@@ -31,10 +31,10 @@ package com.github.jferard.fastods;
 public class TableRow {
 	private String Style = "ro1";
 
-	private ObjectQueue qTableCells = new ObjectQueue();
+	private ObjectQueue<TableCell> qTableCells = ObjectQueue.newQueue();
 
 	public TableRow() {
-	};
+	}
 
 	/**
 	 * Added 0.5.1:<br>
@@ -45,7 +45,7 @@ public class TableRow {
 	 * @return The TableCell for this position, maybe a new TableCell
 	 */
 	public TableCell getCell(final int nCol) {
-		TableCell tc = (TableCell) this.qTableCells.get(nCol);
+		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			tc = new TableCell(TableCell.STYLE_STRING, "");
 			this.qTableCells.setAt(nCol, tc);
@@ -74,7 +74,7 @@ public class TableRow {
 	 */
 	public void setCell(final int nCol, final int nValuetype,
 			final String sValue) {
-		TableCell tc = (TableCell) this.qTableCells.get(nCol);
+		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			tc = new TableCell(nValuetype, sValue);
 		} else {
@@ -107,11 +107,11 @@ public class TableRow {
 	 */
 	public void setCellStyle(final int nCol, final TableStyle ts) {
 
-		TableCell tc = (TableCell) this.qTableCells.get(nCol);
+		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			// Create an empty cell
 			this.setCell(nCol, TableCell.STYLE_STRING, "");
-			tc = (TableCell) this.qTableCells.get(nCol);
+			tc = this.qTableCells.get(nCol);
 		}
 
 		tc.setStyle(ts.getName());
@@ -129,7 +129,7 @@ public class TableRow {
 	/**
 	 * @return The ObjectQueue with all TableCell objects
 	 */
-	public ObjectQueue getCells() {
+	public ObjectQueue<TableCell> getCells() {
 		return this.qTableCells;
 	}
 
@@ -140,7 +140,7 @@ public class TableRow {
 	 * @return The XML string for this object.
 	 */
 	public String[] toXML() {
-		ObjectQueue qRc = new ObjectQueue();
+		ObjectQueue<String> qRc = ObjectQueue.newQueue();
 
 		int nNullFieldCounter = 0;
 
@@ -148,7 +148,7 @@ public class TableRow {
 				+ "\">");
 
 		for (int n = 0; n < this.qTableCells.size(); n++) {
-			TableCell tc = (TableCell) this.qTableCells.get(n);
+			TableCell tc = this.qTableCells.get(n);
 			if (tc == null) {
 				nNullFieldCounter++;
 			} else {
@@ -164,7 +164,7 @@ public class TableRow {
 
 		String[] sReturn = new String[qRc.size()];
 		for (int n = 0; n < qRc.size(); n++) {
-			sReturn[n] = (String) qRc.get(n);
+			sReturn[n] = qRc.get(n);
 		}
 
 		return sReturn;

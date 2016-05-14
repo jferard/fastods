@@ -65,8 +65,8 @@ public class Table {
 	private ConfigItem PageViewZoomValue = new ConfigItem("PageViewZoomValue",
 			"int", "60");
 
-	private ObjectQueue qColumnStyles = new ObjectQueue();
-	private ObjectQueue qTableRows = new ObjectQueue();
+	private ObjectQueue<TableStyle> qColumnStyles = ObjectQueue.newQueue();
+	private ObjectQueue<TableRow> qTableRows = ObjectQueue.newQueue();
 
 	public Table(String sName) {
 		this.setName(sName);
@@ -103,11 +103,11 @@ public class Table {
 		return this.nLastCol;
 	}
 
-	public ObjectQueue getRows() {
+	public ObjectQueue<TableRow> getRows() {
 		return this.qTableRows;
 	}
 
-	public ObjectQueue getColumnStyles() {
+	public ObjectQueue<TableStyle> getColumnStyles() {
 		return this.qColumnStyles;
 	}
 
@@ -201,7 +201,7 @@ public class Table {
 		if (this.qTableRows.get(nRow) == null) {
 			tr = new TableRow();
 		} else {
-			tr = (TableRow) this.qTableRows.get(nRow);
+			tr = this.qTableRows.get(nRow);
 		}
 		tr.setCell(nCol, valuetype, value);
 		this.qTableRows.setAt(nRow, tr);
@@ -250,7 +250,7 @@ public class Table {
 		// -------------------------------------------------------------
 		// Check if this row already exists and create a new one if not
 		// -------------------------------------------------------------
-		TableRow tr = (TableRow) this.qTableRows.get(nRow);
+		TableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
 			tr = new TableRow();
 			this.qTableRows.setAt(nRow, tr);
@@ -337,7 +337,7 @@ public class Table {
 		if (this.qTableRows.get(nRow) == null) {
 			tr = new TableRow();
 		} else {
-			tr = (TableRow) this.qTableRows.get(nRow);
+			tr = this.qTableRows.get(nRow);
 		}
 		tr.setCellStyle(nCol, ts);
 		this.qTableRows.setAt(nRow, tr);

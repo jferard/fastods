@@ -20,6 +20,7 @@
 package com.github.jferard.fastods;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Martin Schulz<br>
@@ -30,11 +31,22 @@ import java.util.LinkedList;
  *         This file ObjectQueue.java is part of SimpleODS.
  *
  */
-public class ObjectQueue {
+public class ObjectQueue<T> {
+	/** Guava's like creator 
+	 * @return the newly created ObjectQueue
+	 */
+	public static <U> ObjectQueue<U> newQueue() {
+		return new ObjectQueue<U>();
+	}
+	
 	/**
 	 * The list with all objects.
 	 */
-	private LinkedList list = new LinkedList();
+	private List<T> list;
+	
+	private ObjectQueue() {
+		this.list = new LinkedList<T>();
+	}
 
 	/**
 	 * Appends the specified element to the end of this list.
@@ -43,7 +55,7 @@ public class ObjectQueue {
 	 *            element to be appended to this list
 	 * @return true
 	 */
-	public boolean add(final Object o) {
+	public boolean add(final T o) {
 		this.list.add(o);
 		return true;
 	}
@@ -58,7 +70,7 @@ public class ObjectQueue {
 	 *            element to be stored at the specified position.
 	 * @return true
 	 */
-	private boolean set(final int n, final Object o) {
+	private boolean set(final int n, final T o) {
 		this.list.set(n, o);
 		return true;
 	}
@@ -78,7 +90,7 @@ public class ObjectQueue {
 	 * @return true - object was set,<br>
 	 *         false - n is invalid, object not set
 	 */
-	public boolean setAt(final int n, final Object o) {
+	public boolean setAt(final int n, final T o) {
 		if (n < 0) {
 			return false;
 		}
@@ -102,7 +114,7 @@ public class ObjectQueue {
 	 *            The position of the object to be returned.
 	 * @return The object at position n
 	 */
-	public Object get(final int n) {
+	public T get(final int n) {
 		if (n < 0 || n >= this.list.size()) {
 			return null;
 		}
@@ -121,7 +133,7 @@ public class ObjectQueue {
 	 */
 	public void printAll() {
 		for (int n = 0; n < this.list.size(); n++) {
-			Object o = this.list.get(n);
+			T o = this.list.get(n);
 
 			if (o == null) {
 				System.out.println(n + "==null");

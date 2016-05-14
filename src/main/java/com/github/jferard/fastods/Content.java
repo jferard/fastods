@@ -35,15 +35,15 @@ import java.util.zip.ZipOutputStream;
 public class Content {
 
 	private Util u = Util.getInstance();
-	private ObjectQueue qTables = new ObjectQueue();
-	private ObjectQueue qTableStyles = new ObjectQueue();
-	private ObjectQueue qPageStyles = new ObjectQueue();
-	private ObjectQueue qTextStyles = new ObjectQueue();
+	private ObjectQueue<Table> qTables = ObjectQueue.newQueue();
+	private ObjectQueue<TableStyle> qTableStyles = ObjectQueue.newQueue();
+	private ObjectQueue<PageStyle> qPageStyles = ObjectQueue.newQueue();
+	private ObjectQueue<TextStyle> qTextStyles = ObjectQueue.newQueue();
 
 	public Content() {
 	}
 
-	public ObjectQueue getTableQueue() {
+	public ObjectQueue<Table> getTableQueue() {
 		return this.qTables;
 	}
 
@@ -56,7 +56,7 @@ public class Content {
 		}
 
 		for (int n = 0; n < this.qTables.size(); n++) {
-			Table tab = (Table) this.qTables.get(n);
+			Table tab = this.qTables.get(n);
 			if (tab.getName().equalsIgnoreCase(sName))
 				return false;
 		}
@@ -73,7 +73,7 @@ public class Content {
 
 		// Loop through all tables and write the informations
 		for (int n = 0; n < this.qTables.size(); n++) {
-			Table tab = (Table) this.qTables.get(n);
+			Table tab = this.qTables.get(n);
 			this.u.writeString(o, tab.toXML());
 			this.u.writeString(o,
 					"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");
@@ -85,7 +85,7 @@ public class Content {
 			// If there is only one column style in column one, just write this
 			// info to OutputStream o
 			if (tab.getColumnStyles().size() == 1) {
-				ts0 = (TableStyle) tab.getColumnStyles().get(0);
+				ts0 = tab.getColumnStyles().get(0);
 				this.u.writeString(o, "<table:table-column table:style-name=\""
 						+ ts0.getName() + "\" table:number-columns-repeated=\""
 						+ 1 + "\" table:default-cell-style-name=\""
@@ -100,8 +100,8 @@ public class Content {
 				int nCount = 1;
 				for (int x = 1; x < tab.getColumnStyles().size(); x++) {
 
-					ts0 = (TableStyle) tab.getColumnStyles().get(x - 1);
-					ts1 = (TableStyle) tab.getColumnStyles().get(x);
+					ts0 = tab.getColumnStyles().get(x - 1);
+					ts1 = tab.getColumnStyles().get(x);
 
 					if (ts0 == null) {
 						sSytle0 = "co1";
@@ -143,7 +143,7 @@ public class Content {
 
 			// Loop through all rows
 			for (int r = 0; r < tab.getRows().size(); r++) {
-				TableRow tr = (TableRow) tab.getRows().get(r);
+				TableRow tr = tab.getRows().get(r);
 
 				if (tr != null) {
 					String[] sToPrint = tr.toXML();
@@ -185,7 +185,7 @@ public class Content {
 			this.u.writeString(o, "<office:automatic-styles>");
 
 			for (int n = 0; n < this.qTableStyles.size(); n++) {
-				TableStyle ts = (TableStyle) this.qTableStyles.get(n);
+				TableStyle ts = this.qTableStyles.get(n);
 				this.u.writeString(o, ts.toXML());
 			}
 			this.u.writeString(o, "</office:automatic-styles>");
@@ -212,7 +212,7 @@ public class Content {
 			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
 		}
 
-		Table tab = (Table) this.qTables.get(nTab);
+		Table tab = this.qTables.get(nTab);
 		tab.setCell(nRow, nCol, valuetype, value);
 
 		return true;
@@ -225,7 +225,7 @@ public class Content {
 			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
 		}
 
-		Table tab = (Table) this.qTables.get(nTab);
+		Table tab = this.qTables.get(nTab);
 
 		tab.setCellStyle(nRow, nCol, ts);
 		this.addTableStyle(ts);
@@ -249,7 +249,7 @@ public class Content {
 		if (nTab < 0 || nTab >= this.qTables.size()) {
 			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
 		}
-		Table tab = (Table) this.qTables.get(nTab);
+		Table tab = this.qTables.get(nTab);
 		return tab.getCell(nRow, nCol);
 
 	}
@@ -261,7 +261,7 @@ public class Content {
 			return false;
 		}
 
-		Table tab = (Table) this.qTables.get(nTab);
+		Table tab = this.qTables.get(nTab);
 
 		tab.setColumnStyle(nCol, ts);
 
@@ -275,13 +275,13 @@ public class Content {
 			return null;
 		}
 
-		return (PageStyle) this.qPageStyles.get(0);
+		return this.qPageStyles.get(0);
 	}
 
 	public void addTableStyle(TableStyle ts) {
 		int x = 0;
 		for (x = 0; x < this.qTableStyles.size(); x++) {
-			TableStyle tabStyle = (TableStyle) this.qTableStyles.get(x);
+			TableStyle tabStyle = this.qTableStyles.get(x);
 			if (tabStyle.getName().equalsIgnoreCase(ts.getName())) {
 				this.qTableStyles.setAt(x, ts);
 				return;
@@ -295,7 +295,7 @@ public class Content {
 	public void addPageStyle(final PageStyle ps) {
 		int x = 0;
 		for (x = 0; x < this.qPageStyles.size(); x++) {
-			PageStyle pStyle = (PageStyle) this.qPageStyles.get(x);
+			PageStyle pStyle = this.qPageStyles.get(x);
 			if (pStyle.getName().equalsIgnoreCase(ps.getName())) {
 				this.qPageStyles.setAt(x, ps);
 				return;
@@ -309,7 +309,7 @@ public class Content {
 	public void addTextStyle(final TextStyle ts) {
 		int x = 0;
 		for (x = 0; x < this.qTextStyles.size(); x++) {
-			TextStyle tStyle = (TextStyle) this.qTextStyles.get(x);
+			TextStyle tStyle = this.qTextStyles.get(x);
 			if (tStyle.getName().equalsIgnoreCase(ts.getName())) {
 				this.qTextStyles.setAt(x, ts);
 				return;
@@ -320,27 +320,27 @@ public class Content {
 		this.qTextStyles.add(ts);
 	}
 
-	public ObjectQueue getTableStyles() {
+	public ObjectQueue<TableStyle> getTableStyles() {
 		return this.qTableStyles;
 	}
 
-	public void setTableStyles(final ObjectQueue qTableStyles) {
+	public void setTableStyles(final ObjectQueue<TableStyle> qTableStyles) {
 		this.qTableStyles = qTableStyles;
 	}
 
-	public ObjectQueue getPageStyles() {
+	public ObjectQueue<PageStyle> getPageStyles() {
 		return this.qPageStyles;
 	}
 
-	public void setPageStyles(final ObjectQueue qPageStyles) {
+	public void setPageStyles(final ObjectQueue<PageStyle> qPageStyles) {
 		this.qPageStyles = qPageStyles;
 	}
 
-	public ObjectQueue getTextStyles() {
+	public ObjectQueue<TextStyle> getTextStyles() {
 		return this.qTextStyles;
 	}
 
-	public void setTextStyles(final ObjectQueue qTextStyles) {
+	public void setTextStyles(final ObjectQueue<TextStyle> qTextStyles) {
 		this.qTextStyles = qTextStyles;
 	}
 

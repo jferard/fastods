@@ -67,7 +67,7 @@ public class TableStyle {
 	private String sDefaultCellStyle = "Default";
 	private String sRowHeight;
 	private String sColumnWidth;
-	private ObjectQueue qBorders = new ObjectQueue();
+	private ObjectQueue<BorderStyle> qBorders = ObjectQueue.newQueue();
 
 	private Content content;
 
@@ -530,7 +530,7 @@ public class TableStyle {
 			// -----------------------------------------
 			int n;
 			for (n = 0; n < this.qBorders.size(); n++) {
-				BorderStyle b = (BorderStyle) this.qBorders.get(n);
+				BorderStyle b = this.qBorders.get(n);
 				if (b.getPosition() == bs.getPosition()) {
 					this.qBorders.setAt(n, bs);
 					return;
@@ -716,7 +716,7 @@ public class TableStyle {
 			// Add all border styles
 			// -----------------------------------------------
 			for (int n = 0; n < this.qBorders.size(); n++) {
-				BorderStyle bs = (BorderStyle) this.qBorders.get(n);
+				BorderStyle bs = this.qBorders.get(n);
 				sbTemp.append(bs.toString());
 			}
 

@@ -36,11 +36,11 @@ public class Styles {
 
 	private Util u = Util.getInstance();
 
-	private ObjectQueue qNumberStyles = new ObjectQueue();
-	private ObjectQueue qCurrencyStyles = new ObjectQueue();
-	private ObjectQueue qPageStyles = new ObjectQueue();
-	private ObjectQueue qTextStyles = new ObjectQueue();
-	private ObjectQueue qDateStyles = new ObjectQueue();
+	private ObjectQueue<NumberStyle> qNumberStyles = ObjectQueue.newQueue();
+	private ObjectQueue<CurrencyStyle> qCurrencyStyles = ObjectQueue.newQueue();
+	private ObjectQueue<PageStyle> qPageStyles = ObjectQueue.newQueue();
+	private ObjectQueue<TextStyle> qTextStyles = ObjectQueue.newQueue();
+	private ObjectQueue<DateStyle> qDateStyles = ObjectQueue.newQueue();
 	private Header header = null;
 	private Footer footer = null;
 
@@ -71,7 +71,7 @@ public class Styles {
 		// --------------------------------------------------------------
 		int x = 0;
 		for (x = 0; x < this.qDateStyles.size(); x++) {
-			DateStyle dateStyle = (DateStyle) this.qDateStyles.get(x);
+			DateStyle dateStyle = this.qDateStyles.get(x);
 			if (dateStyle.getName().equalsIgnoreCase(ds.getName())) {
 				this.qDateStyles.setAt(x, ds);
 				return;
@@ -99,7 +99,7 @@ public class Styles {
 		// --------------------------------------------------------------
 		int x = 0;
 		for (x = 0; x < this.qNumberStyles.size(); x++) {
-			NumberStyle numStyle = (NumberStyle) this.qNumberStyles.get(x);
+			NumberStyle numStyle = this.qNumberStyles.get(x);
 			if (numStyle.getName().equalsIgnoreCase(ns.getName())) {
 				this.qNumberStyles.setAt(x, ns);
 				return;
@@ -127,7 +127,7 @@ public class Styles {
 		// --------------------------------------------------------------
 		int x = 0;
 		for (x = 0; x < this.qCurrencyStyles.size(); x++) {
-			CurrencyStyle cStyle = (CurrencyStyle) this.qCurrencyStyles.get(x);
+			CurrencyStyle cStyle = this.qCurrencyStyles.get(x);
 			if (cStyle.getName().equalsIgnoreCase(cs.getName())) {
 				this.qCurrencyStyles.setAt(x, cs);
 				return;
@@ -147,7 +147,7 @@ public class Styles {
 		// --------------------------------------------------------------
 		int x = 0;
 		for (x = 0; x < this.qPageStyles.size(); x++) {
-			PageStyle pStyle = (PageStyle) this.qPageStyles.get(x);
+			PageStyle pStyle = this.qPageStyles.get(x);
 			if (pStyle.getName().equalsIgnoreCase(ps.getName())) {
 				this.qPageStyles.setAt(x, ps);
 				return;
@@ -169,9 +169,9 @@ public class Styles {
 		// --------------------------------------------------------------
 		int x = 0;
 		for (x = 0; x < this.qTextStyles.size(); x++) {
-			TextStyle tStyle = (TextStyle) this.qTextStyles.get(x);
+			TextStyle tStyle = this.qTextStyles.get(x);
 			if (tStyle.getName().equalsIgnoreCase(ts.getName())) {
-				this.qPageStyles.setAt(x, ts);
+				this.qTextStyles.setAt(x, ts);
 				return;
 			}
 		}
@@ -187,7 +187,8 @@ public class Styles {
 	public boolean createStyles(final ZipOutputStream out) {
 		try {
 			out.putNextEntry(new ZipEntry("styles.xml"));
-			this.u.writeString(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			this.u.writeString(out,
+					"<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			this.u.writeString(out,
 					"<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" office:version=\"1.1\">");
 			this.u.writeString(out, "<office:font-face-decls>");
@@ -201,15 +202,15 @@ public class Styles {
 			this.u.writeString(out, "<office:styles>");
 
 			for (int n = 0; n < this.qDateStyles.size(); n++) {
-				DateStyle ds = (DateStyle) this.qDateStyles.get(n);
+				DateStyle ds = this.qDateStyles.get(n);
 				this.u.writeString(out, ds.toXML());
 			}
 			for (int n = 0; n < this.qNumberStyles.size(); n++) {
-				NumberStyle ns = (NumberStyle) this.qNumberStyles.get(n);
+				NumberStyle ns = this.qNumberStyles.get(n);
 				this.u.writeString(out, ns.toXML());
 			}
 			for (int n = 0; n < this.qCurrencyStyles.size(); n++) {
-				CurrencyStyle cs = (CurrencyStyle) this.qCurrencyStyles.get(n);
+				CurrencyStyle cs = this.qCurrencyStyles.get(n);
 				this.u.writeString(out, cs.toXML());
 			}
 
@@ -234,11 +235,11 @@ public class Styles {
 			*/
 
 			for (int n = 0; n < this.qPageStyles.size(); n++) {
-				PageStyle ps = (PageStyle) this.qPageStyles.get(n);
+				PageStyle ps = this.qPageStyles.get(n);
 				this.u.writeString(out, ps.toXML());
 			}
 			for (int n = 0; n < this.qTextStyles.size(); n++) {
-				TextStyle ts = (TextStyle) this.qTextStyles.get(n);
+				TextStyle ts = this.qTextStyles.get(n);
 				this.u.writeString(out, ts.toXML());
 			}
 
@@ -246,7 +247,7 @@ public class Styles {
 			this.u.writeString(out, "<office:master-styles>");
 
 			for (int n = 0; n < this.qPageStyles.size(); n++) {
-				PageStyle ps = (PageStyle) this.qPageStyles.get(n);
+				PageStyle ps = this.qPageStyles.get(n);
 				this.u.writeString(out, ps.toMasterStyleXML());
 			}
 

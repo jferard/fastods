@@ -43,9 +43,9 @@ public class Header {
 	 */
 	public static final int FLG_REGION_RIGHT = 2;
 
-	private ObjectQueue qLeftRegion = new ObjectQueue();
-	private ObjectQueue qCenterRegion = new ObjectQueue();
-	private ObjectQueue qRightRegion = new ObjectQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qLeftRegion = ObjectQueue.newQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qCenterRegion = ObjectQueue.newQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qRightRegion = ObjectQueue.newQueue();
 
 	private String sMinHeight = "0cm";
 	private String sMarginLeft = "0cm";
@@ -66,7 +66,7 @@ public class Header {
 	public Header(final OdsFile odsFile) {
 		this.o = odsFile;
 		this.o.getStyles().setHeader(this); // Add this Footer object
-		this.qCenterRegion.add(new ObjectQueue()); // Create the first paragraph
+		this.qCenterRegion.add(ObjectQueue.<StyledText>newQueue()); // Create the first paragraph
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class Header {
 
 	}
 
-	private void writeRegion(StringBuffer sbTemp, ObjectQueue qRegion,
+	private void writeRegion(StringBuffer sbTemp, ObjectQueue<ObjectQueue<StyledText>> qRegion,
 			final String sRegionName) {
 
 		if (qRegion.size() == 0) {
@@ -167,7 +167,7 @@ public class Header {
 
 			// <style:header> is written by PageStyle.toMasterStyleXML()
 
-			ObjectQueue qStyledText = (ObjectQueue) qRegion.get(n);
+			ObjectQueue<StyledText> qStyledText = qRegion.get(n);
 
 			sbTemp.append("<text:p>");
 
@@ -178,7 +178,7 @@ public class Header {
 			} else {
 				// Add all styles and text for this paragraphs
 				for (int i = 0; i < qStyledText.size(); i++) {
-					StyledText st = (StyledText) qStyledText.get(i);
+					StyledText st = qStyledText.get(i);
 					sbTemp.append(st.toMasterStyleXML());
 				}
 			}
@@ -210,7 +210,7 @@ public class Header {
 	 */
 	public void addStyledText(final TextStyle ts, final String sText,
 			final int nHeaderRegion, final int nParagraph) {
-		ObjectQueue qStyledText = null;
+		ObjectQueue<StyledText> qStyledText = null;
 
 		switch (nHeaderRegion) {
 		case Header.FLG_REGION_LEFT: // Use left region
@@ -240,14 +240,14 @@ public class Header {
 	 * @param nParagraph
 	 * @return The ObjectQueue with StyledText elements.
 	 */
-	private ObjectQueue checkParagraph(final ObjectQueue qRegion,
+	private ObjectQueue<StyledText> checkParagraph(final ObjectQueue<ObjectQueue<StyledText>> qRegion,
 			final int nParagraph) {
-		ObjectQueue qStyledText = (ObjectQueue) qRegion.get(nParagraph);
+		ObjectQueue<StyledText> qStyledText = qRegion.get(nParagraph);
 		// Check if the paragraph already exists and add a ObjectQueue if not
 		if (qStyledText == null) {
-			qRegion.setAt(nParagraph, new ObjectQueue()); // Create this
+			qRegion.setAt(nParagraph, ObjectQueue.<StyledText>newQueue()); // Create this
 															// paragraph
-			qStyledText = (ObjectQueue) qRegion.get(nParagraph);
+			qStyledText = qRegion.get(nParagraph);
 		}
 
 		return qStyledText;
