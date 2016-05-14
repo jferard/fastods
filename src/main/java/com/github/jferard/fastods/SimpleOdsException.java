@@ -22,9 +22,10 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file SimpleOdsException.java is part of SimpleODS.
+ *         This file SimpleOdsException.java is part of SimpleODS.
  *
  */
 public class SimpleOdsException extends Exception {

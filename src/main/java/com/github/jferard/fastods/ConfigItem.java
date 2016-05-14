@@ -22,9 +22,10 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file ConfigItem.java is part of SimpleODS.
+ *         This file ConfigItem.java is part of SimpleODS.
  *
  */
 public class ConfigItem {
@@ -32,40 +33,42 @@ public class ConfigItem {
 	private String sType;
 	private String sValue;
 
-	public ConfigItem(final String sName, final String sType, final String sValue) {
+	public ConfigItem(final String sName, final String sType,
+			final String sValue) {
 
 		this.sItemName = sName;
 		this.sType = sType;
 		this.sValue = sValue;
 
 	}
-	
+
 	/**
 	 * Get the name of this ConfigItem.
+	 * 
 	 * @return The name of this ConfigItem
 	 */
 	public String getName() {
-		return sItemName;
+		return this.sItemName;
 	}
 
 	public void setName(final String name) {
-		sItemName = name;
+		this.sItemName = name;
 	}
 
 	public String getType() {
-		return sType;
+		return this.sType;
 	}
 
 	public void setType(final String type) {
-		sType = type;
+		this.sType = type;
 	}
 
 	public String getValue() {
-		return sValue;
+		return this.sValue;
 	}
 
 	public void setValue(final String value) {
-		sValue = value;
+		this.sValue = value;
 	}
 
 	/**
@@ -75,7 +78,9 @@ public class ConfigItem {
 	 * @return The XML string for this object.
 	 */
 	public String toXML() {
-		return ("<config:config-item config:name=\"" + sItemName + "\" config:type=\"" + sType + "\">" + sValue + "</config:config-item>");
+		return ("<config:config-item config:name=\"" + this.sItemName
+				+ "\" config:type=\"" + this.sType + "\">" + this.sValue
+				+ "</config:config-item>");
 	}
 
 }

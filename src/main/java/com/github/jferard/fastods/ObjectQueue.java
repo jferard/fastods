@@ -24,9 +24,10 @@ import java.util.LinkedList;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file ObjectQueue.java is part of SimpleODS.
+ *         This file ObjectQueue.java is part of SimpleODS.
  *
  */
 public class ObjectQueue {
@@ -43,7 +44,7 @@ public class ObjectQueue {
 	 * @return true
 	 */
 	public boolean add(final Object o) {
-		list.add(o);
+		this.list.add(o);
 		return true;
 	}
 
@@ -58,14 +59,16 @@ public class ObjectQueue {
 	 * @return true
 	 */
 	private boolean set(final int n, final Object o) {
-		list.set(n, o);
+		this.list.set(n, o);
 		return true;
 	}
 
 	/**
 	 * Set an object at position n.<br>
-	 * If n is > the number of current elements, 'null' elements are added to fill up the list.<br>
-	 * If n is inside the current number of element, the element at position n is replaced.<br>
+	 * If n is > the number of current elements, 'null' elements are added to
+	 * fill up the list.<br>
+	 * If n is inside the current number of element, the element at position n
+	 * is replaced.<br>
 	 * No Exception is thrown when n is out of range.
 	 * 
 	 * @param n
@@ -80,8 +83,8 @@ public class ObjectQueue {
 			return false;
 		}
 
-		if (n >= list.size()) {
-			for (int x = list.size(); x <= n; x++) {
+		if (n >= this.list.size()) {
+			for (int x = this.list.size(); x <= n; x++) {
 				this.add(null);
 			}
 			this.set(n, o);
@@ -95,29 +98,30 @@ public class ObjectQueue {
 	 * Get the object at position n.<br>
 	 * Return null if n is outside of the list.
 	 * 
-	 * @param n The position of the object to be returned.
+	 * @param n
+	 *            The position of the object to be returned.
 	 * @return The object at position n
 	 */
 	public Object get(final int n) {
-		if (n < 0 || n >= list.size()) {
+		if (n < 0 || n >= this.list.size()) {
 			return null;
 		}
-		return (list.get(n));
+		return (this.list.get(n));
 	}
-	
+
 	/**
 	 * @return The number of object in this ObjectQueue
 	 */
 	public int size() {
-		return list.size();
+		return this.list.size();
 	}
-	
+
 	/**
 	 * Print all objects in this ObjectQueue to System.out.
 	 */
 	public void printAll() {
-		for (int n = 0; n < list.size(); n++) {
-			Object o = (Object) list.get(n);
+		for (int n = 0; n < this.list.size(); n++) {
+			Object o = this.list.get(n);
 
 			if (o == null) {
 				System.out.println(n + "==null");
@@ -126,5 +130,5 @@ public class ObjectQueue {
 			}
 		}
 	}
-	
+
 }

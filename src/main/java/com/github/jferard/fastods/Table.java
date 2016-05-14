@@ -22,38 +22,52 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file Table.java is part of SimpleODS.<br>
- * 0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'
+ *         This file Table.java is part of SimpleODS.<br>
+ *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'
  *
  */
 public class Table {
 	final static int TABLE_MAXROWNUMBER = 65536;
 	final static int TABLE_MAXCOLUMNNUMBER = 256;
 	private String sName;
-	private String Style="ta1";
-	private int nLastRow=0;	// The highest row in the table TODO: Check if this can be removed
-	private int nLastCol=0;	// The highest column in the table TODO: Check if this can be removed
-	
-	private ConfigItem CursorPositionX= new ConfigItem( "CursorPositionX","int","0"); 
-	private ConfigItem CursorPositionY= new ConfigItem( "CursorPositionY","int","0");
-	private ConfigItem HorizontalSplitMode = new ConfigItem( "HorizontalSplitMode","short","0");
-	private ConfigItem VerticalSplitMode = new ConfigItem( "VerticalSplitMode","short","0");
-	private ConfigItem HorizontalSplitPosition = new ConfigItem( "HorizontalSplitPosition","int","0");
-	private ConfigItem VerticalSplitPosition = new ConfigItem( "VerticalSplitPosition","int","0");
-	private ConfigItem ActiveSplitRange = new ConfigItem( "ActiveSplitRange","short","2");
-	private ConfigItem PositionLeft = new ConfigItem( "PositionLeft","int","0");
-	private ConfigItem PositionRight = new ConfigItem( "PositionRight","int","0");
-	private ConfigItem PositionTop = new ConfigItem( "PositionTop","int","0");
-	private ConfigItem PositionBottom = new ConfigItem( "PositionBottom","int","0");
-	private ConfigItem ZoomType = new ConfigItem( "ZoomType","short","0");
-	private ConfigItem ZoomValue = new ConfigItem( "ZoomValue","int","100");
-	private ConfigItem PageViewZoomValue = new ConfigItem( "PageViewZoomValue","int","60");
-	
+	private String Style = "ta1";
+	private int nLastRow = 0; // The highest row in the table TODO: Check if
+								// this can be removed
+	private int nLastCol = 0; // The highest column in the table TODO: Check if
+								// this can be removed
+
+	private ConfigItem CursorPositionX = new ConfigItem("CursorPositionX",
+			"int", "0");
+	private ConfigItem CursorPositionY = new ConfigItem("CursorPositionY",
+			"int", "0");
+	private ConfigItem HorizontalSplitMode = new ConfigItem(
+			"HorizontalSplitMode", "short", "0");
+	private ConfigItem VerticalSplitMode = new ConfigItem("VerticalSplitMode",
+			"short", "0");
+	private ConfigItem HorizontalSplitPosition = new ConfigItem(
+			"HorizontalSplitPosition", "int", "0");
+	private ConfigItem VerticalSplitPosition = new ConfigItem(
+			"VerticalSplitPosition", "int", "0");
+	private ConfigItem ActiveSplitRange = new ConfigItem("ActiveSplitRange",
+			"short", "2");
+	private ConfigItem PositionLeft = new ConfigItem("PositionLeft", "int",
+			"0");
+	private ConfigItem PositionRight = new ConfigItem("PositionRight", "int",
+			"0");
+	private ConfigItem PositionTop = new ConfigItem("PositionTop", "int", "0");
+	private ConfigItem PositionBottom = new ConfigItem("PositionBottom", "int",
+			"0");
+	private ConfigItem ZoomType = new ConfigItem("ZoomType", "short", "0");
+	private ConfigItem ZoomValue = new ConfigItem("ZoomValue", "int", "100");
+	private ConfigItem PageViewZoomValue = new ConfigItem("PageViewZoomValue",
+			"int", "60");
+
 	private ObjectQueue qColumnStyles = new ObjectQueue();
 	private ObjectQueue qTableRows = new ObjectQueue();
-		
+
 	public Table(String sName) {
 		this.setName(sName);
 	}
@@ -63,11 +77,19 @@ public class Table {
 	 *         array
 	 */
 	public String[] getConfig() {
-		String[] sConfig = { "<config:config-item-map-entry config:name=\"" + this.getName() + "\">", CursorPositionX.toXML(),
-				CursorPositionY.toXML(), HorizontalSplitMode.toXML(), VerticalSplitMode.toXML(), this.HorizontalSplitMode.toXML(),
-				this.VerticalSplitMode.toXML(), this.HorizontalSplitPosition.toXML(), this.VerticalSplitPosition.toXML(),
-				this.ActiveSplitRange.toXML(), this.PositionLeft.toXML(), this.PositionRight.toXML(), this.PositionTop.toXML(),
-				this.PositionBottom.toXML(), this.ZoomType.toXML(), this.ZoomValue.toXML(), this.PageViewZoomValue.toXML(),
+		String[] sConfig = {
+				"<config:config-item-map-entry config:name=\"" + this.getName()
+						+ "\">",
+				this.CursorPositionX.toXML(), this.CursorPositionY.toXML(),
+				this.HorizontalSplitMode.toXML(), this.VerticalSplitMode.toXML(),
+				this.HorizontalSplitMode.toXML(),
+				this.VerticalSplitMode.toXML(),
+				this.HorizontalSplitPosition.toXML(),
+				this.VerticalSplitPosition.toXML(),
+				this.ActiveSplitRange.toXML(), this.PositionLeft.toXML(),
+				this.PositionRight.toXML(), this.PositionTop.toXML(),
+				this.PositionBottom.toXML(), this.ZoomType.toXML(),
+				this.ZoomValue.toXML(), this.PageViewZoomValue.toXML(),
 				"</config:config-item-map-entry>", };
 
 		return (sConfig);
@@ -89,20 +111,23 @@ public class Table {
 		return this.qColumnStyles;
 	}
 
-	/** 
-	 * Get the current TableStyle 
+	/**
+	 * Get the current TableStyle
+	 * 
 	 * @return The current TableStlye
 	 */
 	public String getStyle() {
-		return Style;
+		return this.Style;
 	}
 
 	/**
 	 * Set a new TableStyle
-	 * @param style The new TableStlye to be used
+	 * 
+	 * @param style
+	 *            The new TableStlye to be used
 	 */
 	public void setStyle(String style) {
-		Style = style;
+		this.Style = style;
 	}
 
 	/**
@@ -111,7 +136,7 @@ public class Table {
 	 * @return The name of this table.
 	 */
 	public String getName() {
-		return sName;
+		return this.sName;
 	}
 
 	/**
@@ -121,9 +146,9 @@ public class Table {
 	 *            The name of this table.
 	 */
 	public void setName(final String name) {
-		sName = name;
+		this.sName = name;
 	}
-	
+
 	/**
 	 * Set the value of a cell.
 	 * 
@@ -133,34 +158,44 @@ public class Table {
 	 *            The column (maximal 256)
 	 * @param valuetype
 	 *            The type of the value,
-	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or TableCell.STYLE_PERCENTAGE
+	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or
+	 *            TableCell.STYLE_PERCENTAGE
 	 * @param value
 	 *            The value to be set
 	 * @return true
-	 * @throws SimpleOdsException Thrown when nRow or nCol have wrong values.
+	 * @throws SimpleOdsException
+	 *             Thrown when nRow or nCol have wrong values.
 	 */
-	public boolean setCell(final int nRow, final int nCol, final int valuetype, final String value) throws SimpleOdsException {
+	public boolean setCell(final int nRow, final int nCol, final int valuetype,
+			final String value) throws SimpleOdsException {
 		TableRow tr;
 
 		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new SimpleOdsException("Maximum row number (65536) exception, row value:[" + nRow + "]");
+			throw new SimpleOdsException(
+					"Maximum row number (65536) exception, row value:[" + nRow
+							+ "]");
 		}
 		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException("Maximum column number (256) exception, column value:[" + nCol + "]");
+			throw new SimpleOdsException(
+					"Maximum column number (256) exception, column value:["
+							+ nCol + "]");
 		}
 		if (nRow < 0) {
-			throw new SimpleOdsException("Negative row number exception, row value:[" + nRow + "]");
+			throw new SimpleOdsException(
+					"Negative row number exception, row value:[" + nRow + "]");
 		}
 		if (nCol < 0) {
-			throw new SimpleOdsException("Negative column number exception, column value:[" + nCol + "]");
+			throw new SimpleOdsException(
+					"Negative column number exception, column value:[" + nCol
+							+ "]");
 		}
 
 		if (nRow > this.nLastRow) {
-			nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
-		}	
+			this.nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
+		}
 		if (nCol > this.nLastCol) {
-			nLastCol = nCol;
-		}	
+			this.nLastCol = nCol;
+		}
 
 		// Check if this row already exists and create a new one if not
 		if (this.qTableRows.get(nRow) == null) {
@@ -192,8 +227,8 @@ public class Table {
 	 * @throws SimpleOdsException
 	 *             Thrown when nRow or nCol have wrong values.
 	 */
-	public boolean setCell(final int nRow, final int nCol, final int valuetype, final String value, final TableStyle ts)
-			throws SimpleOdsException {
+	public boolean setCell(final int nRow, final int nCol, final int valuetype,
+			final String value, final TableStyle ts) throws SimpleOdsException {
 
 		this.setCell(nRow, nCol, valuetype, value);
 		this.setCellStyle(nRow, nCol, ts);
@@ -234,13 +269,18 @@ public class Table {
 	 * @throws SimpleOdsException
 	 *             Thrown if nCol has an invalid value.
 	 */
-	public void setColumnStyle(final int nCol, final TableStyle ts) throws SimpleOdsException {
+	public void setColumnStyle(final int nCol, final TableStyle ts)
+			throws SimpleOdsException {
 
 		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException("Maximum column number (256) exception, column value:[" + nCol + "]");
+			throw new SimpleOdsException(
+					"Maximum column number (256) exception, column value:["
+							+ nCol + "]");
 		}
 		if (nCol < 0) {
-			throw new SimpleOdsException("Negative column number exception, column value:[" + nCol + "]");
+			throw new SimpleOdsException(
+					"Negative column number exception, column value:[" + nCol
+							+ "]");
 		}
 
 		this.qColumnStyles.setAt(nCol, ts);
@@ -260,27 +300,35 @@ public class Table {
 	 * @throws SimpleOdsException
 	 *             when nRow or nCol have wrong values
 	 */
-	public boolean setCellStyle(final int nRow, final int nCol, final TableStyle ts) throws SimpleOdsException {
+	public boolean setCellStyle(final int nRow, final int nCol,
+			final TableStyle ts) throws SimpleOdsException {
 		TableRow tr;
 
 		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new SimpleOdsException("Maximum row number (65536) exception, row value:[" + nRow + "]");
+			throw new SimpleOdsException(
+					"Maximum row number (65536) exception, row value:[" + nRow
+							+ "]");
 		}
 		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException("Maximum column number (256) exception, column value:[" + nCol + "]");
+			throw new SimpleOdsException(
+					"Maximum column number (256) exception, column value:["
+							+ nCol + "]");
 		}
 		if (nRow < 0) {
-			throw new SimpleOdsException("Negative row number exception, row value:[" + nRow + "]");
+			throw new SimpleOdsException(
+					"Negative row number exception, row value:[" + nRow + "]");
 		}
 		if (nCol < 0) {
-			throw new SimpleOdsException("Negative column number exception, column value:[" + nCol + "]");
+			throw new SimpleOdsException(
+					"Negative column number exception, column value:[" + nCol
+							+ "]");
 		}
 
 		if (nRow > this.nLastRow) {
-			nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
+			this.nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
 		}
 		if (nCol > this.nLastCol) {
-			nLastCol = nCol;
+			this.nLastCol = nCol;
 		}
 
 		// -------------------------------------------------------------
@@ -303,8 +351,9 @@ public class Table {
 	 * @return The XML string for this object.
 	 */
 	public String toXML() {
-		return ("<table:table table:name=\"" + this.getName() + "\" table:style-name=\"" + this.getStyle() + "\" table:print=\"false\">");
+		return ("<table:table table:name=\"" + this.getName()
+				+ "\" table:style-name=\"" + this.getStyle()
+				+ "\" table:print=\"false\">");
 	}
-	
 
 }

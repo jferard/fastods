@@ -27,9 +27,10 @@ import java.util.zip.ZipOutputStream;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file Meta.java is part of SimpleODS.
+ *         This file Meta.java is part of SimpleODS.
  *
  */
 public class Meta {
@@ -41,87 +42,85 @@ public class Meta {
 	private String sEditingDuration = "PT1M00S";
 	private int nTableCount = 1;
 	private int nCellCount = 1;
-	
+
 	public Meta() {
 		this.setDateTimeNow();
 	}
-	
+
 	/**
 	 * Store the date and time of the document creation in the Meta data.
 	 */
 	private void setDateTimeNow() {
 		Date dt = new Date();
-		SimpleDateFormat df_date = new SimpleDateFormat( "yyyy-MM-dd" );
-		SimpleDateFormat df_time = new SimpleDateFormat( "HH:mm:ss" );
-		
-		this.sDateTime=df_date.format( dt ) + "T"+df_time.format( dt );
-		
+		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat df_time = new SimpleDateFormat("HH:mm:ss");
+
+		this.sDateTime = df_date.format(dt) + "T" + df_time.format(dt);
+
 	}
-	
-	public String [] getMeta() {
-		String [] sReturn = {
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-				"<office:document-meta xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">",				
-				"<office:meta>",
-				"<meta:generator>", sGenerator, "</meta:generator>",
-				"<dc:creator>", sCreator, "</dc:creator>",
-				"<dc:date>", sDateTime, "</dc:date>",
-				"<meta:editing-cycles>", sEditingCycles, "</meta:editing-cycles>",
-				"<meta:editing-duration>", sEditingDuration, "</meta:editing-duration>",
+
+	public String[] getMeta() {
+		String[] sReturn = { "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+				"<office:document-meta xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">",
+				"<office:meta>", "<meta:generator>", this.sGenerator,
+				"</meta:generator>", "<dc:creator>", this.sCreator, "</dc:creator>",
+				"<dc:date>", this.sDateTime, "</dc:date>", "<meta:editing-cycles>",
+				this.sEditingCycles, "</meta:editing-cycles>",
+				"<meta:editing-duration>", this.sEditingDuration,
+				"</meta:editing-duration>",
 				"<meta:user-defined meta:name=\"Info 1\"/>",
 				"<meta:user-defined meta:name=\"Info 2\"/>",
 				"<meta:user-defined meta:name=\"Info 3\"/>",
 				"<meta:user-defined meta:name=\"Info 4\"/>",
-				"<meta:document-statistic meta:table-count=\"" + nTableCount + "\" meta:cell-count=\"" + nCellCount + "\"/>",
-				"</office:meta>",
-				"</office:document-meta>"
-				
+				"<meta:document-statistic meta:table-count=\"" + this.nTableCount
+						+ "\" meta:cell-count=\"" + this.nCellCount + "\"/>",
+				"</office:meta>", "</office:document-meta>"
+
 		};
-		
+
 		return sReturn;
-		
+
 	}
 
 	public void incTableCount() {
 		this.nTableCount++;
 	}
-	
+
 	public void incCellCount() {
 		this.nCellCount++;
 	}
-	
+
 	public void decTableCount() {
 		if (this.nTableCount > 0) {
 			this.nTableCount--;
 		}
 	}
-	
+
 	public void decCellCount() {
 		if (this.nCellCount > 0) {
 			this.nCellCount--;
-		}	
+		}
 	}
-		
+
 	public String getCreator() {
 		return this.sCreator;
 	}
-	
+
 	public void setCreator(final String sCreator) {
 		this.sCreator = sCreator;
 	}
-	
+
 	public boolean createMeta(final ZipOutputStream o) {
-		
+
 		try {
 			o.putNextEntry(new ZipEntry("meta.xml"));
-			u.writeStringArray(o, this.getMeta());
+			this.u.writeStringArray(o, this.getMeta());
 			o.closeEntry();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		}	
+		}
 		return true;
 	}
-	
 
 }

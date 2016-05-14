@@ -23,27 +23,32 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  *
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  *
- * This file BorderStyle.java is part of SimpleODS.
+ *         This file BorderStyle.java is part of SimpleODS.
  *
  */
 public class BorderStyle {
 
 	/**
-	 * Flag to indicate that the top border should be shown, used by setPosition().
+	 * Flag to indicate that the top border should be shown, used by
+	 * setPosition().
 	 */
 	public static final int POSITION_TOP = 1;
 	/**
-	 * Flag to indicate that the bottom border should be shown, used by setPosition().
+	 * Flag to indicate that the bottom border should be shown, used by
+	 * setPosition().
 	 */
 	public static final int POSITION_BOTTOM = 2;
 	/**
-	 * Flag to indicate that the left border should be shown, used by setPosition().
+	 * Flag to indicate that the left border should be shown, used by
+	 * setPosition().
 	 */
 	public static final int POSITION_LEFT = 3;
 	/**
-	 * Flag to indicate that the right border should be shown, used by setPosition().
+	 * Flag to indicate that the right border should be shown, used by
+	 * setPosition().
 	 */
 	public static final int POSITION_RIGHT = 4;
 	/**
@@ -58,7 +63,7 @@ public class BorderStyle {
 	 * Flag to indicate a border style 'Double', used by setBorderStyle().
 	 */
 	public static final int BORDER_DOUBLE = 2;
-		
+
 	/**
 	 * The border size.<br>
 	 * Default is 0.1cm
@@ -70,12 +75,13 @@ public class BorderStyle {
 	 */
 	private String sBorderColor = "#000000";
 	/**
-	 * The border style. Either BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE.<br>
+	 * The border style. Either BorderStyle.BORDER_SOLID or
+	 * BorderStyle.BORDER_DOUBLE.<br>
 	 * Default is BorderStyle.BORDER_SOLID.
 	 */
 	private int nBorderStyle = BORDER_SOLID;
 	private int nPosition = POSITION_BOTTOM;
-	
+
 	/**
 	 * sSize is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
@@ -96,7 +102,8 @@ public class BorderStyle {
 	 *            BorderStyle.POSITION_LEFT,BorderStyle.POSITION_RIGHT or
 	 *            BorderStyle.POSITION_ALL
 	 */
-	public BorderStyle(final String sSize, final String sColor, final int nStyle, final int nPos) {
+	public BorderStyle(final String sSize, final String sColor,
+			final int nStyle, final int nPos) {
 		this.setBorderSize(sSize);
 		this.setBorderColor(sColor);
 		this.setBorderStyle(nStyle);
@@ -110,20 +117,21 @@ public class BorderStyle {
 	 * @return The size as string, e.g. '0.1cm'
 	 */
 	public String getBorderSize() {
-		return sBorderSize;
+		return this.sBorderSize;
 	}
 
 	/**
 	 * Adds the border size, e.g. '0.1cm'. borderSize is a length value<br>
-	 * expressed as a number followed by a unit of measurement e.g. 0.1cm or 4px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), 
-	 * pc (picas; 6 picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * expressed as a number followed by a unit of measurement e.g. 0.1cm or 4px
+	 * <br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 * 
 	 * @param borderSize
 	 *            The border size as a unit of measurement
 	 */
 	public final void setBorderSize(final String borderSize) {
-		sBorderSize = borderSize;
+		this.sBorderSize = borderSize;
 	}
 
 	/**
@@ -133,7 +141,7 @@ public class BorderStyle {
 	 *            - The border size as int , e.g. 2 or 3
 	 */
 	public void setBorderSize(final int borderSize) {
-		sBorderSize = Integer.toString(borderSize) + "pt";
+		this.sBorderSize = Integer.toString(borderSize) + "pt";
 	}
 
 	/**
@@ -142,7 +150,7 @@ public class BorderStyle {
 	 * @return The color in format #rrggbb
 	 */
 	public String getBorderColor() {
-		return sBorderColor;
+		return this.sBorderColor;
 	}
 
 	/**
@@ -153,7 +161,7 @@ public class BorderStyle {
 	 *            border.
 	 */
 	public final void setBorderColor(final String borderColor) {
-		sBorderColor = borderColor;
+		this.sBorderColor = borderColor;
 	}
 
 	/**
@@ -162,7 +170,7 @@ public class BorderStyle {
 	 * @return BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
 	 */
 	public int getBorderStyle() {
-		return nBorderStyle;
+		return this.nBorderStyle;
 	}
 
 	/**
@@ -172,25 +180,28 @@ public class BorderStyle {
 	 *            BorderStyle.BORDER_SOLID, BorderStyle.BORDER_DOUBLE
 	 */
 	public final void setBorderStyle(final int borderStyle) {
-		nBorderStyle = borderStyle;
+		this.nBorderStyle = borderStyle;
 	}
+
 	/**
 	 * Sets the border size to solid.
 	 */
 	public void setBorderStyleSolid() {
-		nBorderStyle = BORDER_SOLID;
+		this.nBorderStyle = BORDER_SOLID;
 	}
+
 	/**
 	 * Sets the border size to double.
 	 */
 	public void setBorderStyleDouble() {
-		nBorderStyle = BORDER_DOUBLE;
+		this.nBorderStyle = BORDER_DOUBLE;
 	}
+
 	/**
 	 * Resets any previously set BorderStyle.
 	 */
 	public void unsetBorderStyle() {
-		nBorderStyle = 0;
+		this.nBorderStyle = 0;
 	}
 
 	/**
@@ -201,7 +212,7 @@ public class BorderStyle {
 	 *         POSITION_ALL.
 	 */
 	public int getPosition() {
-		return nPosition;
+		return this.nPosition;
 	}
 
 	/**
@@ -214,17 +225,18 @@ public class BorderStyle {
 	 *            POSITION_ALL.
 	 */
 	public final void setPosition(final int position) {
-		if (nPosition < 0 || nPosition > POSITION_ALL) {
-			nPosition = POSITION_ALL;
+		if (this.nPosition < 0 || this.nPosition > POSITION_ALL) {
+			this.nPosition = POSITION_ALL;
 		} else {
-			nPosition = position;
+			this.nPosition = position;
 		}
 	}
-	
+
+	@Override
 	public String toString() {
 		StringBuffer sbReturn = new StringBuffer();
-		
-		switch(this.getPosition()) {
+
+		switch (this.getPosition()) {
 		case POSITION_TOP:
 			sbReturn.append("fo:border-top=\"");
 			break;
@@ -243,23 +255,23 @@ public class BorderStyle {
 		default:
 			sbReturn.append("fo:border=\"");
 		}
-		
+
 		sbReturn.append(this.sBorderSize + " ");
-		
-		switch(this.getBorderStyle()) {
+
+		switch (this.getBorderStyle()) {
 		case BORDER_DOUBLE:
 			sbReturn.append("double ");
 			break;
 		case BORDER_SOLID:
 			sbReturn.append("solid ");
 			break;
-		default:	
+		default:
 			sbReturn.append("solid ");
-		
+
 		}
 		sbReturn.append(this.getBorderColor() + "\" ");
-		
+
 		return sbReturn.toString();
-	}	
-	
+	}
+
 }

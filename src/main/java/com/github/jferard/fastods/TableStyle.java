@@ -22,11 +22,12 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file TableStyle.java is part of SimpleODS.<br>
- * 0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'<br>
- * 0.5.2 Replaced all text properties with a TextStyle object<br>
+ *         This file TableStyle.java is part of SimpleODS.<br>
+ *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'<br>
+ *         0.5.2 Replaced all text properties with a TextStyle object<br>
  */
 public class TableStyle {
 
@@ -34,41 +35,42 @@ public class TableStyle {
 	public final static int STYLE_TABLECOLUMN = 2;
 	public final static int STYLE_TABLEROW = 3;
 	public final static int STYLE_TABLECELL = 4;
-	
+
 	public final static int VERTICALALIGN_TOP = 1;
 	public final static int VERTICALALIGN_MIDDLE = 2;
 	public final static int VERTICALALIGN_BOTTOM = 3;
-	
+
 	public final static int ALIGN_LEFT = 1;
-	public final static int ALIGN_CENTER= 2;
+	public final static int ALIGN_CENTER = 2;
 	public final static int ALIGN_RIGHT = 3;
 	public final static int ALIGN_JUSTIFY = 4;
-	
+
 	private int nFamily;
 	private String sName;
 	private String sParentStyleName = "Default";
-	private String sDataStyle="";
-	private String sBackgroundColor="";
-	//private String sColor="";
-	//private String sFontWeight="";
-	//private String sFontWeightAsian="";
-	//private String sFontWeightComplex="";
-	//private String sFontSize = "";	// text property
-	//private String sFontSizeAsian = "";
-	//private String sFontSizeComplex = "";
-	//private String sFontUnderlineStyle = "";
-	//private String sFontUnderlineColor = "";
+	private String sDataStyle = "";
+	private String sBackgroundColor = "";
+	// private String sColor="";
+	// private String sFontWeight="";
+	// private String sFontWeightAsian="";
+	// private String sFontWeightComplex="";
+	// private String sFontSize = ""; // text property
+	// private String sFontSizeAsian = "";
+	// private String sFontSizeComplex = "";
+	// private String sFontUnderlineStyle = "";
+	// private String sFontUnderlineColor = "";
 	private TextStyle ts;
-	private int nTextAlign = 0;		// 'center','end','start','justify'
-	private int nVerticalAlign = 0;	// 'middle', 'bottom', 'top'
-	private boolean bWrap=false;		// No line wrap when false, line wrap when true
-	private String sDefaultCellStyle = "Default";	
+	private int nTextAlign = 0; // 'center','end','start','justify'
+	private int nVerticalAlign = 0; // 'middle', 'bottom', 'top'
+	private boolean bWrap = false; // No line wrap when false, line wrap when
+									// true
+	private String sDefaultCellStyle = "Default";
 	private String sRowHeight;
 	private String sColumnWidth;
 	private ObjectQueue qBorders = new ObjectQueue();
-	
+
 	private Content content;
-	
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -89,22 +91,27 @@ public class TableStyle {
 	 */
 	public TableStyle(int nFamily, String sStyleName, OdsFile odsFile) {
 		init(nFamily, sStyleName);
-		o = odsFile;
-		ts = new TextStyle(o);
-		content = o.getContent();
-		content.addTableStyle(this);
+		this.o = odsFile;
+		this.ts = new TextStyle(this.o);
+		this.content = this.o.getContent();
+		this.content.addTableStyle(this);
 
 	}
-		
+
 	/**
 	 * Create a new table style.<br>
 	 * Removed with version 0.5.0
-	 * @param nFamily	The type of this style, either 	STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or STYLE_TABLECELL
-	 * @param sName		A unique name for this style
+	 * 
+	 * @param nFamily
+	 *            The type of this style, either
+	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
+	 *            STYLE_TABLECELL
+	 * @param sName
+	 *            A unique name for this style
 	 */
-	//public TableStyle(int nFamily, String sName) {
-	//	init(nFamily,sName);
-	//}
+	// public TableStyle(int nFamily, String sName) {
+	// init(nFamily,sName);
+	// }
 
 	private void init(final int nFamily, String sName) {
 		switch (nFamily) {
@@ -130,9 +137,9 @@ public class TableStyle {
 		this.nFamily = nFamily;
 
 	}
-	
+
 	protected void addStylesObject(Styles s) {
-		o.setStyles(s);
+		this.o.setStyles(s);
 	}
 
 	/**
@@ -152,13 +159,13 @@ public class TableStyle {
 	 * @return One of the table styles
 	 */
 	public int getStyleType() {
-		return nFamily;
+		return this.nFamily;
 	}
 
 	public String getDefaultCellStyle() {
 		return this.sDefaultCellStyle;
 	}
-	
+
 	/**
 	 * Set the column width of a table column.<br>
 	 * sWidth is a length value expressed as a number followed by a unit of
@@ -179,7 +186,7 @@ public class TableStyle {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Set the default cell style of a table column.
 	 * 
@@ -195,7 +202,7 @@ public class TableStyle {
 		}
 
 		this.sDefaultCellStyle = ts.getName();
-		content.addTableStyle(ts);
+		this.content.addTableStyle(ts);
 
 		return true;
 
@@ -263,7 +270,7 @@ public class TableStyle {
 
 		return true;
 	}
-	
+
 	/**
 	 * Set the font weight to italic.<br>
 	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
@@ -275,7 +282,7 @@ public class TableStyle {
 		if (this.nFamily != STYLE_TABLECELL) {
 			return false;
 		}
-		ts.setFontWeightItalic();
+		this.ts.setFontWeightItalic();
 		// this.sFontWeight = "italic";
 		// this.sFontWeightAsian = "italic";
 		// this.sFontWeightComplex = "italic";
@@ -294,7 +301,7 @@ public class TableStyle {
 		if (this.nFamily != STYLE_TABLECELL) {
 			return false;
 		}
-		ts.setFontWeightBold();
+		this.ts.setFontWeightBold();
 		// this.sFontWeight = "bold";
 		// this.sFontWeightAsian = "bold";
 		// this.sFontWeightComplex = "bold";
@@ -314,21 +321,21 @@ public class TableStyle {
 		if (this.nFamily != STYLE_TABLECELL) {
 			return false;
 		}
-		ts.setFontWeightNormal();
+		this.ts.setFontWeightNormal();
 		// this.sFontWeight = "normal";
 		// this.sFontWeightAsian = "normal";
 		// this.sFontWeightComplex = "normal";
 
 		return true;
 	}
-	
+
 	/**
 	 * Get the font size as string, e.g. '10.5pt' or '8pt'
 	 * 
 	 * @return The font size as string, e.g. '10.5pt' or '8pt'
 	 */
 	public String getFontSize() {
-		return ts.getFontSize();
+		return this.ts.getFontSize();
 	}
 
 	/**
@@ -340,7 +347,7 @@ public class TableStyle {
 	 *            - The font size as string, e.g. '10.5pt' or '8pt'
 	 */
 	public void setFontSize(final String fontSize) {
-		ts.setFontSize(fontSize);
+		this.ts.setFontSize(fontSize);
 		// sFontSize = fontSize;
 		// sFontSizeAsian = fontSize;
 		// sFontSizeComplex = fontSize;
@@ -353,24 +360,25 @@ public class TableStyle {
 	 *            - The font size as int , e.g. 10 or 8
 	 */
 	public void setFontSize(final int fontSize) {
-		ts.setFontSize(fontSize);
+		this.ts.setFontSize(fontSize);
 		// sFontSize = Integer.toString(fontSize)+"pt";
 		// sFontSizeAsian = Integer.toString(fontSize)+"pt";
 		// sFontSizeComplex = Integer.toString(fontSize)+"pt";
 	}
-	
+
 	/**
 	 * Set font wrap.
 	 * 
 	 * @param fSetWrap
-	 * <br>
+	 *            <br>
 	 *            true - Font will be wrapped,<br>
 	 *            false - no font wrapping
 	 * @return true - successful,<br>
 	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
 	 */
 	public boolean setFontWrap(final boolean fSetWrap) {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.bWrap = fSetWrap;
 			return true;
 		}
@@ -385,15 +393,17 @@ public class TableStyle {
 	 *         or STYLE_TABLECOLUMN
 	 * @deprecated - Use setFontWrap(true)
 	 */
+	@Deprecated
 	public boolean setFontWrap() {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.bWrap = true;
 			return true;
 		}
 
 		return false;
 	}
-	
+
 	/**
 	 * Reset the fond wrap.
 	 * 
@@ -401,8 +411,10 @@ public class TableStyle {
 	 *         or STYLE_TABLECOLUMN
 	 * @deprecated - Use setFontWrap(false)
 	 */
+	@Deprecated
 	public boolean resetFontWrap() {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.bWrap = false;
 			return true;
 		}
@@ -419,7 +431,8 @@ public class TableStyle {
 	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
 	 */
 	public boolean setTextAlign(final int nAlign) {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.nTextAlign = nAlign;
 			return true;
 		}
@@ -434,31 +447,35 @@ public class TableStyle {
 	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
 	 */
 	public boolean resetTextAlign() {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.nTextAlign = 0;
 			return true;
 		}
 
 		return false;
 	}
-	
+
 	/**
 	 * Set the vertical alignment of text.
 	 * 
-	 * @param nAlign - The vertical alignment flag,<br>
-	 *            either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or VERTICALALIGN_BOTTOM
+	 * @param nAlign
+	 *            - The vertical alignment flag,<br>
+	 *            either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or
+	 *            VERTICALALIGN_BOTTOM
 	 * @return true - successful,<br>
-	 *          false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
+	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
 	 */
 	public boolean setVerticalAlign(final int nAlign) {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.nVerticalAlign = nAlign;
 			return true;
 		}
 
 		return false;
 	}
-	
+
 	/**
 	 * Reset any vertical text alignment.
 	 * 
@@ -466,7 +483,8 @@ public class TableStyle {
 	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
 	 */
 	public boolean resetVerticalAlign() {
-		if (this.nFamily == STYLE_TABLECELL || this.nFamily == STYLE_TABLECOLUMN) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
 			this.nVerticalAlign = 0;
 			return true;
 		}
@@ -489,9 +507,11 @@ public class TableStyle {
 	 *            - The position of the line in this cell, e.g.
 	 *            BorderStyle.POSITION_TOP
 	 */
-	public void addBorderStyle(final String sSize, final String sBorderColor, final int nStyle, final int nPosition) {
+	public void addBorderStyle(final String sSize, final String sBorderColor,
+			final int nStyle, final int nPosition) {
 		if (this.nFamily == STYLE_TABLECELL) {
-			BorderStyle bs = new BorderStyle(sSize, sBorderColor, nStyle, nPosition);
+			BorderStyle bs = new BorderStyle(sSize, sBorderColor, nStyle,
+					nPosition);
 			this.addBorderStyle(bs);
 		}
 	}
@@ -523,7 +543,7 @@ public class TableStyle {
 
 		}
 	}
-	
+
 	/**
 	 * Set the data style for this TableStyle to ns.<br>
 	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
@@ -562,7 +582,7 @@ public class TableStyle {
 		}
 		this.sDataStyle = cs.getName();
 	}
-	
+
 	/**
 	 * Set the data style for this TableStyle to ds.<br>
 	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
@@ -570,7 +590,9 @@ public class TableStyle {
 	 * 
 	 * @param ds
 	 *            The date style to be used
-	 * @throws SimpleOdsException Thrown if the style type of ds is not TableStyle.STYLE_TABLECELL
+	 * @throws SimpleOdsException
+	 *             Thrown if the style type of ds is not
+	 *             TableStyle.STYLE_TABLECELL
 	 */
 	public void setDataStyle(final DateStyle ds) throws SimpleOdsException {
 		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
@@ -579,30 +601,29 @@ public class TableStyle {
 		}
 		this.sDataStyle = ds.getName();
 	}
-	
-	
-	
+
 	/**
 	 * @return The currently set style for the underline.
 	 */
 	public int getFontUnderline() {
 		return this.ts.getFontUnderlineStyle();
-		//return sFontUnderlineStyle;
+		// return sFontUnderlineStyle;
 	}
 
 	/**
 	 * Set the style that should be used for the underline. Valid is:<br>
-	 * 	TextStyle.STYLE_UNDERLINE_NONE<br>
-	 *  TextStyle.STYLE_UNDERLINE_SOLID<br>
-	 *  TextStyle.STYLE_UNDERLINE_DOTTED<br>
-	 *  TextStyle.STYLE_UNDERLINE_DASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_LONGDASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_DOTDASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_WAVE<br>
+	 * TextStyle.STYLE_UNDERLINE_NONE<br>
+	 * TextStyle.STYLE_UNDERLINE_SOLID<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTTED<br>
+	 * TextStyle.STYLE_UNDERLINE_DASH<br>
+	 * TextStyle.STYLE_UNDERLINE_LONGDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
 	 * Other values are ignored.
 	 * 
-	 * @param nUnderlineStyle The underline stlye
+	 * @param nUnderlineStyle
+	 *            The underline stlye
 	 */
 	public void setFontUnderline(final int nUnderlineStyle) {
 		this.ts.setFontUnderlineStyle(nUnderlineStyle);
@@ -622,17 +643,19 @@ public class TableStyle {
 	public TextStyle getTextStyle() {
 		return this.ts;
 	}
-	
+
 	/**
-	 * Set a new TextStyle object. This will overwrite all previous changed to the text styles<br>
+	 * Set a new TextStyle object. This will overwrite all previous changed to
+	 * the text styles<br>
 	 * with the new textStyle.
 	 * 
-	 * @param textStyle The new text style to be used
+	 * @param textStyle
+	 *            The new text style to be used
 	 */
 	public void setTextStyle(final TextStyle textStyle) {
 		this.ts = textStyle;
 	}
-	
+
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
@@ -643,47 +666,55 @@ public class TableStyle {
 		StringBuffer sbTemp = new StringBuffer();
 		sbTemp.append("<style:style style:name=\"" + this.getName() + "\" ");
 		sbTemp.append("style:family=");
-		
-		switch(nFamily) {
+
+		switch (this.nFamily) {
 		case STYLE_TABLECOLUMN:
-			sbTemp.append("\"table-column\"><style:table-column-properties fo:break-before=\"auto\" style:column-width=\""
-					+ this.sColumnWidth + "\" ");
-			sbTemp.append("table:default-cell-style-name=\"" + this.sDefaultCellStyle + "\"/>");
+			sbTemp.append(
+					"\"table-column\"><style:table-column-properties fo:break-before=\"auto\" style:column-width=\""
+							+ this.sColumnWidth + "\" ");
+			sbTemp.append("table:default-cell-style-name=\""
+					+ this.sDefaultCellStyle + "\"/>");
 			break;
 		case STYLE_TABLEROW:
-			sbTemp.append("\"table-row\"><style:table-row-properties style:row-height=\"" + this.sRowHeight
-					+ "\" fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/>");
+			sbTemp.append(
+					"\"table-row\"><style:table-row-properties style:row-height=\""
+							+ this.sRowHeight
+							+ "\" fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/>");
 			break;
 		case STYLE_TABLE:
-			sbTemp.append("\"table\" style:master-page-name=\"DefaultMasterPage\"><style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>");
+			sbTemp.append(
+					"\"table\" style:master-page-name=\"DefaultMasterPage\"><style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>");
 			break;
 		case STYLE_TABLECELL:
-			sbTemp.append("\"table-cell\" style:parent-style-name=\"Default\" ");
+			sbTemp.append(
+					"\"table-cell\" style:parent-style-name=\"Default\" ");
 			if (this.sDataStyle.length() > 0) {
-				sbTemp.append("style:data-style-name=\"" + this.sDataStyle + "\">");
+				sbTemp.append(
+						"style:data-style-name=\"" + this.sDataStyle + "\">");
 			} else {
 				sbTemp.append(">");
 			}
-			sbTemp.append("<style:table-cell-properties fo:background-color=\"" + sBackgroundColor + "\" ");
+			sbTemp.append("<style:table-cell-properties fo:background-color=\""
+					+ this.sBackgroundColor + "\" ");
 
-			switch(this.nVerticalAlign) {
+			switch (this.nVerticalAlign) {
 			case VERTICALALIGN_TOP:
 				sbTemp.append("style:vertical-align=\"top\" ");
 				break;
 			case VERTICALALIGN_MIDDLE:
 				sbTemp.append("style:vertical-align=\"middle\" ");
 				break;
-			case VERTICALALIGN_BOTTOM:	
+			case VERTICALALIGN_BOTTOM:
 				sbTemp.append("style:vertical-align=\"bottom\" ");
 				break;
 			default:
 				sbTemp.append("style:vertical-align=\"top\" ");
 				break;
 			}
-			
-			//-----------------------------------------------
+
+			// -----------------------------------------------
 			// Add all border styles
-			//-----------------------------------------------
+			// -----------------------------------------------
 			for (int n = 0; n < this.qBorders.size(); n++) {
 				BorderStyle bs = (BorderStyle) this.qBorders.get(n);
 				sbTemp.append(bs.toString());
@@ -691,15 +722,17 @@ public class TableStyle {
 
 			if (this.bWrap) {
 				sbTemp.append(" fo:wrap-option=\"wrap\" ");
-			}		
+			}
 			sbTemp.append("/>");
-			//----------------------------------------------------
+			// ----------------------------------------------------
 			// First check if any text properties should be added
-			//----------------------------------------------------
-			if (this.ts.getFontWeight().length() > 0 || this.ts.getFontSize().length() > 0 || this.ts.getFontColor().length() > 0) {
+			// ----------------------------------------------------
+			if (this.ts.getFontWeight().length() > 0
+					|| this.ts.getFontSize().length() > 0
+					|| this.ts.getFontColor().length() > 0) {
 				sbTemp.append(this.ts.toXML());
 			}
-			
+
 			/*
 			 * <style:style style:family="text"><style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold" fo:font-size="13pt" style:font-size-asian="13pt" style:font-size-complex="13pt" style:text-underline-style="dot-dot-dash" style:text-underline-width="auto" style:text-underline-color="#8A2BE2"/></style:style>
 			if (this.sFontWeight.length() > 0 || this.sColor.length() > 0 || this.sFontSize.length() > 0) {
@@ -713,7 +746,7 @@ public class TableStyle {
 							+ this.sFontWeightAsian
 							+ "\" style:font-weight-complex=\""
 							+ this.sFontWeightComplex + "\" ");
-
+			
 				}
 				//-----------------------------------------------
 				// Check if a font color should be added
@@ -727,7 +760,7 @@ public class TableStyle {
 				if (this.sFontSize.length() > 0) {
 					sbTemp.append("fo:font-size=\"" + this.sFontSize + "\" style:font-size-asian=\"" + this.sFontSizeAsian
 							+ "\" style:font-size-complex=\"" + this.sFontSizeComplex + "\" "
-
+			
 					);
 				}
 				//-----------------------------------------------
@@ -742,28 +775,33 @@ public class TableStyle {
 			}*/
 			switch (this.nTextAlign) {
 			case ALIGN_LEFT:
-				sbTemp.append("<style:paragraph-properties fo:text-align=\"start\" fo:margin-left=\"0cm\"/>");
+				sbTemp.append(
+						"<style:paragraph-properties fo:text-align=\"start\" fo:margin-left=\"0cm\"/>");
 				break;
 			case ALIGN_CENTER:
-				sbTemp.append("<style:paragraph-properties fo:text-align=\"center\" fo:margin-left=\"0cm\"/>");
+				sbTemp.append(
+						"<style:paragraph-properties fo:text-align=\"center\" fo:margin-left=\"0cm\"/>");
 				break;
 			case ALIGN_RIGHT:
-				sbTemp.append("<style:paragraph-properties fo:text-align=\"end\" fo:margin-left=\"0cm\"/>");
+				sbTemp.append(
+						"<style:paragraph-properties fo:text-align=\"end\" fo:margin-left=\"0cm\"/>");
 				break;
 			case ALIGN_JUSTIFY:
-				sbTemp.append("<style:paragraph-properties fo:text-align=\"justify\" fo:margin-left=\"0cm\"/>");
+				sbTemp.append(
+						"<style:paragraph-properties fo:text-align=\"justify\" fo:margin-left=\"0cm\"/>");
 				break;
 			default:
-				sbTemp.append("<style:paragraph-properties fo:text-align=\"start\" fo:margin-left=\"0cm\"/>");
+				sbTemp.append(
+						"<style:paragraph-properties fo:text-align=\"start\" fo:margin-left=\"0cm\"/>");
 				break;
 			}
-			
+
 			break;
 		default:
 			sbTemp.append("\">");
 		}
 		sbTemp.append("</style:style>");
-		
+
 		return sbTemp.toString();
 	}
 

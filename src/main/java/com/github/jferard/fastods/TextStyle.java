@@ -22,15 +22,16 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file TextStyle.java is part of SimpleODS.<br>
- * Version 0.5.0 Added support for Font underline style
+ *         This file TextStyle.java is part of SimpleODS.<br>
+ *         Version 0.5.0 Added support for Font underline style
  */
 
 public class TextStyle {
 	private Util u = Util.getInstance();
-	
+
 	// none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public final static int STYLE_UNDERLINE_NONE = 0;
 	public final static int STYLE_UNDERLINE_SOLID = 1;
@@ -40,25 +41,28 @@ public class TextStyle {
 	public final static int STYLE_UNDERLINE_DOTDASH = 5;
 	public final static int STYLE_UNDERLINE_DOTDOTDASH = 6;
 	public final static int STYLE_UNDERLINE_WAVE = 7;
-	
-	private String sName="";
-	private String sFontColor="";
-	private String sFontName="";
-	private String sFontWeight="";			// 0.5.2 Renamed from FontStyle to FontWeight
-	private String sFontWeightAsian="";		// 0.5.2 Renamed from FontStyle to FontWeight
-	private String sFontWeightComplex="";	// 0.5.2 Renamed from FontStyle to FontWeight
-	private String sFontSize = "";	// text property
+
+	private String sName = "";
+	private String sFontColor = "";
+	private String sFontName = "";
+	private String sFontWeight = ""; // 0.5.2 Renamed from FontStyle to
+										// FontWeight
+	private String sFontWeightAsian = ""; // 0.5.2 Renamed from FontStyle to
+											// FontWeight
+	private String sFontWeightComplex = ""; // 0.5.2 Renamed from FontStyle to
+											// FontWeight
+	private String sFontSize = ""; // text property
 	private String sFontSizeAsian = "";
 	private String sFontSizeComplex = "";
 	private String sFontUnderlineColor = "";
-	
+
 	private int nFontUnderlineStyle = TextStyle.STYLE_UNDERLINE_NONE;
-	
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
 	private OdsFile o;
-	
+
 	/**
 	 * Create a new text style with the name sName.<br>
 	 * Version 0.5.0 Added parameter OdsFile odsFile
@@ -71,13 +75,12 @@ public class TextStyle {
 	public TextStyle(final String sStyleName, final OdsFile odsFile) {
 		this.setName(sStyleName);
 		this.o = odsFile;
-		o.getStyles().addTextStyle(this);
+		this.o.getStyles().addTextStyle(this);
 	}
-	
+
 	/**
 	 * Create a new text style without a name.<br>
-	 * This is used by class TableStyle.
-	 * Version 0.5.2 Added 
+	 * This is used by class TableStyle. Version 0.5.2 Added
 	 * 
 	 * @param odsFile
 	 *            The file to add this style to
@@ -85,24 +88,26 @@ public class TextStyle {
 	public TextStyle(final OdsFile odsFile) {
 		this.o = odsFile;
 	}
-	
+
 	/**
 	 * Get the name of this text style.
+	 * 
 	 * @return The text style name
 	 */
 	public String getName() {
-		return sName;
+		return this.sName;
 	}
 
 	/**
 	 * Set the name of this style to sName.
-	 * @param name	- The name of this style
+	 * 
+	 * @param name
+	 *            - The name of this style
 	 */
 	public final void setName(final String name) {
-		sName = name;
+		this.sName = name;
 	}
-	
-	
+
 	/**
 	 * Get the current font color.
 	 * 
@@ -139,6 +144,7 @@ public class TextStyle {
 	 * @return true
 	 * @deprecated 0.5.2 Use setFontWeightItalic() instead.
 	 */
+	@Deprecated
 	public boolean setFontStyleItalic() {
 		this.sFontWeight = "italic";
 		this.sFontWeightAsian = "italic";
@@ -166,6 +172,7 @@ public class TextStyle {
 	 * @return true
 	 * @deprecated 0.5.2 Use setFontWeightBold() instead.
 	 */
+	@Deprecated
 	public boolean setFontStyleBold() {
 		this.sFontWeight = "bold";
 		this.sFontWeightAsian = "bold";
@@ -193,6 +200,7 @@ public class TextStyle {
 	 * @return true -
 	 * @deprecated 0.5.2 Use setFontWeightNormal() instead.
 	 */
+	@Deprecated
 	public boolean setFontStyleNormal() {
 		this.sFontWeight = "normal";
 		this.sFontWeightAsian = "normal";
@@ -200,9 +208,10 @@ public class TextStyle {
 
 		return true;
 	}
-	
+
 	/**
 	 * Get the current font weight.
+	 * 
 	 * @return The current font weight, normal, bold or italic.
 	 */
 	public String getFontWeight() {
@@ -221,27 +230,30 @@ public class TextStyle {
 
 		return true;
 	}
-	
-	
+
 	/**
-	 * Get the font size as string, e.g. '10.5pt' or '8pt' 
-	 * @return	The font size as string, e.g. '10.5pt' or '8pt' 
+	 * Get the font size as string, e.g. '10.5pt' or '8pt'
+	 * 
+	 * @return The font size as string, e.g. '10.5pt' or '8pt'
 	 */
 	public String getFontSize() {
-		return sFontSize;
+		return this.sFontSize;
 	}
 
 	/**
 	 * Set the font size to the given value<br>
-	 * fontSize is a length value expressed as a number followed by pt, e.g. 12pt
-	 * @param fontSize	- The font size as string, e.g. '10.5pt' or '8pt'
+	 * fontSize is a length value expressed as a number followed by pt, e.g.
+	 * 12pt
+	 * 
+	 * @param fontSize
+	 *            - The font size as string, e.g. '10.5pt' or '8pt'
 	 */
 	public void setFontSize(final String fontSize) {
-		sFontSize = fontSize;
-		sFontSizeAsian = fontSize;
-		sFontSizeComplex = fontSize;
+		this.sFontSize = fontSize;
+		this.sFontSizeAsian = fontSize;
+		this.sFontSizeComplex = fontSize;
 	}
-	
+
 	/**
 	 * Set the font size in points to the given value.
 	 * 
@@ -250,38 +262,38 @@ public class TextStyle {
 	 */
 	public void setFontSize(final int fontSize) {
 		String sSize = Integer.toString(fontSize) + "pt";
-		sFontSize = sSize;
-		sFontSizeAsian = sSize;
-		sFontSizeComplex = sSize;
+		this.sFontSize = sSize;
+		this.sFontSizeAsian = sSize;
+		this.sFontSizeComplex = sSize;
 	}
-	
-	
+
 	/**
 	 * @return The currently set style for the underline.
 	 */
 	public int getFontUnderlineStyle() {
-		return nFontUnderlineStyle;
+		return this.nFontUnderlineStyle;
 	}
 
 	/**
 	 * Set the style that should be used for the underline. Valid is:<br>
-	 * 	TextStyle.STYLE_UNDERLINE_NONE<br>
-	 *  TextStyle.STYLE_UNDERLINE_SOLID<br>
-	 *  TextStyle.STYLE_UNDERLINE_DOTTED<br>
-	 *  TextStyle.STYLE_UNDERLINE_DASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_LONGDASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_DOTDASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
-	 *  TextStyle.STYLE_UNDERLINE_WAVE<br>
+	 * TextStyle.STYLE_UNDERLINE_NONE<br>
+	 * TextStyle.STYLE_UNDERLINE_SOLID<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTTED<br>
+	 * TextStyle.STYLE_UNDERLINE_DASH<br>
+	 * TextStyle.STYLE_UNDERLINE_LONGDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
 	 * Other values are ignored.
 	 * 
-	 * @param nStyle One of the TextStyle.STYLE_UNDERLINE
+	 * @param nStyle
+	 *            One of the TextStyle.STYLE_UNDERLINE
 	 */
 	public void setFontUnderlineStyle(final int nStyle) {
 		this.nFontUnderlineStyle = nStyle;
-		
+
 	}
-	
+
 	/**
 	 * Get the currently set underline color.
 	 * 
@@ -302,7 +314,6 @@ public class TextStyle {
 	public void setFontUnderlineColor(final String sColor) {
 		this.sFontUnderlineColor = sColor;
 	}
-	
 
 	/**
 	 * Write the XML format for this object.<br>
@@ -312,15 +323,15 @@ public class TextStyle {
 	 */
 	protected String toXML() {
 		StringBuffer sbTemp = new StringBuffer();
-		
+
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
 		if (this.getName().length() > 0) {
 			sbTemp.append("<style:style ");
-			u.appendElement(sbTemp, "style:name", this.getName());
-			u.appendElement(sbTemp, "style:family", "text");
+			this.u.appendElement(sbTemp, "style:name", this.getName());
+			this.u.appendElement(sbTemp, "style:family", "text");
 			sbTemp.append(">");
 		}
 
@@ -337,13 +348,13 @@ public class TextStyle {
 		}
 		// Check if a font color should be added
 		if (this.sFontColor.length() > 0) {
-			u.appendElement(sbTemp, "fo:color", this.sFontColor);
-			//sbTemp.append("fo:color=\"" + this.sFontColor + "\" ");
+			this.u.appendElement(sbTemp, "fo:color", this.sFontColor);
+			// sbTemp.append("fo:color=\"" + this.sFontColor + "\" ");
 		}
 		// Check if a font name should be added
 		if (this.sFontName.length() > 0) {
-			u.appendElement(sbTemp, "style:font-name", this.sFontName);
-			//sbTemp.append("style:font-name=\"" + this.sFontName + "\" ");
+			this.u.appendElement(sbTemp, "style:font-name", this.sFontName);
+			// sbTemp.append("style:font-name=\"" + this.sFontName + "\" ");
 		}
 		// Check if a font size should be added
 		if (this.sFontSize.length() > 0) {
@@ -354,10 +365,10 @@ public class TextStyle {
 
 			);
 		}
-		
+
 		if (this.nFontUnderlineStyle > 0) {
 			sbTemp.append("style:text-underline-style=\"");
-			switch(this.getFontUnderlineStyle()) {
+			switch (this.getFontUnderlineStyle()) {
 			case STYLE_UNDERLINE_NONE:
 				sbTemp.append("none");
 				break;
@@ -382,23 +393,25 @@ public class TextStyle {
 			case STYLE_UNDERLINE_WAVE:
 				sbTemp.append("wave");
 				break;
-			default:	
+			default:
 				sbTemp.append("none");
 			}
 			sbTemp.append("\" style:text-underline-width=\"auto\"");
-			
-			//---------------------------------------------------------------------------------
-			// If any underline color was set, add the color, otherwise use the font color
-			//---------------------------------------------------------------------------------
+
+			// ---------------------------------------------------------------------------------
+			// If any underline color was set, add the color, otherwise use the
+			// font color
+			// ---------------------------------------------------------------------------------
 			if (this.getFontUnderlineColor().length() > 0) {
-				u.appendElement(sbTemp, "style:text-underline-color", this.getFontUnderlineColor());
+				this.u.appendElement(sbTemp, "style:text-underline-color",
+						this.getFontUnderlineColor());
 			} else {
 				sbTemp.append(" style:text-underline-color=\"font-color\" ");
 			}
 		}
 
-		sbTemp.append("/>");	
-		
+		sbTemp.append("/>");
+
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableStyle.
 		// Do not add the style:style
@@ -408,7 +421,6 @@ public class TextStyle {
 		}
 
 		return sbTemp.toString();
-	}	
-	
+	}
 
 }

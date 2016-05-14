@@ -22,41 +22,47 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file TableRow.java is part of SimpleODS.
+ *         This file TableRow.java is part of SimpleODS.
  *
  */
 public class TableRow {
-	private String Style="ro1";
-	
+	private String Style = "ro1";
+
 	private ObjectQueue qTableCells = new ObjectQueue();
-	
-	public TableRow() {};
-	
+
+	public TableRow() {
+	};
+
 	/**
 	 * Added 0.5.1:<br>
-	 * Get a TableCell, if no TableCell was present at this nCol, create a new one with a default of TableCell.STYLE_STRING and a content of "".  
+	 * Get a TableCell, if no TableCell was present at this nCol, create a new
+	 * one with a default of TableCell.STYLE_STRING and a content of "".
+	 * 
 	 * @param nCol
-	 * @return	The TableCell for this position, maybe a new TableCell
+	 * @return The TableCell for this position, maybe a new TableCell
 	 */
 	public TableCell getCell(final int nCol) {
-		TableCell tc = (TableCell) qTableCells.get(nCol);
+		TableCell tc = (TableCell) this.qTableCells.get(nCol);
 		if (tc == null) {
 			tc = new TableCell(TableCell.STYLE_STRING, "");
-			qTableCells.setAt(nCol, tc);
+			this.qTableCells.setAt(nCol, tc);
 		}
 		return tc;
 	}
-	
+
 	/**
 	 * Set TableCell object at position nCol.<br>
 	 * If there is already a TableCell object, the old one is overwritten.
-	 * @param nCol The column for this cell
+	 * 
+	 * @param nCol
+	 *            The column for this cell
 	 * @param tc
 	 */
 	public void setCell(final int nCol, final TableCell tc) {
-		qTableCells.setAt(nCol, tc);
+		this.qTableCells.setAt(nCol, tc);
 	}
 
 	/**
@@ -66,15 +72,16 @@ public class TableRow {
 	 * @param nValuetype
 	 * @param sValue
 	 */
-	public void setCell(final int nCol, final int nValuetype, final String sValue) {
-		TableCell tc = (TableCell) qTableCells.get(nCol);
+	public void setCell(final int nCol, final int nValuetype,
+			final String sValue) {
+		TableCell tc = (TableCell) this.qTableCells.get(nCol);
 		if (tc == null) {
 			tc = new TableCell(nValuetype, sValue);
 		} else {
 			tc.setValueType(nValuetype);
 			tc.setValue(sValue);
 		}
-		qTableCells.setAt(nCol, tc);
+		this.qTableCells.setAt(nCol, tc);
 	}
 
 	/**
@@ -100,11 +107,11 @@ public class TableRow {
 	 */
 	public void setCellStyle(final int nCol, final TableStyle ts) {
 
-		TableCell tc = (TableCell) qTableCells.get(nCol);
+		TableCell tc = (TableCell) this.qTableCells.get(nCol);
 		if (tc == null) {
 			// Create an empty cell
 			this.setCell(nCol, TableCell.STYLE_STRING, "");
-			tc = (TableCell) qTableCells.get(nCol);
+			tc = (TableCell) this.qTableCells.get(nCol);
 		}
 
 		tc.setStyle(ts.getName());
@@ -112,20 +119,20 @@ public class TableRow {
 	}
 
 	public String getStyle() {
-		return Style;
+		return this.Style;
 	}
 
 	public void setStyle(final String s) {
-		Style = s;
+		this.Style = s;
 	}
-	
+
 	/**
 	 * @return The ObjectQueue with all TableCell objects
 	 */
 	public ObjectQueue getCells() {
 		return this.qTableCells;
 	}
-	
+
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
@@ -137,15 +144,17 @@ public class TableRow {
 
 		int nNullFieldCounter = 0;
 
-		qRc.add("<table:table-row table:style-name=\"" + this.getStyle() + "\">");
+		qRc.add("<table:table-row table:style-name=\"" + this.getStyle()
+				+ "\">");
 
-		for (int n = 0; n < qTableCells.size(); n++) {
-			TableCell tc = (TableCell) qTableCells.get(n);
+		for (int n = 0; n < this.qTableCells.size(); n++) {
+			TableCell tc = (TableCell) this.qTableCells.get(n);
 			if (tc == null) {
 				nNullFieldCounter++;
 			} else {
 				if (nNullFieldCounter > 0) {
-					qRc.add("<table:table-cell table:number-columns-repeated=\"" + nNullFieldCounter + "\"/>");
+					qRc.add("<table:table-cell table:number-columns-repeated=\""
+							+ nNullFieldCounter + "\"/>");
 					nNullFieldCounter = 0;
 				}
 				qRc.add(tc.toXML());

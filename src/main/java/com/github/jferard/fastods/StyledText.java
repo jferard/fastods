@@ -22,25 +22,26 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file StyledText.java is part of SimpleODS.
+ *         This file StyledText.java is part of SimpleODS.
  *
  */
 public class StyledText {
-	
+
 	private Util u = Util.getInstance();
-	
+
 	private TextStyle ts = null;
 	private String sText = null;
-	
-	public StyledText(TextStyle t,String s) {
+
+	public StyledText(TextStyle t, String s) {
 		this.ts = t;
 		this.setText(s);
 	}
 
 	public TextStyle getTextStyle() {
-		return ts;
+		return this.ts;
 	}
 
 	public void setTextStyle(TextStyle t) {
@@ -48,28 +49,26 @@ public class StyledText {
 	}
 
 	public String getText() {
-		return sText;
+		return this.sText;
 	}
 
 	public void setText(String sText) {
-		this.sText = u.toXmlString(sText);
+		this.sText = this.u.toXmlString(sText);
 	}
-	
+
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
+	 * 
 	 * @return
 	 */
 	protected String toMasterStyleXML() {
 		StringBuffer sbTemp = new StringBuffer(60);
 
-		sbTemp.append("<text:span text:style-name=\""
-				+ ts.getName() + "\">");
-		sbTemp.append(sText);
+		sbTemp.append("<text:span text:style-name=\"" + this.ts.getName() + "\">");
+		sbTemp.append(this.sText);
 		sbTemp.append("</text:span>");
-		
+
 		return sbTemp.toString();
 	}
-	
-	
 
 }

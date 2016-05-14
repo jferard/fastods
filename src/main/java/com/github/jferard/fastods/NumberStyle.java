@@ -32,13 +32,13 @@ package com.github.jferard.fastods;
  *
  */
 public class NumberStyle {
-	
+
 	public final static int NUMBER_NORMAL = 1;
 	public final static int NUMBER_SCIENTIFIC = 2;
 	public final static int NUMBER_FRACTION = 3;
 	public final static int NUMBER_PERCENTAGE = 4;
-	
-	private String sName="";
+
+	private String sName = "";
 	private String sNegativeValueColor = "#FF0000";
 	private String sLanguage = "";
 	private String sCountry = "";
@@ -47,16 +47,16 @@ public class NumberStyle {
 	private int nMinIntegerDigits = 1;
 	private int nMinExponentDigits = 0;
 	private int nMinNumeratorDigits = 0;
-	private int nMinDenominatorDigits= 0;
+	private int nMinDenominatorDigits = 0;
 	private boolean bGrouping = false;
 	private boolean bVolatile = false;
 	private boolean bNegativeValuesRed = false;
-	
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
 	private OdsFile o;
-	
+
 	/**
 	 * Create a new number style with the name sName, default minimum integer
 	 * digits is 1 and default decimal places is 2.<br>
@@ -69,8 +69,8 @@ public class NumberStyle {
 	 */
 	public NumberStyle(final String sStyleName, final OdsFile odsFile) {
 		this.setName(sStyleName);
-		o = odsFile;
-		o.getStyles().addNumberStyle(this);
+		this.o = odsFile;
+		this.o.getStyles().addNumberStyle(this);
 	}
 
 	/**
@@ -88,21 +88,22 @@ public class NumberStyle {
 	 * @param odsFile
 	 *            The OdsFile to which this style belongs to.
 	 */
-	public NumberStyle(final String sStyleName, final int nMinIntDigits, final int nDecPlaces, final OdsFile odsFile) {
+	public NumberStyle(final String sStyleName, final int nMinIntDigits,
+			final int nDecPlaces, final OdsFile odsFile) {
 		this.setName(sStyleName);
 		this.setMinIntegerDigits(nMinIntDigits);
 		this.setDecimalPlaces(nDecPlaces);
-		o = odsFile;
-		o.getStyles().addNumberStyle(this);
+		this.o = odsFile;
+		this.o.getStyles().addNumberStyle(this);
 	}
-	
+
 	/**
 	 * Get how many digits are to the right of the decimal symbol.
 	 * 
 	 * @return The number of digits
 	 */
 	public int getDecimalPlaces() {
-		return nDecimalPlaces;
+		return this.nDecimalPlaces;
 	}
 
 	/**
@@ -112,7 +113,7 @@ public class NumberStyle {
 	 *            - The number of digits
 	 */
 	public final void setDecimalPlaces(final int decimalPlaces) {
-		nDecimalPlaces = decimalPlaces;
+		this.nDecimalPlaces = decimalPlaces;
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class NumberStyle {
 	 * @return The number of leading zeros
 	 */
 	public int getMinIntegerDigits() {
-		return nMinIntegerDigits;
+		return this.nMinIntegerDigits;
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class NumberStyle {
 	 *            The number of leading zeros
 	 */
 	public final void setMinIntegerDigits(final int minIntegerDigits) {
-		nMinIntegerDigits = minIntegerDigits;
+		this.nMinIntegerDigits = minIntegerDigits;
 	}
 
 	/**
@@ -140,25 +141,30 @@ public class NumberStyle {
 	 * @return The current number of leading zeros.
 	 */
 	public int getMinExponentDigits() {
-		return nMinExponentDigits;
+		return this.nMinExponentDigits;
 	}
 
 	/**
-	 * Set the number of exponent digits.<br>The number style is set to NUMBER_SCIENTIFIC.
-	 * @param minExponentDigits	The minimum of exponent digits to be used
+	 * Set the number of exponent digits.<br>
+	 * The number style is set to NUMBER_SCIENTIFIC.
+	 * 
+	 * @param minExponentDigits
+	 *            The minimum of exponent digits to be used
 	 */
 	public void setMinExponentDigits(final int minExponentDigits) {
-		nMinExponentDigits = minExponentDigits;
+		this.nMinExponentDigits = minExponentDigits;
 		this.nNumberType = NUMBER_SCIENTIFIC;
 	}
-	
+
 	/**
 	 * Add the numerator and denominator values to be shown.<br>
 	 * The number style is set to NUMBER_FRACTION
+	 * 
 	 * @param nNumerator
 	 * @param nDenominator
 	 */
-	public void setFractionValues(final int nNumerator, final int nDenominator) {
+	public void setFractionValues(final int nNumerator,
+			final int nDenominator) {
 		this.nMinNumeratorDigits = nNumerator;
 		this.nMinDenominatorDigits = nDenominator;
 		this.nNumberType = NUMBER_FRACTION;
@@ -185,72 +191,80 @@ public class NumberStyle {
 	 * @return true The thousands separator will be shown.
 	 */
 	public boolean getThousandsSeparator() {
-		return bGrouping;
-	}	
+		return this.bGrouping;
+	}
 
 	/**
 	 * If this is set to true, the thousands separator is shown.<br>
 	 * The default is false.
 	 * 
-	 * @param grouping true, the thousands separator is shown<br>false, the thousands separator is not shown
+	 * @param grouping
+	 *            true, the thousands separator is shown<br>
+	 *            false, the thousands separator is not shown
 	 */
 	public void setThousandsSeparator(final boolean grouping) {
-		bGrouping = grouping;
+		this.bGrouping = grouping;
 	}
-	
+
 	/**
 	 * @return The name of this style.
 	 */
 	public String getName() {
-		return sName;
+		return this.sName;
 	}
 
 	/**
 	 * Set the name of this style to sName, this name must be unique.
-	 * @param name	- The name of this style.
+	 * 
+	 * @param name
+	 *            - The name of this style.
 	 */
 	public final void setName(final String name) {
-		sName = name;
-	}
-	
-	/**
-	 * @return	The two letter language code, e.g. 'en'
-	 */
-	public String getLanguage() {
-		return sLanguage;
+		this.sName = name;
 	}
 
 	/**
-	 * Set the country and language if you need to distinguish between different<br>
+	 * @return The two letter language code, e.g. 'en'
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
+	}
+
+	/**
+	 * Set the country and language if you need to distinguish between different
+	 * <br>
 	 * countries. E.g. set it to country='US' and language='en'
 	 * 
 	 * @param language
 	 *            The two letter language code, e.g. 'en'
 	 */
 	public void setLanguage(final String language) {
-		sLanguage = language.toLowerCase();
+		this.sLanguage = language.toLowerCase();
 	}
 
 	/**
-	 * @return	The two letter country code, e.g. 'US'
+	 * @return The two letter country code, e.g. 'US'
 	 */
 	public String getCountry() {
-		return sCountry;
+		return this.sCountry;
 	}
 
 	/**
-	 * Set the country and language if you need to distinguish between different countries.
-	 * E.g. set it to country='US' and language='en' 
-	 * @param country	The two letter country code, e.g. 'US'
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 * 
+	 * @param country
+	 *            The two letter country code, e.g. 'US'
 	 */
 	public void setCountry(final String country) {
 		this.sCountry = country.toUpperCase();
 	}
-		
+
 	/**
 	 * Check if this style shows a red color for negative numbers.
 	 * 
-	 * @return true - for negative numbers the font is red<br>false - for negative numbers the font is not red
+	 * @return true - for negative numbers the font is red<br>
+	 *         false - for negative numbers the font is not red
 	 */
 	public boolean isNegativeValuesRed() {
 		return this.bNegativeValuesRed;
@@ -259,7 +273,8 @@ public class NumberStyle {
 	/**
 	 * Set to true if negative values should be shown in red color.
 	 * 
-	 * @param bValue true negative numbers will be shown in red color.
+	 * @param bValue
+	 *            true negative numbers will be shown in red color.
 	 */
 	public void setNegativeValuesRed(final boolean bValue) {
 		this.bNegativeValuesRed = bValue;
@@ -310,7 +325,8 @@ public class NumberStyle {
 
 		this.appendNumberType(sbReturn);
 
-		sbReturn.append("number:min-integer-digits=\"" + this.nMinIntegerDigits + "\" ");
+		sbReturn.append("number:min-integer-digits=\"" + this.nMinIntegerDigits
+				+ "\" ");
 
 		if (this.bGrouping) {
 			sbReturn.append("number:grouping=\"" + this.bGrouping + "\"");
@@ -324,10 +340,10 @@ public class NumberStyle {
 			sbReturn.append("</number:number-style>");
 		}
 
-		//--------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
 		// For negative values, this is the default style and this.sName+'nn' is
 		// the style for positive values
-		//--------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
 		if (this.bNegativeValuesRed) {
 
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
@@ -344,12 +360,14 @@ public class NumberStyle {
 				sbReturn.append("number:country=\"" + this.sCountry + "\" ");
 			}
 			sbReturn.append(">");
-			sbReturn.append("<style:text-properties fo:color=\"" + this.sNegativeValueColor + "\"/>");
+			sbReturn.append("<style:text-properties fo:color=\""
+					+ this.sNegativeValueColor + "\"/>");
 			sbReturn.append("<number:text>-</number:text>");
 
 			this.appendNumberType(sbReturn);
 
-			sbReturn.append("number:min-integer-digits=\"" + this.nMinIntegerDigits + "\" ");
+			sbReturn.append("number:min-integer-digits=\""
+					+ this.nMinIntegerDigits + "\" ");
 			if (this.bGrouping) {
 				sbReturn.append("number:grouping=\"" + this.bGrouping + "\"");
 			}
@@ -359,7 +377,9 @@ public class NumberStyle {
 				sbReturn.append("<number:text>%</number:text>");
 			}
 
-			sbReturn.append("<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"" + this.sName + "nn" + "\"/>");
+			sbReturn.append(
+					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\""
+							+ this.sName + "nn" + "\"/>");
 
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
 				sbReturn.append("</number:percentage-style>");
@@ -371,10 +391,12 @@ public class NumberStyle {
 
 		return sbReturn.toString();
 	}
-	
+
 	/**
 	 * Add the number type in XML format to the StringBuffer sb.
-	 * @param sb The StringBuffer to which the number format is appended.
+	 * 
+	 * @param sb
+	 *            The StringBuffer to which the number format is appended.
 	 */
 	private void appendNumberType(final StringBuffer sb) {
 
@@ -386,27 +408,30 @@ public class NumberStyle {
 			break;
 		case NUMBER_SCIENTIFIC:
 			sb.append("<number:scientific-number ");
-			sb.append("number:min-exponent-digits=\"" + this.nMinExponentDigits + "\" ");
+			sb.append("number:min-exponent-digits=\"" + this.nMinExponentDigits
+					+ "\" ");
 			sb.append("number:decimal-places=\"" + this.nDecimalPlaces + "\" ");
 			break;
 		case NUMBER_FRACTION:
 			sb.append("<number:fraction ");
-			sb.append("number:min-numerator-digits=\"" + this.nMinNumeratorDigits + "\" ");
-			sb.append("number:min-denominator-digits=\"" + this.nMinDenominatorDigits + "\" ");
+			sb.append("number:min-numerator-digits=\""
+					+ this.nMinNumeratorDigits + "\" ");
+			sb.append("number:min-denominator-digits=\""
+					+ this.nMinDenominatorDigits + "\" ");
 		default:
 			sb.append("<number:number ");
 			sb.append("number:decimal-places=\"" + this.nDecimalPlaces + "\" ");
 			break;
 
-			/*
-			 * <number:date-style style:name="N37"
-			 * number:automatic-order="true"> <number:day number:style="long"/>
-			 * <number:text>.</number:text> <number:month number:style="long"/>
-			 * <number:text>.</number:text> <number:year/></number:date-style>
-			 */
+		/*
+		 * <number:date-style style:name="N37"
+		 * number:automatic-order="true"> <number:day number:style="long"/>
+		 * <number:text>.</number:text> <number:month number:style="long"/>
+		 * <number:text>.</number:text> <number:year/></number:date-style>
+		 */
 
 		}
 
 	}
-	
+
 }

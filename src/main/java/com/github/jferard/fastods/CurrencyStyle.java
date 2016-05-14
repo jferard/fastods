@@ -22,20 +22,21 @@ package com.github.jferard.fastods;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file CurrencyStyle.java is part of SimpleODS.
+ *         This file CurrencyStyle.java is part of SimpleODS.
  *
  */
 public class CurrencyStyle {
 	private Util u = Util.getInstance();
-	public final static int NUMBER_CURRENCY= 1;
-	
+	public final static int NUMBER_CURRENCY = 1;
+
 	public final static int SYMBOLPOSITION_BEGIN = 0;
 	public final static int SYMBOLPOSITION_END = 1;
 
-	private String sName="";
-	private String sCurrencySymbol ="€";
+	private String sName = "";
+	private String sCurrencySymbol = "€";
 	private String sNegativeValueColor = "#FF0000";
 	private String sLanguage = "";
 	private String sCountry = "";
@@ -46,112 +47,136 @@ public class CurrencyStyle {
 	private boolean bVolatile = true;
 	private boolean bNegativeValuesRed = true;
 	private int bCurrencyPosition = SYMBOLPOSITION_END;
-	
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
 	private OdsFile o;
-	
+
 	/**
-	 * Create a new number style with the name sName, default minimum integer digits is 1 
-	 * and default decimal places is 2.<br> 
-	 * Version 0.5.0 Added parameter OdsFile o 
-	 * @param sName	The name of the number style.
-	 * @param odsFile		The OdsFile to which this style belongs 
+	 * Create a new number style with the name sName, default minimum integer
+	 * digits is 1 and default decimal places is 2.<br>
+	 * Version 0.5.0 Added parameter OdsFile o
+	 * 
+	 * @param sName
+	 *            The name of the number style.
+	 * @param odsFile
+	 *            The OdsFile to which this style belongs
 	 */
-	public CurrencyStyle(final String sName,OdsFile odsFile) {
+	public CurrencyStyle(final String sName, OdsFile odsFile) {
 		this.setName(sName);
-		o = odsFile;
-		o.getStyles().addCurrencyStyle(this);
+		this.o = odsFile;
+		this.o.getStyles().addCurrencyStyle(this);
 	}
-	
+
 	/**
-	 * Create a new number style with the name sName, minimum integer digits is nMinIntDigits
-	 * and decimal places is nDecPlaces. The number style is NumberStyle.NUMBER_NORMAL<br>
-	 * Version 0.5.0 Added parameter OdsFile o  
-	 * @param sName	The name of the number style.
-	 * @param nMinIntDigits	The minimum integer digits to be shown.
-	 * @param nDecPlaces	The number of decimal places to be shown.
-	 * @param odsFile		The OdsFile to which this style belongs
+	 * Create a new number style with the name sName, minimum integer digits is
+	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
+	 * NumberStyle.NUMBER_NORMAL<br>
+	 * Version 0.5.0 Added parameter OdsFile o
+	 * 
+	 * @param sName
+	 *            The name of the number style.
+	 * @param nMinIntDigits
+	 *            The minimum integer digits to be shown.
+	 * @param nDecPlaces
+	 *            The number of decimal places to be shown.
+	 * @param odsFile
+	 *            The OdsFile to which this style belongs
 	 */
-	public CurrencyStyle(final String sName,int nMinIntDigits,int nDecPlaces,OdsFile odsFile  ) {
+	public CurrencyStyle(final String sName, int nMinIntDigits, int nDecPlaces,
+			OdsFile odsFile) {
 		this.setName(sName);
 		this.setMinIntegerDigits(nMinIntDigits);
 		this.setDecimalPlaces(nDecPlaces);
-		o = odsFile;
-		o.getStyles().addCurrencyStyle(this);
+		this.o = odsFile;
+		this.o.getStyles().addCurrencyStyle(this);
 	}
-	
+
 	/**
 	 * Get how many digits are to the right of the decimal symbol.
-	 * @return	The number of digits
+	 * 
+	 * @return The number of digits
 	 */
 	public int getDecimalPlaces() {
-		return nDecimalPlaces;
+		return this.nDecimalPlaces;
 	}
-	
+
 	/**
 	 * Set how many digits are to the right of the decimal symbol.
-	 * @param decimalPlaces - The number of digits
+	 * 
+	 * @param decimalPlaces
+	 *            - The number of digits
 	 */
 	public void setDecimalPlaces(final int decimalPlaces) {
-		nDecimalPlaces = decimalPlaces;
+		this.nDecimalPlaces = decimalPlaces;
 	}
-	
+
 	/**
 	 * Get how many leading zeros are present.
-	 * @return	The number of leading zeros 
+	 * 
+	 * @return The number of leading zeros
 	 */
 	public int getMinIntegerDigits() {
-		return nMinIntegerDigits;
+		return this.nMinIntegerDigits;
 	}
+
 	/**
 	 * Set how many leading zeros are present.
-	 * @param minIntegerDigits The number of leading zeros
+	 * 
+	 * @param minIntegerDigits
+	 *            The number of leading zeros
 	 */
 	public void setMinIntegerDigits(final int minIntegerDigits) {
-		nMinIntegerDigits = minIntegerDigits;
+		this.nMinIntegerDigits = minIntegerDigits;
 	}
 
-
 	public boolean getThousandsSeparator() {
-		return bGrouping;
-	}	
-	
+		return this.bGrouping;
+	}
+
 	/**
 	 * If this is set to true, the thousands separator is shown.
+	 * 
 	 * @param grouping
 	 */
 	public void setThousandsSeparator(final boolean grouping) {
-		bGrouping = grouping;
+		this.bGrouping = grouping;
 	}
-	
+
 	/**
 	 * Get the name of this currency style.
+	 * 
 	 * @return The currency style name
 	 */
 	public String getName() {
-		return sName;
+		return this.sName;
 	}
 
 	/**
 	 * Set the name of this style to sName.
-	 * @param name	- The name of this style
+	 * 
+	 * @param name
+	 *            - The name of this style
 	 */
 	public void setName(final String name) {
-		sName = name;
+		this.sName = name;
 	}
-	
+
 	/**
 	 * Get the position of the currency symbol.
-	 * @return either CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END
+	 * 
+	 * @return either CurrencyStyle.SYMBOLPOSITION_BEGIN or
+	 *         CurrencyStyle.SYMBOLPOSITION_END
 	 */
 	public int getCurrencySymbolPosition() {
-		return(this.bCurrencyPosition);
+		return (this.bCurrencyPosition);
 	}
-	
+
 	/**
-	 * Set the position of the currency symbol, either CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
+	 * Set the position of the currency symbol, either
+	 * CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
+	 * 
 	 * @param nPos
 	 */
 	public void setCurrencySymbolPosition(int nPos) {
@@ -159,33 +184,34 @@ public class CurrencyStyle {
 	}
 
 	public String getNegativeValueColor() {
-		return sNegativeValueColor;
+		return this.sNegativeValueColor;
 	}
 
 	public void setNegativeValueColor(String negativeValueColor) {
-		sNegativeValueColor = negativeValueColor;
+		this.sNegativeValueColor = negativeValueColor;
 	}
 
 	/**
-	 * @return	The currency symbol that is used. e.g. '$'.
+	 * @return The currency symbol that is used. e.g. '$'.
 	 */
 	public String getCurrencySymbol() {
-		return sCurrencySymbol;
+		return this.sCurrencySymbol;
 	}
 
 	/**
 	 * Change the currency symbol, e.g. '$'.
+	 * 
 	 * @param currencySymbol
 	 */
-	public void setCurrencySymbol(String currencySymbol) {	
-		sCurrencySymbol = u.toXmlString(currencySymbol);
+	public void setCurrencySymbol(String currencySymbol) {
+		this.sCurrencySymbol = this.u.toXmlString(currencySymbol);
 	}
 
 	/**
 	 * @return The two letter language code, e.g. 'en'.
 	 */
 	public String getLanguage() {
-		return sLanguage;
+		return this.sLanguage;
 	}
 
 	/**
@@ -196,46 +222,53 @@ public class CurrencyStyle {
 	 *            The two letter language code, e.g. 'en'
 	 */
 	public void setLanguage(String language) {
-		sLanguage = language.toLowerCase();
+		this.sLanguage = language.toLowerCase();
 	}
 
 	/**
-	 * @return	The two letter country code, e.g. 'US'
+	 * @return The two letter country code, e.g. 'US'
 	 */
 	public String getCountry() {
-		return sCountry;
+		return this.sCountry;
 	}
 
 	/**
-	 * Set the country and language if you need to distinguish between different countries.
-	 * E.g. set it to country='US' and language='en' 
-	 * @param country	The two letter country code, e.g. 'US'
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 * 
+	 * @param country
+	 *            The two letter country code, e.g. 'US'
 	 */
 	public void setCountry(String country) {
-		sCountry = country.toUpperCase();
+		this.sCountry = country.toUpperCase();
 	}
-	
+
 	private void appendCurrencySymbol(StringBuffer sb) {
 		sb.append("<number:currency-symbol ");
-		if (this.sLanguage.length() > 0) sb.append("number:language=\"" + this.sLanguage + "\" ");
-		if (this.sCountry.length() > 0)  sb.append("number:country=\"" + this.sCountry + "\" ");
+		if (this.sLanguage.length() > 0)
+			sb.append("number:language=\"" + this.sLanguage + "\" ");
+		if (this.sCountry.length() > 0)
+			sb.append("number:country=\"" + this.sCountry + "\" ");
 		sb.append(">");
-		sb.append("\"" + this.getCurrencySymbol() + "\"</number:currency-symbol>");
-		
+		sb.append("\"" + this.getCurrencySymbol()
+				+ "\"</number:currency-symbol>");
+
 		return;
 	}
-	
+
 	private void appendCurrencyNumber(StringBuffer sb) {
-		sb.append("<number:number number:decimal-places=\"" + this.nDecimalPlaces + "\" ");
-		sb.append("number:min-integer-digits=\"" + this.nMinIntegerDigits + "\" ");
+		sb.append("<number:number number:decimal-places=\""
+				+ this.nDecimalPlaces + "\" ");
+		sb.append("number:min-integer-digits=\"" + this.nMinIntegerDigits
+				+ "\" ");
 		if (this.bGrouping) {
 			sb.append("number:grouping=\"" + this.bGrouping + "\"");
 		}
 		sb.append("/>");
-		
+
 		return;
 	}
-	
+
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
@@ -244,7 +277,7 @@ public class CurrencyStyle {
 	 */
 	public String toXML() {
 		StringBuffer sbReturn = new StringBuffer();
-		
+
 		// Check where the currency symbol should be positioned
 		if (this.bCurrencyPosition == SYMBOLPOSITION_END) {
 			sbReturn.append("<number:currency-style ");
@@ -255,18 +288,22 @@ public class CurrencyStyle {
 			this.appendCurrencySymbol(sbReturn);
 			sbReturn.append("</number:currency-style>");
 
-			// For negative values, this is the default style and this.sName+'nn' is
+			// For negative values, this is the default style and
+			// this.sName+'nn' is
 			// the style for positive values
 			sbReturn.append("<number:currency-style ");
 			sbReturn.append("style:name=\"" + this.sName + "\">");
-			sbReturn.append("<style:text-properties fo:color=\"" + this.sNegativeValueColor + "\"/>");
+			sbReturn.append("<style:text-properties fo:color=\""
+					+ this.sNegativeValueColor + "\"/>");
 			sbReturn.append("<number:text>-</number:text>");
 			this.appendCurrencyNumber(sbReturn);
 			sbReturn.append("<number:text> </number:text>");
 			this.appendCurrencySymbol(sbReturn);
-			sbReturn.append("<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"" + this.sName + "nn" + "\"/>");
+			sbReturn.append(
+					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\""
+							+ this.sName + "nn" + "\"/>");
 			sbReturn.append("</number:currency-style>");
-		} else {	// SYMBOLPOSITION_BEGIN
+		} else { // SYMBOLPOSITION_BEGIN
 			sbReturn.append("<number:currency-style ");
 			sbReturn.append("style:name=\"" + this.sName + "nn" + "\" ");
 			sbReturn.append("style:volatile=\"true\">");
@@ -274,20 +311,23 @@ public class CurrencyStyle {
 			this.appendCurrencyNumber(sbReturn);
 			sbReturn.append("</number:currency-style>");
 
-			// For negative values, this is the default style and this.sName+'nn' is
+			// For negative values, this is the default style and
+			// this.sName+'nn' is
 			// the style for positive values
 			sbReturn.append("<number:currency-style ");
 			sbReturn.append("style:name=\"" + this.sName + "\">");
-			sbReturn.append("<style:text-properties fo:color=\"" + this.sNegativeValueColor + "\"/>");
+			sbReturn.append("<style:text-properties fo:color=\""
+					+ this.sNegativeValueColor + "\"/>");
 			sbReturn.append("<number:text>-</number:text>");
 			this.appendCurrencySymbol(sbReturn);
 			this.appendCurrencyNumber(sbReturn);
-			sbReturn.append("<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"" + this.sName + "nn" + "\"/>");
+			sbReturn.append(
+					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\""
+							+ this.sName + "nn" + "\"/>");
 			sbReturn.append("</number:currency-style>");
 		}
 
 		return (sbReturn.toString());
 	}
 
-	
 }

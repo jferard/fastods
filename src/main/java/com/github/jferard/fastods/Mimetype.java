@@ -25,28 +25,29 @@ import java.util.zip.ZipOutputStream;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file Mimetype.java is part of SimpleODS.
+ *         This file Mimetype.java is part of SimpleODS.
  *
  */
 public class Mimetype {
 
 	public boolean createMimetype(ZipOutputStream o) {
 		String sLine;
-		
+
 		try {
 			o.putNextEntry(new ZipEntry("mimetype"));
 			sLine = "application/vnd.oasis.opendocument.spreadsheet";
 			byte[] bytes = sLine.getBytes("UTF-8");
 			o.write(bytes, 0, bytes.length);
 			o.closeEntry();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
-	
+
 }

@@ -25,14 +25,15 @@ import java.util.zip.ZipOutputStream;
 /**
  * @author Martin Schulz<br>
  * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         <br>
  * 
- * This file Styles.java is part of SimpleODS.<br>
- * 0.5.1 Added support for DateStyle
+ *         This file Styles.java is part of SimpleODS.<br>
+ *         0.5.1 Added support for DateStyle
  *
  */
 public class Styles {
-	
+
 	private Util u = Util.getInstance();
 
 	private ObjectQueue qNumberStyles = new ObjectQueue();
@@ -42,7 +43,7 @@ public class Styles {
 	private ObjectQueue qDateStyles = new ObjectQueue();
 	private Header header = null;
 	private Footer footer = null;
-	
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -53,7 +54,7 @@ public class Styles {
 	 *            - The OdsFile where the styles belong to
 	 */
 	public Styles(final OdsFile odsFile) {
-		o = odsFile;
+		this.o = odsFile;
 	}
 
 	/**
@@ -85,8 +86,8 @@ public class Styles {
 	}
 
 	/**
-	 * Add a NumberStyle, if a NumberStyle with this name already exist, the old one
-	 * is replaced.
+	 * Add a NumberStyle, if a NumberStyle with this name already exist, the old
+	 * one is replaced.
 	 * 
 	 * @param ns
 	 *            - The number style to be added.
@@ -113,8 +114,8 @@ public class Styles {
 	}
 
 	/**
-	 * Add a CurrencyStyle, if a CurrencyStyle with this name already exist, the old one
-	 * is replaced.
+	 * Add a CurrencyStyle, if a CurrencyStyle with this name already exist, the
+	 * old one is replaced.
 	 * 
 	 * @param cs
 	 *            - The currency style to be added.
@@ -157,7 +158,7 @@ public class Styles {
 		// We did not find it in qPageStyles, make a new entry
 		// --------------------------------------------------------------
 		this.qPageStyles.add(ps);
-		o.getContent().addPageStyle(ps);
+		this.o.getContent().addPageStyle(ps);
 
 	}
 
@@ -179,46 +180,49 @@ public class Styles {
 		// We did not find it in qTextStyles, make a new entry
 		// --------------------------------------------------------------
 		this.qTextStyles.add(ts);
-		o.getContent().addTextStyle(ts);
+		this.o.getContent().addTextStyle(ts);
 
 	}
 
-	
 	public boolean createStyles(final ZipOutputStream out) {
 		try {
 			out.putNextEntry(new ZipEntry("styles.xml"));
-			u.writeString(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			u.writeString(out, "<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" office:version=\"1.1\">");
-			u.writeString(out, "<office:font-face-decls>");
-			u.writeString(out, "<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" style:font-pitch=\"variable\"/>");
-			u.writeString(out, "<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"&apos;Lucida Sans Unicode&apos;\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
-			u.writeString(out, "<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
-			u.writeString(out, "</office:font-face-decls>");
-			u.writeString(out, "<office:styles>");			
-					
+			this.u.writeString(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			this.u.writeString(out,
+					"<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" office:version=\"1.1\">");
+			this.u.writeString(out, "<office:font-face-decls>");
+			this.u.writeString(out,
+					"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" style:font-pitch=\"variable\"/>");
+			this.u.writeString(out,
+					"<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"&apos;Lucida Sans Unicode&apos;\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
+			this.u.writeString(out,
+					"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
+			this.u.writeString(out, "</office:font-face-decls>");
+			this.u.writeString(out, "<office:styles>");
+
 			for (int n = 0; n < this.qDateStyles.size(); n++) {
 				DateStyle ds = (DateStyle) this.qDateStyles.get(n);
-				u.writeString(out, ds.toXML());
+				this.u.writeString(out, ds.toXML());
 			}
 			for (int n = 0; n < this.qNumberStyles.size(); n++) {
 				NumberStyle ns = (NumberStyle) this.qNumberStyles.get(n);
-				u.writeString(out, ns.toXML());
+				this.u.writeString(out, ns.toXML());
 			}
 			for (int n = 0; n < this.qCurrencyStyles.size(); n++) {
 				CurrencyStyle cs = (CurrencyStyle) this.qCurrencyStyles.get(n);
-				u.writeString(out, cs.toXML());
+				this.u.writeString(out, cs.toXML());
 			}
 
 			if (this.footer != null) {
-				u.writeString(out, footer.toXML());
+				this.u.writeString(out, this.footer.toXML());
 			}
 			if (this.header != null) {
-				u.writeString(out, header.toXML());
+				this.u.writeString(out, this.header.toXML());
 			}
-			
-			u.writeString(out, "</office:styles>");
-			u.writeString(out, "<office:automatic-styles>");	
-			
+
+			this.u.writeString(out, "</office:styles>");
+			this.u.writeString(out, "<office:automatic-styles>");
+
 			/*
 			u.writeString(out, "<number:date-style style:name=\"N01\" number:automatic-order=\"true\">");
 			u.writeString(out, "<number:day number:style=\"long\"/>");
@@ -228,52 +232,55 @@ public class Styles {
 			u.writeString(out, "<number:year/>");
 			u.writeString(out, "</number:date-style>");
 			*/
-			
+
 			for (int n = 0; n < this.qPageStyles.size(); n++) {
 				PageStyle ps = (PageStyle) this.qPageStyles.get(n);
-				u.writeString(out, ps.toXML());
+				this.u.writeString(out, ps.toXML());
 			}
 			for (int n = 0; n < this.qTextStyles.size(); n++) {
 				TextStyle ts = (TextStyle) this.qTextStyles.get(n);
-				u.writeString(out, ts.toXML());
+				this.u.writeString(out, ts.toXML());
 			}
 
-			u.writeString(out, "</office:automatic-styles>");
-			u.writeString(out, "<office:master-styles>");
+			this.u.writeString(out, "</office:automatic-styles>");
+			this.u.writeString(out, "<office:master-styles>");
 
 			for (int n = 0; n < this.qPageStyles.size(); n++) {
 				PageStyle ps = (PageStyle) this.qPageStyles.get(n);
-				u.writeString(out, ps.toMasterStyleXML());
+				this.u.writeString(out, ps.toMasterStyleXML());
 			}
-			
-			u.writeString(out, "</office:master-styles>");	
-			u.writeString(out, "</office:document-styles>");
+
+			this.u.writeString(out, "</office:master-styles>");
+			this.u.writeString(out, "</office:document-styles>");
 			out.closeEntry();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		}	
+		}
 		return true;
 	}
-	
-	
+
 	/**
 	 * Get the current footer object.
+	 * 
 	 * @return The current footer object.
 	 */
 	public Footer getFooter() {
 		return this.footer;
 	}
-	
+
 	/**
-	 * Set the footer object to f. Reset this object by setting a new Footer object,<br>
+	 * Set the footer object to f. Reset this object by setting a new Footer
+	 * object,<br>
 	 * or use resetFooter() to remove the Footer object.
-	 * @param f - The footer object to be used
+	 * 
+	 * @param f
+	 *            - The footer object to be used
 	 */
 	public void setFooter(final Footer f) {
 		this.footer = f;
 	}
-	
+
 	/**
 	 * Reset the footer to null.
 	 */
@@ -283,21 +290,25 @@ public class Styles {
 
 	/**
 	 * Get the current header object.
+	 * 
 	 * @return The current header object.
 	 */
 	public Header getHeader() {
 		return this.header;
 	}
-	
+
 	/**
-	 * Set the header object to h. Reset this object by setting a new Header object,<br>
+	 * Set the header object to h. Reset this object by setting a new Header
+	 * object,<br>
 	 * or use resetHeader() to remove the Header object.
-	 * @param h - The header object to be used
+	 * 
+	 * @param h
+	 *            - The header object to be used
 	 */
 	public void setHeader(final Header h) {
 		this.header = h;
 	}
-	
+
 	/**
 	 * Reset the header to null.
 	 */
