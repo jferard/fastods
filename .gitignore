@@ -1,0 +1,16 @@
+# files
+.project
+.classpath
+.pmd
+.ruleset
+.settings
+
+# directories
+.settings
+target
+reports
+
+# files
+*.old
+
+
