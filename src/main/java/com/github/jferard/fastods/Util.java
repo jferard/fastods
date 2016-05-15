@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipOutputStream;
 
+import com.google.common.base.Joiner;
 import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
 
@@ -40,6 +41,8 @@ import com.google.common.xml.XmlEscapers;
 public class Util {
 	private static Util instance;
 
+	public static final char SPACE_CHAR = ' ';
+	
 	// Gray
 	public final static String COLOR_GRAY16 = "#292929";
 	public final static String COLOR_GRAY32 = "#525252";
@@ -302,7 +305,7 @@ public class Util {
 			final String sReplacement) {
 		int nStart = 0;
 		int nEnd = 0;
-		StringBuffer sbResult = new StringBuffer();
+		StringBuilder sbResult = new StringBuilder();
 
 		// ----------------------------------------
 		// Loop until each sNeedle is replaced
@@ -324,6 +327,7 @@ public class Util {
 	 *            The string to be converted
 	 * @return The converted string
 	 */
+	@Deprecated
 	public String toXmlString(String sString) {
 
 		for (int n = 0; n < sString.length(); n++) {
@@ -462,18 +466,18 @@ public class Util {
 	}
 
 	/**
-	 * Append a new element to StringBuffer sb, the name of the element is
+	 * Append a new element to StringBuilder sb, the name of the element is
 	 * sElementName<br>
 	 * and the value is sValue.
 	 * 
 	 * @param sb
-	 *            The StringBuffer to which the new element should be added.
+	 *            The StringBuilder to which the new element should be added.
 	 * @param sElementName
 	 *            The new element name
 	 * @param sValue
 	 *            The value of the element
 	 */
-	public void appendElement(final StringBuffer sb, final String sElementName,
+	public void appendElement(final StringBuilder sb, final String sElementName,
 			final String sValue) {
 		sb.append(" " + sElementName + "=\"");
 		sb.append(sValue);
@@ -481,18 +485,18 @@ public class Util {
 	}
 
 	/**
-	 * Append a new element to StringBuffer sb, the name of the element is
+	 * Append a new element to StringBuilder sb, the name of the element is
 	 * sElementName<br>
 	 * and the value is nValue.
 	 * 
 	 * @param sb
-	 *            The StringBuffer to which the new element should be added.
+	 *            The StringBuilder to which the new element should be added.
 	 * @param sElementName
 	 *            The new element name
 	 * @param nValue
 	 *            The value of the element
 	 */
-	public void appendElement(final StringBuffer sb, final String sElementName,
+	public void appendElement(final StringBuilder sb, final String sElementName,
 			final int nValue) {
 		sb.append(" " + sElementName + "=\"");
 		sb.append(Integer.toString(nValue));

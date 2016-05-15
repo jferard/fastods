@@ -295,7 +295,7 @@ public class NumberStyle {
 	 * @return The XML string for this object.
 	 */
 	public String toXML() {
-		StringBuffer sbReturn = new StringBuffer();
+		StringBuilder sbReturn = new StringBuilder();
 
 		if (this.nNumberType == NUMBER_PERCENTAGE) {
 			sbReturn.append("<number:percentage-style ");
@@ -393,12 +393,12 @@ public class NumberStyle {
 	}
 
 	/**
-	 * Add the number type in XML format to the StringBuffer sb.
+	 * Add the number type in XML format to the StringBuilder sb.
 	 * 
 	 * @param sb
-	 *            The StringBuffer to which the number format is appended.
+	 *            The StringBuilder to which the number format is appended.
 	 */
-	private void appendNumberType(final StringBuffer sb) {
+	private void appendNumberType(final StringBuilder sb) {
 
 		switch (this.nNumberType) {
 		case NUMBER_NORMAL:

@@ -62,7 +62,7 @@ public class StyledText {
 	 * @return
 	 */
 	protected String toMasterStyleXML() {
-		StringBuffer sbTemp = new StringBuffer(60);
+		StringBuilder sbTemp = new StringBuilder(60);
 
 		sbTemp.append("<text:span text:style-name=\"" + this.ts.getName() + "\">");
 		sbTemp.append(this.sText);

@@ -45,7 +45,7 @@ import java.util.zip.ZipOutputStream;
  *
  */
 public class OdsFile {
-	private Util u = Util.getInstance();
+	private Util util = Util.getInstance();
 	private String sFilename;
 	private Mimetype mimetype = new Mimetype();
 	private Manifest manifest = new Manifest();
@@ -263,12 +263,12 @@ public class OdsFile {
 					"<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>",
 					"<config:config-item-map-named config:name=\"Tables\">", };
 
-			this.u.writeStringArray(o, sText1);
+			this.util.writeStringArray(o, sText1);
 
 			// Write the table informations
 			for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
 				Table t = (Table) this.getContent().getTableQueue().get(n);
-				this.u.writeStringArray(o, t.getConfig());
+				this.util.writeStringArray(o, t.getConfig());
 			}
 
 			String[] sText2 = { "</config:config-item-map-named>",
@@ -318,7 +318,7 @@ public class OdsFile {
 
 			};
 
-			this.u.writeStringArray(o, sText2);
+			this.util.writeStringArray(o, sText2);
 
 			o.closeEntry();
 		} catch (Exception e) {
@@ -358,10 +358,10 @@ public class OdsFile {
 		try {
 			ZipOutputStream out = new ZipOutputStream(output);
 			this.mimetype.createMimetype(out);
-			this.manifest.createManifest(out);
-			this.meta.createMeta(out);
-			this.getStyles().createStyles(out);
-			this.getContent().createContent(out);
+			this.manifest.createManifest(this.util, out);
+			this.meta.createMeta(this.util, out);
+			this.getStyles().createStyles(this.util, out);
+			this.getContent().createContent(this.util, out);
 
 			this.createConfigurations2(out);
 
@@ -527,8 +527,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final int nValuetype,
 			String sValue) throws SimpleOdsException {
-		getContent().setCell(nTab, this.u.positionToRow(sPos),
-				this.u.positionToColumn(sPos), nValuetype, sValue);
+		getContent().setCell(nTab, this.util.positionToRow(sPos),
+				this.util.positionToColumn(sPos), nValuetype, sValue);
 	}
 
 	/**
@@ -623,8 +623,8 @@ public class OdsFile {
 	public void setCell(final int nTab, final String sPos, final int nValuetype,
 			final String sValue, final TableStyle ts)
 			throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		getContent().setCell(nTab, nRow, nCol, nValuetype, sValue);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -669,8 +669,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final String sValue)
 			throws SimpleOdsException {
-		getContent().setCell(nTab, this.u.positionToRow(sPos),
-				this.u.positionToColumn(sPos), TableCell.STYLE_STRING, sValue);
+		getContent().setCell(nTab, this.util.positionToRow(sPos),
+				this.util.positionToColumn(sPos), TableCell.STYLE_STRING, sValue);
 	}
 
 	/**
@@ -716,8 +716,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final String sValue,
 			final TableStyle ts) throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		this.setCell(nTab, nRow, nCol, sValue, ts);
 
@@ -763,8 +763,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final int nValue)
 			throws SimpleOdsException {
-		getContent().setCell(nTab, this.u.positionToRow(sPos),
-				this.u.positionToColumn(sPos), TableCell.STYLE_FLOAT,
+		getContent().setCell(nTab, this.util.positionToRow(sPos),
+				this.util.positionToColumn(sPos), TableCell.STYLE_FLOAT,
 				Integer.toString(nValue));
 	}
 
@@ -808,8 +808,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final int nValue,
 			final TableStyle ts) throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 		getContent().setCell(nTab, nRow, nCol, TableCell.STYLE_FLOAT,
 				Integer.toString(nValue));
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -855,8 +855,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final double dValue)
 			throws SimpleOdsException {
-		getContent().setCell(nTab, this.u.positionToRow(sPos),
-				this.u.positionToColumn(sPos), TableCell.STYLE_FLOAT,
+		getContent().setCell(nTab, this.util.positionToRow(sPos),
+				this.util.positionToColumn(sPos), TableCell.STYLE_FLOAT,
 				Double.toString(dValue));
 	}
 
@@ -903,8 +903,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final double dValue,
 			final TableStyle ts) throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		this.setCell(nTab, nRow, nCol, dValue);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -948,7 +948,7 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final Calendar cal)
 			throws SimpleOdsException {
-		this.setCell(nTab, this.u.positionToRow(sPos), this.u.positionToColumn(sPos),
+		this.setCell(nTab, this.util.positionToRow(sPos), this.util.positionToColumn(sPos),
 				cal);
 	}
 
@@ -992,8 +992,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final Calendar cal,
 			final TableStyle ts) throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		this.setCell(nTab, nRow, nCol, cal);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -1030,8 +1030,8 @@ public class OdsFile {
 	 */
 	public TableCell getCell(final int nTab, final String sPos)
 			throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		return this.getContent().getCell(nTab, nRow, nCol);
 	}
@@ -1086,8 +1086,8 @@ public class OdsFile {
 	public void setCellInAllTables(final String sPos, final int nValuetype,
 			final String sValue, final TableStyle ts)
 			throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
 			Table tab = (Table) this.getContent().getTableQueue().get(n);
@@ -1133,8 +1133,8 @@ public class OdsFile {
 	 */
 	public void setCellInAllTables(final String sPos, final Calendar cal,
 			final TableStyle ts) throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
 			this.setCell(n, nRow, nCol, cal);
@@ -1208,8 +1208,8 @@ public class OdsFile {
 	 */
 	public void setCellStyle(final int nTab, final String sPos,
 			final TableStyle ts) throws SimpleOdsException {
-		int nRow = this.u.positionToRow(sPos);
-		int nCol = this.u.positionToColumn(sPos);
+		int nRow = this.util.positionToRow(sPos);
+		int nCol = this.util.positionToColumn(sPos);
 
 		ts.addStylesObject(this.getStyles());
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -1255,7 +1255,7 @@ public class OdsFile {
 	public void setCellMerge(final int nTab, final String sPos,
 			final int nRowMerge, final int nColumnMerge)
 			throws SimpleOdsException {
-		this.setCellMerge(nTab, this.u.positionToRow(sPos), this.u.positionToColumn(sPos),
+		this.setCellMerge(nTab, this.util.positionToRow(sPos), this.util.positionToColumn(sPos),
 				nRowMerge, nColumnMerge);
 	}
 
@@ -1293,8 +1293,8 @@ public class OdsFile {
 			final int nColumnMerge) throws SimpleOdsException {
 
 		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			this.setCellMerge(n, this.u.positionToRow(sPos),
-					this.u.positionToColumn(sPos), nRowMerge, nColumnMerge);
+			this.setCellMerge(n, this.util.positionToRow(sPos),
+					this.util.positionToColumn(sPos), nRowMerge, nColumnMerge);
 		}
 	}
 

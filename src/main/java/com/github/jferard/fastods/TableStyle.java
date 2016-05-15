@@ -662,8 +662,8 @@ public class TableStyle {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	protected String toXML() {
-		StringBuffer sbTemp = new StringBuffer();
+	protected String toXML(Util util) {
+		StringBuilder sbTemp = new StringBuilder();
 		sbTemp.append("<style:style style:name=\"" + this.getName() + "\" ");
 		sbTemp.append("style:family=");
 
@@ -730,7 +730,7 @@ public class TableStyle {
 			if (this.ts.getFontWeight().length() > 0
 					|| this.ts.getFontSize().length() > 0
 					|| this.ts.getFontColor().length() > 0) {
-				sbTemp.append(this.ts.toXML());
+				sbTemp.append(this.ts.toXML(util));
 			}
 
 			/*

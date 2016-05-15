@@ -335,7 +335,7 @@ public class PageStyle {
 	 * @return The master style representation for styles.xml
 	 */
 	protected String toMasterStyleXML() {
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append("<style:master-page style:name=\"DefaultMasterPage\" ");
 		sbTemp.append("style:page-layout-name=\"" + this.getName() + "\">");
@@ -370,7 +370,7 @@ public class PageStyle {
 	 * @return The XML string for this object.
 	 */
 	protected String toXML() {
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append(
 				"<style:page-layout style:name=\"" + this.getName() + "\">");
@@ -419,7 +419,7 @@ public class PageStyle {
 	}
 
 	private String addPrintOrientation() {
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 		if (this.nPrintOrientation == PageStyle.STYLE_PRINTORIENTATION_VERTICAL) {
 			sbTemp.append("style:print-orientation=\"portrait\" ");
 		} else {
@@ -429,7 +429,7 @@ public class PageStyle {
 	}
 
 	private String addWritingMode() {
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append("style:writing-mode=\"");
 
@@ -466,7 +466,7 @@ public class PageStyle {
 		return sbTemp.toString();
 	}
 
-	protected void addHeaderStyle(final StringBuffer sbTemp) {
+	protected void addHeaderStyle(final StringBuilder sbTemp) {
 
 		if (this.o.getStyles().getHeader() == null) {
 			sbTemp.append("<style:header-style />");
@@ -483,7 +483,7 @@ public class PageStyle {
 
 	}
 
-	protected void addFooterStyle(final StringBuffer sbTemp) {
+	protected void addFooterStyle(final StringBuilder sbTemp) {
 
 		if (this.o.getStyles().getFooter() == null) {
 			sbTemp.append("<style:footer-style />");

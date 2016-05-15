@@ -32,8 +32,6 @@ import java.util.zip.ZipOutputStream;
  *
  */
 public class Manifest {
-	private Util u = Util.getInstance();
-
 	String[] sText = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
 			"<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">",
 			"<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
@@ -63,11 +61,11 @@ public class Manifest {
 		return this.sText;
 	}
 
-	public boolean createManifest(final ZipOutputStream o) {
+	public boolean createManifest(Util util, final ZipOutputStream o) {
 
 		try {
 			o.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-			this.u.writeStringArray(o, this.getManifest());
+			util.writeStringArray(o, this.getManifest());
 			o.closeEntry();
 		} catch (Exception e) {
 			e.printStackTrace();

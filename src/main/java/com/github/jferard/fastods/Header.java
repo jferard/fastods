@@ -120,7 +120,7 @@ public class Header {
 	 * @return The XML string for this object.
 	 */
 	protected String toXML() {
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append(
 				"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
@@ -140,7 +140,7 @@ public class Header {
 	 */
 	protected String toMasterStyleXML() {
 
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		this.writeRegion(sbTemp, this.qLeftRegion, "region-left");
 
@@ -154,7 +154,7 @@ public class Header {
 
 	}
 
-	private void writeRegion(StringBuffer sbTemp, ObjectQueue<ObjectQueue<StyledText>> qRegion,
+	private void writeRegion(StringBuilder sbTemp, ObjectQueue<ObjectQueue<StyledText>> qRegion,
 			final String sRegionName) {
 
 		if (qRegion.size() == 0) {

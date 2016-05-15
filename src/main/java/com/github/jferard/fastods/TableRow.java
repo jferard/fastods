@@ -139,7 +139,7 @@ public class TableRow {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String[] toXML() {
+	public String[] toXML(Util util) {
 		ObjectQueue<String> qRc = ObjectQueue.newQueue();
 
 		int nNullFieldCounter = 0;
@@ -157,7 +157,7 @@ public class TableRow {
 							+ nNullFieldCounter + "\"/>");
 					nNullFieldCounter = 0;
 				}
-				qRc.add(tc.toXML());
+				qRc.add(tc.toXML(util));
 			}
 		}
 		qRc.add("</table:table-row>");

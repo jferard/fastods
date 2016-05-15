@@ -204,7 +204,7 @@ public class DateStyle {
 	 * @return The XML string for this object.
 	 */
 	public String toXML() {
-		StringBuffer sbReturn = new StringBuffer();
+		StringBuilder sbReturn = new StringBuilder();
 
 		sbReturn.append("<number:date-style style:name=\"" + this.getName()
 				+ "\" number:automatic-order=\"" + this.isAutomaticOrder()

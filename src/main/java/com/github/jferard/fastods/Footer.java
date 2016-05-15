@@ -119,7 +119,7 @@ public class Footer {
 	 * @return The XML string for this object.
 	 */
 	protected String toXML() {
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append(
 				"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
@@ -139,7 +139,7 @@ public class Footer {
 	 */
 	protected String toMasterStyleXML() {
 
-		StringBuffer sbTemp = new StringBuffer();
+		StringBuilder sbTemp = new StringBuilder();
 
 		this.writeRegion(sbTemp, this.qLeftRegion, "region-left");
 
@@ -153,7 +153,7 @@ public class Footer {
 
 	}
 
-	private void writeRegion(StringBuffer sbTemp,
+	private void writeRegion(StringBuilder sbTemp,
 			ObjectQueue<ObjectQueue<StyledText>> qRegion,
 			final String sRegionName) {
 

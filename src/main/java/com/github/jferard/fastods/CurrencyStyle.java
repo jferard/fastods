@@ -243,7 +243,7 @@ public class CurrencyStyle {
 		this.sCountry = country.toUpperCase();
 	}
 
-	private void appendCurrencySymbol(StringBuffer sb) {
+	private void appendCurrencySymbol(StringBuilder sb) {
 		sb.append("<number:currency-symbol ");
 		if (this.sLanguage.length() > 0)
 			sb.append("number:language=\"" + this.sLanguage + "\" ");
@@ -256,7 +256,7 @@ public class CurrencyStyle {
 		return;
 	}
 
-	private void appendCurrencyNumber(StringBuffer sb) {
+	private void appendCurrencyNumber(StringBuilder sb) {
 		sb.append("<number:number number:decimal-places=\""
 				+ this.nDecimalPlaces + "\" ");
 		sb.append("number:min-integer-digits=\"" + this.nMinIntegerDigits
@@ -276,7 +276,7 @@ public class CurrencyStyle {
 	 * @return The XML string for this object.
 	 */
 	public String toXML() {
-		StringBuffer sbReturn = new StringBuffer();
+		StringBuilder sbReturn = new StringBuilder();
 
 		// Check where the currency symbol should be positioned
 		if (this.bCurrencyPosition == SYMBOLPOSITION_END) {

@@ -34,7 +34,6 @@ import java.util.zip.ZipOutputStream;
  *
  */
 public class Meta {
-	private Util u = Util.getInstance();
 	private String sGenerator = "SimpleOds 0.5.3 20120722";
 	private String sCreator = "SimpleOds 0.5.3";
 	private String sDateTime = "";
@@ -110,11 +109,11 @@ public class Meta {
 		this.sCreator = sCreator;
 	}
 
-	public boolean createMeta(final ZipOutputStream o) {
+	public boolean createMeta(Util util, final ZipOutputStream o) {
 
 		try {
 			o.putNextEntry(new ZipEntry("meta.xml"));
-			this.u.writeStringArray(o, this.getMeta());
+			util.writeStringArray(o, this.getMeta());
 			o.closeEntry();
 		} catch (Exception e) {
 			e.printStackTrace();

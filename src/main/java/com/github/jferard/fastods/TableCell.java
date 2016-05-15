@@ -204,50 +204,49 @@ public class TableCell {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String toXML() {
-		StringBuffer sbTemp = new StringBuffer();
+	public String toXML(Util util) {
+		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append("<table:table-cell ");
 		if (this.getStyle().length() > 0) {
-			this.u.appendElement(sbTemp, "table:style-name", this.getStyle());
 			// sbTemp.append("table:style-name=\"" + this.getStyle() + "\" ");
 		}
 
-		String valueAttribute = this.u.escapeXMLAttribute(this.sValue);
-		String valueContent = this.u.escapeXMLContent(this.sValue);
+		String valueAttribute = util.escapeXMLAttribute(this.sValue);
+		String valueContent = util.escapeXMLContent(this.sValue);
 
 		switch (this.nValueType) {
 		case STYLE_STRING:
 			// sbTemp.append("office:value-type=\"string\" ");
-			this.u.appendElement(sbTemp, "office:value-type", "string");
+			util.appendElement(sbTemp, "office:value-type", "string");
 			break;
 		case STYLE_FLOAT:
 			// sbTemp.append("office:value-type=\"float\" ");
 			// sbTemp.append("office:value=\"" + this.sValue + "\" ");
-			this.u.appendElement(sbTemp, "office:value-type", "float");
-			this.u.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendElement(sbTemp, "office:value-type", "float");
+			util.appendElement(sbTemp, "office:value", valueAttribute);
 			break;
 		case STYLE_PERCENTAGE:
 			// sbTemp.append("office:value-type=\"percentage\" ");
 			// sbTemp.append("office:value=\"" + this.sValue + "\" ");
-			this.u.appendElement(sbTemp, "office:value-type", "percentage");
-			this.u.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendElement(sbTemp, "office:value-type", "percentage");
+			util.appendElement(sbTemp, "office:value", valueAttribute);
 			break;
 		case STYLE_CURRENCY:
 			// sbTemp.append("office:value-type=\"currency\" ");
 			// sbTemp.append("office:value=\"" + this.sValue + "\" ");
-			this.u.appendElement(sbTemp, "office:value-type", "currency");
-			this.u.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendElement(sbTemp, "office:value-type", "currency");
+			util.appendElement(sbTemp, "office:value", valueAttribute);
 			break;
 		case STYLE_DATE:
 			// sbTemp.append("office:value-type=\"date\" ");
 			// sbTemp.append("office:date-value=\"" + this.sDateValue + "\" ");
-			this.u.appendElement(sbTemp, "office:value-type", "date");
-			this.u.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendElement(sbTemp, "office:value-type", "date");
+			util.appendElement(sbTemp, "office:value", valueAttribute);
 			break;
 		default:
 			// sbTemp.append("office:value-type=\"string\" ");
-			this.u.appendElement(sbTemp, "office:value-type", "string");
+			util.appendElement(sbTemp, "office:value-type", "string");
 			/*
 			 * case STYLE_TIME:
 			 * sbTemp.append("office:value-type=\"time-value\" ");
@@ -259,13 +258,13 @@ public class TableCell {
 		}
 
 		if (this.nColumnsSpanned > 0) {
-			this.u.appendElement(sbTemp, "table:number-columns-spanned",
+			util.appendElement(sbTemp, "table:number-columns-spanned",
 					this.nColumnsSpanned);
 			// sbTemp.append("table:number-columns-spanned=\"" +
 			// Integer.toString(nColumnsSpanned) + "\" ");
 		}
 		if (this.nRowsSpanned > 0) {
-			this.u.appendElement(sbTemp, "table:number-rows-spanned", this.nRowsSpanned);
+			util.appendElement(sbTemp, "table:number-rows-spanned", this.nRowsSpanned);
 			// sbTemp.append("table:number-rows-spanned=\"" +
 			// Integer.toString(nRowsSpanned) + "\" ");
 		}

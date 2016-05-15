@@ -30,7 +30,6 @@ package com.github.jferard.fastods;
  *
  */
 public class BorderStyle {
-
 	/**
 	 * Flag to indicate that the top border should be shown, used by
 	 * setPosition().
@@ -141,7 +140,7 @@ public class BorderStyle {
 	 *            - The border size as int , e.g. 2 or 3
 	 */
 	public void setBorderSize(final int borderSize) {
-		this.sBorderSize = Integer.toString(borderSize) + "pt";
+		this.sBorderSize = new StringBuilder(borderSize).append("pt").toString();
 	}
 
 	/**
@@ -234,8 +233,10 @@ public class BorderStyle {
 
 	@Override
 	public String toString() {
-		StringBuffer sbReturn = new StringBuffer();
-
+		if (this.sBorderSize == null && this.sBorderColor == null)
+			return "";
+		
+		StringBuilder sbReturn = new StringBuilder();
 		switch (this.getPosition()) {
 		case POSITION_TOP:
 			sbReturn.append("fo:border-top=\"");
@@ -250,26 +251,27 @@ public class BorderStyle {
 			sbReturn.append("fo:border-right=\"");
 			break;
 		case POSITION_ALL:
-			sbReturn.append("fo:border=\"");
-			break;
 		default:
 			sbReturn.append("fo:border=\"");
+			break;
 		}
 
-		sbReturn.append(this.sBorderSize + " ");
+		if (this.sBorderSize != null)
+			sbReturn.append(this.sBorderSize).append(Util.SPACE_CHAR);
 
-		switch (this.getBorderStyle()) {
-		case BORDER_DOUBLE:
-			sbReturn.append("double ");
-			break;
-		case BORDER_SOLID:
-			sbReturn.append("solid ");
-			break;
-		default:
-			sbReturn.append("solid ");
-
+		if (this.sBorderColor != null) {
+			switch (this.getBorderStyle()) {
+			case BORDER_DOUBLE:
+				sbReturn.append("double ");
+				break;
+			case BORDER_SOLID:
+			default:
+				sbReturn.append("solid ");
+				break;
+			}
+			sbReturn.append(this.sBorderColor);
 		}
-		sbReturn.append(this.getBorderColor() + "\" ");
+		sbReturn.append("\" ");
 
 		return sbReturn.toString();
 	}

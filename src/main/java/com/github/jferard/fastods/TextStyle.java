@@ -30,8 +30,6 @@ package com.github.jferard.fastods;
  */
 
 public class TextStyle {
-	private Util u = Util.getInstance();
-
 	// none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public final static int STYLE_UNDERLINE_NONE = 0;
 	public final static int STYLE_UNDERLINE_SOLID = 1;
@@ -321,8 +319,8 @@ public class TextStyle {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	protected String toXML() {
-		StringBuffer sbTemp = new StringBuffer();
+	protected String toXML(Util util) {
+		StringBuilder sbTemp = new StringBuilder();
 
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableStyle.
@@ -330,8 +328,8 @@ public class TextStyle {
 		// -------------------------------------------------------------
 		if (this.getName().length() > 0) {
 			sbTemp.append("<style:style ");
-			this.u.appendElement(sbTemp, "style:name", this.getName());
-			this.u.appendElement(sbTemp, "style:family", "text");
+			util.appendElement(sbTemp, "style:name", this.getName());
+			util.appendElement(sbTemp, "style:family", "text");
 			sbTemp.append(">");
 		}
 
@@ -348,12 +346,12 @@ public class TextStyle {
 		}
 		// Check if a font color should be added
 		if (this.sFontColor.length() > 0) {
-			this.u.appendElement(sbTemp, "fo:color", this.sFontColor);
+			util.appendElement(sbTemp, "fo:color", this.sFontColor);
 			// sbTemp.append("fo:color=\"" + this.sFontColor + "\" ");
 		}
 		// Check if a font name should be added
 		if (this.sFontName.length() > 0) {
-			this.u.appendElement(sbTemp, "style:font-name", this.sFontName);
+			util.appendElement(sbTemp, "style:font-name", this.sFontName);
 			// sbTemp.append("style:font-name=\"" + this.sFontName + "\" ");
 		}
 		// Check if a font size should be added
@@ -403,7 +401,7 @@ public class TextStyle {
 			// font color
 			// ---------------------------------------------------------------------------------
 			if (this.getFontUnderlineColor().length() > 0) {
-				this.u.appendElement(sbTemp, "style:text-underline-color",
+				util.appendElement(sbTemp, "style:text-underline-color",
 						this.getFontUnderlineColor());
 			} else {
 				sbTemp.append(" style:text-underline-color=\"font-color\" ");
