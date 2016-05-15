@@ -21,13 +21,12 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Martin Schulz<br>
- *
+ * @author Julien Férard
+ *         Copyright (C) 2016 J. Férard 
+ * @author Martin Schulz
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
  *
- *         This file BorderStyle.java is part of SimpleODS.
- *
+ *         This file BorderStyle.java is part of FastODS.
  */
 public class BorderStyle {
 	/**
@@ -105,6 +104,9 @@ public class BorderStyle {
 	/** String representation */
 	private final String asString;
 
+	/** a builder */
+	public static BorderStyleBuilder builder() { return new BorderStyleBuilder(); }
+	
 	/**
 	 * sSize is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
@@ -125,43 +127,16 @@ public class BorderStyle {
 	 *            BorderStyle.POSITION_LEFT,BorderStyle.POSITION_RIGHT or
 	 *            BorderStyle.POSITION_ALL
 	 */
-	public BorderStyle(final String sSize, final String sColor,
+	BorderStyle(final String sSize, final String sColor,
 			final int nStyle, final int nPos) {
+		assert 0 <= nStyle &&  nStyle <= BorderStyle.BORDER_DOUBLE;
+		assert 0 <= nPos && nPos <= POSITION_ALL;
+		
 		this.sBorderSize = sSize;
 		this.sBorderColor = sColor;
 		this.nBorderStyle = nStyle;
-		if (this.nPosition < 0 || this.nPosition > POSITION_ALL) {
-			this.nPosition = POSITION_ALL;
-		} else {
-			this.nPosition = nPos;
-		}
+		this.nPosition = nPos;
 		this.asString = this.computeAsString();
-	}
-
-	/**
-	 * sSize is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 0.1cm or 4px.<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param nSize
-	 *            The size of the border in pt
-	 * @param sColor
-	 *            The color of the border in format '#rrggbb'
-	 * @param nStyle
-	 *            The style of the border, BorderStyle.BORDER_SOLID or
-	 *            BorderStyle.BORDER_DOUBLE
-	 * @param nPos
-	 *            The position to put the border on the cell,
-	 *            BorderStyle.POSITION_TOP,BorderStyle.POSITION_BOTTOM,
-	 *            BorderStyle.POSITION_LEFT,BorderStyle.POSITION_RIGHT or
-	 *            BorderStyle.POSITION_ALL
-	 */
-	public BorderStyle(final int nSize, final String sColor, final int nStyle,
-			final int nPos) {
-		this(new StringBuilder(nSize).append("pt").toString(), sColor, nStyle,
-				nPos);
 	}
 
 	/**

@@ -29,11 +29,11 @@ package com.github.jferard.fastods;
  *
  */
 public class CurrencyStyle {
-	private Util u = Util.getInstance();
 	public final static int NUMBER_CURRENCY = 1;
-
 	public final static int SYMBOLPOSITION_BEGIN = 0;
+
 	public final static int SYMBOLPOSITION_END = 1;
+	private Util u = Util.getInstance();
 
 	private String sName = "";
 	private String sCurrencySymbol = "€";
@@ -52,22 +52,6 @@ public class CurrencyStyle {
 	 * The OdsFile where this object belong to.
 	 */
 	private OdsFile o;
-
-	/**
-	 * Create a new number style with the name sName, default minimum integer
-	 * digits is 1 and default decimal places is 2.<br>
-	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
-	 * @param sName
-	 *            The name of the number style.
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs
-	 */
-	public CurrencyStyle(final String sName, OdsFile odsFile) {
-		this.setName(sName);
-		this.o = odsFile;
-		this.o.getStyles().addCurrencyStyle(this);
-	}
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
@@ -94,73 +78,33 @@ public class CurrencyStyle {
 	}
 
 	/**
-	 * Get how many digits are to the right of the decimal symbol.
+	 * Create a new number style with the name sName, default minimum integer
+	 * digits is 1 and default decimal places is 2.<br>
+	 * Version 0.5.0 Added parameter OdsFile o
 	 * 
-	 * @return The number of digits
+	 * @param sName
+	 *            The name of the number style.
+	 * @param odsFile
+	 *            The OdsFile to which this style belongs
 	 */
-	public int getDecimalPlaces() {
-		return this.nDecimalPlaces;
+	public CurrencyStyle(final String sName, OdsFile odsFile) {
+		this.setName(sName);
+		this.o = odsFile;
+		this.o.getStyles().addCurrencyStyle(this);
 	}
 
 	/**
-	 * Set how many digits are to the right of the decimal symbol.
-	 * 
-	 * @param decimalPlaces
-	 *            - The number of digits
+	 * @return The two letter country code, e.g. 'US'
 	 */
-	public void setDecimalPlaces(final int decimalPlaces) {
-		this.nDecimalPlaces = decimalPlaces;
+	public String getCountry() {
+		return this.sCountry;
 	}
 
 	/**
-	 * Get how many leading zeros are present.
-	 * 
-	 * @return The number of leading zeros
+	 * @return The currency symbol that is used. e.g. '$'.
 	 */
-	public int getMinIntegerDigits() {
-		return this.nMinIntegerDigits;
-	}
-
-	/**
-	 * Set how many leading zeros are present.
-	 * 
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 */
-	public void setMinIntegerDigits(final int minIntegerDigits) {
-		this.nMinIntegerDigits = minIntegerDigits;
-	}
-
-	public boolean getThousandsSeparator() {
-		return this.bGrouping;
-	}
-
-	/**
-	 * If this is set to true, the thousands separator is shown.
-	 * 
-	 * @param grouping
-	 */
-	public void setThousandsSeparator(final boolean grouping) {
-		this.bGrouping = grouping;
-	}
-
-	/**
-	 * Get the name of this currency style.
-	 * 
-	 * @return The currency style name
-	 */
-	public String getName() {
-		return this.sName;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 * 
-	 * @param name
-	 *            - The name of this style
-	 */
-	public void setName(final String name) {
-		this.sName = name;
+	public String getCurrencySymbol() {
+		return this.sCurrencySymbol;
 	}
 
 	/**
@@ -174,28 +118,56 @@ public class CurrencyStyle {
 	}
 
 	/**
-	 * Set the position of the currency symbol, either
-	 * CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
+	 * Get how many digits are to the right of the decimal symbol.
 	 * 
-	 * @param nPos
+	 * @return The number of digits
 	 */
-	public void setCurrencySymbolPosition(int nPos) {
-		this.bCurrencyPosition = nPos;
+	public int getDecimalPlaces() {
+		return this.nDecimalPlaces;
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'.
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
+	}
+
+	/**
+	 * Get how many leading zeros are present.
+	 * 
+	 * @return The number of leading zeros
+	 */
+	public int getMinIntegerDigits() {
+		return this.nMinIntegerDigits;
+	}
+
+	/**
+	 * Get the name of this currency style.
+	 * 
+	 * @return The currency style name
+	 */
+	public String getName() {
+		return this.sName;
 	}
 
 	public String getNegativeValueColor() {
 		return this.sNegativeValueColor;
 	}
 
-	public void setNegativeValueColor(String negativeValueColor) {
-		this.sNegativeValueColor = negativeValueColor;
+	public boolean getThousandsSeparator() {
+		return this.bGrouping;
 	}
 
 	/**
-	 * @return The currency symbol that is used. e.g. '$'.
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 * 
+	 * @param country
+	 *            The two letter country code, e.g. 'US'
 	 */
-	public String getCurrencySymbol() {
-		return this.sCurrencySymbol;
+	public void setCountry(String country) {
+		this.sCountry = country.toUpperCase();
 	}
 
 	/**
@@ -208,10 +180,23 @@ public class CurrencyStyle {
 	}
 
 	/**
-	 * @return The two letter language code, e.g. 'en'.
+	 * Set the position of the currency symbol, either
+	 * CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
+	 * 
+	 * @param nPos
 	 */
-	public String getLanguage() {
-		return this.sLanguage;
+	public void setCurrencySymbolPosition(int nPos) {
+		this.bCurrencyPosition = nPos;
+	}
+
+	/**
+	 * Set how many digits are to the right of the decimal symbol.
+	 * 
+	 * @param decimalPlaces
+	 *            - The number of digits
+	 */
+	public void setDecimalPlaces(final int decimalPlaces) {
+		this.nDecimalPlaces = decimalPlaces;
 	}
 
 	/**
@@ -226,47 +211,36 @@ public class CurrencyStyle {
 	}
 
 	/**
-	 * @return The two letter country code, e.g. 'US'
+	 * Set how many leading zeros are present.
+	 * 
+	 * @param minIntegerDigits
+	 *            The number of leading zeros
 	 */
-	public String getCountry() {
-		return this.sCountry;
+	public void setMinIntegerDigits(final int minIntegerDigits) {
+		this.nMinIntegerDigits = minIntegerDigits;
 	}
 
 	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
+	 * Set the name of this style to sName.
 	 * 
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
+	 * @param name
+	 *            - The name of this style
 	 */
-	public void setCountry(String country) {
-		this.sCountry = country.toUpperCase();
+	public void setName(final String name) {
+		this.sName = name;
 	}
 
-	private void appendCurrencySymbol(StringBuilder sb) {
-		sb.append("<number:currency-symbol ");
-		if (this.sLanguage.length() > 0)
-			sb.append("number:language=\"" + this.sLanguage + "\" ");
-		if (this.sCountry.length() > 0)
-			sb.append("number:country=\"" + this.sCountry + "\" ");
-		sb.append(">");
-		sb.append("\"" + this.getCurrencySymbol()
-				+ "\"</number:currency-symbol>");
-
-		return;
+	public void setNegativeValueColor(String negativeValueColor) {
+		this.sNegativeValueColor = negativeValueColor;
 	}
 
-	private void appendCurrencyNumber(StringBuilder sb) {
-		sb.append("<number:number number:decimal-places=\""
-				+ this.nDecimalPlaces + "\" ");
-		sb.append("number:min-integer-digits=\"" + this.nMinIntegerDigits
-				+ "\" ");
-		if (this.bGrouping) {
-			sb.append("number:grouping=\"" + this.bGrouping + "\"");
-		}
-		sb.append("/>");
-
-		return;
+	/**
+	 * If this is set to true, the thousands separator is shown.
+	 * 
+	 * @param grouping
+	 */
+	public void setThousandsSeparator(final boolean grouping) {
+		this.bGrouping = grouping;
 	}
 
 	/**
@@ -328,6 +302,32 @@ public class CurrencyStyle {
 		}
 
 		return (sbReturn.toString());
+	}
+
+	private void appendCurrencyNumber(StringBuilder sb) {
+		sb.append("<number:number number:decimal-places=\""
+				+ this.nDecimalPlaces + "\" ");
+		sb.append("number:min-integer-digits=\"" + this.nMinIntegerDigits
+				+ "\" ");
+		if (this.bGrouping) {
+			sb.append("number:grouping=\"" + this.bGrouping + "\"");
+		}
+		sb.append("/>");
+
+		return;
+	}
+
+	private void appendCurrencySymbol(StringBuilder sb) {
+		sb.append("<number:currency-symbol ");
+		if (this.sLanguage.length() > 0)
+			sb.append("number:language=\"" + this.sLanguage + "\" ");
+		if (this.sCountry.length() > 0)
+			sb.append("number:country=\"" + this.sCountry + "\" ");
+		sb.append(">");
+		sb.append("\"" + this.getCurrencySymbol()
+				+ "\"</number:currency-symbol>");
+
+		return;
 	}
 
 }
