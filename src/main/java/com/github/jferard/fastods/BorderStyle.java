@@ -64,22 +64,46 @@ public class BorderStyle {
 	public static final int BORDER_DOUBLE = 2;
 
 	/**
-	 * The border size.<br>
-	 * Default is 0.1cm
+	 * The border size default is 0.1cm
 	 */
-	private String sBorderSize = "0.1cm";
+	public static final String DEFAULT_BORDER_SIZE = "0.1cm";
+
 	/**
-	 * The border color.<br>
-	 * Default is #000000 (black).
+	 * The border color default is #000000 (black).
 	 */
-	private String sBorderColor = "#000000";
+	public static final String DEFAULT_BORDER_COLOR = "#000000";
+
+	/**
+	 * The border style default is BorderStyle.BORDER_SOLID.
+	 */
+	public static final int DEFAULT_BORDER_STYLE = BORDER_SOLID;
+
+	/**
+	 * The border size.
+	 */
+	private final String sBorderSize;
+
+	/**
+	 * The border color
+	 */
+	private final String sBorderColor;
+
 	/**
 	 * The border style. Either BorderStyle.BORDER_SOLID or
 	 * BorderStyle.BORDER_DOUBLE.<br>
 	 * Default is BorderStyle.BORDER_SOLID.
 	 */
-	private int nBorderStyle = BORDER_SOLID;
-	private int nPosition = POSITION_BOTTOM;
+	private final int nBorderStyle;
+
+	/**
+	 * The border position. Either BorderStyle.POSITION_ALL,
+	 * BorderStyle.POSITION_BOTTOM, BorderStyle.POSITION_TOP,
+	 * BorderStyle.POSITION_LEFT or BorderStyle.POSITION_RIGHT.
+	 */
+	private final int nPosition;
+	
+	/** String representation */
+	private final String asString;
 
 	/**
 	 * sSize is a length value expressed as a number followed by a unit of
@@ -103,11 +127,41 @@ public class BorderStyle {
 	 */
 	public BorderStyle(final String sSize, final String sColor,
 			final int nStyle, final int nPos) {
-		this.setBorderSize(sSize);
-		this.setBorderColor(sColor);
-		this.setBorderStyle(nStyle);
-		this.setPosition(nPos);
+		this.sBorderSize = sSize;
+		this.sBorderColor = sColor;
+		this.nBorderStyle = nStyle;
+		if (this.nPosition < 0 || this.nPosition > POSITION_ALL) {
+			this.nPosition = POSITION_ALL;
+		} else {
+			this.nPosition = nPos;
+		}
+		this.asString = this.computeAsString();
+	}
 
+	/**
+	 * sSize is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 0.1cm or 4px.<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param nSize
+	 *            The size of the border in pt
+	 * @param sColor
+	 *            The color of the border in format '#rrggbb'
+	 * @param nStyle
+	 *            The style of the border, BorderStyle.BORDER_SOLID or
+	 *            BorderStyle.BORDER_DOUBLE
+	 * @param nPos
+	 *            The position to put the border on the cell,
+	 *            BorderStyle.POSITION_TOP,BorderStyle.POSITION_BOTTOM,
+	 *            BorderStyle.POSITION_LEFT,BorderStyle.POSITION_RIGHT or
+	 *            BorderStyle.POSITION_ALL
+	 */
+	public BorderStyle(final int nSize, final String sColor, final int nStyle,
+			final int nPos) {
+		this(new StringBuilder(nSize).append("pt").toString(), sColor, nStyle,
+				nPos);
 	}
 
 	/**
@@ -120,30 +174,6 @@ public class BorderStyle {
 	}
 
 	/**
-	 * Adds the border size, e.g. '0.1cm'. borderSize is a length value<br>
-	 * expressed as a number followed by a unit of measurement e.g. 0.1cm or 4px
-	 * <br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param borderSize
-	 *            The border size as a unit of measurement
-	 */
-	public final void setBorderSize(final String borderSize) {
-		this.sBorderSize = borderSize;
-	}
-
-	/**
-	 * Set the border size in points to the given value.
-	 * 
-	 * @param borderSize
-	 *            - The border size as int , e.g. 2 or 3
-	 */
-	public void setBorderSize(final int borderSize) {
-		this.sBorderSize = new StringBuilder(borderSize).append("pt").toString();
-	}
-
-	/**
 	 * Get the currently set border color.
 	 * 
 	 * @return The color in format #rrggbb
@@ -153,54 +183,12 @@ public class BorderStyle {
 	}
 
 	/**
-	 * Set the border color to sColor.
-	 * 
-	 * @param borderColor
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            border.
-	 */
-	public final void setBorderColor(final String borderColor) {
-		this.sBorderColor = borderColor;
-	}
-
-	/**
 	 * Gets the current border Style.
 	 * 
 	 * @return BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
 	 */
 	public int getBorderStyle() {
 		return this.nBorderStyle;
-	}
-
-	/**
-	 * Sets the border style.
-	 * 
-	 * @param borderStyle
-	 *            BorderStyle.BORDER_SOLID, BorderStyle.BORDER_DOUBLE
-	 */
-	public final void setBorderStyle(final int borderStyle) {
-		this.nBorderStyle = borderStyle;
-	}
-
-	/**
-	 * Sets the border size to solid.
-	 */
-	public void setBorderStyleSolid() {
-		this.nBorderStyle = BORDER_SOLID;
-	}
-
-	/**
-	 * Sets the border size to double.
-	 */
-	public void setBorderStyleDouble() {
-		this.nBorderStyle = BORDER_DOUBLE;
-	}
-
-	/**
-	 * Resets any previously set BorderStyle.
-	 */
-	public void unsetBorderStyle() {
-		this.nBorderStyle = 0;
 	}
 
 	/**
@@ -214,28 +202,16 @@ public class BorderStyle {
 		return this.nPosition;
 	}
 
-	/**
-	 * Sets the position of the border, e.g. BorderStyle.POSITION_BOTTOM to set
-	 * the border at the cell bottom.
-	 * 
-	 * @param position
-	 *            The position as one of
-	 *            POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
-	 *            POSITION_ALL.
-	 */
-	public final void setPosition(final int position) {
-		if (this.nPosition < 0 || this.nPosition > POSITION_ALL) {
-			this.nPosition = POSITION_ALL;
-		} else {
-			this.nPosition = position;
-		}
-	}
-
 	@Override
 	public String toString() {
+		return this.asString;
+	}
+
+	/** Since BorderStyle in now final, we can precomute the String representation */ 
+	private String computeAsString() {
 		if (this.sBorderSize == null && this.sBorderColor == null)
 			return "";
-		
+
 		StringBuilder sbReturn = new StringBuilder();
 		switch (this.getPosition()) {
 		case POSITION_TOP:
@@ -275,5 +251,4 @@ public class BorderStyle {
 
 		return sbReturn.toString();
 	}
-
 }
