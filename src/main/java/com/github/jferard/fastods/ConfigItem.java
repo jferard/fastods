@@ -20,26 +20,24 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Martin Schulz<br>
- * 
+ * @author Julien Férard
+ *         Copyright (C) 2016 J. Férard 
+ * @author Martin Schulz
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file ConfigItem.java is part of SimpleODS.
  *
+ *         This file ConfigItem.java is part of FastODS.
  */
 public class ConfigItem {
-	private String sItemName;
-	private String sType;
-	private String sValue;
+	private final String sItemName;
+	private final String sType;
+	private final String sValue;
+	private String xml;
 
 	public ConfigItem(final String sName, final String sType,
 			final String sValue) {
-
 		this.sItemName = sName;
 		this.sType = sType;
 		this.sValue = sValue;
-
 	}
 
 	/**
@@ -51,24 +49,12 @@ public class ConfigItem {
 		return this.sItemName;
 	}
 
-	public void setName(final String name) {
-		this.sItemName = name;
-	}
-
 	public String getType() {
 		return this.sType;
 	}
 
-	public void setType(final String type) {
-		this.sType = type;
-	}
-
 	public String getValue() {
 		return this.sValue;
-	}
-
-	public void setValue(final String value) {
-		this.sValue = value;
 	}
 
 	/**
@@ -77,10 +63,15 @@ public class ConfigItem {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String toXML() {
-		return ("<config:config-item config:name=\"" + this.sItemName
-				+ "\" config:type=\"" + this.sType + "\">" + this.sValue
-				+ "</config:config-item>");
+	public String toXML(Util util) {
+		if (this.xml == null) {
+			this.xml = new StringBuilder("<config:config-item config:name=\"")
+					.append(util.escapeXMLAttribute(this.sItemName))
+					.append("\" config:type=\"")
+					.append(util.escapeXMLAttribute(this.sType)).append("\">")
+					.append(util.escapeXMLContent(this.sValue))
+					.append("</config:config-item>").toString();
+		}
+		return this.xml;
 	}
-
 }

@@ -102,7 +102,7 @@ public class BorderStyle {
 	private final int nPosition;
 	
 	/** String representation */
-	private final String asString;
+	private final String string;
 
 	/** a builder */
 	public static BorderStyleBuilder builder() { return new BorderStyleBuilder(); }
@@ -136,7 +136,7 @@ public class BorderStyle {
 		this.sBorderColor = sColor;
 		this.nBorderStyle = nStyle;
 		this.nPosition = nPos;
-		this.asString = this.computeAsString();
+		this.string = this.computeString();
 	}
 
 	/**
@@ -179,11 +179,11 @@ public class BorderStyle {
 
 	@Override
 	public String toString() {
-		return this.asString;
+		return this.string;
 	}
 
 	/** Since BorderStyle in now final, we can precomute the String representation */ 
-	private String computeAsString() {
+	private String computeString() {
 		if (this.sBorderSize == null && this.sBorderColor == null)
 			return "";
 
