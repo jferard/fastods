@@ -55,8 +55,8 @@ class BorderStyleBuilder {
 	private int nPosition;
 
 	public BorderStyleBuilder() {
-		this.nPosition = BorderStyle.POSITION_ALL;
-		this.nBorderStyle = BorderStyle.BORDER_SOLID;
+		this.nPosition = BorderStyle.DEFAULT_BORDER_POSITION;
+		this.nBorderStyle = BorderStyle.DEFAULT_BORDER_STYLE;
 	}
 
 	/**

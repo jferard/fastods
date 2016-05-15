@@ -62,7 +62,6 @@ public class Manifest {
 	}
 
 	public boolean createManifest(Util util, final ZipOutputStream o) {
-
 		try {
 			o.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
 			util.writeStringArray(o, this.getManifest());

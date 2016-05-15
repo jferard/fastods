@@ -21,10 +21,9 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Julien Férard
- *         Copyright (C) 2016 J. Férard 
- * @author Martin Schulz
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
  *         This file BorderStyle.java is part of FastODS.
  */
@@ -76,6 +75,11 @@ public class BorderStyle {
 	 * The border style default is BorderStyle.BORDER_SOLID.
 	 */
 	public static final int DEFAULT_BORDER_STYLE = BORDER_SOLID;
+	
+	/*
+	 * The border position default is BorderStyle.BORDER_ALL.
+	 */
+	public static final int DEFAULT_BORDER_POSITION = POSITION_ALL;
 
 	/**
 	 * The border size.
@@ -100,13 +104,15 @@ public class BorderStyle {
 	 * BorderStyle.POSITION_LEFT or BorderStyle.POSITION_RIGHT.
 	 */
 	private final int nPosition;
-	
+
 	/** String representation */
 	private final String string;
 
 	/** a builder */
-	public static BorderStyleBuilder builder() { return new BorderStyleBuilder(); }
-	
+	public static BorderStyleBuilder builder() {
+		return new BorderStyleBuilder();
+	}
+
 	/**
 	 * sSize is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
@@ -127,11 +133,11 @@ public class BorderStyle {
 	 *            BorderStyle.POSITION_LEFT,BorderStyle.POSITION_RIGHT or
 	 *            BorderStyle.POSITION_ALL
 	 */
-	BorderStyle(final String sSize, final String sColor,
-			final int nStyle, final int nPos) {
-		assert 0 <= nStyle &&  nStyle <= BorderStyle.BORDER_DOUBLE;
+	BorderStyle(final String sSize, final String sColor, final int nStyle,
+			final int nPos) {
+		assert 0 <= nStyle && nStyle <= BorderStyle.BORDER_DOUBLE;
 		assert 0 <= nPos && nPos <= POSITION_ALL;
-		
+
 		this.sBorderSize = sSize;
 		this.sBorderColor = sColor;
 		this.nBorderStyle = nStyle;
@@ -182,7 +188,10 @@ public class BorderStyle {
 		return this.string;
 	}
 
-	/** Since BorderStyle in now final, we can precomute the String representation */ 
+	/**
+	 * Since BorderStyle in now final, we can precomute the String
+	 * representation
+	 */
 	private String computeString() {
 		if (this.sBorderSize == null && this.sBorderColor == null)
 			return "";
