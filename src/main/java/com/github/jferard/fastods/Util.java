@@ -221,11 +221,11 @@ public class Util {
 	}
 
 	public boolean writeStringArray(final ZipOutputStream o,
-			final String[] sText) {
+			final String... sTexts) {
 
 		try {
-			for (int n = 0; n < sText.length; n++) {
-				byte[] bytes = toBytes(sText[n]);
+			for (final String sText : sTexts) {
+				byte[] bytes = toBytes(sText);
 				o.write(bytes, 0, bytes.length);
 			}
 		} catch (Exception e) {
@@ -480,7 +480,7 @@ public class Util {
 	public void appendElement(final StringBuilder sb, final String sElementName,
 			final String sValue) {
 		sb.append(" " + sElementName + "=\"");
-		sb.append(sValue);
+		sb.append(this.escapeXMLAttribute(sValue));
 		sb.append("\" ");
 	}
 

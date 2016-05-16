@@ -31,7 +31,7 @@ package com.github.jferard.fastods;
  * @author martin
  *
  */
-public class NumberStyle {
+public class NumberStyle implements Style {
 
 	public final static int NUMBER_NORMAL = 1;
 	public final static int NUMBER_SCIENTIFIC = 2;

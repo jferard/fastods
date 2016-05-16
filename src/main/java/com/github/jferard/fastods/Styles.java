@@ -19,18 +19,16 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @author Martin Schulz<br>
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file Styles.java is part of SimpleODS.<br>
- *         0.5.1 Added support for DateStyle
- *
+ *         This file Styles.java is part of Fast ODS.
  */
 public class Styles {
 	private ObjectQueue<NumberStyle> qNumberStyles = ObjectQueue.newQueue();
@@ -39,6 +37,7 @@ public class Styles {
 	private ObjectQueue<TextStyle> qTextStyles = ObjectQueue.newQueue();
 	private ObjectQueue<DateStyle> qDateStyles = ObjectQueue.newQueue();
 	private Header header = null;
+
 	private Footer footer = null;
 
 	/**
@@ -55,6 +54,17 @@ public class Styles {
 	}
 
 	/**
+	 * Add a CurrencyStyle, if a CurrencyStyle with this name already exist, the
+	 * old one is replaced.
+	 * 
+	 * @param cs
+	 *            - The currency style to be added.
+	 */
+	public void addCurrencyStyle(CurrencyStyle cs) {
+		ObjectQueue.addNamedElement(this.qCurrencyStyles, cs);
+	}
+
+	/**
 	 * Add a DateStyle, if a DateStyle with this name already exist, the old one
 	 * is replaced.
 	 * 
@@ -62,24 +72,7 @@ public class Styles {
 	 *            - The date style to be added.
 	 */
 	public void addDateStyle(final DateStyle ds) {
-
-		// --------------------------------------------------------------
-		// Check is a style with this name exists and replace if yes
-		// --------------------------------------------------------------
-		int x = 0;
-		for (x = 0; x < this.qDateStyles.size(); x++) {
-			DateStyle dateStyle = this.qDateStyles.get(x);
-			if (dateStyle.getName().equalsIgnoreCase(ds.getName())) {
-				this.qDateStyles.setAt(x, ds);
-				return;
-			}
-		}
-
-		// --------------------------------------------------------------
-		// We did not find it in qDateStyles, make a new entry
-		// --------------------------------------------------------------
-		this.qDateStyles.add(ds);
-
+		ObjectQueue.addNamedElement(this.qDateStyles, ds);
 	}
 
 	/**
@@ -90,102 +83,23 @@ public class Styles {
 	 *            - The number style to be added.
 	 */
 	public void addNumberStyle(final NumberStyle ns) {
-
-		// --------------------------------------------------------------
-		// Check is a style with this name exists and replace if yes
-		// --------------------------------------------------------------
-		int x = 0;
-		for (x = 0; x < this.qNumberStyles.size(); x++) {
-			NumberStyle numStyle = this.qNumberStyles.get(x);
-			if (numStyle.getName().equalsIgnoreCase(ns.getName())) {
-				this.qNumberStyles.setAt(x, ns);
-				return;
-			}
-		}
-
-		// --------------------------------------------------------------
-		// We did not find it in qNumberStyles, make a new entry
-		// --------------------------------------------------------------
-		this.qNumberStyles.add(ns);
-
-	}
-
-	/**
-	 * Add a CurrencyStyle, if a CurrencyStyle with this name already exist, the
-	 * old one is replaced.
-	 * 
-	 * @param cs
-	 *            - The currency style to be added.
-	 */
-	public void addCurrencyStyle(CurrencyStyle cs) {
-
-		// --------------------------------------------------------------
-		// Check is a style with this name exists and replace if yes
-		// --------------------------------------------------------------
-		int x = 0;
-		for (x = 0; x < this.qCurrencyStyles.size(); x++) {
-			CurrencyStyle cStyle = this.qCurrencyStyles.get(x);
-			if (cStyle.getName().equalsIgnoreCase(cs.getName())) {
-				this.qCurrencyStyles.setAt(x, cs);
-				return;
-			}
-		}
-
-		// --------------------------------------------------------------
-		// We did not find it in qCurrencyStyles, make a new entry
-		// --------------------------------------------------------------
-		this.qCurrencyStyles.add(cs);
+		ObjectQueue.addNamedElement(this.qNumberStyles, ns);
 	}
 
 	public void addPageStyle(PageStyle ps) {
-
-		// --------------------------------------------------------------
-		// Check is a style with this name exists and replace if yes
-		// --------------------------------------------------------------
-		int x = 0;
-		for (x = 0; x < this.qPageStyles.size(); x++) {
-			PageStyle pStyle = this.qPageStyles.get(x);
-			if (pStyle.getName().equalsIgnoreCase(ps.getName())) {
-				this.qPageStyles.setAt(x, ps);
-				return;
-			}
-		}
-
-		// --------------------------------------------------------------
-		// We did not find it in qPageStyles, make a new entry
-		// --------------------------------------------------------------
-		this.qPageStyles.add(ps);
-		this.o.getContent().addPageStyle(ps);
-
+		if (ObjectQueue.addNamedElement(this.qPageStyles, ps))
+			this.o.getContent().addPageStyle(ps);
 	}
 
 	public void addTextStyle(TextStyle ts) {
-
-		// --------------------------------------------------------------
-		// Check is a style with this name exists and replace if yes
-		// --------------------------------------------------------------
-		int x = 0;
-		for (x = 0; x < this.qTextStyles.size(); x++) {
-			TextStyle tStyle = this.qTextStyles.get(x);
-			if (tStyle.getName().equalsIgnoreCase(ts.getName())) {
-				this.qTextStyles.setAt(x, ts);
-				return;
-			}
-		}
-
-		// --------------------------------------------------------------
-		// We did not find it in qTextStyles, make a new entry
-		// --------------------------------------------------------------
-		this.qTextStyles.add(ts);
-		this.o.getContent().addTextStyle(ts);
-
+		if (ObjectQueue.addNamedElement(this.qTextStyles, ts))
+			this.o.getContent().addTextStyle(ts);
 	}
 
 	public boolean createStyles(Util util, final ZipOutputStream out) {
 		try {
 			out.putNextEntry(new ZipEntry("styles.xml"));
-			util.writeString(out,
-					"<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			util.writeString(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			util.writeString(out,
 					"<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" office:version=\"1.1\">");
 			util.writeString(out, "<office:font-face-decls>");
@@ -198,18 +112,14 @@ public class Styles {
 			util.writeString(out, "</office:font-face-decls>");
 			util.writeString(out, "<office:styles>");
 
-			for (int n = 0; n < this.qDateStyles.size(); n++) {
-				DateStyle ds = this.qDateStyles.get(n);
+			for (DateStyle ds : this.qDateStyles)
 				util.writeString(out, ds.toXML());
-			}
-			for (int n = 0; n < this.qNumberStyles.size(); n++) {
-				NumberStyle ns = this.qNumberStyles.get(n);
+
+			for (NumberStyle ns : this.qNumberStyles)
 				util.writeString(out, ns.toXML());
-			}
-			for (int n = 0; n < this.qCurrencyStyles.size(); n++) {
-				CurrencyStyle cs = this.qCurrencyStyles.get(n);
-				util.writeString(out, cs.toXML());
-			}
+
+			for (CurrencyStyle cs : this.qCurrencyStyles)
+				util.writeString(out, cs.toXML(util));
 
 			if (this.footer != null) {
 				util.writeString(out, this.footer.toXML());
@@ -231,22 +141,18 @@ public class Styles {
 			u.writeString(out, "</number:date-style>");
 			*/
 
-			for (int n = 0; n < this.qPageStyles.size(); n++) {
-				PageStyle ps = this.qPageStyles.get(n);
+			for (PageStyle ps : this.qPageStyles)
 				util.writeString(out, ps.toXML());
-			}
-			for (int n = 0; n < this.qTextStyles.size(); n++) {
-				TextStyle ts = this.qTextStyles.get(n);
+
+			for (TextStyle ts : this.qTextStyles)
 				util.writeString(out, ts.toXML(util));
-			}
+
 
 			util.writeString(out, "</office:automatic-styles>");
 			util.writeString(out, "<office:master-styles>");
 
-			for (int n = 0; n < this.qPageStyles.size(); n++) {
-				PageStyle ps = this.qPageStyles.get(n);
+			for (PageStyle ps : this.qPageStyles)
 				util.writeString(out, ps.toMasterStyleXML());
-			}
 
 			util.writeString(out, "</office:master-styles>");
 			util.writeString(out, "</office:document-styles>");
@@ -268,6 +174,29 @@ public class Styles {
 	}
 
 	/**
+	 * Get the current header object.
+	 * 
+	 * @return The current header object.
+	 */
+	public Header getHeader() {
+		return this.header;
+	}
+
+	/**
+	 * Reset the footer to null.
+	 */
+	public void resetFooter() {
+		this.footer = null;
+	}
+
+	/**
+	 * Reset the header to null.
+	 */
+	public void resetHeader() {
+		this.header = null;
+	}
+
+	/**
 	 * Set the footer object to f. Reset this object by setting a new Footer
 	 * object,<br>
 	 * or use resetFooter() to remove the Footer object.
@@ -280,22 +209,6 @@ public class Styles {
 	}
 
 	/**
-	 * Reset the footer to null.
-	 */
-	public void resetFooter() {
-		this.footer = null;
-	}
-
-	/**
-	 * Get the current header object.
-	 * 
-	 * @return The current header object.
-	 */
-	public Header getHeader() {
-		return this.header;
-	}
-
-	/**
 	 * Set the header object to h. Reset this object by setting a new Header
 	 * object,<br>
 	 * or use resetHeader() to remove the Header object.
@@ -305,13 +218,6 @@ public class Styles {
 	 */
 	public void setHeader(final Header h) {
 		this.header = h;
-	}
-
-	/**
-	 * Reset the header to null.
-	 */
-	public void resetHeader() {
-		this.header = null;
 	}
 
 }

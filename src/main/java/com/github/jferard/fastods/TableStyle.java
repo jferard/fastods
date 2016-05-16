@@ -29,7 +29,7 @@ package com.github.jferard.fastods;
  *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'<br>
  *         0.5.2 Replaced all text properties with a TextStyle object<br>
  */
-public class TableStyle {
+public class TableStyle implements Style {
 
 	public final static int STYLE_TABLE = 1;
 	public final static int STYLE_TABLECOLUMN = 2;

@@ -45,8 +45,8 @@ public class Content {
 		this.qTextStyles = ObjectQueue.newQueue();
 	}
 
-	public ObjectQueue<Table> getTableQueue() {
-		return this.qTables;
+	public void addPageStyle(final PageStyle ps) {
+		ObjectQueue.addNamedElement(this.qPageStyles, ps); 
 	}
 
 	public boolean addTable(String sName) throws SimpleOdsException {
@@ -67,15 +67,162 @@ public class Content {
 		return true;
 	}
 
-	private boolean getContent(Util util, ZipOutputStream o) {
+	public void addTableStyle(TableStyle ts) {
+		ObjectQueue.addNamedElement(this.qTableStyles, ts); 
+	}
+
+	public void addTextStyle(final TextStyle ts) {
+		ObjectQueue.addNamedElement(this.qTextStyles, ts); 
+	}
+
+	public boolean createContent(Util util, ZipOutputStream o) {
+
+		try {
+			o.putNextEntry(new ZipEntry("content.xml"));
+			util.writeString(o, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			util.writeString(o,
+					"<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" office:version=\"1.1\">");
+			util.writeString(o, "<office:scripts/>");
+			util.writeString(o, "<office:font-face-decls>");
+			util.writeString(o,
+					"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" style:font-pitch=\"variable\"/>");
+			util.writeString(o,
+					"<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"'Lucida Sans Unicode'\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
+			util.writeString(o,
+					"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
+			util.writeString(o, "</office:font-face-decls>");
+			/* Office automatic styles */
+			util.writeString(o, "<office:automatic-styles>");
+
+			for (TableStyle ts : this.qTableStyles)
+				util.writeString(o, ts.toXML(util));
+
+			util.writeString(o, "</office:automatic-styles>");
+
+			util.writeString(o, "<office:body>");
+			util.writeString(o, "<office:spreadsheet>");
+			this.writeSpreadsheet(util, o);
+			util.writeString(o, "</office:spreadsheet>");
+			util.writeString(o, "</office:body>");
+			util.writeString(o, "</office:document-content>");
+
+			o.closeEntry();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get the TableCell object from table nTab at position nRow,nCol.<br>
+	 * If no TableCell was present at this nRow,nCol, create a new one with a
+	 * default of TableCell.STYLE_STRING and a content of ""<br>
+	 * 
+	 * @param nTab
+	 * @param nRow
+	 * @param nCol
+	 * @return The TableCell
+	 * @throws SimpleOdsException
+	 */
+	public TableCell getCell(int nTab, int nRow, int nCol)
+			throws SimpleOdsException {
+		if (nTab < 0 || nTab >= this.qTables.size()) {
+			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
+		}
+		Table tab = this.qTables.get(nTab);
+		return tab.getCell(nRow, nCol);
+
+	}
+
+	public PageStyle getDefaultPageStyle() {
+		if (this.qPageStyles.size() == 0) {
+			return null;
+		}
+
+		return this.qPageStyles.get(0);
+	}
+
+	public ObjectQueue<PageStyle> getPageStyles() {
+		return this.qPageStyles;
+	}
+
+	public ObjectQueue<Table> getTableQueue() {
+		return this.qTables;
+	}
+
+	public ObjectQueue<TableStyle> getTableStyles() {
+		return this.qTableStyles;
+	}
+
+	public ObjectQueue<TextStyle> getTextStyles() {
+		return this.qTextStyles;
+	}
+
+	public boolean setCell(int nTab, int nRow, int nCol, int valuetype,
+			String value) throws SimpleOdsException {
+
+		if (nTab < 0 || nTab >= this.qTables.size()) {
+			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
+		}
+
+		Table tab = this.qTables.get(nTab);
+		tab.setCell(nRow, nCol, valuetype, value);
+
+		return true;
+	}
+
+	public boolean setCellStyle(int nTab, int nRow, int nCol, TableStyle ts)
+			throws SimpleOdsException {
+
+		if (nTab < 0 || nTab >= this.qTables.size()) {
+			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
+		}
+
+		Table tab = this.qTables.get(nTab);
+
+		tab.setCellStyle(nRow, nCol, ts);
+		this.addTableStyle(ts);
+
+		return true;
+	}
+
+	public boolean setColumnStyle(int nTab, int nCol, TableStyle ts)
+			throws SimpleOdsException {
+
+		if (nTab < 0 || nTab >= this.qTables.size()) {
+			return false;
+		}
+
+		Table tab = this.qTables.get(nTab);
+
+		tab.setColumnStyle(nCol, ts);
+
+		this.addTableStyle(ts);
+
+		return true;
+	}
+
+	public void setPageStyles(final ObjectQueue<PageStyle> qPageStyles) {
+		this.qPageStyles = qPageStyles;
+	}
+
+	public void setTableStyles(final ObjectQueue<TableStyle> qTableStyles) {
+		this.qTableStyles = qTableStyles;
+	}
+
+	public void setTextStyles(final ObjectQueue<TextStyle> qTextStyles) {
+		this.qTextStyles = qTextStyles;
+	}
+
+	private boolean writeSpreadsheet(Util util, ZipOutputStream o) {
 		TableStyle ts0 = null;
 		TableStyle ts1 = null;
 		String sDefaultCellSytle0 = "Default";
 		String sDefaultCellSytle1 = "Default";
 
 		// Loop through all tables and write the informations
-		for (int n = 0; n < this.qTables.size(); n++) {
-			Table tab = this.qTables.get(n);
+		for (Table tab : this.qTables) {
 			util.writeString(o, tab.toXML());
 			util.writeString(o,
 					"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");
@@ -165,185 +312,6 @@ public class Content {
 		}
 
 		return true;
-	}
-
-	public boolean createContent(Util util, ZipOutputStream o) {
-
-		try {
-			o.putNextEntry(new ZipEntry("content.xml"));
-			util.writeString(o, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			util.writeString(o,
-					"<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" office:version=\"1.1\">");
-			util.writeString(o, "<office:scripts/>");
-			util.writeString(o, "<office:font-face-decls>");
-			util.writeString(o,
-					"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" style:font-pitch=\"variable\"/>");
-			util.writeString(o,
-					"<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"'Lucida Sans Unicode'\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
-			util.writeString(o,
-					"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
-			util.writeString(o, "</office:font-face-decls>");
-			/* Office automatic styles */
-			util.writeString(o, "<office:automatic-styles>");
-
-			for (int n = 0; n < this.qTableStyles.size(); n++) {
-				TableStyle ts = this.qTableStyles.get(n);
-				util.writeString(o, ts.toXML(util));
-			}
-			util.writeString(o, "</office:automatic-styles>");
-
-			util.writeString(o, "<office:body>");
-			util.writeString(o, "<office:spreadsheet>");
-			this.getContent(util, o);
-			util.writeString(o, "</office:spreadsheet>");
-			util.writeString(o, "</office:body>");
-			util.writeString(o, "</office:document-content>");
-
-			o.closeEntry();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	public boolean setCell(int nTab, int nRow, int nCol, int valuetype,
-			String value) throws SimpleOdsException {
-
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
-		}
-
-		Table tab = this.qTables.get(nTab);
-		tab.setCell(nRow, nCol, valuetype, value);
-
-		return true;
-	}
-
-	public boolean setCellStyle(int nTab, int nRow, int nCol, TableStyle ts)
-			throws SimpleOdsException {
-
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
-		}
-
-		Table tab = this.qTables.get(nTab);
-
-		tab.setCellStyle(nRow, nCol, ts);
-		this.addTableStyle(ts);
-
-		return true;
-	}
-
-	/**
-	 * Get the TableCell object from table nTab at position nRow,nCol.<br>
-	 * If no TableCell was present at this nRow,nCol, create a new one with a
-	 * default of TableCell.STYLE_STRING and a content of ""<br>
-	 * 
-	 * @param nTab
-	 * @param nRow
-	 * @param nCol
-	 * @return The TableCell
-	 * @throws SimpleOdsException
-	 */
-	public TableCell getCell(int nTab, int nRow, int nCol)
-			throws SimpleOdsException {
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
-		}
-		Table tab = this.qTables.get(nTab);
-		return tab.getCell(nRow, nCol);
-
-	}
-
-	public boolean setColumnStyle(int nTab, int nCol, TableStyle ts)
-			throws SimpleOdsException {
-
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			return false;
-		}
-
-		Table tab = this.qTables.get(nTab);
-
-		tab.setColumnStyle(nCol, ts);
-
-		this.addTableStyle(ts);
-
-		return true;
-	}
-
-	public PageStyle getDefaultPageStyle() {
-		if (this.qPageStyles.size() == 0) {
-			return null;
-		}
-
-		return this.qPageStyles.get(0);
-	}
-
-	public void addTableStyle(TableStyle ts) {
-		int x = 0;
-		for (x = 0; x < this.qTableStyles.size(); x++) {
-			TableStyle tabStyle = this.qTableStyles.get(x);
-			if (tabStyle.getName().equalsIgnoreCase(ts.getName())) {
-				this.qTableStyles.setAt(x, ts);
-				return;
-			}
-		}
-
-		// Did not find it in qTableStyle, make a new entry
-		this.qTableStyles.add(ts);
-	}
-
-	public void addPageStyle(final PageStyle ps) {
-		int x = 0;
-		for (x = 0; x < this.qPageStyles.size(); x++) {
-			PageStyle pStyle = this.qPageStyles.get(x);
-			if (pStyle.getName().equalsIgnoreCase(ps.getName())) {
-				this.qPageStyles.setAt(x, ps);
-				return;
-			}
-		}
-
-		// Did not find it in qPageStyle, make a new entry
-		this.qPageStyles.add(ps);
-	}
-
-	public void addTextStyle(final TextStyle ts) {
-		int x = 0;
-		for (x = 0; x < this.qTextStyles.size(); x++) {
-			TextStyle tStyle = this.qTextStyles.get(x);
-			if (tStyle.getName().equalsIgnoreCase(ts.getName())) {
-				this.qTextStyles.setAt(x, ts);
-				return;
-			}
-		}
-
-		// Did not find it in qTextStyles, make a new entry
-		this.qTextStyles.add(ts);
-	}
-
-	public ObjectQueue<TableStyle> getTableStyles() {
-		return this.qTableStyles;
-	}
-
-	public void setTableStyles(final ObjectQueue<TableStyle> qTableStyles) {
-		this.qTableStyles = qTableStyles;
-	}
-
-	public ObjectQueue<PageStyle> getPageStyles() {
-		return this.qPageStyles;
-	}
-
-	public void setPageStyles(final ObjectQueue<PageStyle> qPageStyles) {
-		this.qPageStyles = qPageStyles;
-	}
-
-	public ObjectQueue<TextStyle> getTextStyles() {
-		return this.qTextStyles;
-	}
-
-	public void setTextStyles(final ObjectQueue<TextStyle> qTextStyles) {
-		this.qTextStyles = qTextStyles;
 	}
 
 }

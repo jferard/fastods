@@ -19,25 +19,53 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file ObjectQueue.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file ObjectQueue.java is part of FastODS.
  *
  */
-public class ObjectQueue<T> {
+public class ObjectQueue<T> implements Iterable<T> {
 	/** Guava's like creator 
 	 * @return the newly created ObjectQueue
 	 */
 	public static <U> ObjectQueue<U> newQueue() {
 		return new ObjectQueue<U>();
 	}
+	
+	/**
+	 * Add a Style. If a Style with this name already exist, the old one is
+	 * replaced.
+	 * 
+	 * @param style
+	 *            - The style to be added.
+	 * @return true if a new entry
+	 */
+	public static <T extends Style> boolean addNamedElement(ObjectQueue<T> queue,
+			T element) {
+		// Check is a style with this name exists and replace if yes
+		ListIterator<T> listIterator = queue.list.listIterator();
+		while (listIterator.hasNext()) {
+			T curElement = listIterator.next();
+			if (curElement.getName().equalsIgnoreCase(element.getName())) {
+				listIterator.set(element);
+				return false;
+			}
+		}
+		queue.list.add(element);
+
+		// We did not find it in queue, make a new entry
+		return true;
+	}
+	
 	
 	/**
 	 * The list with all objects.
@@ -132,15 +160,26 @@ public class ObjectQueue<T> {
 	 * Print all objects in this ObjectQueue to System.out.
 	 */
 	public void printAll() {
+		this.printAll(System.out);
+	}
+	
+	public void printAll(PrintStream out) {
 		for (int n = 0; n < this.list.size(); n++) {
 			T o = this.list.get(n);
 
 			if (o == null) {
-				System.out.println(n + "==null");
+				out.println(n + "==null");
 			} else {
-				System.out.println(n);
+				out.println(n);
 			}
 		}
 	}
 
+	public ListIterator<T> listIterator() {
+		return this.list.listIterator();
+	}
+
+	public Iterator<T> iterator() {
+		return this.list.iterator();
+	}
 }

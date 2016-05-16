@@ -30,7 +30,7 @@ package com.github.jferard.fastods;
  *         DATEFORMAT_YYYYMMDD
  *
  */
-public class DateStyle {
+public class DateStyle implements Style {
 
 	/**
 	 * Set the date format like '10.07.2012'.

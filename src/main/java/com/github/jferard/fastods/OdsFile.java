@@ -247,7 +247,7 @@ public class OdsFile {
 		return true;
 	}
 
-	private boolean createSettings(ZipOutputStream o) {
+	private boolean createSettings(Util util, ZipOutputStream o) {
 
 		try {
 			o.putNextEntry(new ZipEntry("settings.xml"));
@@ -256,8 +256,8 @@ public class OdsFile {
 					"<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">",
 					"<office:settings>",
 					"<config:config-item-set config:name=\"ooo:view-settings\">",
-					this.VisibleAreaTop.toXML(), this.VisibleAreaLeft.toXML(),
-					this.VisibleAreaWidth.toXML(), this.VisibleAreaHeight.toXML(),
+					this.VisibleAreaTop.toXML(util), this.VisibleAreaLeft.toXML(util),
+					this.VisibleAreaWidth.toXML(util), this.VisibleAreaHeight.toXML(util),
 					"<config:config-item-map-indexed config:name=\"Views\">",
 					"<config:config-item-map-entry>",
 					"<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>",
@@ -267,52 +267,52 @@ public class OdsFile {
 
 			// Write the table informations
 			for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-				Table t = (Table) this.getContent().getTableQueue().get(n);
-				this.util.writeStringArray(o, t.getConfig());
+				Table t = this.getContent().getTableQueue().get(n);
+				this.util.writeStringArray(o, t.getConfig(util));
 			}
 
 			String[] sText2 = { "</config:config-item-map-named>",
-					this.ViewIdActiveTable.toXML(),
-					this.ViewIdHorizontalScrollbarWidth.toXML(),
-					this.ViewIdPageViewZoomValue.toXML(),
-					this.ViewIdZoomType.toXML(), this.ViewIdZoomValue.toXML(),
-					this.ViewIdShowPageBreakPreview.toXML(),
-					this.ViewIdShowZeroValues.toXML(),
-					this.ViewIdShowNotes.toXML(), this.ViewIdShowGrid.toXML(),
-					this.ViewIdGridColor.toXML(),
-					this.ViewIdShowPageBreaks.toXML(),
-					this.ViewIdHasColumnRowHeaders.toXML(),
-					this.ViewIdIsOutlineSymbolsSet.toXML(),
-					this.ViewIdHasSheetTabs.toXML(),
-					this.ViewIdIsSnapToRaster.toXML(),
-					this.ViewIdRasterIsVisible.toXML(),
-					this.ViewIdRasterResolutionX.toXML(),
-					this.ViewIdRasterResolutionY.toXML(),
-					this.ViewIdRasterSubdivisionX.toXML(),
-					this.ViewIdRasterSubdivisionY.toXML(),
-					this.ViewIdIsRasterAxisSynchronized.toXML(),
+					this.ViewIdActiveTable.toXML(util),
+					this.ViewIdHorizontalScrollbarWidth.toXML(util),
+					this.ViewIdPageViewZoomValue.toXML(util),
+					this.ViewIdZoomType.toXML(util), this.ViewIdZoomValue.toXML(util),
+					this.ViewIdShowPageBreakPreview.toXML(util),
+					this.ViewIdShowZeroValues.toXML(util),
+					this.ViewIdShowNotes.toXML(util), this.ViewIdShowGrid.toXML(util),
+					this.ViewIdGridColor.toXML(util),
+					this.ViewIdShowPageBreaks.toXML(util),
+					this.ViewIdHasColumnRowHeaders.toXML(util),
+					this.ViewIdIsOutlineSymbolsSet.toXML(util),
+					this.ViewIdHasSheetTabs.toXML(util),
+					this.ViewIdIsSnapToRaster.toXML(util),
+					this.ViewIdRasterIsVisible.toXML(util),
+					this.ViewIdRasterResolutionX.toXML(util),
+					this.ViewIdRasterResolutionY.toXML(util),
+					this.ViewIdRasterSubdivisionX.toXML(util),
+					this.ViewIdRasterSubdivisionY.toXML(util),
+					this.ViewIdIsRasterAxisSynchronized.toXML(util),
 					"</config:config-item-map-entry>",
 					"</config:config-item-map-indexed>",
 					"</config:config-item-set>",
 					"<config:config-item-set config:name=\"ooo:configuration-settings\">",
-					this.ShowZeroValues.toXML(), this.ShowNotes.toXML(),
-					this.ShowGrid.toXML(), this.GridColor.toXML(),
-					this.ShowPageBreaks.toXML(), this.LinkUpdateMode.toXML(),
-					this.HasColumnRowHeaders.toXML(), this.HasSheetTabs.toXML(),
-					this.IsOutlineSymbolsSet.toXML(),
-					this.IsSnapToRaster.toXML(), this.RasterIsVisible.toXML(),
-					this.RasterResolutionX.toXML(),
-					this.RasterResolutionY.toXML(),
-					this.RasterSubdivisionX.toXML(),
-					this.RasterSubdivisionY.toXML(),
-					this.IsRasterAxisSynchronized.toXML(),
-					this.AutoCalculate.toXML(), this.PrinterName.toXML(),
-					this.PrinterSetup.toXML(), this.ApplyUserData.toXML(),
-					this.CharacterCompressionType.toXML(),
-					this.IsKernAsianPunctuation.toXML(),
-					this.SaveVersionOnClose.toXML(),
-					this.UpdateFromTemplate.toXML(),
-					this.AllowPrintJobCancel.toXML(), this.LoadReadonly.toXML(),
+					this.ShowZeroValues.toXML(util), this.ShowNotes.toXML(util),
+					this.ShowGrid.toXML(util), this.GridColor.toXML(util),
+					this.ShowPageBreaks.toXML(util), this.LinkUpdateMode.toXML(util),
+					this.HasColumnRowHeaders.toXML(util), this.HasSheetTabs.toXML(util),
+					this.IsOutlineSymbolsSet.toXML(util),
+					this.IsSnapToRaster.toXML(util), this.RasterIsVisible.toXML(util),
+					this.RasterResolutionX.toXML(util),
+					this.RasterResolutionY.toXML(util),
+					this.RasterSubdivisionX.toXML(util),
+					this.RasterSubdivisionY.toXML(util),
+					this.IsRasterAxisSynchronized.toXML(util),
+					this.AutoCalculate.toXML(util), this.PrinterName.toXML(util),
+					this.PrinterSetup.toXML(util), this.ApplyUserData.toXML(util),
+					this.CharacterCompressionType.toXML(util),
+					this.IsKernAsianPunctuation.toXML(util),
+					this.SaveVersionOnClose.toXML(util),
+					this.UpdateFromTemplate.toXML(util),
+					this.AllowPrintJobCancel.toXML(util), this.LoadReadonly.toXML(util),
 					"</config:config-item-set>", "</office:settings>",
 					"</office:document-settings>"
 
@@ -365,7 +365,7 @@ public class OdsFile {
 
 			this.createConfigurations2(out);
 
-			this.createSettings(out);
+			this.createSettings(this.util, out);
 
 			out.putNextEntry(new ZipEntry("Thumbnails/"));
 			out.closeEntry();
@@ -397,8 +397,8 @@ public class OdsFile {
 	 *            first table is shown
 	 */
 	public void setActiveTable(final String sName) {
-		this.ViewIdActiveTable.setValue(sName);
-
+		this.ViewIdActiveTable = new ConfigItem("ActiveTable",
+				"string", sName);
 	}
 
 	/**
@@ -416,9 +416,10 @@ public class OdsFile {
 			return false;
 		}
 
-		Table tab = (Table) this.getContent().getTableQueue().get(nTab);
+		Table tab = this.getContent().getTableQueue().get(nTab);
 
-		this.ViewIdActiveTable.setValue(tab.getName());
+		this.ViewIdActiveTable = new ConfigItem("ActiveTable",
+				"string", tab.getName());
 
 		return true;
 	}

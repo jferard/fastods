@@ -26,7 +26,7 @@ package com.github.jferard.fastods;
  *
  *         This file CurrencyStyle.java is part of FastODS.
  */
-public class CurrencyStyle {
+public class CurrencyStyle implements Style {
 	public final static int NUMBER_CURRENCY = 1;
 	public final static int SYMBOLPOSITION_BEGIN = 0;
 

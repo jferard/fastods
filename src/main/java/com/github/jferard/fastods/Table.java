@@ -76,20 +76,20 @@ public class Table {
 	 * @return The complete configuration information of this table in a string
 	 *         array
 	 */
-	public String[] getConfig() {
+	public String[] getConfig(Util util) {
 		String[] sConfig = {
 				"<config:config-item-map-entry config:name=\"" + this.getName()
 						+ "\">",
-				this.CursorPositionX.toXML(), this.CursorPositionY.toXML(),
-				this.HorizontalSplitMode.toXML(), this.VerticalSplitMode.toXML(),
-				this.HorizontalSplitMode.toXML(),
-				this.VerticalSplitMode.toXML(),
-				this.HorizontalSplitPosition.toXML(),
-				this.VerticalSplitPosition.toXML(),
-				this.ActiveSplitRange.toXML(), this.PositionLeft.toXML(),
-				this.PositionRight.toXML(), this.PositionTop.toXML(),
-				this.PositionBottom.toXML(), this.ZoomType.toXML(),
-				this.ZoomValue.toXML(), this.PageViewZoomValue.toXML(),
+				this.CursorPositionX.toXML(util), this.CursorPositionY.toXML(util),
+				this.HorizontalSplitMode.toXML(util), this.VerticalSplitMode.toXML(util),
+				this.HorizontalSplitMode.toXML(util),
+				this.VerticalSplitMode.toXML(util),
+				this.HorizontalSplitPosition.toXML(util),
+				this.VerticalSplitPosition.toXML(util),
+				this.ActiveSplitRange.toXML(util), this.PositionLeft.toXML(util),
+				this.PositionRight.toXML(util), this.PositionTop.toXML(util),
+				this.PositionBottom.toXML(util), this.ZoomType.toXML(util),
+				this.ZoomValue.toXML(util), this.PageViewZoomValue.toXML(util),
 				"</config:config-item-map-entry>", };
 
 		return (sConfig);

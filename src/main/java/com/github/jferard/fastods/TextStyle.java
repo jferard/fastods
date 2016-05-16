@@ -29,7 +29,7 @@ package com.github.jferard.fastods;
  *         Version 0.5.0 Added support for Font underline style
  */
 
-public class TextStyle {
+public class TextStyle implements Style {
 	// none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public final static int STYLE_UNDERLINE_NONE = 0;
 	public final static int STYLE_UNDERLINE_SOLID = 1;

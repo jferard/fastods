@@ -28,7 +28,7 @@ package com.github.jferard.fastods;
  *         This file PageStyle.java is part of SimpleODS.
  *
  */
-public class PageStyle {
+public class PageStyle implements Style {
 
 	public final static int STYLE_PAPERFORMAT_A3 = 0;
 	public final static int STYLE_PAPERFORMAT_A4 = 1;
