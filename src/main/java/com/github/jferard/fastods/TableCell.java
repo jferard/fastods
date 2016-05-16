@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
+ * TODO : clean code
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>

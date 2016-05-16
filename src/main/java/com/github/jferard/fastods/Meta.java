@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
+ * TODO : clean code
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>

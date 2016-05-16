@@ -30,6 +30,7 @@ import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
 
 /**
+ * TODO : split code, clean code
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>

@@ -23,13 +23,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file Manifest.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
+ *         This file Manifest.java is part of FastODS.
+ *         
  */
 public class Manifest {
 	String[] sText = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
