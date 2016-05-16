@@ -28,7 +28,7 @@ package com.github.jferard.fastods;
  *         This file PageStyle.java is part of SimpleODS.
  *
  */
-public class PageStyle implements Style {
+public class PageStyle implements NamedObject {
 
 	public final static int STYLE_PAPERFORMAT_A3 = 0;
 	public final static int STYLE_PAPERFORMAT_A4 = 1;
@@ -338,12 +338,14 @@ public class PageStyle implements Style {
 		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append("<style:master-page style:name=\"DefaultMasterPage\" ");
-		sbTemp.append("style:page-layout-name=\"" + this.getName() + "\">");
+		sbTemp.append("style:page-layout-name=\"").append(this.getName())
+				.append("\">");
 
 		sbTemp.append("<style:header>");
 		if (this.o.getStyles().getHeader() == null) {
-			sbTemp.append("<text:p text:style-name=\"" + this.sTextStyleHeader
-					+ "\">" + this.sTextHeader + "</text:p>");
+			sbTemp.append("<text:p text:style-name=\"")
+					.append(this.sTextStyleHeader).append("\">")
+					.append(this.sTextHeader).append("</text:p>");
 		} else {
 			sbTemp.append(this.o.getStyles().getHeader().toMasterStyleXML());
 		}
@@ -351,8 +353,9 @@ public class PageStyle implements Style {
 
 		sbTemp.append("<style:footer>");
 		if (this.o.getStyles().getFooter() == null) {
-			sbTemp.append("<text:p text:style-name=\"" + this.sTextStyleFooter
-					+ "\">" + this.sTextFooter + "</text:p>");
+			sbTemp.append("<text:p text:style-name=\"")
+					.append(this.sTextStyleFooter).append("\">")
+					.append(this.sTextFooter).append("</text:p>");
 		} else {
 			sbTemp.append(this.o.getStyles().getFooter().toMasterStyleXML());
 		}
@@ -372,19 +375,26 @@ public class PageStyle implements Style {
 	protected String toXML() {
 		StringBuilder sbTemp = new StringBuilder();
 
-		sbTemp.append(
-				"<style:page-layout style:name=\"" + this.getName() + "\">");
+		sbTemp.append("<style:page-layout style:name=\"").append(this.getName())
+				.append("\">");
 		sbTemp.append("<style:page-layout-properties ");
-		sbTemp.append("fo:page-width=\"" + this.getPageWidth() + "\" ");
-		sbTemp.append("fo:page-height=\"" + this.getPageHeight() + "\" ");
-		sbTemp.append("style:num-format=\"" + this.sNumFormat + "\" ");
+		sbTemp.append("fo:page-width=\"").append(this.getPageWidth())
+				.append("\" ");
+		sbTemp.append("fo:page-height=\"").append(this.getPageHeight())
+				.append("\" ");
+		sbTemp.append("style:num-format=\"").append(this.sNumFormat)
+				.append("\" ");
 		sbTemp.append(addWritingMode());
 		sbTemp.append(addPrintOrientation());
 		sbTemp.append(addBackgroundColor());
-		sbTemp.append("fo:margin-top=\"" + this.getMarginTop() + "\" ");
-		sbTemp.append("fo:margin-bottom=\"" + this.getMarginBottom() + "\" ");
-		sbTemp.append("fo:margin-left=\"" + this.getMarginLeft() + "\" ");
-		sbTemp.append("fo:margin-right=\"" + this.getMarginRight() + "\" ");
+		sbTemp.append("fo:margin-top=\"").append(this.getMarginTop())
+				.append("\" ");
+		sbTemp.append("fo:margin-bottom=\"").append(this.getMarginBottom())
+				.append("\" ");
+		sbTemp.append("fo:margin-left=\"").append(this.getMarginLeft())
+				.append("\" ");
+		sbTemp.append("fo:margin-right=\"").append(this.getMarginRight())
+				.append("\" ");
 		sbTemp.append("/>"); // End of page-layout-properties
 
 		sbTemp.append("<style:header-style />");
@@ -414,8 +424,8 @@ public class PageStyle implements Style {
 			return "";
 		}
 
-		return "fo:background-color=\"" + this.getBackgroundColor() + "\" ";
-
+		return new StringBuilder("fo:background-color=\"")
+				.append(this.getBackgroundColor()).append("\" ").toString();
 	}
 
 	private String addPrintOrientation() {
@@ -474,10 +484,14 @@ public class PageStyle implements Style {
 			Header h = this.o.getStyles().getHeader();
 			sbTemp.append("<style:header-style>");
 			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\"" + h.getMinHeight() + "\" ");
-			sbTemp.append("fo:margin-left=\"" + h.getMarginLeft() + "\" ");
-			sbTemp.append("fo:margin-right=\"" + h.getMarginRight() + "\" ");
-			sbTemp.append("fo:margin-top=\"" + h.getMarginTop() + "\"/>");
+			sbTemp.append("fo:min-height=\"").append(h.getMinHeight())
+					.append("\" ");
+			sbTemp.append("fo:margin-left=\"").append(h.getMarginLeft())
+					.append("\" ");
+			sbTemp.append("fo:margin-right=\"").append(h.getMarginRight())
+					.append("\" ");
+			sbTemp.append("fo:margin-top=\"").append(h.getMarginTop())
+					.append("\"/>");
 			sbTemp.append("</style:header-style>");
 		}
 
@@ -491,10 +505,14 @@ public class PageStyle implements Style {
 			Footer f = this.o.getStyles().getFooter();
 			sbTemp.append("<style:footer-style>");
 			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\"" + f.getMinHeight() + "\" ");
-			sbTemp.append("fo:margin-left=\"" + f.getMarginLeft() + "\" ");
-			sbTemp.append("fo:margin-right=\"" + f.getMarginRight() + "\" ");
-			sbTemp.append("fo:margin-top=\"" + f.getMarginTop() + "\"/>");
+			sbTemp.append("fo:min-height=\"").append(f.getMinHeight())
+					.append("\" ");
+			sbTemp.append("fo:margin-left=\"").append(f.getMarginLeft())
+					.append("\" ");
+			sbTemp.append("fo:margin-right=\"").append(f.getMarginRight())
+					.append("\" ");
+			sbTemp.append("fo:margin-top=\"").append(f.getMarginTop())
+					.append("\"/>");
 			sbTemp.append("</style:footer-style>");
 		}
 

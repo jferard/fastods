@@ -42,7 +42,7 @@ public class Util {
 	private static Util instance;
 
 	public static final char SPACE_CHAR = ' ';
-	
+
 	// Gray
 	public final static String COLOR_GRAY16 = "#292929";
 	public final static String COLOR_GRAY32 = "#525252";
@@ -278,16 +278,19 @@ public class Util {
 			nBlue = 0;
 		}
 
-		return ("#" + toHexString(nRed) + toHexString(nGreen)
-				+ toHexString(nBlue));
+		return new StringBuilder("#").append(toHexString(nRed))
+				.append(toHexString(nGreen)).append(toHexString(nBlue))
+				.toString();
 
 	}
 
 	private String toHexString(final int n) {
+		StringBuilder sbReturn = new StringBuilder();
 		if (n < 16) {
-			return "0" + Integer.toHexString(n);
+			sbReturn.append("0");
 		}
-		return Integer.toHexString(n);
+		sbReturn.append(Integer.toHexString(n));
+		return sbReturn.toString();
 	}
 
 	/**
@@ -335,7 +338,8 @@ public class Util {
 
 			if (c > 128) {
 				sString = replace(sString, sString.substring(n, n + 1),
-						"&#" + c + ";");
+						new StringBuilder("&#").append(c).append(";")
+								.toString());
 			}
 		}
 
@@ -479,9 +483,8 @@ public class Util {
 	 */
 	public void appendElement(final StringBuilder sb, final String sElementName,
 			final String sValue) {
-		sb.append(" " + sElementName + "=\"");
-		sb.append(this.escapeXMLAttribute(sValue));
-		sb.append("\" ");
+		sb.append(" ").append(sElementName).append("=\"")
+				.append(this.escapeXMLAttribute(sValue)).append("\" ");
 	}
 
 	/**
@@ -498,9 +501,8 @@ public class Util {
 	 */
 	public void appendElement(final StringBuilder sb, final String sElementName,
 			final int nValue) {
-		sb.append(" " + sElementName + "=\"");
-		sb.append(Integer.toString(nValue));
-		sb.append("\" ");
+		sb.append(" ").append(sElementName).append("=\"").append(nValue)
+				.append("\" ");
 	}
 
 }

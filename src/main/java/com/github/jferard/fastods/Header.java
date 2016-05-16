@@ -161,7 +161,7 @@ public class Header {
 			return;
 		}
 
-		sbTemp.append("<style:" + sRegionName + ">");
+		sbTemp.append("<style:").append(sRegionName).append(">");
 
 		for (int n = 0; n < qRegion.size(); n++) {
 

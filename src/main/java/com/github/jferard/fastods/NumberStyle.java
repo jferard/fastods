@@ -31,7 +31,7 @@ package com.github.jferard.fastods;
  * @author martin
  *
  */
-public class NumberStyle implements Style {
+public class NumberStyle implements NamedObject {
 
 	public final static int NUMBER_NORMAL = 1;
 	public final static int NUMBER_SCIENTIFIC = 2;
@@ -306,15 +306,17 @@ public class NumberStyle implements Style {
 		// Only change the given name if bNegativeValuesRed is true and use this
 		// style as default style for positive numbers
 		if (this.bNegativeValuesRed) {
-			sbReturn.append("style:name=\"" + this.sName + "nn" + "\" ");
+			sbReturn.append("style:name=\"").append(this.sName).append("nn\" ");
 		} else {
-			sbReturn.append("style:name=\"" + this.sName + "\" ");
+			sbReturn.append("style:name=\"").append(this.sName).append("\" ");
 		}
 		if (this.sLanguage.length() > 0) {
-			sbReturn.append("number:language=\"" + this.sLanguage + "\" ");
+			sbReturn.append("number:language=\"").append(this.sLanguage)
+					.append("\" ");
 		}
 		if (this.sCountry.length() > 0) {
-			sbReturn.append("number:country=\"" + this.sCountry + "\" ");
+			sbReturn.append("number:country=\"").append(this.sCountry)
+					.append("\" ");
 		}
 
 		if (this.bVolatile) {
@@ -325,11 +327,12 @@ public class NumberStyle implements Style {
 
 		this.appendNumberType(sbReturn);
 
-		sbReturn.append("number:min-integer-digits=\"" + this.nMinIntegerDigits
-				+ "\" ");
+		sbReturn.append("number:min-integer-digits=\"")
+				.append(this.nMinIntegerDigits).append("\" ");
 
 		if (this.bGrouping) {
-			sbReturn.append("number:grouping=\"" + this.bGrouping + "\"");
+			sbReturn.append("number:grouping=\"").append(this.bGrouping)
+					.append("\"");
 		}
 		sbReturn.append("/>");
 
@@ -352,16 +355,18 @@ public class NumberStyle implements Style {
 				sbReturn.append("<number:number-style ");
 			}
 
-			sbReturn.append("style:name=\"" + this.sName + "\" ");
+			sbReturn.append("style:name=\"").append(this.sName).append("\" ");
 			if (this.sLanguage.length() > 0) {
-				sbReturn.append("number:language=\"" + this.sLanguage + "\" ");
+				sbReturn.append("number:language=\"").append(this.sLanguage)
+						.append("\" ");
 			}
 			if (this.sCountry.length() > 0) {
-				sbReturn.append("number:country=\"" + this.sCountry + "\" ");
+				sbReturn.append("number:country=\"").append(this.sCountry)
+						.append("\" ");
 			}
 			sbReturn.append(">");
-			sbReturn.append("<style:text-properties fo:color=\""
-					+ this.sNegativeValueColor + "\"/>");
+			sbReturn.append("<style:text-properties fo:color=\"")
+					.append(this.sNegativeValueColor).append("\"/>");
 			sbReturn.append("<number:text>-</number:text>");
 
 			this.appendNumberType(sbReturn);
@@ -369,7 +374,8 @@ public class NumberStyle implements Style {
 			sbReturn.append("number:min-integer-digits=\""
 					+ this.nMinIntegerDigits + "\" ");
 			if (this.bGrouping) {
-				sbReturn.append("number:grouping=\"" + this.bGrouping + "\"");
+				sbReturn.append("number:grouping=\"").append(this.bGrouping)
+						.append("\"");
 			}
 			sbReturn.append("/>");
 
@@ -378,8 +384,8 @@ public class NumberStyle implements Style {
 			}
 
 			sbReturn.append(
-					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\""
-							+ this.sName + "nn" + "\"/>");
+					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"")
+					.append(this.sName).append("nn\"/>");
 
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
 				sbReturn.append("</number:percentage-style>");
@@ -403,24 +409,25 @@ public class NumberStyle implements Style {
 		switch (this.nNumberType) {
 		case NUMBER_NORMAL:
 		case NUMBER_PERCENTAGE:
-			sb.append("<number:number ");
-			sb.append("number:decimal-places=\"" + this.nDecimalPlaces + "\" ");
+			sb.append("<number:number ").append("number:decimal-places=\"")
+					.append(this.nDecimalPlaces).append("\" ");
 			break;
 		case NUMBER_SCIENTIFIC:
-			sb.append("<number:scientific-number ");
-			sb.append("number:min-exponent-digits=\"" + this.nMinExponentDigits
-					+ "\" ");
-			sb.append("number:decimal-places=\"" + this.nDecimalPlaces + "\" ");
+			sb.append("<number:scientific-number ")
+					.append("number:min-exponent-digits=\"")
+					.append(this.nMinExponentDigits).append("\" ")
+					.append("number:decimal-places=\"")
+					.append(this.nDecimalPlaces).append("\" ");
 			break;
 		case NUMBER_FRACTION:
-			sb.append("<number:fraction ");
-			sb.append("number:min-numerator-digits=\""
-					+ this.nMinNumeratorDigits + "\" ");
-			sb.append("number:min-denominator-digits=\""
-					+ this.nMinDenominatorDigits + "\" ");
+			sb.append("<number:fraction ")
+					.append("number:min-numerator-digits=\"")
+					.append(this.nMinNumeratorDigits).append("\" ")
+					.append("number:min-denominator-digits=\"")
+					.append(this.nMinDenominatorDigits).append("\" ");
 		default:
 			sb.append("<number:number ");
-			sb.append("number:decimal-places=\"" + this.nDecimalPlaces + "\" ");
+			sb.append("number:decimal-places=\"").append(this.nDecimalPlaces).append("\" ");
 			break;
 
 		/*

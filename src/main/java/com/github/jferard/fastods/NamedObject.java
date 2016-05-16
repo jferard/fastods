@@ -28,6 +28,6 @@ package com.github.jferard.fastods;
  *         This file BorderStyleBuilder.java is part of FastODS.
  *
  */
-public interface Style {
+public interface NamedObject {
 	String getName();
 }

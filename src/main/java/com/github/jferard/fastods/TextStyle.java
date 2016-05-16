@@ -29,7 +29,7 @@ package com.github.jferard.fastods;
  *         Version 0.5.0 Added support for Font underline style
  */
 
-public class TextStyle implements Style {
+public class TextStyle implements NamedObject {
 	// none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public final static int STYLE_UNDERLINE_NONE = 0;
 	public final static int STYLE_UNDERLINE_SOLID = 1;
@@ -259,7 +259,7 @@ public class TextStyle implements Style {
 	 *            - The font size as int , e.g. 10 or 8
 	 */
 	public void setFontSize(final int fontSize) {
-		String sSize = Integer.toString(fontSize) + "pt";
+		String sSize = new StringBuilder(fontSize).append("pt").toString();
 		this.sFontSize = sSize;
 		this.sFontSizeAsian = sSize;
 		this.sFontSizeComplex = sSize;
@@ -338,10 +338,11 @@ public class TextStyle implements Style {
 		sbTemp.append("<style:text-properties ");
 		// Check if the font weight should be added
 		if (this.sFontWeight.length() > 0) {
-			sbTemp.append("fo:font-weight=\"" + this.sFontWeight
-					+ "\" style:font-weight-asian=\"" + this.sFontWeightAsian
-					+ "\" style:font-weight-complex=\""
-					+ this.sFontWeightComplex + "\" ");
+			sbTemp.append("fo:font-weight=\"").append(this.sFontWeight)
+					.append("\" style:font-weight-asian=\"")
+					.append(this.sFontWeightAsian)
+					.append("\" style:font-weight-complex=\"")
+					.append(this.sFontWeightComplex + "\" ");
 
 		}
 		// Check if a font color should be added
@@ -356,12 +357,11 @@ public class TextStyle implements Style {
 		}
 		// Check if a font size should be added
 		if (this.sFontSize.length() > 0) {
-			sbTemp.append("fo:font-size=\"" + this.sFontSize
-					+ "\" style:font-size-asian=\"" + this.sFontSizeAsian
-					+ "\" style:font-size-complex=\"" + this.sFontSizeComplex
-					+ "\" "
-
-			);
+			sbTemp.append("fo:font-size=\"").append(this.sFontSize)
+					.append("\" style:font-size-asian=\"")
+					.append(this.sFontSizeAsian)
+					.append("\" style:font-size-complex=\"")
+					.append(this.sFontSizeComplex).append("\" ");
 		}
 
 		if (this.nFontUnderlineStyle > 0) {

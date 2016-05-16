@@ -270,7 +270,7 @@ public class TableCell {
 		}
 
 		sbTemp.append(">");
-		sbTemp.append("<text:p>" + valueContent + "</text:p>");
+		sbTemp.append("<text:p>").append(valueContent).append("</text:p>");
 		sbTemp.append("</table:table-cell>");
 
 		return (sbTemp.toString());

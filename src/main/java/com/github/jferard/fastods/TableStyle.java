@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.ListIterator;
+
 /**
  * @author Martin Schulz<br>
  * 
@@ -29,7 +31,7 @@ package com.github.jferard.fastods;
  *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'<br>
  *         0.5.2 Replaced all text properties with a TextStyle object<br>
  */
-public class TableStyle implements Style {
+public class TableStyle implements NamedObject {
 
 	public final static int STYLE_TABLE = 1;
 	public final static int STYLE_TABLECOLUMN = 2;
@@ -528,9 +530,10 @@ public class TableStyle implements Style {
 			// -----------------------------------------
 			// Make sure each position is unique
 			// -----------------------------------------
-			int n;
-			for (n = 0; n < this.qBorders.size(); n++) {
-				BorderStyle b = this.qBorders.get(n);
+			ListIterator<BorderStyle> iterator = this.qBorders.listIterator();
+			while (iterator.hasNext()) {
+				int n = iterator.nextIndex();
+				BorderStyle b = iterator.next();
 				if (b.getPosition() == bs.getPosition()) {
 					this.qBorders.setAt(n, bs);
 					return;
@@ -664,22 +667,23 @@ public class TableStyle implements Style {
 	 */
 	protected String toXML(Util util) {
 		StringBuilder sbTemp = new StringBuilder();
-		sbTemp.append("<style:style style:name=\"" + this.getName() + "\" ");
+		sbTemp.append("<style:style style:name=\"").append(this.getName())
+				.append("\" ");
 		sbTemp.append("style:family=");
 
 		switch (this.nFamily) {
 		case STYLE_TABLECOLUMN:
 			sbTemp.append(
-					"\"table-column\"><style:table-column-properties fo:break-before=\"auto\" style:column-width=\""
-							+ this.sColumnWidth + "\" ");
-			sbTemp.append("table:default-cell-style-name=\""
-					+ this.sDefaultCellStyle + "\"/>");
+					"\"table-column\"><style:table-column-properties fo:break-before=\"auto\" style:column-width=\"")
+					.append(this.sColumnWidth).append("\" ");
+			sbTemp.append("table:default-cell-style-name=\"")
+					.append(this.sDefaultCellStyle).append("\"/>");
 			break;
 		case STYLE_TABLEROW:
 			sbTemp.append(
-					"\"table-row\"><style:table-row-properties style:row-height=\""
-							+ this.sRowHeight
-							+ "\" fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/>");
+					"\"table-row\"><style:table-row-properties style:row-height=\"")
+					.append(this.sRowHeight)
+					.append("\" fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/>");
 			break;
 		case STYLE_TABLE:
 			sbTemp.append(
@@ -689,13 +693,13 @@ public class TableStyle implements Style {
 			sbTemp.append(
 					"\"table-cell\" style:parent-style-name=\"Default\" ");
 			if (this.sDataStyle.length() > 0) {
-				sbTemp.append(
-						"style:data-style-name=\"" + this.sDataStyle + "\">");
+				sbTemp.append("style:data-style-name=\"")
+						.append(this.sDataStyle).append("\">");
 			} else {
 				sbTemp.append(">");
 			}
-			sbTemp.append("<style:table-cell-properties fo:background-color=\""
-					+ this.sBackgroundColor + "\" ");
+			sbTemp.append("<style:table-cell-properties fo:background-color=\"")
+					.append(this.sBackgroundColor).append("\" ");
 
 			switch (this.nVerticalAlign) {
 			case VERTICALALIGN_TOP:
@@ -715,8 +719,7 @@ public class TableStyle implements Style {
 			// -----------------------------------------------
 			// Add all border styles
 			// -----------------------------------------------
-			for (int n = 0; n < this.qBorders.size(); n++) {
-				BorderStyle bs = this.qBorders.get(n);
+			for (BorderStyle bs : this.qBorders) {
 				sbTemp.append(bs.toString());
 			}
 
@@ -758,6 +761,7 @@ public class TableStyle implements Style {
 				// Check is a font size should be added
 				//-----------------------------------------------
 				if (this.sFontSize.length() > 0) {
+
 					sbTemp.append("fo:font-size=\"" + this.sFontSize + "\" style:font-size-asian=\"" + this.sFontSizeAsian
 							+ "\" style:font-size-complex=\"" + this.sFontSizeComplex + "\" "
 			

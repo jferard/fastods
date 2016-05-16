@@ -164,7 +164,7 @@ public class BorderStyle {
 	}
 
 	/**
-	 * Gets the current border Style.
+	 * Gets the current border NamedObject.
 	 * 
 	 * @return BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
 	 */

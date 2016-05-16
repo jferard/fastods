@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -46,7 +47,7 @@ public class Content {
 	}
 
 	public void addPageStyle(final PageStyle ps) {
-		ObjectQueue.addNamedElement(this.qPageStyles, ps); 
+		ObjectQueue.addNamedElement(this.qPageStyles, ps);
 	}
 
 	public boolean addTable(String sName) throws SimpleOdsException {
@@ -57,22 +58,19 @@ public class Content {
 					"Maximum table number (256) reached exception");
 		}
 
-		for (int n = 0; n < this.qTables.size(); n++) {
-			Table tab = this.qTables.get(n);
-			if (tab.getName().equalsIgnoreCase(sName))
-				return false;
-		}
+		if (ObjectQueue.findName(this.qTables, sName))
+			return false;
 
 		this.qTables.add(new Table(sName));
 		return true;
 	}
 
 	public void addTableStyle(TableStyle ts) {
-		ObjectQueue.addNamedElement(this.qTableStyles, ts); 
+		ObjectQueue.addNamedElement(this.qTableStyles, ts);
 	}
 
 	public void addTextStyle(final TextStyle ts) {
-		ObjectQueue.addNamedElement(this.qTextStyles, ts); 
+		ObjectQueue.addNamedElement(this.qTextStyles, ts);
 	}
 
 	public boolean createContent(Util util, ZipOutputStream o) {
@@ -127,12 +125,9 @@ public class Content {
 	 */
 	public TableCell getCell(int nTab, int nRow, int nCol)
 			throws SimpleOdsException {
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
-		}
+		checkTableIndex(nTab);
 		Table tab = this.qTables.get(nTab);
 		return tab.getCell(nRow, nCol);
-
 	}
 
 	public PageStyle getDefaultPageStyle() {
@@ -161,45 +156,40 @@ public class Content {
 
 	public boolean setCell(int nTab, int nRow, int nCol, int valuetype,
 			String value) throws SimpleOdsException {
-
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
-		}
-
+		checkTableIndex(nTab);
 		Table tab = this.qTables.get(nTab);
 		tab.setCell(nRow, nCol, valuetype, value);
-
 		return true;
+	}
+
+	private void checkTableIndex(int nTab) throws SimpleOdsException {
+		if (nTab < 0 || this.qTables.size() <= nTab) {
+			throw new SimpleOdsException(
+					new StringBuilder("Wrong table number [").append(nTab)
+							.append("]").toString());
+		}
 	}
 
 	public boolean setCellStyle(int nTab, int nRow, int nCol, TableStyle ts)
 			throws SimpleOdsException {
-
-		if (nTab < 0 || nTab >= this.qTables.size()) {
-			throw new SimpleOdsException("Wrong table number [" + nTab + "]");
-		}
+		this.checkTableIndex(nTab);
 
 		Table tab = this.qTables.get(nTab);
-
 		tab.setCellStyle(nRow, nCol, ts);
 		this.addTableStyle(ts);
-
 		return true;
 	}
 
 	public boolean setColumnStyle(int nTab, int nCol, TableStyle ts)
 			throws SimpleOdsException {
 
-		if (nTab < 0 || nTab >= this.qTables.size()) {
+		if (nTab < 0 || this.qTables.size() <= nTab) {
 			return false;
 		}
 
 		Table tab = this.qTables.get(nTab);
-
 		tab.setColumnStyle(nCol, ts);
-
 		this.addTableStyle(ts);
-
 		return true;
 	}
 
@@ -235,10 +225,15 @@ public class Content {
 			// info to OutputStream o
 			if (tab.getColumnStyles().size() == 1) {
 				ts0 = tab.getColumnStyles().get(0);
-				util.writeString(o, "<table:table-column table:style-name=\""
-						+ ts0.getName() + "\" table:number-columns-repeated=\""
-						+ 1 + "\" table:default-cell-style-name=\""
-						+ ts0.getDefaultCellStyle() + "\"/>");
+				util.writeString(o,
+						new StringBuilder(
+								"<table:table-column table:style-name=\"")
+										.append(ts0.getName())
+										.append("\" table:number-columns-repeated=\"")
+										.append(1)
+										.append("\" table:default-cell-style-name=\"")
+										.append(ts0.getDefaultCellStyle())
+										.append("\"/>").toString());
 
 			}
 
@@ -247,10 +242,12 @@ public class Content {
 			// write the info to OutputStream o
 			if (tab.getColumnStyles().size() > 1) {
 				int nCount = 1;
-				for (int x = 1; x < tab.getColumnStyles().size(); x++) {
-
-					ts0 = tab.getColumnStyles().get(x - 1);
-					ts1 = tab.getColumnStyles().get(x);
+				
+				Iterator<TableStyle> iterator = tab.getColumnStyles().iterator();
+				ts1 = iterator.next();
+				while (iterator.hasNext()) {
+					ts0 = ts1;
+					ts1 = iterator.next();
 
 					if (ts0 == null) {
 						sSytle0 = "co1";
@@ -271,29 +268,33 @@ public class Content {
 						nCount++;
 					} else {
 						util.writeString(o,
-								"<table:table-column table:style-name=\""
-										+ sSytle0
-										+ "\" table:number-columns-repeated=\""
-										+ nCount
-										+ "\" table:default-cell-style-name=\""
-										+ sDefaultCellSytle1 + "\"/>");
+								new StringBuilder(
+										"<table:table-column table:style-name=\"")
+												.append(sSytle0)
+												.append("\" table:number-columns-repeated=\"")
+												.append(nCount)
+												.append("\" table:default-cell-style-name=\"")
+												.append(sDefaultCellSytle1)
+												.append("\"/>").toString());
 
 						nCount = 1;
 					}
 
 				}
 				util.writeString(o,
-						"<table:table-column table:style-name=\"" + sSytle1
-								+ "\" table:number-columns-repeated=\"" + nCount
-								+ "\" table:default-cell-style-name=\""
-								+ sDefaultCellSytle0 + "\"/>");
+						new StringBuilder(
+								"<table:table-column table:style-name=\"")
+										.append(sSytle1)
+										.append("\" table:number-columns-repeated=\"")
+										.append(nCount)
+										.append("\" table:default-cell-style-name=\"")
+										.append(sDefaultCellSytle0)
+										.append("\"/>").toString());
 
 			}
 
 			// Loop through all rows
-			for (int r = 0; r < tab.getRows().size(); r++) {
-				TableRow tr = tab.getRows().get(r);
-
+			for (TableRow tr : tab.getRows()) {
 				if (tr != null) {
 					String[] sToPrint = tr.toXML(util);
 					util.writeStringArray(o, sToPrint);
@@ -302,8 +303,10 @@ public class Content {
 					util.writeString(o,
 							"<table:table-row table:style-name=\"ro1\">");
 					util.writeString(o,
-							"<table:table-cell table:number-columns-repeated=\""
-									+ tab.getLastCol() + "\"/>");
+							new StringBuilder(
+									"<table:table-cell table:number-columns-repeated=\"")
+											.append(tab.getLastCol())
+											.append("\"/>").toString());
 					util.writeString(o, "</table:table-row>");
 
 				}
@@ -313,5 +316,4 @@ public class Content {
 
 		return true;
 	}
-
 }

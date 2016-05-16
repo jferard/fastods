@@ -161,14 +161,11 @@ public class Footer {
 			return;
 		}
 
-		sbTemp.append("<style:" + sRegionName + ">");
+		sbTemp.append("<style:").append(sRegionName).append(">");
 
-		for (int n = 0; n < qRegion.size(); n++) {
+		for (ObjectQueue<StyledText> qStyledText : qRegion) {
 
 			// <style:footer> is written by PageStyle.toMasterStyleXML()
-
-			ObjectQueue<StyledText> qStyledText = qRegion.get(n);
-
 			sbTemp.append("<text:p>");
 
 			// Check if a qStyles object is null and add an empty paragraph for
@@ -177,18 +174,15 @@ public class Footer {
 				sbTemp.append("<text:span />");
 			} else {
 				// Add all styles and text for this paragraphs
-				for (int i = 0; i < qStyledText.size(); i++) {
-					StyledText st = qStyledText.get(i);
+				for (StyledText st : qStyledText)
 					sbTemp.append(st.toMasterStyleXML());
-
-				}
 			}
 
 			sbTemp.append("</text:p>");
 
 		}
 
-		sbTemp.append("</style:" + sRegionName + ">");
+		sbTemp.append("</style:").append(sRegionName).append(">");
 
 		return;
 	}

@@ -42,14 +42,14 @@ public class ObjectQueue<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * Add a Style. If a Style with this name already exist, the old one is
+	 * Add a NamedObject. If a NamedObject with this name already exist, the old one is
 	 * replaced.
 	 * 
 	 * @param style
 	 *            - The style to be added.
 	 * @return true if a new entry
 	 */
-	public static <T extends Style> boolean addNamedElement(ObjectQueue<T> queue,
+	public static <T extends NamedObject> boolean addNamedElement(ObjectQueue<T> queue,
 			T element) {
 		// Check is a style with this name exists and replace if yes
 		ListIterator<T> listIterator = queue.list.listIterator();
@@ -181,5 +181,13 @@ public class ObjectQueue<T> implements Iterable<T> {
 
 	public Iterator<T> iterator() {
 		return this.list.iterator();
+	}
+
+	public static <T extends NamedObject> boolean findName(ObjectQueue<T> queue, String sName) {
+		for (T curElement : queue) {
+			if (curElement.getName().equalsIgnoreCase(sName))
+				return true;
+		}
+		return false;
 	}
 }

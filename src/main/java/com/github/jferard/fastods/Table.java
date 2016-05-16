@@ -29,7 +29,7 @@ package com.github.jferard.fastods;
  *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'
  *
  */
-public class Table {
+public class Table implements NamedObject {
 	final static int TABLE_MAXROWNUMBER = 65536;
 	final static int TABLE_MAXCOLUMNNUMBER = 256;
 	private String sName;
@@ -78,18 +78,23 @@ public class Table {
 	 */
 	public String[] getConfig(Util util) {
 		String[] sConfig = {
-				"<config:config-item-map-entry config:name=\"" + this.getName()
-						+ "\">",
-				this.CursorPositionX.toXML(util), this.CursorPositionY.toXML(util),
-				this.HorizontalSplitMode.toXML(util), this.VerticalSplitMode.toXML(util),
+				new StringBuilder(
+						"<config:config-item-map-entry config:name=\"")
+								.append(this.getName()).append("\">")
+								.toString(),
+				this.CursorPositionX.toXML(util),
+				this.CursorPositionY.toXML(util),
+				this.HorizontalSplitMode.toXML(util),
+				this.VerticalSplitMode.toXML(util),
 				this.HorizontalSplitMode.toXML(util),
 				this.VerticalSplitMode.toXML(util),
 				this.HorizontalSplitPosition.toXML(util),
 				this.VerticalSplitPosition.toXML(util),
-				this.ActiveSplitRange.toXML(util), this.PositionLeft.toXML(util),
-				this.PositionRight.toXML(util), this.PositionTop.toXML(util),
-				this.PositionBottom.toXML(util), this.ZoomType.toXML(util),
-				this.ZoomValue.toXML(util), this.PageViewZoomValue.toXML(util),
+				this.ActiveSplitRange.toXML(util),
+				this.PositionLeft.toXML(util), this.PositionRight.toXML(util),
+				this.PositionTop.toXML(util), this.PositionBottom.toXML(util),
+				this.ZoomType.toXML(util), this.ZoomValue.toXML(util),
+				this.PageViewZoomValue.toXML(util),
 				"</config:config-item-map-entry>", };
 
 		return (sConfig);
@@ -170,25 +175,8 @@ public class Table {
 			final String value) throws SimpleOdsException {
 		TableRow tr;
 
-		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new SimpleOdsException(
-					"Maximum row number (65536) exception, row value:[" + nRow
-							+ "]");
-		}
-		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException(
-					"Maximum column number (256) exception, column value:["
-							+ nCol + "]");
-		}
-		if (nRow < 0) {
-			throw new SimpleOdsException(
-					"Negative row number exception, row value:[" + nRow + "]");
-		}
-		if (nCol < 0) {
-			throw new SimpleOdsException(
-					"Negative column number exception, column value:[" + nCol
-							+ "]");
-		}
+		this.checkRow(nRow);
+		this.checkCol(nCol);
 
 		if (nRow > this.nLastRow) {
 			this.nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
@@ -206,6 +194,32 @@ public class Table {
 		tr.setCell(nCol, valuetype, value);
 		this.qTableRows.setAt(nRow, tr);
 		return true;
+	}
+
+	private void checkRow(final int nRow) throws SimpleOdsException {
+		if (nRow >= Table.TABLE_MAXROWNUMBER) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Maximum row number (65536) exception, row value:[")
+							.append(nRow).append("]").toString());
+		}
+		if (nRow < 0) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Negative row number exception, row value:[").append(nRow)
+							.append("]").toString());
+		}
+	}
+
+	private void checkCol(final int nCol) throws SimpleOdsException {
+		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Maximum column number (256) exception, column value:[")
+							.append(nCol).append("]").toString());
+		}
+		if (nCol < 0) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Negative column number exception, column value:[")
+							.append(nCol).append("]").toString());
+		}
 	}
 
 	/**
@@ -271,20 +285,8 @@ public class Table {
 	 */
 	public void setColumnStyle(final int nCol, final TableStyle ts)
 			throws SimpleOdsException {
-
-		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException(
-					"Maximum column number (256) exception, column value:["
-							+ nCol + "]");
-		}
-		if (nCol < 0) {
-			throw new SimpleOdsException(
-					"Negative column number exception, column value:[" + nCol
-							+ "]");
-		}
-
+		this.checkCol(nCol);
 		this.qColumnStyles.setAt(nCol, ts);
-
 	}
 
 	/**
@@ -304,26 +306,8 @@ public class Table {
 			final TableStyle ts) throws SimpleOdsException {
 		TableRow tr;
 
-		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new SimpleOdsException(
-					"Maximum row number (65536) exception, row value:[" + nRow
-							+ "]");
-		}
-		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException(
-					"Maximum column number (256) exception, column value:["
-							+ nCol + "]");
-		}
-		if (nRow < 0) {
-			throw new SimpleOdsException(
-					"Negative row number exception, row value:[" + nRow + "]");
-		}
-		if (nCol < 0) {
-			throw new SimpleOdsException(
-					"Negative column number exception, column value:[" + nCol
-							+ "]");
-		}
-
+		this.checkRow(nRow);
+		this.checkCol(nCol);
 		if (nRow > this.nLastRow) {
 			this.nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
 		}
@@ -351,9 +335,10 @@ public class Table {
 	 * @return The XML string for this object.
 	 */
 	public String toXML() {
-		return ("<table:table table:name=\"" + this.getName()
-				+ "\" table:style-name=\"" + this.getStyle()
-				+ "\" table:print=\"false\">");
+		return new StringBuilder("<table:table table:name=\"")
+				.append(this.getName()).append("\" table:style-name=\"")
+				.append(this.getStyle()).append("\" table:print=\"false\">")
+				.toString();
 	}
 
 }

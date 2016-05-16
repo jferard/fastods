@@ -64,9 +64,8 @@ public class StyledText {
 	protected String toMasterStyleXML() {
 		StringBuilder sbTemp = new StringBuilder(60);
 
-		sbTemp.append("<text:span text:style-name=\"" + this.ts.getName() + "\">");
-		sbTemp.append(this.sText);
-		sbTemp.append("</text:span>");
+		sbTemp.append("<text:span text:style-name=\"").append(this.ts.getName())
+				.append("\">").append(this.sText).append("</text:span>");
 
 		return sbTemp.toString();
 	}

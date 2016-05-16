@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.ListIterator;
+
 /**
  * @author Martin Schulz<br>
  * 
@@ -144,17 +146,18 @@ public class TableRow {
 
 		int nNullFieldCounter = 0;
 
-		qRc.add("<table:table-row table:style-name=\"" + this.getStyle()
-				+ "\">");
+		qRc.add(new StringBuilder("<table:table-row table:style-name=\"")
+				.append(this.getStyle()).append("\">").toString());
 
-		for (int n = 0; n < this.qTableCells.size(); n++) {
-			TableCell tc = this.qTableCells.get(n);
+		for (TableCell tc : this.qTableCells) {
 			if (tc == null) {
 				nNullFieldCounter++;
 			} else {
 				if (nNullFieldCounter > 0) {
-					qRc.add("<table:table-cell table:number-columns-repeated=\""
-							+ nNullFieldCounter + "\"/>");
+					qRc.add(new StringBuilder(
+							"<table:table-cell table:number-columns-repeated=\"")
+									.append(nNullFieldCounter).append("\"/>")
+									.toString());
 					nNullFieldCounter = 0;
 				}
 				qRc.add(tc.toXML(util));
@@ -163,8 +166,11 @@ public class TableRow {
 		qRc.add("</table:table-row>");
 
 		String[] sReturn = new String[qRc.size()];
-		for (int n = 0; n < qRc.size(); n++) {
-			sReturn[n] = qRc.get(n);
+		ListIterator<String> iterator = qRc.listIterator();
+		while (iterator.hasNext()) {
+			int n = iterator.nextIndex();
+			String s = iterator.next();
+			sReturn[n] = s;
 		}
 
 		return sReturn;

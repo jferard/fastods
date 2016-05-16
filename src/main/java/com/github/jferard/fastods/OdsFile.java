@@ -27,6 +27,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -256,8 +258,10 @@ public class OdsFile {
 					"<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">",
 					"<office:settings>",
 					"<config:config-item-set config:name=\"ooo:view-settings\">",
-					this.VisibleAreaTop.toXML(util), this.VisibleAreaLeft.toXML(util),
-					this.VisibleAreaWidth.toXML(util), this.VisibleAreaHeight.toXML(util),
+					this.VisibleAreaTop.toXML(util),
+					this.VisibleAreaLeft.toXML(util),
+					this.VisibleAreaWidth.toXML(util),
+					this.VisibleAreaHeight.toXML(util),
 					"<config:config-item-map-indexed config:name=\"Views\">",
 					"<config:config-item-map-entry>",
 					"<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>",
@@ -266,8 +270,7 @@ public class OdsFile {
 			this.util.writeStringArray(o, sText1);
 
 			// Write the table informations
-			for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-				Table t = this.getContent().getTableQueue().get(n);
+			for (Table t : this.getContent().getTableQueue()) {
 				this.util.writeStringArray(o, t.getConfig(util));
 			}
 
@@ -275,10 +278,12 @@ public class OdsFile {
 					this.ViewIdActiveTable.toXML(util),
 					this.ViewIdHorizontalScrollbarWidth.toXML(util),
 					this.ViewIdPageViewZoomValue.toXML(util),
-					this.ViewIdZoomType.toXML(util), this.ViewIdZoomValue.toXML(util),
+					this.ViewIdZoomType.toXML(util),
+					this.ViewIdZoomValue.toXML(util),
 					this.ViewIdShowPageBreakPreview.toXML(util),
 					this.ViewIdShowZeroValues.toXML(util),
-					this.ViewIdShowNotes.toXML(util), this.ViewIdShowGrid.toXML(util),
+					this.ViewIdShowNotes.toXML(util),
+					this.ViewIdShowGrid.toXML(util),
 					this.ViewIdGridColor.toXML(util),
 					this.ViewIdShowPageBreaks.toXML(util),
 					this.ViewIdHasColumnRowHeaders.toXML(util),
@@ -297,24 +302,28 @@ public class OdsFile {
 					"<config:config-item-set config:name=\"ooo:configuration-settings\">",
 					this.ShowZeroValues.toXML(util), this.ShowNotes.toXML(util),
 					this.ShowGrid.toXML(util), this.GridColor.toXML(util),
-					this.ShowPageBreaks.toXML(util), this.LinkUpdateMode.toXML(util),
-					this.HasColumnRowHeaders.toXML(util), this.HasSheetTabs.toXML(util),
+					this.ShowPageBreaks.toXML(util),
+					this.LinkUpdateMode.toXML(util),
+					this.HasColumnRowHeaders.toXML(util),
+					this.HasSheetTabs.toXML(util),
 					this.IsOutlineSymbolsSet.toXML(util),
-					this.IsSnapToRaster.toXML(util), this.RasterIsVisible.toXML(util),
+					this.IsSnapToRaster.toXML(util),
+					this.RasterIsVisible.toXML(util),
 					this.RasterResolutionX.toXML(util),
 					this.RasterResolutionY.toXML(util),
 					this.RasterSubdivisionX.toXML(util),
 					this.RasterSubdivisionY.toXML(util),
 					this.IsRasterAxisSynchronized.toXML(util),
-					this.AutoCalculate.toXML(util), this.PrinterName.toXML(util),
-					this.PrinterSetup.toXML(util), this.ApplyUserData.toXML(util),
+					this.AutoCalculate.toXML(util),
+					this.PrinterName.toXML(util), this.PrinterSetup.toXML(util),
+					this.ApplyUserData.toXML(util),
 					this.CharacterCompressionType.toXML(util),
 					this.IsKernAsianPunctuation.toXML(util),
 					this.SaveVersionOnClose.toXML(util),
 					this.UpdateFromTemplate.toXML(util),
-					this.AllowPrintJobCancel.toXML(util), this.LoadReadonly.toXML(util),
-					"</config:config-item-set>", "</office:settings>",
-					"</office:document-settings>"
+					this.AllowPrintJobCancel.toXML(util),
+					this.LoadReadonly.toXML(util), "</config:config-item-set>",
+					"</office:settings>", "</office:document-settings>"
 
 			};
 
@@ -397,8 +406,7 @@ public class OdsFile {
 	 *            first table is shown
 	 */
 	public void setActiveTable(final String sName) {
-		this.ViewIdActiveTable = new ConfigItem("ActiveTable",
-				"string", sName);
+		this.ViewIdActiveTable = new ConfigItem("ActiveTable", "string", sName);
 	}
 
 	/**
@@ -418,8 +426,8 @@ public class OdsFile {
 
 		Table tab = this.getContent().getTableQueue().get(nTab);
 
-		this.ViewIdActiveTable = new ConfigItem("ActiveTable",
-				"string", tab.getName());
+		this.ViewIdActiveTable = new ConfigItem("ActiveTable", "string",
+				tab.getName());
 
 		return true;
 	}
@@ -478,15 +486,19 @@ public class OdsFile {
 	public void setCell(String sTab, int nRow, int nCol, int nValuetype,
 			String sValue) throws SimpleOdsException {
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table tab = (Table) this.getContent().getTableQueue().get(n);
+		ListIterator<Table> iterator = this.getContent().getTableQueue()
+				.listIterator();
+		while (iterator.hasNext()) {
+			int n = iterator.nextIndex();
+			Table tab = iterator.next();
 			if (tab.getName().equals(sTab)) {
 				getContent().setCell(n, nRow, nCol, nValuetype, sValue);
 				return;
 			}
 		}
 
-		throw new SimpleOdsException("Unknown table name [" + sTab + "]");
+		throw new SimpleOdsException(new StringBuilder("Unknown table name [")
+				.append(sTab).append("]").toString());
 	}
 
 	/**
@@ -562,16 +574,20 @@ public class OdsFile {
 	public void setCell(String sTab, int nRow, int nCol, int nValuetype,
 			String sValue, TableStyle ts) throws SimpleOdsException {
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table tab = (Table) this.getContent().getTableQueue().get(n);
+		final Content content = this.getContent();
+		ListIterator<Table> iterator = content.getTableQueue().listIterator();
+		while (iterator.hasNext()) {
+			int n = iterator.nextIndex();
+			Table tab = iterator.next();
 			if (tab.getName().equals(sTab)) {
-				getContent().setCell(n, nRow, nCol, nValuetype, sValue);
-				getContent().setCellStyle(n, nRow, nCol, ts);
+				content.setCell(n, nRow, nCol, nValuetype, sValue);
+				content.setCellStyle(n, nRow, nCol, ts);
 				return;
 			}
 		}
 
-		throw new SimpleOdsException("Unknown table name [" + sTab + "]");
+		throw new SimpleOdsException(new StringBuilder("Unknown table name [")
+				.append(sTab).append("]").toString());
 	}
 
 	/**
@@ -671,7 +687,8 @@ public class OdsFile {
 	public void setCell(final int nTab, final String sPos, final String sValue)
 			throws SimpleOdsException {
 		getContent().setCell(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), TableCell.STYLE_STRING, sValue);
+				this.util.positionToColumn(sPos), TableCell.STYLE_STRING,
+				sValue);
 	}
 
 	/**
@@ -949,8 +966,8 @@ public class OdsFile {
 	 */
 	public void setCell(final int nTab, final String sPos, final Calendar cal)
 			throws SimpleOdsException {
-		this.setCell(nTab, this.util.positionToRow(sPos), this.util.positionToColumn(sPos),
-				cal);
+		this.setCell(nTab, this.util.positionToRow(sPos),
+				this.util.positionToColumn(sPos), cal);
 	}
 
 	/**
@@ -1062,8 +1079,7 @@ public class OdsFile {
 	public void setCellInAllTables(final int nRow, final int nCol,
 			final int nValuetype, final String sValue, final TableStyle ts)
 			throws SimpleOdsException {
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table tab = (Table) this.getContent().getTableQueue().get(n);
+		for (Table tab : this.getContent().getTableQueue()) {
 			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
 		}
 	}
@@ -1090,8 +1106,7 @@ public class OdsFile {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table tab = (Table) this.getContent().getTableQueue().get(n);
+		for (Table tab : this.getContent().getTableQueue()) {
 			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
 		}
 	}
@@ -1113,9 +1128,11 @@ public class OdsFile {
 	public void setCellInAllTables(final int nRow, final int nCol,
 			final Calendar cal, final TableStyle ts) throws SimpleOdsException {
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
+		final Content content = this.getContent();
+		final int size = content.getTableQueue().size();
+		for (int n = 0; n < size; n++) {
 			this.setCell(n, nRow, nCol, cal);
-			getContent().setCellStyle(n, nRow, nCol, ts);
+			content.setCellStyle(n, nRow, nCol, ts);
 		}
 
 	}
@@ -1137,9 +1154,11 @@ public class OdsFile {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
+		final Content content = this.getContent();
+		final int size = content.getTableQueue().size();
+		for (int n = 0; n < size; n++) {
 			this.setCell(n, nRow, nCol, cal);
-			getContent().setCellStyle(n, nRow, nCol, ts);
+			content.setCellStyle(n, nRow, nCol, ts);
 		}
 
 	}
@@ -1165,16 +1184,20 @@ public class OdsFile {
 	@Deprecated
 	public void setCellStyle(final String sTab, final int nRow, final int nCol,
 			final TableStyle ts) throws SimpleOdsException {
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table tab = (Table) this.getContent().getTableQueue().get(n);
+		ListIterator<Table> iterator = this.getContent().getTableQueue()
+				.listIterator();
+		while (iterator.hasNext()) {
+			int n = iterator.nextIndex();
+			Table tab = iterator.next();
 			if (tab.getName().equals(sTab)) {
 				getContent().setCellStyle(n, nRow, nCol, ts);
 				return;
 			}
 		}
 
-		throw new SimpleOdsException("Unknown table name [" + sTab
-				+ "], add a table with method addTable(" + sTab + ") first");
+		throw new SimpleOdsException(new StringBuilder("Unknown table name [")
+				.append(sTab).append("], add a table with method addTable(")
+				.append(sTab).append(") first").toString());
 	}
 
 	/**
@@ -1256,8 +1279,8 @@ public class OdsFile {
 	public void setCellMerge(final int nTab, final String sPos,
 			final int nRowMerge, final int nColumnMerge)
 			throws SimpleOdsException {
-		this.setCellMerge(nTab, this.util.positionToRow(sPos), this.util.positionToColumn(sPos),
-				nRowMerge, nColumnMerge);
+		this.setCellMerge(nTab, this.util.positionToRow(sPos),
+				this.util.positionToColumn(sPos), nRowMerge, nColumnMerge);
 	}
 
 	/**
@@ -1274,8 +1297,10 @@ public class OdsFile {
 	public void setCellMergeInAllTables(int nRow, int nCol, int nRowMerge,
 			int nColumnMerge) throws SimpleOdsException {
 		TableCell tc;
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			tc = this.getContent().getCell(n, nRow, nCol);
+		final Content content = this.getContent();
+		final int size = content.getTableQueue().size();
+		for (int n = 0; n < size; n++) {
+			tc = content.getCell(n, nRow, nCol);
 			tc.setRowsSpanned(nRowMerge);
 			tc.setColumnsSpanned(nColumnMerge);
 		}
@@ -1293,7 +1318,8 @@ public class OdsFile {
 	public void setCellMergeInAllTables(final String sPos, final int nRowMerge,
 			final int nColumnMerge) throws SimpleOdsException {
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
+		final int size = this.getContent().getTableQueue().size();
+		for (int n = 0; n < size; n++) {
 			this.setCellMerge(n, this.util.positionToRow(sPos),
 					this.util.positionToColumn(sPos), nRowMerge, nColumnMerge);
 		}
@@ -1319,15 +1345,19 @@ public class OdsFile {
 	private void setColumnStyle(String sTab, int nCol, TableStyle ts)
 			throws SimpleOdsException {
 
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table tab = (Table) this.getContent().getTableQueue().get(n);
+		final Content content = this.getContent();
+		ListIterator<Table> iterator = content.getTableQueue().listIterator();
+		while (iterator.hasNext()) {
+			int n = iterator.nextIndex();
+			Table tab = iterator.next();
 			if (tab.getName().equals(sTab)) {
-				getContent().setColumnStyle(n, nCol, ts);
+				content.setColumnStyle(n, nCol, ts);
 				return;
 			}
 		}
 
-		throw new SimpleOdsException("Unknown table name [" + sTab + "]");
+		throw new SimpleOdsException(new StringBuilder("Unknown table name [")
+				.append(sTab).append("]").toString());
 	}
 
 	/**
@@ -1367,9 +1397,12 @@ public class OdsFile {
 	 * @return The number of the table or -1 if sName was not found
 	 */
 	public int getTableNumber(final String sName) {
-		for (int n = 0; n < this.getContent().getTableQueue().size(); n++) {
-			Table t = (Table) this.getContent().getTableQueue().get(n);
-			if (t.getName().equalsIgnoreCase(sName)) {
+		ListIterator<Table> iterator = this.getContent().getTableQueue()
+				.listIterator();
+		while (iterator.hasNext()) {
+			int n = iterator.nextIndex();
+			Table tab = iterator.next();
+			if (tab.getName().equalsIgnoreCase(sName)) {
 				return n;
 			}
 		}
@@ -1385,12 +1418,14 @@ public class OdsFile {
 	 * @return The name of the table
 	 */
 	public String getTableName(final int n) throws SimpleOdsException {
-		if (n < 0 || n >= this.getContent().getTableQueue().size()) {
-			throw new SimpleOdsException("Wrong table number [" + n + "]");
+		final ObjectQueue<Table> tableQueue = this.getContent().getTableQueue();
+		if (n < 0 || tableQueue.size() <= n) {
+			throw new SimpleOdsException(
+					new StringBuilder("Wrong table number [").append(n)
+							.append("]").toString());
 		}
 
-		Table t = (Table) this.getContent().getTableQueue().get(n);
-
+		Table t = tableQueue.get(n);
 		return (t.getName());
 	}
 

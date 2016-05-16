@@ -30,7 +30,7 @@ package com.github.jferard.fastods;
  *         DATEFORMAT_YYYYMMDD
  *
  */
-public class DateStyle implements Style {
+public class DateStyle implements NamedObject {
 
 	/**
 	 * Set the date format like '10.07.2012'.
@@ -206,9 +206,9 @@ public class DateStyle implements Style {
 	public String toXML() {
 		StringBuilder sbReturn = new StringBuilder();
 
-		sbReturn.append("<number:date-style style:name=\"" + this.getName()
-				+ "\" number:automatic-order=\"" + this.isAutomaticOrder()
-				+ "\">");
+		sbReturn.append("<number:date-style style:name=\"")
+				.append(this.getName()).append("\" number:automatic-order=\"")
+				.append(this.isAutomaticOrder()).append("\">");
 
 		switch (this.nDateFormat) {
 		case DateStyle.DATEFORMAT_DDMMYYYY:

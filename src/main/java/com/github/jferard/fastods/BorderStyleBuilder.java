@@ -96,7 +96,7 @@ class BorderStyleBuilder {
 	}
 
 	/**
-	 * Sets the current border Style.
+	 * Sets the current border NamedObject.
 	 * 
 	 * @param nBorderStyle
 	 *            BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
