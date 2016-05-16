@@ -91,12 +91,41 @@ public class PageStyle implements NamedObject {
 		this.o.getStyles().addPageStyle(this);
 	}
 
-	public void setPrintOrientationVertical() {
-		this.nPrintOrientation = STYLE_PRINTORIENTATION_VERTICAL;
+	public String getBackgroundColor() {
+		return this.sBackgroundColor;
 	}
 
-	public void setPrintOrientationHorizontal() {
-		this.nPrintOrientation = STYLE_PRINTORIENTATION_HORIZONTAL;
+	public String getMarginBottom() {
+		return this.sMarginBottom;
+	}
+
+	public String getMarginLeft() {
+		return this.sMarginLeft;
+	}
+
+	public String getMarginRight() {
+		return this.sMarginRight;
+	}
+
+	public String getMarginTop() {
+		return this.sMarginTop;
+	}
+
+	/**
+	 * Get the name of this page style.
+	 * 
+	 * @return The page style name
+	 */
+	public String getName() {
+		return this.sName;
+	}
+
+	public String getPageHeight() {
+		return this.sPageHeight;
+	}
+
+	public String getPageWidth() {
+		return this.sPageWidth;
 	}
 
 	/**
@@ -104,6 +133,132 @@ public class PageStyle implements NamedObject {
 	 */
 	public int getPaperFormat() {
 		return this.nPaperFormat;
+	}
+
+	/**
+	 * Get the writing mode<br>
+	 * . STYLE_WRITINGMODE_LRTB lr-tb (left to right; top to bottom)<br>
+	 * STYLE_WRITINGMODE_RLTB<br>
+	 * STYLE_WRITINGMODE_TBRL<br>
+	 * STYLE_WRITINGMODE_TBLR<br>
+	 * STYLE_WRITINGMODE_LR<br>
+	 * STYLE_WRITINGMODE_RL<br>
+	 * STYLE_WRITINGMODE_TB<br>
+	 * STYLE_WRITINGMODE_PAGE<br>
+	 * 
+	 * @return The current writing mode.
+	 */
+	public int getWritingMode() {
+		return this.nWritingMode;
+	}
+
+	/**
+	 * Set the margin at the top,bottom,left and right. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param margin
+	 */
+	public void setAllMargins(final String margin) {
+		setMarginTop(margin);
+		setMarginBottom(margin);
+		setMarginLeft(margin);
+		setMarginRight(margin);
+	}
+
+	/**
+	 * Set the background color to sColor, a six-digit hex value. Example:
+	 * #aa32f0.<br>
+	 * The background color may also be set to 'transparent' if a background
+	 * image is used (currently unsupported).
+	 * 
+	 * @param sColor
+	 */
+	public void setBackgroundColor(final String sColor) {
+		this.sBackgroundColor = sColor;
+	}
+
+	/**
+	 * Set the margin at the bottom. margin is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param margin
+	 */
+	public void setMarginBottom(final String margin) {
+		this.sMarginBottom = margin;
+	}
+
+	/**
+	 * Set the margin at the left. margin is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param margin
+	 */
+	public void setMarginLeft(final String margin) {
+		this.sMarginLeft = margin;
+	}
+
+	/**
+	 * Set the margin at the right. margin is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param margin
+	 */
+	public void setMarginRight(final String margin) {
+		this.sMarginRight = margin;
+	}
+
+	/**
+	 * Set the margin at the top. margin is a length value expressed as a number
+	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param margin
+	 */
+	public void setMarginTop(final String margin) {
+		this.sMarginTop = margin;
+	}
+
+	/**
+	 * Set the page height. pageHeight is a length value expressed as a number
+	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * When using this method, the paper format is set to
+	 * PageStyle.STYLE_PAPERFORMAT_USER
+	 * 
+	 * @param pageHeight
+	 */
+	public void setPageHeight(final String pageHeight) {
+		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
+		this.sPageHeight = pageHeight;
+	}
+
+	/**
+	 * Set the page width. pageWidth is a length value expressed as a number
+	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * When using this method, the paper format is set to
+	 * PageStyle.STYLE_PAPERFORMAT_USER
+	 * 
+	 * @param pageWidth
+	 */
+	public void setPageWidth(final String pageWidth) {
+		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
+		this.sPageWidth = pageWidth;
 	}
 
 	/**
@@ -149,21 +304,12 @@ public class PageStyle implements NamedObject {
 		}
 	}
 
-	/**
-	 * Get the writing mode<br>
-	 * . STYLE_WRITINGMODE_LRTB lr-tb (left to right; top to bottom)<br>
-	 * STYLE_WRITINGMODE_RLTB<br>
-	 * STYLE_WRITINGMODE_TBRL<br>
-	 * STYLE_WRITINGMODE_TBLR<br>
-	 * STYLE_WRITINGMODE_LR<br>
-	 * STYLE_WRITINGMODE_RL<br>
-	 * STYLE_WRITINGMODE_TB<br>
-	 * STYLE_WRITINGMODE_PAGE<br>
-	 * 
-	 * @return The current writing mode.
-	 */
-	public int getWritingMode() {
-		return this.nWritingMode;
+	public void setPrintOrientationHorizontal() {
+		this.nPrintOrientation = STYLE_PRINTORIENTATION_HORIZONTAL;
+	}
+
+	public void setPrintOrientationVertical() {
+		this.nPrintOrientation = STYLE_PRINTORIENTATION_VERTICAL;
 	}
 
 	/**
@@ -183,150 +329,91 @@ public class PageStyle implements NamedObject {
 		this.nWritingMode = writingMode;
 	}
 
-	public String getPageHeight() {
-		return this.sPageHeight;
+	private String addBackgroundColor() {
+		if (this.getBackgroundColor().length() == 0) {
+			return "";
+		}
+
+		return new StringBuilder("fo:background-color=\"")
+				.append(this.getBackgroundColor()).append("\" ").toString();
 	}
 
-	/**
-	 * Set the page height. pageHeight is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
-	 * 
-	 * @param pageHeight
-	 */
-	public void setPageHeight(final String pageHeight) {
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
-		this.sPageHeight = pageHeight;
+	private void addFooterHeaderStyle(final StringBuilder sbTemp,
+			final FooterHeader header, final String tag) {
+		if (header == null) {
+			sbTemp.append("<").append(tag).append(" />");
+		} else {
+			FooterHeader h = header;
+			sbTemp.append("<").append(tag).append(">");
+			sbTemp.append("<style:header-footer-properties ");
+			sbTemp.append("fo:min-height=\"").append(h.getMinHeight())
+					.append("\" ");
+			sbTemp.append("fo:margin-left=\"").append(h.getMarginLeft())
+					.append("\" ");
+			sbTemp.append("fo:margin-right=\"").append(h.getMarginRight())
+					.append("\" ");
+			sbTemp.append("fo:margin-top=\"").append(h.getMarginTop())
+					.append("\"/>");
+			sbTemp.append("</").append(tag).append(">");
+		}
 	}
 
-	public String getPageWidth() {
-		return this.sPageWidth;
+	private String addPrintOrientation() {
+		StringBuilder sbTemp = new StringBuilder();
+		if (this.nPrintOrientation == PageStyle.STYLE_PRINTORIENTATION_VERTICAL) {
+			sbTemp.append("style:print-orientation=\"portrait\" ");
+		} else {
+			sbTemp.append("style:print-orientation=\"landscape\" ");
+		}
+		return sbTemp.toString();
 	}
 
-	/**
-	 * Set the page width. pageWidth is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
-	 * 
-	 * @param pageWidth
-	 */
-	public void setPageWidth(final String pageWidth) {
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
-		this.sPageWidth = pageWidth;
+	private String addWritingMode() {
+		StringBuilder sbTemp = new StringBuilder();
+
+		sbTemp.append("style:writing-mode=\"");
+
+		switch (this.getWritingMode()) {
+		case STYLE_WRITINGMODE_LRTB: // lr-tb (left to right; top to bottom)
+			sbTemp.append("lr-tb");
+			break;
+		case STYLE_WRITINGMODE_RLTB:
+			sbTemp.append("rl-tb");
+			break;
+		case STYLE_WRITINGMODE_TBRL:
+			sbTemp.append("tb-rl");
+			break;
+		case STYLE_WRITINGMODE_TBLR:
+			sbTemp.append("tb_lr");
+			break;
+		case STYLE_WRITINGMODE_LR:
+			sbTemp.append("lr");
+			break;
+		case STYLE_WRITINGMODE_RL:
+			sbTemp.append("rl");
+			break;
+		case STYLE_WRITINGMODE_TB:
+			sbTemp.append("tb");
+			break;
+		case STYLE_WRITINGMODE_PAGE:
+			sbTemp.append("page");
+			break;
+		default:
+			sbTemp.append("lr-tb");
+		}
+
+		sbTemp.append("\" ");
+		return sbTemp.toString();
 	}
 
-	public String getMarginBottom() {
-		return this.sMarginBottom;
+	protected void addFooterStyle(final StringBuilder sbTemp) {
+		final FooterHeader header = this.o.getStyles().getFooter();
+		this.addFooterHeaderStyle(sbTemp, header, "style:footer-style");
 	}
 
-	/**
-	 * Set the margin at the bottom. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginBottom(final String margin) {
-		this.sMarginBottom = margin;
-	}
-
-	public String getMarginLeft() {
-		return this.sMarginLeft;
-	}
-
-	/**
-	 * Set the margin at the left. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginLeft(final String margin) {
-		this.sMarginLeft = margin;
-	}
-
-	public String getMarginRight() {
-		return this.sMarginRight;
-	}
-
-	/**
-	 * Set the margin at the right. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginRight(final String margin) {
-		this.sMarginRight = margin;
-	}
-
-	public String getMarginTop() {
-		return this.sMarginTop;
-	}
-
-	/**
-	 * Set the margin at the top. margin is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginTop(final String margin) {
-		this.sMarginTop = margin;
-	}
-
-	/**
-	 * Set the margin at the top,bottom,left and right. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setAllMargins(final String margin) {
-		setMarginTop(margin);
-		setMarginBottom(margin);
-		setMarginLeft(margin);
-		setMarginRight(margin);
-	}
-
-	public String getBackgroundColor() {
-		return this.sBackgroundColor;
-	}
-
-	/**
-	 * Set the background color to sColor, a six-digit hex value. Example:
-	 * #aa32f0.<br>
-	 * The background color may also be set to 'transparent' if a background
-	 * image is used (currently unsupported).
-	 * 
-	 * @param sColor
-	 */
-	public void setBackgroundColor(final String sColor) {
-		this.sBackgroundColor = sColor;
-	}
-
-	/**
-	 * Get the name of this page style.
-	 * 
-	 * @return The page style name
-	 */
-	public String getName() {
-		return this.sName;
+	protected void addHeaderStyle(final StringBuilder sbTemp) {
+		final FooterHeader header = this.o.getStyles().getHeader();
+		this.addFooterHeaderStyle(sbTemp, header, "style:header-style");
 	}
 
 	/**
@@ -405,7 +492,7 @@ public class PageStyle implements NamedObject {
 		if( styles.getFooter()==null ) {
 			sbTemp.append("<style:footer-style />");
 		} else {
-			Footer f = styles.getFooter();
+			FooterHeader f = styles.getFooter();
 			sbTemp.append("<style:footer-style>");
 			sbTemp.append("<style:header-footer-properties ");
 			sbTemp.append("fo:min-height=\""+f.getMinHeight()+"\" ");
@@ -417,105 +504,6 @@ public class PageStyle implements NamedObject {
 		sbTemp.append("</style:page-layout>");
 
 		return sbTemp.toString();
-	}
-
-	private String addBackgroundColor() {
-		if (this.getBackgroundColor().length() == 0) {
-			return "";
-		}
-
-		return new StringBuilder("fo:background-color=\"")
-				.append(this.getBackgroundColor()).append("\" ").toString();
-	}
-
-	private String addPrintOrientation() {
-		StringBuilder sbTemp = new StringBuilder();
-		if (this.nPrintOrientation == PageStyle.STYLE_PRINTORIENTATION_VERTICAL) {
-			sbTemp.append("style:print-orientation=\"portrait\" ");
-		} else {
-			sbTemp.append("style:print-orientation=\"landscape\" ");
-		}
-		return sbTemp.toString();
-	}
-
-	private String addWritingMode() {
-		StringBuilder sbTemp = new StringBuilder();
-
-		sbTemp.append("style:writing-mode=\"");
-
-		switch (this.getWritingMode()) {
-		case STYLE_WRITINGMODE_LRTB: // lr-tb (left to right; top to bottom)
-			sbTemp.append("lr-tb");
-			break;
-		case STYLE_WRITINGMODE_RLTB:
-			sbTemp.append("rl-tb");
-			break;
-		case STYLE_WRITINGMODE_TBRL:
-			sbTemp.append("tb-rl");
-			break;
-		case STYLE_WRITINGMODE_TBLR:
-			sbTemp.append("tb_lr");
-			break;
-		case STYLE_WRITINGMODE_LR:
-			sbTemp.append("lr");
-			break;
-		case STYLE_WRITINGMODE_RL:
-			sbTemp.append("rl");
-			break;
-		case STYLE_WRITINGMODE_TB:
-			sbTemp.append("tb");
-			break;
-		case STYLE_WRITINGMODE_PAGE:
-			sbTemp.append("page");
-			break;
-		default:
-			sbTemp.append("lr-tb");
-		}
-
-		sbTemp.append("\" ");
-		return sbTemp.toString();
-	}
-
-	protected void addHeaderStyle(final StringBuilder sbTemp) {
-
-		if (this.o.getStyles().getHeader() == null) {
-			sbTemp.append("<style:header-style />");
-		} else {
-			Header h = this.o.getStyles().getHeader();
-			sbTemp.append("<style:header-style>");
-			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\"").append(h.getMinHeight())
-					.append("\" ");
-			sbTemp.append("fo:margin-left=\"").append(h.getMarginLeft())
-					.append("\" ");
-			sbTemp.append("fo:margin-right=\"").append(h.getMarginRight())
-					.append("\" ");
-			sbTemp.append("fo:margin-top=\"").append(h.getMarginTop())
-					.append("\"/>");
-			sbTemp.append("</style:header-style>");
-		}
-
-	}
-
-	protected void addFooterStyle(final StringBuilder sbTemp) {
-
-		if (this.o.getStyles().getFooter() == null) {
-			sbTemp.append("<style:footer-style />");
-		} else {
-			Footer f = this.o.getStyles().getFooter();
-			sbTemp.append("<style:footer-style>");
-			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\"").append(f.getMinHeight())
-					.append("\" ");
-			sbTemp.append("fo:margin-left=\"").append(f.getMarginLeft())
-					.append("\" ");
-			sbTemp.append("fo:margin-right=\"").append(f.getMarginRight())
-					.append("\" ");
-			sbTemp.append("fo:margin-top=\"").append(f.getMarginTop())
-					.append("\"/>");
-			sbTemp.append("</style:footer-style>");
-		}
-
 	}
 
 }

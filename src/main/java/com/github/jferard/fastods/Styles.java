@@ -36,9 +36,9 @@ public class Styles {
 	private ObjectQueue<PageStyle> qPageStyles = ObjectQueue.newQueue();
 	private ObjectQueue<TextStyle> qTextStyles = ObjectQueue.newQueue();
 	private ObjectQueue<DateStyle> qDateStyles = ObjectQueue.newQueue();
-	private Header header = null;
+	private FooterHeader header = null;
 
-	private Footer footer = null;
+	private FooterHeader footer = null;
 
 	/**
 	 * The OdsFile where this object belong to.
@@ -61,7 +61,7 @@ public class Styles {
 	 *            - The currency style to be added.
 	 */
 	public void addCurrencyStyle(CurrencyStyle cs) {
-		ObjectQueue.addNamedElement(this.qCurrencyStyles, cs);
+		ObjectQueue.addOrReplaceNamedElement(this.qCurrencyStyles, cs);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class Styles {
 	 *            - The date style to be added.
 	 */
 	public void addDateStyle(final DateStyle ds) {
-		ObjectQueue.addNamedElement(this.qDateStyles, ds);
+		ObjectQueue.addOrReplaceNamedElement(this.qDateStyles, ds);
 	}
 
 	/**
@@ -83,16 +83,16 @@ public class Styles {
 	 *            - The number style to be added.
 	 */
 	public void addNumberStyle(final NumberStyle ns) {
-		ObjectQueue.addNamedElement(this.qNumberStyles, ns);
+		ObjectQueue.addOrReplaceNamedElement(this.qNumberStyles, ns);
 	}
 
 	public void addPageStyle(PageStyle ps) {
-		if (ObjectQueue.addNamedElement(this.qPageStyles, ps))
+		if (ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps))
 			this.o.getContent().addPageStyle(ps);
 	}
 
 	public void addTextStyle(TextStyle ts) {
-		if (ObjectQueue.addNamedElement(this.qTextStyles, ts))
+		if (ObjectQueue.addOrReplaceNamedElement(this.qTextStyles, ts))
 			this.o.getContent().addTextStyle(ts);
 	}
 
@@ -169,7 +169,7 @@ public class Styles {
 	 * 
 	 * @return The current footer object.
 	 */
-	public Footer getFooter() {
+	public FooterHeader getFooter() {
 		return this.footer;
 	}
 
@@ -178,7 +178,7 @@ public class Styles {
 	 * 
 	 * @return The current header object.
 	 */
-	public Header getHeader() {
+	public FooterHeader getHeader() {
 		return this.header;
 	}
 
@@ -197,14 +197,14 @@ public class Styles {
 	}
 
 	/**
-	 * Set the footer object to f. Reset this object by setting a new Footer
+	 * Set the footer object to f. Reset this object by setting a new FooterHeader
 	 * object,<br>
-	 * or use resetFooter() to remove the Footer object.
+	 * or use resetFooter() to remove the FooterHeader object.
 	 * 
 	 * @param f
 	 *            - The footer object to be used
 	 */
-	public void setFooter(final Footer f) {
+	public void setFooter(final FooterHeader f) {
 		this.footer = f;
 	}
 
@@ -216,7 +216,7 @@ public class Styles {
 	 * @param h
 	 *            - The header object to be used
 	 */
-	public void setHeader(final Header h) {
+	public void setHeader(final FooterHeader h) {
 		this.header = h;
 	}
 

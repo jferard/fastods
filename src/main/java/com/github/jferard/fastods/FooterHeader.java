@@ -20,32 +20,34 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file Footer.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file FooterHeader.java is part of SimpleODS.
  *
  */
-public class Footer {
+public class FooterHeader {
 
 	/**
-	 * The footer region on the left page side.
+	 * The region on the left page side.
 	 */
 	public static final int FLG_REGION_LEFT = 0;
 	/**
-	 * The footer region in the middle of the page.
+	 * The region in the middle of the page.
 	 */
 	public static final int FLG_REGION_CENTER = 1;
 	/**
-	 * The footer region on the right page side.
+	 * The region on the right page side.
 	 */
 	public static final int FLG_REGION_RIGHT = 2;
 
-	private ObjectQueue<ObjectQueue<StyledText>> qLeftRegion = ObjectQueue.newQueue();
-	private ObjectQueue<ObjectQueue<StyledText>> qCenterRegion = ObjectQueue.newQueue();
-	private ObjectQueue<ObjectQueue<StyledText>> qRightRegion = ObjectQueue.newQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qLeftRegion = ObjectQueue
+			.newQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qCenterRegion = ObjectQueue
+			.newQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qRightRegion = ObjectQueue
+			.newQueue();
 
 	private String sMinHeight = "0cm";
 	private String sMarginLeft = "0cm";
@@ -58,21 +60,36 @@ public class Footer {
 	private OdsFile o;
 
 	/**
+	 * Footer or Header ?
+	 */
+	public static final int FOOTER = 1;
+	public static final int HEADER = 2;
+
+	private int footerHeaderType;
+
+	/**
 	 * Create a new footer object.
 	 * 
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
-	public Footer(final OdsFile odsFile) {
+	public FooterHeader(final OdsFile odsFile, int footerHeaderType) {
 		this.o = odsFile;
-		this.o.getStyles().setFooter(this); // Add this Footer object
-		this.qCenterRegion.add(ObjectQueue.<StyledText>newQueue()); // Create the
-																// first
-																// paragraph
+		this.footerHeaderType = footerHeaderType;
+		if (this.footerHeaderType == FOOTER)
+			this.o.getStyles().setFooter(this); // Add this FooterHeader object
+		else if (this.footerHeaderType == HEADER)
+			this.o.getStyles().setHeader(this); // Add this FooterHeader object
+		else
+			throw new IllegalArgumentException();
+		this.qCenterRegion.add(ObjectQueue.<StyledText> newQueue()); // Create
+																		// the
+		// first
+		// paragraph
 	}
 
 	/**
-	 * @return The current minimum height of the footer.
+	 * @return The current minimum height of the footer/header.
 	 */
 	public String getMinHeight() {
 		return this.sMinHeight;
@@ -83,7 +100,7 @@ public class Footer {
 	}
 
 	/**
-	 * @return The current left margin of the footer.
+	 * @return The current left margin of the footer/header.
 	 */
 	public String getMarginLeft() {
 		return this.sMarginLeft;
@@ -94,7 +111,7 @@ public class Footer {
 	}
 
 	/**
-	 * @return The current right margin of the footer.
+	 * @return The current right margin of the footer/header.
 	 */
 	public String getMarginRight() {
 		return this.sMarginRight;
@@ -104,6 +121,9 @@ public class Footer {
 		this.sMarginRight = sMarginRight;
 	}
 
+	/**
+	 * @return The current top margin of the footer/header.
+	 */
 	public String getMarginTop() {
 		return this.sMarginTop;
 	}
@@ -121,8 +141,13 @@ public class Footer {
 	protected String toXML() {
 		StringBuilder sbTemp = new StringBuilder();
 
-		sbTemp.append(
-				"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+		if (this.footerHeaderType == FOOTER)
+			sbTemp.append(
+					"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+		else if (this.footerHeaderType == HEADER)
+			sbTemp.append(
+					"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+		
 		sbTemp.append(
 				"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
 
@@ -147,7 +172,7 @@ public class Footer {
 
 		this.writeRegion(sbTemp, this.qRightRegion, "region-right");
 
-		// </style:footer> is written by PageStyle.toMasterStyleXML()
+		// </style:footer/header> is written by PageStyle.toMasterStyleXML()
 
 		return sbTemp.toString();
 
@@ -164,8 +189,7 @@ public class Footer {
 		sbTemp.append("<style:").append(sRegionName).append(">");
 
 		for (ObjectQueue<StyledText> qStyledText : qRegion) {
-
-			// <style:footer> is written by PageStyle.toMasterStyleXML()
+			// <style:footer/header> is written by PageStyle.toMasterStyleXML()
 			sbTemp.append("<text:p>");
 
 			// Check if a qStyles object is null and add an empty paragraph for
@@ -179,7 +203,6 @@ public class Footer {
 			}
 
 			sbTemp.append("</text:p>");
-
 		}
 
 		sbTemp.append("</style:").append(sRegionName).append(">");
@@ -188,8 +211,8 @@ public class Footer {
 	}
 
 	/**
-	 * Adds a TextStyle and text to the footer region specified by
-	 * nFooterRegion.<br>
+	 * Adds a TextStyle and text to the footer/header region specified by
+	 * nRegion.<br>
 	 * The paragraph to be used is nParagraph.<br>
 	 * The text will be shown in the order it was added with this function.
 	 * 
@@ -197,24 +220,25 @@ public class Footer {
 	 *            The text style to be used
 	 * @param sText
 	 *            The string with the text
-	 * @param nFooterRegion
-	 *            One of : Footer.FLG_REGION_LEFT, Footer.FLG_REGION_CENTER or
-	 *            Footer.FLG_REGION_RIGHT
+	 * @param nRegion
+	 *            One of : FooterHeader.FLG_REGION_LEFT,
+	 *            FooterHeader.FLG_REGION_CENTER or
+	 *            FooterHeader.FLG_REGION_RIGHT
 	 * @param nParagraph
 	 *            The paragraph number to be used
 	 */
 	public void addStyledText(final TextStyle ts, final String sText,
-			final int nFooterRegion, final int nParagraph) {
+			final int nRegion, final int nParagraph) {
 		ObjectQueue<StyledText> qStyledText = null;
 
-		switch (nFooterRegion) {
-		case Footer.FLG_REGION_LEFT: // Use left region
+		switch (nRegion) {
+		case FooterHeader.FLG_REGION_LEFT: // Use left region
 			qStyledText = this.checkParagraph(this.qLeftRegion, nParagraph);
 			break;
-		case Footer.FLG_REGION_CENTER: // Use center region
+		case FooterHeader.FLG_REGION_CENTER: // Use center region
 			qStyledText = this.checkParagraph(this.qCenterRegion, nParagraph);
 			break;
-		case Footer.FLG_REGION_RIGHT: // Use right region
+		case FooterHeader.FLG_REGION_RIGHT: // Use right region
 			qStyledText = this.checkParagraph(this.qRightRegion, nParagraph);
 			break;
 		default: // Invalid nFooterRegionValue, use center region as default
@@ -241,8 +265,8 @@ public class Footer {
 		ObjectQueue<StyledText> qStyledText = qRegion.get(nParagraph);
 		// Check if the paragraph already exists and add a ObjectQueue if not
 		if (qStyledText == null) {
-			qRegion.setAt(nParagraph, ObjectQueue.<StyledText>newQueue()); // Create
-																		// this
+			qRegion.setAt(nParagraph, ObjectQueue.<StyledText> newQueue()); // Create
+																			// this
 			// paragraph
 			qStyledText = qRegion.get(nParagraph);
 		}

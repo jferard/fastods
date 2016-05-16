@@ -49,7 +49,7 @@ public class ObjectQueue<T> implements Iterable<T> {
 	 *            - The style to be added.
 	 * @return true if a new entry
 	 */
-	public static <T extends NamedObject> boolean addNamedElement(ObjectQueue<T> queue,
+	public static <T extends NamedObject> boolean addOrReplaceNamedElement(ObjectQueue<T> queue,
 			T element) {
 		// Check is a style with this name exists and replace if yes
 		ListIterator<T> listIterator = queue.list.listIterator();

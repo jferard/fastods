@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -52,8 +51,8 @@ public class OdsFile {
 	private Mimetype mimetype = new Mimetype();
 	private Manifest manifest = new Manifest();
 	private Meta meta = new Meta();
-	private Header header = null;
-	private Footer footer = null;
+	private FooterHeader header = null;
+	private FooterHeader footerHeader = null;
 	private Content content;
 	private Styles styles;
 
@@ -1430,25 +1429,25 @@ public class OdsFile {
 	}
 
 	/**
-	 * Sets a new footer object, any earlier footer that was set will be reset
-	 * and the new footer is used.
+	 * Sets a new footerHeader object, any earlier footerHeader that was set will be reset
+	 * and the new footerHeader is used.
 	 * 
 	 * @param f
-	 *            - The new footer to be used.
+	 *            - The new footerHeader to be used.
 	 */
-	public void setFooter(final Footer f) {
-		this.footer = f;
+	public void setFooter(final FooterHeader f) {
+		this.footerHeader = f;
 		getStyles().setFooter(f);
 	}
 
 	/**
-	 * Returns the current footer.
+	 * Returns the current footerHeader.
 	 * 
-	 * @return The footer that is currently set , maybe null if no footer was
+	 * @return The footerHeader that is currently set , maybe null if no footerHeader was
 	 *         set
 	 */
-	public Footer getFooter() {
-		return this.footer;
+	public FooterHeader getFooter() {
+		return this.footerHeader;
 	}
 
 	/**
@@ -1458,7 +1457,7 @@ public class OdsFile {
 	 * @param h
 	 *            - The new header to be used.
 	 */
-	public void setHeader(final Header h) {
+	public void setHeader(final FooterHeader h) {
 		this.header = h;
 		getStyles().setHeader(h);
 	}
@@ -1469,7 +1468,7 @@ public class OdsFile {
 	 * @return The header that is currently set , maybe null if no header was
 	 *         set
 	 */
-	public Header getHeader() {
+	public FooterHeader getHeader() {
 		return this.header;
 	}
 

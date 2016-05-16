@@ -47,7 +47,7 @@ public class Content {
 	}
 
 	public void addPageStyle(final PageStyle ps) {
-		ObjectQueue.addNamedElement(this.qPageStyles, ps);
+		ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps);
 	}
 
 	public boolean addTable(String sName) throws SimpleOdsException {
@@ -66,11 +66,11 @@ public class Content {
 	}
 
 	public void addTableStyle(TableStyle ts) {
-		ObjectQueue.addNamedElement(this.qTableStyles, ts);
+		ObjectQueue.addOrReplaceNamedElement(this.qTableStyles, ts);
 	}
 
 	public void addTextStyle(final TextStyle ts) {
-		ObjectQueue.addNamedElement(this.qTextStyles, ts);
+		ObjectQueue.addOrReplaceNamedElement(this.qTextStyles, ts);
 	}
 
 	public boolean createContent(Util util, ZipOutputStream o) {
