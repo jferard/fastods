@@ -20,18 +20,30 @@
 package com.github.jferard.fastods;
 
 /**
- * TODO : clean code
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file DateStyle.java is part of SimpleODS.<br>
- *         0.5.2 Added DATEFORMAT_MMYY Added DATEFORMAT_WW Added
- *         DATEFORMAT_YYYYMMDD
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
+ *         This file DateStyle.java is part of FastODS. SimpleODS 0.5.2 Added
+ *         DATEFORMAT_MMYY Added DATEFORMAT_WW Added DATEFORMAT_YYYYMMDD
  */
 public class DateStyle implements NamedObject {
+
+	private static final String DOT_SPACE = "<number:text>. </number:text>";
+	private static final String SPACE = "<number:text> </number:text>";
+	private static final String DAY = "<number:day/>";
+	private static final String WEEK = "<number:week-of-year/>";
+	private static final String YEAR = "<number:year/>";
+	private static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
+	private static final String DASH = "<number:text>-</number:text>";
+	private static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
+	private static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
+	private static final String LONG_DAY = "<number:day number:style=\"long\"/>";
+	private static final String DOT = "<number:text>.</number:text>";
+
+	public static DateStyleBuilder builder() {
+		return new DateStyleBuilder();
+	}
 
 	/**
 	 * Set the date format like '10.07.2012'.
@@ -50,6 +62,11 @@ public class DateStyle implements NamedObject {
 	 * Set the date format like '10.07.12'.
 	 */
 	public static final int DATEFORMAT_DDMMYY = 2;
+
+	/**
+	 * The default date format DATEFORMAT_DDMMYY.
+	 */
+	public static final int DEFAULT_DATEFORMAT = DATEFORMAT_DDMMYY;
 	/*
 	<number:date-style style:name="N37" number:automatic-order="true">
 	<number:day number:style="long"/>
@@ -61,7 +78,7 @@ public class DateStyle implements NamedObject {
 	/**
 	 * Set the date format like '10.July 2012'.
 	 */
-	public static final int DATEFORMAT_TMMMMYY = 3;
+	public static final int DATEFORMAT_TMMMMYYYY = 3;
 	/*
 	<number:date-style style:name="N76" number:automatic-order="true">
 	<number:day/>
@@ -118,19 +135,12 @@ public class DateStyle implements NamedObject {
 	/**
 	 * The name of this style.
 	 */
-	private String sName = "";
+	private final String sName;
+	private final boolean bAutomaticOrder;
 
-	private boolean bAutomaticOrder = false;
+	private final int nDateFormat;
 
-	/**
-	 * The default date format DATEFORMAT_DDMMYY.
-	 */
-	private int nDateFormat = DATEFORMAT_DDMMYY;
-
-	/**
-	 * The OdsFile to which this style belongs to.
-	 */
-	private OdsFile o;
+	private String xml;
 
 	/**
 	 * Create a new date style with the name sName.<br>
@@ -141,27 +151,25 @@ public class DateStyle implements NamedObject {
 	 * @param odsFile
 	 *            The odsFile to which this style belongs to.
 	 */
-	public DateStyle(final String sName, final OdsFile odsFile) {
-		this.setName(sName);
-		this.o = odsFile;
-		this.o.getStyles().addDateStyle(this);
+	protected DateStyle(final String sName, final int nDateFormat,
+			final boolean bAutomaticOrder) {
+		this.sName = sName;
+		this.nDateFormat = nDateFormat;
+		this.bAutomaticOrder = bAutomaticOrder;
 	}
 
+	/**
+	 * @param odsFile The OdsFile to which this style belongs to.
+	 */
+	public void addToFile(OdsFile odsFile) {
+		odsFile.getStyles().addDateStyle(this);
+	}
+	
 	/**
 	 * @return The name of this style.
 	 */
 	public String getName() {
 		return this.sName;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 * 
-	 * @param name
-	 *            - The name of this style.
-	 */
-	public void setName(final String name) {
-		this.sName = name;
 	}
 
 	/**
@@ -172,98 +180,54 @@ public class DateStyle implements NamedObject {
 	}
 
 	/**
-	 * The automatic-order attribute can be used to automatically order data to
-	 * match the default order<br>
-	 * for the language and country of the date style.
-	 * 
-	 * @param bAutomatic
-	 */
-	public void setAutomaticOrder(final boolean bAutomatic) {
-		this.bAutomaticOrder = bAutomatic;
-	}
-
-	/**
-	 * Set the date format.<br>
-	 * Valid is one of the following:<br>
-	 * DateStyle.DATEFORMAT_DDMMYYYY<br>
-	 * DateStyle.DATEFORMAT_DDMMYY<br>
-	 * DateStyle.DATEFORMAT_TMMMMYY<br>
-	 * DateStyle.DATEFORMAT_MMMM<br>
-	 * *
-	 * 
-	 * @param nFormat
-	 *            The date format to be used.
-	 */
-	public void setDateFormat(final int nFormat) {
-		this.nDateFormat = nFormat;
-	}
-
-	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String toXML() {
-		StringBuilder sbReturn = new StringBuilder();
+	public String toXML(Util util) {
+		if (this.xml == null) {
+			StringBuilder sbReturn = new StringBuilder();
 
-		sbReturn.append("<number:date-style style:name=\"")
-				.append(this.getName()).append("\" number:automatic-order=\"")
-				.append(this.isAutomaticOrder()).append("\">");
+			sbReturn.append("<number:date-style style:name=\"")
+					.append(util.escapeXMLAttribute(this.getName()))
+					.append("\" number:automatic-order=\"")
+					.append(this.isAutomaticOrder()).append("\">");
 
-		switch (this.nDateFormat) {
-		case DateStyle.DATEFORMAT_DDMMYYYY:
-			sbReturn.append("<number:day number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:month number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:year number:style=\"long\"/>");
-			break;
-		case DateStyle.DATEFORMAT_DDMMYY:
-			sbReturn.append("<number:day number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:month number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:year/>");
-			break;
-		case DateStyle.DATEFORMAT_TMMMMYY:
-			sbReturn.append("<number:day/>");
-			sbReturn.append("<number:text>. </number:text>");
-			sbReturn.append(
-					"<number:month number:style=\"long\" number:textual=\"true\"/>");
-			sbReturn.append("<number:text> </number:text>");
-			sbReturn.append("<number:year number:style=\"long\"/>");
-			break;
-		case DateStyle.DATEFORMAT_MMMM:
-			sbReturn.append(
-					"<number:month number:style=\"long\" number:textual=\"true\"/>");
-			break;
-		case DateStyle.DATEFORMAT_MMYY:
-			sbReturn.append("<number:month number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:year/>");
-			break;
-		case DateStyle.DATEFORMAT_WW:
-			sbReturn.append("<number:week-of-year/>");
-			break;
-		case DateStyle.DATEFORMAT_YYYYMMDD:
-			sbReturn.append("<number:year number:style=\"long\"/>");
-			sbReturn.append("<number:text>-</number:text>");
-			sbReturn.append("<number:month number:style=\"long\"/>");
-			sbReturn.append("<number:text>-</number:text>");
-			sbReturn.append("<number:day number:style=\"long\"/>");
-			break;
-		default:
-			sbReturn.append("<number:day number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:month number:style=\"long\"/>");
-			sbReturn.append("<number:text>.</number:text>");
-			sbReturn.append("<number:year number:style=\"long\"/>");
+			switch (this.nDateFormat) {
+			case DateStyle.DEFAULT_DATEFORMAT:
+				sbReturn.append(LONG_DAY).append(DOT).append(LONG_MONTH)
+						.append(DOT).append(YEAR);
+				break;
+			case DateStyle.DATEFORMAT_TMMMMYYYY:
+				sbReturn.append(DAY).append(DOT_SPACE)
+						.append(LONG_TEXTUAL_MONTH).append(SPACE)
+						.append(LONG_YEAR);
+				break;
+			case DateStyle.DATEFORMAT_MMMM:
+				sbReturn.append(LONG_TEXTUAL_MONTH);
+				break;
+			case DateStyle.DATEFORMAT_MMYY:
+				sbReturn.append(LONG_MONTH).append(DOT).append(YEAR);
+				break;
+			case DateStyle.DATEFORMAT_WW:
+				sbReturn.append(WEEK);
+				break;
+			case DateStyle.DATEFORMAT_YYYYMMDD:
+				sbReturn.append(LONG_YEAR).append(DASH).append(LONG_MONTH)
+						.append(DASH).append(LONG_DAY);
+				break;
+			case DateStyle.DATEFORMAT_DDMMYYYY:
+			default:
+				sbReturn.append(LONG_DAY).append(DOT).append(LONG_MONTH)
+						.append(DOT).append(LONG_YEAR);
+			}
+
+			sbReturn.append("</number:date-style>");
+
+			this.xml = sbReturn.toString();
 		}
-
-		sbReturn.append("</number:date-style>");
-
-		return sbReturn.toString();
+		return this.xml;
 	}
 
 }
