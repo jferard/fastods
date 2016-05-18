@@ -20,9 +20,8 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
+ *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file CurrencyStyleBuilder.java is part of FastODS.
  *
@@ -56,6 +55,17 @@ class CurrencyStyleBuilder {
 		this.bVolatile = true;
 		this.bNegativeValuesRed = true;
 		this.bCurrencyPosition = CurrencyStyle.SYMBOLPOSITION_END;
+	}
+
+	public CurrencyStyle build() {
+		if (this.sName == null)
+			throw new IllegalArgumentException();
+
+		return new CurrencyStyle(this.sName, this.sCurrencySymbol,
+				this.sNegativeValueColor, this.sLanguage, this.sCountry,
+				this.nNumberType, this.nDecimalPlaces, this.nMinIntegerDigits,
+				this.bGrouping, this.bVolatile, this.bNegativeValuesRed,
+				this.bCurrencyPosition);
 	}
 
 	/**
@@ -149,25 +159,5 @@ class CurrencyStyleBuilder {
 	public CurrencyStyleBuilder thousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
 		return this;
-	}
-
-	public CurrencyStyle build() {
-		if (this.sName == null)
-			throw new IllegalArgumentException();
-		
-		return new CurrencyStyle(
-				this.sName,
-				this.sCurrencySymbol,
-				this.sNegativeValueColor,
-				this.sLanguage,
-				this.sCountry,
-				this.nNumberType,
-				this.nDecimalPlaces,
-				this.nMinIntegerDigits,
-				this.bGrouping,
-				this.bVolatile,
-				this.bNegativeValuesRed,
-				this.bCurrencyPosition
-				);
 	}
 }

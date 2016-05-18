@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
@@ -26,15 +27,16 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *         <br>
  * 
- *         This file Meta.java is part of SimpleODS.
+ *         This file MetaEntry.java is part of SimpleODS.
  *
  */
-public class Meta {
+public class MetaEntry implements OdsEntry {
 	private String sGenerator = "SimpleOds 0.5.3 20120722";
 	private String sCreator = "SimpleOds 0.5.3";
 	private String sDateTime = "";
@@ -43,12 +45,12 @@ public class Meta {
 	private int nTableCount = 1;
 	private int nCellCount = 1;
 
-	public Meta() {
+	public MetaEntry() {
 		this.setDateTimeNow();
 	}
 
 	/**
-	 * Store the date and time of the document creation in the Meta data.
+	 * Store the date and time of the document creation in the MetaEntry data.
 	 */
 	private void setDateTimeNow() {
 		Date dt = new Date();
@@ -114,17 +116,11 @@ public class Meta {
 		this.sCreator = sCreator;
 	}
 
-	public boolean createMeta(Util util, final ZipOutputStream o) {
-
-		try {
-			o.putNextEntry(new ZipEntry("meta.xml"));
-			util.writeStringArray(o, this.getMeta());
-			o.closeEntry();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+	@Override
+	public void write(Util util, final ZipOutputStream o) throws IOException {
+		o.putNextEntry(new ZipEntry("meta.xml"));
+		util.writeStringArray(o, this.getMeta());
+		o.closeEntry();
 	}
 
 }

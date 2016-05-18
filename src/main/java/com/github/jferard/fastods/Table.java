@@ -21,6 +21,7 @@ package com.github.jferard.fastods;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -74,6 +75,33 @@ public class Table implements NamedObject {
 	}
 
 	/**
+	 * Get a TableCell, if no TableCell was present at this nRow,nCol, create a
+	 * new one with a default of TableCell.STYLE_STRING and a content of "".
+	 * 
+	 * @param nRow
+	 *            The row (maximal 65536)
+	 * @param nCol
+	 *            The column (maximal 256)
+	 * @return The TableCell for this position, maybe a new TableCell
+	 */
+	public TableCell getCell(final int nRow, final int nCol) {
+
+		// -------------------------------------------------------------
+		// Check if this row already exists and create a new one if not
+		// -------------------------------------------------------------
+		TableRow tr = this.qTableRows.get(nRow);
+		if (tr == null) {
+			tr = new TableRow();
+			this.qTableRows.setAt(nRow, tr);
+		}
+		return tr.getCell(nCol);
+	}
+
+	public ObjectQueue<TableStyle> getColumnStyles() {
+		return this.qColumnStyles;
+	}
+
+	/**
 	 * @return The complete configuration information of this table in a string
 	 *         array
 	 */
@@ -101,39 +129,12 @@ public class Table implements NamedObject {
 		return (sConfig);
 	}
 
-	public int getLastRow() {
-		return this.nLastRow;
-	}
-
 	public int getLastCol() {
 		return this.nLastCol;
 	}
 
-	public ObjectQueue<TableRow> getRows() {
-		return this.qTableRows;
-	}
-
-	public ObjectQueue<TableStyle> getColumnStyles() {
-		return this.qColumnStyles;
-	}
-
-	/**
-	 * Get the current TableStyle
-	 * 
-	 * @return The current TableStlye
-	 */
-	public String getStyle() {
-		return this.Style;
-	}
-
-	/**
-	 * Set a new TableStyle
-	 * 
-	 * @param style
-	 *            The new TableStlye to be used
-	 */
-	public void setStyle(String style) {
-		this.Style = style;
+	public int getLastRow() {
+		return this.nLastRow;
 	}
 
 	/**
@@ -145,14 +146,17 @@ public class Table implements NamedObject {
 		return this.sName;
 	}
 
+	public ObjectQueue<TableRow> getRows() {
+		return this.qTableRows;
+	}
+
 	/**
-	 * Set the name of this table.
+	 * Get the current TableStyle
 	 * 
-	 * @param name
-	 *            The name of this table.
+	 * @return The current TableStlye
 	 */
-	public void setName(final String name) {
-		this.sName = name;
+	public String getStyle() {
+		return this.Style;
 	}
 
 	/**
@@ -197,32 +201,6 @@ public class Table implements NamedObject {
 		return true;
 	}
 
-	private void checkRow(final int nRow) throws SimpleOdsException {
-		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new SimpleOdsException(new StringBuilder(
-					"Maximum row number (65536) exception, row value:[")
-							.append(nRow).append("]").toString());
-		}
-		if (nRow < 0) {
-			throw new SimpleOdsException(new StringBuilder(
-					"Negative row number exception, row value:[").append(nRow)
-							.append("]").toString());
-		}
-	}
-
-	private void checkCol(final int nCol) throws SimpleOdsException {
-		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException(new StringBuilder(
-					"Maximum column number (256) exception, column value:[")
-							.append(nCol).append("]").toString());
-		}
-		if (nCol < 0) {
-			throw new SimpleOdsException(new StringBuilder(
-					"Negative column number exception, column value:[")
-							.append(nCol).append("]").toString());
-		}
-	}
-
 	/**
 	 * Set the value of a cell.
 	 * 
@@ -248,46 +226,6 @@ public class Table implements NamedObject {
 		this.setCell(nRow, nCol, valuetype, value);
 		this.setCellStyle(nRow, nCol, ts);
 		return true;
-	}
-
-	/**
-	 * Get a TableCell, if no TableCell was present at this nRow,nCol, create a
-	 * new one with a default of TableCell.STYLE_STRING and a content of "".
-	 * 
-	 * @param nRow
-	 *            The row (maximal 65536)
-	 * @param nCol
-	 *            The column (maximal 256)
-	 * @return The TableCell for this position, maybe a new TableCell
-	 */
-	public TableCell getCell(final int nRow, final int nCol) {
-
-		// -------------------------------------------------------------
-		// Check if this row already exists and create a new one if not
-		// -------------------------------------------------------------
-		TableRow tr = this.qTableRows.get(nRow);
-		if (tr == null) {
-			tr = new TableRow();
-			this.qTableRows.setAt(nRow, tr);
-		}
-		return tr.getCell(nCol);
-	}
-
-	/**
-	 * Set the style of a column.
-	 * 
-	 * @param nCol
-	 *            The column number
-	 * @param ts
-	 *            The style to be used, make sure the style is of type
-	 *            TableStyle.STYLEFAMILY_TABLECOLUMN
-	 * @throws SimpleOdsException
-	 *             Thrown if nCol has an invalid value.
-	 */
-	public void setColumnStyle(final int nCol, final TableStyle ts)
-			throws SimpleOdsException {
-		this.checkCol(nCol);
-		this.qColumnStyles.setAt(nCol, ts);
 	}
 
 	/**
@@ -330,6 +268,43 @@ public class Table implements NamedObject {
 	}
 
 	/**
+	 * Set the style of a column.
+	 * 
+	 * @param nCol
+	 *            The column number
+	 * @param ts
+	 *            The style to be used, make sure the style is of type
+	 *            TableStyle.STYLEFAMILY_TABLECOLUMN
+	 * @throws SimpleOdsException
+	 *             Thrown if nCol has an invalid value.
+	 */
+	public void setColumnStyle(final int nCol, final TableStyle ts)
+			throws SimpleOdsException {
+		this.checkCol(nCol);
+		this.qColumnStyles.setAt(nCol, ts);
+	}
+
+	/**
+	 * Set the name of this table.
+	 * 
+	 * @param name
+	 *            The name of this table.
+	 */
+	public void setName(final String name) {
+		this.sName = name;
+	}
+
+	/**
+	 * Set a new TableStyle
+	 * 
+	 * @param style
+	 *            The new TableStlye to be used
+	 */
+	public void setStyle(String style) {
+		this.Style = style;
+	}
+
+	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
@@ -340,6 +315,32 @@ public class Table implements NamedObject {
 				.append(this.getName()).append("\" table:style-name=\"")
 				.append(this.getStyle()).append("\" table:print=\"false\">")
 				.toString();
+	}
+
+	private void checkCol(final int nCol) throws SimpleOdsException {
+		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Maximum column number (256) exception, column value:[")
+							.append(nCol).append("]").toString());
+		}
+		if (nCol < 0) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Negative column number exception, column value:[")
+							.append(nCol).append("]").toString());
+		}
+	}
+
+	private void checkRow(final int nRow) throws SimpleOdsException {
+		if (nRow >= Table.TABLE_MAXROWNUMBER) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Maximum row number (65536) exception, row value:[")
+							.append(nRow).append("]").toString());
+		}
+		if (nRow < 0) {
+			throw new SimpleOdsException(new StringBuilder(
+					"Negative row number exception, row value:[").append(nRow)
+							.append("]").toString());
+		}
 	}
 
 }

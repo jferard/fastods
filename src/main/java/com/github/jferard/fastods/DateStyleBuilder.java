@@ -20,10 +20,10 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
+ *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file DateStyleBuilder.java is part of FastODS. 
+ *         This file DateStyleBuilder.java is part of FastODS.
  */
 class DateStyleBuilder {
 	/**
@@ -53,28 +53,27 @@ class DateStyleBuilder {
 	}
 
 	/**
-	 * Set the name of this style to sName.
-	 * 
-	 * @param name
-	 *            - The name of this style.
-	 * @return this for fluent style            
-	 */
-	public DateStyleBuilder name(final String name) {
-		this.sName = name;
-		return this;
-	}
-
-	/**
 	 * The automatic-order attribute can be used to automatically order data to
 	 * match the default order<br>
 	 * for the language and country of the date style.
 	 * 
 	 * @param bAutomatic
-	 * @return this for fluent style            
+	 * @return this for fluent style
 	 */
 	public DateStyleBuilder automaticOrder(final boolean bAutomatic) {
 		this.bAutomaticOrder = bAutomatic;
 		return this;
+	}
+
+	/**
+	 * @return the DateStyle
+	 */
+	public DateStyle build() {
+		if (this.sName == null)
+			throw new IllegalArgumentException();
+
+		return new DateStyle(this.sName, this.nDateFormat,
+				this.bAutomaticOrder);
 	}
 
 	/**
@@ -96,12 +95,14 @@ class DateStyleBuilder {
 	}
 
 	/**
-	 * @return the DateStyle
+	 * Set the name of this style to sName.
+	 * 
+	 * @param name
+	 *            - The name of this style.
+	 * @return this for fluent style
 	 */
-	public DateStyle build() {
-		if (this.sName == null)
-			throw new IllegalArgumentException();
-		
-		return new DateStyle(this.sName, this.nDateFormat, this.bAutomaticOrder);
+	public DateStyleBuilder name(final String name) {
+		this.sName = name;
+		return this;
 	}
 }

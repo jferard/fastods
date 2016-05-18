@@ -19,18 +19,23 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipOutputStream;
 
-import com.google.common.base.Joiner;
+import com.google.common.base.Charsets;
 import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
 
 /**
  * TODO : split code, clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -193,7 +198,14 @@ public class Util {
 	public final static String COLOR_WhiteSmoke = "#F5F5F5";
 	public final static String COLOR_White = "#FFFFFF";
 
+	public static Util getInstance() {
+		if (Util.instance == null) {
+			Util.instance = new Util();
+		}
+		return Util.instance;
+	}
 	private Escaper xmlContentEscaper;
+
 	private Escaper xmlAttributeEscaper;
 
 	public Util() {
@@ -201,51 +213,57 @@ public class Util {
 		this.xmlAttributeEscaper = XmlEscapers.xmlAttributeEscaper();
 	}
 
-	public static Util getInstance() {
-		if (Util.instance == null) {
-			Util.instance = new Util();
-		}
-		return Util.instance;
+	/**
+	 * Append a new element to StringBuilder sb, the name of the element is
+	 * sElementName<br>
+	 * and the value is nValue.
+	 * 
+	 * @param sb
+	 *            The StringBuilder to which the new element should be added.
+	 * @param sElementName
+	 *            The new element name
+	 * @param nValue
+	 *            The value of the element
+	 */
+	public void appendElement(final StringBuilder sb, final String sElementName,
+			final int nValue) {
+		sb.append(" ").append(sElementName).append("=\"").append(nValue)
+				.append("\" ");
 	}
 
-	// JF
-	public byte[] toBytes(String s) throws UnsupportedEncodingException {
-		return s.getBytes("UTF-8");
+	/**
+	 * Append a new element to StringBuilder sb, the name of the element is
+	 * sElementName<br>
+	 * and the value is sValue.
+	 * 
+	 * @param sb
+	 *            The StringBuilder to which the new element should be added.
+	 * @param sElementName
+	 *            The new element name
+	 * @param sValue
+	 *            The value of the element
+	 */
+	public void appendElement(final StringBuilder sb, final String sElementName,
+			final String sValue) {
+		sb.append(" ").append(sElementName).append("=\"")
+				.append(this.escapeXMLAttribute(sValue)).append("\" ");
 	}
 
-	public String escapeXMLContent(String s) {
-		return this.xmlContentEscaper.escape(s);
-	}
-
-	public String escapeXMLAttribute(String s) {
-		return this.xmlAttributeEscaper.escape(s);
-	}
-
-	public boolean writeStringArray(final ZipOutputStream o,
-			final String... sTexts) {
-
-		try {
-			for (final String sText : sTexts) {
-				byte[] bytes = toBytes(sText);
-				o.write(bytes, 0, bytes.length);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-
-	public boolean writeString(final ZipOutputStream o, final String sText) {
-
-		try {
-			byte[] bytes = toBytes(sText);
-			o.write(bytes, 0, bytes.length);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+	/**
+	 * Copy all styles from one OdsFile to another OdsFile.<br>
+	 * The target file will then contain all styles from the source file.
+	 * 
+	 * @param source
+	 *            The source file
+	 * @param target
+	 *            The target file.
+	 */
+	public void copyStylesFromTo(final OdsFile source, final OdsFile target) {
+		target.setStyles(source.getStyles());
+		target.getContent().setPageStyles(source.getContent().getPageStyles());
+		target.getContent()
+				.setTableStyles(source.getContent().getTableStyles());
+		target.getContent().setTextStyles(source.getContent().getTextStyles());
 	}
 
 	/**
@@ -285,68 +303,6 @@ public class Util {
 
 	}
 
-	private String toHexString(final int n) {
-		StringBuilder sbReturn = new StringBuilder();
-		if (n < 16) {
-			sbReturn.append("0");
-		}
-		sbReturn.append(Integer.toHexString(n));
-		return sbReturn.toString();
-	}
-
-	/**
-	 * Replace all occurrences of a sub-string within a string.
-	 * 
-	 * @param sHaystack
-	 *            The source string to be checked
-	 * @param sNeedle
-	 *            The sub-string to be replaced
-	 * @param sReplacement
-	 *            The replacement string
-	 * @return The new string
-	 */
-	public String replace(final String sHaystack, final String sNeedle,
-			final String sReplacement) {
-		int nStart = 0;
-		int nEnd = 0;
-		StringBuilder sbResult = new StringBuilder();
-
-		// ----------------------------------------
-		// Loop until each sNeedle is replaced
-		// ----------------------------------------
-		while ((nEnd = sHaystack.indexOf(sNeedle, nStart)) >= 0) {
-			sbResult.append(sHaystack.substring(nStart, nEnd));
-			sbResult.append(sReplacement);
-			nStart = nEnd + sNeedle.length();
-		}
-		sbResult.append(sHaystack.substring(nStart));
-
-		return sbResult.toString();
-	}
-
-	/**
-	 * Helper function to convert non-ASCII character to XML encoding.
-	 * 
-	 * @param sString
-	 *            The string to be converted
-	 * @return The converted string
-	 */
-	@Deprecated
-	public String toXmlString(String sString) {
-
-		for (int n = 0; n < sString.length(); n++) {
-			int c = sString.charAt(n);
-
-			if (c > 128) {
-				sString = replace(sString, sString.substring(n, n + 1),
-						new StringBuilder("&#").append(c).append(";")
-								.toString());
-			}
-		}
-
-		return sString;
-	}
-
 	/**
 	 * Get the todays date in format sDateFormat. See Javas 'SimpleDateFormat'
 	 * for details.<br>
@@ -381,6 +337,14 @@ public class Util {
 		DateFormat formatter = new SimpleDateFormat(sDateFormat);
 
 		return formatter.format(new Date());
+	}
+
+	public String escapeXMLAttribute(String s) {
+		return this.xmlAttributeEscaper.escape(s);
+	}
+
+	public String escapeXMLContent(String s) {
+		return this.xmlContentEscaper.escape(s);
 	}
 
 	/**
@@ -454,56 +418,101 @@ public class Util {
 	}
 
 	/**
-	 * Copy all styles from one OdsFile to another OdsFile.<br>
-	 * The target file will then contain all styles from the source file.
+	 * Replace all occurrences of a sub-string within a string.
 	 * 
-	 * @param source
-	 *            The source file
-	 * @param target
-	 *            The target file.
+	 * @param sHaystack
+	 *            The source string to be checked
+	 * @param sNeedle
+	 *            The sub-string to be replaced
+	 * @param sReplacement
+	 *            The replacement string
+	 * @return The new string
 	 */
-	public void copyStylesFromTo(final OdsFile source, final OdsFile target) {
-		target.setStyles(source.getStyles());
-		target.getContent().setPageStyles(source.getContent().getPageStyles());
-		target.getContent()
-				.setTableStyles(source.getContent().getTableStyles());
-		target.getContent().setTextStyles(source.getContent().getTextStyles());
+	public String replace(final String sHaystack, final String sNeedle,
+			final String sReplacement) {
+		int nStart = 0;
+		int nEnd = 0;
+		StringBuilder sbResult = new StringBuilder();
+
+		// ----------------------------------------
+		// Loop until each sNeedle is replaced
+		// ----------------------------------------
+		while ((nEnd = sHaystack.indexOf(sNeedle, nStart)) >= 0) {
+			sbResult.append(sHaystack.substring(nStart, nEnd));
+			sbResult.append(sReplacement);
+			nStart = nEnd + sNeedle.length();
+		}
+		sbResult.append(sHaystack.substring(nStart));
+
+		return sbResult.toString();
+	}
+
+	// JF
+	public byte[] toBytes(String s) throws UnsupportedEncodingException {
+		return s.getBytes("UTF-8");
 	}
 
 	/**
-	 * Append a new element to StringBuilder sb, the name of the element is
-	 * sElementName<br>
-	 * and the value is sValue.
+	 * Helper function to convert non-ASCII character to XML encoding.
 	 * 
-	 * @param sb
-	 *            The StringBuilder to which the new element should be added.
-	 * @param sElementName
-	 *            The new element name
-	 * @param sValue
-	 *            The value of the element
+	 * @param sString
+	 *            The string to be converted
+	 * @return The converted string
 	 */
-	public void appendElement(final StringBuilder sb, final String sElementName,
-			final String sValue) {
-		sb.append(" ").append(sElementName).append("=\"")
-				.append(this.escapeXMLAttribute(sValue)).append("\" ");
+	@Deprecated
+	public String toXmlString(String sString) {
+
+		for (int n = 0; n < sString.length(); n++) {
+			int c = sString.charAt(n);
+
+			if (c > 128) {
+				sString = replace(sString, sString.substring(n, n + 1),
+						new StringBuilder("&#").append(c).append(";")
+								.toString());
+			}
+		}
+
+		return sString;
 	}
 
-	/**
-	 * Append a new element to StringBuilder sb, the name of the element is
-	 * sElementName<br>
-	 * and the value is nValue.
-	 * 
-	 * @param sb
-	 *            The StringBuilder to which the new element should be added.
-	 * @param sElementName
-	 *            The new element name
-	 * @param nValue
-	 *            The value of the element
-	 */
-	public void appendElement(final StringBuilder sb, final String sElementName,
-			final int nValue) {
-		sb.append(" ").append(sElementName).append("=\"").append(nValue)
-				.append("\" ");
+	public Writer wrapStream(OutputStream out) {
+		return new BufferedWriter(new OutputStreamWriter(out, Charsets.UTF_8));
+	}
+
+	public boolean writeString(final ZipOutputStream o, final String sText) {
+
+		try {
+			byte[] bytes = toBytes(sText);
+			o.write(bytes, 0, bytes.length);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public boolean writeStringArray(final ZipOutputStream o,
+			final String... sTexts) {
+
+		try {
+			for (final String sText : sTexts) {
+				byte[] bytes = toBytes(sText);
+				o.write(bytes, 0, bytes.length);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	private String toHexString(final int n) {
+		StringBuilder sbReturn = new StringBuilder();
+		if (n < 16) {
+			sbReturn.append("0");
+		}
+		sbReturn.append(Integer.toHexString(n));
+		return sbReturn.toString();
 	}
 
 }

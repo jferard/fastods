@@ -19,29 +19,28 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
  * TODO : clean code
+ * 
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file Mimetype.java is part of FastODS.
+ *         This file MimetypeEntry.java is part of FastODS.
  */
-public class Mimetype {
-	public boolean createMimetype(Util util, ZipOutputStream o) {
-		try {
-			o.putNextEntry(new ZipEntry("mimetype"));
-			util.writeString(o, "application/vnd.oasis.opendocument.spreadsheet");
-			o.closeEntry();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+public class MimetypeEntry implements OdsEntry {
+	@Override
+	public void write(Util util, ZipOutputStream zipOut) throws IOException {
+		zipOut.putNextEntry(new ZipEntry("mimetype"));
+		Writer writer = util.wrapStream(zipOut);
+		writer.write("application/vnd.oasis.opendocument.spreadsheet");
+		writer.flush();
+		zipOut.closeEntry();
 	}
 
 }

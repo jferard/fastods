@@ -21,6 +21,7 @@ package com.github.jferard.fastods;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -63,6 +64,17 @@ public class TextStyle implements NamedObject {
 	private OdsFile o;
 
 	/**
+	 * Create a new text style without a name.<br>
+	 * This is used by class TableStyle. Version 0.5.2 Added
+	 * 
+	 * @param odsFile
+	 *            The file to add this style to
+	 */
+	public TextStyle(final OdsFile odsFile) {
+		this.o = odsFile;
+	}
+
+	/**
 	 * Create a new text style with the name sName.<br>
 	 * Version 0.5.0 Added parameter OdsFile odsFile
 	 * 
@@ -78,14 +90,46 @@ public class TextStyle implements NamedObject {
 	}
 
 	/**
-	 * Create a new text style without a name.<br>
-	 * This is used by class TableStyle. Version 0.5.2 Added
+	 * Get the current font color.
 	 * 
-	 * @param odsFile
-	 *            The file to add this style to
+	 * @return The currently set font color as a String in format #rrggbb
 	 */
-	public TextStyle(final OdsFile odsFile) {
-		this.o = odsFile;
+	public String getFontColor() {
+		return this.sFontColor;
+	}
+
+	/**
+	 * Get the font size as string, e.g. '10.5pt' or '8pt'
+	 * 
+	 * @return The font size as string, e.g. '10.5pt' or '8pt'
+	 */
+	public String getFontSize() {
+		return this.sFontSize;
+	}
+
+	/**
+	 * Get the currently set underline color.
+	 * 
+	 * @return The color in format #rrggbb
+	 */
+	public String getFontUnderlineColor() {
+		return this.sFontUnderlineColor;
+	}
+
+	/**
+	 * @return The currently set style for the underline.
+	 */
+	public int getFontUnderlineStyle() {
+		return this.nFontUnderlineStyle;
+	}
+
+	/**
+	 * Get the current font weight.
+	 * 
+	 * @return The current font weight, normal, bold or italic.
+	 */
+	public String getFontWeight() {
+		return this.sFontWeight;
 	}
 
 	/**
@@ -95,25 +139,6 @@ public class TextStyle implements NamedObject {
 	 */
 	public String getName() {
 		return this.sName;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 * 
-	 * @param name
-	 *            - The name of this style
-	 */
-	public final void setName(final String name) {
-		this.sName = name;
-	}
-
-	/**
-	 * Get the current font color.
-	 * 
-	 * @return The currently set font color as a String in format #rrggbb
-	 */
-	public String getFontColor() {
-		return this.sFontColor;
 	}
 
 	/**
@@ -138,31 +163,30 @@ public class TextStyle implements NamedObject {
 	}
 
 	/**
-	 * Set the font weight to italic.
+	 * Set the font size in points to the given value.
 	 * 
-	 * @return true
-	 * @deprecated 0.5.2 Use setFontWeightItalic() instead.
+	 * @param fontSize
+	 *            - The font size as int , e.g. 10 or 8
 	 */
-	@Deprecated
-	public boolean setFontStyleItalic() {
-		this.sFontWeight = "italic";
-		this.sFontWeightAsian = "italic";
-		this.sFontWeightComplex = "italic";
-
-		return true;
+	public void setFontSize(final int fontSize) {
+		String sSize = new StringBuilder(fontSize).append("pt").toString();
+		this.sFontSize = sSize;
+		this.sFontSizeAsian = sSize;
+		this.sFontSizeComplex = sSize;
 	}
 
 	/**
-	 * Set the font weight to italic.
+	 * Set the font size to the given value<br>
+	 * fontSize is a length value expressed as a number followed by pt, e.g.
+	 * 12pt
 	 * 
-	 * @return true
+	 * @param fontSize
+	 *            - The font size as string, e.g. '10.5pt' or '8pt'
 	 */
-	public boolean setFontWeightItalic() {
-		this.sFontWeight = "italic";
-		this.sFontWeightAsian = "italic";
-		this.sFontWeightComplex = "italic";
-
-		return true;
+	public void setFontSize(final String fontSize) {
+		this.sFontSize = fontSize;
+		this.sFontSizeAsian = fontSize;
+		this.sFontSizeComplex = fontSize;
 	}
 
 	/**
@@ -181,14 +205,16 @@ public class TextStyle implements NamedObject {
 	}
 
 	/**
-	 * Set the font weight to bold.
+	 * Set the font weight to italic.
 	 * 
 	 * @return true
+	 * @deprecated 0.5.2 Use setFontWeightItalic() instead.
 	 */
-	public boolean setFontWeightBold() {
-		this.sFontWeight = "bold";
-		this.sFontWeightAsian = "bold";
-		this.sFontWeightComplex = "bold";
+	@Deprecated
+	public boolean setFontStyleItalic() {
+		this.sFontWeight = "italic";
+		this.sFontWeightAsian = "italic";
+		this.sFontWeightComplex = "italic";
 
 		return true;
 	}
@@ -209,68 +235,15 @@ public class TextStyle implements NamedObject {
 	}
 
 	/**
-	 * Get the current font weight.
+	 * Set the font underline color to sColor. Use an empty string to reset it
+	 * to 'auto'.
 	 * 
-	 * @return The current font weight, normal, bold or italic.
+	 * @param sColor
+	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
+	 *            cell background.
 	 */
-	public String getFontWeight() {
-		return this.sFontWeight;
-	}
-
-	/**
-	 * Set the font weight to normal.
-	 * 
-	 * @return true -
-	 */
-	public boolean setFontWeightNormal() {
-		this.sFontWeight = "normal";
-		this.sFontWeightAsian = "normal";
-		this.sFontWeightComplex = "normal";
-
-		return true;
-	}
-
-	/**
-	 * Get the font size as string, e.g. '10.5pt' or '8pt'
-	 * 
-	 * @return The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public String getFontSize() {
-		return this.sFontSize;
-	}
-
-	/**
-	 * Set the font size to the given value<br>
-	 * fontSize is a length value expressed as a number followed by pt, e.g.
-	 * 12pt
-	 * 
-	 * @param fontSize
-	 *            - The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public void setFontSize(final String fontSize) {
-		this.sFontSize = fontSize;
-		this.sFontSizeAsian = fontSize;
-		this.sFontSizeComplex = fontSize;
-	}
-
-	/**
-	 * Set the font size in points to the given value.
-	 * 
-	 * @param fontSize
-	 *            - The font size as int , e.g. 10 or 8
-	 */
-	public void setFontSize(final int fontSize) {
-		String sSize = new StringBuilder(fontSize).append("pt").toString();
-		this.sFontSize = sSize;
-		this.sFontSizeAsian = sSize;
-		this.sFontSizeComplex = sSize;
-	}
-
-	/**
-	 * @return The currently set style for the underline.
-	 */
-	public int getFontUnderlineStyle() {
-		return this.nFontUnderlineStyle;
+	public void setFontUnderlineColor(final String sColor) {
+		this.sFontUnderlineColor = sColor;
 	}
 
 	/**
@@ -294,24 +267,52 @@ public class TextStyle implements NamedObject {
 	}
 
 	/**
-	 * Get the currently set underline color.
+	 * Set the font weight to bold.
 	 * 
-	 * @return The color in format #rrggbb
+	 * @return true
 	 */
-	public String getFontUnderlineColor() {
-		return this.sFontUnderlineColor;
+	public boolean setFontWeightBold() {
+		this.sFontWeight = "bold";
+		this.sFontWeightAsian = "bold";
+		this.sFontWeightComplex = "bold";
+
+		return true;
 	}
 
 	/**
-	 * Set the font underline color to sColor. Use an empty string to reset it
-	 * to 'auto'.
+	 * Set the font weight to italic.
 	 * 
-	 * @param sColor
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            cell background.
+	 * @return true
 	 */
-	public void setFontUnderlineColor(final String sColor) {
-		this.sFontUnderlineColor = sColor;
+	public boolean setFontWeightItalic() {
+		this.sFontWeight = "italic";
+		this.sFontWeightAsian = "italic";
+		this.sFontWeightComplex = "italic";
+
+		return true;
+	}
+
+	/**
+	 * Set the font weight to normal.
+	 * 
+	 * @return true -
+	 */
+	public boolean setFontWeightNormal() {
+		this.sFontWeight = "normal";
+		this.sFontWeightAsian = "normal";
+		this.sFontWeightComplex = "normal";
+
+		return true;
+	}
+
+	/**
+	 * Set the name of this style to sName.
+	 * 
+	 * @param name
+	 *            - The name of this style
+	 */
+	public final void setName(final String name) {
+		this.sName = name;
 	}
 
 	/**

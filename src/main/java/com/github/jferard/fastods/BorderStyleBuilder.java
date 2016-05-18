@@ -23,8 +23,8 @@ package com.github.jferard.fastods;
 /**
  * @author Julien Férard
  *
- *         Copyright (C) 2016 J. Férard 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
+ *         <mtschulz at users.sourceforge.net>
  *
  *         This file BorderStyleBuilder.java is part of FastODS.
  *
@@ -60,14 +60,14 @@ class BorderStyleBuilder {
 	}
 
 	/**
-	 * Sets the current value of border size.
+	 * Set the currently set border color.
 	 * 
-	 * @param sBorderSize
-	 *            The size as string, e.g. '0.1cm'
+	 * @param sBorderColor
+	 *            The color in format #rrggbb
 	 * @return this for fluent style
 	 */
-	public BorderStyleBuilder borderSize(String sBorderSize) {
-		this.sBorderSize = sBorderSize;
+	public BorderStyleBuilder borderColor(String sBorderColor) {
+		this.sBorderColor = sBorderColor;
 		return this;
 	}
 
@@ -84,14 +84,14 @@ class BorderStyleBuilder {
 	}
 
 	/**
-	 * Set the currently set border color.
+	 * Sets the current value of border size.
 	 * 
-	 * @param sBorderColor
-	 *            The color in format #rrggbb
+	 * @param sBorderSize
+	 *            The size as string, e.g. '0.1cm'
 	 * @return this for fluent style
 	 */
-	public BorderStyleBuilder borderColor(String sBorderColor) {
-		this.sBorderColor = sBorderColor;
+	public BorderStyleBuilder borderSize(String sBorderSize) {
+		this.sBorderSize = sBorderSize;
 		return this;
 	}
 
@@ -111,6 +111,16 @@ class BorderStyleBuilder {
 	}
 
 	/**
+	 * Builds a border style
+	 * 
+	 * @return ths BorderStyle
+	 */
+	public BorderStyle build() {
+		return new BorderStyle(this.sBorderSize, this.sBorderColor,
+				this.nBorderStyle, this.nPosition);
+	}
+
+	/**
 	 * Sets the border positions as numerical value.
 	 * 
 	 * @param nPosition
@@ -124,15 +134,5 @@ class BorderStyleBuilder {
 		else
 			this.nPosition = nPosition;
 		return this;
-	}
-
-	/**
-	 * Builds a border style
-	 * 
-	 * @return ths BorderStyle
-	 */
-	public BorderStyle build() {
-		return new BorderStyle(this.sBorderSize, this.sBorderColor,
-				this.nBorderStyle, this.nPosition);
 	}
 }

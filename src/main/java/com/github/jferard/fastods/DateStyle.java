@@ -41,14 +41,11 @@ public class DateStyle implements NamedObject {
 	private static final String LONG_DAY = "<number:day number:style=\"long\"/>";
 	private static final String DOT = "<number:text>.</number:text>";
 
-	public static DateStyleBuilder builder() {
-		return new DateStyleBuilder();
-	}
-
 	/**
 	 * Set the date format like '10.07.2012'.
 	 */
 	public static final int DATEFORMAT_DDMMYYYY = 1;
+
 	/*
 	<number:date-style style:name="N36" number:automatic-order="true">
 	<number:day number:style="long"/>
@@ -62,11 +59,11 @@ public class DateStyle implements NamedObject {
 	 * Set the date format like '10.07.12'.
 	 */
 	public static final int DATEFORMAT_DDMMYY = 2;
-
 	/**
 	 * The default date format DATEFORMAT_DDMMYY.
 	 */
 	public static final int DEFAULT_DATEFORMAT = DATEFORMAT_DDMMYY;
+
 	/*
 	<number:date-style style:name="N37" number:automatic-order="true">
 	<number:day number:style="long"/>
@@ -108,7 +105,6 @@ public class DateStyle implements NamedObject {
 	 * <number:year/>
 	 * </number:date-style>
 	 */
-
 	/**
 	 * Set the date format to the weeknumber like '28'.<br>
 	 * Week number
@@ -131,6 +127,10 @@ public class DateStyle implements NamedObject {
 	 * <number:text>-</number:text>
 	 * <number:day number:style="long"/>
 	 */
+
+	public static DateStyleBuilder builder() {
+		return new DateStyleBuilder();
+	}
 
 	/**
 	 * The name of this style.
@@ -159,12 +159,13 @@ public class DateStyle implements NamedObject {
 	}
 
 	/**
-	 * @param odsFile The OdsFile to which this style belongs to.
+	 * @param odsFile
+	 *            The OdsFile to which this style belongs to.
 	 */
 	public void addToFile(OdsFile odsFile) {
 		odsFile.getStyles().addDateStyle(this);
 	}
-	
+
 	/**
 	 * @return The name of this style.
 	 */

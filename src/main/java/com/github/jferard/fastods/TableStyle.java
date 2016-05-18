@@ -23,6 +23,7 @@ import java.util.ListIterator;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -72,7 +73,7 @@ public class TableStyle implements NamedObject {
 	private String sColumnWidth;
 	private ObjectQueue<BorderStyle> qBorders = ObjectQueue.newQueue();
 
-	private Content content;
+	private ContentEntry contentEntry;
 
 	/**
 	 * The OdsFile where this object belong to.
@@ -80,7 +81,7 @@ public class TableStyle implements NamedObject {
 	private OdsFile o;
 
 	/**
-	 * Create a new table style and add it to content.<br>
+	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
 	 * 
 	 * @param nFamily
@@ -96,9 +97,524 @@ public class TableStyle implements NamedObject {
 		init(nFamily, sStyleName);
 		this.o = odsFile;
 		this.ts = new TextStyle(this.o);
-		this.content = this.o.getContent();
-		this.content.addTableStyle(this);
+		this.contentEntry = this.o.getContent();
+		this.contentEntry.addTableStyle(this);
 
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 * 
+	 * @param bs
+	 *            - The border style to be used
+	 */
+	public void addBorderStyle(final BorderStyle bs) {
+
+		if (this.nFamily == STYLE_TABLECELL) {
+			// -----------------------------------------
+			// Make sure each position is unique
+			// -----------------------------------------
+			ListIterator<BorderStyle> iterator = this.qBorders.listIterator();
+			while (iterator.hasNext()) {
+				int n = iterator.nextIndex();
+				BorderStyle b = iterator.next();
+				if (b.getPosition() == bs.getPosition()) {
+					this.qBorders.setAt(n, bs);
+					return;
+				}
+			}
+			// ----------------------------------------------
+			// Did not find it in qBorders, make a new entry
+			// ----------------------------------------------
+			this.qBorders.add(bs);
+
+		}
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 * 
+	 * @param sSize
+	 *            The size of the line e.g. '0.1cm'
+	 * @param sBorderColor
+	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
+	 *            red border
+	 * @param nStyle
+	 *            - The style of the border line, either
+	 *            BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
+	 * @param nPosition
+	 *            - The position of the line in this cell, e.g.
+	 *            BorderStyle.POSITION_TOP
+	 */
+	public void addBorderStyle(final String sSize, final String sBorderColor,
+			final int nStyle, final int nPosition) {
+		if (this.nFamily == STYLE_TABLECELL) {
+			BorderStyle bs = new BorderStyle(sSize, sBorderColor, nStyle,
+					nPosition);
+			this.addBorderStyle(bs);
+		}
+	}
+
+	public String getDefaultCellStyle() {
+		return this.sDefaultCellStyle;
+	}
+
+	/**
+	 * Get the font size as string, e.g. '10.5pt' or '8pt'
+	 * 
+	 * @return The font size as string, e.g. '10.5pt' or '8pt'
+	 */
+	public String getFontSize() {
+		return this.ts.getFontSize();
+	}
+
+	/**
+	 * @return The currently set style for the underline.
+	 */
+	public int getFontUnderline() {
+		return this.ts.getFontUnderlineStyle();
+		// return sFontUnderlineStyle;
+	}
+
+	/**
+	 * Get the name of this table style.
+	 * 
+	 * @return The table style name
+	 */
+	public String getName() {
+		return this.sName;
+	}
+
+	/**
+	 * Get the style type of this TableStyle, this is either:<br>
+	 * TableStyle.STYLE_TABLE, TableStyle.STYLE_TABLECOLUMN
+	 * ,TableStyle.STYLE_TABLEROW or TableStyle.STYLE_TABLECELL.
+	 * 
+	 * @return One of the table styles
+	 */
+	public int getStyleType() {
+		return this.nFamily;
+	}
+
+	/**
+	 * Get the current TextStyle object.
+	 * 
+	 * @return The current textStyle object
+	 */
+	public TextStyle getTextStyle() {
+		return this.ts;
+	}
+
+	/**
+	 * Reset the fond wrap.
+	 * 
+	 * @return true - successful, false - style must be either STYLE_TABLECELL
+	 *         or STYLE_TABLECOLUMN
+	 * @deprecated - Use setFontWrap(false)
+	 */
+	@Deprecated
+	public boolean resetFontWrap() {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.bWrap = false;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Reset any text alignment.
+	 * 
+	 * @return true - successful,<br>
+	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
+	 */
+	public boolean resetTextAlign() {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.nTextAlign = 0;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Reset any vertical text alignment.
+	 * 
+	 * @return true - successful,<br>
+	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
+	 */
+	public boolean resetVerticalAlign() {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.nVerticalAlign = 0;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Set the cell background color to sColor.<br>
+	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
+	 * 
+	 * @param sColor
+	 *            - The color to be used in format #rrggbb e.g. #ff0000 for a
+	 *            red cell background
+	 * @return true - the value was set,<br>
+	 *         false - This object is no table cell, you can not set the
+	 *         background color to it
+	 */
+	public boolean setBackgroundColor(final String sColor) {
+		if (this.nFamily != STYLE_TABLECELL) {
+			return false;
+		}
+		this.sBackgroundColor = sColor;
+
+		return true;
+	}
+
+	/**
+	 * Set the column width of a table column.<br>
+	 * sWidth is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param sWidth
+	 *            - The width of a column, e.g. '10cm'
+	 * @return true - The width was set, false - this object is no table column,
+	 *         you can not set the default cell to it
+	 */
+	public boolean setColumnWidth(final String sWidth) {
+		if (this.nFamily == STYLE_TABLECOLUMN) {
+			this.sColumnWidth = sWidth;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Set the data style for this TableStyle to cs.<br>
+	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
+	 * is thrown
+	 * 
+	 * @param cs
+	 *            The currency style to be used
+	 * @throws SimpleOdsException
+	 *             Thrown if the style type of cs is not
+	 *             TableStyle.STYLE_TABLECELL
+	 */
+	public void setDataStyle(final CurrencyStyle cs) throws SimpleOdsException {
+		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
+			throw new SimpleOdsException(
+					"Can not add the CurrencyStyle to this TableStyle, the TableStyle must be TableStyle.STYLE_TABLECELL");
+		}
+		this.sDataStyle = cs.getName();
+	}
+
+	/**
+	 * Set the data style for this TableStyle to ds.<br>
+	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
+	 * is thrown
+	 * 
+	 * @param ds
+	 *            The date style to be used
+	 * @throws SimpleOdsException
+	 *             Thrown if the style type of ds is not
+	 *             TableStyle.STYLE_TABLECELL
+	 */
+	public void setDataStyle(final DateStyle ds) throws SimpleOdsException {
+		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
+			throw new SimpleOdsException(
+					"Can not add the DateStyle to this TableStyle, the TableStyle must be TableStyle.STYLE_TABLECELL");
+		}
+		this.sDataStyle = ds.getName();
+	}
+
+	/**
+	 * Set the data style for this TableStyle to ns.<br>
+	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
+	 * is thrown
+	 * 
+	 * @param ns
+	 *            The number style to be used
+	 * @throws SimpleOdsException
+	 *             Thrown if the style type of ns is not
+	 *             TableStyle.STYLE_TABLECELL
+	 */
+	public void setDataStyle(final NumberStyle ns) throws SimpleOdsException {
+		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
+			throw new SimpleOdsException(
+					"Can not add the NumberStyle to this TableStyle, the TableStyle must be TableStyle.STYLE_TABLECELL");
+		}
+		this.sDataStyle = ns.getName();
+
+	}
+
+	/**
+	 * Set the default cell style of a table column.
+	 * 
+	 * @param ts
+	 *            The table cell style to be used as default
+	 * @return true - The style was set as default,<br>
+	 *         false - this object is no table column, you can not set the
+	 *         default cell to it
+	 */
+	public boolean setDefaultCellStyle(final TableStyle ts) {
+		if (this.nFamily != STYLE_TABLECOLUMN) {
+			return false;
+		}
+
+		this.sDefaultCellStyle = ts.getName();
+		this.contentEntry.addTableStyle(ts);
+
+		return true;
+
+	}
+
+	/**
+	 * Set the font color to sColor.<br>
+	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
+	 * 
+	 * @param sColor
+	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
+	 *            cell background
+	 * @return true - the value was set,<br>
+	 *         false - This object is no table cell, you can not set the font
+	 *         color to it
+	 */
+	public boolean setFontColor(final String sColor) {
+		if (this.nFamily != STYLE_TABLECELL) {
+			return false;
+		}
+		this.ts.setFontColor(sColor);
+
+		return true;
+	}
+
+	/**
+	 * Set the font size in points to the given value.
+	 * 
+	 * @param fontSize
+	 *            - The font size as int , e.g. 10 or 8
+	 */
+	public void setFontSize(final int fontSize) {
+		this.ts.setFontSize(fontSize);
+		// sFontSize = Integer.toString(fontSize)+"pt";
+		// sFontSizeAsian = Integer.toString(fontSize)+"pt";
+		// sFontSizeComplex = Integer.toString(fontSize)+"pt";
+	}
+
+	/**
+	 * Set the font size to the given value<br>
+	 * fontSize is a length value expressed as a number followed by pt, e.g.
+	 * 12pt
+	 * 
+	 * @param fontSize
+	 *            - The font size as string, e.g. '10.5pt' or '8pt'
+	 */
+	public void setFontSize(final String fontSize) {
+		this.ts.setFontSize(fontSize);
+		// sFontSize = fontSize;
+		// sFontSizeAsian = fontSize;
+		// sFontSizeComplex = fontSize;
+	}
+
+	/**
+	 * Set the style that should be used for the underline. Valid is:<br>
+	 * TextStyle.STYLE_UNDERLINE_NONE<br>
+	 * TextStyle.STYLE_UNDERLINE_SOLID<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTTED<br>
+	 * TextStyle.STYLE_UNDERLINE_DASH<br>
+	 * TextStyle.STYLE_UNDERLINE_LONGDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
+	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
+	 * Other values are ignored.
+	 * 
+	 * @param nUnderlineStyle
+	 *            The underline stlye
+	 */
+	public void setFontUnderline(final int nUnderlineStyle) {
+		this.ts.setFontUnderlineStyle(nUnderlineStyle);
+		// if
+		// ("none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave".indexOf(sFontUnderline.toLowerCase())
+		// < 0) {
+		// return;
+		// }
+		// this.sFontUnderlineStyle = sFontUnderline;
+	}
+
+	/**
+	 * Set the font weight to bold.<br>
+	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
+	 * 
+	 * @return true - the value was set,<br>
+	 *         false - This object is no table cell, you can not set it to bold
+	 */
+	public boolean setFontWeightBold() {
+		if (this.nFamily != STYLE_TABLECELL) {
+			return false;
+		}
+		this.ts.setFontWeightBold();
+		// this.sFontWeight = "bold";
+		// this.sFontWeightAsian = "bold";
+		// this.sFontWeightComplex = "bold";
+
+		return true;
+	}
+
+	/**
+	 * Set the font weight to italic.<br>
+	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
+	 * 
+	 * @return true - the value was set,<br>
+	 *         false - This object is no table cell, you can not set it to bold
+	 */
+	public boolean setFontWeightItalic() {
+		if (this.nFamily != STYLE_TABLECELL) {
+			return false;
+		}
+		this.ts.setFontWeightItalic();
+		// this.sFontWeight = "italic";
+		// this.sFontWeightAsian = "italic";
+		// this.sFontWeightComplex = "italic";
+
+		return true;
+	}
+
+	/**
+	 * Set the font weight to normal.<br>
+	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
+	 * 
+	 * @return true - the value was set,<br>
+	 *         false - This object is no table cell, you can not set it to
+	 *         normal
+	 */
+	public boolean setFontWeightNormal() {
+		if (this.nFamily != STYLE_TABLECELL) {
+			return false;
+		}
+		this.ts.setFontWeightNormal();
+		// this.sFontWeight = "normal";
+		// this.sFontWeightAsian = "normal";
+		// this.sFontWeightComplex = "normal";
+
+		return true;
+	}
+
+	/**
+	 * Set fond wrap to true.
+	 * 
+	 * @return true - successful, false - style must be either STYLE_TABLECELL
+	 *         or STYLE_TABLECOLUMN
+	 * @deprecated - Use setFontWrap(true)
+	 */
+	@Deprecated
+	public boolean setFontWrap() {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.bWrap = true;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Set font wrap.
+	 * 
+	 * @param fSetWrap
+	 *            <br>
+	 *            true - Font will be wrapped,<br>
+	 *            false - no font wrapping
+	 * @return true - successful,<br>
+	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
+	 */
+	public boolean setFontWrap(final boolean fSetWrap) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.bWrap = fSetWrap;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Set the row height to a table row.<br>
+	 * sHeight is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @param sHeight
+	 *            The table row height to be used, e.g. '1.0cm'
+	 * @return true - The height was set,<br>
+	 *         false - his object is no table row, you can not set the height to
+	 *         it
+	 */
+	public boolean setRowHeight(final String sHeight) {
+		if (this.nFamily != STYLE_TABLEROW) {
+			return false;
+		}
+		this.sRowHeight = sHeight;
+
+		return true;
+	}
+
+	/**
+	 * Set the alignment of text.
+	 * 
+	 * @param nAlign
+	 *            - The text alignment flag,
+	 * @return true - successful,<br>
+	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
+	 */
+	public boolean setTextAlign(final int nAlign) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.nTextAlign = nAlign;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Set a new TextStyle object. This will overwrite all previous changed to
+	 * the text styles<br>
+	 * with the new textStyle.
+	 * 
+	 * @param textStyle
+	 *            The new text style to be used
+	 */
+	public void setTextStyle(final TextStyle textStyle) {
+		this.ts = textStyle;
+	}
+
+	/**
+	 * Set the vertical alignment of text.
+	 * 
+	 * @param nAlign
+	 *            - The vertical alignment flag,<br>
+	 *            either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or
+	 *            VERTICALALIGN_BOTTOM
+	 * @return true - successful,<br>
+	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
+	 */
+	public boolean setVerticalAlign(final int nAlign) {
+		if (this.nFamily == STYLE_TABLECELL
+				|| this.nFamily == STYLE_TABLECOLUMN) {
+			this.nVerticalAlign = nAlign;
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -141,523 +657,8 @@ public class TableStyle implements NamedObject {
 
 	}
 
-	protected void addStylesObject(Styles s) {
+	protected void addStylesObject(StylesEntry s) {
 		this.o.setStyles(s);
-	}
-
-	/**
-	 * Get the name of this table style.
-	 * 
-	 * @return The table style name
-	 */
-	public String getName() {
-		return this.sName;
-	}
-
-	/**
-	 * Get the style type of this TableStyle, this is either:<br>
-	 * TableStyle.STYLE_TABLE, TableStyle.STYLE_TABLECOLUMN
-	 * ,TableStyle.STYLE_TABLEROW or TableStyle.STYLE_TABLECELL.
-	 * 
-	 * @return One of the table styles
-	 */
-	public int getStyleType() {
-		return this.nFamily;
-	}
-
-	public String getDefaultCellStyle() {
-		return this.sDefaultCellStyle;
-	}
-
-	/**
-	 * Set the column width of a table column.<br>
-	 * sWidth is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param sWidth
-	 *            - The width of a column, e.g. '10cm'
-	 * @return true - The width was set, false - this object is no table column,
-	 *         you can not set the default cell to it
-	 */
-	public boolean setColumnWidth(final String sWidth) {
-		if (this.nFamily == STYLE_TABLECOLUMN) {
-			this.sColumnWidth = sWidth;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Set the default cell style of a table column.
-	 * 
-	 * @param ts
-	 *            The table cell style to be used as default
-	 * @return true - The style was set as default,<br>
-	 *         false - this object is no table column, you can not set the
-	 *         default cell to it
-	 */
-	public boolean setDefaultCellStyle(final TableStyle ts) {
-		if (this.nFamily != STYLE_TABLECOLUMN) {
-			return false;
-		}
-
-		this.sDefaultCellStyle = ts.getName();
-		this.content.addTableStyle(ts);
-
-		return true;
-
-	}
-
-	/**
-	 * Set the row height to a table row.<br>
-	 * sHeight is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param sHeight
-	 *            The table row height to be used, e.g. '1.0cm'
-	 * @return true - The height was set,<br>
-	 *         false - his object is no table row, you can not set the height to
-	 *         it
-	 */
-	public boolean setRowHeight(final String sHeight) {
-		if (this.nFamily != STYLE_TABLEROW) {
-			return false;
-		}
-		this.sRowHeight = sHeight;
-
-		return true;
-	}
-
-	/**
-	 * Set the cell background color to sColor.<br>
-	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
-	 * 
-	 * @param sColor
-	 *            - The color to be used in format #rrggbb e.g. #ff0000 for a
-	 *            red cell background
-	 * @return true - the value was set,<br>
-	 *         false - This object is no table cell, you can not set the
-	 *         background color to it
-	 */
-	public boolean setBackgroundColor(final String sColor) {
-		if (this.nFamily != STYLE_TABLECELL) {
-			return false;
-		}
-		this.sBackgroundColor = sColor;
-
-		return true;
-	}
-
-	/**
-	 * Set the font color to sColor.<br>
-	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
-	 * 
-	 * @param sColor
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            cell background
-	 * @return true - the value was set,<br>
-	 *         false - This object is no table cell, you can not set the font
-	 *         color to it
-	 */
-	public boolean setFontColor(final String sColor) {
-		if (this.nFamily != STYLE_TABLECELL) {
-			return false;
-		}
-		this.ts.setFontColor(sColor);
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to italic.<br>
-	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
-	 * 
-	 * @return true - the value was set,<br>
-	 *         false - This object is no table cell, you can not set it to bold
-	 */
-	public boolean setFontWeightItalic() {
-		if (this.nFamily != STYLE_TABLECELL) {
-			return false;
-		}
-		this.ts.setFontWeightItalic();
-		// this.sFontWeight = "italic";
-		// this.sFontWeightAsian = "italic";
-		// this.sFontWeightComplex = "italic";
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to bold.<br>
-	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
-	 * 
-	 * @return true - the value was set,<br>
-	 *         false - This object is no table cell, you can not set it to bold
-	 */
-	public boolean setFontWeightBold() {
-		if (this.nFamily != STYLE_TABLECELL) {
-			return false;
-		}
-		this.ts.setFontWeightBold();
-		// this.sFontWeight = "bold";
-		// this.sFontWeightAsian = "bold";
-		// this.sFontWeightComplex = "bold";
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to normal.<br>
-	 * The TableStyle must be of a format of TableStyle.STYLE_TABLECELL
-	 * 
-	 * @return true - the value was set,<br>
-	 *         false - This object is no table cell, you can not set it to
-	 *         normal
-	 */
-	public boolean setFontWeightNormal() {
-		if (this.nFamily != STYLE_TABLECELL) {
-			return false;
-		}
-		this.ts.setFontWeightNormal();
-		// this.sFontWeight = "normal";
-		// this.sFontWeightAsian = "normal";
-		// this.sFontWeightComplex = "normal";
-
-		return true;
-	}
-
-	/**
-	 * Get the font size as string, e.g. '10.5pt' or '8pt'
-	 * 
-	 * @return The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public String getFontSize() {
-		return this.ts.getFontSize();
-	}
-
-	/**
-	 * Set the font size to the given value<br>
-	 * fontSize is a length value expressed as a number followed by pt, e.g.
-	 * 12pt
-	 * 
-	 * @param fontSize
-	 *            - The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public void setFontSize(final String fontSize) {
-		this.ts.setFontSize(fontSize);
-		// sFontSize = fontSize;
-		// sFontSizeAsian = fontSize;
-		// sFontSizeComplex = fontSize;
-	}
-
-	/**
-	 * Set the font size in points to the given value.
-	 * 
-	 * @param fontSize
-	 *            - The font size as int , e.g. 10 or 8
-	 */
-	public void setFontSize(final int fontSize) {
-		this.ts.setFontSize(fontSize);
-		// sFontSize = Integer.toString(fontSize)+"pt";
-		// sFontSizeAsian = Integer.toString(fontSize)+"pt";
-		// sFontSizeComplex = Integer.toString(fontSize)+"pt";
-	}
-
-	/**
-	 * Set font wrap.
-	 * 
-	 * @param fSetWrap
-	 *            <br>
-	 *            true - Font will be wrapped,<br>
-	 *            false - no font wrapping
-	 * @return true - successful,<br>
-	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
-	 */
-	public boolean setFontWrap(final boolean fSetWrap) {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.bWrap = fSetWrap;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Set fond wrap to true.
-	 * 
-	 * @return true - successful, false - style must be either STYLE_TABLECELL
-	 *         or STYLE_TABLECOLUMN
-	 * @deprecated - Use setFontWrap(true)
-	 */
-	@Deprecated
-	public boolean setFontWrap() {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.bWrap = true;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Reset the fond wrap.
-	 * 
-	 * @return true - successful, false - style must be either STYLE_TABLECELL
-	 *         or STYLE_TABLECOLUMN
-	 * @deprecated - Use setFontWrap(false)
-	 */
-	@Deprecated
-	public boolean resetFontWrap() {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.bWrap = false;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Set the alignment of text.
-	 * 
-	 * @param nAlign
-	 *            - The text alignment flag,
-	 * @return true - successful,<br>
-	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
-	 */
-	public boolean setTextAlign(final int nAlign) {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.nTextAlign = nAlign;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Reset any text alignment.
-	 * 
-	 * @return true - successful,<br>
-	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
-	 */
-	public boolean resetTextAlign() {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.nTextAlign = 0;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Set the vertical alignment of text.
-	 * 
-	 * @param nAlign
-	 *            - The vertical alignment flag,<br>
-	 *            either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or
-	 *            VERTICALALIGN_BOTTOM
-	 * @return true - successful,<br>
-	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
-	 */
-	public boolean setVerticalAlign(final int nAlign) {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.nVerticalAlign = nAlign;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Reset any vertical text alignment.
-	 * 
-	 * @return true - successful,<br>
-	 *         false - style must be either STYLE_TABLECELL or STYLE_TABLECOLUMN
-	 */
-	public boolean resetVerticalAlign() {
-		if (this.nFamily == STYLE_TABLECELL
-				|| this.nFamily == STYLE_TABLECOLUMN) {
-			this.nVerticalAlign = 0;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 * 
-	 * @param sSize
-	 *            The size of the line e.g. '0.1cm'
-	 * @param sBorderColor
-	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
-	 *            red border
-	 * @param nStyle
-	 *            - The style of the border line, either
-	 *            BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
-	 * @param nPosition
-	 *            - The position of the line in this cell, e.g.
-	 *            BorderStyle.POSITION_TOP
-	 */
-	public void addBorderStyle(final String sSize, final String sBorderColor,
-			final int nStyle, final int nPosition) {
-		if (this.nFamily == STYLE_TABLECELL) {
-			BorderStyle bs = new BorderStyle(sSize, sBorderColor, nStyle,
-					nPosition);
-			this.addBorderStyle(bs);
-		}
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 * 
-	 * @param bs
-	 *            - The border style to be used
-	 */
-	public void addBorderStyle(final BorderStyle bs) {
-
-		if (this.nFamily == STYLE_TABLECELL) {
-			// -----------------------------------------
-			// Make sure each position is unique
-			// -----------------------------------------
-			ListIterator<BorderStyle> iterator = this.qBorders.listIterator();
-			while (iterator.hasNext()) {
-				int n = iterator.nextIndex();
-				BorderStyle b = iterator.next();
-				if (b.getPosition() == bs.getPosition()) {
-					this.qBorders.setAt(n, bs);
-					return;
-				}
-			}
-			// ----------------------------------------------
-			// Did not find it in qBorders, make a new entry
-			// ----------------------------------------------
-			this.qBorders.add(bs);
-
-		}
-	}
-
-	/**
-	 * Set the data style for this TableStyle to ns.<br>
-	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
-	 * is thrown
-	 * 
-	 * @param ns
-	 *            The number style to be used
-	 * @throws SimpleOdsException
-	 *             Thrown if the style type of ns is not
-	 *             TableStyle.STYLE_TABLECELL
-	 */
-	public void setDataStyle(final NumberStyle ns) throws SimpleOdsException {
-		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
-			throw new SimpleOdsException(
-					"Can not add the NumberStyle to this TableStyle, the TableStyle must be TableStyle.STYLE_TABLECELL");
-		}
-		this.sDataStyle = ns.getName();
-
-	}
-
-	/**
-	 * Set the data style for this TableStyle to cs.<br>
-	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
-	 * is thrown
-	 * 
-	 * @param cs
-	 *            The currency style to be used
-	 * @throws SimpleOdsException
-	 *             Thrown if the style type of cs is not
-	 *             TableStyle.STYLE_TABLECELL
-	 */
-	public void setDataStyle(final CurrencyStyle cs) throws SimpleOdsException {
-		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
-			throw new SimpleOdsException(
-					"Can not add the CurrencyStyle to this TableStyle, the TableStyle must be TableStyle.STYLE_TABLECELL");
-		}
-		this.sDataStyle = cs.getName();
-	}
-
-	/**
-	 * Set the data style for this TableStyle to ds.<br>
-	 * If the StyleType of this TableStyle is not STYLE_TABLECELL, an exception
-	 * is thrown
-	 * 
-	 * @param ds
-	 *            The date style to be used
-	 * @throws SimpleOdsException
-	 *             Thrown if the style type of ds is not
-	 *             TableStyle.STYLE_TABLECELL
-	 */
-	public void setDataStyle(final DateStyle ds) throws SimpleOdsException {
-		if (this.getStyleType() != TableStyle.STYLE_TABLECELL) {
-			throw new SimpleOdsException(
-					"Can not add the DateStyle to this TableStyle, the TableStyle must be TableStyle.STYLE_TABLECELL");
-		}
-		this.sDataStyle = ds.getName();
-	}
-
-	/**
-	 * @return The currently set style for the underline.
-	 */
-	public int getFontUnderline() {
-		return this.ts.getFontUnderlineStyle();
-		// return sFontUnderlineStyle;
-	}
-
-	/**
-	 * Set the style that should be used for the underline. Valid is:<br>
-	 * TextStyle.STYLE_UNDERLINE_NONE<br>
-	 * TextStyle.STYLE_UNDERLINE_SOLID<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTTED<br>
-	 * TextStyle.STYLE_UNDERLINE_DASH<br>
-	 * TextStyle.STYLE_UNDERLINE_LONGDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
-	 * Other values are ignored.
-	 * 
-	 * @param nUnderlineStyle
-	 *            The underline stlye
-	 */
-	public void setFontUnderline(final int nUnderlineStyle) {
-		this.ts.setFontUnderlineStyle(nUnderlineStyle);
-		// if
-		// ("none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave".indexOf(sFontUnderline.toLowerCase())
-		// < 0) {
-		// return;
-		// }
-		// this.sFontUnderlineStyle = sFontUnderline;
-	}
-
-	/**
-	 * Get the current TextStyle object.
-	 * 
-	 * @return The current textStyle object
-	 */
-	public TextStyle getTextStyle() {
-		return this.ts;
-	}
-
-	/**
-	 * Set a new TextStyle object. This will overwrite all previous changed to
-	 * the text styles<br>
-	 * with the new textStyle.
-	 * 
-	 * @param textStyle
-	 *            The new text style to be used
-	 */
-	public void setTextStyle(final TextStyle textStyle) {
-		this.ts = textStyle;
 	}
 
 	/**
@@ -762,7 +763,7 @@ public class TableStyle implements NamedObject {
 				// Check is a font size should be added
 				//-----------------------------------------------
 				if (this.sFontSize.length() > 0) {
-
+			
 					sbTemp.append("fo:font-size=\"" + this.sFontSize + "\" style:font-size-asian=\"" + this.sFontSizeAsian
 							+ "\" style:font-size-complex=\"" + this.sFontSizeComplex + "\" "
 			

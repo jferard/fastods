@@ -59,22 +59,6 @@ public class NumberStyle implements NamedObject {
 	private OdsFile o;
 
 	/**
-	 * Create a new number style with the name sName, default minimum integer
-	 * digits is 1 and default decimal places is 2.<br>
-	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
-	 * @param sStyleName
-	 *            The name of the number style, this name must be unique.
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs to.
-	 */
-	public NumberStyle(final String sStyleName, final OdsFile odsFile) {
-		this.setName(sStyleName);
-		this.o = odsFile;
-		this.o.getStyles().addNumberStyle(this);
-	}
-
-	/**
 	 * Create a new number style with the name sName, minimum integer digits is
 	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL<br>
@@ -99,12 +83,97 @@ public class NumberStyle implements NamedObject {
 	}
 
 	/**
+	 * Create a new number style with the name sName, default minimum integer
+	 * digits is 1 and default decimal places is 2.<br>
+	 * Version 0.5.0 Added parameter OdsFile o
+	 * 
+	 * @param sStyleName
+	 *            The name of the number style, this name must be unique.
+	 * @param odsFile
+	 *            The OdsFile to which this style belongs to.
+	 */
+	public NumberStyle(final String sStyleName, final OdsFile odsFile) {
+		this.setName(sStyleName);
+		this.o = odsFile;
+		this.o.getStyles().addNumberStyle(this);
+	}
+
+	/**
+	 * @return The two letter country code, e.g. 'US'
+	 */
+	public String getCountry() {
+		return this.sCountry;
+	}
+
+	/**
 	 * Get how many digits are to the right of the decimal symbol.
 	 * 
 	 * @return The number of digits
 	 */
 	public int getDecimalPlaces() {
 		return this.nDecimalPlaces;
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
+	}
+
+	/**
+	 * Get the current number of leading zeros.
+	 * 
+	 * @return The current number of leading zeros.
+	 */
+	public int getMinExponentDigits() {
+		return this.nMinExponentDigits;
+	}
+
+	/**
+	 * Get how many leading zeros are present.
+	 * 
+	 * @return The number of leading zeros
+	 */
+	public int getMinIntegerDigits() {
+		return this.nMinIntegerDigits;
+	}
+
+	/**
+	 * @return The name of this style.
+	 */
+	public String getName() {
+		return this.sName;
+	}
+
+	/**
+	 * Get the current status of the thousands separator.
+	 * 
+	 * @return true The thousands separator will be shown.
+	 */
+	public boolean getThousandsSeparator() {
+		return this.bGrouping;
+	}
+
+	/**
+	 * Check if this style shows a red color for negative numbers.
+	 * 
+	 * @return true - for negative numbers the font is red<br>
+	 *         false - for negative numbers the font is not red
+	 */
+	public boolean isNegativeValuesRed() {
+		return this.bNegativeValuesRed;
+	}
+
+	/**
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 * 
+	 * @param country
+	 *            The two letter country code, e.g. 'US'
+	 */
+	public void setCountry(final String country) {
+		this.sCountry = country.toUpperCase();
 	}
 
 	/**
@@ -118,31 +187,29 @@ public class NumberStyle implements NamedObject {
 	}
 
 	/**
-	 * Get how many leading zeros are present.
+	 * Add the numerator and denominator values to be shown.<br>
+	 * The number style is set to NUMBER_FRACTION
 	 * 
-	 * @return The number of leading zeros
+	 * @param nNumerator
+	 * @param nDenominator
 	 */
-	public int getMinIntegerDigits() {
-		return this.nMinIntegerDigits;
+	public void setFractionValues(final int nNumerator,
+			final int nDenominator) {
+		this.nMinNumeratorDigits = nNumerator;
+		this.nMinDenominatorDigits = nDenominator;
+		this.nNumberType = NUMBER_FRACTION;
 	}
 
 	/**
-	 * Set how many leading zeros are present.
+	 * Set the country and language if you need to distinguish between different
+	 * <br>
+	 * countries. E.g. set it to country='US' and language='en'
 	 * 
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
+	 * @param language
+	 *            The two letter language code, e.g. 'en'
 	 */
-	public final void setMinIntegerDigits(final int minIntegerDigits) {
-		this.nMinIntegerDigits = minIntegerDigits;
-	}
-
-	/**
-	 * Get the current number of leading zeros.
-	 * 
-	 * @return The current number of leading zeros.
-	 */
-	public int getMinExponentDigits() {
-		return this.nMinExponentDigits;
+	public void setLanguage(final String language) {
+		this.sLanguage = language.toLowerCase();
 	}
 
 	/**
@@ -158,17 +225,34 @@ public class NumberStyle implements NamedObject {
 	}
 
 	/**
-	 * Add the numerator and denominator values to be shown.<br>
-	 * The number style is set to NUMBER_FRACTION
+	 * Set how many leading zeros are present.
 	 * 
-	 * @param nNumerator
-	 * @param nDenominator
+	 * @param minIntegerDigits
+	 *            The number of leading zeros
 	 */
-	public void setFractionValues(final int nNumerator,
-			final int nDenominator) {
-		this.nMinNumeratorDigits = nNumerator;
-		this.nMinDenominatorDigits = nDenominator;
-		this.nNumberType = NUMBER_FRACTION;
+	public final void setMinIntegerDigits(final int minIntegerDigits) {
+		this.nMinIntegerDigits = minIntegerDigits;
+	}
+
+	/**
+	 * Set the name of this style to sName, this name must be unique.
+	 * 
+	 * @param name
+	 *            - The name of this style.
+	 */
+	public final void setName(final String name) {
+		this.sName = name;
+	}
+
+	/**
+	 * Set to true if negative values should be shown in red color.
+	 * 
+	 * @param bValue
+	 *            true negative numbers will be shown in red color.
+	 */
+	public void setNegativeValuesRed(final boolean bValue) {
+		this.bNegativeValuesRed = bValue;
+		this.bVolatile = bValue;
 	}
 
 	/**
@@ -187,15 +271,6 @@ public class NumberStyle implements NamedObject {
 	}
 
 	/**
-	 * Get the current status of the thousands separator.
-	 * 
-	 * @return true The thousands separator will be shown.
-	 */
-	public boolean getThousandsSeparator() {
-		return this.bGrouping;
-	}
-
-	/**
 	 * If this is set to true, the thousands separator is shown.<br>
 	 * The default is false.
 	 * 
@@ -205,81 +280,6 @@ public class NumberStyle implements NamedObject {
 	 */
 	public void setThousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
-	}
-
-	/**
-	 * @return The name of this style.
-	 */
-	public String getName() {
-		return this.sName;
-	}
-
-	/**
-	 * Set the name of this style to sName, this name must be unique.
-	 * 
-	 * @param name
-	 *            - The name of this style.
-	 */
-	public final void setName(final String name) {
-		this.sName = name;
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * <br>
-	 * countries. E.g. set it to country='US' and language='en'
-	 * 
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public void setLanguage(final String language) {
-		this.sLanguage = language.toLowerCase();
-	}
-
-	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 * 
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 */
-	public void setCountry(final String country) {
-		this.sCountry = country.toUpperCase();
-	}
-
-	/**
-	 * Check if this style shows a red color for negative numbers.
-	 * 
-	 * @return true - for negative numbers the font is red<br>
-	 *         false - for negative numbers the font is not red
-	 */
-	public boolean isNegativeValuesRed() {
-		return this.bNegativeValuesRed;
-	}
-
-	/**
-	 * Set to true if negative values should be shown in red color.
-	 * 
-	 * @param bValue
-	 *            true negative numbers will be shown in red color.
-	 */
-	public void setNegativeValuesRed(final boolean bValue) {
-		this.bNegativeValuesRed = bValue;
-		this.bVolatile = bValue;
 	}
 
 	/**
@@ -428,7 +428,8 @@ public class NumberStyle implements NamedObject {
 					.append(this.nMinDenominatorDigits).append("\" ");
 		default:
 			sb.append("<number:number ");
-			sb.append("number:decimal-places=\"").append(this.nDecimalPlaces).append("\" ");
+			sb.append("number:decimal-places=\"").append(this.nDecimalPlaces)
+					.append("\" ");
 			break;
 
 		/*

@@ -75,11 +75,16 @@ public class BorderStyle {
 	 * The border style default is BorderStyle.BORDER_SOLID.
 	 */
 	public static final int DEFAULT_BORDER_STYLE = BORDER_SOLID;
-	
+
 	/*
 	 * The border position default is BorderStyle.BORDER_ALL.
 	 */
 	public static final int DEFAULT_BORDER_POSITION = POSITION_ALL;
+
+	/** a builder */
+	public static BorderStyleBuilder builder() {
+		return new BorderStyleBuilder();
+	}
 
 	/**
 	 * The border size.
@@ -107,11 +112,6 @@ public class BorderStyle {
 
 	/** String representation */
 	private final String string;
-
-	/** a builder */
-	public static BorderStyleBuilder builder() {
-		return new BorderStyleBuilder();
-	}
 
 	/**
 	 * sSize is a length value expressed as a number followed by a unit of
@@ -146,21 +146,21 @@ public class BorderStyle {
 	}
 
 	/**
-	 * Gets the current value of border size.
-	 * 
-	 * @return The size as string, e.g. '0.1cm'
-	 */
-	public String getBorderSize() {
-		return this.sBorderSize;
-	}
-
-	/**
 	 * Get the currently set border color.
 	 * 
 	 * @return The color in format #rrggbb
 	 */
 	public String getBorderColor() {
 		return this.sBorderColor;
+	}
+
+	/**
+	 * Gets the current value of border size.
+	 * 
+	 * @return The size as string, e.g. '0.1cm'
+	 */
+	public String getBorderSize() {
+		return this.sBorderSize;
 	}
 
 	/**

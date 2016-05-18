@@ -72,7 +72,7 @@ public class CurrencyStyle implements NamedObject {
 		this.bNegativeValuesRed = bNegativeValuesRed;
 		this.bCurrencyPosition = bCurrencyPosition;
 	}
-	
+
 	public void addToFile(OdsFile odsFile) {
 		odsFile.getStyles().addCurrencyStyle(this);
 	}
@@ -153,12 +153,12 @@ public class CurrencyStyle implements NamedObject {
 		if (this.xml == null) {
 			final String currency = this.currencyToXML(util);
 			final String escapedName = util.escapeXMLAttribute(this.sName);
-			
+
 			StringBuilder sbReturn = new StringBuilder();
-			
+
 			sbReturn.append("<number:currency-style ").append("style:name=\"")
-					.append(escapedName).append("nn")
-					.append("\" ").append("style:volatile=\"true\">");
+					.append(escapedName).append("nn").append("\" ")
+					.append("style:volatile=\"true\">");
 			sbReturn.append(currency);
 			sbReturn.append("</number:currency-style>");
 
@@ -175,26 +175,11 @@ public class CurrencyStyle implements NamedObject {
 			sbReturn.append(currency);
 			sbReturn.append(
 					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"")
-					.append(escapedName)
-					.append("nn\"/>");
+					.append(escapedName).append("nn\"/>");
 			sbReturn.append("</number:currency-style>");
 			this.xml = sbReturn.toString();
 		}
 		return this.xml;
-	}
-
-	private String currencyToXML(Util util) {
-		StringBuilder sbReturn = new StringBuilder();
-		// Check where the currency symbol should be positioned
-		if (this.bCurrencyPosition == SYMBOLPOSITION_END) {
-			this.appendCurrencyNumber(sbReturn);
-			sbReturn.append("<number:text> </number:text>");
-			this.appendCurrencySymbol(util, sbReturn);
-		} else { // SYMBOLPOSITION_BEGIN
-			this.appendCurrencySymbol(util, sbReturn);
-			this.appendCurrencyNumber(sbReturn);
-		}
-		return sbReturn.toString();
 	}
 
 	private void appendCurrencyNumber(StringBuilder sb) {
@@ -220,6 +205,20 @@ public class CurrencyStyle implements NamedObject {
 		sb.append("\"").append(util.escapeXMLContent(this.getCurrencySymbol()))
 				.append("\"");
 		sb.append("</number:currency-symbol>");
+	}
+
+	private String currencyToXML(Util util) {
+		StringBuilder sbReturn = new StringBuilder();
+		// Check where the currency symbol should be positioned
+		if (this.bCurrencyPosition == SYMBOLPOSITION_END) {
+			this.appendCurrencyNumber(sbReturn);
+			sbReturn.append("<number:text> </number:text>");
+			this.appendCurrencySymbol(util, sbReturn);
+		} else { // SYMBOLPOSITION_BEGIN
+			this.appendCurrencySymbol(util, sbReturn);
+			this.appendCurrencyNumber(sbReturn);
+		}
+		return sbReturn.toString();
 	}
 
 }

@@ -31,11 +31,11 @@ package com.github.jferard.fastods;
 public class SimpleOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-	private SimpleOdsException() {
-	}
-
 	public SimpleOdsException(String s) {
 		super(s);
+	}
+
+	private SimpleOdsException() {
 	}
 
 }

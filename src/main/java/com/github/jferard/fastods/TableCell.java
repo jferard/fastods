@@ -24,6 +24,7 @@ import java.util.Calendar;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -33,7 +34,6 @@ import java.util.Calendar;
  *
  */
 public class TableCell {
-	private Util u = Util.getInstance();
 	public final static int STYLE_STRING = 1;
 	public final static int STYLE_FLOAT = 2;
 	public final static int STYLE_PERCENTAGE = 3;
@@ -41,6 +41,7 @@ public class TableCell {
 	public final static int STYLE_DATE = 5;
 	// public final static int STYLE_TIME = 6;
 	// public final static int STYLE_BOOLEAN = 7;
+	private Util u = Util.getInstance();
 
 	private int nValueType = STYLE_STRING;
 	private String sText = "";
@@ -68,33 +69,11 @@ public class TableCell {
 		}
 	}
 
-	public int getValueType() {
-		return this.nValueType;
-	}
-
 	/**
-	 * Set the type of the value for this cell.
-	 * 
-	 * @param valueType
-	 *            - TableCell.STYLE_STRING,TableCell.STYLE_FLOAT,TableCell.
-	 *            STYLE_PERCENTAGE,TableCell.STYLE_CURRENCY or
-	 *            TableCell.STYLE_DATE
+	 * @return The number of columns that this cell spans overs.
 	 */
-	public void setValueType(final int valueType) {
-		this.nValueType = valueType;
-	}
-
-	/**
-	 * Get the text within this cell.
-	 * 
-	 * @return A String with the text
-	 */
-	public String getText() {
-		return this.sText;
-	}
-
-	public void setText(String text) {
-		this.sText = text;
+	public int getColumnsSpanned() {
+		return this.nColumnsSpanned;
 	}
 
 	/**
@@ -109,25 +88,6 @@ public class TableCell {
 	}
 
 	/**
-	 * Set the currency value and table cell style to STYLE_CURRENCY.
-	 * 
-	 * @param currency
-	 *            The currency value
-	 */
-	public void setCurrency(final String currency) {
-		this.sCurrency = currency;
-		this.nValueType = TableCell.STYLE_CURRENCY;
-	}
-
-	public String getValue() {
-		return this.sValue;
-	}
-
-	public void setValue(String value) {
-		this.sValue = value;
-	}
-
-	/**
 	 * @return The date value set by setDateValue() or an empty string if
 	 *         nothing was set.
 	 */
@@ -136,32 +96,31 @@ public class TableCell {
 	}
 
 	/**
-	 * Set the date value for a cell with TableCell.STYLE_DATE.
-	 * 
-	 * @param cal
-	 *            - A Calendar object with the date to be used
+	 * @return The number of rows that this cell spans overs.
 	 */
-	public void setDateValue(final Calendar cal) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		this.sDateValue = sdf.format(cal.getTime());
-		sdf = new SimpleDateFormat("dd.MM.yy");
-		this.sValue = sdf.format(cal.getTime());
-		this.nValueType = TableCell.STYLE_DATE;
+	public int getRowsSpanned() {
+		return this.nRowsSpanned;
 	}
 
 	public String getStyle() {
 		return this.sStyle;
 	}
 
-	public void setStyle(final String style) {
-		this.sStyle = style;
+	/**
+	 * Get the text within this cell.
+	 * 
+	 * @return A String with the text
+	 */
+	public String getText() {
+		return this.sText;
 	}
 
-	/**
-	 * @return The number of columns that this cell spans overs.
-	 */
-	public int getColumnsSpanned() {
-		return this.nColumnsSpanned;
+	public String getValue() {
+		return this.sValue;
+	}
+
+	public int getValueType() {
+		return this.nValueType;
 	}
 
 	/**
@@ -179,10 +138,28 @@ public class TableCell {
 	}
 
 	/**
-	 * @return The number of rows that this cell spans overs.
+	 * Set the currency value and table cell style to STYLE_CURRENCY.
+	 * 
+	 * @param currency
+	 *            The currency value
 	 */
-	public int getRowsSpanned() {
-		return this.nRowsSpanned;
+	public void setCurrency(final String currency) {
+		this.sCurrency = currency;
+		this.nValueType = TableCell.STYLE_CURRENCY;
+	}
+
+	/**
+	 * Set the date value for a cell with TableCell.STYLE_DATE.
+	 * 
+	 * @param cal
+	 *            - A Calendar object with the date to be used
+	 */
+	public void setDateValue(final Calendar cal) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		this.sDateValue = sdf.format(cal.getTime());
+		sdf = new SimpleDateFormat("dd.MM.yy");
+		this.sValue = sdf.format(cal.getTime());
+		this.nValueType = TableCell.STYLE_DATE;
 	}
 
 	/**
@@ -197,6 +174,30 @@ public class TableCell {
 		} else {
 			this.nRowsSpanned = n;
 		}
+	}
+
+	public void setStyle(final String style) {
+		this.sStyle = style;
+	}
+
+	public void setText(String text) {
+		this.sText = text;
+	}
+
+	public void setValue(String value) {
+		this.sValue = value;
+	}
+
+	/**
+	 * Set the type of the value for this cell.
+	 * 
+	 * @param valueType
+	 *            - TableCell.STYLE_STRING,TableCell.STYLE_FLOAT,TableCell.
+	 *            STYLE_PERCENTAGE,TableCell.STYLE_CURRENCY or
+	 *            TableCell.STYLE_DATE
+	 */
+	public void setValueType(final int valueType) {
+		this.nValueType = valueType;
 	}
 
 	/**
@@ -265,7 +266,8 @@ public class TableCell {
 			// Integer.toString(nColumnsSpanned) + "\" ");
 		}
 		if (this.nRowsSpanned > 0) {
-			util.appendElement(sbTemp, "table:number-rows-spanned", this.nRowsSpanned);
+			util.appendElement(sbTemp, "table:number-rows-spanned",
+					this.nRowsSpanned);
 			// sbTemp.append("table:number-rows-spanned=\"" +
 			// Integer.toString(nRowsSpanned) + "\" ");
 		}

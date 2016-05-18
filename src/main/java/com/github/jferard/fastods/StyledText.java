@@ -21,6 +21,7 @@ package com.github.jferard.fastods;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -41,20 +42,20 @@ public class StyledText {
 		this.setText(s);
 	}
 
-	public TextStyle getTextStyle() {
-		return this.ts;
-	}
-
-	public void setTextStyle(TextStyle t) {
-		this.ts = t;
-	}
-
 	public String getText() {
 		return this.sText;
 	}
 
+	public TextStyle getTextStyle() {
+		return this.ts;
+	}
+
 	public void setText(String sText) {
 		this.sText = this.u.toXmlString(sText);
+	}
+
+	public void setTextStyle(TextStyle t) {
+		this.ts = t;
 	}
 
 	/**

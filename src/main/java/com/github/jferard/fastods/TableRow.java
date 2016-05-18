@@ -23,6 +23,7 @@ import java.util.ListIterator;
 
 /**
  * TODO : clean code
+ * 
  * @author Martin Schulz<br>
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -57,15 +58,14 @@ public class TableRow {
 	}
 
 	/**
-	 * Set TableCell object at position nCol.<br>
-	 * If there is already a TableCell object, the old one is overwritten.
-	 * 
-	 * @param nCol
-	 *            The column for this cell
-	 * @param tc
+	 * @return The ObjectQueue with all TableCell objects
 	 */
-	public void setCell(final int nCol, final TableCell tc) {
-		this.qTableCells.setAt(nCol, tc);
+	public ObjectQueue<TableCell> getCells() {
+		return this.qTableCells;
+	}
+
+	public String getStyle() {
+		return this.Style;
 	}
 
 	/**
@@ -101,6 +101,18 @@ public class TableRow {
 	}
 
 	/**
+	 * Set TableCell object at position nCol.<br>
+	 * If there is already a TableCell object, the old one is overwritten.
+	 * 
+	 * @param nCol
+	 *            The column for this cell
+	 * @param tc
+	 */
+	public void setCell(final int nCol, final TableCell tc) {
+		this.qTableCells.setAt(nCol, tc);
+	}
+
+	/**
 	 * Set the cell style for the cell at nCol to ts.
 	 * 
 	 * @param nCol
@@ -121,19 +133,8 @@ public class TableRow {
 
 	}
 
-	public String getStyle() {
-		return this.Style;
-	}
-
 	public void setStyle(final String s) {
 		this.Style = s;
-	}
-
-	/**
-	 * @return The ObjectQueue with all TableCell objects
-	 */
-	public ObjectQueue<TableCell> getCells() {
-		return this.qTableCells;
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class TableRow {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String[] toXML(Util util) {
+	public String[] toXMLArray(Util util) {
 		ObjectQueue<String> qRc = ObjectQueue.newQueue();
 
 		int nNullFieldCounter = 0;

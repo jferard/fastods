@@ -42,28 +42,28 @@ public class FooterHeader {
 	 */
 	public static final int FLG_REGION_RIGHT = 2;
 
-	private ObjectQueue<ObjectQueue<StyledText>> qLeftRegion = ObjectQueue
-			.newQueue();
-	private ObjectQueue<ObjectQueue<StyledText>> qCenterRegion = ObjectQueue
-			.newQueue();
-	private ObjectQueue<ObjectQueue<StyledText>> qRightRegion = ObjectQueue
-			.newQueue();
-
-	private String sMinHeight = "0cm";
-	private String sMarginLeft = "0cm";
-	private String sMarginRight = "0cm";
-	private String sMarginTop = "0cm";
-
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private OdsFile o;
-
 	/**
 	 * Footer or Header ?
 	 */
 	public static final int FOOTER = 1;
 	public static final int HEADER = 2;
+	private ObjectQueue<ObjectQueue<StyledText>> qLeftRegion = ObjectQueue
+			.newQueue();
+
+	private ObjectQueue<ObjectQueue<StyledText>> qCenterRegion = ObjectQueue
+			.newQueue();
+	private ObjectQueue<ObjectQueue<StyledText>> qRightRegion = ObjectQueue
+			.newQueue();
+	private String sMinHeight = "0cm";
+	private String sMarginLeft = "0cm";
+
+	private String sMarginRight = "0cm";
+
+	private String sMarginTop = "0cm";
+	/**
+	 * The OdsFile where this object belong to.
+	 */
+	private OdsFile o;
 
 	private int footerHeaderType;
 
@@ -88,126 +88,16 @@ public class FooterHeader {
 		// paragraph
 	}
 
-	/**
-	 * @return The current minimum height of the footer/header.
-	 */
-	public String getMinHeight() {
-		return this.sMinHeight;
+	public void addPageCount(final TextStyle ts, final int nFooterRegion,
+			final int nParagraph) {
+		addStyledText(ts, "<text:page-count>99</text:page-count>",
+				nFooterRegion, nParagraph);
 	}
 
-	public void setMinHeight(String sMinHeight) {
-		this.sMinHeight = sMinHeight;
-	}
-
-	/**
-	 * @return The current left margin of the footer/header.
-	 */
-	public String getMarginLeft() {
-		return this.sMarginLeft;
-	}
-
-	public void setMarginLeft(String sMarginLeft) {
-		this.sMarginLeft = sMarginLeft;
-	}
-
-	/**
-	 * @return The current right margin of the footer/header.
-	 */
-	public String getMarginRight() {
-		return this.sMarginRight;
-	}
-
-	public void setMarginRight(String sMarginRight) {
-		this.sMarginRight = sMarginRight;
-	}
-
-	/**
-	 * @return The current top margin of the footer/header.
-	 */
-	public String getMarginTop() {
-		return this.sMarginTop;
-	}
-
-	public void setMarginTop(String sMarginTop) {
-		this.sMarginTop = sMarginTop;
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	protected String toXML() {
-		StringBuilder sbTemp = new StringBuilder();
-
-		if (this.footerHeaderType == FOOTER)
-			sbTemp.append(
-					"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
-		else if (this.footerHeaderType == HEADER)
-			sbTemp.append(
-					"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
-		
-		sbTemp.append(
-				"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
-
-		sbTemp.append("</style:paragraph-properties>");
-		sbTemp.append("</style:style>");
-
-		return sbTemp.toString();
-	}
-
-	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
-	 * 
-	 * @return
-	 */
-	protected String toMasterStyleXML() {
-
-		StringBuilder sbTemp = new StringBuilder();
-
-		this.writeRegion(sbTemp, this.qLeftRegion, "region-left");
-
-		this.writeRegion(sbTemp, this.qCenterRegion, "region-center");
-
-		this.writeRegion(sbTemp, this.qRightRegion, "region-right");
-
-		// </style:footer/header> is written by PageStyle.toMasterStyleXML()
-
-		return sbTemp.toString();
-
-	}
-
-	private void writeRegion(StringBuilder sbTemp,
-			ObjectQueue<ObjectQueue<StyledText>> qRegion,
-			final String sRegionName) {
-
-		if (qRegion.size() == 0) {
-			return;
-		}
-
-		sbTemp.append("<style:").append(sRegionName).append(">");
-
-		for (ObjectQueue<StyledText> qStyledText : qRegion) {
-			// <style:footer/header> is written by PageStyle.toMasterStyleXML()
-			sbTemp.append("<text:p>");
-
-			// Check if a qStyles object is null and add an empty paragraph for
-			// this
-			if (qStyledText == null) {
-				sbTemp.append("<text:span />");
-			} else {
-				// Add all styles and text for this paragraphs
-				for (StyledText st : qStyledText)
-					sbTemp.append(st.toMasterStyleXML());
-			}
-
-			sbTemp.append("</text:p>");
-		}
-
-		sbTemp.append("</style:").append(sRegionName).append(">");
-
-		return;
+	public void addPageNumber(final TextStyle ts, final int nFooterRegion,
+			final int nParagraph) {
+		addStyledText(ts, "<text:page-number>1</text:page-number>",
+				nFooterRegion, nParagraph);
 	}
 
 	/**
@@ -251,6 +141,50 @@ public class FooterHeader {
 	}
 
 	/**
+	 * @return The current left margin of the footer/header.
+	 */
+	public String getMarginLeft() {
+		return this.sMarginLeft;
+	}
+
+	/**
+	 * @return The current right margin of the footer/header.
+	 */
+	public String getMarginRight() {
+		return this.sMarginRight;
+	}
+
+	/**
+	 * @return The current top margin of the footer/header.
+	 */
+	public String getMarginTop() {
+		return this.sMarginTop;
+	}
+
+	/**
+	 * @return The current minimum height of the footer/header.
+	 */
+	public String getMinHeight() {
+		return this.sMinHeight;
+	}
+
+	public void setMarginLeft(String sMarginLeft) {
+		this.sMarginLeft = sMarginLeft;
+	}
+
+	public void setMarginRight(String sMarginRight) {
+		this.sMarginRight = sMarginRight;
+	}
+
+	public void setMarginTop(String sMarginTop) {
+		this.sMarginTop = sMarginTop;
+	}
+
+	public void setMinHeight(String sMinHeight) {
+		this.sMinHeight = sMinHeight;
+	}
+
+	/**
 	 * Checks if nParagraph is present in qRegion and return it if yes, if it is
 	 * not present, create a new ObjectQueue and add it to qRegion. Return the
 	 * new ObjectQueue.
@@ -274,16 +208,82 @@ public class FooterHeader {
 		return qStyledText;
 	}
 
-	public void addPageNumber(final TextStyle ts, final int nFooterRegion,
-			final int nParagraph) {
-		addStyledText(ts, "<text:page-number>1</text:page-number>",
-				nFooterRegion, nParagraph);
+	private void writeRegion(StringBuilder sbTemp,
+			ObjectQueue<ObjectQueue<StyledText>> qRegion,
+			final String sRegionName) {
+
+		if (qRegion.size() == 0) {
+			return;
+		}
+
+		sbTemp.append("<style:").append(sRegionName).append(">");
+
+		for (ObjectQueue<StyledText> qStyledText : qRegion) {
+			// <style:footer/header> is written by PageStyle.toMasterStyleXML()
+			sbTemp.append("<text:p>");
+
+			// Check if a qStyles object is null and add an empty paragraph for
+			// this
+			if (qStyledText == null) {
+				sbTemp.append("<text:span />");
+			} else {
+				// Add all styles and text for this paragraphs
+				for (StyledText st : qStyledText)
+					sbTemp.append(st.toMasterStyleXML());
+			}
+
+			sbTemp.append("</text:p>");
+		}
+
+		sbTemp.append("</style:").append(sRegionName).append(">");
+
+		return;
 	}
 
-	public void addPageCount(final TextStyle ts, final int nFooterRegion,
-			final int nParagraph) {
-		addStyledText(ts, "<text:page-count>99</text:page-count>",
-				nFooterRegion, nParagraph);
+	/**
+	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
+	 * 
+	 * @return
+	 */
+	protected String toMasterStyleXML() {
+
+		StringBuilder sbTemp = new StringBuilder();
+
+		this.writeRegion(sbTemp, this.qLeftRegion, "region-left");
+
+		this.writeRegion(sbTemp, this.qCenterRegion, "region-center");
+
+		this.writeRegion(sbTemp, this.qRightRegion, "region-right");
+
+		// </style:footer/header> is written by PageStyle.toMasterStyleXML()
+
+		return sbTemp.toString();
+
+	}
+
+	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 * 
+	 * @return The XML string for this object.
+	 */
+	protected String toXML() {
+		StringBuilder sbTemp = new StringBuilder();
+
+		if (this.footerHeaderType == FOOTER)
+			sbTemp.append(
+					"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+		else if (this.footerHeaderType == HEADER)
+			sbTemp.append(
+					"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+
+		sbTemp.append(
+				"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
+
+		sbTemp.append("</style:paragraph-properties>");
+		sbTemp.append("</style:style>");
+
+		return sbTemp.toString();
 	}
 
 }

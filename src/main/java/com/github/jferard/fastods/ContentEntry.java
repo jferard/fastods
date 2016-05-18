@@ -19,28 +19,29 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * TODO : clean code
- * @author Martin Schulz<br>
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file Content.java is part of SimpleODS.<br>
- *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'
+ *         This file ContentEntry.java is part of SimpleODS.<br>
+ *         SimpleODS 0.5.1 Changed all 'throw Exception' to 'throw
+ *         SimpleOdsException'
  *
  */
-public class Content {
+public class ContentEntry implements OdsEntry {
 	private ObjectQueue<Table> qTables;
 	private ObjectQueue<TableStyle> qTableStyles;
 	private ObjectQueue<PageStyle> qPageStyles;
 	private ObjectQueue<TextStyle> qTextStyles;
 
-	public Content() {
+	public ContentEntry() {
 		this.qTables = ObjectQueue.newQueue();
 		this.qTableStyles = ObjectQueue.newQueue();
 		this.qPageStyles = ObjectQueue.newQueue();
@@ -72,45 +73,6 @@ public class Content {
 
 	public void addTextStyle(final TextStyle ts) {
 		ObjectQueue.addOrReplaceNamedElement(this.qTextStyles, ts);
-	}
-
-	public boolean createContent(Util util, ZipOutputStream o) {
-
-		try {
-			o.putNextEntry(new ZipEntry("content.xml"));
-			util.writeString(o, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			util.writeString(o,
-					"<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" office:version=\"1.1\">");
-			util.writeString(o, "<office:scripts/>");
-			util.writeString(o, "<office:font-face-decls>");
-			util.writeString(o,
-					"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" style:font-pitch=\"variable\"/>");
-			util.writeString(o,
-					"<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"'Lucida Sans Unicode'\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
-			util.writeString(o,
-					"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
-			util.writeString(o, "</office:font-face-decls>");
-			/* Office automatic styles */
-			util.writeString(o, "<office:automatic-styles>");
-
-			for (TableStyle ts : this.qTableStyles)
-				util.writeString(o, ts.toXML(util));
-
-			util.writeString(o, "</office:automatic-styles>");
-
-			util.writeString(o, "<office:body>");
-			util.writeString(o, "<office:spreadsheet>");
-			this.writeSpreadsheet(util, o);
-			util.writeString(o, "</office:spreadsheet>");
-			util.writeString(o, "</office:body>");
-			util.writeString(o, "</office:document-content>");
-
-			o.closeEntry();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -163,14 +125,6 @@ public class Content {
 		return true;
 	}
 
-	private void checkTableIndex(int nTab) throws SimpleOdsException {
-		if (nTab < 0 || this.qTables.size() <= nTab) {
-			throw new SimpleOdsException(
-					new StringBuilder("Wrong table number [").append(nTab)
-							.append("]").toString());
-		}
-	}
-
 	public boolean setCellStyle(int nTab, int nRow, int nCol, TableStyle ts)
 			throws SimpleOdsException {
 		this.checkTableIndex(nTab);
@@ -206,7 +160,60 @@ public class Content {
 		this.qTextStyles = qTextStyles;
 	}
 
-	private boolean writeSpreadsheet(Util util, ZipOutputStream o) {
+	@Override
+	public void write(Util util, ZipOutputStream zipOut) throws IOException {
+		zipOut.putNextEntry(new ZipEntry("content.xml"));
+		Writer writer = util.wrapStream(zipOut);
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		writer.write(
+				"<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" office:version=\"1.1\">");
+		writer.write("<office:scripts/>");
+		writer.write("<office:font-face-decls>");
+		writer.write(
+				"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" style:font-pitch=\"variable\"/>");
+		writer.write(
+				"<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"'Lucida Sans Unicode'\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
+		writer.write(
+				"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
+		writer.write("</office:font-face-decls>");
+		/* Office automatic styles */
+		writer.write("<office:automatic-styles>");
+
+		for (TableStyle ts : this.qTableStyles)
+			writer.write(ts.toXML(util));
+
+		writer.write("</office:automatic-styles>");
+
+		writer.write("<office:body>");
+		writer.write("<office:spreadsheet>");
+		this.writeSpreadsheet(util, writer);
+		writer.write("</office:spreadsheet>");
+		writer.write("</office:body>");
+		writer.write("</office:document-content>");
+		writer.flush();
+
+		zipOut.closeEntry();
+	}
+
+	private void checkTableIndex(int nTab) throws SimpleOdsException {
+		if (nTab < 0 || this.qTables.size() <= nTab) {
+			throw new SimpleOdsException(
+					new StringBuilder("Wrong table number [").append(nTab)
+							.append("]").toString());
+		}
+	}
+
+	private String columnStyle(Util util, String sSytle,
+			String sDefaultCellSytle, int nCount) {
+		return new StringBuilder("<table:table-column table:style-name=\"")
+				.append(util.escapeXMLAttribute(sSytle))
+				.append("\" table:number-columns-repeated=\"").append(nCount)
+				.append("\" table:default-cell-style-name=\"")
+				.append(util.escapeXMLAttribute(sDefaultCellSytle))
+				.append("\"/>").toString();
+	}
+
+	private void writeSpreadsheet(Util util, Writer writer) throws IOException {
 		TableStyle ts0 = null;
 		TableStyle ts1 = null;
 		String sDefaultCellSytle0 = "Default";
@@ -214,8 +221,8 @@ public class Content {
 
 		// Loop through all tables and write the informations
 		for (Table tab : this.qTables) {
-			util.writeString(o, tab.toXML());
-			util.writeString(o,
+			writer.write(tab.toXML());
+			writer.write(
 					"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");
 
 			// Loop through all table column styles and write the informations
@@ -226,15 +233,8 @@ public class Content {
 			// info to OutputStream o
 			if (tab.getColumnStyles().size() == 1) {
 				ts0 = tab.getColumnStyles().get(0);
-				util.writeString(o,
-						new StringBuilder(
-								"<table:table-column table:style-name=\"")
-										.append(ts0.getName())
-										.append("\" table:number-columns-repeated=\"")
-										.append(1)
-										.append("\" table:default-cell-style-name=\"")
-										.append(ts0.getDefaultCellStyle())
-										.append("\"/>").toString());
+				writer.write(this.columnStyle(util, ts0.getName(),
+						ts0.getDefaultCellStyle(), 1));
 
 			}
 
@@ -243,8 +243,9 @@ public class Content {
 			// write the info to OutputStream o
 			if (tab.getColumnStyles().size() > 1) {
 				int nCount = 1;
-				
-				Iterator<TableStyle> iterator = tab.getColumnStyles().iterator();
+
+				Iterator<TableStyle> iterator = tab.getColumnStyles()
+						.iterator();
 				ts1 = iterator.next();
 				while (iterator.hasNext()) {
 					ts0 = ts1;
@@ -268,53 +269,35 @@ public class Content {
 					if (sSytle0.equalsIgnoreCase(sSytle1)) {
 						nCount++;
 					} else {
-						util.writeString(o,
-								new StringBuilder(
-										"<table:table-column table:style-name=\"")
-												.append(sSytle0)
-												.append("\" table:number-columns-repeated=\"")
-												.append(nCount)
-												.append("\" table:default-cell-style-name=\"")
-												.append(sDefaultCellSytle1)
-												.append("\"/>").toString());
+						writer.write(this.columnStyle(util, sSytle0,
+								sDefaultCellSytle1, nCount));
 
 						nCount = 1;
 					}
 
 				}
-				util.writeString(o,
-						new StringBuilder(
-								"<table:table-column table:style-name=\"")
-										.append(sSytle1)
-										.append("\" table:number-columns-repeated=\"")
-										.append(nCount)
-										.append("\" table:default-cell-style-name=\"")
-										.append(sDefaultCellSytle0)
-										.append("\"/>").toString());
+				writer.write(this.columnStyle(util, sSytle1, sDefaultCellSytle0,
+						nCount));
 
 			}
 
 			// Loop through all rows
 			for (TableRow tr : tab.getRows()) {
 				if (tr != null) {
-					String[] sToPrint = tr.toXML(util);
-					util.writeStringArray(o, sToPrint);
+					String[] sToPrintArray = tr.toXMLArray(util);
+					for (String sToPrint : sToPrintArray)
+						writer.write(sToPrint);
 				} else {
 					// Empty TableRow
-					util.writeString(o,
-							"<table:table-row table:style-name=\"ro1\">");
-					util.writeString(o,
-							new StringBuilder(
-									"<table:table-cell table:number-columns-repeated=\"")
-											.append(tab.getLastCol())
-											.append("\"/>").toString());
-					util.writeString(o, "</table:table-row>");
-
+					writer.write("<table:table-row table:style-name=\"ro1\">");
+					// no toString() here
+					writer.append(new StringBuilder(
+							"<table:table-cell table:number-columns-repeated=\"")
+									.append(tab.getLastCol()).append("\"/>"));
+					writer.write("</table:table-row>");
 				}
 			}
-			util.writeString(o, "</table:table>");
+			writer.write("</table:table>");
 		}
-
-		return true;
 	}
 }

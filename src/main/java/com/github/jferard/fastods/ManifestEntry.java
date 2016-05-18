@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -27,10 +29,10 @@ import java.util.zip.ZipOutputStream;
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file Manifest.java is part of FastODS.
- *         
+ *         This file ManifestEntry.java is part of FastODS.
+ * 
  */
-public class Manifest {
+public class ManifestEntry implements OdsEntry {
 	String[] sText = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
 			"<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">",
 			"<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
@@ -60,15 +62,14 @@ public class Manifest {
 		return this.sText;
 	}
 
-	public boolean createManifest(Util util, final ZipOutputStream o) {
-		try {
-			o.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-			util.writeStringArray(o, this.getManifest());
-			o.closeEntry();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+	@Override
+	public void write(Util util, final ZipOutputStream zipOut)
+			throws IOException {
+		zipOut.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
+		Writer writer = util.wrapStream(zipOut);
+		for (String item : this.getManifest())
+			writer.write(item);
+		writer.flush();
+		zipOut.closeEntry();
 	}
 }

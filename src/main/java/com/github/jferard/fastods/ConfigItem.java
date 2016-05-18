@@ -20,10 +20,9 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Julien Férard
- *         Copyright (C) 2016 J. Férard 
- * @author Martin Schulz
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
  *         This file ConfigItem.java is part of FastODS.
  */

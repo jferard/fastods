@@ -34,23 +34,16 @@ import java.util.ListIterator;
  *
  */
 public class ObjectQueue<T> implements Iterable<T> {
-	/** Guava's like creator 
-	 * @return the newly created ObjectQueue
-	 */
-	public static <U> ObjectQueue<U> newQueue() {
-		return new ObjectQueue<U>();
-	}
-	
 	/**
-	 * Add a NamedObject. If a NamedObject with this name already exist, the old one is
-	 * replaced.
+	 * Add a NamedObject. If a NamedObject with this name already exist, the old
+	 * one is replaced.
 	 * 
 	 * @param style
 	 *            - The style to be added.
 	 * @return true if a new entry
 	 */
-	public static <T extends NamedObject> boolean addOrReplaceNamedElement(ObjectQueue<T> queue,
-			T element) {
+	public static <T extends NamedObject> boolean addOrReplaceNamedElement(
+			ObjectQueue<T> queue, T element) {
 		// Check is a style with this name exists and replace if yes
 		ListIterator<T> listIterator = queue.list.listIterator();
 		while (listIterator.hasNext()) {
@@ -65,13 +58,30 @@ public class ObjectQueue<T> implements Iterable<T> {
 		// We did not find it in queue, make a new entry
 		return true;
 	}
-	
-	
+
+	public static <T extends NamedObject> boolean findName(ObjectQueue<T> queue,
+			String sName) {
+		for (T curElement : queue) {
+			if (curElement.getName().equalsIgnoreCase(sName))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Guava's like creator
+	 * 
+	 * @return the newly created ObjectQueue
+	 */
+	public static <U> ObjectQueue<U> newQueue() {
+		return new ObjectQueue<U>();
+	}
+
 	/**
 	 * The list with all objects.
 	 */
 	private List<T> list;
-	
+
 	private ObjectQueue() {
 		this.list = new LinkedList<T>();
 	}
@@ -89,18 +99,45 @@ public class ObjectQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Replaces the element at the specified position in this list with the
-	 * specified element.
+	 * Get the object at position n.<br>
+	 * Return null if n is outside of the list.
 	 * 
 	 * @param n
-	 *            index of the element to replace.
-	 * @param o
-	 *            element to be stored at the specified position.
-	 * @return true
+	 *            The position of the object to be returned.
+	 * @return The object at position n
 	 */
-	private boolean set(final int n, final T o) {
-		this.list.set(n, o);
-		return true;
+	public T get(final int n) {
+		if (n < 0 || n >= this.list.size()) {
+			return null;
+		}
+		return (this.list.get(n));
+	}
+
+	public Iterator<T> iterator() {
+		return this.list.iterator();
+	}
+
+	public ListIterator<T> listIterator() {
+		return this.list.listIterator();
+	}
+
+	/**
+	 * Print all objects in this ObjectQueue to System.out.
+	 */
+	public void printAll() {
+		this.printAll(System.out);
+	}
+
+	public void printAll(PrintStream out) {
+		for (int n = 0; n < this.list.size(); n++) {
+			T o = this.list.get(n);
+
+			if (o == null) {
+				out.println(n + "==null");
+			} else {
+				out.println(n);
+			}
+		}
 	}
 
 	/**
@@ -135,21 +172,6 @@ public class ObjectQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Get the object at position n.<br>
-	 * Return null if n is outside of the list.
-	 * 
-	 * @param n
-	 *            The position of the object to be returned.
-	 * @return The object at position n
-	 */
-	public T get(final int n) {
-		if (n < 0 || n >= this.list.size()) {
-			return null;
-		}
-		return (this.list.get(n));
-	}
-
-	/**
 	 * @return The number of object in this ObjectQueue
 	 */
 	public int size() {
@@ -157,37 +179,17 @@ public class ObjectQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Print all objects in this ObjectQueue to System.out.
+	 * Replaces the element at the specified position in this list with the
+	 * specified element.
+	 * 
+	 * @param n
+	 *            index of the element to replace.
+	 * @param o
+	 *            element to be stored at the specified position.
+	 * @return true
 	 */
-	public void printAll() {
-		this.printAll(System.out);
-	}
-	
-	public void printAll(PrintStream out) {
-		for (int n = 0; n < this.list.size(); n++) {
-			T o = this.list.get(n);
-
-			if (o == null) {
-				out.println(n + "==null");
-			} else {
-				out.println(n);
-			}
-		}
-	}
-
-	public ListIterator<T> listIterator() {
-		return this.list.listIterator();
-	}
-
-	public Iterator<T> iterator() {
-		return this.list.iterator();
-	}
-
-	public static <T extends NamedObject> boolean findName(ObjectQueue<T> queue, String sName) {
-		for (T curElement : queue) {
-			if (curElement.getName().equalsIgnoreCase(sName))
-				return true;
-		}
-		return false;
+	private boolean set(final int n, final T o) {
+		this.list.set(n, o);
+		return true;
 	}
 }
