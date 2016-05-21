@@ -29,6 +29,7 @@ package com.github.jferard.fastods;
  * 
  *         This file PageStyle.java is part of SimpleODS.
  *
+ * styles.xml/office:document-styles/office:master-styles/style:master-page 
  */
 public class PageStyle implements NamedObject {
 
@@ -56,30 +57,27 @@ public class PageStyle implements NamedObject {
 	public final static int STYLE_WRITINGMODE_TB = 6;
 	public final static int STYLE_WRITINGMODE_PAGE = 7;
 
-	private String sName;
-	private String sMarginTop = "1.5cm";
-	private String sMarginBottom = "1.5cm";
-	private String sMarginLeft = "1.5cm";
-	private String sMarginRight = "1.5cm";
+	private final String sName;
+	private final String sMarginTop;
+	private final String sMarginBottom;
+	private final String sMarginLeft;
+	private final String sMarginRight;
 
-	private String sPageWidth = "29.7cm";
-	private String sPageHeight = "21.0cm";
-	private String sNumFormat = "1";
-	private String sBackgroundColor = "";
+	private final String sPageWidth;
+	private final String sPageHeight;
+	private final String sNumFormat;
+	private final String sBackgroundColor;
 
-	private String sTextStyleFooter = "";
-	private String sTextStyleHeader = "";
-	private String sTextHeader = "";
-	private String sTextFooter = "";
+	private final String sTextStyleFooter;
+	private final String sTextStyleHeader;
+	private final String sTextHeader;
+	private final String sTextFooter;
 
-	private int nPrintOrientation = PageStyle.STYLE_PRINTORIENTATION_VERTICAL;
-	private int nPaperFormat = PageStyle.STYLE_PAPERFORMAT_A4;
-	private int nWritingMode = PageStyle.STYLE_WRITINGMODE_LRTB;
-
-	/**
-	 * The OdsFile where this object belong to
-	 */
-	private OdsFile o;
+	private final int nPrintOrientation;
+	private final int nPaperFormat;
+	private final int nWritingMode;
+	private FooterHeader header;
+	private FooterHeader footer;
 
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsFile o
@@ -87,10 +85,33 @@ public class PageStyle implements NamedObject {
 	 * @param sName
 	 *            A unique name for this style
 	 */
-	public PageStyle(final String sName, OdsFile odsFile) {
+	public PageStyle(String sName, String sMarginTop, String sMarginBottom,
+			String sMarginLeft, String sMarginRight, String sPageWidth,
+			String sPageHeight, String sNumFormat, String sBackgroundColor,
+			String sTextStyleFooter, String sTextStyleHeader,
+			String sTextHeader, String sTextFooter, int nPrintOrientation,
+			int nPaperFormat, int nWritingMode) {
 		this.sName = sName;
-		this.o = odsFile;
-		this.o.getStyles().addPageStyle(this);
+		this.sMarginTop = sMarginTop;
+		this.sMarginBottom = sMarginBottom;
+		this.sMarginLeft = sMarginLeft;
+		this.sMarginRight = sMarginRight;
+		this.sPageWidth = sPageWidth;
+		this.sPageHeight = sPageHeight;
+		this.sNumFormat = sNumFormat;
+		this.sBackgroundColor = sBackgroundColor;
+		this.sTextStyleFooter = sTextStyleFooter;
+		this.sTextStyleHeader = sTextStyleHeader;
+		this.sTextHeader = sTextHeader;
+		this.sTextFooter = sTextFooter;
+		this.nPrintOrientation = nPrintOrientation;
+		this.nPaperFormat = nPaperFormat;
+		this.nWritingMode = nWritingMode;
+	}
+
+	public void addToFile(OdsFile odsFile) {
+		this.header = odsFile.getStyles().getHeader();
+		this.footer = odsFile.getStyles().getFooter();
 	}
 
 	public String getBackgroundColor() {
@@ -154,183 +175,6 @@ public class PageStyle implements NamedObject {
 		return this.nWritingMode;
 	}
 
-	/**
-	 * Set the margin at the top,bottom,left and right. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setAllMargins(final String margin) {
-		setMarginTop(margin);
-		setMarginBottom(margin);
-		setMarginLeft(margin);
-		setMarginRight(margin);
-	}
-
-	/**
-	 * Set the background color to sColor, a six-digit hex value. Example:
-	 * #aa32f0.<br>
-	 * The background color may also be set to 'transparent' if a background
-	 * image is used (currently unsupported).
-	 * 
-	 * @param sColor
-	 */
-	public void setBackgroundColor(final String sColor) {
-		this.sBackgroundColor = sColor;
-	}
-
-	/**
-	 * Set the margin at the bottom. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginBottom(final String margin) {
-		this.sMarginBottom = margin;
-	}
-
-	/**
-	 * Set the margin at the left. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginLeft(final String margin) {
-		this.sMarginLeft = margin;
-	}
-
-	/**
-	 * Set the margin at the right. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginRight(final String margin) {
-		this.sMarginRight = margin;
-	}
-
-	/**
-	 * Set the margin at the top. margin is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @param margin
-	 */
-	public void setMarginTop(final String margin) {
-		this.sMarginTop = margin;
-	}
-
-	/**
-	 * Set the page height. pageHeight is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
-	 * 
-	 * @param pageHeight
-	 */
-	public void setPageHeight(final String pageHeight) {
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
-		this.sPageHeight = pageHeight;
-	}
-
-	/**
-	 * Set the page width. pageWidth is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
-	 * 
-	 * @param pageWidth
-	 */
-	public void setPageWidth(final String pageWidth) {
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
-		this.sPageWidth = pageWidth;
-	}
-
-	/**
-	 * Set the paper format to one of<br>
-	 * PageStyle.STYLE_PAPERFORMAT_A3<br>
-	 * PageStyle.STYLE_PAPERFORMAT_A4<br>
-	 * PageStyle.STYLE_PAPERFORMAT_A5<br>
-	 * PageStyle.STYLE_PAPERFORMAT_LETTER<br>
-	 * PageStyle.STYLE_PAPERFORMAT_LEGAL<br>
-	 * PageStyle.STYLE_PAPERFORMAT_USER , automatically used if you use
-	 * setPageHeight() or setPageWidth().
-	 * 
-	 * @param nPaperFormat
-	 */
-	public void setPaperFormat(final int nPaperFormat) {
-
-		this.nPaperFormat = nPaperFormat;
-		switch (nPaperFormat) {
-		case STYLE_PAPERFORMAT_A3:
-			this.sPageWidth = "42.0cm";
-			this.sPageHeight = "29.7cm";
-			break;
-		case STYLE_PAPERFORMAT_A4:
-			this.sPageWidth = "29.7cm";
-			this.sPageHeight = "21.0cm";
-			break;
-		case STYLE_PAPERFORMAT_A5:
-			this.sPageWidth = "21.0cm";
-			this.sPageHeight = "14.8cm";
-			break;
-		case STYLE_PAPERFORMAT_LETTER:
-			this.sPageWidth = "27.94cm";
-			this.sPageHeight = "21.59cm";
-			break;
-		case STYLE_PAPERFORMAT_LEGAL:
-			this.sPageWidth = "35.57cm";
-			this.sPageHeight = "21.59cm";
-			break;
-		default:
-			this.sPageWidth = "29.7cm";
-			this.sPageHeight = "21.0cm";
-			this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_A4;
-		}
-	}
-
-	public void setPrintOrientationHorizontal() {
-		this.nPrintOrientation = STYLE_PRINTORIENTATION_HORIZONTAL;
-	}
-
-	public void setPrintOrientationVertical() {
-		this.nPrintOrientation = STYLE_PRINTORIENTATION_VERTICAL;
-	}
-
-	/**
-	 * Set the writing mode to one of<br>
-	 * STYLE_WRITINGMODE_LRTB lr-tb (left to right; top to bottom)<br>
-	 * STYLE_WRITINGMODE_RLTB<br>
-	 * STYLE_WRITINGMODE_TBRL<br>
-	 * STYLE_WRITINGMODE_TBLR<br>
-	 * STYLE_WRITINGMODE_LR<br>
-	 * STYLE_WRITINGMODE_RL<br>
-	 * STYLE_WRITINGMODE_TB<br>
-	 * STYLE_WRITINGMODE_PAGE<br>
-	 * 
-	 * @param writingMode
-	 */
-	public void setWritingMode(final int writingMode) {
-		this.nWritingMode = writingMode;
-	}
-
 	private String addBackgroundColor() {
 		if (this.getBackgroundColor().length() == 0) {
 			return "";
@@ -361,12 +205,13 @@ public class PageStyle implements NamedObject {
 	}
 
 	private String addPrintOrientation() {
-		StringBuilder sbTemp = new StringBuilder();
+		StringBuilder sbTemp = new StringBuilder("style:print-orientation=\"");
 		if (this.nPrintOrientation == PageStyle.STYLE_PRINTORIENTATION_VERTICAL) {
-			sbTemp.append("style:print-orientation=\"portrait\" ");
+			sbTemp.append("portrait");
 		} else {
-			sbTemp.append("style:print-orientation=\"landscape\" ");
+			sbTemp.append("landscape");
 		}
+		sbTemp.append("\" ");
 		return sbTemp.toString();
 	}
 
@@ -408,45 +253,34 @@ public class PageStyle implements NamedObject {
 		return sbTemp.toString();
 	}
 
-	protected void addFooterStyle(final StringBuilder sbTemp) {
-		final FooterHeader header = this.o.getStyles().getFooter();
-		this.addFooterHeaderStyle(sbTemp, header, "style:footer-style");
-	}
-
-	protected void addHeaderStyle(final StringBuilder sbTemp) {
-		final FooterHeader header = this.o.getStyles().getHeader();
-		this.addFooterHeaderStyle(sbTemp, header, "style:header-style");
-	}
-
 	/**
 	 * Return the master-style informations for this PageStyle.
 	 * 
 	 * @return The master style representation for styles.xml
 	 */
-	protected String toMasterStyleXML() {
+	protected String toMasterStyleXML(Util util) {
 		StringBuilder sbTemp = new StringBuilder();
-
 		sbTemp.append("<style:master-page style:name=\"DefaultMasterPage\" ");
 		sbTemp.append("style:page-layout-name=\"").append(this.getName())
 				.append("\">");
 
 		sbTemp.append("<style:header>");
-		if (this.o.getStyles().getHeader() == null) {
+		if (this.header == null) {
 			sbTemp.append("<text:p text:style-name=\"")
 					.append(this.sTextStyleHeader).append("\">")
 					.append(this.sTextHeader).append("</text:p>");
 		} else {
-			sbTemp.append(this.o.getStyles().getHeader().toMasterStyleXML());
+			sbTemp.append(this.header.toMasterStyleXML(util));
 		}
 		sbTemp.append("</style:header>");
 
 		sbTemp.append("<style:footer>");
-		if (this.o.getStyles().getFooter() == null) {
+		if (this.footer == null) {
 			sbTemp.append("<text:p text:style-name=\"")
 					.append(this.sTextStyleFooter).append("\">")
 					.append(this.sTextFooter).append("</text:p>");
 		} else {
-			sbTemp.append(this.o.getStyles().getFooter().toMasterStyleXML());
+			sbTemp.append(this.footer.toMasterStyleXML(util));
 		}
 		sbTemp.append("</style:footer>");
 
@@ -459,12 +293,14 @@ public class PageStyle implements NamedObject {
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
+	 * @param odsFile
+	 * 
 	 * @return The XML string for this object.
 	 */
-	protected String toXML() {
+	public String toXML(Util util) {
 		StringBuilder sbTemp = new StringBuilder();
 
-		sbTemp.append("<style:page-layout style:name=\"").append(this.getName())
+		sbTemp.append("<style:page-layout style:name=\"").append(this.sName)
 				.append("\">");
 		sbTemp.append("<style:page-layout-properties ");
 		sbTemp.append("fo:page-width=\"").append(this.getPageWidth())
@@ -488,8 +324,8 @@ public class PageStyle implements NamedObject {
 
 		sbTemp.append("<style:header-style />");
 
-		addHeaderStyle(sbTemp);
-		addFooterStyle(sbTemp);
+		this.addFooterHeaderStyle(sbTemp, this.header, "style:header-style");
+		this.addFooterHeaderStyle(sbTemp, this.header, "style:footer-style");
 		/*
 		if( styles.getFooter()==null ) {
 			sbTemp.append("<style:footer-style />");
@@ -508,4 +344,7 @@ public class PageStyle implements NamedObject {
 		return sbTemp.toString();
 	}
 
+	public static PageStyleBuilder builder() {
+		return new PageStyleBuilder();
+	}
 }

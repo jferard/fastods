@@ -20,33 +20,41 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * TODO : clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file MetaEntry.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
+ *         This file MetaEntry.java is part of FastODS.
+ * 
+ * WHERE ?
+ * meta.xml/office:document-meta
  */
 public class MetaEntry implements OdsEntry {
-	private String sGenerator = "SimpleOds 0.5.3 20120722";
-	private String sCreator = "SimpleOds 0.5.3";
-	private String sDateTime = "";
-	private String sEditingCycles = "1";
-	private String sEditingDuration = "PT1M00S";
+	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
+
+	private String sDateTime;
 	private int nTableCount = 1;
 	private int nCellCount = 1;
+	private String sCreator;
+	
+	private final String sGenerator;
+	private final String sEditingCycles;
+	private final String sEditingDuration;
 
 	public MetaEntry() {
 		this.setDateTimeNow();
+		this.sGenerator = "FastOds 0.0.1 2016";
+		this.sCreator = "FastOds 0.0.1";
+		this.sEditingCycles = "1";
+		this.sEditingDuration = "PT1M00S";
 	}
 
 	/**
@@ -54,14 +62,12 @@ public class MetaEntry implements OdsEntry {
 	 */
 	private void setDateTimeNow() {
 		Date dt = new Date();
-		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat df_time = new SimpleDateFormat("HH:mm:ss");
 
-		this.sDateTime = new StringBuilder(df_date.format(dt)).append("T")
-				.append(df_time.format(dt)).toString();
+		this.sDateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
+				.append("T").append(MetaEntry.DF_TIME.format(dt)).toString();
 	}
 
-	public String[] getMeta() {
+	private String[] getMeta() {
 		String[] sReturn = { "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
 				"<office:document-meta xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">",
 				"<office:meta>", "<meta:generator>", this.sGenerator,
@@ -81,11 +87,8 @@ public class MetaEntry implements OdsEntry {
 								.append(this.nCellCount).append("\"/>")
 								.toString(),
 				"</office:meta>", "</office:document-meta>"
-
 		};
-
 		return sReturn;
-
 	}
 
 	public void incTableCount() {
@@ -117,10 +120,12 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(Util util, final ZipOutputStream o) throws IOException {
-		o.putNextEntry(new ZipEntry("meta.xml"));
-		util.writeStringArray(o, this.getMeta());
-		o.closeEntry();
+	public void write(Util util, final ZipOutputStream zipOut) throws IOException {
+		zipOut.putNextEntry(new ZipEntry("meta.xml"));
+		Writer writer = util.wrapStream(zipOut);
+		for (String item :this.getMeta())
+			writer.write(item);
+		writer.flush();
+		zipOut.closeEntry();
 	}
-
 }

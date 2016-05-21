@@ -48,6 +48,8 @@ import java.util.zip.ZipOutputStream;
  *         Added getCell(final int nTab, final String sPos).<br>
  *         Added getCell(final int nTab, final int nRow, final int nCol)<br>
  *
+ * WHERE ?
+ * root !
  */
 public class OdsFile {
 	private Util util = Util.getInstance();
@@ -71,12 +73,11 @@ public class OdsFile {
 	public OdsFile(final String sName) {
 		this.newFile(sName);
 		// Add four default stylesEntry to contentEntry
-		new TableStyle(TableStyle.STYLE_TABLE, "ta1", this);
-		new TableStyle(TableStyle.STYLE_TABLEROW, "ro1", this);
-		new TableStyle(TableStyle.STYLE_TABLECOLUMN, "co1", this);
-		new TableStyle(TableStyle.STYLE_TABLECELL, "Default", this);
-		PageStyle pm1 = new PageStyle("Mpm1", this);
-		this.getContent().addPageStyle(pm1);
+		TableStyle.builder().name("ta1").build().addToFile(this);
+		TableRowStyle.builder().name("ro1").build().addToFile(this);
+		TableColumnStyle.builder().name("co1").build().addToFile(this);
+		TableCellStyle.builder().name("Default").build().addToFile(this);
+		PageStyle.builder().name("Mpm1").build().addToFile(this);
 	}
 
 	/**
@@ -322,7 +323,7 @@ public class OdsFile {
 			this.metaEntry.write(this.util, out);
 			this.getStyles().write(this.util, out);
 			this.getContent().write(this.util, out);
-			this.createConfigurations2(out);
+			this.createConfigurations(out);
 			this.settingsEntry.write(this.util, out);
 			out.putNextEntry(new ZipEntry("Thumbnails/"));
 			out.closeEntry();
@@ -395,11 +396,11 @@ public class OdsFile {
 	 *            The calendar object with the date
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final int nRow, final int nCol,
-			final Calendar cal, final TableStyle ts) throws SimpleOdsException {
+			final Calendar cal, final TableCellStyle ts) throws SimpleOdsException {
 		this.setCell(nTab, nRow, nCol, cal);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
 	}
@@ -444,11 +445,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final int nRow, final int nCol,
-			final double dValue, final TableStyle ts)
+			final double dValue, final TableCellStyle ts)
 			throws SimpleOdsException {
 		this.setCell(nTab, nRow, nCol, dValue);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -519,11 +520,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final int nRow, final int nCol,
-			int nValuetype, String sValue, TableStyle ts)
+			int nValuetype, String sValue, TableCellStyle ts)
 			throws SimpleOdsException {
 		getContent().setCell(nTab, nRow, nCol, nValuetype, sValue);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -544,11 +545,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final int nRow, final int nCol,
-			final int nValue, final TableStyle ts) throws SimpleOdsException {
+			final int nValue, final TableCellStyle ts) throws SimpleOdsException {
 		getContent().setCell(nTab, nRow, nCol, TableCell.STYLE_FLOAT,
 				Integer.toString(nValue));
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -589,11 +590,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final int nRow, final int nCol,
-			final String sValue, final TableStyle ts)
+			final String sValue, final TableCellStyle ts)
 			throws SimpleOdsException {
 		getContent().setCell(nTab, nRow, nCol, TableCell.STYLE_STRING, sValue);
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
@@ -633,11 +634,11 @@ public class OdsFile {
 	 *            The calendar object with the date
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final String sPos, final Calendar cal,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
@@ -678,11 +679,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final String sPos, final double dValue,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
@@ -751,11 +752,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final String sPos, final int nValuetype,
-			final String sValue, final TableStyle ts)
+			final String sValue, final TableCellStyle ts)
 			throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
@@ -778,7 +779,7 @@ public class OdsFile {
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final String sPos, final int nValue,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 		getContent().setCell(nTab, nRow, nCol, TableCell.STYLE_FLOAT,
@@ -819,11 +820,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCell(final int nTab, final String sPos, final String sValue,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
@@ -890,7 +891,7 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 * 
 	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(String)}<br>
@@ -900,7 +901,7 @@ public class OdsFile {
 	 */
 	@Deprecated
 	public void setCell(String sTab, int nRow, int nCol, int nValuetype,
-			String sValue, TableStyle ts) throws SimpleOdsException {
+			String sValue, TableCellStyle ts) throws SimpleOdsException {
 
 		final ContentEntry contentEntry = this.getContent();
 		ListIterator<Table> iterator = contentEntry.getTableQueue()
@@ -930,11 +931,11 @@ public class OdsFile {
 	 *            The calendar object with the date
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCellInAllTables(final int nRow, final int nCol,
-			final Calendar cal, final TableStyle ts) throws SimpleOdsException {
+			final Calendar cal, final TableCellStyle ts) throws SimpleOdsException {
 
 		final ContentEntry contentEntry = this.getContent();
 		final int size = contentEntry.getTableQueue().size();
@@ -960,11 +961,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCellInAllTables(final int nRow, final int nCol,
-			final int nValuetype, final String sValue, final TableStyle ts)
+			final int nValuetype, final String sValue, final TableCellStyle ts)
 			throws SimpleOdsException {
 		for (Table tab : this.getContent().getTableQueue()) {
 			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
@@ -980,11 +981,11 @@ public class OdsFile {
 	 *            The calendar object with the date
 	 * @param ts
 	 *            The table style for this cells, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCellInAllTables(final String sPos, final Calendar cal,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
@@ -1010,11 +1011,11 @@ public class OdsFile {
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws SimpleOdsException
 	 */
 	public void setCellInAllTables(final String sPos, final int nValuetype,
-			final String sValue, final TableStyle ts)
+			final String sValue, final TableCellStyle ts)
 			throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
@@ -1121,11 +1122,10 @@ public class OdsFile {
 	 *            The column, 0 is the first column
 	 * @param ts
 	 *            The table style to be used, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 */
 	public void setCellStyle(final int nTab, final int nRow, final int nCol,
-			final TableStyle ts) throws SimpleOdsException {
-		ts.addStylesObject(this.getStyles());
+			final TableCellStyle ts) throws SimpleOdsException {
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
 	}
 
@@ -1138,14 +1138,13 @@ public class OdsFile {
 	 *            The cell position e.g. 'A1'
 	 * @param ts
 	 *            The table style to be used, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 */
 	public void setCellStyle(final int nTab, final String sPos,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
-		ts.addStylesObject(this.getStyles());
 		getContent().setCellStyle(nTab, nRow, nCol, ts);
 	}
 
@@ -1160,7 +1159,7 @@ public class OdsFile {
 	 *            The column, 0 is the first column
 	 * @param ts
 	 *            The table style to be used, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECELL
+	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * 
 	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(String)}<br>
 	 *             instead setCellStyle("Tab2",1,1,"stringvalue") use
@@ -1169,7 +1168,7 @@ public class OdsFile {
 	 */
 	@Deprecated
 	public void setCellStyle(final String sTab, final int nRow, final int nCol,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		ListIterator<Table> iterator = this.getContent().getTableQueue()
 				.listIterator();
 		while (iterator.hasNext()) {
@@ -1195,10 +1194,10 @@ public class OdsFile {
 	 *            The column, 0 is the first column
 	 * @param ts
 	 *            The table style to be used, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECOLUMN
+	 *            TableCellStyle.STYLEFAMILY_TABLECOLUMN
 	 */
 	public void setColumnStyle(final int nTab, final int nCol,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableColumnStyle ts) throws SimpleOdsException {
 		getContent().setColumnStyle(nTab, nCol, ts);
 	}
 
@@ -1246,7 +1245,7 @@ public class OdsFile {
 		this.stylesEntry = s;
 	}
 
-	private void createConfigurations2(ZipOutputStream o) throws IOException {
+	private void createConfigurations(ZipOutputStream o) throws IOException {
 		for (String entry : new String[] {
 				"Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
@@ -1267,7 +1266,7 @@ public class OdsFile {
 	 *            The column, 0 is the first column
 	 * @param ts
 	 *            The table style to be used, must be of type
-	 *            TableStyle.STYLEFAMILY_TABLECOLUMN
+	 *            TableCellStyle.STYLEFAMILY_TABLECOLUMN
 	 * 
 	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(final String
 	 *             sName)} instead setColumnStyle("Tab2",1,1,"stringvalue") use
@@ -1275,7 +1274,7 @@ public class OdsFile {
 	 * 
 	 */
 	@Deprecated
-	private void setColumnStyle(String sTab, int nCol, TableStyle ts)
+	private void setColumnStyle(String sTab, int nCol, TableColumnStyle ts)
 			throws SimpleOdsException {
 
 		final ContentEntry contentEntry = this.getContent();

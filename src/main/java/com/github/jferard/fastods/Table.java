@@ -19,6 +19,10 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
+
 /**
  * TODO : clean code
  * 
@@ -30,6 +34,8 @@ package com.github.jferard.fastods;
  *         This file Table.java is part of SimpleODS.<br>
  *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'
  *
+ * WHERE ?
+ * content.xml/office:document-content/office:body/office:spreadsheet/table:table
  */
 public class Table implements NamedObject {
 	final static int TABLE_MAXROWNUMBER = 65536;
@@ -67,7 +73,7 @@ public class Table implements NamedObject {
 	private ConfigItem PageViewZoomValue = new ConfigItem("PageViewZoomValue",
 			"int", "60");
 
-	private ObjectQueue<TableStyle> qColumnStyles = ObjectQueue.newQueue();
+	private ObjectQueue<TableColumnStyle> qColumnStyles = ObjectQueue.newQueue();
 	private ObjectQueue<TableRow> qTableRows = ObjectQueue.newQueue();
 
 	public Table(String sName) {
@@ -97,7 +103,7 @@ public class Table implements NamedObject {
 		return tr.getCell(nCol);
 	}
 
-	public ObjectQueue<TableStyle> getColumnStyles() {
+	public ObjectQueue<TableColumnStyle> getColumnStyles() {
 		return this.qColumnStyles;
 	}
 
@@ -151,7 +157,7 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Get the current TableStyle
+	 * Get the current TableFamilyStyle
 	 * 
 	 * @return The current TableStlye
 	 */
@@ -215,13 +221,13 @@ public class Table implements NamedObject {
 	 * @param value
 	 *            The value to be set
 	 * @param ts
-	 *            The TableStyle to be used for this cell.
+	 *            The TableFamilyStyle to be used for this cell.
 	 * @return true
 	 * @throws SimpleOdsException
 	 *             Thrown when nRow or nCol have wrong values.
 	 */
 	public boolean setCell(final int nRow, final int nCol, final int valuetype,
-			final String value, final TableStyle ts) throws SimpleOdsException {
+			final String value, final TableCellStyle ts) throws SimpleOdsException {
 
 		this.setCell(nRow, nCol, valuetype, value);
 		this.setCellStyle(nRow, nCol, ts);
@@ -236,13 +242,13 @@ public class Table implements NamedObject {
 	 * @param nCol
 	 *            The column number
 	 * @param ts
-	 *            The TableStyle to be used
+	 *            The TableFamilyStyle to be used
 	 * @return TRUE The cell style was set
 	 * @throws SimpleOdsException
 	 *             when nRow or nCol have wrong values
 	 */
 	public boolean setCellStyle(final int nRow, final int nCol,
-			final TableStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws SimpleOdsException {
 		TableRow tr;
 
 		this.checkRow(nRow);
@@ -274,11 +280,11 @@ public class Table implements NamedObject {
 	 *            The column number
 	 * @param ts
 	 *            The style to be used, make sure the style is of type
-	 *            TableStyle.STYLEFAMILY_TABLECOLUMN
+	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
 	 * @throws SimpleOdsException
 	 *             Thrown if nCol has an invalid value.
 	 */
-	public void setColumnStyle(final int nCol, final TableStyle ts)
+	public void setColumnStyle(final int nCol, final TableColumnStyle ts)
 			throws SimpleOdsException {
 		this.checkCol(nCol);
 		this.qColumnStyles.setAt(nCol, ts);
@@ -295,7 +301,7 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Set a new TableStyle
+	 * Set a new TableFamilyStyle
 	 * 
 	 * @param style
 	 *            The new TableStlye to be used
@@ -310,12 +316,99 @@ public class Table implements NamedObject {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String toXML() {
-		return new StringBuilder("<table:table table:name=\"")
+	public String toXML(Util util) {
+		StringBuilder sb = new StringBuilder("<table:table table:name=\"")
 				.append(this.getName()).append("\" table:style-name=\"")
-				.append(this.getStyle()).append("\" table:print=\"false\">")
-				.toString();
+				.append(this.getStyle()).append("\" table:print=\"false\">");
+		sb.append(
+				"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");
+		this.appendColumnStyles(sb, util);
+		this.appendRows(sb, util);
+		sb.append("</table:table>");
+
+		return sb.toString(); 
 	}
+	
+	private void appendRows(StringBuilder sb, Util util) {
+		// Loop through all rows
+		for (TableRow tr : this.getRows()) {
+			if (tr != null) {
+				sb.append(tr.toXML(util));
+			} else {
+				// Empty TableRow
+				sb.append("<table:table-row table:style-name=\"ro1\">");
+				// no toString() here
+				sb.append(
+						"<table:table-cell table:number-columns-repeated=\"")
+								.append(this.getLastCol()).append("\"/>");
+				sb.append("</table:table-row>");
+			}
+		}
+	}
+
+	private void appendColumnStyles(StringBuilder sb, Util util) {
+		TableColumnStyle ts0 = null;
+		TableColumnStyle ts1 = null;
+		String sDefaultCellSytle0 = "Default";
+		String sDefaultCellSytle1 = "Default";
+
+		// Loop through all table column styles and write the informations
+		String sSytle0 = "co1";
+		String sSytle1 = "co1";
+
+		// If there is only one column style in column one, just write this
+		// info to OutputStream o
+		if (this.getColumnStyles().size() == 1) {
+			ts0 = this.getColumnStyles().get(0);
+			Table.appendColumnStyle(sb, util, ts0.getName(),
+					ts0.getDefaultCellStyle(), 1);
+
+		}
+
+		// If there is more than one column with a style, loop through all
+		// styles and
+		// write the info to OutputStream o
+		if (this.getColumnStyles().size() > 1) {
+			int nCount = 1;
+
+			Iterator<TableColumnStyle> iterator = this.getColumnStyles()
+					.iterator();
+			ts1 = iterator.next();
+			while (iterator.hasNext()) {
+				ts0 = ts1;
+				ts1 = iterator.next();
+
+				if (ts0 == null) {
+					sSytle0 = "co1";
+					sDefaultCellSytle1 = "Default";
+				} else {
+					sSytle0 = ts0.getName();
+					sDefaultCellSytle1 = ts0.getDefaultCellStyle();
+				}
+				if (ts1 == null) {
+					sSytle1 = "co1";
+					sDefaultCellSytle0 = "Default";
+				} else {
+					sSytle1 = ts1.getName();
+					sDefaultCellSytle0 = ts1.getDefaultCellStyle();
+				}
+
+				if (sSytle0.equalsIgnoreCase(sSytle1)) {
+					nCount++;
+				} else {
+					Table.appendColumnStyle(sb, util, sSytle0,
+							sDefaultCellSytle1, nCount);
+
+					nCount = 1;
+				}
+
+			}
+			Table.appendColumnStyle(sb, util, sSytle1, sDefaultCellSytle0,
+					nCount);
+
+		}
+	}
+	
 
 	private void checkCol(final int nCol) throws SimpleOdsException {
 		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
@@ -343,4 +436,15 @@ public class Table implements NamedObject {
 		}
 	}
 
+	private static void appendColumnStyle(StringBuilder sb, Util util, String sSytle,
+			String sDefaultCellSytle, int nCount) {
+		sb.append("<table:table-column table:style-name=\"")
+				.append(util.escapeXMLAttribute(sSytle))
+				.append("\" table:number-columns-repeated=\"").append(nCount)
+				.append("\" table:default-cell-style-name=\"")
+				.append(util.escapeXMLAttribute(sDefaultCellSytle))
+				.append("\"/>");
+	}
+
+	
 }

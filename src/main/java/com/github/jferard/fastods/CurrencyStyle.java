@@ -25,6 +25,10 @@ package com.github.jferard.fastods;
  *         users.sourceforge.net>
  *
  *         This file CurrencyStyle.java is part of FastODS.
+ *         
+ * WHERE ?
+ * content.xml/office:document-content/office:automatic-styles/number:currency-style
+ * styles.xml/office:document-styles/office:styles/number:currency-style
  */
 public class CurrencyStyle implements NamedObject {
 	public final static int NUMBER_CURRENCY = 1;

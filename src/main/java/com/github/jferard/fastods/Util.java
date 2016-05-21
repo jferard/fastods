@@ -225,7 +225,7 @@ public class Util {
 	 * @param nValue
 	 *            The value of the element
 	 */
-	public void appendElement(final StringBuilder sb, final String sElementName,
+	public void appendAttribute(final StringBuilder sb, final String sElementName,
 			final int nValue) {
 		sb.append(" ").append(sElementName).append("=\"").append(nValue)
 				.append("\" ");
@@ -243,10 +243,10 @@ public class Util {
 	 * @param sValue
 	 *            The value of the element
 	 */
-	public void appendElement(final StringBuilder sb, final String sElementName,
+	public void appendAttribute(final StringBuilder sb, final String sElementName,
 			final String sValue) {
-		sb.append(" ").append(sElementName).append("=\"")
-				.append(this.escapeXMLAttribute(sValue)).append("\" ");
+		sb.append(' ').append(sElementName).append("=\"")
+				.append(this.escapeXMLAttribute(sValue)).append('"');
 	}
 
 	/**

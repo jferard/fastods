@@ -106,6 +106,7 @@ public class ObjectQueue<T> implements Iterable<T> {
 	 *            The position of the object to be returned.
 	 * @return The object at position n
 	 */
+	@Deprecated
 	public T get(final int n) {
 		if (n < 0 || n >= this.list.size()) {
 			return null;

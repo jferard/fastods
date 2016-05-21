@@ -29,10 +29,11 @@ package com.github.jferard.fastods;
  * 
  *         This file TextStyle.java is part of SimpleODS.<br>
  *         Version 0.5.0 Added support for Font underline style
+ *         
+ * content.xml/office:document-content/office:automatic-styles/style:style/style:style
  */
-
 public class TextStyle implements NamedObject {
-	// none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
+	// 20.380 : one,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public final static int STYLE_UNDERLINE_NONE = 0;
 	public final static int STYLE_UNDERLINE_SOLID = 1;
 	public final static int STYLE_UNDERLINE_DOTTED = 2;
@@ -42,37 +43,25 @@ public class TextStyle implements NamedObject {
 	public final static int STYLE_UNDERLINE_DOTDOTDASH = 6;
 	public final static int STYLE_UNDERLINE_WAVE = 7;
 
-	private String sName = "";
-	private String sFontColor = "";
-	private String sFontName = "";
-	private String sFontWeight = ""; // 0.5.2 Renamed from FontStyle to
-										// FontWeight
-	private String sFontWeightAsian = ""; // 0.5.2 Renamed from FontStyle to
-											// FontWeight
-	private String sFontWeightComplex = ""; // 0.5.2 Renamed from FontStyle to
-											// FontWeight
-	private String sFontSize = ""; // text property
-	private String sFontSizeAsian = "";
-	private String sFontSizeComplex = "";
-	private String sFontUnderlineColor = "";
-
-	private int nFontUnderlineStyle = TextStyle.STYLE_UNDERLINE_NONE;
-
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private OdsFile o;
-
-	/**
-	 * Create a new text style without a name.<br>
-	 * This is used by class TableStyle. Version 0.5.2 Added
-	 * 
-	 * @param odsFile
-	 *            The file to add this style to
-	 */
-	public TextStyle(final OdsFile odsFile) {
-		this.o = odsFile;
+	public static TextStyleBuilder builder() {
+		return new TextStyleBuilder();
 	}
+	
+	private final String sName ;
+	private final String sFontColor;
+	private final String sFontName;
+	private final String sFontWeight;
+									
+	private final String sFontWeightAsian;
+											
+	private final String sFontWeightComplex;
+											
+	private final String sFontSize;
+	private final String sFontSizeAsian;
+	private final String sFontSizeComplex;
+	private final String sFontUnderlineColor;
+
+	private final int nFontUnderlineStyle;
 
 	/**
 	 * Create a new text style with the name sName.<br>
@@ -83,12 +72,28 @@ public class TextStyle implements NamedObject {
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	public TextStyle(final String sStyleName, final OdsFile odsFile) {
-		this.setName(sStyleName);
-		this.o = odsFile;
-		this.o.getStyles().addTextStyle(this);
+	TextStyle(String sName, String sFontColor, String sFontName,
+			String sFontWeight, String sFontWeightAsian,
+			String sFontWeightComplex, String sFontSize,
+			String sFontSizeAsian, String sFontSizeComplex,
+			String sFontUnderlineColor, int nFontUnderlineStyle) {
+		this.sName = sName;
+		this.sFontColor = sFontColor;
+		this.sFontName = sFontName;
+		this.sFontWeight = sFontWeight;
+		this.sFontWeightAsian = sFontWeightAsian;
+		this.sFontWeightComplex = sFontWeightComplex;
+		this.sFontSize = sFontSize;
+		this.sFontSizeAsian = sFontSizeAsian;
+		this.sFontSizeComplex = sFontSizeComplex;
+		this.sFontUnderlineColor = sFontUnderlineColor;
+		this.nFontUnderlineStyle = nFontUnderlineStyle;
 	}
 
+	public void addToFile(final OdsFile odsFile) {
+		odsFile.getStyles().addTextStyle(this);
+	}
+	
 	/**
 	 * Get the current font color.
 	 * 
@@ -142,196 +147,22 @@ public class TextStyle implements NamedObject {
 	}
 
 	/**
-	 * Set the font color to sColor.
-	 * 
-	 * @param sColor
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            cell background
-	 */
-	public void setFontColor(final String sColor) {
-		this.sFontColor = sColor;
-	}
-
-	/**
-	 * Set the font name to be used for this style.
-	 * 
-	 * @param fontName
-	 *            The font name for this TextStyle
-	 */
-	public void setFontName(final String fontName) {
-		this.sFontName = fontName;
-	}
-
-	/**
-	 * Set the font size in points to the given value.
-	 * 
-	 * @param fontSize
-	 *            - The font size as int , e.g. 10 or 8
-	 */
-	public void setFontSize(final int fontSize) {
-		String sSize = new StringBuilder(fontSize).append("pt").toString();
-		this.sFontSize = sSize;
-		this.sFontSizeAsian = sSize;
-		this.sFontSizeComplex = sSize;
-	}
-
-	/**
-	 * Set the font size to the given value<br>
-	 * fontSize is a length value expressed as a number followed by pt, e.g.
-	 * 12pt
-	 * 
-	 * @param fontSize
-	 *            - The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public void setFontSize(final String fontSize) {
-		this.sFontSize = fontSize;
-		this.sFontSizeAsian = fontSize;
-		this.sFontSizeComplex = fontSize;
-	}
-
-	/**
-	 * Set the font weight to bold.
-	 * 
-	 * @return true
-	 * @deprecated 0.5.2 Use setFontWeightBold() instead.
-	 */
-	@Deprecated
-	public boolean setFontStyleBold() {
-		this.sFontWeight = "bold";
-		this.sFontWeightAsian = "bold";
-		this.sFontWeightComplex = "bold";
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to italic.
-	 * 
-	 * @return true
-	 * @deprecated 0.5.2 Use setFontWeightItalic() instead.
-	 */
-	@Deprecated
-	public boolean setFontStyleItalic() {
-		this.sFontWeight = "italic";
-		this.sFontWeightAsian = "italic";
-		this.sFontWeightComplex = "italic";
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to normal.
-	 * 
-	 * @return true -
-	 * @deprecated 0.5.2 Use setFontWeightNormal() instead.
-	 */
-	@Deprecated
-	public boolean setFontStyleNormal() {
-		this.sFontWeight = "normal";
-		this.sFontWeightAsian = "normal";
-		this.sFontWeightComplex = "normal";
-
-		return true;
-	}
-
-	/**
-	 * Set the font underline color to sColor. Use an empty string to reset it
-	 * to 'auto'.
-	 * 
-	 * @param sColor
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            cell background.
-	 */
-	public void setFontUnderlineColor(final String sColor) {
-		this.sFontUnderlineColor = sColor;
-	}
-
-	/**
-	 * Set the style that should be used for the underline. Valid is:<br>
-	 * TextStyle.STYLE_UNDERLINE_NONE<br>
-	 * TextStyle.STYLE_UNDERLINE_SOLID<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTTED<br>
-	 * TextStyle.STYLE_UNDERLINE_DASH<br>
-	 * TextStyle.STYLE_UNDERLINE_LONGDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
-	 * Other values are ignored.
-	 * 
-	 * @param nStyle
-	 *            One of the TextStyle.STYLE_UNDERLINE
-	 */
-	public void setFontUnderlineStyle(final int nStyle) {
-		this.nFontUnderlineStyle = nStyle;
-
-	}
-
-	/**
-	 * Set the font weight to bold.
-	 * 
-	 * @return true
-	 */
-	public boolean setFontWeightBold() {
-		this.sFontWeight = "bold";
-		this.sFontWeightAsian = "bold";
-		this.sFontWeightComplex = "bold";
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to italic.
-	 * 
-	 * @return true
-	 */
-	public boolean setFontWeightItalic() {
-		this.sFontWeight = "italic";
-		this.sFontWeightAsian = "italic";
-		this.sFontWeightComplex = "italic";
-
-		return true;
-	}
-
-	/**
-	 * Set the font weight to normal.
-	 * 
-	 * @return true -
-	 */
-	public boolean setFontWeightNormal() {
-		this.sFontWeight = "normal";
-		this.sFontWeightAsian = "normal";
-		this.sFontWeightComplex = "normal";
-
-		return true;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 * 
-	 * @param name
-	 *            - The name of this style
-	 */
-	public final void setName(final String name) {
-		this.sName = name;
-	}
-
-	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
 	 * @return The XML string for this object.
 	 */
-	protected String toXML(Util util) {
+	public String toXML(Util util) {
 		StringBuilder sbTemp = new StringBuilder();
 
 		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableStyle.
+		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
-		if (this.getName().length() > 0) {
+		if (this.sName.length() > 0) {
 			sbTemp.append("<style:style ");
-			util.appendElement(sbTemp, "style:name", this.getName());
-			util.appendElement(sbTemp, "style:family", "text");
+			util.appendAttribute(sbTemp, "style:name", this.getName());
+			util.appendAttribute(sbTemp, "style:family", "text");
 			sbTemp.append(">");
 		}
 
@@ -340,80 +171,47 @@ public class TextStyle implements NamedObject {
 		sbTemp.append("<style:text-properties ");
 		// Check if the font weight should be added
 		if (this.sFontWeight.length() > 0) {
-			sbTemp.append("fo:font-weight=\"").append(this.sFontWeight)
-					.append("\" style:font-weight-asian=\"")
-					.append(this.sFontWeightAsian)
-					.append("\" style:font-weight-complex=\"")
-					.append(this.sFontWeightComplex + "\" ");
-
+			util.appendAttribute(sbTemp, "fo:font-weight", this.sFontWeight);
+			util.appendAttribute(sbTemp, "style:font-weight-asian", this.sFontWeightAsian);
+			util.appendAttribute(sbTemp, "style:font-weight-complex", this.sFontWeightComplex);
 		}
 		// Check if a font color should be added
 		if (this.sFontColor.length() > 0) {
-			util.appendElement(sbTemp, "fo:color", this.sFontColor);
-			// sbTemp.append("fo:color=\"" + this.sFontColor + "\" ");
+			util.appendAttribute(sbTemp, "fo:color", this.sFontColor);
 		}
 		// Check if a font name should be added
 		if (this.sFontName.length() > 0) {
-			util.appendElement(sbTemp, "style:font-name", this.sFontName);
-			// sbTemp.append("style:font-name=\"" + this.sFontName + "\" ");
+			util.appendAttribute(sbTemp, "style:font-name", this.sFontName);
 		}
 		// Check if a font size should be added
 		if (this.sFontSize.length() > 0) {
-			sbTemp.append("fo:font-size=\"").append(this.sFontSize)
-					.append("\" style:font-size-asian=\"")
-					.append(this.sFontSizeAsian)
-					.append("\" style:font-size-complex=\"")
-					.append(this.sFontSizeComplex).append("\" ");
+			util.appendAttribute(sbTemp, "fo:font-size", this.sFontSize);
+			util.appendAttribute(sbTemp, "style:font-size-asian", this.sFontSizeAsian);
+			util.appendAttribute(sbTemp, "style:font-size-complex", this.sFontSizeComplex);
 		}
 
 		if (this.nFontUnderlineStyle > 0) {
-			sbTemp.append("style:text-underline-style=\"");
-			switch (this.getFontUnderlineStyle()) {
-			case STYLE_UNDERLINE_NONE:
-				sbTemp.append("none");
-				break;
-			case STYLE_UNDERLINE_SOLID:
-				sbTemp.append("solid");
-				break;
-			case STYLE_UNDERLINE_DOTTED:
-				sbTemp.append("dotted");
-				break;
-			case STYLE_UNDERLINE_DASH:
-				sbTemp.append("dash");
-				break;
-			case STYLE_UNDERLINE_LONGDASH:
-				sbTemp.append("long-dash");
-				break;
-			case STYLE_UNDERLINE_DOTDASH:
-				sbTemp.append("dot-dash");
-				break;
-			case STYLE_UNDERLINE_DOTDOTDASH:
-				sbTemp.append("dot-dot-dash");
-				break;
-			case STYLE_UNDERLINE_WAVE:
-				sbTemp.append("wave");
-				break;
-			default:
-				sbTemp.append("none");
-			}
-			sbTemp.append("\" style:text-underline-width=\"auto\"");
+			String styleUnderlineAttribute = getStyleUnderlineAttribute(this.nFontUnderlineStyle);
+			util.appendAttribute(sbTemp, "style:text-underline-style", styleUnderlineAttribute);
+			util.appendAttribute(sbTemp, "style:text-underline-width", "auto");
 
 			// ---------------------------------------------------------------------------------
 			// If any underline color was set, add the color, otherwise use the
 			// font color
 			// ---------------------------------------------------------------------------------
 			if (this.getFontUnderlineColor().length() > 0) {
-				util.appendElement(sbTemp, "style:text-underline-color",
-						this.getFontUnderlineColor());
+				util.appendAttribute(sbTemp, "style:text-underline-color",
+						this.sFontUnderlineColor);
 			} else {
-				sbTemp.append(" style:text-underline-color=\"font-color\" ");
+				util.appendAttribute(sbTemp, "style:text-underline-color",
+						"font-color");
 			}
 		}
 
 		sbTemp.append("/>");
 
 		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableStyle.
+		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
 		if (this.getName().length() > 0) {
@@ -421,6 +219,40 @@ public class TextStyle implements NamedObject {
 		}
 
 		return sbTemp.toString();
+	}
+
+	// enum + toString()
+	private String getStyleUnderlineAttribute(int nFontUnderlineStyle) {
+		String styleUnderlineAttribute;
+		switch (nFontUnderlineStyle) {
+		case STYLE_UNDERLINE_NONE:
+			styleUnderlineAttribute = "none";
+			break;
+		case STYLE_UNDERLINE_SOLID:
+			styleUnderlineAttribute = "solid";
+			break;
+		case STYLE_UNDERLINE_DOTTED:
+			styleUnderlineAttribute = "dotted";
+			break;
+		case STYLE_UNDERLINE_DASH:
+			styleUnderlineAttribute = "dash";
+			break;
+		case STYLE_UNDERLINE_LONGDASH:
+			styleUnderlineAttribute = "long-dash";
+			break;
+		case STYLE_UNDERLINE_DOTDASH:
+			styleUnderlineAttribute = "dot-dash";
+			break;
+		case STYLE_UNDERLINE_DOTDOTDASH:
+			styleUnderlineAttribute = "dot-dot-dash";
+			break;
+		case STYLE_UNDERLINE_WAVE:
+			styleUnderlineAttribute = "wave";
+			break;
+		default:
+			styleUnderlineAttribute = "none";
+		}
+		return styleUnderlineAttribute;
 	}
 
 }

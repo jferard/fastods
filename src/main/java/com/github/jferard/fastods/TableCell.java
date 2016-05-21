@@ -23,15 +23,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * TODO : clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file TableCell.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
+ *         This file TableCell.java is part of FastODS.
+ *         
+ * WHERE ?
+ * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-row/table:table-cell
  */
 public class TableCell {
 	public final static int STYLE_STRING = 1;
@@ -210,45 +209,32 @@ public class TableCell {
 		StringBuilder sbTemp = new StringBuilder();
 
 		sbTemp.append("<table:table-cell ");
-		if (this.getStyle().length() > 0) {
-			// sbTemp.append("table:style-name=\"" + this.getStyle() + "\" ");
+		if (this.sStyle.length() > 0) {
+			util.appendAttribute(sbTemp, "table:style-name", this.getStyle());
 		}
-
-		String valueAttribute = util.escapeXMLAttribute(this.sValue);
-		String valueContent = util.escapeXMLContent(this.sValue);
 
 		switch (this.nValueType) {
 		case STYLE_STRING:
-			// sbTemp.append("office:value-type=\"string\" ");
-			util.appendElement(sbTemp, "office:value-type", "string");
+			util.appendAttribute(sbTemp, "office:value-type", "string");
 			break;
 		case STYLE_FLOAT:
-			// sbTemp.append("office:value-type=\"float\" ");
-			// sbTemp.append("office:value=\"" + this.sValue + "\" ");
-			util.appendElement(sbTemp, "office:value-type", "float");
-			util.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendAttribute(sbTemp, "office:value-type", "float");
+			util.appendAttribute(sbTemp, "office:value", this.sValue);
 			break;
 		case STYLE_PERCENTAGE:
-			// sbTemp.append("office:value-type=\"percentage\" ");
-			// sbTemp.append("office:value=\"" + this.sValue + "\" ");
-			util.appendElement(sbTemp, "office:value-type", "percentage");
-			util.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendAttribute(sbTemp, "office:value-type", "percentage");
+			util.appendAttribute(sbTemp, "office:value", this.sValue);
 			break;
 		case STYLE_CURRENCY:
-			// sbTemp.append("office:value-type=\"currency\" ");
-			// sbTemp.append("office:value=\"" + this.sValue + "\" ");
-			util.appendElement(sbTemp, "office:value-type", "currency");
-			util.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendAttribute(sbTemp, "office:value-type", "currency");
+			util.appendAttribute(sbTemp, "office:value", this.sCurrency);
 			break;
 		case STYLE_DATE:
-			// sbTemp.append("office:value-type=\"date\" ");
-			// sbTemp.append("office:date-value=\"" + this.sDateValue + "\" ");
-			util.appendElement(sbTemp, "office:value-type", "date");
-			util.appendElement(sbTemp, "office:value", valueAttribute);
+			util.appendAttribute(sbTemp, "office:value-type", "date");
+			util.appendAttribute(sbTemp, "office:value", this.sDateValue);
 			break;
 		default:
-			// sbTemp.append("office:value-type=\"string\" ");
-			util.appendElement(sbTemp, "office:value-type", "string");
+			util.appendAttribute(sbTemp, "office:value-type", "string");
 			/*
 			 * case STYLE_TIME:
 			 * sbTemp.append("office:value-type=\"time-value\" ");
@@ -260,20 +246,16 @@ public class TableCell {
 		}
 
 		if (this.nColumnsSpanned > 0) {
-			util.appendElement(sbTemp, "table:number-columns-spanned",
+			util.appendAttribute(sbTemp, "table:number-columns-spanned",
 					this.nColumnsSpanned);
-			// sbTemp.append("table:number-columns-spanned=\"" +
-			// Integer.toString(nColumnsSpanned) + "\" ");
 		}
 		if (this.nRowsSpanned > 0) {
-			util.appendElement(sbTemp, "table:number-rows-spanned",
+			util.appendAttribute(sbTemp, "table:number-rows-spanned",
 					this.nRowsSpanned);
-			// sbTemp.append("table:number-rows-spanned=\"" +
-			// Integer.toString(nRowsSpanned) + "\" ");
 		}
 
 		sbTemp.append(">");
-		sbTemp.append("<text:p>").append(valueContent).append("</text:p>");
+		sbTemp.append("<text:p>").append(util.escapeXMLContent(this.sValue)).append("</text:p>");
 		sbTemp.append("</table:table-cell>");
 
 		return (sbTemp.toString());

@@ -26,6 +26,8 @@ package com.github.jferard.fastods;
  *
  *         This file FooterHeader.java is part of SimpleODS.
  *
+ * styles.xml/office:document-styles/office:master-styles/style:master-page/style:footer 
+ * styles.xml/office:document-styles/office:master-styles/style:master-page/style:header
  */
 public class FooterHeader {
 
@@ -208,7 +210,7 @@ public class FooterHeader {
 		return qStyledText;
 	}
 
-	private void writeRegion(StringBuilder sbTemp,
+	private void writeRegion(StringBuilder sbTemp, Util util, 
 			ObjectQueue<ObjectQueue<StyledText>> qRegion,
 			final String sRegionName) {
 
@@ -229,7 +231,7 @@ public class FooterHeader {
 			} else {
 				// Add all styles and text for this paragraphs
 				for (StyledText st : qStyledText)
-					sbTemp.append(st.toMasterStyleXML());
+					sbTemp.append(st.toMasterStyleXML(util));
 			}
 
 			sbTemp.append("</text:p>");
@@ -245,43 +247,17 @@ public class FooterHeader {
 	 * 
 	 * @return
 	 */
-	protected String toMasterStyleXML() {
+	protected String toMasterStyleXML(Util util) {
 
 		StringBuilder sbTemp = new StringBuilder();
 
-		this.writeRegion(sbTemp, this.qLeftRegion, "region-left");
+		this.writeRegion(sbTemp, util, this.qLeftRegion, "region-left");
 
-		this.writeRegion(sbTemp, this.qCenterRegion, "region-center");
+		this.writeRegion(sbTemp, util, this.qCenterRegion, "region-center");
 
-		this.writeRegion(sbTemp, this.qRightRegion, "region-right");
+		this.writeRegion(sbTemp, util, this.qRightRegion, "region-right");
 
 		// </style:footer/header> is written by PageStyle.toMasterStyleXML()
-
-		return sbTemp.toString();
-
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	protected String toXML() {
-		StringBuilder sbTemp = new StringBuilder();
-
-		if (this.footerHeaderType == FOOTER)
-			sbTemp.append(
-					"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
-		else if (this.footerHeaderType == HEADER)
-			sbTemp.append(
-					"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
-
-		sbTemp.append(
-				"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
-
-		sbTemp.append("</style:paragraph-properties>");
-		sbTemp.append("</style:style>");
 
 		return sbTemp.toString();
 	}

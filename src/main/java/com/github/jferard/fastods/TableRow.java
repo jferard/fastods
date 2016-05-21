@@ -19,25 +19,27 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ListIterator;
 
 /**
- * TODO : clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file TableRow.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
+ *         This file TableRow.java is part of FastODS.
+ *
+ * WHERE ?
+ * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-row
  */
-public class TableRow {
-	private String Style = "ro1";
-
-	private ObjectQueue<TableCell> qTableCells = ObjectQueue.newQueue();
+public class TableRow implements XMLWritable {
+	private String styleName;
+	private ObjectQueue<TableCell> qTableCells;
 
 	public TableRow() {
+		this.styleName = "ro1";
+		this.qTableCells = ObjectQueue.newQueue();
 	}
 
 	/**
@@ -64,8 +66,8 @@ public class TableRow {
 		return this.qTableCells;
 	}
 
-	public String getStyle() {
-		return this.Style;
+	public String getStyleName() {
+		return this.styleName;
 	}
 
 	/**
@@ -80,11 +82,11 @@ public class TableRow {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			tc = new TableCell(nValuetype, sValue);
+			this.qTableCells.setAt(nCol, tc);
 		} else {
 			tc.setValueType(nValuetype);
 			tc.setValue(sValue);
 		}
-		this.qTableCells.setAt(nCol, tc);
 	}
 
 	/**
@@ -113,69 +115,76 @@ public class TableRow {
 	}
 
 	/**
-	 * Set the cell style for the cell at nCol to ts.
+	 * Set the cell styleName for the cell at nCol to ts.
 	 * 
 	 * @param nCol
 	 *            The column number
 	 * @param ts
-	 *            The table style to be used
+	 *            The table styleName to be used
 	 */
-	public void setCellStyle(final int nCol, final TableStyle ts) {
-
+	public void setCellStyle(final int nCol, final TableCellStyle ts) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			// Create an empty cell
-			this.setCell(nCol, TableCell.STYLE_STRING, "");
-			tc = this.qTableCells.get(nCol);
+			tc = new TableCell(TableCell.STYLE_STRING, "");
+			this.qTableCells.setAt(nCol, tc);
 		}
-
+		ts.addToFile(odsFile);
 		tc.setStyle(ts.getName());
-
 	}
 
 	public void setStyle(final String s) {
-		this.Style = s;
+		this.styleName = s;
 	}
 
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
+	 * @throws IOException 
 	 */
-	public String[] toXMLArray(Util util) {
-		ObjectQueue<String> qRc = ObjectQueue.newQueue();
+	@Override
+	public void writeXML(Util util, Writer writer) throws IOException {
+		writer.append(
+				new StringBuilder("<table:table-row table:styleName-name=\"")
+						.append(this.getStyleName()).append("\">"));
 
 		int nNullFieldCounter = 0;
-
-		qRc.add(new StringBuilder("<table:table-row table:style-name=\"")
-				.append(this.getStyle()).append("\">").toString());
-
 		for (TableCell tc : this.qTableCells) {
 			if (tc == null) {
 				nNullFieldCounter++;
 			} else {
 				if (nNullFieldCounter > 0) {
-					qRc.add(new StringBuilder(
+					writer.append(new StringBuilder(
 							"<table:table-cell table:number-columns-repeated=\"")
-									.append(nNullFieldCounter).append("\"/>")
-									.toString());
+									.append(nNullFieldCounter).append("\"/>"));
 					nNullFieldCounter = 0;
 				}
-				qRc.add(tc.toXML(util));
+				writer.write(tc.toXML(util));
 			}
 		}
-		qRc.add("</table:table-row>");
-
-		String[] sReturn = new String[qRc.size()];
-		ListIterator<String> iterator = qRc.listIterator();
-		while (iterator.hasNext()) {
-			int n = iterator.nextIndex();
-			String s = iterator.next();
-			sReturn[n] = s;
-		}
-
-		return sReturn;
+		writer.write("</table:table-row>");
 	}
 
+	public String toXML(Util util) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<table:table-row table:styleName-name=\"")
+						.append(this.getStyleName()).append("\">");
+
+		int nNullFieldCounter = 0;
+		for (TableCell tc : this.qTableCells) {
+			if (tc == null) {
+				nNullFieldCounter++;
+			} else {
+				if (nNullFieldCounter > 0) {
+					sb.append(new StringBuilder(
+							"<table:table-cell table:number-columns-repeated=\"")
+									.append(nNullFieldCounter).append("\"/>"));
+					nNullFieldCounter = 0;
+				}
+				sb.append(tc.toXML(util));
+			}
+		}
+		sb.append("</table:table-row>");
+		return sb.toString();
+	}
 }

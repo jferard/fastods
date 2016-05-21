@@ -20,23 +20,20 @@
 package com.github.jferard.fastods;
 
 /**
+ * /**
  * 
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * @author Julien Férard 
+ * 
+ * Copyright (C) 2016 J. Férard
+ * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
+ *         This file TableFamilyStyleBuilder.java is part of FastODS. SimpleODS 0.5.1
  *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
- *         
- * content.xml/office:document-content/office:automatic-styles
  */
-public class TableStyle implements NamedObject {
-	public static TableStyleBuilder builder() {
-		return new TableStyleBuilder();
-	}
-	
-	private final String sName;
+class TableColumnStyleBuilder {
+	private String sColumnWidth;
+	private String sName;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -51,34 +48,35 @@ public class TableStyle implements NamedObject {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(String sStyleName) {
-		this.sName = sStyleName;
-	}
-	
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addTableStyle(this);
+	public TableColumnStyleBuilder() {
+		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 	}
 
 	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
+	 * Set the column width of a table column.<br>
+	 * sWidth is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
 	 * 
-	 * @return The XML string for this object.
+	 * @param sWidth
+	 *            - The width of a column, e.g. '10cm'
+	 * @return true - The width was set, false - this object is no table column,
+	 *         you can not set the default cell to it
 	 */
-	public String toXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder();
-		sbTemp.append("<style:style");
-		util.appendAttribute(sbTemp, "style:name", this.sName);
-		util.appendAttribute(sbTemp, "style:family", "table");
-		util.appendAttribute(sbTemp, "style:master-page-name", "DefaultMasterPage");
-		sbTemp.append("><style:table-properties");
-		util.appendAttribute(sbTemp, "table:display", "true");
-		util.appendAttribute(sbTemp, "style:writing-mode", "lr-tb");
-		sbTemp.append("/></style:style>");
-		return sbTemp.toString();
+	public TableColumnStyleBuilder columnWidth(final String sWidth) {
+		this.sColumnWidth = sWidth;
+		return this;
+	}
+	
+	public TableColumnStyleBuilder name(String sName) {
+		this.sName = sName;
+		return this;
 	}
 
-	public String getName() {
-		return this.sName;
+	public TableColumnStyle build() {
+		return new TableColumnStyle(this.sName, this.sColumnWidth);
+		
 	}
 }

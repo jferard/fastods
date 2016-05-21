@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/** 
+ * 
+ * WHERE ?
+ * settings.xml/office:document-settings
+ */
 public class SettingsEntry implements OdsEntry {
 	// ViewSettings
 	private ConfigItem VisibleAreaTop = new ConfigItem("VisibleAreaTop", "int",

@@ -19,7 +19,10 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.ListIterator;
+
 /**
+ * /**
  * 
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -28,15 +31,18 @@ package com.github.jferard.fastods;
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
  *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
- *         
- * content.xml/office:document-content/office:automatic-styles
+ *
+ * WHERE ?
+ * content.xml/office:document-content/office:automatic-styles/style:style
+ * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-column
  */
-public class TableStyle implements NamedObject {
-	public static TableStyleBuilder builder() {
-		return new TableStyleBuilder();
+public class TableRowStyle implements NamedObject {
+	public static TableRowStyleBuilder builder() {
+		return new TableRowStyleBuilder();
 	}
 	
-	private final String sName;
+	private String sRowHeight;
+	private String sName;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -51,12 +57,24 @@ public class TableStyle implements NamedObject {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(String sStyleName) {
+	TableRowStyle(String sStyleName, String sRowHeight) {
 		this.sName = sStyleName;
+		this.sRowHeight = sRowHeight;
 	}
-	
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addTableStyle(this);
+
+	/**
+	 * Set the row height to a table row.<br>
+	 * sHeight is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 * 
+	 * @return sHeight
+	 *            The table row height to be used, e.g. '1.0cm'
+	 */
+	public String getRowHeight() {
+		return this.sRowHeight;
 	}
 
 	/**
@@ -69,16 +87,21 @@ public class TableStyle implements NamedObject {
 		StringBuilder sbTemp = new StringBuilder();
 		sbTemp.append("<style:style");
 		util.appendAttribute(sbTemp, "style:name", this.sName);
-		util.appendAttribute(sbTemp, "style:family", "table");
-		util.appendAttribute(sbTemp, "style:master-page-name", "DefaultMasterPage");
-		sbTemp.append("><style:table-properties");
-		util.appendAttribute(sbTemp, "table:display", "true");
-		util.appendAttribute(sbTemp, "style:writing-mode", "lr-tb");
+		util.appendAttribute(sbTemp, "style:family", "table-row");
+		sbTemp.append("><style:table-row-properties");
+		util.appendAttribute(sbTemp, "row-height", this.sRowHeight);
+		util.appendAttribute(sbTemp, "fo:break-before", "auto");
+		util.appendAttribute(sbTemp, "style:use-optimal-row-height", "true");
 		sbTemp.append("/></style:style>");
+
 		return sbTemp.toString();
 	}
 
 	public String getName() {
 		return this.sName;
+	}
+
+	public void addToFile(final OdsFile odsFile) {
+		odsFile.getContent().addTableStyle(this);
 	}
 }

@@ -25,6 +25,9 @@ package com.github.jferard.fastods;
  *         users.sourceforge.net>
  *
  *         This file ConfigItem.java is part of FastODS.
+ * 
+ * WHERE ?
+ * settings.xml/office:document-settings/office:settings/settingsEntry:settingsEntry-item-set/config:config-item
  */
 public class ConfigItem {
 	private final String sItemName;

@@ -34,10 +34,11 @@ import java.util.zip.ZipOutputStream;
  *         SimpleODS 0.5.1 Changed all 'throw Exception' to 'throw
  *         SimpleOdsException'
  *
+ *         content.xml/office:document-content
  */
 public class ContentEntry implements OdsEntry {
 	private ObjectQueue<Table> qTables;
-	private ObjectQueue<TableStyle> qTableStyles;
+	private ObjectQueue<NamedObject> qTableStyles;
 	private ObjectQueue<PageStyle> qPageStyles;
 	private ObjectQueue<TextStyle> qTextStyles;
 
@@ -67,7 +68,7 @@ public class ContentEntry implements OdsEntry {
 		return true;
 	}
 
-	public void addTableStyle(TableStyle ts) {
+	public void addTableStyle(NamedObject ts) {
 		ObjectQueue.addOrReplaceNamedElement(this.qTableStyles, ts);
 	}
 
@@ -109,7 +110,7 @@ public class ContentEntry implements OdsEntry {
 		return this.qTables;
 	}
 
-	public ObjectQueue<TableStyle> getTableStyles() {
+	public ObjectQueue<NamedObject> getTableStyles() {
 		return this.qTableStyles;
 	}
 
@@ -125,7 +126,7 @@ public class ContentEntry implements OdsEntry {
 		return true;
 	}
 
-	public boolean setCellStyle(int nTab, int nRow, int nCol, TableStyle ts)
+	public boolean setCellStyle(int nTab, int nRow, int nCol, TableCellStyle ts)
 			throws SimpleOdsException {
 		this.checkTableIndex(nTab);
 
@@ -135,7 +136,7 @@ public class ContentEntry implements OdsEntry {
 		return true;
 	}
 
-	public boolean setColumnStyle(int nTab, int nCol, TableStyle ts)
+	public boolean setColumnStyle(int nTab, int nCol, TableColumnStyle ts)
 			throws SimpleOdsException {
 
 		if (nTab < 0 || this.qTables.size() <= nTab) {
@@ -152,7 +153,7 @@ public class ContentEntry implements OdsEntry {
 		this.qPageStyles = qPageStyles;
 	}
 
-	public void setTableStyles(final ObjectQueue<TableStyle> qTableStyles) {
+	public void setTableStyles(final ObjectQueue<NamedObject> qTableStyles) {
 		this.qTableStyles = qTableStyles;
 	}
 
@@ -179,7 +180,7 @@ public class ContentEntry implements OdsEntry {
 		/* Office automatic styles */
 		writer.write("<office:automatic-styles>");
 
-		for (TableStyle ts : this.qTableStyles)
+		for (NamedObject ts : this.qTableStyles)
 			writer.write(ts.toXML(util));
 
 		writer.write("</office:automatic-styles>");
@@ -203,101 +204,10 @@ public class ContentEntry implements OdsEntry {
 		}
 	}
 
-	private String columnStyle(Util util, String sSytle,
-			String sDefaultCellSytle, int nCount) {
-		return new StringBuilder("<table:table-column table:style-name=\"")
-				.append(util.escapeXMLAttribute(sSytle))
-				.append("\" table:number-columns-repeated=\"").append(nCount)
-				.append("\" table:default-cell-style-name=\"")
-				.append(util.escapeXMLAttribute(sDefaultCellSytle))
-				.append("\"/>").toString();
-	}
-
 	private void writeSpreadsheet(Util util, Writer writer) throws IOException {
-		TableStyle ts0 = null;
-		TableStyle ts1 = null;
-		String sDefaultCellSytle0 = "Default";
-		String sDefaultCellSytle1 = "Default";
-
 		// Loop through all tables and write the informations
 		for (Table tab : this.qTables) {
-			writer.write(tab.toXML());
-			writer.write(
-					"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");
-
-			// Loop through all table column styles and write the informations
-			String sSytle0 = "co1";
-			String sSytle1 = "co1";
-
-			// If there is only one column style in column one, just write this
-			// info to OutputStream o
-			if (tab.getColumnStyles().size() == 1) {
-				ts0 = tab.getColumnStyles().get(0);
-				writer.write(this.columnStyle(util, ts0.getName(),
-						ts0.getDefaultCellStyle(), 1));
-
-			}
-
-			// If there is more than one column with a style, loop through all
-			// styles and
-			// write the info to OutputStream o
-			if (tab.getColumnStyles().size() > 1) {
-				int nCount = 1;
-
-				Iterator<TableStyle> iterator = tab.getColumnStyles()
-						.iterator();
-				ts1 = iterator.next();
-				while (iterator.hasNext()) {
-					ts0 = ts1;
-					ts1 = iterator.next();
-
-					if (ts0 == null) {
-						sSytle0 = "co1";
-						sDefaultCellSytle1 = "Default";
-					} else {
-						sSytle0 = ts0.getName();
-						sDefaultCellSytle1 = ts0.getDefaultCellStyle();
-					}
-					if (ts1 == null) {
-						sSytle1 = "co1";
-						sDefaultCellSytle0 = "Default";
-					} else {
-						sSytle1 = ts1.getName();
-						sDefaultCellSytle0 = ts1.getDefaultCellStyle();
-					}
-
-					if (sSytle0.equalsIgnoreCase(sSytle1)) {
-						nCount++;
-					} else {
-						writer.write(this.columnStyle(util, sSytle0,
-								sDefaultCellSytle1, nCount));
-
-						nCount = 1;
-					}
-
-				}
-				writer.write(this.columnStyle(util, sSytle1, sDefaultCellSytle0,
-						nCount));
-
-			}
-
-			// Loop through all rows
-			for (TableRow tr : tab.getRows()) {
-				if (tr != null) {
-					String[] sToPrintArray = tr.toXMLArray(util);
-					for (String sToPrint : sToPrintArray)
-						writer.write(sToPrint);
-				} else {
-					// Empty TableRow
-					writer.write("<table:table-row table:style-name=\"ro1\">");
-					// no toString() here
-					writer.append(new StringBuilder(
-							"<table:table-cell table:number-columns-repeated=\"")
-									.append(tab.getLastCol()).append("\"/>"));
-					writer.write("</table:table-row>");
-				}
-			}
-			writer.write("</table:table>");
+			writer.write(tab.toXML(util)); // this opens the table:table tag
 		}
 	}
 }

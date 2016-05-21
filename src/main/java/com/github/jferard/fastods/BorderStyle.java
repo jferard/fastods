@@ -26,6 +26,9 @@ package com.github.jferard.fastods;
  *         users.sourceforge.net>
  *
  *         This file BorderStyle.java is part of FastODS.
+ *         
+ * WHERE ?
+ * ../style:style#
  */
 public class BorderStyle {
 	/**

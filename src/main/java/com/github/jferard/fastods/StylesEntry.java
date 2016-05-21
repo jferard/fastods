@@ -31,6 +31,8 @@ import java.util.zip.ZipOutputStream;
  *         users.sourceforge.net>
  * 
  *         This file StylesEntry.java is part of Fast ODS.
+ *         
+ * styles.xml/office:document-styles 
  */
 public class StylesEntry implements OdsEntry {
 	private ObjectQueue<NumberStyle> qNumberStyles = ObjectQueue.newQueue();
@@ -176,16 +178,32 @@ public class StylesEntry implements OdsEntry {
 			writer.write(ds.toXML(util));
 
 		for (NumberStyle ns : this.qNumberStyles)
-			writer.write(ns.toXML());
+			writer.write(ns.toXML(util));
 
 		for (CurrencyStyle cs : this.qCurrencyStyles)
 			writer.write(cs.toXML(util));
 
 		if (this.footer != null) {
-			writer.write(this.footer.toXML());
+			StringBuilder sbTemp = new StringBuilder();
+			sbTemp.append(
+					"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+			sbTemp.append(
+					"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
+			sbTemp.append("</style:paragraph-properties>");
+			sbTemp.append("</style:style>");
+			final String footerXML = sbTemp.toString();
+			writer.write(footerXML);
 		}
 		if (this.header != null) {
-			writer.write(this.header.toXML());
+			StringBuilder sbTemp = new StringBuilder();
+			sbTemp.append(
+					"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
+			sbTemp.append(
+					"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
+			sbTemp.append("</style:paragraph-properties>");
+			sbTemp.append("</style:style>");
+			final String headerXML = sbTemp.toString();
+			writer.write(headerXML);
 		}
 
 		writer.write("</office:styles>");
@@ -202,7 +220,7 @@ public class StylesEntry implements OdsEntry {
 		*/
 
 		for (PageStyle ps : this.qPageStyles)
-			writer.write(ps.toXML());
+			writer.write(ps.toXML(util));
 
 		for (TextStyle ts : this.qTextStyles)
 			writer.write(ts.toXML(util));
@@ -211,7 +229,7 @@ public class StylesEntry implements OdsEntry {
 		writer.write("<office:master-styles>");
 
 		for (PageStyle ps : this.qPageStyles)
-			writer.write(ps.toMasterStyleXML());
+			writer.write(ps.toMasterStyleXML(util));
 
 		writer.write("</office:master-styles>");
 		writer.write("</office:document-styles>");

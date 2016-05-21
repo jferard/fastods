@@ -29,6 +29,9 @@ package com.github.jferard.fastods;
  * 
  *         This file StyledText.java is part of SimpleODS.
  *
+ * WHERE ?
+ * styles.xml/office:document-styles/office:master-styles/style:master-page/style:footer/text:p/text:span
+ * styles.xml/office:document-styles/office:master-styles/style:master-page/style:header/text:p/text:span
  */
 public class StyledText {
 
@@ -51,7 +54,7 @@ public class StyledText {
 	}
 
 	public void setText(String sText) {
-		this.sText = this.u.toXmlString(sText);
+		this.sText = sText;
 	}
 
 	public void setTextStyle(TextStyle t) {
@@ -63,11 +66,13 @@ public class StyledText {
 	 * 
 	 * @return
 	 */
-	protected String toMasterStyleXML() {
+	protected String toMasterStyleXML(Util util) {
 		StringBuilder sbTemp = new StringBuilder(60);
 
-		sbTemp.append("<text:span text:style-name=\"").append(this.ts.getName())
-				.append("\">").append(this.sText).append("</text:span>");
+		sbTemp.append("<text:span text:style-name=\"")
+				.append(util.escapeXMLAttribute(this.ts.getName()))
+				.append("\">").append(util.escapeXMLContent(this.sText))
+				.append("</text:span>");
 
 		return sbTemp.toString();
 	}

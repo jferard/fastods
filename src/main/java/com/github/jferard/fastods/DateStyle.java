@@ -26,6 +26,9 @@ package com.github.jferard.fastods;
  *
  *         This file DateStyle.java is part of FastODS. SimpleODS 0.5.2 Added
  *         DATEFORMAT_MMYY Added DATEFORMAT_WW Added DATEFORMAT_YYYYMMDD
+ *         
+ * content.xml/office:document-content/office:automatic-styles/number:date-style
+ * styles.xml/office:document-styles/office:styles/number:date-style
  */
 public class DateStyle implements NamedObject {
 

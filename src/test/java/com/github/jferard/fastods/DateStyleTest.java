@@ -16,7 +16,12 @@ public class DateStyleTest {
 	public final void test() {
 		DateStyle ds = DateStyle.builder().name("test").build();
 		Assert.assertEquals(
-				"<number:date-style style:name=\"test\" number:automatic-order=\"false\"><number:day number:style=\"long\"/><number:text>.</number:text><number:month number:style=\"long\"/><number:text>.</number:text><number:year/></number:date-style>",
+				"<number:date-style style:name=\"test\" number:automatic-order=\"false\">"
+						+ "<number:day number:style=\"long\"/>"
+						+ "<number:text>.</number:text>"
+						+ "<number:month number:style=\"long\"/>"
+						+ "<number:text>.</number:text><number:year/>"
+						+ "</number:date-style>",
 				ds.toXML(Util.getInstance()));
 	}
 }

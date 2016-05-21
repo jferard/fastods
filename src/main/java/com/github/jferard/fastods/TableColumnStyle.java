@@ -19,7 +19,10 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.ListIterator;
+
 /**
+ * /**
  * 
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -29,13 +32,16 @@ package com.github.jferard.fastods;
  *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  *         
- * content.xml/office:document-content/office:automatic-styles
- */
-public class TableStyle implements NamedObject {
-	public static TableStyleBuilder builder() {
-		return new TableStyleBuilder();
+ * WHERE ?
+ * content.xml/office:document-content/office:automatic-styles/style:style
+ * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-column
+*/
+public class TableColumnStyle implements NamedObject {
+	public static TableRowStyleBuilder builder() {
+		return new TableRowStyleBuilder();
 	}
 	
+	private final String sColumnWidth;
 	private final String sName;
 
 	/**
@@ -51,12 +57,9 @@ public class TableStyle implements NamedObject {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(String sStyleName) {
+	TableColumnStyle(String sStyleName, String sColumnWidth) {
 		this.sName = sStyleName;
-	}
-	
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addTableStyle(this);
+		this.sColumnWidth = sColumnWidth;
 	}
 
 	/**
@@ -69,16 +72,28 @@ public class TableStyle implements NamedObject {
 		StringBuilder sbTemp = new StringBuilder();
 		sbTemp.append("<style:style");
 		util.appendAttribute(sbTemp, "style:name", this.sName);
-		util.appendAttribute(sbTemp, "style:family", "table");
-		util.appendAttribute(sbTemp, "style:master-page-name", "DefaultMasterPage");
-		sbTemp.append("><style:table-properties");
-		util.appendAttribute(sbTemp, "table:display", "true");
-		util.appendAttribute(sbTemp, "style:writing-mode", "lr-tb");
+		util.appendAttribute(sbTemp, "style:family", "table-column");
+		sbTemp.append("><style:table-column-properties");
+		util.appendAttribute(sbTemp, "fo:break-before", "auto");
+		util.appendAttribute(sbTemp, "style:column-width", this.sColumnWidth);
+//		util.appendAttribute(sbTemp, "table:default-cell-style-name", this.sDefaultCellStyle);
 		sbTemp.append("/></style:style>");
 		return sbTemp.toString();
 	}
 
 	public String getName() {
 		return this.sName;
+	}
+
+	public String getColumnWidth() {
+		return this.sColumnWidth;
+	}
+
+	public String getDefaultCellStyle() {
+		return "Default"; // TODO : use a default cell style if nec.
+	}
+	
+	public void addToFile(final OdsFile odsFile) {
+		odsFile.getContent().addTableStyle(this);
 	}
 }

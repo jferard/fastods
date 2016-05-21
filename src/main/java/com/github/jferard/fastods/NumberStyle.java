@@ -20,17 +20,17 @@
 package com.github.jferard.fastods;
 
 /**
- * TODO : clean code
- * @author Martin Schulz<br>
- * 
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net><br>
- * 
- * This file NumberStyle.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
- */
-/**
- * @author martin
- *
+ *         This file NumberStyle.java is part of FastODS.
+ *         
+ * WHERE ?
+ * content.xml/office:document-content/office:automatic-styles/number:number-style
+ * content.xml/office:document-content/office:automatic-styles/number:percentage-style
+ * styles.xml/office:document-styles/office:styles/number:number-style
+ * styles.xml/office:document-styles/office:styles/number:percentage-style
  */
 public class NumberStyle implements NamedObject {
 
@@ -39,30 +39,29 @@ public class NumberStyle implements NamedObject {
 	public final static int NUMBER_FRACTION = 3;
 	public final static int NUMBER_PERCENTAGE = 4;
 
-	private String sName = "";
-	private String sNegativeValueColor = "#FF0000";
-	private String sLanguage = "";
-	private String sCountry = "";
-	private int nNumberType = NUMBER_NORMAL;
-	private int nDecimalPlaces = 2;
-	private int nMinIntegerDigits = 1;
-	private int nMinExponentDigits = 0;
-	private int nMinNumeratorDigits = 0;
-	private int nMinDenominatorDigits = 0;
-	private boolean bGrouping = false;
-	private boolean bVolatile = false;
-	private boolean bNegativeValuesRed = false;
+	public static NumberStyleBuilder builder() {
+		return new NumberStyleBuilder();
+	}
 
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private OdsFile o;
+	private final String sName;
+	private final String sNegativeValueColor;
+	private final String sLanguage;
+	private final String sCountry;
+	private final int nNumberType;
+	private final int nDecimalPlaces;
+	private final int nMinIntegerDigits;
+	private final int nMinExponentDigits;
+	private final int nMinNumeratorDigits;
+	private final int nMinDenominatorDigits;
+	private final boolean bGrouping;
+	private final boolean bVolatile;
+	private final boolean bNegativeValuesRed;
+	private String xml;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
 	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
-	 * NumberStyle.NUMBER_NORMAL<br>
-	 * Version 0.5.0 Added parameter OdsFile o
+	 * NumberStyle.NUMBER_NORMAL
 	 * 
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
@@ -70,32 +69,29 @@ public class NumberStyle implements NamedObject {
 	 *            The minimum integer digits to be shown.
 	 * @param nDecPlaces
 	 *            The number of decimal places to be shown.
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs to.
 	 */
-	public NumberStyle(final String sStyleName, final int nMinIntDigits,
-			final int nDecPlaces, final OdsFile odsFile) {
-		this.setName(sStyleName);
-		this.setMinIntegerDigits(nMinIntDigits);
-		this.setDecimalPlaces(nDecPlaces);
-		this.o = odsFile;
-		this.o.getStyles().addNumberStyle(this);
+	NumberStyle(String sName, String sNegativeValueColor, String sLanguage,
+			String sCountry, int nNumberType, int nDecimalPlaces,
+			int nMinIntegerDigits, int nMinExponentDigits,
+			int nMinNumeratorDigits, int nMinDenominatorDigits,
+			boolean bGrouping, boolean bVolatile, boolean bNegativeValuesRed) {
+		this.sName = sName;
+		this.sNegativeValueColor = sNegativeValueColor;
+		this.sLanguage = sLanguage;
+		this.sCountry = sCountry;
+		this.nNumberType = nNumberType;
+		this.nDecimalPlaces = nDecimalPlaces;
+		this.nMinIntegerDigits = nMinIntegerDigits;
+		this.nMinExponentDigits = nMinExponentDigits;
+		this.nMinNumeratorDigits = nMinNumeratorDigits;
+		this.nMinDenominatorDigits = nMinDenominatorDigits;
+		this.bGrouping = bGrouping;
+		this.bVolatile = bVolatile;
+		this.bNegativeValuesRed = bNegativeValuesRed;
 	}
 
-	/**
-	 * Create a new number style with the name sName, default minimum integer
-	 * digits is 1 and default decimal places is 2.<br>
-	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
-	 * @param sStyleName
-	 *            The name of the number style, this name must be unique.
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs to.
-	 */
-	public NumberStyle(final String sStyleName, final OdsFile odsFile) {
-		this.setName(sStyleName);
-		this.o = odsFile;
-		this.o.getStyles().addNumberStyle(this);
+	public void addToFile(OdsFile odsFile) {
+		odsFile.getStyles().addNumberStyle(this);
 	}
 
 	/**
@@ -166,189 +162,15 @@ public class NumberStyle implements NamedObject {
 	}
 
 	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 * 
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 */
-	public void setCountry(final String country) {
-		this.sCountry = country.toUpperCase();
-	}
-
-	/**
-	 * Set how many digits are to the right of the decimal symbol.
-	 * 
-	 * @param decimalPlaces
-	 *            - The number of digits
-	 */
-	public final void setDecimalPlaces(final int decimalPlaces) {
-		this.nDecimalPlaces = decimalPlaces;
-	}
-
-	/**
-	 * Add the numerator and denominator values to be shown.<br>
-	 * The number style is set to NUMBER_FRACTION
-	 * 
-	 * @param nNumerator
-	 * @param nDenominator
-	 */
-	public void setFractionValues(final int nNumerator,
-			final int nDenominator) {
-		this.nMinNumeratorDigits = nNumerator;
-		this.nMinDenominatorDigits = nDenominator;
-		this.nNumberType = NUMBER_FRACTION;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * <br>
-	 * countries. E.g. set it to country='US' and language='en'
-	 * 
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public void setLanguage(final String language) {
-		this.sLanguage = language.toLowerCase();
-	}
-
-	/**
-	 * Set the number of exponent digits.<br>
-	 * The number style is set to NUMBER_SCIENTIFIC.
-	 * 
-	 * @param minExponentDigits
-	 *            The minimum of exponent digits to be used
-	 */
-	public void setMinExponentDigits(final int minExponentDigits) {
-		this.nMinExponentDigits = minExponentDigits;
-		this.nNumberType = NUMBER_SCIENTIFIC;
-	}
-
-	/**
-	 * Set how many leading zeros are present.
-	 * 
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 */
-	public final void setMinIntegerDigits(final int minIntegerDigits) {
-		this.nMinIntegerDigits = minIntegerDigits;
-	}
-
-	/**
-	 * Set the name of this style to sName, this name must be unique.
-	 * 
-	 * @param name
-	 *            - The name of this style.
-	 */
-	public final void setName(final String name) {
-		this.sName = name;
-	}
-
-	/**
-	 * Set to true if negative values should be shown in red color.
-	 * 
-	 * @param bValue
-	 *            true negative numbers will be shown in red color.
-	 */
-	public void setNegativeValuesRed(final boolean bValue) {
-		this.bNegativeValuesRed = bValue;
-		this.bVolatile = bValue;
-	}
-
-	/**
-	 * Set the number type for this style.<br>
-	 * Valid is one of the following:<br>
-	 * NumberStyle.NUMBER_NORMAL<br>
-	 * NumberStyle.NUMBER_SCIENTIFIC<br>
-	 * NumberStyle.NUMBER_FRACTION<br>
-	 * NumberStyle.NUMBER_PERCENTAGE<br>
-	 * 
-	 * @param nType
-	 *            The number type to be used.
-	 */
-	public void setNumberType(final int nType) {
-		this.nNumberType = nType;
-	}
-
-	/**
-	 * If this is set to true, the thousands separator is shown.<br>
-	 * The default is false.
-	 * 
-	 * @param grouping
-	 *            true, the thousands separator is shown<br>
-	 *            false, the thousands separator is not shown
-	 */
-	public void setThousandsSeparator(final boolean grouping) {
-		this.bGrouping = grouping;
-	}
-
-	/**
-	 * Set the number format to percentage.
-	 */
-	public void setToPercentageStyle() {
-		this.nNumberType = NUMBER_PERCENTAGE;
-	}
-
-	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
+	 * @param util 
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String toXML() {
-		StringBuilder sbReturn = new StringBuilder();
-
-		if (this.nNumberType == NUMBER_PERCENTAGE) {
-			sbReturn.append("<number:percentage-style ");
-		} else {
-			sbReturn.append("<number:number-style ");
-		}
-
-		// Only change the given name if bNegativeValuesRed is true and use this
-		// style as default style for positive numbers
-		if (this.bNegativeValuesRed) {
-			sbReturn.append("style:name=\"").append(this.sName).append("nn\" ");
-		} else {
-			sbReturn.append("style:name=\"").append(this.sName).append("\" ");
-		}
-		if (this.sLanguage.length() > 0) {
-			sbReturn.append("number:language=\"").append(this.sLanguage)
-					.append("\" ");
-		}
-		if (this.sCountry.length() > 0) {
-			sbReturn.append("number:country=\"").append(this.sCountry)
-					.append("\" ");
-		}
-
-		if (this.bVolatile) {
-			sbReturn.append("style:volatile=\"true\">");
-		} else {
-			sbReturn.append(">");
-		}
-
-		this.appendNumberType(sbReturn);
-
-		sbReturn.append("number:min-integer-digits=\"")
-				.append(this.nMinIntegerDigits).append("\" ");
-
-		if (this.bGrouping) {
-			sbReturn.append("number:grouping=\"").append(this.bGrouping)
-					.append("\"");
-		}
-		sbReturn.append("/>");
-
-		if (this.nNumberType == NUMBER_PERCENTAGE) {
-			sbReturn.append("<number:text>%</number:text>");
-			sbReturn.append("</number:percentage-style>");
-		} else {
-			sbReturn.append("</number:number-style>");
-		}
-
-		// --------------------------------------------------------------------------
-		// For negative values, this is the default style and this.sName+'nn' is
-		// the style for positive values
-		// --------------------------------------------------------------------------
-		if (this.bNegativeValuesRed) {
+	public String toXML(Util util) {
+		if (this.xml == null) {
+			StringBuilder sbReturn = new StringBuilder();
 
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
 				sbReturn.append("<number:percentage-style ");
@@ -356,7 +178,15 @@ public class NumberStyle implements NamedObject {
 				sbReturn.append("<number:number-style ");
 			}
 
-			sbReturn.append("style:name=\"").append(this.sName).append("\" ");
+			// Only change the given name if bNegativeValuesRed is true and use
+			// this
+			// style as default style for positive numbers
+			sbReturn.append("style:name=\"").append(this.sName);
+			if (this.bNegativeValuesRed) {
+				sbReturn.append("nn\" ");
+			} else {
+				sbReturn.append("\" ");
+			}
 			if (this.sLanguage.length() > 0) {
 				sbReturn.append("number:language=\"").append(this.sLanguage)
 						.append("\" ");
@@ -365,15 +195,18 @@ public class NumberStyle implements NamedObject {
 				sbReturn.append("number:country=\"").append(this.sCountry)
 						.append("\" ");
 			}
-			sbReturn.append(">");
-			sbReturn.append("<style:text-properties fo:color=\"")
-					.append(this.sNegativeValueColor).append("\"/>");
-			sbReturn.append("<number:text>-</number:text>");
+
+			if (this.bVolatile) {
+				sbReturn.append("style:volatile=\"true\">");
+			} else {
+				sbReturn.append(">");
+			}
 
 			this.appendNumberType(sbReturn);
 
-			sbReturn.append("number:min-integer-digits=\""
-					+ this.nMinIntegerDigits + "\" ");
+			sbReturn.append("number:min-integer-digits=\"")
+					.append(this.nMinIntegerDigits).append("\" ");
+
 			if (this.bGrouping) {
 				sbReturn.append("number:grouping=\"").append(this.bGrouping)
 						.append("\"");
@@ -382,21 +215,67 @@ public class NumberStyle implements NamedObject {
 
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
 				sbReturn.append("<number:text>%</number:text>");
-			}
-
-			sbReturn.append(
-					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"")
-					.append(this.sName).append("nn\"/>");
-
-			if (this.nNumberType == NUMBER_PERCENTAGE) {
 				sbReturn.append("</number:percentage-style>");
 			} else {
 				sbReturn.append("</number:number-style>");
 			}
 
-		}
+			// --------------------------------------------------------------------------
+			// For negative values, this is the default style and
+			// this.sName+'nn' is
+			// the style for positive values
+			// --------------------------------------------------------------------------
+			if (this.bNegativeValuesRed) {
+				if (this.nNumberType == NUMBER_PERCENTAGE) {
+					sbReturn.append("<number:percentage-style ");
+				} else {
+					sbReturn.append("<number:number-style ");
+				}
 
-		return sbReturn.toString();
+				sbReturn.append("style:name=\"").append(this.sName)
+						.append("\" ");
+				if (this.sLanguage.length() > 0) {
+					sbReturn.append("number:language=\"").append(this.sLanguage)
+							.append("\" ");
+				}
+				if (this.sCountry.length() > 0) {
+					sbReturn.append("number:country=\"").append(this.sCountry)
+							.append("\" ");
+				}
+				sbReturn.append(">");
+				sbReturn.append("<style:text-properties fo:color=\"")
+						.append(this.sNegativeValueColor).append("\"/>");
+				sbReturn.append("<number:text>-</number:text>");
+
+				this.appendNumberType(sbReturn);
+
+				sbReturn.append("number:min-integer-digits=\"")
+						.append(this.nMinIntegerDigits).append("\" ");
+				if (this.bGrouping) {
+					sbReturn.append("number:grouping=\"").append(this.bGrouping)
+							.append("\"");
+				}
+				sbReturn.append("/>");
+
+				if (this.nNumberType == NUMBER_PERCENTAGE) {
+					sbReturn.append("<number:text>%</number:text>");
+				}
+
+				sbReturn.append(
+						"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"")
+						.append(this.sName).append("nn\"/>");
+
+				if (this.nNumberType == NUMBER_PERCENTAGE) {
+					sbReturn.append("</number:percentage-style>");
+				} else {
+					sbReturn.append("</number:number-style>");
+				}
+
+			}
+
+			this.xml = sbReturn.toString();
+		}
+		return this.xml;
 	}
 
 	/**
