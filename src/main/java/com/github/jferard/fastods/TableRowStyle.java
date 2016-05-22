@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.util.ListIterator;
 
 /**
@@ -32,15 +33,17 @@ import java.util.ListIterator;
  *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  *
- * WHERE ?
- * content.xml/office:document-content/office:automatic-styles/style:style
- * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-column
+ *         WHERE ?
+ *         content.xml/office:document-content/office:automatic-styles/style:
+ *         style
+ *         content.xml/office:document-content/office:body/office:spreadsheet/
+ *         table:table/table:table-column
  */
-public class TableRowStyle implements NamedObject {
+public class TableRowStyle implements NamedObject, XMLAppendable {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
-	
+
 	private String sRowHeight;
 	private String sName;
 
@@ -70,8 +73,7 @@ public class TableRowStyle implements NamedObject {
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
 	 * 
-	 * @return sHeight
-	 *            The table row height to be used, e.g. '1.0cm'
+	 * @return sHeight The table row height to be used, e.g. '1.0cm'
 	 */
 	public String getRowHeight() {
 		return this.sRowHeight;
@@ -84,17 +86,14 @@ public class TableRowStyle implements NamedObject {
 	 * @return The XML string for this object.
 	 */
 	public String toXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder();
-		sbTemp.append("<style:style");
-		util.appendAttribute(sbTemp, "style:name", this.sName);
-		util.appendAttribute(sbTemp, "style:family", "table-row");
-		sbTemp.append("><style:table-row-properties");
-		util.appendAttribute(sbTemp, "row-height", this.sRowHeight);
-		util.appendAttribute(sbTemp, "fo:break-before", "auto");
-		util.appendAttribute(sbTemp, "style:use-optimal-row-height", "true");
-		sbTemp.append("/></style:style>");
-
-		return sbTemp.toString();
+		try {
+			StringBuilder sbTemp = new StringBuilder();
+			this.appendXML(util, sbTemp);
+			return sbTemp.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	public String getName() {
@@ -103,5 +102,17 @@ public class TableRowStyle implements NamedObject {
 
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getContent().addTableStyle(this);
+	}
+
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<style:style");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:family", "table-row");
+		appendable.append("><style:table-row-properties");
+		util.appendAttribute(appendable, "row-height", this.sRowHeight);
+		util.appendAttribute(appendable, "fo:break-before", "auto");
+		util.appendAttribute(appendable, "style:use-optimal-row-height",
+				"true");
+		appendable.append("/></style:style>");
 	}
 }

@@ -24,7 +24,7 @@ package com.github.jferard.fastods;
  * 
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file TextStyle.java is part of FastODS. SimpleOds Version 0.5.0
+ *         This file TextStyleBuilder.java is part of FastODS. SimpleOds Version 0.5.0
  *         Added support for Font underline style
  */
 

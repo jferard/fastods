@@ -19,20 +19,21 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
- * TODO : clean code
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file TextStyle.java is part of FastODS. SimpleOds Version 0.5.0
+ *         Added support for Font underline style
  * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file TextStyle.java is part of SimpleODS.<br>
- *         Version 0.5.0 Added support for Font underline style
- *         
- * content.xml/office:document-content/office:automatic-styles/style:style/style:style
+ *         WHERE ?
+ *         content.xml/office:document-content/office:automatic-styles/style:
+ *         style/style:style
  */
-public class TextStyle implements NamedObject {
+public class TextStyle implements NamedObject, XMLAppendable {
 	// 20.380 : one,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public final static int STYLE_UNDERLINE_NONE = 0;
 	public final static int STYLE_UNDERLINE_SOLID = 1;
@@ -46,16 +47,16 @@ public class TextStyle implements NamedObject {
 	public static TextStyleBuilder builder() {
 		return new TextStyleBuilder();
 	}
-	
-	private final String sName ;
+
+	private final String sName;
 	private final String sFontColor;
 	private final String sFontName;
 	private final String sFontWeight;
-									
+
 	private final String sFontWeightAsian;
-											
+
 	private final String sFontWeightComplex;
-											
+
 	private final String sFontSize;
 	private final String sFontSizeAsian;
 	private final String sFontSizeComplex;
@@ -74,9 +75,9 @@ public class TextStyle implements NamedObject {
 	 */
 	TextStyle(String sName, String sFontColor, String sFontName,
 			String sFontWeight, String sFontWeightAsian,
-			String sFontWeightComplex, String sFontSize,
-			String sFontSizeAsian, String sFontSizeComplex,
-			String sFontUnderlineColor, int nFontUnderlineStyle) {
+			String sFontWeightComplex, String sFontSize, String sFontSizeAsian,
+			String sFontSizeComplex, String sFontUnderlineColor,
+			int nFontUnderlineStyle) {
 		this.sName = sName;
 		this.sFontColor = sFontColor;
 		this.sFontName = sFontName;
@@ -93,7 +94,7 @@ public class TextStyle implements NamedObject {
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addTextStyle(this);
 	}
-	
+
 	/**
 	 * Get the current font color.
 	 * 
@@ -152,73 +153,16 @@ public class TextStyle implements NamedObject {
 	 * 
 	 * @return The XML string for this object.
 	 */
+	@Deprecated
 	public String toXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder();
-
-		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableFamilyStyle.
-		// Do not add the style:style
-		// -------------------------------------------------------------
-		if (this.sName.length() > 0) {
-			sbTemp.append("<style:style ");
-			util.appendAttribute(sbTemp, "style:name", this.getName());
-			util.appendAttribute(sbTemp, "style:family", "text");
-			sbTemp.append(">");
+		try {
+			StringBuilder sbTemp = new StringBuilder();
+			this.appendXML(util, sbTemp);
+			return sbTemp.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
 		}
-
-		// First check if any text properties should be added
-
-		sbTemp.append("<style:text-properties ");
-		// Check if the font weight should be added
-		if (this.sFontWeight.length() > 0) {
-			util.appendAttribute(sbTemp, "fo:font-weight", this.sFontWeight);
-			util.appendAttribute(sbTemp, "style:font-weight-asian", this.sFontWeightAsian);
-			util.appendAttribute(sbTemp, "style:font-weight-complex", this.sFontWeightComplex);
-		}
-		// Check if a font color should be added
-		if (this.sFontColor.length() > 0) {
-			util.appendAttribute(sbTemp, "fo:color", this.sFontColor);
-		}
-		// Check if a font name should be added
-		if (this.sFontName.length() > 0) {
-			util.appendAttribute(sbTemp, "style:font-name", this.sFontName);
-		}
-		// Check if a font size should be added
-		if (this.sFontSize.length() > 0) {
-			util.appendAttribute(sbTemp, "fo:font-size", this.sFontSize);
-			util.appendAttribute(sbTemp, "style:font-size-asian", this.sFontSizeAsian);
-			util.appendAttribute(sbTemp, "style:font-size-complex", this.sFontSizeComplex);
-		}
-
-		if (this.nFontUnderlineStyle > 0) {
-			String styleUnderlineAttribute = getStyleUnderlineAttribute(this.nFontUnderlineStyle);
-			util.appendAttribute(sbTemp, "style:text-underline-style", styleUnderlineAttribute);
-			util.appendAttribute(sbTemp, "style:text-underline-width", "auto");
-
-			// ---------------------------------------------------------------------------------
-			// If any underline color was set, add the color, otherwise use the
-			// font color
-			// ---------------------------------------------------------------------------------
-			if (this.getFontUnderlineColor().length() > 0) {
-				util.appendAttribute(sbTemp, "style:text-underline-color",
-						this.sFontUnderlineColor);
-			} else {
-				util.appendAttribute(sbTemp, "style:text-underline-color",
-						"font-color");
-			}
-		}
-
-		sbTemp.append("/>");
-
-		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableFamilyStyle.
-		// Do not add the style:style
-		// -------------------------------------------------------------
-		if (this.getName().length() > 0) {
-			sbTemp.append("</style:style>");
-		}
-
-		return sbTemp.toString();
 	}
 
 	// enum + toString()
@@ -253,6 +197,77 @@ public class TextStyle implements NamedObject {
 			styleUnderlineAttribute = "none";
 		}
 		return styleUnderlineAttribute;
+	}
+
+	public void appendXML(Util util, Appendable sbTemp) throws IOException {
+		// -------------------------------------------------------------
+		// The name maybe empty if this style is part of TableFamilyStyle.
+		// Do not add the style:style
+		// -------------------------------------------------------------
+		if (this.sName.length() > 0) {
+			sbTemp.append("<style:style ");
+			util.appendAttribute(sbTemp, "style:name", this.getName());
+			util.appendAttribute(sbTemp, "style:family", "text");
+			sbTemp.append(">");
+		}
+
+		// First check if any text properties should be added
+
+		sbTemp.append("<style:text-properties ");
+		// Check if the font weight should be added
+		if (this.sFontWeight.length() > 0) {
+			util.appendAttribute(sbTemp, "fo:font-weight", this.sFontWeight);
+			util.appendAttribute(sbTemp, "style:font-weight-asian",
+					this.sFontWeightAsian);
+			util.appendAttribute(sbTemp, "style:font-weight-complex",
+					this.sFontWeightComplex);
+		}
+		// Check if a font color should be added
+		if (this.sFontColor.length() > 0) {
+			util.appendAttribute(sbTemp, "fo:color", this.sFontColor);
+		}
+		// Check if a font name should be added
+		if (this.sFontName.length() > 0) {
+			util.appendAttribute(sbTemp, "style:font-name", this.sFontName);
+		}
+		// Check if a font size should be added
+		if (this.sFontSize.length() > 0) {
+			util.appendAttribute(sbTemp, "fo:font-size", this.sFontSize);
+			util.appendAttribute(sbTemp, "style:font-size-asian",
+					this.sFontSizeAsian);
+			util.appendAttribute(sbTemp, "style:font-size-complex",
+					this.sFontSizeComplex);
+		}
+
+		if (this.nFontUnderlineStyle > 0) {
+			String styleUnderlineAttribute = getStyleUnderlineAttribute(
+					this.nFontUnderlineStyle);
+			util.appendAttribute(sbTemp, "style:text-underline-style",
+					styleUnderlineAttribute);
+			util.appendAttribute(sbTemp, "style:text-underline-width", "auto");
+
+			// ---------------------------------------------------------------------------------
+			// If any underline color was set, add the color, otherwise use the
+			// font color
+			// ---------------------------------------------------------------------------------
+			if (this.getFontUnderlineColor().length() > 0) {
+				util.appendAttribute(sbTemp, "style:text-underline-color",
+						this.sFontUnderlineColor);
+			} else {
+				util.appendAttribute(sbTemp, "style:text-underline-color",
+						"font-color");
+			}
+		}
+
+		sbTemp.append("/>");
+
+		// -------------------------------------------------------------
+		// The name maybe empty if this style is part of TableFamilyStyle.
+		// Do not add the style:style
+		// -------------------------------------------------------------
+		if (this.getName().length() > 0) {
+			sbTemp.append("</style:style>");
+		}
 	}
 
 }

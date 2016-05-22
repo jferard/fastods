@@ -55,6 +55,8 @@ public class PageStyleBuilder {
 	private int nPrintOrientation;
 	private int nPaperFormat;
 	private int nWritingMode;
+	private FooterHeader header;
+	private FooterHeader footer;
 
 	/**
 	 * Create a new page style.
@@ -80,6 +82,18 @@ public class PageStyleBuilder {
 		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_A4;
 		this.nWritingMode = PageStyle.STYLE_WRITINGMODE_LRTB;
 	}
+	
+	public PageStyleBuilder header(FooterHeader header) {
+		this.header = header;
+		return this;
+	}
+	
+	public PageStyleBuilder footer(FooterHeader footer) {
+		this.footer = footer;
+		return this;
+	}
+	
+	
 
 	/**
 	 * Set the margin at the top,bottom,left and right. margin is a length value
@@ -282,8 +296,8 @@ public class PageStyleBuilder {
 	public PageStyle build() {
 		return new PageStyle(this.sName, this.sMarginTop, this.sMarginBottom,
 				this.sMarginLeft, this.sMarginRight, this.sPageWidth,
-				this.sPageHeight, this.sNumFormat, this.sBackgroundColor,
-				this.sTextStyleFooter, this.sTextStyleHeader, this.sTextHeader,
+				this.sPageHeight, this.sNumFormat, this.sBackgroundColor, this.footer,
+				this.sTextStyleFooter, this.header, this.sTextStyleHeader, this.sTextHeader,
 				this.sTextFooter, this.nPrintOrientation, this.nPaperFormat,
 				this.nWritingMode);
 	}

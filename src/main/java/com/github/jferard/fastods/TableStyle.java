@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * 
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -28,14 +30,14 @@ package com.github.jferard.fastods;
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
  *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
- *         
- * content.xml/office:document-content/office:automatic-styles
+ * 
+ *         content.xml/office:document-content/office:automatic-styles
  */
-public class TableStyle implements NamedObject {
+public class TableStyle implements NamedObject, XMLAppendable {
 	public static TableStyleBuilder builder() {
 		return new TableStyleBuilder();
 	}
-	
+
 	private final String sName;
 
 	/**
@@ -54,7 +56,7 @@ public class TableStyle implements NamedObject {
 	TableStyle(String sStyleName) {
 		this.sName = sStyleName;
 	}
-	
+
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getContent().addTableStyle(this);
 	}
@@ -66,19 +68,29 @@ public class TableStyle implements NamedObject {
 	 * @return The XML string for this object.
 	 */
 	public String toXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder();
-		sbTemp.append("<style:style");
-		util.appendAttribute(sbTemp, "style:name", this.sName);
-		util.appendAttribute(sbTemp, "style:family", "table");
-		util.appendAttribute(sbTemp, "style:master-page-name", "DefaultMasterPage");
-		sbTemp.append("><style:table-properties");
-		util.appendAttribute(sbTemp, "table:display", "true");
-		util.appendAttribute(sbTemp, "style:writing-mode", "lr-tb");
-		sbTemp.append("/></style:style>");
-		return sbTemp.toString();
+		try {
+			StringBuilder sbTemp = new StringBuilder();
+			this.appendXML(util, sbTemp);
+			return sbTemp.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	public String getName() {
 		return this.sName;
+	}
+
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<style:style");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:family", "table");
+		util.appendAttribute(appendable, "style:master-page-name",
+				"DefaultMasterPage");
+		appendable.append("><style:table-properties");
+		util.appendAttribute(appendable, "table:display", "true");
+		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
+		appendable.append("/></style:style>");
 	}
 }

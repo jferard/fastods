@@ -11,12 +11,12 @@ public class OdsFileTest {
 
 	@Test
 	public final void test() throws SimpleOdsException {
-		System.out.println("Filling a 5000 rows, 20 columns spreadsheet");
+		System.out.println("Filling a 50 rows, 5 columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
 		// Load the file.
-		OdsFile file = new OdsFile("20columns.ods");
+		OdsFile file = new OdsFile("5columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
 
@@ -48,4 +48,28 @@ public class OdsFileTest {
 		System.out.println("Filled in " + (t2 - t1) + " ms");
 	}
 
+	@Test
+	public final void test2() throws SimpleOdsException {
+		System.out.println("Filling a 5000 rows, 20 columns spreadsheet");
+		long t1 = System.currentTimeMillis();
+		final Random random = new Random();
+
+		// Load the file.
+		OdsFile file = new OdsFile("20columns.ods");
+		Optional<Table> optTable = file.addTable("test");
+		Assert.assertTrue(optTable.isPresent());
+
+		Table table = optTable.get();
+		for (int y = 0; y < 5000; y++) {
+			final TableRow row = table.nextRow();
+			for (int x = 0; x < 20; x++) {
+				row.setCell(x, String.valueOf(random.nextInt(1000)));
+			}
+		}
+
+		file.save();
+
+		long t2 = System.currentTimeMillis();
+		System.out.println("Filled in " + (t2 - t1) + " ms");
+	}
 }

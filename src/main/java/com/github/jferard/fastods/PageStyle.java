@@ -84,11 +84,13 @@ public class PageStyle implements NamedObject {
 	 * 
 	 * @param sName
 	 *            A unique name for this style
+	 * @param header2 
+	 * @param footer 
 	 */
 	public PageStyle(String sName, String sMarginTop, String sMarginBottom,
 			String sMarginLeft, String sMarginRight, String sPageWidth,
 			String sPageHeight, String sNumFormat, String sBackgroundColor,
-			String sTextStyleFooter, String sTextStyleHeader,
+			FooterHeader footer, String sTextStyleFooter, FooterHeader header, String sTextStyleHeader,
 			String sTextHeader, String sTextFooter, int nPrintOrientation,
 			int nPaperFormat, int nWritingMode) {
 		this.sName = sName;
@@ -100,7 +102,9 @@ public class PageStyle implements NamedObject {
 		this.sPageHeight = sPageHeight;
 		this.sNumFormat = sNumFormat;
 		this.sBackgroundColor = sBackgroundColor;
+		this.footer = footer;
 		this.sTextStyleFooter = sTextStyleFooter;
+		this.header = header;
 		this.sTextStyleHeader = sTextStyleHeader;
 		this.sTextHeader = sTextHeader;
 		this.sTextFooter = sTextFooter;
@@ -110,8 +114,7 @@ public class PageStyle implements NamedObject {
 	}
 
 	public void addToFile(OdsFile odsFile) {
-		this.header = odsFile.getStyles().getHeader();
-		this.footer = odsFile.getStyles().getFooter();
+		odsFile.getStyles().addPageStyle(this);
 	}
 
 	public String getBackgroundColor() {

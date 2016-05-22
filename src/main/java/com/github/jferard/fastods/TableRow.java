@@ -30,10 +30,11 @@ import java.util.ListIterator;
  *
  *         This file TableRow.java is part of FastODS.
  *
- * WHERE ?
- * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-row
+ *         WHERE ?
+ *         content.xml/office:document-content/office:body/office:spreadsheet/
+ *         table:table/table:table-row
  */
-public class TableRow implements XMLWritable {
+public class TableRow implements XMLAppendable {
 	private String styleName;
 	private ObjectQueue<TableCell> qTableCells;
 	private int nRow;
@@ -57,7 +58,8 @@ public class TableRow implements XMLWritable {
 	public TableCell getCell(final int nCol) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new TableCell(this.odsFile, this.nRow, nCol, TableCell.STYLE_STRING, "");
+			tc = new TableCell(this.odsFile, this.nRow, nCol,
+					TableCell.STYLE_STRING, "");
 			this.qTableCells.setAt(nCol, tc);
 		}
 		return tc;
@@ -85,7 +87,8 @@ public class TableRow implements XMLWritable {
 			final String sValue) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new TableCell(this.odsFile, this.nRow, nCol, nValuetype, sValue);
+			tc = new TableCell(this.odsFile, this.nRow, nCol, nValuetype,
+					sValue);
 			this.qTableCells.setAt(nCol, tc);
 		} else {
 			tc.setValueType(nValuetype);
@@ -130,7 +133,8 @@ public class TableRow implements XMLWritable {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			// Create an empty cell
-			tc = new TableCell(this.odsFile, this.nRow, nCol, TableCell.STYLE_STRING, "");
+			tc = new TableCell(this.odsFile, this.nRow, nCol,
+					TableCell.STYLE_STRING, "");
 			this.qTableCells.setAt(nCol, tc);
 		}
 		ts.addToFile(this.odsFile);
@@ -144,13 +148,15 @@ public class TableRow implements XMLWritable {
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	@Override
-	public void writeXML(Util util, Writer writer) throws IOException {
-		writer.append(
-				new StringBuilder("<table:table-row table:styleName-name=\"")
-						.append(this.getStyleName()).append("\">"));
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<table:table-row ");
+		util.appendAttribute(appendable, "table:styleName-name",
+				this.getStyleName());
+		appendable.append(">");
 
 		int nNullFieldCounter = 0;
 		for (TableCell tc : this.qTableCells) {
@@ -158,37 +164,26 @@ public class TableRow implements XMLWritable {
 				nNullFieldCounter++;
 			} else {
 				if (nNullFieldCounter > 0) {
-					writer.append(new StringBuilder(
-							"<table:table-cell table:number-columns-repeated=\"")
-									.append(nNullFieldCounter).append("\"/>"));
+					appendable.append("<table:table-cell ");
+					util.appendAttribute(appendable,
+							"table:number-columns-repeated", nNullFieldCounter);
+					appendable.append("/>");
 					nNullFieldCounter = 0;
 				}
-				writer.write(tc.toXML(util));
+				tc.appendXML(util, appendable);
 			}
 		}
-		writer.write("</table:table-row>");
+		appendable.append("</table:table-row>");
 	}
 
 	public String toXML(Util util) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<table:table-row table:styleName-name=\"")
-						.append(this.getStyleName()).append("\">");
-
-		int nNullFieldCounter = 0;
-		for (TableCell tc : this.qTableCells) {
-			if (tc == null) {
-				nNullFieldCounter++;
-			} else {
-				if (nNullFieldCounter > 0) {
-					sb.append(new StringBuilder(
-							"<table:table-cell table:number-columns-repeated=\"")
-									.append(nNullFieldCounter).append("\"/>"));
-					nNullFieldCounter = 0;
-				}
-				sb.append(tc.toXML(util));
-			}
+		try {
+			StringBuilder sb = new StringBuilder();
+			this.appendXML(util, sb);
+			return sb.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
 		}
-		sb.append("</table:table-row>");
-		return sb.toString();
 	}
 }

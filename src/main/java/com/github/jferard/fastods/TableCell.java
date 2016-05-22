@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -32,7 +33,7 @@ import java.util.Calendar;
  * WHERE ?
  * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-row/table:table-cell
  */
-public class TableCell {
+public class TableCell implements XMLAppendable {
 	public final static int STYLE_STRING = 1;
 	public final static int STYLE_FLOAT = 2;
 	public final static int STYLE_PERCENTAGE = 3;
@@ -210,35 +211,45 @@ public class TableCell {
 	 * @return The XML string for this object.
 	 */
 	public String toXML(Util util) {
+		try {
 		StringBuilder sbTemp = new StringBuilder();
+			this.appendXML(util, sbTemp);
+		return sbTemp.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 
-		sbTemp.append("<table:table-cell ");
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<table:table-cell ");
 		if (this.sStyle.length() > 0) {
-			util.appendAttribute(sbTemp, "table:style-name", this.getStyle());
+			util.appendAttribute(appendable, "table:style-name", this.getStyle());
 		}
 
 		switch (this.nValueType) {
 		case STYLE_STRING:
-			util.appendAttribute(sbTemp, "office:value-type", "string");
+			util.appendAttribute(appendable, "office:value-type", "string");
 			break;
 		case STYLE_FLOAT:
-			util.appendAttribute(sbTemp, "office:value-type", "float");
-			util.appendAttribute(sbTemp, "office:value", this.sValue);
+			util.appendAttribute(appendable, "office:value-type", "float");
+			util.appendAttribute(appendable, "office:value", this.sValue);
 			break;
 		case STYLE_PERCENTAGE:
-			util.appendAttribute(sbTemp, "office:value-type", "percentage");
-			util.appendAttribute(sbTemp, "office:value", this.sValue);
+			util.appendAttribute(appendable, "office:value-type", "percentage");
+			util.appendAttribute(appendable, "office:value", this.sValue);
 			break;
 		case STYLE_CURRENCY:
-			util.appendAttribute(sbTemp, "office:value-type", "currency");
-			util.appendAttribute(sbTemp, "office:value", this.sCurrency);
+			util.appendAttribute(appendable, "office:value-type", "currency");
+			util.appendAttribute(appendable, "office:value", this.sCurrency);
 			break;
 		case STYLE_DATE:
-			util.appendAttribute(sbTemp, "office:value-type", "date");
-			util.appendAttribute(sbTemp, "office:value", this.sDateValue);
+			util.appendAttribute(appendable, "office:value-type", "date");
+			util.appendAttribute(appendable, "office:value", this.sDateValue);
 			break;
 		default:
-			util.appendAttribute(sbTemp, "office:value-type", "string");
+			util.appendAttribute(appendable, "office:value-type", "string");
 			/*
 			 * case STYLE_TIME:
 			 * sbTemp.append("office:value-type=\"time-value\" ");
@@ -250,20 +261,17 @@ public class TableCell {
 		}
 
 		if (this.nColumnsSpanned > 0) {
-			util.appendAttribute(sbTemp, "table:number-columns-spanned",
+			util.appendAttribute(appendable, "table:number-columns-spanned",
 					this.nColumnsSpanned);
 		}
 		if (this.nRowsSpanned > 0) {
-			util.appendAttribute(sbTemp, "table:number-rows-spanned",
+			util.appendAttribute(appendable, "table:number-rows-spanned",
 					this.nRowsSpanned);
 		}
 
-		sbTemp.append(">");
-		sbTemp.append("<text:p>").append(util.escapeXMLContent(this.sValue)).append("</text:p>");
-		sbTemp.append("</table:table-cell>");
-
-		return (sbTemp.toString());
-
+		appendable.append(">");
+		appendable.append("<text:p>").append(util.escapeXMLContent(this.sValue)).append("</text:p>");
+		appendable.append("</table:table-cell>");
 	}
 
 }

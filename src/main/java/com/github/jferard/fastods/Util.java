@@ -20,6 +20,7 @@
 package com.github.jferard.fastods;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -218,16 +219,17 @@ public class Util {
 	 * sElementName<br>
 	 * and the value is nValue.
 	 * 
-	 * @param sb
+	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
 	 * @param sElementName
 	 *            The new element name
 	 * @param nValue
 	 *            The value of the element
+	 * @throws IOException 
 	 */
-	public void appendAttribute(final StringBuilder sb, final String sElementName,
-			final int nValue) {
-		sb.append(" ").append(sElementName).append("=\"").append(nValue)
+	public void appendAttribute(final Appendable appendable, final String sElementName,
+			final int nValue) throws IOException {
+		appendable.append(" ").append(sElementName).append("=\"").append(Integer.toString(nValue))
 				.append("\" ");
 	}
 
@@ -236,16 +238,17 @@ public class Util {
 	 * sElementName<br>
 	 * and the value is sValue.
 	 * 
-	 * @param sb
+	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
 	 * @param sElementName
 	 *            The new element name
 	 * @param sValue
 	 *            The value of the element
+	 * @throws IOException 
 	 */
-	public void appendAttribute(final StringBuilder sb, final String sElementName,
-			final String sValue) {
-		sb.append(' ').append(sElementName).append("=\"")
+	public void appendAttribute(final Appendable appendable, final String sElementName,
+			final String sValue) throws IOException {
+		appendable.append(' ').append(sElementName).append("=\"")
 				.append(this.escapeXMLAttribute(sValue)).append('"');
 	}
 

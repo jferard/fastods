@@ -198,7 +198,8 @@ class ContentEntry implements OdsEntry {
 
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
-		this.writeSpreadsheet(util, writer);
+		for (Table tab : this.qTables)
+			tab.appendXML(util, writer);
 		writer.write("</office:spreadsheet>");
 		writer.write("</office:body>");
 		writer.write("</office:document-content>");
@@ -212,13 +213,6 @@ class ContentEntry implements OdsEntry {
 			throw new SimpleOdsException(
 					new StringBuilder("Wrong table number [").append(nTab)
 							.append("]").toString());
-		}
-	}
-
-	private void writeSpreadsheet(Util util, Writer writer) throws IOException {
-		// Loop through all tables and write the informations
-		for (Table tab : this.qTables) {
-			writer.write(tab.toXML(util)); // this opens the table:table tag
 		}
 	}
 }

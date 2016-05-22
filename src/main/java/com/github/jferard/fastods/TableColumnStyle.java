@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.util.ListIterator;
 
 /**
@@ -36,7 +37,7 @@ import java.util.ListIterator;
  * content.xml/office:document-content/office:automatic-styles/style:style
  * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-column
 */
-public class TableColumnStyle implements NamedObject {
+public class TableColumnStyle implements NamedObject, XMLAppendable {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
@@ -69,16 +70,14 @@ public class TableColumnStyle implements NamedObject {
 	 * @return The XML string for this object.
 	 */
 	public String toXML(Util util) {
+		try {
 		StringBuilder sbTemp = new StringBuilder();
-		sbTemp.append("<style:style");
-		util.appendAttribute(sbTemp, "style:name", this.sName);
-		util.appendAttribute(sbTemp, "style:family", "table-column");
-		sbTemp.append("><style:table-column-properties");
-		util.appendAttribute(sbTemp, "fo:break-before", "auto");
-		util.appendAttribute(sbTemp, "style:column-width", this.sColumnWidth);
-//		util.appendAttribute(sbTemp, "table:default-cell-style-name", this.sDefaultCellStyle);
-		sbTemp.append("/></style:style>");
+			this.appendXML(util, sbTemp);
 		return sbTemp.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	public String getName() {
@@ -95,5 +94,17 @@ public class TableColumnStyle implements NamedObject {
 	
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getContent().addTableStyle(this);
+	}
+
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<style:style");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:family", "table-column");
+		appendable.append("><style:table-column-properties");
+		util.appendAttribute(appendable, "fo:break-before", "auto");
+		util.appendAttribute(appendable, "style:column-width", this.sColumnWidth);
+//		util.appendAttribute(sbTemp, "table:default-cell-style-name", this.sDefaultCellStyle);
+		appendable.append("/></style:style>");
 	}
 }

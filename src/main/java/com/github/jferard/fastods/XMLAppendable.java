@@ -10,6 +10,6 @@ import java.io.Writer;
  *
  *         This file BorderStyle.java is part of FastODS.
  */
-public interface XMLWritable {
-	void writeXML(Util util, Writer writer) throws IOException;
+public interface XMLAppendable {
+	void appendXML(Util util, Appendable appendable) throws IOException;
 }

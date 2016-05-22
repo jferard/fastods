@@ -223,7 +223,7 @@ public class StylesEntry implements OdsEntry {
 			writer.write(ps.toXML(util));
 
 		for (TextStyle ts : this.qTextStyles)
-			writer.write(ts.toXML(util));
+			ts.appendXML(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
