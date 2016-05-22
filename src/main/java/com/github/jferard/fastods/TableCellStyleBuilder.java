@@ -277,7 +277,7 @@ class TableCellStyleBuilder {
 	}
 
 	public TableCellStyle build() {
-		if (sName == null)
+		if (this.sName == null)
 			throw new IllegalStateException();
 		
 		return new TableCellStyle(this.sName, this.sDataStyle,

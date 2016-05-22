@@ -176,14 +176,4 @@ public class TableRow implements XMLAppendable {
 		appendable.append("</table:table-row>");
 	}
 
-	public String toXML(Util util) {
-		try {
-			StringBuilder sb = new StringBuilder();
-			this.appendXML(util, sb);
-			return sb.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
 }

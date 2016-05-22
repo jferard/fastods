@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -26,9 +28,10 @@ package com.github.jferard.fastods;
  *
  *         This file DateStyle.java is part of FastODS. SimpleODS 0.5.2 Added
  *         DATEFORMAT_MMYY Added DATEFORMAT_WW Added DATEFORMAT_YYYYMMDD
- *         
- * content.xml/office:document-content/office:automatic-styles/number:date-style
- * styles.xml/office:document-styles/office:styles/number:date-style
+ * 
+ *         content.xml/office:document-content/office:automatic-styles/number:
+ *         date-style
+ *         styles.xml/office:document-styles/office:styles/number:date-style
  */
 public class DateStyle implements NamedObject {
 
@@ -187,51 +190,43 @@ public class DateStyle implements NamedObject {
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
-	 * @return The XML string for this object.
 	 */
-	public String toXML(Util util) {
-		if (this.xml == null) {
-			StringBuilder sbReturn = new StringBuilder();
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<number:date-style");
+		util.appendAttribute(appendable, "style:name", this.getName());
+		util.appendAttribute(appendable, "number:automatic-order", this.isAutomaticOrder());
+		appendable.append(">");
 
-			sbReturn.append("<number:date-style style:name=\"")
-					.append(util.escapeXMLAttribute(this.getName()))
-					.append("\" number:automatic-order=\"")
-					.append(this.isAutomaticOrder()).append("\">");
-
-			switch (this.nDateFormat) {
-			case DateStyle.DEFAULT_DATEFORMAT:
-				sbReturn.append(LONG_DAY).append(DOT).append(LONG_MONTH)
-						.append(DOT).append(YEAR);
-				break;
-			case DateStyle.DATEFORMAT_TMMMMYYYY:
-				sbReturn.append(DAY).append(DOT_SPACE)
-						.append(LONG_TEXTUAL_MONTH).append(SPACE)
-						.append(LONG_YEAR);
-				break;
-			case DateStyle.DATEFORMAT_MMMM:
-				sbReturn.append(LONG_TEXTUAL_MONTH);
-				break;
-			case DateStyle.DATEFORMAT_MMYY:
-				sbReturn.append(LONG_MONTH).append(DOT).append(YEAR);
-				break;
-			case DateStyle.DATEFORMAT_WW:
-				sbReturn.append(WEEK);
-				break;
-			case DateStyle.DATEFORMAT_YYYYMMDD:
-				sbReturn.append(LONG_YEAR).append(DASH).append(LONG_MONTH)
-						.append(DASH).append(LONG_DAY);
-				break;
-			case DateStyle.DATEFORMAT_DDMMYYYY:
-			default:
-				sbReturn.append(LONG_DAY).append(DOT).append(LONG_MONTH)
-						.append(DOT).append(LONG_YEAR);
-			}
-
-			sbReturn.append("</number:date-style>");
-
-			this.xml = sbReturn.toString();
+		switch (this.nDateFormat) {
+		case DateStyle.DEFAULT_DATEFORMAT:
+			appendable.append(LONG_DAY).append(DOT).append(LONG_MONTH).append(DOT)
+					.append(YEAR);
+			break;
+		case DateStyle.DATEFORMAT_TMMMMYYYY:
+			appendable.append(DAY).append(DOT_SPACE).append(LONG_TEXTUAL_MONTH)
+					.append(SPACE).append(LONG_YEAR);
+			break;
+		case DateStyle.DATEFORMAT_MMMM:
+			appendable.append(LONG_TEXTUAL_MONTH);
+			break;
+		case DateStyle.DATEFORMAT_MMYY:
+			appendable.append(LONG_MONTH).append(DOT).append(YEAR);
+			break;
+		case DateStyle.DATEFORMAT_WW:
+			appendable.append(WEEK);
+			break;
+		case DateStyle.DATEFORMAT_YYYYMMDD:
+			appendable.append(LONG_YEAR).append(DASH).append(LONG_MONTH)
+					.append(DASH).append(LONG_DAY);
+			break;
+		case DateStyle.DATEFORMAT_DDMMYYYY:
+		default:
+			appendable.append(LONG_DAY).append(DOT).append(LONG_MONTH).append(DOT)
+					.append(LONG_YEAR);
 		}
-		return this.xml;
+
+		appendable.append("</number:date-style>");
 	}
 
 }

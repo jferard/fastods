@@ -28,6 +28,8 @@ import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 import com.google.common.base.Charsets;
@@ -209,9 +211,12 @@ public class Util {
 
 	private Escaper xmlAttributeEscaper;
 
+	private Map<String, String> attrMap;
+
 	public Util() {
 		this.xmlContentEscaper = XmlEscapers.xmlContentEscaper();
 		this.xmlAttributeEscaper = XmlEscapers.xmlAttributeEscaper();
+		this.attrMap = new HashMap<String, String>();
 	}
 
 	/**
@@ -229,8 +234,7 @@ public class Util {
 	 */
 	public void appendAttribute(final Appendable appendable, final String sElementName,
 			final int nValue) throws IOException {
-		appendable.append(" ").append(sElementName).append("=\"").append(Integer.toString(nValue))
-				.append("\" ");
+		this.appendAttribute(appendable, sElementName, Integer.toString(nValue));
 	}
 
 	/**
@@ -343,7 +347,12 @@ public class Util {
 	}
 
 	public String escapeXMLAttribute(String s) {
-		return this.xmlAttributeEscaper.escape(s);
+		String s2 = this.attrMap.get(s);
+		if (s2 == null) {
+			s2 = this.xmlAttributeEscaper.escape(s);
+			this.attrMap.put(s, s2);
+		}
+		return s2;
 	}
 
 	public String escapeXMLContent(String s) {
@@ -516,6 +525,11 @@ public class Util {
 		}
 		sbReturn.append(Integer.toHexString(n));
 		return sbReturn.toString();
+	}
+
+	public void appendAttribute(Appendable appendable, String sElementName,
+			boolean b) throws IOException {
+		this.appendAttribute(appendable, sElementName, Boolean.toString(b));
 	}
 
 }

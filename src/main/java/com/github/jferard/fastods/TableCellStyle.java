@@ -179,7 +179,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		// Add all border styles
 		// -----------------------------------------------
 		for (BorderStyle bs : this.qBorders) {
-			appendable.append(bs.toString());
+			bs.appendXML(util, appendable);
 		}
 
 		if (this.bWrap)

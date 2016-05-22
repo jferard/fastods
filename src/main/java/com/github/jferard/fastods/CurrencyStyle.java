@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -153,37 +155,32 @@ public class CurrencyStyle implements NamedObject {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	public String toXML(Util util) {
-		if (this.xml == null) {
-			final String currency = this.currencyToXML(util);
-			final String escapedName = util.escapeXMLAttribute(this.sName);
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+			final StringBuilder currency = this.currencyToXML(util);
 
-			StringBuilder sbReturn = new StringBuilder();
-
-			sbReturn.append("<number:currency-style ").append("style:name=\"")
-					.append(escapedName).append("nn").append("\" ")
-					.append("style:volatile=\"true\">");
-			sbReturn.append(currency);
-			sbReturn.append("</number:currency-style>");
+			appendable.append("<number:currency-style");
+			util.appendAttribute(appendable, "style:name", this.sName+"nn");
+			appendable.append(" style:volatile=\"true\">");
+			appendable.append(currency);
+			appendable.append("</number:currency-style>");
 
 			// For negative values, this is the default style and
 			// this.sName+'nn' is
 			// the style for positive values
-			sbReturn.append("<number:currency-style ").append("style:name=\"")
-					.append(escapedName).append("\">");
-			sbReturn.append("<style:text-properties fo:color=\"")
-					.append(util.escapeXMLAttribute(this.sNegativeValueColor))
-					.append("\"/>");
-			sbReturn.append("<number:text>-</number:text>");
+			appendable.append("<number:currency-style");
+			util.appendAttribute(appendable, "style:name", this.sName);
+			appendable.append(">");
+			appendable.append("<style:text-properties");
+			util.appendAttribute(appendable, "fo:color", this.sNegativeValueColor);
+			appendable.append("/>");
+			appendable.append("<number:text>-</number:text>");
 
-			sbReturn.append(currency);
-			sbReturn.append(
-					"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"")
-					.append(escapedName).append("nn\"/>");
-			sbReturn.append("</number:currency-style>");
-			this.xml = sbReturn.toString();
-		}
-		return this.xml;
+			appendable.append(currency);
+			appendable.append(
+					"<style:map style:condition=\"value()&gt;=0\"");
+			util.appendAttribute(appendable, "style:apply-style-name", this.sName+"nn");
+			appendable.append("/></number:currency-style>");
 	}
 
 	private void appendCurrencyNumber(StringBuilder sb) {
@@ -197,21 +194,19 @@ public class CurrencyStyle implements NamedObject {
 		sb.append("/>");
 	}
 
-	private void appendCurrencySymbol(Util util, StringBuilder sb) {
-		sb.append("<number:currency-symbol ");
+	private void appendCurrencySymbol(Util util, StringBuilder sb) throws IOException {
+		sb.append("<number:currency-symbol");
 		if (this.sLanguage.length() > 0)
-			sb.append("number:language=\"")
-					.append(util.escapeXMLAttribute(this.sLanguage))
-					.append("\" ");
+			util.appendAttribute(sb, "number:language", this.sLanguage);
 		if (this.sCountry.length() > 0)
-			sb.append("number:country=\"").append(this.sCountry).append("\" ");
+			util.appendAttribute(sb, "number:country", this.sCountry);
 		sb.append(">");
-		sb.append("\"").append(util.escapeXMLContent(this.getCurrencySymbol()))
+		sb.append("\"").append(util.escapeXMLContent(this.sCurrencySymbol))
 				.append("\"");
 		sb.append("</number:currency-symbol>");
 	}
 
-	private String currencyToXML(Util util) {
+	private StringBuilder currencyToXML(Util util) throws IOException {
 		StringBuilder sbReturn = new StringBuilder();
 		// Check where the currency symbol should be positioned
 		if (this.bCurrencyPosition == SYMBOLPOSITION_END) {
@@ -222,7 +217,6 @@ public class CurrencyStyle implements NamedObject {
 			this.appendCurrencySymbol(util, sbReturn);
 			this.appendCurrencyNumber(sbReturn);
 		}
-		return sbReturn.toString();
+		return sbReturn;
 	}
-
 }

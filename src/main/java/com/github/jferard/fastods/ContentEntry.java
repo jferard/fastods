@@ -21,7 +21,6 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -192,7 +191,7 @@ class ContentEntry implements OdsEntry {
 		writer.write("<office:automatic-styles>");
 
 		for (NamedObject ts : this.qTableStyles)
-			writer.write(ts.toXML(util));
+			ts.appendXML(util, writer);
 
 		writer.write("</office:automatic-styles>");
 

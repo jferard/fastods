@@ -62,7 +62,7 @@ public class OdsFile {
 	private FooterHeader footerHeader = null;
 	private ContentEntry contentEntry;
 	private StylesEntry stylesEntry;
-	private SettingsEntry settingsEntry = new SettingsEntry();
+	private SettingsEntry settingsEntry;
 
 	/**
 	 * Create a new ODS file.
@@ -320,12 +320,8 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream output) {
-		// can be done at table creation ?? 
-		for (Table t : this.getContent().getTableQueue()) {
-			for (String item : t.getConfig(this.util))
-				this.settingsEntry.addTableConfig(item);
-		}
-		
+		this.settingsEntry = new SettingsEntry(this.getContent().getTableQueue());
+
 		try {
 			ZipOutputStream out = new ZipOutputStream(output);
 			this.mimetypeEntry.write(this.util, out);

@@ -79,23 +79,6 @@ public class TableRowStyle implements NamedObject, XMLAppendable {
 		return this.sRowHeight;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	public String toXML(Util util) {
-		try {
-			StringBuilder sbTemp = new StringBuilder();
-			this.appendXML(util, sbTemp);
-			return sbTemp.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 	public String getName() {
 		return this.sName;
 	}

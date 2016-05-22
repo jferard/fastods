@@ -20,6 +20,8 @@
 
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -30,7 +32,7 @@ package com.github.jferard.fastods;
  * WHERE ?
  * ../style:style#
  */
-public class BorderStyle {
+public class BorderStyle implements XMLAppendable {
 	/**
 	 * Flag to indicate that the top border should be shown, used by
 	 * setPosition().
@@ -113,9 +115,6 @@ public class BorderStyle {
 	 */
 	private final int nPosition;
 
-	/** String representation */
-	private final String string;
-
 	/**
 	 * sSize is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
@@ -145,7 +144,6 @@ public class BorderStyle {
 		this.sBorderColor = sColor;
 		this.nBorderStyle = nStyle;
 		this.nPosition = nPos;
-		this.string = this.computeString();
 	}
 
 	/**
@@ -187,55 +185,44 @@ public class BorderStyle {
 	}
 
 	@Override
-	public String toString() {
-		return this.string;
-	}
-
-	/**
-	 * Since BorderStyle in now final, we can precomute the String
-	 * representation
-	 */
-	private String computeString() {
+	public void appendXML(Util util, Appendable appendable) throws IOException {
 		if (this.sBorderSize == null && this.sBorderColor == null)
-			return "";
+			return;
 
-		StringBuilder sbReturn = new StringBuilder();
 		switch (this.getPosition()) {
 		case POSITION_TOP:
-			sbReturn.append("fo:border-top=\"");
+			appendable.append("fo:border-top=\"");
 			break;
 		case POSITION_BOTTOM:
-			sbReturn.append("fo:border-bottom=\"");
+			appendable.append("fo:border-bottom=\"");
 			break;
 		case POSITION_LEFT:
-			sbReturn.append("fo:border-left=\"");
+			appendable.append("fo:border-left=\"");
 			break;
 		case POSITION_RIGHT:
-			sbReturn.append("fo:border-right=\"");
+			appendable.append("fo:border-right=\"");
 			break;
 		case POSITION_ALL:
 		default:
-			sbReturn.append("fo:border=\"");
+			appendable.append("fo:border=\"");
 			break;
 		}
 
 		if (this.sBorderSize != null)
-			sbReturn.append(this.sBorderSize).append(Util.SPACE_CHAR);
+			appendable.append(this.sBorderSize).append(Util.SPACE_CHAR);
 
 		if (this.sBorderColor != null) {
 			switch (this.getBorderStyle()) {
 			case BORDER_DOUBLE:
-				sbReturn.append("double ");
+				appendable.append("double ");
 				break;
 			case BORDER_SOLID:
 			default:
-				sbReturn.append("solid ");
+				appendable.append("solid ");
 				break;
 			}
-			sbReturn.append(this.sBorderColor);
+			appendable.append(this.sBorderColor);
 		}
-		sbReturn.append("\" ");
-
-		return sbReturn.toString();
+		appendable.append("\" ");
 	}
 }

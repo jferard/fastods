@@ -147,24 +147,6 @@ public class TextStyle implements NamedObject, XMLAppendable {
 		return this.sName;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	@Deprecated
-	public String toXML(Util util) {
-		try {
-			StringBuilder sbTemp = new StringBuilder();
-			this.appendXML(util, sbTemp);
-			return sbTemp.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 	// enum + toString()
 	private String getStyleUnderlineAttribute(int nFontUnderlineStyle) {
 		String styleUnderlineAttribute;

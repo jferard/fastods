@@ -175,13 +175,13 @@ public class StylesEntry implements OdsEntry {
 		writer.write("<office:styles>");
 
 		for (DateStyle ds : this.qDateStyles)
-			writer.write(ds.toXML(util));
+			ds.appendXML(util, writer);
 
 		for (NumberStyle ns : this.qNumberStyles)
-			writer.write(ns.toXML(util));
+			ns.appendXML(util, writer);
 
 		for (CurrencyStyle cs : this.qCurrencyStyles)
-			writer.write(cs.toXML(util));
+			cs.appendXML(util, writer);
 
 		if (this.footer != null) {
 			StringBuilder sbTemp = new StringBuilder();
@@ -220,7 +220,7 @@ public class StylesEntry implements OdsEntry {
 		*/
 
 		for (PageStyle ps : this.qPageStyles)
-			writer.write(ps.toXML(util));
+			ps.appendXML(util, writer);
 
 		for (TextStyle ts : this.qTextStyles)
 			ts.appendXML(util, writer);

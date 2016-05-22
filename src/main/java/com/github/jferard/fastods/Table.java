@@ -109,32 +109,27 @@ public class Table implements NamedObject, XMLAppendable {
 		return this.qColumnStyles;
 	}
 
-	/**
-	 * @return The complete configuration information of this table in a string
-	 *         array
-	 */
-	public String[] getConfig(Util util) {
-		String[] sConfig = {
-				new StringBuilder(
-						"<config:config-item-map-entry config:name=\"")
-								.append(this.getName()).append("\">")
-								.toString(),
-				this.CursorPositionX.toXML(util),
-				this.CursorPositionY.toXML(util),
-				this.HorizontalSplitMode.toXML(util),
-				this.VerticalSplitMode.toXML(util),
-				this.HorizontalSplitMode.toXML(util),
-				this.VerticalSplitMode.toXML(util),
-				this.HorizontalSplitPosition.toXML(util),
-				this.VerticalSplitPosition.toXML(util),
-				this.ActiveSplitRange.toXML(util),
-				this.PositionLeft.toXML(util), this.PositionRight.toXML(util),
-				this.PositionTop.toXML(util), this.PositionBottom.toXML(util),
-				this.ZoomType.toXML(util), this.ZoomValue.toXML(util),
-				this.PageViewZoomValue.toXML(util),
-				"</config:config-item-map-entry>", };
-
-		return (sConfig);
+	public void appendXMLConfig(Util util, Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-entry");
+		util.appendAttribute(appendable, "config:name", this.sName);
+		appendable.append(">");
+		this.CursorPositionX.appendXML(util, appendable);
+		this.CursorPositionY.appendXML(util, appendable);
+		this.HorizontalSplitMode.appendXML(util, appendable);
+		this.VerticalSplitMode.appendXML(util, appendable);
+		this.HorizontalSplitMode.appendXML(util, appendable);
+		this.VerticalSplitMode.appendXML(util, appendable);
+		this.HorizontalSplitPosition.appendXML(util, appendable);
+		this.VerticalSplitPosition.appendXML(util, appendable);
+		this.ActiveSplitRange.appendXML(util, appendable);
+		this.PositionLeft.appendXML(util, appendable); 
+		this.PositionRight.appendXML(util, appendable);
+		this.PositionTop.appendXML(util, appendable); 
+		this.PositionBottom.appendXML(util, appendable);
+		this.ZoomType.appendXML(util, appendable); 
+		this.ZoomValue.appendXML(util, appendable);
+		this.PageViewZoomValue.appendXML(util, appendable);
+		appendable.append("</config:config-item-map-entry>");
 	}
 
 	public int getLastCol() {
@@ -307,23 +302,6 @@ public class Table implements NamedObject, XMLAppendable {
 	 */
 	public void setStyle(String style) {
 		this.Style = style;
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	public String toXML(Util util) {
-		try {
-			StringBuilder sb = new StringBuilder();
-			this.appendXML(util, sb);
-			return sb.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
 	}
 
 	private void appendRows(Appendable appendable, Util util)

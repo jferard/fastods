@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -29,7 +31,7 @@ package com.github.jferard.fastods;
  * WHERE ?
  * settings.xml/office:document-settings/office:settings/settingsEntry:settingsEntry-item-set/config:config-item
  */
-public class ConfigItem {
+public class ConfigItem implements XMLAppendable {
 	private final String sItemName;
 	private final String sType;
 	private final String sValue;
@@ -64,16 +66,15 @@ public class ConfigItem {
 	 * This is used while writing the ODS file.
 	 * 
 	 * @return The XML string for this object.
+	 * @throws IOException 
 	 */
-	public String toXML(Util util) {
-		if (this.xml == null) {
-			this.xml = new StringBuilder("<config:config-item config:name=\"")
-					.append(util.escapeXMLAttribute(this.sItemName))
-					.append("\" config:type=\"")
-					.append(util.escapeXMLAttribute(this.sType)).append("\">")
-					.append(util.escapeXMLContent(this.sValue))
-					.append("</config:config-item>").toString();
-		}
-		return this.xml;
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<config:config-item");
+		util.appendAttribute(appendable, "config:name", this.sItemName);
+		util.appendAttribute(appendable, "config:type", this.sType);
+		appendable.append(">");
+		appendable.append(util.escapeXMLContent(this.sValue));
+		appendable.append("</config:config-item>");
 	}
 }

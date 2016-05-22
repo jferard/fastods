@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * TODO : clean code
  * 
@@ -29,7 +31,8 @@ package com.github.jferard.fastods;
  * 
  *         This file PageStyle.java is part of SimpleODS.
  *
- * styles.xml/office:document-styles/office:master-styles/style:master-page 
+ *         styles.xml/office:document-styles/office:master-styles/style:master-
+ *         page
  */
 public class PageStyle implements NamedObject {
 
@@ -84,15 +87,15 @@ public class PageStyle implements NamedObject {
 	 * 
 	 * @param sName
 	 *            A unique name for this style
-	 * @param header2 
-	 * @param footer 
+	 * @param header2
+	 * @param footer
 	 */
 	public PageStyle(String sName, String sMarginTop, String sMarginBottom,
 			String sMarginLeft, String sMarginRight, String sPageWidth,
 			String sPageHeight, String sNumFormat, String sBackgroundColor,
-			FooterHeader footer, String sTextStyleFooter, FooterHeader header, String sTextStyleHeader,
-			String sTextHeader, String sTextFooter, int nPrintOrientation,
-			int nPaperFormat, int nWritingMode) {
+			FooterHeader footer, String sTextStyleFooter, FooterHeader header,
+			String sTextStyleHeader, String sTextHeader, String sTextFooter,
+			int nPrintOrientation, int nPaperFormat, int nWritingMode) {
 		this.sName = sName;
 		this.sMarginTop = sMarginTop;
 		this.sMarginBottom = sMarginBottom;
@@ -178,37 +181,34 @@ public class PageStyle implements NamedObject {
 		return this.nWritingMode;
 	}
 
-	private String addBackgroundColor() {
-		if (this.getBackgroundColor().length() == 0) {
-			return "";
+	private void appendBackgroundColor(Util util, Appendable appendable) throws IOException {
+		if (this.getBackgroundColor().length() > 0) {
+		util.appendAttribute(appendable, "fo:background-color", this.sBackgroundColor);
 		}
-
-		return new StringBuilder("fo:background-color=\"")
-				.append(this.getBackgroundColor()).append("\" ").toString();
 	}
 
-	private void addFooterHeaderStyle(final StringBuilder sbTemp,
-			final FooterHeader header, final String tag) {
+	private void addFooterHeaderStyle(final Appendable appendable,
+			final FooterHeader header, final String tag) throws IOException {
 		if (header == null) {
-			sbTemp.append("<").append(tag).append(" />");
+			appendable.append("<").append(tag).append(" />");
 		} else {
 			FooterHeader h = header;
-			sbTemp.append("<").append(tag).append(">");
-			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\"").append(h.getMinHeight())
+			appendable.append("<").append(tag).append(">");
+			appendable.append("<style:header-footer-properties ");
+			appendable.append("fo:min-height=\"").append(h.getMinHeight())
 					.append("\" ");
-			sbTemp.append("fo:margin-left=\"").append(h.getMarginLeft())
+			appendable.append("fo:margin-left=\"").append(h.getMarginLeft())
 					.append("\" ");
-			sbTemp.append("fo:margin-right=\"").append(h.getMarginRight())
+			appendable.append("fo:margin-right=\"").append(h.getMarginRight())
 					.append("\" ");
-			sbTemp.append("fo:margin-top=\"").append(h.getMarginTop())
+			appendable.append("fo:margin-top=\"").append(h.getMarginTop())
 					.append("\"/>");
-			sbTemp.append("</").append(tag).append(">");
+			appendable.append("</").append(tag).append(">");
 		}
 	}
 
 	private String addPrintOrientation() {
-		StringBuilder sbTemp = new StringBuilder("style:print-orientation=\"");
+		StringBuilder sbTemp = new StringBuilder(" style:print-orientation=\"");
 		if (this.nPrintOrientation == PageStyle.STYLE_PRINTORIENTATION_VERTICAL) {
 			sbTemp.append("portrait");
 		} else {
@@ -221,7 +221,7 @@ public class PageStyle implements NamedObject {
 	private String addWritingMode() {
 		StringBuilder sbTemp = new StringBuilder();
 
-		sbTemp.append("style:writing-mode=\"");
+		sbTemp.append(" style:writing-mode=\"");
 
 		switch (this.getWritingMode()) {
 		case STYLE_WRITINGMODE_LRTB: // lr-tb (left to right; top to bottom)
@@ -252,7 +252,7 @@ public class PageStyle implements NamedObject {
 			sbTemp.append("lr-tb");
 		}
 
-		sbTemp.append("\" ");
+		sbTemp.append("\"");
 		return sbTemp.toString();
 	}
 
@@ -292,43 +292,37 @@ public class PageStyle implements NamedObject {
 		return sbTemp.toString();
 	}
 
+	public static PageStyleBuilder builder() {
+		return new PageStyleBuilder();
+	}
+
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
-	 * @param odsFile
-	 * 
-	 * @return The XML string for this object.
 	 */
-	public String toXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder();
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<style:page-layout");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		appendable.append(">");
+		appendable.append("<style:page-layout-properties");
+		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
+		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
+		util.appendAttribute(appendable, "style:num-format", this.sNumFormat);
+		appendable.append(addWritingMode());
+		appendable.append(addPrintOrientation());
+		this.appendBackgroundColor(util, appendable);
+		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
+		util.appendAttribute(appendable, "fo:margin-bottom", this.sMarginBottom);
+		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
+		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
+		appendable.append("/>"); // End of page-layout-properties
 
-		sbTemp.append("<style:page-layout style:name=\"").append(this.sName)
-				.append("\">");
-		sbTemp.append("<style:page-layout-properties ");
-		sbTemp.append("fo:page-width=\"").append(this.getPageWidth())
-				.append("\" ");
-		sbTemp.append("fo:page-height=\"").append(this.getPageHeight())
-				.append("\" ");
-		sbTemp.append("style:num-format=\"").append(this.sNumFormat)
-				.append("\" ");
-		sbTemp.append(addWritingMode());
-		sbTemp.append(addPrintOrientation());
-		sbTemp.append(addBackgroundColor());
-		sbTemp.append("fo:margin-top=\"").append(this.getMarginTop())
-				.append("\" ");
-		sbTemp.append("fo:margin-bottom=\"").append(this.getMarginBottom())
-				.append("\" ");
-		sbTemp.append("fo:margin-left=\"").append(this.getMarginLeft())
-				.append("\" ");
-		sbTemp.append("fo:margin-right=\"").append(this.getMarginRight())
-				.append("\" ");
-		sbTemp.append("/>"); // End of page-layout-properties
+		appendable.append("<style:header-style />");
 
-		sbTemp.append("<style:header-style />");
-
-		this.addFooterHeaderStyle(sbTemp, this.header, "style:header-style");
-		this.addFooterHeaderStyle(sbTemp, this.header, "style:footer-style");
+		this.addFooterHeaderStyle(appendable, this.header, "style:header-style");
+		this.addFooterHeaderStyle(appendable, this.header, "style:footer-style");
 		/*
 		if( styles.getFooter()==null ) {
 			sbTemp.append("<style:footer-style />");
@@ -342,12 +336,6 @@ public class PageStyle implements NamedObject {
 			sbTemp.append("fo:margin-top=\""+f.getsMarginTop()+"\"/>");
 			sbTemp.append("</style:footer-style>");		
 		}*/
-		sbTemp.append("</style:page-layout>");
-
-		return sbTemp.toString();
-	}
-
-	public static PageStyleBuilder builder() {
-		return new PageStyleBuilder();
+		appendable.append("</style:page-layout>");
 	}
 }

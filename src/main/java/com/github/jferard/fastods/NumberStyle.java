@@ -19,18 +19,23 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
  *         This file NumberStyle.java is part of FastODS.
- *         
- * WHERE ?
- * content.xml/office:document-content/office:automatic-styles/number:number-style
- * content.xml/office:document-content/office:automatic-styles/number:percentage-style
- * styles.xml/office:document-styles/office:styles/number:number-style
- * styles.xml/office:document-styles/office:styles/number:percentage-style
+ * 
+ *         WHERE ?
+ *         content.xml/office:document-content/office:automatic-styles/number:
+ *         number-style
+ *         content.xml/office:document-content/office:automatic-styles/number:
+ *         percentage-style
+ *         styles.xml/office:document-styles/office:styles/number:number-style
+ *         styles.xml/office:document-styles/office:styles/number:percentage-
+ *         style
  */
 public class NumberStyle implements NamedObject {
 
@@ -164,151 +169,126 @@ public class NumberStyle implements NamedObject {
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * @param util 
 	 * 
-	 * @return The XML string for this object.
+	 * @param util
 	 */
-	public String toXML(Util util) {
-		if (this.xml == null) {
-			StringBuilder sbReturn = new StringBuilder();
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		if (this.nNumberType == NUMBER_PERCENTAGE) {
+			appendable.append("<number:percentage-style");
+		} else {
+			appendable.append("<number:number-style");
+		}
 
+		// Only change the given name if bNegativeValuesRed is true and use
+		// this
+		// style as default style for positive numbers
+
+		if (this.bNegativeValuesRed)
+			util.appendAttribute(appendable, "style:name", this.sName + "nn");
+		else
+			util.appendAttribute(appendable, "style:name", this.sName);
+
+		if (this.sLanguage.length() > 0) {
+			util.appendAttribute(appendable, "number:language", this.sLanguage);
+		}
+		if (this.sCountry.length() > 0) {
+			util.appendAttribute(appendable, "number:country", this.sCountry);
+		}
+		if (this.bVolatile)
+			appendable.append(" style:volatile=\"true\"");
+		
+		appendable.append(">");
+		this.appendNumberType(util, appendable);
+		util.appendAttribute(appendable, "number:min-integer-digits", this.nMinIntegerDigits);
+
+		if (this.bGrouping) {
+			util.appendAttribute(appendable, "number:grouping", this.bGrouping);
+		}
+		appendable.append("/>");
+
+		if (this.nNumberType == NUMBER_PERCENTAGE) {
+			appendable.append("<number:text>%</number:text>");
+			appendable.append("</number:percentage-style>");
+		} else {
+			appendable.append("</number:number-style>");
+		}
+
+		// --------------------------------------------------------------------------
+		// For negative values, this is the default style and
+		// this.sName+'nn' is
+		// the style for positive values
+		// --------------------------------------------------------------------------
+		if (this.bNegativeValuesRed) {
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
-				sbReturn.append("<number:percentage-style ");
+				appendable.append("<number:percentage-style");
 			} else {
-				sbReturn.append("<number:number-style ");
+				appendable.append("<number:number-style");
 			}
 
-			// Only change the given name if bNegativeValuesRed is true and use
-			// this
-			// style as default style for positive numbers
-			sbReturn.append("style:name=\"").append(this.sName);
-			if (this.bNegativeValuesRed) {
-				sbReturn.append("nn\" ");
-			} else {
-				sbReturn.append("\" ");
-			}
+			util.appendAttribute(appendable, "style:name", this.sName);
+			
 			if (this.sLanguage.length() > 0) {
-				sbReturn.append("number:language=\"").append(this.sLanguage)
-						.append("\" ");
+				util.appendAttribute(appendable, "number:language", this.sLanguage);
 			}
 			if (this.sCountry.length() > 0) {
-				sbReturn.append("number:country=\"").append(this.sCountry)
-						.append("\" ");
+				util.appendAttribute(appendable, "number:country", this.sCountry);
 			}
+			appendable.append(">");
+			appendable.append("<style:text-properties");
+			util.appendAttribute(appendable, "fo:color", this.sNegativeValueColor);
+			appendable.append("/>");
+			appendable.append("<number:text>-</number:text>");
 
-			if (this.bVolatile) {
-				sbReturn.append("style:volatile=\"true\">");
-			} else {
-				sbReturn.append(">");
-			}
-
-			this.appendNumberType(sbReturn);
-
-			sbReturn.append("number:min-integer-digits=\"")
-					.append(this.nMinIntegerDigits).append("\" ");
-
+			this.appendNumberType(util, appendable);
+			util.appendAttribute(appendable, "number:min-integer-digits", this.nMinIntegerDigits);
 			if (this.bGrouping) {
-				sbReturn.append("number:grouping=\"").append(this.bGrouping)
-						.append("\"");
+				util.appendAttribute(appendable, "number:grouping", this.bGrouping);
 			}
-			sbReturn.append("/>");
+			appendable.append("/>");
 
 			if (this.nNumberType == NUMBER_PERCENTAGE) {
-				sbReturn.append("<number:text>%</number:text>");
-				sbReturn.append("</number:percentage-style>");
+				appendable.append("<number:text>%</number:text>");
+			}
+
+			appendable
+					.append("<style:map style:condition=\"value()&gt;=0\"");
+			util.appendAttribute(appendable, "style:apply-style-name", this.sName+"nn");
+			appendable.append("/>");
+
+			if (this.nNumberType == NUMBER_PERCENTAGE) {
+				appendable.append("</number:percentage-style>");
 			} else {
-				sbReturn.append("</number:number-style>");
+				appendable.append("</number:number-style>");
 			}
 
-			// --------------------------------------------------------------------------
-			// For negative values, this is the default style and
-			// this.sName+'nn' is
-			// the style for positive values
-			// --------------------------------------------------------------------------
-			if (this.bNegativeValuesRed) {
-				if (this.nNumberType == NUMBER_PERCENTAGE) {
-					sbReturn.append("<number:percentage-style ");
-				} else {
-					sbReturn.append("<number:number-style ");
-				}
-
-				sbReturn.append("style:name=\"").append(this.sName)
-						.append("\" ");
-				if (this.sLanguage.length() > 0) {
-					sbReturn.append("number:language=\"").append(this.sLanguage)
-							.append("\" ");
-				}
-				if (this.sCountry.length() > 0) {
-					sbReturn.append("number:country=\"").append(this.sCountry)
-							.append("\" ");
-				}
-				sbReturn.append(">");
-				sbReturn.append("<style:text-properties fo:color=\"")
-						.append(this.sNegativeValueColor).append("\"/>");
-				sbReturn.append("<number:text>-</number:text>");
-
-				this.appendNumberType(sbReturn);
-
-				sbReturn.append("number:min-integer-digits=\"")
-						.append(this.nMinIntegerDigits).append("\" ");
-				if (this.bGrouping) {
-					sbReturn.append("number:grouping=\"").append(this.bGrouping)
-							.append("\"");
-				}
-				sbReturn.append("/>");
-
-				if (this.nNumberType == NUMBER_PERCENTAGE) {
-					sbReturn.append("<number:text>%</number:text>");
-				}
-
-				sbReturn.append(
-						"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"")
-						.append(this.sName).append("nn\"/>");
-
-				if (this.nNumberType == NUMBER_PERCENTAGE) {
-					sbReturn.append("</number:percentage-style>");
-				} else {
-					sbReturn.append("</number:number-style>");
-				}
-
-			}
-
-			this.xml = sbReturn.toString();
 		}
-		return this.xml;
 	}
 
 	/**
 	 * Add the number type in XML format to the StringBuilder sb.
 	 * 
-	 * @param sb
+	 * @param appendable
 	 *            The StringBuilder to which the number format is appended.
+	 * @throws IOException 
 	 */
-	private void appendNumberType(final StringBuilder sb) {
+	private void appendNumberType(Util util, final Appendable appendable) throws IOException {
 
 		switch (this.nNumberType) {
-		case NUMBER_NORMAL:
-		case NUMBER_PERCENTAGE:
-			sb.append("<number:number ").append("number:decimal-places=\"")
-					.append(this.nDecimalPlaces).append("\" ");
-			break;
 		case NUMBER_SCIENTIFIC:
-			sb.append("<number:scientific-number ")
-					.append("number:min-exponent-digits=\"")
-					.append(this.nMinExponentDigits).append("\" ")
-					.append("number:decimal-places=\"")
-					.append(this.nDecimalPlaces).append("\" ");
+			appendable.append("<number:scientific-number");
+			util.appendAttribute(appendable, "number:min-exponent-digits", this.nMinExponentDigits);
+			util.appendAttribute(appendable, "number:decimal-places", this.nDecimalPlaces);
 			break;
 		case NUMBER_FRACTION:
-			sb.append("<number:fraction ")
-					.append("number:min-numerator-digits=\"")
-					.append(this.nMinNumeratorDigits).append("\" ")
-					.append("number:min-denominator-digits=\"")
-					.append(this.nMinDenominatorDigits).append("\" ");
+			appendable.append("<number:fraction");
+			util.appendAttribute(appendable, "number:min-numerator-digits", this.nMinNumeratorDigits);
+			util.appendAttribute(appendable, "number:min-denominator-digits", this.nMinDenominatorDigits);
+		case NUMBER_NORMAL:
+		case NUMBER_PERCENTAGE:
 		default:
-			sb.append("<number:number ");
-			sb.append("number:decimal-places=\"").append(this.nDecimalPlaces)
-					.append("\" ");
+			appendable.append("<number:number");
+			util.appendAttribute(appendable, "number:decimal-places", this.nDecimalPlaces);
 			break;
 
 		/*
@@ -321,5 +301,4 @@ public class NumberStyle implements NamedObject {
 		}
 
 	}
-
 }

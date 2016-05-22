@@ -121,6 +121,11 @@ public class SettingsEntry implements OdsEntry {
 			"false");
 
 	private List<String> tableConfigs = new LinkedList<String>();
+	private ObjectQueue<Table> tables;
+
+	public SettingsEntry(ObjectQueue<Table> tables) {
+		this.tables = tables;
+	}
 
 	/**
 	 * Set the active table , this is the table that is shown if you open the
@@ -134,10 +139,6 @@ public class SettingsEntry implements OdsEntry {
 		this.ViewIdActiveTable = new ConfigItem("ActiveTable", "string", sName);
 	}
 
-	public void addTableConfig(String config) {
-		this.tableConfigs.add(config);
-	}
-
 	public void write(Util util, ZipOutputStream zipOut) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("settings.xml"));
 		Writer writer = util.wrapStream(zipOut);
@@ -148,10 +149,10 @@ public class SettingsEntry implements OdsEntry {
 		writer.write("<office:settings>");
 		writer.write(
 				"<settingsEntry:settingsEntry-item-set settingsEntry:name=\"ooo:view-settings\">");
-		writer.write(this.VisibleAreaTop.toXML(util));
-		writer.write(this.VisibleAreaLeft.toXML(util));
-		writer.write(this.VisibleAreaWidth.toXML(util));
-		writer.write(this.VisibleAreaHeight.toXML(util));
+		this.VisibleAreaTop.appendXML(util, writer);
+		this.VisibleAreaLeft.appendXML(util, writer);
+		this.VisibleAreaWidth.appendXML(util, writer);
+		this.VisibleAreaHeight.appendXML(util, writer);
 		writer.write(
 				"<settingsEntry:settingsEntry-item-map-indexed settingsEntry:name=\"Views\">");
 		writer.write("<settingsEntry:settingsEntry-item-map-entry>");
@@ -160,63 +161,63 @@ public class SettingsEntry implements OdsEntry {
 		writer.write(
 				"<settingsEntry:settingsEntry-item-map-named settingsEntry:name=\"Tables\">");
 
-		for (String config : this.tableConfigs)
-			writer.write(config);
+		for (Table t : this.tables)
+			t.appendXMLConfig(util, writer);
 
 		writer.write("</settingsEntry:settingsEntry-item-map-named>");
-		writer.write(this.ViewIdActiveTable.toXML(util));
-		writer.write(this.ViewIdHorizontalScrollbarWidth.toXML(util));
-		writer.write(this.ViewIdPageViewZoomValue.toXML(util));
-		writer.write(this.ViewIdZoomType.toXML(util));
-		writer.write(this.ViewIdZoomValue.toXML(util));
-		writer.write(this.ViewIdShowPageBreakPreview.toXML(util));
-		writer.write(this.ViewIdShowZeroValues.toXML(util));
-		writer.write(this.ViewIdShowNotes.toXML(util));
-		writer.write(this.ViewIdShowGrid.toXML(util));
-		writer.write(this.ViewIdGridColor.toXML(util));
-		writer.write(this.ViewIdShowPageBreaks.toXML(util));
-		writer.write(this.ViewIdHasColumnRowHeaders.toXML(util));
-		writer.write(this.ViewIdIsOutlineSymbolsSet.toXML(util));
-		writer.write(this.ViewIdHasSheetTabs.toXML(util));
-		writer.write(this.ViewIdIsSnapToRaster.toXML(util));
-		writer.write(this.ViewIdRasterIsVisible.toXML(util));
-		writer.write(this.ViewIdRasterResolutionX.toXML(util));
-		writer.write(this.ViewIdRasterResolutionY.toXML(util));
-		writer.write(this.ViewIdRasterSubdivisionX.toXML(util));
+		this.ViewIdActiveTable.appendXML(util, writer);
+		this.ViewIdHorizontalScrollbarWidth.appendXML(util, writer);
+		this.ViewIdPageViewZoomValue.appendXML(util, writer);
+		this.ViewIdZoomType.appendXML(util, writer);
+		this.ViewIdZoomValue.appendXML(util, writer);
+		this.ViewIdShowPageBreakPreview.appendXML(util, writer);
+		this.ViewIdShowZeroValues.appendXML(util, writer);
+		this.ViewIdShowNotes.appendXML(util, writer);
+		this.ViewIdShowGrid.appendXML(util, writer);
+		this.ViewIdGridColor.appendXML(util, writer);
+		this.ViewIdShowPageBreaks.appendXML(util, writer);
+		this.ViewIdHasColumnRowHeaders.appendXML(util, writer);
+		this.ViewIdIsOutlineSymbolsSet.appendXML(util, writer);
+		this.ViewIdHasSheetTabs.appendXML(util, writer);
+		this.ViewIdIsSnapToRaster.appendXML(util, writer);
+		this.ViewIdRasterIsVisible.appendXML(util, writer);
+		this.ViewIdRasterResolutionX.appendXML(util, writer);
+		this.ViewIdRasterResolutionY.appendXML(util, writer);
+		this.ViewIdRasterSubdivisionX.appendXML(util, writer);
 
-		writer.write(this.ViewIdRasterSubdivisionY.toXML(util));
-		writer.write(this.ViewIdIsRasterAxisSynchronized.toXML(util));
+		this.ViewIdRasterSubdivisionY.appendXML(util, writer);
+		this.ViewIdIsRasterAxisSynchronized.appendXML(util, writer);
 		writer.write("</settingsEntry:settingsEntry-item-map-entry>");
 		writer.write("</settingsEntry:settingsEntry-item-map-indexed>");
 		writer.write("</settingsEntry:settingsEntry-item-set>");
 		writer.write(
 				"<settingsEntry:settingsEntry-item-set settingsEntry:name=\"ooo:configuration-settings\">");
-		writer.write(this.ShowZeroValues.toXML(util));
-		writer.write(this.ShowNotes.toXML(util));
-		writer.write(this.ShowGrid.toXML(util));
-		writer.write(this.GridColor.toXML(util));
-		writer.write(this.ShowPageBreaks.toXML(util));
-		writer.write(this.LinkUpdateMode.toXML(util));
-		writer.write(this.HasColumnRowHeaders.toXML(util));
-		writer.write(this.HasSheetTabs.toXML(util));
-		writer.write(this.IsOutlineSymbolsSet.toXML(util));
-		writer.write(this.IsSnapToRaster.toXML(util));
-		writer.write(this.RasterIsVisible.toXML(util));
-		writer.write(this.RasterResolutionX.toXML(util));
-		writer.write(this.RasterResolutionY.toXML(util));
-		writer.write(this.RasterSubdivisionX.toXML(util));
-		writer.write(this.RasterSubdivisionY.toXML(util));
-		writer.write(this.IsRasterAxisSynchronized.toXML(util));
-		writer.write(this.AutoCalculate.toXML(util));
-		writer.write(this.PrinterName.toXML(util));
-		writer.write(this.PrinterSetup.toXML(util));
-		writer.write(this.ApplyUserData.toXML(util));
-		writer.write(this.CharacterCompressionType.toXML(util));
-		writer.write(this.IsKernAsianPunctuation.toXML(util));
-		writer.write(this.SaveVersionOnClose.toXML(util));
-		writer.write(this.UpdateFromTemplate.toXML(util));
-		writer.write(this.AllowPrintJobCancel.toXML(util));
-		writer.write(this.LoadReadonly.toXML(util));
+		this.ShowZeroValues.appendXML(util, writer);
+		this.ShowNotes.appendXML(util, writer);
+		this.ShowGrid.appendXML(util, writer);
+		this.GridColor.appendXML(util, writer);
+		this.ShowPageBreaks.appendXML(util, writer);
+		this.LinkUpdateMode.appendXML(util, writer);
+		this.HasColumnRowHeaders.appendXML(util, writer);
+		this.HasSheetTabs.appendXML(util, writer);
+		this.IsOutlineSymbolsSet.appendXML(util, writer);
+		this.IsSnapToRaster.appendXML(util, writer);
+		this.RasterIsVisible.appendXML(util, writer);
+		this.RasterResolutionX.appendXML(util, writer);
+		this.RasterResolutionY.appendXML(util, writer);
+		this.RasterSubdivisionX.appendXML(util, writer);
+		this.RasterSubdivisionY.appendXML(util, writer);
+		this.IsRasterAxisSynchronized.appendXML(util, writer);
+		this.AutoCalculate.appendXML(util, writer);
+		this.PrinterName.appendXML(util, writer);
+		this.PrinterSetup.appendXML(util, writer);
+		this.ApplyUserData.appendXML(util, writer);
+		this.CharacterCompressionType.appendXML(util, writer);
+		this.IsKernAsianPunctuation.appendXML(util, writer);
+		this.SaveVersionOnClose.appendXML(util, writer);
+		this.UpdateFromTemplate.appendXML(util, writer);
+		this.AllowPrintJobCancel.appendXML(util, writer);
+		this.LoadReadonly.appendXML(util, writer);
 		writer.write("</settingsEntry:settingsEntry-item-set>");
 		writer.write("</office:settings>");
 		writer.write("</office:document-settings>");
