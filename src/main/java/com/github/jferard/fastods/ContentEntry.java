@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.google.common.base.Optional;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -36,13 +38,15 @@ import java.util.zip.ZipOutputStream;
  *
  *         content.xml/office:document-content
  */
-public class ContentEntry implements OdsEntry {
+class ContentEntry implements OdsEntry {
 	private ObjectQueue<Table> qTables;
 	private ObjectQueue<NamedObject> qTableStyles;
 	private ObjectQueue<PageStyle> qPageStyles;
 	private ObjectQueue<TextStyle> qTextStyles;
+	private OdsFile odsFile;
 
-	public ContentEntry() {
+	ContentEntry(OdsFile odsFile) {
+		this.odsFile = odsFile;
 		this.qTables = ObjectQueue.newQueue();
 		this.qTableStyles = ObjectQueue.newQueue();
 		this.qPageStyles = ObjectQueue.newQueue();
@@ -53,21 +57,28 @@ public class ContentEntry implements OdsEntry {
 		ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps);
 	}
 
-	public boolean addTable(String sName) throws SimpleOdsException {
+	public Optional<Table> addTable(String sName) throws SimpleOdsException {
+		Optional<Table> optTable = this.getTable(sName);
+		if (optTable.isPresent())
+			optTable = Optional.absent();
+		else {
+			final Table table = new Table(this.odsFile, sName);
+			this.qTables.add(table);
+			optTable = Optional.of(table);
+		}
+		return optTable;
+	}
 
+	public Optional<Table> getTable(String sName) throws SimpleOdsException {
 		// Check if we reached the maximum number of tables
 		if (this.qTables.size() >= 256) {
 			throw new SimpleOdsException(
 					"Maximum table number (256) reached exception");
 		}
 
-		if (ObjectQueue.findName(this.qTables, sName))
-			return false;
-
-		this.qTables.add(new Table(sName));
-		return true;
+		return ObjectQueue.findElement(this.qTables, sName);
 	}
-
+	
 	public void addTableStyle(NamedObject ts) {
 		ObjectQueue.addOrReplaceNamedElement(this.qTableStyles, ts);
 	}

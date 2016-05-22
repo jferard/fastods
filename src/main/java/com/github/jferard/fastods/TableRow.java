@@ -36,8 +36,12 @@ import java.util.ListIterator;
 public class TableRow implements XMLWritable {
 	private String styleName;
 	private ObjectQueue<TableCell> qTableCells;
+	private int nRow;
+	private OdsFile odsFile;
 
-	public TableRow() {
+	TableRow(OdsFile odsFile, int nRow) {
+		this.nRow = nRow;
+		this.odsFile = odsFile;
 		this.styleName = "ro1";
 		this.qTableCells = ObjectQueue.newQueue();
 	}
@@ -53,7 +57,7 @@ public class TableRow implements XMLWritable {
 	public TableCell getCell(final int nCol) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new TableCell(TableCell.STYLE_STRING, "");
+			tc = new TableCell(this.odsFile, this.nRow, nCol, TableCell.STYLE_STRING, "");
 			this.qTableCells.setAt(nCol, tc);
 		}
 		return tc;
@@ -62,7 +66,7 @@ public class TableRow implements XMLWritable {
 	/**
 	 * @return The ObjectQueue with all TableCell objects
 	 */
-	public ObjectQueue<TableCell> getCells() {
+	private ObjectQueue<TableCell> getCells() {
 		return this.qTableCells;
 	}
 
@@ -81,7 +85,7 @@ public class TableRow implements XMLWritable {
 			final String sValue) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new TableCell(nValuetype, sValue);
+			tc = new TableCell(this.odsFile, this.nRow, nCol, nValuetype, sValue);
 			this.qTableCells.setAt(nCol, tc);
 		} else {
 			tc.setValueType(nValuetype);
@@ -126,10 +130,10 @@ public class TableRow implements XMLWritable {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			// Create an empty cell
-			tc = new TableCell(TableCell.STYLE_STRING, "");
+			tc = new TableCell(this.odsFile, this.nRow, nCol, TableCell.STYLE_STRING, "");
 			this.qTableCells.setAt(nCol, tc);
 		}
-		ts.addToFile(odsFile);
+		ts.addToFile(this.odsFile);
 		tc.setStyle(ts.getName());
 	}
 

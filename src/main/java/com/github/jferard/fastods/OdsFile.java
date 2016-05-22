@@ -27,11 +27,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.util.Calendar;
 import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import com.google.common.base.Optional;
 
 /**
  * TODO : split and clean code
@@ -95,14 +96,23 @@ public class OdsFile {
 	 *         false - The table already exist, it was added again
 	 * @throws SimpleOdsException
 	 */
-	public boolean addTable(final String sName) throws SimpleOdsException {
+	public Optional<Table> addTable(final String sName) throws SimpleOdsException {
 
-		if (this.getContent().addTable(sName)) {
+		Optional<Table> optTable = this.getContent().addTable(sName);
+		if (optTable.isPresent())
 			this.settingsEntry.setActiveTable(sName);
-			return true;
-		}
-		return false;
+		
+		return optTable;
 	}
+	
+	public Optional<Table> getTable(final String sName) throws SimpleOdsException {
+		Optional<Table> optTable = this.getContent().getTable(sName);
+		if (optTable.isPresent())
+			this.settingsEntry.setActiveTable(sName);
+		
+		return optTable;
+	}
+	
 
 	/**
 	 * Get the TableCell object.
@@ -146,7 +156,7 @@ public class OdsFile {
 	 */
 	public ContentEntry getContent() {
 		if (this.contentEntry == null) {
-			this.contentEntry = new ContentEntry();
+			this.contentEntry = new ContentEntry(this);
 		}
 		return this.contentEntry;
 	}

@@ -2,7 +2,10 @@ package com.github.jferard.fastods;
 
 import java.util.Random;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.common.base.Optional;
 
 public class OdsFileTest {
 
@@ -14,13 +17,12 @@ public class OdsFileTest {
 
 		// Load the file.
 		OdsFile file = new OdsFile("20columns.ods");
-		file.addTable("test");
-		Table table = (Table) file.getContent().getTableQueue().get(0);
+		Optional<Table> optTable = file.addTable("test");
+		Assert.assertTrue(optTable.isPresent());
 
-		final ObjectQueue<TableRow> rowsQueue = table.getRows();
+		Table table = optTable.get();
 		for (int y = 0; y < 50; y++) {
-			final TableRow row = new TableRow();
-			rowsQueue.setAt(y, row);
+			final TableRow row = table.nextRow();
 			for (int x = 0; x < 5; x++) {
 				row.setCell(x, String.valueOf(random.nextInt(1000)));
 				switch (x) {

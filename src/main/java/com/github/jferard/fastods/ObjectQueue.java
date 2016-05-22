@@ -25,6 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.google.common.base.Optional;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -68,6 +70,15 @@ public class ObjectQueue<T> implements Iterable<T> {
 		return false;
 	}
 
+	public static <T extends NamedObject> Optional<T> findElement(ObjectQueue<T> queue,
+			String sName) {
+		for (T curElement : queue) {
+			if (curElement.getName().equalsIgnoreCase(sName))
+				return Optional.of(curElement);
+		}
+		return Optional.absent();
+	}
+	
 	/**
 	 * Guava's like creator
 	 * 

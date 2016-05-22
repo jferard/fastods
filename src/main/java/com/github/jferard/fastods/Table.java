@@ -42,8 +42,6 @@ public class Table implements NamedObject {
 	final static int TABLE_MAXCOLUMNNUMBER = 256;
 	private String sName;
 	private String Style = "ta1";
-	private int nLastRow = 0; // The highest row in the table TODO: Check if
-								// this can be removed
 	private int nLastCol = 0; // The highest column in the table TODO: Check if
 								// this can be removed
 
@@ -75,9 +73,11 @@ public class Table implements NamedObject {
 
 	private ObjectQueue<TableColumnStyle> qColumnStyles = ObjectQueue.newQueue();
 	private ObjectQueue<TableRow> qTableRows = ObjectQueue.newQueue();
+	private OdsFile odsFile;
 
-	public Table(String sName) {
-		this.setName(sName);
+	Table(OdsFile odsFile, String sName) {
+		this.odsFile = odsFile;
+		this.sName = sName;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class Table implements NamedObject {
 		// -------------------------------------------------------------
 		TableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
-			tr = new TableRow();
+			tr = new TableRow(this.odsFile, nRow);
 			this.qTableRows.setAt(nRow, tr);
 		}
 		return tr.getCell(nCol);
@@ -140,7 +140,7 @@ public class Table implements NamedObject {
 	}
 
 	public int getLastRow() {
-		return this.nLastRow;
+		return this.qTableRows.size()-1;
 	}
 
 	/**
@@ -154,6 +154,28 @@ public class Table implements NamedObject {
 
 	public ObjectQueue<TableRow> getRows() {
 		return this.qTableRows;
+	}
+	
+	public TableRow getRow(int nRow) throws SimpleOdsException {
+		this.checkRow(nRow);
+
+		TableRow tr;
+		if (nRow >= this.qTableRows.size()) {
+			tr = new TableRow(this.odsFile, nRow);
+			this.qTableRows.setAt(nRow, tr);
+		} else {
+			tr = this.qTableRows.get(nRow);
+		}
+		return tr;
+	}
+	
+	public TableRow nextRow() throws SimpleOdsException {
+		final int nRow = this.qTableRows.size();
+		this.checkRow(nRow);
+
+		TableRow tr = new TableRow(this.odsFile, nRow);
+		this.qTableRows.add(tr);
+		return tr;
 	}
 
 	/**
@@ -184,26 +206,14 @@ public class Table implements NamedObject {
 	 */
 	public boolean setCell(final int nRow, final int nCol, final int valuetype,
 			final String value) throws SimpleOdsException {
-		TableRow tr;
-
 		this.checkRow(nRow);
 		this.checkCol(nCol);
 
-		if (nRow > this.nLastRow) {
-			this.nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
-		}
 		if (nCol > this.nLastCol) {
 			this.nLastCol = nCol;
 		}
-
-		// Check if this row already exists and create a new one if not
-		if (this.qTableRows.get(nRow) == null) {
-			tr = new TableRow();
-		} else {
-			tr = this.qTableRows.get(nRow);
-		}
+		TableRow tr = this.getRow(nRow);
 		tr.setCell(nCol, valuetype, value);
-		this.qTableRows.setAt(nRow, tr);
 		return true;
 	}
 
@@ -249,27 +259,13 @@ public class Table implements NamedObject {
 	 */
 	public boolean setCellStyle(final int nRow, final int nCol,
 			final TableCellStyle ts) throws SimpleOdsException {
-		TableRow tr;
 
-		this.checkRow(nRow);
 		this.checkCol(nCol);
-		if (nRow > this.nLastRow) {
-			this.nLastRow = nRow; // TODO: Ersatz durch qTableRows.size()???
-		}
 		if (nCol > this.nLastCol) {
 			this.nLastCol = nCol;
 		}
-
-		// -------------------------------------------------------------
-		// Check if this row already exists and create a new one if not
-		// -------------------------------------------------------------
-		if (this.qTableRows.get(nRow) == null) {
-			tr = new TableRow();
-		} else {
-			tr = this.qTableRows.get(nRow);
-		}
+		TableRow tr = this.getRow(nRow);
 		tr.setCellStyle(nCol, ts);
-		this.qTableRows.setAt(nRow, tr);
 		return true;
 	}
 

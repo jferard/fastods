@@ -38,11 +38,8 @@ public class TableCell {
 	public final static int STYLE_PERCENTAGE = 3;
 	public final static int STYLE_CURRENCY = 4;
 	public final static int STYLE_DATE = 5;
-	// public final static int STYLE_TIME = 6;
-	// public final static int STYLE_BOOLEAN = 7;
-	private Util u = Util.getInstance();
-
 	private int nValueType = STYLE_STRING;
+	
 	private String sText = "";
 	private String sCurrency = "EUR";
 	private String sValue = "";
@@ -50,6 +47,9 @@ public class TableCell {
 	private String sStyle = "";
 	private int nColumnsSpanned = 0;
 	private int nRowsSpanned = 0;
+	private OdsFile odsFile;
+	private int nRow;
+	private int nCol;
 
 	/**
 	 * A table cell.
@@ -59,13 +59,12 @@ public class TableCell {
 	 * @param value
 	 *            The String content for this cell.
 	 */
-	public TableCell(final int valuetype, final String value) {
-		this.setValueType(valuetype);
-		if (this.nValueType == STYLE_STRING) {
-			this.setValue(this.u.toXmlString(value));
-		} else {
-			this.setValue(value);
-		}
+	TableCell(OdsFile odsFile, int nRow, int nCol, final int valuetype, final String value) {
+		this.odsFile = odsFile;
+		this.nRow = nRow;
+		this.nCol = nCol;
+		this.nValueType = valuetype;
+		this.sValue = value;
 	}
 
 	/**
@@ -175,6 +174,11 @@ public class TableCell {
 		}
 	}
 
+	public void setStyle(TableCellStyle style) {
+		style.addToFile(this.odsFile);
+		this.sStyle = style.getName();
+	}
+	
 	public void setStyle(final String style) {
 		this.sStyle = style;
 	}
