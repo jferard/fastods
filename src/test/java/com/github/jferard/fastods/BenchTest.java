@@ -20,7 +20,7 @@ public class BenchTest {
 	}
 	
 	@Test
-	public final void testFast() throws SimpleOdsException {
+	public final void testFast() throws FastOdsException {
 		System.out.println("Fast : filling a "+ROW_COUNT+" rows, "+COL_COUNT+" columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 

@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.TableCell.Type;
 import com.google.common.base.Optional;
 
 /**
@@ -33,7 +34,7 @@ import com.google.common.base.Optional;
  * 
  *         This file ContentEntry.java is part of SimpleODS.<br>
  *         SimpleODS 0.5.1 Changed all 'throw Exception' to 'throw
- *         SimpleOdsException'
+ *         FastOdsException'
  *
  *         content.xml/office:document-content
  */
@@ -56,7 +57,7 @@ class ContentEntry implements OdsEntry {
 		ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps);
 	}
 
-	public Optional<Table> addTable(String sName) throws SimpleOdsException {
+	public Optional<Table> addTable(String sName) throws FastOdsException {
 		Optional<Table> optTable = this.getTable(sName);
 		if (optTable.isPresent())
 			optTable = Optional.absent();
@@ -68,10 +69,10 @@ class ContentEntry implements OdsEntry {
 		return optTable;
 	}
 
-	public Optional<Table> getTable(String sName) throws SimpleOdsException {
+	public Optional<Table> getTable(String sName) throws FastOdsException {
 		// Check if we reached the maximum number of tables
 		if (this.qTables.size() >= 256) {
-			throw new SimpleOdsException(
+			throw new FastOdsException(
 					"Maximum table number (256) reached exception");
 		}
 
@@ -95,10 +96,10 @@ class ContentEntry implements OdsEntry {
 	 * @param nRow
 	 * @param nCol
 	 * @return The TableCell
-	 * @throws SimpleOdsException
+	 * @throws FastOdsException
 	 */
 	public TableCell getCell(int nTab, int nRow, int nCol)
-			throws SimpleOdsException {
+			throws FastOdsException {
 		checkTableIndex(nTab);
 		Table tab = this.qTables.get(nTab);
 		return tab.getCell(nRow, nCol);
@@ -128,16 +129,16 @@ class ContentEntry implements OdsEntry {
 		return this.qTextStyles;
 	}
 
-	public boolean setCell(int nTab, int nRow, int nCol, int valuetype,
-			String value) throws SimpleOdsException {
+	public boolean setCell(int nTab, int nRow, int nCol, Type type,
+			String value) throws FastOdsException {
 		checkTableIndex(nTab);
 		Table tab = this.qTables.get(nTab);
-		tab.setCell(nRow, nCol, valuetype, value);
+		tab.setCell(nRow, nCol, type, value);
 		return true;
 	}
 
 	public boolean setCellStyle(int nTab, int nRow, int nCol, TableCellStyle ts)
-			throws SimpleOdsException {
+			throws FastOdsException {
 		this.checkTableIndex(nTab);
 
 		Table tab = this.qTables.get(nTab);
@@ -147,7 +148,7 @@ class ContentEntry implements OdsEntry {
 	}
 
 	public boolean setColumnStyle(int nTab, int nCol, TableColumnStyle ts)
-			throws SimpleOdsException {
+			throws FastOdsException {
 
 		if (nTab < 0 || this.qTables.size() <= nTab) {
 			return false;
@@ -207,9 +208,9 @@ class ContentEntry implements OdsEntry {
 		zipOut.closeEntry();
 	}
 
-	private void checkTableIndex(int nTab) throws SimpleOdsException {
+	private void checkTableIndex(int nTab) throws FastOdsException {
 		if (nTab < 0 || this.qTables.size() <= nTab) {
-			throw new SimpleOdsException(
+			throw new FastOdsException(
 					new StringBuilder("Wrong table number [").append(nTab)
 							.append("]").toString());
 		}

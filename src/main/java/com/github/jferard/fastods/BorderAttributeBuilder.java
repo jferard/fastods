@@ -20,16 +20,19 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.BorderAttribute.Position;
+import com.github.jferard.fastods.BorderAttribute.Style;
+
 /**
  * @author Julien Férard
  *
  *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
  *         <mtschulz at users.sourceforge.net>
  *
- *         This file BorderStyleBuilder.java is part of FastODS.
+ *         This file BorderAttributeBuilder.java is part of FastODS.
  *
  */
-class BorderStyleBuilder {
+class BorderAttributeBuilder {
 	/**
 	 * The border size.
 	 */
@@ -41,22 +44,22 @@ class BorderStyleBuilder {
 	private String sBorderColor;
 
 	/**
-	 * The border style. Either BorderStyle.BORDER_SOLID or
-	 * BorderStyle.BORDER_DOUBLE.<br>
-	 * Default is BorderStyle.BORDER_SOLID.
+	 * The border style. Either BorderAttribute.BORDER_SOLID or
+	 * BorderAttribute.BORDER_DOUBLE.<br>
+	 * Default is BorderAttribute.BORDER_SOLID.
 	 */
-	private int nBorderStyle;
+	private Style style;
 
 	/**
-	 * The border position. Either BorderStyle.POSITION_ALL,
-	 * BorderStyle.POSITION_BOTTOM, BorderStyle.POSITION_TOP,
-	 * BorderStyle.POSITION_LEFT or BorderStyle.POSITION_RIGHT.
+	 * The border position. Either BorderAttribute.POSITION_ALL,
+	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
+	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
 	 */
-	private int nPosition;
+	private Position position;
 
-	public BorderStyleBuilder() {
-		this.nPosition = BorderStyle.DEFAULT_BORDER_POSITION;
-		this.nBorderStyle = BorderStyle.DEFAULT_BORDER_STYLE;
+	public BorderAttributeBuilder() {
+		this.position = BorderAttribute.DEFAULT_POSITION;
+		this.style = BorderAttribute.DEFAULT_STYLE;
 	}
 
 	/**
@@ -66,7 +69,7 @@ class BorderStyleBuilder {
 	 *            The color in format #rrggbb
 	 * @return this for fluent style
 	 */
-	public BorderStyleBuilder borderColor(String sBorderColor) {
+	public BorderAttributeBuilder borderColor(String sBorderColor) {
 		this.sBorderColor = sBorderColor;
 		return this;
 	}
@@ -78,7 +81,7 @@ class BorderStyleBuilder {
 	 *            The size as int, in pt
 	 * @return this for fluent style
 	 */
-	public BorderStyleBuilder borderSize(int nSize) {
+	public BorderAttributeBuilder borderSize(int nSize) {
 		this.sBorderSize = new StringBuilder(nSize).append("pt").toString();
 		return this;
 	}
@@ -90,7 +93,7 @@ class BorderStyleBuilder {
 	 *            The size as string, e.g. '0.1cm'
 	 * @return this for fluent style
 	 */
-	public BorderStyleBuilder borderSize(String sBorderSize) {
+	public BorderAttributeBuilder borderSize(String sBorderSize) {
 		this.sBorderSize = sBorderSize;
 		return this;
 	}
@@ -98,41 +101,35 @@ class BorderStyleBuilder {
 	/**
 	 * Sets the current border NamedObject.
 	 * 
-	 * @param nBorderStyle
-	 *            BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
+	 * @param style
+	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
 	 * @return this for fluent style
 	 */
-	public BorderStyleBuilder borderStyle(int nBorderStyle) {
-		if (nBorderStyle < 0 || nBorderStyle > BorderStyle.BORDER_DOUBLE)
-			this.nBorderStyle = BorderStyle.BORDER_SOLID;
-		else
-			this.nBorderStyle = nBorderStyle;
+	public BorderAttributeBuilder borderStyle(Style style) {
+		this.style = style;
 		return this;
 	}
 
 	/**
 	 * Builds a border style
 	 * 
-	 * @return ths BorderStyle
+	 * @return ths BorderAttribute
 	 */
-	public BorderStyle build() {
-		return new BorderStyle(this.sBorderSize, this.sBorderColor,
-				this.nBorderStyle, this.nPosition);
+	public BorderAttribute build() {
+		return new BorderAttribute(this.sBorderSize, this.sBorderColor,
+				this.style, this.position);
 	}
 
 	/**
 	 * Sets the border positions as numerical value.
 	 * 
-	 * @param nPosition
+	 * @param position
 	 *            The position as one of
 	 *            POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
 	 *            POSITION_ALL.
 	 */
-	public BorderStyleBuilder position(int nPosition) {
-		if (nPosition < 0 || nPosition > BorderStyle.POSITION_ALL)
-			this.nPosition = BorderStyle.POSITION_ALL;
-		else
-			this.nPosition = nPosition;
+	public BorderAttributeBuilder position(Position position) {
+		this.position = position;
 		return this;
 	}
 }

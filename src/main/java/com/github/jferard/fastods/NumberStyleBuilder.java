@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.NumberStyle.Type;
+
 /**
  * @author Julien Férard 
  * Copyright (C) 2016 J. Férard
@@ -31,7 +33,7 @@ class NumberStyleBuilder {
 	private String sNegativeValueColor;
 	private String sLanguage;
 	private String sCountry;
-	private int nNumberType;
+	private Type numberType;
 	private int nDecimalPlaces;
 	private int nMinIntegerDigits;
 	private int nMinExponentDigits;
@@ -61,7 +63,7 @@ class NumberStyleBuilder {
 		this.sNegativeValueColor = "#FF0000";
 		this.sLanguage = "";
 		this.sCountry = "";
-		this.nNumberType = NumberStyle.NUMBER_NORMAL;
+		this.numberType = NumberStyle.DEFAULT_TYPE;
 		this.nDecimalPlaces = 2;
 		this.nMinIntegerDigits = 1;
 		this.nMinExponentDigits = 0;
@@ -109,7 +111,7 @@ class NumberStyleBuilder {
 			final int nDenominator) {
 		this.nMinNumeratorDigits = nNumerator;
 		this.nMinDenominatorDigits = nDenominator;
-		this.nNumberType = NumberStyle.NUMBER_FRACTION;
+		this.numberType = NumberStyle.Type.FRACTION;
 		return this;
 	}
 
@@ -136,7 +138,7 @@ class NumberStyleBuilder {
 	public NumberStyleBuilder setMinExponentDigits(
 			final int minExponentDigits) {
 		this.nMinExponentDigits = minExponentDigits;
-		this.nNumberType = NumberStyle.NUMBER_SCIENTIFIC;
+		this.numberType = NumberStyle.Type.SCIENTIFIC;
 		return this;
 	}
 
@@ -189,12 +191,12 @@ class NumberStyleBuilder {
 	 * NumberStyle.NUMBER_FRACTION<br>
 	 * NumberStyle.NUMBER_PERCENTAGE<br>
 	 * 
-	 * @param nType
+	 * @param numberType
 	 *            The number type to be used.
 	 * @return this for fluent style
 	 */
-	public NumberStyleBuilder numberType(final int nType) {
-		this.nNumberType = nType;
+	public NumberStyleBuilder numberType(final Type numberType) {
+		this.numberType = numberType;
 		return this;
 	}
 
@@ -218,13 +220,13 @@ class NumberStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public NumberStyleBuilder toPercentageStyle() {
-		this.nNumberType = NumberStyle.NUMBER_PERCENTAGE;
+		this.numberType = NumberStyle.Type.PERCENTAGE;
 		return this;
 	}
 
 	public NumberStyle build() {
 		return new NumberStyle(this.sName, this.sNegativeValueColor,
-				this.sLanguage, this.sCountry, this.nNumberType,
+				this.sLanguage, this.sCountry, this.numberType,
 				this.nDecimalPlaces, this.nMinIntegerDigits,
 				this.nMinExponentDigits, this.nMinNumeratorDigits,
 				this.nMinDenominatorDigits, this.bGrouping, this.bVolatile,

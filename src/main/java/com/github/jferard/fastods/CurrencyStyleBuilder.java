@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.CurrencyStyle.SymbolPosition;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
@@ -32,13 +34,12 @@ class CurrencyStyleBuilder {
 	private String sNegativeValueColor;
 	private String sLanguage;
 	private String sCountry;
-	private int nNumberType;
 	private int nDecimalPlaces;
 	private int nMinIntegerDigits;
 	private boolean bGrouping;
 	private boolean bVolatile;
 	private boolean bNegativeValuesRed;
-	private int bCurrencyPosition;
+	private SymbolPosition currencyPosition;
 
 	/**
 	 * The builder
@@ -48,13 +49,12 @@ class CurrencyStyleBuilder {
 		this.sNegativeValueColor = "#FF0000";
 		this.sLanguage = "";
 		this.sCountry = "";
-		this.nNumberType = CurrencyStyle.NUMBER_CURRENCY;
 		this.nDecimalPlaces = 2;
 		this.nMinIntegerDigits = 1;
 		this.bGrouping = false;
 		this.bVolatile = true;
 		this.bNegativeValuesRed = true;
-		this.bCurrencyPosition = CurrencyStyle.SYMBOLPOSITION_END;
+		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
 
 	public CurrencyStyle build() {
@@ -63,9 +63,9 @@ class CurrencyStyleBuilder {
 
 		return new CurrencyStyle(this.sName, this.sCurrencySymbol,
 				this.sNegativeValueColor, this.sLanguage, this.sCountry,
-				this.nNumberType, this.nDecimalPlaces, this.nMinIntegerDigits,
+				this.nDecimalPlaces, this.nMinIntegerDigits,
 				this.bGrouping, this.bVolatile, this.bNegativeValuesRed,
-				this.bCurrencyPosition);
+				this.currencyPosition);
 	}
 
 	/**
@@ -94,10 +94,10 @@ class CurrencyStyleBuilder {
 	 * Set the position of the currency symbol, either
 	 * CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
 	 * 
-	 * @param nPos
+	 * @param symbolPosition
 	 */
-	public CurrencyStyleBuilder currencySymbolPosition(int nPos) {
-		this.bCurrencyPosition = nPos;
+	public CurrencyStyleBuilder currencySymbolPosition(SymbolPosition symbolPosition) {
+		this.currencyPosition = symbolPosition;
 		return this;
 	}
 

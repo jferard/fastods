@@ -59,7 +59,7 @@ public class TableRow implements XMLAppendable {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
 			tc = new TableCell(this.odsFile, this.nRow, nCol,
-					TableCell.STYLE_STRING, "");
+					TableCell.Type.STRING, "");
 			this.qTableCells.setAt(nCol, tc);
 		}
 		return tc;
@@ -83,7 +83,7 @@ public class TableRow implements XMLAppendable {
 	 * @param nValuetype
 	 * @param sValue
 	 */
-	public void setCell(final int nCol, final int nValuetype,
+	public void setCell(final int nCol, final TableCell.Type nValuetype,
 			final String sValue) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
@@ -106,7 +106,7 @@ public class TableRow implements XMLAppendable {
 	 *            The value to be used
 	 */
 	public void setCell(final int nCol, final String sValue) {
-		this.setCell(nCol, TableCell.STYLE_STRING, sValue);
+		this.setCell(nCol, TableCell.Type.STRING, sValue);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class TableRow implements XMLAppendable {
 		if (tc == null) {
 			// Create an empty cell
 			tc = new TableCell(this.odsFile, this.nRow, nCol,
-					TableCell.STYLE_STRING, "");
+					TableCell.Type.STRING, "");
 			this.qTableCells.setAt(nCol, tc);
 		}
 		ts.addToFile(this.odsFile);

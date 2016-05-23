@@ -20,14 +20,11 @@
 package com.github.jferard.fastods;
 
 /**
- * TODO : clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file StyledText.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file StyledText.java is part of FastODS.
  *
  * WHERE ?
  * styles.xml/office:document-styles/office:master-styles/style:master-page/style:footer/text:p/text:span

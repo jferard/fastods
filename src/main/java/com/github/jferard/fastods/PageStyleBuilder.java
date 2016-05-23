@@ -19,23 +19,21 @@
 */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.PageStyle.PaperFormat;
+import com.github.jferard.fastods.PageStyle.PrintOrientation;
+import com.github.jferard.fastods.PageStyle.WritingMode;
+
 /**
- * TODO : clean code
+ * @author Julien Férard 
  * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file PageStyle.java is part of SimpleODS.
+ * Copyright (C) 2016 J. Férard
+ * Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file PageStyleBuilder.java is part of FastODS.
  *
  */
 public class PageStyleBuilder {
-
-	private static final String LEGAL_WIDTH = "21.59cm";
-	private static final String A5_HEIGHT = "21.0cm";
-	private static final String A4_HEIGHT = "29.7cm";
-
 	private String sName;
 	private String sMarginTop;
 	private String sMarginBottom;
@@ -52,9 +50,9 @@ public class PageStyleBuilder {
 	private String sTextHeader;
 	private String sTextFooter;
 
-	private int nPrintOrientation;
-	private int nPaperFormat;
-	private int nWritingMode;
+	private PrintOrientation printOrientation;
+	private PaperFormat paperFormat;
+	private WritingMode writingMode;
 	private FooterHeader header;
 	private FooterHeader footer;
 
@@ -68,8 +66,7 @@ public class PageStyleBuilder {
 		this.sMarginLeft = "1.5cm";
 		this.sMarginRight = "1.5cm";
 
-		this.sPageWidth = A4_HEIGHT;
-		this.sPageHeight = A5_HEIGHT;
+		this.paperFormat(PageStyle.DEFAULT_FORMAT);
 		this.sNumFormat = "1";
 		this.sBackgroundColor = "";
 
@@ -78,9 +75,8 @@ public class PageStyleBuilder {
 		this.sTextHeader = "";
 		this.sTextFooter = "";
 
-		this.nPrintOrientation = PageStyle.STYLE_PRINTORIENTATION_VERTICAL;
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_A4;
-		this.nWritingMode = PageStyle.STYLE_WRITINGMODE_LRTB;
+		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
+		this.writingMode = PageStyle.DEFAULT_WRITINGMODE;
 	}
 	
 	public PageStyleBuilder header(FooterHeader header) {
@@ -198,7 +194,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder pageHeight(final String pageHeight) {
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
+		this.paperFormat = PageStyle.PaperFormat.USER;
 		this.sPageHeight = pageHeight;
 		return this;
 	}
@@ -215,7 +211,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder setPageWidth(final String pageWidth) {
-		this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_USER;
+		this.paperFormat = PageStyle.PaperFormat.USER;
 		this.sPageWidth = pageWidth;
 		return this;
 	}
@@ -230,47 +226,23 @@ public class PageStyleBuilder {
 	 * PageStyle.STYLE_PAPERFORMAT_USER , automatically used if you use
 	 * setPageHeight() or setPageWidth().
 	 * 
-	 * @param nPaperFormat
+	 * @param paperFormat
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder paperFormat(final int nPaperFormat) {
-		this.nPaperFormat = nPaperFormat;
-		switch (nPaperFormat) {
-		case PageStyle.STYLE_PAPERFORMAT_A3:
-			this.sPageWidth = "42.0cm";
-			this.sPageHeight = A4_HEIGHT;
-			break;
-		case PageStyle.STYLE_PAPERFORMAT_A4:
-			this.sPageWidth = A4_HEIGHT;
-			this.sPageHeight = A5_HEIGHT;
-			break;
-		case PageStyle.STYLE_PAPERFORMAT_A5:
-			this.sPageWidth = A5_HEIGHT;
-			this.sPageHeight = "14.8cm";
-			break;
-		case PageStyle.STYLE_PAPERFORMAT_LETTER:
-			this.sPageWidth = "27.94cm";
-			this.sPageHeight = LEGAL_WIDTH;
-			break;
-		case PageStyle.STYLE_PAPERFORMAT_LEGAL:
-			this.sPageWidth = "35.57cm";
-			this.sPageHeight = LEGAL_WIDTH;
-			break;
-		default:
-			this.sPageWidth = A4_HEIGHT;
-			this.sPageHeight = A5_HEIGHT;
-			this.nPaperFormat = PageStyle.STYLE_PAPERFORMAT_A4;
-		}
+	public PageStyleBuilder paperFormat(final PaperFormat paperFormat) {
+		this.paperFormat = paperFormat;
+		this.sPageWidth = paperFormat.getHeight();
+		this.sPageHeight = paperFormat.getWidth();
 		return this;
 	}
 
 	public PageStyleBuilder printOrientationHorizontal() {
-		this.nPrintOrientation = PageStyle.STYLE_PRINTORIENTATION_HORIZONTAL;
+		this.printOrientation = PageStyle.PrintOrientation.HORIZONTAL;
 		return this;
 	}
 
 	public PageStyleBuilder printOrientationVertical() {
-		this.nPrintOrientation = PageStyle.STYLE_PRINTORIENTATION_VERTICAL;
+		this.printOrientation = PageStyle.PrintOrientation.VERTICAL;
 		return this;
 	}
 
@@ -288,8 +260,8 @@ public class PageStyleBuilder {
 	 * @param writingMode
 	 * @return
 	 */
-	public PageStyleBuilder writingMode(final int writingMode) {
-		this.nWritingMode = writingMode;
+	public PageStyleBuilder writingMode(final WritingMode writingMode) {
+		this.writingMode = writingMode;
 		return this;
 	}
 
@@ -298,8 +270,8 @@ public class PageStyleBuilder {
 				this.sMarginLeft, this.sMarginRight, this.sPageWidth,
 				this.sPageHeight, this.sNumFormat, this.sBackgroundColor, this.footer,
 				this.sTextStyleFooter, this.header, this.sTextStyleHeader, this.sTextHeader,
-				this.sTextFooter, this.nPrintOrientation, this.nPaperFormat,
-				this.nWritingMode);
+				this.sTextFooter, this.printOrientation, this.paperFormat,
+				this.writingMode);
 	}
 
 	public PageStyleBuilder name(String sName) {

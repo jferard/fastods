@@ -34,15 +34,23 @@ import java.io.IOException;
  *         style/style:style
  */
 public class TextStyle implements NamedObject, XMLAppendable {
-	// 20.380 : one,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
-	public final static int STYLE_UNDERLINE_NONE = 0;
-	public final static int STYLE_UNDERLINE_SOLID = 1;
-	public final static int STYLE_UNDERLINE_DOTTED = 2;
-	public final static int STYLE_UNDERLINE_DASH = 3;
-	public final static int STYLE_UNDERLINE_LONGDASH = 4;
-	public final static int STYLE_UNDERLINE_DOTDASH = 5;
-	public final static int STYLE_UNDERLINE_DOTDOTDASH = 6;
-	public final static int STYLE_UNDERLINE_WAVE = 7;
+	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
+	public static enum Underline {
+		NONE("none"),
+		SOLID("solid"),
+		DOTTED("dotted"),
+		DASH("dash"),
+		LONGDASH("long-dash"),
+		DOTDASH("dot-dash"),
+		DOTDOTDASH("dot-dot-dash"),
+		WAVE("wave");
+		
+		private final String attrValue;
+
+		private Underline(String attrValue) {
+			this.attrValue = attrValue;
+		}
+	}
 
 	public static TextStyleBuilder builder() {
 		return new TextStyleBuilder();
@@ -62,7 +70,7 @@ public class TextStyle implements NamedObject, XMLAppendable {
 	private final String sFontSizeComplex;
 	private final String sFontUnderlineColor;
 
-	private final int nFontUnderlineStyle;
+	private final Underline nFontUnderlineStyle;
 
 	/**
 	 * Create a new text style with the name sName.<br>
@@ -77,7 +85,7 @@ public class TextStyle implements NamedObject, XMLAppendable {
 			String sFontWeight, String sFontWeightAsian,
 			String sFontWeightComplex, String sFontSize, String sFontSizeAsian,
 			String sFontSizeComplex, String sFontUnderlineColor,
-			int nFontUnderlineStyle) {
+			Underline nFontUnderlineStyle) {
 		this.sName = sName;
 		this.sFontColor = sFontColor;
 		this.sFontName = sFontName;
@@ -125,7 +133,7 @@ public class TextStyle implements NamedObject, XMLAppendable {
 	/**
 	 * @return The currently set style for the underline.
 	 */
-	public int getFontUnderlineStyle() {
+	public Underline getFontUnderlineStyle() {
 		return this.nFontUnderlineStyle;
 	}
 
@@ -147,40 +155,7 @@ public class TextStyle implements NamedObject, XMLAppendable {
 		return this.sName;
 	}
 
-	// enum + toString()
-	private String getStyleUnderlineAttribute(int nFontUnderlineStyle) {
-		String styleUnderlineAttribute;
-		switch (nFontUnderlineStyle) {
-		case STYLE_UNDERLINE_NONE:
-			styleUnderlineAttribute = "none";
-			break;
-		case STYLE_UNDERLINE_SOLID:
-			styleUnderlineAttribute = "solid";
-			break;
-		case STYLE_UNDERLINE_DOTTED:
-			styleUnderlineAttribute = "dotted";
-			break;
-		case STYLE_UNDERLINE_DASH:
-			styleUnderlineAttribute = "dash";
-			break;
-		case STYLE_UNDERLINE_LONGDASH:
-			styleUnderlineAttribute = "long-dash";
-			break;
-		case STYLE_UNDERLINE_DOTDASH:
-			styleUnderlineAttribute = "dot-dash";
-			break;
-		case STYLE_UNDERLINE_DOTDOTDASH:
-			styleUnderlineAttribute = "dot-dot-dash";
-			break;
-		case STYLE_UNDERLINE_WAVE:
-			styleUnderlineAttribute = "wave";
-			break;
-		default:
-			styleUnderlineAttribute = "none";
-		}
-		return styleUnderlineAttribute;
-	}
-
+	@Override
 	public void appendXML(Util util, Appendable sbTemp) throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
@@ -189,7 +164,7 @@ public class TextStyle implements NamedObject, XMLAppendable {
 		if (this.sName.length() > 0) {
 			sbTemp.append("<style:style ");
 			util.appendAttribute(sbTemp, "style:name", this.getName());
-			util.appendAttribute(sbTemp, "style:family", "text");
+			util.appendEAttribute(sbTemp, "style:family", "text");
 			sbTemp.append(">");
 		}
 
@@ -221,12 +196,10 @@ public class TextStyle implements NamedObject, XMLAppendable {
 					this.sFontSizeComplex);
 		}
 
-		if (this.nFontUnderlineStyle > 0) {
-			String styleUnderlineAttribute = getStyleUnderlineAttribute(
-					this.nFontUnderlineStyle);
-			util.appendAttribute(sbTemp, "style:text-underline-style",
-					styleUnderlineAttribute);
-			util.appendAttribute(sbTemp, "style:text-underline-width", "auto");
+		if (this.nFontUnderlineStyle != null) {
+			util.appendEAttribute(sbTemp, "style:text-underline-style",
+					this.nFontUnderlineStyle.attrValue);
+			util.appendEAttribute(sbTemp, "style:text-underline-width", "auto");
 
 			// ---------------------------------------------------------------------------------
 			// If any underline color was set, add the color, otherwise use the

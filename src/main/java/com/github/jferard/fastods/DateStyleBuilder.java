@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.DateStyle.Format;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
@@ -36,7 +38,7 @@ class DateStyleBuilder {
 	/**
 	 * The default date format DATEFORMAT_DDMMYY.
 	 */
-	private int nDateFormat;
+	private Format dateFormat;
 
 	/**
 	 * Create a new date style with the name sName.<br>
@@ -48,7 +50,7 @@ class DateStyleBuilder {
 	 *            The odsFile to which this style belongs to.
 	 */
 	protected DateStyleBuilder() {
-		this.nDateFormat = DateStyle.DEFAULT_DATEFORMAT;
+		this.dateFormat = DateStyle.DEFAULT_FORMAT;
 		this.bAutomaticOrder = false;
 	}
 
@@ -72,7 +74,7 @@ class DateStyleBuilder {
 		if (this.sName == null)
 			throw new IllegalArgumentException();
 
-		return new DateStyle(this.sName, this.nDateFormat,
+		return new DateStyle(this.sName, this.dateFormat,
 				this.bAutomaticOrder);
 	}
 
@@ -85,12 +87,12 @@ class DateStyleBuilder {
 	 * DateStyle.DATEFORMAT_MMMM<br>
 	 * *
 	 * 
-	 * @param nFormat
+	 * @param format
 	 *            The date format to be used.
 	 * @return this for fluent style
 	 */
-	public DateStyleBuilder dateFormat(final int nFormat) {
-		this.nDateFormat = nFormat;
+	public DateStyleBuilder dateFormat(final Format format) {
+		this.dateFormat = format;
 		return this;
 	}
 

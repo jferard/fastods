@@ -22,64 +22,101 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 /**
- * TODO : clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file PageStyle.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
- *         styles.xml/office:document-styles/office:master-styles/style:master-
+ *         This file PageStyle.java is part of FastODS.
+ *
+ * WHERE ?
+ * styles.xml/office:document-styles/office:master-styles/style:master-
  *         page
  */
 public class PageStyle implements NamedObject {
+	public static enum PaperFormat {
+		A3("42.0cm", "29.7cm"), A4("29.7cm", "21.0cm"), A5("21.0cm",
+				"14.8cm"), LETTER("27.94cm",
+						"21.59cm"), LEGAL("35.57cm", "21.59cm"), USER("", "");
 
-	public final static int STYLE_PAPERFORMAT_A3 = 0;
-	public final static int STYLE_PAPERFORMAT_A4 = 1;
-	public final static int STYLE_PAPERFORMAT_A5 = 2;
-	public final static int STYLE_PAPERFORMAT_LETTER = 3;
-	public final static int STYLE_PAPERFORMAT_LEGAL = 4;
-	public final static int STYLE_PAPERFORMAT_USER = 255; // Change nPaperFormat
-															// to 255 if
-															// setPageWidth() or
-															// setPageHeigth()
-															// is used
+		private final String height;
+		private final String width;
 
-	public final static int STYLE_PRINTORIENTATION_VERTICAL = 0;
-	public final static int STYLE_PRINTORIENTATION_HORIZONTAL = 1;
+		private PaperFormat(String height, String width) {
+			this.height = height;
+			this.width = width;
 
-	public final static int STYLE_WRITINGMODE_LRTB = 0; // lr-tb (left to right;
-														// top to bottom)
-	public final static int STYLE_WRITINGMODE_RLTB = 1;
-	public final static int STYLE_WRITINGMODE_TBRL = 2;
-	public final static int STYLE_WRITINGMODE_TBLR = 3;
-	public final static int STYLE_WRITINGMODE_LR = 4;
-	public final static int STYLE_WRITINGMODE_RL = 5;
-	public final static int STYLE_WRITINGMODE_TB = 6;
-	public final static int STYLE_WRITINGMODE_PAGE = 7;
+		}
+
+		String getHeight() {
+			return this.height;
+		}
+
+		String getWidth() {
+			return this.width;
+		}
+	}
+
+	public static enum PrintOrientation {
+		VERTICAL("portrait"), HORIZONTAL("landscape");
+
+		private final String attrValue;
+		
+		private PrintOrientation(String attrValue) {
+			this.attrValue = attrValue;
+		}
+
+		String getAttrValue() {
+			return this.attrValue;
+		}
+	}
+
+	public static enum WritingMode {
+		LRTB("lr-tb"), RLTB("rl-tb"), TBRL("tb-rl"), TBLR("tb_lr"), 
+		LR("lr"), RL("rl"), TB("tb"), PAGE("page");
+
+		private final String attrValue;
+		
+		private WritingMode(String attrValue) {
+			this.attrValue = attrValue;
+		}
+
+		String getAttrValue() {
+			return this.attrValue;
+		}
+
+	}
+
+	public static final WritingMode DEFAULT_WRITINGMODE = WritingMode.LRTB;
+
+	public static PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
+
+	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
+
+	public static PageStyleBuilder builder() {
+		return new PageStyleBuilder();
+	}
 
 	private final String sName;
 	private final String sMarginTop;
 	private final String sMarginBottom;
 	private final String sMarginLeft;
-	private final String sMarginRight;
 
+	private final String sMarginRight;
 	private final String sPageWidth;
 	private final String sPageHeight;
 	private final String sNumFormat;
-	private final String sBackgroundColor;
 
+	private final String sBackgroundColor;
 	private final String sTextStyleFooter;
 	private final String sTextStyleHeader;
 	private final String sTextHeader;
-	private final String sTextFooter;
 
-	private final int nPrintOrientation;
-	private final int nPaperFormat;
-	private final int nWritingMode;
+	private final String sTextFooter;
+	private final PrintOrientation printOrientation;
+	private final PaperFormat paperFormat;
+	private final WritingMode writingMode;
 	private FooterHeader header;
+
 	private FooterHeader footer;
 
 	/**
@@ -95,7 +132,7 @@ public class PageStyle implements NamedObject {
 			String sPageHeight, String sNumFormat, String sBackgroundColor,
 			FooterHeader footer, String sTextStyleFooter, FooterHeader header,
 			String sTextStyleHeader, String sTextHeader, String sTextFooter,
-			int nPrintOrientation, int nPaperFormat, int nWritingMode) {
+			PrintOrientation printOrientation, PaperFormat paperFormat, WritingMode writingMode) {
 		this.sName = sName;
 		this.sMarginTop = sMarginTop;
 		this.sMarginBottom = sMarginBottom;
@@ -111,13 +148,59 @@ public class PageStyle implements NamedObject {
 		this.sTextStyleHeader = sTextStyleHeader;
 		this.sTextHeader = sTextHeader;
 		this.sTextFooter = sTextFooter;
-		this.nPrintOrientation = nPrintOrientation;
-		this.nPaperFormat = nPaperFormat;
-		this.nWritingMode = nWritingMode;
+		this.printOrientation = printOrientation;
+		this.paperFormat = paperFormat;
+		this.writingMode = writingMode;
 	}
 
 	public void addToFile(OdsFile odsFile) {
 		odsFile.getStyles().addPageStyle(this);
+	}
+
+	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 * 
+	 */
+	@Override
+	public void appendXML(Util util, Appendable appendable) throws IOException {
+		appendable.append("<style:page-layout");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		appendable.append(">");
+		appendable.append("<style:page-layout-properties");
+		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
+		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
+		util.appendAttribute(appendable, "style:num-format", this.sNumFormat);
+		util.appendEAttribute(appendable, "style:writing-mode", this.writingMode.getAttrValue());
+		util.appendEAttribute(appendable, "style:print-orientation", this.printOrientation.getAttrValue());
+		this.appendBackgroundColor(util, appendable);
+		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
+		util.appendAttribute(appendable, "fo:margin-bottom",
+				this.sMarginBottom);
+		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
+		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
+		appendable.append("/>"); // End of page-layout-properties
+
+		appendable.append("<style:header-style />");
+
+		this.addFooterHeaderStyle(appendable, this.header,
+				"style:header-style");
+		this.addFooterHeaderStyle(appendable, this.header,
+				"style:footer-style");
+		/*
+		if( styles.getFooter()==null ) {
+			sbTemp.append("<style:footer-style />");
+		} else {
+			FooterHeader f = styles.getFooter();
+			sbTemp.append("<style:footer-style>");
+			sbTemp.append("<style:header-footer-properties ");
+			sbTemp.append("fo:min-height=\""+f.getMinHeight()+"\" ");
+			sbTemp.append("fo:margin-left=\""+f.getMarginLeft()+"\" ");
+			sbTemp.append("fo:margin-right=\""+f.getMarginRight()+"\" ");
+			sbTemp.append("fo:margin-top=\""+f.getsMarginTop()+"\"/>");
+			sbTemp.append("</style:footer-style>");		
+		}*/
+		appendable.append("</style:page-layout>");
 	}
 
 	public String getBackgroundColor() {
@@ -145,6 +228,7 @@ public class PageStyle implements NamedObject {
 	 * 
 	 * @return The page style name
 	 */
+	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -160,8 +244,8 @@ public class PageStyle implements NamedObject {
 	/**
 	 * Get the paper format as one of PageStyle.STYLE_PAPERFORMAT_*.
 	 */
-	public int getPaperFormat() {
-		return this.nPaperFormat;
+	public PaperFormat getPaperFormat() {
+		return this.paperFormat;
 	}
 
 	/**
@@ -177,14 +261,8 @@ public class PageStyle implements NamedObject {
 	 * 
 	 * @return The current writing mode.
 	 */
-	public int getWritingMode() {
-		return this.nWritingMode;
-	}
-
-	private void appendBackgroundColor(Util util, Appendable appendable) throws IOException {
-		if (this.getBackgroundColor().length() > 0) {
-		util.appendAttribute(appendable, "fo:background-color", this.sBackgroundColor);
-		}
+	public WritingMode getWritingMode() {
+		return this.writingMode;
 	}
 
 	private void addFooterHeaderStyle(final Appendable appendable,
@@ -207,53 +285,12 @@ public class PageStyle implements NamedObject {
 		}
 	}
 
-	private String addPrintOrientation() {
-		StringBuilder sbTemp = new StringBuilder(" style:print-orientation=\"");
-		if (this.nPrintOrientation == PageStyle.STYLE_PRINTORIENTATION_VERTICAL) {
-			sbTemp.append("portrait");
-		} else {
-			sbTemp.append("landscape");
+	private void appendBackgroundColor(Util util, Appendable appendable)
+			throws IOException {
+		if (this.getBackgroundColor().length() > 0) {
+			util.appendAttribute(appendable, "fo:background-color",
+					this.sBackgroundColor);
 		}
-		sbTemp.append("\" ");
-		return sbTemp.toString();
-	}
-
-	private String addWritingMode() {
-		StringBuilder sbTemp = new StringBuilder();
-
-		sbTemp.append(" style:writing-mode=\"");
-
-		switch (this.getWritingMode()) {
-		case STYLE_WRITINGMODE_LRTB: // lr-tb (left to right; top to bottom)
-			sbTemp.append("lr-tb");
-			break;
-		case STYLE_WRITINGMODE_RLTB:
-			sbTemp.append("rl-tb");
-			break;
-		case STYLE_WRITINGMODE_TBRL:
-			sbTemp.append("tb-rl");
-			break;
-		case STYLE_WRITINGMODE_TBLR:
-			sbTemp.append("tb_lr");
-			break;
-		case STYLE_WRITINGMODE_LR:
-			sbTemp.append("lr");
-			break;
-		case STYLE_WRITINGMODE_RL:
-			sbTemp.append("rl");
-			break;
-		case STYLE_WRITINGMODE_TB:
-			sbTemp.append("tb");
-			break;
-		case STYLE_WRITINGMODE_PAGE:
-			sbTemp.append("page");
-			break;
-		default:
-			sbTemp.append("lr-tb");
-		}
-
-		sbTemp.append("\"");
-		return sbTemp.toString();
 	}
 
 	/**
@@ -290,52 +327,5 @@ public class PageStyle implements NamedObject {
 		sbTemp.append("</style:master-page>");
 
 		return sbTemp.toString();
-	}
-
-	public static PageStyleBuilder builder() {
-		return new PageStyleBuilder();
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 */
-	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
-		appendable.append("<style:page-layout");
-		util.appendAttribute(appendable, "style:name", this.sName);
-		appendable.append(">");
-		appendable.append("<style:page-layout-properties");
-		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
-		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
-		util.appendAttribute(appendable, "style:num-format", this.sNumFormat);
-		appendable.append(addWritingMode());
-		appendable.append(addPrintOrientation());
-		this.appendBackgroundColor(util, appendable);
-		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
-		util.appendAttribute(appendable, "fo:margin-bottom", this.sMarginBottom);
-		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
-		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
-		appendable.append("/>"); // End of page-layout-properties
-
-		appendable.append("<style:header-style />");
-
-		this.addFooterHeaderStyle(appendable, this.header, "style:header-style");
-		this.addFooterHeaderStyle(appendable, this.header, "style:footer-style");
-		/*
-		if( styles.getFooter()==null ) {
-			sbTemp.append("<style:footer-style />");
-		} else {
-			FooterHeader f = styles.getFooter();
-			sbTemp.append("<style:footer-style>");
-			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\""+f.getMinHeight()+"\" ");
-			sbTemp.append("fo:margin-left=\""+f.getMarginLeft()+"\" ");
-			sbTemp.append("fo:margin-right=\""+f.getMarginRight()+"\" ");
-			sbTemp.append("fo:margin-top=\""+f.getsMarginTop()+"\"/>");
-			sbTemp.append("</style:footer-style>");		
-		}*/
-		appendable.append("</style:page-layout>");
 	}
 }

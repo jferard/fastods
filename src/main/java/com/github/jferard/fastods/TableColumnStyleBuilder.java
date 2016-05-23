@@ -28,7 +28,7 @@ package com.github.jferard.fastods;
  * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file TableFamilyStyleBuilder.java is part of FastODS. SimpleODS 0.5.1
- *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
+ *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  */
 class TableColumnStyleBuilder {

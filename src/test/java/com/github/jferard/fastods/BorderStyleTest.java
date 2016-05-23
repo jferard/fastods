@@ -12,10 +12,10 @@ public class BorderStyleTest {
 
 	@Test
 	public final void basicTest() throws IOException {
-		BorderStyle bs = BorderStyle.builder().borderSize("1cm")
+		BorderAttribute bs = BorderAttribute.builder().borderSize("1cm")
 				.borderColor(Util.COLOR_AliceBlue)
-				.borderStyle(BorderStyle.BORDER_SOLID)
-				.position(BorderStyle.POSITION_ALL).build();
+				.borderStyle(BorderAttribute.Style.SOLID)
+				.position(BorderAttribute.Position.ALL).build();
 		StringBuilder sb = new StringBuilder();
 		bs.appendXML(this.util, sb);
 		Assert.assertEquals("fo:border=\"1cm solid #F0F8FF\"",
@@ -24,7 +24,7 @@ public class BorderStyleTest {
 
 	@Test
 	public final void nullTest() throws IOException {
-		BorderStyle bs = BorderStyle.builder().borderStyle(-1).position(-1)
+		BorderAttribute bs = BorderAttribute.builder()
 				.build();
 		StringBuilder sb = new StringBuilder();
 		bs.appendXML(this.util, sb);
@@ -34,8 +34,7 @@ public class BorderStyleTest {
 
 	@Test
 	public final void nullSizeTest() throws IOException {
-		BorderStyle bs = BorderStyle.builder().borderColor(Util.COLOR_AliceBlue)
-				.borderStyle(-1).position(-1).build();
+		BorderAttribute bs = BorderAttribute.builder().borderColor(Util.COLOR_AliceBlue).build();
 		StringBuilder sb = new StringBuilder();
 		bs.appendXML(this.util, sb);
 		// was fo:border="null solid #F0F8FF" but should be fo:border="solid
@@ -46,8 +45,7 @@ public class BorderStyleTest {
 
 	@Test
 	public final void nullColorTest() throws IOException {
-		BorderStyle bs = BorderStyle.builder().borderSize("1cm")
-				.borderStyle(-1).position(-1).build();
+		BorderAttribute bs = BorderAttribute.builder().borderSize("1cm").build();
 		StringBuilder sb = new StringBuilder();
 		bs.appendXML(this.util, sb);
 		// was fo:border="1cm solid null" but should be fo:border="1cm"

@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.TextStyle.Underline;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * 
@@ -40,7 +42,7 @@ class TextStyleBuilder {
 	private String sFontSizeComplex;
 	private String sFontUnderlineColor;
 
-	private int nFontUnderlineStyle;
+	private Underline nFontUnderlineStyle;
 
 	/**
 	 * Create a new text style without a name.<br>
@@ -64,7 +66,7 @@ class TextStyleBuilder {
 		this.sFontSizeComplex = "";
 		this.sFontUnderlineColor = "";
 
-		this.nFontUnderlineStyle = TextStyle.STYLE_UNDERLINE_NONE;
+		this.nFontUnderlineStyle = TextStyle.Underline.NONE;
 	}
 
 	/**
@@ -153,7 +155,7 @@ class TextStyleBuilder {
 	 *            One of the TextStyle.STYLE_UNDERLINE
 	 * @return
 	 */
-	public TextStyleBuilder fontUnderlineStyle(final int nStyle) {
+	public TextStyleBuilder fontUnderlineStyle(final Underline nStyle) {
 		this.nFontUnderlineStyle = nStyle;
 		return this;
 	}

@@ -37,15 +37,11 @@ import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
 
 /**
- * TODO : split code, clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file Util.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
+ *         This file Util.java is part of FastODS.
  */
 public class Util {
 	private static Util instance;
@@ -207,6 +203,7 @@ public class Util {
 		}
 		return Util.instance;
 	}
+
 	private Escaper xmlContentEscaper;
 
 	private Escaper xmlAttributeEscaper;
@@ -217,6 +214,11 @@ public class Util {
 		this.xmlContentEscaper = XmlEscapers.xmlContentEscaper();
 		this.xmlAttributeEscaper = XmlEscapers.xmlAttributeEscaper();
 		this.attrMap = new HashMap<String, String>();
+	}
+
+	public void appendAttribute(Appendable appendable, String sElementName,
+			boolean b) throws IOException {
+		this.appendEAttribute(appendable, sElementName, Boolean.toString(b));
 	}
 
 	/**
@@ -230,11 +232,19 @@ public class Util {
 	 *            The new element name
 	 * @param nValue
 	 *            The value of the element
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public void appendAttribute(final Appendable appendable, final String sElementName,
-			final int nValue) throws IOException {
-		this.appendAttribute(appendable, sElementName, Integer.toString(nValue));
+	public void appendAttribute(final Appendable appendable,
+			final String sElementName, final int nValue) throws IOException {
+		this.appendEAttribute(appendable, sElementName,
+				Integer.toString(nValue));
+	}
+
+	/** @param sValue escaped attribute */
+	public void appendEAttribute(Appendable appendable, String sElementName,
+			String sValue) throws IOException {
+		appendable.append(' ').append(sElementName).append("=\"").append(sValue)
+				.append('"');
 	}
 
 	/**
@@ -248,10 +258,10 @@ public class Util {
 	 *            The new element name
 	 * @param sValue
 	 *            The value of the element
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public void appendAttribute(final Appendable appendable, final String sElementName,
-			final String sValue) throws IOException {
+	public void appendAttribute(final Appendable appendable,
+			final String sElementName, final String sValue) throws IOException {
 		appendable.append(' ').append(sElementName).append("=\"")
 				.append(this.escapeXMLAttribute(sValue)).append('"');
 	}
@@ -525,11 +535,6 @@ public class Util {
 		}
 		sbReturn.append(Integer.toHexString(n));
 		return sbReturn.toString();
-	}
-
-	public void appendAttribute(Appendable appendable, String sElementName,
-			boolean b) throws IOException {
-		this.appendAttribute(appendable, sElementName, Boolean.toString(b));
 	}
 
 }

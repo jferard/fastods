@@ -20,22 +20,21 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file SimpleOdsException.java is part of SimpleODS.
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file FastOdsException.java is part of FastODS.
  *
  */
-public class SimpleOdsException extends Exception {
+public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-	public SimpleOdsException(String s) {
+	public FastOdsException(String s) {
 		super(s);
 	}
 
-	private SimpleOdsException() {
+	private FastOdsException() {
 	}
 
 }

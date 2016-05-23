@@ -28,7 +28,7 @@ import java.io.IOException;
  *         users.sourceforge.net>
  *
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
- *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
+ *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  * 
  *         content.xml/office:document-content/office:automatic-styles

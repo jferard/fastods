@@ -29,28 +29,45 @@ import java.util.Calendar;
  *         users.sourceforge.net>
  *
  *         This file TableCell.java is part of FastODS.
- *         
- * WHERE ?
- * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-row/table:table-cell
+ * 
+ *         WHERE ?
+ *         content.xml/office:document-content/office:body/office:spreadsheet/
+ *         table:table/table:table-row/table:table-cell
  */
 public class TableCell implements XMLAppendable {
-	public final static int STYLE_STRING = 1;
-	public final static int STYLE_FLOAT = 2;
-	public final static int STYLE_PERCENTAGE = 3;
-	public final static int STYLE_CURRENCY = 4;
-	public final static int STYLE_DATE = 5;
-	private int nValueType = STYLE_STRING;
-	
-	private String sText = "";
-	private String sCurrency = "EUR";
-	private String sValue = "";
-	private String sDateValue = "";
-	private String sStyle = "";
-	private int nColumnsSpanned = 0;
-	private int nRowsSpanned = 0;
+	public static enum Type {
+		FLOAT("float"), PERCENTAGE("percentage"), CURRENCY(
+				"currency"), DATE("date"), STRING("string");
+		
+		private final String attrValue;
+
+		private Type(String attrValue) {
+			this.attrValue = attrValue;
+		}
+
+		public String getAttrValue() {
+			return this.attrValue;
+		}
+	}
+
+	public static Type DEFAULT_TYPE = Type.STRING;
+
+	private Type valueType;
+	private String sText;
+	private String sCurrency;
+	private String sValue;
+	private String sDateValue;
+	private String sStyle;
+	private int nColumnsSpanned;
+	private int nRowsSpanned;
 	private OdsFile odsFile;
 	private int nRow;
 	private int nCol;
+
+	private static SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd");
+	private static SimpleDateFormat VALUE_FORMAT = new SimpleDateFormat(
+			"dd.MM.yy");
 
 	/**
 	 * A table cell.
@@ -60,12 +77,19 @@ public class TableCell implements XMLAppendable {
 	 * @param value
 	 *            The String content for this cell.
 	 */
-	TableCell(OdsFile odsFile, int nRow, int nCol, final int valuetype, final String value) {
+	TableCell(OdsFile odsFile, int nRow, int nCol, final Type valuetype,
+			final String value) {
+		this.sText = "";
+		this.sCurrency = "EUR";
 		this.odsFile = odsFile;
 		this.nRow = nRow;
 		this.nCol = nCol;
-		this.nValueType = valuetype;
+		this.valueType = valuetype;
 		this.sValue = value;
+		this.sDateValue = "";
+		this.sStyle = "";
+		this.nColumnsSpanned = 0;
+		this.nRowsSpanned = 0;
 	}
 
 	/**
@@ -118,8 +142,8 @@ public class TableCell implements XMLAppendable {
 		return this.sValue;
 	}
 
-	public int getValueType() {
-		return this.nValueType;
+	public Type getValueType() {
+		return this.valueType;
 	}
 
 	/**
@@ -144,7 +168,7 @@ public class TableCell implements XMLAppendable {
 	 */
 	public void setCurrency(final String currency) {
 		this.sCurrency = currency;
-		this.nValueType = TableCell.STYLE_CURRENCY;
+		this.valueType = TableCell.Type.CURRENCY;
 	}
 
 	/**
@@ -154,11 +178,9 @@ public class TableCell implements XMLAppendable {
 	 *            - A Calendar object with the date to be used
 	 */
 	public void setDateValue(final Calendar cal) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		this.sDateValue = sdf.format(cal.getTime());
-		sdf = new SimpleDateFormat("dd.MM.yy");
-		this.sValue = sdf.format(cal.getTime());
-		this.nValueType = TableCell.STYLE_DATE;
+		this.sDateValue = DATE_VALUE_FORMAT.format(cal.getTime());
+		this.sValue = VALUE_FORMAT.format(cal.getTime());
+		this.valueType = TableCell.Type.DATE;
 	}
 
 	/**
@@ -179,7 +201,7 @@ public class TableCell implements XMLAppendable {
 		style.addToFile(this.odsFile);
 		this.sStyle = style.getName();
 	}
-	
+
 	public void setStyle(final String style) {
 		this.sStyle = style;
 	}
@@ -200,64 +222,31 @@ public class TableCell implements XMLAppendable {
 	 *            STYLE_PERCENTAGE,TableCell.STYLE_CURRENCY or
 	 *            TableCell.STYLE_DATE
 	 */
-	public void setValueType(final int valueType) {
-		this.nValueType = valueType;
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	public String toXML(Util util) {
-		try {
-		StringBuilder sbTemp = new StringBuilder();
-			this.appendXML(util, sbTemp);
-		return sbTemp.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
+	public void setValueType(final Type valueType) {
+		this.valueType = valueType;
 	}
 
 	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {
 		appendable.append("<table:table-cell ");
 		if (this.sStyle.length() > 0) {
-			util.appendAttribute(appendable, "table:style-name", this.getStyle());
+			util.appendAttribute(appendable, "table:style-name",
+					this.getStyle());
 		}
+		
+		util.appendEAttribute(appendable, "office:value-type", this.valueType.attrValue);
 
-		switch (this.nValueType) {
-		case STYLE_STRING:
-			util.appendAttribute(appendable, "office:value-type", "string");
-			break;
-		case STYLE_FLOAT:
-			util.appendAttribute(appendable, "office:value-type", "float");
-			util.appendAttribute(appendable, "office:value", this.sValue);
-			break;
-		case STYLE_PERCENTAGE:
-			util.appendAttribute(appendable, "office:value-type", "percentage");
-			util.appendAttribute(appendable, "office:value", this.sValue);
-			break;
-		case STYLE_CURRENCY:
-			util.appendAttribute(appendable, "office:value-type", "currency");
+		switch (this.valueType) {
+		case CURRENCY:
 			util.appendAttribute(appendable, "office:value", this.sCurrency);
 			break;
-		case STYLE_DATE:
-			util.appendAttribute(appendable, "office:value-type", "date");
+		case DATE:
 			util.appendAttribute(appendable, "office:value", this.sDateValue);
 			break;
+		case STRING:
+			break;
 		default:
-			util.appendAttribute(appendable, "office:value-type", "string");
-			/*
-			 * case STYLE_TIME:
-			 * sbTemp.append("office:value-type=\"time-value\" ");
-			 * sbTemp.append("office:value=\""+this.sValue+"\" "); case
-			 * STYLE_BOOLEAN:
-			 * sbTemp.append("office:value-type=\"boolean-value\" ");
-			 * sbTemp.append("office:value=\""+this.sValue+"\" ");
-			 */
+			util.appendAttribute(appendable, "office:value", this.sValue);
 		}
 
 		if (this.nColumnsSpanned > 0) {
@@ -269,8 +258,8 @@ public class TableCell implements XMLAppendable {
 					this.nRowsSpanned);
 		}
 
-		appendable.append(">");
-		appendable.append("<text:p>").append(util.escapeXMLContent(this.sValue)).append("</text:p>");
+		appendable.append("><text:p>").append(util.escapeXMLContent(this.sValue))
+				.append("</text:p>");
 		appendable.append("</table:table-cell>");
 	}
 

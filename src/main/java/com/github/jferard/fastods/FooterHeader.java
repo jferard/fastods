@@ -30,25 +30,18 @@ package com.github.jferard.fastods;
  * styles.xml/office:document-styles/office:master-styles/style:master-page/style:header
  */
 public class FooterHeader {
-
-	/**
-	 * The region on the left page side.
-	 */
-	public static final int FLG_REGION_LEFT = 0;
-	/**
-	 * The region in the middle of the page.
-	 */
-	public static final int FLG_REGION_CENTER = 1;
-	/**
-	 * The region on the right page side.
-	 */
-	public static final int FLG_REGION_RIGHT = 2;
-
+	public static enum Region {
+		LEFT, CENTER, RIGHT;
+	}
+	
 	/**
 	 * Footer or Header ?
 	 */
-	public static final int FOOTER = 1;
-	public static final int HEADER = 2;
+	public static enum Type {
+		FOOTER, HEADER;
+	}
+
+	
 	private ObjectQueue<ObjectQueue<StyledText>> qLeftRegion = ObjectQueue
 			.newQueue();
 
@@ -67,7 +60,7 @@ public class FooterHeader {
 	 */
 	private OdsFile o;
 
-	private int footerHeaderType;
+	private Type footerHeaderType;
 
 	/**
 	 * Create a new footer object.
@@ -75,12 +68,12 @@ public class FooterHeader {
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
-	public FooterHeader(final OdsFile odsFile, int footerHeaderType) {
+	public FooterHeader(final OdsFile odsFile, Type footerHeaderType) {
 		this.o = odsFile;
 		this.footerHeaderType = footerHeaderType;
-		if (this.footerHeaderType == FOOTER)
+		if (this.footerHeaderType == Type.FOOTER)
 			this.o.getStyles().setFooter(this); // Add this FooterHeader object
-		else if (this.footerHeaderType == HEADER)
+		else if (this.footerHeaderType == Type.HEADER)
 			this.o.getStyles().setHeader(this); // Add this FooterHeader object
 		else
 			throw new IllegalArgumentException();
@@ -90,16 +83,16 @@ public class FooterHeader {
 		// paragraph
 	}
 
-	public void addPageCount(final TextStyle ts, final int nFooterRegion,
+	public void addPageCount(final TextStyle ts, final Region region,
 			final int nParagraph) {
-		addStyledText(ts, "<text:page-count>99</text:page-count>",
-				nFooterRegion, nParagraph);
+		this.addStyledText(ts, "<text:page-count>99</text:page-count>",
+				region, nParagraph);
 	}
 
-	public void addPageNumber(final TextStyle ts, final int nFooterRegion,
+	public void addPageNumber(final TextStyle ts, final Region region,
 			final int nParagraph) {
-		addStyledText(ts, "<text:page-number>1</text:page-number>",
-				nFooterRegion, nParagraph);
+		this.addStyledText(ts, "<text:page-number>1</text:page-number>",
+				region, nParagraph);
 	}
 
 	/**
@@ -112,7 +105,7 @@ public class FooterHeader {
 	 *            The text style to be used
 	 * @param sText
 	 *            The string with the text
-	 * @param nRegion
+	 * @param region
 	 *            One of : FooterHeader.FLG_REGION_LEFT,
 	 *            FooterHeader.FLG_REGION_CENTER or
 	 *            FooterHeader.FLG_REGION_RIGHT
@@ -120,21 +113,21 @@ public class FooterHeader {
 	 *            The paragraph number to be used
 	 */
 	public void addStyledText(final TextStyle ts, final String sText,
-			final int nRegion, final int nParagraph) {
+			final Region region, final int nParagraph) {
 		ObjectQueue<StyledText> qStyledText = null;
 
-		switch (nRegion) {
-		case FooterHeader.FLG_REGION_LEFT: // Use left region
+		switch (region) {
+		case LEFT: // Use left region
 			qStyledText = this.checkParagraph(this.qLeftRegion, nParagraph);
 			break;
-		case FooterHeader.FLG_REGION_CENTER: // Use center region
+		case CENTER: // Use center region
 			qStyledText = this.checkParagraph(this.qCenterRegion, nParagraph);
 			break;
-		case FooterHeader.FLG_REGION_RIGHT: // Use right region
+		case RIGHT: // Use right region
 			qStyledText = this.checkParagraph(this.qRightRegion, nParagraph);
 			break;
 		default: // Invalid nFooterRegionValue, use center region as default
-			qStyledText = this.checkParagraph(this.qCenterRegion, nParagraph);
+			throw new IllegalStateException();
 		}
 
 		StyledText st = new StyledText(ts, sText);

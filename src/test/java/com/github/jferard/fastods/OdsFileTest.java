@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 public class OdsFileTest {
 
 	@Test
-	public final void test() throws SimpleOdsException {
+	public final void test() throws FastOdsException {
 		System.out.println("Filling a 50 rows, 5 columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();

@@ -33,11 +33,11 @@ import java.io.IOException;
  * styles.xml/office:document-styles/office:styles/number:currency-style
  */
 public class CurrencyStyle implements NamedObject {
-	public final static int NUMBER_CURRENCY = 1;
-	public final static int SYMBOLPOSITION_BEGIN = 0;
-
-	public final static int SYMBOLPOSITION_END = 1;
-
+	// public final static int NUMBER_CURRENCY = 1;
+	public static enum SymbolPosition {
+		BEGIN, END;
+	}
+	
 	public static CurrencyStyleBuilder builder() {
 		return new CurrencyStyleBuilder();
 	}
@@ -47,13 +47,12 @@ public class CurrencyStyle implements NamedObject {
 	private final String sNegativeValueColor;
 	private final String sLanguage;
 	private final String sCountry;
-	private final int nNumberType;
 	private final int nDecimalPlaces;
 	private final int nMinIntegerDigits;
 	private final boolean bGrouping;
 	private final boolean bVolatile;
 	private final boolean bNegativeValuesRed;
-	private final int bCurrencyPosition;
+	private final SymbolPosition currencyPosition;
 
 	/**
 	 * The OdsFile where this object belong to.
@@ -62,21 +61,20 @@ public class CurrencyStyle implements NamedObject {
 
 	protected CurrencyStyle(String sName, String sCurrencySymbol,
 			String sNegativeValueColor, String sLanguage, String sCountry,
-			int nNumberType, int nDecimalPlaces, int nMinIntegerDigits,
+			int nDecimalPlaces, int nMinIntegerDigits,
 			boolean bGrouping, boolean bVolatile, boolean bNegativeValuesRed,
-			int bCurrencyPosition) {
+			SymbolPosition currencyPosition) {
 		this.sName = sName;
 		this.sCurrencySymbol = sCurrencySymbol;
 		this.sNegativeValueColor = sNegativeValueColor;
 		this.sLanguage = sLanguage;
 		this.sCountry = sCountry;
-		this.nNumberType = nNumberType;
 		this.nDecimalPlaces = nDecimalPlaces;
 		this.nMinIntegerDigits = nMinIntegerDigits;
 		this.bGrouping = bGrouping;
 		this.bVolatile = bVolatile;
 		this.bNegativeValuesRed = bNegativeValuesRed;
-		this.bCurrencyPosition = bCurrencyPosition;
+		this.currencyPosition = currencyPosition;
 	}
 
 	public void addToFile(OdsFile odsFile) {
@@ -103,8 +101,8 @@ public class CurrencyStyle implements NamedObject {
 	 * @return either CurrencyStyle.SYMBOLPOSITION_BEGIN or
 	 *         CurrencyStyle.SYMBOLPOSITION_END
 	 */
-	public int getCurrencySymbolPosition() {
-		return (this.bCurrencyPosition);
+	public SymbolPosition getCurrencySymbolPosition() {
+		return this.currencyPosition;
 	}
 
 	/**
@@ -209,7 +207,7 @@ public class CurrencyStyle implements NamedObject {
 	private StringBuilder currencyToXML(Util util) throws IOException {
 		StringBuilder sbReturn = new StringBuilder();
 		// Check where the currency symbol should be positioned
-		if (this.bCurrencyPosition == SYMBOLPOSITION_END) {
+		if (this.currencyPosition == SymbolPosition.END) {
 			this.appendCurrencyNumber(sbReturn);
 			sbReturn.append("<number:text> </number:text>");
 			this.appendCurrencySymbol(util, sbReturn);

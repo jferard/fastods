@@ -8,7 +8,7 @@ import java.io.Writer;
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file BorderStyle.java is part of FastODS.
+ *         This file BorderAttribute.java is part of FastODS.
  */
 public interface XMLAppendable {
 	void appendXML(Util util, Appendable appendable) throws IOException;

@@ -23,16 +23,16 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 
+import com.github.jferard.fastods.TableCell.Type;
+
 /**
- * TODO : clean code
- * 
- * @author Martin Schulz<br>
- * 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *         <br>
- * 
- *         This file Table.java is part of SimpleODS.<br>
- *         0.5.1 Changed all 'throw Exception' to 'throw SimpleOdsException'
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file Table.java is part of FastODS.
+
+ *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw FastOdsException'
  *
  *         WHERE ?
  *         content.xml/office:document-content/office:body/office:spreadsheet/
@@ -153,7 +153,7 @@ public class Table implements NamedObject, XMLAppendable {
 		return this.qTableRows;
 	}
 
-	public TableRow getRow(int nRow) throws SimpleOdsException {
+	public TableRow getRow(int nRow) throws FastOdsException {
 		this.checkRow(nRow);
 
 		TableRow tr;
@@ -166,7 +166,7 @@ public class Table implements NamedObject, XMLAppendable {
 		return tr;
 	}
 
-	public TableRow nextRow() throws SimpleOdsException {
+	public TableRow nextRow() throws FastOdsException {
 		final int nRow = this.qTableRows.size();
 		this.checkRow(nRow);
 
@@ -191,18 +191,18 @@ public class Table implements NamedObject, XMLAppendable {
 	 *            The row (maximal 65536)
 	 * @param nCol
 	 *            The column (maximal 256)
-	 * @param valuetype
+	 * @param type
 	 *            The type of the value,
 	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or
 	 *            TableCell.STYLE_PERCENTAGE
 	 * @param value
 	 *            The value to be set
 	 * @return true
-	 * @throws SimpleOdsException
+	 * @throws FastOdsException
 	 *             Thrown when nRow or nCol have wrong values.
 	 */
-	public boolean setCell(final int nRow, final int nCol, final int valuetype,
-			final String value) throws SimpleOdsException {
+	public boolean setCell(final int nRow, final int nCol, final Type type,
+			final String value) throws FastOdsException {
 		this.checkRow(nRow);
 		this.checkCol(nCol);
 
@@ -210,7 +210,7 @@ public class Table implements NamedObject, XMLAppendable {
 			this.nLastCol = nCol;
 		}
 		TableRow tr = this.getRow(nRow);
-		tr.setCell(nCol, valuetype, value);
+		tr.setCell(nCol, type, value);
 		return true;
 	}
 
@@ -230,12 +230,12 @@ public class Table implements NamedObject, XMLAppendable {
 	 * @param ts
 	 *            The TableFamilyStyle to be used for this cell.
 	 * @return true
-	 * @throws SimpleOdsException
+	 * @throws FastOdsException
 	 *             Thrown when nRow or nCol have wrong values.
 	 */
-	public boolean setCell(final int nRow, final int nCol, final int valuetype,
+	public boolean setCell(final int nRow, final int nCol, final Type valuetype,
 			final String value, final TableCellStyle ts)
-			throws SimpleOdsException {
+			throws FastOdsException {
 
 		this.setCell(nRow, nCol, valuetype, value);
 		this.setCellStyle(nRow, nCol, ts);
@@ -252,11 +252,11 @@ public class Table implements NamedObject, XMLAppendable {
 	 * @param ts
 	 *            The TableFamilyStyle to be used
 	 * @return TRUE The cell style was set
-	 * @throws SimpleOdsException
+	 * @throws FastOdsException
 	 *             when nRow or nCol have wrong values
 	 */
 	public boolean setCellStyle(final int nRow, final int nCol,
-			final TableCellStyle ts) throws SimpleOdsException {
+			final TableCellStyle ts) throws FastOdsException {
 
 		this.checkCol(nCol);
 		if (nCol > this.nLastCol) {
@@ -275,11 +275,11 @@ public class Table implements NamedObject, XMLAppendable {
 	 * @param ts
 	 *            The style to be used, make sure the style is of type
 	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
-	 * @throws SimpleOdsException
+	 * @throws FastOdsException
 	 *             Thrown if nCol has an invalid value.
 	 */
 	public void setColumnStyle(final int nCol, final TableColumnStyle ts)
-			throws SimpleOdsException {
+			throws FastOdsException {
 		this.checkCol(nCol);
 		this.qColumnStyles.setAt(nCol, ts);
 	}
@@ -386,27 +386,27 @@ public class Table implements NamedObject, XMLAppendable {
 		}
 	}
 
-	private void checkCol(final int nCol) throws SimpleOdsException {
+	private void checkCol(final int nCol) throws FastOdsException {
 		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new SimpleOdsException(new StringBuilder(
+			throw new FastOdsException(new StringBuilder(
 					"Maximum column number (256) exception, column value:[")
 							.append(nCol).append("]").toString());
 		}
 		if (nCol < 0) {
-			throw new SimpleOdsException(new StringBuilder(
+			throw new FastOdsException(new StringBuilder(
 					"Negative column number exception, column value:[")
 							.append(nCol).append("]").toString());
 		}
 	}
 
-	private void checkRow(final int nRow) throws SimpleOdsException {
+	private void checkRow(final int nRow) throws FastOdsException {
 		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new SimpleOdsException(new StringBuilder(
+			throw new FastOdsException(new StringBuilder(
 					"Maximum row number (65536) exception, row value:[")
 							.append(nRow).append("]").toString());
 		}
 		if (nRow < 0) {
-			throw new SimpleOdsException(new StringBuilder(
+			throw new FastOdsException(new StringBuilder(
 					"Negative row number exception, row value:[").append(nRow)
 							.append("]").toString());
 		}

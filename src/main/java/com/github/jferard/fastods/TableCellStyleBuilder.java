@@ -29,7 +29,7 @@ import java.util.ListIterator;
  *         users.sourceforge.net>
  *
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
- *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
+ *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  */
 class TableCellStyleBuilder {
@@ -37,12 +37,13 @@ class TableCellStyleBuilder {
 	private String sDataStyle;
 	private String sBackgroundColor;
 	private TextStyleBuilder tsBuilder;
-	private int nTextAlign; // 'center','end','start','justify'
-	private int nVerticalAlign; // 'middle', 'bottom', 'top'
+	private TableCellStyle.Align nTextAlign; // 'center','end','start','justify'
+	private TableCellStyle.VerticalAlign nVerticalAlign; // 'middle', 'bottom',
+															// 'top'
 	private boolean bWrap; // No line wrap when false, line wrap when
 							// true
 	private String sDefaultCellStyle;
-	private ObjectQueue<BorderStyle> qBorders;
+	private ObjectQueue<BorderAttribute> qBorders;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -58,8 +59,8 @@ class TableCellStyleBuilder {
 	 *            The OdsFile to add this style to
 	 */
 	public TableCellStyleBuilder() {
-		this.nTextAlign = 0;
-		this.nVerticalAlign = 0;
+		this.nTextAlign = TableCellStyle.Align.LEFT;
+		this.nVerticalAlign = TableCellStyle.VerticalAlign.TOP;
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
@@ -76,13 +77,13 @@ class TableCellStyleBuilder {
 	 *            - The border style to be used
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder addBorderStyle(final BorderStyle bs) {
+	public TableCellStyleBuilder addBorderStyle(final BorderAttribute bs) {
 		// -----------------------------------------
 		// Make sure each position is unique
 		// -----------------------------------------
-		ListIterator<BorderStyle> iterator = this.qBorders.listIterator();
+		ListIterator<BorderAttribute> iterator = this.qBorders.listIterator();
 		while (iterator.hasNext()) {
-			BorderStyle b = iterator.next();
+			BorderAttribute b = iterator.next();
 			if (b.getPosition() == bs.getPosition()) {
 				iterator.set(bs);
 				return this;
@@ -105,15 +106,16 @@ class TableCellStyleBuilder {
 	 *            red border
 	 * @param nStyle
 	 *            - The style of the border line, either
-	 *            BorderStyle.BORDER_SOLID or BorderStyle.BORDER_DOUBLE
+	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
 	 * @param nPosition
 	 *            - The position of the line in this cell, e.g.
-	 *            BorderStyle.POSITION_TOP
+	 *            BorderAttribute.POSITION_TOP
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder addBorderStyle(final String sSize,
-			final String sBorderColor, final int nStyle, final int nPosition) {
-		BorderStyle bs = new BorderStyle(sSize, sBorderColor, nStyle,
+			final String sBorderColor, final BorderAttribute.Style nStyle,
+			final BorderAttribute.Position nPosition) {
+		BorderAttribute bs = new BorderAttribute(sSize, sBorderColor, nStyle,
 				nPosition);
 		this.addBorderStyle(bs);
 		return this;
@@ -144,7 +146,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs)
-			throws SimpleOdsException {
+			throws FastOdsException {
 		this.sDataStyle = cs.getName();
 		return this;
 	}
@@ -159,7 +161,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder dataStyle(final DateStyle ds)
-			throws SimpleOdsException {
+			throws FastOdsException {
 		this.sDataStyle = ds.getName();
 		return this;
 	}
@@ -174,7 +176,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder dataStyle(final NumberStyle ns)
-			throws SimpleOdsException {
+			throws FastOdsException {
 		this.sDataStyle = ns.getName();
 		return this;
 	}
@@ -252,7 +254,7 @@ class TableCellStyleBuilder {
 	 *            - The text alignment flag,
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder textAlign(final int nAlign) {
+	public TableCellStyleBuilder textAlign(final TableCellStyle.Align nAlign) {
 		this.nTextAlign = nAlign;
 		return this;
 	}
@@ -266,7 +268,8 @@ class TableCellStyleBuilder {
 	 *            VERTICALALIGN_BOTTOM
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder verticalAlign(final int nAlign) {
+	public TableCellStyleBuilder verticalAlign(
+			final TableCellStyle.VerticalAlign nAlign) {
 		this.nVerticalAlign = nAlign;
 		return this;
 	}
@@ -279,7 +282,7 @@ class TableCellStyleBuilder {
 	public TableCellStyle build() {
 		if (this.sName == null)
 			throw new IllegalStateException();
-		
+
 		return new TableCellStyle(this.sName, this.sDataStyle,
 				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
 				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,

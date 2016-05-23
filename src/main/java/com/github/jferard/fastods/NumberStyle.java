@@ -38,11 +38,11 @@ import java.io.IOException;
  *         style
  */
 public class NumberStyle implements NamedObject {
-
-	public final static int NUMBER_NORMAL = 1;
-	public final static int NUMBER_SCIENTIFIC = 2;
-	public final static int NUMBER_FRACTION = 3;
-	public final static int NUMBER_PERCENTAGE = 4;
+	public static enum Type {
+		NORMAL, SCIENTIFIC, FRACTION, PERCENTAGE;
+	}
+	
+	public static Type DEFAULT_TYPE = Type.NORMAL;
 
 	public static NumberStyleBuilder builder() {
 		return new NumberStyleBuilder();
@@ -52,7 +52,7 @@ public class NumberStyle implements NamedObject {
 	private final String sNegativeValueColor;
 	private final String sLanguage;
 	private final String sCountry;
-	private final int nNumberType;
+	private final Type numberType;
 	private final int nDecimalPlaces;
 	private final int nMinIntegerDigits;
 	private final int nMinExponentDigits;
@@ -61,7 +61,6 @@ public class NumberStyle implements NamedObject {
 	private final boolean bGrouping;
 	private final boolean bVolatile;
 	private final boolean bNegativeValuesRed;
-	private String xml;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
@@ -76,7 +75,7 @@ public class NumberStyle implements NamedObject {
 	 *            The number of decimal places to be shown.
 	 */
 	NumberStyle(String sName, String sNegativeValueColor, String sLanguage,
-			String sCountry, int nNumberType, int nDecimalPlaces,
+			String sCountry, Type numberType, int nDecimalPlaces,
 			int nMinIntegerDigits, int nMinExponentDigits,
 			int nMinNumeratorDigits, int nMinDenominatorDigits,
 			boolean bGrouping, boolean bVolatile, boolean bNegativeValuesRed) {
@@ -84,7 +83,7 @@ public class NumberStyle implements NamedObject {
 		this.sNegativeValueColor = sNegativeValueColor;
 		this.sLanguage = sLanguage;
 		this.sCountry = sCountry;
-		this.nNumberType = nNumberType;
+		this.numberType = numberType;
 		this.nDecimalPlaces = nDecimalPlaces;
 		this.nMinIntegerDigits = nMinIntegerDigits;
 		this.nMinExponentDigits = nMinExponentDigits;
@@ -143,6 +142,7 @@ public class NumberStyle implements NamedObject {
 	/**
 	 * @return The name of this style.
 	 */
+	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -174,7 +174,7 @@ public class NumberStyle implements NamedObject {
 	 */
 	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {
-		if (this.nNumberType == NUMBER_PERCENTAGE) {
+		if (this.numberType == Type.PERCENTAGE) {
 			appendable.append("<number:percentage-style");
 		} else {
 			appendable.append("<number:number-style");
@@ -207,7 +207,7 @@ public class NumberStyle implements NamedObject {
 		}
 		appendable.append("/>");
 
-		if (this.nNumberType == NUMBER_PERCENTAGE) {
+		if (this.numberType == Type.PERCENTAGE) {
 			appendable.append("<number:text>%</number:text>");
 			appendable.append("</number:percentage-style>");
 		} else {
@@ -220,7 +220,7 @@ public class NumberStyle implements NamedObject {
 		// the style for positive values
 		// --------------------------------------------------------------------------
 		if (this.bNegativeValuesRed) {
-			if (this.nNumberType == NUMBER_PERCENTAGE) {
+			if (this.numberType == Type.PERCENTAGE) {
 				appendable.append("<number:percentage-style");
 			} else {
 				appendable.append("<number:number-style");
@@ -247,7 +247,7 @@ public class NumberStyle implements NamedObject {
 			}
 			appendable.append("/>");
 
-			if (this.nNumberType == NUMBER_PERCENTAGE) {
+			if (this.numberType == Type.PERCENTAGE) {
 				appendable.append("<number:text>%</number:text>");
 			}
 
@@ -256,7 +256,7 @@ public class NumberStyle implements NamedObject {
 			util.appendAttribute(appendable, "style:apply-style-name", this.sName+"nn");
 			appendable.append("/>");
 
-			if (this.nNumberType == NUMBER_PERCENTAGE) {
+			if (this.numberType == Type.PERCENTAGE) {
 				appendable.append("</number:percentage-style>");
 			} else {
 				appendable.append("</number:number-style>");
@@ -274,30 +274,23 @@ public class NumberStyle implements NamedObject {
 	 */
 	private void appendNumberType(Util util, final Appendable appendable) throws IOException {
 
-		switch (this.nNumberType) {
-		case NUMBER_SCIENTIFIC:
+		switch (this.numberType) {
+		case SCIENTIFIC:
 			appendable.append("<number:scientific-number");
 			util.appendAttribute(appendable, "number:min-exponent-digits", this.nMinExponentDigits);
 			util.appendAttribute(appendable, "number:decimal-places", this.nDecimalPlaces);
 			break;
-		case NUMBER_FRACTION:
+		case FRACTION:
 			appendable.append("<number:fraction");
 			util.appendAttribute(appendable, "number:min-numerator-digits", this.nMinNumeratorDigits);
 			util.appendAttribute(appendable, "number:min-denominator-digits", this.nMinDenominatorDigits);
-		case NUMBER_NORMAL:
-		case NUMBER_PERCENTAGE:
+			//$FALL-THROUGH$
+		case NORMAL:
+		case PERCENTAGE:
 		default:
 			appendable.append("<number:number");
 			util.appendAttribute(appendable, "number:decimal-places", this.nDecimalPlaces);
 			break;
-
-		/*
-		 * <number:date-style style:name="N37"
-		 * number:automatic-order="true"> <number:day number:style="long"/>
-		 * <number:text>.</number:text> <number:month number:style="long"/>
-		 * <number:text>.</number:text> <number:year/></number:date-style>
-		 */
-
 		}
 
 	}

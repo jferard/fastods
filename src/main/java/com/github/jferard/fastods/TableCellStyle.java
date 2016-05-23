@@ -22,40 +22,53 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 /**
- * /**
  * 
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
- *         Changed all 'throw Exception' to 'throw SimpleOdsException' SimpleODS
- *         0.5.2 Replaced all text properties with a TextStyle object
+ *         This file TableFamilyStyle.java is part of FastODS.
+ * 
+ *         SimpleODS 0.5.1 Changed all 'throw Exception' to 'throw
+ *         FastOdsException' 
+ *         SimpleODS 0.5.2 Replaced all text properties with a
+ *         TextStyle object
  * 
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style
  */
 public class TableCellStyle implements NamedObject, XMLAppendable {
-	public final static int VERTICALALIGN_TOP = 1;
-	public final static int VERTICALALIGN_MIDDLE = 2;
-	public final static int VERTICALALIGN_BOTTOM = 3;
+	public static enum VerticalAlign {
+		TOP("top"), MIDDLE("middle"), BOTTOM("bottom");
+		
+		private final String attrValue;
 
-	public final static int ALIGN_LEFT = 1;
-	public final static int ALIGN_CENTER = 2;
-	public final static int ALIGN_RIGHT = 3;
-	public final static int ALIGN_JUSTIFY = 4;
+		private VerticalAlign(String attrValue) {
+			this.attrValue = attrValue;
+		}
+	}
+
+	public static enum Align {
+		LEFT("start"), CENTER("center"), RIGHT("end"), JUSTIFY("justify");
+		
+		private final String attrValue;
+
+		private Align(String attrValue) {
+			this.attrValue = attrValue;
+		}
+	}
 
 	private final String sName;
 	private final String sDataStyle;
 	private final String sBackgroundColor;
 	private final TextStyle ts;
-	private final int nTextAlign; // 'center','end','start','justify'
-	private final int nVerticalAlign; // 'middle', 'bottom', 'top'
+	private final Align nTextAlign; // 'center','end','start','justify'
+	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
 	private final boolean bWrap; // No line wrap when false, line wrap when
 	// true
 	private final String sDefaultCellStyle;
-	private final ObjectQueue<BorderStyle> qBorders;
+	private final ObjectQueue<BorderAttribute> qBorders;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -71,8 +84,8 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 	 *            The OdsFile to add this style to
 	 */
 	TableCellStyle(String sName, String sDataStyle, String sBackgroundColor,
-			TextStyle ts, int nTextAlign, int nVerticalAlign, boolean bWrap,
-			String sDefaultCellStyle, ObjectQueue<BorderStyle> qBorders) {
+			TextStyle ts, Align nTextAlign, VerticalAlign nVerticalAlign, boolean bWrap,
+			String sDefaultCellStyle, ObjectQueue<BorderAttribute> qBorders) {
 		this.sName = sName;
 		this.sDataStyle = sDataStyle;
 		this.sBackgroundColor = sBackgroundColor;
@@ -106,49 +119,6 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		}
 	}
 
-	// enum + toString()
-	private static String getVAlignAttribute(int nVerticalAlign) {
-		String vAlignAttribute;
-		switch (nVerticalAlign) {
-		case TableCellStyle.VERTICALALIGN_TOP:
-			vAlignAttribute = "top";
-			break;
-		case TableCellStyle.VERTICALALIGN_MIDDLE:
-			vAlignAttribute = "middle";
-			break;
-		case TableCellStyle.VERTICALALIGN_BOTTOM:
-			vAlignAttribute = "bottom";
-			break;
-		default:
-			vAlignAttribute = "top";
-			break;
-		}
-		return vAlignAttribute;
-	}
-
-	// enum + toSring();
-	private static String getTextAlignAttribute(int nTextAlign) {
-		String textAlignAttribute;
-		switch (nTextAlign) {
-		case TableCellStyle.ALIGN_LEFT:
-			textAlignAttribute = "start";
-			break;
-		case TableCellStyle.ALIGN_CENTER:
-			textAlignAttribute = "center";
-			break;
-		case TableCellStyle.ALIGN_RIGHT:
-			textAlignAttribute = "end";
-			break;
-		case TableCellStyle.ALIGN_JUSTIFY:
-			textAlignAttribute = "justify";
-			break;
-		default:
-			textAlignAttribute = "start";
-			break;
-		}
-		return textAlignAttribute;
-	}
-
 	public String getName() {
 		return this.sName;
 	}
@@ -161,8 +131,8 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 	public void appendXML(Util util, Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
-		util.appendAttribute(appendable, "style:family", "table-cell");
-		util.appendAttribute(appendable, "style:parent-style-name", "Default");
+		util.appendEAttribute(appendable, "style:family", "table-cell");
+		util.appendEAttribute(appendable, "style:parent-style-name", "Default");
 		if (this.sDataStyle.length() > 0)
 			util.appendAttribute(appendable, "style:data-style-name",
 					this.sDataStyle);
@@ -171,19 +141,18 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		util.appendAttribute(appendable, "fo:background-color",
 				this.sBackgroundColor);
 
-		String vAlignAttribute = getVAlignAttribute(this.nVerticalAlign);
-		util.appendAttribute(appendable, "style:vertical-align",
-				vAlignAttribute);
+		util.appendEAttribute(appendable, "style:vertical-align",
+				this.nVerticalAlign.attrValue);
 
 		// -----------------------------------------------
 		// Add all border styles
 		// -----------------------------------------------
-		for (BorderStyle bs : this.qBorders) {
+		for (BorderAttribute bs : this.qBorders) {
 			bs.appendXML(util, appendable);
 		}
 
 		if (this.bWrap)
-			util.appendAttribute(appendable, "fo:wrap-option", "wrap");
+			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
 
 		appendable.append("/>");
 		// ----------------------------------------------------
@@ -196,12 +165,8 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		}
 
 		appendable.append("<style:paragraph-properties");
-
-		String textAlignAttribute = TableCellStyle
-				.getTextAlignAttribute(this.nTextAlign);
-
-		util.appendAttribute(appendable, "fo:text-align", textAlignAttribute);
-		util.appendAttribute(appendable, "fo:margin-left", "0cm");
+		util.appendEAttribute(appendable, "fo:text-align", this.nTextAlign.attrValue);
+		util.appendEAttribute(appendable, "fo:margin-left", "0cm");
 		appendable.append("/></style:style>");
 	}
 }

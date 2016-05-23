@@ -4,8 +4,8 @@
 	<groupId>com.github.jferard</groupId>
 	<artifactId>fastods</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Fast ODS</name>
-	<description>Fast ODS writer, a Martin Schulz's SimpleODS fork</description>
+	<name>FastODS</name>
+	<description>FastODS writer, a Martin Schulz's SimpleODS fork</description>
 
 	<dependencies>
 		<dependency>
