@@ -21,7 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ListIterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -31,17 +32,16 @@ import java.util.zip.ZipOutputStream;
  *         users.sourceforge.net>
  * 
  *         This file StylesEntry.java is part of Fast ODS.
- *         
- * styles.xml/office:document-styles 
+ * 
+ *         styles.xml/office:document-styles
  */
 public class StylesEntry implements OdsEntry {
-	private ObjectQueue<NumberStyle> qNumberStyles = ObjectQueue.newQueue();
-	private ObjectQueue<CurrencyStyle> qCurrencyStyles = ObjectQueue.newQueue();
-	private ObjectQueue<PageStyle> qPageStyles = ObjectQueue.newQueue();
-	private ObjectQueue<TextStyle> qTextStyles = ObjectQueue.newQueue();
-	private ObjectQueue<DateStyle> qDateStyles = ObjectQueue.newQueue();
+	private final Map<String, NumberStyle> qNumberStyles;
+	private final Map<String, CurrencyStyle> qCurrencyStyles;
+	private final Map<String, PageStyle> qPageStyles;
+	private final Map<String, TextStyle> qTextStyles;
+	private final Map<String, DateStyle> qDateStyles;
 	private FooterHeader header = null;
-
 	private FooterHeader footer = null;
 
 	/**
@@ -55,6 +55,11 @@ public class StylesEntry implements OdsEntry {
 	 */
 	public StylesEntry(final OdsFile odsFile) {
 		this.o = odsFile;
+		this.qNumberStyles = new HashMap<String, NumberStyle>();
+		this.qCurrencyStyles = new HashMap<String, CurrencyStyle>();
+		this.qPageStyles = new HashMap<String, PageStyle>();
+		this.qTextStyles = new HashMap<String, TextStyle>();
+		this.qDateStyles = new HashMap<String, DateStyle>();
 	}
 
 	/**
@@ -65,7 +70,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The currency style to be added.
 	 */
 	public void addCurrencyStyle(CurrencyStyle cs) {
-		ObjectQueue.addOrReplaceNamedElement(this.qCurrencyStyles, cs);
+		this.qCurrencyStyles.put(cs.getName(), cs);
 	}
 
 	/**
@@ -76,7 +81,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The date style to be added.
 	 */
 	public void addDateStyle(final DateStyle ds) {
-		ObjectQueue.addOrReplaceNamedElement(this.qDateStyles, ds);
+		this.qDateStyles.put(ds.getName(), ds);
 	}
 
 	/**
@@ -87,17 +92,15 @@ public class StylesEntry implements OdsEntry {
 	 *            - The number style to be added.
 	 */
 	public void addNumberStyle(final NumberStyle ns) {
-		ObjectQueue.addOrReplaceNamedElement(this.qNumberStyles, ns);
+		this.qNumberStyles.put(ns.getName(), ns);
 	}
 
 	public void addPageStyle(PageStyle ps) {
-		if (ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps))
-			this.o.getContent().addPageStyle(ps);
+		this.qPageStyles.put(ps.getName(), ps);
 	}
 
 	public void addTextStyle(TextStyle ts) {
-		if (ObjectQueue.addOrReplaceNamedElement(this.qTextStyles, ts))
-			this.o.getContent().addTextStyle(ts);
+		this.qTextStyles.put(ts.getName(), ts);
 	}
 
 	/**
@@ -174,13 +177,13 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-		for (DateStyle ds : this.qDateStyles)
+		for (DateStyle ds : this.qDateStyles.values())
 			ds.appendXML(util, writer);
 
-		for (NumberStyle ns : this.qNumberStyles)
+		for (NumberStyle ns : this.qNumberStyles.values())
 			ns.appendXML(util, writer);
 
-		for (CurrencyStyle cs : this.qCurrencyStyles)
+		for (CurrencyStyle cs : this.qCurrencyStyles.values())
 			cs.appendXML(util, writer);
 
 		if (this.footer != null) {
@@ -219,17 +222,17 @@ public class StylesEntry implements OdsEntry {
 		u.writeString(out, "</number:date-style>");
 		*/
 
-		for (PageStyle ps : this.qPageStyles)
+		for (PageStyle ps : this.qPageStyles.values())
 			ps.appendXML(util, writer);
 
-		for (TextStyle ts : this.qTextStyles)
+		for (TextStyle ts : this.qTextStyles.values())
 			ts.appendXML(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
-		for (PageStyle ps : this.qPageStyles)
-			writer.write(ps.toMasterStyleXML(util));
+		for (PageStyle ps : this.qPageStyles.values())
+			ps.appendMasterStyleXML(util, writer);
 
 		writer.write("</office:master-styles>");
 		writer.write("</office:document-styles>");

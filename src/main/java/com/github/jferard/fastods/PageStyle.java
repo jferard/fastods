@@ -28,8 +28,8 @@ import java.io.IOException;
  *
  *         This file PageStyle.java is part of FastODS.
  *
- * WHERE ?
- * styles.xml/office:document-styles/office:master-styles/style:master-
+ *         WHERE ?
+ *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page
  */
 public class PageStyle implements NamedObject {
@@ -60,7 +60,7 @@ public class PageStyle implements NamedObject {
 		VERTICAL("portrait"), HORIZONTAL("landscape");
 
 		private final String attrValue;
-		
+
 		private PrintOrientation(String attrValue) {
 			this.attrValue = attrValue;
 		}
@@ -71,11 +71,11 @@ public class PageStyle implements NamedObject {
 	}
 
 	public static enum WritingMode {
-		LRTB("lr-tb"), RLTB("rl-tb"), TBRL("tb-rl"), TBLR("tb_lr"), 
-		LR("lr"), RL("rl"), TB("tb"), PAGE("page");
+		LRTB("lr-tb"), RLTB("rl-tb"), TBRL("tb-rl"), TBLR("tb_lr"), LR(
+				"lr"), RL("rl"), TB("tb"), PAGE("page");
 
 		private final String attrValue;
-		
+
 		private WritingMode(String attrValue) {
 			this.attrValue = attrValue;
 		}
@@ -88,7 +88,7 @@ public class PageStyle implements NamedObject {
 
 	public static final WritingMode DEFAULT_WRITINGMODE = WritingMode.LRTB;
 
-	public static PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
+	public static final PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
 
 	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
 
@@ -132,7 +132,8 @@ public class PageStyle implements NamedObject {
 			String sPageHeight, String sNumFormat, String sBackgroundColor,
 			FooterHeader footer, String sTextStyleFooter, FooterHeader header,
 			String sTextStyleHeader, String sTextHeader, String sTextFooter,
-			PrintOrientation printOrientation, PaperFormat paperFormat, WritingMode writingMode) {
+			PrintOrientation printOrientation, PaperFormat paperFormat,
+			WritingMode writingMode) {
 		this.sName = sName;
 		this.sMarginTop = sMarginTop;
 		this.sMarginBottom = sMarginBottom;
@@ -171,8 +172,10 @@ public class PageStyle implements NamedObject {
 		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
 		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
 		util.appendAttribute(appendable, "style:num-format", this.sNumFormat);
-		util.appendEAttribute(appendable, "style:writing-mode", this.writingMode.getAttrValue());
-		util.appendEAttribute(appendable, "style:print-orientation", this.printOrientation.getAttrValue());
+		util.appendEAttribute(appendable, "style:writing-mode",
+				this.writingMode.getAttrValue());
+		util.appendEAttribute(appendable, "style:print-orientation",
+				this.printOrientation.getAttrValue());
 		this.appendBackgroundColor(util, appendable);
 		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
 		util.appendAttribute(appendable, "fo:margin-bottom",
@@ -297,35 +300,40 @@ public class PageStyle implements NamedObject {
 	 * Return the master-style informations for this PageStyle.
 	 * 
 	 * @return The master style representation for styles.xml
+	 * @throws IOException
 	 */
-	protected String toMasterStyleXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder();
-		sbTemp.append("<style:master-page style:name=\"DefaultMasterPage\" ");
-		sbTemp.append("style:page-layout-name=\"").append(this.getName())
-				.append("\">");
+	public void appendMasterStyleXML(Util util, Appendable appendable)
+			throws IOException {
+		appendable.append("<style:master-page");
+		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
+		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
+		appendable.append(">");
 
-		sbTemp.append("<style:header>");
+		appendable.append("<style:header>");
 		if (this.header == null) {
-			sbTemp.append("<text:p text:style-name=\"")
-					.append(this.sTextStyleHeader).append("\">")
-					.append(this.sTextHeader).append("</text:p>");
+			appendable.append("<text:p");
+			util.appendAttribute(appendable, "text:style-name",
+					this.sTextStyleHeader);
+			appendable.append(">");
+			appendable.append(util.escapeXMLContent(this.sTextHeader))
+					.append("</text:p>");
 		} else {
-			sbTemp.append(this.header.toMasterStyleXML(util));
+			this.header.appendMasterStyleXML(util, appendable);
 		}
-		sbTemp.append("</style:header>");
+		appendable.append("</style:header>");
 
-		sbTemp.append("<style:footer>");
+		appendable.append("<style:footer>");
 		if (this.footer == null) {
-			sbTemp.append("<text:p text:style-name=\"")
-					.append(this.sTextStyleFooter).append("\">")
-					.append(this.sTextFooter).append("</text:p>");
+			appendable.append("<text:p");
+			util.appendAttribute(appendable, "text:style-name",
+					this.sTextStyleFooter);
+			appendable.append(">");
+			appendable.append(util.escapeXMLContent(this.sTextFooter))
+					.append("</text:p>");
 		} else {
-			sbTemp.append(this.footer.toMasterStyleXML(util));
+			this.footer.appendMasterStyleXML(util, appendable);
 		}
-		sbTemp.append("</style:footer>");
-
-		sbTemp.append("</style:master-page>");
-
-		return sbTemp.toString();
+		appendable.append("</style:footer>");
+		appendable.append("</style:master-page>");
 	}
 }

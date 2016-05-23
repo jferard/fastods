@@ -20,8 +20,9 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.github.jferard.fastods.TableCell.Type;
 
@@ -31,8 +32,9 @@ import com.github.jferard.fastods.TableCell.Type;
  *         users.sourceforge.net>
  *
  *         This file Table.java is part of FastODS.
-
- *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw FastOdsException'
+ * 
+ *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw
+ *         FastOdsException'
  *
  *         WHERE ?
  *         content.xml/office:document-content/office:body/office:spreadsheet/
@@ -41,45 +43,67 @@ import com.github.jferard.fastods.TableCell.Type;
 public class Table implements NamedObject, XMLAppendable {
 	final static int TABLE_MAXROWNUMBER = 65536;
 	final static int TABLE_MAXCOLUMNNUMBER = 256;
+	
 	private String sName;
-	private String Style = "ta1";
-	private int nLastCol = 0; // The highest column in the table TODO: Check if
+	private String styleName;
+	private int nLastCol; // The highest column in the table TODO: Check if
 								// this can be removed
 
-	private ConfigItem CursorPositionX = new ConfigItem("CursorPositionX",
-			"int", "0");
-	private ConfigItem CursorPositionY = new ConfigItem("CursorPositionY",
-			"int", "0");
-	private ConfigItem HorizontalSplitMode = new ConfigItem(
-			"HorizontalSplitMode", "short", "0");
-	private ConfigItem VerticalSplitMode = new ConfigItem("VerticalSplitMode",
-			"short", "0");
-	private ConfigItem HorizontalSplitPosition = new ConfigItem(
-			"HorizontalSplitPosition", "int", "0");
-	private ConfigItem VerticalSplitPosition = new ConfigItem(
-			"VerticalSplitPosition", "int", "0");
-	private ConfigItem ActiveSplitRange = new ConfigItem("ActiveSplitRange",
-			"short", "2");
-	private ConfigItem PositionLeft = new ConfigItem("PositionLeft", "int",
-			"0");
-	private ConfigItem PositionRight = new ConfigItem("PositionRight", "int",
-			"0");
-	private ConfigItem PositionTop = new ConfigItem("PositionTop", "int", "0");
-	private ConfigItem PositionBottom = new ConfigItem("PositionBottom", "int",
-			"0");
-	private ConfigItem ZoomType = new ConfigItem("ZoomType", "short", "0");
-	private ConfigItem ZoomValue = new ConfigItem("ZoomValue", "int", "100");
-	private ConfigItem PageViewZoomValue = new ConfigItem("PageViewZoomValue",
-			"int", "60");
+	private final ConfigItem cursorPositionX;
+	private final ConfigItem cursorPositionY;
+	private final ConfigItem horizontalSplitMode;
+	private final ConfigItem verticalSplitMode;
+	private final ConfigItem horizontalSplitPosition;
+	private final ConfigItem verticalSplitPosition;
+	private final ConfigItem activeSplitRange;
+	private final ConfigItem positionLeft;
+	private final ConfigItem positionRight;
+	private final ConfigItem positionTop;
+	private final ConfigItem positionBottom;
+	private final ConfigItem zoomType;
+	private final ConfigItem zoomValue;
+	private final ConfigItem pageViewZoomValue;
 
-	private ObjectQueue<TableColumnStyle> qColumnStyles = ObjectQueue
-			.newQueue();
-	private ObjectQueue<TableRow> qTableRows = ObjectQueue.newQueue();
-	private OdsFile odsFile;
+	private final List<TableColumnStyle> qColumnStyles;
+	private final List<TableRow> qTableRows;
+	private final OdsFile odsFile;
 
 	Table(OdsFile odsFile, String sName) {
 		this.odsFile = odsFile;
 		this.sName = sName;
+		this.styleName = "ta1";
+		this.nLastCol = 0; // The highest column in the table TODO: Check if
+									// this can be removed
+
+		this.cursorPositionX = new ConfigItem("CursorPositionX",
+				"int", "0");
+		this.cursorPositionY = new ConfigItem("cursorPositionY",
+				"int", "0");
+		this.horizontalSplitMode = new ConfigItem(
+				"horizontalSplitMode", "short", "0");
+		this.verticalSplitMode = new ConfigItem("verticalSplitMode",
+				"short", "0");
+		this.horizontalSplitPosition = new ConfigItem(
+				"horizontalSplitPosition", "int", "0");
+		this.verticalSplitPosition = new ConfigItem(
+				"verticalSplitPosition", "int", "0");
+		this.activeSplitRange = new ConfigItem("activeSplitRange",
+				"short", "2");
+		this.positionLeft = new ConfigItem("positionLeft", "int",
+				"0");
+		this.positionRight = new ConfigItem("PositionRight", "int",
+				"0");
+		this.positionTop = new ConfigItem("PositionTop", "int", "0");
+		this.positionBottom = new ConfigItem("positionBottom", "int",
+				"0");
+		this.zoomType = new ConfigItem("zoomType", "short", "0");
+		this.zoomValue = new ConfigItem("zoomValue", "int", "100");
+		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue",
+				"int", "60");
+
+		this.qColumnStyles = new LinkedList<TableColumnStyle>();
+		this.qTableRows = new LinkedList<TableRow>();
+		
 	}
 
 	/**
@@ -100,35 +124,36 @@ public class Table implements NamedObject, XMLAppendable {
 		TableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
 			tr = new TableRow(this.odsFile, nRow);
-			this.qTableRows.setAt(nRow, tr);
+			this.qTableRows.set(nRow, tr);
 		}
 		return tr.getCell(nCol);
 	}
 
-	public ObjectQueue<TableColumnStyle> getColumnStyles() {
+	public List<TableColumnStyle> getColumnStyles() {
 		return this.qColumnStyles;
 	}
 
-	public void appendXMLConfig(Util util, Appendable appendable) throws IOException {
+	public void appendXMLConfig(Util util, Appendable appendable)
+			throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.sName);
 		appendable.append(">");
-		this.CursorPositionX.appendXML(util, appendable);
-		this.CursorPositionY.appendXML(util, appendable);
-		this.HorizontalSplitMode.appendXML(util, appendable);
-		this.VerticalSplitMode.appendXML(util, appendable);
-		this.HorizontalSplitMode.appendXML(util, appendable);
-		this.VerticalSplitMode.appendXML(util, appendable);
-		this.HorizontalSplitPosition.appendXML(util, appendable);
-		this.VerticalSplitPosition.appendXML(util, appendable);
-		this.ActiveSplitRange.appendXML(util, appendable);
-		this.PositionLeft.appendXML(util, appendable); 
-		this.PositionRight.appendXML(util, appendable);
-		this.PositionTop.appendXML(util, appendable); 
-		this.PositionBottom.appendXML(util, appendable);
-		this.ZoomType.appendXML(util, appendable); 
-		this.ZoomValue.appendXML(util, appendable);
-		this.PageViewZoomValue.appendXML(util, appendable);
+		this.cursorPositionX.appendXML(util, appendable);
+		this.cursorPositionY.appendXML(util, appendable);
+		this.horizontalSplitMode.appendXML(util, appendable);
+		this.verticalSplitMode.appendXML(util, appendable);
+		this.horizontalSplitMode.appendXML(util, appendable);
+		this.verticalSplitMode.appendXML(util, appendable);
+		this.horizontalSplitPosition.appendXML(util, appendable);
+		this.verticalSplitPosition.appendXML(util, appendable);
+		this.activeSplitRange.appendXML(util, appendable);
+		this.positionLeft.appendXML(util, appendable);
+		this.positionRight.appendXML(util, appendable);
+		this.positionTop.appendXML(util, appendable);
+		this.positionBottom.appendXML(util, appendable);
+		this.zoomType.appendXML(util, appendable);
+		this.zoomValue.appendXML(util, appendable);
+		this.pageViewZoomValue.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-entry>");
 	}
 
@@ -145,11 +170,12 @@ public class Table implements NamedObject, XMLAppendable {
 	 * 
 	 * @return The name of this table.
 	 */
+	@Override
 	public String getName() {
 		return this.sName;
 	}
 
-	public ObjectQueue<TableRow> getRows() {
+	public List<TableRow> getRows() {
 		return this.qTableRows;
 	}
 
@@ -159,7 +185,7 @@ public class Table implements NamedObject, XMLAppendable {
 		TableRow tr;
 		if (nRow >= this.qTableRows.size()) {
 			tr = new TableRow(this.odsFile, nRow);
-			this.qTableRows.setAt(nRow, tr);
+			this.qTableRows.set(nRow, tr);
 		} else {
 			tr = this.qTableRows.get(nRow);
 		}
@@ -180,8 +206,8 @@ public class Table implements NamedObject, XMLAppendable {
 	 * 
 	 * @return The current TableStlye
 	 */
-	public String getStyle() {
-		return this.Style;
+	public String getStyleName() {
+		return this.styleName;
 	}
 
 	/**
@@ -281,7 +307,7 @@ public class Table implements NamedObject, XMLAppendable {
 	public void setColumnStyle(final int nCol, final TableColumnStyle ts)
 			throws FastOdsException {
 		this.checkCol(nCol);
-		this.qColumnStyles.setAt(nCol, ts);
+		this.qColumnStyles.set(nCol, ts);
 	}
 
 	/**
@@ -301,7 +327,7 @@ public class Table implements NamedObject, XMLAppendable {
 	 *            The new TableStlye to be used
 	 */
 	public void setStyle(String style) {
-		this.Style = style;
+		this.styleName = style;
 	}
 
 	private void appendRows(Appendable appendable, Util util)
@@ -323,7 +349,8 @@ public class Table implements NamedObject, XMLAppendable {
 		}
 	}
 
-	private void appendColumnStyles(Appendable appendable, Util util) throws IOException {
+	private void appendColumnStyles(Appendable appendable, Util util)
+			throws IOException {
 		TableColumnStyle ts0 = null;
 		TableColumnStyle ts1 = null;
 		String sDefaultCellSytle0 = "Default";
@@ -413,18 +440,21 @@ public class Table implements NamedObject, XMLAppendable {
 	}
 
 	private static void appendColumnStyle(Appendable appendable, Util util,
-			String sSytle, String sDefaultCellSytle, int nCount) throws IOException {
+			String sSytle, String sDefaultCellSytle, int nCount)
+			throws IOException {
 		appendable.append("<table:table-column ");
 		util.appendAttribute(appendable, "table:style-name", sSytle);
-		util.appendAttribute(appendable, "table:number-columns-repeated", nCount);
-		util.appendAttribute(appendable, "table:default-cell-style-name", sDefaultCellSytle);
+		util.appendAttribute(appendable, "table:number-columns-repeated",
+				nCount);
+		util.appendAttribute(appendable, "table:default-cell-style-name",
+				sDefaultCellSytle);
 		appendable.append("/>");
 	}
 
 	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {
 		appendable.append("<table:table table:name=\"").append(this.getName())
-				.append("\" table:style-name=\"").append(this.getStyle())
+				.append("\" table:style-name=\"").append(this.getStyleName())
 				.append("\" table:print=\"false\">");
 		appendable.append(
 				"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");

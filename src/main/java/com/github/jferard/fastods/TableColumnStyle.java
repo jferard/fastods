@@ -20,7 +20,6 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.ListIterator;
 
 /**
  * /**
@@ -32,16 +31,18 @@ import java.util.ListIterator;
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
  *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
- *         
- * WHERE ?
- * content.xml/office:document-content/office:automatic-styles/style:style
- * content.xml/office:document-content/office:body/office:spreadsheet/table:table/table:table-column
-*/
+ * 
+ *         WHERE ?
+ *         content.xml/office:document-content/office:automatic-styles/style:
+ *         style
+ *         content.xml/office:document-content/office:body/office:spreadsheet/
+ *         table:table/table:table-column
+ */
 public class TableColumnStyle implements NamedObject, XMLAppendable {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
-	
+
 	private final String sColumnWidth;
 	private final String sName;
 
@@ -71,15 +72,16 @@ public class TableColumnStyle implements NamedObject, XMLAppendable {
 	 */
 	public String toXML(Util util) {
 		try {
-		StringBuilder sbTemp = new StringBuilder();
+			StringBuilder sbTemp = new StringBuilder();
 			this.appendXML(util, sbTemp);
-		return sbTemp.toString();
+			return sbTemp.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return "";
 		}
 	}
 
+	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -91,7 +93,7 @@ public class TableColumnStyle implements NamedObject, XMLAppendable {
 	public String getDefaultCellStyle() {
 		return "Default"; // TODO : use a default cell style if nec.
 	}
-	
+
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getContent().addTableStyle(this);
 	}
@@ -103,8 +105,10 @@ public class TableColumnStyle implements NamedObject, XMLAppendable {
 		util.appendAttribute(appendable, "style:family", "table-column");
 		appendable.append("><style:table-column-properties");
 		util.appendAttribute(appendable, "fo:break-before", "auto");
-		util.appendAttribute(appendable, "style:column-width", this.sColumnWidth);
-//		util.appendAttribute(sbTemp, "table:default-cell-style-name", this.sDefaultCellStyle);
+		util.appendAttribute(appendable, "style:column-width",
+				this.sColumnWidth);
+		// util.appendAttribute(sbTemp, "table:default-cell-style-name",
+		// this.sDefaultCellStyle);
 		appendable.append("/></style:style>");
 	}
 }

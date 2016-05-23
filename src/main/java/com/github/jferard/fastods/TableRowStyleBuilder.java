@@ -34,6 +34,7 @@ class TableRowStyleBuilder {
 
 	private String sRowHeight;
 	private String sName;
+
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
@@ -77,6 +78,6 @@ class TableRowStyleBuilder {
 
 	public TableRowStyle build() {
 		return new TableRowStyle(this.sName, this.sRowHeight);
-		
+
 	}
 }

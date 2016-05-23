@@ -22,8 +22,8 @@ package com.github.jferard.fastods;
 /**
  * @author Julien Férard
  *
- *         Copyright (C) 2016 J. Férard 
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
+ *         <mtschulz at users.sourceforge.net>
  *
  *         This file NamedObject.java is part of FastODS.
  *

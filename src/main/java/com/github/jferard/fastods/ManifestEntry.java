@@ -31,8 +31,7 @@ import java.util.zip.ZipOutputStream;
  *
  *         This file ManifestEntry.java is part of FastODS.
  * 
- * WHERE ?
- * META-INF/manifest.xml/manifest:manifest
+ *         WHERE ? META-INF/manifest.xml/manifest:manifest
  */
 public class ManifestEntry implements OdsEntry {
 	String[] sText = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",

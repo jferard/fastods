@@ -24,11 +24,10 @@ import com.github.jferard.fastods.PageStyle.PrintOrientation;
 import com.github.jferard.fastods.PageStyle.WritingMode;
 
 /**
- * @author Julien Férard 
+ * @author Julien Férard
  * 
- * Copyright (C) 2016 J. Férard
- * Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
+ *         <mtschulz at users.sourceforge.net>
  *
  *         This file PageStyleBuilder.java is part of FastODS.
  *
@@ -78,18 +77,16 @@ public class PageStyleBuilder {
 		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITINGMODE;
 	}
-	
+
 	public PageStyleBuilder header(FooterHeader header) {
 		this.header = header;
 		return this;
 	}
-	
+
 	public PageStyleBuilder footer(FooterHeader footer) {
 		this.footer = footer;
 		return this;
 	}
-	
-	
 
 	/**
 	 * Set the margin at the top,bottom,left and right. margin is a length value
@@ -229,7 +226,7 @@ public class PageStyleBuilder {
 	 * @param paperFormat
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder paperFormat(final PaperFormat paperFormat) {
+	public final PageStyleBuilder paperFormat(final PaperFormat paperFormat) {
 		this.paperFormat = paperFormat;
 		this.sPageWidth = paperFormat.getHeight();
 		this.sPageHeight = paperFormat.getWidth();
@@ -268,10 +265,10 @@ public class PageStyleBuilder {
 	public PageStyle build() {
 		return new PageStyle(this.sName, this.sMarginTop, this.sMarginBottom,
 				this.sMarginLeft, this.sMarginRight, this.sPageWidth,
-				this.sPageHeight, this.sNumFormat, this.sBackgroundColor, this.footer,
-				this.sTextStyleFooter, this.header, this.sTextStyleHeader, this.sTextHeader,
-				this.sTextFooter, this.printOrientation, this.paperFormat,
-				this.writingMode);
+				this.sPageHeight, this.sNumFormat, this.sBackgroundColor,
+				this.footer, this.sTextStyleFooter, this.header,
+				this.sTextStyleHeader, this.sTextHeader, this.sTextFooter,
+				this.printOrientation, this.paperFormat, this.writingMode);
 	}
 
 	public PageStyleBuilder name(String sName) {

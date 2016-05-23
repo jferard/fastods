@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -26,9 +28,11 @@ package com.github.jferard.fastods;
  *
  *         This file StyledText.java is part of FastODS.
  *
- * WHERE ?
- * styles.xml/office:document-styles/office:master-styles/style:master-page/style:footer/text:p/text:span
- * styles.xml/office:document-styles/office:master-styles/style:master-page/style:header/text:p/text:span
+ *         WHERE ?
+ *         styles.xml/office:document-styles/office:master-styles/style:master-
+ *         page/style:footer/text:p/text:span
+ *         styles.xml/office:document-styles/office:master-styles/style:master-
+ *         page/style:header/text:p/text:span
  */
 public class StyledText {
 
@@ -61,17 +65,14 @@ public class StyledText {
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
 	 * 
-	 * @return
+	 * @throws IOException
 	 */
-	protected String toMasterStyleXML(Util util) {
-		StringBuilder sbTemp = new StringBuilder(60);
-
-		sbTemp.append("<text:span text:style-name=\"")
-				.append(util.escapeXMLAttribute(this.ts.getName()))
-				.append("\">").append(util.escapeXMLContent(this.sText))
+	public void appendMasterStyleXML(Util util, Appendable appendable)
+			throws IOException {
+		appendable.append("<text:span");
+		util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+		appendable.append(">").append(util.escapeXMLContent(this.sText))
 				.append("</text:span>");
-
-		return sbTemp.toString();
 	}
 
 }

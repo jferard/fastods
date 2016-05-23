@@ -74,8 +74,7 @@ class DateStyleBuilder {
 		if (this.sName == null)
 			throw new IllegalArgumentException();
 
-		return new DateStyle(this.sName, this.dateFormat,
-				this.bAutomaticOrder);
+		return new DateStyle(this.sName, this.dateFormat, this.bAutomaticOrder);
 	}
 
 	/**

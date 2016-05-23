@@ -29,10 +29,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
 import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
 
@@ -56,146 +59,146 @@ public class Util {
 	public final static String COLOR_GRAY80 = "#CCCCCC";
 	public final static String COLOR_GRAY96 = "#F5F5F5";
 
-	public final static String COLOR_Maroon = "#800000";
-	public final static String COLOR_DarkRed = "#8B0000";
-	public final static String COLOR_Firebrick = "#B22222";
-	public final static String COLOR_Red = "#FF0000";
-	public final static String COLOR_Salmon = "#FA8072";
-	public final static String COLOR_Tomato = "#FF6347";
-	public final static String COLOR_Coral = "#FF7F50";
-	public final static String COLOR_OrangeRed = "#FF4500";
-	public final static String COLOR_Chocolate = "#D2691E";
-	public final static String COLOR_SandyBrown = "#F4A460";
-	public final static String COLOR_DarkOrange = "#FF8C00";
-	public final static String COLOR_Orange = "#FFA500";
-	public final static String COLOR_DarkGoldenrod = "#B8860B";
-	public final static String COLOR_Goldenrod = "#DAA520";
-	public final static String COLOR_Gold = "#FFD700";
-	public final static String COLOR_Olive = "#808000";
-	public final static String COLOR_Yellow = "#FFFF00";
-	public final static String COLOR_YellowGreen = "#9ACD32";
-	public final static String COLOR_GreenYellow = "#ADFF2F";
-	public final static String COLOR_Chartreuse = "#7FFF00";
-	public final static String COLOR_LawnGreen = "#7CFC00";
-	public final static String COLOR_Green = "#008000";
-	public final static String COLOR_Lime = "#00FF00";
-	public final static String COLOR_LimeGreen = "#32CD32";
-	public final static String COLOR_SpringGreen = "#00FF7F";
-	public final static String COLOR_MediumSpringGreen = "#00FA9A";
-	public final static String COLOR_Turquoise = "#40E0D0";
-	public final static String COLOR_LightSeaGreen = "#20B2AA";
-	public final static String COLOR_MediumTurquoise = "#48D1CC";
-	public final static String COLOR_Teal = "#008080";
-	public final static String COLOR_DarkCyan = "#008B8B";
-	public final static String COLOR_Aqua = "#00FFFF";
-	public final static String COLOR_Cyan = "#00FFFF";
-	public final static String COLOR_DarkTurquoise = "#00CED1";
-	public final static String COLOR_DeepSkyBlue = "#00BFFF";
-	public final static String COLOR_DodgerBlue = "#1E90FF";
-	public final static String COLOR_RoyalBlue = "#4169E1";
-	public final static String COLOR_Navy = "#000080";
-	public final static String COLOR_DarkBlue = "#00008B";
-	public final static String COLOR_MediumBlue = "#0000CD";
-	public final static String COLOR_Blue = "#0000FF";
-	public final static String COLOR_BlueViolet = "#8A2BE2";
-	public final static String COLOR_DarkOrchid = "#9932CC";
-	public final static String COLOR_DarkViolet = "#9400D3";
-	public final static String COLOR_Purple = "#800080";
-	public final static String COLOR_DarkMagenta = "#8B008B";
-	public final static String COLOR_Fuchsia = "#FF00FF";
-	public final static String COLOR_Magenta = "#FF00FF";
-	public final static String COLOR_MediumVioletRed = "#C71585";
-	public final static String COLOR_DeepPink = "#FF1493";
-	public final static String COLOR_HotPink = "#FF69B4";
-	public final static String COLOR_Crimson = "#DC143C";
-	public final static String COLOR_Brown = "#A52A2A";
-	public final static String COLOR_IndianRed = "#CD5C5C";
-	public final static String COLOR_RosyBrown = "#BC8F8F";
-	public final static String COLOR_LightCoral = "#F08080";
-	public final static String COLOR_Snow = "#FFFAFA";
-	public final static String COLOR_MistyRose = "#FFE4E1";
-	public final static String COLOR_DarkSalmon = "#E9967A";
-	public final static String COLOR_LightSalmon = "#FFA07A";
-	public final static String COLOR_Sienna = "#A0522D";
-	public final static String COLOR_SeaShell = "#FFF5EE";
-	public final static String COLOR_SaddleBrown = "#8B4513";
-	public final static String COLOR_Peachpuff = "#FFDAB9";
-	public final static String COLOR_Peru = "#CD853F";
-	public final static String COLOR_Linen = "#FAF0E6";
-	public final static String COLOR_Bisque = "#FFE4C4";
-	public final static String COLOR_Burlywood = "#DEB887";
-	public final static String COLOR_Tan = "#D2B48C";
-	public final static String COLOR_AntiqueWhite = "#FAEBD7";
-	public final static String COLOR_NavajoWhite = "#FFDEAD";
-	public final static String COLOR_BlanchedAlmond = "#FFEBCD";
-	public final static String COLOR_PapayaWhip = "#FFEFD5";
-	public final static String COLOR_Moccasin = "#FFE4B5";
-	public final static String COLOR_Wheat = "#F5DEB3";
-	public final static String COLOR_Oldlace = "#FDF5E6";
-	public final static String COLOR_FloralWhite = "#FFFAF0";
-	public final static String COLOR_Cornsilk = "#FFF8DC";
-	public final static String COLOR_Khaki = "#F0E68C";
-	public final static String COLOR_LemonChiffon = "#FFFACD";
-	public final static String COLOR_PaleGoldenrod = "#EEE8AA";
-	public final static String COLOR_DarkKhaki = "#BDB76B";
-	public final static String COLOR_Beige = "#F5F5DC";
-	public final static String COLOR_LightGoldenrodYellow = "#FAFAD2";
-	public final static String COLOR_LightYellow = "#FFFFE0";
-	public final static String COLOR_Ivory = "#FFFFF0";
-	public final static String COLOR_OliveDrab = "#6B8E23";
-	public final static String COLOR_DarkOliveGreen = "#556B2F";
-	public final static String COLOR_DarkSeaGreen = "#8FBC8F";
-	public final static String COLOR_DarkGreen = "#006400";
-	public final static String COLOR_ForestGreen = "#228B22";
-	public final static String COLOR_LightGreen = "#90EE90";
-	public final static String COLOR_PaleGreen = "#98FB98";
-	public final static String COLOR_Honeydew = "#F0FFF0";
-	public final static String COLOR_SeaGreen = "#2E8B57";
-	public final static String COLOR_MediumSeaGreen = "#3CB371";
-	public final static String COLOR_Mintcream = "#F5FFFA";
-	public final static String COLOR_MediumAquamarine = "#66CDAA";
-	public final static String COLOR_Aquamarine = "#7FFFD4";
-	public final static String COLOR_DarkSlateGray = "#2F4F4F";
-	public final static String COLOR_PaleTurquoise = "#AFEEEE";
-	public final static String COLOR_LightCyan = "#E0FFFF";
-	public final static String COLOR_Azure = "#F0FFFF";
-	public final static String COLOR_CadetBlue = "#5F9EA0";
-	public final static String COLOR_PowderBlue = "#B0E0E6";
-	public final static String COLOR_LightBlue = "#ADD8E6";
-	public final static String COLOR_SkyBlue = "#87CEEB";
-	public final static String COLOR_LightskyBlue = "#87CEFA";
-	public final static String COLOR_SteelBlue = "#4682B4";
-	public final static String COLOR_AliceBlue = "#F0F8FF";
-	public final static String COLOR_SlateGray = "#708090";
-	public final static String COLOR_LightSlateGray = "#778899";
-	public final static String COLOR_LightSteelBlue = "#B0C4DE";
-	public final static String COLOR_CornflowerBlue = "#6495ED";
-	public final static String COLOR_Lavender = "#E6E6FA";
-	public final static String COLOR_GhostWhite = "#F8F8FF";
-	public final static String COLOR_MidnightBlue = "#191970";
-	public final static String COLOR_SlateBlue = "#6A5ACD";
-	public final static String COLOR_DarkSlateBlue = "#483D8B";
-	public final static String COLOR_MediumSlateBlue = "#7B68EE";
-	public final static String COLOR_MediumPurple = "#9370DB";
-	public final static String COLOR_Indigo = "#4B0082";
-	public final static String COLOR_MediumOrchid = "#BA55D3";
-	public final static String COLOR_Plum = "#DDA0DD";
-	public final static String COLOR_Violet = "#EE82EE";
-	public final static String COLOR_Thistle = "#D8BFD8";
-	public final static String COLOR_Orchid = "#DA70D6";
-	public final static String COLOR_LavenderBlush = "#FFF0F5";
-	public final static String COLOR_PaleVioletRed = "#DB7093";
-	public final static String COLOR_Pink = "#FFC0CB";
-	public final static String COLOR_LightPink = "#FFB6C1";
-	public final static String COLOR_Black = "#000000";
-	public final static String COLOR_DimGray = "#696969";
-	public final static String COLOR_Gray = "#808080";
-	public final static String COLOR_DarkGray = "#A9A9A9";
-	public final static String COLOR_Silver = "#C0C0C0";
-	public final static String COLOR_LightGrey = "#D3D3D3";
-	public final static String COLOR_Gainsboro = "#DCDCDC";
-	public final static String COLOR_WhiteSmoke = "#F5F5F5";
-	public final static String COLOR_White = "#FFFFFF";
+	public final static String COLOR_MAROON = "#800000";
+	public final static String COLOR_DARKRED = "#8B0000";
+	public final static String COLOR_FIREBRICK = "#B22222";
+	public final static String COLOR_RED = "#FF0000";
+	public final static String COLOR_SALMON = "#FA8072";
+	public final static String COLOR_TOMATO = "#FF6347";
+	public final static String COLOR_CORAL = "#FF7F50";
+	public final static String COLOR_ORANGERED = "#FF4500";
+	public final static String COLOR_CHOCOLATE = "#D2691E";
+	public final static String COLOR_SANDYBROWN = "#F4A460";
+	public final static String COLOR_DARKORANGE = "#FF8C00";
+	public final static String COLOR_ORANGE = "#FFA500";
+	public final static String COLOR_DARKGOLDENROD = "#B8860B";
+	public final static String COLOR_GOLDENROD = "#DAA520";
+	public final static String COLOR_GOLD = "#FFD700";
+	public final static String COLOR_OLIVE = "#808000";
+	public final static String COLOR_YELLOW = "#FFFF00";
+	public final static String COLOR_YELLOWGREEN = "#9ACD32";
+	public final static String COLOR_GREENYELLOW = "#ADFF2F";
+	public final static String COLOR_CHARTREUSE = "#7FFF00";
+	public final static String COLOR_LAWNGREEN = "#7CFC00";
+	public final static String COLOR_GREEN = "#008000";
+	public final static String COLOR_LIME = "#00FF00";
+	public final static String COLOR_LIMEGREEN = "#32CD32";
+	public final static String COLOR_SPRINGGREEN = "#00FF7F";
+	public final static String COLOR_MEDIUMSPRINGGREEN = "#00FA9A";
+	public final static String COLOR_TURQUOISE = "#40E0D0";
+	public final static String COLOR_LIGHTSEAGREEN = "#20B2AA";
+	public final static String COLOR_MEDIUMTURQUOISE = "#48D1CC";
+	public final static String COLOR_TEAL = "#008080";
+	public final static String COLOR_DARKCYAN = "#008B8B";
+	public final static String COLOR_AQUA = "#00FFFF";
+	public final static String COLOR_CYAN = "#00FFFF";
+	public final static String COLOR_DARKTURQUOISE = "#00CED1";
+	public final static String COLOR_DEEPSKYBLUE = "#00BFFF";
+	public final static String COLOR_DODGERBLUE = "#1E90FF";
+	public final static String COLOR_ROYALBLUE = "#4169E1";
+	public final static String COLOR_NAVY = "#000080";
+	public final static String COLOR_DARKBLUE = "#00008B";
+	public final static String COLOR_MEDIUMBLUE = "#0000CD";
+	public final static String COLOR_BLUE = "#0000FF";
+	public final static String COLOR_BLUEVIOLET = "#8A2BE2";
+	public final static String COLOR_DARKORCHID = "#9932CC";
+	public final static String COLOR_DARKVIOLET = "#9400D3";
+	public final static String COLOR_PURPLE = "#800080";
+	public final static String COLOR_DARKMAGENTA = "#8B008B";
+	public final static String COLOR_FUCHSIA = "#FF00FF";
+	public final static String COLOR_MAGENTA = "#FF00FF";
+	public final static String COLOR_MEDIUMVIOLETRED = "#C71585";
+	public final static String COLOR_DEEPPINK = "#FF1493";
+	public final static String COLOR_HOTPINK = "#FF69B4";
+	public final static String COLOR_CRIMSON = "#DC143C";
+	public final static String COLOR_BROWN = "#A52A2A";
+	public final static String COLOR_INDIANRED = "#CD5C5C";
+	public final static String COLOR_ROSYBROWN = "#BC8F8F";
+	public final static String COLOR_LIGHTCORAL = "#F08080";
+	public final static String COLOR_SNOW = "#FFFAFA";
+	public final static String COLOR_MISTYROSE = "#FFE4E1";
+	public final static String COLOR_DARKSALMON = "#E9967A";
+	public final static String COLOR_LIGHTSALMON = "#FFA07A";
+	public final static String COLOR_SIENNA = "#A0522D";
+	public final static String COLOR_SEASHELL = "#FFF5EE";
+	public final static String COLOR_SADDLEBROWN = "#8B4513";
+	public final static String COLOR_PEACHPUFF = "#FFDAB9";
+	public final static String COLOR_PERU = "#CD853F";
+	public final static String COLOR_LINEN = "#FAF0E6";
+	public final static String COLOR_BISQUE = "#FFE4C4";
+	public final static String COLOR_BURLYWOOD = "#DEB887";
+	public final static String COLOR_TAN = "#D2B48C";
+	public final static String COLOR_ANTIQUEWHITE = "#FAEBD7";
+	public final static String COLOR_NAVAJOWHITE = "#FFDEAD";
+	public final static String COLOR_BLANCHEDALMOND = "#FFEBCD";
+	public final static String COLOR_PAPAYAWHIP = "#FFEFD5";
+	public final static String COLOR_MOCCASIN = "#FFE4B5";
+	public final static String COLOR_WHEAT = "#F5DEB3";
+	public final static String COLOR_OLDLACE = "#FDF5E6";
+	public final static String COLOR_FLORALWHITE = "#FFFAF0";
+	public final static String COLOR_CORNSILK = "#FFF8DC";
+	public final static String COLOR_KHAKI = "#F0E68C";
+	public final static String COLOR_LEMONCHIFFON = "#FFFACD";
+	public final static String COLOR_PALEGOLDENROD = "#EEE8AA";
+	public final static String COLOR_DARKKHAKI = "#BDB76B";
+	public final static String COLOR_BEIGE = "#F5F5DC";
+	public final static String COLOR_LIGHTGOLDENRODYELLOW = "#FAFAD2";
+	public final static String COLOR_LIGHTYELLOW = "#FFFFE0";
+	public final static String COLOR_IVORY = "#FFFFF0";
+	public final static String COLOR_OLIVEDRAB = "#6B8E23";
+	public final static String COLOR_DARKOLIVEGREEN = "#556B2F";
+	public final static String COLOR_DARKSEAGREEN = "#8FBC8F";
+	public final static String COLOR_DARKGREEN = "#006400";
+	public final static String COLOR_FORESTGREEN = "#228B22";
+	public final static String COLOR_LIGHTGREEN = "#90EE90";
+	public final static String COLOR_PALEGREEN = "#98FB98";
+	public final static String COLOR_HONEYDEW = "#F0FFF0";
+	public final static String COLOR_SEAGREEN = "#2E8B57";
+	public final static String COLOR_MEDIUMSEAGREEN = "#3CB371";
+	public final static String COLOR_MINTCREAM = "#F5FFFA";
+	public final static String COLOR_MEDIUMAQUAMARINE = "#66CDAA";
+	public final static String COLOR_AQUAMARINE = "#7FFFD4";
+	public final static String COLOR_DARKSLATEGRAY = "#2F4F4F";
+	public final static String COLOR_PALETURQUOISE = "#AFEEEE";
+	public final static String COLOR_LIGHTCYAN = "#E0FFFF";
+	public final static String COLOR_AZURE = "#F0FFFF";
+	public final static String COLOR_CADETBLUE = "#5F9EA0";
+	public final static String COLOR_POWDERBLUE = "#B0E0E6";
+	public final static String COLOR_LIGHTBLUE = "#ADD8E6";
+	public final static String COLOR_SKYBLUE = "#87CEEB";
+	public final static String COLOR_LIGHTSKYBLUE = "#87CEFA";
+	public final static String COLOR_STEELBLUE = "#4682B4";
+	public final static String COLOR_ALICEBLUE = "#F0F8FF";
+	public final static String COLOR_SLATEGRAY = "#708090";
+	public final static String COLOR_LIGHTSLATEGRAY = "#778899";
+	public final static String COLOR_LIGHTSTEELBLUE = "#B0C4DE";
+	public final static String COLOR_CORNFLOWERBLUE = "#6495ED";
+	public final static String COLOR_LAVENDER = "#E6E6FA";
+	public final static String COLOR_GHOSTWHITE = "#F8F8FF";
+	public final static String COLOR_MIDNIGHTBLUE = "#191970";
+	public final static String COLOR_SLATEBLUE = "#6A5ACD";
+	public final static String COLOR_DARKSLATEBLUE = "#483D8B";
+	public final static String COLOR_MEDIUMSLATEBLUE = "#7B68EE";
+	public final static String COLOR_MEDIUMPURPLE = "#9370DB";
+	public final static String COLOR_INDIGO = "#4B0082";
+	public final static String COLOR_MEDIUMORCHID = "#BA55D3";
+	public final static String COLOR_PLUM = "#DDA0DD";
+	public final static String COLOR_VIOLET = "#EE82EE";
+	public final static String COLOR_THISTLE = "#D8BFD8";
+	public final static String COLOR_ORCHID = "#DA70D6";
+	public final static String COLOR_LAVENDERBLUSH = "#FFF0F5";
+	public final static String COLOR_PALEVIOLETRED = "#DB7093";
+	public final static String COLOR_PINK = "#FFC0CB";
+	public final static String COLOR_LIGHTPINK = "#FFB6C1";
+	public final static String COLOR_BLACK = "#000000";
+	public final static String COLOR_DIMGRAY = "#696969";
+	public final static String COLOR_GRAY = "#808080";
+	public final static String COLOR_DARKGRAY = "#A9A9A9";
+	public final static String COLOR_SILVER = "#C0C0C0";
+	public final static String COLOR_LIGHTGREY = "#D3D3D3";
+	public final static String COLOR_GAINSBORO = "#DCDCDC";
+	public final static String COLOR_WHITESMOKE = "#F5F5F5";
+	public final static String COLOR_WHITE = "#FFFFFF";
 
 	public static Util getInstance() {
 		if (Util.instance == null) {
@@ -240,7 +243,10 @@ public class Util {
 				Integer.toString(nValue));
 	}
 
-	/** @param sValue escaped attribute */
+	/**
+	 * @param sValue
+	 *            escaped attribute
+	 */
 	public void appendEAttribute(Appendable appendable, String sElementName,
 			String sValue) throws IOException {
 		appendable.append(' ').append(sElementName).append("=\"").append(sValue)
@@ -275,13 +281,14 @@ public class Util {
 	 * @param target
 	 *            The target file.
 	 */
+	/*
 	public void copyStylesFromTo(final OdsFile source, final OdsFile target) {
 		target.setStyles(source.getStyles());
 		target.getContent().setPageStyles(source.getContent().getPageStyles());
 		target.getContent()
 				.setTableStyles(source.getContent().getTableStyles());
 		target.getContent().setTextStyles(source.getContent().getTextStyles());
-	}
+	}*/
 
 	/**
 	 * Helper function to create any available color string from color values.
@@ -535,6 +542,26 @@ public class Util {
 		}
 		sbReturn.append(Integer.toHexString(n));
 		return sbReturn.toString();
+	}
+
+	public static <T extends NamedObject> Optional<T> findElementByName(
+			List<T> list, String name) {
+		// Check is a style with this name exists and replace if yes
+		ListIterator<T> listIterator = list.listIterator();
+		while (listIterator.hasNext()) {
+			T curElement = listIterator.next();
+			if (curElement.getName().equals(name)) {
+				return Optional.of(curElement);
+			}
+		}
+		return Optional.absent();
+	}
+
+	public void appendTag(Appendable appendable, String tagName, String content)
+			throws IOException {
+		appendable.append('<').append(tagName).append('>')
+				.append(this.escapeXMLContent(content)).append("</")
+				.append(tagName).append('>');
 	}
 
 }

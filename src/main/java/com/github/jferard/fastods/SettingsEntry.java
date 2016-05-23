@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/** 
+/**
  * 
- * WHERE ?
- * settings.xml/office:document-settings
+ * WHERE ? settings.xml/office:document-settings
  */
 public class SettingsEntry implements OdsEntry {
 	// ViewSettings
@@ -121,9 +120,9 @@ public class SettingsEntry implements OdsEntry {
 			"false");
 
 	private List<String> tableConfigs = new LinkedList<String>();
-	private ObjectQueue<Table> tables;
+	private List<Table> tables;
 
-	public SettingsEntry(ObjectQueue<Table> tables) {
+	public SettingsEntry(List<Table> tables) {
 		this.tables = tables;
 	}
 
@@ -139,6 +138,7 @@ public class SettingsEntry implements OdsEntry {
 		this.ViewIdActiveTable = new ConfigItem("ActiveTable", "string", sName);
 	}
 
+	@Override
 	public void write(Util util, ZipOutputStream zipOut) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("settings.xml"));
 		Writer writer = util.wrapStream(zipOut);

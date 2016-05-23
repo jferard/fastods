@@ -20,7 +20,6 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.ListIterator;
 
 /**
  * /**
@@ -79,6 +78,7 @@ public class TableRowStyle implements NamedObject, XMLAppendable {
 		return this.sRowHeight;
 	}
 
+	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -87,6 +87,7 @@ public class TableRowStyle implements NamedObject, XMLAppendable {
 		odsFile.getContent().addTableStyle(this);
 	}
 
+	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);

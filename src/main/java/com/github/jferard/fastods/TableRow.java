@@ -20,8 +20,8 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.util.ListIterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -36,7 +36,7 @@ import java.util.ListIterator;
  */
 public class TableRow implements XMLAppendable {
 	private String styleName;
-	private ObjectQueue<TableCell> qTableCells;
+	private List<TableCell> qTableCells;
 	private int nRow;
 	private OdsFile odsFile;
 
@@ -44,7 +44,7 @@ public class TableRow implements XMLAppendable {
 		this.nRow = nRow;
 		this.odsFile = odsFile;
 		this.styleName = "ro1";
-		this.qTableCells = ObjectQueue.newQueue();
+		this.qTableCells = new LinkedList<TableCell>();
 	}
 
 	/**
@@ -60,15 +60,15 @@ public class TableRow implements XMLAppendable {
 		if (tc == null) {
 			tc = new TableCell(this.odsFile, this.nRow, nCol,
 					TableCell.Type.STRING, "");
-			this.qTableCells.setAt(nCol, tc);
+			this.qTableCells.set(nCol, tc);
 		}
 		return tc;
 	}
 
 	/**
-	 * @return The ObjectQueue with all TableCell objects
+	 * @return The List with all TableCell objects
 	 */
-	private ObjectQueue<TableCell> getCells() {
+	private List<TableCell> getCells() {
 		return this.qTableCells;
 	}
 
@@ -85,14 +85,17 @@ public class TableRow implements XMLAppendable {
 	 */
 	public void setCell(final int nCol, final TableCell.Type nValuetype,
 			final String sValue) {
-		TableCell tc = this.qTableCells.get(nCol);
-		if (tc == null) {
-			tc = new TableCell(this.odsFile, this.nRow, nCol, nValuetype,
-					sValue);
-			this.qTableCells.setAt(nCol, tc);
-		} else {
+		if (0 <= nCol && nCol < this.qTableCells.size()) {
+			TableCell tc = this.qTableCells.get(nCol);
 			tc.setValueType(nValuetype);
 			tc.setValue(sValue);
+		} else {
+			while (nCol < this.qTableCells.size() - 1) {
+				this.qTableCells.add(null);
+			}
+			TableCell tc = new TableCell(this.odsFile, this.nRow, nCol,
+					nValuetype, sValue);
+			this.qTableCells.add(tc);
 		}
 	}
 
@@ -118,7 +121,7 @@ public class TableRow implements XMLAppendable {
 	 * @param tc
 	 */
 	public void setCell(final int nCol, final TableCell tc) {
-		this.qTableCells.setAt(nCol, tc);
+		this.qTableCells.set(nCol, tc);
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class TableRow implements XMLAppendable {
 			// Create an empty cell
 			tc = new TableCell(this.odsFile, this.nRow, nCol,
 					TableCell.Type.STRING, "");
-			this.qTableCells.setAt(nCol, tc);
+			this.qTableCells.set(nCol, tc);
 		}
 		ts.addToFile(this.odsFile);
 		tc.setStyle(ts.getName());

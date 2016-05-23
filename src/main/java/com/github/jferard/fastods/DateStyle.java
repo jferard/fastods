@@ -130,6 +130,7 @@ public class DateStyle implements NamedObject {
 	/**
 	 * @return The name of this style.
 	 */
+	@Override
 	public String getName() {
 		return this.sName;
 	}

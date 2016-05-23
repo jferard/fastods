@@ -21,6 +21,10 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -39,23 +43,24 @@ import com.google.common.base.Optional;
  *         content.xml/office:document-content
  */
 class ContentEntry implements OdsEntry {
-	private ObjectQueue<Table> qTables;
-	private ObjectQueue<NamedObject> qTableStyles;
-	private ObjectQueue<PageStyle> qPageStyles;
-	private ObjectQueue<TextStyle> qTextStyles;
+	private List<Table> qTables;
+	private Map<String, NamedObject> tableStyleByName;
+	/*	private Map<String, PageStyle> qPageStyles;
+		private Map<String, TextStyle> qTextStyles; */
 	private OdsFile odsFile;
 
 	ContentEntry(OdsFile odsFile) {
 		this.odsFile = odsFile;
-		this.qTables = ObjectQueue.newQueue();
-		this.qTableStyles = ObjectQueue.newQueue();
-		this.qPageStyles = ObjectQueue.newQueue();
-		this.qTextStyles = ObjectQueue.newQueue();
+		this.qTables = new LinkedList<Table>();
+		this.tableStyleByName = new HashMap<String, NamedObject>();
+		/*		this.qPageStyles = ObjectQueue.newQueue();
+				this.qTextStyles = ObjectQueue.newQueue(); */
 	}
 
+	/*
 	public void addPageStyle(final PageStyle ps) {
 		ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps);
-	}
+	}*/
 
 	public Optional<Table> addTable(String sName) throws FastOdsException {
 		Optional<Table> optTable = this.getTable(sName);
@@ -76,16 +81,17 @@ class ContentEntry implements OdsEntry {
 					"Maximum table number (256) reached exception");
 		}
 
-		return ObjectQueue.findElement(this.qTables, sName);
-	}
-	
-	public void addTableStyle(NamedObject ts) {
-		ObjectQueue.addOrReplaceNamedElement(this.qTableStyles, ts);
+		return Util.findElementByName(this.qTables, sName);
 	}
 
+	public void addTableStyle(NamedObject ts) {
+		this.tableStyleByName.put(ts.getName(), ts);
+	}
+
+	/*
 	public void addTextStyle(final TextStyle ts) {
 		ObjectQueue.addOrReplaceNamedElement(this.qTextStyles, ts);
-	}
+	}*/
 
 	/**
 	 * Get the TableCell object from table nTab at position nRow,nCol.<br>
@@ -105,29 +111,31 @@ class ContentEntry implements OdsEntry {
 		return tab.getCell(nRow, nCol);
 	}
 
+	/*
 	public PageStyle getDefaultPageStyle() {
 		if (this.qPageStyles.size() == 0) {
 			return null;
 		}
-
+	
 		return this.qPageStyles.get(0);
 	}
-
+	
 	public ObjectQueue<PageStyle> getPageStyles() {
 		return this.qPageStyles;
-	}
+	}*/
 
-	public ObjectQueue<Table> getTableQueue() {
+	public List<Table> getTables() {
 		return this.qTables;
 	}
 
-	public ObjectQueue<NamedObject> getTableStyles() {
-		return this.qTableStyles;
+	public Map<String, NamedObject> getTableStyles() {
+		return this.tableStyleByName;
 	}
 
+	/*
 	public ObjectQueue<TextStyle> getTextStyles() {
 		return this.qTextStyles;
-	}
+	}*/
 
 	public boolean setCell(int nTab, int nRow, int nCol, Type type,
 			String value) throws FastOdsException {
@@ -143,7 +151,7 @@ class ContentEntry implements OdsEntry {
 
 		Table tab = this.qTables.get(nTab);
 		tab.setCellStyle(nRow, nCol, ts);
-		this.addTableStyle(ts);
+		// this.addTableStyle(ts);
 		return true;
 	}
 
@@ -156,21 +164,23 @@ class ContentEntry implements OdsEntry {
 
 		Table tab = this.qTables.get(nTab);
 		tab.setColumnStyle(nCol, ts);
-		this.addTableStyle(ts);
+		// this.addTableStyle(ts);
 		return true;
 	}
 
+	/*
 	public void setPageStyles(final ObjectQueue<PageStyle> qPageStyles) {
 		this.qPageStyles = qPageStyles;
-	}
+	}*/
 
+	/*
 	public void setTableStyles(final ObjectQueue<NamedObject> qTableStyles) {
-		this.qTableStyles = qTableStyles;
+		this.tableStyleByName = qTableStyles;
 	}
-
+	
 	public void setTextStyles(final ObjectQueue<TextStyle> qTextStyles) {
 		this.qTextStyles = qTextStyles;
-	}
+	}*/
 
 	@Override
 	public void write(Util util, ZipOutputStream zipOut) throws IOException {
@@ -191,7 +201,7 @@ class ContentEntry implements OdsEntry {
 		/* Office automatic styles */
 		writer.write("<office:automatic-styles>");
 
-		for (NamedObject ts : this.qTableStyles)
+		for (NamedObject ts : this.tableStyleByName.values())
 			ts.appendXML(util, writer);
 
 		writer.write("</office:automatic-styles>");
@@ -210,9 +220,8 @@ class ContentEntry implements OdsEntry {
 
 	private void checkTableIndex(int nTab) throws FastOdsException {
 		if (nTab < 0 || this.qTables.size() <= nTab) {
-			throw new FastOdsException(
-					new StringBuilder("Wrong table number [").append(nTab)
-							.append("]").toString());
+			throw new FastOdsException(new StringBuilder("Wrong table number [")
+					.append(nTab).append("]").toString());
 		}
 	}
 }

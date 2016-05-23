@@ -33,8 +33,7 @@ import java.util.zip.ZipOutputStream;
  *
  *         This file MetaEntry.java is part of FastODS.
  * 
- * WHERE ?
- * meta.xml/office:document-meta
+ *         WHERE ? meta.xml/office:document-meta
  */
 public class MetaEntry implements OdsEntry {
 	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
@@ -44,7 +43,7 @@ public class MetaEntry implements OdsEntry {
 	private int nTableCount = 1;
 	private int nCellCount = 1;
 	private String sCreator;
-	
+
 	private final String sGenerator;
 	private final String sEditingCycles;
 	private final String sEditingDuration;
@@ -65,30 +64,6 @@ public class MetaEntry implements OdsEntry {
 
 		this.sDateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
 				.append("T").append(MetaEntry.DF_TIME.format(dt)).toString();
-	}
-
-	private String[] getMeta() {
-		String[] sReturn = { "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-				"<office:document-meta xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">",
-				"<office:meta>", "<meta:generator>", this.sGenerator,
-				"</meta:generator>", "<dc:creator>", this.sCreator,
-				"</dc:creator>", "<dc:date>", this.sDateTime, "</dc:date>",
-				"<meta:editing-cycles>", this.sEditingCycles,
-				"</meta:editing-cycles>", "<meta:editing-duration>",
-				this.sEditingDuration, "</meta:editing-duration>",
-				"<meta:user-defined meta:name=\"Info 1\"/>",
-				"<meta:user-defined meta:name=\"Info 2\"/>",
-				"<meta:user-defined meta:name=\"Info 3\"/>",
-				"<meta:user-defined meta:name=\"Info 4\"/>",
-				new StringBuilder(
-						"<meta:document-statistic meta:table-count=\"")
-								.append(this.nTableCount)
-								.append("\" meta:cell-count=\"")
-								.append(this.nCellCount).append("\"/>")
-								.toString(),
-				"</office:meta>", "</office:document-meta>"
-		};
-		return sReturn;
 	}
 
 	public void incTableCount() {
@@ -120,11 +95,27 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(Util util, final ZipOutputStream zipOut) throws IOException {
+	public void write(Util util, final ZipOutputStream zipOut)
+			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("meta.xml"));
 		Writer writer = util.wrapStream(zipOut);
-		for (String item :this.getMeta())
-			writer.write(item);
+		writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+				.append("<office:document-meta xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">")
+				.append("<office:meta>");
+		util.appendTag(writer, "meta:generator", this.sGenerator);
+		util.appendTag(writer, "dc:creator", this.sCreator);
+		util.appendTag(writer, "dc:date", this.sDateTime);
+		util.appendTag(writer, "meta:editing-cycles", this.sEditingCycles);
+		util.appendTag(writer, "meta:editing-duration", this.sEditingDuration);
+		writer.append("<meta:user-defined meta:name=\"Info 1\"/>")
+				.append("<meta:user-defined meta:name=\"Info 2\"/>")
+				.append("<meta:user-defined meta:name=\"Info 3\"/>")
+				.append("<meta:user-defined meta:name=\"Info 4\"/>")
+				.append("<meta:document-statistic");
+		util.appendAttribute(writer, "meta:table-count", this.nTableCount);
+		util.appendAttribute(writer, "meta:cell-count", this.nCellCount);
+		writer.append("/>").append("</office:meta>")
+				.append("</office:document-meta>");
 		writer.flush();
 		zipOut.closeEntry();
 	}

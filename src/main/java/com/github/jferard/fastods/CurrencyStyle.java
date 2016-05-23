@@ -27,17 +27,18 @@ import java.io.IOException;
  *         users.sourceforge.net>
  *
  *         This file CurrencyStyle.java is part of FastODS.
- *         
- * WHERE ?
- * content.xml/office:document-content/office:automatic-styles/number:currency-style
- * styles.xml/office:document-styles/office:styles/number:currency-style
+ * 
+ *         WHERE ?
+ *         content.xml/office:document-content/office:automatic-styles/number:
+ *         currency-style
+ *         styles.xml/office:document-styles/office:styles/number:currency-style
  */
 public class CurrencyStyle implements NamedObject {
 	// public final static int NUMBER_CURRENCY = 1;
 	public static enum SymbolPosition {
 		BEGIN, END;
 	}
-	
+
 	public static CurrencyStyleBuilder builder() {
 		return new CurrencyStyleBuilder();
 	}
@@ -61,8 +62,8 @@ public class CurrencyStyle implements NamedObject {
 
 	protected CurrencyStyle(String sName, String sCurrencySymbol,
 			String sNegativeValueColor, String sLanguage, String sCountry,
-			int nDecimalPlaces, int nMinIntegerDigits,
-			boolean bGrouping, boolean bVolatile, boolean bNegativeValuesRed,
+			int nDecimalPlaces, int nMinIntegerDigits, boolean bGrouping,
+			boolean bVolatile, boolean bNegativeValuesRed,
 			SymbolPosition currencyPosition) {
 		this.sName = sName;
 		this.sCurrencySymbol = sCurrencySymbol;
@@ -135,6 +136,7 @@ public class CurrencyStyle implements NamedObject {
 	 * 
 	 * @return The currency style name
 	 */
+	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -155,30 +157,30 @@ public class CurrencyStyle implements NamedObject {
 	 */
 	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {
-			final StringBuilder currency = this.currencyToXML(util);
+		final StringBuilder currency = this.currencyToXML(util);
 
-			appendable.append("<number:currency-style");
-			util.appendAttribute(appendable, "style:name", this.sName+"nn");
-			appendable.append(" style:volatile=\"true\">");
-			appendable.append(currency);
-			appendable.append("</number:currency-style>");
+		appendable.append("<number:currency-style");
+		util.appendAttribute(appendable, "style:name", this.sName + "nn");
+		appendable.append(" style:volatile=\"true\">");
+		appendable.append(currency);
+		appendable.append("</number:currency-style>");
 
-			// For negative values, this is the default style and
-			// this.sName+'nn' is
-			// the style for positive values
-			appendable.append("<number:currency-style");
-			util.appendAttribute(appendable, "style:name", this.sName);
-			appendable.append(">");
-			appendable.append("<style:text-properties");
-			util.appendAttribute(appendable, "fo:color", this.sNegativeValueColor);
-			appendable.append("/>");
-			appendable.append("<number:text>-</number:text>");
+		// For negative values, this is the default style and
+		// this.sName+'nn' is
+		// the style for positive values
+		appendable.append("<number:currency-style");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		appendable.append(">");
+		appendable.append("<style:text-properties");
+		util.appendAttribute(appendable, "fo:color", this.sNegativeValueColor);
+		appendable.append("/>");
+		appendable.append("<number:text>-</number:text>");
 
-			appendable.append(currency);
-			appendable.append(
-					"<style:map style:condition=\"value()&gt;=0\"");
-			util.appendAttribute(appendable, "style:apply-style-name", this.sName+"nn");
-			appendable.append("/></number:currency-style>");
+		appendable.append(currency);
+		appendable.append("<style:map style:condition=\"value()&gt;=0\"");
+		util.appendAttribute(appendable, "style:apply-style-name",
+				this.sName + "nn");
+		appendable.append("/></number:currency-style>");
 	}
 
 	private void appendCurrencyNumber(StringBuilder sb) {
@@ -192,7 +194,8 @@ public class CurrencyStyle implements NamedObject {
 		sb.append("/>");
 	}
 
-	private void appendCurrencySymbol(Util util, StringBuilder sb) throws IOException {
+	private void appendCurrencySymbol(Util util, StringBuilder sb)
+			throws IOException {
 		sb.append("<number:currency-symbol");
 		if (this.sLanguage.length() > 0)
 			util.appendAttribute(sb, "number:language", this.sLanguage);

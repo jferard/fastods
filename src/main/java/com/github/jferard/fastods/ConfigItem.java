@@ -28,8 +28,9 @@ import java.io.IOException;
  *
  *         This file ConfigItem.java is part of FastODS.
  * 
- * WHERE ?
- * settings.xml/office:document-settings/office:settings/settingsEntry:settingsEntry-item-set/config:config-item
+ *         WHERE ?
+ *         settings.xml/office:document-settings/office:settings/settingsEntry:
+ *         settingsEntry-item-set/config:config-item
  */
 public class ConfigItem implements XMLAppendable {
 	private final String sItemName;
@@ -66,7 +67,7 @@ public class ConfigItem implements XMLAppendable {
 	 * This is used while writing the ODS file.
 	 * 
 	 * @return The XML string for this object.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {

@@ -19,7 +19,8 @@
 */
 package com.github.jferard.fastods;
 
-import java.util.ListIterator;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * /**
@@ -43,7 +44,7 @@ class TableCellStyleBuilder {
 	private boolean bWrap; // No line wrap when false, line wrap when
 							// true
 	private String sDefaultCellStyle;
-	private ObjectQueue<BorderAttribute> qBorders;
+	private Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -67,7 +68,8 @@ class TableCellStyleBuilder {
 		this.sDataStyle = "";
 		this.tsBuilder = new TextStyleBuilder();
 		this.sDefaultCellStyle = "Default";
-		this.qBorders = ObjectQueue.newQueue();
+		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
+				BorderAttribute.Position.class);
 	}
 
 	/**
@@ -78,21 +80,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder addBorderStyle(final BorderAttribute bs) {
-		// -----------------------------------------
-		// Make sure each position is unique
-		// -----------------------------------------
-		ListIterator<BorderAttribute> iterator = this.qBorders.listIterator();
-		while (iterator.hasNext()) {
-			BorderAttribute b = iterator.next();
-			if (b.getPosition() == bs.getPosition()) {
-				iterator.set(bs);
-				return this;
-			}
-		}
-		// ----------------------------------------------
-		// Did not find it in qBorders, make a new entry
-		// ----------------------------------------------
-		this.qBorders.add(bs);
+		this.borderByPosition.put(bs.getPosition(), bs);
 		return this;
 	}
 
@@ -286,9 +274,7 @@ class TableCellStyleBuilder {
 		return new TableCellStyle(this.sName, this.sDataStyle,
 				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
 				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
-				this.qBorders
-
-		);
+				this.borderByPosition);
 
 	}
 }

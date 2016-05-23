@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -162,9 +163,10 @@ public class OdsFile {
 		return this.contentEntry;
 	}
 
+	/*
 	public PageStyle getDefaultPageStyle() {
 		return this.getContent().getDefaultPageStyle();
-	}
+	}*/
 
 	/**
 	 * Returns the current footerHeader.
@@ -226,14 +228,19 @@ public class OdsFile {
 	 * @return The name of the table
 	 */
 	public String getTableName(final int n) throws FastOdsException {
-		final ObjectQueue<Table> tableQueue = this.getContent().getTableQueue();
+		Table t = this.getTable(n);
+		return t.getName();
+	}
+
+	private Table getTable(final int n) throws FastOdsException {
+		final List<Table> tableQueue = this.getContent().getTables();
 		if (n < 0 || tableQueue.size() <= n) {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(n).append("]").toString());
 		}
 
 		Table t = tableQueue.get(n);
-		return (t.getName());
+		return t;
 	}
 
 	/**
@@ -244,7 +251,7 @@ public class OdsFile {
 	 * @return The number of the table or -1 if sName was not found
 	 */
 	public int getTableNumber(final String sName) {
-		ListIterator<Table> iterator = this.getContent().getTableQueue()
+		ListIterator<Table> iterator = this.getContent().getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			int n = iterator.nextIndex();
@@ -263,7 +270,7 @@ public class OdsFile {
 	 * @return The number of the last table
 	 */
 	public int lastTableNumber() {
-		return this.getContent().getTableQueue().size();
+		return this.getContent().getTables().size();
 	}
 
 	/**
@@ -274,7 +281,7 @@ public class OdsFile {
 	 *            exists it is overwritten
 	 * @return False, if filename is a directory
 	 */
-	public boolean newFile(final String sName) {
+	public final boolean newFile(final String sName) {
 
 		try {
 			File f = new File(sName);
@@ -320,8 +327,7 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream output) {
-		this.settingsEntry = new SettingsEntry(
-				this.getContent().getTableQueue());
+		this.settingsEntry = new SettingsEntry(this.getContent().getTables());
 
 		try {
 			ZipOutputStream out = new ZipOutputStream(output);
@@ -359,11 +365,11 @@ public class OdsFile {
 	 *         value
 	 */
 	public boolean setActiveTable(final int nTab) {
-		if (nTab < 0 || nTab >= this.getContent().getTableQueue().size()) {
+		if (nTab < 0 || nTab >= this.getContent().getTables().size()) {
 			return false;
 		}
 
-		Table tab = this.getContent().getTableQueue().get(nTab);
+		Table tab = this.getContent().getTables().get(nTab);
 		this.settingsEntry.setActiveTable(tab.getName());
 
 		return true;
@@ -867,7 +873,7 @@ public class OdsFile {
 	public void setCell(String sTab, int nRow, int nCol,
 			TableCell.Type nValuetype, String sValue) throws FastOdsException {
 
-		ListIterator<Table> iterator = this.getContent().getTableQueue()
+		ListIterator<Table> iterator = this.getContent().getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			int n = iterator.nextIndex();
@@ -909,12 +915,12 @@ public class OdsFile {
 	 * 
 	 */
 	@Deprecated
-	public void setCell(String sTab, int nRow, int nCol, TableCell.Type nValuetype,
-			String sValue, TableCellStyle ts) throws FastOdsException {
+	public void setCell(String sTab, int nRow, int nCol,
+			TableCell.Type nValuetype, String sValue, TableCellStyle ts)
+			throws FastOdsException {
 
 		final ContentEntry contentEntry = this.getContent();
-		ListIterator<Table> iterator = contentEntry.getTableQueue()
-				.listIterator();
+		ListIterator<Table> iterator = contentEntry.getTables().listIterator();
 		while (iterator.hasNext()) {
 			int n = iterator.nextIndex();
 			Table tab = iterator.next();
@@ -948,7 +954,7 @@ public class OdsFile {
 			throws FastOdsException {
 
 		final ContentEntry contentEntry = this.getContent();
-		final int size = contentEntry.getTableQueue().size();
+		final int size = contentEntry.getTables().size();
 		for (int n = 0; n < size; n++) {
 			this.setCell(n, nRow, nCol, cal);
 			contentEntry.setCellStyle(n, nRow, nCol, ts);
@@ -975,9 +981,9 @@ public class OdsFile {
 	 * @throws FastOdsException
 	 */
 	public void setCellInAllTables(final int nRow, final int nCol,
-			final TableCell.Type nValuetype, final String sValue, final TableCellStyle ts)
-			throws FastOdsException {
-		for (Table tab : this.getContent().getTableQueue()) {
+			final TableCell.Type nValuetype, final String sValue,
+			final TableCellStyle ts) throws FastOdsException {
+		for (Table tab : this.getContent().getTables()) {
 			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
 		}
 	}
@@ -1000,7 +1006,7 @@ public class OdsFile {
 		int nCol = this.util.positionToColumn(sPos);
 
 		final ContentEntry contentEntry = this.getContent();
-		final int size = contentEntry.getTableQueue().size();
+		final int size = contentEntry.getTables().size();
 		for (int n = 0; n < size; n++) {
 			this.setCell(n, nRow, nCol, cal);
 			contentEntry.setCellStyle(n, nRow, nCol, ts);
@@ -1024,13 +1030,13 @@ public class OdsFile {
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
-	public void setCellInAllTables(final String sPos, final TableCell.Type nValuetype,
-			final String sValue, final TableCellStyle ts)
-			throws FastOdsException {
+	public void setCellInAllTables(final String sPos,
+			final TableCell.Type nValuetype, final String sValue,
+			final TableCellStyle ts) throws FastOdsException {
 		int nRow = this.util.positionToRow(sPos);
 		int nCol = this.util.positionToColumn(sPos);
 
-		for (Table tab : this.getContent().getTableQueue()) {
+		for (Table tab : this.getContent().getTables()) {
 			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
 		}
 	}
@@ -1094,7 +1100,7 @@ public class OdsFile {
 			int nColumnMerge) throws FastOdsException {
 		TableCell tc;
 		final ContentEntry contentEntry = this.getContent();
-		final int size = contentEntry.getTableQueue().size();
+		final int size = contentEntry.getTables().size();
 		for (int n = 0; n < size; n++) {
 			tc = contentEntry.getCell(n, nRow, nCol);
 			tc.setRowsSpanned(nRowMerge);
@@ -1114,7 +1120,7 @@ public class OdsFile {
 	public void setCellMergeInAllTables(final String sPos, final int nRowMerge,
 			final int nColumnMerge) throws FastOdsException {
 
-		final int size = this.getContent().getTableQueue().size();
+		final int size = this.getContent().getTables().size();
 		for (int n = 0; n < size; n++) {
 			this.setCellMerge(n, this.util.positionToRow(sPos),
 					this.util.positionToColumn(sPos), nRowMerge, nColumnMerge);
@@ -1179,7 +1185,7 @@ public class OdsFile {
 	@Deprecated
 	public void setCellStyle(final String sTab, final int nRow, final int nCol,
 			final TableCellStyle ts) throws FastOdsException {
-		ListIterator<Table> iterator = this.getContent().getTableQueue()
+		ListIterator<Table> iterator = this.getContent().getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			int n = iterator.nextIndex();
@@ -1288,8 +1294,7 @@ public class OdsFile {
 			throws FastOdsException {
 
 		final ContentEntry contentEntry = this.getContent();
-		ListIterator<Table> iterator = contentEntry.getTableQueue()
-				.listIterator();
+		ListIterator<Table> iterator = contentEntry.getTables().listIterator();
 		while (iterator.hasNext()) {
 			int n = iterator.nextIndex();
 			Table tab = iterator.next();

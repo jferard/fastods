@@ -30,9 +30,8 @@ import java.util.zip.ZipOutputStream;
  *         users.sourceforge.net>
  *
  *         This file MimetypeEntry.java is part of FastODS.
- *         
- * WHERE ?
- * mimetype
+ * 
+ *         WHERE ? mimetype
  */
 public class MimetypeEntry implements OdsEntry {
 	@Override

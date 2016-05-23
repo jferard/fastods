@@ -36,9 +36,9 @@ import java.util.Calendar;
  */
 public class TableCell implements XMLAppendable {
 	public static enum Type {
-		FLOAT("float"), PERCENTAGE("percentage"), CURRENCY(
-				"currency"), DATE("date"), STRING("string");
-		
+		FLOAT("float"), PERCENTAGE("percentage"), CURRENCY("currency"), DATE(
+				"date"), STRING("string");
+
 		private final String attrValue;
 
 		private Type(String attrValue) {
@@ -50,7 +50,7 @@ public class TableCell implements XMLAppendable {
 		}
 	}
 
-	public static Type DEFAULT_TYPE = Type.STRING;
+	public static final Type DEFAULT_TYPE = Type.STRING;
 
 	private Type valueType;
 	private String sText;
@@ -64,9 +64,9 @@ public class TableCell implements XMLAppendable {
 	private int nRow;
 	private int nCol;
 
-	private static SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
+	private static final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd");
-	private static SimpleDateFormat VALUE_FORMAT = new SimpleDateFormat(
+	private static final SimpleDateFormat VALUE_FORMAT = new SimpleDateFormat(
 			"dd.MM.yy");
 
 	/**
@@ -233,8 +233,9 @@ public class TableCell implements XMLAppendable {
 			util.appendAttribute(appendable, "table:style-name",
 					this.getStyle());
 		}
-		
-		util.appendEAttribute(appendable, "office:value-type", this.valueType.attrValue);
+
+		util.appendEAttribute(appendable, "office:value-type",
+				this.valueType.attrValue);
 
 		switch (this.valueType) {
 		case CURRENCY:
@@ -258,8 +259,8 @@ public class TableCell implements XMLAppendable {
 					this.nRowsSpanned);
 		}
 
-		appendable.append("><text:p>").append(util.escapeXMLContent(this.sValue))
-				.append("</text:p>");
+		appendable.append("><text:p>")
+				.append(util.escapeXMLContent(this.sValue)).append("</text:p>");
 		appendable.append("</table:table-cell>");
 	}
 

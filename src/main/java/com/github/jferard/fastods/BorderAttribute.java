@@ -34,8 +34,7 @@ import java.io.IOException;
 public class BorderAttribute implements XMLAppendable {
 	public static enum Position {
 		TOP("fo:border-top"), BOTTOM("fo:border-bottom"), LEFT(
-				"fo:border-left"), RIGHT("fo:border-right"), ALL(
-						"fo:border");
+				"fo:border-left"), RIGHT("fo:border-right"), ALL("fo:border");
 
 		private final String attrName;
 
@@ -49,7 +48,7 @@ public class BorderAttribute implements XMLAppendable {
 	}
 
 	public static final Position DEFAULT_POSITION = Position.ALL;
-	
+
 	public static enum Style {
 		SOLID("solid"), DOUBLE("double");
 
@@ -63,7 +62,7 @@ public class BorderAttribute implements XMLAppendable {
 			return this.attrValue;
 		}
 	}
-	
+
 	public static final Style DEFAULT_STYLE = Style.SOLID;
 
 	/**

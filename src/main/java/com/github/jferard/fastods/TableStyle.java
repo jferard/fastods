@@ -61,11 +61,12 @@ public class TableStyle implements NamedObject, XMLAppendable {
 		odsFile.getContent().addTableStyle(this);
 	}
 
-
+	@Override
 	public String getName() {
 		return this.sName;
 	}
 
+	@Override
 	public void appendXML(Util util, Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);

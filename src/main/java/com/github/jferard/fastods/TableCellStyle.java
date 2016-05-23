@@ -20,6 +20,9 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
+import java.util.Map;
+
+import com.github.jferard.fastods.BorderAttribute.Position;
 
 /**
  * 
@@ -30,8 +33,7 @@ import java.io.IOException;
  *         This file TableFamilyStyle.java is part of FastODS.
  * 
  *         SimpleODS 0.5.1 Changed all 'throw Exception' to 'throw
- *         FastOdsException' 
- *         SimpleODS 0.5.2 Replaced all text properties with a
+ *         FastOdsException' SimpleODS 0.5.2 Replaced all text properties with a
  *         TextStyle object
  * 
  *         WHERE ?
@@ -41,7 +43,7 @@ import java.io.IOException;
 public class TableCellStyle implements NamedObject, XMLAppendable {
 	public static enum VerticalAlign {
 		TOP("top"), MIDDLE("middle"), BOTTOM("bottom");
-		
+
 		private final String attrValue;
 
 		private VerticalAlign(String attrValue) {
@@ -51,7 +53,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 
 	public static enum Align {
 		LEFT("start"), CENTER("center"), RIGHT("end"), JUSTIFY("justify");
-		
+
 		private final String attrValue;
 
 		private Align(String attrValue) {
@@ -68,7 +70,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 	private final boolean bWrap; // No line wrap when false, line wrap when
 	// true
 	private final String sDefaultCellStyle;
-	private final ObjectQueue<BorderAttribute> qBorders;
+	private final Map<Position, BorderAttribute> borderByPosition;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -84,8 +86,9 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 	 *            The OdsFile to add this style to
 	 */
 	TableCellStyle(String sName, String sDataStyle, String sBackgroundColor,
-			TextStyle ts, Align nTextAlign, VerticalAlign nVerticalAlign, boolean bWrap,
-			String sDefaultCellStyle, ObjectQueue<BorderAttribute> qBorders) {
+			TextStyle ts, Align nTextAlign, VerticalAlign nVerticalAlign,
+			boolean bWrap, String sDefaultCellStyle,
+			Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
 		this.sName = sName;
 		this.sDataStyle = sDataStyle;
 		this.sBackgroundColor = sBackgroundColor;
@@ -94,7 +97,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		this.nVerticalAlign = nVerticalAlign;
 		this.bWrap = bWrap;
 		this.sDefaultCellStyle = sDefaultCellStyle;
-		this.qBorders = qBorders;
+		this.borderByPosition = borderByPosition;
 	}
 
 	public void addToFile(final OdsFile odsFile) {
@@ -119,6 +122,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -147,7 +151,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		// -----------------------------------------------
 		// Add all border styles
 		// -----------------------------------------------
-		for (BorderAttribute bs : this.qBorders) {
+		for (BorderAttribute bs : this.borderByPosition.values()) {
 			bs.appendXML(util, appendable);
 		}
 
@@ -165,7 +169,8 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		}
 
 		appendable.append("<style:paragraph-properties");
-		util.appendEAttribute(appendable, "fo:text-align", this.nTextAlign.attrValue);
+		util.appendEAttribute(appendable, "fo:text-align",
+				this.nTextAlign.attrValue);
 		util.appendEAttribute(appendable, "fo:margin-left", "0cm");
 		appendable.append("/></style:style>");
 	}

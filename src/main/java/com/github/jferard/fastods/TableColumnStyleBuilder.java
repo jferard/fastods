@@ -22,14 +22,14 @@ package com.github.jferard.fastods;
 /**
  * /**
  * 
- * @author Julien Férard 
+ * @author Julien Férard
  * 
- * Copyright (C) 2016 J. Férard
- * Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
+ *         <mtschulz at users.sourceforge.net>
  *
- *         This file TableFamilyStyleBuilder.java is part of FastODS. SimpleODS 0.5.1
- *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
- *         0.5.2 Replaced all text properties with a TextStyle object
+ *         This file TableFamilyStyleBuilder.java is part of FastODS. SimpleODS
+ *         0.5.1 Changed all 'throw Exception' to 'throw FastOdsException'
+ *         SimpleODS 0.5.2 Replaced all text properties with a TextStyle object
  */
 class TableColumnStyleBuilder {
 	private String sColumnWidth;
@@ -69,7 +69,7 @@ class TableColumnStyleBuilder {
 		this.sColumnWidth = sWidth;
 		return this;
 	}
-	
+
 	public TableColumnStyleBuilder name(String sName) {
 		this.sName = sName;
 		return this;
@@ -77,6 +77,6 @@ class TableColumnStyleBuilder {
 
 	public TableColumnStyle build() {
 		return new TableColumnStyle(this.sName, this.sColumnWidth);
-		
+
 	}
 }

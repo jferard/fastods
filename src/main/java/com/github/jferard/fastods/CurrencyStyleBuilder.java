@@ -63,9 +63,8 @@ class CurrencyStyleBuilder {
 
 		return new CurrencyStyle(this.sName, this.sCurrencySymbol,
 				this.sNegativeValueColor, this.sLanguage, this.sCountry,
-				this.nDecimalPlaces, this.nMinIntegerDigits,
-				this.bGrouping, this.bVolatile, this.bNegativeValuesRed,
-				this.currencyPosition);
+				this.nDecimalPlaces, this.nMinIntegerDigits, this.bGrouping,
+				this.bVolatile, this.bNegativeValuesRed, this.currencyPosition);
 	}
 
 	/**
@@ -96,7 +95,8 @@ class CurrencyStyleBuilder {
 	 * 
 	 * @param symbolPosition
 	 */
-	public CurrencyStyleBuilder currencySymbolPosition(SymbolPosition symbolPosition) {
+	public CurrencyStyleBuilder currencySymbolPosition(
+			SymbolPosition symbolPosition) {
 		this.currencyPosition = symbolPosition;
 		return this;
 	}

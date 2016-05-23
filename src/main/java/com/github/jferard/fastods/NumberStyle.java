@@ -41,8 +41,8 @@ public class NumberStyle implements NamedObject {
 	public static enum Type {
 		NORMAL, SCIENTIFIC, FRACTION, PERCENTAGE;
 	}
-	
-	public static Type DEFAULT_TYPE = Type.NORMAL;
+
+	public static final Type DEFAULT_TYPE = Type.NORMAL;
 
 	public static NumberStyleBuilder builder() {
 		return new NumberStyleBuilder();
@@ -197,10 +197,11 @@ public class NumberStyle implements NamedObject {
 		}
 		if (this.bVolatile)
 			appendable.append(" style:volatile=\"true\"");
-		
+
 		appendable.append(">");
 		this.appendNumberType(util, appendable);
-		util.appendAttribute(appendable, "number:min-integer-digits", this.nMinIntegerDigits);
+		util.appendAttribute(appendable, "number:min-integer-digits",
+				this.nMinIntegerDigits);
 
 		if (this.bGrouping) {
 			util.appendAttribute(appendable, "number:grouping", this.bGrouping);
@@ -227,23 +228,28 @@ public class NumberStyle implements NamedObject {
 			}
 
 			util.appendAttribute(appendable, "style:name", this.sName);
-			
+
 			if (this.sLanguage.length() > 0) {
-				util.appendAttribute(appendable, "number:language", this.sLanguage);
+				util.appendAttribute(appendable, "number:language",
+						this.sLanguage);
 			}
 			if (this.sCountry.length() > 0) {
-				util.appendAttribute(appendable, "number:country", this.sCountry);
+				util.appendAttribute(appendable, "number:country",
+						this.sCountry);
 			}
 			appendable.append(">");
 			appendable.append("<style:text-properties");
-			util.appendAttribute(appendable, "fo:color", this.sNegativeValueColor);
+			util.appendAttribute(appendable, "fo:color",
+					this.sNegativeValueColor);
 			appendable.append("/>");
 			appendable.append("<number:text>-</number:text>");
 
 			this.appendNumberType(util, appendable);
-			util.appendAttribute(appendable, "number:min-integer-digits", this.nMinIntegerDigits);
+			util.appendAttribute(appendable, "number:min-integer-digits",
+					this.nMinIntegerDigits);
 			if (this.bGrouping) {
-				util.appendAttribute(appendable, "number:grouping", this.bGrouping);
+				util.appendAttribute(appendable, "number:grouping",
+						this.bGrouping);
 			}
 			appendable.append("/>");
 
@@ -251,9 +257,9 @@ public class NumberStyle implements NamedObject {
 				appendable.append("<number:text>%</number:text>");
 			}
 
-			appendable
-					.append("<style:map style:condition=\"value()&gt;=0\"");
-			util.appendAttribute(appendable, "style:apply-style-name", this.sName+"nn");
+			appendable.append("<style:map style:condition=\"value()&gt;=0\"");
+			util.appendAttribute(appendable, "style:apply-style-name",
+					this.sName + "nn");
 			appendable.append("/>");
 
 			if (this.numberType == Type.PERCENTAGE) {
@@ -270,26 +276,32 @@ public class NumberStyle implements NamedObject {
 	 * 
 	 * @param appendable
 	 *            The StringBuilder to which the number format is appended.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	private void appendNumberType(Util util, final Appendable appendable) throws IOException {
+	private void appendNumberType(Util util, final Appendable appendable)
+			throws IOException {
 
 		switch (this.numberType) {
 		case SCIENTIFIC:
 			appendable.append("<number:scientific-number");
-			util.appendAttribute(appendable, "number:min-exponent-digits", this.nMinExponentDigits);
-			util.appendAttribute(appendable, "number:decimal-places", this.nDecimalPlaces);
+			util.appendAttribute(appendable, "number:min-exponent-digits",
+					this.nMinExponentDigits);
+			util.appendAttribute(appendable, "number:decimal-places",
+					this.nDecimalPlaces);
 			break;
 		case FRACTION:
 			appendable.append("<number:fraction");
-			util.appendAttribute(appendable, "number:min-numerator-digits", this.nMinNumeratorDigits);
-			util.appendAttribute(appendable, "number:min-denominator-digits", this.nMinDenominatorDigits);
+			util.appendAttribute(appendable, "number:min-numerator-digits",
+					this.nMinNumeratorDigits);
+			util.appendAttribute(appendable, "number:min-denominator-digits",
+					this.nMinDenominatorDigits);
 			//$FALL-THROUGH$
 		case NORMAL:
 		case PERCENTAGE:
 		default:
 			appendable.append("<number:number");
-			util.appendAttribute(appendable, "number:decimal-places", this.nDecimalPlaces);
+			util.appendAttribute(appendable, "number:decimal-places",
+					this.nDecimalPlaces);
 			break;
 		}
 

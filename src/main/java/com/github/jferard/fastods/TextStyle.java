@@ -36,15 +36,10 @@ import java.io.IOException;
 public class TextStyle implements NamedObject, XMLAppendable {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
-		NONE("none"),
-		SOLID("solid"),
-		DOTTED("dotted"),
-		DASH("dash"),
-		LONGDASH("long-dash"),
-		DOTDASH("dot-dash"),
-		DOTDOTDASH("dot-dot-dash"),
-		WAVE("wave");
-		
+		NONE("none"), SOLID("solid"), DOTTED("dotted"), DASH("dash"), LONGDASH(
+				"long-dash"), DOTDASH(
+						"dot-dash"), DOTDOTDASH("dot-dot-dash"), WAVE("wave");
+
 		private final String attrValue;
 
 		private Underline(String attrValue) {
@@ -151,6 +146,7 @@ public class TextStyle implements NamedObject, XMLAppendable {
 	 * 
 	 * @return The text style name
 	 */
+	@Override
 	public String getName() {
 		return this.sName;
 	}
