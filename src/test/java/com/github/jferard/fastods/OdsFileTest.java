@@ -40,7 +40,6 @@ public class OdsFileTest {
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		// Load the file.
 		OdsFile file = new OdsFile("5columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
