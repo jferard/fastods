@@ -1,7 +1,6 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -11,5 +10,14 @@ import java.io.Writer;
  *         This file BorderAttribute.java is part of FastODS.
  */
 public interface XMLAppendable {
+	/**
+	 * Appends XML code to the Appendable, using Util.
+	 * 
+	 * @param util
+	 *            the Util instance
+	 * @param appendable
+	 *            the Appendable object
+	 * @throws IOException
+	 */
 	void appendXML(Util util, Appendable appendable) throws IOException;
 }

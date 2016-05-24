@@ -101,9 +101,8 @@ public class Table implements NamedObject, XMLAppendable {
 		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue",
 				"int", "60");
 
-		this.qColumnStyles = new LinkedList<TableColumnStyle>();
-		this.qTableRows = new LinkedList<TableRow>();
-		
+		this.qColumnStyles = FullList.newList();
+		this.qTableRows = FullList.newList();
 	}
 
 	/**
@@ -384,31 +383,31 @@ public class Table implements NamedObject, XMLAppendable {
 
 				if (ts0 == null) {
 					sSytle0 = "co1";
-					sDefaultCellSytle1 = "Default";
+					sDefaultCellSytle0 = "Default";
 				} else {
 					sSytle0 = ts0.getName();
-					sDefaultCellSytle1 = ts0.getDefaultCellStyle();
+					sDefaultCellSytle0 = ts0.getDefaultCellStyle();
 				}
 				if (ts1 == null) {
 					sSytle1 = "co1";
-					sDefaultCellSytle0 = "Default";
+					sDefaultCellSytle1 = "Default";
 				} else {
 					sSytle1 = ts1.getName();
-					sDefaultCellSytle0 = ts1.getDefaultCellStyle();
+					sDefaultCellSytle1 = ts1.getDefaultCellStyle();
 				}
 
 				if (sSytle0.equalsIgnoreCase(sSytle1)) {
 					nCount++;
 				} else {
 					Table.appendColumnStyle(appendable, util, sSytle0,
-							sDefaultCellSytle1, nCount);
+							sDefaultCellSytle0, nCount);
 
 					nCount = 1;
 				}
 
 			}
 			Table.appendColumnStyle(appendable, util, sSytle1,
-					sDefaultCellSytle0, nCount);
+					sDefaultCellSytle1, nCount);
 
 		}
 	}

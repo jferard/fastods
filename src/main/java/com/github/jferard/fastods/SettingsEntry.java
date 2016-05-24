@@ -1,128 +1,199 @@
+/*
+ * FastODS - a Martin Schulz's SimpleODS fork
+ *    Copyright (C) 2016 J. Férard
+ * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
+ *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
+/**
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ *
+ *         This file SettingsEntry.java is part of FastODS.
  * 
  * WHERE ? settings.xml/office:document-settings
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class SettingsEntry implements OdsEntry {
 	// ViewSettings
-	private ConfigItem VisibleAreaTop = new ConfigItem("VisibleAreaTop", "int",
-			"0");
-	private ConfigItem VisibleAreaLeft = new ConfigItem("VisibleAreaLeft",
-			"int", "0");
-	private ConfigItem VisibleAreaWidth = new ConfigItem("VisibleAreaWidth",
-			"int", "680");
-	private ConfigItem VisibleAreaHeight = new ConfigItem("VisibleAreaHeight",
-			"int", "400");
+	private final ConfigItem visibleAreaTop;
+	private final ConfigItem visibleAreaLeft;
+	private final ConfigItem visibleAreaWidth;
+	private final ConfigItem visibleAreaHeight;
 
 	// ViewIdSettings
-	private ConfigItem ViewIdActiveTable = new ConfigItem("ActiveTable",
-			"string", "Tab1");
-	private ConfigItem ViewIdHorizontalScrollbarWidth = new ConfigItem(
-			"ViewIdHorizontalScrollbarWidth", "int", "270");
-	private ConfigItem ViewIdZoomType = new ConfigItem("ViewIdZoomType",
-			"short", "0");
-	private ConfigItem ViewIdZoomValue = new ConfigItem("ViewIdZoomValue",
-			"int", "100");
-	private ConfigItem ViewIdPageViewZoomValue = new ConfigItem(
-			"ViewIdPageViewZoomValue", "int", "60");
-	private ConfigItem ViewIdShowPageBreakPreview = new ConfigItem(
-			"ViewIdShowPageBreakPreview", "boolean", "false");
-	private ConfigItem ViewIdShowZeroValues = new ConfigItem(
-			"ViewIdShowZeroValues", "boolean", "true");
-	private ConfigItem ViewIdShowNotes = new ConfigItem("ViewIdShowNotes",
-			"boolean", "true");
-	private ConfigItem ViewIdShowGrid = new ConfigItem("ViewIdShowGrid",
-			"boolean", "true");
-	private ConfigItem ViewIdGridColor = new ConfigItem("ViewIdGridColor",
-			"long", "12632256");
-	private ConfigItem ViewIdShowPageBreaks = new ConfigItem(
-			"ViewIdShowPageBreaks", "boolean", "true");
-	private ConfigItem ViewIdHasColumnRowHeaders = new ConfigItem(
-			"ViewIdHasColumnRowHeaders", "boolean", "true");
-	private ConfigItem ViewIdHasSheetTabs = new ConfigItem("ViewIdHasSheetTabs",
-			"boolean", "true");
-	private ConfigItem ViewIdIsOutlineSymbolsSet = new ConfigItem(
-			"ViewIdIsOutlineSymbolsSet", "boolean", "true");
-	private ConfigItem ViewIdIsSnapToRaster = new ConfigItem(
-			"ViewIdIsSnapToRaster", "boolean", "false");
-	private ConfigItem ViewIdRasterIsVisible = new ConfigItem(
-			"ViewIdRasterIsVisible", "boolean", "false");
-	private ConfigItem ViewIdRasterResolutionX = new ConfigItem(
-			"ViewIdRasterResolutionX", "int", "1000");
-	private ConfigItem ViewIdRasterResolutionY = new ConfigItem(
-			"ViewIdRasterResolutionY", "int", "1000");
-	private ConfigItem ViewIdRasterSubdivisionX = new ConfigItem(
-			"ViewIdRasterSubdivisionX", "int", "1");
-	private ConfigItem ViewIdRasterSubdivisionY = new ConfigItem(
-			"ViewIdRasterSubdivisionY", "int", "1");
-	private ConfigItem ViewIdIsRasterAxisSynchronized = new ConfigItem(
-			"ViewIdIsRasterAxisSynchronized", "boolean", "true");
+	private ConfigItem viewIdActiveTable;
+	private final ConfigItem viewIdHorizontalScrollbarWidth;
+	private final ConfigItem viewIdZoomType;
+	private final ConfigItem viewIdZoomValue;
+	private final ConfigItem viewIdPageViewZoomValue;
+	private final ConfigItem viewIdShowPageBreakPreview;
+	private final ConfigItem viewIdShowZeroValues;
+	private final ConfigItem viewIdShowNotes;
+	private final ConfigItem viewIdShowGrid;
+	private final ConfigItem viewIdGridColor;
+	private final ConfigItem viewIdShowPageBreaks;
+	private final ConfigItem viewIdHasColumnRowHeaders;
+	private final ConfigItem viewIdHasSheetTabs;
+	private final ConfigItem viewIdIsOutlineSymbolsSet;
+	private final ConfigItem viewIdIsSnapToRaster;
+	private final ConfigItem viewIdRasterIsVisible;
+	private final ConfigItem viewIdRasterResolutionX;
+	private final ConfigItem viewIdRasterResolutionY;
+	private final ConfigItem viewIdRasterSubdivisionX;
+	private final ConfigItem viewIdRasterSubdivisionY;
+	private final ConfigItem viewIdIsRasterAxisSynchronized;
 
 	// ConfigurationSettings
-	private ConfigItem ShowZeroValues = new ConfigItem("ShowZeroValues",
-			"boolean", "true");
-	private ConfigItem ShowNotes = new ConfigItem("ShowNotes", "boolean",
-			"true");
-	private ConfigItem ShowGrid = new ConfigItem("ShowGrid", "boolean", "true");
-	private ConfigItem GridColor = new ConfigItem("GridColor", "long",
-			"12632256");
-	private ConfigItem ShowPageBreaks = new ConfigItem("ShowPageBreaks",
-			"boolean", "true");
-	private ConfigItem LinkUpdateMode = new ConfigItem("LinkUpdateMode",
-			"short", "3");
-	private ConfigItem HasColumnRowHeaders = new ConfigItem(
-			"HasColumnRowHeaders", "boolean", "true");
-	private ConfigItem HasSheetTabs = new ConfigItem("HasSheetTabs", "boolean",
-			"true");
-	private ConfigItem IsOutlineSymbolsSet = new ConfigItem(
-			"IsOutlineSymbolsSet", "boolean", "true");
-	private ConfigItem IsSnapToRaster = new ConfigItem("IsSnapToRaster",
-			"boolean", "false");
-	private ConfigItem RasterIsVisible = new ConfigItem("RasterIsVisible",
-			"boolean", "false");
-	private ConfigItem RasterResolutionX = new ConfigItem("RasterResolutionX",
-			"int", "1000");
-	private ConfigItem RasterResolutionY = new ConfigItem("RasterResolutionY",
-			"int", "1000");
-	private ConfigItem RasterSubdivisionX = new ConfigItem("RasterSubdivisionX",
-			"int", "1");
-	private ConfigItem RasterSubdivisionY = new ConfigItem("RasterSubdivisionY",
-			"int", "1");
-	private ConfigItem IsRasterAxisSynchronized = new ConfigItem(
-			"IsRasterAxisSynchronized", "boolean", "true");
-	private ConfigItem AutoCalculate = new ConfigItem("AutoCalculate",
-			"boolean", "true");
-	private ConfigItem PrinterName = new ConfigItem("PrinterName", "string",
-			"");
-	private ConfigItem PrinterSetup = new ConfigItem("PrinterSetup",
-			"base64Binary", "");
-	private ConfigItem ApplyUserData = new ConfigItem("ApplyUserData",
-			"boolean", "true");
-	private ConfigItem CharacterCompressionType = new ConfigItem(
-			"CharacterCompressionType", "short", "0");
-	private ConfigItem IsKernAsianPunctuation = new ConfigItem(
-			"IsKernAsianPunctuation", "boolean", "false");
-	private ConfigItem SaveVersionOnClose = new ConfigItem("SaveVersionOnClose",
-			"boolean", "false");
-	private ConfigItem UpdateFromTemplate = new ConfigItem("UpdateFromTemplate",
-			"boolean", "true");
-	private ConfigItem AllowPrintJobCancel = new ConfigItem(
-			"AllowPrintJobCancel", "boolean", "true");
-	private ConfigItem LoadReadonly = new ConfigItem("LoadReadonly", "boolean",
-			"false");
+	private final ConfigItem showZeroValues;
+	private final ConfigItem showNotes;
+	private final ConfigItem showGrid;
+	private final ConfigItem gridColor;
+	private final ConfigItem showPageBreaks;
+	private final ConfigItem linkUpdateMode;
+	private final ConfigItem hasColumnRowHeaders;
+	private final ConfigItem hasSheetTabs;
+	private final ConfigItem isOutlineSymbolsSet;
+	private final ConfigItem isSnapToRaster;
+	private final ConfigItem rasterIsVisible;
+	private final ConfigItem rasterResolutionX;
+	private final ConfigItem rasterResolutionY;
+	private final ConfigItem rasterSubdivisionX;
+	private final ConfigItem rasterSubdivisionY;
+	private final ConfigItem isRasterAxisSynchronized;
+	private final ConfigItem autoCalculate;
+	private final ConfigItem printerName;
+	private final ConfigItem printerSetup;
+	private final ConfigItem applyUserData;
+	private final ConfigItem characterCompressionType;
+	private final ConfigItem isKernAsianPunctuation;
+	private final ConfigItem saveVersionOnClose;
+	private final ConfigItem updateFromTemplate;
+	private final ConfigItem allowPrintJobCancel;
+	private final ConfigItem loadReadonly;
 
-	private List<String> tableConfigs = new LinkedList<String>();
+//	private final List<String> tableConfigs;
 	private List<Table> tables;
 
-	public SettingsEntry(List<Table> tables) {
+	public SettingsEntry() {
+		this.tables = Collections.emptyList();
+		this.visibleAreaTop = new ConfigItem("VisibleAreaTop", "int", "0");
+		this.visibleAreaLeft = new ConfigItem("VisibleAreaLeft", "int", "0");
+		this.visibleAreaWidth = new ConfigItem("VisibleAreaWidth", "int",
+				"680");
+		this.visibleAreaHeight = new ConfigItem("VisibleAreaHeight", "int",
+				"400");
+		this.viewIdActiveTable = new ConfigItem("ActiveTable", "string",
+				"Tab1");
+		this.viewIdHorizontalScrollbarWidth = new ConfigItem(
+				"ViewIdHorizontalScrollbarWidth", "int", "270");
+		this.viewIdZoomType = new ConfigItem("ViewIdZoomType", "short", "0");
+		this.viewIdZoomValue = new ConfigItem("ViewIdZoomValue", "int", "100");
+		this.viewIdPageViewZoomValue = new ConfigItem("ViewIdPageViewZoomValue",
+				"int", "60");
+		this.viewIdShowPageBreakPreview = new ConfigItem(
+				"ViewIdShowPageBreakPreview", "boolean", "false");
+		this.viewIdShowZeroValues = new ConfigItem("ViewIdShowZeroValues",
+				"boolean", "true");
+		this.viewIdShowNotes = new ConfigItem("ViewIdShowNotes", "boolean",
+				"true");
+		this.viewIdShowGrid = new ConfigItem("ViewIdShowGrid", "boolean",
+				"true");
+		this.viewIdGridColor = new ConfigItem("ViewIdGridColor", "long",
+				"12632256");
+		this.viewIdShowPageBreaks = new ConfigItem("ViewIdShowPageBreaks",
+				"boolean", "true");
+		this.viewIdHasColumnRowHeaders = new ConfigItem(
+				"ViewIdHasColumnRowHeaders", "boolean", "true");
+		this.viewIdHasSheetTabs = new ConfigItem("ViewIdHasSheetTabs",
+				"boolean", "true");
+		this.viewIdIsOutlineSymbolsSet = new ConfigItem(
+				"ViewIdIsOutlineSymbolsSet", "boolean", "true");
+		this.viewIdIsSnapToRaster = new ConfigItem("ViewIdIsSnapToRaster",
+				"boolean", "false");
+		this.viewIdRasterIsVisible = new ConfigItem("ViewIdRasterIsVisible",
+				"boolean", "false");
+		this.viewIdRasterResolutionX = new ConfigItem("ViewIdRasterResolutionX",
+				"int", "1000");
+		this.viewIdRasterResolutionY = new ConfigItem("ViewIdRasterResolutionY",
+				"int", "1000");
+		this.viewIdRasterSubdivisionX = new ConfigItem(
+				"ViewIdRasterSubdivisionX", "int", "1");
+		this.viewIdRasterSubdivisionY = new ConfigItem(
+				"ViewIdRasterSubdivisionY", "int", "1");
+		this.viewIdIsRasterAxisSynchronized = new ConfigItem(
+				"ViewIdIsRasterAxisSynchronized", "boolean", "true");
+		this.showZeroValues = new ConfigItem("ShowZeroValues", "boolean",
+				"true");
+		this.showNotes = new ConfigItem("ShowNotes", "boolean", "true");
+		this.showGrid = new ConfigItem("ShowGrid", "boolean", "true");
+		this.gridColor = new ConfigItem("GridColor", "long", "12632256");
+		this.showPageBreaks = new ConfigItem("ShowPageBreaks", "boolean",
+				"true");
+		this.linkUpdateMode = new ConfigItem("LinkUpdateMode", "short", "3");
+		this.hasColumnRowHeaders = new ConfigItem("HasColumnRowHeaders",
+				"boolean", "true");
+		this.hasSheetTabs = new ConfigItem("HasSheetTabs", "boolean", "true");
+		this.isOutlineSymbolsSet = new ConfigItem("IsOutlineSymbolsSet",
+				"boolean", "true");
+		this.isSnapToRaster = new ConfigItem("IsSnapToRaster", "boolean",
+				"false");
+		this.rasterIsVisible = new ConfigItem("RasterIsVisible", "boolean",
+				"false");
+		this.rasterResolutionX = new ConfigItem("RasterResolutionX", "int",
+				"1000");
+		this.rasterResolutionY = new ConfigItem("RasterResolutionY", "int",
+				"1000");
+		this.rasterSubdivisionX = new ConfigItem("RasterSubdivisionX", "int",
+				"1");
+		this.rasterSubdivisionY = new ConfigItem("RasterSubdivisionY", "int",
+				"1");
+		this.isRasterAxisSynchronized = new ConfigItem(
+				"IsRasterAxisSynchronized", "boolean", "true");
+		this.autoCalculate = new ConfigItem("AutoCalculate", "boolean", "true");
+		this.printerName = new ConfigItem("PrinterName", "string", "");
+		this.printerSetup = new ConfigItem("PrinterSetup", "base64Binary", "");
+		this.applyUserData = new ConfigItem("ApplyUserData", "boolean", "true");
+		this.characterCompressionType = new ConfigItem(
+				"CharacterCompressionType", "short", "0");
+		this.isKernAsianPunctuation = new ConfigItem("IsKernAsianPunctuation",
+				"boolean", "false");
+		this.saveVersionOnClose = new ConfigItem("SaveVersionOnClose",
+				"boolean", "false");
+		this.updateFromTemplate = new ConfigItem("UpdateFromTemplate",
+				"boolean", "true");
+		this.allowPrintJobCancel = new ConfigItem("AllowPrintJobCancel",
+				"boolean", "true");
+		this.loadReadonly = new ConfigItem("LoadReadonly", "boolean", "false");
+//		this.tableConfigs = new LinkedList<String>();
+	}
+	
+	public void setTables(List<Table> tables) {
 		this.tables = tables;
 	}
 
@@ -135,7 +206,7 @@ public class SettingsEntry implements OdsEntry {
 	 *            first table is shown
 	 */
 	public void setActiveTable(final String sName) {
-		this.ViewIdActiveTable = new ConfigItem("ActiveTable", "string", sName);
+		this.viewIdActiveTable = new ConfigItem("ActiveTable", "string", sName);
 	}
 
 	@Override
@@ -149,10 +220,10 @@ public class SettingsEntry implements OdsEntry {
 		writer.write("<office:settings>");
 		writer.write(
 				"<settingsEntry:settingsEntry-item-set settingsEntry:name=\"ooo:view-settings\">");
-		this.VisibleAreaTop.appendXML(util, writer);
-		this.VisibleAreaLeft.appendXML(util, writer);
-		this.VisibleAreaWidth.appendXML(util, writer);
-		this.VisibleAreaHeight.appendXML(util, writer);
+		this.visibleAreaTop.appendXML(util, writer);
+		this.visibleAreaLeft.appendXML(util, writer);
+		this.visibleAreaWidth.appendXML(util, writer);
+		this.visibleAreaHeight.appendXML(util, writer);
 		writer.write(
 				"<settingsEntry:settingsEntry-item-map-indexed settingsEntry:name=\"Views\">");
 		writer.write("<settingsEntry:settingsEntry-item-map-entry>");
@@ -165,59 +236,59 @@ public class SettingsEntry implements OdsEntry {
 			t.appendXMLConfig(util, writer);
 
 		writer.write("</settingsEntry:settingsEntry-item-map-named>");
-		this.ViewIdActiveTable.appendXML(util, writer);
-		this.ViewIdHorizontalScrollbarWidth.appendXML(util, writer);
-		this.ViewIdPageViewZoomValue.appendXML(util, writer);
-		this.ViewIdZoomType.appendXML(util, writer);
-		this.ViewIdZoomValue.appendXML(util, writer);
-		this.ViewIdShowPageBreakPreview.appendXML(util, writer);
-		this.ViewIdShowZeroValues.appendXML(util, writer);
-		this.ViewIdShowNotes.appendXML(util, writer);
-		this.ViewIdShowGrid.appendXML(util, writer);
-		this.ViewIdGridColor.appendXML(util, writer);
-		this.ViewIdShowPageBreaks.appendXML(util, writer);
-		this.ViewIdHasColumnRowHeaders.appendXML(util, writer);
-		this.ViewIdIsOutlineSymbolsSet.appendXML(util, writer);
-		this.ViewIdHasSheetTabs.appendXML(util, writer);
-		this.ViewIdIsSnapToRaster.appendXML(util, writer);
-		this.ViewIdRasterIsVisible.appendXML(util, writer);
-		this.ViewIdRasterResolutionX.appendXML(util, writer);
-		this.ViewIdRasterResolutionY.appendXML(util, writer);
-		this.ViewIdRasterSubdivisionX.appendXML(util, writer);
+		this.viewIdActiveTable.appendXML(util, writer);
+		this.viewIdHorizontalScrollbarWidth.appendXML(util, writer);
+		this.viewIdPageViewZoomValue.appendXML(util, writer);
+		this.viewIdZoomType.appendXML(util, writer);
+		this.viewIdZoomValue.appendXML(util, writer);
+		this.viewIdShowPageBreakPreview.appendXML(util, writer);
+		this.viewIdShowZeroValues.appendXML(util, writer);
+		this.viewIdShowNotes.appendXML(util, writer);
+		this.viewIdShowGrid.appendXML(util, writer);
+		this.viewIdGridColor.appendXML(util, writer);
+		this.viewIdShowPageBreaks.appendXML(util, writer);
+		this.viewIdHasColumnRowHeaders.appendXML(util, writer);
+		this.viewIdIsOutlineSymbolsSet.appendXML(util, writer);
+		this.viewIdHasSheetTabs.appendXML(util, writer);
+		this.viewIdIsSnapToRaster.appendXML(util, writer);
+		this.viewIdRasterIsVisible.appendXML(util, writer);
+		this.viewIdRasterResolutionX.appendXML(util, writer);
+		this.viewIdRasterResolutionY.appendXML(util, writer);
+		this.viewIdRasterSubdivisionX.appendXML(util, writer);
 
-		this.ViewIdRasterSubdivisionY.appendXML(util, writer);
-		this.ViewIdIsRasterAxisSynchronized.appendXML(util, writer);
+		this.viewIdRasterSubdivisionY.appendXML(util, writer);
+		this.viewIdIsRasterAxisSynchronized.appendXML(util, writer);
 		writer.write("</settingsEntry:settingsEntry-item-map-entry>");
 		writer.write("</settingsEntry:settingsEntry-item-map-indexed>");
 		writer.write("</settingsEntry:settingsEntry-item-set>");
 		writer.write(
 				"<settingsEntry:settingsEntry-item-set settingsEntry:name=\"ooo:configuration-settings\">");
-		this.ShowZeroValues.appendXML(util, writer);
-		this.ShowNotes.appendXML(util, writer);
-		this.ShowGrid.appendXML(util, writer);
-		this.GridColor.appendXML(util, writer);
-		this.ShowPageBreaks.appendXML(util, writer);
-		this.LinkUpdateMode.appendXML(util, writer);
-		this.HasColumnRowHeaders.appendXML(util, writer);
-		this.HasSheetTabs.appendXML(util, writer);
-		this.IsOutlineSymbolsSet.appendXML(util, writer);
-		this.IsSnapToRaster.appendXML(util, writer);
-		this.RasterIsVisible.appendXML(util, writer);
-		this.RasterResolutionX.appendXML(util, writer);
-		this.RasterResolutionY.appendXML(util, writer);
-		this.RasterSubdivisionX.appendXML(util, writer);
-		this.RasterSubdivisionY.appendXML(util, writer);
-		this.IsRasterAxisSynchronized.appendXML(util, writer);
-		this.AutoCalculate.appendXML(util, writer);
-		this.PrinterName.appendXML(util, writer);
-		this.PrinterSetup.appendXML(util, writer);
-		this.ApplyUserData.appendXML(util, writer);
-		this.CharacterCompressionType.appendXML(util, writer);
-		this.IsKernAsianPunctuation.appendXML(util, writer);
-		this.SaveVersionOnClose.appendXML(util, writer);
-		this.UpdateFromTemplate.appendXML(util, writer);
-		this.AllowPrintJobCancel.appendXML(util, writer);
-		this.LoadReadonly.appendXML(util, writer);
+		this.showZeroValues.appendXML(util, writer);
+		this.showNotes.appendXML(util, writer);
+		this.showGrid.appendXML(util, writer);
+		this.gridColor.appendXML(util, writer);
+		this.showPageBreaks.appendXML(util, writer);
+		this.linkUpdateMode.appendXML(util, writer);
+		this.hasColumnRowHeaders.appendXML(util, writer);
+		this.hasSheetTabs.appendXML(util, writer);
+		this.isOutlineSymbolsSet.appendXML(util, writer);
+		this.isSnapToRaster.appendXML(util, writer);
+		this.rasterIsVisible.appendXML(util, writer);
+		this.rasterResolutionX.appendXML(util, writer);
+		this.rasterResolutionY.appendXML(util, writer);
+		this.rasterSubdivisionX.appendXML(util, writer);
+		this.rasterSubdivisionY.appendXML(util, writer);
+		this.isRasterAxisSynchronized.appendXML(util, writer);
+		this.autoCalculate.appendXML(util, writer);
+		this.printerName.appendXML(util, writer);
+		this.printerSetup.appendXML(util, writer);
+		this.applyUserData.appendXML(util, writer);
+		this.characterCompressionType.appendXML(util, writer);
+		this.isKernAsianPunctuation.appendXML(util, writer);
+		this.saveVersionOnClose.appendXML(util, writer);
+		this.updateFromTemplate.appendXML(util, writer);
+		this.allowPrintJobCancel.appendXML(util, writer);
+		this.loadReadonly.appendXML(util, writer);
 		writer.write("</settingsEntry:settingsEntry-item-set>");
 		writer.write("</office:settings>");
 		writer.write("</office:document-settings>");

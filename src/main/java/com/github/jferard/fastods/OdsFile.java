@@ -55,12 +55,13 @@ import com.google.common.base.Optional;
  */
 public class OdsFile {
 	private Util util = Util.getInstance();
+	
 	private String sFilename;
-	private MimetypeEntry mimetypeEntry = new MimetypeEntry();
-	private ManifestEntry manifestEntry = new ManifestEntry();
-	private MetaEntry metaEntry = new MetaEntry();
+	private final MimetypeEntry mimetypeEntry;
+	private final ManifestEntry manifestEntry;
+	private final MetaEntry metaEntry;
 	private FooterHeader header = null;
-	private FooterHeader footerHeader = null;
+	private FooterHeader footer = null;
 	private ContentEntry contentEntry;
 	private StylesEntry stylesEntry;
 	private SettingsEntry settingsEntry;
@@ -74,6 +75,13 @@ public class OdsFile {
 	 */
 	public OdsFile(final String sName) {
 		this.newFile(sName);
+		this.mimetypeEntry = new MimetypeEntry();
+		this.manifestEntry = new ManifestEntry();
+		this.settingsEntry = new SettingsEntry();
+		this.metaEntry = new MetaEntry();
+		this.header = null;
+		this.footer = null;
+		
 		// Add four default stylesEntry to contentEntry
 		TableStyle.builder().name("ta1").build().addToFile(this);
 		TableRowStyle.builder().name("ro1").build().addToFile(this);
@@ -169,13 +177,13 @@ public class OdsFile {
 	}*/
 
 	/**
-	 * Returns the current footerHeader.
+	 * Returns the current footer.
 	 * 
-	 * @return The footerHeader that is currently set , maybe null if no
-	 *         footerHeader was set
+	 * @return The footer that is currently set , maybe null if no
+	 *         footer was set
 	 */
 	public FooterHeader getFooter() {
-		return this.footerHeader;
+		return this.footer;
 	}
 
 	/**
@@ -282,22 +290,13 @@ public class OdsFile {
 	 * @return False, if filename is a directory
 	 */
 	public final boolean newFile(final String sName) {
-
-		try {
-			File f = new File(sName);
-
-			// Check if sName is a directory and abort if YES
-			if (f.isDirectory()) {
-				return false;
-			}
-
-			this.sFilename = sName;
-
-			this.save();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		File f = new File(sName);
+		// Check if sName is a directory and abort if YES
+		if (f.isDirectory()) {
+			return false;
 		}
+		this.sFilename = sName;
+//		this.save();
 
 		return true;
 	}
@@ -327,7 +326,7 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream output) {
-		this.settingsEntry = new SettingsEntry(this.getContent().getTables());
+		this.settingsEntry.setTables(this.getContent().getTables());
 
 		try {
 			ZipOutputStream out = new ZipOutputStream(output);
@@ -884,8 +883,7 @@ public class OdsFile {
 			}
 		}
 
-		throw new FastOdsException(new StringBuilder("Unknown table name [")
-				.append(sTab).append("]").toString());
+		throw FastOdsException.unkownTableName(sTab);
 	}
 
 	/**
@@ -931,8 +929,7 @@ public class OdsFile {
 			}
 		}
 
-		throw new FastOdsException(new StringBuilder("Unknown table name [")
-				.append(sTab).append("]").toString());
+		throw FastOdsException.unkownTableName(sTab);
 	}
 
 	/**
@@ -1196,9 +1193,7 @@ public class OdsFile {
 			}
 		}
 
-		throw new FastOdsException(new StringBuilder("Unknown table name [")
-				.append(sTab).append("], add a table with method addTable(")
-				.append(sTab).append(") first").toString());
+		throw FastOdsException.unkownTableName(sTab);
 	}
 
 	/**
@@ -1228,14 +1223,14 @@ public class OdsFile {
 	}
 
 	/**
-	 * Sets a new footerHeader object, any earlier footerHeader that was set
-	 * will be reset and the new footerHeader is used.
+	 * Sets a new footer object, any earlier footer that was set
+	 * will be reset and the new footer is used.
 	 * 
 	 * @param f
-	 *            - The new footerHeader to be used.
+	 *            - The new footer to be used.
 	 */
 	public void setFooter(final FooterHeader f) {
-		this.footerHeader = f;
+		this.footer = f;
 		getStyles().setFooter(f);
 	}
 
@@ -1294,18 +1289,11 @@ public class OdsFile {
 			throws FastOdsException {
 
 		final ContentEntry contentEntry = this.getContent();
-		ListIterator<Table> iterator = contentEntry.getTables().listIterator();
-		while (iterator.hasNext()) {
-			int n = iterator.nextIndex();
-			Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
-				contentEntry.setColumnStyle(n, nCol, ts);
-				return;
-			}
-		}
-
-		throw new FastOdsException(new StringBuilder("Unknown table name [")
-				.append(sTab).append("]").toString());
+		final Optional<Table> optTab = contentEntry.getTable(sTab);
+		if (optTab.isPresent())
+			contentEntry.setColumnStyle(optTab.get(), nCol, ts);
+		else
+			throw FastOdsException.unkownTableName(sTab);
 	}
 
 }

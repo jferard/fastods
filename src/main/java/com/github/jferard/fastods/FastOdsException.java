@@ -30,11 +30,12 @@ package com.github.jferard.fastods;
 public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-	public FastOdsException(String s) {
-		super(s);
+	public FastOdsException(final String message) {
+		super(message);
 	}
 
-	private FastOdsException() {
+	public static FastOdsException unkownTableName(final String sTab) {
+		return new FastOdsException(new StringBuilder("Unknown table name [")
+				.append(sTab).append(']').toString());
 	}
-
 }

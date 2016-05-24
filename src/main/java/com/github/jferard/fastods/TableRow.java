@@ -44,7 +44,7 @@ public class TableRow implements XMLAppendable {
 		this.nRow = nRow;
 		this.odsFile = odsFile;
 		this.styleName = "ro1";
-		this.qTableCells = new LinkedList<TableCell>();
+		this.qTableCells = FullList.newList();
 	}
 
 	/**

@@ -224,4 +224,8 @@ class ContentEntry implements OdsEntry {
 					.append(nTab).append("]").toString());
 		}
 	}
+
+	public void setColumnStyle(Table table, int nCol, TableColumnStyle ts) throws FastOdsException {
+		table.setColumnStyle(nCol, ts);
+	}
 }
