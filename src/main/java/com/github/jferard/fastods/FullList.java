@@ -65,7 +65,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public int size() {
-		return this.list.size();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -106,8 +106,9 @@ public class FullList<E> implements List<E> {
 	}
 
 	private void removeTrail() {
-		while (this.list.get(this.list.size() - 1) == this.blankElement)
-			this.list.remove(this.list.size() - 1);
+		while (this.list.size() >= 1
+				&& this.list.get(this.list.size() - 1) == this.blankElement)
+			this.list.removeLast();
 	}
 
 	@Override
@@ -134,22 +135,30 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public E set(int index, E element) {
-		if (element == this.blankElement) {
-			if (index < this.list.size())
-				return this.list.set(index, element);
-		} else {
-			if (index <= this.list.size()) {
-				this.addMissingBlanks(index-1);	
-				this.list.add(element);
+		E result;
+		final int lastIndex = this.list.size() - 1;
+		if (index < lastIndex)
+			result = this.list.set(index, element);
+		else if (index == lastIndex) { // last element
+			if (element == this.blankElement) {
+				result = this.list.removeLast();
+				this.removeTrail();
 			} else
-				return this.list.set(index, element);
+				result = this.list.set(index, element);
+		} else {
+			result = this.blankElement;
+			if (element != this.blankElement) {
+				this.addMissingBlanks(index - 1);
+				this.list.add(element);
+			}
 		}
-		return this.blankElement;
+		return result;
 	}
 
-	/** this.list.size() == index */ 
+	/** this.list.size() == index */
 	private void addMissingBlanks(int index) {
-		for (int i = 0; i < this.list.size() - index; i++)
+		final int count = index - this.list.size();
+		for (int i = 0; i < count; i++)
 			this.list.add(this.blankElement);
 	}
 
