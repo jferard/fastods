@@ -35,7 +35,7 @@ import com.google.common.base.Optional;
 public class OdsFileTest {
 
 	@Test
-	public final void test() throws FastOdsException {
+	public final void test50() throws FastOdsException {
 		System.out.println("Filling a 50 rows, 5 columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
@@ -51,18 +51,39 @@ public class OdsFileTest {
 				row.setCell(x, String.valueOf(random.nextInt(1000)));
 				switch (x) {
 				case 1:
-					row.setCellStyle(x, TableCellStyle.builder().name("tcs1").backgroundColor("#00FF00").build());
+					row.setCellStyle(x, TableCellStyle.builder().name("tcs1")
+							.backgroundColor("#00FF00").build());
 					break;
 				case 2:
-					row.setCellStyle(x, TableCellStyle.builder().name("tcs2").fontWeightBold().build());
+					row.setCellStyle(x, TableCellStyle.builder().name("tcs2")
+							.fontWeightBold().build());
 					break;
 				case 3:
-					row.setCellStyle(x, TableCellStyle.builder().name("tcs3").fontWeightItalic().build());
+					row.setCellStyle(x, TableCellStyle.builder().name("tcs3")
+							.fontWeightItalic().build());
 					break;
 				default:
 					break;
 				}
+			}
+		}
+	}
 
+	@Test
+	public final void test100000() throws FastOdsException {
+		System.out.println("Filling a 100000 rows, 300 columns spreadsheet");
+		long t1 = System.currentTimeMillis();
+		final Random random = new Random();
+
+		OdsFile file = new OdsFile("100000columns.ods");
+		Optional<Table> optTable = file.addTable("test");
+		Assert.assertTrue(optTable.isPresent());
+
+		Table table = optTable.get();
+		for (int y = 0; y < 100000; y++) {
+			final TableRow row = table.nextRow();
+			for (int x = 0; x < 300; x++) {
+				row.setCell(x, String.valueOf(random.nextInt(1000)));
 			}
 		}
 

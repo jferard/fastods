@@ -93,7 +93,6 @@ public class OdsFile {
 	/**
 	 * Add a new table to the file, the new table is set to the active table.
 	 * <br>
-	 * A maximum of 256 table per file is supported.<br>
 	 * Use setActiveTable to override the current active table, this has no
 	 * influence to<br>
 	 * the program, the active table is the first table that is shown in
@@ -107,7 +106,6 @@ public class OdsFile {
 	 */
 	public Optional<Table> addTable(final String sName)
 			throws FastOdsException {
-
 		Optional<Table> optTable = this.getContent().addTable(sName);
 		if (optTable.isPresent())
 			this.settingsEntry.setActiveTable(sName);

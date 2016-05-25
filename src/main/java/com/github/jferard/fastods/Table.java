@@ -41,9 +41,6 @@ import com.github.jferard.fastods.TableCell.Type;
  *         table:table
  */
 public class Table implements NamedObject {
-	final static int TABLE_MAXROWNUMBER = 65536;
-	final static int TABLE_MAXCOLUMNNUMBER = 256;
-	
 	private String sName;
 	private String styleName;
 	private int nLastCol; // The highest column in the table TODO: Check if
@@ -110,9 +107,9 @@ public class Table implements NamedObject {
 	 * new one with a default of TableCell.STYLE_STRING and a content of "".
 	 * 
 	 * @param nRow
-	 *            The row (maximal 65536)
+	 *            The row
 	 * @param nCol
-	 *            The column (maximal 256)
+	 *            The column
 	 * @return The TableCell for this position, maybe a new TableCell
 	 */
 	public TableCell getCell(final int nRow, final int nCol) {
@@ -213,9 +210,9 @@ public class Table implements NamedObject {
 	 * Set the value of a cell.
 	 * 
 	 * @param nRow
-	 *            The row (maximal 65536)
+	 *            The row
 	 * @param nCol
-	 *            The column (maximal 256)
+	 *            The column
 	 * @param type
 	 *            The type of the value,
 	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or
@@ -243,9 +240,9 @@ public class Table implements NamedObject {
 	 * Set the value of a cell.
 	 * 
 	 * @param nRow
-	 *            The row (maximal 65536)
+	 *            The row
 	 * @param nCol
-	 *            The column (maximal 256)
+	 *            The column
 	 * @param valuetype
 	 *            The type of the value,
 	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or
@@ -410,11 +407,6 @@ public class Table implements NamedObject {
 	}
 
 	private void checkCol(final int nCol) throws FastOdsException {
-		if (nCol >= Table.TABLE_MAXCOLUMNNUMBER) {
-			throw new FastOdsException(new StringBuilder(
-					"Maximum column number (256) exception, column value:[")
-							.append(nCol).append("]").toString());
-		}
 		if (nCol < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative column number exception, column value:[")
@@ -423,11 +415,6 @@ public class Table implements NamedObject {
 	}
 
 	private void checkRow(final int nRow) throws FastOdsException {
-		if (nRow >= Table.TABLE_MAXROWNUMBER) {
-			throw new FastOdsException(new StringBuilder(
-					"Maximum row number (65536) exception, row value:[")
-							.append(nRow).append("]").toString());
-		}
 		if (nRow < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative row number exception, row value:[").append(nRow)

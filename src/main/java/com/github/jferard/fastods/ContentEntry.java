@@ -75,12 +75,6 @@ class ContentEntry implements OdsEntry {
 	}
 
 	public Optional<Table> getTable(String sName) throws FastOdsException {
-		// Check if we reached the maximum number of tables
-		if (this.qTables.size() >= 256) {
-			throw new FastOdsException(
-					"Maximum table number (256) reached exception");
-		}
-
 		return Util.findElementByName(this.qTables, sName);
 	}
 
