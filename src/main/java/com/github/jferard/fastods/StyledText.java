@@ -34,7 +34,7 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page/style:header/text:p/text:span
  */
-public class StyledText {
+public class StyledText implements XMLAppendable<FooterHeader> {
 
 	private Util u = Util.getInstance();
 
@@ -67,7 +67,8 @@ public class StyledText {
 	 * 
 	 * @throws IOException
 	 */
-	public void appendMasterStyleXML(Util util, Appendable appendable)
+	@Override
+	public void appendXML(Util util, Appendable appendable, FooterHeader where)
 			throws IOException {
 		appendable.append("<text:span");
 		util.appendEAttribute(appendable, "text:style-name", this.ts.getName());

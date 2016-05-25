@@ -32,7 +32,8 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page
  */
-public class PageStyle implements NamedObject {
+public class PageStyle
+		implements NamedObject<AutomaticStyle> {
 	public static enum PaperFormat {
 		A3("42.0cm", "29.7cm"), A4("29.7cm", "21.0cm"), A5("21.0cm",
 				"14.8cm"), LETTER("27.94cm",
@@ -159,16 +160,56 @@ public class PageStyle implements NamedObject {
 	}
 
 	/**
+	 * Return the master-style informations for this PageStyle.
+	 * 
+	 * @return The master style representation for styles.xml
+	 * @throws IOException
+	 */
+	public void appendXML(Util util, Appendable appendable, MasterStyle where)
+			throws IOException {
+		appendable.append("<style:master-page");
+		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
+		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
+		appendable.append("><style:header>");
+		if (this.header == null) {
+			appendable.append("<text:p");
+			appendDefaultFooterHeader(util, appendable, this.sTextStyleHeader,
+					this.sTextHeader);
+		} else {
+			this.header.appendXML(util, appendable, MasterStyle.instance);
+		}
+		appendable.append("</style:header>");
+
+		appendable.append("<style:footer>");
+		if (this.footer == null) {
+			appendDefaultFooterHeader(util, appendable, this.sTextStyleFooter,
+					this.sTextFooter);
+		} else {
+			this.footer.appendXML(util, appendable, MasterStyle.instance);
+		}
+		appendable.append("</style:footer>");
+		appendable.append("</style:master-page>");
+	}
+
+	private void appendDefaultFooterHeader(Util util, Appendable appendable,
+			String sTextStyle, String sText) throws IOException {
+		appendable.append("<text:p");
+		util.appendAttribute(appendable, "text:style-name", sTextStyle);
+		appendable.append(">");
+		appendable.append(util.escapeXMLContent(sText)).append("</text:p>");
+	}
+
+	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 * 
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable,
+			AutomaticStyle where) throws IOException {
 		appendable.append("<style:page-layout");
 		util.appendAttribute(appendable, "style:name", this.sName);
-		appendable.append(">");
-		appendable.append("<style:page-layout-properties");
+		appendable.append("><style:page-layout-properties");
 		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
 		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
 		util.appendAttribute(appendable, "style:num-format", this.sNumFormat);
@@ -183,8 +224,6 @@ public class PageStyle implements NamedObject {
 		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
 		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
 		appendable.append("/>"); // End of page-layout-properties
-
-		appendable.append("<style:header-style />");
 
 		this.addFooterHeaderStyle(appendable, this.header,
 				"style:header-style");
@@ -294,46 +333,5 @@ public class PageStyle implements NamedObject {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.sBackgroundColor);
 		}
-	}
-
-	/**
-	 * Return the master-style informations for this PageStyle.
-	 * 
-	 * @return The master style representation for styles.xml
-	 * @throws IOException
-	 */
-	public void appendMasterStyleXML(Util util, Appendable appendable)
-			throws IOException {
-		appendable.append("<style:master-page");
-		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
-		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
-		appendable.append(">");
-
-		appendable.append("<style:header>");
-		if (this.header == null) {
-			appendable.append("<text:p");
-			util.appendAttribute(appendable, "text:style-name",
-					this.sTextStyleHeader);
-			appendable.append(">");
-			appendable.append(util.escapeXMLContent(this.sTextHeader))
-					.append("</text:p>");
-		} else {
-			this.header.appendMasterStyleXML(util, appendable);
-		}
-		appendable.append("</style:header>");
-
-		appendable.append("<style:footer>");
-		if (this.footer == null) {
-			appendable.append("<text:p");
-			util.appendAttribute(appendable, "text:style-name",
-					this.sTextStyleFooter);
-			appendable.append(">");
-			appendable.append(util.escapeXMLContent(this.sTextFooter))
-					.append("</text:p>");
-		} else {
-			this.footer.appendMasterStyleXML(util, appendable);
-		}
-		appendable.append("</style:footer>");
-		appendable.append("</style:master-page>");
 	}
 }

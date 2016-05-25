@@ -7,9 +7,9 @@ import java.io.IOException;
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file BorderAttribute.java is part of FastODS.
+ *         This file XMLAppendable.java is part of FastODS.
  */
-public interface XMLAppendable {
+public interface XMLAppendable<E> {
 	/**
 	 * Appends XML code to the Appendable, using Util.
 	 * 
@@ -19,5 +19,5 @@ public interface XMLAppendable {
 	 *            the Appendable object
 	 * @throws IOException
 	 */
-	void appendXML(Util util, Appendable appendable) throws IOException;
+	void appendXML(Util util, Appendable appendable, E where) throws IOException;
 }

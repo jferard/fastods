@@ -38,7 +38,7 @@ import java.io.IOException;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-column
  */
-public class TableRowStyle implements NamedObject, XMLAppendable {
+public class TableRowStyle implements NamedObject<ContentEntry> {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
@@ -88,7 +88,7 @@ public class TableRowStyle implements NamedObject, XMLAppendable {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table-row");

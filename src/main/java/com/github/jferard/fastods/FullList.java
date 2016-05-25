@@ -50,7 +50,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public boolean isEmpty() {
-		return false;
+		return this.list.size() == 0;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public int size() {
-		throw new UnsupportedOperationException();
+		return this.list.size();
 	}
 
 	@Override

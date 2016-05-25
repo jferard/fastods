@@ -32,7 +32,7 @@ import com.github.jferard.fastods.PageStyle.WritingMode;
  *         This file PageStyleBuilder.java is part of FastODS.
  *
  */
-public class PageStyleBuilder {
+class PageStyleBuilder {
 	private String sName;
 	private String sMarginTop;
 	private String sMarginBottom;
@@ -263,6 +263,10 @@ public class PageStyleBuilder {
 	}
 
 	public PageStyle build() {
+		if (this.sName == null)
+			throw new IllegalStateException();
+		
+		// TODO : create MarginAttribute and use a EnumMap<MarginAtribute.Position, MarginAttribute>
 		return new PageStyle(this.sName, this.sMarginTop, this.sMarginBottom,
 				this.sMarginLeft, this.sMarginRight, this.sPageWidth,
 				this.sPageHeight, this.sNumFormat, this.sBackgroundColor,

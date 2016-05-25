@@ -178,35 +178,19 @@ public class StylesEntry implements OdsEntry {
 		writer.write("<office:styles>");
 
 		for (DateStyle ds : this.qDateStyles.values())
-			ds.appendXML(util, writer);
+			ds.appendXML(util, writer, this);
 
 		for (NumberStyle ns : this.qNumberStyles.values())
-			ns.appendXML(util, writer);
+			ns.appendXML(util, writer, this);
 
 		for (CurrencyStyle cs : this.qCurrencyStyles.values())
-			cs.appendXML(util, writer);
+			cs.appendXML(util, writer, this);
 
 		if (this.footer != null) {
-			StringBuilder sbTemp = new StringBuilder();
-			sbTemp.append(
-					"<style:style style:name=\"Footer\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
-			sbTemp.append(
-					"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
-			sbTemp.append("</style:paragraph-properties>");
-			sbTemp.append("</style:style>");
-			final String footerXML = sbTemp.toString();
-			writer.write(footerXML);
+			this.appendFooterHeader(util, writer, "Footer");
 		}
 		if (this.header != null) {
-			StringBuilder sbTemp = new StringBuilder();
-			sbTemp.append(
-					"<style:style style:name=\"Header\" style:family=\"paragraph\" style:parent-style-name=\"Standard\"  style:class=\"extra\">");
-			sbTemp.append(
-					"<style:paragraph-properties  text:number-lines=\"false\" text:line-number=\"0\">");
-			sbTemp.append("</style:paragraph-properties>");
-			sbTemp.append("</style:style>");
-			final String headerXML = sbTemp.toString();
-			writer.write(headerXML);
+			StylesEntry.appendFooterHeader(util, writer, "Header");
 		}
 
 		writer.write("</office:styles>");
@@ -223,21 +207,36 @@ public class StylesEntry implements OdsEntry {
 		*/
 
 		for (PageStyle ps : this.qPageStyles.values())
-			ps.appendXML(util, writer);
+			ps.appendXML(util, writer, AutomaticStyle.instance);
 
 		for (TextStyle ts : this.qTextStyles.values())
-			ts.appendXML(util, writer);
+			ts.appendXML(util, writer, AutomaticStyle.instance);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
 		for (PageStyle ps : this.qPageStyles.values())
-			ps.appendMasterStyleXML(util, writer);
+			ps.appendXML(util, writer, MasterStyle.instance);
 
 		writer.write("</office:master-styles>");
 		writer.write("</office:document-styles>");
 		writer.flush();
 		zipOut.closeEntry();
+	}
+
+	private static void appendFooterHeader(Util util, Appendable appendable, String name) throws IOException {
+		appendable.append(
+				"<style:style");
+		util.appendEAttribute(appendable, "style:name", name);
+		util.appendEAttribute(appendable, "style:family", "paragraph");
+		util.appendEAttribute(appendable, "style:parent-style-name", "Standard");
+		util.appendEAttribute(appendable, "style:class", "extra");
+				appendable.append(
+						"><style:paragraph-properties");
+		util.appendAttribute(appendable, "text:number-lines", false);
+		util.appendAttribute(appendable, "text:line-number", 0);
+		appendable.append(
+				"/></style:style>");
 	}
 
 }

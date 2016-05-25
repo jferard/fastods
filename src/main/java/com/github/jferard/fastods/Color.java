@@ -201,12 +201,12 @@ public final class Color {
 	}
 
 	private static String toHexString(final int n) {
-		StringBuilder sbReturn = new StringBuilder();
 		if (n < 0)
 			return "00";
 		if (n > 255)
 			return "ff";
 
+		StringBuilder sbReturn = new StringBuilder();
 		if (n < 16)
 			sbReturn.append('0');
 		sbReturn.append(Integer.toHexString(n));

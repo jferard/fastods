@@ -28,6 +28,6 @@ package com.github.jferard.fastods;
  *         This file NamedObject.java is part of FastODS.
  *
  */
-public interface NamedObject extends XMLAppendable {
+public interface NamedObject<E> extends XMLAppendable<E> {
 	String getName();
 }

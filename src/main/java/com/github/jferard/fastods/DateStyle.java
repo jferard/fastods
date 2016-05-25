@@ -33,7 +33,7 @@ import java.io.IOException;
  *         date-style
  *         styles.xml/office:document-styles/office:styles/number:date-style
  */
-public class DateStyle implements NamedObject {
+public class DateStyle implements NamedObject<StylesEntry> {
 
 	private static final String DOT_SPACE = "<number:text>. </number:text>";
 	private static final String SPACE = "<number:text> </number:text>";
@@ -148,7 +148,8 @@ public class DateStyle implements NamedObject {
 	 * 
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable,
+			StylesEntry where) throws IOException {
 		appendable.append("<number:date-style");
 		util.appendAttribute(appendable, "style:name", this.getName());
 		util.appendAttribute(appendable, "number:automatic-order",

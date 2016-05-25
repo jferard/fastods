@@ -40,7 +40,7 @@ import com.github.jferard.fastods.BorderAttribute.Position;
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style
  */
-public class TableCellStyle implements NamedObject, XMLAppendable {
+public class TableCellStyle implements NamedObject<ContentEntry> {
 	public static enum VerticalAlign {
 		TOP("top"), MIDDLE("middle"), BOTTOM("bottom");
 
@@ -104,24 +104,6 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		odsFile.getContent().addTableStyle(this);
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 * @throws IOException
-	 */
-	public String toXML(Util util) {
-		try {
-			StringBuilder sbTemp = new StringBuilder();
-			this.appendXML(util, sbTemp);
-			return sbTemp.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 	@Override
 	public String getName() {
 		return this.sName;
@@ -131,8 +113,15 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		return new TableCellStyleBuilder();
 	}
 
+	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 * 
+	 * @return The XML string for this object.
+	 * @throws IOException
+	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
@@ -152,7 +141,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		// Add all border styles
 		// -----------------------------------------------
 		for (BorderAttribute bs : this.borderByPosition.values()) {
-			bs.appendXML(util, appendable);
+			bs.appendXML(util, appendable, this);
 		}
 
 		if (this.bWrap)
@@ -165,7 +154,7 @@ public class TableCellStyle implements NamedObject, XMLAppendable {
 		if (this.ts.getFontWeight().length() > 0
 				|| this.ts.getFontSize().length() > 0
 				|| this.ts.getFontColor().length() > 0) {
-			this.ts.appendXML(util, appendable);
+			this.ts.appendXML(util, appendable, this);
 		}
 
 		appendable.append("<style:paragraph-properties");

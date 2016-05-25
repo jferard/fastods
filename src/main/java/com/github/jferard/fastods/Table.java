@@ -40,7 +40,7 @@ import com.github.jferard.fastods.TableCell.Type;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table
  */
-public class Table implements NamedObject, XMLAppendable {
+public class Table implements NamedObject<ContentEntry> {
 	final static int TABLE_MAXROWNUMBER = 65536;
 	final static int TABLE_MAXCOLUMNNUMBER = 256;
 	
@@ -132,27 +132,27 @@ public class Table implements NamedObject, XMLAppendable {
 		return this.qColumnStyles;
 	}
 
-	public void appendXMLConfig(Util util, Appendable appendable)
+	public void appendXML(Util util, Appendable appendable, SettingsEntry where)
 			throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.sName);
 		appendable.append(">");
-		this.cursorPositionX.appendXML(util, appendable);
-		this.cursorPositionY.appendXML(util, appendable);
-		this.horizontalSplitMode.appendXML(util, appendable);
-		this.verticalSplitMode.appendXML(util, appendable);
-		this.horizontalSplitMode.appendXML(util, appendable);
-		this.verticalSplitMode.appendXML(util, appendable);
-		this.horizontalSplitPosition.appendXML(util, appendable);
-		this.verticalSplitPosition.appendXML(util, appendable);
-		this.activeSplitRange.appendXML(util, appendable);
-		this.positionLeft.appendXML(util, appendable);
-		this.positionRight.appendXML(util, appendable);
-		this.positionTop.appendXML(util, appendable);
-		this.positionBottom.appendXML(util, appendable);
-		this.zoomType.appendXML(util, appendable);
-		this.zoomValue.appendXML(util, appendable);
-		this.pageViewZoomValue.appendXML(util, appendable);
+		this.cursorPositionX.appendXML(util, appendable, this);
+		this.cursorPositionY.appendXML(util, appendable, this);
+		this.horizontalSplitMode.appendXML(util, appendable, this);
+		this.verticalSplitMode.appendXML(util, appendable, this);
+		this.horizontalSplitMode.appendXML(util, appendable, this);
+		this.verticalSplitMode.appendXML(util, appendable, this);
+		this.horizontalSplitPosition.appendXML(util, appendable, this);
+		this.verticalSplitPosition.appendXML(util, appendable, this);
+		this.activeSplitRange.appendXML(util, appendable, this);
+		this.positionLeft.appendXML(util, appendable, this);
+		this.positionRight.appendXML(util, appendable, this);
+		this.positionTop.appendXML(util, appendable, this);
+		this.positionBottom.appendXML(util, appendable, this);
+		this.zoomType.appendXML(util, appendable, this);
+		this.zoomValue.appendXML(util, appendable, this);
+		this.pageViewZoomValue.appendXML(util, appendable, this);
 		appendable.append("</config:config-item-map-entry>");
 	}
 
@@ -333,18 +333,15 @@ public class Table implements NamedObject, XMLAppendable {
 			throws IOException {
 		// Loop through all rows
 		for (TableRow tr : this.getRows()) {
-			if (tr != null) {
-				tr.appendXML(util, appendable);
-			} else {
-				// Empty TableRow
-				appendable.append("<table:table-row table:style-name=\"ro1\">");
-				// no toString() here
-				appendable.append("<table:table-cell ");
+			if (tr == null) {
+				appendable.append("<table:table-row");
+				util.appendEAttribute(appendable, "table:style-name", "ro1");
+				appendable.append("><table:table-cell");
 				util.appendAttribute(appendable,
-						"table:number-columns-repeated", this.getLastCol());
-				appendable.append("/>");
-				appendable.append("</table:table-row>");
-			}
+						"table:number-columns-repeated", this.nLastCol);
+				appendable.append("/></table:table-row>");
+			} else
+				tr.appendXML(util, appendable, this);
 		}
 	}
 
@@ -451,7 +448,7 @@ public class Table implements NamedObject, XMLAppendable {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
 		appendable.append("<table:table table:name=\"").append(this.getName())
 				.append("\" table:style-name=\"").append(this.getStyleName())
 				.append("\" table:print=\"false\">");

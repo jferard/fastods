@@ -33,7 +33,7 @@ import java.io.IOException;
  * 
  *         content.xml/office:document-content/office:automatic-styles
  */
-public class TableStyle implements NamedObject, XMLAppendable {
+public class TableStyle implements NamedObject<ContentEntry> {
 	public static TableStyleBuilder builder() {
 		return new TableStyleBuilder();
 	}
@@ -67,7 +67,7 @@ public class TableStyle implements NamedObject, XMLAppendable {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table");

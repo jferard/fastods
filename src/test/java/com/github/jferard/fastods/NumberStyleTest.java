@@ -33,15 +33,30 @@ import org.junit.Test;
 public class NumberStyleTest {
 
 	@Test
-	public final void test() throws IOException {
+	public final void testEmpty() throws IOException {
 		NumberStyle ns = NumberStyle.builder().name("test").build();
 		StringBuilder sb = new StringBuilder();
-		ns.appendXML(Util.getInstance(), sb);
-		Assert.assertEquals(
-				"<number:number-style style:name=\"test\">"
-						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
-						+ "</number:number-style>",
-				sb.toString());
+		ns.appendXML(Util.getInstance(), sb, null);
+		Assert.assertEquals("<number:number-style style:name=\"test\">"
+				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
+				+ "</number:number-style>", sb.toString());
 	}
 
+	@Test
+	public final void testNegative() throws IOException {
+		NumberStyle ns = NumberStyle.builder().name("test").negativeValuesRed(true).build();
+		StringBuilder sb = new StringBuilder();
+		ns.appendXML(Util.getInstance(), sb, null);
+		Assert.assertEquals(
+				"<number:number-style style:name=\"testnn\" style:volatile=\"true\">"+
+				"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"+
+				"</number:number-style>"+
+				"<number:number-style style:name=\"test\">"+
+				"<style:text-properties fo:color=\"#FF0000\"/>"+
+				"<number:text>-</number:text>"+
+				"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"+
+				"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"testnn\"/>"+
+				"</number:number-style>",
+				sb.toString());
+	}
 }

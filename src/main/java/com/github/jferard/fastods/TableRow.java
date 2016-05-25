@@ -34,7 +34,7 @@ import java.util.List;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-row
  */
-public class TableRow implements XMLAppendable {
+public class TableRow implements XMLAppendable<Table> {
 	private String styleName;
 	private List<TableCell> qTableCells;
 	private int nRow;
@@ -155,7 +155,7 @@ public class TableRow implements XMLAppendable {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, Table where) throws IOException {
 		appendable.append("<table:table-row ");
 		util.appendAttribute(appendable, "table:styleName-name",
 				this.getStyleName());
@@ -173,7 +173,7 @@ public class TableRow implements XMLAppendable {
 					appendable.append("/>");
 					nNullFieldCounter = 0;
 				}
-				tc.appendXML(util, appendable);
+				tc.appendXML(util, appendable, this);
 			}
 		}
 		appendable.append("</table:table-row>");

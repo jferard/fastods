@@ -206,7 +206,7 @@ public class FooterHeader {
 		return qStyledText;
 	}
 
-	private void writeRegion(Util util, Appendable appendable,
+	private void appendRegion(Util util, Appendable appendable,
 			List<List<StyledText>> qRegion, final String sRegionName)
 			throws IOException {
 
@@ -228,7 +228,7 @@ public class FooterHeader {
 			} else {
 				// Add all styles and text for this paragraphs
 				for (StyledText st : qStyledText)
-					st.appendMasterStyleXML(util, appendable);
+					st.appendXML(util, appendable, this);
 			}
 
 			appendable.append("</text:p>");
@@ -244,11 +244,11 @@ public class FooterHeader {
 	 * 
 	 * @throws IOException
 	 */
-	public void appendMasterStyleXML(Util util, Appendable appendable)
+	public void appendXML(Util util, Appendable appendable, MasterStyle where)
 			throws IOException {
-		this.writeRegion(util, appendable, this.qLeftRegion, "region-left");
-		this.writeRegion(util, appendable, this.qCenterRegion, "region-center");
-		this.writeRegion(util, appendable, this.qRightRegion, "region-right");
+		this.appendRegion(util, appendable, this.qLeftRegion, "region-left");
+		this.appendRegion(util, appendable, this.qCenterRegion, "region-center");
+		this.appendRegion(util, appendable, this.qRightRegion, "region-right");
 	}
 
 }

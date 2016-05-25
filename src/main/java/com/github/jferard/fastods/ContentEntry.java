@@ -202,14 +202,14 @@ class ContentEntry implements OdsEntry {
 		writer.write("<office:automatic-styles>");
 
 		for (NamedObject ts : this.tableStyleByName.values())
-			ts.appendXML(util, writer);
+			ts.appendXML(util, writer, this);
 
 		writer.write("</office:automatic-styles>");
 
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
 		for (Table tab : this.qTables)
-			tab.appendXML(util, writer);
+			tab.appendXML(util, writer, this);
 		writer.write("</office:spreadsheet>");
 		writer.write("</office:body>");
 		writer.write("</office:document-content>");

@@ -38,7 +38,8 @@ import java.io.IOException;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-column
  */
-public class TableColumnStyle implements NamedObject, XMLAppendable {
+public class TableColumnStyle
+		implements NamedObject<ContentEntry> {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
@@ -64,23 +65,6 @@ public class TableColumnStyle implements NamedObject, XMLAppendable {
 		this.sColumnWidth = sColumnWidth;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 */
-	public String toXML(Util util) {
-		try {
-			StringBuilder sbTemp = new StringBuilder();
-			this.appendXML(util, sbTemp);
-			return sbTemp.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 	@Override
 	public String getName() {
 		return this.sName;
@@ -98,8 +82,15 @@ public class TableColumnStyle implements NamedObject, XMLAppendable {
 		odsFile.getContent().addTableStyle(this);
 	}
 
+	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 * 
+	 * @return The XML string for this object.
+	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, ContentEntry where)
+			throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table-column");
@@ -111,4 +102,10 @@ public class TableColumnStyle implements NamedObject, XMLAppendable {
 		// this.sDefaultCellStyle);
 		appendable.append("/></style:style>");
 	}
+
+	public void appendXML(Util util, Appendable appendable, Table where)
+			throws IOException {
+		// TODO : 9.1.12 <table:table-columns>
+	}
+
 }

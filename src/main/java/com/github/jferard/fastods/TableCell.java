@@ -34,7 +34,7 @@ import java.util.Calendar;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-row/table:table-cell
  */
-public class TableCell implements XMLAppendable {
+public class TableCell implements XMLAppendable<TableRow> {
 	public static enum Type {
 		FLOAT("float"), PERCENTAGE("percentage"), CURRENCY("currency"), DATE(
 				"date"), STRING("string");
@@ -227,7 +227,7 @@ public class TableCell implements XMLAppendable {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, TableRow where) throws IOException {
 		appendable.append("<table:table-cell ");
 		if (this.sStyle.length() > 0) {
 			util.appendAttribute(appendable, "table:style-name",

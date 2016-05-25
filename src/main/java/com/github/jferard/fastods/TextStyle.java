@@ -33,7 +33,7 @@ import java.io.IOException;
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style/style:style
  */
-public class TextStyle implements NamedObject, XMLAppendable {
+public class TextStyle implements NamedObject<Object> {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
 		NONE("none"), SOLID("solid"), DOTTED("dotted"), DASH("dash"), LONGDASH(
@@ -152,72 +152,72 @@ public class TextStyle implements NamedObject, XMLAppendable {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable sbTemp) throws IOException {
+	public void appendXML(Util util, Appendable appendable, Object where) throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
 		if (this.sName.length() > 0) {
-			sbTemp.append("<style:style ");
-			util.appendAttribute(sbTemp, "style:name", this.getName());
-			util.appendEAttribute(sbTemp, "style:family", "text");
-			sbTemp.append(">");
+			appendable.append("<style:style ");
+			util.appendAttribute(appendable, "style:name", this.getName());
+			util.appendEAttribute(appendable, "style:family", "text");
+			appendable.append(">");
 		}
 
 		// First check if any text properties should be added
 
-		sbTemp.append("<style:text-properties ");
+		appendable.append("<style:text-properties ");
 		// Check if the font weight should be added
 		if (this.sFontWeight.length() > 0) {
-			util.appendAttribute(sbTemp, "fo:font-weight", this.sFontWeight);
-			util.appendAttribute(sbTemp, "style:font-weight-asian",
+			util.appendAttribute(appendable, "fo:font-weight", this.sFontWeight);
+			util.appendAttribute(appendable, "style:font-weight-asian",
 					this.sFontWeightAsian);
-			util.appendAttribute(sbTemp, "style:font-weight-complex",
+			util.appendAttribute(appendable, "style:font-weight-complex",
 					this.sFontWeightComplex);
 		}
 		// Check if a font color should be added
 		if (this.sFontColor.length() > 0) {
-			util.appendAttribute(sbTemp, "fo:color", this.sFontColor);
+			util.appendAttribute(appendable, "fo:color", this.sFontColor);
 		}
 		// Check if a font name should be added
 		if (this.sFontName.length() > 0) {
-			util.appendAttribute(sbTemp, "style:font-name", this.sFontName);
+			util.appendAttribute(appendable, "style:font-name", this.sFontName);
 		}
 		// Check if a font size should be added
 		if (this.sFontSize.length() > 0) {
-			util.appendAttribute(sbTemp, "fo:font-size", this.sFontSize);
-			util.appendAttribute(sbTemp, "style:font-size-asian",
+			util.appendAttribute(appendable, "fo:font-size", this.sFontSize);
+			util.appendAttribute(appendable, "style:font-size-asian",
 					this.sFontSizeAsian);
-			util.appendAttribute(sbTemp, "style:font-size-complex",
+			util.appendAttribute(appendable, "style:font-size-complex",
 					this.sFontSizeComplex);
 		}
 
 		if (this.nFontUnderlineStyle != null) {
-			util.appendEAttribute(sbTemp, "style:text-underline-style",
+			util.appendEAttribute(appendable, "style:text-underline-style",
 					this.nFontUnderlineStyle.attrValue);
-			util.appendEAttribute(sbTemp, "style:text-underline-width", "auto");
+			util.appendEAttribute(appendable, "style:text-underline-width", "auto");
 
 			// ---------------------------------------------------------------------------------
 			// If any underline color was set, add the color, otherwise use the
 			// font color
 			// ---------------------------------------------------------------------------------
 			if (this.getFontUnderlineColor().length() > 0) {
-				util.appendAttribute(sbTemp, "style:text-underline-color",
+				util.appendAttribute(appendable, "style:text-underline-color",
 						this.sFontUnderlineColor);
 			} else {
-				util.appendAttribute(sbTemp, "style:text-underline-color",
+				util.appendAttribute(appendable, "style:text-underline-color",
 						"font-color");
 			}
 		}
 
-		sbTemp.append("/>");
+		appendable.append("/>");
 
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
 		if (this.getName().length() > 0) {
-			sbTemp.append("</style:style>");
+			appendable.append("</style:style>");
 		}
 	}
 

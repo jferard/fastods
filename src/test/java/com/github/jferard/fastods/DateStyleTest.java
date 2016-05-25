@@ -43,7 +43,7 @@ public class DateStyleTest {
 	public final void test() throws IOException {
 		DateStyle ds = DateStyle.builder().name("test").build();
 		StringBuilder sb = new StringBuilder();
-		ds.appendXML(Util.getInstance(), sb);
+		ds.appendXML(Util.getInstance(), sb, null);
 		Assert.assertEquals(
 				"<number:date-style style:name=\"test\" number:automatic-order=\"false\">"
 						+ "<number:day number:style=\"long\"/>"

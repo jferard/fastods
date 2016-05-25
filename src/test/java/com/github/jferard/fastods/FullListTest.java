@@ -13,24 +13,25 @@ import com.google.common.collect.Lists;
 
 public class FullListTest {
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
 	public final void testSize() {
 		List<String> l = FullList.newList();
-		l.size();
+		Assert.assertEquals(0, l.size());
+		Assert.assertTrue(l.isEmpty());
 	}
 	
 	@Test
 	public final void testGet() {
 		List<String> l = FullList.newList();
 		Assert.assertNull(l.get(10));
-		Assert.assertFalse(l.iterator().hasNext());
+		Assert.assertTrue(l.isEmpty());
 	}
 	
 	@Test
 	public final void testSetNullAfter() {
 		List<String> l = FullList.newList();
 		l.set(10, null);
-		Assert.assertFalse(l.iterator().hasNext());
+		Assert.assertTrue(l.isEmpty());
 	}
 
 	@Test
@@ -41,7 +42,7 @@ public class FullListTest {
 		Assert.assertEquals("a", l.set(0, null));
 		Assert.assertEquals(Arrays.asList(null, "b"), l);		
 		Assert.assertEquals("b", l.set(1, null));
-		Assert.assertFalse(l.iterator().hasNext());
+		Assert.assertTrue(l.isEmpty());
 	}
 
 	@Test

@@ -31,7 +31,7 @@ import java.io.IOException;
  * 
  *         WHERE ? ../style:style#
  */
-public class BorderAttribute implements XMLAppendable {
+public class BorderAttribute implements XMLAppendable<TableCellStyle> {
 	public static enum Position {
 		TOP("fo:border-top"), BOTTOM("fo:border-bottom"), LEFT(
 				"fo:border-left"), RIGHT("fo:border-right"), ALL("fo:border");
@@ -171,7 +171,7 @@ public class BorderAttribute implements XMLAppendable {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, TableCellStyle where) throws IOException {
 		if (this.sBorderSize == null && this.sBorderColor == null)
 			return;
 

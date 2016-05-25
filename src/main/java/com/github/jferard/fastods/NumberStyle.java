@@ -37,7 +37,7 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class NumberStyle implements NamedObject {
+public class NumberStyle implements NamedObject<StylesEntry> {
 	public static enum Type {
 		NORMAL, SCIENTIFIC, FRACTION, PERCENTAGE;
 	}
@@ -59,6 +59,10 @@ public class NumberStyle implements NamedObject {
 	private final int nMinNumeratorDigits;
 	private final int nMinDenominatorDigits;
 	private final boolean bGrouping;
+	/**
+	 * 19.517 : "The style:volatile attribute specifies whether unused style in a
+	 * document are retained or discarded by consumers."
+	 */
 	private final boolean bVolatile;
 	private final boolean bNegativeValuesRed;
 
@@ -173,7 +177,7 @@ public class NumberStyle implements NamedObject {
 	 * @param util
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, StylesEntry where) throws IOException {
 		if (this.numberType == Type.PERCENTAGE) {
 			appendable.append("<number:percentage-style");
 		} else {

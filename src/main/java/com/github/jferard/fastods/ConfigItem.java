@@ -32,7 +32,7 @@ import java.io.IOException;
  *         settings.xml/office:document-settings/office:settings/settingsEntry:
  *         settingsEntry-item-set/config:config-item
  */
-public class ConfigItem implements XMLAppendable {
+public class ConfigItem implements NamedObject<Object> {
 	private final String sItemName;
 	private final String sType;
 	private final String sValue;
@@ -50,6 +50,7 @@ public class ConfigItem implements XMLAppendable {
 	 * 
 	 * @return The name of this ConfigItem
 	 */
+	@Override
 	public String getName() {
 		return this.sItemName;
 	}
@@ -70,7 +71,7 @@ public class ConfigItem implements XMLAppendable {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable) throws IOException {
+	public void appendXML(Util util, Appendable appendable, Object where) throws IOException {
 		appendable.append("<config:config-item");
 		util.appendAttribute(appendable, "config:name", this.sItemName);
 		util.appendAttribute(appendable, "config:type", this.sType);
