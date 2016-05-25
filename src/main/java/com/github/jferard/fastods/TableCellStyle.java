@@ -40,7 +40,7 @@ import com.github.jferard.fastods.BorderAttribute.Position;
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style
  */
-public class TableCellStyle implements NamedObject<ContentEntry> {
+public class TableCellStyle implements StyleTag {
 	public static enum VerticalAlign {
 		TOP("top"), MIDDLE("middle"), BOTTOM("bottom");
 
@@ -101,7 +101,7 @@ public class TableCellStyle implements NamedObject<ContentEntry> {
 	}
 
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addTableStyle(this);
+		odsFile.getContent().addStyleTag(this);
 	}
 
 	@Override

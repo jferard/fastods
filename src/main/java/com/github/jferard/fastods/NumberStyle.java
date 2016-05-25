@@ -37,7 +37,7 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class NumberStyle implements NamedObject<StylesEntry> {
+public class NumberStyle implements NamedObject {
 	public static enum Type {
 		NORMAL, SCIENTIFIC, FRACTION, PERCENTAGE;
 	}
@@ -176,7 +176,6 @@ public class NumberStyle implements NamedObject<StylesEntry> {
 	 * 
 	 * @param util
 	 */
-	@Override
 	public void appendXML(Util util, Appendable appendable, StylesEntry where) throws IOException {
 		if (this.numberType == Type.PERCENTAGE) {
 			appendable.append("<number:percentage-style");

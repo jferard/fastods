@@ -40,7 +40,7 @@ import com.github.jferard.fastods.TableCell.Type;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table
  */
-public class Table implements NamedObject<ContentEntry> {
+public class Table implements NamedObject {
 	final static int TABLE_MAXROWNUMBER = 65536;
 	final static int TABLE_MAXCOLUMNNUMBER = 256;
 	
@@ -447,7 +447,6 @@ public class Table implements NamedObject<ContentEntry> {
 		appendable.append("/>");
 	}
 
-	@Override
 	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
 		appendable.append("<table:table table:name=\"").append(this.getName())
 				.append("\" table:style-name=\"").append(this.getStyleName())

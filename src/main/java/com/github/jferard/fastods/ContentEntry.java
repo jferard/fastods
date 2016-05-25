@@ -44,7 +44,7 @@ import com.google.common.base.Optional;
  */
 class ContentEntry implements OdsEntry {
 	private List<Table> qTables;
-	private Map<String, NamedObject> tableStyleByName;
+	private Map<String, StyleTag> styleTagByName;
 	/*	private Map<String, PageStyle> qPageStyles;
 		private Map<String, TextStyle> qTextStyles; */
 	private OdsFile odsFile;
@@ -52,7 +52,7 @@ class ContentEntry implements OdsEntry {
 	ContentEntry(OdsFile odsFile) {
 		this.odsFile = odsFile;
 		this.qTables = new LinkedList<Table>();
-		this.tableStyleByName = new HashMap<String, NamedObject>();
+		this.styleTagByName = new HashMap<String, StyleTag>();
 		/*		this.qPageStyles = ObjectQueue.newQueue();
 				this.qTextStyles = ObjectQueue.newQueue(); */
 	}
@@ -84,8 +84,8 @@ class ContentEntry implements OdsEntry {
 		return Util.findElementByName(this.qTables, sName);
 	}
 
-	public void addTableStyle(NamedObject ts) {
-		this.tableStyleByName.put(ts.getName(), ts);
+	public void addStyleTag(StyleTag styleTag) {
+		this.styleTagByName.put(styleTag.getName(), styleTag);
 	}
 
 	/*
@@ -128,8 +128,8 @@ class ContentEntry implements OdsEntry {
 		return this.qTables;
 	}
 
-	public Map<String, NamedObject> getTableStyles() {
-		return this.tableStyleByName;
+	public Map<String, StyleTag> getStyleTagByName() {
+		return this.styleTagByName;
 	}
 
 	/*
@@ -201,7 +201,7 @@ class ContentEntry implements OdsEntry {
 		/* Office automatic styles */
 		writer.write("<office:automatic-styles>");
 
-		for (NamedObject ts : this.tableStyleByName.values())
+		for (StyleTag ts : this.styleTagByName.values())
 			ts.appendXML(util, writer, this);
 
 		writer.write("</office:automatic-styles>");

@@ -33,7 +33,7 @@ import java.io.IOException;
  *         currency-style
  *         styles.xml/office:document-styles/office:styles/number:currency-style
  */
-public class CurrencyStyle implements NamedObject<StylesEntry> {
+public class CurrencyStyle implements NamedObject {
 	// public final static int NUMBER_CURRENCY = 1;
 	public static enum SymbolPosition {
 		BEGIN, END;
@@ -155,7 +155,6 @@ public class CurrencyStyle implements NamedObject<StylesEntry> {
 	 * 
 	 * @return The XML string for this object.
 	 */
-	@Override
 	public void appendXML(Util util, Appendable appendable, StylesEntry where) throws IOException {
 		final StringBuilder currency = this.currencyToXML(util);
 

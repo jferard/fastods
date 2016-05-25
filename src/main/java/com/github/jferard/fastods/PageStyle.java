@@ -32,12 +32,19 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page
  */
-public class PageStyle
-		implements NamedObject<AutomaticStyle> {
+public class PageStyle {
+	private static final String A3_H = "42.0cm";
+	private static final String A3_W = "29.7cm";
+	private static final String A4_W = "21.0cm";
+	private static final String A5_W = "14.8cm";
+	private static final String LETTER_H = "27.94cm";
+	private static final String LETTER_W = "21.59cm";
+	private static final String LEGAL_H = "35.57cm";
+	
 	public static enum PaperFormat {
-		A3("42.0cm", "29.7cm"), A4("29.7cm", "21.0cm"), A5("21.0cm",
-				"14.8cm"), LETTER("27.94cm",
-						"21.59cm"), LEGAL("35.57cm", "21.59cm"), USER("", "");
+		A3(A3_H, A3_W), A4(A3_W, A4_W), A5(A4_W,
+				A5_W), LETTER(LETTER_H,
+						LETTER_W), LEGAL(LEGAL_H, LETTER_W), USER("", "");
 
 		private final String height;
 		private final String width;
@@ -172,8 +179,7 @@ public class PageStyle
 		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
 		appendable.append("><style:header>");
 		if (this.header == null) {
-			appendable.append("<text:p");
-			appendDefaultFooterHeader(util, appendable, this.sTextStyleHeader,
+			PageStyle.appendDefaultFooterHeader(util, appendable, this.sTextStyleHeader,
 					this.sTextHeader);
 		} else {
 			this.header.appendXML(util, appendable, MasterStyle.instance);
@@ -182,7 +188,7 @@ public class PageStyle
 
 		appendable.append("<style:footer>");
 		if (this.footer == null) {
-			appendDefaultFooterHeader(util, appendable, this.sTextStyleFooter,
+			PageStyle.appendDefaultFooterHeader(util, appendable, this.sTextStyleFooter,
 					this.sTextFooter);
 		} else {
 			this.footer.appendXML(util, appendable, MasterStyle.instance);
@@ -191,7 +197,7 @@ public class PageStyle
 		appendable.append("</style:master-page>");
 	}
 
-	private void appendDefaultFooterHeader(Util util, Appendable appendable,
+	private static void appendDefaultFooterHeader(Util util, Appendable appendable,
 			String sTextStyle, String sText) throws IOException {
 		appendable.append("<text:p");
 		util.appendAttribute(appendable, "text:style-name", sTextStyle);
@@ -204,7 +210,6 @@ public class PageStyle
 	 * This is used while writing the ODS file.
 	 * 
 	 */
-	@Override
 	public void appendXML(Util util, Appendable appendable,
 			AutomaticStyle where) throws IOException {
 		appendable.append("<style:page-layout");
@@ -270,7 +275,6 @@ public class PageStyle
 	 * 
 	 * @return The page style name
 	 */
-	@Override
 	public String getName() {
 		return this.sName;
 	}

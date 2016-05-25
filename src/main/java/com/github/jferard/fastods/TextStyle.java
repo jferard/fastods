@@ -33,7 +33,7 @@ import java.io.IOException;
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style/style:style
  */
-public class TextStyle implements NamedObject<Object> {
+public class TextStyle implements NamedObject {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
 		NONE("none"), SOLID("solid"), DOTTED("dotted"), DASH("dash"), LONGDASH(
@@ -151,7 +151,6 @@ public class TextStyle implements NamedObject<Object> {
 		return this.sName;
 	}
 
-	@Override
 	public void appendXML(Util util, Appendable appendable, Object where) throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
@@ -159,7 +158,7 @@ public class TextStyle implements NamedObject<Object> {
 		// -------------------------------------------------------------
 		if (this.sName.length() > 0) {
 			appendable.append("<style:style ");
-			util.appendAttribute(appendable, "style:name", this.getName());
+			util.appendAttribute(appendable, "style:name", this.sName);
 			util.appendEAttribute(appendable, "style:family", "text");
 			appendable.append(">");
 		}

@@ -33,7 +33,7 @@ import java.io.IOException;
  * 
  *         content.xml/office:document-content/office:automatic-styles
  */
-public class TableStyle implements NamedObject<ContentEntry> {
+public class TableStyle implements StyleTag {
 	public static TableStyleBuilder builder() {
 		return new TableStyleBuilder();
 	}
@@ -58,7 +58,7 @@ public class TableStyle implements NamedObject<ContentEntry> {
 	}
 
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addTableStyle(this);
+		odsFile.getContent().addStyleTag(this);
 	}
 
 	@Override

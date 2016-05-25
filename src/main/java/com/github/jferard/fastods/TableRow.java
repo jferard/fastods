@@ -34,7 +34,7 @@ import java.util.List;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-row
  */
-public class TableRow implements XMLAppendable<Table> {
+public class TableRow {
 	private String styleName;
 	private List<TableCell> qTableCells;
 	private int nRow;
@@ -154,7 +154,6 @@ public class TableRow implements XMLAppendable<Table> {
 	 * 
 	 * @throws IOException
 	 */
-	@Override
 	public void appendXML(Util util, Appendable appendable, Table where) throws IOException {
 		appendable.append("<table:table-row ");
 		util.appendAttribute(appendable, "table:styleName-name",

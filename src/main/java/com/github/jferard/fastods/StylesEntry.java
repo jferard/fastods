@@ -187,7 +187,7 @@ public class StylesEntry implements OdsEntry {
 			cs.appendXML(util, writer, this);
 
 		if (this.footer != null) {
-			this.appendFooterHeader(util, writer, "Footer");
+			StylesEntry.appendFooterHeader(util, writer, "Footer");
 		}
 		if (this.header != null) {
 			StylesEntry.appendFooterHeader(util, writer, "Header");

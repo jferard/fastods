@@ -39,7 +39,7 @@ import java.io.IOException;
  *         table:table/table:table-column
  */
 public class TableColumnStyle
-		implements NamedObject<ContentEntry> {
+		implements StyleTag {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
@@ -79,7 +79,7 @@ public class TableColumnStyle
 	}
 
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addTableStyle(this);
+		odsFile.getContent().addStyleTag(this);
 	}
 
 	/**
