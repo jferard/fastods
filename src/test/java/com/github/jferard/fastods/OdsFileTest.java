@@ -67,11 +67,15 @@ public class OdsFileTest {
 				}
 			}
 		}
+		file.save();
+
+		long t2 = System.currentTimeMillis();
+		System.out.println("Filled in " + (t2 - t1) + " ms");
 	}
 
-	@Test
+//	@Test
 	public final void test100000() throws FastOdsException {
-		System.out.println("Filling a 100000 rows, 300 columns spreadsheet");
+		System.out.println("Filling a 100000 rows, 20 columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
@@ -81,6 +85,30 @@ public class OdsFileTest {
 
 		Table table = optTable.get();
 		for (int y = 0; y < 100000; y++) {
+			final TableRow row = table.nextRow();
+			for (int x = 0; x < 20; x++) {
+				row.setCell(x, String.valueOf(random.nextInt(1000)));
+			}
+		}
+
+		file.save();
+
+		long t2 = System.currentTimeMillis();
+		System.out.println("Filled in " + (t2 - t1) + " ms");
+	}
+
+//	@Test
+	public final void test1000() throws FastOdsException {
+		System.out.println("Filling a 10000 rows, 300 columns spreadsheet");
+		long t1 = System.currentTimeMillis();
+		final Random random = new Random();
+
+		OdsFile file = new OdsFile("1000columns.ods");
+		Optional<Table> optTable = file.addTable("test");
+		Assert.assertTrue(optTable.isPresent());
+
+		Table table = optTable.get();
+		for (int y = 0; y < 1000; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 300; x++) {
 				row.setCell(x, String.valueOf(random.nextInt(1000)));

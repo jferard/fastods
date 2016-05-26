@@ -32,21 +32,21 @@ import java.util.zip.ZipOutputStream;
  *         users.sourceforge.net>
  *
  *         This file MetaEntry.java is part of FastODS.
- * 
+ *
  *         WHERE ? meta.xml/office:document-meta
  */
 public class MetaEntry implements OdsEntry {
 	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
 
-	private String sDateTime;
-	private int nTableCount = 1;
 	private int nCellCount = 1;
+	private int nTableCount = 1;
 	private String sCreator;
+	private String sDateTime;
 
-	private final String sGenerator;
 	private final String sEditingCycles;
 	private final String sEditingDuration;
+	private final String sGenerator;
 
 	public MetaEntry() {
 		this.setDateTimeNow();
@@ -56,22 +56,10 @@ public class MetaEntry implements OdsEntry {
 		this.sEditingDuration = "PT1M00S";
 	}
 
-	/**
-	 * Store the date and time of the document creation in the MetaEntry data.
-	 */
-	private void setDateTimeNow() {
-		Date dt = new Date();
-
-		this.sDateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
-				.append("T").append(MetaEntry.DF_TIME.format(dt)).toString();
-	}
-
-	public void incTableCount() {
-		this.nTableCount++;
-	}
-
-	public void incCellCount() {
-		this.nCellCount++;
+	public void decCellCount() {
+		if (this.nCellCount > 0) {
+			this.nCellCount--;
+		}
 	}
 
 	public void decTableCount() {
@@ -80,14 +68,16 @@ public class MetaEntry implements OdsEntry {
 		}
 	}
 
-	public void decCellCount() {
-		if (this.nCellCount > 0) {
-			this.nCellCount--;
-		}
-	}
-
 	public String getCreator() {
 		return this.sCreator;
+	}
+
+	public void incCellCount() {
+		this.nCellCount++;
+	}
+
+	public void incTableCount() {
+		this.nTableCount++;
 	}
 
 	public void setCreator(final String sCreator) {
@@ -95,13 +85,26 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(Util util, final ZipOutputStream zipOut)
+	public void write(final Util util, final ZipOutputStream zipOut)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("meta.xml"));
-		Writer writer = util.wrapStream(zipOut);
-		writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-				.append("<office:document-meta xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">")
-				.append("<office:meta>");
+		final Writer writer = util.wrapStream(zipOut);
+		writer.append("<?xml");
+		util.appendEAttribute(writer, "version", "1.0");
+		util.appendEAttribute(writer, "encoding", "UTF-8");
+		writer.append("?><office:document-meta");
+		util.appendEAttribute(writer, "xmlns:office",
+				"urn:oasis:names:tc:opendocument:xmlns:office:1.0");
+		util.appendEAttribute(writer, "xmlns:xlink",
+				"http://www.w3.org/1999/xlink");
+		util.appendEAttribute(writer, "xmlns:dc",
+				"http://purl.org/dc/elements/1.1/");
+		util.appendEAttribute(writer, "xmlns:meta",
+				"urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
+		util.appendEAttribute(writer, "xmlns:ooo",
+				"http://openoffice.org/2004/office");
+		util.appendEAttribute(writer, "office:version", "1.1");
+		writer.append("><office:meta>");
 		util.appendTag(writer, "meta:generator", this.sGenerator);
 		util.appendTag(writer, "dc:creator", this.sCreator);
 		util.appendTag(writer, "dc:date", this.sDateTime);
@@ -114,9 +117,18 @@ public class MetaEntry implements OdsEntry {
 				.append("<meta:document-statistic");
 		util.appendAttribute(writer, "meta:table-count", this.nTableCount);
 		util.appendAttribute(writer, "meta:cell-count", this.nCellCount);
-		writer.append("/>").append("</office:meta>")
-				.append("</office:document-meta>");
+		writer.append("/></office:meta>").append("</office:document-meta>");
 		writer.flush();
 		zipOut.closeEntry();
+	}
+
+	/**
+	 * Store the date and time of the document creation in the MetaEntry data.
+	 */
+	private void setDateTimeNow() {
+		final Date dt = new Date();
+
+		this.sDateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
+				.append("T").append(MetaEntry.DF_TIME.format(dt)).toString();
 	}
 }

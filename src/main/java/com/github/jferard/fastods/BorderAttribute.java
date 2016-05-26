@@ -28,17 +28,18 @@ import java.io.IOException;
  *         users.sourceforge.net>
  *
  *         This file BorderAttribute.java is part of FastODS.
- * 
+ *
  *         WHERE ? ../style:style#
  */
 public class BorderAttribute {
 	public static enum Position {
-		TOP("fo:border-top"), BOTTOM("fo:border-bottom"), LEFT(
-				"fo:border-left"), RIGHT("fo:border-right"), ALL("fo:border");
+		ALL("fo:border"), BOTTOM("fo:border-bottom"), LEFT(
+				"fo:border-left"), RIGHT(
+						"fo:border-right"), TOP("fo:border-top");
 
 		private final String attrName;
 
-		private Position(String attrName) {
+		private Position(final String attrName) {
 			this.attrName = attrName;
 		}
 
@@ -47,14 +48,12 @@ public class BorderAttribute {
 		}
 	}
 
-	public static final Position DEFAULT_POSITION = Position.ALL;
-
 	public static enum Style {
-		SOLID("solid"), DOUBLE("double");
+		DOUBLE("double"), SOLID("solid");
 
 		private final String attrValue;
 
-		private Style(String attrValue) {
+		private Style(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 
@@ -63,39 +62,24 @@ public class BorderAttribute {
 		}
 	}
 
-	public static final Style DEFAULT_STYLE = Style.SOLID;
+	/**
+	 * The border color default is #000000 (black).
+	 */
+	public static final String DEFAULT_BORDER_COLOR = "#000000";
 
 	/**
 	 * The border size default is 0.1cm
 	 */
 	public static final String DEFAULT_BORDER_SIZE = "0.1cm";
 
-	/**
-	 * The border color default is #000000 (black).
-	 */
-	public static final String DEFAULT_BORDER_COLOR = "#000000";
+	public static final Position DEFAULT_POSITION = Position.ALL;
+
+	public static final Style DEFAULT_STYLE = Style.SOLID;
 
 	/** a builder */
 	public static BorderAttributeBuilder builder() {
 		return new BorderAttributeBuilder();
 	}
-
-	/**
-	 * The border size.
-	 */
-	private final String sBorderSize;
-
-	/**
-	 * The border color
-	 */
-	private final String sBorderColor;
-
-	/**
-	 * The border style. Either BorderAttribute.BORDER_SOLID or
-	 * BorderAttribute.BORDER_DOUBLE.<br>
-	 * Default is BorderAttribute.BORDER_SOLID.
-	 */
-	private final Style style;
 
 	/**
 	 * The border position. Either BorderAttribute.POSITION_ALL,
@@ -105,12 +89,29 @@ public class BorderAttribute {
 	private final Position position;
 
 	/**
+	 * The border color
+	 */
+	private final String sBorderColor;
+
+	/**
+	 * The border size.
+	 */
+	private final String sBorderSize;
+
+	/**
+	 * The border style. Either BorderAttribute.BORDER_SOLID or
+	 * BorderAttribute.BORDER_DOUBLE.<br>
+	 * Default is BorderAttribute.BORDER_SOLID.
+	 */
+	private final Style style;
+
+	/**
 	 * sSize is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
-	 * 
+	 *
 	 * @param sSize
 	 *            The size of the border
 	 * @param sColor
@@ -132,49 +133,12 @@ public class BorderAttribute {
 		this.position = position;
 	}
 
-	/**
-	 * Get the currently set border color.
-	 * 
-	 * @return The color in format #rrggbb
-	 */
-	public String getBorderColor() {
-		return this.sBorderColor;
-	}
-
-	/**
-	 * Gets the current value of border size.
-	 * 
-	 * @return The size as string, e.g. '0.1cm'
-	 */
-	public String getBorderSize() {
-		return this.sBorderSize;
-	}
-
-	/**
-	 * Gets the current border NamedObject.
-	 * 
-	 * @return BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
-	 */
-	public Style getStyle() {
-		return this.style;
-	}
-
-	/**
-	 * Returns the border positions as numerical value.
-	 * 
-	 * @return The position as one of
-	 *         POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
-	 *         POSITION_ALL.
-	 */
-	public Position getPosition() {
-		return this.position;
-	}
-
-	public void appendXML(Util util, Appendable appendable, TableCellStyle where) throws IOException {
+	public void appendXMLToTableCellStyle(final Util util,
+			final Appendable appendable) throws IOException {
 		if (this.sBorderSize == null && this.sBorderColor == null)
 			return;
 
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		if (this.sBorderSize != null)
 			sb.append(this.sBorderSize).append(Util.SPACE_CHAR);
 
@@ -183,5 +147,43 @@ public class BorderAttribute {
 					.append(this.sBorderColor);
 
 		util.appendAttribute(appendable, this.position.attrName, sb.toString());
+	}
+
+	/**
+	 * Get the currently set border color.
+	 *
+	 * @return The color in format #rrggbb
+	 */
+	public String getBorderColor() {
+		return this.sBorderColor;
+	}
+
+	/**
+	 * Gets the current value of border size.
+	 *
+	 * @return The size as string, e.g. '0.1cm'
+	 */
+	public String getBorderSize() {
+		return this.sBorderSize;
+	}
+
+	/**
+	 * Returns the border positions as numerical value.
+	 *
+	 * @return The position as one of
+	 *         POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
+	 *         POSITION_ALL.
+	 */
+	public Position getPosition() {
+		return this.position;
+	}
+
+	/**
+	 * Gets the current border NamedObject.
+	 *
+	 * @return BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 */
+	public Style getStyle() {
+		return this.style;
 	}
 }

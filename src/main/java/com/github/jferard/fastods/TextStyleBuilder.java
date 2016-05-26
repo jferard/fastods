@@ -23,7 +23,7 @@ import com.github.jferard.fastods.TextStyle.Underline;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * 
+ *
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file TextStyleBuilder.java is part of FastODS. SimpleOds Version
@@ -31,23 +31,23 @@ import com.github.jferard.fastods.TextStyle.Underline;
  */
 
 class TextStyleBuilder {
-	private String sName;
+	private Underline nFontUnderlineStyle;
 	private String sFontColor;
 	private String sFontName;
-	private String sFontWeight;
-	private String sFontWeightAsian;
-	private String sFontWeightComplex;
 	private String sFontSize;
 	private String sFontSizeAsian;
 	private String sFontSizeComplex;
 	private String sFontUnderlineColor;
+	private String sFontWeight;
+	private String sFontWeightAsian;
+	private String sFontWeightComplex;
 
-	private Underline nFontUnderlineStyle;
+	private String sName;
 
 	/**
 	 * Create a new text style without a name.<br>
 	 * This is used by class TableFamilyStyle. Version 0.5.2 Added
-	 * 
+	 *
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
@@ -69,9 +69,17 @@ class TextStyleBuilder {
 		this.nFontUnderlineStyle = TextStyle.Underline.NONE;
 	}
 
+	public TextStyle build() {
+		return new TextStyle(this.sName, this.sFontColor, this.sFontName,
+				this.sFontWeight, this.sFontWeightAsian,
+				this.sFontWeightComplex, this.sFontSize, this.sFontSizeAsian,
+				this.sFontSizeComplex, this.sFontUnderlineColor,
+				this.nFontUnderlineStyle);
+	}
+
 	/**
 	 * Set the font color to sColor.
-	 * 
+	 *
 	 * @param sColor
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
 	 *            cell background
@@ -84,7 +92,7 @@ class TextStyleBuilder {
 
 	/**
 	 * Set the font name to be used for this style.
-	 * 
+	 *
 	 * @param fontName
 	 *            The font name for this TextStyle
 	 * @return
@@ -96,13 +104,14 @@ class TextStyleBuilder {
 
 	/**
 	 * Set the font size in points to the given value.
-	 * 
+	 *
 	 * @param fontSize
 	 *            - The font size as int , e.g. 10 or 8
 	 * @return
 	 */
 	public TextStyleBuilder fontSize(final int fontSize) {
-		String sSize = new StringBuilder(fontSize).append("pt").toString();
+		final String sSize = new StringBuilder(fontSize).append("pt")
+				.toString();
 		this.sFontSize = sSize;
 		this.sFontSizeAsian = sSize;
 		this.sFontSizeComplex = sSize;
@@ -113,7 +122,7 @@ class TextStyleBuilder {
 	 * Set the font size to the given value<br>
 	 * fontSize is a length value expressed as a number followed by pt, e.g.
 	 * 12pt
-	 * 
+	 *
 	 * @param fontSize
 	 *            - The font size as string, e.g. '10.5pt' or '8pt'
 	 * @return
@@ -128,7 +137,7 @@ class TextStyleBuilder {
 	/**
 	 * Set the font underline color to sColor. Use an empty string to reset it
 	 * to 'auto'.
-	 * 
+	 *
 	 * @param sColor
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
 	 *            cell background.
@@ -150,7 +159,7 @@ class TextStyleBuilder {
 	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
 	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
 	 * Other values are ignored.
-	 * 
+	 *
 	 * @param nStyle
 	 *            One of the TextStyle.STYLE_UNDERLINE
 	 * @return
@@ -162,7 +171,7 @@ class TextStyleBuilder {
 
 	/**
 	 * Set the font weight to bold.
-	 * 
+	 *
 	 * @return true
 	 */
 	public TextStyleBuilder fontWeightBold() {
@@ -174,7 +183,7 @@ class TextStyleBuilder {
 
 	/**
 	 * Set the font weight to italic.
-	 * 
+	 *
 	 * @return true
 	 */
 	public TextStyleBuilder fontWeightItalic() {
@@ -187,7 +196,7 @@ class TextStyleBuilder {
 
 	/**
 	 * Set the font weight to normal.
-	 * 
+	 *
 	 * @return true -
 	 */
 	public TextStyleBuilder fontWeightNormal() {
@@ -200,7 +209,7 @@ class TextStyleBuilder {
 
 	/**
 	 * Set the name of this style to sName.
-	 * 
+	 *
 	 * @param name
 	 *            - The name of this style
 	 * @return
@@ -208,13 +217,5 @@ class TextStyleBuilder {
 	public final TextStyleBuilder name(final String name) {
 		this.sName = name;
 		return this;
-	}
-
-	public TextStyle build() {
-		return new TextStyle(this.sName, this.sFontColor, this.sFontName,
-				this.sFontWeight, this.sFontWeightAsian,
-				this.sFontWeightComplex, this.sFontSize, this.sFontSizeAsian,
-				this.sFontSizeComplex, this.sFontUnderlineColor,
-				this.nFontUnderlineStyle);
 	}
 }

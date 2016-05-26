@@ -28,7 +28,7 @@ import java.io.IOException;
  *
  *         This file TextStyle.java is part of FastODS. SimpleOds Version 0.5.0
  *         Added support for Font underline style
- * 
+ *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style/style:style
@@ -36,13 +36,13 @@ import java.io.IOException;
 public class TextStyle implements NamedObject {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
-		NONE("none"), SOLID("solid"), DOTTED("dotted"), DASH("dash"), LONGDASH(
-				"long-dash"), DOTDASH(
-						"dot-dash"), DOTDOTDASH("dot-dot-dash"), WAVE("wave");
+		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
+				"dotted"), LONGDASH("long-dash"), NONE(
+						"none"), SOLID("solid"), WAVE("wave");
 
 		private final String attrValue;
 
-		private Underline(String attrValue) {
+		private Underline(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 	}
@@ -51,36 +51,37 @@ public class TextStyle implements NamedObject {
 		return new TextStyleBuilder();
 	}
 
-	private final String sName;
+	private final Underline nFontUnderlineStyle;
 	private final String sFontColor;
 	private final String sFontName;
+	private final String sFontSize;
+
+	private final String sFontSizeAsian;
+
+	private final String sFontSizeComplex;
+
+	private final String sFontUnderlineColor;
 	private final String sFontWeight;
-
 	private final String sFontWeightAsian;
-
 	private final String sFontWeightComplex;
 
-	private final String sFontSize;
-	private final String sFontSizeAsian;
-	private final String sFontSizeComplex;
-	private final String sFontUnderlineColor;
-
-	private final Underline nFontUnderlineStyle;
+	private final String sName;
 
 	/**
 	 * Create a new text style with the name sName.<br>
 	 * Version 0.5.0 Added parameter OdsFile odsFile
-	 * 
+	 *
 	 * @param sStyleName
 	 *            The name of the text style.
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	TextStyle(String sName, String sFontColor, String sFontName,
-			String sFontWeight, String sFontWeightAsian,
-			String sFontWeightComplex, String sFontSize, String sFontSizeAsian,
-			String sFontSizeComplex, String sFontUnderlineColor,
-			Underline nFontUnderlineStyle) {
+	TextStyle(final String sName, final String sFontColor,
+			final String sFontName, final String sFontWeight,
+			final String sFontWeightAsian, final String sFontWeightComplex,
+			final String sFontSize, final String sFontSizeAsian,
+			final String sFontSizeComplex, final String sFontUnderlineColor,
+			final Underline nFontUnderlineStyle) {
 		this.sName = sName;
 		this.sFontColor = sFontColor;
 		this.sFontName = sFontName;
@@ -98,60 +99,8 @@ public class TextStyle implements NamedObject {
 		odsFile.getStyles().addTextStyle(this);
 	}
 
-	/**
-	 * Get the current font color.
-	 * 
-	 * @return The currently set font color as a String in format #rrggbb
-	 */
-	public String getFontColor() {
-		return this.sFontColor;
-	}
-
-	/**
-	 * Get the font size as string, e.g. '10.5pt' or '8pt'
-	 * 
-	 * @return The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public String getFontSize() {
-		return this.sFontSize;
-	}
-
-	/**
-	 * Get the currently set underline color.
-	 * 
-	 * @return The color in format #rrggbb
-	 */
-	public String getFontUnderlineColor() {
-		return this.sFontUnderlineColor;
-	}
-
-	/**
-	 * @return The currently set style for the underline.
-	 */
-	public Underline getFontUnderlineStyle() {
-		return this.nFontUnderlineStyle;
-	}
-
-	/**
-	 * Get the current font weight.
-	 * 
-	 * @return The current font weight, normal, bold or italic.
-	 */
-	public String getFontWeight() {
-		return this.sFontWeight;
-	}
-
-	/**
-	 * Get the name of this text style.
-	 * 
-	 * @return The text style name
-	 */
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	public void appendXML(Util util, Appendable appendable, Object where) throws IOException {
+	public void appendXMLToObject(final Util util, final Appendable appendable)
+			throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
@@ -168,7 +117,8 @@ public class TextStyle implements NamedObject {
 		appendable.append("<style:text-properties ");
 		// Check if the font weight should be added
 		if (this.sFontWeight.length() > 0) {
-			util.appendAttribute(appendable, "fo:font-weight", this.sFontWeight);
+			util.appendAttribute(appendable, "fo:font-weight",
+					this.sFontWeight);
 			util.appendAttribute(appendable, "style:font-weight-asian",
 					this.sFontWeightAsian);
 			util.appendAttribute(appendable, "style:font-weight-complex",
@@ -194,7 +144,8 @@ public class TextStyle implements NamedObject {
 		if (this.nFontUnderlineStyle != null) {
 			util.appendEAttribute(appendable, "style:text-underline-style",
 					this.nFontUnderlineStyle.attrValue);
-			util.appendEAttribute(appendable, "style:text-underline-width", "auto");
+			util.appendEAttribute(appendable, "style:text-underline-width",
+					"auto");
 
 			// ---------------------------------------------------------------------------------
 			// If any underline color was set, add the color, otherwise use the
@@ -218,6 +169,59 @@ public class TextStyle implements NamedObject {
 		if (this.getName().length() > 0) {
 			appendable.append("</style:style>");
 		}
+	}
+
+	/**
+	 * Get the current font color.
+	 *
+	 * @return The currently set font color as a String in format #rrggbb
+	 */
+	public String getFontColor() {
+		return this.sFontColor;
+	}
+
+	/**
+	 * Get the font size as string, e.g. '10.5pt' or '8pt'
+	 *
+	 * @return The font size as string, e.g. '10.5pt' or '8pt'
+	 */
+	public String getFontSize() {
+		return this.sFontSize;
+	}
+
+	/**
+	 * Get the currently set underline color.
+	 *
+	 * @return The color in format #rrggbb
+	 */
+	public String getFontUnderlineColor() {
+		return this.sFontUnderlineColor;
+	}
+
+	/**
+	 * @return The currently set style for the underline.
+	 */
+	public Underline getFontUnderlineStyle() {
+		return this.nFontUnderlineStyle;
+	}
+
+	/**
+	 * Get the current font weight.
+	 *
+	 * @return The current font weight, normal, bold or italic.
+	 */
+	public String getFontWeight() {
+		return this.sFontWeight;
+	}
+
+	/**
+	 * Get the name of this text style.
+	 *
+	 * @return The text style name
+	 */
+	@Override
+	public String getName() {
+		return this.sName;
 	}
 
 }

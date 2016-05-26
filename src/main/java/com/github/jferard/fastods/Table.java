@@ -21,7 +21,6 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.github.jferard.fastods.TableCell.Type;
@@ -32,7 +31,7 @@ import com.github.jferard.fastods.TableCell.Type;
  *         users.sourceforge.net>
  *
  *         This file Table.java is part of FastODS.
- * 
+ *
  *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw
  *         FastOdsException'
  *
@@ -41,71 +40,119 @@ import com.github.jferard.fastods.TableCell.Type;
  *         table:table
  */
 public class Table implements NamedObject {
-	private String sName;
-	private String styleName;
-	private int nLastCol; // The highest column in the table TODO: Check if
-								// this can be removed
+	private static void appendColumnStyle(final Appendable appendable,
+			final Util util, final String sSytle,
+			final String sDefaultCellSytle, final int nCount)
+			throws IOException {
+		appendable.append("<table:table-column ");
+		util.appendAttribute(appendable, "table:style-name", sSytle);
+		util.appendAttribute(appendable, "table:number-columns-repeated",
+				nCount);
+		util.appendAttribute(appendable, "table:default-cell-style-name",
+				sDefaultCellSytle);
+		appendable.append("/>");
+	}
 
+	private final ConfigItem activeSplitRange;
 	private final ConfigItem cursorPositionX;
+
 	private final ConfigItem cursorPositionY;
 	private final ConfigItem horizontalSplitMode;
-	private final ConfigItem verticalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
-	private final ConfigItem verticalSplitPosition;
-	private final ConfigItem activeSplitRange;
+	private int nLastCol; // The highest column in the table TODO: Check if
+							// this can be removed
+	private final OdsFile odsFile;
+	private final ConfigItem pageViewZoomValue;
+	private final ConfigItem positionBottom;
 	private final ConfigItem positionLeft;
 	private final ConfigItem positionRight;
 	private final ConfigItem positionTop;
-	private final ConfigItem positionBottom;
-	private final ConfigItem zoomType;
-	private final ConfigItem zoomValue;
-	private final ConfigItem pageViewZoomValue;
-
 	private final List<TableColumnStyle> qColumnStyles;
 	private final List<TableRow> qTableRows;
-	private final OdsFile odsFile;
+	private String sName;
+	private String styleName;
 
-	Table(OdsFile odsFile, String sName) {
+	private final ConfigItem verticalSplitMode;
+	private final ConfigItem verticalSplitPosition;
+	private final ConfigItem zoomType;
+
+	private final ConfigItem zoomValue;
+
+	Table(final OdsFile odsFile, final String sName) {
 		this.odsFile = odsFile;
 		this.sName = sName;
 		this.styleName = "ta1";
 		this.nLastCol = 0; // The highest column in the table TODO: Check if
-									// this can be removed
+							// this can be removed
 
-		this.cursorPositionX = new ConfigItem("CursorPositionX",
-				"int", "0");
-		this.cursorPositionY = new ConfigItem("cursorPositionY",
-				"int", "0");
-		this.horizontalSplitMode = new ConfigItem(
-				"horizontalSplitMode", "short", "0");
-		this.verticalSplitMode = new ConfigItem("verticalSplitMode",
+		this.cursorPositionX = new ConfigItem("CursorPositionX", "int", "0");
+		this.cursorPositionY = new ConfigItem("cursorPositionY", "int", "0");
+		this.horizontalSplitMode = new ConfigItem("horizontalSplitMode",
 				"short", "0");
-		this.horizontalSplitPosition = new ConfigItem(
-				"horizontalSplitPosition", "int", "0");
-		this.verticalSplitPosition = new ConfigItem(
-				"verticalSplitPosition", "int", "0");
-		this.activeSplitRange = new ConfigItem("activeSplitRange",
-				"short", "2");
-		this.positionLeft = new ConfigItem("positionLeft", "int",
+		this.verticalSplitMode = new ConfigItem("verticalSplitMode", "short",
 				"0");
-		this.positionRight = new ConfigItem("PositionRight", "int",
-				"0");
+		this.horizontalSplitPosition = new ConfigItem("horizontalSplitPosition",
+				"int", "0");
+		this.verticalSplitPosition = new ConfigItem("verticalSplitPosition",
+				"int", "0");
+		this.activeSplitRange = new ConfigItem("activeSplitRange", "short",
+				"2");
+		this.positionLeft = new ConfigItem("positionLeft", "int", "0");
+		this.positionRight = new ConfigItem("PositionRight", "int", "0");
 		this.positionTop = new ConfigItem("PositionTop", "int", "0");
-		this.positionBottom = new ConfigItem("positionBottom", "int",
-				"0");
+		this.positionBottom = new ConfigItem("positionBottom", "int", "0");
 		this.zoomType = new ConfigItem("zoomType", "short", "0");
 		this.zoomValue = new ConfigItem("zoomValue", "int", "100");
-		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue",
-				"int", "60");
+		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue", "int",
+				"60");
 
 		this.qColumnStyles = FullList.newList();
 		this.qTableRows = FullList.newList();
 	}
 
+	public void appendXMLToContentEntry(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<table:table");
+		util.appendAttribute(appendable, "table:name", this.sName);
+		util.appendAttribute(appendable, "table:style-name", this.styleName);
+		util.appendAttribute(appendable, "table:print", false);
+		appendable.append("><office:forms");
+		util.appendAttribute(appendable, "form:automatic-focus", false);
+		util.appendAttribute(appendable, "form:apply-design-mode", false);
+		appendable.append("/>");
+		this.appendColumnStyles(appendable, util);
+		this.appendRows(appendable, util);
+		appendable.append("</table:table>");
+	}
+
+	public void appendXMLToSettingsEntry(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-entry");
+		util.appendAttribute(appendable, "config:name", this.sName);
+		appendable.append(">");
+		this.cursorPositionX.appendXMLToObject(util, appendable);
+		this.cursorPositionY.appendXMLToObject(util, appendable);
+		this.horizontalSplitMode.appendXMLToObject(util, appendable);
+		this.verticalSplitMode.appendXMLToObject(util, appendable);
+		this.horizontalSplitMode.appendXMLToObject(util, appendable);
+		this.verticalSplitMode.appendXMLToObject(util, appendable);
+		this.horizontalSplitPosition.appendXMLToObject(util, appendable);
+		this.verticalSplitPosition.appendXMLToObject(util, appendable);
+		this.activeSplitRange.appendXMLToObject(util, appendable);
+		this.positionLeft.appendXMLToObject(util, appendable);
+		this.positionRight.appendXMLToObject(util, appendable);
+		this.positionTop.appendXMLToObject(util, appendable);
+		this.positionBottom.appendXMLToObject(util, appendable);
+		this.zoomType.appendXMLToObject(util, appendable);
+		this.zoomValue.appendXMLToObject(util, appendable);
+		this.pageViewZoomValue.appendXMLToObject(util, appendable);
+		appendable.append("</config:config-item-map-entry>");
+	}
+
 	/**
 	 * Get a TableCell, if no TableCell was present at this nRow,nCol, create a
 	 * new one with a default of TableCell.STYLE_STRING and a content of "".
-	 * 
+	 *
 	 * @param nRow
 	 *            The row
 	 * @param nCol
@@ -129,30 +176,6 @@ public class Table implements NamedObject {
 		return this.qColumnStyles;
 	}
 
-	public void appendXML(Util util, Appendable appendable, SettingsEntry where)
-			throws IOException {
-		appendable.append("<config:config-item-map-entry");
-		util.appendAttribute(appendable, "config:name", this.sName);
-		appendable.append(">");
-		this.cursorPositionX.appendXML(util, appendable, this);
-		this.cursorPositionY.appendXML(util, appendable, this);
-		this.horizontalSplitMode.appendXML(util, appendable, this);
-		this.verticalSplitMode.appendXML(util, appendable, this);
-		this.horizontalSplitMode.appendXML(util, appendable, this);
-		this.verticalSplitMode.appendXML(util, appendable, this);
-		this.horizontalSplitPosition.appendXML(util, appendable, this);
-		this.verticalSplitPosition.appendXML(util, appendable, this);
-		this.activeSplitRange.appendXML(util, appendable, this);
-		this.positionLeft.appendXML(util, appendable, this);
-		this.positionRight.appendXML(util, appendable, this);
-		this.positionTop.appendXML(util, appendable, this);
-		this.positionBottom.appendXML(util, appendable, this);
-		this.zoomType.appendXML(util, appendable, this);
-		this.zoomValue.appendXML(util, appendable, this);
-		this.pageViewZoomValue.appendXML(util, appendable, this);
-		appendable.append("</config:config-item-map-entry>");
-	}
-
 	public int getLastCol() {
 		return this.nLastCol;
 	}
@@ -163,7 +186,7 @@ public class Table implements NamedObject {
 
 	/**
 	 * Get the name of this table.
-	 * 
+	 *
 	 * @return The name of this table.
 	 */
 	@Override
@@ -171,11 +194,7 @@ public class Table implements NamedObject {
 		return this.sName;
 	}
 
-	public List<TableRow> getRows() {
-		return this.qTableRows;
-	}
-
-	public TableRow getRow(int nRow) throws FastOdsException {
+	public TableRow getRow(final int nRow) throws FastOdsException {
 		this.checkRow(nRow);
 
 		TableRow tr;
@@ -188,27 +207,31 @@ public class Table implements NamedObject {
 		return tr;
 	}
 
-	public TableRow nextRow() throws FastOdsException {
-		final int nRow = this.qTableRows.size();
-		this.checkRow(nRow);
-
-		TableRow tr = new TableRow(this.odsFile, nRow);
-		this.qTableRows.add(tr);
-		return tr;
+	public List<TableRow> getRows() {
+		return this.qTableRows;
 	}
 
 	/**
 	 * Get the current TableFamilyStyle
-	 * 
+	 *
 	 * @return The current TableStlye
 	 */
 	public String getStyleName() {
 		return this.styleName;
 	}
 
+	public TableRow nextRow() throws FastOdsException {
+		final int nRow = this.qTableRows.size();
+		this.checkRow(nRow);
+
+		final TableRow tr = new TableRow(this.odsFile, nRow);
+		this.qTableRows.add(tr);
+		return tr;
+	}
+
 	/**
 	 * Set the value of a cell.
-	 * 
+	 *
 	 * @param nRow
 	 *            The row
 	 * @param nCol
@@ -231,14 +254,14 @@ public class Table implements NamedObject {
 		if (nCol > this.nLastCol) {
 			this.nLastCol = nCol;
 		}
-		TableRow tr = this.getRow(nRow);
+		final TableRow tr = this.getRow(nRow);
 		tr.setCell(nCol, type, value);
 		return true;
 	}
 
 	/**
 	 * Set the value of a cell.
-	 * 
+	 *
 	 * @param nRow
 	 *            The row
 	 * @param nCol
@@ -266,7 +289,7 @@ public class Table implements NamedObject {
 
 	/**
 	 * Set the cell style for the specified cell.
-	 * 
+	 *
 	 * @param nRow
 	 *            The row number
 	 * @param nCol
@@ -284,14 +307,14 @@ public class Table implements NamedObject {
 		if (nCol > this.nLastCol) {
 			this.nLastCol = nCol;
 		}
-		TableRow tr = this.getRow(nRow);
+		final TableRow tr = this.getRow(nRow);
 		tr.setCellStyle(nCol, ts);
 		return true;
 	}
 
 	/**
 	 * Set the style of a column.
-	 * 
+	 *
 	 * @param nCol
 	 *            The column number
 	 * @param ts
@@ -308,7 +331,7 @@ public class Table implements NamedObject {
 
 	/**
 	 * Set the name of this table.
-	 * 
+	 *
 	 * @param name
 	 *            The name of this table.
 	 */
@@ -318,32 +341,16 @@ public class Table implements NamedObject {
 
 	/**
 	 * Set a new TableFamilyStyle
-	 * 
+	 *
 	 * @param style
 	 *            The new TableStlye to be used
 	 */
-	public void setStyle(String style) {
+	public void setStyle(final String style) {
 		this.styleName = style;
 	}
 
-	private void appendRows(Appendable appendable, Util util)
-			throws IOException {
-		// Loop through all rows
-		for (TableRow tr : this.getRows()) {
-			if (tr == null) {
-				appendable.append("<table:table-row");
-				util.appendEAttribute(appendable, "table:style-name", "ro1");
-				appendable.append("><table:table-cell");
-				util.appendAttribute(appendable,
-						"table:number-columns-repeated", this.nLastCol);
-				appendable.append("/></table:table-row>");
-			} else
-				tr.appendXML(util, appendable, this);
-		}
-	}
-
-	private void appendColumnStyles(Appendable appendable, Util util)
-			throws IOException {
+	private void appendColumnStyles(final Appendable appendable,
+			final Util util) throws IOException {
 		TableColumnStyle ts0 = null;
 		TableColumnStyle ts1 = null;
 		String sDefaultCellSytle0 = "Default";
@@ -368,7 +375,7 @@ public class Table implements NamedObject {
 		if (this.getColumnStyles().size() > 1) {
 			int nCount = 1;
 
-			Iterator<TableColumnStyle> iterator = this.getColumnStyles()
+			final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
 					.iterator();
 			ts1 = iterator.next();
 			while (iterator.hasNext()) {
@@ -406,6 +413,22 @@ public class Table implements NamedObject {
 		}
 	}
 
+	private void appendRows(final Appendable appendable, final Util util)
+			throws IOException {
+		// Loop through all rows
+		for (final TableRow tr : this.getRows()) {
+			if (tr == null) {
+				appendable.append("<table:table-row");
+				util.appendEAttribute(appendable, "table:style-name", "ro1");
+				appendable.append("><table:table-cell");
+				util.appendAttribute(appendable,
+						"table:number-columns-repeated", this.nLastCol);
+				appendable.append("/></table:table-row>");
+			} else
+				tr.appendXMLToTable(util, appendable);
+		}
+	}
+
 	private void checkCol(final int nCol) throws FastOdsException {
 		if (nCol < 0) {
 			throw new FastOdsException(new StringBuilder(
@@ -420,29 +443,6 @@ public class Table implements NamedObject {
 					"Negative row number exception, row value:[").append(nRow)
 							.append("]").toString());
 		}
-	}
-
-	private static void appendColumnStyle(Appendable appendable, Util util,
-			String sSytle, String sDefaultCellSytle, int nCount)
-			throws IOException {
-		appendable.append("<table:table-column ");
-		util.appendAttribute(appendable, "table:style-name", sSytle);
-		util.appendAttribute(appendable, "table:number-columns-repeated",
-				nCount);
-		util.appendAttribute(appendable, "table:default-cell-style-name",
-				sDefaultCellSytle);
-		appendable.append("/>");
-	}
-
-	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
-		appendable.append("<table:table table:name=\"").append(this.getName())
-				.append("\" table:style-name=\"").append(this.getStyleName())
-				.append("\" table:print=\"false\">");
-		appendable.append(
-				"<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>");
-		this.appendColumnStyles(appendable, util);
-		this.appendRows(appendable, util);
-		appendable.append("</table:table>");
 	}
 
 }

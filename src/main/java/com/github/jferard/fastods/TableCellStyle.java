@@ -25,57 +25,62 @@ import java.util.Map;
 import com.github.jferard.fastods.BorderAttribute.Position;
 
 /**
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
  *         This file TableFamilyStyle.java is part of FastODS.
- * 
+ *
  *         SimpleODS 0.5.1 Changed all 'throw Exception' to 'throw
  *         FastOdsException' SimpleODS 0.5.2 Replaced all text properties with a
  *         TextStyle object
- * 
+ *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style
  */
 public class TableCellStyle implements StyleTag {
-	public static enum VerticalAlign {
-		TOP("top"), MIDDLE("middle"), BOTTOM("bottom");
-
-		private final String attrValue;
-
-		private VerticalAlign(String attrValue) {
-			this.attrValue = attrValue;
-		}
-	}
-
 	public static enum Align {
-		LEFT("start"), CENTER("center"), RIGHT("end"), JUSTIFY("justify");
+		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
 
 		private final String attrValue;
 
-		private Align(String attrValue) {
+		private Align(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 	}
 
-	private final String sName;
-	private final String sDataStyle;
-	private final String sBackgroundColor;
-	private final TextStyle ts;
+	public static enum VerticalAlign {
+		BOTTOM("bottom"), MIDDLE("middle"), TOP("top");
+
+		private final String attrValue;
+
+		private VerticalAlign(final String attrValue) {
+			this.attrValue = attrValue;
+		}
+	}
+
+	public static TableCellStyleBuilder builder() {
+		return new TableCellStyleBuilder();
+	}
+
+	private final Map<Position, BorderAttribute> borderByPosition;
+	private final boolean bWrap; // No line wrap when false, line wrap when
 	private final Align nTextAlign; // 'center','end','start','justify'
 	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
-	private final boolean bWrap; // No line wrap when false, line wrap when
+	private final String sBackgroundColor;
+	private final String sDataStyle;
 	// true
 	private final String sDefaultCellStyle;
-	private final Map<Position, BorderAttribute> borderByPosition;
+	private final String sName;
+
+	private final TextStyle textStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -85,14 +90,15 @@ public class TableCellStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableCellStyle(String sName, String sDataStyle, String sBackgroundColor,
-			TextStyle ts, Align nTextAlign, VerticalAlign nVerticalAlign,
-			boolean bWrap, String sDefaultCellStyle,
-			Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
+	TableCellStyle(final String sName, final String sDataStyle,
+			final String sBackgroundColor, final TextStyle ts,
+			final Align nTextAlign, final VerticalAlign nVerticalAlign,
+			final boolean bWrap, final String sDefaultCellStyle,
+			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
 		this.sName = sName;
 		this.sDataStyle = sDataStyle;
 		this.sBackgroundColor = sBackgroundColor;
-		this.ts = ts;
+		this.textStyle = ts;
 		this.nTextAlign = nTextAlign;
 		this.nVerticalAlign = nVerticalAlign;
 		this.bWrap = bWrap;
@@ -104,24 +110,16 @@ public class TableCellStyle implements StyleTag {
 		odsFile.getContent().addStyleTag(this);
 	}
 
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	public static TableCellStyleBuilder builder() {
-		return new TableCellStyleBuilder();
-	}
-
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * 
+	 *
 	 * @return The XML string for this object.
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
+	public void appendXMLToContentEntry(final Util util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
@@ -140,8 +138,8 @@ public class TableCellStyle implements StyleTag {
 		// -----------------------------------------------
 		// Add all border styles
 		// -----------------------------------------------
-		for (BorderAttribute bs : this.borderByPosition.values()) {
-			bs.appendXML(util, appendable, this);
+		for (final BorderAttribute bs : this.borderByPosition.values()) {
+			bs.appendXMLToTableCellStyle(util, appendable);
 		}
 
 		if (this.bWrap)
@@ -151,10 +149,10 @@ public class TableCellStyle implements StyleTag {
 		// ----------------------------------------------------
 		// First check if any text properties should be added
 		// ----------------------------------------------------
-		if (this.ts.getFontWeight().length() > 0
-				|| this.ts.getFontSize().length() > 0
-				|| this.ts.getFontColor().length() > 0) {
-			this.ts.appendXML(util, appendable, this);
+		if (this.textStyle.getFontWeight().length() > 0
+				|| this.textStyle.getFontSize().length() > 0
+				|| this.textStyle.getFontColor().length() > 0) {
+			this.textStyle.appendXMLToObject(util, appendable);
 		}
 
 		appendable.append("<style:paragraph-properties");
@@ -162,5 +160,10 @@ public class TableCellStyle implements StyleTag {
 				this.nTextAlign.attrValue);
 		util.appendEAttribute(appendable, "fo:margin-left", "0cm");
 		appendable.append("/></style:style>");
+	}
+
+	@Override
+	public String getName() {
+		return this.sName;
 	}
 }

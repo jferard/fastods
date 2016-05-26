@@ -28,40 +28,23 @@ import java.io.IOException;
  *
  *         This file DateStyle.java is part of FastODS. SimpleODS 0.5.2 Added
  *         Format.MMYY Added Format.WW Added Format.YYYYMMDD
- * 
+ *
  *         content.xml/office:document-content/office:automatic-styles/number:
  *         date-style
  *         styles.xml/office:document-styles/office:styles/number:date-style
  */
 public class DateStyle implements NamedObject {
 
-	private static final String DOT_SPACE = "<number:text>. </number:text>";
-	private static final String SPACE = "<number:text> </number:text>";
-	private static final String DAY = "<number:day/>";
-	private static final String WEEK = "<number:week-of-year/>";
-	private static final String YEAR = "<number:year/>";
-	private static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
-	private static final String DASH = "<number:text>-</number:text>";
-	private static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
-	private static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
-	private static final String LONG_DAY = "<number:day number:style=\"long\"/>";
-	private static final String DOT = "<number:text>.</number:text>";
-
 	public static enum Format {
-		/**
-		 * Set the date format like '10.07.2012'.
-		 */
-		DDMMYYYY,
-
 		/**
 		 * Set the date format like '10.07.12'.
 		 */
 		DDMMYY,
 
 		/**
-		 * Set the date format like '10.July 2012'.
+		 * Set the date format like '10.07.2012'.
 		 */
-		TMMMMYYYY,
+		DDMMYYYY,
 
 		/**
 		 * Set the date format like 'July'.
@@ -73,6 +56,11 @@ public class DateStyle implements NamedObject {
 		 * Month.Year
 		 */
 		MMYY,
+
+		/**
+		 * Set the date format like '10.July 2012'.
+		 */
+		TMMMMYYYY,
 
 		/**
 		 * Set the date format to the weeknumber like '28'.<br>
@@ -90,23 +78,36 @@ public class DateStyle implements NamedObject {
 	 * The default date format Format.DDMMYY.
 	 */
 	public static final Format DEFAULT_FORMAT = Format.DDMMYY;
+	private static final String DASH = "<number:text>-</number:text>";
+	private static final String DAY = "<number:day/>";
+	private static final String DOT = "<number:text>.</number:text>";
+	private static final String DOT_SPACE = "<number:text>. </number:text>";
+	private static final String LONG_DAY = "<number:day number:style=\"long\"/>";
+	private static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
+	private static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
+	private static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
+	private static final String SPACE = "<number:text> </number:text>";
+
+	private static final String WEEK = "<number:week-of-year/>";
+
+	private static final String YEAR = "<number:year/>";
 
 	public static DateStyleBuilder builder() {
 		return new DateStyleBuilder();
 	}
 
+	private final boolean bAutomaticOrder;
+	private final Format dateFormat;
+
 	/**
 	 * The name of this style.
 	 */
 	private final String sName;
-	private final boolean bAutomaticOrder;
-
-	private final Format dateFormat;
 
 	/**
 	 * Create a new date style with the name sName.<br>
 	 * Version 0.5.1 Added.
-	 * 
+	 *
 	 * @param sName
 	 *            The name of the number style.
 	 * @param odsFile
@@ -123,8 +124,59 @@ public class DateStyle implements NamedObject {
 	 * @param odsFile
 	 *            The OdsFile to which this style belongs to.
 	 */
-	public void addToFile(OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addDateStyle(this);
+	}
+
+	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 *
+	 */
+	public void appendXMLToStylesEntry(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<number:date-style");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "number:automatic-order",
+				this.isAutomaticOrder());
+		appendable.append(">");
+
+		switch (this.dateFormat) {
+		case TMMMMYYYY:
+			appendable.append(DateStyle.DAY).append(DateStyle.DOT_SPACE)
+					.append(DateStyle.LONG_TEXTUAL_MONTH)
+					.append(DateStyle.SPACE).append(DateStyle.LONG_YEAR);
+			break;
+		case MMMM:
+			appendable.append(DateStyle.LONG_TEXTUAL_MONTH);
+			break;
+		case MMYY:
+			appendable.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
+					.append(DateStyle.YEAR);
+			break;
+		case WW:
+			appendable.append(DateStyle.WEEK);
+			break;
+		case YYYYMMDD:
+			appendable.append(DateStyle.LONG_YEAR).append(DateStyle.DASH)
+					.append(DateStyle.LONG_MONTH).append(DateStyle.DASH)
+					.append(DateStyle.LONG_DAY);
+			break;
+		case DDMMYYYY:
+			appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
+					.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
+					.append(DateStyle.LONG_YEAR);
+			break;
+		case DDMMYY:
+			appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
+					.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
+					.append(DateStyle.YEAR);
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+
+		appendable.append("</number:date-style>");
 	}
 
 	/**
@@ -140,52 +192,6 @@ public class DateStyle implements NamedObject {
 	 */
 	public boolean isAutomaticOrder() {
 		return this.bAutomaticOrder;
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 */
-	public void appendXML(Util util, Appendable appendable,
-			StylesEntry where) throws IOException {
-		appendable.append("<number:date-style");
-		util.appendAttribute(appendable, "style:name", this.sName);
-		util.appendAttribute(appendable, "number:automatic-order",
-				this.isAutomaticOrder());
-		appendable.append(">");
-
-		switch (this.dateFormat) {
-		case TMMMMYYYY:
-			appendable.append(DAY).append(DOT_SPACE).append(LONG_TEXTUAL_MONTH)
-					.append(SPACE).append(LONG_YEAR);
-			break;
-		case MMMM:
-			appendable.append(LONG_TEXTUAL_MONTH);
-			break;
-		case MMYY:
-			appendable.append(LONG_MONTH).append(DOT).append(YEAR);
-			break;
-		case WW:
-			appendable.append(WEEK);
-			break;
-		case YYYYMMDD:
-			appendable.append(LONG_YEAR).append(DASH).append(LONG_MONTH)
-					.append(DASH).append(LONG_DAY);
-			break;
-		case DDMMYYYY:
-			appendable.append(LONG_DAY).append(DOT).append(LONG_MONTH)
-					.append(DOT).append(LONG_YEAR);
-			break;
-		case DDMMYY:
-			appendable.append(LONG_DAY).append(DOT).append(LONG_MONTH)
-					.append(DOT).append(YEAR);
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-
-		appendable.append("</number:date-style>");
 	}
 
 }

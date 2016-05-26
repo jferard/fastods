@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * /**
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
@@ -43,13 +43,13 @@ public class TableRowStyle implements StyleTag {
 		return new TableRowStyleBuilder();
 	}
 
-	private String sRowHeight;
-	private String sName;
+	private final String sName;
+	private final String sRowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -59,28 +59,9 @@ public class TableRowStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableRowStyle(String sStyleName, String sRowHeight) {
+	TableRowStyle(final String sStyleName, final String sRowHeight) {
 		this.sName = sStyleName;
 		this.sRowHeight = sRowHeight;
-	}
-
-	/**
-	 * Set the row height to a table row.<br>
-	 * sHeight is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 * 
-	 * @return sHeight The table row height to be used, e.g. '1.0cm'
-	 */
-	public String getRowHeight() {
-		return this.sRowHeight;
-	}
-
-	@Override
-	public String getName() {
-		return this.sName;
 	}
 
 	public void addToFile(final OdsFile odsFile) {
@@ -88,7 +69,8 @@ public class TableRowStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
+	public void appendXMLToContentEntry(final Util util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table-row");
@@ -98,5 +80,24 @@ public class TableRowStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:use-optimal-row-height",
 				"true");
 		appendable.append("/></style:style>");
+	}
+
+	@Override
+	public String getName() {
+		return this.sName;
+	}
+
+	/**
+	 * Set the row height to a table row.<br>
+	 * sHeight is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 *
+	 * @return sHeight The table row height to be used, e.g. '1.0cm'
+	 */
+	public String getRowHeight() {
+		return this.sRowHeight;
 	}
 }

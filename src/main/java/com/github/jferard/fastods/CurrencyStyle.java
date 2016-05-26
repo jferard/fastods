@@ -27,7 +27,7 @@ import java.io.IOException;
  *         users.sourceforge.net>
  *
  *         This file CurrencyStyle.java is part of FastODS.
- * 
+ *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/number:
  *         currency-style
@@ -43,28 +43,29 @@ public class CurrencyStyle implements NamedObject {
 		return new CurrencyStyleBuilder();
 	}
 
-	private final String sName;
-	private final String sCurrencySymbol;
-	private final String sNegativeValueColor;
-	private final String sLanguage;
-	private final String sCountry;
+	private final boolean bGrouping;
+	private final boolean bNegativeValuesRed;
+	private final boolean bVolatile;
+	private final SymbolPosition currencyPosition;
 	private final int nDecimalPlaces;
 	private final int nMinIntegerDigits;
-	private final boolean bGrouping;
-	private final boolean bVolatile;
-	private final boolean bNegativeValuesRed;
-	private final SymbolPosition currencyPosition;
+	private final String sCountry;
+	private final String sCurrencySymbol;
+	private final String sLanguage;
+	private final String sName;
+	private final String sNegativeValueColor;
 
 	/**
 	 * The OdsFile where this object belong to.
 	 */
 	private String xml;
 
-	protected CurrencyStyle(String sName, String sCurrencySymbol,
-			String sNegativeValueColor, String sLanguage, String sCountry,
-			int nDecimalPlaces, int nMinIntegerDigits, boolean bGrouping,
-			boolean bVolatile, boolean bNegativeValuesRed,
-			SymbolPosition currencyPosition) {
+	protected CurrencyStyle(final String sName, final String sCurrencySymbol,
+			final String sNegativeValueColor, final String sLanguage,
+			final String sCountry, final int nDecimalPlaces,
+			final int nMinIntegerDigits, final boolean bGrouping,
+			final boolean bVolatile, final boolean bNegativeValuesRed,
+			final SymbolPosition currencyPosition) {
 		this.sName = sName;
 		this.sCurrencySymbol = sCurrencySymbol;
 		this.sNegativeValueColor = sNegativeValueColor;
@@ -78,84 +79,18 @@ public class CurrencyStyle implements NamedObject {
 		this.currencyPosition = currencyPosition;
 	}
 
-	public void addToFile(OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addCurrencyStyle(this);
-	}
-
-	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
-	 * @return The currency symbol that is used. e.g. '$'.
-	 */
-	public String getCurrencySymbol() {
-		return this.sCurrencySymbol;
-	}
-
-	/**
-	 * Get the position of the currency symbol.
-	 * 
-	 * @return either CurrencyStyle.SYMBOLPOSITION_BEGIN or
-	 *         CurrencyStyle.SYMBOLPOSITION_END
-	 */
-	public SymbolPosition getCurrencySymbolPosition() {
-		return this.currencyPosition;
-	}
-
-	/**
-	 * Get how many digits are to the right of the decimal symbol.
-	 * 
-	 * @return The number of digits
-	 */
-	public int getDecimalPlaces() {
-		return this.nDecimalPlaces;
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'.
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
-	}
-
-	/**
-	 * Get how many leading zeros are present.
-	 * 
-	 * @return The number of leading zeros
-	 */
-	public int getMinIntegerDigits() {
-		return this.nMinIntegerDigits;
-	}
-
-	/**
-	 * Get the name of this currency style.
-	 * 
-	 * @return The currency style name
-	 */
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	public String getNegativeValueColor() {
-		return this.sNegativeValueColor;
-	}
-
-	public boolean getThousandsSeparator() {
-		return this.bGrouping;
 	}
 
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * 
+	 *
 	 * @return The XML string for this object.
 	 */
-	public void appendXML(Util util, Appendable appendable, StylesEntry where) throws IOException {
+	public void appendXMLToStylesEntry(final Util util,
+			final Appendable appendable) throws IOException {
 		final StringBuilder currency = this.currencyToXML(util);
 
 		appendable.append("<number:currency-style");
@@ -176,46 +111,116 @@ public class CurrencyStyle implements NamedObject {
 		appendable.append("<number:text>-</number:text>");
 
 		appendable.append(currency);
-		appendable.append("<style:map style:condition=\"value()&gt;=0\"");
+		appendable.append("<style:map");
+		util.appendAttribute(appendable, "style:condition", "value()>=0");
 		util.appendAttribute(appendable, "style:apply-style-name",
 				this.sName + "nn");
 		appendable.append("/></number:currency-style>");
 	}
 
-	private void appendCurrencyNumber(StringBuilder sb) {
-		sb.append("<number:number number:decimal-places=\"")
-				.append(this.nDecimalPlaces).append("\" ")
-				.append("number:min-integer-digits=\"")
-				.append(this.nMinIntegerDigits).append("\" ");
+	/**
+	 * @return The two letter country code, e.g. 'US'
+	 */
+	public String getCountry() {
+		return this.sCountry;
+	}
+
+	/**
+	 * @return The currency symbol that is used. e.g. '$'.
+	 */
+	public String getCurrencySymbol() {
+		return this.sCurrencySymbol;
+	}
+
+	/**
+	 * Get the position of the currency symbol.
+	 *
+	 * @return either CurrencyStyle.SYMBOLPOSITION_BEGIN or
+	 *         CurrencyStyle.SYMBOLPOSITION_END
+	 */
+	public SymbolPosition getCurrencySymbolPosition() {
+		return this.currencyPosition;
+	}
+
+	/**
+	 * Get how many digits are to the right of the decimal symbol.
+	 *
+	 * @return The number of digits
+	 */
+	public int getDecimalPlaces() {
+		return this.nDecimalPlaces;
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'.
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
+	}
+
+	/**
+	 * Get how many leading zeros are present.
+	 *
+	 * @return The number of leading zeros
+	 */
+	public int getMinIntegerDigits() {
+		return this.nMinIntegerDigits;
+	}
+
+	/**
+	 * Get the name of this currency style.
+	 *
+	 * @return The currency style name
+	 */
+	@Override
+	public String getName() {
+		return this.sName;
+	}
+
+	public String getNegativeValueColor() {
+		return this.sNegativeValueColor;
+	}
+
+	public boolean getThousandsSeparator() {
+		return this.bGrouping;
+	}
+
+	private void appendCurrencyNumber(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<number:number");
+		util.appendAttribute(appendable, "number:decimal-places",
+				this.nDecimalPlaces);
+		util.appendAttribute(appendable, "number:min-integer-digits",
+				this.nMinIntegerDigits);
 		if (this.bGrouping)
-			sb.append("number:grouping=\"").append(this.bGrouping).append("\"");
-
-		sb.append("/>");
+			util.appendAttribute(appendable, "number:grouping", this.bGrouping);
+		appendable.append("/>");
 	}
 
-	private void appendCurrencySymbol(Util util, StringBuilder sb)
-			throws IOException {
-		sb.append("<number:currency-symbol");
+	private void appendCurrencySymbol(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<number:currency-symbol");
 		if (this.sLanguage.length() > 0)
-			util.appendAttribute(sb, "number:language", this.sLanguage);
+			util.appendAttribute(appendable, "number:language", this.sLanguage);
 		if (this.sCountry.length() > 0)
-			util.appendAttribute(sb, "number:country", this.sCountry);
-		sb.append(">");
-		sb.append("\"").append(util.escapeXMLContent(this.sCurrencySymbol))
+			util.appendAttribute(appendable, "number:country", this.sCountry);
+		appendable.append(">");
+		appendable.append("\"")
+				.append(util.escapeXMLContent(this.sCurrencySymbol))
 				.append("\"");
-		sb.append("</number:currency-symbol>");
+		appendable.append("</number:currency-symbol>");
 	}
 
-	private StringBuilder currencyToXML(Util util) throws IOException {
-		StringBuilder sbReturn = new StringBuilder();
+	private StringBuilder currencyToXML(final Util util) throws IOException {
+		final StringBuilder sbReturn = new StringBuilder();
 		// Check where the currency symbol should be positioned
 		if (this.currencyPosition == SymbolPosition.END) {
-			this.appendCurrencyNumber(sbReturn);
+			this.appendCurrencyNumber(util, sbReturn);
 			sbReturn.append("<number:text> </number:text>");
 			this.appendCurrencySymbol(util, sbReturn);
 		} else { // SYMBOLPOSITION_BEGIN
 			this.appendCurrencySymbol(util, sbReturn);
-			this.appendCurrencyNumber(sbReturn);
+			this.appendCurrencyNumber(util, sbReturn);
 		}
 		return sbReturn;
 	}

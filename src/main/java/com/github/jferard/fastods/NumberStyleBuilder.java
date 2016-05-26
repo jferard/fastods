@@ -28,26 +28,26 @@ import com.github.jferard.fastods.NumberStyle.Type;
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
 class NumberStyleBuilder {
-	private String sName;
-	private String sNegativeValueColor;
-	private String sLanguage;
-	private String sCountry;
-	private Type numberType;
-	private int nDecimalPlaces;
-	private int nMinIntegerDigits;
-	private int nMinExponentDigits;
-	private int nMinNumeratorDigits;
-	private int nMinDenominatorDigits;
 	private boolean bGrouping;
-	private boolean bVolatile;
 	private boolean bNegativeValuesRed;
+	private boolean bVolatile;
+	private int nDecimalPlaces;
+	private int nMinDenominatorDigits;
+	private int nMinExponentDigits;
+	private int nMinIntegerDigits;
+	private int nMinNumeratorDigits;
+	private Type numberType;
+	private String sCountry;
+	private String sLanguage;
+	private String sName;
+	private final String sNegativeValueColor;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
 	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
 	 * @param nMinIntDigits
@@ -73,10 +73,19 @@ class NumberStyleBuilder {
 		this.bNegativeValuesRed = false;
 	}
 
+	public NumberStyle build() {
+		return new NumberStyle(this.sName, this.sNegativeValueColor,
+				this.sLanguage, this.sCountry, this.numberType,
+				this.nDecimalPlaces, this.nMinIntegerDigits,
+				this.nMinExponentDigits, this.nMinNumeratorDigits,
+				this.nMinDenominatorDigits, this.bGrouping, this.bVolatile,
+				this.bNegativeValuesRed);
+	}
+
 	/**
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
-	 * 
+	 *
 	 * @param country
 	 *            The two letter country code, e.g. 'US'
 	 * @return this for fluent style
@@ -88,7 +97,7 @@ class NumberStyleBuilder {
 
 	/**
 	 * Set how many digits are to the right of the decimal symbol.
-	 * 
+	 *
 	 * @param decimalPlaces
 	 *            - The number of digits
 	 * @return this for fluent style
@@ -101,7 +110,7 @@ class NumberStyleBuilder {
 	/**
 	 * Add the numerator and denominator values to be shown.<br>
 	 * The number style is set to NUMBER_FRACTION
-	 * 
+	 *
 	 * @param nNumerator
 	 * @param nDenominator
 	 * @return this for fluent style
@@ -115,48 +124,8 @@ class NumberStyleBuilder {
 	}
 
 	/**
-	 * Set the country and language if you need to distinguish between different
-	 * <br>
-	 * countries. E.g. set it to country='US' and language='en'
-	 * 
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public void setLanguage(final String language) {
-		this.sLanguage = language.toLowerCase();
-	}
-
-	/**
-	 * Set the number of exponent digits.<br>
-	 * The number style is set to NUMBER_SCIENTIFIC.
-	 * 
-	 * @param minExponentDigits
-	 *            The minimum of exponent digits to be used
-	 * @return this for fluent style
-	 */
-	public NumberStyleBuilder setMinExponentDigits(
-			final int minExponentDigits) {
-		this.nMinExponentDigits = minExponentDigits;
-		this.numberType = NumberStyle.Type.SCIENTIFIC;
-		return this;
-	}
-
-	/**
-	 * Set how many leading zeros are present.
-	 * 
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 * @return this for fluent style
-	 */
-	public final NumberStyleBuilder setMinIntegerDigits(
-			final int minIntegerDigits) {
-		this.nMinIntegerDigits = minIntegerDigits;
-		return this;
-	}
-
-	/**
 	 * Set the name of this style to sName, this name must be unique.
-	 * 
+	 *
 	 * @param name
 	 *            - The name of this style.
 	 * @return
@@ -169,12 +138,12 @@ class NumberStyleBuilder {
 
 	/**
 	 * Set to true if negative values should be shown in red color.
-	 * 
+	 *
 	 * @param bValue
 	 *            true negative numbers will be shown in red color.
 	 * @return
 	 * @return this for fluent style
-	 * 
+	 *
 	 */
 	public NumberStyleBuilder negativeValuesRed(final boolean bValue) {
 		this.bNegativeValuesRed = bValue;
@@ -189,7 +158,7 @@ class NumberStyleBuilder {
 	 * NumberStyle.NUMBER_SCIENTIFIC<br>
 	 * NumberStyle.NUMBER_FRACTION<br>
 	 * NumberStyle.NUMBER_PERCENTAGE<br>
-	 * 
+	 *
 	 * @param numberType
 	 *            The number type to be used.
 	 * @return this for fluent style
@@ -200,9 +169,49 @@ class NumberStyleBuilder {
 	}
 
 	/**
+	 * Set the country and language if you need to distinguish between different
+	 * <br>
+	 * countries. E.g. set it to country='US' and language='en'
+	 *
+	 * @param language
+	 *            The two letter language code, e.g. 'en'
+	 */
+	public void setLanguage(final String language) {
+		this.sLanguage = language.toLowerCase();
+	}
+
+	/**
+	 * Set the number of exponent digits.<br>
+	 * The number style is set to NUMBER_SCIENTIFIC.
+	 *
+	 * @param minExponentDigits
+	 *            The minimum of exponent digits to be used
+	 * @return this for fluent style
+	 */
+	public NumberStyleBuilder setMinExponentDigits(
+			final int minExponentDigits) {
+		this.nMinExponentDigits = minExponentDigits;
+		this.numberType = NumberStyle.Type.SCIENTIFIC;
+		return this;
+	}
+
+	/**
+	 * Set how many leading zeros are present.
+	 *
+	 * @param minIntegerDigits
+	 *            The number of leading zeros
+	 * @return this for fluent style
+	 */
+	public final NumberStyleBuilder setMinIntegerDigits(
+			final int minIntegerDigits) {
+		this.nMinIntegerDigits = minIntegerDigits;
+		return this;
+	}
+
+	/**
 	 * If this is set to true, the thousands separator is shown.<br>
 	 * The default is false.
-	 * 
+	 *
 	 * @param grouping
 	 *            true, the thousands separator is shown<br>
 	 *            false, the thousands separator is not shown
@@ -215,21 +224,12 @@ class NumberStyleBuilder {
 
 	/**
 	 * Set the number format to percentage.
-	 * 
+	 *
 	 * @return this for fluent style
 	 */
 	public NumberStyleBuilder toPercentageStyle() {
 		this.numberType = NumberStyle.Type.PERCENTAGE;
 		return this;
-	}
-
-	public NumberStyle build() {
-		return new NumberStyle(this.sName, this.sNegativeValueColor,
-				this.sLanguage, this.sCountry, this.numberType,
-				this.nDecimalPlaces, this.nMinIntegerDigits,
-				this.nMinExponentDigits, this.nMinNumeratorDigits,
-				this.nMinDenominatorDigits, this.bGrouping, this.bVolatile,
-				this.bNegativeValuesRed);
 	}
 
 }

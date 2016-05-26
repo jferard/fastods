@@ -23,7 +23,7 @@ import java.io.IOException;
 
 /**
  * /**
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
@@ -31,15 +31,14 @@ import java.io.IOException;
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
  *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
- * 
+ *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-column
  */
-public class TableColumnStyle
-		implements StyleTag {
+public class TableColumnStyle implements StyleTag {
 	public static TableRowStyleBuilder builder() {
 		return new TableRowStyleBuilder();
 	}
@@ -50,7 +49,7 @@ public class TableColumnStyle
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -60,22 +59,9 @@ public class TableColumnStyle
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableColumnStyle(String sStyleName, String sColumnWidth) {
+	TableColumnStyle(final String sStyleName, final String sColumnWidth) {
 		this.sName = sStyleName;
 		this.sColumnWidth = sColumnWidth;
-	}
-
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	public String getColumnWidth() {
-		return this.sColumnWidth;
-	}
-
-	public String getDefaultCellStyle() {
-		return "Default"; // TODO : use a default cell style if nec.
 	}
 
 	public void addToFile(final OdsFile odsFile) {
@@ -85,12 +71,12 @@ public class TableColumnStyle
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * 
+	 *
 	 * @return The XML string for this object.
 	 */
 	@Override
-	public void appendXML(Util util, Appendable appendable, ContentEntry where)
-			throws IOException {
+	public void appendXMLToContentEntry(final Util util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table-column");
@@ -103,9 +89,22 @@ public class TableColumnStyle
 		appendable.append("/></style:style>");
 	}
 
-	public void appendXML(Util util, Appendable appendable, Table where)
+	public void appendXMLToTable(final Util util, final Appendable appendable)
 			throws IOException {
 		// TODO : 9.1.12 <table:table-columns>
+	}
+
+	public String getColumnWidth() {
+		return this.sColumnWidth;
+	}
+
+	public String getDefaultCellStyle() {
+		return "Default"; // TODO : use a default cell style if nec.
+	}
+
+	@Override
+	public String getName() {
+		return this.sName;
 	}
 
 }

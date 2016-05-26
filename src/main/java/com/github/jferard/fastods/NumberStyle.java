@@ -27,7 +27,7 @@ import java.io.IOException;
  *         users.sourceforge.net>
  *
  *         This file NumberStyle.java is part of FastODS.
- * 
+ *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/number:
  *         number-style
@@ -39,7 +39,7 @@ import java.io.IOException;
  */
 public class NumberStyle implements NamedObject {
 	public static enum Type {
-		NORMAL, SCIENTIFIC, FRACTION, PERCENTAGE;
+		FRACTION, NORMAL, PERCENTAGE, SCIENTIFIC;
 	}
 
 	public static final Type DEFAULT_TYPE = Type.NORMAL;
@@ -48,29 +48,29 @@ public class NumberStyle implements NamedObject {
 		return new NumberStyleBuilder();
 	}
 
-	private final String sName;
-	private final String sNegativeValueColor;
-	private final String sLanguage;
-	private final String sCountry;
-	private final Type numberType;
-	private final int nDecimalPlaces;
-	private final int nMinIntegerDigits;
-	private final int nMinExponentDigits;
-	private final int nMinNumeratorDigits;
-	private final int nMinDenominatorDigits;
 	private final boolean bGrouping;
+	private final boolean bNegativeValuesRed;
 	/**
-	 * 19.517 : "The style:volatile attribute specifies whether unused style in a
-	 * document are retained or discarded by consumers."
+	 * 19.517 : "The style:volatile attribute specifies whether unused style in
+	 * a document are retained or discarded by consumers."
 	 */
 	private final boolean bVolatile;
-	private final boolean bNegativeValuesRed;
+	private final int nDecimalPlaces;
+	private final int nMinDenominatorDigits;
+	private final int nMinExponentDigits;
+	private final int nMinIntegerDigits;
+	private final int nMinNumeratorDigits;
+	private final Type numberType;
+	private final String sCountry;
+	private final String sLanguage;
+	private final String sName;
+	private final String sNegativeValueColor;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
 	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL
-	 * 
+	 *
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
 	 * @param nMinIntDigits
@@ -78,11 +78,13 @@ public class NumberStyle implements NamedObject {
 	 * @param nDecPlaces
 	 *            The number of decimal places to be shown.
 	 */
-	NumberStyle(String sName, String sNegativeValueColor, String sLanguage,
-			String sCountry, Type numberType, int nDecimalPlaces,
-			int nMinIntegerDigits, int nMinExponentDigits,
-			int nMinNumeratorDigits, int nMinDenominatorDigits,
-			boolean bGrouping, boolean bVolatile, boolean bNegativeValuesRed) {
+	NumberStyle(final String sName, final String sNegativeValueColor,
+			final String sLanguage, final String sCountry,
+			final Type numberType, final int nDecimalPlaces,
+			final int nMinIntegerDigits, final int nMinExponentDigits,
+			final int nMinNumeratorDigits, final int nMinDenominatorDigits,
+			final boolean bGrouping, final boolean bVolatile,
+			final boolean bNegativeValuesRed) {
 		this.sName = sName;
 		this.sNegativeValueColor = sNegativeValueColor;
 		this.sLanguage = sLanguage;
@@ -98,85 +100,18 @@ public class NumberStyle implements NamedObject {
 		this.bNegativeValuesRed = bNegativeValuesRed;
 	}
 
-	public void addToFile(OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addNumberStyle(this);
-	}
-
-	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
-	 * Get how many digits are to the right of the decimal symbol.
-	 * 
-	 * @return The number of digits
-	 */
-	public int getDecimalPlaces() {
-		return this.nDecimalPlaces;
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
-	}
-
-	/**
-	 * Get the current number of leading zeros.
-	 * 
-	 * @return The current number of leading zeros.
-	 */
-	public int getMinExponentDigits() {
-		return this.nMinExponentDigits;
-	}
-
-	/**
-	 * Get how many leading zeros are present.
-	 * 
-	 * @return The number of leading zeros
-	 */
-	public int getMinIntegerDigits() {
-		return this.nMinIntegerDigits;
-	}
-
-	/**
-	 * @return The name of this style.
-	 */
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	/**
-	 * Get the current status of the thousands separator.
-	 * 
-	 * @return true The thousands separator will be shown.
-	 */
-	public boolean getThousandsSeparator() {
-		return this.bGrouping;
-	}
-
-	/**
-	 * Check if this style shows a red color for negative numbers.
-	 * 
-	 * @return true - for negative numbers the font is red<br>
-	 *         false - for negative numbers the font is not red
-	 */
-	public boolean isNegativeValuesRed() {
-		return this.bNegativeValuesRed;
 	}
 
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * 
+	 *
 	 * @param util
 	 */
-	public void appendXML(Util util, Appendable appendable, StylesEntry where) throws IOException {
+	public void appendXMLToStylesEntry(final Util util,
+			final Appendable appendable) throws IOException {
 		if (this.numberType == Type.PERCENTAGE) {
 			appendable.append("<number:percentage-style");
 		} else {
@@ -199,7 +134,7 @@ public class NumberStyle implements NamedObject {
 			util.appendAttribute(appendable, "number:country", this.sCountry);
 		}
 		if (this.bVolatile)
-			appendable.append(" style:volatile=\"true\"");
+			util.appendAttribute(appendable, "style:volatile", true);
 
 		appendable.append(">");
 		this.appendNumberType(util, appendable);
@@ -260,7 +195,8 @@ public class NumberStyle implements NamedObject {
 				appendable.append("<number:text>%</number:text>");
 			}
 
-			appendable.append("<style:map style:condition=\"value()&gt;=0\"");
+			appendable.append("<style:map");
+			util.appendAttribute(appendable, "style:condition", "value()>=0");
 			util.appendAttribute(appendable, "style:apply-style-name",
 					this.sName + "nn");
 			appendable.append("/>");
@@ -275,13 +211,81 @@ public class NumberStyle implements NamedObject {
 	}
 
 	/**
+	 * @return The two letter country code, e.g. 'US'
+	 */
+	public String getCountry() {
+		return this.sCountry;
+	}
+
+	/**
+	 * Get how many digits are to the right of the decimal symbol.
+	 *
+	 * @return The number of digits
+	 */
+	public int getDecimalPlaces() {
+		return this.nDecimalPlaces;
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
+	}
+
+	/**
+	 * Get the current number of leading zeros.
+	 *
+	 * @return The current number of leading zeros.
+	 */
+	public int getMinExponentDigits() {
+		return this.nMinExponentDigits;
+	}
+
+	/**
+	 * Get how many leading zeros are present.
+	 *
+	 * @return The number of leading zeros
+	 */
+	public int getMinIntegerDigits() {
+		return this.nMinIntegerDigits;
+	}
+
+	/**
+	 * @return The name of this style.
+	 */
+	@Override
+	public String getName() {
+		return this.sName;
+	}
+
+	/**
+	 * Get the current status of the thousands separator.
+	 *
+	 * @return true The thousands separator will be shown.
+	 */
+	public boolean getThousandsSeparator() {
+		return this.bGrouping;
+	}
+
+	/**
+	 * Check if this style shows a red color for negative numbers.
+	 *
+	 * @return true - for negative numbers the font is red<br>
+	 *         false - for negative numbers the font is not red
+	 */
+	public boolean isNegativeValuesRed() {
+		return this.bNegativeValuesRed;
+	}
+
+	/**
 	 * Add the number type in XML format to the StringBuilder sb.
-	 * 
+	 *
 	 * @param appendable
 	 *            The StringBuilder to which the number format is appended.
 	 * @throws IOException
 	 */
-	private void appendNumberType(Util util, final Appendable appendable)
+	private void appendNumberType(final Util util, final Appendable appendable)
 			throws IOException {
 
 		switch (this.numberType) {

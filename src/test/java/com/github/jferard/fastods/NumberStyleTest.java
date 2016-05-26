@@ -36,7 +36,7 @@ public class NumberStyleTest {
 	public final void testEmpty() throws IOException {
 		NumberStyle ns = NumberStyle.builder().name("test").build();
 		StringBuilder sb = new StringBuilder();
-		ns.appendXML(Util.getInstance(), sb, null);
+		ns.appendXMLToStylesEntry(Util.getInstance(), sb);
 		Assert.assertEquals("<number:number-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "</number:number-style>", sb.toString());
@@ -46,7 +46,7 @@ public class NumberStyleTest {
 	public final void testNegative() throws IOException {
 		NumberStyle ns = NumberStyle.builder().name("test").negativeValuesRed(true).build();
 		StringBuilder sb = new StringBuilder();
-		ns.appendXML(Util.getInstance(), sb, null);
+		ns.appendXMLToStylesEntry(Util.getInstance(), sb);
 		Assert.assertEquals(
 				"<number:number-style style:name=\"testnn\" style:volatile=\"true\">"+
 				"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"+

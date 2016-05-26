@@ -29,17 +29,17 @@ import com.github.jferard.fastods.CurrencyStyle.SymbolPosition;
  *
  */
 class CurrencyStyleBuilder {
-	private String sName;
-	private String sCurrencySymbol;
-	private String sNegativeValueColor;
-	private String sLanguage;
-	private String sCountry;
+	private boolean bGrouping;
+	private final boolean bNegativeValuesRed;
+	private final boolean bVolatile;
+	private SymbolPosition currencyPosition;
 	private int nDecimalPlaces;
 	private int nMinIntegerDigits;
-	private boolean bGrouping;
-	private boolean bVolatile;
-	private boolean bNegativeValuesRed;
-	private SymbolPosition currencyPosition;
+	private String sCountry;
+	private String sCurrencySymbol;
+	private String sLanguage;
+	private String sName;
+	private String sNegativeValueColor;
 
 	/**
 	 * The builder
@@ -70,21 +70,21 @@ class CurrencyStyleBuilder {
 	/**
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
-	 * 
+	 *
 	 * @param country
 	 *            The two letter country code, e.g. 'US'
 	 */
-	public CurrencyStyleBuilder country(String country) {
+	public CurrencyStyleBuilder country(final String country) {
 		this.sCountry = country.toUpperCase();
 		return this;
 	}
 
 	/**
 	 * Change the currency symbol, e.g. '$'.
-	 * 
+	 *
 	 * @param currencySymbol
 	 */
-	public CurrencyStyleBuilder currencySymbol(String currencySymbol) {
+	public CurrencyStyleBuilder currencySymbol(final String currencySymbol) {
 		this.sCurrencySymbol = currencySymbol;
 		return this;
 	}
@@ -92,18 +92,18 @@ class CurrencyStyleBuilder {
 	/**
 	 * Set the position of the currency symbol, either
 	 * CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
-	 * 
+	 *
 	 * @param symbolPosition
 	 */
 	public CurrencyStyleBuilder currencySymbolPosition(
-			SymbolPosition symbolPosition) {
+			final SymbolPosition symbolPosition) {
 		this.currencyPosition = symbolPosition;
 		return this;
 	}
 
 	/**
 	 * Set how many digits are to the right of the decimal symbol.
-	 * 
+	 *
 	 * @param decimalPlaces
 	 *            - The number of digits
 	 */
@@ -115,18 +115,18 @@ class CurrencyStyleBuilder {
 	/**
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
-	 * 
+	 *
 	 * @param language
 	 *            The two letter language code, e.g. 'en'
 	 */
-	public CurrencyStyleBuilder language(String language) {
+	public CurrencyStyleBuilder language(final String language) {
 		this.sLanguage = language.toLowerCase();
 		return this;
 	}
 
 	/**
 	 * Set how many leading zeros are present.
-	 * 
+	 *
 	 * @param minIntegerDigits
 	 *            The number of leading zeros
 	 */
@@ -137,7 +137,7 @@ class CurrencyStyleBuilder {
 
 	/**
 	 * Set the name of this style to sName.
-	 * 
+	 *
 	 * @param name
 	 *            - The name of this style
 	 */
@@ -146,14 +146,15 @@ class CurrencyStyleBuilder {
 		return this;
 	}
 
-	public CurrencyStyleBuilder negativeValueColor(String negativeValueColor) {
+	public CurrencyStyleBuilder negativeValueColor(
+			final String negativeValueColor) {
 		this.sNegativeValueColor = negativeValueColor;
 		return this;
 	}
 
 	/**
 	 * If this is set to true, the thousands separator is shown.
-	 * 
+	 *
 	 * @param grouping
 	 */
 	public CurrencyStyleBuilder thousandsSeparator(final boolean grouping) {

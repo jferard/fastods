@@ -41,10 +41,10 @@ public class CurrencyStyleTest {
 	public final void test() throws IOException {
 		CurrencyStyle cs = CurrencyStyle.builder().name("test").build();
 		StringBuilder sb = new StringBuilder();
-		cs.appendXML(Util.getInstance(), sb, null);
+		cs.appendXMLToStylesEntry(Util.getInstance(), sb);
 		Assert.assertEquals(
 				"<number:currency-style style:name=\"testnn\" style:volatile=\"true\">"
-						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" />"
+						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> "
 						+ "</number:text><number:currency-symbol>\"€\""
 						+ "</number:currency-symbol>"
@@ -52,7 +52,7 @@ public class CurrencyStyleTest {
 						+ "<number:currency-style style:name=\"test\">"
 						+ "<style:text-properties fo:color=\"#FF0000\"/>"
 						+ "<number:text>-" + "</number:text>"
-						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" />"
+						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> "
 						+ "</number:text><number:currency-symbol>\"€\""
 						+ "</number:currency-symbol>"

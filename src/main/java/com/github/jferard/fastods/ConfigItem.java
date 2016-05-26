@@ -27,7 +27,7 @@ import java.io.IOException;
  *         users.sourceforge.net>
  *
  *         This file ConfigItem.java is part of FastODS.
- * 
+ *
  *         WHERE ?
  *         settings.xml/office:document-settings/office:settings/settingsEntry:
  *         settingsEntry-item-set/config:config-item
@@ -46,8 +46,25 @@ public class ConfigItem {
 	}
 
 	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 *
+	 * @return The XML string for this object.
+	 * @throws IOException
+	 */
+	public void appendXMLToObject(final Util util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<config:config-item");
+		util.appendAttribute(appendable, "config:name", this.sItemName);
+		util.appendAttribute(appendable, "config:type", this.sType);
+		appendable.append(">");
+		appendable.append(util.escapeXMLContent(this.sValue));
+		appendable.append("</config:config-item>");
+	}
+
+	/**
 	 * Get the name of this ConfigItem.
-	 * 
+	 *
 	 * @return The name of this ConfigItem
 	 */
 	public String getName() {
@@ -60,21 +77,5 @@ public class ConfigItem {
 
 	public String getValue() {
 		return this.sValue;
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @return The XML string for this object.
-	 * @throws IOException
-	 */
-	public void appendXML(Util util, Appendable appendable, Object where) throws IOException {
-		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.sItemName);
-		util.appendAttribute(appendable, "config:type", this.sType);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.sValue));
-		appendable.append("</config:config-item>");
 	}
 }

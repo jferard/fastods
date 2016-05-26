@@ -20,7 +20,6 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,12 +34,12 @@ import java.util.List;
  *         table:table/table:table-row
  */
 public class TableRow {
+	private final int nRow;
+	private final OdsFile odsFile;
+	private final List<TableCell> qTableCells;
 	private String styleName;
-	private List<TableCell> qTableCells;
-	private int nRow;
-	private OdsFile odsFile;
 
-	TableRow(OdsFile odsFile, int nRow) {
+	TableRow(final OdsFile odsFile, final int nRow) {
 		this.nRow = nRow;
 		this.odsFile = odsFile;
 		this.styleName = "ro1";
@@ -48,10 +47,41 @@ public class TableRow {
 	}
 
 	/**
+	 * Write the XML format for this object.<br>
+	 * This is used while writing the ODS file.
+	 *
+	 * @throws IOException
+	 */
+	public void appendXMLToTable(final Util util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<table:table-row");
+		util.appendAttribute(appendable, "table:styleName-name",
+				this.styleName);
+		appendable.append(">");
+
+		int nNullFieldCounter = 0;
+		for (final TableCell tc : this.qTableCells) {
+			if (tc == null) {
+				nNullFieldCounter++;
+			} else {
+				if (nNullFieldCounter > 0) {
+					appendable.append("<table:table-cell");
+					util.appendAttribute(appendable,
+							"table:number-columns-repeated", nNullFieldCounter);
+					appendable.append("/>");
+					nNullFieldCounter = 0;
+				}
+				tc.appendXMLToTableRow(util, appendable);
+			}
+		}
+		appendable.append("</table:table-row>");
+	}
+
+	/**
 	 * Added 0.5.1:<br>
 	 * Get a TableCell, if no TableCell was present at this nCol, create a new
 	 * one with a default of TableCell.STYLE_STRING and a content of "".
-	 * 
+	 *
 	 * @param nCol
 	 * @return The TableCell for this position, maybe a new TableCell
 	 */
@@ -65,44 +95,14 @@ public class TableRow {
 		return tc;
 	}
 
-	/**
-	 * @return The List with all TableCell objects
-	 */
-	private List<TableCell> getCells() {
-		return this.qTableCells;
-	}
-
 	public String getStyleName() {
 		return this.styleName;
 	}
 
 	/**
-	 * 
-	 * @param nCol
-	 *            The column for this cell
-	 * @param nValuetype
-	 * @param sValue
-	 */
-	public void setCell(final int nCol, final TableCell.Type nValuetype,
-			final String sValue) {
-		if (0 <= nCol && nCol < this.qTableCells.size()) {
-			TableCell tc = this.qTableCells.get(nCol);
-			tc.setValueType(nValuetype);
-			tc.setValue(sValue);
-		} else {
-			while (nCol < this.qTableCells.size() - 1) {
-				this.qTableCells.add(null);
-			}
-			TableCell tc = new TableCell(this.odsFile, this.nRow, nCol,
-					nValuetype, sValue);
-			this.qTableCells.add(tc);
-		}
-	}
-
-	/**
 	 * Set the cell to the content of string, the value type of the cell is
 	 * TableCell.STYLE_STRING .
-	 * 
+	 *
 	 * @param nCol
 	 *            The column to set
 	 * @param sValue
@@ -115,7 +115,7 @@ public class TableRow {
 	/**
 	 * Set TableCell object at position nCol.<br>
 	 * If there is already a TableCell object, the old one is overwritten.
-	 * 
+	 *
 	 * @param nCol
 	 *            The column for this cell
 	 * @param tc
@@ -125,8 +125,31 @@ public class TableRow {
 	}
 
 	/**
+	 *
+	 * @param nCol
+	 *            The column for this cell
+	 * @param nValuetype
+	 * @param sValue
+	 */
+	public void setCell(final int nCol, final TableCell.Type nValuetype,
+			final String sValue) {
+		if (0 <= nCol && nCol < this.qTableCells.size()) {
+			final TableCell tc = this.qTableCells.get(nCol);
+			tc.setValueType(nValuetype);
+			tc.setValue(sValue);
+		} else {
+			while (nCol < this.qTableCells.size() - 1) {
+				this.qTableCells.add(null);
+			}
+			final TableCell tc = new TableCell(this.odsFile, this.nRow, nCol,
+					nValuetype, sValue);
+			this.qTableCells.add(tc);
+		}
+	}
+
+	/**
 	 * Set the cell styleName for the cell at nCol to ts.
-	 * 
+	 *
 	 * @param nCol
 	 *            The column number
 	 * @param ts
@@ -149,33 +172,10 @@ public class TableRow {
 	}
 
 	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 * 
-	 * @throws IOException
+	 * @return The List with all TableCell objects
 	 */
-	public void appendXML(Util util, Appendable appendable, Table where) throws IOException {
-		appendable.append("<table:table-row ");
-		util.appendAttribute(appendable, "table:styleName-name",
-				this.getStyleName());
-		appendable.append(">");
-
-		int nNullFieldCounter = 0;
-		for (TableCell tc : this.qTableCells) {
-			if (tc == null) {
-				nNullFieldCounter++;
-			} else {
-				if (nNullFieldCounter > 0) {
-					appendable.append("<table:table-cell ");
-					util.appendAttribute(appendable,
-							"table:number-columns-repeated", nNullFieldCounter);
-					appendable.append("/>");
-					nNullFieldCounter = 0;
-				}
-				tc.appendXML(util, appendable, this);
-			}
-		}
-		appendable.append("</table:table-row>");
+	private List<TableCell> getCells() {
+		return this.qTableCells;
 	}
 
 }

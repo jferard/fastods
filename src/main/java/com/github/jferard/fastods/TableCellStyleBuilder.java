@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * /**
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
@@ -34,22 +34,22 @@ import java.util.Map;
  *         0.5.2 Replaced all text properties with a TextStyle object
  */
 class TableCellStyleBuilder {
-	private String sName;
-	private String sDataStyle;
-	private String sBackgroundColor;
-	private TextStyleBuilder tsBuilder;
+	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
+	// 'top'
+	private boolean bWrap; // No line wrap when false, line wrap when
 	private TableCellStyle.Align nTextAlign; // 'center','end','start','justify'
 	private TableCellStyle.VerticalAlign nVerticalAlign; // 'middle', 'bottom',
-															// 'top'
-	private boolean bWrap; // No line wrap when false, line wrap when
-							// true
-	private String sDefaultCellStyle;
-	private Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
+	private String sBackgroundColor;
+	private String sDataStyle;
+	// true
+	private final String sDefaultCellStyle;
+	private String sName;
+	private final TextStyleBuilder tsBuilder;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -74,7 +74,7 @@ class TableCellStyleBuilder {
 
 	/**
 	 * Add a border style to this cell.
-	 * 
+	 *
 	 * @param bs
 	 *            - The border style to be used
 	 * @return this for fluent style
@@ -86,7 +86,7 @@ class TableCellStyleBuilder {
 
 	/**
 	 * Add a border style to this cell.
-	 * 
+	 *
 	 * @param sSize
 	 *            The size of the line e.g. '0.1cm'
 	 * @param sBorderColor
@@ -103,8 +103,8 @@ class TableCellStyleBuilder {
 	public TableCellStyleBuilder addBorderStyle(final String sSize,
 			final String sBorderColor, final BorderAttribute.Style nStyle,
 			final BorderAttribute.Position nPosition) {
-		BorderAttribute bs = new BorderAttribute(sSize, sBorderColor, nStyle,
-				nPosition);
+		final BorderAttribute bs = new BorderAttribute(sSize, sBorderColor,
+				nStyle, nPosition);
 		this.addBorderStyle(bs);
 		return this;
 	}
@@ -113,7 +113,7 @@ class TableCellStyleBuilder {
 	 * Set the cell background color to sColor.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
-	 * 
+	 *
 	 * @param sColor
 	 *            - The color to be used in format #rrggbb e.g. #ff0000 for a
 	 *            red cell background
@@ -124,11 +124,22 @@ class TableCellStyleBuilder {
 		return this;
 	}
 
+	public TableCellStyle build() {
+		if (this.sName == null)
+			throw new IllegalStateException();
+
+		return new TableCellStyle(this.sName, this.sDataStyle,
+				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
+				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
+				this.borderByPosition);
+
+	}
+
 	/**
 	 * Set the data style for this TableFamilyStyle to cs.<br>
 	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
 	 * exception is thrown
-	 * 
+	 *
 	 * @param cs
 	 *            The currency style to be used
 	 * @return this for fluent style
@@ -143,7 +154,7 @@ class TableCellStyleBuilder {
 	 * Set the data style for this TableFamilyStyle to ds.<br>
 	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
 	 * exception is thrown
-	 * 
+	 *
 	 * @param ds
 	 *            The date style to be used
 	 * @return this for fluent style
@@ -158,7 +169,7 @@ class TableCellStyleBuilder {
 	 * Set the data style for this TableFamilyStyle to ns.<br>
 	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
 	 * exception is thrown
-	 * 
+	 *
 	 * @param ns
 	 *            The number style to be used
 	 * @return this for fluent style
@@ -173,7 +184,7 @@ class TableCellStyleBuilder {
 	 * Set the font color to sColor.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
-	 * 
+	 *
 	 * @param sColor
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
 	 *            cell background
@@ -188,7 +199,7 @@ class TableCellStyleBuilder {
 	 * Set the font weight to bold.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
-	 * 
+	 *
 	 * @return true - the value was set,<br>
 	 *         false - This object is no table cell, you can not set it to bold
 	 */
@@ -201,7 +212,7 @@ class TableCellStyleBuilder {
 	 * Set the font weight to italic.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
-	 * 
+	 *
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder fontWeightItalic() {
@@ -213,7 +224,7 @@ class TableCellStyleBuilder {
 	 * Set the font weight to normal.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
-	 * 
+	 *
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder fontWeightNormal() {
@@ -223,7 +234,7 @@ class TableCellStyleBuilder {
 
 	/**
 	 * /** Set font wrap.
-	 * 
+	 *
 	 * @param fSetWrap
 	 *            <br>
 	 *            true - Font will be wrapped,<br>
@@ -235,9 +246,14 @@ class TableCellStyleBuilder {
 		return this;
 	}
 
+	public TableCellStyleBuilder name(final String sName) {
+		this.sName = sName;
+		return this;
+	}
+
 	/**
 	 * Set the alignment of text.
-	 * 
+	 *
 	 * @param nAlign
 	 *            - The text alignment flag,
 	 * @return this for fluent style
@@ -249,7 +265,7 @@ class TableCellStyleBuilder {
 
 	/**
 	 * Set the vertical alignment of text.
-	 * 
+	 *
 	 * @param nAlign
 	 *            - The vertical alignment flag,<br>
 	 *            either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or
@@ -260,21 +276,5 @@ class TableCellStyleBuilder {
 			final TableCellStyle.VerticalAlign nAlign) {
 		this.nVerticalAlign = nAlign;
 		return this;
-	}
-
-	public TableCellStyleBuilder name(String sName) {
-		this.sName = sName;
-		return this;
-	}
-
-	public TableCellStyle build() {
-		if (this.sName == null)
-			throw new IllegalStateException();
-
-		return new TableCellStyle(this.sName, this.sDataStyle,
-				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
-				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
-				this.borderByPosition);
-
 	}
 }

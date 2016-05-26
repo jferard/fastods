@@ -34,14 +34,21 @@ import com.github.jferard.fastods.BorderAttribute.Style;
  */
 class BorderAttributeBuilder {
 	/**
-	 * The border size.
+	 * The border position. Either BorderAttribute.POSITION_ALL,
+	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
+	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
 	 */
-	private String sBorderSize;
+	private Position position;
 
 	/**
 	 * The border color
 	 */
 	private String sBorderColor;
+
+	/**
+	 * The border size.
+	 */
+	private String sBorderSize;
 
 	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
@@ -50,13 +57,6 @@ class BorderAttributeBuilder {
 	 */
 	private Style style;
 
-	/**
-	 * The border position. Either BorderAttribute.POSITION_ALL,
-	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
-	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
-	 */
-	private Position position;
-
 	public BorderAttributeBuilder() {
 		this.position = BorderAttribute.DEFAULT_POSITION;
 		this.style = BorderAttribute.DEFAULT_STYLE;
@@ -64,55 +64,55 @@ class BorderAttributeBuilder {
 
 	/**
 	 * Set the currently set border color.
-	 * 
+	 *
 	 * @param sBorderColor
 	 *            The color in format #rrggbb
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderColor(String sBorderColor) {
+	public BorderAttributeBuilder borderColor(final String sBorderColor) {
 		this.sBorderColor = sBorderColor;
 		return this;
 	}
 
 	/**
 	 * Sets the current value of border size in pt.
-	 * 
+	 *
 	 * @param nSize
 	 *            The size as int, in pt
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderSize(int nSize) {
+	public BorderAttributeBuilder borderSize(final int nSize) {
 		this.sBorderSize = new StringBuilder(nSize).append("pt").toString();
 		return this;
 	}
 
 	/**
 	 * Sets the current value of border size.
-	 * 
+	 *
 	 * @param sBorderSize
 	 *            The size as string, e.g. '0.1cm'
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderSize(String sBorderSize) {
+	public BorderAttributeBuilder borderSize(final String sBorderSize) {
 		this.sBorderSize = sBorderSize;
 		return this;
 	}
 
 	/**
 	 * Sets the current border NamedObject.
-	 * 
+	 *
 	 * @param style
 	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderStyle(Style style) {
+	public BorderAttributeBuilder borderStyle(final Style style) {
 		this.style = style;
 		return this;
 	}
 
 	/**
 	 * Builds a border style
-	 * 
+	 *
 	 * @return ths BorderAttribute
 	 */
 	public BorderAttribute build() {
@@ -122,13 +122,13 @@ class BorderAttributeBuilder {
 
 	/**
 	 * Sets the border positions as numerical value.
-	 * 
+	 *
 	 * @param position
 	 *            The position as one of
 	 *            POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
 	 *            POSITION_ALL.
 	 */
-	public BorderAttributeBuilder position(Position position) {
+	public BorderAttributeBuilder position(final Position position) {
 		this.position = position;
 		return this;
 	}

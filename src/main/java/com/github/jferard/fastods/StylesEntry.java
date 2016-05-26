@@ -30,24 +30,39 @@ import java.util.zip.ZipOutputStream;
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
- * 
+ *
  *         This file StylesEntry.java is part of Fast ODS.
- * 
+ *
  *         styles.xml/office:document-styles
  */
 public class StylesEntry implements OdsEntry {
-	private final Map<String, NumberStyle> qNumberStyles;
-	private final Map<String, CurrencyStyle> qCurrencyStyles;
-	private final Map<String, PageStyle> qPageStyles;
-	private final Map<String, TextStyle> qTextStyles;
-	private final Map<String, DateStyle> qDateStyles;
-	private FooterHeader header = null;
-	private FooterHeader footer = null;
+	private static void appendFooterHeader(final Util util,
+			final Appendable appendable, final String name) throws IOException {
+		appendable.append("<style:style");
+		util.appendEAttribute(appendable, "style:name", name);
+		util.appendEAttribute(appendable, "style:family", "paragraph");
+		util.appendEAttribute(appendable, "style:parent-style-name",
+				"Standard");
+		util.appendEAttribute(appendable, "style:class", "extra");
+		appendable.append("><style:paragraph-properties");
+		util.appendAttribute(appendable, "text:number-lines", false);
+		util.appendAttribute(appendable, "text:line-number", 0);
+		appendable.append("/></style:style>");
+	}
 
+	private FooterHeader footer = null;
+	private FooterHeader header = null;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private OdsFile o;
+	private final OdsFile o;
+	private final Map<String, CurrencyStyle> qCurrencyStyles;
+	private final Map<String, DateStyle> qDateStyles;
+	private final Map<String, NumberStyle> qNumberStyles;
+
+	private final Map<String, PageStyle> qPageStyles;
+
+	private final Map<String, TextStyle> qTextStyles;
 
 	/**
 	 * @param odsFile
@@ -65,18 +80,18 @@ public class StylesEntry implements OdsEntry {
 	/**
 	 * Add a CurrencyStyle, if a CurrencyStyle with this name already exist, the
 	 * old one is replaced.
-	 * 
+	 *
 	 * @param cs
 	 *            - The currency style to be added.
 	 */
-	public void addCurrencyStyle(CurrencyStyle cs) {
+	public void addCurrencyStyle(final CurrencyStyle cs) {
 		this.qCurrencyStyles.put(cs.getName(), cs);
 	}
 
 	/**
 	 * Add a DateStyle, if a DateStyle with this name already exist, the old one
 	 * is replaced.
-	 * 
+	 *
 	 * @param ds
 	 *            - The date style to be added.
 	 */
@@ -87,7 +102,7 @@ public class StylesEntry implements OdsEntry {
 	/**
 	 * Add a NumberStyle, if a NumberStyle with this name already exist, the old
 	 * one is replaced.
-	 * 
+	 *
 	 * @param ns
 	 *            - The number style to be added.
 	 */
@@ -95,17 +110,17 @@ public class StylesEntry implements OdsEntry {
 		this.qNumberStyles.put(ns.getName(), ns);
 	}
 
-	public void addPageStyle(PageStyle ps) {
+	public void addPageStyle(final PageStyle ps) {
 		this.qPageStyles.put(ps.getName(), ps);
 	}
 
-	public void addTextStyle(TextStyle ts) {
+	public void addTextStyle(final TextStyle ts) {
 		this.qTextStyles.put(ts.getName(), ts);
 	}
 
 	/**
 	 * Get the current footer object.
-	 * 
+	 *
 	 * @return The current footer object.
 	 */
 	public FooterHeader getFooter() {
@@ -114,7 +129,7 @@ public class StylesEntry implements OdsEntry {
 
 	/**
 	 * Get the current header object.
-	 * 
+	 *
 	 * @return The current header object.
 	 */
 	public FooterHeader getHeader() {
@@ -139,7 +154,7 @@ public class StylesEntry implements OdsEntry {
 	 * Set the footer object to f. Reset this object by setting a new
 	 * FooterHeader object,<br>
 	 * or use resetFooter() to remove the FooterHeader object.
-	 * 
+	 *
 	 * @param f
 	 *            - The footer object to be used
 	 */
@@ -151,7 +166,7 @@ public class StylesEntry implements OdsEntry {
 	 * Set the header object to h. Reset this object by setting a new Header
 	 * object,<br>
 	 * or use resetHeader() to remove the Header object.
-	 * 
+	 *
 	 * @param h
 	 *            - The header object to be used
 	 */
@@ -160,10 +175,10 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(Util util, final ZipOutputStream zipOut)
+	public void write(final Util util, final ZipOutputStream zipOut)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("styles.xml"));
-		Writer writer = util.wrapStream(zipOut);
+		final Writer writer = util.wrapStream(zipOut);
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
 				"<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" office:version=\"1.1\">");
@@ -177,14 +192,14 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-		for (DateStyle ds : this.qDateStyles.values())
-			ds.appendXML(util, writer, this);
+		for (final DateStyle ds : this.qDateStyles.values())
+			ds.appendXMLToStylesEntry(util, writer);
 
-		for (NumberStyle ns : this.qNumberStyles.values())
-			ns.appendXML(util, writer, this);
+		for (final NumberStyle ns : this.qNumberStyles.values())
+			ns.appendXMLToStylesEntry(util, writer);
 
-		for (CurrencyStyle cs : this.qCurrencyStyles.values())
-			cs.appendXML(util, writer, this);
+		for (final CurrencyStyle cs : this.qCurrencyStyles.values())
+			cs.appendXMLToStylesEntry(util, writer);
 
 		if (this.footer != null) {
 			StylesEntry.appendFooterHeader(util, writer, "Footer");
@@ -206,37 +221,22 @@ public class StylesEntry implements OdsEntry {
 		u.writeString(out, "</number:date-style>");
 		*/
 
-		for (PageStyle ps : this.qPageStyles.values())
-			ps.appendXML(util, writer, AutomaticStyle.instance);
+		for (final PageStyle ps : this.qPageStyles.values())
+			ps.appendXMLToAutomaticStyle(util, writer);
 
-		for (TextStyle ts : this.qTextStyles.values())
-			ts.appendXML(util, writer, AutomaticStyle.instance);
+		for (final TextStyle ts : this.qTextStyles.values())
+			ts.appendXMLToObject(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
-		for (PageStyle ps : this.qPageStyles.values())
-			ps.appendXML(util, writer, MasterStyle.instance);
+		for (final PageStyle ps : this.qPageStyles.values())
+			ps.appendXMLToMasterStyle(util, writer);
 
 		writer.write("</office:master-styles>");
 		writer.write("</office:document-styles>");
 		writer.flush();
 		zipOut.closeEntry();
-	}
-
-	private static void appendFooterHeader(Util util, Appendable appendable, String name) throws IOException {
-		appendable.append(
-				"<style:style");
-		util.appendEAttribute(appendable, "style:name", name);
-		util.appendEAttribute(appendable, "style:family", "paragraph");
-		util.appendEAttribute(appendable, "style:parent-style-name", "Standard");
-		util.appendEAttribute(appendable, "style:class", "extra");
-				appendable.append(
-						"><style:paragraph-properties");
-		util.appendAttribute(appendable, "text:number-lines", false);
-		util.appendAttribute(appendable, "text:line-number", 0);
-		appendable.append(
-				"/></style:style>");
 	}
 
 }

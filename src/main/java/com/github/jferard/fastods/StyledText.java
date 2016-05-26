@@ -36,14 +36,27 @@ import java.io.IOException;
  */
 public class StyledText {
 
-	private Util u = Util.getInstance();
-
-	private TextStyle ts = null;
 	private String sText = null;
 
-	public StyledText(TextStyle t, String s) {
+	private TextStyle ts = null;
+	private final Util u = Util.getInstance();
+
+	public StyledText(final TextStyle t, final String s) {
 		this.ts = t;
 		this.setText(s);
+	}
+
+	/**
+	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
+	 *
+	 * @throws IOException
+	 */
+	public void appendXMLToFooterHeader(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<text:span");
+		util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+		appendable.append(">").append(util.escapeXMLContent(this.sText))
+				.append("</text:span>");
 	}
 
 	public String getText() {
@@ -54,25 +67,12 @@ public class StyledText {
 		return this.ts;
 	}
 
-	public void setText(String sText) {
+	public void setText(final String sText) {
 		this.sText = sText;
 	}
 
-	public void setTextStyle(TextStyle t) {
+	public void setTextStyle(final TextStyle t) {
 		this.ts = t;
-	}
-
-	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
-	 * 
-	 * @throws IOException
-	 */
-	public void appendXML(Util util, Appendable appendable, FooterHeader where)
-			throws IOException {
-		appendable.append("<text:span");
-		util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
-		appendable.append(">").append(util.escapeXMLContent(this.sText))
-				.append("</text:span>");
 	}
 
 }

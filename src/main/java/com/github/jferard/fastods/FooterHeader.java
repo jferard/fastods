@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class FooterHeader {
 	public static enum Region {
-		LEFT, CENTER, RIGHT;
+		CENTER, LEFT, RIGHT;
 	}
 
 	/**
@@ -47,25 +47,25 @@ public class FooterHeader {
 		FOOTER, HEADER;
 	}
 
-	private final List<List<StyledText>> qLeftRegion;
-	private final List<List<StyledText>> qCenterRegion;
-	private final List<List<StyledText>> qRightRegion;
-	private String sMinHeight;
-	private String sMarginLeft;
-	private String sMarginRight;
-	private String sMarginTop;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private Type footerHeaderType;
+	private final Type footerHeaderType;
+	private final List<List<StyledText>> qCenterRegion;
+	private final List<List<StyledText>> qLeftRegion;
+	private final List<List<StyledText>> qRightRegion;
+	private String sMarginLeft;
+	private String sMarginRight;
+	private String sMarginTop;
+	private String sMinHeight;
 
 	/**
 	 * Create a new footer object.
-	 * 
+	 *
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
-	public FooterHeader(Type footerHeaderType) {
+	public FooterHeader(final Type footerHeaderType) {
 		this.footerHeaderType = footerHeaderType;
 		this.qLeftRegion = new LinkedList<List<StyledText>>();
 		this.qCenterRegion = new LinkedList<List<StyledText>>();
@@ -78,13 +78,6 @@ public class FooterHeader {
 																// the
 		// first
 		// paragraph
-	}
-
-	public void addToFile(OdsFile odsFile) {
-		if (this.footerHeaderType == Type.FOOTER)
-			odsFile.getStyles().setFooter(this); // Add this FooterHeader object
-		else if (this.footerHeaderType == Type.HEADER)
-			odsFile.getStyles().setHeader(this); // Add this FooterHeader object
 	}
 
 	public void addPageCount(final TextStyle ts, final Region region,
@@ -104,7 +97,7 @@ public class FooterHeader {
 	 * nRegion.<br>
 	 * The paragraph to be used is nParagraph.<br>
 	 * The text will be shown in the order it was added with this function.
-	 * 
+	 *
 	 * @param ts
 	 *            The text style to be used
 	 * @param sText
@@ -134,9 +127,29 @@ public class FooterHeader {
 			throw new IllegalStateException();
 		}
 
-		StyledText st = new StyledText(ts, sText);
+		final StyledText st = new StyledText(ts, sText);
 		qStyledText.add(st);
 
+	}
+
+	public void addToFile(final OdsFile odsFile) {
+		if (this.footerHeaderType == Type.FOOTER)
+			odsFile.getStyles().setFooter(this); // Add this FooterHeader object
+		else if (this.footerHeaderType == Type.HEADER)
+			odsFile.getStyles().setHeader(this); // Add this FooterHeader object
+	}
+
+	/**
+	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
+	 *
+	 * @throws IOException
+	 */
+	public void appendXMLToMasterStyle(final Util util,
+			final Appendable appendable) throws IOException {
+		this.appendRegion(util, appendable, this.qLeftRegion, "region-left");
+		this.appendRegion(util, appendable, this.qCenterRegion,
+				"region-center");
+		this.appendRegion(util, appendable, this.qRightRegion, "region-right");
 	}
 
 	/**
@@ -167,27 +180,60 @@ public class FooterHeader {
 		return this.sMinHeight;
 	}
 
-	public void setMarginLeft(String sMarginLeft) {
+	public void setMarginLeft(final String sMarginLeft) {
 		this.sMarginLeft = sMarginLeft;
 	}
 
-	public void setMarginRight(String sMarginRight) {
+	public void setMarginRight(final String sMarginRight) {
 		this.sMarginRight = sMarginRight;
 	}
 
-	public void setMarginTop(String sMarginTop) {
+	public void setMarginTop(final String sMarginTop) {
 		this.sMarginTop = sMarginTop;
 	}
 
-	public void setMinHeight(String sMinHeight) {
+	public void setMinHeight(final String sMinHeight) {
 		this.sMinHeight = sMinHeight;
+	}
+
+	private void appendRegion(final Util util, final Appendable appendable,
+			final List<List<StyledText>> qRegion, final String sRegionName)
+			throws IOException {
+
+		if (qRegion.size() == 0) {
+			return;
+		}
+
+		appendable.append("<style:")
+				.append(util.escapeXMLAttribute(sRegionName)).append(">");
+
+		for (final List<StyledText> qStyledText : qRegion) {
+			// <style:footer/header> is written by PageStyle.toMasterStyleXML()
+			appendable.append("<text:p>");
+
+			// Check if a qStyles object is null and add an empty paragraph for
+			// this
+			if (qStyledText == null) {
+				appendable.append("<text:span />");
+			} else {
+				// Add all styles and text for this paragraphs
+				for (final StyledText st : qStyledText)
+					st.appendXMLToFooterHeader(util, appendable);
+			}
+
+			appendable.append("</text:p>");
+		}
+
+		appendable.append("</style:").append(sRegionName).append(">");
+
+		return;
 	}
 
 	/**
 	 * Checks if nParagraph is present in qRegion and return it if yes, if it is
 	 * not present, create a new List and add it to qRegion. Return the new
 	 * List.
-	 * 
+	 *
 	 * @param qRegion
 	 * @param nParagraph
 	 * @return The List with StyledText elements.
@@ -204,51 +250,6 @@ public class FooterHeader {
 		}
 
 		return qStyledText;
-	}
-
-	private void appendRegion(Util util, Appendable appendable,
-			List<List<StyledText>> qRegion, final String sRegionName)
-			throws IOException {
-
-		if (qRegion.size() == 0) {
-			return;
-		}
-
-		appendable.append("<style:")
-				.append(util.escapeXMLAttribute(sRegionName)).append(">");
-
-		for (List<StyledText> qStyledText : qRegion) {
-			// <style:footer/header> is written by PageStyle.toMasterStyleXML()
-			appendable.append("<text:p>");
-
-			// Check if a qStyles object is null and add an empty paragraph for
-			// this
-			if (qStyledText == null) {
-				appendable.append("<text:span />");
-			} else {
-				// Add all styles and text for this paragraphs
-				for (StyledText st : qStyledText)
-					st.appendXML(util, appendable, this);
-			}
-
-			appendable.append("</text:p>");
-		}
-
-		appendable.append("</style:").append(sRegionName).append(">");
-
-		return;
-	}
-
-	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
-	 * 
-	 * @throws IOException
-	 */
-	public void appendXML(Util util, Appendable appendable, MasterStyle where)
-			throws IOException {
-		this.appendRegion(util, appendable, this.qLeftRegion, "region-left");
-		this.appendRegion(util, appendable, this.qCenterRegion, "region-center");
-		this.appendRegion(util, appendable, this.qRightRegion, "region-right");
 	}
 
 }

@@ -30,14 +30,15 @@ import java.util.zip.ZipOutputStream;
  *         users.sourceforge.net>
  *
  *         This file MimetypeEntry.java is part of FastODS.
- * 
+ *
  *         WHERE ? mimetype
  */
 public class MimetypeEntry implements OdsEntry {
 	@Override
-	public void write(Util util, ZipOutputStream zipOut) throws IOException {
+	public void write(final Util util, final ZipOutputStream zipOut)
+			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("mimetype"));
-		Writer writer = util.wrapStream(zipOut);
+		final Writer writer = util.wrapStream(zipOut);
 		writer.write("application/vnd.oasis.opendocument.spreadsheet");
 		writer.flush();
 		zipOut.closeEntry();

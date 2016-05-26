@@ -33,23 +33,17 @@ import java.io.IOException;
  *         page
  */
 public class PageStyle {
-	private static final String A3_H = "42.0cm";
-	private static final String A3_W = "29.7cm";
-	private static final String A4_W = "21.0cm";
-	private static final String A5_W = "14.8cm";
-	private static final String LETTER_H = "27.94cm";
-	private static final String LETTER_W = "21.59cm";
-	private static final String LEGAL_H = "35.57cm";
-	
 	public static enum PaperFormat {
-		A3(A3_H, A3_W), A4(A3_W, A4_W), A5(A4_W,
-				A5_W), LETTER(LETTER_H,
-						LETTER_W), LEGAL(LEGAL_H, LETTER_W), USER("", "");
+		A3(PageStyle.A3_H, PageStyle.A3_W), A4(PageStyle.A3_W,
+				PageStyle.A4_W), A5(PageStyle.A4_W, PageStyle.A5_W), LEGAL(
+						PageStyle.LEGAL_H,
+						PageStyle.LETTER_W), LETTER(PageStyle.LETTER_H,
+								PageStyle.LETTER_W), USER("", "");
 
 		private final String height;
 		private final String width;
 
-		private PaperFormat(String height, String width) {
+		private PaperFormat(final String height, final String width) {
 			this.height = height;
 			this.width = width;
 
@@ -65,11 +59,11 @@ public class PageStyle {
 	}
 
 	public static enum PrintOrientation {
-		VERTICAL("portrait"), HORIZONTAL("landscape");
+		HORIZONTAL("landscape"), VERTICAL("portrait");
 
 		private final String attrValue;
 
-		private PrintOrientation(String attrValue) {
+		private PrintOrientation(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 
@@ -79,12 +73,12 @@ public class PageStyle {
 	}
 
 	public static enum WritingMode {
-		LRTB("lr-tb"), RLTB("rl-tb"), TBRL("tb-rl"), TBLR("tb_lr"), LR(
-				"lr"), RL("rl"), TB("tb"), PAGE("page");
+		LR("lr"), LRTB("lr-tb"), PAGE("page"), RL("rl"), RLTB("rl-tb"), TB(
+				"tb"), TBLR("tb_lr"), TBRL("tb-rl");
 
 		private final String attrValue;
 
-		private WritingMode(String attrValue) {
+		private WritingMode(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 
@@ -94,54 +88,77 @@ public class PageStyle {
 
 	}
 
-	public static final WritingMode DEFAULT_WRITINGMODE = WritingMode.LRTB;
-
 	public static final PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
-
 	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
+	public static final WritingMode DEFAULT_WRITINGMODE = WritingMode.LRTB;
+	private static final String A3_H = "42.0cm";
+
+	private static final String A3_W = "29.7cm";
+
+	private static final String A4_W = "21.0cm";
+
+	private static final String A5_W = "14.8cm";
+
+	private static final String LEGAL_H = "35.57cm";
+
+	private static final String LETTER_H = "27.94cm";
+
+	private static final String LETTER_W = "21.59cm";
 
 	public static PageStyleBuilder builder() {
 		return new PageStyleBuilder();
 	}
 
-	private final String sName;
-	private final String sMarginTop;
+	private static void appendDefaultFooterHeader(final Util util,
+			final Appendable appendable, final String sTextStyle,
+			final String sText) throws IOException {
+		appendable.append("<text:p");
+		util.appendAttribute(appendable, "text:style-name", sTextStyle);
+		appendable.append(">");
+		appendable.append(util.escapeXMLContent(sText)).append("</text:p>");
+	}
+
+	private final FooterHeader footer;
+	private final FooterHeader header;
+	private final PaperFormat paperFormat;
+
+	private final PrintOrientation printOrientation;
+	private final String sBackgroundColor;
 	private final String sMarginBottom;
 	private final String sMarginLeft;
 
 	private final String sMarginRight;
-	private final String sPageWidth;
-	private final String sPageHeight;
+	private final String sMarginTop;
+	private final String sName;
 	private final String sNumFormat;
 
-	private final String sBackgroundColor;
-	private final String sTextStyleFooter;
-	private final String sTextStyleHeader;
-	private final String sTextHeader;
-
+	private final String sPageHeight;
+	private final String sPageWidth;
 	private final String sTextFooter;
-	private final PrintOrientation printOrientation;
-	private final PaperFormat paperFormat;
-	private final WritingMode writingMode;
-	private FooterHeader header;
+	private final String sTextHeader;
+	private final String sTextStyleFooter;
 
-	private FooterHeader footer;
+	private final String sTextStyleHeader;
+
+	private final WritingMode writingMode;
 
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param sName
 	 *            A unique name for this style
 	 * @param header2
 	 * @param footer
 	 */
-	public PageStyle(String sName, String sMarginTop, String sMarginBottom,
-			String sMarginLeft, String sMarginRight, String sPageWidth,
-			String sPageHeight, String sNumFormat, String sBackgroundColor,
-			FooterHeader footer, String sTextStyleFooter, FooterHeader header,
-			String sTextStyleHeader, String sTextHeader, String sTextFooter,
-			PrintOrientation printOrientation, PaperFormat paperFormat,
-			WritingMode writingMode) {
+	public PageStyle(final String sName, final String sMarginTop,
+			final String sMarginBottom, final String sMarginLeft,
+			final String sMarginRight, final String sPageWidth,
+			final String sPageHeight, final String sNumFormat,
+			final String sBackgroundColor, final FooterHeader footer,
+			final String sTextStyleFooter, final FooterHeader header,
+			final String sTextStyleHeader, final String sTextHeader,
+			final String sTextFooter, final PrintOrientation printOrientation,
+			final PaperFormat paperFormat, final WritingMode writingMode) {
 		this.sName = sName;
 		this.sMarginTop = sMarginTop;
 		this.sMarginBottom = sMarginBottom;
@@ -162,56 +179,17 @@ public class PageStyle {
 		this.writingMode = writingMode;
 	}
 
-	public void addToFile(OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addPageStyle(this);
-	}
-
-	/**
-	 * Return the master-style informations for this PageStyle.
-	 * 
-	 * @return The master style representation for styles.xml
-	 * @throws IOException
-	 */
-	public void appendXML(Util util, Appendable appendable, MasterStyle where)
-			throws IOException {
-		appendable.append("<style:master-page");
-		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
-		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
-		appendable.append("><style:header>");
-		if (this.header == null) {
-			PageStyle.appendDefaultFooterHeader(util, appendable, this.sTextStyleHeader,
-					this.sTextHeader);
-		} else {
-			this.header.appendXML(util, appendable, MasterStyle.instance);
-		}
-		appendable.append("</style:header>");
-
-		appendable.append("<style:footer>");
-		if (this.footer == null) {
-			PageStyle.appendDefaultFooterHeader(util, appendable, this.sTextStyleFooter,
-					this.sTextFooter);
-		} else {
-			this.footer.appendXML(util, appendable, MasterStyle.instance);
-		}
-		appendable.append("</style:footer>");
-		appendable.append("</style:master-page>");
-	}
-
-	private static void appendDefaultFooterHeader(Util util, Appendable appendable,
-			String sTextStyle, String sText) throws IOException {
-		appendable.append("<text:p");
-		util.appendAttribute(appendable, "text:style-name", sTextStyle);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(sText)).append("</text:p>");
 	}
 
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 * 
+	 *
 	 */
-	public void appendXML(Util util, Appendable appendable,
-			AutomaticStyle where) throws IOException {
+	public void appendXMLToAutomaticStyle(final Util util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<style:page-layout");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		appendable.append("><style:page-layout-properties");
@@ -230,9 +208,9 @@ public class PageStyle {
 		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
 		appendable.append("/>"); // End of page-layout-properties
 
-		this.addFooterHeaderStyle(appendable, this.header,
+		this.addFooterHeaderStyle(util, appendable, this.header,
 				"style:header-style");
-		this.addFooterHeaderStyle(appendable, this.header,
+		this.addFooterHeaderStyle(util, appendable, this.header,
 				"style:footer-style");
 		/*
 		if( styles.getFooter()==null ) {
@@ -245,9 +223,40 @@ public class PageStyle {
 			sbTemp.append("fo:margin-left=\""+f.getMarginLeft()+"\" ");
 			sbTemp.append("fo:margin-right=\""+f.getMarginRight()+"\" ");
 			sbTemp.append("fo:margin-top=\""+f.getsMarginTop()+"\"/>");
-			sbTemp.append("</style:footer-style>");		
+			sbTemp.append("</style:footer-style>");
 		}*/
 		appendable.append("</style:page-layout>");
+	}
+
+	/**
+	 * Return the master-style informations for this PageStyle.
+	 *
+	 * @return The master style representation for styles.xml
+	 * @throws IOException
+	 */
+	public void appendXMLToMasterStyle(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<style:master-page");
+		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
+		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
+		appendable.append("><style:header>");
+		if (this.header == null) {
+			PageStyle.appendDefaultFooterHeader(util, appendable,
+					this.sTextStyleHeader, this.sTextHeader);
+		} else {
+			this.header.appendXMLToMasterStyle(util, appendable);
+		}
+		appendable.append("</style:header>");
+
+		appendable.append("<style:footer>");
+		if (this.footer == null) {
+			PageStyle.appendDefaultFooterHeader(util, appendable,
+					this.sTextStyleFooter, this.sTextFooter);
+		} else {
+			this.footer.appendXMLToMasterStyle(util, appendable);
+		}
+		appendable.append("</style:footer>");
+		appendable.append("</style:master-page>");
 	}
 
 	public String getBackgroundColor() {
@@ -272,7 +281,7 @@ public class PageStyle {
 
 	/**
 	 * Get the name of this page style.
-	 * 
+	 *
 	 * @return The page style name
 	 */
 	public String getName() {
@@ -304,35 +313,34 @@ public class PageStyle {
 	 * STYLE_WRITINGMODE_RL<br>
 	 * STYLE_WRITINGMODE_TB<br>
 	 * STYLE_WRITINGMODE_PAGE<br>
-	 * 
+	 *
 	 * @return The current writing mode.
 	 */
 	public WritingMode getWritingMode() {
 		return this.writingMode;
 	}
 
-	private void addFooterHeaderStyle(final Appendable appendable,
-			final FooterHeader header, final String tag) throws IOException {
+	private void addFooterHeaderStyle(final Util util,
+			final Appendable appendable, final FooterHeader header,
+			final String tag) throws IOException {
 		if (header == null) {
 			appendable.append("<").append(tag).append(" />");
 		} else {
-			FooterHeader h = header;
+			final FooterHeader h = header;
 			appendable.append("<").append(tag).append(">");
-			appendable.append("<style:header-footer-properties ");
-			appendable.append("fo:min-height=\"").append(h.getMinHeight())
-					.append("\" ");
-			appendable.append("fo:margin-left=\"").append(h.getMarginLeft())
-					.append("\" ");
-			appendable.append("fo:margin-right=\"").append(h.getMarginRight())
-					.append("\" ");
-			appendable.append("fo:margin-top=\"").append(h.getMarginTop())
-					.append("\"/>");
-			appendable.append("</").append(tag).append(">");
+			appendable.append("<style:header-footer-properties");
+			util.appendAttribute(appendable, "fo:min-height", h.getMinHeight());
+			util.appendAttribute(appendable, "fo:margin-left",
+					h.getMarginLeft());
+			util.appendAttribute(appendable, "fo:margin-right",
+					h.getMarginRight());
+			util.appendAttribute(appendable, "fo:margin-top", h.getMarginTop());
+			appendable.append("/><").append(tag).append(">");
 		}
 	}
 
-	private void appendBackgroundColor(Util util, Appendable appendable)
-			throws IOException {
+	private void appendBackgroundColor(final Util util,
+			final Appendable appendable) throws IOException {
 		if (this.getBackgroundColor().length() > 0) {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.sBackgroundColor);

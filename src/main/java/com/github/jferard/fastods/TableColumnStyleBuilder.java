@@ -21,9 +21,9 @@ package com.github.jferard.fastods;
 
 /**
  * /**
- * 
+ *
  * @author Julien Férard
- * 
+ *
  *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
  *         <mtschulz at users.sourceforge.net>
  *
@@ -38,7 +38,7 @@ class TableColumnStyleBuilder {
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -52,6 +52,11 @@ class TableColumnStyleBuilder {
 		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 	}
 
+	public TableColumnStyle build() {
+		return new TableColumnStyle(this.sName, this.sColumnWidth);
+
+	}
+
 	/**
 	 * Set the column width of a table column.<br>
 	 * sWidth is a length value expressed as a number followed by a unit of
@@ -59,7 +64,7 @@ class TableColumnStyleBuilder {
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
-	 * 
+	 *
 	 * @param sWidth
 	 *            - The width of a column, e.g. '10cm'
 	 * @return true - The width was set, false - this object is no table column,
@@ -70,13 +75,8 @@ class TableColumnStyleBuilder {
 		return this;
 	}
 
-	public TableColumnStyleBuilder name(String sName) {
+	public TableColumnStyleBuilder name(final String sName) {
 		this.sName = sName;
 		return this;
-	}
-
-	public TableColumnStyle build() {
-		return new TableColumnStyle(this.sName, this.sColumnWidth);
-
 	}
 }

@@ -49,12 +49,25 @@ import com.google.common.xml.XmlEscapers;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class Util {
-	private static Util instance;
-
 	/**
 	 * A space char for append
 	 */
 	public static final char SPACE_CHAR = ' ';
+
+	private static Util instance;
+
+	public static <T extends NamedObject> Optional<T> findElementByName(
+			final List<T> list, final String name) {
+		// Check is a style with this name exists and replace if yes
+		final ListIterator<T> listIterator = list.listIterator();
+		while (listIterator.hasNext()) {
+			final T curElement = listIterator.next();
+			if (curElement.getName().equals(name)) {
+				return Optional.of(curElement);
+			}
+		}
+		return Optional.absent();
+	}
 
 	public static Util getInstance() {
 		if (Util.instance == null) {
@@ -63,11 +76,11 @@ public class Util {
 		return Util.instance;
 	}
 
-	private Escaper xmlContentEscaper;
+	private final Map<String, String> attrMap;
 
-	private Escaper xmlAttributeEscaper;
+	private final Escaper xmlAttributeEscaper;
 
-	private Map<String, String> attrMap;
+	private final Escaper xmlContentEscaper;
 
 	public Util() {
 		this.xmlContentEscaper = XmlEscapers.xmlContentEscaper();
@@ -75,8 +88,8 @@ public class Util {
 		this.attrMap = new HashMap<String, String>();
 	}
 
-	public void appendAttribute(Appendable appendable, String sElementName,
-			boolean b) throws IOException {
+	public void appendAttribute(final Appendable appendable,
+			final String sElementName, final boolean b) throws IOException {
 		this.appendEAttribute(appendable, sElementName, Boolean.toString(b));
 	}
 
@@ -84,7 +97,7 @@ public class Util {
 	 * Append a new element to StringBuilder sb, the name of the element is
 	 * sElementName<br>
 	 * and the value is nValue.
-	 * 
+	 *
 	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
 	 * @param sElementName
@@ -100,20 +113,10 @@ public class Util {
 	}
 
 	/**
-	 * @param sValue
-	 *            escaped attribute
-	 */
-	public void appendEAttribute(Appendable appendable, String sElementName,
-			String sValue) throws IOException {
-		appendable.append(' ').append(sElementName).append("=\"").append(sValue)
-				.append('"');
-	}
-
-	/**
 	 * Append a new element to StringBuilder sb, the name of the element is
 	 * sElementName<br>
 	 * and the value is sValue.
-	 * 
+	 *
 	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
 	 * @param sElementName
@@ -131,7 +134,7 @@ public class Util {
 	/**
 	 * Copy all styles from one OdsFile to another OdsFile.<br>
 	 * The target file will then contain all styles from the source file.
-	 * 
+	 *
 	 * @param source
 	 *            The source file
 	 * @param target
@@ -145,6 +148,23 @@ public class Util {
 				.setTableStyles(source.getContent().getTableStyles());
 		target.getContent().setTextStyles(source.getContent().getTextStyles());
 	}*/
+
+	/**
+	 * @param sValue
+	 *            escaped attribute
+	 */
+	public void appendEAttribute(final Appendable appendable,
+			final String sElementName, final String sValue) throws IOException {
+		appendable.append(' ').append(sElementName).append("=\"").append(sValue)
+				.append('"');
+	}
+
+	public void appendTag(final Appendable appendable, final String tagName,
+			final String content) throws IOException {
+		appendable.append('<').append(tagName).append('>')
+				.append(this.escapeXMLContent(content)).append("</")
+				.append(tagName).append('>');
+	}
 
 	/**
 	 * Get the todays date in format sDateFormat. See Javas 'SimpleDateFormat'
@@ -171,18 +191,19 @@ public class Util {
 	 * S Millisecond Number 978<br>
 	 * z Time zone General time zone Pacific Standard Time; PST; GMT-08:00<br>
 	 * Z Time zone RFC 822 time zone -0800<br>
-	 * 
+	 *
 	 * @param sDateFormat
 	 *            The date format for todays date that should be returned.
 	 * @return A string with the current date in sDateFormat
 	 */
 	public String dateToday(final String sDateFormat) {
-		DateFormat formatter = new SimpleDateFormat(sDateFormat, Locale.US);
+		final DateFormat formatter = new SimpleDateFormat(sDateFormat,
+				Locale.US);
 
 		return formatter.format(new Date());
 	}
 
-	public String escapeXMLAttribute(String s) {
+	public String escapeXMLAttribute(final String s) {
 		String s2 = this.attrMap.get(s);
 		if (s2 == null) {
 			s2 = this.xmlAttributeEscaper.escape(s);
@@ -191,13 +212,13 @@ public class Util {
 		return s2;
 	}
 
-	public String escapeXMLContent(String s) {
+	public String escapeXMLContent(final String s) {
 		return this.xmlContentEscaper.escape(s);
 	}
 
 	/**
 	 * Convert a cell position string like B3 to the column number.
-	 * 
+	 *
 	 * @param sPos
 	 *            The cell position in the range 'A1' to 'IV65536'
 	 * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
@@ -205,7 +226,7 @@ public class Util {
 	 */
 	public int positionToColumn(final String sPos) {
 
-		String s = sPos.toUpperCase(Locale.US);
+		final String s = sPos.toUpperCase(Locale.US);
 		int nCount = 0;
 		int nValue = 0;
 
@@ -213,7 +234,7 @@ public class Util {
 		// Loop through the string, starting at the end
 		// ------------------------------------------------
 		for (int n = s.length() - 1; n >= 0; n--) {
-			char c = s.charAt(n);
+			final char c = s.charAt(n);
 			// ------------------------------------------------
 			// Only letters A-Z are valid
 			// ------------------------------------------------
@@ -232,7 +253,7 @@ public class Util {
 
 	/**
 	 * Convert a string like B3 to the row number.
-	 * 
+	 *
 	 * @param sPos
 	 *            The cell position in the range 'A1' to 'IV65536'
 	 * @return The column, e.g. A1 will return 0, B3 will return 2, X65000 will
@@ -247,7 +268,7 @@ public class Util {
 		// Loop through the string, starting at the end
 		// -------------------------------------------------
 		for (int n = sPos.length() - 1; n >= 0; n--) {
-			char c = sPos.charAt(n);
+			final char c = sPos.charAt(n);
 			// -------------------------------------------------
 			// Only numbers are valid
 			// -------------------------------------------------
@@ -267,7 +288,7 @@ public class Util {
 
 	/**
 	 * Replace all occurrences of a sub-string within a string.
-	 * 
+	 *
 	 * @param sHaystack
 	 *            The source string to be checked
 	 * @param sNeedle
@@ -280,7 +301,7 @@ public class Util {
 			final String sReplacement) {
 		int nStart = 0;
 		int nEnd = 0;
-		StringBuilder sbResult = new StringBuilder();
+		final StringBuilder sbResult = new StringBuilder();
 
 		// ----------------------------------------
 		// Loop until each sNeedle is replaced
@@ -296,25 +317,27 @@ public class Util {
 	}
 
 	// JF
-	public byte[] toBytes(String s) throws UnsupportedEncodingException {
+	public byte[] toBytes(final String s) throws UnsupportedEncodingException {
 		return s.getBytes("UTF-8");
 	}
 
 	/**
 	 * Wraps an OutputStream in a BufferedWriter
-	 * @param out the stream
+	 *
+	 * @param out
+	 *            the stream
 	 * @return the writer
 	 */
-	public Writer wrapStream(OutputStream out) {
+	public Writer wrapStream(final OutputStream out) {
 		return new BufferedWriter(new OutputStreamWriter(out, Charsets.UTF_8));
 	}
 
 	public boolean writeString(final ZipOutputStream o, final String sText) {
 
 		try {
-			byte[] bytes = toBytes(sText);
+			final byte[] bytes = this.toBytes(sText);
 			o.write(bytes, 0, bytes.length);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -326,34 +349,14 @@ public class Util {
 
 		try {
 			for (final String sText : sTexts) {
-				byte[] bytes = toBytes(sText);
+				final byte[] bytes = this.toBytes(sText);
 				o.write(bytes, 0, bytes.length);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
-	}
-
-	public static <T extends NamedObject> Optional<T> findElementByName(
-			List<T> list, String name) {
-		// Check is a style with this name exists and replace if yes
-		ListIterator<T> listIterator = list.listIterator();
-		while (listIterator.hasNext()) {
-			T curElement = listIterator.next();
-			if (curElement.getName().equals(name)) {
-				return Optional.of(curElement);
-			}
-		}
-		return Optional.absent();
-	}
-
-	public void appendTag(Appendable appendable, String tagName, String content)
-			throws IOException {
-		appendable.append('<').append(tagName).append('>')
-				.append(this.escapeXMLContent(content)).append("</")
-				.append(tagName).append('>');
 	}
 
 }

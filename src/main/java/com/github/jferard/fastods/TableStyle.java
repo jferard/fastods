@@ -22,7 +22,7 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 /**
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
@@ -30,7 +30,7 @@ import java.io.IOException;
  *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
  *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
- * 
+ *
  *         content.xml/office:document-content/office:automatic-styles
  */
 public class TableStyle implements StyleTag {
@@ -43,7 +43,7 @@ public class TableStyle implements StyleTag {
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -53,7 +53,7 @@ public class TableStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(String sStyleName) {
+	TableStyle(final String sStyleName) {
 		this.sName = sStyleName;
 	}
 
@@ -62,12 +62,8 @@ public class TableStyle implements StyleTag {
 	}
 
 	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	@Override
-	public void appendXML(Util util, Appendable appendable, ContentEntry where) throws IOException {
+	public void appendXMLToContentEntry(final Util util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table");
@@ -77,5 +73,10 @@ public class TableStyle implements StyleTag {
 		util.appendAttribute(appendable, "table:display", "true");
 		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
 		appendable.append("/></style:style>");
+	}
+
+	@Override
+	public String getName() {
+		return this.sName;
 	}
 }

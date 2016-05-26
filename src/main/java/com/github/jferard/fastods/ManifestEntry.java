@@ -30,7 +30,7 @@ import java.util.zip.ZipOutputStream;
  *         users.sourceforge.net>
  *
  *         This file ManifestEntry.java is part of FastODS.
- * 
+ *
  *         WHERE ? META-INF/manifest.xml/manifest:manifest
  */
 public class ManifestEntry implements OdsEntry {
@@ -64,11 +64,11 @@ public class ManifestEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(Util util, final ZipOutputStream zipOut)
+	public void write(final Util util, final ZipOutputStream zipOut)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-		Writer writer = util.wrapStream(zipOut);
-		for (String item : this.getManifest())
+		final Writer writer = util.wrapStream(zipOut);
+		for (final String item : this.getManifest())
 			writer.write(item);
 		writer.flush();
 		zipOut.closeEntry();

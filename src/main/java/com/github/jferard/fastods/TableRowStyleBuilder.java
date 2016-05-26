@@ -21,7 +21,7 @@ package com.github.jferard.fastods;
 
 /**
  * /**
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
@@ -32,13 +32,13 @@ package com.github.jferard.fastods;
  */
 class TableRowStyleBuilder {
 
-	private String sRowHeight;
 	private String sName;
+	private String sRowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param nFamily
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -52,6 +52,16 @@ class TableRowStyleBuilder {
 		this.sRowHeight = "0.45cm";
 	}
 
+	public TableRowStyle build() {
+		return new TableRowStyle(this.sName, this.sRowHeight);
+
+	}
+
+	public TableRowStyleBuilder name(final String sName) {
+		this.sName = sName;
+		return this;
+	}
+
 	/**
 	 * Set the row height to a table row.<br>
 	 * sHeight is a length value expressed as a number followed by a unit of
@@ -59,7 +69,7 @@ class TableRowStyleBuilder {
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
-	 * 
+	 *
 	 * @param sHeight
 	 *            The table row height to be used, e.g. '1.0cm'
 	 * @return true - The height was set,<br>
@@ -69,15 +79,5 @@ class TableRowStyleBuilder {
 	public TableRowStyleBuilder rowHeight(final String sHeight) {
 		this.sRowHeight = sHeight;
 		return this;
-	}
-
-	public TableRowStyleBuilder name(String sName) {
-		this.sName = sName;
-		return this;
-	}
-
-	public TableRowStyle build() {
-		return new TableRowStyle(this.sName, this.sRowHeight);
-
 	}
 }

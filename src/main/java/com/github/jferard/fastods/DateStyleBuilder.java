@@ -28,11 +28,6 @@ import com.github.jferard.fastods.DateStyle.Format;
  *         This file DateStyleBuilder.java is part of FastODS.
  */
 class DateStyleBuilder {
-	/**
-	 * The name of this style.
-	 */
-	private String sName;
-
 	private boolean bAutomaticOrder;
 
 	/**
@@ -41,9 +36,14 @@ class DateStyleBuilder {
 	private Format dateFormat;
 
 	/**
+	 * The name of this style.
+	 */
+	private String sName;
+
+	/**
 	 * Create a new date style with the name sName.<br>
 	 * Version 0.5.1 Added.
-	 * 
+	 *
 	 * @param sName
 	 *            The name of the number style.
 	 * @param odsFile
@@ -58,7 +58,7 @@ class DateStyleBuilder {
 	 * The automatic-order attribute can be used to automatically order data to
 	 * match the default order<br>
 	 * for the language and country of the date style.
-	 * 
+	 *
 	 * @param bAutomatic
 	 * @return this for fluent style
 	 */
@@ -85,7 +85,7 @@ class DateStyleBuilder {
 	 * DateStyle.DATEFORMAT_TMMMMYYYY<br>
 	 * DateStyle.DATEFORMAT_MMMM<br>
 	 * *
-	 * 
+	 *
 	 * @param format
 	 *            The date format to be used.
 	 * @return this for fluent style
@@ -97,7 +97,7 @@ class DateStyleBuilder {
 
 	/**
 	 * Set the name of this style to sName.
-	 * 
+	 *
 	 * @param name
 	 *            - The name of this style.
 	 * @return this for fluent style
