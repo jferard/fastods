@@ -125,11 +125,6 @@ public class PageStyle {
 
 	private final String sPageHeight;
 	private final String sPageWidth;
-	private final String sTextFooter;
-	private final String sTextHeader;
-	private final String sTextStyleFooter;
-
-	private final String sTextStyleHeader;
 
 	private final WritingMode writingMode;
 
@@ -145,10 +140,8 @@ public class PageStyle {
 			final String sMarginBottom, final String sMarginLeft,
 			final String sMarginRight, final String sPageWidth,
 			final String sPageHeight, final String sNumFormat,
-			final String sBackgroundColor, final FooterHeader footer,
-			final String sTextStyleFooter, final FooterHeader header,
-			final String sTextStyleHeader, final String sTextHeader,
-			final String sTextFooter, final PrintOrientation printOrientation,
+			final String sBackgroundColor, final FooterHeader footer, final FooterHeader header,
+			final PrintOrientation printOrientation,
 			final PaperFormat paperFormat, final WritingMode writingMode) {
 		this.sName = sName;
 		this.sMarginTop = sMarginTop;
@@ -160,11 +153,7 @@ public class PageStyle {
 		this.sNumFormat = sNumFormat;
 		this.sBackgroundColor = sBackgroundColor;
 		this.footer = footer;
-		this.sTextStyleFooter = sTextStyleFooter;
 		this.header = header;
-		this.sTextStyleHeader = sTextStyleHeader;
-		this.sTextHeader = sTextHeader;
-		this.sTextFooter = sTextFooter;
 		this.printOrientation = printOrientation;
 		this.paperFormat = paperFormat;
 		this.writingMode = writingMode;
@@ -199,9 +188,9 @@ public class PageStyle {
 		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
 		appendable.append("/>"); // End of page-layout-properties
 
-		PageStyle.addFooterHeaderStyle(util, appendable, this.header,
+		PageStyle.appendFooterHeaderStyle(util, appendable, this.getHeader(),
 				"style:header-style");
-		PageStyle.addFooterHeaderStyle(util, appendable, this.header,
+		PageStyle.appendFooterHeaderStyle(util, appendable, this.getFooter(),
 				"style:footer-style");
 		/*
 		if( styles.getFooter()==null ) {
@@ -231,29 +220,18 @@ public class PageStyle {
 		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
 		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
 		appendable.append("><style:header>");
-		PageStyle.appendFooterHeader(util, appendable, this.header, this.sTextStyleHeader, this.sTextHeader);
+		this.getHeader().appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:header>");
 		appendable.append("<style:header-left");
 		util.appendAttribute(appendable, "style:display", false);
 		appendable.append("/>");
 		appendable.append("<style:footer>");
-		PageStyle.appendFooterHeader(util, appendable, this.footer, this.sTextStyleFooter, this.sTextFooter);
+		this.getFooter().appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:footer>");
 		appendable.append("<style:footer-left");
 		util.appendAttribute(appendable, "style:display", false);
 		appendable.append("/>");
 		appendable.append("</style:master-page>");
-	}
-
-	private static void appendFooterHeader(final Util util, final Appendable appendable, FooterHeader footerHeader, String sTextStyle, String sText)
-			throws IOException {
-		if (footerHeader == null) {
-			appendable.append("<text:p");
-			util.appendAttribute(appendable, "text:style-name", sTextStyle);
-			appendable.append(">").append(util.escapeXMLContent(sText)).append("</text:p>");
-		} else {
-			footerHeader.appendXMLToMasterStyle(util, appendable);
-		}
 	}
 
 	public String getBackgroundColor() {
@@ -317,7 +295,7 @@ public class PageStyle {
 		return this.writingMode;
 	}
 
-	private static void addFooterHeaderStyle(final Util util,
+	private static void appendFooterHeaderStyle(final Util util,
 			final Appendable appendable, final FooterHeader footerHeader,
 			final String tag) throws IOException {
 		if (footerHeader == null)
@@ -332,5 +310,13 @@ public class PageStyle {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.sBackgroundColor);
 		}
+	}
+
+	public FooterHeader getHeader() {
+		return this.header;
+	}
+
+	public FooterHeader getFooter() {
+		return this.footer;
 	}
 }

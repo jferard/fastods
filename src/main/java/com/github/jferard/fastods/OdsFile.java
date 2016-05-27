@@ -56,8 +56,6 @@ import com.google.common.base.Optional;
 public class OdsFile {
 	private ContentEntry contentEntry;
 
-	private FooterHeader footer = null;
-	private FooterHeader header = null;
 	private final ManifestEntry manifestEntry;
 	private final MetaEntry metaEntry;
 	private final MimetypeEntry mimetypeEntry;
@@ -79,14 +77,12 @@ public class OdsFile {
 		this.manifestEntry = new ManifestEntry();
 		this.settingsEntry = new SettingsEntry();
 		this.metaEntry = new MetaEntry();
-		this.header = null;
-		this.footer = null;
 
 		// Add four default stylesEntry to contentEntry
 		TableStyle.builder().name("ta1").build().addToFile(this);
 		TableRowStyle.builder().name("ro1").build().addToFile(this);
 		TableColumnStyle.builder().name("co1").build().addToFile(this);
-		TableCellStyle.builder().name("Default").build().addToFile(this);
+		TableCellStyle.builder("Default").build().addToFile(this);
 		PageStyle.builder("Mpm1").build().addToFile(this);
 	}
 
@@ -160,30 +156,10 @@ public class OdsFile {
 		return this.contentEntry;
 	}
 
-	/**
-	 * Returns the current footer.
-	 *
-	 * @return The footer that is currently set , maybe null if no footer was
-	 *         set
-	 */
-	public FooterHeader getFooter() {
-		return this.footer;
-	}
-
 	/*
 	public PageStyle getDefaultPageStyle() {
 		return this.getContent().getDefaultPageStyle();
 	}*/
-
-	/**
-	 * Returns the current header.
-	 *
-	 * @return The header that is currently set , maybe null if no header was
-	 *         set
-	 */
-	public FooterHeader getHeader() {
-		return this.header;
-	}
 
 	/**
 	 * Get the MetaEntry data for this OdsFile.
@@ -1213,30 +1189,6 @@ public class OdsFile {
 	 */
 	public void setContent(final ContentEntry cont) {
 		this.contentEntry = cont;
-	}
-
-	/**
-	 * Sets a new footer object, any earlier footer that was set will be reset
-	 * and the new footer is used.
-	 *
-	 * @param f
-	 *            - The new footer to be used.
-	 */
-	public void setFooter(final FooterHeader f) {
-		this.footer = f;
-		this.getStyles().setFooter(f);
-	}
-
-	/**
-	 * Sets a new header object, any earlier header that was set will be reset
-	 * and the. new header is used.
-	 *
-	 * @param h
-	 *            - The new header to be used.
-	 */
-	public void setHeader(final FooterHeader h) {
-		this.header = h;
-		this.getStyles().setHeader(h);
 	}
 
 	/**

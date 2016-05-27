@@ -34,8 +34,6 @@ import java.util.List;
  *         page/style:header
  */
 class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
-	private final List<List<StyledText>> region;
-
 	/**
 	 * Create a new footer object.
 	 *
@@ -44,12 +42,13 @@ class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.region = FullList.newList();
+		this.curRegion = FullList.newList();
 	}
 
 	@Override
 	public FooterHeader build() {
-		return new SimpleFooterHeader(this.footerHeaderType, this.region, this.sMarginLeft,
-				this.sMarginRight, this.sMarginTop, this.sMinHeight);
+		return new SimpleFooterHeader(this.footerHeaderType, this.curRegion,
+				this.sMarginLeft, this.sMarginRight, this.sMarginTop,
+				this.sMinHeight);
 	}
 }

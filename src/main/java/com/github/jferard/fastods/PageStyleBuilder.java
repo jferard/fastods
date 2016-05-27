@@ -49,10 +49,6 @@ class PageStyleBuilder {
 	private String sPageHeight;
 	private String sPageWidth;
 
-	private final String sTextFooter;
-	private final String sTextHeader;
-	private final String sTextStyleFooter;
-	private final String sTextStyleHeader;
 	private WritingMode writingMode;
 
 	/**
@@ -62,7 +58,7 @@ class PageStyleBuilder {
 	public PageStyleBuilder(final String sName) {
 		if (sName == null)
 			throw new IllegalStateException();
-		
+
 		this.sName = sName;
 		this.sMarginTop = "1.5cm";
 		this.sMarginBottom = "1.5cm";
@@ -73,13 +69,14 @@ class PageStyleBuilder {
 		this.sNumFormat = "1";
 		this.sBackgroundColor = "";
 
-		this.sTextStyleFooter = "";
-		this.sTextStyleHeader = "";
-		this.sTextHeader = "";
-		this.sTextFooter = "";
-
 		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITINGMODE;
+
+		final TextStyle noneStyle = TextStyle.builder("none").build();
+		this.header = FooterHeader
+				.simpleHeader(noneStyle, "");
+		this.footer = FooterHeader
+				.simpleFooter(noneStyle, "");
 	}
 
 	/**
@@ -121,9 +118,8 @@ class PageStyleBuilder {
 		return new PageStyle(this.sName, this.sMarginTop, this.sMarginBottom,
 				this.sMarginLeft, this.sMarginRight, this.sPageWidth,
 				this.sPageHeight, this.sNumFormat, this.sBackgroundColor,
-				this.footer, this.sTextStyleFooter, this.header,
-				this.sTextStyleHeader, this.sTextHeader, this.sTextFooter,
-				this.printOrientation, this.paperFormat, this.writingMode);
+				this.footer, this.header, this.printOrientation,
+				this.paperFormat, this.writingMode);
 	}
 
 	public PageStyleBuilder footer(final FooterHeader footer) {

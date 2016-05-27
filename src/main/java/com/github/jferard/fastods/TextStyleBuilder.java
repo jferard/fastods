@@ -42,17 +42,21 @@ class TextStyleBuilder {
 	private String sFontWeightAsian;
 	private String sFontWeightComplex;
 
-	private String sName;
+	private final String sName;
 
 	/**
 	 * Create a new text style without a name.<br>
 	 * This is used by class TableFamilyStyle. Version 0.5.2 Added
+	 * @param sName2 
 	 *
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	public TextStyleBuilder() {
-		this.sName = "";
+	public TextStyleBuilder(String sName) {
+		if (sName == null)
+			throw new IllegalArgumentException();
+
+		this.sName = sName;
 		this.sFontColor = "";
 		this.sFontName = "";
 		this.sFontWeight = ""; // 0.5.2 Renamed from FontStyle to
@@ -204,18 +208,6 @@ class TextStyleBuilder {
 		this.sFontWeightAsian = "normal";
 		this.sFontWeightComplex = "normal";
 
-		return this;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 *
-	 * @param name
-	 *            - The name of this style
-	 * @return
-	 */
-	public final TextStyleBuilder name(final String name) {
-		this.sName = name;
 		return this;
 	}
 }

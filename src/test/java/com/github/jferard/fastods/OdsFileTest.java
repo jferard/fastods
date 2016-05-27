@@ -51,15 +51,15 @@ public class OdsFileTest {
 				row.setCell(x, String.valueOf(random.nextInt(1000)));
 				switch (x) {
 				case 1:
-					row.setCellStyle(x, TableCellStyle.builder().name("tcs1")
+					row.setCellStyle(x, TableCellStyle.builder("tcs1")
 							.backgroundColor("#00FF00").build());
 					break;
 				case 2:
-					row.setCellStyle(x, TableCellStyle.builder().name("tcs2")
+					row.setCellStyle(x, TableCellStyle.builder("tcs2")
 							.fontWeightBold().build());
 					break;
 				case 3:
-					row.setCellStyle(x, TableCellStyle.builder().name("tcs3")
+					row.setCellStyle(x, TableCellStyle.builder("tcs3")
 							.fontWeightItalic().build());
 					break;
 				default:

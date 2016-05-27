@@ -43,9 +43,9 @@ class TableCellStyleBuilder {
 	private String sDataStyle;
 	// true
 	private final String sDefaultCellStyle;
-	private String sName;
+	private final String sName;
 	private final TextStyleBuilder tsBuilder;
-
+	
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
@@ -59,14 +59,18 @@ class TableCellStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableCellStyleBuilder() {
+	public TableCellStyleBuilder(final String sName) {
+		if (sName == null)
+			throw new IllegalArgumentException();
+		
+		this.sName = sName;
 		this.nTextAlign = TableCellStyle.Align.LEFT;
 		this.nVerticalAlign = TableCellStyle.VerticalAlign.TOP;
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
 		this.sDataStyle = "";
-		this.tsBuilder = new TextStyleBuilder();
+		this.tsBuilder = new TextStyleBuilder(sName);
 		this.sDefaultCellStyle = "Default";
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);
@@ -243,11 +247,6 @@ class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder fontWrap(final boolean fSetWrap) {
 		this.bWrap = fSetWrap;
-		return this;
-	}
-
-	public TableCellStyleBuilder name(final String sName) {
-		this.sName = sName;
 		return this;
 	}
 

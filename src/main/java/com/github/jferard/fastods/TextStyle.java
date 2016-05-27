@@ -47,8 +47,8 @@ public class TextStyle implements NamedObject {
 		}
 	}
 
-	public static TextStyleBuilder builder() {
-		return new TextStyleBuilder();
+	public static TextStyleBuilder builder(String sName) {
+		return new TextStyleBuilder(sName);
 	}
 
 	private final Underline nFontUnderlineStyle;

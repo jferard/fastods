@@ -36,7 +36,7 @@ import java.util.zip.ZipOutputStream;
  *         styles.xml/office:document-styles
  */
 public class StylesEntry implements OdsEntry {
-	private static void appendFooterHeader(final Util util,
+	private static void appendDefaultFooterHeaderStyle(final Util util,
 			final Appendable appendable, final String name) throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", name);
@@ -50,8 +50,6 @@ public class StylesEntry implements OdsEntry {
 		appendable.append("/></style:style>");
 	}
 
-	private FooterHeader footer = null;
-	private FooterHeader header = null;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -118,62 +116,6 @@ public class StylesEntry implements OdsEntry {
 		this.qTextStyles.put(ts.getStyleName(), ts);
 	}
 
-	/**
-	 * Get the current footer object.
-	 *
-	 * @return The current footer object.
-	 */
-	public FooterHeader getFooter() {
-		return this.footer;
-	}
-
-	/**
-	 * Get the current header object.
-	 *
-	 * @return The current header object.
-	 */
-	public FooterHeader getHeader() {
-		return this.header;
-	}
-
-	/**
-	 * Reset the footer to null.
-	 */
-	public void resetFooter() {
-		this.footer = null;
-	}
-
-	/**
-	 * Reset the header to null.
-	 */
-	public void resetHeader() {
-		this.header = null;
-	}
-
-	/**
-	 * Set the footer object to f. Reset this object by setting a new
-	 * FooterHeader object,<br>
-	 * or use resetFooter() to remove the FooterHeader object.
-	 *
-	 * @param f
-	 *            - The footer object to be used
-	 */
-	public void setFooter(final FooterHeader f) {
-		this.footer = f;
-	}
-
-	/**
-	 * Set the header object to h. Reset this object by setting a new Header
-	 * object,<br>
-	 * or use resetHeader() to remove the Header object.
-	 *
-	 * @param h
-	 *            - The header object to be used
-	 */
-	public void setHeader(final FooterHeader h) {
-		this.header = h;
-	}
-
 	@Override
 	public void write(final Util util, final ZipOutputStream zipOut)
 			throws IOException {
@@ -201,11 +143,22 @@ public class StylesEntry implements OdsEntry {
 		for (final CurrencyStyle cs : this.qCurrencyStyles.values())
 			cs.appendXMLToStylesEntry(util, writer);
 
-		if (this.footer != null) {
-			StylesEntry.appendFooterHeader(util, writer, "Footer");
+		boolean hasHeader = false;
+		boolean hasFooter = false;
+		for (final PageStyle ps : this.qPageStyles.values()) {
+			if (hasHeader && hasFooter)
+				break;
+			if (!hasHeader && ps.getHeader() != null)
+				hasHeader = true;
+			if (!hasFooter && ps.getFooter() != null)
+				hasFooter = true;
 		}
-		if (this.header != null) {
-			StylesEntry.appendFooterHeader(util, writer, "Header");
+
+		if (hasHeader) {
+			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Header");
+		}
+		if (hasFooter) {
+			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Footer");
 		}
 
 		writer.write("</office:styles>");

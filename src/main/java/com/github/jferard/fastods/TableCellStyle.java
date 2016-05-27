@@ -61,8 +61,8 @@ public class TableCellStyle implements StyleTag {
 		}
 	}
 
-	public static TableCellStyleBuilder builder() {
-		return new TableCellStyleBuilder();
+	public static TableCellStyleBuilder builder(final String sName) {
+		return new TableCellStyleBuilder(sName);
 	}
 
 	private final Map<Position, BorderAttribute> borderByPosition;

@@ -45,6 +45,15 @@ public abstract class FooterHeader {
 		return new RegionFooterHeaderBuilder(footerHeaderType);
 	}
 	
+	public static FooterHeader simpleHeader(TextStyle ts, String sText) {
+		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText).build();
+	}
+	
+	public static FooterHeader simpleFooter(TextStyle ts, String sText) {
+		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, sText).build();
+	}
+	
+	
 	public static enum Region {
 		CENTER, LEFT, RIGHT;
 	}
@@ -88,13 +97,6 @@ public abstract class FooterHeader {
 		this.sMarginRight = sMarginRight;
 		this.sMarginTop = sMarginTop;
 		this.sMinHeight = sMinHeight;
-	}
-
-	public void addToFile(final OdsFile odsFile) {
-		if (this.footerHeaderType == Type.FOOTER)
-			odsFile.getStyles().setFooter(this); // Add this FooterHeader object
-		else if (this.footerHeaderType == Type.HEADER)
-			odsFile.getStyles().setHeader(this); // Add this FooterHeader object
 	}
 
 	/**
