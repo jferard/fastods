@@ -92,8 +92,8 @@ public class DateStyle implements NamedObject {
 
 	private static final String YEAR = "<number:year/>";
 
-	public static DateStyleBuilder builder() {
-		return new DateStyleBuilder();
+	public static DateStyleBuilder builder(final String sName) {
+		return new DateStyleBuilder(sName);
 	}
 
 	private final boolean bAutomaticOrder;
@@ -183,7 +183,7 @@ public class DateStyle implements NamedObject {
 	 * @return The name of this style.
 	 */
 	@Override
-	public String getName() {
+	public String getStyleName() {
 		return this.sName;
 	}
 

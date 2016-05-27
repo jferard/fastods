@@ -62,7 +62,7 @@ public class Util {
 		final ListIterator<T> listIterator = list.listIterator();
 		while (listIterator.hasNext()) {
 			final T curElement = listIterator.next();
-			if (curElement.getName().equals(name)) {
+			if (curElement.getStyleName().equals(name)) {
 				return Optional.of(curElement);
 			}
 		}

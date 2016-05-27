@@ -38,7 +38,7 @@ class DateStyleBuilder {
 	/**
 	 * The name of this style.
 	 */
-	private String sName;
+	private final String sName;
 
 	/**
 	 * Create a new date style with the name sName.<br>
@@ -46,10 +46,12 @@ class DateStyleBuilder {
 	 *
 	 * @param sName
 	 *            The name of the number style.
-	 * @param odsFile
-	 *            The odsFile to which this style belongs to.
 	 */
-	protected DateStyleBuilder() {
+	protected DateStyleBuilder(final String sName) {
+		if (sName == null)
+			throw new IllegalArgumentException();
+		
+		this.sName = sName;
 		this.dateFormat = DateStyle.DEFAULT_FORMAT;
 		this.bAutomaticOrder = false;
 	}
@@ -71,9 +73,6 @@ class DateStyleBuilder {
 	 * @return the DateStyle
 	 */
 	public DateStyle build() {
-		if (this.sName == null)
-			throw new IllegalArgumentException();
-
 		return new DateStyle(this.sName, this.dateFormat, this.bAutomaticOrder);
 	}
 
@@ -92,18 +91,6 @@ class DateStyleBuilder {
 	 */
 	public DateStyleBuilder dateFormat(final Format format) {
 		this.dateFormat = format;
-		return this;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 *
-	 * @param name
-	 *            - The name of this style.
-	 * @return this for fluent style
-	 */
-	public DateStyleBuilder name(final String name) {
-		this.sName = name;
 		return this;
 	}
 }

@@ -38,13 +38,16 @@ class CurrencyStyleBuilder {
 	private String sCountry;
 	private String sCurrencySymbol;
 	private String sLanguage;
-	private String sName;
+	private final String sName;
 	private String sNegativeValueColor;
 
 	/**
 	 * The builder
+	 * @param name
+	 *            - The name of this style
 	 */
-	protected CurrencyStyleBuilder() {
+	protected CurrencyStyleBuilder(final String name) {
+		this.sName = name;
 		this.sCurrencySymbol = "€";
 		this.sNegativeValueColor = "#FF0000";
 		this.sLanguage = "";
@@ -58,9 +61,6 @@ class CurrencyStyleBuilder {
 	}
 
 	public CurrencyStyle build() {
-		if (this.sName == null)
-			throw new IllegalArgumentException();
-
 		return new CurrencyStyle(this.sName, this.sCurrencySymbol,
 				this.sNegativeValueColor, this.sLanguage, this.sCountry,
 				this.nDecimalPlaces, this.nMinIntegerDigits, this.bGrouping,
@@ -132,17 +132,6 @@ class CurrencyStyleBuilder {
 	 */
 	public CurrencyStyleBuilder minIntegerDigits(final int minIntegerDigits) {
 		this.nMinIntegerDigits = minIntegerDigits;
-		return this;
-	}
-
-	/**
-	 * Set the name of this style to sName.
-	 *
-	 * @param name
-	 *            - The name of this style
-	 */
-	public CurrencyStyleBuilder name(final String name) {
-		this.sName = name;
 		return this;
 	}
 

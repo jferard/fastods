@@ -36,12 +36,12 @@ public class DateStyleTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testWithNoName() {
-		DateStyle ds = DateStyle.builder().build();
+		DateStyle ds = DateStyle.builder(null).build();
 	}
 
 	@Test
 	public final void test() throws IOException {
-		DateStyle ds = DateStyle.builder().name("test").build();
+		DateStyle ds = DateStyle.builder("test").build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(Util.getInstance(), sb);
 		Assert.assertEquals(

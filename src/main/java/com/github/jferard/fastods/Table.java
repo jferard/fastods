@@ -189,7 +189,6 @@ public class Table implements NamedObject {
 	 *
 	 * @return The name of this table.
 	 */
-	@Override
 	public String getName() {
 		return this.sName;
 	}
@@ -216,6 +215,7 @@ public class Table implements NamedObject {
 	 *
 	 * @return The current TableStlye
 	 */
+	@Override
 	public String getStyleName() {
 		return this.styleName;
 	}

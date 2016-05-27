@@ -85,7 +85,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The currency style to be added.
 	 */
 	public void addCurrencyStyle(final CurrencyStyle cs) {
-		this.qCurrencyStyles.put(cs.getName(), cs);
+		this.qCurrencyStyles.put(cs.getStyleName(), cs);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The date style to be added.
 	 */
 	public void addDateStyle(final DateStyle ds) {
-		this.qDateStyles.put(ds.getName(), ds);
+		this.qDateStyles.put(ds.getStyleName(), ds);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The number style to be added.
 	 */
 	public void addNumberStyle(final NumberStyle ns) {
-		this.qNumberStyles.put(ns.getName(), ns);
+		this.qNumberStyles.put(ns.getStyleName(), ns);
 	}
 
 	public void addPageStyle(final PageStyle ps) {
@@ -115,7 +115,7 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	public void addTextStyle(final TextStyle ts) {
-		this.qTextStyles.put(ts.getName(), ts);
+		this.qTextStyles.put(ts.getStyleName(), ts);
 	}
 
 	/**

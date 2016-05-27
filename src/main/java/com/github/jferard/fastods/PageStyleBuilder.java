@@ -44,7 +44,7 @@ class PageStyleBuilder {
 	private String sMarginRight;
 	private String sMarginTop;
 
-	private String sName;
+	private final String sName;
 	private final String sNumFormat;
 	private String sPageHeight;
 	private String sPageWidth;
@@ -59,7 +59,11 @@ class PageStyleBuilder {
 	 * Create a new page style.
 	 *
 	 */
-	public PageStyleBuilder() {
+	public PageStyleBuilder(final String sName) {
+		if (sName == null)
+			throw new IllegalStateException();
+		
+		this.sName = sName;
 		this.sMarginTop = "1.5cm";
 		this.sMarginBottom = "1.5cm";
 		this.sMarginLeft = "1.5cm";
@@ -112,9 +116,6 @@ class PageStyleBuilder {
 	}
 
 	public PageStyle build() {
-		if (this.sName == null)
-			throw new IllegalStateException();
-
 		// TODO : create MarginAttribute and use a
 		// EnumMap<MarginAtribute.Position, MarginAttribute>
 		return new PageStyle(this.sName, this.sMarginTop, this.sMarginBottom,
@@ -190,11 +191,6 @@ class PageStyleBuilder {
 	 */
 	public PageStyleBuilder marginTop(final String margin) {
 		this.sMarginTop = margin;
-		return this;
-	}
-
-	public PageStyleBuilder name(final String sName) {
-		this.sName = sName;
 		return this;
 	}
 

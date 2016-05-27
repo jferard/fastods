@@ -29,5 +29,5 @@ package com.github.jferard.fastods;
  *
  */
 public interface NamedObject {
-	String getName();
+	String getStyleName();
 }

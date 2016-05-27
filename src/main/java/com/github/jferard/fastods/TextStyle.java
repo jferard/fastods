@@ -166,7 +166,7 @@ public class TextStyle implements NamedObject {
 		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
-		if (this.getName().length() > 0) {
+		if (this.getStyleName().length() > 0) {
 			appendable.append("</style:style>");
 		}
 	}
@@ -220,7 +220,7 @@ public class TextStyle implements NamedObject {
 	 * @return The text style name
 	 */
 	@Override
-	public String getName() {
+	public String getStyleName() {
 		return this.sName;
 	}
 

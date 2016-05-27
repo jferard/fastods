@@ -34,7 +34,7 @@ public class NumberStyleTest {
 
 	@Test
 	public final void testEmpty() throws IOException {
-		NumberStyle ns = NumberStyle.builder().name("test").build();
+		NumberStyle ns = NumberStyle.builder("test").build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(Util.getInstance(), sb);
 		Assert.assertEquals("<number:number-style style:name=\"test\">"
@@ -44,7 +44,7 @@ public class NumberStyleTest {
 
 	@Test
 	public final void testNegative() throws IOException {
-		NumberStyle ns = NumberStyle.builder().name("test").negativeValuesRed(true).build();
+		NumberStyle ns = NumberStyle.builder("test").negativeValuesRed(true).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(Util.getInstance(), sb);
 		Assert.assertEquals(

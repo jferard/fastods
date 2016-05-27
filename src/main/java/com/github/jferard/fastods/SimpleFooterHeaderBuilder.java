@@ -19,60 +19,37 @@
 */
 package com.github.jferard.fastods;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * 
+ *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file StyledText.java is part of FastODS.
+ *         This file FooterHeaderBuilder.java is part of FastODS.
  *
- *         WHERE ?
  *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:footer/text:p/text:span
+ *         page/style:footer
  *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:header/text:p/text:span
+ *         page/style:header
  */
-public class StyledText {
-
-	private String sText = null;
-
-	private TextStyle ts = null;
-	private final Util u = Util.getInstance();
-
-	public StyledText(final TextStyle t, final String s) {
-		this.ts = t;
-		this.sText = s;
-	}
+class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
+	private final List<List<StyledText>> region;
 
 	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
+	 * Create a new footer object.
 	 *
-	 * @throws IOException
+	 * @param odsFile
+	 *            - The OdsFile to which this footer belongs to.
 	 */
-	public void appendXMLToFooterHeader(final Util util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<text:span");
-		util.appendEAttribute(appendable, "text:style-name", this.ts.getStyleName());
-		appendable.append(">").append(this.sText)
-				.append("</text:span>");
+	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
+		super(footerHeaderType);
+		this.region = FullList.newList();
 	}
 
-	public String getText() {
-		return this.sText;
+	@Override
+	public FooterHeader build() {
+		return new SimpleFooterHeader(this.footerHeaderType, this.region, this.sMarginLeft,
+				this.sMarginRight, this.sMarginTop, this.sMinHeight);
 	}
-
-	public TextStyle getTextStyle() {
-		return this.ts;
-	}
-
-	public void setText(final String sText) {
-		this.sText = sText;
-	}
-
-	public void setTextStyle(final TextStyle t) {
-		this.ts = t;
-	}
-
 }

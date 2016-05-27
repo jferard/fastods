@@ -39,26 +39,21 @@ class NumberStyleBuilder {
 	private Type numberType;
 	private String sCountry;
 	private String sLanguage;
-	private String sName;
+	private final String sName;
 	private final String sNegativeValueColor;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
-	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
-	 * NumberStyle.NUMBER_NORMAL<br>
-	 * Version 0.5.0 Added parameter OdsFile o
+	 * nMinIntDigits and decimal places is nDecPlaces.
 	 *
-	 * @param sStyleName
+	 * @param sName
 	 *            The name of the number style, this name must be unique.
-	 * @param nMinIntDigits
-	 *            The minimum integer digits to be shown.
-	 * @param nDecPlaces
-	 *            The number of decimal places to be shown.
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs to.
 	 */
-	public NumberStyleBuilder() {
-		this.sName = "";
+	public NumberStyleBuilder(final String sName) {
+		if (sName == null)
+			throw new IllegalArgumentException();
+		
+		this.sName = sName;
 		this.sNegativeValueColor = "#FF0000";
 		this.sLanguage = "";
 		this.sCountry = "";
@@ -120,19 +115,6 @@ class NumberStyleBuilder {
 		this.nMinNumeratorDigits = nNumerator;
 		this.nMinDenominatorDigits = nDenominator;
 		this.numberType = NumberStyle.Type.FRACTION;
-		return this;
-	}
-
-	/**
-	 * Set the name of this style to sName, this name must be unique.
-	 *
-	 * @param name
-	 *            - The name of this style.
-	 * @return
-	 * @return this for fluent style
-	 */
-	public final NumberStyleBuilder name(final String name) {
-		this.sName = name;
 		return this;
 	}
 

@@ -44,8 +44,8 @@ public class NumberStyle implements NamedObject {
 
 	public static final Type DEFAULT_TYPE = Type.NORMAL;
 
-	public static NumberStyleBuilder builder() {
-		return new NumberStyleBuilder();
+	public static NumberStyleBuilder builder(final String sName) {
+		return new NumberStyleBuilder(sName);
 	}
 
 	private final boolean bGrouping;
@@ -255,7 +255,7 @@ public class NumberStyle implements NamedObject {
 	 * @return The name of this style.
 	 */
 	@Override
-	public String getName() {
+	public String getStyleName() {
 		return this.sName;
 	}
 

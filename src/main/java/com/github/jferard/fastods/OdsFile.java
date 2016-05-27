@@ -87,7 +87,7 @@ public class OdsFile {
 		TableRowStyle.builder().name("ro1").build().addToFile(this);
 		TableColumnStyle.builder().name("co1").build().addToFile(this);
 		TableCellStyle.builder().name("Default").build().addToFile(this);
-		PageStyle.builder().name("Mpm1").build().addToFile(this);
+		PageStyle.builder("Mpm1").build().addToFile(this);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class OdsFile {
 	 */
 	public String getTableName(final int n) throws FastOdsException {
 		final Table t = this.getTable(n);
-		return t.getName();
+		return t.getStyleName();
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getName().equalsIgnoreCase(sName)) {
+			if (tab.getStyleName().equalsIgnoreCase(sName)) {
 				return n;
 			}
 		}
@@ -352,7 +352,7 @@ public class OdsFile {
 		}
 
 		final Table tab = this.getContent().getTables().get(nTab);
-		this.settingsEntry.setActiveTable(tab.getName());
+		this.settingsEntry.setActiveTable(tab.getStyleName());
 
 		return true;
 	}
@@ -868,7 +868,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
+			if (tab.getStyleName().equals(sTab)) {
 				this.getContent().setCell(n, nRow, nCol, nValuetype, sValue);
 				return;
 			}
@@ -914,7 +914,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
+			if (tab.getStyleName().equals(sTab)) {
 				contentEntry.setCell(n, nRow, nCol, nValuetype, sValue);
 				contentEntry.setCellStyle(n, nRow, nCol, ts);
 				return;
@@ -1180,7 +1180,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
+			if (tab.getStyleName().equals(sTab)) {
 				this.getContent().setCellStyle(n, nRow, nCol, ts);
 				return;
 			}

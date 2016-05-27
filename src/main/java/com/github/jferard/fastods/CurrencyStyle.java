@@ -39,8 +39,10 @@ public class CurrencyStyle implements NamedObject {
 		BEGIN, END;
 	}
 
-	public static CurrencyStyleBuilder builder() {
-		return new CurrencyStyleBuilder();
+	public static CurrencyStyleBuilder builder(String sName) {
+		if (sName == null)
+			throw new IllegalArgumentException();
+		return new CurrencyStyleBuilder(sName);
 	}
 
 	private final boolean bGrouping;
@@ -173,7 +175,7 @@ public class CurrencyStyle implements NamedObject {
 	 * @return The currency style name
 	 */
 	@Override
-	public String getName() {
+	public String getStyleName() {
 		return this.sName;
 	}
 

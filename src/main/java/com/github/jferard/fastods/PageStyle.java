@@ -105,17 +105,8 @@ public class PageStyle {
 
 	private static final String LETTER_W = "21.59cm";
 
-	public static PageStyleBuilder builder() {
-		return new PageStyleBuilder();
-	}
-
-	private static void appendDefaultFooterHeader(final Util util,
-			final Appendable appendable, final String sTextStyle,
-			final String sText) throws IOException {
-		appendable.append("<text:p");
-		util.appendAttribute(appendable, "text:style-name", sTextStyle);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(sText)).append("</text:p>");
+	public static PageStyleBuilder builder(final String sName) {
+		return new PageStyleBuilder(sName);
 	}
 
 	private final FooterHeader footer;
@@ -208,9 +199,9 @@ public class PageStyle {
 		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
 		appendable.append("/>"); // End of page-layout-properties
 
-		this.addFooterHeaderStyle(util, appendable, this.header,
+		PageStyle.addFooterHeaderStyle(util, appendable, this.header,
 				"style:header-style");
-		this.addFooterHeaderStyle(util, appendable, this.header,
+		PageStyle.addFooterHeaderStyle(util, appendable, this.header,
 				"style:footer-style");
 		/*
 		if( styles.getFooter()==null ) {
@@ -240,23 +231,29 @@ public class PageStyle {
 		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
 		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
 		appendable.append("><style:header>");
-		if (this.header == null) {
-			PageStyle.appendDefaultFooterHeader(util, appendable,
-					this.sTextStyleHeader, this.sTextHeader);
-		} else {
-			this.header.appendXMLToMasterStyle(util, appendable);
-		}
+		PageStyle.appendFooterHeader(util, appendable, this.header, this.sTextStyleHeader, this.sTextHeader);
 		appendable.append("</style:header>");
-
+		appendable.append("<style:header-left");
+		util.appendAttribute(appendable, "style:display", false);
+		appendable.append("/>");
 		appendable.append("<style:footer>");
-		if (this.footer == null) {
-			PageStyle.appendDefaultFooterHeader(util, appendable,
-					this.sTextStyleFooter, this.sTextFooter);
-		} else {
-			this.footer.appendXMLToMasterStyle(util, appendable);
-		}
+		PageStyle.appendFooterHeader(util, appendable, this.footer, this.sTextStyleFooter, this.sTextFooter);
 		appendable.append("</style:footer>");
+		appendable.append("<style:footer-left");
+		util.appendAttribute(appendable, "style:display", false);
+		appendable.append("/>");
 		appendable.append("</style:master-page>");
+	}
+
+	private static void appendFooterHeader(final Util util, final Appendable appendable, FooterHeader footerHeader, String sTextStyle, String sText)
+			throws IOException {
+		if (footerHeader == null) {
+			appendable.append("<text:p");
+			util.appendAttribute(appendable, "text:style-name", sTextStyle);
+			appendable.append(">").append(util.escapeXMLContent(sText)).append("</text:p>");
+		} else {
+			footerHeader.appendXMLToMasterStyle(util, appendable);
+		}
 	}
 
 	public String getBackgroundColor() {
@@ -320,25 +317,15 @@ public class PageStyle {
 		return this.writingMode;
 	}
 
-	private void addFooterHeaderStyle(final Util util,
-			final Appendable appendable, final FooterHeader header,
+	private static void addFooterHeaderStyle(final Util util,
+			final Appendable appendable, final FooterHeader footerHeader,
 			final String tag) throws IOException {
-		if (header == null) {
-			appendable.append("<").append(tag).append(" />");
-		} else {
-			final FooterHeader h = header;
-			appendable.append("<").append(tag).append(">");
-			appendable.append("<style:header-footer-properties");
-			util.appendAttribute(appendable, "fo:min-height", h.getMinHeight());
-			util.appendAttribute(appendable, "fo:margin-left",
-					h.getMarginLeft());
-			util.appendAttribute(appendable, "fo:margin-right",
-					h.getMarginRight());
-			util.appendAttribute(appendable, "fo:margin-top", h.getMarginTop());
-			appendable.append("/><").append(tag).append(">");
-		}
+		if (footerHeader == null)
+			appendable.append("<").append(tag).append("/>");
+		else
+			footerHeader.appendXMLToAutomaticStyle(util, appendable);
 	}
-
+		
 	private void appendBackgroundColor(final Util util,
 			final Appendable appendable) throws IOException {
 		if (this.getBackgroundColor().length() > 0) {

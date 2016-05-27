@@ -146,7 +146,7 @@ class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs)
 			throws FastOdsException {
-		this.sDataStyle = cs.getName();
+		this.sDataStyle = cs.getStyleName();
 		return this;
 	}
 
@@ -161,7 +161,7 @@ class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder dataStyle(final DateStyle ds)
 			throws FastOdsException {
-		this.sDataStyle = ds.getName();
+		this.sDataStyle = ds.getStyleName();
 		return this;
 	}
 
@@ -176,7 +176,7 @@ class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder dataStyle(final NumberStyle ns)
 			throws FastOdsException {
-		this.sDataStyle = ns.getName();
+		this.sDataStyle = ns.getStyleName();
 		return this;
 	}
 
