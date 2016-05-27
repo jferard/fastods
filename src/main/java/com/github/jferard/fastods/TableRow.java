@@ -163,8 +163,7 @@ public class TableRow {
 					TableCell.Type.STRING, "");
 			this.qTableCells.set(nCol, tc);
 		}
-		ts.addToFile(this.odsFile);
-		tc.setStyle(ts.getName());
+		tc.setStyle(ts);
 	}
 
 	public void setStyle(final String s) {

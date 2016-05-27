@@ -1,7 +1,5 @@
 package com.github.jferard.fastods;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import org.junit.Assert;

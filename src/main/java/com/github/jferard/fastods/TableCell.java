@@ -63,11 +63,12 @@ public class TableCell {
 	private final OdsFile odsFile;
 	private String sCurrency;
 	private String sDateValue;
-	private String sStyle;
 	private String sText;
 
 	private String sValue;
 	private Type valueType;
+
+	private TableCellStyle style;
 
 	/**
 	 * A table cell.
@@ -87,7 +88,6 @@ public class TableCell {
 		this.valueType = valuetype;
 		this.sValue = value;
 		this.sDateValue = "";
-		this.sStyle = "";
 		this.nColumnsSpanned = 0;
 		this.nRowsSpanned = 0;
 	}
@@ -95,8 +95,8 @@ public class TableCell {
 	public void appendXMLToTableRow(final Util util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<table:table-cell ");
-		if (this.sStyle.length() > 0) {
-			util.appendAttribute(appendable, "table:style-name", this.sStyle);
+		if (this.style != null) {
+			util.appendAttribute(appendable, "table:style-name", this.style.getName());
 		}
 
 		util.appendEAttribute(appendable, "office:value-type",
@@ -162,8 +162,8 @@ public class TableCell {
 		return this.nRowsSpanned;
 	}
 
-	public String getStyle() {
-		return this.sStyle;
+	public String getStyleName() {
+		return this.style.getName();
 	}
 
 	/**
@@ -234,13 +234,9 @@ public class TableCell {
 		}
 	}
 
-	public void setStyle(final String style) {
-		this.sStyle = style;
-	}
-
 	public void setStyle(final TableCellStyle style) {
 		style.addToFile(this.odsFile);
-		this.sStyle = style.getName();
+		this.style = style;
 	}
 
 	public void setText(final String text) {

@@ -36,7 +36,6 @@ public class ConfigItem {
 	private final String sItemName;
 	private final String sType;
 	private final String sValue;
-	private String xml;
 
 	public ConfigItem(final String sName, final String sType,
 			final String sValue) {

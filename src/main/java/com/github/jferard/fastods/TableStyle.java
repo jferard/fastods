@@ -37,8 +37,11 @@ public class TableStyle implements StyleTag {
 	public static TableStyleBuilder builder(final String sName) {
 		return new TableStyleBuilder(sName);
 	}
+	
+	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").build();
 
 	private final String sName;
+	private final PageStyle pageStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -53,11 +56,12 @@ public class TableStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(final String sStyleName) {
+	TableStyle(final String sStyleName, final PageStyle pageStyle) {
 		this.sName = sStyleName;
+		this.pageStyle = pageStyle;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
+	void addToFile(final OdsFile odsFile) {
 		odsFile.getContent().addStyleTag(this);
 	}
 
@@ -67,8 +71,8 @@ public class TableStyle implements StyleTag {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table");
-		util.appendAttribute(appendable, "style:master-page-name",
-				"DefaultMasterPage");
+		util.appendEAttribute(appendable, "style:master-page-name",
+				PageStyle.DEFAULT_MASTER_PAGE);
 		appendable.append("><style:table-properties");
 		util.appendAttribute(appendable, "table:display", "true");
 		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");

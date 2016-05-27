@@ -41,6 +41,8 @@ import com.github.jferard.fastods.BorderAttribute.Position;
  *         style
  */
 public class TableCellStyle implements StyleTag {
+	public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default").build();
+
 	public static enum Align {
 		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
 

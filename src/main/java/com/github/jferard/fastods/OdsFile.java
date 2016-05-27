@@ -79,10 +79,10 @@ public class OdsFile {
 		this.metaEntry = new MetaEntry();
 
 		// Add four default stylesEntry to contentEntry
-		TableStyle.builder("ta1").build().addToFile(this);
+		TableStyle.DEFAULT_TABLE_STYLE.addToFile(this);
 		TableRowStyle.builder("ro1").build().addToFile(this);
-		TableColumnStyle.builder("co1").build().addToFile(this);
-		TableCellStyle.builder("Default").build().addToFile(this);
+		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToFile(this);
+		TableCellStyle.DEFAULT_CELL_STYLE.addToFile(this);
 		PageStyle.builder("Mpm1").build().addToFile(this);
 	}
 
@@ -104,7 +104,7 @@ public class OdsFile {
 			throws FastOdsException {
 		final Optional<Table> optTable = this.getContent().addTable(sName);
 		if (optTable.isPresent())
-			this.settingsEntry.setActiveTable(sName);
+			this.settingsEntry.setActiveTable(optTable.get());
 
 		return optTable;
 	}
@@ -189,11 +189,10 @@ public class OdsFile {
 		return this.stylesEntry;
 	}
 
-	public Optional<Table> getTable(final String sName)
-			throws FastOdsException {
+	public Optional<Table> getTable(final String sName) {
 		final Optional<Table> optTable = this.getContent().getTable(sName);
 		if (optTable.isPresent())
-			this.settingsEntry.setActiveTable(sName);
+			this.settingsEntry.setActiveTable(optTable.get());
 
 		return optTable;
 	}
@@ -211,7 +210,7 @@ public class OdsFile {
 	 */
 	public String getTableName(final int n) throws FastOdsException {
 		final Table t = this.getTable(n);
-		return t.getStyleName();
+		return t.getName();
 	}
 
 	/**
@@ -227,7 +226,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getStyleName().equalsIgnoreCase(sName)) {
+			if (tab.getName().equalsIgnoreCase(sName)) {
 				return n;
 			}
 		}
@@ -328,7 +327,7 @@ public class OdsFile {
 		}
 
 		final Table tab = this.getContent().getTables().get(nTab);
-		this.settingsEntry.setActiveTable(tab.getStyleName());
+		this.settingsEntry.setActiveTable(tab);
 
 		return true;
 	}
@@ -844,7 +843,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getStyleName().equals(sTab)) {
+			if (tab.getName().equals(sTab)) {
 				this.getContent().setCell(n, nRow, nCol, nValuetype, sValue);
 				return;
 			}
@@ -890,7 +889,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getStyleName().equals(sTab)) {
+			if (tab.getName().equals(sTab)) {
 				contentEntry.setCell(n, nRow, nCol, nValuetype, sValue);
 				contentEntry.setCellStyle(n, nRow, nCol, ts);
 				return;
@@ -1156,7 +1155,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getStyleName().equals(sTab)) {
+			if (tab.getName().equals(sTab)) {
 				this.getContent().setCellStyle(n, nRow, nCol, ts);
 				return;
 			}

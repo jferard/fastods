@@ -201,8 +201,8 @@ public class SettingsEntry implements OdsEntry {
 	 *            The table name, this table should already exist, otherwise the
 	 *            first table is shown
 	 */
-	public void setActiveTable(final String sName) {
-		this.viewIdActiveTable = new ConfigItem("ActiveTable", "string", sName);
+	public void setActiveTable(final Table table) {
+		this.viewIdActiveTable = new ConfigItem("ActiveTable", "string", table.getName());
 	}
 
 	public void setTables(final List<Table> tables) {

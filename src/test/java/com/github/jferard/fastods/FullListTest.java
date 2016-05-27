@@ -1,7 +1,5 @@
 package com.github.jferard.fastods;
 
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
 import java.util.List;
 

@@ -39,12 +39,16 @@ import java.io.IOException;
  *         table:table/table:table-column
  */
 public class TableColumnStyle implements StyleTag {
+	public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
+			.builder("co1").build();
+
 	public static TableColumnStyleBuilder builder(final String sName) {
 		return new TableColumnStyleBuilder(sName);
 	}
 
 	private final String sColumnWidth;
 	private final String sName;
+	private final TableCellStyle defaultCellStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -56,12 +60,14 @@ public class TableColumnStyle implements StyleTag {
 	 *            STYLE_TABLECELL
 	 * @param sStyleName
 	 *            A unique name for this style
+	 * @param defaultCellStyle 
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableColumnStyle(final String sStyleName, final String sColumnWidth) {
+	TableColumnStyle(final String sStyleName, final String sColumnWidth, TableCellStyle defaultCellStyle) {
 		this.sName = sStyleName;
 		this.sColumnWidth = sColumnWidth;
+		this.defaultCellStyle = defaultCellStyle;
 	}
 
 	public void addToFile(final OdsFile odsFile) {
@@ -69,10 +75,7 @@ public class TableColumnStyle implements StyleTag {
 	}
 
 	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @return The XML string for this object.
+	 * 17.16 <style:table-column-properties>
 	 */
 	@Override
 	public void appendXMLToContentEntry(final Util util,
@@ -84,27 +87,53 @@ public class TableColumnStyle implements StyleTag {
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:column-width",
 				this.sColumnWidth);
-		// util.appendAttribute(sbTemp, "table:default-cell-style-name",
-		// this.sDefaultCellStyle);
 		appendable.append("/></style:style>");
 	}
 
-	public void appendXMLToTable(final Util util, final Appendable appendable)
+	public void appendXMLToTable(final Util util, final Appendable appendable, final int nCount)
 			throws IOException {
-		// TODO : 9.1.12 <table:table-columns>
+		appendable.append("<table:table-column ");
+		util.appendAttribute(appendable, "table:style-name",
+				this.sName);
+		util.appendAttribute(appendable, "table:number-columns-repeated",
+				nCount);
+		util.appendAttribute(appendable, "table:default-cell-style-name",
+				this.defaultCellStyle.getName());
+		appendable.append("/>");
 	}
 
 	public String getColumnWidth() {
 		return this.sColumnWidth;
 	}
 
-	public String getDefaultCellStyle() {
-		return "Default"; // TODO : use a default cell style if nec.
+	public String getDefaultCellStyleName() {
+		return this.defaultCellStyle.getName();
 	}
 
 	@Override
 	public String getName() {
 		return this.sName;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.sName == null) ? 0 : this.sName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (obj instanceof TableColumnStyle) {
+			TableColumnStyle other = (TableColumnStyle) obj;
+			return this.sName.equals(other.sName);
+		} else
+			return false;
 	}
 
 }

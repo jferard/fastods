@@ -19,8 +19,6 @@
 */
 package com.github.jferard.fastods;
 
-import java.util.List;
-
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * 

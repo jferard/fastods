@@ -31,8 +31,13 @@ import java.io.IOException;
  *         WHERE ?
  *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page
+ *         
+ * @see 16.5 <style:page-layout>
+ * @see 16.9 <style:master-page>
  */
 public class PageStyle {
+	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
+
 	public static enum PaperFormat {
 		A3(PageStyle.A3_H, PageStyle.A3_W), A4(PageStyle.A3_W,
 				PageStyle.A4_W), A5(PageStyle.A4_W, PageStyle.A5_W), LEGAL(
@@ -159,7 +164,7 @@ public class PageStyle {
 		this.writingMode = writingMode;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
+	void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addPageStyle(this);
 	}
 
@@ -217,7 +222,7 @@ public class PageStyle {
 	public void appendXMLToMasterStyle(final Util util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
-		util.appendEAttribute(appendable, "style:name", "DefaultMasterPage");
+		util.appendEAttribute(appendable, "style:name", DEFAULT_MASTER_PAGE);
 		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
 		appendable.append("><style:header>");
 		this.getHeader().appendXMLToMasterStyle(util, appendable);

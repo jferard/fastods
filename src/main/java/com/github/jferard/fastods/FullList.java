@@ -32,11 +32,16 @@ import java.util.Spliterator;
  *
  *         This file FullList.java is part of FastODS.
  *
+ * The class FullList represents a List that is unlimited.
+ *
  */
-
 public class FullList<E> implements List<E> {
 	public static <E> List<E> newList() {
 		return new FullList<E>(null);
+	}
+	
+	public static <E> List<E> newList(E e) {
+		return new FullList<E>(e);
 	}
 
 	private final E blankElement;

@@ -66,8 +66,7 @@ class ContentEntry implements OdsEntry {
 		this.styleTagByName.put(styleTag.getName(), styleTag);
 	}
 
-	public Optional<Table> addTable(final String sName)
-			throws FastOdsException {
+	public Optional<Table> addTable(final String sName) {
 		Optional<Table> optTable = this.getTable(sName);
 		if (optTable.isPresent())
 			optTable = Optional.absent();
@@ -119,8 +118,7 @@ class ContentEntry implements OdsEntry {
 		return this.qPageStyles;
 	}*/
 
-	public Optional<Table> getTable(final String sName)
-			throws FastOdsException {
+	public Optional<Table> getTable(final String sName) {
 		return Util.findElementByName(this.qTables, sName);
 	}
 

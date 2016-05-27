@@ -33,6 +33,7 @@ package com.github.jferard.fastods;
  */
 class TableColumnStyleBuilder {
 	private String sColumnWidth;
+	private TableCellStyle defaultCellStyle;
 	private final String sName;
 
 	/**
@@ -51,10 +52,11 @@ class TableColumnStyleBuilder {
 	public TableColumnStyleBuilder(String sName) {
 		this.sName = sName;
 		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
+		this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
 	}
 
 	public TableColumnStyle build() {
-		return new TableColumnStyle(this.sName, this.sColumnWidth);
+		return new TableColumnStyle(this.sName, this.sColumnWidth, this.defaultCellStyle);
 
 	}
 
@@ -75,4 +77,10 @@ class TableColumnStyleBuilder {
 		this.sColumnWidth = sWidth;
 		return this;
 	}
+	
+	public TableColumnStyleBuilder defaultCellStyle(final TableCellStyle defaultCellStyle) {
+		this.defaultCellStyle = defaultCellStyle;
+		return this;
+	}
+	
 }

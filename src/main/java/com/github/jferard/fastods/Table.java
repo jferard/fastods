@@ -40,27 +40,12 @@ import com.github.jferard.fastods.TableCell.Type;
  *         table:table
  */
 public class Table implements NamedObject {
-	private static void appendColumnStyle(final Appendable appendable,
-			final Util util, final String sSytle,
-			final String sDefaultCellSytle, final int nCount)
-			throws IOException {
-		appendable.append("<table:table-column ");
-		util.appendAttribute(appendable, "table:style-name", sSytle);
-		util.appendAttribute(appendable, "table:number-columns-repeated",
-				nCount);
-		util.appendAttribute(appendable, "table:default-cell-style-name",
-				sDefaultCellSytle);
-		appendable.append("/>");
-	}
-
 	private final ConfigItem activeSplitRange;
 	private final ConfigItem cursorPositionX;
 
 	private final ConfigItem cursorPositionY;
 	private final ConfigItem horizontalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
-	private int nLastCol; // The highest column in the table TODO: Check if
-							// this can be removed
 	private final OdsFile odsFile;
 	private final ConfigItem pageViewZoomValue;
 	private final ConfigItem positionBottom;
@@ -70,7 +55,7 @@ public class Table implements NamedObject {
 	private final List<TableColumnStyle> qColumnStyles;
 	private final List<TableRow> qTableRows;
 	private String sName;
-	private String styleName;
+	private TableStyle style;
 
 	private final ConfigItem verticalSplitMode;
 	private final ConfigItem verticalSplitPosition;
@@ -81,10 +66,7 @@ public class Table implements NamedObject {
 	Table(final OdsFile odsFile, final String sName) {
 		this.odsFile = odsFile;
 		this.sName = sName;
-		this.styleName = "ta1";
-		this.nLastCol = 0; // The highest column in the table TODO: Check if
-							// this can be removed
-
+		this.style = TableStyle.DEFAULT_TABLE_STYLE;
 		this.cursorPositionX = new ConfigItem("CursorPositionX", "int", "0");
 		this.cursorPositionY = new ConfigItem("cursorPositionY", "int", "0");
 		this.horizontalSplitMode = new ConfigItem("horizontalSplitMode",
@@ -106,15 +88,17 @@ public class Table implements NamedObject {
 		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue", "int",
 				"60");
 
-		this.qColumnStyles = FullList.newList();
+		this.qColumnStyles = FullList
+				.newList(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE);
 		this.qTableRows = FullList.newList();
 	}
 
-	public void appendXMLToContentEntry(final Util util,
+	void appendXMLToContentEntry(final Util util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.sName);
-		util.appendAttribute(appendable, "table:style-name", this.styleName);
+		util.appendAttribute(appendable, "table:style-name",
+				this.style.getName());
 		util.appendAttribute(appendable, "table:print", false);
 		appendable.append("><office:forms");
 		util.appendAttribute(appendable, "form:automatic-focus", false);
@@ -125,7 +109,7 @@ public class Table implements NamedObject {
 		appendable.append("</table:table>");
 	}
 
-	public void appendXMLToSettingsEntry(final Util util,
+	void appendXMLToSettingsEntry(final Util util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.sName);
@@ -176,10 +160,6 @@ public class Table implements NamedObject {
 		return this.qColumnStyles;
 	}
 
-	public int getLastCol() {
-		return this.nLastCol;
-	}
-
 	public int getLastRow() {
 		return this.qTableRows.size() - 1;
 	}
@@ -194,7 +174,7 @@ public class Table implements NamedObject {
 	}
 
 	public TableRow getRow(final int nRow) throws FastOdsException {
-		this.checkRow(nRow);
+		Table.checkRow(nRow);
 
 		TableRow tr;
 		if (nRow >= this.qTableRows.size()) {
@@ -217,12 +197,12 @@ public class Table implements NamedObject {
 	 */
 	@Override
 	public String getStyleName() {
-		return this.styleName;
+		return this.style.getName();
 	}
 
 	public TableRow nextRow() throws FastOdsException {
 		final int nRow = this.qTableRows.size();
-		this.checkRow(nRow);
+		Table.checkRow(nRow);
 
 		final TableRow tr = new TableRow(this.odsFile, nRow);
 		this.qTableRows.add(tr);
@@ -248,12 +228,8 @@ public class Table implements NamedObject {
 	 */
 	public boolean setCell(final int nRow, final int nCol, final Type type,
 			final String value) throws FastOdsException {
-		this.checkRow(nRow);
-		this.checkCol(nCol);
-
-		if (nCol > this.nLastCol) {
-			this.nLastCol = nCol;
-		}
+		Table.checkRow(nRow);
+		Table.checkCol(nCol);
 		final TableRow tr = this.getRow(nRow);
 		tr.setCell(nCol, type, value);
 		return true;
@@ -302,11 +278,8 @@ public class Table implements NamedObject {
 	 */
 	public boolean setCellStyle(final int nRow, final int nCol,
 			final TableCellStyle ts) throws FastOdsException {
-
-		this.checkCol(nCol);
-		if (nCol > this.nLastCol) {
-			this.nLastCol = nCol;
-		}
+		Table.checkRow(nRow);
+		Table.checkCol(nCol);
 		final TableRow tr = this.getRow(nRow);
 		tr.setCellStyle(nCol, ts);
 		return true;
@@ -325,7 +298,7 @@ public class Table implements NamedObject {
 	 */
 	public void setColumnStyle(final int nCol, final TableColumnStyle ts)
 			throws FastOdsException {
-		this.checkCol(nCol);
+		Table.checkCol(nCol);
 		this.qColumnStyles.set(nCol, ts);
 	}
 
@@ -343,74 +316,35 @@ public class Table implements NamedObject {
 	 * Set a new TableFamilyStyle
 	 *
 	 * @param style
-	 *            The new TableStlye to be used
+	 *            The new TableStyle to be used
 	 */
-	public void setStyle(final String style) {
-		this.styleName = style;
+	public void setStyle(final TableStyle style) {
+		this.style = style;
 	}
 
 	private void appendColumnStyles(final Appendable appendable,
 			final Util util) throws IOException {
-		TableColumnStyle ts0 = null;
-		TableColumnStyle ts1 = null;
-		String sDefaultCellSytle0 = "Default";
-		String sDefaultCellSytle1 = "Default";
-
-		// Loop through all table column styles and write the informations
-		String sSytle0 = "co1";
-		String sSytle1 = "co1";
-
-		// If there is only one column style in column one, just write this
-		// info to OutputStream o
-		if (this.getColumnStyles().size() == 1) {
-			ts0 = this.getColumnStyles().get(0);
-			Table.appendColumnStyle(appendable, util, ts0.getName(),
-					ts0.getDefaultCellStyle(), 1);
-
-		}
-
-		// If there is more than one column with a style, loop through all
-		// styles and
-		// write the info to OutputStream o
-		if (this.getColumnStyles().size() > 1) {
-			int nCount = 1;
-
-			final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
-					.iterator();
+		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
+				.iterator();
+		if (!iterator.hasNext())
+			return;
+		
+		TableColumnStyle ts0 = TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE;
+		int nCount = 1;
+		TableColumnStyle ts1 = iterator.next();
+		while (iterator.hasNext()) {
+			ts0 = ts1;
 			ts1 = iterator.next();
-			while (iterator.hasNext()) {
-				ts0 = ts1;
-				ts1 = iterator.next();
 
-				if (ts0 == null) {
-					sSytle0 = "co1";
-					sDefaultCellSytle0 = "Default";
-				} else {
-					sSytle0 = ts0.getName();
-					sDefaultCellSytle0 = ts0.getDefaultCellStyle();
-				}
-				if (ts1 == null) {
-					sSytle1 = "co1";
-					sDefaultCellSytle1 = "Default";
-				} else {
-					sSytle1 = ts1.getName();
-					sDefaultCellSytle1 = ts1.getDefaultCellStyle();
-				}
-
-				if (sSytle0.equalsIgnoreCase(sSytle1)) {
-					nCount++;
-				} else {
-					Table.appendColumnStyle(appendable, util, sSytle0,
-							sDefaultCellSytle0, nCount);
-
-					nCount = 1;
-				}
-
+			if (ts0.equals(ts1)) {
+				nCount++;
+			} else {
+				ts0.appendXMLToTable(util, appendable, nCount);
+				nCount = 1;
 			}
-			Table.appendColumnStyle(appendable, util, sSytle1,
-					sDefaultCellSytle1, nCount);
 
 		}
+		ts1.appendXMLToTable(util, appendable, nCount);
 	}
 
 	private void appendRows(final Appendable appendable, final Util util)
@@ -420,16 +354,13 @@ public class Table implements NamedObject {
 			if (tr == null) {
 				appendable.append("<table:table-row");
 				util.appendEAttribute(appendable, "table:style-name", "ro1");
-				appendable.append("><table:table-cell");
-				util.appendAttribute(appendable,
-						"table:number-columns-repeated", this.nLastCol);
-				appendable.append("/></table:table-row>");
+				appendable.append("><table:table-cell/></table:table-row>");
 			} else
 				tr.appendXMLToTable(util, appendable);
 		}
 	}
 
-	private void checkCol(final int nCol) throws FastOdsException {
+	private static void checkCol(final int nCol) throws FastOdsException {
 		if (nCol < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative column number exception, column value:[")
@@ -437,7 +368,7 @@ public class Table implements NamedObject {
 		}
 	}
 
-	private void checkRow(final int nRow) throws FastOdsException {
+	private static void checkRow(final int nRow) throws FastOdsException {
 		if (nRow < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative row number exception, row value:[").append(nRow)

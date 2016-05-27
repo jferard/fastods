@@ -148,8 +148,7 @@ class TableCellStyleBuilder {
 	 *            The currency style to be used
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs)
-			throws FastOdsException {
+	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
 		this.sDataStyle = cs.getStyleName();
 		return this;
 	}
@@ -163,8 +162,7 @@ class TableCellStyleBuilder {
 	 *            The date style to be used
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder dataStyle(final DateStyle ds)
-			throws FastOdsException {
+	public TableCellStyleBuilder dataStyle(final DateStyle ds) {
 		this.sDataStyle = ds.getStyleName();
 		return this;
 	}
@@ -178,8 +176,7 @@ class TableCellStyleBuilder {
 	 *            The number style to be used
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder dataStyle(final NumberStyle ns)
-			throws FastOdsException {
+	public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
 		this.sDataStyle = ns.getStyleName();
 		return this;
 	}
