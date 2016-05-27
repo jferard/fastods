@@ -34,8 +34,8 @@ import java.io.IOException;
  *         content.xml/office:document-content/office:automatic-styles
  */
 public class TableStyle implements StyleTag {
-	public static TableStyleBuilder builder() {
-		return new TableStyleBuilder();
+	public static TableStyleBuilder builder(final String sName) {
+		return new TableStyleBuilder(sName);
 	}
 
 	private final String sName;

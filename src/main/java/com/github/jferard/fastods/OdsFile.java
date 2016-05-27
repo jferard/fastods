@@ -79,9 +79,9 @@ public class OdsFile {
 		this.metaEntry = new MetaEntry();
 
 		// Add four default stylesEntry to contentEntry
-		TableStyle.builder().name("ta1").build().addToFile(this);
-		TableRowStyle.builder().name("ro1").build().addToFile(this);
-		TableColumnStyle.builder().name("co1").build().addToFile(this);
+		TableStyle.builder("ta1").build().addToFile(this);
+		TableRowStyle.builder("ro1").build().addToFile(this);
+		TableColumnStyle.builder("co1").build().addToFile(this);
 		TableCellStyle.builder("Default").build().addToFile(this);
 		PageStyle.builder("Mpm1").build().addToFile(this);
 	}

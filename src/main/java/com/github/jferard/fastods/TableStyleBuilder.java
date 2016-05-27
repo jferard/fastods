@@ -29,20 +29,16 @@ package com.github.jferard.fastods;
  *         <br>
  */
 class TableStyleBuilder {
-	private String sName;
+	private final String sName;
 
 	/**
+	 * @param sName 
 	 */
-	TableStyleBuilder() {
+	TableStyleBuilder(String sName) {
+		this.sName = sName;
 	}
 
 	public TableStyle build() {
 		return new TableStyle(this.sName);
-
-	}
-
-	public TableStyleBuilder name(final String sName) {
-		this.sName = sName;
-		return this;
 	}
 }

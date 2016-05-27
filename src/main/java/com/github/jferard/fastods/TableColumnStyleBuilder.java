@@ -33,7 +33,7 @@ package com.github.jferard.fastods;
  */
 class TableColumnStyleBuilder {
 	private String sColumnWidth;
-	private String sName;
+	private final String sName;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -48,7 +48,8 @@ class TableColumnStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableColumnStyleBuilder() {
+	public TableColumnStyleBuilder(String sName) {
+		this.sName = sName;
 		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 	}
 
@@ -72,11 +73,6 @@ class TableColumnStyleBuilder {
 	 */
 	public TableColumnStyleBuilder columnWidth(final String sWidth) {
 		this.sColumnWidth = sWidth;
-		return this;
-	}
-
-	public TableColumnStyleBuilder name(final String sName) {
-		this.sName = sName;
 		return this;
 	}
 }

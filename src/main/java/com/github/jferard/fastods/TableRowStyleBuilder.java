@@ -32,12 +32,13 @@ package com.github.jferard.fastods;
  */
 class TableRowStyleBuilder {
 
-	private String sName;
+	private final String sName;
 	private String sRowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
+	 * @param sName 
 	 *
 	 * @param nFamily
 	 *            The type of this style, either
@@ -48,18 +49,14 @@ class TableRowStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableRowStyleBuilder() {
+	public TableRowStyleBuilder(String sName) {
+		this.sName = sName;
 		this.sRowHeight = "0.45cm";
 	}
 
 	public TableRowStyle build() {
 		return new TableRowStyle(this.sName, this.sRowHeight);
 
-	}
-
-	public TableRowStyleBuilder name(final String sName) {
-		this.sName = sName;
-		return this;
 	}
 
 	/**

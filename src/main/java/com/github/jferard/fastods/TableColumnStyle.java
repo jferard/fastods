@@ -39,8 +39,8 @@ import java.io.IOException;
  *         table:table/table:table-column
  */
 public class TableColumnStyle implements StyleTag {
-	public static TableRowStyleBuilder builder() {
-		return new TableRowStyleBuilder();
+	public static TableColumnStyleBuilder builder(final String sName) {
+		return new TableColumnStyleBuilder(sName);
 	}
 
 	private final String sColumnWidth;
