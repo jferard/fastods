@@ -94,7 +94,7 @@ public class TableCell {
 
 	public void appendXMLToTableRow(final Util util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<table:table-cell ");
+		appendable.append("<table:table-cell");
 		if (this.style != null) {
 			util.appendAttribute(appendable, "table:style-name", this.style.getName());
 		}

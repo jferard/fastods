@@ -22,7 +22,6 @@
 */
 package com.github.jferard.fastods;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -79,6 +78,8 @@ public class OdsFile {
 		this.manifestEntry = new ManifestEntry();
 		this.settingsEntry = new SettingsEntry();
 		this.metaEntry = new MetaEntry();
+		this.contentEntry = new ContentEntry(this);
+		this.stylesEntry = new StylesEntry(this);
 
 		// Add four default stylesEntry to contentEntry
 		TableStyle.DEFAULT_TABLE_STYLE.addToFile(this);
@@ -152,9 +153,6 @@ public class OdsFile {
 	 * @return The contentEntry object for this OdsFile
 	 */
 	public ContentEntry getContent() {
-		if (this.contentEntry == null) {
-			this.contentEntry = new ContentEntry(this);
-		}
 		return this.contentEntry;
 	}
 
@@ -185,9 +183,6 @@ public class OdsFile {
 	 * @return The stylesEntry object for this OdsFile
 	 */
 	public StylesEntry getStyles() {
-		if (this.stylesEntry == null) {
-			this.stylesEntry = new StylesEntry(this);
-		}
 		return this.stylesEntry;
 	}
 
@@ -291,19 +286,17 @@ public class OdsFile {
 	 */
 	public boolean save(final OutputStream output) {
 		this.settingsEntry.setTables(this.getContent().getTables());
-
+		final ZipOutputStream zipOut = new ZipOutputStream(output);
+		final Writer writer = this.util.wrapStream(zipOut);
+		
 		try {
-			final ZipOutputStream zipOut = new ZipOutputStream(output);
-			final Writer writer = this.util.wrapStream(zipOut);
 			this.mimetypeEntry.write(this.util, zipOut, writer);
 			this.manifestEntry.write(this.util, zipOut, writer);
 			this.metaEntry.write(this.util, zipOut, writer);
-			this.getStyles().write(this.util, zipOut, writer);
-			this.getContent().write(this.util, zipOut, writer);
-			this.createConfigurationsEntries(zipOut);
+			this.stylesEntry.write(this.util, zipOut, writer);
+			this.contentEntry.write(this.util, zipOut, writer);
 			this.settingsEntry.write(this.util, zipOut, writer);
-			zipOut.putNextEntry(new ZipEntry("Thumbnails/"));
-			zipOut.closeEntry();
+			this.createEmptyEntries(zipOut);
 
 			zipOut.close();
 		} catch (final IOException e) {
@@ -1203,10 +1196,10 @@ public class OdsFile {
 		this.stylesEntry = s;
 	}
 
-	private void createConfigurationsEntries(final ZipOutputStream o)
+	private void createEmptyEntries(final ZipOutputStream o)
 			throws IOException {
 		for (final String entry : new String[] {
-				"Configurations2/accelerator/current.xml",
+				"Thumbnails/", "Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
 				"Configurations2/menubar/", "Configurations2/popupmenu/",
 				"Configurations2/progressbar/", "Configurations2/statusbar/",

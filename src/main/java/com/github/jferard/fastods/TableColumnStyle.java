@@ -92,13 +92,15 @@ public class TableColumnStyle implements StyleTag {
 
 	public void appendXMLToTable(final Util util, final Appendable appendable, final int nCount)
 			throws IOException {
-		appendable.append("<table:table-column ");
+		appendable.append("<table:table-column");
 		util.appendAttribute(appendable, "table:style-name",
 				this.sName);
-		util.appendAttribute(appendable, "table:number-columns-repeated",
-				nCount);
-		util.appendAttribute(appendable, "table:default-cell-style-name",
-				this.defaultCellStyle.getName());
+		if (nCount > 1)
+			util.appendAttribute(appendable, "table:number-columns-repeated",
+					nCount);
+		if (this.defaultCellStyle != null)
+			util.appendAttribute(appendable, "table:default-cell-style-name",
+					this.defaultCellStyle.getName());
 		appendable.append("/>");
 	}
 

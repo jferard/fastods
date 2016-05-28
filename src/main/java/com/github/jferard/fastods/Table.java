@@ -104,7 +104,7 @@ public class Table implements NamedObject {
 		util.appendAttribute(appendable, "form:automatic-focus", false);
 		util.appendAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
-		this.appendColumnStyles(appendable, util);
+//		this.appendColumnStyles(appendable, util);
 		this.appendRows(appendable, util);
 		appendable.append("</table:table>");
 	}
@@ -345,6 +345,7 @@ public class Table implements NamedObject {
 
 		}
 		ts1.appendXMLToTable(util, appendable, nCount);
+		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.appendXMLToTable(util, appendable, 1);
 	}
 
 	private void appendRows(final Appendable appendable, final Util util)

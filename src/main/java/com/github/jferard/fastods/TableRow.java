@@ -38,6 +38,7 @@ public class TableRow {
 	private final OdsFile odsFile;
 	private final List<TableCell> qTableCells;
 	private TableRowStyle rowStyle;
+	private TableCellStyle defaultCellStyle;
 
 	TableRow(final OdsFile odsFile, final int nRow) {
 		this.nRow = nRow;
@@ -55,8 +56,11 @@ public class TableRow {
 	public void appendXMLToTable(final Util util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<table:table-row");
-		util.appendAttribute(appendable, "table:style-name",
-				this.rowStyle.getName());
+		if (this.rowStyle != null)
+			util.appendAttribute(appendable, "table:style-name",
+					this.rowStyle.getName());
+		util.appendAttribute(appendable, "table:default-cell-style-name",
+				this.defaultCellStyle.getName());
 		appendable.append(">");
 
 		int nNullFieldCounter = 0;
@@ -66,14 +70,17 @@ public class TableRow {
 			} else {
 				if (nNullFieldCounter > 0) {
 					appendable.append("<table:table-cell");
-					util.appendAttribute(appendable,
-							"table:number-columns-repeated", nNullFieldCounter);
+					if (nNullFieldCounter > 1)
+						util.appendAttribute(appendable,
+								"table:number-columns-repeated",
+								nNullFieldCounter);
 					appendable.append("/>");
 					nNullFieldCounter = 0;
 				}
 				tc.appendXMLToTableRow(util, appendable);
 			}
 		}
+
 		appendable.append("</table:table-row>");
 	}
 
@@ -164,6 +171,18 @@ public class TableRow {
 			this.qTableCells.set(nCol, tc);
 		}
 		tc.setStyle(ts);
+	}
+
+	/**
+	 * Set the cell rowStyle for the cell at nCol to ts.
+	 *
+	 * @param nCol
+	 *            The column number
+	 * @param ts
+	 *            The table rowStyle to be used
+	 */
+	public void setDefaultCellStyle(final TableCellStyle ts) {
+		this.defaultCellStyle = ts;
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {

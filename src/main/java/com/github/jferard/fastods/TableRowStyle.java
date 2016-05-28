@@ -78,7 +78,8 @@ public class TableRowStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendAttribute(appendable, "style:family", "table-row");
 		appendable.append("><style:table-row-properties");
-		util.appendAttribute(appendable, "row-height", this.sRowHeight);
+		if (this.sRowHeight != null)
+			util.appendAttribute(appendable, "style:row-height", this.sRowHeight);
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:use-optimal-row-height",
 				"true");

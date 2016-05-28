@@ -45,25 +45,50 @@ public class OdsFileTest {
 		Assert.assertTrue(optTable.isPresent());
 
 		Table table = optTable.get();
+		TableRow row = table.getRow(0);
+		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
+				.build();
+		trs.addToFile(file);
+		TableCellStyle tcls = TableCellStyle.builder("cc")
+				.backgroundColor("#dddddd").fontWeightBold().build();
+		tcls.addToFile(file);
+		row.setStyle(trs);
+		row.setDefaultCellStyle(tcls);
+		TableCellStyle tcls2 = TableCellStyle.builder("dd").fontColor("#ff0000")
+				.build();
+		tcls2.addToFile(file);
+		TableColumnStyle tcns = TableColumnStyle.builder("ccs")
+				.columnWidth("10cm").defaultCellStyle(tcls).build();
+		tcns.addToFile(file);
+		table.setColumnStyle(0, tcns);
+
 		for (int y = 0; y < 50; y++) {
-			final TableRow row = table.nextRow();
+			row = table.getRow(y);
 			for (int x = 0; x < 5; x++) {
 				row.setCell(x, String.valueOf(random.nextInt(1000)));
-				switch (x) {
-				case 1:
-					row.setCellStyle(x, TableCellStyle.builder("tcs1")
-							.backgroundColor("#00FF00").build());
-					break;
-				case 2:
-					row.setCellStyle(x, TableCellStyle.builder("tcs2")
-							.fontWeightBold().build());
-					break;
-				case 3:
-					row.setCellStyle(x, TableCellStyle.builder("tcs3")
-							.fontStyleItalic().build());
-					break;
-				default:
-					break;
+				if ((y + 1) % 3 == 0) {
+					switch (x) {
+					case 0:
+						row.setCellStyle(x, TableCellStyle.builder("tcs0")
+								.backgroundColor("#0000ff").build());
+						break;
+					case 1:
+						row.setCellStyle(x, TableCellStyle.builder("tcs1")
+								.backgroundColor("#00FF00").build());
+						break;
+					case 2:
+						row.setCellStyle(x, TableCellStyle.builder("tcs2")
+								.fontWeightBold().build());
+						break;
+					case 3:
+						row.setCellStyle(x, TableCellStyle.builder("tcs3")
+								.fontStyleItalic().build());
+						break;
+					default:
+						break;
+					}
+				} else if (y == 12 && x == 3) {
+					row.setCellStyle(x, tcls);
 				}
 			}
 		}
@@ -73,7 +98,7 @@ public class OdsFileTest {
 		System.out.println("Filled in " + (t2 - t1) + " ms");
 	}
 
-//	@Test
+	// @Test
 	public final void test100000() throws FastOdsException {
 		System.out.println("Filling a 100000 rows, 20 columns spreadsheet");
 		long t1 = System.currentTimeMillis();
@@ -97,7 +122,7 @@ public class OdsFileTest {
 		System.out.println("Filled in " + (t2 - t1) + " ms");
 	}
 
-//	@Test
+	// @Test
 	public final void test1000() throws FastOdsException {
 		System.out.println("Filling a 10000 rows, 300 columns spreadsheet");
 		long t1 = System.currentTimeMillis();
