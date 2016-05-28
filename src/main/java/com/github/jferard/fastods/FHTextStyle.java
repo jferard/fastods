@@ -54,15 +54,15 @@ public class FHTextStyle implements NamedObject {
 		return new FHTextStyleBuilder(sName);
 	}
 
-	private final Underline nFontUnderlineStyle;
-	private final String sFontColor;
-	private final String sFontName;
-	private final String sFontSize;
+	private final /*@Nullable*/ Underline nFontUnderlineStyle;
+	private final /*@Nullable*/ String sFontColor;
+	private final /*@Nullable*/ String sFontName;
+	private final /*@Nullable*/ String sFontSize;
 
-	private final String sFontStyle;
+	private final /*@Nullable*/ String sFontStyle;
 
-	private final String sFontUnderlineColor;
-	private final String sFontWeight;
+	private final /*@Nullable*/ String sFontUnderlineColor;
+	private final /*@Nullable*/ String sFontWeight;
 
 	private final String sName;
 
@@ -94,24 +94,29 @@ public class FHTextStyle implements NamedObject {
 		odsFile.getStyles().addTextStyle(this);
 	}
 
-	public void appendXMLToObject(final Util util, final Appendable appendable)
+	public void appendXMLToStylesEntry(final Util util, final Appendable appendable)
 			throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
-		if (this.sName.length() > 0) {
-			appendable.append("<style:style ");
-			util.appendAttribute(appendable, "style:name", this.sName);
-			util.appendEAttribute(appendable, "style:family", "text");
-			appendable.append(">");
-		}
+		appendable.append("<style:style ");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendEAttribute(appendable, "style:family", "text");
+		appendable.append(">");
 
 		// First check if any text properties should be added
 
-		appendable.append("<style:text-properties ");
+		appendXMLToContentEntry(util, appendable);
+
+		appendable.append("</style:style>");
+	}
+
+	public void appendXMLToContentEntry(final Util util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<style:text-properties");
 		// Check if the font weight should be added
-		if (this.sFontWeight.length() > 0) {
+		if (this.sFontWeight != null) {
 			util.appendAttribute(appendable, "fo:font-weight",
 					this.sFontWeight);
 			util.appendAttribute(appendable, "style:font-weight-asian",
@@ -119,26 +124,25 @@ public class FHTextStyle implements NamedObject {
 			util.appendAttribute(appendable, "style:font-weight-complex",
 					this.sFontWeight);
 		}
-		
-		if (this.sFontStyle.length() > 0) {
-			util.appendAttribute(appendable, "fo:font-style",
-					this.sFontStyle);
+
+		if (this.sFontStyle != null) {
+			util.appendAttribute(appendable, "fo:font-style", this.sFontStyle);
 			util.appendAttribute(appendable, "style:font-style-asian",
 					this.sFontStyle);
 			util.appendAttribute(appendable, "style:font-style-complex",
 					this.sFontStyle);
 		}
-		
+
 		// Check if a font color should be added
-		if (this.sFontColor.length() > 0) {
+		if (this.sFontColor != null) {
 			util.appendAttribute(appendable, "fo:color", this.sFontColor);
 		}
 		// Check if a font name should be added
-		if (this.sFontName.length() > 0) {
+		if (this.sFontName != null) {
 			util.appendAttribute(appendable, "style:font-name", this.sFontName);
 		}
 		// Check if a font size should be added
-		if (this.sFontSize.length() > 0) {
+		if (this.sFontSize != null) {
 			util.appendAttribute(appendable, "fo:font-size", this.sFontSize);
 			util.appendAttribute(appendable, "style:font-size-asian",
 					this.sFontSize);
@@ -153,10 +157,11 @@ public class FHTextStyle implements NamedObject {
 					"auto");
 
 			// ---------------------------------------------------------------------------------
-			// If any underline color was set, add the color, otherwise use the
+			// If any underline color was set, add the color, otherwise use
+			// the
 			// font color
 			// ---------------------------------------------------------------------------------
-			if (this.getFontUnderlineColor().length() > 0) {
+			if (this.sFontUnderlineColor != null) {
 				util.appendAttribute(appendable, "style:text-underline-color",
 						this.sFontUnderlineColor);
 			} else {
@@ -164,16 +169,7 @@ public class FHTextStyle implements NamedObject {
 						"font-color");
 			}
 		}
-
 		appendable.append("/>");
-
-		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableFamilyStyle.
-		// Do not add the style:style
-		// -------------------------------------------------------------
-		if (this.sName.length() > 0) {
-			appendable.append("</style:style>");
-		}
 	}
 
 	/**
@@ -229,4 +225,11 @@ public class FHTextStyle implements NamedObject {
 		return this.sName;
 	}
 
+	public boolean isNotEmpty() {
+		return this.sName != null && this.sName.length() > 0
+				&& (this.nFontUnderlineStyle != null || this.sFontColor != null
+						|| this.sFontSize != null || this.sFontStyle != null
+						|| this.sFontUnderlineColor != null
+						|| this.sFontWeight != null);
+	}
 }

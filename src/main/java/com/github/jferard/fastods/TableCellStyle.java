@@ -151,10 +151,8 @@ public class TableCellStyle implements StyleTag {
 		// ----------------------------------------------------
 		// First check if any text properties should be added
 		// ----------------------------------------------------
-		if (this.textStyle.getFontWeight().length() > 0
-				|| this.textStyle.getFontSize().length() > 0
-				|| this.textStyle.getFontColor().length() > 0) {
-			this.textStyle.appendXMLToObject(util, appendable);
+		if (this.textStyle != null && this.textStyle.isNotEmpty()) {
+			this.textStyle.appendXMLToContentEntry(util, appendable);
 		}
 
 		appendable.append("<style:paragraph-properties");

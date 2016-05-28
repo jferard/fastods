@@ -69,7 +69,7 @@ class TableCellStyleBuilder {
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
-		this.tsBuilder = new FHTextStyleBuilder(sName);
+		this.tsBuilder = new FHTextStyleBuilder("fh"+sName);
 		this.sDefaultCellStyle = "Default";
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);

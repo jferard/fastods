@@ -22,6 +22,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -291,7 +292,7 @@ public class OdsFile {
 		this.settingsEntry.setTables(this.getContent().getTables());
 
 		try {
-			final ZipOutputStream out = new ZipOutputStream(output);
+			final ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(output, 64*1024));
 			this.mimetypeEntry.write(this.util, out);
 			this.manifestEntry.write(this.util, out);
 			this.metaEntry.write(this.util, out);

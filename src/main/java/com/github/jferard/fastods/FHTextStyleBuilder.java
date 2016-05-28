@@ -58,14 +58,6 @@ class FHTextStyleBuilder {
 			throw new IllegalArgumentException();
 
 		this.sName = sName;
-		this.sFontColor = "";
-		this.sFontName = "";
-		this.sFontWeight = "";
-		this.sFontStyle = "";
-		this.sFontSize = ""; // text property
-		this.sFontUnderlineColor = "";
-
-		this.nFontUnderlineStyle = FHTextStyle.Underline.NONE;
 	}
 
 	public FHTextStyle build() {
