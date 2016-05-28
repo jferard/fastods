@@ -47,6 +47,8 @@ public class TextStyle implements NamedObject {
 		}
 	}
 
+	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle.builder("Default").build();
+
 	public static TextStyleBuilder builder(String sName) {
 		return new TextStyleBuilder(sName);
 	}
@@ -99,7 +101,7 @@ public class TextStyle implements NamedObject {
 		odsFile.getStyles().addTextStyle(this);
 	}
 
-	public void appendXMLToObject(final Util util, final Appendable appendable)
+	public void appendXMLToStylesEntry(final Util util, final Appendable appendable)
 			throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
@@ -166,7 +168,7 @@ public class TextStyle implements NamedObject {
 		// The name maybe empty if this style is part of TableFamilyStyle.
 		// Do not add the style:style
 		// -------------------------------------------------------------
-		if (this.getStyleName().length() > 0) {
+		if (this.sName.length() > 0) {
 			appendable.append("</style:style>");
 		}
 	}
@@ -220,7 +222,7 @@ public class TextStyle implements NamedObject {
 	 * @return The text style name
 	 */
 	@Override
-	public String getStyleName() {
+	public String getName() {
 		return this.sName;
 	}
 

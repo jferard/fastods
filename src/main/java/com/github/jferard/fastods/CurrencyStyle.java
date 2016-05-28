@@ -33,7 +33,7 @@ import java.io.IOException;
  *         currency-style
  *         styles.xml/office:document-styles/office:styles/number:currency-style
  */
-public class CurrencyStyle implements NamedObject {
+public class CurrencyStyle implements DataStyle {
 	// public final static int NUMBER_CURRENCY = 1;
 	public static enum SymbolPosition {
 		BEGIN, END;
@@ -57,11 +57,6 @@ public class CurrencyStyle implements NamedObject {
 	private final String sName;
 	private final String sNegativeValueColor;
 
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private String xml;
-
 	protected CurrencyStyle(final String sName, final String sCurrencySymbol,
 			final String sNegativeValueColor, final String sLanguage,
 			final String sCountry, final int nDecimalPlaces,
@@ -81,6 +76,7 @@ public class CurrencyStyle implements NamedObject {
 		this.currencyPosition = currencyPosition;
 	}
 
+	@Override
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addCurrencyStyle(this);
 	}
@@ -91,6 +87,7 @@ public class CurrencyStyle implements NamedObject {
 	 *
 	 * @return The XML string for this object.
 	 */
+	@Override
 	public void appendXMLToStylesEntry(final Util util,
 			final Appendable appendable) throws IOException {
 		final StringBuilder currency = this.currencyToXML(util);
@@ -175,7 +172,7 @@ public class CurrencyStyle implements NamedObject {
 	 * @return The currency style name
 	 */
 	@Override
-	public String getStyleName() {
+	public String getName() {
 		return this.sName;
 	}
 

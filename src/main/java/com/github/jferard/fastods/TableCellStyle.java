@@ -72,7 +72,7 @@ public class TableCellStyle implements StyleTag {
 	private final Align nTextAlign; // 'center','end','start','justify'
 	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
 	private final String sBackgroundColor;
-	private final String sDataStyle;
+	private final DataStyle dataStyle;
 	// true
 	private final String sDefaultCellStyle;
 	private final String sName;
@@ -92,13 +92,13 @@ public class TableCellStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableCellStyle(final String sName, final String sDataStyle,
+	TableCellStyle(final String sName, final DataStyle dataStyle,
 			final String sBackgroundColor, final TextStyle ts,
 			final Align nTextAlign, final VerticalAlign nVerticalAlign,
 			final boolean bWrap, final String sDefaultCellStyle,
 			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
 		this.sName = sName;
-		this.sDataStyle = sDataStyle;
+		this.dataStyle = dataStyle;
 		this.sBackgroundColor = sBackgroundColor;
 		this.textStyle = ts;
 		this.nTextAlign = nTextAlign;
@@ -126,9 +126,9 @@ public class TableCellStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
 		util.appendEAttribute(appendable, "style:parent-style-name", "Default");
-		if (this.sDataStyle.length() > 0)
+		if (this.dataStyle != null)
 			util.appendAttribute(appendable, "style:data-style-name",
-					this.sDataStyle);
+					this.dataStyle.getName());
 
 		appendable.append("><style:table-cell-properties");
 		util.appendAttribute(appendable, "fo:background-color",
@@ -154,7 +154,7 @@ public class TableCellStyle implements StyleTag {
 		if (this.textStyle.getFontWeight().length() > 0
 				|| this.textStyle.getFontSize().length() > 0
 				|| this.textStyle.getFontColor().length() > 0) {
-			this.textStyle.appendXMLToObject(util, appendable);
+			this.textStyle.appendXMLToStylesEntry(util, appendable);
 		}
 
 		appendable.append("<style:paragraph-properties");

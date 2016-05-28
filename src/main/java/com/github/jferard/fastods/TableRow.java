@@ -37,12 +37,12 @@ public class TableRow {
 	private final int nRow;
 	private final OdsFile odsFile;
 	private final List<TableCell> qTableCells;
-	private String styleName;
+	private TableRowStyle rowStyle;
 
 	TableRow(final OdsFile odsFile, final int nRow) {
 		this.nRow = nRow;
 		this.odsFile = odsFile;
-		this.styleName = "ro1";
+		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
 		this.qTableCells = FullList.newList();
 	}
 
@@ -55,8 +55,8 @@ public class TableRow {
 	public void appendXMLToTable(final Util util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<table:table-row");
-		util.appendAttribute(appendable, "table:styleName-name",
-				this.styleName);
+		util.appendAttribute(appendable, "table:style-name",
+				this.rowStyle.getName());
 		appendable.append(">");
 
 		int nNullFieldCounter = 0;
@@ -95,8 +95,8 @@ public class TableRow {
 		return tc;
 	}
 
-	public String getStyleName() {
-		return this.styleName;
+	public String getRowStyleName() {
+		return this.rowStyle.getName();
 	}
 
 	/**
@@ -148,12 +148,12 @@ public class TableRow {
 	}
 
 	/**
-	 * Set the cell styleName for the cell at nCol to ts.
+	 * Set the cell rowStyle for the cell at nCol to ts.
 	 *
 	 * @param nCol
 	 *            The column number
 	 * @param ts
-	 *            The table styleName to be used
+	 *            The table rowStyle to be used
 	 */
 	public void setCellStyle(final int nCol, final TableCellStyle ts) {
 		TableCell tc = this.qTableCells.get(nCol);
@@ -166,14 +166,14 @@ public class TableRow {
 		tc.setStyle(ts);
 	}
 
-	public void setStyle(final String s) {
-		this.styleName = s;
+	public void setStyle(final TableRowStyle rowStyle) {
+		this.rowStyle = rowStyle;
 	}
 
 	/**
 	 * @return The List with all TableCell objects
 	 */
-	private List<TableCell> getCells() {
+	public List<TableCell> getCells() {
 		return this.qTableCells;
 	}
 

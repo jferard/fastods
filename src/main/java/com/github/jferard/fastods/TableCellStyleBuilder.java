@@ -40,7 +40,7 @@ class TableCellStyleBuilder {
 	private TableCellStyle.Align nTextAlign; // 'center','end','start','justify'
 	private TableCellStyle.VerticalAlign nVerticalAlign; // 'middle', 'bottom',
 	private String sBackgroundColor;
-	private String sDataStyle;
+	private DataStyle dataStyle;
 	// true
 	private final String sDefaultCellStyle;
 	private final String sName;
@@ -69,7 +69,6 @@ class TableCellStyleBuilder {
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
-		this.sDataStyle = "";
 		this.tsBuilder = new TextStyleBuilder(sName);
 		this.sDefaultCellStyle = "Default";
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
@@ -132,7 +131,7 @@ class TableCellStyleBuilder {
 		if (this.sName == null)
 			throw new IllegalStateException();
 
-		return new TableCellStyle(this.sName, this.sDataStyle,
+		return new TableCellStyle(this.sName, this.dataStyle,
 				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
 				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
 				this.borderByPosition);
@@ -149,7 +148,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
-		this.sDataStyle = cs.getStyleName();
+		this.dataStyle = cs;
 		return this;
 	}
 
@@ -163,7 +162,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder dataStyle(final DateStyle ds) {
-		this.sDataStyle = ds.getStyleName();
+		this.dataStyle = ds;
 		return this;
 	}
 
@@ -177,7 +176,7 @@ class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
-		this.sDataStyle = ns.getStyleName();
+		this.dataStyle = ns;
 		return this;
 	}
 

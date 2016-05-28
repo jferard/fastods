@@ -37,7 +37,7 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class NumberStyle implements NamedObject {
+public class NumberStyle implements DataStyle {
 	public static enum Type {
 		FRACTION, NORMAL, PERCENTAGE, SCIENTIFIC;
 	}
@@ -100,6 +100,7 @@ public class NumberStyle implements NamedObject {
 		this.bNegativeValuesRed = bNegativeValuesRed;
 	}
 
+	@Override
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addNumberStyle(this);
 	}
@@ -110,6 +111,7 @@ public class NumberStyle implements NamedObject {
 	 *
 	 * @param util
 	 */
+	@Override
 	public void appendXMLToStylesEntry(final Util util,
 			final Appendable appendable) throws IOException {
 		if (this.numberType == Type.PERCENTAGE) {
@@ -255,7 +257,7 @@ public class NumberStyle implements NamedObject {
 	 * @return The name of this style.
 	 */
 	@Override
-	public String getStyleName() {
+	public String getName() {
 		return this.sName;
 	}
 

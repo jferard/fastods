@@ -80,7 +80,7 @@ public class OdsFile {
 
 		// Add four default stylesEntry to contentEntry
 		TableStyle.DEFAULT_TABLE_STYLE.addToFile(this);
-		TableRowStyle.builder("ro1").build().addToFile(this);
+		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToFile(this);
 		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToFile(this);
 		TableCellStyle.DEFAULT_CELL_STYLE.addToFile(this);
 		PageStyle.builder("Mpm1").build().addToFile(this);

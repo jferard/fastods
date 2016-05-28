@@ -50,10 +50,6 @@ public class StylesEntry implements OdsEntry {
 		appendable.append("/></style:style>");
 	}
 
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private final OdsFile o;
 	private final Map<String, CurrencyStyle> qCurrencyStyles;
 	private final Map<String, DateStyle> qDateStyles;
 	private final Map<String, NumberStyle> qNumberStyles;
@@ -67,7 +63,6 @@ public class StylesEntry implements OdsEntry {
 	 *            - The OdsFile where the styles belong to
 	 */
 	public StylesEntry(final OdsFile odsFile) {
-		this.o = odsFile;
 		this.qNumberStyles = new HashMap<String, NumberStyle>();
 		this.qCurrencyStyles = new HashMap<String, CurrencyStyle>();
 		this.qPageStyles = new HashMap<String, PageStyle>();
@@ -83,7 +78,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The currency style to be added.
 	 */
 	public void addCurrencyStyle(final CurrencyStyle cs) {
-		this.qCurrencyStyles.put(cs.getStyleName(), cs);
+		this.qCurrencyStyles.put(cs.getName(), cs);
 	}
 
 	/**
@@ -94,7 +89,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The date style to be added.
 	 */
 	public void addDateStyle(final DateStyle ds) {
-		this.qDateStyles.put(ds.getStyleName(), ds);
+		this.qDateStyles.put(ds.getName(), ds);
 	}
 
 	/**
@@ -105,7 +100,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The number style to be added.
 	 */
 	public void addNumberStyle(final NumberStyle ns) {
-		this.qNumberStyles.put(ns.getStyleName(), ns);
+		this.qNumberStyles.put(ns.getName(), ns);
 	}
 
 	public void addPageStyle(final PageStyle ps) {
@@ -113,7 +108,7 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	public void addTextStyle(final TextStyle ts) {
-		this.qTextStyles.put(ts.getStyleName(), ts);
+		this.qTextStyles.put(ts.getName(), ts);
 	}
 
 	@Override
@@ -178,7 +173,7 @@ public class StylesEntry implements OdsEntry {
 			ps.appendXMLToAutomaticStyle(util, writer);
 
 		for (final TextStyle ts : this.qTextStyles.values())
-			ts.appendXMLToObject(util, writer);
+			ts.appendXMLToStylesEntry(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");

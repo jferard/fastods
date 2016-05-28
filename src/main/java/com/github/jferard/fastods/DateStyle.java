@@ -33,7 +33,7 @@ import java.io.IOException;
  *         date-style
  *         styles.xml/office:document-styles/office:styles/number:date-style
  */
-public class DateStyle implements NamedObject {
+public class DateStyle implements DataStyle {
 
 	public static enum Format {
 		/**
@@ -124,6 +124,7 @@ public class DateStyle implements NamedObject {
 	 * @param odsFile
 	 *            The OdsFile to which this style belongs to.
 	 */
+	@Override
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.getStyles().addDateStyle(this);
 	}
@@ -133,6 +134,7 @@ public class DateStyle implements NamedObject {
 	 * This is used while writing the ODS file.
 	 *
 	 */
+	@Override
 	public void appendXMLToStylesEntry(final Util util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:date-style");
@@ -183,7 +185,7 @@ public class DateStyle implements NamedObject {
 	 * @return The name of this style.
 	 */
 	@Override
-	public String getStyleName() {
+	public String getName() {
 		return this.sName;
 	}
 

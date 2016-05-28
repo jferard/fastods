@@ -36,11 +36,9 @@ import java.io.IOException;
  */
 public class StyledText {
 
-	private String sText = null;
-
-	private TextStyle ts = null;
-	private final Util u = Util.getInstance();
-
+	private final String sText;
+	private final TextStyle ts;
+	
 	public StyledText(final TextStyle t, final String s) {
 		this.ts = t;
 		this.sText = s;
@@ -54,7 +52,7 @@ public class StyledText {
 	public void appendXMLToFooterHeader(final Util util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<text:span");
-		util.appendEAttribute(appendable, "text:style-name", this.ts.getStyleName());
+		util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
 		appendable.append(">").append(this.sText)
 				.append("</text:span>");
 	}
@@ -66,13 +64,4 @@ public class StyledText {
 	public TextStyle getTextStyle() {
 		return this.ts;
 	}
-
-	public void setText(final String sText) {
-		this.sText = sText;
-	}
-
-	public void setTextStyle(final TextStyle t) {
-		this.ts = t;
-	}
-
 }

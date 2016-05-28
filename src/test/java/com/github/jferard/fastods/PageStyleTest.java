@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class PageStyleTest {
 	@Test(expected = IllegalStateException.class)
-	public final void testEmpty() throws IOException {
+	public final void testEmpty() {
 		PageStyle pageStyle = PageStyle.builder(null).build();
 	}
 
