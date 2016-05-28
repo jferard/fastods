@@ -60,7 +60,7 @@ public class OdsFileTest {
 					break;
 				case 3:
 					row.setCellStyle(x, TableCellStyle.builder("tcs3")
-							.fontWeightItalic().build());
+							.fontStyleItalic().build());
 					break;
 				default:
 					break;

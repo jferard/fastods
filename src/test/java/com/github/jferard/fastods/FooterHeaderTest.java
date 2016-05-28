@@ -47,7 +47,7 @@ public class FooterHeaderTest {
 	@Test
 	public final void testSimpleFooterToAutomaticStyle() throws IOException {
 		FooterHeader header = FooterHeader.simpleHeader(
-				TextStyle.builder("style").fontWeightItalic().build(), "text");
+				TextStyle.builder("style").fontStyleItalic().build(), "text");
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToAutomaticStyle(Util.getInstance(), sb);
 		Assert.assertEquals("<style:header-style>"
@@ -58,7 +58,7 @@ public class FooterHeaderTest {
 	@Test
 	public final void testSimpleFooterToMasterStyle() throws IOException {
 		FooterHeader header = FooterHeader.simpleHeader(
-				TextStyle.builder("style").fontWeightItalic().build(), "text");
+				TextStyle.builder("style").fontStyleItalic().build(), "text");
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(Util.getInstance(), sb);
 		Assert.assertEquals(

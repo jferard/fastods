@@ -47,7 +47,8 @@ public class TextStyle implements NamedObject {
 		}
 	}
 
-	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle.builder("Default").build();
+	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle
+			.builder("Default").build();
 
 	public static TextStyleBuilder builder(String sName) {
 		return new TextStyleBuilder(sName);
@@ -58,14 +59,10 @@ public class TextStyle implements NamedObject {
 	private final String sFontName;
 	private final String sFontSize;
 
-	private final String sFontSizeAsian;
-
-	private final String sFontSizeComplex;
+	private final String sFontStyle;
 
 	private final String sFontUnderlineColor;
 	private final String sFontWeight;
-	private final String sFontWeightAsian;
-	private final String sFontWeightComplex;
 
 	private final String sName;
 
@@ -80,19 +77,15 @@ public class TextStyle implements NamedObject {
 	 */
 	TextStyle(final String sName, final String sFontColor,
 			final String sFontName, final String sFontWeight,
-			final String sFontWeightAsian, final String sFontWeightComplex,
-			final String sFontSize, final String sFontSizeAsian,
-			final String sFontSizeComplex, final String sFontUnderlineColor,
+			final String sFontStyle, final String sFontSize,
+			final String sFontUnderlineColor,
 			final Underline nFontUnderlineStyle) {
 		this.sName = sName;
 		this.sFontColor = sFontColor;
 		this.sFontName = sFontName;
 		this.sFontWeight = sFontWeight;
-		this.sFontWeightAsian = sFontWeightAsian;
-		this.sFontWeightComplex = sFontWeightComplex;
+		this.sFontStyle = sFontStyle;
 		this.sFontSize = sFontSize;
-		this.sFontSizeAsian = sFontSizeAsian;
-		this.sFontSizeComplex = sFontSizeComplex;
 		this.sFontUnderlineColor = sFontUnderlineColor;
 		this.nFontUnderlineStyle = nFontUnderlineStyle;
 	}
@@ -101,7 +94,7 @@ public class TextStyle implements NamedObject {
 		odsFile.getStyles().addTextStyle(this);
 	}
 
-	public void appendXMLToStylesEntry(final Util util, final Appendable appendable)
+	public void appendXMLToObject(final Util util, final Appendable appendable)
 			throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
@@ -122,10 +115,20 @@ public class TextStyle implements NamedObject {
 			util.appendAttribute(appendable, "fo:font-weight",
 					this.sFontWeight);
 			util.appendAttribute(appendable, "style:font-weight-asian",
-					this.sFontWeightAsian);
+					this.sFontWeight);
 			util.appendAttribute(appendable, "style:font-weight-complex",
-					this.sFontWeightComplex);
+					this.sFontWeight);
 		}
+		
+		if (this.sFontStyle.length() > 0) {
+			util.appendAttribute(appendable, "fo:font-style",
+					this.sFontStyle);
+			util.appendAttribute(appendable, "style:font-style-asian",
+					this.sFontStyle);
+			util.appendAttribute(appendable, "style:font-style-complex",
+					this.sFontStyle);
+		}
+		
 		// Check if a font color should be added
 		if (this.sFontColor.length() > 0) {
 			util.appendAttribute(appendable, "fo:color", this.sFontColor);
@@ -138,9 +141,9 @@ public class TextStyle implements NamedObject {
 		if (this.sFontSize.length() > 0) {
 			util.appendAttribute(appendable, "fo:font-size", this.sFontSize);
 			util.appendAttribute(appendable, "style:font-size-asian",
-					this.sFontSizeAsian);
+					this.sFontSize);
 			util.appendAttribute(appendable, "style:font-size-complex",
-					this.sFontSizeComplex);
+					this.sFontSize);
 		}
 
 		if (this.nFontUnderlineStyle != null) {

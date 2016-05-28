@@ -215,11 +215,16 @@ class TableCellStyleBuilder {
 	 *
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder fontWeightItalic() {
-		this.tsBuilder.fontWeightItalic();
+	public TableCellStyleBuilder fontStyleItalic() {
+		this.tsBuilder.fontStyleItalic();
 		return this;
 	}
 
+	public TableCellStyleBuilder fontStyleNormal() {
+		this.tsBuilder.fontStyleNormal();
+		return this;
+	}
+	
 	/**
 	 * Set the font weight to normal.<br>
 	 * The TableFamilyStyle must be of a format of

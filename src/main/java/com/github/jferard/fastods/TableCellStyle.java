@@ -154,7 +154,7 @@ public class TableCellStyle implements StyleTag {
 		if (this.textStyle.getFontWeight().length() > 0
 				|| this.textStyle.getFontSize().length() > 0
 				|| this.textStyle.getFontColor().length() > 0) {
-			this.textStyle.appendXMLToStylesEntry(util, appendable);
+			this.textStyle.appendXMLToObject(util, appendable);
 		}
 
 		appendable.append("<style:paragraph-properties");

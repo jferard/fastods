@@ -43,6 +43,7 @@ class TextStyleBuilder {
 	private String sFontWeightComplex;
 
 	private final String sName;
+	private String sFontStyle;
 
 	/**
 	 * Create a new text style without a name.<br>
@@ -59,15 +60,9 @@ class TextStyleBuilder {
 		this.sName = sName;
 		this.sFontColor = "";
 		this.sFontName = "";
-		this.sFontWeight = ""; // 0.5.2 Renamed from FontStyle to
-								// FontWeight
-		this.sFontWeightAsian = ""; // 0.5.2 Renamed from FontStyle to
-									// FontWeight
-		this.sFontWeightComplex = ""; // 0.5.2 Renamed from FontStyle to
-										// FontWeight
+		this.sFontWeight = "";
+		this.sFontStyle = "";
 		this.sFontSize = ""; // text property
-		this.sFontSizeAsian = "";
-		this.sFontSizeComplex = "";
 		this.sFontUnderlineColor = "";
 
 		this.nFontUnderlineStyle = TextStyle.Underline.NONE;
@@ -75,9 +70,7 @@ class TextStyleBuilder {
 
 	public TextStyle build() {
 		return new TextStyle(this.sName, this.sFontColor, this.sFontName,
-				this.sFontWeight, this.sFontWeightAsian,
-				this.sFontWeightComplex, this.sFontSize, this.sFontSizeAsian,
-				this.sFontSizeComplex, this.sFontUnderlineColor,
+				this.sFontWeight, this.sFontStyle, this.sFontSize, this.sFontUnderlineColor,
 				this.nFontUnderlineStyle);
 	}
 
@@ -117,8 +110,6 @@ class TextStyleBuilder {
 		final String sSize = new StringBuilder(fontSize).append("pt")
 				.toString();
 		this.sFontSize = sSize;
-		this.sFontSizeAsian = sSize;
-		this.sFontSizeComplex = sSize;
 		return this;
 	}
 
@@ -133,8 +124,6 @@ class TextStyleBuilder {
 	 */
 	public TextStyleBuilder fontSize(final String fontSize) {
 		this.sFontSize = fontSize;
-		this.sFontSizeAsian = fontSize;
-		this.sFontSizeComplex = fontSize;
 		return this;
 	}
 
@@ -180,8 +169,6 @@ class TextStyleBuilder {
 	 */
 	public TextStyleBuilder fontWeightBold() {
 		this.sFontWeight = "bold";
-		this.sFontWeightAsian = "bold";
-		this.sFontWeightComplex = "bold";
 		return this;
 	}
 
@@ -190,13 +177,21 @@ class TextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public TextStyleBuilder fontWeightItalic() {
-		this.sFontWeight = "italic";
-		this.sFontWeightAsian = "italic";
-		this.sFontWeightComplex = "italic";
-
+	public TextStyleBuilder fontStyleItalic() {
+		this.sFontStyle = "italic";
 		return this;
 	}
+	
+	/**
+	 * Set the font weight to italic.
+	 *
+	 * @return true
+	 */
+	public TextStyleBuilder fontStyleNormal() {
+		this.sFontStyle = "normal";
+		return this;
+	}
+	
 
 	/**
 	 * Set the font weight to normal.
@@ -205,9 +200,6 @@ class TextStyleBuilder {
 	 */
 	public TextStyleBuilder fontWeightNormal() {
 		this.sFontWeight = "normal";
-		this.sFontWeightAsian = "normal";
-		this.sFontWeightComplex = "normal";
-
 		return this;
 	}
 }
