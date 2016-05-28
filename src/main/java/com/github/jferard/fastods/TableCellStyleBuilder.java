@@ -44,7 +44,7 @@ class TableCellStyleBuilder {
 	// true
 	private final String sDefaultCellStyle;
 	private final String sName;
-	private final TextStyleBuilder tsBuilder;
+	private final FHTextStyleBuilder tsBuilder;
 	
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -69,7 +69,7 @@ class TableCellStyleBuilder {
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
-		this.tsBuilder = new TextStyleBuilder(sName);
+		this.tsBuilder = new FHTextStyleBuilder(sName);
 		this.sDefaultCellStyle = "Default";
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);

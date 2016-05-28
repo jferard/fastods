@@ -38,7 +38,7 @@ class SimpleFooterHeader extends FooterHeader {
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private final List<List<StyledText>> region;
+	private final List<FHParagraph> region;
 
 	/**
 	 * Create a new footer object.
@@ -47,7 +47,7 @@ class SimpleFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final List<List<StyledText>> region, String sMarginLeft,
+			final List<FHParagraph> region, String sMarginLeft,
 			String sMarginRight, String sMarginTop, String sMinHeight) {
 		super(footerHeaderType, sMarginLeft, sMarginRight, sMarginTop, sMinHeight);
 		this.region = region;
@@ -61,6 +61,6 @@ class SimpleFooterHeader extends FooterHeader {
 	@Override
 	public void appendXMLToMasterStyle(final Util util,
 			final Appendable appendable) throws IOException {
-		FooterHeader.appendRegionBody(util, appendable, this.region);
+		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable, this.region);
 	}
 }

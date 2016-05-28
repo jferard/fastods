@@ -33,7 +33,7 @@ import java.io.IOException;
  *         content.xml/office:document-content/office:automatic-styles/style:
  *         style/style:style
  */
-public class TextStyle implements NamedObject {
+public class FHTextStyle implements NamedObject {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
 		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
@@ -47,11 +47,11 @@ public class TextStyle implements NamedObject {
 		}
 	}
 
-	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle
+	public static final FHTextStyle DEFAULT_TEXT_STYLE = FHTextStyle
 			.builder("Default").build();
 
-	public static TextStyleBuilder builder(String sName) {
-		return new TextStyleBuilder(sName);
+	public static FHTextStyleBuilder builder(String sName) {
+		return new FHTextStyleBuilder(sName);
 	}
 
 	private final Underline nFontUnderlineStyle;
@@ -75,7 +75,7 @@ public class TextStyle implements NamedObject {
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	TextStyle(final String sName, final String sFontColor,
+	FHTextStyle(final String sName, final String sFontColor,
 			final String sFontName, final String sFontWeight,
 			final String sFontStyle, final String sFontSize,
 			final String sFontUnderlineColor,

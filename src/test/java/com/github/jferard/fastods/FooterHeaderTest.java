@@ -12,7 +12,8 @@ public class FooterHeaderTest {
 	public final void testToAutomaticStyle() throws IOException {
 		FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.CENTER)
-				.pageNumber(TextStyle.builder("style").fontWeightBold().build())
+				.pageNumber(
+						FHTextStyle.builder("style").fontWeightBold().build())
 				.build();
 		StringBuilder sb = new StringBuilder();
 		footer.appendXMLToAutomaticStyle(Util.getInstance(), sb);
@@ -25,14 +26,16 @@ public class FooterHeaderTest {
 	public final void testToMasterStyle() throws IOException {
 		FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.CENTER)
-				.pageNumber(TextStyle.builder("style").fontWeightBold().build())
+				.pageNumber(
+						FHTextStyle.builder("style").fontWeightBold().build())
 				.build();
 		StringBuilder sb = new StringBuilder();
 		footer.appendXMLToMasterStyle(Util.getInstance(), sb);
-		Assert.assertEquals("<style:region-center>" + "<text:p>"
-				+ "<text:span text:style-name=\"style\">"
-				+ "<text:page-number>1</text:page-number>" + "</text:span>"
-				+ "</text:p>" + "</style:region-center>", sb.toString());
+		Assert.assertEquals(
+				"<style:region-center>" + "<text:p text:style-name=\"style\">"
+						+ "<text:page-number>1</text:page-number>" + "</text:p>"
+						+ "</style:region-center>",
+				sb.toString());
 	}
 
 	@Test
@@ -47,7 +50,7 @@ public class FooterHeaderTest {
 	@Test
 	public final void testSimpleFooterToAutomaticStyle() throws IOException {
 		FooterHeader header = FooterHeader.simpleHeader(
-				TextStyle.builder("style").fontStyleItalic().build(), "text");
+				FHTextStyle.builder("style").fontStyleItalic().build(), "text");
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToAutomaticStyle(Util.getInstance(), sb);
 		Assert.assertEquals("<style:header-style>"
@@ -58,11 +61,11 @@ public class FooterHeaderTest {
 	@Test
 	public final void testSimpleFooterToMasterStyle() throws IOException {
 		FooterHeader header = FooterHeader.simpleHeader(
-				TextStyle.builder("style").fontStyleItalic().build(), "text");
+				FHTextStyle.builder("style").fontStyleItalic().build(), "text");
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(Util.getInstance(), sb);
 		Assert.assertEquals(
-				"<text:p><text:span text:style-name=\"style\">text</text:span></text:p>",
+				"<text:p text:style-name=\"style\">" + "text" + "</text:p>",
 				sb.toString());
 	}
 

@@ -34,13 +34,11 @@ public class PageStyleTest {
 		pageStyle.appendXMLToMasterStyle(Util.getInstance(), sb);
 		Assert.assertEquals(
 				"<style:master-page style:name=\"DefaultMasterPage\" style:page-layout-name=\"test\">"
-						+ "<style:header>" + "<text:p>"
-						+ "<text:span text:style-name=\"none\">"
-						+ "</text:span>" + "</text:p>" + "</style:header>"
+						+ "<style:header>" + "<text:p text:style-name=\"none\">"
+						+ "</text:p>" + "</style:header>"
 						+ "<style:header-left style:display=\"false\"/>"
-						+ "<style:footer>" + "<text:p>"
-						+ "<text:span text:style-name=\"none\">"
-						+ "</text:span>" + "</text:p>" + "</style:footer>"
+						+ "<style:footer>" + "<text:p text:style-name=\"none\">"
+						+ "</text:p>" + "</style:footer>"
 						+ "<style:footer-left style:display=\"false\"/>"
 						+ "</style:master-page>",
 				sb.toString());

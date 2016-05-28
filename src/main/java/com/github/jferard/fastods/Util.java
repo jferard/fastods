@@ -172,7 +172,7 @@ public class Util {
 	 * The following pattern letters are defined (all other characters from 'A'
 	 * to 'Z' and from 'a' to 'z' are reserved):<br>
 	 * Letter Date or Time Component Presentation Examples<br>
-	 * G Era designator Text AD<br>
+	 * G Era designator FHText AD<br>
 	 * y Year Year 1996; 96<br>
 	 * M Month in year Month July; Jul; 07<br>
 	 * w Week in year Number 27<br>
@@ -180,8 +180,8 @@ public class Util {
 	 * D Day in year Number 189<br>
 	 * d Day in month Number 10<br>
 	 * F Day of week in month Number 2<br>
-	 * E Day in week Text Tuesday; Tue<br>
-	 * a Am/pm marker Text PM<br>
+	 * E Day in week FHText Tuesday; Tue<br>
+	 * a Am/pm marker FHText PM<br>
 	 * H Hour in day (0-23) Number 0<br>
 	 * k Hour in day (1-24) Number 24<br>
 	 * K Hour in am/pm (0-11) Number 0<br>

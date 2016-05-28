@@ -26,7 +26,7 @@ import java.io.IOException;
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file StyledText.java is part of FastODS.
+ *         This file FHText.java is part of FastODS.
  *
  *         WHERE ?
  *         styles.xml/office:document-styles/office:master-styles/style:master-
@@ -34,34 +34,49 @@ import java.io.IOException;
  *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page/style:header/text:p/text:span
  */
-public class StyledText {
-
+public class FHText {
 	private final String sText;
-	private final TextStyle ts;
+	private final /*@Nullable*/ FHTextStyle ts;
+
+	public FHText(final String sText) {
+		this(sText, null);
+	}
 	
-	public StyledText(final TextStyle t, final String s) {
+	public FHText(final String s, final FHTextStyle t) {
 		this.ts = t;
 		this.sText = s;
 	}
 
+	public void appendXMLTextPToParagraph(Util util,
+			Appendable appendable) throws IOException {
+		appendable.append("<text:p");
+		if (this.ts != null)
+			util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+		appendable.append(">").append(this.sText).append("</text:p>");
+	}
+
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
+	 * @param tagName TODO
 	 *
 	 * @throws IOException
 	 */
-	public void appendXMLToFooterHeader(final Util util,
+	public void appendXMLOptionalSpanToParagraph(final Util util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<text:span");
-		util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
-		appendable.append(">").append(this.sText)
-				.append("</text:span>");
+		if (this.ts == null) {
+			appendable.append(this.sText);
+		} else {
+			appendable.append("<text:span");
+			util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+			appendable.append(">").append(this.sText).append("</text:span>");
+		}
 	}
 
 	public String getText() {
 		return this.sText;
 	}
 
-	public TextStyle getTextStyle() {
+	public FHTextStyle getTextStyle() {
 		return this.ts;
 	}
 }

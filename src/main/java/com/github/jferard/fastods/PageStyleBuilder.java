@@ -72,7 +72,7 @@ class PageStyleBuilder {
 		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITINGMODE;
 
-		final TextStyle noneStyle = TextStyle.builder("none").build();
+		final FHTextStyle noneStyle = FHTextStyle.builder("none").build();
 		this.header = FooterHeader
 				.simpleHeader(noneStyle, "");
 		this.footer = FooterHeader

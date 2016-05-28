@@ -77,7 +77,7 @@ public class TableCellStyle implements StyleTag {
 	private final String sDefaultCellStyle;
 	private final String sName;
 
-	private final TextStyle textStyle;
+	private final FHTextStyle textStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -93,7 +93,7 @@ public class TableCellStyle implements StyleTag {
 	 *            The OdsFile to add this style to
 	 */
 	TableCellStyle(final String sName, final DataStyle dataStyle,
-			final String sBackgroundColor, final TextStyle ts,
+			final String sBackgroundColor, final FHTextStyle ts,
 			final Align nTextAlign, final VerticalAlign nVerticalAlign,
 			final boolean bWrap, final String sDefaultCellStyle,
 			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {

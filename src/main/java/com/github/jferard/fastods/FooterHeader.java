@@ -35,29 +35,10 @@ import java.util.List;
  *         page/style:header
  */
 public abstract class FooterHeader {
-	public static SimpleFooterHeaderBuilder simpleBuilder(
-			final FooterHeader.Type footerHeaderType) {
-		return new SimpleFooterHeaderBuilder(footerHeaderType);
-	}
-	
-	public static RegionFooterHeaderBuilder regionBuilder(
-			final RegionFooterHeader.Type footerHeaderType) {
-		return new RegionFooterHeaderBuilder(footerHeaderType);
-	}
-	
-	public static FooterHeader simpleHeader(TextStyle ts, String sText) {
-		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText).build();
-	}
-	
-	public static FooterHeader simpleFooter(TextStyle ts, String sText) {
-		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, sText).build();
-	}
-	
-	
 	public static enum Region {
 		CENTER, LEFT, RIGHT;
 	}
-
+	
 	/**
 	 * Footer or Header ?
 	 */
@@ -74,7 +55,37 @@ public abstract class FooterHeader {
 			return this.typeName;
 		}
 	}
+	
+	public static RegionFooterHeaderBuilder regionBuilder(
+			final RegionFooterHeader.Type footerHeaderType) {
+		return new RegionFooterHeaderBuilder(footerHeaderType);
+	}
+	
+	public static SimpleFooterHeaderBuilder simpleBuilder(
+			final FooterHeader.Type footerHeaderType) {
+		return new SimpleFooterHeaderBuilder(footerHeaderType);
+	}
+	
+	
+	public static FooterHeader simpleFooter(FHTextStyle ts, String sText) {
+		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, sText).build();
+	}
 
+	public static FooterHeader simpleHeader(FHTextStyle ts, String sText) {
+		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText).build();
+	}
+
+	protected static void appendXMLRegionBodyToMasterStyle(final Util util,
+			final Appendable appendable, final List<FHParagraph> region)
+			throws IOException {
+		for (final FHParagraph paragraph : region) {
+			if (paragraph == null)
+				appendable.append("<text:p/>");
+			else {
+				paragraph.appendXMLToRegionBody(util, appendable);
+			}
+		}
+	}
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -82,6 +93,7 @@ public abstract class FooterHeader {
 	protected final String sMarginLeft;
 	protected final String sMarginRight;
 	protected final String sMarginTop;
+
 	protected final String sMinHeight;
 
 	/**
@@ -98,6 +110,19 @@ public abstract class FooterHeader {
 		this.sMarginTop = sMarginTop;
 		this.sMinHeight = sMinHeight;
 	}
+	
+	public void appendXMLToAutomaticStyle(Util util, Appendable appendable)
+			throws IOException {
+		appendable.append("<style:").append(this.footerHeaderType.typeName)
+				.append("-style>");
+		appendable.append("<style:header-footer-properties");
+		util.appendAttribute(appendable, "fo:min-height", this.sMinHeight);
+		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
+		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
+		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
+		appendable.append("/></style:").append(this.footerHeaderType.typeName)
+				.append("-style>");
+	}
 
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
@@ -106,7 +131,7 @@ public abstract class FooterHeader {
 	 */
 	public abstract void appendXMLToMasterStyle(final Util util,
 			final Appendable appendable) throws IOException;
-	
+
 	/**
 	 * @return The current left margin of the footer/header.
 	 */
@@ -134,37 +159,9 @@ public abstract class FooterHeader {
 	public String getMinHeight() {
 		return this.sMinHeight;
 	}
-
-	public void appendXMLToAutomaticStyle(Util util, Appendable appendable)
-			throws IOException {
-		appendable.append("<style:").append(this.footerHeaderType.typeName)
-				.append("-style>");
-		appendable.append("<style:header-footer-properties");
-		util.appendAttribute(appendable, "fo:min-height", this.sMinHeight);
-		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
-		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
-		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
-		appendable.append("/></style:").append(this.footerHeaderType.typeName)
-				.append("-style>");
-	}
-
+	
 	public String getTypeName() {
 		return this.footerHeaderType.typeName;
-	}
-	
-	protected static void appendRegionBody(final Util util,
-			final Appendable appendable, final List<List<StyledText>> region)
-			throws IOException {
-		for (final List<StyledText> paragraph : region) {
-			if (paragraph == null)
-				appendable.append("<text:p/>");
-			else {
-				appendable.append("<text:p>");
-				for (final StyledText textChunk : paragraph)
-					textChunk.appendXMLToFooterHeader(util, appendable);
-				appendable.append("</text:p>");
-			}
-		}
 	}
 	
 }

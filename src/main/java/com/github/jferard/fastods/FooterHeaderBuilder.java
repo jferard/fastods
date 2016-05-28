@@ -19,7 +19,6 @@
 */
 package com.github.jferard.fastods;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ abstract class FooterHeaderBuilder {
 	protected String sMarginRight;
 	protected String sMarginTop;
 	protected String sMinHeight;
-	protected List<List<StyledText>> curRegion;
+	protected List<FHParagraph> curRegion;
 
 	/**
 	 * Create a new footer object.
@@ -59,24 +58,24 @@ abstract class FooterHeaderBuilder {
 		this.sMarginTop = "0cm";
 	}
 
-	public FooterHeaderBuilder pageCount(final TextStyle ts) {
+	public FooterHeaderBuilder pageCount(final FHTextStyle ts) {
 		this.styledText(ts, "<text:page-count>99</text:page-count>");
 		return this;
 	}
 
-	public FooterHeaderBuilder pageCount(final TextStyle ts,
+	public FooterHeaderBuilder pageCount(final FHTextStyle ts,
 			final int nParagraph) {
 		this.styledText(ts, "<text:page-count>99</text:page-count>",
 				nParagraph);
 		return this;
 	}
 
-	public FooterHeaderBuilder pageNumber(final TextStyle ts) {
+	public FooterHeaderBuilder pageNumber(final FHTextStyle ts) {
 		this.styledText(ts, "<text:page-number>1</text:page-number>");
 		return this;
 	}
 
-	public FooterHeaderBuilder pageNumber(final TextStyle ts, final int nParagraph) {
+	public FooterHeaderBuilder pageNumber(final FHTextStyle ts, final int nParagraph) {
 		this.styledText(ts, "<text:page-number>1</text:page-number>",
 				nParagraph);
 		return this;
@@ -100,11 +99,11 @@ abstract class FooterHeaderBuilder {
 	 *            The paragraph number to be used
 	 * @return 
 	 */
-	public FooterHeaderBuilder styledText(final TextStyle ts, final String sText,
+	public FooterHeaderBuilder styledText(final FHTextStyle ts, final String sText,
 			final int nParagraph) {
-		List<StyledText> qStyledText = FooterHeaderBuilder.checkParagraph(this.curRegion,
+		FHParagraph qStyledText = FooterHeaderBuilder.checkParagraph(this.curRegion,
 				nParagraph);
-		final StyledText st = new StyledText(ts, sText);
+		final FHText st = new FHText(sText, ts);
 		qStyledText.add(st);
 		return this;
 	}
@@ -127,9 +126,9 @@ abstract class FooterHeaderBuilder {
 	 *            The paragraph number to be used
 	 * @return 
 	 */
-	public FooterHeaderBuilder styledText(final TextStyle ts, final String sText) {
-		List<StyledText> qStyledText = new LinkedList<StyledText>();
-		final StyledText st = new StyledText(ts, sText);
+	public FooterHeaderBuilder styledText(final FHTextStyle ts, final String sText) {
+		FHParagraph qStyledText = new FHParagraph();
+		final FHText st = new FHText(sText, ts);
 		qStyledText.add(st);
 		this.curRegion.add(qStyledText);
 		return this;
@@ -140,18 +139,18 @@ abstract class FooterHeaderBuilder {
 	 * not present, create a new List and add it to qRegion. Return the new
 	 * List.
 	 *
-	 * @param qRegion
+	 * @param curRegion
 	 * @param nParagraph
-	 * @return The List with StyledText elements.
+	 * @return The List with FHText elements.
 	 */
-	protected static List<StyledText> checkParagraph(
-			final List<List<StyledText>> qRegion, final int nParagraph) {
-		List<StyledText> qStyledText = qRegion.get(nParagraph);
+	protected static FHParagraph checkParagraph(
+			final List<FHParagraph> curRegion, final int nParagraph) {
+		FHParagraph qStyledText = curRegion.get(nParagraph);
 
 		// Check if the paragraph already exists and add a List if not
 		if (qStyledText == null) {
-			qStyledText = new LinkedList<StyledText>();
-			qRegion.set(nParagraph, qStyledText);
+			qStyledText = new FHParagraph();
+			curRegion.set(nParagraph, qStyledText);
 		}
 
 		return qStyledText;

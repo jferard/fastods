@@ -56,7 +56,7 @@ public class StylesEntry implements OdsEntry {
 
 	private final Map<String, PageStyle> qPageStyles;
 
-	private final Map<String, TextStyle> qTextStyles;
+	private final Map<String, FHTextStyle> qTextStyles;
 
 	/**
 	 * @param odsFile
@@ -66,7 +66,7 @@ public class StylesEntry implements OdsEntry {
 		this.qNumberStyles = new HashMap<String, NumberStyle>();
 		this.qCurrencyStyles = new HashMap<String, CurrencyStyle>();
 		this.qPageStyles = new HashMap<String, PageStyle>();
-		this.qTextStyles = new HashMap<String, TextStyle>();
+		this.qTextStyles = new HashMap<String, FHTextStyle>();
 		this.qDateStyles = new HashMap<String, DateStyle>();
 	}
 
@@ -107,7 +107,7 @@ public class StylesEntry implements OdsEntry {
 		this.qPageStyles.put(ps.getName(), ps);
 	}
 
-	public void addTextStyle(final TextStyle ts) {
+	public void addTextStyle(final FHTextStyle ts) {
 		this.qTextStyles.put(ts.getName(), ts);
 	}
 
@@ -172,7 +172,7 @@ public class StylesEntry implements OdsEntry {
 		for (final PageStyle ps : this.qPageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
 
-		for (final TextStyle ts : this.qTextStyles.values())
+		for (final FHTextStyle ts : this.qTextStyles.values())
 			ts.appendXMLToObject(util, writer);
 
 		writer.write("</office:automatic-styles>");

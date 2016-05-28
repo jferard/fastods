@@ -35,9 +35,9 @@ import java.util.List;
  */
 class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 
-	private final List<List<StyledText>> qCenterRegion;
-	private final List<List<StyledText>> qLeftRegion;
-	private final List<List<StyledText>> qRightRegion;
+	private final List<FHParagraph> qCenterRegion;
+	private final List<FHParagraph> qLeftRegion;
+	private final List<FHParagraph> qRightRegion;
 
 	/**
 	 * Create a new footer object.

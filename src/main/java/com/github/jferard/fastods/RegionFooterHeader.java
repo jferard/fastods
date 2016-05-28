@@ -38,9 +38,9 @@ class RegionFooterHeader extends FooterHeader {
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private final List<List<StyledText>> qCenterRegion;
-	private final List<List<StyledText>> qLeftRegion;
-	private final List<List<StyledText>> qRightRegion;
+	private final List<FHParagraph> qCenterRegion;
+	private final List<FHParagraph> qLeftRegion;
+	private final List<FHParagraph> qRightRegion;
 
 	/**
 	 * Create a new footer object.
@@ -49,9 +49,9 @@ class RegionFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
-			final List<List<StyledText>> qCenterRegion,
-			final List<List<StyledText>> qLeftRegion,
-			final List<List<StyledText>> qRightRegion, String sMarginLeft,
+			final List<FHParagraph> qCenterRegion,
+			final List<FHParagraph> qLeftRegion,
+			final List<FHParagraph> qRightRegion, String sMarginLeft,
 			String sMarginRight, String sMarginTop, String sMinHeight) {
 		super(footerHeaderType, sMarginLeft, sMarginRight, sMarginTop, sMinHeight);
 		this.qCenterRegion = qCenterRegion;
@@ -74,13 +74,13 @@ class RegionFooterHeader extends FooterHeader {
 	}
 
 	private static void appendRegion(final Util util, final Appendable appendable,
-			final List<List<StyledText>> qRegion, final String sRegionName)
+			final List<FHParagraph> qRegion, final String sRegionName)
 			throws IOException {
 		if (qRegion.size() == 0)
 			return;
 
 		appendable.append("<style:").append(sRegionName).append(">");
-		FooterHeader.appendRegionBody(util, appendable, qRegion);
+		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable, qRegion);
 		appendable.append("</style:").append(sRegionName).append(">");
 	}
 }
