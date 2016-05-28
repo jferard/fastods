@@ -35,10 +35,9 @@ import java.util.zip.ZipOutputStream;
  */
 public class MimetypeEntry implements OdsEntry {
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut)
+	public void write(final Util util, final ZipOutputStream zipOut, Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("mimetype"));
-		final Writer writer = util.wrapStream(zipOut);
 		writer.write("application/vnd.oasis.opendocument.spreadsheet");
 		writer.flush();
 		zipOut.closeEntry();

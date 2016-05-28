@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
@@ -292,18 +293,19 @@ public class OdsFile {
 		this.settingsEntry.setTables(this.getContent().getTables());
 
 		try {
-			final ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(output, 64*1024));
-			this.mimetypeEntry.write(this.util, out);
-			this.manifestEntry.write(this.util, out);
-			this.metaEntry.write(this.util, out);
-			this.getStyles().write(this.util, out);
-			this.getContent().write(this.util, out);
-			this.createConfigurations(out);
-			this.settingsEntry.write(this.util, out);
-			out.putNextEntry(new ZipEntry("Thumbnails/"));
-			out.closeEntry();
+			final ZipOutputStream zipOut = new ZipOutputStream(output);
+			final Writer writer = this.util.wrapStream(zipOut);
+			this.mimetypeEntry.write(this.util, zipOut, writer);
+			this.manifestEntry.write(this.util, zipOut, writer);
+			this.metaEntry.write(this.util, zipOut, writer);
+			this.getStyles().write(this.util, zipOut, writer);
+			this.getContent().write(this.util, zipOut, writer);
+			this.createConfigurationsEntries(zipOut);
+			this.settingsEntry.write(this.util, zipOut, writer);
+			zipOut.putNextEntry(new ZipEntry("Thumbnails/"));
+			zipOut.closeEntry();
 
-			out.close();
+			zipOut.close();
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return false;
@@ -1201,7 +1203,7 @@ public class OdsFile {
 		this.stylesEntry = s;
 	}
 
-	private void createConfigurations(final ZipOutputStream o)
+	private void createConfigurationsEntries(final ZipOutputStream o)
 			throws IOException {
 		for (final String entry : new String[] {
 				"Configurations2/accelerator/current.xml",

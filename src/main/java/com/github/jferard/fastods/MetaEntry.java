@@ -85,10 +85,9 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut)
+	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("meta.xml"));
-		final Writer writer = util.wrapStream(zipOut);
 		writer.append("<?xml");
 		util.appendEAttribute(writer, "version", "1.0");
 		util.appendEAttribute(writer, "encoding", "UTF-8");

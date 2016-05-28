@@ -210,11 +210,9 @@ public class SettingsEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut)
+	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("settings.xml"));
-		final Writer writer = util.wrapStream(zipOut);
-
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 		writer.write(
 				"<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:settingsEntry=\"urn:oasis:names:tc:opendocument:xmlns:settingsEntry:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">");
@@ -293,7 +291,6 @@ public class SettingsEntry implements OdsEntry {
 		writer.write("</settingsEntry:settingsEntry-item-set>");
 		writer.write("</office:settings>");
 		writer.write("</office:document-settings>");
-
 		writer.flush();
 		zipOut.closeEntry();
 	}
