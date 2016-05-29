@@ -82,6 +82,25 @@ public class BenchTest {
 
 		file.save();
 	}
+	
+	@Test
+	public final void testFast2() throws FastOdsException {
+		// Open the file.
+		OdsFile file = new OdsFile("f60columns.ods");
+		Optional<Table> optTable = file.addTable("test");
+		Assert.assertTrue(optTable.isPresent());
+
+		Table table = optTable.get();
+		for (int y = 0; y < 3*ROW_COUNT; y++) {
+			final TableRow row = table.nextRow();
+			for (int x = 0; x < 3*COL_COUNT; x++) {
+				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
+			}
+		}
+
+		file.save();
+	}
+	
 
 	@Test
 	public final void testSimple() throws org.simpleods.SimpleOdsException {
@@ -103,6 +122,28 @@ public class BenchTest {
 
 		file.save();
 	}
+	
+	@Test
+	public final void testSimple2() throws org.simpleods.SimpleOdsException {
+		// Open the file.
+		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
+				"s60columns.ods");
+		file.addTable("test");
+		org.simpleods.Table table = (org.simpleods.Table) file.getContent()
+				.getTableQueue().get(0);
+
+		final ObjectQueue rows = table.getRows();
+		for (int y = 0; y < 3*ROW_COUNT; y++) {
+			final org.simpleods.TableRow row = new org.simpleods.TableRow();
+			rows.add(row);
+			for (int x = 0; x < 3*COL_COUNT; x++) {
+				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
+			}
+		}
+
+		file.save();
+	}
+	
 
 	@Test
 	public final void testJOpen() throws IOException {

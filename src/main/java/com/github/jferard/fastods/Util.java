@@ -20,13 +20,12 @@
 package com.github.jferard.fastods;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,8 +40,6 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.escape.Escaper;
 import com.google.common.xml.XmlEscapers;
-
-import sun.nio.cs.StreamEncoder;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -332,8 +329,8 @@ public class Util {
 	 *            the stream
 	 * @return the writer
 	 */
-	public Writer wrapStream(final OutputStream out) {
-		return new OutputStreamWriter(out, Charsets.UTF_8);
+	public Writer wrapStream(final OutputStream out, int size) {
+		return new BufferedWriter(new OutputStreamWriter(out, Charsets.UTF_8), size);
 	}
 
 	public boolean writeString(final ZipOutputStream o, final String sText) {

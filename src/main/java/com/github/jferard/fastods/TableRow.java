@@ -59,8 +59,9 @@ public class TableRow {
 		if (this.rowStyle != null)
 			util.appendAttribute(appendable, "table:style-name",
 					this.rowStyle.getName());
-		util.appendAttribute(appendable, "table:default-cell-style-name",
-				this.defaultCellStyle.getName());
+		if (this.defaultCellStyle != null)
+			util.appendAttribute(appendable, "table:default-cell-style-name",
+					this.defaultCellStyle.getName());
 		appendable.append(">");
 
 		int nNullFieldCounter = 0;

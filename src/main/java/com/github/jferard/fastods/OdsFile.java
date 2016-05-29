@@ -55,6 +55,11 @@ import com.google.common.base.Optional;
  *         WHERE ? root !
  */
 public class OdsFile {
+	/**
+	 * 512 k of buffer before sending data to OutputStreamWriter.
+	 */
+	private static final int DEFAULT_BUFFER_SIZE = 512*1024;
+
 	private ContentEntry contentEntry;
 
 	private final ManifestEntry manifestEntry;
@@ -64,6 +69,11 @@ public class OdsFile {
 	private String sFilename;
 	private StylesEntry stylesEntry;
 	private final Util util = Util.getInstance();
+	private final int bufferSize;
+
+	public OdsFile(final String sName) {
+		this(sName, 512*DEFAULT_BUFFER_SIZE);
+	}
 
 	/**
 	 * Create a new ODS file.
@@ -72,8 +82,9 @@ public class OdsFile {
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
 	 */
-	public OdsFile(final String sName) {
+	public OdsFile(final String sName, int bufferSize) {
 		this.newFile(sName);
+		this.bufferSize = bufferSize;
 		this.mimetypeEntry = new MimetypeEntry();
 		this.manifestEntry = new ManifestEntry();
 		this.settingsEntry = new SettingsEntry();
@@ -285,9 +296,9 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream output) {
-		this.settingsEntry.setTables(this.getContent().getTables());
+		this.settingsEntry.setTables(this.contentEntry.getTables());
 		final ZipOutputStream zipOut = new ZipOutputStream(output);
-		final Writer writer = this.util.wrapStream(zipOut);
+		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
 		
 		try {
 			this.mimetypeEntry.write(this.util, zipOut, writer);
