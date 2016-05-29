@@ -67,8 +67,8 @@ public class TableRowStyle implements StyleTag {
 		this.sRowHeight = sRowHeight;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addStyleTag(this);
+	void addToFile(final OdsFile odsFile) {
+		odsFile.addStyleTag(this);
 	}
 
 	@Override

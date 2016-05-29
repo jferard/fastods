@@ -39,8 +39,10 @@ public class TableRow {
 	private final List<TableCell> qTableCells;
 	private TableRowStyle rowStyle;
 	private TableCellStyle defaultCellStyle;
+	private Util util;
 
-	TableRow(final OdsFile odsFile, final int nRow) {
+	TableRow(final OdsFile odsFile, final Util util, final int nRow) {
+		this.util = util;
 		this.nRow = nRow;
 		this.odsFile = odsFile;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
@@ -102,22 +104,22 @@ public class TableRow {
 		}
 		return tc;
 	}
+	
+	public TableCell getCell(final String sPos) {
+		final int nCol = this.util.positionToColumn(sPos);
+		return this.getCell(nCol);
+	}
+	
+
+	/**
+	 * @return The List with all TableCell objects
+	 */
+	protected List<TableCell> getCells() {
+		return this.qTableCells;
+	}
 
 	public String getRowStyleName() {
 		return this.rowStyle.getName();
-	}
-
-	/**
-	 * Set the cell to the content of string, the value type of the cell is
-	 * TableCell.STYLE_STRING .
-	 *
-	 * @param nCol
-	 *            The column to set
-	 * @param sValue
-	 *            The value to be used
-	 */
-	public void setCell(final int nCol, final String sValue) {
-		this.setCell(nCol, TableCell.Type.STRING, sValue);
 	}
 
 	/**
@@ -128,50 +130,41 @@ public class TableRow {
 	 *            The column for this cell
 	 * @param tc
 	 */
-	public void setCell(final int nCol, final TableCell tc) {
+	protected void setCell(final int nCol, final TableCell tc) {
 		this.qTableCells.set(nCol, tc);
 	}
 
 	/**
-	 *
+	 * Set the merging of multiple cells to one cell.
 	 * @param nCol
-	 *            The column for this cell
-	 * @param nValuetype
-	 * @param sValue
+	 *            The column, 0 is the first column
+	 * @param nRowMerge
+	 * @param nColumnMerge
+	 *
+	 * @throws FastOdsException
 	 */
-	public void setCell(final int nCol, final TableCell.Type nValuetype,
-			final String sValue) {
-		if (0 <= nCol && nCol < this.qTableCells.size()) {
-			final TableCell tc = this.qTableCells.get(nCol);
-			tc.setValueType(nValuetype);
-			tc.setValue(sValue);
-		} else {
-			while (nCol < this.qTableCells.size() - 1) {
-				this.qTableCells.add(null);
-			}
-			final TableCell tc = new TableCell(this.odsFile, this.nRow, nCol,
-					nValuetype, sValue);
-			this.qTableCells.add(tc);
-		}
+	public void setCellMerge(final int nCol, final int nRowMerge, final int nColumnMerge)
+			throws FastOdsException {
+		final TableCell tc = this.getCell(nCol);
+		tc.setRowsSpanned(nRowMerge);
+		tc.setColumnsSpanned(nColumnMerge);
 	}
 
 	/**
-	 * Set the cell rowStyle for the cell at nCol to ts.
+	 * Set the merging of multiple cells to one cell.
+	 * @param sPos
+	 *            The cell position e.g. 'A1'
+	 * @param nRowMerge
+	 * @param nColumnMerge
 	 *
-	 * @param nCol
-	 *            The column number
-	 * @param ts
-	 *            The table rowStyle to be used
+	 * @throws FastOdsException
 	 */
-	public void setCellStyle(final int nCol, final TableCellStyle ts) {
-		TableCell tc = this.qTableCells.get(nCol);
-		if (tc == null) {
-			// Create an empty cell
-			tc = new TableCell(this.odsFile, this.nRow, nCol,
-					TableCell.Type.STRING, "");
-			this.qTableCells.set(nCol, tc);
-		}
-		tc.setStyle(ts);
+	public void setCellMerge(final String sPos, final int nRowMerge,
+			final int nColumnMerge)
+			throws FastOdsException {
+		final int nCol = this.util.positionToColumn(sPos);
+		this.setCellMerge(nCol, nRowMerge,
+				nColumnMerge);
 	}
 
 	/**
@@ -189,12 +182,4 @@ public class TableRow {
 	public void setStyle(final TableRowStyle rowStyle) {
 		this.rowStyle = rowStyle;
 	}
-
-	/**
-	 * @return The List with all TableCell objects
-	 */
-	public List<TableCell> getCells() {
-		return this.qTableCells;
-	}
-
 }

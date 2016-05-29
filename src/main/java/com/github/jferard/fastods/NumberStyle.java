@@ -102,7 +102,7 @@ public class NumberStyle implements DataStyle {
 
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.getStyles().addNumberStyle(this);
+		odsFile.addNumberStyle(this);
 	}
 
 	/**

@@ -65,30 +65,31 @@ public class OdsFileTest {
 		for (int y = 0; y < 50; y++) {
 			row = table.getRow(y);
 			for (int x = 0; x < 5; x++) {
-				row.setCell(x, String.valueOf(random.nextInt(1000)));
+				TableCell cell = row.getCell(x);
+				cell.setFloatValue(random.nextInt(1000));
 				if ((y + 1) % 3 == 0) {
 					switch (x) {
 					case 0:
-						row.setCellStyle(x, TableCellStyle.builder("tcs0")
+						cell.setStyle(TableCellStyle.builder("tcs0")
 								.backgroundColor("#0000ff").build());
 						break;
 					case 1:
-						row.setCellStyle(x, TableCellStyle.builder("tcs1")
+						cell.setStyle(TableCellStyle.builder("tcs1")
 								.backgroundColor("#00FF00").build());
 						break;
 					case 2:
-						row.setCellStyle(x, TableCellStyle.builder("tcs2")
+						cell.setStyle(TableCellStyle.builder("tcs2")
 								.fontWeightBold().build());
 						break;
 					case 3:
-						row.setCellStyle(x, TableCellStyle.builder("tcs3")
+						cell.setStyle(TableCellStyle.builder("tcs3")
 								.fontStyleItalic().build());
 						break;
 					default:
 						break;
 					}
 				} else if (y == 12 && x == 3) {
-					row.setCellStyle(x, tcls);
+					cell.setStyle(tcls);
 				}
 			}
 		}
@@ -112,7 +113,8 @@ public class OdsFileTest {
 		for (int y = 0; y < 100000; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 20; x++) {
-				row.setCell(x, String.valueOf(random.nextInt(1000)));
+				TableCell cell = row.getCell(x);
+				cell.setFloatValue(random.nextInt(1000));
 			}
 		}
 
@@ -136,7 +138,8 @@ public class OdsFileTest {
 		for (int y = 0; y < 1000; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 300; x++) {
-				row.setCell(x, String.valueOf(random.nextInt(1000)));
+				TableCell cell = row.getCell(x);
+				cell.setFloatValue(random.nextInt(1000));
 			}
 		}
 

@@ -21,6 +21,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +29,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.github.jferard.fastods.TableCell.Type;
 import com.google.common.base.Optional;
 
 /**
@@ -43,8 +43,6 @@ import com.google.common.base.Optional;
  *         content.xml/office:document-content
  */
 class ContentEntry implements OdsEntry {
-	/*	private Map<String, PageStyle> qPageStyles;
-		private Map<String, TextStyle> qTextStyles; */
 	private final OdsFile odsFile;
 	private final List<Table> qTables;
 	private final Map<String, StyleTag> styleTagByName;
@@ -53,16 +51,9 @@ class ContentEntry implements OdsEntry {
 		this.odsFile = odsFile;
 		this.qTables = new LinkedList<Table>();
 		this.styleTagByName = new HashMap<String, StyleTag>();
-		/*		this.qPageStyles = ObjectQueue.newQueue();
-				this.qTextStyles = ObjectQueue.newQueue(); */
 	}
 
-	/*
-	public void addPageStyle(final PageStyle ps) {
-		ObjectQueue.addOrReplaceNamedElement(this.qPageStyles, ps);
-	}*/
-
-	public void addStyleTag(final StyleTag styleTag) {
+	void addStyleTag(final StyleTag styleTag) {
 		this.styleTagByName.put(styleTag.getName(), styleTag);
 	}
 
@@ -89,6 +80,7 @@ class ContentEntry implements OdsEntry {
 	 * @return The TableCell
 	 * @throws FastOdsException
 	 */
+	@Deprecated
 	public TableCell getCell(final int nTab, final int nRow, final int nCol)
 			throws FastOdsException {
 		this.checkTableIndex(nTab);
@@ -96,89 +88,12 @@ class ContentEntry implements OdsEntry {
 		return tab.getCell(nRow, nCol);
 	}
 
-	/*
-	public void addTextStyle(final TextStyle ts) {
-		ObjectQueue.addOrReplaceNamedElement(this.qTextStyles, ts);
-	}*/
-
-	public Map<String, StyleTag> getStyleTagByName() {
-		return this.styleTagByName;
-	}
-
-	/*
-	public PageStyle getDefaultPageStyle() {
-		if (this.qPageStyles.size() == 0) {
-			return null;
-		}
-
-		return this.qPageStyles.get(0);
-	}
-
-	public ObjectQueue<PageStyle> getPageStyles() {
-		return this.qPageStyles;
-	}*/
-
 	public Optional<Table> getTable(final String sName) {
 		return Util.findElementByName(this.qTables, sName);
 	}
 
-	public List<Table> getTables() {
-		return this.qTables;
-	}
-
-	/*
-	public ObjectQueue<TextStyle> getTextStyles() {
-		return this.qTextStyles;
-	}*/
-
-	public boolean setCell(final int nTab, final int nRow, final int nCol,
-			final Type type, final String value) throws FastOdsException {
-		this.checkTableIndex(nTab);
-		final Table tab = this.qTables.get(nTab);
-		tab.setCell(nRow, nCol, type, value);
-		return true;
-	}
-
-	public boolean setCellStyle(final int nTab, final int nRow, final int nCol,
-			final TableCellStyle ts) throws FastOdsException {
-		this.checkTableIndex(nTab);
-
-		final Table tab = this.qTables.get(nTab);
-		tab.setCellStyle(nRow, nCol, ts);
-		// this.addTableStyle(ts);
-		return true;
-	}
-
-	public boolean setColumnStyle(final int nTab, final int nCol,
-			final TableColumnStyle ts) throws FastOdsException {
-
-		if (nTab < 0 || this.qTables.size() <= nTab) {
-			return false;
-		}
-
-		final Table tab = this.qTables.get(nTab);
-		tab.setColumnStyle(nCol, ts);
-		// this.addTableStyle(ts);
-		return true;
-	}
-
-	/*
-	public void setPageStyles(final ObjectQueue<PageStyle> qPageStyles) {
-		this.qPageStyles = qPageStyles;
-	}*/
-
-	/*
-	public void setTableStyles(final ObjectQueue<NamedObject> qTableStyles) {
-		this.tableStyleByName = qTableStyles;
-	}
-
-	public void setTextStyles(final ObjectQueue<TextStyle> qTextStyles) {
-		this.qTextStyles = qTextStyles;
-	}*/
-
-	public void setColumnStyle(final Table table, final int nCol,
-			final TableColumnStyle ts) throws FastOdsException {
-		table.setColumnStyle(nCol, ts);
+	List<Table> getTables() {
+		return Collections.unmodifiableList(this.qTables);
 	}
 
 	@Override
@@ -221,5 +136,13 @@ class ContentEntry implements OdsEntry {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(nTab).append("]").toString());
 		}
+	}
+
+	public int getTableCount() {
+		return this.qTables.size();
+	}
+
+	public Table getTable(int nTab) {
+		return this.qTables.get(nTab);
 	}
 }

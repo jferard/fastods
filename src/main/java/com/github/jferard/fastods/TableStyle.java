@@ -62,7 +62,7 @@ public class TableStyle implements StyleTag {
 	}
 
 	void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addStyleTag(this);
+		odsFile.addStyleTag(this);
 	}
 
 	@Override

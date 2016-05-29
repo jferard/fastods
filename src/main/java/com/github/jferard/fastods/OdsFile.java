@@ -116,69 +116,11 @@ public class OdsFile {
 	 */
 	public Optional<Table> addTable(final String sName)
 			throws FastOdsException {
-		final Optional<Table> optTable = this.getContent().addTable(sName);
+		final Optional<Table> optTable = this.contentEntry.addTable(sName);
 		if (optTable.isPresent())
 			this.settingsEntry.setActiveTable(optTable.get());
 
 		return optTable;
-	}
-
-	/**
-	 * Get the TableCell object.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @return The requested TableCell object.
-	 * @throws FastOdsException
-	 */
-	public TableCell getCell(final int nTab, final int nRow, final int nCol)
-			throws FastOdsException {
-		return this.getContent().getCell(nTab, nRow, nCol);
-	}
-
-	/**
-	 * Get the TableCell object.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @return The requested TableCell object.
-	 * @throws FastOdsException
-	 */
-	public TableCell getCell(final int nTab, final String sPos)
-			throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-
-		return this.getContent().getCell(nTab, nRow, nCol);
-	}
-
-	/**
-	 * @return The contentEntry object for this OdsFile
-	 */
-	public ContentEntry getContent() {
-		return this.contentEntry;
-	}
-
-	/*
-	public PageStyle getDefaultPageStyle() {
-		return this.getContent().getDefaultPageStyle();
-	}*/
-
-	/**
-	 * Get the MetaEntry data for this OdsFile.
-	 *
-	 * @return The metaEntry data
-	 */
-	public MetaEntry getMeta() {
-		return this.metaEntry;
 	}
 
 	/**
@@ -190,24 +132,13 @@ public class OdsFile {
 		return this.sFilename;
 	}
 
-	/**
-	 * @return The stylesEntry object for this OdsFile
-	 */
-	public StylesEntry getStyles() {
-		return this.stylesEntry;
-	}
-
 	public Optional<Table> getTable(final String sName) {
-		final Optional<Table> optTable = this.getContent().getTable(sName);
+		final Optional<Table> optTable = this.contentEntry.getTable(sName);
 		if (optTable.isPresent())
 			this.settingsEntry.setActiveTable(optTable.get());
 
 		return optTable;
 	}
-
-	// -----------------------------------------------------
-	// All methods for setCell with the nValueType to be set by the user
-	// -----------------------------------------------------
 
 	/**
 	 * Returns the name of the table.
@@ -229,7 +160,7 @@ public class OdsFile {
 	 * @return The number of the table or -1 if sName was not found
 	 */
 	public int getTableNumber(final String sName) {
-		final ListIterator<Table> iterator = this.getContent().getTables()
+		final ListIterator<Table> iterator = this.contentEntry.getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
@@ -247,8 +178,8 @@ public class OdsFile {
 	 *
 	 * @return The number of the last table
 	 */
-	public int lastTableNumber() {
-		return this.getContent().getTables().size();
+	public int tableCount() {
+		return this.contentEntry.getTableCount();
 	}
 
 	/**
@@ -266,8 +197,6 @@ public class OdsFile {
 			return false;
 		}
 		this.sFilename = sName;
-		// this.save();
-
 		return true;
 	}
 
@@ -329,13 +258,11 @@ public class OdsFile {
 	 *         value
 	 */
 	public boolean setActiveTable(final int nTab) {
-		if (nTab < 0 || nTab >= this.getContent().getTables().size()) {
+		if (nTab < 0 || nTab >= this.contentEntry.getTableCount())
 			return false;
-		}
 
-		final Table tab = this.getContent().getTables().get(nTab);
+		final Table tab = this.contentEntry.getTable(nTab);
 		this.settingsEntry.setActiveTable(tab);
-
 		return true;
 	}
 
@@ -343,568 +270,6 @@ public class OdsFile {
 	// All methods for setCell with TableCell.Type.STRING
 	// ----------------------------------------------------------------------
 
-	/**
-	 * Sets the cell value in table nTab to the date from the Calendar object.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param cal
-	 *            The calendar object with the date
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final Calendar cal) throws FastOdsException {
-		final TableCell tc = this.getContent().getCell(nTab, nRow, nCol);
-		tc.setDateValue(cal);
-	}
-
-	/**
-	 * Sets the cell value in table nTab to the date from the Calendar object.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param cal
-	 *            The calendar object with the date
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final Calendar cal, final TableCellStyle ts)
-			throws FastOdsException {
-		this.setCell(nTab, nRow, nCol, cal);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param dValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final double dValue) throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, TableCell.Type.FLOAT,
-				Double.toString(dValue));
-	}
-
-	// -----------------------------------------------------------------------
-	// All methods for setCell with TableCell.Type.FLOAT and integer nValue
-	// -----------------------------------------------------------------------
-
-	/**
-	 * Sets the cell value in table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param dValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final double dValue, final TableCellStyle ts)
-			throws FastOdsException {
-		this.setCell(nTab, nRow, nCol, dValue);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final int nValue) throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, TableCell.Type.FLOAT,
-				Integer.toString(nValue));
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final int nValue, final TableCellStyle ts) throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, TableCell.Type.FLOAT,
-				Integer.toString(nValue));
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.STRING.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final String sValue) throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, TableCell.Type.STRING,
-				sValue);
-	}
-
-	// -----------------------------------------------------------------------
-	// All methods for setCell with TableCell.Type.FLOAT and double dValue
-	// -----------------------------------------------------------------------
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.STRING.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final String sValue, final TableCellStyle ts)
-			throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, TableCell.Type.STRING,
-				sValue);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given values.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE
-	 * @param sValue
-	 *            The value to set the cell to
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final TableCell.Type nValuetype, final String sValue)
-			throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, nValuetype, sValue);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given values.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table.
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE.
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final int nRow, final int nCol,
-			final TableCell.Type nValuetype, final String sValue,
-			final TableCellStyle ts) throws FastOdsException {
-		this.getContent().setCell(nTab, nRow, nCol, nValuetype, sValue);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in table nTab to the date from the Calendar object.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param cal
-	 *            The calendar object with the date
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final Calendar cal)
-			throws FastOdsException {
-		this.setCell(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), cal);
-	}
-
-	// -----------------------------------------------------------------------
-	// All methods for setCell with TableCell.Type.DATE
-	// -----------------------------------------------------------------------
-
-	/**
-	 * Sets the cell value in table nTab to the date from the Calendar object.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param cal
-	 *            The calendar object with the date
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final Calendar cal,
-			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-
-		this.setCell(nTab, nRow, nCol, cal);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param dValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final double dValue)
-			throws FastOdsException {
-		this.getContent().setCell(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), TableCell.Type.FLOAT,
-				Double.toString(dValue));
-	}
-
-	/**
-	 * Sets the cell value in table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param dValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final double dValue,
-			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-
-		this.setCell(nTab, nRow, nCol, dValue);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param nValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final int nValue)
-			throws FastOdsException {
-		this.getContent().setCell(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), TableCell.Type.FLOAT,
-				Integer.toString(nValue));
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.FLOAT.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param nValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final int nValue,
-			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-		this.getContent().setCell(nTab, nRow, nCol, TableCell.Type.FLOAT,
-				Integer.toString(nValue));
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.STRING.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final String sValue)
-			throws FastOdsException {
-		this.getContent().setCell(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), TableCell.Type.STRING,
-				sValue);
-	}
-
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-
-	/**
-	 * Sets the cell value in Table nTab to the given value, the value type is
-	 * TableCell.Type.STRING.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos, final String sValue,
-			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-
-		this.setCell(nTab, nRow, nCol, sValue, ts);
-
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given values.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE
-	 * @param sValue
-	 *            The value to set the cell to
-	 */
-	public void setCell(final int nTab, final String sPos,
-			final TableCell.Type nValuetype, final String sValue)
-			throws FastOdsException {
-		this.getContent().setCell(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), nValuetype, sValue);
-	}
-
-	/**
-	 * Sets the cell value in Table nTab to the given values.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE.
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCell(final int nTab, final String sPos,
-			final TableCell.Type nValuetype, final String sValue,
-			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-
-		this.getContent().setCell(nTab, nRow, nCol, nValuetype, sValue);
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the cell value in Table sTab to the given values.
-	 *
-	 * @param sTab
-	 *            The table name, this table must already exist
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @throws FastOdsException
-	 *
-	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(String)}<br>
-	 *             instead setCell("Tab2",1,1,"stringvalue") use
-	 *             setCell(getTableNumber("Tab2"),1,1,"stringvalue")
-	 *
-	 */
-	@Deprecated
-	public void setCell(final String sTab, final int nRow, final int nCol,
-			final TableCell.Type nValuetype, final String sValue)
-			throws FastOdsException {
-
-		final ListIterator<Table> iterator = this.getContent().getTables()
-				.listIterator();
-		while (iterator.hasNext()) {
-			final int n = iterator.nextIndex();
-			final Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
-				this.getContent().setCell(n, nRow, nCol, nValuetype, sValue);
-				return;
-			}
-		}
-
-		throw FastOdsException.unkownTableName(sTab);
-	}
-
-	/**
-	 *
-	 * Sets the cell value in Table sTab to the given values.
-	 *
-	 * @param sTab
-	 *            The table name, this table must already exist
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE.
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 *
-	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(String)}<br>
-	 *             instead e.g.setCell("Tab2",1,1,"stringvalue") use
-	 *             setCell(getTableNumber("Tab2"),1,1,"stringvalue")
-	 *
-	 */
-	@Deprecated
-	public void setCell(final String sTab, final int nRow, final int nCol,
-			final TableCell.Type nValuetype, final String sValue,
-			final TableCellStyle ts) throws FastOdsException {
-
-		final ContentEntry contentEntry = this.getContent();
-		final ListIterator<Table> iterator = contentEntry.getTables()
-				.listIterator();
-		while (iterator.hasNext()) {
-			final int n = iterator.nextIndex();
-			final Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
-				contentEntry.setCell(n, nRow, nCol, nValuetype, sValue);
-				contentEntry.setCellStyle(n, nRow, nCol, ts);
-				return;
-			}
-		}
-
-		throw FastOdsException.unkownTableName(sTab);
-	}
 
 	/**
 	 * Sets the cell value in all tables to the date from the Calendar object.
@@ -924,39 +289,13 @@ public class OdsFile {
 			final Calendar cal, final TableCellStyle ts)
 			throws FastOdsException {
 
-		final ContentEntry contentEntry = this.getContent();
-		final int size = contentEntry.getTables().size();
-		for (int n = 0; n < size; n++) {
-			this.setCell(n, nRow, nCol, cal);
-			contentEntry.setCellStyle(n, nRow, nCol, ts);
+		for (final Table table : this.contentEntry.getTables()) {
+			final TableRow row = table.getRow(nRow);
+			TableCell cell = row.getCell(nCol);
+			cell.setDateValue(cal);
+			cell.setStyle(ts);
 		}
 
-	}
-
-	/**
-	 * Sets the cell value in all tables to the given values.
-	 *
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nValuetype
-	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE.
-	 * @param sValue
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCellInAllTables(final int nRow, final int nCol,
-			final TableCell.Type nValuetype, final String sValue,
-			final TableCellStyle ts) throws FastOdsException {
-		for (final Table tab : this.getContent().getTables()) {
-			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
-		}
 	}
 
 	/**
@@ -975,14 +314,7 @@ public class OdsFile {
 			final TableCellStyle ts) throws FastOdsException {
 		final int nRow = this.util.positionToRow(sPos);
 		final int nCol = this.util.positionToColumn(sPos);
-
-		final ContentEntry contentEntry = this.getContent();
-		final int size = contentEntry.getTables().size();
-		for (int n = 0; n < size; n++) {
-			this.setCell(n, nRow, nCol, cal);
-			contentEntry.setCellStyle(n, nRow, nCol, ts);
-		}
-
+		this.setCellInAllTables(nRow, nCol, cal, ts);
 	}
 
 	/**
@@ -1006,54 +338,8 @@ public class OdsFile {
 			final TableCellStyle ts) throws FastOdsException {
 		final int nRow = this.util.positionToRow(sPos);
 		final int nCol = this.util.positionToColumn(sPos);
-
-		for (final Table tab : this.getContent().getTables()) {
-			tab.setCell(nRow, nCol, nValuetype, sValue, ts);
-		}
-	}
-
-	// -----------------------------------------------------------------------
-	// Additional methods for cells
-	// -----------------------------------------------------------------------
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param nRowMerge
-	 * @param nColumnMerge
-	 * @throws FastOdsException
-	 */
-	public void setCellMerge(final int nTab, final int nRow, final int nCol,
-			final int nRowMerge, final int nColumnMerge)
-			throws FastOdsException {
-		final TableCell tc = this.getContent().getCell(nTab, nRow, nCol);
-		tc.setRowsSpanned(nRowMerge);
-		tc.setColumnsSpanned(nColumnMerge);
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist, 0 is the
-	 *            first table
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param nRowMerge
-	 * @param nColumnMerge
-	 * @throws FastOdsException
-	 */
-	public void setCellMerge(final int nTab, final String sPos,
-			final int nRowMerge, final int nColumnMerge)
-			throws FastOdsException {
-		this.setCellMerge(nTab, this.util.positionToRow(sPos),
-				this.util.positionToColumn(sPos), nRowMerge, nColumnMerge);
+//		this.setCellInAllTables(nRow, nCol, nValuetype, sValue,
+//				ts);
 	}
 
 	/**
@@ -1070,13 +356,11 @@ public class OdsFile {
 	public void setCellMergeInAllTables(final int nRow, final int nCol,
 			final int nRowMerge, final int nColumnMerge)
 			throws FastOdsException {
-		TableCell tc;
-		final ContentEntry contentEntry = this.getContent();
-		final int size = contentEntry.getTables().size();
-		for (int n = 0; n < size; n++) {
-			tc = contentEntry.getCell(n, nRow, nCol);
-			tc.setRowsSpanned(nRowMerge);
-			tc.setColumnsSpanned(nColumnMerge);
+		for (final Table table : this.contentEntry.getTables()) {
+			final TableRow row = table.getRow(nRow);
+			TableCell cell = row.getCell(nCol);
+			cell.setRowsSpanned(nRowMerge);
+			cell.setColumnsSpanned(nColumnMerge);
 		}
 	}
 
@@ -1091,120 +375,9 @@ public class OdsFile {
 	 */
 	public void setCellMergeInAllTables(final String sPos, final int nRowMerge,
 			final int nColumnMerge) throws FastOdsException {
-
-		final int size = this.getContent().getTables().size();
-		for (int n = 0; n < size; n++) {
-			this.setCellMerge(n, this.util.positionToRow(sPos),
-					this.util.positionToColumn(sPos), nRowMerge, nColumnMerge);
-		}
-	}
-
-	/**
-	 * Sets the style of this table cell.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param ts
-	 *            The table style to be used, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 */
-	public void setCellStyle(final int nTab, final int nRow, final int nCol,
-			final TableCellStyle ts) throws FastOdsException {
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the style of this table cell.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist
-	 * @param sPos
-	 *            The cell position e.g. 'A1'
-	 * @param ts
-	 *            The table style to be used, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 */
-	public void setCellStyle(final int nTab, final String sPos,
-			final TableCellStyle ts) throws FastOdsException {
 		final int nRow = this.util.positionToRow(sPos);
 		final int nCol = this.util.positionToColumn(sPos);
-
-		this.getContent().setCellStyle(nTab, nRow, nCol, ts);
-	}
-
-	/**
-	 * Sets the style of this table cell.
-	 *
-	 * @param sTab
-	 *            The table name, this table must already exist
-	 * @param nRow
-	 *            The row, 0 is the first row
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param ts
-	 *            The table style to be used, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 *
-	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(String)}<br>
-	 *             instead setCellStyle("Tab2",1,1,"stringvalue") use
-	 *             setCellStyle(getTableNumber("Tab2"),1,1,"stringvalue")
-	 *
-	 */
-	@Deprecated
-	public void setCellStyle(final String sTab, final int nRow, final int nCol,
-			final TableCellStyle ts) throws FastOdsException {
-		final ListIterator<Table> iterator = this.getContent().getTables()
-				.listIterator();
-		while (iterator.hasNext()) {
-			final int n = iterator.nextIndex();
-			final Table tab = iterator.next();
-			if (tab.getName().equals(sTab)) {
-				this.getContent().setCellStyle(n, nRow, nCol, ts);
-				return;
-			}
-		}
-
-		throw FastOdsException.unkownTableName(sTab);
-	}
-
-	/**
-	 * Sets the style of this table column.
-	 *
-	 * @param nTab
-	 *            The table number, this table must already exist
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param ts
-	 *            The table style to be used, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECOLUMN
-	 */
-	public void setColumnStyle(final int nTab, final int nCol,
-			final TableColumnStyle ts) throws FastOdsException {
-		this.getContent().setColumnStyle(nTab, nCol, ts);
-	}
-
-	/**
-	 * Set a new contentEntry to this OdsFile.
-	 *
-	 * @param contentEntry
-	 *            The new contentEntry to be used.
-	 */
-	public void setContent(final ContentEntry cont) {
-		this.contentEntry = cont;
-	}
-
-	/**
-	 * Set the stylesEntry for this ODsFile to stylesEntry.
-	 *
-	 * @param s
-	 *            - The new stylesEntry object to be used.
-	 */
-	public final void setStyles(final StylesEntry s) {
-		this.stylesEntry = s;
+		this.setCellMergeInAllTables(nRow, nCol, nRowMerge, nColumnMerge);	
 	}
 
 	private void createEmptyEntries(final ZipOutputStream o)
@@ -1220,8 +393,8 @@ public class OdsFile {
 		}
 	}
 
-	private Table getTable(final int n) throws FastOdsException {
-		final List<Table> tableQueue = this.getContent().getTables();
+	public Table getTable(final int n) throws FastOdsException {
+		final List<Table> tableQueue = this.contentEntry.getTables();
 		if (n < 0 || tableQueue.size() <= n) {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(n).append("]").toString());
@@ -1231,32 +404,28 @@ public class OdsFile {
 		return t;
 	}
 
-	/**
-	 * Sets the style of this table column.
-	 *
-	 * @param sTab
-	 *            The table name, this table must already exist
-	 * @param nCol
-	 *            The column, 0 is the first column
-	 * @param ts
-	 *            The table style to be used, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECOLUMN
-	 *
-	 * @deprecated As of release 0.2.1, use {@link #getTableNumber(final String
-	 *             sName)} instead setColumnStyle("Tab2",1,1,"stringvalue") use
-	 *             setColumnCell(getTableNumber("Tab2"),1,1,"stringvalue")
-	 *
-	 */
-	@Deprecated
-	private void setColumnStyle(final String sTab, final int nCol,
-			final TableColumnStyle ts) throws FastOdsException {
-
-		final ContentEntry contentEntry = this.getContent();
-		final Optional<Table> optTab = contentEntry.getTable(sTab);
-		if (optTab.isPresent())
-			contentEntry.setColumnStyle(optTab.get(), nCol, ts);
-		else
-			throw FastOdsException.unkownTableName(sTab);
+	void addStyleTag(StyleTag styleTag) {
+		this.contentEntry.addStyleTag(styleTag);
+		
 	}
 
+	void addPageStyle(PageStyle pageStyle) {
+		this.stylesEntry.addPageStyle(pageStyle);
+	}
+
+	void addNumberStyle(NumberStyle numberStyle) {
+		this.stylesEntry.addNumberStyle(numberStyle);
+	}
+
+	void addCurrencyStyle(CurrencyStyle currencyStyle) {
+		this.stylesEntry.addCurrencyStyle(currencyStyle);
+	}
+
+	void addDateStyle(DateStyle dateStyle) {
+		this.stylesEntry.addDateStyle(dateStyle);
+	}
+
+	void addTextStyle(FHTextStyle fhTextStyle) {
+		this.stylesEntry.addTextStyle(fhTextStyle);
+	}
 }

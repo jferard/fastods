@@ -126,7 +126,7 @@ public class DateStyle implements DataStyle {
 	 */
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.getStyles().addDateStyle(this);
+		odsFile.addDateStyle(this);
 	}
 
 	/**

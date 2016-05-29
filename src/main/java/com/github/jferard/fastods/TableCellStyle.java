@@ -108,8 +108,8 @@ public class TableCellStyle implements StyleTag {
 		this.borderByPosition = borderByPosition;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addStyleTag(this);
+	void addToFile(final OdsFile odsFile) {
+		odsFile.addStyleTag(this);
 	}
 
 	/**

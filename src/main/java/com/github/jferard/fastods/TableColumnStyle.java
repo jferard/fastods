@@ -70,8 +70,8 @@ public class TableColumnStyle implements StyleTag {
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getContent().addStyleTag(this);
+	void addToFile(final OdsFile odsFile) {
+		odsFile.addStyleTag(this);
 	}
 
 	/**

@@ -22,6 +22,7 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -35,9 +36,13 @@ import java.util.Calendar;
  *         table:table/table:table-row/table:table-cell
  */
 public class TableCell {
+	
+	/**
+	 * 19.385 office:value-type
+	 */
 	public static enum Type {
-		CURRENCY("currency"), DATE("date"), FLOAT("float"), PERCENTAGE(
-				"percentage"), STRING("string");
+		BOOLEAN("boolean"), CURRENCY("currency"), DATE("date"), FLOAT("float"), PERCENTAGE(
+				"percentage"), STRING("string"), TIME("time"), VOID("void");
 
 		private final String attrValue;
 
@@ -52,10 +57,16 @@ public class TableCell {
 
 	public static final Type DEFAULT_TYPE = Type.STRING;
 
+	/**
+	 * XML Schema Part 2, 3.2.7 dateTime
+	 */
 	private static final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd");
-	private static final SimpleDateFormat VALUE_FORMAT = new SimpleDateFormat(
-			"dd.MM.yy");
+			"yyyy-MM-dd'T'HH:mm:ss.SSS");
+	/**
+	 * XML Schema Part 2, 3.2.6 duration
+	 */
+	private static final SimpleDateFormat TIME_VALUE_FORMAT = new SimpleDateFormat(
+			"'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'");
 	private final int nCol;
 	private int nColumnsSpanned;
 	private final int nRow;
@@ -63,12 +74,20 @@ public class TableCell {
 	private final OdsFile odsFile;
 	private String sCurrency;
 	private String sDateValue;
+	private String sValue;
 	private String sText;
 
-	private String sValue;
+	/**
+	 * 19.384 office:value
+	 */
+	private String sBooleanValue;
 	private Type valueType;
 
 	private TableCellStyle style;
+
+	private String sStringValue;
+
+	private String sTimeValue;
 
 	/**
 	 * A table cell.
@@ -86,7 +105,7 @@ public class TableCell {
 		this.nRow = nRow;
 		this.nCol = nCol;
 		this.valueType = valuetype;
-		this.sValue = value;
+		this.sBooleanValue = value;
 		this.sDateValue = "";
 		this.nColumnsSpanned = 0;
 		this.nRowsSpanned = 0;
@@ -103,16 +122,28 @@ public class TableCell {
 				this.valueType.attrValue);
 
 		switch (this.valueType) {
+		case BOOLEAN:
+			util.appendAttribute(appendable, "office:boolean-value", this.sBooleanValue);
+			break;
 		case CURRENCY:
-			util.appendAttribute(appendable, "office:value", this.sCurrency);
+			util.appendAttribute(appendable, "office:currency", this.sCurrency);
+			//$FALL-THROUGH$
+		case FLOAT:
+		case PERCENTAGE:
+			util.appendAttribute(appendable, "office:value", this.sValue);
 			break;
 		case DATE:
-			util.appendAttribute(appendable, "office:value", this.sDateValue);
+			util.appendAttribute(appendable, "office:date-value", this.sDateValue);
 			break;
 		case STRING:
+			util.appendAttribute(appendable, "office:string-value", this.sStringValue);
 			break;
+		case TIME:
+			util.appendAttribute(appendable, "office:time-value", this.sTimeValue);
+			break;
+		case VOID:
 		default:
-			util.appendAttribute(appendable, "office:value", this.sValue);
+			break;
 		}
 
 		if (this.nColumnsSpanned > 0) {
@@ -125,16 +156,26 @@ public class TableCell {
 		}
 
 		appendable.append("><text:p>")
-				.append(util.escapeXMLContent(this.sValue)).append("</text:p>");
+				.append(util.escapeXMLContent(this.sBooleanValue)).append("</text:p>");
 		appendable.append("</table:table-cell>");
 	}
 
+	/**
+	 * Return the currently set boolean value.
+	 *
+	 * @return The currency value
+	 */
+	public String getBooleanValue() {
+		return this.sBooleanValue;
+	}
+	
 	/**
 	 * @return The number of columns that this cell spans overs.
 	 */
 	public int getColumnsSpanned() {
 		return this.nColumnsSpanned;
 	}
+	
 
 	/**
 	 * Return the currently set currency value.<br>
@@ -146,6 +187,17 @@ public class TableCell {
 	public String getCurrency() {
 		return this.sCurrency;
 	}
+	
+	/**
+	 * Return the currently set currency value.<br>
+	 * There is no check if this is really a table cell with style
+	 * STYLE_CURRENCY.
+	 *
+	 * @return The currency value
+	 */
+	public String getCurrencyValue() {
+		return this.sValue;
+	}
 
 	/**
 	 * @return The date value set by setDateValue() or an empty string if
@@ -154,33 +206,66 @@ public class TableCell {
 	public String getDateValue() {
 		return this.sDateValue;
 	}
-
+	
+	/**
+	 * @return The float value set by setFloatValue() or an empty string if
+	 *         nothing was set.
+	 */
+	public String getFloatValue() {
+		return this.sValue;
+	}
+	
+	/**
+	 * @return The percentage value set by setPercentageValue() or an empty string if
+	 *         nothing was set.
+	 */
+	public String getPercentageValue() {
+		return this.sValue;
+	}
+	
+	
 	/**
 	 * @return The number of rows that this cell spans overs.
 	 */
 	public int getRowsSpanned() {
 		return this.nRowsSpanned;
 	}
+	
+
+	/**
+	 * @return The string value set by setStringValue() or an empty string if
+	 *         nothing was set.
+	 */
+	public String getStringValue() {
+		return this.sStringValue;
+	}
+	
+	/**
+	 * @return The timee value set by setTimeValue() or an empty string if
+	 *         nothing was set.
+	 */
+	public String getTimeValue() {
+		return this.sTimeValue;
+	}
+	
 
 	public String getStyleName() {
 		return this.style.getName();
 	}
 
-	/**
-	 * Get the text within this cell.
-	 *
-	 * @return A String with the text
-	 */
-	public String getText() {
-		return this.sText;
-	}
-
-	public String getValue() {
-		return this.sValue;
-	}
-
 	public Type getValueType() {
 		return this.valueType;
+	}
+
+	/**
+	 * Set the currency value and table cell style to STYLE_CURRENCY.
+	 *
+	 * @param currency
+	 *            The currency value
+	 */
+	public void setBooleanValue(final Boolean value) {
+		this.sBooleanValue= value.toString();
+		this.valueType = TableCell.Type.BOOLEAN;
 	}
 
 	/**
@@ -203,7 +288,8 @@ public class TableCell {
 	 * @param currency
 	 *            The currency value
 	 */
-	public void setCurrency(final String currency) {
+	public void setCurrencyValue(final Number value, final String currency) {
+		this.sBooleanValue= value.toString();
 		this.sCurrency = currency;
 		this.valueType = TableCell.Type.CURRENCY;
 	}
@@ -216,10 +302,59 @@ public class TableCell {
 	 */
 	public void setDateValue(final Calendar cal) {
 		this.sDateValue = TableCell.DATE_VALUE_FORMAT.format(cal.getTime());
-		this.sValue = TableCell.VALUE_FORMAT.format(cal.getTime());
 		this.valueType = TableCell.Type.DATE;
 	}
+	
+	public void setDateValue(Date value) {
+		this.sDateValue = TableCell.DATE_VALUE_FORMAT.format(value);
+		this.valueType = TableCell.Type.DATE;
+	}
+	
+	/**
+	 * Set the float value for a cell with TableCell.Type.FLOAT.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
+	public void setFloatValue(final Number value) {
+		this.sValue = value.toString();
+		this.valueType = TableCell.Type.FLOAT;
+	}
+	
+	/**
+	 * Set the float value for a cell with TableCell.Type.STRING.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
+	public void setObjectValue(final Object value) {
+		if (value == null)
+			return;
 
+		Object retValue;
+		if (value instanceof String)
+			this.setStringValue((String) value);
+		else if (value instanceof Number)
+			this.setFloatValue((Number) value);
+		else if (value instanceof Date) {
+			this.setDateValue((Date) value);
+		} else if (value instanceof Calendar) {
+			this.setDateValue((Calendar) value);
+		} else
+			this.setStringValue(value.toString());
+	}
+
+	/**
+	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
+	public void setPercentageValue(final Number value) {
+		this.sValue = value.toString();
+		this.valueType = TableCell.Type.PERCENTAGE;
+	}
+	
 	/**
 	 * To merge cells, set the number of rows that should be merged.
 	 *
@@ -233,30 +368,25 @@ public class TableCell {
 			this.nRowsSpanned = n;
 		}
 	}
+	
+	/**
+	 * Set the float value for a cell with TableCell.Type.STRING.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
+	public void setStringValue(final String value) {
+		this.sStringValue = value;
+		this.valueType = TableCell.Type.STRING;
+	}
 
 	public void setStyle(final TableCellStyle style) {
 		style.addToFile(this.odsFile);
 		this.style = style;
 	}
 
-	public void setText(final String text) {
-		this.sText = text;
+	public void setTimeValue(final Calendar cal) {
+		this.sTimeValue = TableCell.TIME_VALUE_FORMAT.format(cal.getTime());
+		this.valueType = TableCell.Type.TIME;
 	}
-
-	public void setValue(final String value) {
-		this.sValue = value;
-	}
-
-	/**
-	 * Set the type of the value for this cell.
-	 *
-	 * @param valueType
-	 *            - TableCell.STYLE_STRING,TableCell.STYLE_FLOAT,TableCell.
-	 *            STYLE_PERCENTAGE,TableCell.STYLE_CURRENCY or
-	 *            TableCell.STYLE_DATE
-	 */
-	public void setValueType(final Type valueType) {
-		this.valueType = valueType;
-	}
-
 }

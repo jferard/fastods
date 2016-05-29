@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.github.jferard.fastods.TableCell.Type;
+import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -62,6 +63,7 @@ public class Table implements NamedObject {
 	private final ConfigItem zoomType;
 
 	private final ConfigItem zoomValue;
+	private Util util;
 
 	Table(final OdsFile odsFile, final String sName) {
 		this.odsFile = odsFile;
@@ -93,8 +95,8 @@ public class Table implements NamedObject {
 		this.qTableRows = FullList.newList();
 	}
 
-	void appendXMLToContentEntry(final Util util,
-			final Appendable appendable) throws IOException {
+	void appendXMLToContentEntry(final Util util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.sName);
 		util.appendAttribute(appendable, "table:style-name",
@@ -104,13 +106,13 @@ public class Table implements NamedObject {
 		util.appendAttribute(appendable, "form:automatic-focus", false);
 		util.appendAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
-//		this.appendColumnStyles(appendable, util);
+		// this.appendColumnStyles(appendable, util);
 		this.appendRows(appendable, util);
 		appendable.append("</table:table>");
 	}
 
-	void appendXMLToSettingsEntry(final Util util,
-			final Appendable appendable) throws IOException {
+	void appendXMLToSettingsEntry(final Util util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.sName);
 		appendable.append(">");
@@ -150,7 +152,7 @@ public class Table implements NamedObject {
 		// -------------------------------------------------------------
 		TableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
-			tr = new TableRow(this.odsFile, nRow);
+			tr = new TableRow(this.odsFile, this.util, nRow);
 			this.qTableRows.set(nRow, tr);
 		}
 		return tr.getCell(nCol);
@@ -179,12 +181,17 @@ public class Table implements NamedObject {
 
 		TableRow tr;
 		if (nRow >= this.qTableRows.size()) {
-			tr = new TableRow(this.odsFile, nRow);
+			tr = new TableRow(this.odsFile, this.util, nRow);
 			this.qTableRows.set(nRow, tr);
 		} else {
 			tr = this.qTableRows.get(nRow);
 		}
 		return tr;
+	}
+
+	public TableRow getRow(final String sPos) throws FastOdsException {
+		final int nRow = this.util.positionToRow(sPos);
+		return getRow(nRow);
 	}
 
 	public List<TableRow> getRows() {
@@ -204,85 +211,9 @@ public class Table implements NamedObject {
 		final int nRow = this.qTableRows.size();
 		Table.checkRow(nRow);
 
-		final TableRow tr = new TableRow(this.odsFile, nRow);
+		final TableRow tr = new TableRow(this.odsFile, this.util, nRow);
 		this.qTableRows.add(tr);
 		return tr;
-	}
-
-	/**
-	 * Set the value of a cell.
-	 *
-	 * @param nRow
-	 *            The row
-	 * @param nCol
-	 *            The column
-	 * @param type
-	 *            The type of the value,
-	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or
-	 *            TableCell.STYLE_PERCENTAGE
-	 * @param value
-	 *            The value to be set
-	 * @return true
-	 * @throws FastOdsException
-	 *             Thrown when nRow or nCol have wrong values.
-	 */
-	public boolean setCell(final int nRow, final int nCol, final Type type,
-			final String value) throws FastOdsException {
-		Table.checkRow(nRow);
-		Table.checkCol(nCol);
-		final TableRow tr = this.getRow(nRow);
-		tr.setCell(nCol, type, value);
-		return true;
-	}
-
-	/**
-	 * Set the value of a cell.
-	 *
-	 * @param nRow
-	 *            The row
-	 * @param nCol
-	 *            The column
-	 * @param valuetype
-	 *            The type of the value,
-	 *            TableCell.STYLE_STRING,TableCell.STYLE_FLOAT or
-	 *            TableCell.STYLE_PERCENTAGE
-	 * @param value
-	 *            The value to be set
-	 * @param ts
-	 *            The TableFamilyStyle to be used for this cell.
-	 * @return true
-	 * @throws FastOdsException
-	 *             Thrown when nRow or nCol have wrong values.
-	 */
-	public boolean setCell(final int nRow, final int nCol, final Type valuetype,
-			final String value, final TableCellStyle ts)
-			throws FastOdsException {
-
-		this.setCell(nRow, nCol, valuetype, value);
-		this.setCellStyle(nRow, nCol, ts);
-		return true;
-	}
-
-	/**
-	 * Set the cell style for the specified cell.
-	 *
-	 * @param nRow
-	 *            The row number
-	 * @param nCol
-	 *            The column number
-	 * @param ts
-	 *            The TableFamilyStyle to be used
-	 * @return TRUE The cell style was set
-	 * @throws FastOdsException
-	 *             when nRow or nCol have wrong values
-	 */
-	public boolean setCellStyle(final int nRow, final int nCol,
-			final TableCellStyle ts) throws FastOdsException {
-		Table.checkRow(nRow);
-		Table.checkCol(nCol);
-		final TableRow tr = this.getRow(nRow);
-		tr.setCellStyle(nCol, ts);
-		return true;
 	}
 
 	/**
@@ -322,13 +253,17 @@ public class Table implements NamedObject {
 		this.style = style;
 	}
 
+	public void addData(DataWrapper data) {
+		data.addToTable(this);
+	}
+
 	private void appendColumnStyles(final Appendable appendable,
 			final Util util) throws IOException {
 		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
 				.iterator();
 		if (!iterator.hasNext())
 			return;
-		
+
 		TableColumnStyle ts0 = TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE;
 		int nCount = 1;
 		TableColumnStyle ts1 = iterator.next();
@@ -345,7 +280,8 @@ public class Table implements NamedObject {
 
 		}
 		ts1.appendXMLToTable(util, appendable, nCount);
-		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.appendXMLToTable(util, appendable, 1);
+		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.appendXMLToTable(util,
+				appendable, 1);
 	}
 
 	private void appendRows(final Appendable appendable, final Util util)
@@ -376,5 +312,4 @@ public class Table implements NamedObject {
 							.append("]").toString());
 		}
 	}
-
 }

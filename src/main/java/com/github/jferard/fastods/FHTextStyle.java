@@ -90,8 +90,8 @@ public class FHTextStyle implements NamedObject {
 		this.nFontUnderlineStyle = nFontUnderlineStyle;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.getStyles().addTextStyle(this);
+	void addToFile(final OdsFile odsFile) {
+		odsFile.addTextStyle(this);
 	}
 
 	public void appendXMLToStylesEntry(final Util util, final Appendable appendable)

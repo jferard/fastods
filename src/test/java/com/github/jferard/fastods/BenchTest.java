@@ -76,14 +76,15 @@ public class BenchTest {
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < COL_COUNT; x++) {
-				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
+				TableCell cell = row.getCell(x);
+				cell.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 
 		file.save();
 	}
 	
-	@Test
+//	@Test
 	public final void testFast2() throws FastOdsException {
 		// Open the file.
 		OdsFile file = new OdsFile("f60columns.ods");
@@ -94,7 +95,8 @@ public class BenchTest {
 		for (int y = 0; y < 3*ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 3*COL_COUNT; x++) {
-				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
+				TableCell cell = row.getCell(x);
+				cell.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 
@@ -123,7 +125,7 @@ public class BenchTest {
 		file.save();
 	}
 	
-	@Test
+//	@Test
 	public final void testSimple2() throws org.simpleods.SimpleOdsException {
 		// Open the file.
 		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
@@ -144,8 +146,7 @@ public class BenchTest {
 		file.save();
 	}
 	
-
-	@Test
+//	@Test
 	public final void testJOpen() throws IOException {
 		// the file.
 		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel()).getSheet(0);

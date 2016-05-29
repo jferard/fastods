@@ -78,7 +78,7 @@ public class CurrencyStyle implements DataStyle {
 
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.getStyles().addCurrencyStyle(this);
+		odsFile.addCurrencyStyle(this);
 	}
 
 	/**

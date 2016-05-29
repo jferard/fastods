@@ -165,7 +165,7 @@ public class PageStyle {
 	}
 
 	void addToFile(final OdsFile odsFile) {
-		odsFile.getStyles().addPageStyle(this);
+		odsFile.addPageStyle(this);
 	}
 
 	/**
