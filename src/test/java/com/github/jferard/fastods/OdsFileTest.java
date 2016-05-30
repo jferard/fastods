@@ -101,11 +101,11 @@ public class OdsFileTest {
 						cell.setCurrencyValue(150.5, "€"); break;
 					case 2:
 						cell.setDateValue(Calendar.getInstance());
-						final DateStyle build0 = DateStyle.builder("trgfgbf").build();
+//						final DateStyle build0 = DateStyle.builder("trgfgbf").build();
 //						build0.addToFile(file);
-						final TableCellStyle build1 = TableCellStyle.builder("ttete").dataStyle(build0).build();
+//						final TableCellStyle build1 = TableCellStyle.builder("ttete").dataStyle(build0).build();
 //						build1.addToFile(file);
-						cell.setStyle(build1);
+//						cell.setStyle(build1);
 						 break;
 					case 3:
 						cell.setPercentageValue(70.3); break;

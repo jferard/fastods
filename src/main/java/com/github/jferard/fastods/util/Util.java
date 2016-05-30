@@ -184,25 +184,24 @@ public class Util {
 	 * @return
 	 */
 	public String formatTimeInterval(final long milliseconds) {
-		StringBuilder sb = new StringBuilder('P');
 		long curMilliseconds = milliseconds;
-
+		StringBuilder sb = new StringBuilder().append('P');
 		final long days = TimeUnit.MILLISECONDS.toDays(curMilliseconds);
 		sb.append(days).append("DT");
 		curMilliseconds -= TimeUnit.DAYS.toMillis(days);
 
 		final long hours = TimeUnit.MILLISECONDS.toHours(curMilliseconds);
-		sb.append(hours).append("H");
+		sb.append(hours).append('H');
 		curMilliseconds -= TimeUnit.HOURS.toMillis(hours);
 
 		final long minutes = TimeUnit.MILLISECONDS.toMinutes(curMilliseconds);
-		sb.append(minutes).append("M");
+		sb.append(minutes).append('M');
 		curMilliseconds -= TimeUnit.MINUTES.toMillis(minutes);
-		
+
 		final long seconds = TimeUnit.MILLISECONDS.toSeconds(curMilliseconds);
 		sb.append(seconds);
 		curMilliseconds -= TimeUnit.SECONDS.toMillis(seconds);
-		
+
 		sb.append('.').append(curMilliseconds).append('S');
 		return sb.toString();
 	}

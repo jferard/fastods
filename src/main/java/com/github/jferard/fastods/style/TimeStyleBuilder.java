@@ -29,13 +29,11 @@ import com.github.jferard.fastods.style.DateStyle.Format;
  *
  *         This file DateStyleBuilder.java is part of FastODS.
  */
-public class DateStyleBuilder {
-	private boolean bAutomaticOrder;
-
+public class TimeStyleBuilder {
 	/**
 	 * The default date format DATEFORMAT_DDMMYY.
 	 */
-	private DateStyle.Format dateFormat;
+	private TimeStyle.Format timeFormat;
 
 	/**
 	 * The name of this style.
@@ -52,7 +50,7 @@ public class DateStyleBuilder {
 	 * @param sName
 	 *            The name of the number style.
 	 */
-	protected DateStyleBuilder(final String sName) {
+	protected TimeStyleBuilder(final String sName) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 		
@@ -60,7 +58,6 @@ public class DateStyleBuilder {
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.sName = sName;
-		this.bAutomaticOrder = false;
 	}
 	
 	/**
@@ -70,7 +67,7 @@ public class DateStyleBuilder {
 	 * @param country
 	 *            The two letter country code, e.g. 'US'
 	 */
-	public DateStyleBuilder country(final String country) {
+	public TimeStyleBuilder country(final String country) {
 		this.sCountry = country.toUpperCase();
 		return this;
 	}
@@ -82,30 +79,17 @@ public class DateStyleBuilder {
 	 * @param language
 	 *            The two letter language code, e.g. 'en'
 	 */
-	public DateStyleBuilder language(final String language) {
+	public TimeStyleBuilder language(final String language) {
 		this.sLanguage = language.toLowerCase();
-		return this;
-	}
-
-	/**
-	 * The automatic-order attribute can be used to automatically order data to
-	 * match the default order<br>
-	 * for the language and country of the date style.
-	 *
-	 * @param bAutomatic
-	 * @return this for fluent style
-	 */
-	public DateStyleBuilder automaticOrder(final boolean bAutomatic) {
-		this.bAutomaticOrder = bAutomatic;
 		return this;
 	}
 
 	/**
 	 * @return the DateStyle
 	 */
-	public DateStyle build() {
-		return new DateStyle(this.sName, this.dateFormat, this.sCountry,
-				this.sLanguage, this.bAutomaticOrder);
+	public TimeStyle build() {
+		return new TimeStyle(this.sName, this.timeFormat, this.sCountry,
+				this.sLanguage);
 	}
 
 	/**
@@ -121,8 +105,8 @@ public class DateStyleBuilder {
 	 *            The date format to be used.
 	 * @return this for fluent style
 	 */
-	public DateStyleBuilder dateFormat(final DateStyle.Format format) {
-		this.dateFormat = format;
+	public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
+		this.timeFormat = format;
 		return this;
 	}
 }

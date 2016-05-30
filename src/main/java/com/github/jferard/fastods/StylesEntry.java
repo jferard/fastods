@@ -32,6 +32,8 @@ import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.NumberStyle;
 import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.PercentageStyle;
+import com.github.jferard.fastods.style.TimeStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -65,7 +67,9 @@ public class StylesEntry implements OdsEntry {
 	private final Map<String, PageStyle> qPageStyles;
 
 	private final Map<String, FHTextStyle> qTextStyles;
-	private HashMap<String, BooleanStyle> qBooleanStyles;
+	private final Map<String, BooleanStyle> qBooleanStyles;
+	private final Map<String, PercentageStyle> qPercentageStyles;
+	private final Map<String, TimeStyle> qTimeStyles;
 
 	/**
 	 * @param odsFile
@@ -78,6 +82,8 @@ public class StylesEntry implements OdsEntry {
 		this.qPageStyles = new HashMap<String, PageStyle>();
 		this.qTextStyles = new HashMap<String, FHTextStyle>();
 		this.qDateStyles = new HashMap<String, DateStyle>();
+		this.qPercentageStyles = new HashMap<String, PercentageStyle>();
+		this.qTimeStyles = new HashMap<String, TimeStyle>();
 	}
 
 	public void addBooleanStyle(BooleanStyle booleanStyle) {
@@ -121,8 +127,16 @@ public class StylesEntry implements OdsEntry {
 		this.qPageStyles.put(ps.getName(), ps);
 	}
 
+	public void addPercentageStyle(PercentageStyle percentageStyle) {
+		this.qPercentageStyles.put(percentageStyle.getName(), percentageStyle);
+	}
+
 	public void addTextStyle(final FHTextStyle ts) {
 		this.qTextStyles.put(ts.getName(), ts);
+	}
+
+	public void addTimeStyle(TimeStyle timeStyle) {
+		this.qTimeStyles.put(timeStyle.getName(), timeStyle);
 	}
 
 	@Override
@@ -154,6 +168,13 @@ public class StylesEntry implements OdsEntry {
 		for (final NumberStyle ns : this.qNumberStyles.values())
 			ns.appendXMLToStylesEntry(util, writer);
 
+		for (final PercentageStyle ps : this.qPercentageStyles.values())
+			ps.appendXMLToStylesEntry(util, writer);
+		
+		for (final TimeStyle ps : this.qTimeStyles.values())
+			ps.appendXMLToStylesEntry(util, writer);
+		
+		
 		boolean hasHeader = false;
 		boolean hasFooter = false;
 		for (final PageStyle ps : this.qPageStyles.values()) {

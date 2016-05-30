@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods.style;
 
+import java.util.Locale;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
@@ -39,8 +41,9 @@ public class BooleanStyleBuilder {
 	 */
 	protected BooleanStyleBuilder(final String name) {
 		this.sName = name;
-		this.sLanguage = "";
-		this.sCountry = "";
+		final Locale locale = Locale.getDefault();
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
 		this.bVolatile = true;
 	}
 

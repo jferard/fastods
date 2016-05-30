@@ -55,8 +55,8 @@ public class CurrencyStyle implements DataStyle {
 	private final int nDecimalPlaces;
 	private final int nMinIntegerDigits;
 	private final String sCountry;
-	private final String sCurrencySymbol;
 	private final String sLanguage;
+	private final String sCurrencySymbol;
 	private final String sName;
 	private final String sNegativeValueColor;
 
@@ -202,9 +202,9 @@ public class CurrencyStyle implements DataStyle {
 	private void appendCurrencySymbol(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:currency-symbol");
-		if (this.sLanguage.length() > 0)
+		if (this.sLanguage != null)
 			util.appendAttribute(appendable, "number:language", this.sLanguage);
-		if (this.sCountry.length() > 0)
+		if (this.sCountry != null)
 			util.appendAttribute(appendable, "number:country", this.sCountry);
 		appendable.append(">");
 		appendable.append("\"")

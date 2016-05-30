@@ -19,6 +19,9 @@
 */
 package com.github.jferard.fastods.style;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
 
 /**
@@ -36,8 +39,8 @@ public class CurrencyStyleBuilder {
 	private int nDecimalPlaces;
 	private int nMinIntegerDigits;
 	private String sCountry;
-	private String sCurrencySymbol;
 	private String sLanguage;
+	private String sCurrencySymbol;
 	private final String sName;
 	private String sNegativeValueColor;
 
@@ -48,10 +51,11 @@ public class CurrencyStyleBuilder {
 	 */
 	protected CurrencyStyleBuilder(final String name) {
 		this.sName = name;
-		this.sCurrencySymbol = "€";
+		final Locale locale = Locale.getDefault();
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		this.sCurrencySymbol = NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol(locale);
 		this.sNegativeValueColor = "#FF0000";
-		this.sLanguage = "";
-		this.sCountry = "";
 		this.nDecimalPlaces = 2;
 		this.nMinIntegerDigits = 1;
 		this.bGrouping = false;
@@ -79,6 +83,18 @@ public class CurrencyStyleBuilder {
 		return this;
 	}
 
+	/**
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 *
+	 * @param language
+	 *            The two letter language code, e.g. 'en'
+	 */
+	public CurrencyStyleBuilder language(final String language) {
+		this.sLanguage = language.toLowerCase();
+		return this;
+	}
+	
 	/**
 	 * Change the currency symbol, e.g. '$'.
 	 *
@@ -109,18 +125,6 @@ public class CurrencyStyleBuilder {
 	 */
 	public CurrencyStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.nDecimalPlaces = decimalPlaces;
-		return this;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public CurrencyStyleBuilder language(final String language) {
-		this.sLanguage = language.toLowerCase();
 		return this;
 	}
 

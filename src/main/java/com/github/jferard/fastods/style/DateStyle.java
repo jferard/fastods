@@ -80,7 +80,6 @@ public class DateStyle implements DataStyle {
 	/**
 	 * The default date format Format.DDMMYY.
 	 */
-	public static final Format DEFAULT_FORMAT = Format.DDMMYY;
 	private static final String DASH = "<number:text>-</number:text>";
 	private static final String DAY = "<number:day/>";
 	private static final String DOT = "<number:text>.</number:text>";
@@ -101,6 +100,8 @@ public class DateStyle implements DataStyle {
 
 	private final boolean bAutomaticOrder;
 	private final Format dateFormat;
+	private final String sCountry;
+	private final String sLanguage;
 
 	/**
 	 * The name of this style.
@@ -117,10 +118,20 @@ public class DateStyle implements DataStyle {
 	 *            The odsFile to which this style belongs to.
 	 */
 	protected DateStyle(final String sName, final Format dateFormat,
+			final String sCountry, final String sLanguage,
 			final boolean bAutomaticOrder) {
 		this.sName = sName;
 		this.dateFormat = dateFormat;
+		this.sCountry = sCountry;
+		this.sLanguage = sLanguage;
 		this.bAutomaticOrder = bAutomaticOrder;
+	}
+
+	/**
+	 * @return The two letter country code, e.g. 'US'
+	 */
+	public String getCountry() {
+		return this.sCountry;
 	}
 
 	/**
@@ -130,6 +141,13 @@ public class DateStyle implements DataStyle {
 	@Override
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.addDateStyle(this);
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'.
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
 	}
 
 	/**
@@ -143,45 +161,56 @@ public class DateStyle implements DataStyle {
 		appendable.append("<number:date-style");
 		util.appendAttribute(appendable, "style:name", this.sName);
 		util.appendEAttribute(appendable, "number:automatic-order",
-				this.isAutomaticOrder());
-		appendable.append(">");
+				this.bAutomaticOrder);
+		if (this.sLanguage != null)
+			util.appendAttribute(appendable, "number:language", this.sLanguage);
+		if (this.sCountry != null)
+			util.appendAttribute(appendable, "number:country", this.sCountry);
+		if (this.dateFormat == null) {
+			util.appendEAttribute(appendable, "number:format-source",
+					"language");
+			appendable.append("/>");
+		} else {
+			util.appendEAttribute(appendable, "number:format-source", "fixed");
+			appendable.append(">");
 
-		switch (this.dateFormat) {
-		case TMMMMYYYY:
-			appendable.append(DateStyle.DAY).append(DateStyle.DOT_SPACE)
-					.append(DateStyle.LONG_TEXTUAL_MONTH)
-					.append(DateStyle.SPACE).append(DateStyle.LONG_YEAR);
-			break;
-		case MMMM:
-			appendable.append(DateStyle.LONG_TEXTUAL_MONTH);
-			break;
-		case MMYY:
-			appendable.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
-					.append(DateStyle.YEAR);
-			break;
-		case WW:
-			appendable.append(DateStyle.WEEK);
-			break;
-		case YYYYMMDD:
-			appendable.append(DateStyle.LONG_YEAR).append(DateStyle.DASH)
-					.append(DateStyle.LONG_MONTH).append(DateStyle.DASH)
-					.append(DateStyle.LONG_DAY);
-			break;
-		case DDMMYYYY:
-			appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
-					.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
-					.append(DateStyle.LONG_YEAR);
-			break;
-		case DDMMYY:
-			appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
-					.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
-					.append(DateStyle.YEAR);
-			break;
-		default:
-			throw new IllegalStateException();
+			switch (this.dateFormat) {
+			case TMMMMYYYY:
+				appendable.append(DateStyle.DAY).append(DateStyle.DOT_SPACE)
+						.append(DateStyle.LONG_TEXTUAL_MONTH)
+						.append(DateStyle.SPACE).append(DateStyle.LONG_YEAR);
+				break;
+			case MMMM:
+				appendable.append(DateStyle.LONG_TEXTUAL_MONTH);
+				break;
+			case MMYY:
+				appendable.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
+						.append(DateStyle.YEAR);
+				break;
+			case WW:
+				appendable.append(DateStyle.WEEK);
+				break;
+			case YYYYMMDD:
+				appendable.append(DateStyle.LONG_YEAR).append(DateStyle.DASH)
+						.append(DateStyle.LONG_MONTH).append(DateStyle.DASH)
+						.append(DateStyle.LONG_DAY);
+				break;
+			case DDMMYYYY:
+				appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
+						.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
+						.append(DateStyle.LONG_YEAR);
+				break;
+			case DDMMYY:
+				appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
+						.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
+						.append(DateStyle.YEAR);
+				break;
+			default:
+				throw new IllegalStateException();
+			}
+
+			appendable.append("</number:date-style>");
 		}
-
-		appendable.append("</number:date-style>");
 	}
 
 	/**

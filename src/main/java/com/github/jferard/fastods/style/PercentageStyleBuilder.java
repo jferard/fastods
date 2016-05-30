@@ -29,7 +29,7 @@ import com.github.jferard.fastods.style.NumberStyle.Type;
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public class NumberStyleBuilder {
+public class PercentageStyleBuilder {
 	private boolean bGrouping;
 	private boolean bNegativeValuesRed;
 	private boolean bVolatile;
@@ -51,7 +51,7 @@ public class NumberStyleBuilder {
 	 * @param sName
 	 *            The name of the number style, this name must be unique.
 	 */
-	public NumberStyleBuilder(final String sName) {
+	public PercentageStyleBuilder(final String sName) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 		
@@ -60,7 +60,6 @@ public class NumberStyleBuilder {
 		final Locale locale = Locale.getDefault();
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
-		this.numberType = NumberStyle.DEFAULT_TYPE;
 		this.nDecimalPlaces = 2;
 		this.nMinIntegerDigits = 1;
 		this.nMinExponentDigits = 0;
@@ -71,10 +70,9 @@ public class NumberStyleBuilder {
 		this.bNegativeValuesRed = false;
 	}
 
-	public NumberStyle build() {
-		return new NumberStyle(this.sName, this.sNegativeValueColor,
-				this.sLanguage, this.sCountry, this.numberType,
-				this.nDecimalPlaces, this.nMinIntegerDigits,
+	public PercentageStyle build() {
+		return new PercentageStyle(this.sName, this.sNegativeValueColor,
+				this.sLanguage, this.sCountry, this.nDecimalPlaces, this.nMinIntegerDigits,
 				this.nMinExponentDigits, this.nMinNumeratorDigits,
 				this.nMinDenominatorDigits, this.bGrouping, this.bVolatile,
 				this.bNegativeValuesRed);
@@ -88,7 +86,7 @@ public class NumberStyleBuilder {
 	 *            The two letter country code, e.g. 'US'
 	 * @return this for fluent style
 	 */
-	public NumberStyleBuilder country(final String country) {
+	public PercentageStyleBuilder country(final String country) {
 		this.sCountry = country.toUpperCase();
 		return this;
 	}
@@ -100,7 +98,7 @@ public class NumberStyleBuilder {
 	 *            - The number of digits
 	 * @return this for fluent style
 	 */
-	public final NumberStyleBuilder decimalPlaces(final int decimalPlaces) {
+	public final PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.nDecimalPlaces = decimalPlaces;
 		return this;
 	}
@@ -113,7 +111,7 @@ public class NumberStyleBuilder {
 	 * @param nDenominator
 	 * @return this for fluent style
 	 */
-	public NumberStyleBuilder fractionValues(final int nNumerator,
+	public PercentageStyleBuilder fractionValues(final int nNumerator,
 			final int nDenominator) {
 		this.nMinNumeratorDigits = nNumerator;
 		this.nMinDenominatorDigits = nDenominator;
@@ -130,7 +128,7 @@ public class NumberStyleBuilder {
 	 * @return this for fluent style
 	 *
 	 */
-	public NumberStyleBuilder negativeValuesRed(final boolean bValue) {
+	public PercentageStyleBuilder negativeValuesRed(final boolean bValue) {
 		this.bNegativeValuesRed = bValue;
 		this.bVolatile = bValue;
 		return this;
@@ -148,7 +146,7 @@ public class NumberStyleBuilder {
 	 *            The number type to be used.
 	 * @return this for fluent style
 	 */
-	public NumberStyleBuilder numberType(final Type numberType) {
+	public PercentageStyleBuilder numberType(final Type numberType) {
 		this.numberType = numberType;
 		return this;
 	}
@@ -173,7 +171,7 @@ public class NumberStyleBuilder {
 	 *            The minimum of exponent digits to be used
 	 * @return this for fluent style
 	 */
-	public NumberStyleBuilder setMinExponentDigits(
+	public PercentageStyleBuilder setMinExponentDigits(
 			final int minExponentDigits) {
 		this.nMinExponentDigits = minExponentDigits;
 		this.numberType = NumberStyle.Type.SCIENTIFIC;
@@ -187,7 +185,7 @@ public class NumberStyleBuilder {
 	 *            The number of leading zeros
 	 * @return this for fluent style
 	 */
-	public final NumberStyleBuilder setMinIntegerDigits(
+	public final PercentageStyleBuilder setMinIntegerDigits(
 			final int minIntegerDigits) {
 		this.nMinIntegerDigits = minIntegerDigits;
 		return this;
@@ -202,7 +200,7 @@ public class NumberStyleBuilder {
 	 *            false, the thousands separator is not shown
 	 * @return this for fluent style
 	 */
-	public NumberStyleBuilder thousandsSeparator(final boolean grouping) {
+	public PercentageStyleBuilder thousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
 		return this;
 	}

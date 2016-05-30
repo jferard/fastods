@@ -40,15 +40,9 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class NumberStyle implements DataStyle {
-	public static enum Type {
-		FRACTION, NORMAL, SCIENTIFIC;
-	}
-
-	public static final Type DEFAULT_TYPE = Type.NORMAL;
-
-	public static NumberStyleBuilder builder(final String sName) {
-		return new NumberStyleBuilder(sName);
+public class PercentageStyle implements DataStyle {
+	public static PercentageStyleBuilder builder(final String sName) {
+		return new PercentageStyleBuilder(sName);
 	}
 
 	private final boolean bGrouping;
@@ -63,11 +57,11 @@ public class NumberStyle implements DataStyle {
 	private final int nMinExponentDigits;
 	private final int nMinIntegerDigits;
 	private final int nMinNumeratorDigits;
-	private final Type numberType;
 	private final String sCountry;
 	private final String sLanguage;
 	private final String sName;
 	private final String sNegativeValueColor;
+	private Object numberType;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is
@@ -81,18 +75,16 @@ public class NumberStyle implements DataStyle {
 	 * @param nDecPlaces
 	 *            The number of decimal places to be shown.
 	 */
-	NumberStyle(final String sName, final String sNegativeValueColor,
+	PercentageStyle(final String sName, final String sNegativeValueColor,
 			final String sLanguage, final String sCountry,
-			final Type numberType, final int nDecimalPlaces,
-			final int nMinIntegerDigits, final int nMinExponentDigits,
-			final int nMinNumeratorDigits, final int nMinDenominatorDigits,
-			final boolean bGrouping, final boolean bVolatile,
-			final boolean bNegativeValuesRed) {
+			final int nDecimalPlaces, final int nMinIntegerDigits,
+			final int nMinExponentDigits, final int nMinNumeratorDigits,
+			final int nMinDenominatorDigits, final boolean bGrouping,
+			final boolean bVolatile, final boolean bNegativeValuesRed) {
 		this.sName = sName;
 		this.sNegativeValueColor = sNegativeValueColor;
 		this.sLanguage = sLanguage;
 		this.sCountry = sCountry;
-		this.numberType = numberType;
 		this.nDecimalPlaces = nDecimalPlaces;
 		this.nMinIntegerDigits = nMinIntegerDigits;
 		this.nMinExponentDigits = nMinExponentDigits;
@@ -105,7 +97,7 @@ public class NumberStyle implements DataStyle {
 
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.addNumberStyle(this);
+		odsFile.addPercentageStyle(this);
 	}
 
 	/**
@@ -117,7 +109,7 @@ public class NumberStyle implements DataStyle {
 	@Override
 	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<number:number-style");
+		appendable.append("<number:percentage-style");
 
 		// Only change the given name if bNegativeValuesRed is true and use
 		// this
@@ -146,7 +138,9 @@ public class NumberStyle implements DataStyle {
 			util.appendEAttribute(appendable, "number:grouping",
 					this.bGrouping);
 		}
-		appendable.append("/></number:number-style>");
+		appendable.append("/>");
+		appendable.append("<number:text>%</number:text>");
+		appendable.append("</number:percentage-style>");
 
 		// --------------------------------------------------------------------------
 		// For negative values, this is the default style and
@@ -154,15 +148,15 @@ public class NumberStyle implements DataStyle {
 		// the style for positive values
 		// --------------------------------------------------------------------------
 		if (this.bNegativeValuesRed) {
-				appendable.append("<number:number-style");
+			appendable.append("<number:percentage-style");
 
 			util.appendAttribute(appendable, "style:name", this.sName);
 
-			if (this.sLanguage != null) {
+			if (this.sLanguage.length() > 0) {
 				util.appendAttribute(appendable, "number:language",
 						this.sLanguage);
 			}
-			if (this.sCountry != null) {
+			if (this.sCountry.length() > 0) {
 				util.appendAttribute(appendable, "number:country",
 						this.sCountry);
 			}
@@ -180,11 +174,15 @@ public class NumberStyle implements DataStyle {
 				util.appendEAttribute(appendable, "number:grouping",
 						this.bGrouping);
 			}
-			appendable.append("/><style:map");
+			appendable.append("/>");
+			appendable.append("<number:text>%</number:text>");
+
+			appendable.append("<style:map");
 			util.appendAttribute(appendable, "style:condition", "value()>=0");
 			util.appendAttribute(appendable, "style:apply-style-name",
 					this.sName + "nn");
-			appendable.append("/></number:number-style>");
+			appendable.append("/>");
+			appendable.append("</number:percentage-style>");
 		}
 	}
 
@@ -265,29 +263,9 @@ public class NumberStyle implements DataStyle {
 	 */
 	private void appendNumberType(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-
-		switch (this.numberType) {
-		case SCIENTIFIC:
-			appendable.append("<number:scientific-number");
-			util.appendEAttribute(appendable, "number:min-exponent-digits",
-					this.nMinExponentDigits);
-			util.appendEAttribute(appendable, "number:decimal-places",
-					this.nDecimalPlaces);
-			break;
-		case FRACTION:
-			appendable.append("<number:fraction");
-			util.appendEAttribute(appendable, "number:min-numerator-digits",
-					this.nMinNumeratorDigits);
-			util.appendEAttribute(appendable, "number:min-denominator-digits",
-					this.nMinDenominatorDigits);
-			//$FALL-THROUGH$
-		case NORMAL:
-		default:
-			appendable.append("<number:number");
-			util.appendEAttribute(appendable, "number:decimal-places",
-					this.nDecimalPlaces);
-			break;
-		}
+		appendable.append("<number:number");
+		util.appendEAttribute(appendable, "number:decimal-places",
+				this.nDecimalPlaces);
 
 	}
 }
