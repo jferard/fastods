@@ -24,6 +24,8 @@ import java.io.Writer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -64,7 +66,7 @@ public class ManifestEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
+	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
 		for (final String item : this.getManifest())

@@ -22,6 +22,8 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -75,7 +77,7 @@ public abstract class FooterHeader {
 		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText).build();
 	}
 
-	protected static void appendXMLRegionBodyToMasterStyle(final Util util,
+	protected static void appendXMLRegionBodyToMasterStyle(final XMLUtil util,
 			final Appendable appendable, final List<FHParagraph> region)
 			throws IOException {
 		for (final FHParagraph paragraph : region) {
@@ -111,7 +113,7 @@ public abstract class FooterHeader {
 		this.sMinHeight = sMinHeight;
 	}
 	
-	public void appendXMLToAutomaticStyle(Util util, Appendable appendable)
+	public void appendXMLToAutomaticStyle(XMLUtil util, Appendable appendable)
 			throws IOException {
 		appendable.append("<style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
@@ -129,7 +131,7 @@ public abstract class FooterHeader {
 	 *
 	 * @throws IOException
 	 */
-	public abstract void appendXMLToMasterStyle(final Util util,
+	public abstract void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException;
 
 	/**

@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -51,7 +53,7 @@ public class ConfigItem {
 	 * @return The XML string for this object.
 	 * @throws IOException
 	 */
-	public void appendXMLToObject(final Util util, final Appendable appendable)
+	public void appendXMLToObject(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<config:config-item");
 		util.appendAttribute(appendable, "config:name", this.sItemName);

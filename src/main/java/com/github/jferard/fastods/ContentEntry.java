@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Optional;
 
 /**
@@ -46,9 +48,13 @@ class ContentEntry implements OdsEntry {
 	private final OdsFile odsFile;
 	private final List<Table> qTables;
 	private final Map<String, StyleTag> styleTagByName;
+	private Util util;
+	private TableCellFormat format;
 
-	ContentEntry(final OdsFile odsFile) {
+	ContentEntry(final OdsFile odsFile, Util util, TableCellFormat format) {
 		this.odsFile = odsFile;
+		this.util = util;
+		this.format = format;
 		this.qTables = new LinkedList<Table>();
 		this.styleTagByName = new HashMap<String, StyleTag>();
 	}
@@ -62,7 +68,7 @@ class ContentEntry implements OdsEntry {
 		if (optTable.isPresent())
 			optTable = Optional.absent();
 		else {
-			final Table table = new Table(this.odsFile, sName);
+			final Table table = new Table(this.odsFile, this.util, this.format, sName);
 			this.qTables.add(table);
 			optTable = Optional.of(table);
 		}
@@ -89,7 +95,7 @@ class ContentEntry implements OdsEntry {
 	}
 
 	public Optional<Table> getTable(final String sName) {
-		return Util.findElementByName(this.qTables, sName);
+		return this.util.findElementByName(this.qTables, sName);
 	}
 
 	List<Table> getTables() {
@@ -97,7 +103,7 @@ class ContentEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
+	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("content.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");

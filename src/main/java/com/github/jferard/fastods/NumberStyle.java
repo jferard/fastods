@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -112,7 +114,7 @@ public class NumberStyle implements DataStyle {
 	 * @param util
 	 */
 	@Override
-	public void appendXMLToStylesEntry(final Util util,
+	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.numberType == Type.PERCENTAGE) {
 			appendable.append("<number:percentage-style");
@@ -136,15 +138,15 @@ public class NumberStyle implements DataStyle {
 			util.appendAttribute(appendable, "number:country", this.sCountry);
 		}
 		if (this.bVolatile)
-			util.appendAttribute(appendable, "style:volatile", true);
+			util.appendEAttribute(appendable, "style:volatile", true);
 
 		appendable.append(">");
 		this.appendNumberType(util, appendable);
-		util.appendAttribute(appendable, "number:min-integer-digits",
+		util.appendEAttribute(appendable, "number:min-integer-digits",
 				this.nMinIntegerDigits);
 
 		if (this.bGrouping) {
-			util.appendAttribute(appendable, "number:grouping", this.bGrouping);
+			util.appendEAttribute(appendable, "number:grouping", this.bGrouping);
 		}
 		appendable.append("/>");
 
@@ -185,10 +187,10 @@ public class NumberStyle implements DataStyle {
 			appendable.append("<number:text>-</number:text>");
 
 			this.appendNumberType(util, appendable);
-			util.appendAttribute(appendable, "number:min-integer-digits",
+			util.appendEAttribute(appendable, "number:min-integer-digits",
 					this.nMinIntegerDigits);
 			if (this.bGrouping) {
-				util.appendAttribute(appendable, "number:grouping",
+				util.appendEAttribute(appendable, "number:grouping",
 						this.bGrouping);
 			}
 			appendable.append("/>");
@@ -287,29 +289,29 @@ public class NumberStyle implements DataStyle {
 	 *            The StringBuilder to which the number format is appended.
 	 * @throws IOException
 	 */
-	private void appendNumberType(final Util util, final Appendable appendable)
+	private void appendNumberType(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 
 		switch (this.numberType) {
 		case SCIENTIFIC:
 			appendable.append("<number:scientific-number");
-			util.appendAttribute(appendable, "number:min-exponent-digits",
+			util.appendEAttribute(appendable, "number:min-exponent-digits",
 					this.nMinExponentDigits);
-			util.appendAttribute(appendable, "number:decimal-places",
+			util.appendEAttribute(appendable, "number:decimal-places",
 					this.nDecimalPlaces);
 			break;
 		case FRACTION:
 			appendable.append("<number:fraction");
-			util.appendAttribute(appendable, "number:min-numerator-digits",
+			util.appendEAttribute(appendable, "number:min-numerator-digits",
 					this.nMinNumeratorDigits);
-			util.appendAttribute(appendable, "number:min-denominator-digits",
+			util.appendEAttribute(appendable, "number:min-denominator-digits",
 					this.nMinDenominatorDigits);
 			//$FALL-THROUGH$
 		case NORMAL:
 		case PERCENTAGE:
 		default:
 			appendable.append("<number:number");
-			util.appendAttribute(appendable, "number:decimal-places",
+			util.appendEAttribute(appendable, "number:decimal-places",
 					this.nDecimalPlaces);
 			break;
 		}

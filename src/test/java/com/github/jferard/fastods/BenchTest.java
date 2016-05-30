@@ -68,7 +68,7 @@ public class BenchTest {
 	@Test
 	public final void testFast() throws FastOdsException {
 		// Open the file.
-		OdsFile file = new OdsFile("f20columns.ods");
+		OdsFile file = OdsFile.create("f20columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
 
@@ -87,7 +87,7 @@ public class BenchTest {
 //	@Test
 	public final void testFast2() throws FastOdsException {
 		// Open the file.
-		OdsFile file = new OdsFile("f60columns.ods");
+		OdsFile file = OdsFile.create("f60columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
 

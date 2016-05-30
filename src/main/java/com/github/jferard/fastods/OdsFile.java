@@ -34,6 +34,10 @@ import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.Util.Position;
+import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Optional;
 
 /**
@@ -58,7 +62,7 @@ public class OdsFile {
 	/**
 	 * 512 k of buffer before sending data to OutputStreamWriter.
 	 */
-	private static final int DEFAULT_BUFFER_SIZE = 512*1024;
+	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024;
 
 	private ContentEntry contentEntry;
 
@@ -68,11 +72,15 @@ public class OdsFile {
 	private final SettingsEntry settingsEntry;
 	private String sFilename;
 	private StylesEntry stylesEntry;
-	private final Util util = Util.getInstance();
+	private final Util util;
 	private final int bufferSize;
 
-	public OdsFile(final String sName) {
-		this(sName, 512*DEFAULT_BUFFER_SIZE);
+	private XMLUtil xmlUtil;
+
+	public static OdsFile create(final String sName) {
+		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
+		return new OdsFile(sName, new Util(), new XMLUtil(escaper),
+				new FrenchTableCellFormat(escaper), 512 * DEFAULT_BUFFER_SIZE);
 	}
 
 	/**
@@ -81,15 +89,20 @@ public class OdsFile {
 	 * @param sName
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
+	 * @param util
+	 * @param xmlUtil
 	 */
-	public OdsFile(final String sName, int bufferSize) {
+	public OdsFile(final String sName, Util util, XMLUtil xmlUtil,
+			TableCellFormat format, int bufferSize) {
+		this.util = util;
+		this.xmlUtil = xmlUtil;
 		this.newFile(sName);
 		this.bufferSize = bufferSize;
 		this.mimetypeEntry = new MimetypeEntry();
 		this.manifestEntry = new ManifestEntry();
 		this.settingsEntry = new SettingsEntry();
 		this.metaEntry = new MetaEntry();
-		this.contentEntry = new ContentEntry(this);
+		this.contentEntry = new ContentEntry(this, util, format);
 		this.stylesEntry = new StylesEntry(this);
 
 		// Add four default stylesEntry to contentEntry
@@ -228,14 +241,14 @@ public class OdsFile {
 		this.settingsEntry.setTables(this.contentEntry.getTables());
 		final ZipOutputStream zipOut = new ZipOutputStream(output);
 		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
-		
+
 		try {
-			this.mimetypeEntry.write(this.util, zipOut, writer);
-			this.manifestEntry.write(this.util, zipOut, writer);
-			this.metaEntry.write(this.util, zipOut, writer);
-			this.stylesEntry.write(this.util, zipOut, writer);
-			this.contentEntry.write(this.util, zipOut, writer);
-			this.settingsEntry.write(this.util, zipOut, writer);
+			this.mimetypeEntry.write(this.xmlUtil, zipOut, writer);
+			this.manifestEntry.write(this.xmlUtil, zipOut, writer);
+			this.metaEntry.write(this.xmlUtil, zipOut, writer);
+			this.stylesEntry.write(this.xmlUtil, zipOut, writer);
+			this.contentEntry.write(this.xmlUtil, zipOut, writer);
+			this.settingsEntry.write(this.xmlUtil, zipOut, writer);
 			this.createEmptyEntries(zipOut);
 
 			zipOut.close();
@@ -269,7 +282,6 @@ public class OdsFile {
 	// ----------------------------------------------------------------------
 	// All methods for setCell with TableCell.Type.STRING
 	// ----------------------------------------------------------------------
-
 
 	/**
 	 * Sets the cell value in all tables to the date from the Calendar object.
@@ -312,8 +324,9 @@ public class OdsFile {
 	 */
 	public void setCellInAllTables(final String sPos, final Calendar cal,
 			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
+		final Position position = this.util.getPosition(sPos);
+		final int nRow = position.getRow();
+		final int nCol = position.getColumn();
 		this.setCellInAllTables(nRow, nCol, cal, ts);
 	}
 
@@ -336,10 +349,11 @@ public class OdsFile {
 	public void setCellInAllTables(final String sPos,
 			final TableCell.Type nValuetype, final String sValue,
 			final TableCellStyle ts) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-//		this.setCellInAllTables(nRow, nCol, nValuetype, sValue,
-//				ts);
+		final Position position = this.util.getPosition(sPos);
+		final int nRow = position.getRow();
+		final int nCol = position.getColumn();
+		// this.setCellInAllTables(nRow, nCol, nValuetype, sValue,
+		// ts);
 	}
 
 	/**
@@ -375,15 +389,16 @@ public class OdsFile {
 	 */
 	public void setCellMergeInAllTables(final String sPos, final int nRowMerge,
 			final int nColumnMerge) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
-		final int nCol = this.util.positionToColumn(sPos);
-		this.setCellMergeInAllTables(nRow, nCol, nRowMerge, nColumnMerge);	
+		final Position position = this.util.getPosition(sPos);
+		final int nRow = position.getRow();
+		final int nCol = position.getColumn();
+		this.setCellMergeInAllTables(nRow, nCol, nRowMerge, nColumnMerge);
 	}
 
 	private void createEmptyEntries(final ZipOutputStream o)
 			throws IOException {
-		for (final String entry : new String[] {
-				"Thumbnails/", "Configurations2/accelerator/current.xml",
+		for (final String entry : new String[] { "Thumbnails/",
+				"Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
 				"Configurations2/menubar/", "Configurations2/popupmenu/",
 				"Configurations2/progressbar/", "Configurations2/statusbar/",
@@ -406,7 +421,7 @@ public class OdsFile {
 
 	void addStyleTag(StyleTag styleTag) {
 		this.contentEntry.addStyleTag(styleTag);
-		
+
 	}
 
 	void addPageStyle(PageStyle pageStyle) {

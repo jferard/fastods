@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -94,7 +96,7 @@ public class FHTextStyle implements NamedObject {
 		odsFile.addTextStyle(this);
 	}
 
-	public void appendXMLToStylesEntry(final Util util, final Appendable appendable)
+	public void appendXMLToStylesEntry(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		// -------------------------------------------------------------
 		// The name maybe empty if this style is part of TableFamilyStyle.
@@ -112,7 +114,7 @@ public class FHTextStyle implements NamedObject {
 		appendable.append("</style:style>");
 	}
 
-	public void appendXMLToContentEntry(final Util util,
+	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:text-properties");
 		// Check if the font weight should be added

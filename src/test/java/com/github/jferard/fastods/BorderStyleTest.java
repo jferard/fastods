@@ -25,6 +25,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
@@ -33,7 +36,7 @@ import org.junit.Test;
  */
 public class BorderStyleTest {
 	
-	private Util util;
+	private XMLUtil util;
 
 	@Test
 	public final void basicTest() throws IOException {
@@ -79,7 +82,7 @@ public class BorderStyleTest {
 
 	@Before
 	public void setUp() {
-		this.util = Util.getInstance();
+		this.util = new XMLUtil(new FastOdsXMLEscaper());
 	}
 
 }

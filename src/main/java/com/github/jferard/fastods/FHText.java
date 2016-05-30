@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -47,7 +49,7 @@ public class FHText {
 		this.sText = s;
 	}
 
-	public void appendXMLTextPToParagraph(Util util,
+	public void appendXMLTextPToParagraph(XMLUtil util,
 			Appendable appendable) throws IOException {
 		appendable.append("<text:p");
 		if (this.ts != null)
@@ -61,7 +63,7 @@ public class FHText {
 	 *
 	 * @throws IOException
 	 */
-	public void appendXMLOptionalSpanToParagraph(final Util util,
+	public void appendXMLOptionalSpanToParagraph(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.ts == null) {
 			appendable.append(this.sText);

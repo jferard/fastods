@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -36,7 +38,7 @@ import java.util.zip.ZipOutputStream;
  *         styles.xml/office:document-styles
  */
 public class StylesEntry implements OdsEntry {
-	private static void appendDefaultFooterHeaderStyle(final Util util,
+	private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
 			final Appendable appendable, final String name) throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", name);
@@ -45,8 +47,8 @@ public class StylesEntry implements OdsEntry {
 				"Standard");
 		util.appendEAttribute(appendable, "style:class", "extra");
 		appendable.append("><style:paragraph-properties");
-		util.appendAttribute(appendable, "text:number-lines", false);
-		util.appendAttribute(appendable, "text:line-number", 0);
+		util.appendEAttribute(appendable, "text:number-lines", false);
+		util.appendEAttribute(appendable, "text:line-number", 0);
 		appendable.append("/></style:style>");
 	}
 
@@ -112,7 +114,7 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
+	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("styles.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");

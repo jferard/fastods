@@ -19,6 +19,7 @@
  */
 package com.github.jferard.fastods;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import org.junit.Assert;
@@ -40,7 +41,7 @@ public class OdsFileTest {
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		OdsFile file = new OdsFile("5columns.ods");
+		OdsFile file = OdsFile.create("5columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
 
@@ -88,8 +89,34 @@ public class OdsFileTest {
 					default:
 						break;
 					}
-				} else if (y == 12 && x == 3) {
-					cell.setStyle(tcls);
+				} else if (y == 6) {
+					switch (x) {
+					case 0:
+						cell.setBooleanValue(true); break;
+					case 1:
+						cell.setCurrencyValue(150.5, "€"); break;
+					case 2:
+						cell.setDateValue(Calendar.getInstance());
+						final DateStyle build0 = DateStyle.builder("trgfgbf").build();
+						build0.addToFile(file);
+						final TableCellStyle build1 = TableCellStyle.builder("ttete").dataStyle(build0).build();
+						build1.addToFile(file);
+						cell.setStyle(build1);
+						 break;
+					case 3:
+						cell.setPercentageValue(70.3); break;
+					case 4:
+						cell.setStringValue("foobar"); break;
+					default: break;
+					}
+				} else if (y == 9) {
+					switch (x) {
+					case 0:
+					case 3:
+						cell.setStyle(tcls); break;
+					default:
+						cell.setTimeValue(x*60*1000);
+					}
 				}
 			}
 		}
@@ -105,7 +132,7 @@ public class OdsFileTest {
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		OdsFile file = new OdsFile("100000columns.ods");
+		OdsFile file = OdsFile.create("100000columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
 
@@ -130,7 +157,7 @@ public class OdsFileTest {
 		long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		OdsFile file = new OdsFile("1000columns.ods");
+		OdsFile file = OdsFile.create("1000columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
 

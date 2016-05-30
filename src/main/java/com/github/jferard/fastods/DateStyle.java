@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -135,11 +137,11 @@ public class DateStyle implements DataStyle {
 	 *
 	 */
 	@Override
-	public void appendXMLToStylesEntry(final Util util,
+	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:date-style");
 		util.appendAttribute(appendable, "style:name", this.sName);
-		util.appendAttribute(appendable, "number:automatic-order",
+		util.appendEAttribute(appendable, "number:automatic-order",
 				this.isAutomaticOrder());
 		appendable.append(">");
 

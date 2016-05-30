@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -85,7 +87,7 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
+	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("meta.xml"));
 		writer.append("<?xml");
@@ -114,8 +116,8 @@ public class MetaEntry implements OdsEntry {
 				.append("<meta:user-defined meta:name=\"Info 3\"/>")
 				.append("<meta:user-defined meta:name=\"Info 4\"/>")
 				.append("<meta:document-statistic");
-		util.appendAttribute(writer, "meta:table-count", this.nTableCount);
-		util.appendAttribute(writer, "meta:cell-count", this.nCellCount);
+		util.appendEAttribute(writer, "meta:table-count", this.nTableCount);
+		util.appendEAttribute(writer, "meta:cell-count", this.nCellCount);
 		writer.append("/></office:meta>").append("</office:document-meta>");
 		writer.flush();
 		zipOut.closeEntry();

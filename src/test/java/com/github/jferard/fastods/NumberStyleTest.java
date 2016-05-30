@@ -22,7 +22,11 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -31,12 +35,18 @@ import org.junit.Test;
  *         This file BenchTest.java is part of FastODS.
  */
 public class NumberStyleTest {
+	private XMLUtil util;
+
+	@Before
+	public void setUp() {
+		this.util = new XMLUtil(new FastOdsXMLEscaper());
+	}
 
 	@Test
 	public final void testEmpty() throws IOException {
 		NumberStyle ns = NumberStyle.builder("test").build();
 		StringBuilder sb = new StringBuilder();
-		ns.appendXMLToStylesEntry(Util.getInstance(), sb);
+		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals("<number:number-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "</number:number-style>", sb.toString());
@@ -46,7 +56,7 @@ public class NumberStyleTest {
 	public final void testNegative() throws IOException {
 		NumberStyle ns = NumberStyle.builder("test").negativeValuesRed(true).build();
 		StringBuilder sb = new StringBuilder();
-		ns.appendXMLToStylesEntry(Util.getInstance(), sb);
+		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:number-style style:name=\"testnn\" style:volatile=\"true\">"+
 				"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"+

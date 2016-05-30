@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * /**
  *
@@ -210,7 +212,7 @@ public class SettingsEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final Util util, final ZipOutputStream zipOut, final Writer writer)
+	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
 			throws IOException {
 		zipOut.putNextEntry(new ZipEntry("settings.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");

@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * /**
  *
@@ -72,7 +74,7 @@ public class TableRowStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXMLToContentEntry(final Util util,
+	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);

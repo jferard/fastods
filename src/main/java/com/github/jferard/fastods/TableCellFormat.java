@@ -19,30 +19,23 @@
 */
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import com.github.jferard.fastods.util.XMLUtil;
+import java.util.Date;
 
 /**
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ * Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file MimetypeEntry.java is part of FastODS.
+ *         This file TableCellFormat.java is part of FastODS.
  *
- *         WHERE ? mimetype
  */
-public class MimetypeEntry implements OdsEntry {
-	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, Writer writer)
-			throws IOException {
-		zipOut.putNextEntry(new ZipEntry("mimetype"));
-		writer.write("application/vnd.oasis.opendocument.spreadsheet");
-		writer.flush();
-		zipOut.closeEntry();
-	}
-
+public interface TableCellFormat {
+	String formatBoolean(Boolean value);
+	String formatCurrency(Number value, String currency);
+	String formatDate(Date value);
+	String formatFloat(Number value);
+	String formatPercentage(Number value);
+	String formatString(String value);
+	String formatTime(long milliseconds);
 }

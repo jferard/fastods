@@ -22,6 +22,8 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -65,7 +67,7 @@ class RegionFooterHeader extends FooterHeader {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXMLToMasterStyle(final Util util,
+	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		RegionFooterHeader.appendRegion(util, appendable, this.qLeftRegion, "region-left");
 		RegionFooterHeader.appendRegion(util, appendable, this.qCenterRegion,
@@ -73,7 +75,7 @@ class RegionFooterHeader extends FooterHeader {
 		RegionFooterHeader.appendRegion(util, appendable, this.qRightRegion, "region-right");
 	}
 
-	private static void appendRegion(final Util util, final Appendable appendable,
+	private static void appendRegion(final XMLUtil util, final Appendable appendable,
 			final List<FHParagraph> qRegion, final String sRegionName)
 			throws IOException {
 		if (qRegion.size() == 0)

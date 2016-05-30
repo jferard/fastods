@@ -22,6 +22,8 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  *
@@ -41,7 +43,7 @@ public class FHParagraph {
 		return this.texts;
 	}
 
-	public void appendXMLToRegionBody(final Util util,
+	public void appendXMLToRegionBody(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		switch (this.texts.size()) {
 		case 0:

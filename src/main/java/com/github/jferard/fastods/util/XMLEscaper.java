@@ -17,32 +17,18 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import com.github.jferard.fastods.util.XMLUtil;
+package com.github.jferard.fastods.util;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ * Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file MimetypeEntry.java is part of FastODS.
- *
- *         WHERE ? mimetype
+ *         This file XMLEscaper.java is part of FastODS.
  */
-public class MimetypeEntry implements OdsEntry {
-	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, Writer writer)
-			throws IOException {
-		zipOut.putNextEntry(new ZipEntry("mimetype"));
-		writer.write("application/vnd.oasis.opendocument.spreadsheet");
-		writer.flush();
-		zipOut.closeEntry();
-	}
-
+@SuppressWarnings("PMD.UnusedLocalVariable")
+public interface XMLEscaper {
+	String escapeXMLAttribute(final String s);
+	
+	String escapeXMLContent(final String s);
 }

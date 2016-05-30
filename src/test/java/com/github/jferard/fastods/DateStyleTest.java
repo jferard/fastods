@@ -22,7 +22,11 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -31,6 +35,12 @@ import org.junit.Test;
  *         This file BenchTest.java is part of FastODS.
  */
 public class DateStyleTest {
+	private XMLUtil util;
+
+	@Before
+	public void setUp() {
+		this.util = new XMLUtil(new FastOdsXMLEscaper());
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testWithNoName() {
@@ -41,7 +51,7 @@ public class DateStyleTest {
 	public final void test() throws IOException {
 		DateStyle ds = DateStyle.builder("test").build();
 		StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(Util.getInstance(), sb);
+		ds.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:date-style style:name=\"test\" number:automatic-order=\"false\">"
 						+ "<number:day number:style=\"long\"/>"

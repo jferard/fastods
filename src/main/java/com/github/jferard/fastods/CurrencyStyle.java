@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -88,7 +90,7 @@ public class CurrencyStyle implements DataStyle {
 	 * @return The XML string for this object.
 	 */
 	@Override
-	public void appendXMLToStylesEntry(final Util util,
+	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		final StringBuilder currency = this.currencyToXML(util);
 
@@ -184,19 +186,19 @@ public class CurrencyStyle implements DataStyle {
 		return this.bGrouping;
 	}
 
-	private void appendCurrencyNumber(final Util util,
+	private void appendCurrencyNumber(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:number");
-		util.appendAttribute(appendable, "number:decimal-places",
+		util.appendEAttribute(appendable, "number:decimal-places",
 				this.nDecimalPlaces);
-		util.appendAttribute(appendable, "number:min-integer-digits",
+		util.appendEAttribute(appendable, "number:min-integer-digits",
 				this.nMinIntegerDigits);
 		if (this.bGrouping)
-			util.appendAttribute(appendable, "number:grouping", this.bGrouping);
+			util.appendEAttribute(appendable, "number:grouping", this.bGrouping);
 		appendable.append("/>");
 	}
 
-	private void appendCurrencySymbol(final Util util,
+	private void appendCurrencySymbol(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:currency-symbol");
 		if (this.sLanguage.length() > 0)
@@ -210,7 +212,7 @@ public class CurrencyStyle implements DataStyle {
 		appendable.append("</number:currency-symbol>");
 	}
 
-	private StringBuilder currencyToXML(final Util util) throws IOException {
+	private StringBuilder currencyToXML(final XMLUtil util) throws IOException {
 		final StringBuilder sbReturn = new StringBuilder();
 		// Check where the currency symbol should be positioned
 		if (this.currencyPosition == SymbolPosition.END) {

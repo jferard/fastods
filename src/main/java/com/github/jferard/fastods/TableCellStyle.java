@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.github.jferard.fastods.BorderAttribute.Position;
+import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  *
@@ -120,7 +121,7 @@ public class TableCellStyle implements StyleTag {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXMLToContentEntry(final Util util,
+	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);

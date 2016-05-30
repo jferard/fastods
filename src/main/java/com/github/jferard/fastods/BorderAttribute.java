@@ -22,6 +22,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -133,20 +135,20 @@ public class BorderAttribute {
 		this.position = position;
 	}
 
-	public void appendXMLToTableCellStyle(final Util util,
+	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.sBorderSize == null && this.sBorderColor == null)
 			return;
 
 		final StringBuilder sb = new StringBuilder();
 		if (this.sBorderSize != null)
-			sb.append(this.sBorderSize).append(Util.SPACE_CHAR);
+			sb.append(this.sBorderSize).append(XMLUtil.SPACE_CHAR);
 
 		if (this.sBorderColor != null)
-			sb.append(this.style.attrValue).append(Util.SPACE_CHAR)
+			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
 					.append(this.sBorderColor);
 
-		util.appendAttribute(appendable, this.position.attrName, sb.toString());
+		util.appendEAttribute(appendable, this.position.attrName, sb.toString());
 	}
 
 	/**

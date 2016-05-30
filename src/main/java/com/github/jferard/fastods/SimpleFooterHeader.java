@@ -22,6 +22,8 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -59,7 +61,7 @@ class SimpleFooterHeader extends FooterHeader {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXMLToMasterStyle(final Util util,
+	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable, this.region);
 	}

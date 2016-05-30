@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.jferard.fastods.TableCell.Type;
-import com.google.common.base.Optional;
+import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -64,9 +64,12 @@ public class Table implements NamedObject {
 
 	private final ConfigItem zoomValue;
 	private Util util;
+	private TableCellFormat format;
 
-	Table(final OdsFile odsFile, final String sName) {
+	Table(final OdsFile odsFile, final Util util, TableCellFormat format, final String sName) {
 		this.odsFile = odsFile;
+		this.util = util;
+		this.format = format;
 		this.sName = sName;
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
 		this.cursorPositionX = new ConfigItem("CursorPositionX", "int", "0");
@@ -95,23 +98,23 @@ public class Table implements NamedObject {
 		this.qTableRows = FullList.newList();
 	}
 
-	void appendXMLToContentEntry(final Util util, final Appendable appendable)
+	void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.sName);
 		util.appendAttribute(appendable, "table:style-name",
 				this.style.getName());
-		util.appendAttribute(appendable, "table:print", false);
+		util.appendEAttribute(appendable, "table:print", false);
 		appendable.append("><office:forms");
-		util.appendAttribute(appendable, "form:automatic-focus", false);
-		util.appendAttribute(appendable, "form:apply-design-mode", false);
+		util.appendEAttribute(appendable, "form:automatic-focus", false);
+		util.appendEAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
 		// this.appendColumnStyles(appendable, util);
 		this.appendRows(appendable, util);
 		appendable.append("</table:table>");
 	}
 
-	void appendXMLToSettingsEntry(final Util util, final Appendable appendable)
+	void appendXMLToSettingsEntry(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.sName);
@@ -144,17 +147,10 @@ public class Table implements NamedObject {
 	 * @param nCol
 	 *            The column
 	 * @return The TableCell for this position, maybe a new TableCell
+	 * @throws FastOdsException 
 	 */
-	public TableCell getCell(final int nRow, final int nCol) {
-
-		// -------------------------------------------------------------
-		// Check if this row already exists and create a new one if not
-		// -------------------------------------------------------------
-		TableRow tr = this.qTableRows.get(nRow);
-		if (tr == null) {
-			tr = new TableRow(this.odsFile, this.util, nRow);
-			this.qTableRows.set(nRow, tr);
-		}
+	public TableCell getCell(final int nRow, final int nCol) throws FastOdsException {
+		TableRow tr = this.getRow(nRow);
 		return tr.getCell(nCol);
 	}
 
@@ -178,19 +174,16 @@ public class Table implements NamedObject {
 
 	public TableRow getRow(final int nRow) throws FastOdsException {
 		Table.checkRow(nRow);
-
-		TableRow tr;
-		if (nRow >= this.qTableRows.size()) {
-			tr = new TableRow(this.odsFile, this.util, nRow);
+		TableRow tr = this.qTableRows.get(nRow);
+		if (tr == null) {
+			tr = new TableRow(this.odsFile, this.util, this.format, nRow);
 			this.qTableRows.set(nRow, tr);
-		} else {
-			tr = this.qTableRows.get(nRow);
 		}
 		return tr;
 	}
 
 	public TableRow getRow(final String sPos) throws FastOdsException {
-		final int nRow = this.util.positionToRow(sPos);
+		final int nRow = this.util.getPosition(sPos).getRow();
 		return getRow(nRow);
 	}
 
@@ -211,7 +204,7 @@ public class Table implements NamedObject {
 		final int nRow = this.qTableRows.size();
 		Table.checkRow(nRow);
 
-		final TableRow tr = new TableRow(this.odsFile, this.util, nRow);
+		final TableRow tr = new TableRow(this.odsFile, this.util, this.format, nRow);
 		this.qTableRows.add(tr);
 		return tr;
 	}
@@ -258,7 +251,7 @@ public class Table implements NamedObject {
 	}
 
 	private void appendColumnStyles(final Appendable appendable,
-			final Util util) throws IOException {
+			final XMLUtil util) throws IOException {
 		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
 				.iterator();
 		if (!iterator.hasNext())
@@ -284,7 +277,7 @@ public class Table implements NamedObject {
 				appendable, 1);
 	}
 
-	private void appendRows(final Appendable appendable, final Util util)
+	private void appendRows(final Appendable appendable, final XMLUtil util)
 			throws IOException {
 		// Loop through all rows
 		for (final TableRow tr : this.getRows()) {

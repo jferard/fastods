@@ -22,6 +22,9 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -40,9 +43,11 @@ public class TableRow {
 	private TableRowStyle rowStyle;
 	private TableCellStyle defaultCellStyle;
 	private Util util;
+	private TableCellFormat format;
 
-	TableRow(final OdsFile odsFile, final Util util, final int nRow) {
+	TableRow(final OdsFile odsFile, final Util util, TableCellFormat format, final int nRow) {
 		this.util = util;
+		this.format = format;
 		this.nRow = nRow;
 		this.odsFile = odsFile;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
@@ -55,7 +60,7 @@ public class TableRow {
 	 *
 	 * @throws IOException
 	 */
-	public void appendXMLToTable(final Util util, final Appendable appendable)
+	public void appendXMLToTable(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<table:table-row");
 		if (this.rowStyle != null)
@@ -74,7 +79,7 @@ public class TableRow {
 				if (nNullFieldCounter > 0) {
 					appendable.append("<table:table-cell");
 					if (nNullFieldCounter > 1)
-						util.appendAttribute(appendable,
+						util.appendEAttribute(appendable,
 								"table:number-columns-repeated",
 								nNullFieldCounter);
 					appendable.append("/>");
@@ -98,7 +103,7 @@ public class TableRow {
 	public TableCell getCell(final int nCol) {
 		TableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new TableCell(this.odsFile, this.nRow, nCol,
+			tc = new TableCell(this.odsFile, this.util, this.format, this.nRow, nCol,
 					TableCell.Type.STRING, "");
 			this.qTableCells.set(nCol, tc);
 		}
@@ -106,7 +111,7 @@ public class TableRow {
 	}
 	
 	public TableCell getCell(final String sPos) {
-		final int nCol = this.util.positionToColumn(sPos);
+		final int nCol = this.util.getPosition(sPos).getColumn();
 		return this.getCell(nCol);
 	}
 	
@@ -162,7 +167,7 @@ public class TableRow {
 	public void setCellMerge(final String sPos, final int nRowMerge,
 			final int nColumnMerge)
 			throws FastOdsException {
-		final int nCol = this.util.positionToColumn(sPos);
+		final int nCol = this.util.getPosition(sPos).getColumn();
 		this.setCellMerge(nCol, nRowMerge,
 				nColumnMerge);
 	}

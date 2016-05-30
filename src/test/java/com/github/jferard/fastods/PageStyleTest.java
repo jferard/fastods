@@ -3,9 +3,20 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
+
 public class PageStyleTest {
+	private XMLUtil util;
+
+	@Before
+	public void setUp() {
+		this.util = new XMLUtil(new FastOdsXMLEscaper());
+	}
+	
 	@Test(expected = IllegalStateException.class)
 	public final void testEmpty() {
 		PageStyle pageStyle = PageStyle.builder(null).build();
@@ -15,7 +26,7 @@ public class PageStyleTest {
 	public final void testAlmostEmptyToAutomaticStyle() throws IOException {
 		PageStyle pageStyle = PageStyle.builder("test").build();
 		StringBuilder sb = new StringBuilder();
-		pageStyle.appendXMLToAutomaticStyle(Util.getInstance(), sb);
+		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertEquals(
 				"<style:page-layout style:name=\"test\">"
 						+ "<style:page-layout-properties fo:page-width=\"29.7cm\" fo:page-height=\"21.0cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin-top=\"1.5cm\" fo:margin-bottom=\"1.5cm\" fo:margin-left=\"1.5cm\" fo:margin-right=\"1.5cm\"/>"
@@ -31,7 +42,7 @@ public class PageStyleTest {
 	public final void testAlmostEmptyToMasterStyle() throws IOException {
 		PageStyle pageStyle = PageStyle.builder("test").build();
 		StringBuilder sb = new StringBuilder();
-		pageStyle.appendXMLToMasterStyle(Util.getInstance(), sb);
+		pageStyle.appendXMLToMasterStyle(this.util, sb);
 		Assert.assertEquals(
 				"<style:master-page style:name=\"DefaultMasterPage\" style:page-layout-name=\"test\">"
 						+ "<style:header>" + "<text:p text:style-name=\"none\">"

@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * /**
  *
@@ -78,7 +80,7 @@ public class TableColumnStyle implements StyleTag {
 	 * 17.16 <style:table-column-properties>
 	 */
 	@Override
-	public void appendXMLToContentEntry(final Util util,
+	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
@@ -90,13 +92,13 @@ public class TableColumnStyle implements StyleTag {
 		appendable.append("/></style:style>");
 	}
 
-	public void appendXMLToTable(final Util util, final Appendable appendable, final int nCount)
+	public void appendXMLToTable(final XMLUtil util, final Appendable appendable, final int nCount)
 			throws IOException {
 		appendable.append("<table:table-column");
 		util.appendAttribute(appendable, "table:style-name",
 				this.sName);
 		if (nCount > 1)
-			util.appendAttribute(appendable, "table:number-columns-repeated",
+			util.appendEAttribute(appendable, "table:number-columns-repeated",
 					nCount);
 		if (this.defaultCellStyle != null)
 			util.appendAttribute(appendable, "table:default-cell-style-name",

@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -173,7 +175,7 @@ public class PageStyle {
 	 * This is used while writing the ODS file.
 	 *
 	 */
-	public void appendXMLToAutomaticStyle(final Util util,
+	public void appendXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:page-layout");
 		util.appendAttribute(appendable, "style:name", this.sName);
@@ -219,7 +221,7 @@ public class PageStyle {
 	 * @return The master style representation for styles.xml
 	 * @throws IOException
 	 */
-	public void appendXMLToMasterStyle(final Util util,
+	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
 		util.appendEAttribute(appendable, "style:name", DEFAULT_MASTER_PAGE);
@@ -228,13 +230,13 @@ public class PageStyle {
 		this.getHeader().appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:header>");
 		appendable.append("<style:header-left");
-		util.appendAttribute(appendable, "style:display", false);
+		util.appendEAttribute(appendable, "style:display", false);
 		appendable.append("/>");
 		appendable.append("<style:footer>");
 		this.getFooter().appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:footer>");
 		appendable.append("<style:footer-left");
-		util.appendAttribute(appendable, "style:display", false);
+		util.appendEAttribute(appendable, "style:display", false);
 		appendable.append("/>");
 		appendable.append("</style:master-page>");
 	}
@@ -300,7 +302,7 @@ public class PageStyle {
 		return this.writingMode;
 	}
 
-	private static void appendFooterHeaderStyle(final Util util,
+	private static void appendFooterHeaderStyle(final XMLUtil util,
 			final Appendable appendable, final FooterHeader footerHeader,
 			final String tag) throws IOException {
 		if (footerHeader == null)
@@ -309,7 +311,7 @@ public class PageStyle {
 			footerHeader.appendXMLToAutomaticStyle(util, appendable);
 	}
 		
-	private void appendBackgroundColor(final Util util,
+	private void appendBackgroundColor(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.getBackgroundColor().length() > 0) {
 			util.appendAttribute(appendable, "fo:background-color",
