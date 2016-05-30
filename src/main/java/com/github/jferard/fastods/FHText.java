@@ -21,6 +21,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**

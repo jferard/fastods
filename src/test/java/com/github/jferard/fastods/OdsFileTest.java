@@ -25,6 +25,10 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.github.jferard.fastods.style.DateStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.google.common.base.Optional;
 
 /**

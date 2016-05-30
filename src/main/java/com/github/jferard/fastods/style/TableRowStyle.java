@@ -17,10 +17,11 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -40,17 +41,16 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-column
  */
-public class TableColumnStyle implements StyleTag {
-	public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
-			.builder("co1").build();
+public class TableRowStyle implements StyleTag {
+	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").build();
 
-	public static TableColumnStyleBuilder builder(final String sName) {
-		return new TableColumnStyleBuilder(sName);
+
+	public static TableRowStyleBuilder builder(final String sName) {
+		return new TableRowStyleBuilder(sName);
 	}
 
-	private final String sColumnWidth;
 	private final String sName;
-	private final TableCellStyle defaultCellStyle;
+	private final String sRowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -62,56 +62,31 @@ public class TableColumnStyle implements StyleTag {
 	 *            STYLE_TABLECELL
 	 * @param sStyleName
 	 *            A unique name for this style
-	 * @param defaultCellStyle 
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableColumnStyle(final String sStyleName, final String sColumnWidth, TableCellStyle defaultCellStyle) {
+	TableRowStyle(final String sStyleName, final String sRowHeight) {
 		this.sName = sStyleName;
-		this.sColumnWidth = sColumnWidth;
-		this.defaultCellStyle = defaultCellStyle;
+		this.sRowHeight = sRowHeight;
 	}
 
-	void addToFile(final OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.addStyleTag(this);
 	}
 
-	/**
-	 * 17.16 <style:table-column-properties>
-	 */
 	@Override
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
-		util.appendAttribute(appendable, "style:family", "table-column");
-		appendable.append("><style:table-column-properties");
+		util.appendAttribute(appendable, "style:family", "table-row");
+		appendable.append("><style:table-row-properties");
+		if (this.sRowHeight != null)
+			util.appendAttribute(appendable, "style:row-height", this.sRowHeight);
 		util.appendAttribute(appendable, "fo:break-before", "auto");
-		util.appendAttribute(appendable, "style:column-width",
-				this.sColumnWidth);
+		util.appendAttribute(appendable, "style:use-optimal-row-height",
+				"true");
 		appendable.append("/></style:style>");
-	}
-
-	public void appendXMLToTable(final XMLUtil util, final Appendable appendable, final int nCount)
-			throws IOException {
-		appendable.append("<table:table-column");
-		util.appendAttribute(appendable, "table:style-name",
-				this.sName);
-		if (nCount > 1)
-			util.appendEAttribute(appendable, "table:number-columns-repeated",
-					nCount);
-		if (this.defaultCellStyle != null)
-			util.appendAttribute(appendable, "table:default-cell-style-name",
-					this.defaultCellStyle.getName());
-		appendable.append("/>");
-	}
-
-	public String getColumnWidth() {
-		return this.sColumnWidth;
-	}
-
-	public String getDefaultCellStyleName() {
-		return this.defaultCellStyle.getName();
 	}
 
 	@Override
@@ -119,25 +94,17 @@ public class TableColumnStyle implements StyleTag {
 		return this.sName;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((this.sName == null) ? 0 : this.sName.hashCode());
-		return result;
+	/**
+	 * Set the row height to a table row.<br>
+	 * sHeight is a length value expressed as a number followed by a unit of
+	 * measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 *
+	 * @return sHeight The table row height to be used, e.g. '1.0cm'
+	 */
+	public String getRowHeight() {
+		return this.sRowHeight;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-
-		if (obj instanceof TableColumnStyle) {
-			TableColumnStyle other = (TableColumnStyle) obj;
-			return this.sName.equals(other.sName);
-		} else
-			return false;
-	}
-
 }

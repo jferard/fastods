@@ -17,12 +17,12 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 import java.util.Map;
 
-import com.github.jferard.fastods.BorderAttribute.Position;
+import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -68,7 +68,7 @@ public class TableCellStyle implements StyleTag {
 		return new TableCellStyleBuilder(sName);
 	}
 
-	private final Map<Position, BorderAttribute> borderByPosition;
+	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	private final boolean bWrap; // No line wrap when false, line wrap when
 	private final Align nTextAlign; // 'center','end','start','justify'
 	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
@@ -109,7 +109,7 @@ public class TableCellStyle implements StyleTag {
 		this.borderByPosition = borderByPosition;
 	}
 
-	void addToFile(final OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		if (this.dataStyle != null)
 			this.dataStyle.addToFile(odsFile);
 		odsFile.addStyleTag(this);

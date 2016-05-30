@@ -21,6 +21,8 @@ package com.github.jferard.fastods;
 
 import java.util.List;
 
+import com.github.jferard.fastods.style.FHTextStyle;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * 

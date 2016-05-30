@@ -17,11 +17,12 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.PageStyle.PaperFormat;
-import com.github.jferard.fastods.PageStyle.PrintOrientation;
-import com.github.jferard.fastods.PageStyle.WritingMode;
+import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.style.PageStyle.PaperFormat;
+import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
+import com.github.jferard.fastods.style.PageStyle.WritingMode;
 
 /**
  * @author Julien Férard
@@ -32,7 +33,7 @@ import com.github.jferard.fastods.PageStyle.WritingMode;
  *         This file PageStyleBuilder.java is part of FastODS.
  *
  */
-class PageStyleBuilder {
+public class PageStyleBuilder {
 	private FooterHeader footer;
 	private FooterHeader header;
 	private PaperFormat paperFormat;

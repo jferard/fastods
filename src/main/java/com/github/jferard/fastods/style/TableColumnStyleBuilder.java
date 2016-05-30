@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 /**
  * /**
@@ -31,7 +31,7 @@ package com.github.jferard.fastods;
  *         0.5.1 Changed all 'throw Exception' to 'throw FastOdsException'
  *         SimpleODS 0.5.2 Replaced all text properties with a TextStyle object
  */
-class TableColumnStyleBuilder {
+public class TableColumnStyleBuilder {
 	private String sColumnWidth;
 	private TableCellStyle defaultCellStyle;
 	private final String sName;

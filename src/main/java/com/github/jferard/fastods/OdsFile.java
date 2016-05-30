@@ -34,6 +34,19 @@ import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.style.BooleanStyle;
+import com.github.jferard.fastods.style.CurrencyStyle;
+import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.style.DateStyle;
+import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.FrenchDataStyles;
+import com.github.jferard.fastods.style.NumberStyle;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.Util.Position;
@@ -110,7 +123,7 @@ public class OdsFile {
 		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToFile(this);
 		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToFile(this);
 		TableCellStyle.DEFAULT_CELL_STYLE.addToFile(this);
-		PageStyle.builder("Mpm1").build().addToFile(this);
+		PageStyle.DEFAULT_PAGE_STYLE.addToFile(this);
 	}
 
 	/**
@@ -419,32 +432,31 @@ public class OdsFile {
 		}
 	}
 
-	void addBooleanStyle(BooleanStyle booleanStyle) {
+	public void addBooleanStyle(BooleanStyle booleanStyle) {
 		this.stylesEntry.addBooleanStyle(booleanStyle);
 	}
 
-	void addCurrencyStyle(CurrencyStyle currencyStyle) {
+	public void addCurrencyStyle(CurrencyStyle currencyStyle) {
 		this.stylesEntry.addCurrencyStyle(currencyStyle);
 	}
 
-	void addDateStyle(DateStyle dateStyle) {
+	public void addDateStyle(DateStyle dateStyle) {
 		this.stylesEntry.addDateStyle(dateStyle);
 	}
 
-	void addNumberStyle(NumberStyle numberStyle) {
+	public void addNumberStyle(NumberStyle numberStyle) {
 		this.stylesEntry.addNumberStyle(numberStyle);
 	}
 
-	void addPageStyle(PageStyle pageStyle) {
+	public void addPageStyle(PageStyle pageStyle) {
 		this.stylesEntry.addPageStyle(pageStyle);
 	}
 
-	void addStyleTag(StyleTag styleTag) {
+	public void addStyleTag(StyleTag styleTag) {
 		this.contentEntry.addStyleTag(styleTag);
-
 	}
 
-	void addTextStyle(FHTextStyle fhTextStyle) {
+	public void addTextStyle(FHTextStyle fhTextStyle) {
 		this.stylesEntry.addTextStyle(fhTextStyle);
 	}
 }

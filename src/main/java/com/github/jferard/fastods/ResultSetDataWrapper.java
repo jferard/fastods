@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.jferard.fastods.style.TableCellStyle;
+
 public class ResultSetDataWrapper implements DataWrapper {
 	/**
 	 * column count of the ResultSet.

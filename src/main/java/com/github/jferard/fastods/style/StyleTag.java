@@ -1,4 +1,4 @@
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 

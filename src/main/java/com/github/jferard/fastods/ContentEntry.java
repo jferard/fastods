@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Optional;

@@ -17,9 +17,9 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FHTextStyle.Underline;
+import com.github.jferard.fastods.style.FHTextStyle.Underline;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -30,7 +30,7 @@ import com.github.jferard.fastods.FHTextStyle.Underline;
  *         0.5.0 Added support for Font underline style
  */
 
-class FHTextStyleBuilder {
+public class FHTextStyleBuilder {
 	private Underline nFontUnderlineStyle;
 	private String sFontColor;
 	private String sFontName;

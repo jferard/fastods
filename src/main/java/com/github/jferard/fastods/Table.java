@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 

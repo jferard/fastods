@@ -17,14 +17,14 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * /**
  *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
@@ -34,22 +34,17 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  *
- *         WHERE ?
- *         content.xml/office:document-content/office:automatic-styles/style:
- *         style
- *         content.xml/office:document-content/office:body/office:spreadsheet/
- *         table:table/table:table-column
+ *         content.xml/office:document-content/office:automatic-styles
  */
-public class TableRowStyle implements StyleTag {
-	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").build();
-
-
-	public static TableRowStyleBuilder builder(final String sName) {
-		return new TableRowStyleBuilder(sName);
+public class TableStyle implements StyleTag {
+	public static TableStyleBuilder builder(final String sName) {
+		return new TableStyleBuilder(sName);
 	}
+	
+	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").build();
 
 	private final String sName;
-	private final String sRowHeight;
+	private final PageStyle pageStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -64,12 +59,12 @@ public class TableRowStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableRowStyle(final String sStyleName, final String sRowHeight) {
+	TableStyle(final String sStyleName, final PageStyle pageStyle) {
 		this.sName = sStyleName;
-		this.sRowHeight = sRowHeight;
+		this.pageStyle = pageStyle;
 	}
 
-	void addToFile(final OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.addStyleTag(this);
 	}
 
@@ -78,32 +73,17 @@ public class TableRowStyle implements StyleTag {
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.sName);
-		util.appendAttribute(appendable, "style:family", "table-row");
-		appendable.append("><style:table-row-properties");
-		if (this.sRowHeight != null)
-			util.appendAttribute(appendable, "style:row-height", this.sRowHeight);
-		util.appendAttribute(appendable, "fo:break-before", "auto");
-		util.appendAttribute(appendable, "style:use-optimal-row-height",
-				"true");
+		util.appendAttribute(appendable, "style:family", "table");
+		util.appendEAttribute(appendable, "style:master-page-name",
+				PageStyle.DEFAULT_MASTER_PAGE);
+		appendable.append("><style:table-properties");
+		util.appendAttribute(appendable, "table:display", "true");
+		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
 		appendable.append("/></style:style>");
 	}
 
 	@Override
 	public String getName() {
 		return this.sName;
-	}
-
-	/**
-	 * Set the row height to a table row.<br>
-	 * sHeight is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
-	 *
-	 * @return sHeight The table row height to be used, e.g. '1.0cm'
-	 */
-	public String getRowHeight() {
-		return this.sRowHeight;
 	}
 }

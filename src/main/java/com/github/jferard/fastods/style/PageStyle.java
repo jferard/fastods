@@ -17,10 +17,12 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -111,6 +113,7 @@ public class PageStyle {
 	private static final String LETTER_H = "27.94cm";
 
 	private static final String LETTER_W = "21.59cm";
+	public static final PageStyle DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
 
 	public static PageStyleBuilder builder(final String sName) {
 		return new PageStyleBuilder(sName);
@@ -166,7 +169,7 @@ public class PageStyle {
 		this.writingMode = writingMode;
 	}
 
-	void addToFile(final OdsFile odsFile) {
+	public void addToFile(final OdsFile odsFile) {
 		odsFile.addPageStyle(this);
 	}
 

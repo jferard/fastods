@@ -17,9 +17,9 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.DateStyle.Format;
+import com.github.jferard.fastods.style.DateStyle.Format;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -27,7 +27,7 @@ import com.github.jferard.fastods.DateStyle.Format;
  *
  *         This file DateStyleBuilder.java is part of FastODS.
  */
-class DateStyleBuilder {
+public class DateStyleBuilder {
 	private boolean bAutomaticOrder;
 
 	/**

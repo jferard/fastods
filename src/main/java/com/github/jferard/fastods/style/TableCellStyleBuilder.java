@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ import java.util.Map;
  *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
  *         0.5.2 Replaced all text properties with a TextStyle object
  */
-class TableCellStyleBuilder {
+public class TableCellStyleBuilder {
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	// 'top'
 	private boolean bWrap; // No line wrap when false, line wrap when

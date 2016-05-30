@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 

@@ -17,9 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
-
-import com.github.jferard.fastods.CurrencyStyle.SymbolPosition;
+package com.github.jferard.fastods.style;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -28,7 +26,7 @@ import com.github.jferard.fastods.CurrencyStyle.SymbolPosition;
  *         This file CurrencyStyleBuilder.java is part of FastODS.
  *
  */
-class BooleanStyleBuilder {
+public class BooleanStyleBuilder {
 	private boolean bVolatile;
 	private String sCountry;
 	private String sLanguage;

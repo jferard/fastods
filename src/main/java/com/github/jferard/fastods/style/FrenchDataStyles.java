@@ -1,4 +1,4 @@
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 public class FrenchDataStyles implements DataStyles {
 	private TableCellStyle boolFr;

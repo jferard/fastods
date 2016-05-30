@@ -17,29 +17,35 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
-
-import java.util.Date;
+package com.github.jferard.fastods.style;
 
 /**
+ * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
+ *         Schulz <mtschulz at users.sourceforge.net>
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
- *
- *         This file DataStyles.java is part of FastODS.
- *
+ *         This file TableStyleBuilder.java is part of FastODS. SimpleOds 0.5.1
+ *         Changed all 'throw Exception' to 'throw FastOdsException'<br>
+ *         SimpleOds 0.5.2 Replaced all text properties with a TextStyle object
+ *         <br>
  */
-public interface DataStyles {
-	TableCellStyle getBooleanStyle();
+public class TableStyleBuilder {
+	private final String sName;
+	private PageStyle pageStyle;
 
-	TableCellStyle getDateStyle();
+	/**
+	 * @param sName 
+	 */
+	TableStyleBuilder(String sName) {
+		this.sName = sName;
+		this.pageStyle = PageStyle.builder(sName).build();
+	}
+	
+	public TableStyleBuilder pageStyle(final PageStyle pageStyle) {
+		this.pageStyle = pageStyle;
+		return this;
+	}
 
-	TableCellStyle getNumberStyle();
-
-	TableCellStyle getPercentageStyle();
-
-	TableCellStyle getTimeStyle();
-
-	TableCellStyle getCurrencyStyle();
+	public TableStyle build() {
+		return new TableStyle(this.sName, this.pageStyle);
+	}
 }

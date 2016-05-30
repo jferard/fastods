@@ -18,10 +18,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.BorderAttribute.Position;
-import com.github.jferard.fastods.BorderAttribute.Style;
+import com.github.jferard.fastods.style.BorderAttribute.Position;
+import com.github.jferard.fastods.style.BorderAttribute.Style;
 
 /**
  * @author Julien Férard
@@ -32,7 +32,7 @@ import com.github.jferard.fastods.BorderAttribute.Style;
  *         This file BorderAttributeBuilder.java is part of FastODS.
  *
  */
-class BorderAttributeBuilder {
+public class BorderAttributeBuilder {
 	/**
 	 * The border position. Either BorderAttribute.POSITION_ALL,
 	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,

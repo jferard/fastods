@@ -17,9 +17,9 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.NumberStyle.Type;
+import com.github.jferard.fastods.style.NumberStyle.Type;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -27,7 +27,7 @@ import com.github.jferard.fastods.NumberStyle.Type;
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-class NumberStyleBuilder {
+public class NumberStyleBuilder {
 	private boolean bGrouping;
 	private boolean bNegativeValuesRed;
 	private boolean bVolatile;
