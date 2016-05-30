@@ -138,19 +138,19 @@ class TableCellStyleBuilder {
 
 	}
 
-	/**
-	 * Set the data style for this TableFamilyStyle to cs.<br>
-	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-	 * exception is thrown
-	 *
-	 * @param cs
-	 *            The currency style to be used
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
-		this.dataStyle = cs;
-		return this;
-	}
+//	/**
+//	 * Set the data style for this TableFamilyStyle to cs.<br>
+//	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+//	 * exception is thrown
+//	 *
+//	 * @param cs
+//	 *            The currency style to be used
+//	 * @return this for fluent style
+//	 */
+//	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
+//		this.dataStyle = cs;
+//		return this;
+//	}
 
 	/**
 	 * Set the data style for this TableFamilyStyle to ds.<br>
@@ -161,24 +161,24 @@ class TableCellStyleBuilder {
 	 *            The date style to be used
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder dataStyle(final DateStyle ds) {
+	public TableCellStyleBuilder dataStyle(final DataStyle ds) {
 		this.dataStyle = ds;
 		return this;
 	}
 
-	/**
-	 * Set the data style for this TableFamilyStyle to ns.<br>
-	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-	 * exception is thrown
-	 *
-	 * @param ns
-	 *            The number style to be used
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
-		this.dataStyle = ns;
-		return this;
-	}
+//	/**
+//	 * Set the data style for this TableFamilyStyle to ns.<br>
+//	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+//	 * exception is thrown
+//	 *
+//	 * @param ns
+//	 *            The number style to be used
+//	 * @return this for fluent style
+//	 */
+//	public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
+//		this.dataStyle = ns;
+//		return this;
+//	}
 
 	/**
 	 * Set the font color to sColor.<br>

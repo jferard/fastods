@@ -49,18 +49,18 @@ public class OdsFileTest {
 		TableRow row = table.getRow(0);
 		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
-		trs.addToFile(file);
+//		trs.addToFile(file);
 		TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
-		tcls.addToFile(file);
+//		tcls.addToFile(file);
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
 		TableCellStyle tcls2 = TableCellStyle.builder("dd").fontColor("#ff0000")
 				.build();
-		tcls2.addToFile(file);
+//		tcls2.addToFile(file);
 		TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
-		tcns.addToFile(file);
+//		tcns.addToFile(file);
 		table.setColumnStyle(0, tcns);
 
 		for (int y = 0; y < 50; y++) {
@@ -98,9 +98,9 @@ public class OdsFileTest {
 					case 2:
 						cell.setDateValue(Calendar.getInstance());
 						final DateStyle build0 = DateStyle.builder("trgfgbf").build();
-						build0.addToFile(file);
+//						build0.addToFile(file);
 						final TableCellStyle build1 = TableCellStyle.builder("ttete").dataStyle(build0).build();
-						build1.addToFile(file);
+//						build1.addToFile(file);
 						cell.setStyle(build1);
 						 break;
 					case 3:

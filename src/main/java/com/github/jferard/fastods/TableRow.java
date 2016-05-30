@@ -43,9 +43,9 @@ public class TableRow {
 	private TableRowStyle rowStyle;
 	private TableCellStyle defaultCellStyle;
 	private Util util;
-	private TableCellFormat format;
+	private DataStyles format;
 
-	TableRow(final OdsFile odsFile, final Util util, TableCellFormat format, final int nRow) {
+	TableRow(final OdsFile odsFile, final Util util, DataStyles format, final int nRow) {
 		this.util = util;
 		this.format = format;
 		this.nRow = nRow;
@@ -181,10 +181,12 @@ public class TableRow {
 	 *            The table rowStyle to be used
 	 */
 	public void setDefaultCellStyle(final TableCellStyle ts) {
+		ts.addToFile(this.odsFile);
 		this.defaultCellStyle = ts;
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {
+		rowStyle.addToFile(this.odsFile);
 		this.rowStyle = rowStyle;
 	}
 }

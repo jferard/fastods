@@ -64,9 +64,9 @@ public class Table implements NamedObject {
 
 	private final ConfigItem zoomValue;
 	private Util util;
-	private TableCellFormat format;
+	private DataStyles format;
 
-	Table(final OdsFile odsFile, final Util util, TableCellFormat format, final String sName) {
+	Table(final OdsFile odsFile, final Util util, DataStyles format, final String sName) {
 		this.odsFile = odsFile;
 		this.util = util;
 		this.format = format;
@@ -223,6 +223,7 @@ public class Table implements NamedObject {
 	public void setColumnStyle(final int nCol, final TableColumnStyle ts)
 			throws FastOdsException {
 		Table.checkCol(nCol);
+		ts.addToFile(this.odsFile);
 		this.qColumnStyles.set(nCol, ts);
 	}
 

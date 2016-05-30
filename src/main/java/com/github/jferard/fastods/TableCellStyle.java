@@ -73,7 +73,7 @@ public class TableCellStyle implements StyleTag {
 	private final Align nTextAlign; // 'center','end','start','justify'
 	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
 	private final String sBackgroundColor;
-	private final DataStyle dataStyle;
+	private DataStyle dataStyle;
 	// true
 	private final String sDefaultCellStyle;
 	private final String sName;
@@ -110,6 +110,8 @@ public class TableCellStyle implements StyleTag {
 	}
 
 	void addToFile(final OdsFile odsFile) {
+		if (this.dataStyle != null)
+			this.dataStyle.addToFile(odsFile);
 		odsFile.addStyleTag(this);
 	}
 
@@ -166,5 +168,13 @@ public class TableCellStyle implements StyleTag {
 	@Override
 	public String getName() {
 		return this.sName;
+	}
+
+	public DataStyle getDataStyle() {
+		return this.dataStyle;
+	}
+
+	public void setDataStyle(DataStyle dataStyle) {
+		this.dataStyle = dataStyle;
 	}
 }

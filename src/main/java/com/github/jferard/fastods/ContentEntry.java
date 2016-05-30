@@ -49,9 +49,9 @@ class ContentEntry implements OdsEntry {
 	private final List<Table> qTables;
 	private final Map<String, StyleTag> styleTagByName;
 	private Util util;
-	private TableCellFormat format;
+	private DataStyles format;
 
-	ContentEntry(final OdsFile odsFile, Util util, TableCellFormat format) {
+	ContentEntry(final OdsFile odsFile, Util util, DataStyles format) {
 		this.odsFile = odsFile;
 		this.util = util;
 		this.format = format;

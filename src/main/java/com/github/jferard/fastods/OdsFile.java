@@ -64,8 +64,13 @@ public class OdsFile {
 	 */
 	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024;
 
-	private ContentEntry contentEntry;
+	public static OdsFile create(final String sName) {
+		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
+		return new OdsFile(sName, new Util(), new XMLUtil(escaper),
+				new FrenchDataStyles(), 512 * DEFAULT_BUFFER_SIZE);
+	}
 
+	private ContentEntry contentEntry;
 	private final ManifestEntry manifestEntry;
 	private final MetaEntry metaEntry;
 	private final MimetypeEntry mimetypeEntry;
@@ -73,15 +78,10 @@ public class OdsFile {
 	private String sFilename;
 	private StylesEntry stylesEntry;
 	private final Util util;
+
 	private final int bufferSize;
 
 	private XMLUtil xmlUtil;
-
-	public static OdsFile create(final String sName) {
-		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
-		return new OdsFile(sName, new Util(), new XMLUtil(escaper),
-				new FrenchTableCellFormat(escaper), 512 * DEFAULT_BUFFER_SIZE);
-	}
 
 	/**
 	 * Create a new ODS file.
@@ -93,7 +93,7 @@ public class OdsFile {
 	 * @param xmlUtil
 	 */
 	public OdsFile(final String sName, Util util, XMLUtil xmlUtil,
-			TableCellFormat format, int bufferSize) {
+			DataStyles format, int bufferSize) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
 		this.newFile(sName);
@@ -145,6 +145,17 @@ public class OdsFile {
 		return this.sFilename;
 	}
 
+	public Table getTable(final int n) throws FastOdsException {
+		final List<Table> tableQueue = this.contentEntry.getTables();
+		if (n < 0 || tableQueue.size() <= n) {
+			throw new FastOdsException(new StringBuilder("Wrong table number [")
+					.append(n).append("]").toString());
+		}
+
+		final Table t = tableQueue.get(n);
+		return t;
+	}
+
 	public Optional<Table> getTable(final String sName) {
 		final Optional<Table> optTable = this.contentEntry.getTable(sName);
 		if (optTable.isPresent())
@@ -184,15 +195,6 @@ public class OdsFile {
 		}
 
 		return -1;
-	}
-
-	/**
-	 * Gets the number of the last table.
-	 *
-	 * @return The number of the last table
-	 */
-	public int tableCount() {
-		return this.contentEntry.getTableCount();
 	}
 
 	/**
@@ -395,6 +397,15 @@ public class OdsFile {
 		this.setCellMergeInAllTables(nRow, nCol, nRowMerge, nColumnMerge);
 	}
 
+	/**
+	 * Gets the number of the last table.
+	 *
+	 * @return The number of the last table
+	 */
+	public int tableCount() {
+		return this.contentEntry.getTableCount();
+	}
+
 	private void createEmptyEntries(final ZipOutputStream o)
 			throws IOException {
 		for (final String entry : new String[] { "Thumbnails/",
@@ -408,28 +419,8 @@ public class OdsFile {
 		}
 	}
 
-	public Table getTable(final int n) throws FastOdsException {
-		final List<Table> tableQueue = this.contentEntry.getTables();
-		if (n < 0 || tableQueue.size() <= n) {
-			throw new FastOdsException(new StringBuilder("Wrong table number [")
-					.append(n).append("]").toString());
-		}
-
-		final Table t = tableQueue.get(n);
-		return t;
-	}
-
-	void addStyleTag(StyleTag styleTag) {
-		this.contentEntry.addStyleTag(styleTag);
-
-	}
-
-	void addPageStyle(PageStyle pageStyle) {
-		this.stylesEntry.addPageStyle(pageStyle);
-	}
-
-	void addNumberStyle(NumberStyle numberStyle) {
-		this.stylesEntry.addNumberStyle(numberStyle);
+	void addBooleanStyle(BooleanStyle booleanStyle) {
+		this.stylesEntry.addBooleanStyle(booleanStyle);
 	}
 
 	void addCurrencyStyle(CurrencyStyle currencyStyle) {
@@ -438,6 +429,19 @@ public class OdsFile {
 
 	void addDateStyle(DateStyle dateStyle) {
 		this.stylesEntry.addDateStyle(dateStyle);
+	}
+
+	void addNumberStyle(NumberStyle numberStyle) {
+		this.stylesEntry.addNumberStyle(numberStyle);
+	}
+
+	void addPageStyle(PageStyle pageStyle) {
+		this.stylesEntry.addPageStyle(pageStyle);
+	}
+
+	void addStyleTag(StyleTag styleTag) {
+		this.contentEntry.addStyleTag(styleTag);
+
 	}
 
 	void addTextStyle(FHTextStyle fhTextStyle) {

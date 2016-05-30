@@ -59,6 +59,7 @@ public class StylesEntry implements OdsEntry {
 	private final Map<String, PageStyle> qPageStyles;
 
 	private final Map<String, FHTextStyle> qTextStyles;
+	private HashMap<String, BooleanStyle> qBooleanStyles;
 
 	/**
 	 * @param odsFile
@@ -66,10 +67,15 @@ public class StylesEntry implements OdsEntry {
 	 */
 	public StylesEntry(final OdsFile odsFile) {
 		this.qNumberStyles = new HashMap<String, NumberStyle>();
+		this.qBooleanStyles = new HashMap<String, BooleanStyle>();
 		this.qCurrencyStyles = new HashMap<String, CurrencyStyle>();
 		this.qPageStyles = new HashMap<String, PageStyle>();
 		this.qTextStyles = new HashMap<String, FHTextStyle>();
 		this.qDateStyles = new HashMap<String, DateStyle>();
+	}
+
+	public void addBooleanStyle(BooleanStyle booleanStyle) {
+		this.qBooleanStyles.put(booleanStyle.getName(), booleanStyle);
 	}
 
 	/**
@@ -130,14 +136,17 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
+		for (final BooleanStyle bs : this.qBooleanStyles.values())
+			bs.appendXMLToStylesEntry(util, writer);
+
+		for (final CurrencyStyle cs : this.qCurrencyStyles.values())
+			cs.appendXMLToStylesEntry(util, writer);
+		
 		for (final DateStyle ds : this.qDateStyles.values())
 			ds.appendXMLToStylesEntry(util, writer);
 
 		for (final NumberStyle ns : this.qNumberStyles.values())
 			ns.appendXMLToStylesEntry(util, writer);
-
-		for (final CurrencyStyle cs : this.qCurrencyStyles.values())
-			cs.appendXMLToStylesEntry(util, writer);
 
 		boolean hasHeader = false;
 		boolean hasFooter = false;

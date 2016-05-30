@@ -27,15 +27,19 @@ import java.util.Date;
  * Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file TableCellFormat.java is part of FastODS.
+ *         This file DataStyles.java is part of FastODS.
  *
  */
-public interface TableCellFormat {
-	String formatBoolean(Boolean value);
-	String formatCurrency(Number value, String currency);
-	String formatDate(Date value);
-	String formatFloat(Number value);
-	String formatPercentage(Number value);
-	String formatString(String value);
-	String formatTime(long milliseconds);
+public interface DataStyles {
+	TableCellStyle getBooleanStyle();
+
+	TableCellStyle getDateStyle();
+
+	TableCellStyle getNumberStyle();
+
+	TableCellStyle getPercentageStyle();
+
+	TableCellStyle getTimeStyle();
+
+	TableCellStyle getCurrencyStyle();
 }

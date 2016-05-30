@@ -89,7 +89,7 @@ public class TableCell {
 
 	private String sTimeValue;
 
-	private TableCellFormat format;
+	private DataStyles dataStyles;
 
 	private Util util;
 
@@ -101,12 +101,11 @@ public class TableCell {
 	 * @param value
 	 *            The String content for this cell.
 	 */
-	TableCell(final OdsFile odsFile, Util util, final TableCellFormat format,
+	TableCell(final OdsFile odsFile, Util util, final DataStyles dataStyles,
 			final int nRow, final int nCol, final Type valuetype,
 			final String value) {
 		this.util = util;
-		this.format = format;
-		this.sText = "";
+		this.dataStyles = dataStyles;
 		this.sCurrency = "EUR";
 		this.odsFile = odsFile;
 		this.nRow = nRow;
@@ -277,7 +276,7 @@ public class TableCell {
 	public void setBooleanValue(final Boolean value) {
 		this.sBooleanValue = value.toString();
 		this.valueType = TableCell.Type.BOOLEAN;
-		this.sText = this.format.formatBoolean(value);
+		this.setStyle(this.dataStyles.getBooleanStyle());
 	}
 
 	/**
@@ -304,7 +303,7 @@ public class TableCell {
 		this.sBooleanValue = value.toString();
 		this.sCurrency = currency; // escape here
 		this.valueType = TableCell.Type.CURRENCY;
-		this.sText = this.format.formatCurrency(value, currency);
+		this.setStyle(this.dataStyles.getCurrencyStyle());
 	}
 
 	/**
@@ -320,7 +319,7 @@ public class TableCell {
 	public void setDateValue(Date value) {
 		this.sDateValue = TableCell.DATE_VALUE_FORMAT.format(value);
 		this.valueType = TableCell.Type.DATE;
-		this.sText = this.format.formatDate(value);
+		this.setStyle(this.dataStyles.getDateStyle());
 	}
 
 	/**
@@ -332,7 +331,7 @@ public class TableCell {
 	public void setFloatValue(final Number value) {
 		this.sValue = value.toString();
 		this.valueType = TableCell.Type.FLOAT;
-		this.sText = this.format.formatFloat(value);
+		this.setStyle(this.dataStyles.getNumberStyle());
 	}
 
 	/**
@@ -367,7 +366,7 @@ public class TableCell {
 	public void setPercentageValue(final Number value) {
 		this.sValue = value.toString();
 		this.valueType = TableCell.Type.PERCENTAGE;
-		this.sText = this.format.formatPercentage(value);
+		this.setStyle(this.dataStyles.getPercentageStyle());
 	}
 
 	/**
@@ -391,23 +390,27 @@ public class TableCell {
 	 *            - A double object with the value to be used
 	 */
 	public void setStringValue(final String value) {
-		this.sStringValue = value;
+		this.sStringValue = value;// TODO ESCAPE
 		this.valueType = TableCell.Type.STRING;
-		this.sText = this.format.formatString(value);
 	}
 
 	public void setStyle(final TableCellStyle style) {
+		if (style == null)
+			return;
+		
 		style.addToFile(this.odsFile);
+		if (style.getDataStyle() == null && this.style != null && this.style.getDataStyle() != null)
+			style.setDataStyle(this.style.getDataStyle());
 		this.style = style;
 	}
 
 	public void setTimeValue(final long timeInMillis) {
 		this.sTimeValue = this.util.formatTimeInterval(timeInMillis);
 		this.valueType = TableCell.Type.TIME;
-		this.sText = this.format.formatTime(timeInMillis);
+		this.setStyle(this.dataStyles.getTimeStyle());
 	}
 
-	public void setFormat(TableCellFormat format) {
-		this.format = format;
+	public void setFormat(DataStyles format) {
+		this.dataStyles = format;
 	}
 }
