@@ -20,6 +20,7 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -55,7 +56,7 @@ public class TimeStyle implements DataStyle {
 	private static final String SECONDS = "<number:seconds/>";
 
 	public static TimeStyleBuilder builder(final String sName) {
-		return new TimeStyleBuilder(sName);
+		return new TimeStyleBuilder(sName, Locale.getDefault());
 	}
 
 	private final TimeStyle.Format timeFormat;
@@ -97,7 +98,7 @@ public class TimeStyle implements DataStyle {
 	 */
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.addTimeStyle(this);
+		odsFile.addDataStyle(this);
 	}
 
 	/**

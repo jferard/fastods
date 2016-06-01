@@ -38,10 +38,10 @@ public class BooleanStyleBuilder {
 	 * The builder
 	 * @param name
 	 *            - The name of this style
+	 * @param locale 
 	 */
-	protected BooleanStyleBuilder(final String name) {
+	protected BooleanStyleBuilder(final String name, Locale locale) {
 		this.sName = name;
-		final Locale locale = Locale.getDefault();
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.bVolatile = true;

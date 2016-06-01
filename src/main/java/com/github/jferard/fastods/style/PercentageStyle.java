@@ -20,6 +20,7 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -42,7 +43,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class PercentageStyle implements DataStyle {
 	public static PercentageStyleBuilder builder(final String sName) {
-		return new PercentageStyleBuilder(sName);
+		return new PercentageStyleBuilder(sName, Locale.getDefault());
 	}
 
 	private final boolean bGrouping;
@@ -97,7 +98,7 @@ public class PercentageStyle implements DataStyle {
 
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.addPercentageStyle(this);
+		odsFile.addDataStyle(this);
 	}
 
 	/**

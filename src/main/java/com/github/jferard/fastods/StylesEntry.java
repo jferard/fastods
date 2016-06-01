@@ -28,6 +28,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.style.BooleanStyle;
 import com.github.jferard.fastods.style.CurrencyStyle;
+import com.github.jferard.fastods.style.DataStyle;
 import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.NumberStyle;
@@ -60,83 +61,37 @@ public class StylesEntry implements OdsEntry {
 		appendable.append("/></style:style>");
 	}
 
-	private final Map<String, CurrencyStyle> qCurrencyStyles;
-	private final Map<String, DateStyle> qDateStyles;
-	private final Map<String, NumberStyle> qNumberStyles;
-
 	private final Map<String, PageStyle> qPageStyles;
-
 	private final Map<String, FHTextStyle> qTextStyles;
-	private final Map<String, BooleanStyle> qBooleanStyles;
-	private final Map<String, PercentageStyle> qPercentageStyles;
-	private final Map<String, TimeStyle> qTimeStyles;
+	private final Map<String, DataStyle> qDataStyles;
 
 	/**
 	 * @param odsFile
 	 *            - The OdsFile where the styles belong to
 	 */
 	public StylesEntry(final OdsFile odsFile) {
-		this.qNumberStyles = new HashMap<String, NumberStyle>();
-		this.qBooleanStyles = new HashMap<String, BooleanStyle>();
-		this.qCurrencyStyles = new HashMap<String, CurrencyStyle>();
+		this.qDataStyles = new HashMap<String, DataStyle>();
 		this.qPageStyles = new HashMap<String, PageStyle>();
 		this.qTextStyles = new HashMap<String, FHTextStyle>();
-		this.qDateStyles = new HashMap<String, DateStyle>();
-		this.qPercentageStyles = new HashMap<String, PercentageStyle>();
-		this.qTimeStyles = new HashMap<String, TimeStyle>();
-	}
-
-	public void addBooleanStyle(BooleanStyle booleanStyle) {
-		this.qBooleanStyles.put(booleanStyle.getName(), booleanStyle);
 	}
 
 	/**
-	 * Add a CurrencyStyle, if a CurrencyStyle with this name already exist, the
+	 * Add a DataStyle, if a DataStyle with this name already exist, the
 	 * old one is replaced.
 	 *
-	 * @param cs
-	 *            - The currency style to be added.
+	 * @param dataStyle
+	 *            - The data style to be added.
 	 */
-	public void addCurrencyStyle(final CurrencyStyle cs) {
-		this.qCurrencyStyles.put(cs.getName(), cs);
-	}
-
-	/**
-	 * Add a DateStyle, if a DateStyle with this name already exist, the old one
-	 * is replaced.
-	 *
-	 * @param ds
-	 *            - The date style to be added.
-	 */
-	public void addDateStyle(final DateStyle ds) {
-		this.qDateStyles.put(ds.getName(), ds);
-	}
-
-	/**
-	 * Add a NumberStyle, if a NumberStyle with this name already exist, the old
-	 * one is replaced.
-	 *
-	 * @param ns
-	 *            - The number style to be added.
-	 */
-	public void addNumberStyle(final NumberStyle ns) {
-		this.qNumberStyles.put(ns.getName(), ns);
+	public void addDataStyle(DataStyle dataStyle) {
+		this.qDataStyles.put(dataStyle.getName(), dataStyle);
 	}
 
 	public void addPageStyle(final PageStyle ps) {
 		this.qPageStyles.put(ps.getName(), ps);
 	}
 
-	public void addPercentageStyle(PercentageStyle percentageStyle) {
-		this.qPercentageStyles.put(percentageStyle.getName(), percentageStyle);
-	}
-
 	public void addTextStyle(final FHTextStyle ts) {
 		this.qTextStyles.put(ts.getName(), ts);
-	}
-
-	public void addTimeStyle(TimeStyle timeStyle) {
-		this.qTimeStyles.put(timeStyle.getName(), timeStyle);
 	}
 
 	@Override
@@ -156,25 +111,9 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-		for (final BooleanStyle bs : this.qBooleanStyles.values())
+		for (final DataStyle bs : this.qDataStyles.values())
 			bs.appendXMLToStylesEntry(util, writer);
 
-		for (final CurrencyStyle cs : this.qCurrencyStyles.values())
-			cs.appendXMLToStylesEntry(util, writer);
-		
-		for (final DateStyle ds : this.qDateStyles.values())
-			ds.appendXMLToStylesEntry(util, writer);
-
-		for (final NumberStyle ns : this.qNumberStyles.values())
-			ns.appendXMLToStylesEntry(util, writer);
-
-		for (final PercentageStyle ps : this.qPercentageStyles.values())
-			ps.appendXMLToStylesEntry(util, writer);
-		
-		for (final TimeStyle ps : this.qTimeStyles.values())
-			ps.appendXMLToStylesEntry(util, writer);
-		
-		
 		boolean hasHeader = false;
 		boolean hasFooter = false;
 		for (final PageStyle ps : this.qPageStyles.values()) {

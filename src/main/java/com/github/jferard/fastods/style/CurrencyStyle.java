@@ -20,6 +20,7 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -45,7 +46,7 @@ public class CurrencyStyle implements DataStyle {
 	public static CurrencyStyleBuilder builder(String sName) {
 		if (sName == null)
 			throw new IllegalArgumentException();
-		return new CurrencyStyleBuilder(sName);
+		return new CurrencyStyleBuilder(sName, Locale.getDefault());
 	}
 
 	private final boolean bGrouping;
@@ -81,7 +82,7 @@ public class CurrencyStyle implements DataStyle {
 
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.addCurrencyStyle(this);
+		odsFile.addDataStyle(this);
 	}
 
 	/**

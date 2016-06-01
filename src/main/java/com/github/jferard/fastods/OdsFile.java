@@ -36,19 +36,16 @@ import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.style.BooleanStyle;
 import com.github.jferard.fastods.style.CurrencyStyle;
+import com.github.jferard.fastods.style.DataStyle;
 import com.github.jferard.fastods.style.DataStyles;
-import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.LocaleDataStyles;
-import com.github.jferard.fastods.style.NumberStyle;
 import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.PercentageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TimeStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.Util.Position;
@@ -434,20 +431,8 @@ public class OdsFile {
 		}
 	}
 
-	public void addBooleanStyle(BooleanStyle booleanStyle) {
-		this.stylesEntry.addBooleanStyle(booleanStyle);
-	}
-
-	public void addCurrencyStyle(CurrencyStyle currencyStyle) {
-		this.stylesEntry.addCurrencyStyle(currencyStyle);
-	}
-
-	public void addDateStyle(DateStyle dateStyle) {
-		this.stylesEntry.addDateStyle(dateStyle);
-	}
-
-	public void addNumberStyle(NumberStyle numberStyle) {
-		this.stylesEntry.addNumberStyle(numberStyle);
+	public void addDataStyle(DataStyle dataStyle) {
+		this.stylesEntry.addDataStyle(dataStyle);
 	}
 
 	public void addPageStyle(PageStyle pageStyle) {
@@ -462,11 +447,4 @@ public class OdsFile {
 		this.stylesEntry.addTextStyle(fhTextStyle);
 	}
 
-	public void addPercentageStyle(PercentageStyle percentageStyle) {
-		this.stylesEntry.addPercentageStyle(percentageStyle);
-	}
-
-	public void addTimeStyle(TimeStyle timeStyle) {
-		this.stylesEntry.addTimeStyle(timeStyle);
-	}
 }

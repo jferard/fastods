@@ -50,14 +50,14 @@ public class NumberStyleBuilder {
 	 *
 	 * @param sName
 	 *            The name of the number style, this name must be unique.
+	 * @param locale 
 	 */
-	public NumberStyleBuilder(final String sName) {
+	public NumberStyleBuilder(final String sName, Locale locale) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 		
 		this.sName = sName;
 		this.sNegativeValueColor = "#FF0000";
-		final Locale locale = Locale.getDefault();
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.numberType = NumberStyle.DEFAULT_TYPE;

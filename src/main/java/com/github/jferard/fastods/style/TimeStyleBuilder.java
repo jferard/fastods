@@ -50,11 +50,9 @@ public class TimeStyleBuilder {
 	 * @param sName
 	 *            The name of the number style.
 	 */
-	protected TimeStyleBuilder(final String sName) {
+	protected TimeStyleBuilder(final String sName, final Locale locale) {
 		if (sName == null)
 			throw new IllegalArgumentException();
-		
-		final Locale locale = Locale.getDefault();
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.sName = sName;

@@ -51,12 +51,12 @@ public class DateStyleBuilder {
 	 *
 	 * @param sName
 	 *            The name of the number style.
+	 * @param locale 
 	 */
-	protected DateStyleBuilder(final String sName) {
+	protected DateStyleBuilder(final String sName, Locale locale) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 		
-		final Locale locale = Locale.getDefault();
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.sName = sName;

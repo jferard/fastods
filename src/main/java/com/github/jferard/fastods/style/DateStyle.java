@@ -20,6 +20,7 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -95,7 +96,7 @@ public class DateStyle implements DataStyle {
 	private static final String YEAR = "<number:year/>";
 
 	public static DateStyleBuilder builder(final String sName) {
-		return new DateStyleBuilder(sName);
+		return new DateStyleBuilder(sName, Locale.getDefault());
 	}
 
 	private final boolean bAutomaticOrder;
@@ -140,7 +141,7 @@ public class DateStyle implements DataStyle {
 	 */
 	@Override
 	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDateStyle(this);
+		odsFile.addDataStyle(this);
 	}
 
 	/**

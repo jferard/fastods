@@ -48,10 +48,10 @@ public class CurrencyStyleBuilder {
 	 * The builder
 	 * @param name
 	 *            - The name of this style
+	 * @param locale 
 	 */
-	protected CurrencyStyleBuilder(final String name) {
+	protected CurrencyStyleBuilder(final String name, Locale locale) {
 		this.sName = name;
-		final Locale locale = Locale.getDefault();
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.sCurrencySymbol = NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol(locale);
