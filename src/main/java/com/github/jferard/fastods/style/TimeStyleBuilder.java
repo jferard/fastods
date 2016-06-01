@@ -107,4 +107,10 @@ public class TimeStyleBuilder {
 		this.timeFormat = format;
 		return this;
 	}
+	
+	public TimeStyleBuilder locale(Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
 }

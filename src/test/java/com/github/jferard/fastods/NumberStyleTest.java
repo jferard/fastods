@@ -20,6 +20,7 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,36 +37,39 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         This file BenchTest.java is part of FastODS.
  */
 public class NumberStyleTest {
+	private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
 	private XMLUtil util;
+	private Locale locale;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.locale = Locale.US;
 	}
 
 	@Test
 	public final void testEmpty() throws IOException {
-		NumberStyle ns = NumberStyle.builder("test").build();
+		NumberStyle ns = NumberStyle.builder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals("<number:number-style style:name=\"test\">"
-				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
+		Assert.assertEquals("<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"
+				+ NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 				+ "</number:number-style>", sb.toString());
 	}
 
 	@Test
 	public final void testNegative() throws IOException {
-		NumberStyle ns = NumberStyle.builder("test").negativeValuesRed(true).build();
+		NumberStyle ns = NumberStyle.builder("test").negativeValuesRed(true).locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
-				"<number:number-style style:name=\"testnn\" style:volatile=\"true\">"+
-				"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"+
+				"<number:number-style style:name=\"testnn\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"+
+				NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS+
 				"</number:number-style>"+
-				"<number:number-style style:name=\"test\">"+
+				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"+
 				"<style:text-properties fo:color=\"#FF0000\"/>"+
 				"<number:text>-</number:text>"+
-				"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"+
+				NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS+
 				"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"testnn\"/>"+
 				"</number:number-style>",
 				sb.toString());

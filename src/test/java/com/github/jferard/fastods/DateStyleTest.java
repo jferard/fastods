@@ -20,6 +20,7 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,29 +38,26 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class DateStyleTest {
 	private XMLUtil util;
+	private Locale locale;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.locale = Locale.US;
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testWithNoName() {
-		DateStyle ds = DateStyle.builder(null).build();
+		DateStyle ds = DateStyle.builder(null).locale(this.locale).build();
 	}
 
 	@Test
 	public final void test() throws IOException {
-		DateStyle ds = DateStyle.builder("test").build();
+		DateStyle ds = DateStyle.builder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
-				"<number:date-style style:name=\"test\" number:automatic-order=\"false\">"
-						+ "<number:day number:style=\"long\"/>"
-						+ "<number:text>.</number:text>"
-						+ "<number:month number:style=\"long\"/>"
-						+ "<number:text>.</number:text><number:year/>"
-						+ "</number:date-style>",
+				"<number:date-style style:name=\"test\" number:automatic-order=\"false\" number:language=\"en\" number:country=\"US\" number:format-source=\"language\"/>",
 				sb.toString());
 	}
 }

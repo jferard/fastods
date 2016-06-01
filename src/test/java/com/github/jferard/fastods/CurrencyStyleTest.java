@@ -20,6 +20,7 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,58 +38,33 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class CurrencyStyleTest {
 	private XMLUtil util;
+	private Locale locale;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.locale = Locale.US;
 	}
 
 	@Test
 	public final void testStylesEntry() throws IOException {
-		CurrencyStyle cs = CurrencyStyle.builder("test").build();
+		CurrencyStyle cs = CurrencyStyle.builder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		cs.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
-				"<number:currency-style style:name=\"testnn\" style:volatile=\"true\">"
+				"<number:currency-style style:name=\"testnn\" style:volatile=\"true\" number:language=\"en\" number:country=\"US\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
-						+ "<number:text> "
-						+ "</number:text><number:currency-symbol>\"€\""
-						+ "</number:currency-symbol>"
+						+ "<number:text> </number:text>"
+						+ "<number:currency-symbol number:language=\"en\" number:country=\"US\"/>"
 						+ "</number:currency-style>"
-						+ "<number:currency-style style:name=\"test\">"
+						+ "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"
 						+ "<style:text-properties fo:color=\"#FF0000\"/>"
-						+ "<number:text>-" + "</number:text>"
+						+ "<number:text>-</number:text>"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
-						+ "<number:text> "
-						+ "</number:text><number:currency-symbol>\"€\""
-						+ "</number:currency-symbol>"
+						+ "<number:text> </number:text>"
+						+ "<number:currency-symbol number:language=\"en\" number:country=\"US\"/>"
 						+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"testnn\"/>"
 						+ "</number:currency-style>",
 				sb.toString());
 	}
-
-	@Test
-	public final void test() throws IOException {
-		CurrencyStyle cs = CurrencyStyle.builder("test").build();
-		StringBuilder sb = new StringBuilder();
-		cs.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals(
-				"<number:currency-style style:name=\"testnn\" style:volatile=\"true\">"
-						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
-						+ "<number:text> "
-						+ "</number:text><number:currency-symbol>\"€\""
-						+ "</number:currency-symbol>"
-						+ "</number:currency-style>"
-						+ "<number:currency-style style:name=\"test\">"
-						+ "<style:text-properties fo:color=\"#FF0000\"/>"
-						+ "<number:text>-" + "</number:text>"
-						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
-						+ "<number:text> "
-						+ "</number:text><number:currency-symbol>\"€\""
-						+ "</number:currency-symbol>"
-						+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"testnn\"/>"
-						+ "</number:currency-style>",
-				sb.toString());
-	}
-	
 }

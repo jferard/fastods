@@ -125,4 +125,10 @@ public class DateStyleBuilder {
 		this.dateFormat = format;
 		return this;
 	}
+	
+	public DateStyleBuilder locale(Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
 }

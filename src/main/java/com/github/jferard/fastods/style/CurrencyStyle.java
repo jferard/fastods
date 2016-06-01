@@ -98,7 +98,12 @@ public class CurrencyStyle implements DataStyle {
 
 		appendable.append("<number:currency-style");
 		util.appendAttribute(appendable, "style:name", this.sName + "nn");
-		appendable.append(" style:volatile=\"true\">");
+		util.appendEAttribute(appendable, "style:volatile", true);
+		if (this.sLanguage != null)
+			util.appendAttribute(appendable, "number:language", this.sLanguage);
+		if (this.sCountry != null)
+			util.appendAttribute(appendable, "number:country", this.sCountry);
+		appendable.append(">");
 		appendable.append(currency);
 		appendable.append("</number:currency-style>");
 
@@ -107,6 +112,10 @@ public class CurrencyStyle implements DataStyle {
 		// the style for positive values
 		appendable.append("<number:currency-style");
 		util.appendAttribute(appendable, "style:name", this.sName);
+		if (this.sLanguage != null)
+			util.appendAttribute(appendable, "number:language", this.sLanguage);
+		if (this.sCountry != null)
+			util.appendAttribute(appendable, "number:country", this.sCountry);
 		appendable.append(">");
 		appendable.append("<style:text-properties");
 		util.appendAttribute(appendable, "fo:color", this.sNegativeValueColor);
@@ -207,11 +216,12 @@ public class CurrencyStyle implements DataStyle {
 			util.appendAttribute(appendable, "number:language", this.sLanguage);
 		if (this.sCountry != null)
 			util.appendAttribute(appendable, "number:country", this.sCountry);
-		appendable.append(">");
-		appendable.append("\"")
-				.append(util.escapeXMLContent(this.sCurrencySymbol))
-				.append("\"");
-		appendable.append("</number:currency-symbol>");
+		if (this.sCurrencySymbol != null) {
+			appendable.append(">\"")
+					.append(util.escapeXMLContent(this.sCurrencySymbol))
+					.append("\"</number:currency-symbol>");
+		} else
+			appendable.append("/>");
 	}
 
 	private StringBuilder currencyToXML(final XMLUtil util) throws IOException {

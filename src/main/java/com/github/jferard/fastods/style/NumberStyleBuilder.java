@@ -206,4 +206,15 @@ public class NumberStyleBuilder {
 		this.bGrouping = grouping;
 		return this;
 	}
+	
+	public NumberStyleBuilder locale(Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
+
+	public NumberStyleBuilder language(String language) {
+		this.sLanguage = language;
+		return this;
+	}
 }

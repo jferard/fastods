@@ -204,4 +204,10 @@ public class PercentageStyleBuilder {
 		this.bGrouping = grouping;
 		return this;
 	}
+	
+	public PercentageStyleBuilder locale(Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
 }

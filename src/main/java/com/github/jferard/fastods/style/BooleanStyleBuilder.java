@@ -76,6 +76,7 @@ public class BooleanStyleBuilder {
 		this.sLanguage = language.toLowerCase();
 		return this;
 	}
+	
 
 	/**
 	 * Set how many leading zeros are present.
@@ -87,4 +88,11 @@ public class BooleanStyleBuilder {
 		this.bVolatile = bVolatile;
 		return this;
 	}
+	
+	public BooleanStyleBuilder locale(Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
+	
 }

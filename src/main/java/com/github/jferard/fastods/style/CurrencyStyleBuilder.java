@@ -52,9 +52,7 @@ public class CurrencyStyleBuilder {
 	 */
 	protected CurrencyStyleBuilder(final String name, Locale locale) {
 		this.sName = name;
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		this.sCurrencySymbol = NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol(locale);
+		this.locale(locale);
 		this.sNegativeValueColor = "#FF0000";
 		this.nDecimalPlaces = 2;
 		this.nMinIntegerDigits = 1;
@@ -152,6 +150,12 @@ public class CurrencyStyleBuilder {
 	 */
 	public CurrencyStyleBuilder thousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
+		return this;
+	}
+
+	public CurrencyStyleBuilder locale(Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 }
