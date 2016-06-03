@@ -34,6 +34,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.simpleods.ObjectQueue;
+import org.simpleods.SimpleOdsException;
 
 import com.google.common.base.Optional;
 
@@ -47,27 +48,31 @@ public class BenchTest {
 	private static final int COL_COUNT = 40;
 	private static final int ROW_COUNT = 10000;
 	private Random random;
-	private long t1;
 
 	@Rule public TestName name = new TestName();
 	
 	@Before
 	public final void setUp() {
 		this.random = new Random();
-		System.out.println(this.name.getMethodName()+" : filling a " + ROW_COUNT + " rows, "
-				+ COL_COUNT + " columns spreadsheet");
-		this.t1 = System.currentTimeMillis();
 	}
 	
 	@After
 	public final void tearDown() {
-		long t2 = System.currentTimeMillis();
-		System.out.println("Filled in " + (t2 - this.t1) + " ms");
 	}
 
 	@Test
+	public void test() throws FastOdsException, SimpleOdsException {
+		for (int i = 0 ; i<10 ; i++) {
+			testFast();
+			testSimple();
+		}
+	}
+	
 	public final void testFast() throws FastOdsException {
 		// Open the file.
+		System.out.println("testFast: filling a " + ROW_COUNT + " rows, "
+				+ COL_COUNT + " columns spreadsheet");
+		long t1 = System.currentTimeMillis();
 		OdsFile file = OdsFile.create("f20columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
@@ -82,31 +87,16 @@ public class BenchTest {
 		}
 
 		file.save();
+		long t2 = System.currentTimeMillis();
+		System.out.println("Filled in " + (t2 - t1) + " ms");
 	}
 	
-	@Test
-	public final void testFast2() throws FastOdsException {
+//	@Test
+	public final void testSimple() throws SimpleOdsException {
 		// Open the file.
-		OdsFile file = OdsFile.create("f60columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
-
-		Table table = optTable.get();
-		for (int y = 0; y < 3*ROW_COUNT; y++) {
-			final TableRow row = table.nextRow();
-			for (int x = 0; x < 3*COL_COUNT; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(this.random.nextInt(1000));
-			}
-		}
-
-		file.save();
-	}
-	
-
-	@Test
-	public final void testSimple() throws org.simpleods.SimpleOdsException {
-		// Open the file.
+		System.out.println("testSimple: filling a " + ROW_COUNT + " rows, "
+				+ COL_COUNT + " columns spreadsheet");
+		long t1 = System.currentTimeMillis();
 		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
 				"s20columns.ods");
 		file.addTable("test");
@@ -119,6 +109,27 @@ public class BenchTest {
 			rows.add(row);
 			for (int x = 0; x < COL_COUNT; x++) {
 				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
+			}
+		}
+
+		file.save();
+		long t2 = System.currentTimeMillis();
+		System.out.println("Filled in " + (t2 - t1) + " ms");
+	}
+
+//	@Test
+	public final void testFast2() throws FastOdsException {
+		// Open the file.
+		OdsFile file = OdsFile.create("f60columns.ods");
+		Optional<Table> optTable = file.addTable("test");
+		Assert.assertTrue(optTable.isPresent());
+
+		Table table = optTable.get();
+		for (int y = 0; y < 3*ROW_COUNT; y++) {
+			final TableRow row = table.nextRow();
+			for (int x = 0; x < 3*COL_COUNT; x++) {
+				TableCell cell = row.getCell(x);
+				cell.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 
@@ -146,7 +157,7 @@ public class BenchTest {
 		file.save();
 	}
 
-	@Test
+//	@Test
 	public final void testJOpen() throws IOException {
 		// the file.
 		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel()).getSheet(0);

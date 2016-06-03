@@ -46,7 +46,7 @@ import com.google.common.base.Optional;
  * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileTest#testFast test
  */
 public class ProfileTest {
-	private static final int COL_COUNT = 2*40;
+	private static final int COL_COUNT = 40;
 	private static final int ROW_COUNT = 2*20000;
 	private Random random;
 	private long t1;
