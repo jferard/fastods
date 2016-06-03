@@ -48,10 +48,6 @@ public class NumberStyle implements DataStyle {
 
 	public static final Type DEFAULT_TYPE = Type.NORMAL;
 
-	public static NumberStyleBuilder builder(final String sName) {
-		return new NumberStyleBuilder(sName, Locale.getDefault());
-	}
-
 	private final boolean bGrouping;
 	private final boolean bNegativeValuesRed;
 	/**

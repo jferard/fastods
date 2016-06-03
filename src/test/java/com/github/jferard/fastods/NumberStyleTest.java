@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jferard.fastods.style.DataStyleBuilderFactory;
 import com.github.jferard.fastods.style.NumberStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -40,16 +41,18 @@ public class NumberStyleTest {
 	private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
 	private XMLUtil util;
 	private Locale locale;
+	private DataStyleBuilderFactory factory;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
+		this.factory = new DataStyleBuilderFactory(this.locale);
 	}
 
 	@Test
 	public final void testEmpty() throws IOException {
-		NumberStyle ns = NumberStyle.builder("test").locale(this.locale).build();
+		NumberStyle ns = this.factory.numberStyleBuilder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals("<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"
@@ -59,7 +62,7 @@ public class NumberStyleTest {
 
 	@Test
 	public final void testNegative() throws IOException {
-		NumberStyle ns = NumberStyle.builder("test").negativeValuesRed(true).locale(this.locale).build();
+		NumberStyle ns = this.factory.numberStyleBuilder("test").negativeValuesRed(true).locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(

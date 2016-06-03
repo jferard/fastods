@@ -39,12 +39,6 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         16.27.23 <number:boolean-style>
  */
 public class BooleanStyle implements DataStyle {
-	public static BooleanStyleBuilder builder(final String sName) {
-		if (sName == null)
-			throw new IllegalArgumentException();
-		return new BooleanStyleBuilder(sName, Locale.getDefault());
-	}
-
 	private final boolean bVolatile;
 	private final String sCountry;
 	private final String sLanguage;

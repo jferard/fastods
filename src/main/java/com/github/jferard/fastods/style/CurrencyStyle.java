@@ -43,12 +43,6 @@ public class CurrencyStyle implements DataStyle {
 		BEGIN, END;
 	}
 
-	public static CurrencyStyleBuilder builder(final String sName) {
-		if (sName == null)
-			throw new IllegalArgumentException();
-		return new CurrencyStyleBuilder(sName, Locale.getDefault());
-	}
-
 	private final boolean bGrouping;
 	private final boolean bNegativeValuesRed;
 	private final boolean bVolatile;

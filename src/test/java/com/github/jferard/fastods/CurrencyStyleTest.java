@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.style.CurrencyStyle;
+import com.github.jferard.fastods.style.DataStyleBuilderFactory;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -39,16 +40,18 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class CurrencyStyleTest {
 	private XMLUtil util;
 	private Locale locale;
+	private DataStyleBuilderFactory factory;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
+		this.factory = new DataStyleBuilderFactory(this.locale);
 	}
 
 	@Test
 	public final void testStylesEntry() throws IOException {
-		CurrencyStyle cs = CurrencyStyle.builder("test").locale(this.locale).build();
+		CurrencyStyle cs = this.factory.currencyStyleBuilder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		cs.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(

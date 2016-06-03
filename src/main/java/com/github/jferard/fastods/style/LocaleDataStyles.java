@@ -10,28 +10,32 @@ public class LocaleDataStyles implements DataStyles {
 	private final TableCellStyle percentageCellStyle;
 	private final TableCellStyle timeCellStyle;
 
-	public LocaleDataStyles(final XMLUtil util) {
-		final BooleanStyle booleanDataStyle = BooleanStyle
-				.builder("boolean-data").build();
+	public LocaleDataStyles(final DataStyleBuilderFactory builderFactory,
+			final XMLUtil util) {
+
+		final BooleanStyle booleanDataStyle = builderFactory
+				.booleanStyleBuilder("boolean-data").build();
 		this.booleanCellStyle = TableCellStyle.builder(util, "boolean-style")
 				.dataStyle(booleanDataStyle).build();
-		final CurrencyStyle currencyDataStyle = CurrencyStyle
-				.builder("currency-data").build();
+		final CurrencyStyle currencyDataStyle = builderFactory
+				.currencyStyleBuilder("currency-data").build();
 		this.currencyCellStyle = TableCellStyle.builder(util, "currency-style")
 				.dataStyle(currencyDataStyle).build();
-		final DateStyle dateDataStyle = DateStyle.builder("date-data").build();
+		final DateStyle dateDataStyle = builderFactory
+				.dateStyleBuilder("date-data").build();
 		this.dateCellStyle = TableCellStyle.builder(util, "date-style")
 				.dataStyle(dateDataStyle).build();
-		final NumberStyle numberDataStyle = NumberStyle.builder("number-data")
-				.build();
+		final NumberStyle numberDataStyle = builderFactory
+				.numberStyleBuilder("number-data").build();
 		this.numberCellStyle = TableCellStyle.builder(util, "number-style")
 				.dataStyle(numberDataStyle).build();
-		final PercentageStyle percentageDataStyle = PercentageStyle
-				.builder("percentage-data").build();
+		final PercentageStyle percentageDataStyle = builderFactory
+				.percentageStyleBuilder("percentage-data").build();
 		this.percentageCellStyle = TableCellStyle
 				.builder(util, "percentage-style")
 				.dataStyle(percentageDataStyle).build();
-		final TimeStyle timeDataStyle = TimeStyle.builder("time-data").build();
+		final TimeStyle timeDataStyle = builderFactory
+				.timeStyleBuilder("time-data").build();
 		this.timeCellStyle = TableCellStyle.builder(util, "time-style")
 				.dataStyle(timeDataStyle).build();
 	}

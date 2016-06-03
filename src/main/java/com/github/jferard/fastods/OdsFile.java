@@ -31,10 +31,12 @@ import java.io.Writer;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.style.DataStyle;
+import com.github.jferard.fastods.style.DataStyleBuilderFactory;
 import com.github.jferard.fastods.style.DataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.LocaleDataStyles;
@@ -74,10 +76,15 @@ public class OdsFile {
 	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024;
 
 	public static OdsFile create(final String sName) {
+		return OdsFile.create(Locale.getDefault(), sName);
+	}
+	
+	public static OdsFile create(final Locale locale, final String sName) {
 		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
 		final XMLUtil xmlUtil = new XMLUtil(escaper);
+		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(locale);  
 		return new OdsFile(sName, new Util(), xmlUtil,
-				new LocaleDataStyles(xmlUtil), OdsFile.DEFAULT_BUFFER_SIZE);
+				new LocaleDataStyles(builderFactory, xmlUtil), OdsFile.DEFAULT_BUFFER_SIZE);
 	}
 
 	private final int bufferSize;

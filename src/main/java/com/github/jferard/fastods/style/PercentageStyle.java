@@ -42,10 +42,6 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         style
  */
 public class PercentageStyle implements DataStyle {
-	public static PercentageStyleBuilder builder(final String sName) {
-		return new PercentageStyleBuilder(sName, Locale.getDefault());
-	}
-
 	private final boolean bGrouping;
 	private final boolean bNegativeValuesRed;
 	/**

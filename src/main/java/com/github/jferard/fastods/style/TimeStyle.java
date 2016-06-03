@@ -55,10 +55,6 @@ public class TimeStyle implements DataStyle {
 	private static final String MINUTES = "<number:minutes/>";
 	private static final String SECONDS = "<number:seconds/>";
 
-	public static TimeStyleBuilder builder(final String sName) {
-		return new TimeStyleBuilder(sName, Locale.getDefault());
-	}
-
 	private final String sCountry;
 	private final String sLanguage;
 	/**

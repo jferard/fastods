@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jferard.fastods.style.DataStyleBuilderFactory;
 import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -39,21 +40,23 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class DateStyleTest {
 	private XMLUtil util;
 	private Locale locale;
+	private DataStyleBuilderFactory factory;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
+		this.factory = new DataStyleBuilderFactory(this.locale);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testWithNoName() {
-		DateStyle ds = DateStyle.builder(null).locale(this.locale).build();
+		DateStyle ds = this.factory.dateStyleBuilder(null).locale(this.locale).build();
 	}
 
 	@Test
 	public final void test() throws IOException {
-		DateStyle ds = DateStyle.builder("test").locale(this.locale).build();
+		DateStyle ds = this.factory.dateStyleBuilder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(

@@ -55,8 +55,7 @@ public class DateStyleBuilder {
 		if (sName == null)
 			throw new IllegalArgumentException();
 
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
+		this.locale(locale);
 		this.sName = sName;
 		this.bAutomaticOrder = false;
 	}

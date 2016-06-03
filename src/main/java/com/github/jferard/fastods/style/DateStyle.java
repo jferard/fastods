@@ -95,10 +95,6 @@ public class DateStyle implements DataStyle {
 
 	private static final String YEAR = "<number:year/>";
 
-	public static DateStyleBuilder builder(final String sName) {
-		return new DateStyleBuilder(sName, Locale.getDefault());
-	}
-
 	private final boolean bAutomaticOrder;
 	private final Format dateFormat;
 	private final String sCountry;
