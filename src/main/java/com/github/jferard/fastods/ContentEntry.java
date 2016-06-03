@@ -33,7 +33,6 @@ import com.github.jferard.fastods.style.DataStyles;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -64,17 +63,18 @@ class ContentEntry implements OdsEntry {
 		this.styleTagByName = new HashMap<String, StyleTag>();
 	}
 
-	public Optional<Table> addTable(final String sName) {
-		Optional<Table> optTable = this.getTable(sName);
-		if (optTable.isPresent())
-			optTable = Optional.absent();
-		else {
-			final Table table = new Table(this.odsFile, this.xmlUtil, this.util,
+	/**
+	 * @param sName the name of the table to create
+	 * @return the table (whether it existed before call or not). Never null
+	 */
+	public Table addTable(final String sName) {
+		Table table = this.getTable(sName);
+		if (table == null) {
+			table = new Table(this.odsFile, this.xmlUtil, this.util,
 					this.format, sName);
 			this.qTables.add(table);
-			optTable = Optional.of(table);
 		}
-		return optTable;
+		return table;
 	}
 
 	/**
@@ -100,7 +100,11 @@ class ContentEntry implements OdsEntry {
 		return this.qTables.get(nTab);
 	}
 
-	public Optional<Table> getTable(final String sName) {
+	/**
+	 * @param sName the name of the table to find
+	 * @return the table, or null if none present
+	 */
+	public Table getTable(final String sName) {
 		return this.util.findElementByName(this.qTables, sName);
 	}
 

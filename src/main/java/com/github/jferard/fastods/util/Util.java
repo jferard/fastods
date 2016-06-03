@@ -23,14 +23,11 @@ import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.List;
-import java.util.ListIterator;
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import com.github.jferard.fastods.NamedObject;
-import com.google.common.base.Charsets;
-import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -41,6 +38,8 @@ import com.google.common.base.Optional;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class Util {
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
+
 	public static class Position {
 		private final int column;
 		private final int row;
@@ -88,17 +87,19 @@ public class Util {
 		}
 	}
 
-	public <T extends NamedObject> Optional<T> findElementByName(
-			final List<T> list, final String name) {
+	/**
+	 * @param iterable the iterable to look over 
+	 * @param name the name of the object to find
+	 * @return the object, otr null if none present
+	 */
+	public <T extends NamedObject> T findElementByName(
+			final Iterable<T> iterable, final String name) {
 		// Check is a style with this name exists and replace if yes
-		final ListIterator<T> listIterator = list.listIterator();
-		while (listIterator.hasNext()) {
-			final T curElement = listIterator.next();
-			if (curElement.getName().equals(name)) {
-				return Optional.of(curElement);
-			}
+		for (T curElement : iterable) {
+			if (curElement.getName().equals(name))
+				return curElement;
 		}
-		return Optional.absent();
+		return null;
 	}
 
 	/**
@@ -202,7 +203,7 @@ public class Util {
 	 * @return the writer
 	 */
 	public Writer wrapStream(final OutputStream out, final int size) {
-		return new BufferedWriter(new OutputStreamWriter(out, Charsets.UTF_8),
+		return new BufferedWriter(new OutputStreamWriter(out, Util.UTF_8),
 				size);
 	}
 }

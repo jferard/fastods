@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file BenchTest.java is part of FastODS.
+ *         This file BenchIT.java is part of FastODS.
  */
 public class CurrencyStyleTest {
 	private XMLUtil util;

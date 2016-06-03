@@ -48,7 +48,6 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.Util.Position;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -146,17 +145,14 @@ public class OdsFile {
 	 *
 	 * @param sName
 	 *            - The name of the table to add
-	 * @return true - The table was added,<br>
-	 *         false - The table already exist, it was added again
+	 * @return the table
 	 * @throws FastOdsException
 	 */
-	public Optional<Table> addTable(final String sName)
+	public Table addTable(final String sName)
 			throws FastOdsException {
-		final Optional<Table> optTable = this.contentEntry.addTable(sName);
-		if (optTable.isPresent())
-			this.settingsEntry.setActiveTable(optTable.get());
-
-		return optTable;
+		final Table table = this.contentEntry.addTable(sName);
+		this.settingsEntry.setActiveTable(table);
+		return table;
 	}
 
 	public void addTextStyle(final FHTextStyle fhTextStyle) {
@@ -183,12 +179,15 @@ public class OdsFile {
 		return t;
 	}
 
-	public Optional<Table> getTable(final String sName) {
-		final Optional<Table> optTable = this.contentEntry.getTable(sName);
-		if (optTable.isPresent())
-			this.settingsEntry.setActiveTable(optTable.get());
-
-		return optTable;
+	/**
+	 * @param sName the name of the table
+	 * @return the table, or null if not exists
+	 */
+	public Table getTable(final String sName) {
+		final Table table = this.contentEntry.getTable(sName);
+		if (table != null)
+			this.settingsEntry.setActiveTable(table);
+		return table;
 	}
 
 	/**

@@ -41,11 +41,11 @@ import com.google.common.base.Optional;
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file BenchTest.java is part of FastODS.
+ *         This file BenchIT.java is part of FastODS.
  *         
- * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileTest#testFast test
+ * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileIT#testFast test
  */
-public class ProfileTest {
+public class ProfileIT {
 	private static final int COL_COUNT = 40;
 	private static final int ROW_COUNT = 2*20000;
 	private Random random;
@@ -71,10 +71,8 @@ public class ProfileTest {
 	public final void testFast() throws FastOdsException {
 		// Open the file.
 		OdsFile file = OdsFile.create("f20columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
+		final Table table = file.addTable("test");
 
-		Table table = optTable.get();
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < COL_COUNT; x++) {

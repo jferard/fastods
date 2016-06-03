@@ -42,9 +42,9 @@ import com.google.common.base.Optional;
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file BenchTest.java is part of FastODS.
+ *         This file BenchIT.java is part of FastODS.
  */
-public class BenchTest {
+public class BenchIT {
 	private static final int COL_COUNT = 40;
 	private static final int ROW_COUNT = 10000;
 	private Random random;
@@ -74,10 +74,8 @@ public class BenchTest {
 				+ COL_COUNT + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		OdsFile file = OdsFile.create("f20columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
+		final Table table = file.addTable("test");
 
-		Table table = optTable.get();
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < COL_COUNT; x++) {
@@ -121,10 +119,8 @@ public class BenchTest {
 	public final void testFast2() throws FastOdsException {
 		// Open the file.
 		OdsFile file = OdsFile.create("f60columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
+		final Table table = file.addTable("test");
 
-		Table table = optTable.get();
 		for (int y = 0; y < 3*ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 3*COL_COUNT; x++) {

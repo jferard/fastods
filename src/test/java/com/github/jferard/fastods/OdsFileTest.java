@@ -25,7 +25,6 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -37,7 +36,7 @@ import com.google.common.base.Optional;
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file BenchTest.java is part of FastODS.
+ *         This file BenchIT.java is part of FastODS.
  */
 public class OdsFileTest {
 
@@ -48,12 +47,10 @@ public class OdsFileTest {
 		final Random random = new Random();
 
 		OdsFile file = OdsFile.create("5columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
+		final Table table = file.addTable("test");
 		FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
 		XMLUtil xmlUtil = new XMLUtil(xmlEscaper);
 		
-		Table table = optTable.get();
 		TableRow row = table.getRow(0);
 		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
@@ -146,10 +143,8 @@ public class OdsFileTest {
 		final Random random = new Random();
 
 		OdsFile file = OdsFile.create("100000columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
+		final Table table = file.addTable("test");
 
-		Table table = optTable.get();
 		for (int y = 0; y < 100000; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 20; x++) {
@@ -171,10 +166,8 @@ public class OdsFileTest {
 		final Random random = new Random();
 
 		OdsFile file = OdsFile.create("1000columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
+		final Table table = file.addTable("test");
 
-		Table table = optTable.get();
 		for (int y = 0; y < 1000; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < 300; x++) {

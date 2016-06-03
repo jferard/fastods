@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file BenchTest.java is part of FastODS.
+ *         This file BenchIT.java is part of FastODS.
  */
 public class NumberStyleTest {
 	private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
