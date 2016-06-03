@@ -77,7 +77,11 @@ public class OdsFileTest {
 		final TableCellStyle tcs3 = TableCellStyle.builder(xmlUtil, "tcs3")
 				.fontStyleItalic().build();
 		
-		for (int y = 0; y < 50; y++) {
+		row = table.getRow(0);
+		row.getCell(0).setStringValue("éèà");
+		row.getCell(1).setStringValue("€€€€");
+		row.getCell(2).setStringValue("£");
+		for (int y = 1; y < 50; y++) {
 			row = table.getRow(y);
 			for (int x = 0; x < 5; x++) {
 				TableCell cell = row.getCell(x);

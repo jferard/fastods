@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods.style;
 
+import java.util.Currency;
 import java.util.Locale;
 
 import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
@@ -129,6 +130,8 @@ public class CurrencyStyleBuilder {
 	public CurrencyStyleBuilder locale(final Locale locale) {
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
+		if (this.sCurrencySymbol == null)
+			this.sCurrencySymbol = Currency.getInstance(locale).getSymbol();
 		return this;
 	}
 

@@ -211,12 +211,7 @@ public class CurrencyStyle implements DataStyle {
 			util.appendAttribute(appendable, "number:language", this.sLanguage);
 		if (this.sCountry != null)
 			util.appendAttribute(appendable, "number:country", this.sCountry);
-		if (this.sCurrencySymbol != null) {
-			appendable.append(">\"")
-					.append(util.escapeXMLContent(this.sCurrencySymbol))
-					.append("\"</number:currency-symbol>");
-		} else
-			appendable.append("/>");
+		appendable.append(">").append(util.escapeXMLContent(this.sCurrencySymbol)).append("</number:currency-symbol>");
 	}
 
 	private StringBuilder currencyToXML(final XMLUtil util) throws IOException {

@@ -7,6 +7,10 @@
 	<name>FastODS</name>
 	<description>FastODS writer, a Martin Schulz's SimpleODS fork</description>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -21,7 +25,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.simpleods</groupId>
 			<artifactId>simpleODS</artifactId>
@@ -35,6 +39,6 @@
 			<version>1.3b1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 </project>

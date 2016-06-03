@@ -51,21 +51,24 @@ public class CurrencyStyleTest {
 
 	@Test
 	public final void testStylesEntry() throws IOException {
-		CurrencyStyle cs = this.factory.currencyStyleBuilder("test").locale(this.locale).build();
+		CurrencyStyle cs = this.factory.currencyStyleBuilder("test")
+				.locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		cs.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:currency-style style:name=\"testnn\" style:volatile=\"true\" number:language=\"en\" number:country=\"US\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> </number:text>"
-						+ "<number:currency-symbol number:language=\"en\" number:country=\"US\"/>"
+						+ "<number:currency-symbol number:language=\"en\" number:country=\"US\">"
+						+ "USD" + "</number:currency-symbol>"
 						+ "</number:currency-style>"
 						+ "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"
 						+ "<style:text-properties fo:color=\"#FF0000\"/>"
 						+ "<number:text>-</number:text>"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> </number:text>"
-						+ "<number:currency-symbol number:language=\"en\" number:country=\"US\"/>"
+						+ "<number:currency-symbol number:language=\"en\" number:country=\"US\">"
+						+ "USD" + "</number:currency-symbol>"
 						+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"testnn\"/>"
 						+ "</number:currency-style>",
 				sb.toString());
