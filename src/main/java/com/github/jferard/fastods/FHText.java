@@ -44,23 +44,17 @@ public class FHText {
 	public FHText(final String sText) {
 		this(sText, null);
 	}
-	
+
 	public FHText(final String s, final FHTextStyle t) {
 		this.ts = t;
 		this.sText = s;
 	}
 
-	public void appendXMLTextPToParagraph(XMLUtil util,
-			Appendable appendable) throws IOException {
-		appendable.append("<text:p");
-		if (this.ts != null)
-			util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
-		appendable.append(">").append(this.sText).append("</text:p>");
-	}
-
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
-	 * @param tagName TODO
+	 * 
+	 * @param tagName
+	 *            TODO
 	 *
 	 * @throws IOException
 	 */
@@ -70,9 +64,19 @@ public class FHText {
 			appendable.append(this.sText);
 		} else {
 			appendable.append("<text:span");
-			util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+			util.appendEAttribute(appendable, "text:style-name",
+					this.ts.getName());
 			appendable.append(">").append(this.sText).append("</text:span>");
 		}
+	}
+
+	public void appendXMLTextPToParagraph(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<text:p");
+		if (this.ts != null)
+			util.appendEAttribute(appendable, "text:style-name",
+					this.ts.getName());
+		appendable.append(">").append(this.sText).append("</text:p>");
 	}
 
 	public String getText() {

@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * /**
  *
@@ -32,13 +34,15 @@ package com.github.jferard.fastods.style;
  *         SimpleODS 0.5.2 Replaced all text properties with a TextStyle object
  */
 public class TableColumnStyleBuilder {
-	private String sColumnWidth;
 	private TableCellStyle defaultCellStyle;
+	private String sColumnWidth;
 	private final String sName;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
+	 * 
+	 * @param xmlUtil
 	 *
 	 * @param nFamily
 	 *            The type of this style, either
@@ -49,14 +53,15 @@ public class TableColumnStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableColumnStyleBuilder(String sName) {
-		this.sName = sName;
+	public TableColumnStyleBuilder(final XMLUtil xmlUtil, final String sName) {
+		this.sName = xmlUtil.escapeXMLAttribute(sName);
 		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
-		this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
+		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle(xmlUtil);
 	}
 
 	public TableColumnStyle build() {
-		return new TableColumnStyle(this.sName, this.sColumnWidth, this.defaultCellStyle);
+		return new TableColumnStyle(this.sName, this.sColumnWidth,
+				this.defaultCellStyle);
 
 	}
 
@@ -77,10 +82,11 @@ public class TableColumnStyleBuilder {
 		this.sColumnWidth = sWidth;
 		return this;
 	}
-	
-	public TableColumnStyleBuilder defaultCellStyle(final TableCellStyle defaultCellStyle) {
+
+	public TableColumnStyleBuilder defaultCellStyle(
+			final TableCellStyle defaultCellStyle) {
 		this.defaultCellStyle = defaultCellStyle;
 		return this;
 	}
-	
+
 }

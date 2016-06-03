@@ -43,7 +43,7 @@ public class CurrencyStyle implements DataStyle {
 		BEGIN, END;
 	}
 
-	public static CurrencyStyleBuilder builder(String sName) {
+	public static CurrencyStyleBuilder builder(final String sName) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 		return new CurrencyStyleBuilder(sName, Locale.getDefault());
@@ -56,8 +56,8 @@ public class CurrencyStyle implements DataStyle {
 	private final int nDecimalPlaces;
 	private final int nMinIntegerDigits;
 	private final String sCountry;
-	private final String sLanguage;
 	private final String sCurrencySymbol;
+	private final String sLanguage;
 	private final String sName;
 	private final String sNegativeValueColor;
 
@@ -205,7 +205,8 @@ public class CurrencyStyle implements DataStyle {
 		util.appendEAttribute(appendable, "number:min-integer-digits",
 				this.nMinIntegerDigits);
 		if (this.bGrouping)
-			util.appendEAttribute(appendable, "number:grouping", this.bGrouping);
+			util.appendEAttribute(appendable, "number:grouping",
+					this.bGrouping);
 		appendable.append("/>");
 	}
 

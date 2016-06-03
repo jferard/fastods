@@ -44,10 +44,26 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         table:table
  */
 public class Table implements NamedObject {
+	private static void checkCol(final int nCol) throws FastOdsException {
+		if (nCol < 0) {
+			throw new FastOdsException(new StringBuilder(
+					"Negative column number exception, column value:[")
+							.append(nCol).append("]").toString());
+		}
+	}
+
+	private static void checkRow(final int nRow) throws FastOdsException {
+		if (nRow < 0) {
+			throw new FastOdsException(new StringBuilder(
+					"Negative row number exception, row value:[").append(nRow)
+							.append("]").toString());
+		}
+	}
+
 	private final ConfigItem activeSplitRange;
 	private final ConfigItem cursorPositionX;
-
 	private final ConfigItem cursorPositionY;
+	private final DataStyles format;
 	private final ConfigItem horizontalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
 	private final OdsFile odsFile;
@@ -57,19 +73,21 @@ public class Table implements NamedObject {
 	private final ConfigItem positionRight;
 	private final ConfigItem positionTop;
 	private final List<TableColumnStyle> qColumnStyles;
+
 	private final List<TableRow> qTableRows;
 	private String sName;
 	private TableStyle style;
 
+	private final Util util;
 	private final ConfigItem verticalSplitMode;
 	private final ConfigItem verticalSplitPosition;
+
 	private final ConfigItem zoomType;
 
 	private final ConfigItem zoomValue;
-	private Util util;
-	private DataStyles format;
 
-	Table(final OdsFile odsFile, final Util util, DataStyles format, final String sName) {
+	Table(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
+			final DataStyles format, final String sName) {
 		this.odsFile = odsFile;
 		this.util = util;
 		this.format = format;
@@ -97,48 +115,12 @@ public class Table implements NamedObject {
 				"60");
 
 		this.qColumnStyles = FullList
-				.newList(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE);
+				.newList(TableColumnStyle.getDefaultColumnStyle(xmlUtil));
 		this.qTableRows = FullList.newList();
 	}
 
-	void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<table:table");
-		util.appendAttribute(appendable, "table:name", this.sName);
-		util.appendAttribute(appendable, "table:style-name",
-				this.style.getName());
-		util.appendEAttribute(appendable, "table:print", false);
-		appendable.append("><office:forms");
-		util.appendEAttribute(appendable, "form:automatic-focus", false);
-		util.appendEAttribute(appendable, "form:apply-design-mode", false);
-		appendable.append("/>");
-		// this.appendColumnStyles(appendable, util);
-		this.appendRows(appendable, util);
-		appendable.append("</table:table>");
-	}
-
-	void appendXMLToSettingsEntry(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<config:config-item-map-entry");
-		util.appendAttribute(appendable, "config:name", this.sName);
-		appendable.append(">");
-		this.cursorPositionX.appendXMLToObject(util, appendable);
-		this.cursorPositionY.appendXMLToObject(util, appendable);
-		this.horizontalSplitMode.appendXMLToObject(util, appendable);
-		this.verticalSplitMode.appendXMLToObject(util, appendable);
-		this.horizontalSplitMode.appendXMLToObject(util, appendable);
-		this.verticalSplitMode.appendXMLToObject(util, appendable);
-		this.horizontalSplitPosition.appendXMLToObject(util, appendable);
-		this.verticalSplitPosition.appendXMLToObject(util, appendable);
-		this.activeSplitRange.appendXMLToObject(util, appendable);
-		this.positionLeft.appendXMLToObject(util, appendable);
-		this.positionRight.appendXMLToObject(util, appendable);
-		this.positionTop.appendXMLToObject(util, appendable);
-		this.positionBottom.appendXMLToObject(util, appendable);
-		this.zoomType.appendXMLToObject(util, appendable);
-		this.zoomValue.appendXMLToObject(util, appendable);
-		this.pageViewZoomValue.appendXMLToObject(util, appendable);
-		appendable.append("</config:config-item-map-entry>");
+	public void addData(final DataWrapper data) {
+		data.addToTable(this);
 	}
 
 	/**
@@ -150,10 +132,11 @@ public class Table implements NamedObject {
 	 * @param nCol
 	 *            The column
 	 * @return The TableCell for this position, maybe a new TableCell
-	 * @throws FastOdsException 
+	 * @throws FastOdsException
 	 */
-	public TableCell getCell(final int nRow, final int nCol) throws FastOdsException {
-		TableRow tr = this.getRow(nRow);
+	public TableCell getCell(final int nRow, final int nCol)
+			throws FastOdsException {
+		final TableRow tr = this.getRow(nRow);
 		return tr.getCell(nCol);
 	}
 
@@ -187,7 +170,7 @@ public class Table implements NamedObject {
 
 	public TableRow getRow(final String sPos) throws FastOdsException {
 		final int nRow = this.util.getPosition(sPos).getRow();
-		return getRow(nRow);
+		return this.getRow(nRow);
 	}
 
 	public List<TableRow> getRows() {
@@ -205,9 +188,8 @@ public class Table implements NamedObject {
 
 	public TableRow nextRow() throws FastOdsException {
 		final int nRow = this.qTableRows.size();
-		Table.checkRow(nRow);
-
-		final TableRow tr = new TableRow(this.odsFile, this.util, this.format, nRow);
+		final TableRow tr = new TableRow(this.odsFile, this.util, this.format,
+				nRow);
 		this.qTableRows.add(tr);
 		return tr;
 	}
@@ -250,18 +232,14 @@ public class Table implements NamedObject {
 		this.style = style;
 	}
 
-	public void addData(DataWrapper data) {
-		data.addToTable(this);
-	}
-
 	private void appendColumnStyles(final Appendable appendable,
-			final XMLUtil util) throws IOException {
+			final XMLUtil xmlUtil) throws IOException {
 		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
 				.iterator();
 		if (!iterator.hasNext())
 			return;
 
-		TableColumnStyle ts0 = TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE;
+		TableColumnStyle ts0 = TableColumnStyle.getDefaultColumnStyle(xmlUtil);
 		int nCount = 1;
 		TableColumnStyle ts1 = iterator.next();
 		while (iterator.hasNext()) {
@@ -271,14 +249,14 @@ public class Table implements NamedObject {
 			if (ts0.equals(ts1)) {
 				nCount++;
 			} else {
-				ts0.appendXMLToTable(util, appendable, nCount);
+				ts0.appendXMLToTable(xmlUtil, appendable, nCount);
 				nCount = 1;
 			}
 
 		}
-		ts1.appendXMLToTable(util, appendable, nCount);
-		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.appendXMLToTable(util,
-				appendable, 1);
+		ts1.appendXMLToTable(xmlUtil, appendable, nCount);
+		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
+				.appendXMLToTable(xmlUtil, appendable, 1);
 	}
 
 	private void appendRows(final Appendable appendable, final XMLUtil util)
@@ -294,19 +272,43 @@ public class Table implements NamedObject {
 		}
 	}
 
-	private static void checkCol(final int nCol) throws FastOdsException {
-		if (nCol < 0) {
-			throw new FastOdsException(new StringBuilder(
-					"Negative column number exception, column value:[")
-							.append(nCol).append("]").toString());
-		}
+	void appendXMLToContentEntry(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<table:table");
+		util.appendAttribute(appendable, "table:name", this.sName);
+		util.appendAttribute(appendable, "table:style-name",
+				this.style.getName());
+		util.appendEAttribute(appendable, "table:print", false);
+		appendable.append("><office:forms");
+		util.appendEAttribute(appendable, "form:automatic-focus", false);
+		util.appendEAttribute(appendable, "form:apply-design-mode", false);
+		appendable.append("/>");
+		// this.appendColumnStyles(appendable, util);
+		this.appendRows(appendable, util);
+		appendable.append("</table:table>");
 	}
 
-	private static void checkRow(final int nRow) throws FastOdsException {
-		if (nRow < 0) {
-			throw new FastOdsException(new StringBuilder(
-					"Negative row number exception, row value:[").append(nRow)
-							.append("]").toString());
-		}
+	void appendXMLToSettingsEntry(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-entry");
+		util.appendAttribute(appendable, "config:name", this.sName);
+		appendable.append(">");
+		this.cursorPositionX.appendXMLToObject(util, appendable);
+		this.cursorPositionY.appendXMLToObject(util, appendable);
+		this.horizontalSplitMode.appendXMLToObject(util, appendable);
+		this.verticalSplitMode.appendXMLToObject(util, appendable);
+		this.horizontalSplitMode.appendXMLToObject(util, appendable);
+		this.verticalSplitMode.appendXMLToObject(util, appendable);
+		this.horizontalSplitPosition.appendXMLToObject(util, appendable);
+		this.verticalSplitPosition.appendXMLToObject(util, appendable);
+		this.activeSplitRange.appendXMLToObject(util, appendable);
+		this.positionLeft.appendXMLToObject(util, appendable);
+		this.positionRight.appendXMLToObject(util, appendable);
+		this.positionTop.appendXMLToObject(util, appendable);
+		this.positionBottom.appendXMLToObject(util, appendable);
+		this.zoomType.appendXMLToObject(util, appendable);
+		this.zoomValue.appendXMLToObject(util, appendable);
+		this.pageViewZoomValue.appendXMLToObject(util, appendable);
+		appendable.append("</config:config-item-map-entry>");
 	}
 }

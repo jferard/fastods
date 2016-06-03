@@ -21,8 +21,6 @@ package com.github.jferard.fastods.style;
 
 import java.util.Locale;
 
-import com.github.jferard.fastods.style.DateStyle.Format;
-
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
@@ -37,13 +35,13 @@ public class DateStyleBuilder {
 	 */
 	private DateStyle.Format dateFormat;
 
+	private String sCountry;
+
+	private String sLanguage;
 	/**
 	 * The name of this style.
 	 */
 	private final String sName;
-	
-	private String sCountry;
-	private String sLanguage;
 
 	/**
 	 * Create a new date style with the name sName.<br>
@@ -51,40 +49,16 @@ public class DateStyleBuilder {
 	 *
 	 * @param sName
 	 *            The name of the number style.
-	 * @param locale 
+	 * @param locale
 	 */
-	protected DateStyleBuilder(final String sName, Locale locale) {
+	protected DateStyleBuilder(final String sName, final Locale locale) {
 		if (sName == null)
 			throw new IllegalArgumentException();
-		
+
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		this.sName = sName;
 		this.bAutomaticOrder = false;
-	}
-	
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 */
-	public DateStyleBuilder country(final String country) {
-		this.sCountry = country.toUpperCase();
-		return this;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public DateStyleBuilder language(final String language) {
-		this.sLanguage = language.toLowerCase();
-		return this;
 	}
 
 	/**
@@ -109,6 +83,18 @@ public class DateStyleBuilder {
 	}
 
 	/**
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 *
+	 * @param country
+	 *            The two letter country code, e.g. 'US'
+	 */
+	public DateStyleBuilder country(final String country) {
+		this.sCountry = country.toUpperCase();
+		return this;
+	}
+
+	/**
 	 * Set the date format.<br>
 	 * Valid is one of the following:<br>
 	 * DateStyle.DATEFORMAT_DDMMYYYY<br>
@@ -125,8 +111,20 @@ public class DateStyleBuilder {
 		this.dateFormat = format;
 		return this;
 	}
-	
-	public DateStyleBuilder locale(Locale locale) {
+
+	/**
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 *
+	 * @param language
+	 *            The two letter language code, e.g. 'en'
+	 */
+	public DateStyleBuilder language(final String language) {
+		this.sLanguage = language.toLowerCase();
+		return this;
+	}
+
+	public DateStyleBuilder locale(final Locale locale) {
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		return this;

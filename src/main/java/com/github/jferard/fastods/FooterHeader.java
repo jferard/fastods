@@ -41,7 +41,7 @@ public abstract class FooterHeader {
 	public static enum Region {
 		CENTER, LEFT, RIGHT;
 	}
-	
+
 	/**
 	 * Footer or Header ?
 	 */
@@ -50,7 +50,7 @@ public abstract class FooterHeader {
 
 		private final String typeName;
 
-		private Type(String typeName) {
+		private Type(final String typeName) {
 			this.typeName = typeName;
 		}
 
@@ -58,24 +58,27 @@ public abstract class FooterHeader {
 			return this.typeName;
 		}
 	}
-	
+
 	public static RegionFooterHeaderBuilder regionBuilder(
 			final RegionFooterHeader.Type footerHeaderType) {
 		return new RegionFooterHeaderBuilder(footerHeaderType);
 	}
-	
+
 	public static SimpleFooterHeaderBuilder simpleBuilder(
 			final FooterHeader.Type footerHeaderType) {
 		return new SimpleFooterHeaderBuilder(footerHeaderType);
 	}
-	
-	
-	public static FooterHeader simpleFooter(FHTextStyle ts, String sText) {
-		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, sText).build();
+
+	public static FooterHeader simpleFooter(final FHTextStyle ts,
+			final String sText) {
+		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, sText)
+				.build();
 	}
 
-	public static FooterHeader simpleHeader(FHTextStyle ts, String sText) {
-		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText).build();
+	public static FooterHeader simpleHeader(final FHTextStyle ts,
+			final String sText) {
+		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText)
+				.build();
 	}
 
 	protected static void appendXMLRegionBodyToMasterStyle(final XMLUtil util,
@@ -89,6 +92,7 @@ public abstract class FooterHeader {
 			}
 		}
 	}
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -105,17 +109,18 @@ public abstract class FooterHeader {
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
-	FooterHeader(final FooterHeader.Type footerHeaderType, String sMarginLeft,
-			String sMarginRight, String sMarginTop, String sMinHeight) {
+	FooterHeader(final FooterHeader.Type footerHeaderType,
+			final String sMarginLeft, final String sMarginRight,
+			final String sMarginTop, final String sMinHeight) {
 		this.footerHeaderType = footerHeaderType;
 		this.sMarginLeft = sMarginLeft;
 		this.sMarginRight = sMarginRight;
 		this.sMarginTop = sMarginTop;
 		this.sMinHeight = sMinHeight;
 	}
-	
-	public void appendXMLToAutomaticStyle(XMLUtil util, Appendable appendable)
-			throws IOException {
+
+	public void appendXMLToAutomaticStyle(final XMLUtil util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
 		appendable.append("<style:header-footer-properties");
@@ -162,9 +167,9 @@ public abstract class FooterHeader {
 	public String getMinHeight() {
 		return this.sMinHeight;
 	}
-	
+
 	public String getTypeName() {
 		return this.footerHeaderType.typeName;
 	}
-	
+
 }

@@ -14,6 +14,7 @@ public class ResultSetDataWrapper implements DataWrapper {
 	 * column count of the ResultSet.
 	 */
 	private int columnCount;
+	private TableCellStyle headCellStyle;
 	/**
 	 * maximum number of lines to be written
 	 */
@@ -26,7 +27,6 @@ public class ResultSetDataWrapper implements DataWrapper {
 	 * the ResultSet.
 	 */
 	private final ResultSet resultSet;
-	private TableCellStyle headCellStyle;
 
 	private ResultSetDataWrapper(final ResultSet rs, final int max) {
 		this.resultSet = rs;
@@ -40,11 +40,11 @@ public class ResultSetDataWrapper implements DataWrapper {
 	}
 
 	@Override
-	public boolean addToTable(Table table) {
+	public boolean addToTable(final Table table) {
 		if (this.metadata == null)
 			return false;
 
-		int count = 0;
+		final int count = 0;
 		try {
 			TableRow row;
 			if (this.resultSet.next()) {
@@ -62,7 +62,7 @@ public class ResultSetDataWrapper implements DataWrapper {
 			e.printStackTrace();
 		} catch (final IOException e) {
 			e.printStackTrace();
-		} catch (FastOdsException e) {
+		} catch (final FastOdsException e) {
 			e.printStackTrace();
 		}
 		return count > 0;
@@ -93,12 +93,12 @@ public class ResultSetDataWrapper implements DataWrapper {
 		return values;
 	}
 
-	private void writeDateLineTo(TableRow row)
+	private void writeDateLineTo(final TableRow row)
 			throws SQLException, IOException {
 		final List<Object> columnValues = this.getColumnValues();
 		for (int j = 1; j <= this.columnCount; j++) {
 			final Object object = columnValues.get(j);
-			TableCell cell = row.getCell(j - 1);
+			final TableCell cell = row.getCell(j - 1);
 			cell.setObjectValue(object);
 		}
 	}
@@ -107,7 +107,7 @@ public class ResultSetDataWrapper implements DataWrapper {
 		final List<String> columnNames = this.getColumnNames();
 		for (int j = 1; j <= this.columnCount; j++) {
 			final String name = columnNames.get(j);
-			TableCell cell = row.getCell(j - 1);
+			final TableCell cell = row.getCell(j - 1);
 			cell.setStringValue(name);
 			cell.setStyle(this.headCellStyle);
 		}
@@ -116,12 +116,12 @@ public class ResultSetDataWrapper implements DataWrapper {
 	private void writeLastLineDataTo(final TableRow row, final int count) {
 		if (count == 0) {// no row
 			for (int j = 1; j <= this.columnCount; j++) {
-				TableCell cell = row.getCell(j - 1);
+				final TableCell cell = row.getCell(j - 1);
 				cell.setStringValue("");
 			}
 		} else if (count > this.max) {
 			for (int j = 1; j <= this.columnCount; j++) {
-				TableCell cell = row.getCell(j - 1);
+				final TableCell cell = row.getCell(j - 1);
 				cell.setStringValue(String.format("... (%d rows remaining)",
 						count - this.max));
 			}

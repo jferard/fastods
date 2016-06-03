@@ -37,7 +37,7 @@ public class XMLUtil {
 
 	private final XMLEscaper escaper;
 
-	public XMLUtil(XMLEscaper escaper) {
+	public XMLUtil(final XMLEscaper escaper) {
 		this.escaper = escaper;
 	}
 
@@ -101,11 +101,11 @@ public class XMLUtil {
 				.append(tagName).append('>');
 	}
 
-	public String escapeXMLAttribute(String s) {
+	public String escapeXMLAttribute(final String s) {
 		return this.escaper.escapeXMLAttribute(s);
 	}
 
-	public String escapeXMLContent(String s) {
+	public String escapeXMLContent(final String s) {
 		return this.escaper.escapeXMLContent(s);
 	}
 }

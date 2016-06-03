@@ -37,14 +37,15 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         content.xml/office:document-content/office:automatic-styles
  */
 public class TableStyle implements StyleTag {
+	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
+			.builder("ta1").build();
+
 	public static TableStyleBuilder builder(final String sName) {
 		return new TableStyleBuilder(sName);
 	}
-	
-	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").build();
 
-	private final String sName;
 	private final PageStyle pageStyle;
+	private final String sName;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>

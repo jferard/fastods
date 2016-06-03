@@ -42,17 +42,19 @@ import com.google.common.base.Optional;
  *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file BenchTest.java is part of FastODS.
+ *         
+ * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileTest#testFast test
  */
-public class BenchTest {
-	private static final int COL_COUNT = 40;
-	private static final int ROW_COUNT = 10000;
+public class ProfileTest {
+	private static final int COL_COUNT = 2*40;
+	private static final int ROW_COUNT = 2*20000;
 	private Random random;
 	private long t1;
 
 	@Rule public TestName name = new TestName();
 	
 	@Before
-	public final void setUp() {
+	public final void setUp() throws InterruptedException {
 		this.random = new Random();
 		System.out.println(this.name.getMethodName()+" : filling a " + ROW_COUNT + " rows, "
 				+ COL_COUNT + " columns spreadsheet");
@@ -76,90 +78,11 @@ public class BenchTest {
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();
 			for (int x = 0; x < COL_COUNT; x++) {
-				TableCell cell = row.getCell(x);
+				TableCell cell = row.nextCell();
 				cell.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 
 		file.save();
 	}
-	
-	@Test
-	public final void testFast2() throws FastOdsException {
-		// Open the file.
-		OdsFile file = OdsFile.create("f60columns.ods");
-		Optional<Table> optTable = file.addTable("test");
-		Assert.assertTrue(optTable.isPresent());
-
-		Table table = optTable.get();
-		for (int y = 0; y < 3*ROW_COUNT; y++) {
-			final TableRow row = table.nextRow();
-			for (int x = 0; x < 3*COL_COUNT; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(this.random.nextInt(1000));
-			}
-		}
-
-		file.save();
-	}
-	
-
-	@Test
-	public final void testSimple() throws org.simpleods.SimpleOdsException {
-		// Open the file.
-		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
-				"s20columns.ods");
-		file.addTable("test");
-		org.simpleods.Table table = (org.simpleods.Table) file.getContent()
-				.getTableQueue().get(0);
-
-		final ObjectQueue rows = table.getRows();
-		for (int y = 0; y < ROW_COUNT; y++) {
-			final org.simpleods.TableRow row = new org.simpleods.TableRow();
-			rows.add(row);
-			for (int x = 0; x < COL_COUNT; x++) {
-				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
-			}
-		}
-
-		file.save();
-	}
-	
-	@Test
-	public final void testSimple2() throws org.simpleods.SimpleOdsException {
-		// Open the file.
-		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
-				"s60columns.ods");
-		file.addTable("test");
-		org.simpleods.Table table = (org.simpleods.Table) file.getContent()
-				.getTableQueue().get(0);
-
-		final ObjectQueue rows = table.getRows();
-		for (int y = 0; y < 3*ROW_COUNT; y++) {
-			final org.simpleods.TableRow row = new org.simpleods.TableRow();
-			rows.add(row);
-			for (int x = 0; x < 3*COL_COUNT; x++) {
-				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
-			}
-		}
-
-		file.save();
-	}
-
-	@Test
-	public final void testJOpen() throws IOException {
-		// the file.
-		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel()).getSheet(0);
-		sheet.ensureColumnCount(COL_COUNT);
-		sheet.ensureRowCount(ROW_COUNT);
-		
-		for (int y = 0; y < ROW_COUNT; y++) {
-			for (int x = 0; x < COL_COUNT; x++) {
-				sheet.setValueAt(String.valueOf(this.random.nextInt(1000)), x, y);
-			}
-		}
-		File outputFile = new File("j20columns.ods");
-		sheet.getSpreadSheet().saveAs(outputFile);
-	}
-
 }

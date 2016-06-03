@@ -29,23 +29,23 @@ package com.github.jferard.fastods.style;
  *         <br>
  */
 public class TableStyleBuilder {
-	private final String sName;
 	private PageStyle pageStyle;
+	private final String sName;
 
 	/**
-	 * @param sName 
+	 * @param sName
 	 */
-	TableStyleBuilder(String sName) {
+	TableStyleBuilder(final String sName) {
 		this.sName = sName;
 		this.pageStyle = PageStyle.builder(sName).build();
-	}
-	
-	public TableStyleBuilder pageStyle(final PageStyle pageStyle) {
-		this.pageStyle = pageStyle;
-		return this;
 	}
 
 	public TableStyle build() {
 		return new TableStyle(this.sName, this.pageStyle);
+	}
+
+	public TableStyleBuilder pageStyle(final PageStyle pageStyle) {
+		this.pageStyle = pageStyle;
+		return this;
 	}
 }

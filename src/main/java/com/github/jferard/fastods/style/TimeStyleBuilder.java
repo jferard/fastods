@@ -21,8 +21,6 @@ package com.github.jferard.fastods.style;
 
 import java.util.Locale;
 
-import com.github.jferard.fastods.style.DateStyle.Format;
-
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
@@ -30,18 +28,18 @@ import com.github.jferard.fastods.style.DateStyle.Format;
  *         This file DateStyleBuilder.java is part of FastODS.
  */
 public class TimeStyleBuilder {
-	/**
-	 * The default date format DATEFORMAT_DDMMYY.
-	 */
-	private TimeStyle.Format timeFormat;
+	private String sCountry;
+
+	private String sLanguage;
 
 	/**
 	 * The name of this style.
 	 */
 	private final String sName;
-	
-	private String sCountry;
-	private String sLanguage;
+	/**
+	 * The default date format DATEFORMAT_DDMMYY.
+	 */
+	private TimeStyle.Format timeFormat;
 
 	/**
 	 * Create a new date style with the name sName.<br>
@@ -57,7 +55,15 @@ public class TimeStyleBuilder {
 		this.sLanguage = locale.getLanguage();
 		this.sName = sName;
 	}
-	
+
+	/**
+	 * @return the DateStyle
+	 */
+	public TimeStyle build() {
+		return new TimeStyle(this.sName, this.timeFormat, this.sCountry,
+				this.sLanguage);
+	}
+
 	/**
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
@@ -82,12 +88,10 @@ public class TimeStyleBuilder {
 		return this;
 	}
 
-	/**
-	 * @return the DateStyle
-	 */
-	public TimeStyle build() {
-		return new TimeStyle(this.sName, this.timeFormat, this.sCountry,
-				this.sLanguage);
+	public TimeStyleBuilder locale(final Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
 	}
 
 	/**
@@ -105,12 +109,6 @@ public class TimeStyleBuilder {
 	 */
 	public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
 		this.timeFormat = format;
-		return this;
-	}
-	
-	public TimeStyleBuilder locale(Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 }

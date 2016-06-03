@@ -50,12 +50,12 @@ public class PercentageStyleBuilder {
 	 *
 	 * @param sName
 	 *            The name of the number style, this name must be unique.
-	 * @param locale 
+	 * @param locale
 	 */
-	public PercentageStyleBuilder(final String sName, Locale locale) {
+	public PercentageStyleBuilder(final String sName, final Locale locale) {
 		if (sName == null)
 			throw new IllegalArgumentException();
-		
+
 		this.sName = sName;
 		this.sNegativeValueColor = "#FF0000";
 		this.sCountry = locale.getCountry();
@@ -72,10 +72,10 @@ public class PercentageStyleBuilder {
 
 	public PercentageStyle build() {
 		return new PercentageStyle(this.sName, this.sNegativeValueColor,
-				this.sLanguage, this.sCountry, this.nDecimalPlaces, this.nMinIntegerDigits,
-				this.nMinExponentDigits, this.nMinNumeratorDigits,
-				this.nMinDenominatorDigits, this.bGrouping, this.bVolatile,
-				this.bNegativeValuesRed);
+				this.sLanguage, this.sCountry, this.nDecimalPlaces,
+				this.nMinIntegerDigits, this.nMinExponentDigits,
+				this.nMinNumeratorDigits, this.nMinDenominatorDigits,
+				this.bGrouping, this.bVolatile, this.bNegativeValuesRed);
 	}
 
 	/**
@@ -116,6 +116,12 @@ public class PercentageStyleBuilder {
 		this.nMinNumeratorDigits = nNumerator;
 		this.nMinDenominatorDigits = nDenominator;
 		this.numberType = NumberStyle.Type.FRACTION;
+		return this;
+	}
+
+	public PercentageStyleBuilder locale(final Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 
@@ -202,12 +208,6 @@ public class PercentageStyleBuilder {
 	 */
 	public PercentageStyleBuilder thousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
-		return this;
-	}
-	
-	public PercentageStyleBuilder locale(Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 }

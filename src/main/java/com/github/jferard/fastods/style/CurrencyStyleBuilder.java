@@ -19,7 +19,6 @@
 */
 package com.github.jferard.fastods.style;
 
-import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
@@ -39,18 +38,19 @@ public class CurrencyStyleBuilder {
 	private int nDecimalPlaces;
 	private int nMinIntegerDigits;
 	private String sCountry;
-	private String sLanguage;
 	private String sCurrencySymbol;
+	private String sLanguage;
 	private final String sName;
 	private String sNegativeValueColor;
 
 	/**
 	 * The builder
+	 * 
 	 * @param name
 	 *            - The name of this style
-	 * @param locale 
+	 * @param locale
 	 */
-	protected CurrencyStyleBuilder(final String name, Locale locale) {
+	protected CurrencyStyleBuilder(final String name, final Locale locale) {
 		this.sName = name;
 		this.locale(locale);
 		this.sNegativeValueColor = "#FF0000";
@@ -81,18 +81,6 @@ public class CurrencyStyleBuilder {
 		return this;
 	}
 
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public CurrencyStyleBuilder language(final String language) {
-		this.sLanguage = language.toLowerCase();
-		return this;
-	}
-	
 	/**
 	 * Change the currency symbol, e.g. '$'.
 	 *
@@ -127,6 +115,24 @@ public class CurrencyStyleBuilder {
 	}
 
 	/**
+	 * Set the country and language if you need to distinguish between different
+	 * countries. E.g. set it to country='US' and language='en'
+	 *
+	 * @param language
+	 *            The two letter language code, e.g. 'en'
+	 */
+	public CurrencyStyleBuilder language(final String language) {
+		this.sLanguage = language.toLowerCase();
+		return this;
+	}
+
+	public CurrencyStyleBuilder locale(final Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
+
+	/**
 	 * Set how many leading zeros are present.
 	 *
 	 * @param minIntegerDigits
@@ -150,12 +156,6 @@ public class CurrencyStyleBuilder {
 	 */
 	public CurrencyStyleBuilder thousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
-		return this;
-	}
-
-	public CurrencyStyleBuilder locale(Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 }

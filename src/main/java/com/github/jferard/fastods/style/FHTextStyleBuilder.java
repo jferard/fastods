@@ -37,23 +37,24 @@ public class FHTextStyleBuilder {
 	private String sFontSize;
 	private String sFontSizeAsian;
 	private String sFontSizeComplex;
+	private String sFontStyle;
 	private String sFontUnderlineColor;
 	private String sFontWeight;
 	private String sFontWeightAsian;
-	private String sFontWeightComplex;
 
+	private String sFontWeightComplex;
 	private final String sName;
-	private String sFontStyle;
 
 	/**
 	 * Create a new text style without a name.<br>
 	 * This is used by class TableFamilyStyle. Version 0.5.2 Added
-	 * @param sName2 
+	 * 
+	 * @param sName2
 	 *
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	public FHTextStyleBuilder(String sName) {
+	public FHTextStyleBuilder(final String sName) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 
@@ -62,8 +63,8 @@ public class FHTextStyleBuilder {
 
 	public FHTextStyle build() {
 		return new FHTextStyle(this.sName, this.sFontColor, this.sFontName,
-				this.sFontWeight, this.sFontStyle, this.sFontSize, this.sFontUnderlineColor,
-				this.nFontUnderlineStyle);
+				this.sFontWeight, this.sFontStyle, this.sFontSize,
+				this.sFontUnderlineColor, this.nFontUnderlineStyle);
 	}
 
 	/**
@@ -120,6 +121,26 @@ public class FHTextStyleBuilder {
 	}
 
 	/**
+	 * Set the font weight to italic.
+	 *
+	 * @return true
+	 */
+	public FHTextStyleBuilder fontStyleItalic() {
+		this.sFontStyle = "italic";
+		return this;
+	}
+
+	/**
+	 * Set the font weight to italic.
+	 *
+	 * @return true
+	 */
+	public FHTextStyleBuilder fontStyleNormal() {
+		this.sFontStyle = "normal";
+		return this;
+	}
+
+	/**
 	 * Set the font underline color to sColor. Use an empty string to reset it
 	 * to 'auto'.
 	 *
@@ -163,27 +184,6 @@ public class FHTextStyleBuilder {
 		this.sFontWeight = "bold";
 		return this;
 	}
-
-	/**
-	 * Set the font weight to italic.
-	 *
-	 * @return true
-	 */
-	public FHTextStyleBuilder fontStyleItalic() {
-		this.sFontStyle = "italic";
-		return this;
-	}
-	
-	/**
-	 * Set the font weight to italic.
-	 *
-	 * @return true
-	 */
-	public FHTextStyleBuilder fontStyleNormal() {
-		this.sFontStyle = "normal";
-		return this;
-	}
-	
 
 	/**
 	 * Set the font weight to normal.

@@ -66,8 +66,8 @@ public class ManifestEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
-			throws IOException {
+	public void write(final XMLUtil util, final ZipOutputStream zipOut,
+			final Writer writer) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
 		for (final String item : this.getManifest())
 			writer.write(item);

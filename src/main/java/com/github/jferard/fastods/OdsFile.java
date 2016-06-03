@@ -34,8 +34,6 @@ import java.util.ListIterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.github.jferard.fastods.style.BooleanStyle;
-import com.github.jferard.fastods.style.CurrencyStyle;
 import com.github.jferard.fastods.style.DataStyle;
 import com.github.jferard.fastods.style.DataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
@@ -78,22 +76,23 @@ public class OdsFile {
 
 	public static OdsFile create(final String sName) {
 		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
-		return new OdsFile(sName, new Util(), new XMLUtil(escaper),
-				new LocaleDataStyles(), 512 * DEFAULT_BUFFER_SIZE);
+		final XMLUtil xmlUtil = new XMLUtil(escaper);
+		return new OdsFile(sName, new Util(), xmlUtil,
+				new LocaleDataStyles(xmlUtil), OdsFile.DEFAULT_BUFFER_SIZE);
 	}
 
-	private ContentEntry contentEntry;
+	private final int bufferSize;
+	private final ContentEntry contentEntry;
 	private final ManifestEntry manifestEntry;
 	private final MetaEntry metaEntry;
 	private final MimetypeEntry mimetypeEntry;
 	private final SettingsEntry settingsEntry;
 	private String sFilename;
-	private StylesEntry stylesEntry;
+	private final StylesEntry stylesEntry;
+
 	private final Util util;
 
-	private final int bufferSize;
-
-	private XMLUtil xmlUtil;
+	private final XMLUtil xmlUtil;
 
 	/**
 	 * Create a new ODS file.
@@ -104,8 +103,8 @@ public class OdsFile {
 	 * @param util
 	 * @param xmlUtil
 	 */
-	public OdsFile(final String sName, Util util, XMLUtil xmlUtil,
-			DataStyles format, int bufferSize) {
+	public OdsFile(final String sName, final Util util, final XMLUtil xmlUtil,
+			final DataStyles format, final int bufferSize) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
 		this.newFile(sName);
@@ -114,15 +113,27 @@ public class OdsFile {
 		this.manifestEntry = new ManifestEntry();
 		this.settingsEntry = new SettingsEntry();
 		this.metaEntry = new MetaEntry();
-		this.contentEntry = new ContentEntry(this, util, format);
+		this.contentEntry = new ContentEntry(this, xmlUtil, util, format);
 		this.stylesEntry = new StylesEntry(this);
 
 		// Add four default stylesEntry to contentEntry
 		TableStyle.DEFAULT_TABLE_STYLE.addToFile(this);
 		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToFile(this);
-		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToFile(this);
-		TableCellStyle.DEFAULT_CELL_STYLE.addToFile(this);
+		TableColumnStyle.getDefaultColumnStyle(xmlUtil).addToFile(this);
+		TableCellStyle.getDefaultCellStyle(xmlUtil).addToFile(this);
 		PageStyle.DEFAULT_PAGE_STYLE.addToFile(this);
+	}
+
+	public void addDataStyle(final DataStyle dataStyle) {
+		this.stylesEntry.addDataStyle(dataStyle);
+	}
+
+	public void addPageStyle(final PageStyle pageStyle) {
+		this.stylesEntry.addPageStyle(pageStyle);
+	}
+
+	public void addStyleTag(final StyleTag styleTag) {
+		this.contentEntry.addStyleTag(styleTag);
 	}
 
 	/**
@@ -146,6 +157,10 @@ public class OdsFile {
 			this.settingsEntry.setActiveTable(optTable.get());
 
 		return optTable;
+	}
+
+	public void addTextStyle(final FHTextStyle fhTextStyle) {
+		this.stylesEntry.addTextStyle(fhTextStyle);
 	}
 
 	/**
@@ -208,6 +223,10 @@ public class OdsFile {
 
 		return -1;
 	}
+
+	// ----------------------------------------------------------------------
+	// All methods for setCell with TableCell.Type.STRING
+	// ----------------------------------------------------------------------
 
 	/**
 	 * Create a new,empty file, use addTable to add tables.
@@ -293,10 +312,6 @@ public class OdsFile {
 		return true;
 	}
 
-	// ----------------------------------------------------------------------
-	// All methods for setCell with TableCell.Type.STRING
-	// ----------------------------------------------------------------------
-
 	/**
 	 * Sets the cell value in all tables to the date from the Calendar object.
 	 *
@@ -317,7 +332,7 @@ public class OdsFile {
 
 		for (final Table table : this.contentEntry.getTables()) {
 			final TableRow row = table.getRow(nRow);
-			TableCell cell = row.getCell(nCol);
+			final TableCell cell = row.getCell(nCol);
 			cell.setDateValue(cal);
 			cell.setStyle(ts);
 		}
@@ -386,7 +401,7 @@ public class OdsFile {
 			throws FastOdsException {
 		for (final Table table : this.contentEntry.getTables()) {
 			final TableRow row = table.getRow(nRow);
-			TableCell cell = row.getCell(nCol);
+			final TableCell cell = row.getCell(nCol);
 			cell.setRowsSpanned(nRowMerge);
 			cell.setColumnsSpanned(nColumnMerge);
 		}
@@ -429,22 +444,6 @@ public class OdsFile {
 			o.putNextEntry(new ZipEntry(entry));
 			o.closeEntry();
 		}
-	}
-
-	public void addDataStyle(DataStyle dataStyle) {
-		this.stylesEntry.addDataStyle(dataStyle);
-	}
-
-	public void addPageStyle(PageStyle pageStyle) {
-		this.stylesEntry.addPageStyle(pageStyle);
-	}
-
-	public void addStyleTag(StyleTag styleTag) {
-		this.contentEntry.addStyleTag(styleTag);
-	}
-
-	public void addTextStyle(FHTextStyle fhTextStyle) {
-		this.stylesEntry.addTextStyle(fhTextStyle);
 	}
 
 }

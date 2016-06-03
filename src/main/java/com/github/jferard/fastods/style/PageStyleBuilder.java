@@ -71,13 +71,11 @@ public class PageStyleBuilder {
 		this.sBackgroundColor = "";
 
 		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
-		this.writingMode = PageStyle.DEFAULT_WRITINGMODE;
+		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
 
 		final FHTextStyle noneStyle = FHTextStyle.builder("none").build();
-		this.header = FooterHeader
-				.simpleHeader(noneStyle, "");
-		this.footer = FooterHeader
-				.simpleFooter(noneStyle, "");
+		this.header = FooterHeader.simpleHeader(noneStyle, "");
+		this.footer = FooterHeader.simpleFooter(noneStyle, "");
 	}
 
 	/**

@@ -204,7 +204,8 @@ public class SettingsEntry implements OdsEntry {
 	 *            first table is shown
 	 */
 	public void setActiveTable(final Table table) {
-		this.viewIdActiveTable = new ConfigItem("ActiveTable", "string", table.getName());
+		this.viewIdActiveTable = new ConfigItem("ActiveTable", "string",
+				table.getName());
 	}
 
 	public void setTables(final List<Table> tables) {
@@ -212,8 +213,8 @@ public class SettingsEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
-			throws IOException {
+	public void write(final XMLUtil util, final ZipOutputStream zipOut,
+			final Writer writer) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("settings.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 		writer.write(

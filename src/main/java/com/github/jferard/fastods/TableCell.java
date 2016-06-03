@@ -61,7 +61,7 @@ public class TableCell {
 		}
 	}
 
-	public static final Type DEFAULT_TYPE = Type.STRING;
+	public static final Type DEFAULT_TYPE = Type.VOID;
 
 	/**
 	 * XML Schema Part 2, 3.2.7 dateTime
@@ -69,31 +69,24 @@ public class TableCell {
 	private static final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
-	private final int nCol;
+	private DataStyles dataStyles;
+//	private final int nCol;
 	private int nColumnsSpanned;
-	private final int nRow;
+//	private final int nRow;
 	private int nRowsSpanned;
 	private final OdsFile odsFile;
-	private String sCurrency;
-	private String sDateValue;
-	private String sValue;
-	private String sText;
-
 	/**
 	 * 19.384 office:value
 	 */
-	private String sBooleanValue;
-	private Type valueType;
+	private String sCurrency;
 
 	private TableCellStyle style;
 
-	private String sStringValue;
+	private String sValue;
 
-	private String sTimeValue;
+	private final Util util;
 
-	private DataStyles dataStyles;
-
-	private Util util;
+	private Type valueType;
 
 	/**
 	 * A table cell.
@@ -103,18 +96,14 @@ public class TableCell {
 	 * @param value
 	 *            The String content for this cell.
 	 */
-	TableCell(final OdsFile odsFile, Util util, final DataStyles dataStyles,
-			final int nRow, final int nCol, final Type valuetype,
-			final String value) {
+	TableCell(final OdsFile odsFile, final Util util,
+			final DataStyles dataStyles, final int nRow, final int nCol) {
 		this.util = util;
 		this.dataStyles = dataStyles;
-		this.sCurrency = "EUR";
 		this.odsFile = odsFile;
-		this.nRow = nRow;
-		this.nCol = nCol;
-		this.valueType = valuetype;
-		this.sBooleanValue = value;
-		this.sDateValue = "";
+//		this.nRow = nRow;
+//		this.nCol = nCol;
+		this.valueType = TableCell.DEFAULT_TYPE;
 		this.nColumnsSpanned = 0;
 		this.nRowsSpanned = 0;
 	}
@@ -122,8 +111,9 @@ public class TableCell {
 	public void appendXMLToTableRow(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<table:table-cell");
+
 		if (this.style != null) {
-			util.appendAttribute(appendable, "table:style-name",
+			util.appendEAttribute(appendable, "table:style-name",
 					this.style.getName());
 		}
 
@@ -131,27 +121,27 @@ public class TableCell {
 				this.valueType.attrValue);
 		switch (this.valueType) {
 		case BOOLEAN:
-			util.appendAttribute(appendable, "office:boolean-value",
-					this.sBooleanValue);
+			util.appendEAttribute(appendable, "office:boolean-value",
+					this.sValue);
 			break;
 		case CURRENCY:
 			util.appendAttribute(appendable, "office:currency", this.sCurrency);
 			//$FALL-THROUGH$
 		case FLOAT:
 		case PERCENTAGE:
-			util.appendAttribute(appendable, "office:value", this.sValue);
+			util.appendEAttribute(appendable, "office:value", this.sValue);
 			break;
 		case DATE:
-			util.appendAttribute(appendable, "office:date-value",
-					this.sDateValue);
+			util.appendEAttribute(appendable, "office:date-value",
+					this.sValue);
 			break;
 		case STRING:
 			util.appendAttribute(appendable, "office:string-value",
-					this.sStringValue);
+					this.sValue);
 			break;
 		case TIME:
-			util.appendAttribute(appendable, "office:time-value",
-					this.sTimeValue);
+			util.appendEAttribute(appendable, "office:time-value",
+					this.sValue);
 			break;
 		case VOID:
 		default:
@@ -167,13 +157,13 @@ public class TableCell {
 					this.nRowsSpanned);
 		}
 
-//		if (this.sText == null)
-			appendable.append("/>");
-//		else {
-//			appendable.append("><text:p>").append(this.sText)
-//					.append("</text:p>");
-//			appendable.append("</table:table-cell>");
-//		}
+		// if (this.sText == null)
+		appendable.append("/>");
+		// else {
+		// appendable.append("><text:p>").append(this.sText)
+		// .append("</text:p>");
+		// appendable.append("</table:table-cell>");
+		// }
 	}
 
 	/**
@@ -182,7 +172,7 @@ public class TableCell {
 	 * @return The currency value
 	 */
 	public String getBooleanValue() {
-		return this.sBooleanValue;
+		return this.sValue;
 	}
 
 	/**
@@ -219,7 +209,7 @@ public class TableCell {
 	 *         nothing was set.
 	 */
 	public String getDateValue() {
-		return this.sDateValue;
+		return this.sValue;
 	}
 
 	/**
@@ -250,7 +240,11 @@ public class TableCell {
 	 *         nothing was set.
 	 */
 	public String getStringValue() {
-		return this.sStringValue;
+		return this.sValue;
+	}
+
+	public String getStyleName() {
+		return this.style.getName();
 	}
 
 	/**
@@ -258,11 +252,7 @@ public class TableCell {
 	 *         nothing was set.
 	 */
 	public String getTimeValue() {
-		return this.sTimeValue;
-	}
-
-	public String getStyleName() {
-		return this.style.getName();
+		return this.sValue;
 	}
 
 	public Type getValueType() {
@@ -276,7 +266,7 @@ public class TableCell {
 	 *            The currency value
 	 */
 	public void setBooleanValue(final Boolean value) {
-		this.sBooleanValue = value.toString();
+		this.sValue = value.toString();
 		this.valueType = TableCell.Type.BOOLEAN;
 		this.setStyle(this.dataStyles.getBooleanStyle());
 	}
@@ -302,7 +292,7 @@ public class TableCell {
 	 *            The currency value
 	 */
 	public void setCurrencyValue(final Number value, final String currency) {
-		this.sBooleanValue = value.toString();
+		this.sValue = value.toString();
 		this.sCurrency = currency; // escape here
 		this.valueType = TableCell.Type.CURRENCY;
 		this.setStyle(this.dataStyles.getCurrencyStyle());
@@ -318,8 +308,8 @@ public class TableCell {
 		this.setDateValue(cal.getTime());
 	}
 
-	public void setDateValue(Date value) {
-		this.sDateValue = TableCell.DATE_VALUE_FORMAT.format(value);
+	public void setDateValue(final Date value) {
+		this.sValue = TableCell.DATE_VALUE_FORMAT.format(value);
 		this.valueType = TableCell.Type.DATE;
 		this.setStyle(this.dataStyles.getDateStyle());
 	}
@@ -336,6 +326,10 @@ public class TableCell {
 		this.setStyle(this.dataStyles.getNumberStyle());
 	}
 
+	public void setFormat(final DataStyles format) {
+		this.dataStyles = format;
+	}
+
 	/**
 	 * Set the float value for a cell with TableCell.Type.STRING.
 	 *
@@ -346,7 +340,7 @@ public class TableCell {
 		if (value == null)
 			return;
 
-		Object retValue;
+		final Object retValue;
 		if (value instanceof String)
 			this.setStringValue((String) value);
 		else if (value instanceof Number)
@@ -392,27 +386,24 @@ public class TableCell {
 	 *            - A double object with the value to be used
 	 */
 	public void setStringValue(final String value) {
-		this.sStringValue = value;// TODO ESCAPE
+		this.sValue = value;// TODO ESCAPE
 		this.valueType = TableCell.Type.STRING;
 	}
 
 	public void setStyle(final TableCellStyle style) {
 		if (style == null)
 			return;
-		
+
 		style.addToFile(this.odsFile);
-		if (style.getDataStyle() == null && this.style != null && this.style.getDataStyle() != null)
+		if (style.getDataStyle() == null && this.style != null
+				&& this.style.getDataStyle() != null)
 			style.setDataStyle(this.style.getDataStyle());
 		this.style = style;
 	}
 
 	public void setTimeValue(final long timeInMillis) {
-		this.sTimeValue = this.util.formatTimeInterval(timeInMillis);
+		this.sValue = this.util.formatTimeInterval(timeInMillis);
 		this.valueType = TableCell.Type.TIME;
 		this.setStyle(this.dataStyles.getTimeStyle());
-	}
-
-	public void setFormat(DataStyles format) {
-		this.dataStyles = format;
 	}
 }

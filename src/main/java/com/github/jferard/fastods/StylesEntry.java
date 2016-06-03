@@ -26,15 +26,9 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.github.jferard.fastods.style.BooleanStyle;
-import com.github.jferard.fastods.style.CurrencyStyle;
 import com.github.jferard.fastods.style.DataStyle;
-import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.style.FHTextStyle;
-import com.github.jferard.fastods.style.NumberStyle;
 import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.PercentageStyle;
-import com.github.jferard.fastods.style.TimeStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -61,9 +55,9 @@ public class StylesEntry implements OdsEntry {
 		appendable.append("/></style:style>");
 	}
 
+	private final Map<String, DataStyle> qDataStyles;
 	private final Map<String, PageStyle> qPageStyles;
 	private final Map<String, FHTextStyle> qTextStyles;
-	private final Map<String, DataStyle> qDataStyles;
 
 	/**
 	 * @param odsFile
@@ -76,27 +70,39 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	/**
-	 * Add a DataStyle, if a DataStyle with this name already exist, the
-	 * old one is replaced.
+	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
+	 * is replaced.
 	 *
 	 * @param dataStyle
 	 *            - The data style to be added.
 	 */
-	public void addDataStyle(DataStyle dataStyle) {
-		this.qDataStyles.put(dataStyle.getName(), dataStyle);
+	public void addDataStyle(final DataStyle dataStyle) {
+		final String name = dataStyle.getName();
+		if (this.qDataStyles.containsKey(name))
+			return;
+
+		this.qDataStyles.put(name, dataStyle);
 	}
 
 	public void addPageStyle(final PageStyle ps) {
-		this.qPageStyles.put(ps.getName(), ps);
+		final String name = ps.getName();
+		if (this.qPageStyles.containsKey(name))
+			return;
+
+		this.qPageStyles.put(name, ps);
 	}
 
 	public void addTextStyle(final FHTextStyle ts) {
-		this.qTextStyles.put(ts.getName(), ts);
+		final String name = ts.getName();
+		if (this.qTextStyles.containsKey(name))
+			return;
+
+		this.qTextStyles.put(name, ts);
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
-			throws IOException {
+	public void write(final XMLUtil util, final ZipOutputStream zipOut,
+			final Writer writer) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("styles.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(

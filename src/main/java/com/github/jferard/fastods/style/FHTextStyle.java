@@ -54,7 +54,7 @@ public class FHTextStyle implements NamedObject {
 	public static final FHTextStyle DEFAULT_TEXT_STYLE = FHTextStyle
 			.builder("Default").build();
 
-	public static FHTextStyleBuilder builder(String sName) {
+	public static FHTextStyleBuilder builder(final String sName) {
 		return new FHTextStyleBuilder(sName);
 	}
 
@@ -92,28 +92,6 @@ public class FHTextStyle implements NamedObject {
 		this.sFontSize = sFontSize;
 		this.sFontUnderlineColor = sFontUnderlineColor;
 		this.nFontUnderlineStyle = nFontUnderlineStyle;
-	}
-
-	void addToFile(final OdsFile odsFile) {
-		odsFile.addTextStyle(this);
-	}
-
-	public void appendXMLToStylesEntry(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableFamilyStyle.
-		// Do not add the style:style
-		// -------------------------------------------------------------
-		appendable.append("<style:style ");
-		util.appendAttribute(appendable, "style:name", this.sName);
-		util.appendEAttribute(appendable, "style:family", "text");
-		appendable.append(">");
-
-		// First check if any text properties should be added
-
-		appendXMLToContentEntry(util, appendable);
-
-		appendable.append("</style:style>");
 	}
 
 	public void appendXMLToContentEntry(final XMLUtil util,
@@ -176,6 +154,24 @@ public class FHTextStyle implements NamedObject {
 		appendable.append("/>");
 	}
 
+	public void appendXMLToStylesEntry(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		// -------------------------------------------------------------
+		// The name maybe empty if this style is part of TableFamilyStyle.
+		// Do not add the style:style
+		// -------------------------------------------------------------
+		appendable.append("<style:style ");
+		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendEAttribute(appendable, "style:family", "text");
+		appendable.append(">");
+
+		// First check if any text properties should be added
+
+		this.appendXMLToContentEntry(util, appendable);
+
+		appendable.append("</style:style>");
+	}
+
 	/**
 	 * Get the current font color.
 	 *
@@ -235,5 +231,9 @@ public class FHTextStyle implements NamedObject {
 						|| this.sFontSize != null || this.sFontStyle != null
 						|| this.sFontUnderlineColor != null
 						|| this.sFontWeight != null);
+	}
+
+	void addToFile(final OdsFile odsFile) {
+		odsFile.addTextStyle(this);
 	}
 }

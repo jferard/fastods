@@ -42,8 +42,6 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         style
  */
 public class TableCellStyle implements StyleTag {
-	public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default").build();
-
 	public static enum Align {
 		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
 
@@ -64,18 +62,30 @@ public class TableCellStyle implements StyleTag {
 		}
 	}
 
-	public static TableCellStyleBuilder builder(final String sName) {
-		return new TableCellStyleBuilder(sName);
+	private static TableCellStyle defaultCellStyle;
+
+	public static TableCellStyleBuilder builder(final XMLUtil util,
+			final String sName) {
+		return new TableCellStyleBuilder(util, sName);
+	}
+
+	public static TableCellStyle getDefaultCellStyle(final XMLUtil util) {
+		if (TableCellStyle.defaultCellStyle == null)
+			TableCellStyle.defaultCellStyle = TableCellStyle
+					.builder(util, "Default").build();
+
+		return TableCellStyle.defaultCellStyle;
 	}
 
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	private final boolean bWrap; // No line wrap when false, line wrap when
+	private DataStyle dataStyle;
 	private final Align nTextAlign; // 'center','end','start','justify'
 	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
 	private final String sBackgroundColor;
-	private DataStyle dataStyle;
 	// true
 	private final String sDefaultCellStyle;
+
 	private final String sName;
 
 	private final FHTextStyle textStyle;
@@ -93,12 +103,13 @@ public class TableCellStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableCellStyle(final String sName, final DataStyle dataStyle,
-			final String sBackgroundColor, final FHTextStyle ts,
-			final Align nTextAlign, final VerticalAlign nVerticalAlign,
-			final boolean bWrap, final String sDefaultCellStyle,
+	TableCellStyle(final XMLUtil util, final String sName,
+			final DataStyle dataStyle, final String sBackgroundColor,
+			final FHTextStyle ts, final Align nTextAlign,
+			final VerticalAlign nVerticalAlign, final boolean bWrap,
+			final String sDefaultCellStyle,
 			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
-		this.sName = sName;
+		this.sName = util.escapeXMLAttribute(sName);
 		this.dataStyle = dataStyle;
 		this.sBackgroundColor = sBackgroundColor;
 		this.textStyle = ts;
@@ -126,7 +137,7 @@ public class TableCellStyle implements StyleTag {
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendEAttribute(appendable, "style:name", this.sName);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
 		util.appendEAttribute(appendable, "style:parent-style-name", "Default");
 		if (this.dataStyle != null)
@@ -165,16 +176,16 @@ public class TableCellStyle implements StyleTag {
 		appendable.append("/></style:style>");
 	}
 
+	public DataStyle getDataStyle() {
+		return this.dataStyle;
+	}
+
 	@Override
 	public String getName() {
 		return this.sName;
 	}
 
-	public DataStyle getDataStyle() {
-		return this.dataStyle;
-	}
-
-	public void setDataStyle(DataStyle dataStyle) {
+	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
 	}
 }

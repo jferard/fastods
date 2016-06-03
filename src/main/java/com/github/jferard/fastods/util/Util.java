@@ -42,20 +42,20 @@ import com.google.common.base.Optional;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class Util {
 	public static class Position {
-		private final int row;
 		private final int column;
+		private final int row;
 
-		private Position(int row, int column) {
+		private Position(final int row, final int column) {
 			this.row = row;
 			this.column = column;
 		}
 
-		public int getRow() {
-			return this.row;
-		}
-
 		public int getColumn() {
 			return this.column;
+		}
+
+		public int getRow() {
+			return this.row;
 		}
 	}
 
@@ -80,7 +80,7 @@ public class Util {
 		target.getContent().setTextStyles(source.getContent().getTextStyles());
 	}*/
 
-	public boolean equal(Object o1, Object o2) {
+	public boolean equal(final Object o1, final Object o2) {
 		if (o1 == null) {
 			return o2 == null;
 		} else {
@@ -102,6 +102,36 @@ public class Util {
 	}
 
 	/**
+	 * XML Schema Part 2, 3.2.6 duration
+	 * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
+	 *
+	 * @param milliseconds
+	 * @return
+	 */
+	public String formatTimeInterval(final long milliseconds) {
+		long curMilliseconds = milliseconds;
+		final StringBuilder sb = new StringBuilder().append('P');
+		final long days = TimeUnit.MILLISECONDS.toDays(curMilliseconds);
+		sb.append(days).append("DT");
+		curMilliseconds -= TimeUnit.DAYS.toMillis(days);
+
+		final long hours = TimeUnit.MILLISECONDS.toHours(curMilliseconds);
+		sb.append(hours).append('H');
+		curMilliseconds -= TimeUnit.HOURS.toMillis(hours);
+
+		final long minutes = TimeUnit.MILLISECONDS.toMinutes(curMilliseconds);
+		sb.append(minutes).append('M');
+		curMilliseconds -= TimeUnit.MINUTES.toMillis(minutes);
+
+		final long seconds = TimeUnit.MILLISECONDS.toSeconds(curMilliseconds);
+		sb.append(seconds);
+		curMilliseconds -= TimeUnit.SECONDS.toMillis(seconds);
+
+		sb.append('.').append(curMilliseconds).append('S');
+		return sb.toString();
+	}
+
+	/**
 	 * Convert a cell position string like B3 to the column number.
 	 *
 	 * @param sPos
@@ -111,7 +141,7 @@ public class Util {
 	 */
 	public Position getPosition(final String sPos) {
 		final String s = sPos.toUpperCase(Locale.US);
-		int len = s.length();
+		final int len = s.length();
 		int status = 0;
 
 		int nRow = 0;
@@ -171,38 +201,8 @@ public class Util {
 	 *            the stream
 	 * @return the writer
 	 */
-	public Writer wrapStream(final OutputStream out, int size) {
+	public Writer wrapStream(final OutputStream out, final int size) {
 		return new BufferedWriter(new OutputStreamWriter(out, Charsets.UTF_8),
 				size);
-	}
-
-	/**
-	 * XML Schema Part 2, 3.2.6 duration
-	 * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
-	 *
-	 * @param milliseconds
-	 * @return
-	 */
-	public String formatTimeInterval(final long milliseconds) {
-		long curMilliseconds = milliseconds;
-		StringBuilder sb = new StringBuilder().append('P');
-		final long days = TimeUnit.MILLISECONDS.toDays(curMilliseconds);
-		sb.append(days).append("DT");
-		curMilliseconds -= TimeUnit.DAYS.toMillis(days);
-
-		final long hours = TimeUnit.MILLISECONDS.toHours(curMilliseconds);
-		sb.append(hours).append('H');
-		curMilliseconds -= TimeUnit.HOURS.toMillis(hours);
-
-		final long minutes = TimeUnit.MILLISECONDS.toMinutes(curMilliseconds);
-		sb.append(minutes).append('M');
-		curMilliseconds -= TimeUnit.MINUTES.toMillis(minutes);
-
-		final long seconds = TimeUnit.MILLISECONDS.toSeconds(curMilliseconds);
-		sb.append(seconds);
-		curMilliseconds -= TimeUnit.SECONDS.toMillis(seconds);
-
-		sb.append('.').append(curMilliseconds).append('S');
-		return sb.toString();
 	}
 }

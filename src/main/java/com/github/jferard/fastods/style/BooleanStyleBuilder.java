@@ -36,11 +36,12 @@ public class BooleanStyleBuilder {
 
 	/**
 	 * The builder
+	 * 
 	 * @param name
 	 *            - The name of this style
-	 * @param locale 
+	 * @param locale
 	 */
-	protected BooleanStyleBuilder(final String name, Locale locale) {
+	protected BooleanStyleBuilder(final String name, final Locale locale) {
 		this.sName = name;
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
@@ -64,7 +65,6 @@ public class BooleanStyleBuilder {
 		return this;
 	}
 
-
 	/**
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
@@ -76,7 +76,12 @@ public class BooleanStyleBuilder {
 		this.sLanguage = language.toLowerCase();
 		return this;
 	}
-	
+
+	public BooleanStyleBuilder locale(final Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
+		return this;
+	}
 
 	/**
 	 * Set how many leading zeros are present.
@@ -88,11 +93,5 @@ public class BooleanStyleBuilder {
 		this.bVolatile = bVolatile;
 		return this;
 	}
-	
-	public BooleanStyleBuilder locale(Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		return this;
-	}
-	
+
 }

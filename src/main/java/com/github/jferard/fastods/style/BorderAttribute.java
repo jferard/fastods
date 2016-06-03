@@ -148,7 +148,8 @@ public class BorderAttribute {
 			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
 					.append(this.sBorderColor);
 
-		util.appendEAttribute(appendable, this.position.attrName, sb.toString());
+		util.appendEAttribute(appendable, this.position.attrName,
+				sb.toString());
 	}
 
 	/**

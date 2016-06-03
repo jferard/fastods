@@ -50,12 +50,12 @@ public class NumberStyleBuilder {
 	 *
 	 * @param sName
 	 *            The name of the number style, this name must be unique.
-	 * @param locale 
+	 * @param locale
 	 */
-	public NumberStyleBuilder(final String sName, Locale locale) {
+	public NumberStyleBuilder(final String sName, final Locale locale) {
 		if (sName == null)
 			throw new IllegalArgumentException();
-		
+
 		this.sName = sName;
 		this.sNegativeValueColor = "#FF0000";
 		this.sCountry = locale.getCountry();
@@ -118,6 +118,17 @@ public class NumberStyleBuilder {
 		this.nMinNumeratorDigits = nNumerator;
 		this.nMinDenominatorDigits = nDenominator;
 		this.numberType = NumberStyle.Type.FRACTION;
+		return this;
+	}
+
+	public NumberStyleBuilder language(final String language) {
+		this.sLanguage = language;
+		return this;
+	}
+
+	public NumberStyleBuilder locale(final Locale locale) {
+		this.sCountry = locale.getCountry();
+		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 
@@ -204,17 +215,6 @@ public class NumberStyleBuilder {
 	 */
 	public NumberStyleBuilder thousandsSeparator(final boolean grouping) {
 		this.bGrouping = grouping;
-		return this;
-	}
-	
-	public NumberStyleBuilder locale(Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		return this;
-	}
-
-	public NumberStyleBuilder language(String language) {
-		this.sLanguage = language;
 		return this;
 	}
 }

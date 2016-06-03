@@ -7,5 +7,6 @@ import java.util.zip.ZipOutputStream;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public interface OdsEntry {
-	void write(XMLUtil util, ZipOutputStream out, Writer writer) throws IOException;
+	void write(XMLUtil util, ZipOutputStream out, Writer writer)
+			throws IOException;
 }

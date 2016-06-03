@@ -155,7 +155,7 @@ public class NumberStyle implements DataStyle {
 		// the style for positive values
 		// --------------------------------------------------------------------------
 		if (this.bNegativeValuesRed) {
-				appendable.append("<number:number-style");
+			appendable.append("<number:number-style");
 
 			util.appendAttribute(appendable, "style:name", this.sName);
 

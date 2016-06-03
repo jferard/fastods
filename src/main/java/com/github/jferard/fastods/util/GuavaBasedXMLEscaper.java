@@ -19,27 +19,10 @@
 */
 package com.github.jferard.fastods.util;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Locale;
 import java.util.Map;
-import java.util.zip.ZipOutputStream;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Optional;
 import com.google.common.escape.Escaper;
-import com.google.common.xml.XmlEscapers;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -55,7 +38,8 @@ public class GuavaBasedXMLEscaper {
 	private final Escaper xmlAttributeEscaper;
 	private final Escaper xmlContentEscaper;
 
-	public GuavaBasedXMLEscaper(Escaper contentEscaper, Escaper attributeEscaper) {
+	public GuavaBasedXMLEscaper(final Escaper contentEscaper,
+			final Escaper attributeEscaper) {
 		this.xmlContentEscaper = contentEscaper;
 		this.xmlAttributeEscaper = attributeEscaper;
 		this.attrMap = new HashMap<String, String>();

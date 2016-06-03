@@ -32,15 +32,15 @@ import java.util.Spliterator;
  *
  *         This file FullList.java is part of FastODS.
  *
- * The class FullList represents a List that is unlimited.
+ *         The class FullList represents a List that is unlimited.
  *
  */
 public class FullList<E> implements List<E> {
 	public static <E> List<E> newList() {
 		return new FullList<E>(null);
 	}
-	
-	public static <E> List<E> newList(E e) {
+
+	public static <E> List<E> newList(final E e) {
 		return new FullList<E>(e);
 	}
 
@@ -189,21 +189,23 @@ public class FullList<E> implements List<E> {
 	@Override
 	public E set(final int index, final E element) {
 		E result;
-		final int lastIndex = this.list.size() - 1;
-		if (index < lastIndex)
+		final int size = this.list.size();
+		final int lastIndex = size - 1;
+		if (index > lastIndex) {
+			result = this.blankElement;
+			if (element != this.blankElement) {
+				if (index > size)
+					this.addMissingBlanks(index - 1);
+				this.list.add(element);
+			}
+		} else if (index < lastIndex)
 			result = this.list.set(index, element);
-		else if (index == lastIndex) { // last element
+		else { // last element
 			if (element == this.blankElement) {
 				result = this.list.removeLast();
 				this.removeTrail();
 			} else
 				result = this.list.set(index, element);
-		} else {
-			result = this.blankElement;
-			if (element != this.blankElement) {
-				this.addMissingBlanks(index - 1);
-				this.list.add(element);
-			}
 		}
 		return result;
 	}

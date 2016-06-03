@@ -32,13 +32,13 @@ import java.util.Map;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class FastOdsXMLEscaper implements XMLEscaper {
 	private static final int BUFFER_SIZE = 65536;
-	private char[] buffer;
-
 	private final Map<String, String> attrMap;
+
+	private char[] buffer;
 
 	public FastOdsXMLEscaper() {
 		this.attrMap = new HashMap<String, String>();
-		this.buffer = new char[BUFFER_SIZE];
+		this.buffer = new char[FastOdsXMLEscaper.BUFFER_SIZE];
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 			boolean specialChar = false;
 			boolean oneSpecialChar = false;
 			for (int sourceIndex = 0; sourceIndex < length; sourceIndex++) {
-				char c = s.charAt(sourceIndex);
+				final char c = s.charAt(sourceIndex);
 				if (c == '&') {
 					copyToIndex = sourceIndex + 1;
 					toCopy = "amp;";
@@ -97,8 +97,10 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 				if (specialChar) {
 					oneSpecialChar = true;
 					if (destIndex >= this.buffer.length) {
-						char[] newBuffer = new char[2*this.buffer.length];
-						System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
+						final char[] newBuffer = new char[2
+								* this.buffer.length];
+						System.arraycopy(this.buffer, 0, newBuffer, 0,
+								destIndex);
 						this.buffer = newBuffer;
 					}
 					if (copyToIndex > copyFromIndex) {
@@ -108,14 +110,14 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					}
 					copyFromIndex = copyToIndex + 1;
 					specialChar = false;
-					for (char c2 : toCopy.toCharArray())
+					for (final char c2 : toCopy.toCharArray())
 						this.buffer[destIndex++] = c2;
 				}
 			}
 
 			if (oneSpecialChar) {
 				if (destIndex >= this.buffer.length) {
-					char[] newBuffer = new char[2*this.buffer.length];
+					final char[] newBuffer = new char[2 * this.buffer.length];
 					System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
 					this.buffer = newBuffer;
 				}
@@ -146,7 +148,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 			boolean specialChar = false;
 			boolean oneSpecialChar = false;
 			for (int sourceIndex = 0; sourceIndex < length; sourceIndex++) {
-				char c = s.charAt(sourceIndex);
+				final char c = s.charAt(sourceIndex);
 				if (c == '&') {
 					copyToIndex = sourceIndex + 1;
 					toCopy = "amp;";
@@ -169,8 +171,10 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 				if (specialChar) {
 					oneSpecialChar = true;
 					if (destIndex >= this.buffer.length) {
-						char[] newBuffer = new char[2*this.buffer.length];
-						System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
+						final char[] newBuffer = new char[2
+								* this.buffer.length];
+						System.arraycopy(this.buffer, 0, newBuffer, 0,
+								destIndex);
 						this.buffer = newBuffer;
 					}
 					if (copyToIndex > copyFromIndex) {
@@ -180,14 +184,14 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					}
 					copyFromIndex = copyToIndex + 1;
 					specialChar = false;
-					for (char c2 : toCopy.toCharArray())
+					for (final char c2 : toCopy.toCharArray())
 						this.buffer[destIndex++] = c2;
 				}
 			}
 
 			if (oneSpecialChar) {
 				if (destIndex >= this.buffer.length) {
-					char[] newBuffer = new char[2*this.buffer.length];
+					final char[] newBuffer = new char[2 * this.buffer.length];
 					System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
 					this.buffer = newBuffer;
 				}

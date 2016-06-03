@@ -58,11 +58,11 @@ public class PercentageStyle implements DataStyle {
 	private final int nMinExponentDigits;
 	private final int nMinIntegerDigits;
 	private final int nMinNumeratorDigits;
+	private Object numberType;
 	private final String sCountry;
 	private final String sLanguage;
 	private final String sName;
 	private final String sNegativeValueColor;
-	private Object numberType;
 
 	/**
 	 * Create a new number style with the name sName, minimum integer digits is

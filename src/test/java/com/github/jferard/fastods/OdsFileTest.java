@@ -29,6 +29,8 @@ import com.github.jferard.fastods.style.DateStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Optional;
 
 /**
@@ -48,25 +50,36 @@ public class OdsFileTest {
 		OdsFile file = OdsFile.create("5columns.ods");
 		Optional<Table> optTable = file.addTable("test");
 		Assert.assertTrue(optTable.isPresent());
-
+		FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
+		XMLUtil xmlUtil = new XMLUtil(xmlEscaper);
+		
 		Table table = optTable.get();
 		TableRow row = table.getRow(0);
 		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
 //		trs.addToFile(file);
-		TableCellStyle tcls = TableCellStyle.builder("cc")
+		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 //		tcls.addToFile(file);
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
-		TableCellStyle tcls2 = TableCellStyle.builder("dd").fontColor("#ff0000")
+		TableCellStyle tcls2 = TableCellStyle.builder(xmlUtil, "dd").fontColor("#ff0000")
 				.build();
 //		tcls2.addToFile(file);
-		TableColumnStyle tcns = TableColumnStyle.builder("ccs")
+		TableColumnStyle tcns = TableColumnStyle.builder(xmlUtil, "ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
 //		tcns.addToFile(file);
 		table.setColumnStyle(0, tcns);
 
+		final TableCellStyle tcs0 = TableCellStyle.builder(xmlUtil, "tcs0")
+				.backgroundColor("#0000ff").build();
+		final TableCellStyle tcs1 = TableCellStyle.builder(xmlUtil, "tcs1")
+				.backgroundColor("#00FF00").build();
+		final TableCellStyle tcs2 = TableCellStyle.builder(xmlUtil, "tcs2")
+				.fontWeightBold().build();
+		final TableCellStyle tcs3 = TableCellStyle.builder(xmlUtil, "tcs3")
+				.fontStyleItalic().build();
+		
 		for (int y = 0; y < 50; y++) {
 			row = table.getRow(y);
 			for (int x = 0; x < 5; x++) {
@@ -75,20 +88,16 @@ public class OdsFileTest {
 				if ((y + 1) % 3 == 0) {
 					switch (x) {
 					case 0:
-						cell.setStyle(TableCellStyle.builder("tcs0")
-								.backgroundColor("#0000ff").build());
+						cell.setStyle(tcs0);
 						break;
 					case 1:
-						cell.setStyle(TableCellStyle.builder("tcs1")
-								.backgroundColor("#00FF00").build());
+						cell.setStyle(tcs1);
 						break;
 					case 2:
-						cell.setStyle(TableCellStyle.builder("tcs2")
-								.fontWeightBold().build());
+						cell.setStyle(tcs2);
 						break;
 					case 3:
-						cell.setStyle(TableCellStyle.builder("tcs3")
-								.fontStyleItalic().build());
+						cell.setStyle(tcs3);
 						break;
 					default:
 						break;

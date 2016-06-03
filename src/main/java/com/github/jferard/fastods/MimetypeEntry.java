@@ -37,8 +37,8 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class MimetypeEntry implements OdsEntry {
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, Writer writer)
-			throws IOException {
+	public void write(final XMLUtil util, final ZipOutputStream zipOut,
+			final Writer writer) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("mimetype"));
 		writer.write("application/vnd.oasis.opendocument.spreadsheet");
 		writer.flush();

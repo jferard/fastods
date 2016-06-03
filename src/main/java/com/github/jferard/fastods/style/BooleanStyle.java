@@ -35,11 +35,11 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         content.xml/office:document-content/office:automatic-styles/number:
  *         currency-style
  *         styles.xml/office:document-styles/office:styles/number:currency-style
- * 
+ *
  *         16.27.23 <number:boolean-style>
  */
 public class BooleanStyle implements DataStyle {
-	public static BooleanStyleBuilder builder(String sName) {
+	public static BooleanStyleBuilder builder(final String sName) {
 		if (sName == null)
 			throw new IllegalArgumentException();
 		return new BooleanStyleBuilder(sName, Locale.getDefault());

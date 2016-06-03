@@ -47,22 +47,21 @@ import com.google.common.base.Optional;
  *         content.xml/office:document-content
  */
 class ContentEntry implements OdsEntry {
+	private final DataStyles format;
 	private final OdsFile odsFile;
 	private final List<Table> qTables;
 	private final Map<String, StyleTag> styleTagByName;
-	private Util util;
-	private DataStyles format;
+	private final Util util;
+	private final XMLUtil xmlUtil;
 
-	ContentEntry(final OdsFile odsFile, Util util, DataStyles format) {
+	ContentEntry(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
+			final DataStyles format) {
 		this.odsFile = odsFile;
+		this.xmlUtil = xmlUtil;
 		this.util = util;
 		this.format = format;
 		this.qTables = new LinkedList<Table>();
 		this.styleTagByName = new HashMap<String, StyleTag>();
-	}
-
-	void addStyleTag(final StyleTag styleTag) {
-		this.styleTagByName.put(styleTag.getName(), styleTag);
 	}
 
 	public Optional<Table> addTable(final String sName) {
@@ -70,7 +69,8 @@ class ContentEntry implements OdsEntry {
 		if (optTable.isPresent())
 			optTable = Optional.absent();
 		else {
-			final Table table = new Table(this.odsFile, this.util, this.format, sName);
+			final Table table = new Table(this.odsFile, this.xmlUtil, this.util,
+					this.format, sName);
 			this.qTables.add(table);
 			optTable = Optional.of(table);
 		}
@@ -96,17 +96,21 @@ class ContentEntry implements OdsEntry {
 		return tab.getCell(nRow, nCol);
 	}
 
+	public Table getTable(final int nTab) {
+		return this.qTables.get(nTab);
+	}
+
 	public Optional<Table> getTable(final String sName) {
 		return this.util.findElementByName(this.qTables, sName);
 	}
 
-	List<Table> getTables() {
-		return Collections.unmodifiableList(this.qTables);
+	public int getTableCount() {
+		return this.qTables.size();
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut, final Writer writer)
-			throws IOException {
+	public void write(final XMLUtil util, final ZipOutputStream zipOut,
+			final Writer writer) throws IOException {
 		zipOut.putNextEntry(new ZipEntry("content.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
@@ -146,11 +150,11 @@ class ContentEntry implements OdsEntry {
 		}
 	}
 
-	public int getTableCount() {
-		return this.qTables.size();
+	void addStyleTag(final StyleTag styleTag) {
+		this.styleTagByName.put(styleTag.getName(), styleTag);
 	}
 
-	public Table getTable(int nTab) {
-		return this.qTables.get(nTab);
+	List<Table> getTables() {
+		return Collections.unmodifiableList(this.qTables);
 	}
 }

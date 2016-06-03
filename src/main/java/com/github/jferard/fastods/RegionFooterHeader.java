@@ -37,11 +37,24 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         page/style:header
  */
 class RegionFooterHeader extends FooterHeader {
+	private static void appendRegion(final XMLUtil util,
+			final Appendable appendable, final List<FHParagraph> qRegion,
+			final String sRegionName) throws IOException {
+		if (qRegion.size() == 0)
+			return;
+
+		appendable.append("<style:").append(sRegionName).append(">");
+		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable,
+				qRegion);
+		appendable.append("</style:").append(sRegionName).append(">");
+	}
+
 	/**
 	 * The OdsFile where this object belong to.
 	 */
 	private final List<FHParagraph> qCenterRegion;
 	private final List<FHParagraph> qLeftRegion;
+
 	private final List<FHParagraph> qRightRegion;
 
 	/**
@@ -53,9 +66,11 @@ class RegionFooterHeader extends FooterHeader {
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
 			final List<FHParagraph> qCenterRegion,
 			final List<FHParagraph> qLeftRegion,
-			final List<FHParagraph> qRightRegion, String sMarginLeft,
-			String sMarginRight, String sMarginTop, String sMinHeight) {
-		super(footerHeaderType, sMarginLeft, sMarginRight, sMarginTop, sMinHeight);
+			final List<FHParagraph> qRightRegion, final String sMarginLeft,
+			final String sMarginRight, final String sMarginTop,
+			final String sMinHeight) {
+		super(footerHeaderType, sMarginLeft, sMarginRight, sMarginTop,
+				sMinHeight);
 		this.qCenterRegion = qCenterRegion;
 		this.qLeftRegion = qLeftRegion;
 		this.qRightRegion = qRightRegion;
@@ -69,20 +84,11 @@ class RegionFooterHeader extends FooterHeader {
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		RegionFooterHeader.appendRegion(util, appendable, this.qLeftRegion, "region-left");
+		RegionFooterHeader.appendRegion(util, appendable, this.qLeftRegion,
+				"region-left");
 		RegionFooterHeader.appendRegion(util, appendable, this.qCenterRegion,
 				"region-center");
-		RegionFooterHeader.appendRegion(util, appendable, this.qRightRegion, "region-right");
-	}
-
-	private static void appendRegion(final XMLUtil util, final Appendable appendable,
-			final List<FHParagraph> qRegion, final String sRegionName)
-			throws IOException {
-		if (qRegion.size() == 0)
-			return;
-
-		appendable.append("<style:").append(sRegionName).append(">");
-		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable, qRegion);
-		appendable.append("</style:").append(sRegionName).append(">");
+		RegionFooterHeader.appendRegion(util, appendable, this.qRightRegion,
+				"region-right");
 	}
 }

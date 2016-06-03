@@ -22,6 +22,8 @@ package com.github.jferard.fastods.style;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
 /**
  * /**
  *
@@ -37,15 +39,16 @@ public class TableCellStyleBuilder {
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	// 'top'
 	private boolean bWrap; // No line wrap when false, line wrap when
+	private DataStyle dataStyle;
 	private TableCellStyle.Align nTextAlign; // 'center','end','start','justify'
 	private TableCellStyle.VerticalAlign nVerticalAlign; // 'middle', 'bottom',
 	private String sBackgroundColor;
-	private DataStyle dataStyle;
 	// true
 	private final String sDefaultCellStyle;
 	private final String sName;
 	private final FHTextStyleBuilder tsBuilder;
-	
+	private final XMLUtil util;
+
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
@@ -59,17 +62,18 @@ public class TableCellStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableCellStyleBuilder(final String sName) {
+	public TableCellStyleBuilder(final XMLUtil util, final String sName) {
+		this.util = util;
 		if (sName == null)
 			throw new IllegalArgumentException();
-		
+
 		this.sName = sName;
 		this.nTextAlign = TableCellStyle.Align.LEFT;
 		this.nVerticalAlign = TableCellStyle.VerticalAlign.TOP;
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
-		this.tsBuilder = new FHTextStyleBuilder("fh"+sName);
+		this.tsBuilder = new FHTextStyleBuilder("fh" + sName);
 		this.sDefaultCellStyle = "Default";
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);
@@ -131,26 +135,26 @@ public class TableCellStyleBuilder {
 		if (this.sName == null)
 			throw new IllegalStateException();
 
-		return new TableCellStyle(this.sName, this.dataStyle,
+		return new TableCellStyle(this.util, this.sName, this.dataStyle,
 				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
 				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
 				this.borderByPosition);
 
 	}
 
-//	/**
-//	 * Set the data style for this TableFamilyStyle to cs.<br>
-//	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-//	 * exception is thrown
-//	 *
-//	 * @param cs
-//	 *            The currency style to be used
-//	 * @return this for fluent style
-//	 */
-//	public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
-//		this.dataStyle = cs;
-//		return this;
-//	}
+	// /**
+	// * Set the data style for this TableFamilyStyle to cs.<br>
+	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+	// * exception is thrown
+	// *
+	// * @param cs
+	// * The currency style to be used
+	// * @return this for fluent style
+	// */
+	// public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
+	// this.dataStyle = cs;
+	// return this;
+	// }
 
 	/**
 	 * Set the data style for this TableFamilyStyle to ds.<br>
@@ -166,19 +170,19 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
-//	/**
-//	 * Set the data style for this TableFamilyStyle to ns.<br>
-//	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-//	 * exception is thrown
-//	 *
-//	 * @param ns
-//	 *            The number style to be used
-//	 * @return this for fluent style
-//	 */
-//	public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
-//		this.dataStyle = ns;
-//		return this;
-//	}
+	// /**
+	// * Set the data style for this TableFamilyStyle to ns.<br>
+	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+	// * exception is thrown
+	// *
+	// * @param ns
+	// * The number style to be used
+	// * @return this for fluent style
+	// */
+	// public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
+	// this.dataStyle = ns;
+	// return this;
+	// }
 
 	/**
 	 * Set the font color to sColor.<br>
@@ -192,19 +196,6 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder fontColor(final String sColor) {
 		this.tsBuilder.fontColor(sColor);
-		return this;
-	}
-
-	/**
-	 * Set the font weight to bold.<br>
-	 * The TableFamilyStyle must be of a format of
-	 * TableFamilyStyle.STYLE_TABLECELL
-	 *
-	 * @return true - the value was set,<br>
-	 *         false - This object is no table cell, you can not set it to bold
-	 */
-	public TableCellStyleBuilder fontWeightBold() {
-		this.tsBuilder.fontWeightBold();
 		return this;
 	}
 
@@ -224,7 +215,20 @@ public class TableCellStyleBuilder {
 		this.tsBuilder.fontStyleNormal();
 		return this;
 	}
-	
+
+	/**
+	 * Set the font weight to bold.<br>
+	 * The TableFamilyStyle must be of a format of
+	 * TableFamilyStyle.STYLE_TABLECELL
+	 *
+	 * @return true - the value was set,<br>
+	 *         false - This object is no table cell, you can not set it to bold
+	 */
+	public TableCellStyleBuilder fontWeightBold() {
+		this.tsBuilder.fontWeightBold();
+		return this;
+	}
+
 	/**
 	 * Set the font weight to normal.<br>
 	 * The TableFamilyStyle must be of a format of

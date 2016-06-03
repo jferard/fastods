@@ -8,7 +8,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 public interface DataStyle extends NamedObject {
 	void addToFile(OdsFile file);
-	
-	void appendXMLToStylesEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException;
+
+	void appendXMLToStylesEntry(final XMLUtil util, final Appendable appendable)
+			throws IOException;
 }

@@ -25,7 +25,7 @@ import com.github.jferard.fastods.style.FHTextStyle;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * 
+ *
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file FooterHeaderBuilder.java is part of FastODS.
@@ -36,106 +36,6 @@ import com.github.jferard.fastods.style.FHTextStyle;
  *         page/style:header
  */
 abstract class FooterHeaderBuilder {
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	protected final FooterHeader.Type footerHeaderType;
-	protected String sMarginLeft;
-	protected String sMarginRight;
-	protected String sMarginTop;
-	protected String sMinHeight;
-	protected List<FHParagraph> curRegion;
-
-	/**
-	 * Create a new footer object.
-	 *
-	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
-	 */
-	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
-		this.footerHeaderType = footerHeaderType;
-		this.sMinHeight = "0cm";
-		this.sMarginLeft = "0cm";
-		this.sMarginRight = "0cm";
-		this.sMarginTop = "0cm";
-	}
-
-	public FooterHeaderBuilder pageCount(final FHTextStyle ts) {
-		this.styledText(ts, "<text:page-count>99</text:page-count>");
-		return this;
-	}
-
-	public FooterHeaderBuilder pageCount(final FHTextStyle ts,
-			final int nParagraph) {
-		this.styledText(ts, "<text:page-count>99</text:page-count>",
-				nParagraph);
-		return this;
-	}
-
-	public FooterHeaderBuilder pageNumber(final FHTextStyle ts) {
-		this.styledText(ts, "<text:page-number>1</text:page-number>");
-		return this;
-	}
-
-	public FooterHeaderBuilder pageNumber(final FHTextStyle ts, final int nParagraph) {
-		this.styledText(ts, "<text:page-number>1</text:page-number>",
-				nParagraph);
-		return this;
-	}
-
-	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * nRegion.<br>
-	 * The paragraph to be used is nParagraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
-	 * @param sText
-	 *            The string with the text
-	 * @param region
-	 *            One of : FooterHeader.FLG_REGION_LEFT,
-	 *            FooterHeader.FLG_REGION_CENTER or
-	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param nParagraph
-	 *            The paragraph number to be used
-	 * @return 
-	 */
-	public FooterHeaderBuilder styledText(final FHTextStyle ts, final String sText,
-			final int nParagraph) {
-		FHParagraph qStyledText = FooterHeaderBuilder.checkParagraph(this.curRegion,
-				nParagraph);
-		final FHText st = new FHText(sText, ts);
-		qStyledText.add(st);
-		return this;
-	}
-
-	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * nRegion.<br>
-	 * The paragraph to be used is nParagraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
-	 * @param sText
-	 *            The string with the text
-	 * @param region
-	 *            One of : FooterHeader.FLG_REGION_LEFT,
-	 *            FooterHeader.FLG_REGION_CENTER or
-	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param nParagraph
-	 *            The paragraph number to be used
-	 * @return 
-	 */
-	public FooterHeaderBuilder styledText(final FHTextStyle ts, final String sText) {
-		FHParagraph qStyledText = new FHParagraph();
-		final FHText st = new FHText(sText, ts);
-		qStyledText.add(st);
-		this.curRegion.add(qStyledText);
-		return this;
-	}
-
 	/**
 	 * Checks if nParagraph is present in qRegion and return it if yes, if it is
 	 * not present, create a new List and add it to qRegion. Return the new
@@ -158,5 +58,108 @@ abstract class FooterHeaderBuilder {
 		return qStyledText;
 	}
 
+	protected List<FHParagraph> curRegion;
+	/**
+	 * The OdsFile where this object belong to.
+	 */
+	protected final FooterHeader.Type footerHeaderType;
+	protected String sMarginLeft;
+	protected String sMarginRight;
+	protected String sMarginTop;
+
+	protected String sMinHeight;
+
+	/**
+	 * Create a new footer object.
+	 *
+	 * @param odsFile
+	 *            - The OdsFile to which this footer belongs to.
+	 */
+	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
+		this.footerHeaderType = footerHeaderType;
+		this.sMinHeight = "0cm";
+		this.sMarginLeft = "0cm";
+		this.sMarginRight = "0cm";
+		this.sMarginTop = "0cm";
+	}
+
 	public abstract FooterHeader build();
+
+	public FooterHeaderBuilder pageCount(final FHTextStyle ts) {
+		this.styledText(ts, "<text:page-count>99</text:page-count>");
+		return this;
+	}
+
+	public FooterHeaderBuilder pageCount(final FHTextStyle ts,
+			final int nParagraph) {
+		this.styledText(ts, "<text:page-count>99</text:page-count>",
+				nParagraph);
+		return this;
+	}
+
+	public FooterHeaderBuilder pageNumber(final FHTextStyle ts) {
+		this.styledText(ts, "<text:page-number>1</text:page-number>");
+		return this;
+	}
+
+	public FooterHeaderBuilder pageNumber(final FHTextStyle ts,
+			final int nParagraph) {
+		this.styledText(ts, "<text:page-number>1</text:page-number>",
+				nParagraph);
+		return this;
+	}
+
+	/**
+	 * Adds a TextStyle and text to the footer/header region specified by
+	 * nRegion.<br>
+	 * The paragraph to be used is nParagraph.<br>
+	 * The text will be shown in the order it was added with this function.
+	 *
+	 * @param ts
+	 *            The text style to be used
+	 * @param sText
+	 *            The string with the text
+	 * @param region
+	 *            One of : FooterHeader.FLG_REGION_LEFT,
+	 *            FooterHeader.FLG_REGION_CENTER or
+	 *            FooterHeader.FLG_REGION_RIGHT
+	 * @param nParagraph
+	 *            The paragraph number to be used
+	 * @return
+	 */
+	public FooterHeaderBuilder styledText(final FHTextStyle ts,
+			final String sText) {
+		final FHParagraph qStyledText = new FHParagraph();
+		final FHText st = new FHText(sText, ts);
+		qStyledText.add(st);
+		this.curRegion.add(qStyledText);
+		return this;
+	}
+
+	/**
+	 * Adds a TextStyle and text to the footer/header region specified by
+	 * nRegion.<br>
+	 * The paragraph to be used is nParagraph.<br>
+	 * The text will be shown in the order it was added with this function.
+	 *
+	 * @param ts
+	 *            The text style to be used
+	 * @param sText
+	 *            The string with the text
+	 * @param region
+	 *            One of : FooterHeader.FLG_REGION_LEFT,
+	 *            FooterHeader.FLG_REGION_CENTER or
+	 *            FooterHeader.FLG_REGION_RIGHT
+	 * @param nParagraph
+	 *            The paragraph number to be used
+	 * @return
+	 */
+	public FooterHeaderBuilder styledText(final FHTextStyle ts,
+			final String sText, final int nParagraph) {
+		final FHParagraph qStyledText = FooterHeaderBuilder
+				.checkParagraph(this.curRegion, nParagraph);
+		final FHText st = new FHText(sText, ts);
+		qStyledText.add(st);
+		return this;
+	}
 }

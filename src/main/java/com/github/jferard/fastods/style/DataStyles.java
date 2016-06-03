@@ -19,19 +19,18 @@
 */
 package com.github.jferard.fastods.style;
 
-import java.util.Date;
-
 /**
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard Martin Schulz Copyright
+ *         2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file DataStyles.java is part of FastODS.
  *
  */
 public interface DataStyles {
 	TableCellStyle getBooleanStyle();
+
+	TableCellStyle getCurrencyStyle();
 
 	TableCellStyle getDateStyle();
 
@@ -40,6 +39,4 @@ public interface DataStyles {
 	TableCellStyle getPercentageStyle();
 
 	TableCellStyle getTimeStyle();
-
-	TableCellStyle getCurrencyStyle();
 }

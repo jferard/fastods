@@ -53,8 +53,8 @@ public class ConfigItem {
 	 * @return The XML string for this object.
 	 * @throws IOException
 	 */
-	public void appendXMLToObject(final XMLUtil util, final Appendable appendable)
-			throws IOException {
+	public void appendXMLToObject(final XMLUtil util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item");
 		util.appendAttribute(appendable, "config:name", this.sItemName);
 		util.appendAttribute(appendable, "config:type", this.sType);

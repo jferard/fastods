@@ -45,12 +45,12 @@ public class TimeStyle implements DataStyle {
 		HHMMSS
 	}
 
+	private static final String COLON = "<number:text>:</number:text>";
 	/**
 	 * The default date format Format.DDMMYY.
 	 */
 	private static final String DASH = "<number:text>-</number:text>";
 	private static final String DOT = "<number:text>.</number:text>";
-	private static final String COLON = "<number:text>:</number:text>";
 	private static final String HOURS = "<number:hours/>";
 	private static final String MINUTES = "<number:minutes/>";
 	private static final String SECONDS = "<number:seconds/>";
@@ -59,14 +59,14 @@ public class TimeStyle implements DataStyle {
 		return new TimeStyleBuilder(sName, Locale.getDefault());
 	}
 
-	private final TimeStyle.Format timeFormat;
 	private final String sCountry;
 	private final String sLanguage;
-
 	/**
 	 * The name of this style.
 	 */
 	private final String sName;
+
+	private final TimeStyle.Format timeFormat;
 
 	/**
 	 * Create a new date style with the name sName.<br>
@@ -86,26 +86,12 @@ public class TimeStyle implements DataStyle {
 	}
 
 	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
 	 * @param odsFile
 	 *            The OdsFile to which this style belongs to.
 	 */
 	@Override
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.addDataStyle(this);
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'.
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
 	}
 
 	/**
@@ -141,6 +127,20 @@ public class TimeStyle implements DataStyle {
 
 			appendable.append("</number:time-style>");
 		}
+	}
+
+	/**
+	 * @return The two letter country code, e.g. 'US'
+	 */
+	public String getCountry() {
+		return this.sCountry;
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'.
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
 	}
 
 	/**

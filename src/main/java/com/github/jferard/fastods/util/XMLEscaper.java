@@ -20,15 +20,14 @@
 package com.github.jferard.fastods.util;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard Martin Schulz Copyright
+ *         2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file XMLEscaper.java is part of FastODS.
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public interface XMLEscaper {
 	String escapeXMLAttribute(final String s);
-	
+
 	String escapeXMLContent(final String s);
 }

@@ -42,8 +42,8 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         table:table/table:table-column
  */
 public class TableRowStyle implements StyleTag {
-	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").build();
-
+	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle
+			.builder("ro1").build();
 
 	public static TableRowStyleBuilder builder(final String sName) {
 		return new TableRowStyleBuilder(sName);
@@ -82,7 +82,8 @@ public class TableRowStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:family", "table-row");
 		appendable.append("><style:table-row-properties");
 		if (this.sRowHeight != null)
-			util.appendAttribute(appendable, "style:row-height", this.sRowHeight);
+			util.appendAttribute(appendable, "style:row-height",
+					this.sRowHeight);
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:use-optimal-row-height",
 				"true");

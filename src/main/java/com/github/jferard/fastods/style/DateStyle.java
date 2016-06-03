@@ -129,26 +129,12 @@ public class DateStyle implements DataStyle {
 	}
 
 	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
 	 * @param odsFile
 	 *            The OdsFile to which this style belongs to.
 	 */
 	@Override
 	public void addToFile(final OdsFile odsFile) {
 		odsFile.addDataStyle(this);
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'.
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
 	}
 
 	/**
@@ -212,6 +198,20 @@ public class DateStyle implements DataStyle {
 
 			appendable.append("</number:date-style>");
 		}
+	}
+
+	/**
+	 * @return The two letter country code, e.g. 'US'
+	 */
+	public String getCountry() {
+		return this.sCountry;
+	}
+
+	/**
+	 * @return The two letter language code, e.g. 'en'.
+	 */
+	public String getLanguage() {
+		return this.sLanguage;
 	}
 
 	/**

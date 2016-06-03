@@ -39,8 +39,12 @@ public class FHParagraph {
 		this.texts = FullList.newList();
 	}
 
-	public List<FHText> getTexts() {
-		return this.texts;
+	public void add(final FHText fHText) {
+		this.texts.add(fHText);
+	}
+
+	public void add(final String content) {
+		this.texts.add(new FHText(content));
 	}
 
 	public void appendXMLToRegionBody(final XMLUtil util,
@@ -62,12 +66,8 @@ public class FHParagraph {
 		}
 	}
 
-	public void add(FHText fHText) {
-		this.texts.add(fHText);
+	public List<FHText> getTexts() {
+		return this.texts;
 	}
-	
-	public void add(String content) {
-		this.texts.add(new FHText(content));
-	}
-	
+
 }

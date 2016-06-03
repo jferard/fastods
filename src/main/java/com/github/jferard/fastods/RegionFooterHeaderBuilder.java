@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * 
+ *
  *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file FooterHeaderBuilder.java is part of FastODS.
@@ -52,6 +52,13 @@ class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 		this.qRightRegion = FullList.newList();
 	}
 
+	@Override
+	public FooterHeader build() {
+		return new RegionFooterHeader(this.footerHeaderType, this.qCenterRegion,
+				this.qLeftRegion, this.qRightRegion, this.sMarginLeft,
+				this.sMarginRight, this.sMarginTop, this.sMinHeight);
+	}
+
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {
 		switch (region) {
 		case LEFT: // Use left region
@@ -67,12 +74,5 @@ class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 			throw new IllegalStateException();
 		}
 		return this;
-	}
-
-	@Override
-	public FooterHeader build() {
-		return new RegionFooterHeader(this.footerHeaderType, this.qCenterRegion,
-				this.qLeftRegion, this.qRightRegion, this.sMarginLeft,
-				this.sMarginRight, this.sMarginTop, this.sMinHeight);
 	}
 }
