@@ -43,6 +43,8 @@ import com.google.common.base.Optional;
  *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file BenchIT.java is part of FastODS.
+ *         
+ * mvn -Dtest=BenchIT#test test
  */
 public class BenchIT {
 	private static final int COL_COUNT = 40;

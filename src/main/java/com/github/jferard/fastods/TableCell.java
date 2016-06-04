@@ -265,8 +265,8 @@ public class TableCell {
 	 * @param currency
 	 *            The currency value
 	 */
-	public void setBooleanValue(final Boolean value) {
-		this.sValue = value.toString();
+	public void setBooleanValue(final boolean value) {
+		this.sValue = value ? "true" : "false";
 		this.valueType = TableCell.Type.BOOLEAN;
 		this.setStyle(this.dataStyles.getBooleanStyle());
 	}
@@ -283,6 +283,32 @@ public class TableCell {
 		} else {
 			this.nColumnsSpanned = n;
 		}
+	}
+
+	/**
+	 * Set the currency value and table cell style to STYLE_CURRENCY.
+	 *
+	 * @param currency
+	 *            The currency value
+	 */
+	public void setCurrencyValue(final int value, final String currency) {
+		this.sValue = Integer.toString(value);
+		this.sCurrency = currency; // escape here
+		this.valueType = TableCell.Type.CURRENCY;
+		this.setStyle(this.dataStyles.getCurrencyStyle());
+	}
+
+	/**
+	 * Set the currency value and table cell style to STYLE_CURRENCY.
+	 *
+	 * @param currency
+	 *            The currency value
+	 */
+	public void setCurrencyValue(final float value, final String currency) {
+		this.sValue = Float.toString(value);
+		this.sCurrency = currency; // escape here
+		this.valueType = TableCell.Type.CURRENCY;
+		this.setStyle(this.dataStyles.getCurrencyStyle());
 	}
 
 	/**
@@ -320,11 +346,37 @@ public class TableCell {
 	 * @param value
 	 *            - A double object with the value to be used
 	 */
+	public void setFloatValue(final int value) {
+		this.sValue = Integer.toString(value);
+		this.valueType = TableCell.Type.FLOAT;
+		this.setStyle(this.dataStyles.getNumberStyle());
+	}
+	
+	/**
+	 * Set the float value for a cell with TableCell.Type.FLOAT.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
+	public void setFloatValue(final float value) {
+		this.sValue = Float.toString(value);
+		this.valueType = TableCell.Type.FLOAT;
+		this.setStyle(this.dataStyles.getNumberStyle());
+	}
+	
+	/**
+	 * Set the float value for a cell with TableCell.Type.FLOAT.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
 	public void setFloatValue(final Number value) {
 		this.sValue = value.toString();
 		this.valueType = TableCell.Type.FLOAT;
 		this.setStyle(this.dataStyles.getNumberStyle());
 	}
+
+	
 
 	public void setFormat(final DataStyles format) {
 		this.dataStyles = format;
@@ -353,6 +405,18 @@ public class TableCell {
 			this.setStringValue(value.toString());
 	}
 
+	/**
+	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
+	 *
+	 * @param value
+	 *            - A double object with the value to be used
+	 */
+	public void setPercentageValue(final float value) {
+		this.sValue = Float.toString(value);
+		this.valueType = TableCell.Type.PERCENTAGE;
+		this.setStyle(this.dataStyles.getPercentageStyle());
+	}
+	
 	/**
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
