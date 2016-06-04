@@ -43,6 +43,7 @@ import com.google.common.base.Optional;
  *
  *         This file BenchIT.java is part of FastODS.
  *         
+ * Usage : launch jvisualvm.
  * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileIT#testFast test
  */
 public class ProfileIT {

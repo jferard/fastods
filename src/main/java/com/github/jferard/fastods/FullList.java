@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -46,14 +47,14 @@ public class FullList<E> implements List<E> {
 
 	private final E blankElement;
 
-	private final LinkedList<E> list;
+	private final ArrayList<E> list;
 
 	private FullList(final E blankElement) {
 		this.blankElement = blankElement;
-		this.list = new LinkedList<E>();
+		this.list = new ArrayList<E>(64);
 	}
 
-	private FullList(final E blankElement, final LinkedList<E> list) {
+	private FullList(final E blankElement, final ArrayList<E> list) {
 		this.blankElement = blankElement;
 		this.list = list;
 	}
@@ -202,7 +203,7 @@ public class FullList<E> implements List<E> {
 			result = this.list.set(index, element);
 		else { // last element
 			if (element == this.blankElement) {
-				result = this.list.removeLast();
+				result = this.list.remove(size - 1);
 				this.removeTrail();
 			} else
 				result = this.list.set(index, element);
@@ -223,7 +224,7 @@ public class FullList<E> implements List<E> {
 	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
 		return new FullList<E>(this.blankElement,
-				(LinkedList<E>) this.list.subList(fromIndex, toIndex));
+				(ArrayList<E>) this.list.subList(fromIndex, toIndex));
 	}
 
 	@Override
@@ -249,8 +250,11 @@ public class FullList<E> implements List<E> {
 	}
 
 	private void removeTrail() {
-		while (this.list.size() >= 1
-				&& this.list.get(this.list.size() - 1) == this.blankElement)
-			this.list.removeLast();
+		int last = this.list.size() - 1;
+		while (last >= 0
+				&& this.list.get(last) == this.blankElement) {
+			this.list.remove(last);
+			last = this.list.size() - 1;
+		}
 	}
 }
