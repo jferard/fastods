@@ -3,7 +3,7 @@
 
 (C) M. Schulz 2008-2013 for SimpleODS
 
-A fast ODS writing library in Java, under GPL v3.
+A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
 
 ## Why FastODS ?
 Because I need to write big and simple ODS files very fast in Java.
@@ -24,16 +24,15 @@ Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten 
 ## Example
 ```java
 OdsFile file = new OdsFile("5columns.ods");
-Optional<Table> optTable = file.addTable("test");
-assert optTable.isPresent();
+Table table = file.addTable("test");
 
-Table table = optTable.get();
-TabelCellStyle style = TableCellStyle.builder().name("tcs1").backgroundColor("#00FF00").build()
+TableCellStyle style = TableCellStyle.builder().name("tcs1").backgroundColor("#00FF00").build()
 for (int y = 0; y < 50; y++) {
 	final TableRow row = table.nextRow();
 	for (int x = 0; x < 5; x++) {
-		row.setCell(x, String.valueOf(random.nextInt(1000)));
-		row.setCellStyle(x, style);
+		final TableCell cell = row.nextCell();
+		cell.setFloat(random.nextInt(1000));
+		cell.setStyle(style);
 	}
 }
 
@@ -43,9 +42,9 @@ file.save();
 ## TODO
 * Code cleaning;
 * A lot of testing;
-* Improvement of FullList class;
-* Remove that Guava dependency that was very useful for development;
-* ResultSet writing;
+* Better ResultSet writing;
+* Use the flyweight pattern for cells;
+* Speed up float->string
 * ...
 
 
