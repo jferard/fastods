@@ -74,17 +74,21 @@ public class OdsFile {
 	 * 512 k of buffer before sending data to OutputStreamWriter.
 	 */
 	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024;
+	private static final int DEFAULT_ROW_CAPACITY = 1024;
+	private static final int DEFAULT_COLUMN_CAPACITY = 32;
 
 	public static OdsFile create(final String sName) {
 		return OdsFile.create(Locale.getDefault(), sName);
 	}
-	
+
 	public static OdsFile create(final Locale locale, final String sName) {
 		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
 		final XMLUtil xmlUtil = new XMLUtil(escaper);
-		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(locale);  
+		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
+				locale);
 		return new OdsFile(sName, new Util(), xmlUtil,
-				new LocaleDataStyles(builderFactory, xmlUtil), OdsFile.DEFAULT_BUFFER_SIZE);
+				new LocaleDataStyles(builderFactory, xmlUtil),
+				OdsFile.DEFAULT_BUFFER_SIZE);
 	}
 
 	private final int bufferSize;
@@ -155,9 +159,14 @@ public class OdsFile {
 	 * @return the table
 	 * @throws FastOdsException
 	 */
-	public Table addTable(final String sName)
-			throws FastOdsException {
-		final Table table = this.contentEntry.addTable(sName);
+	public Table addTable(final String sName) throws FastOdsException {
+		return this.addTable(sName, OdsFile.DEFAULT_ROW_CAPACITY,
+				OdsFile.DEFAULT_COLUMN_CAPACITY);
+	}
+
+	public Table addTable(String sName, int rowCapacity, int columnCapacity) {
+		final Table table = this.contentEntry.addTable(sName, rowCapacity,
+				columnCapacity);
 		this.settingsEntry.setActiveTable(table);
 		return table;
 	}
@@ -187,7 +196,8 @@ public class OdsFile {
 	}
 
 	/**
-	 * @param sName the name of the table
+	 * @param sName
+	 *            the name of the table
 	 * @return the table, or null if not exists
 	 */
 	public Table getTable(final String sName) {

@@ -65,13 +65,15 @@ class ContentEntry implements OdsEntry {
 
 	/**
 	 * @param sName the name of the table to create
+	 * @param columnCapacity 
+	 * @param rowCapacity 
 	 * @return the table (whether it existed before call or not). Never null
 	 */
-	public Table addTable(final String sName) {
+	public Table addTable(final String sName, int rowCapacity, int columnCapacity) {
 		Table table = this.getTable(sName);
 		if (table == null) {
 			table = new Table(this.odsFile, this.xmlUtil, this.util,
-					this.format, sName);
+					this.format, sName, rowCapacity, columnCapacity);
 			this.qTables.add(table);
 		}
 		return table;

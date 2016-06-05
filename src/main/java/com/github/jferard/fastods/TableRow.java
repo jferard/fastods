@@ -49,13 +49,13 @@ public class TableRow {
 	private final Util util;
 
 	TableRow(final OdsFile odsFile, final Util util, final DataStyles format,
-			final int nRow) {
+			final int nRow, int columnCapacity) {
 		this.util = util;
 		this.format = format;
 		this.nRow = nRow;
 		this.odsFile = odsFile;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
-		this.qTableCells = FullList.newList();
+		this.qTableCells = FullList.newListWithCapacity(columnCapacity);
 	}
 
 	/**

@@ -85,13 +85,16 @@ public class Table implements NamedObject {
 	private final ConfigItem zoomType;
 
 	private final ConfigItem zoomValue;
+	private int columnCapacity;
 
 	Table(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
-			final DataStyles format, final String sName) {
+			final DataStyles format, final String sName, int rowCapacity,
+			int columnCapacity) {
 		this.odsFile = odsFile;
 		this.util = util;
 		this.format = format;
 		this.sName = sName;
+		this.columnCapacity = columnCapacity;
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
 		this.cursorPositionX = new ConfigItem("CursorPositionX", "int", "0");
 		this.cursorPositionY = new ConfigItem("cursorPositionY", "int", "0");
@@ -114,9 +117,10 @@ public class Table implements NamedObject {
 		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue", "int",
 				"60");
 
-		this.qColumnStyles = FullList
-				.newList(TableColumnStyle.getDefaultColumnStyle(xmlUtil));
-		this.qTableRows = FullList.newList();
+		this.qColumnStyles = FullList.<TableColumnStyle> builder()
+				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil)).capacity(this.columnCapacity)
+				.build();
+		this.qTableRows = FullList.newListWithCapacity(rowCapacity);
 	}
 
 	public void addData(final DataWrapper data) {
@@ -162,7 +166,7 @@ public class Table implements NamedObject {
 		Table.checkRow(nRow);
 		TableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
-			tr = new TableRow(this.odsFile, this.util, this.format, nRow);
+			tr = new TableRow(this.odsFile, this.util, this.format, nRow, this.columnCapacity);
 			this.qTableRows.set(nRow, tr);
 		}
 		return tr;
@@ -189,7 +193,7 @@ public class Table implements NamedObject {
 	public TableRow nextRow() throws FastOdsException {
 		final int nRow = this.qTableRows.size();
 		final TableRow tr = new TableRow(this.odsFile, this.util, this.format,
-				nRow);
+				nRow, this.columnCapacity);
 		this.qTableRows.add(tr);
 		return tr;
 	}

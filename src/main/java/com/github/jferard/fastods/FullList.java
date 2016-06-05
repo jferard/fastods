@@ -22,7 +22,6 @@ package com.github.jferard.fastods;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Spliterator;
@@ -37,26 +36,57 @@ import java.util.Spliterator;
  *
  */
 public class FullList<E> implements List<E> {
-	public static <E> List<E> newList() {
-		return new FullList<E>(null);
+	public static class FullListBuilder<F> {
+
+		private F blankElement;
+		private int capacity;
+
+		FullListBuilder() {
+			this.blankElement = null;
+			this.capacity = FullList.DEFAULT_CAPACITY;
+		}
+
+		public FullListBuilder<F> blankElement(F element) {
+			this.blankElement = element;
+			return this;
+		}
+
+		public FullList<F> build() {
+			return new FullList<F>(this.blankElement, this.capacity);
+		}
+
+		public FullListBuilder<F> capacity(final int capacity) {
+			this.capacity = capacity;
+			return this;
+		}
 	}
 
-	public static <E> List<E> newList(final E e) {
-		return new FullList<E>(e);
+	private static final int DEFAULT_CAPACITY = 64;
+
+	public static <F> FullListBuilder<F> builder() {
+		return new FullListBuilder<F>();
+	}
+
+	public static <F> List<F> newList() {
+		return new FullList<F>(null, FullList.DEFAULT_CAPACITY);
+	}
+
+	public static <F> List<F> newListWithCapacity(int rowCapacity) {
+		return new FullList<F>(null, rowCapacity);
 	}
 
 	private final E blankElement;
 
 	private final ArrayList<E> list;
 
-	private FullList(final E blankElement) {
-		this.blankElement = blankElement;
-		this.list = new ArrayList<E>(64);
-	}
-
 	private FullList(final E blankElement, final ArrayList<E> list) {
 		this.blankElement = blankElement;
 		this.list = list;
+	}
+
+	private FullList(final E blankElement, final int capacity) {
+		this.blankElement = blankElement;
+		this.list = new ArrayList<E>(capacity);
 	}
 
 	@Override
@@ -251,8 +281,7 @@ public class FullList<E> implements List<E> {
 
 	private void removeTrail() {
 		int last = this.list.size() - 1;
-		while (last >= 0
-				&& this.list.get(last) == this.blankElement) {
+		while (last >= 0 && this.list.get(last) == this.blankElement) {
 			this.list.remove(last);
 			last = this.list.size() - 1;
 		}

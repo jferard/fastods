@@ -76,7 +76,7 @@ public class BenchIT {
 				+ COL_COUNT + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		OdsFile file = OdsFile.create("f20columns.ods");
-		final Table table = file.addTable("test");
+		final Table table = file.addTable("test", BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
 
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();

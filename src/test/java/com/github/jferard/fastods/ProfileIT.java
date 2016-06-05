@@ -48,7 +48,7 @@ import com.google.common.base.Optional;
  */
 public class ProfileIT {
 	private static final int COL_COUNT = 40;
-	private static final int ROW_COUNT = 2*20000;
+	private static final int ROW_COUNT = 80000;
 	private Random random;
 	private long t1;
 
@@ -72,7 +72,7 @@ public class ProfileIT {
 	public final void testFast() throws FastOdsException {
 		// Open the file.
 		OdsFile file = OdsFile.create("f20columns.ods");
-		final Table table = file.addTable("test");
+		final Table table = file.addTable("test", ProfileIT.ROW_COUNT, ProfileIT.COL_COUNT);
 
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final TableRow row = table.nextRow();

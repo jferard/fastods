@@ -47,7 +47,7 @@ public class OdsFileTest {
 		final Random random = new Random();
 
 		OdsFile file = OdsFile.create("5columns.ods");
-		final Table table = file.addTable("test");
+		final Table table = file.addTable("test", 50, 5);
 		FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
 		XMLUtil xmlUtil = new XMLUtil(xmlEscaper);
 		

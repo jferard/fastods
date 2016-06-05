@@ -40,7 +40,7 @@ class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.curRegion = FullList.newList();
+		this.curRegion = FullList.<FHParagraph>builder().capacity(16).build();
 	}
 
 	@Override
