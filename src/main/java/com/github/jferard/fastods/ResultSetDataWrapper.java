@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.github.jferard.fastods.style.TableCellStyle;
 
-public class ResultSetDataWrapper implements DataWrapper {
+public final class ResultSetDataWrapper implements DataWrapper {
 	/**
 	 * column count of the ResultSet.
 	 */
@@ -46,7 +46,7 @@ public class ResultSetDataWrapper implements DataWrapper {
 
 		final int count = 0;
 		try {
-			TableRow row;
+			HeavyTableRow row;
 			if (this.resultSet.next()) {
 				row = table.nextRow();
 				this.writeFirstLineDataTo(row);
@@ -61,8 +61,6 @@ public class ResultSetDataWrapper implements DataWrapper {
 		} catch (final SQLException e) {
 			e.printStackTrace();
 		} catch (final IOException e) {
-			e.printStackTrace();
-		} catch (final FastOdsException e) {
 			e.printStackTrace();
 		}
 		return count > 0;
@@ -93,36 +91,40 @@ public class ResultSetDataWrapper implements DataWrapper {
 		return values;
 	}
 
-	private void writeDateLineTo(final TableRow row)
+	private void writeDateLineTo(final HeavyTableRow row)
 			throws SQLException, IOException {
 		final List<Object> columnValues = this.getColumnValues();
+		final TableCellWalker walker = row.getWalker();
 		for (int j = 1; j <= this.columnCount; j++) {
 			final Object object = columnValues.get(j);
-			final TableCell cell = row.getCell(j - 1);
-			cell.setObjectValue(object);
+			walker.nextCell();
+			walker.setObjectValue(object);
 		}
 	}
 
-	private void writeFirstLineDataTo(final TableRow row) throws SQLException {
+	private void writeFirstLineDataTo(final HeavyTableRow row)
+			throws SQLException {
 		final List<String> columnNames = this.getColumnNames();
+		final TableCellWalker walker = row.getWalker();
 		for (int j = 1; j <= this.columnCount; j++) {
+			walker.nextCell();
 			final String name = columnNames.get(j);
-			final TableCell cell = row.getCell(j - 1);
-			cell.setStringValue(name);
-			cell.setStyle(this.headCellStyle);
+			walker.setStringValue(name);
+			walker.setStyle(this.headCellStyle);
 		}
 	}
 
-	private void writeLastLineDataTo(final TableRow row, final int count) {
+	private void writeLastLineDataTo(final HeavyTableRow row, final int count) {
+		final TableCellWalker walker = row.getWalker();
 		if (count == 0) {// no row
 			for (int j = 1; j <= this.columnCount; j++) {
-				final TableCell cell = row.getCell(j - 1);
-				cell.setStringValue("");
+				walker.nextCell();
+				walker.setStringValue("");
 			}
 		} else if (count > this.max) {
 			for (int j = 1; j <= this.columnCount; j++) {
-				final TableCell cell = row.getCell(j - 1);
-				cell.setStringValue(String.format("... (%d rows remaining)",
+				walker.nextCell();
+				walker.setStringValue(String.format("... (%d rows remaining)",
 						count - this.max));
 			}
 		}

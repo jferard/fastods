@@ -20,7 +20,6 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;

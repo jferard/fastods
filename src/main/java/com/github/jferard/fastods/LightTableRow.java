@@ -33,23 +33,23 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file TableRow.java is part of FastODS.
+ *         This file LightTableRow.java is part of FastODS.
  *
  *         WHERE ?
  *         content.xml/office:document-content/office:body/office:spreadsheet/
  *         table:table/table:table-row
  */
-public class TableRow {
+public class LightTableRow {
 	private TableCellStyle defaultCellStyle;
 	private final DataStyles format;
 	private final int nRow;
 	private final OdsFile odsFile;
-	private final List<TableCell> qTableCells;
+	private final List<HeavyTableCell> qTableCells;
 	private TableRowStyle rowStyle;
 	private final Util util;
 
-	TableRow(final OdsFile odsFile, final Util util, final DataStyles format,
-			final int nRow, int columnCapacity) {
+	LightTableRow(final OdsFile odsFile, final Util util,
+			final DataStyles format, final int nRow, final int columnCapacity) {
 		this.util = util;
 		this.format = format;
 		this.nRow = nRow;
@@ -76,7 +76,7 @@ public class TableRow {
 		appendable.append(">");
 
 		int nNullFieldCounter = 0;
-		for (final TableCell tc : this.qTableCells) {
+		for (final HeavyTableCell tc : this.qTableCells) {
 			if (tc == null) {
 				nNullFieldCounter++;
 			} else {
@@ -98,23 +98,24 @@ public class TableRow {
 
 	/**
 	 * Added 0.5.1:<br>
-	 * Get a TableCell, if no TableCell was present at this nCol, create a new
-	 * one with a default of TableCell.STYLE_STRING and a content of "".
+	 * Get a HeavyTableCell, if no HeavyTableCell was present at this nCol,
+	 * create a new one with a default of HeavyTableCell.STYLE_STRING and a
+	 * content of "".
 	 *
 	 * @param nCol
-	 * @return The TableCell for this position, maybe a new TableCell
+	 * @return The HeavyTableCell for this position, maybe a new HeavyTableCell
 	 */
-	public TableCell getCell(final int nCol) {
-		TableCell tc = this.qTableCells.get(nCol);
+	public HeavyTableCell getCell(final int nCol) {
+		HeavyTableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new TableCell(this.odsFile, this.util, this.format, this.nRow,
-					nCol);
+			tc = new HeavyTableCell(this.odsFile, this.util, this.format,
+					this.nRow, nCol);
 			this.qTableCells.set(nCol, tc);
 		}
 		return tc;
 	}
 
-	public TableCell getCell(final String sPos) {
+	public HeavyTableCell getCell(final String sPos) {
 		final int nCol = this.util.getPosition(sPos).getColumn();
 		return this.getCell(nCol);
 	}
@@ -123,10 +124,10 @@ public class TableRow {
 		return this.rowStyle.getName();
 	}
 
-	public TableCell nextCell() {
+	public HeavyTableCell nextCell() {
 		final int nCol = this.qTableCells.size();
-		TableCell tc = new TableCell(this.odsFile, this.util, this.format,
-				this.nRow, nCol);
+		final HeavyTableCell tc = new HeavyTableCell(this.odsFile, this.util,
+				this.format, this.nRow, nCol);
 		this.qTableCells.add(tc);
 		return tc;
 	}
@@ -143,7 +144,7 @@ public class TableRow {
 	 */
 	public void setCellMerge(final int nCol, final int nRowMerge,
 			final int nColumnMerge) throws FastOdsException {
-		final TableCell tc = this.getCell(nCol);
+		final HeavyTableCell tc = this.getCell(nCol);
 		tc.setRowsSpanned(nRowMerge);
 		tc.setColumnsSpanned(nColumnMerge);
 	}
@@ -183,21 +184,21 @@ public class TableRow {
 	}
 
 	/**
-	 * @return The List with all TableCell objects
+	 * @return The List with all HeavyTableCell objects
 	 */
-	protected List<TableCell> getCells() {
+	protected List<HeavyTableCell> getCells() {
 		return this.qTableCells;
 	}
 
 	/**
-	 * Set TableCell object at position nCol.<br>
-	 * If there is already a TableCell object, the old one is overwritten.
+	 * Set HeavyTableCell object at position nCol.<br>
+	 * If there is already a HeavyTableCell object, the old one is overwritten.
 	 *
 	 * @param nCol
 	 *            The column for this cell
 	 * @param tc
 	 */
-	protected void setCell(final int nCol, final TableCell tc) {
+	protected void setCell(final int nCol, final HeavyTableCell tc) {
 		this.qTableCells.set(nCol, tc);
 	}
 }

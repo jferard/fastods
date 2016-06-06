@@ -40,9 +40,12 @@ class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.curRegion = FullList.<FHParagraph>builder().capacity(16).build();
+		this.curRegion = FullList.<FHParagraph> builder().capacity(16).build();
 	}
 
+	/* 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public FooterHeader build() {
 		return new SimpleFooterHeader(this.footerHeaderType, this.curRegion,

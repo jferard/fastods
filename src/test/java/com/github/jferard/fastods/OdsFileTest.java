@@ -1,7 +1,7 @@
 /*
  * FastODS - a Martin Schulz's SimpleODS fork
  *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
+ * SimpleODS - A Heavyweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
  *    This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@ package com.github.jferard.fastods;
 import java.util.Calendar;
 import java.util.Random;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -30,7 +29,6 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -51,7 +49,7 @@ public class OdsFileTest {
 		FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
 		XMLUtil xmlUtil = new XMLUtil(xmlEscaper);
 		
-		TableRow row = table.getRow(0);
+		HeavyTableRow row = table.getRow(0);
 		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
 //		trs.addToFile(file);
@@ -78,27 +76,28 @@ public class OdsFileTest {
 				.fontStyleItalic().build();
 		
 		row = table.getRow(0);
-		row.getCell(0).setStringValue("éèà");
-		row.getCell(1).setStringValue("€€€€");
-		row.getCell(2).setStringValue("£");
+		row.setStringValue(0, "éèà");
+		row.setStringValue(1, "€€€€");
+		row.setStringValue(2, "£");
 		for (int y = 1; y < 50; y++) {
 			row = table.getRow(y);
+			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 5; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(random.nextInt(1000));
+				walker.nextCell();
+				walker.setFloatValue(random.nextInt(1000));
 				if ((y + 1) % 3 == 0) {
 					switch (x) {
 					case 0:
-						cell.setStyle(tcs0);
+						walker.setStyle(tcs0);
 						break;
 					case 1:
-						cell.setStyle(tcs1);
+						walker.setStyle(tcs1);
 						break;
 					case 2:
-						cell.setStyle(tcs2);
+						walker.setStyle(tcs2);
 						break;
 					case 3:
-						cell.setStyle(tcs3);
+						walker.setStyle(tcs3);
 						break;
 					default:
 						break;
@@ -106,11 +105,11 @@ public class OdsFileTest {
 				} else if (y == 6) {
 					switch (x) {
 					case 0:
-						cell.setBooleanValue(true); break;
+						walker.setBooleanValue(true); break;
 					case 1:
-						cell.setCurrencyValue(150.5, "€"); break;
+						walker.setCurrencyValue(150.5, "€"); break;
 					case 2:
-						cell.setDateValue(Calendar.getInstance());
+						walker.setDateValue(Calendar.getInstance());
 //						final DateStyle build0 = DateStyle.builder("trgfgbf").build();
 //						build0.addToFile(file);
 //						final TableCellStyle build1 = TableCellStyle.builder("ttete").dataStyle(build0).build();
@@ -118,24 +117,24 @@ public class OdsFileTest {
 //						cell.setStyle(build1);
 						 break;
 					case 3:
-						cell.setPercentageValue(70.3); break;
+						walker.setPercentageValue(70.3); break;
 					case 4:
-						cell.setStringValue("foobar"); break;
+						walker.setStringValue("foobar"); break;
 					default: break;
 					}
 				} else if (y == 9) {
 					switch (x) {
 					case 0:
 					case 3:
-						cell.setStyle(tcls); break;
+						walker.setStyle(tcls); break;
 					default:
-						cell.setTimeValue(x*60*1000);
+						walker.setTimeValue(x*60*1000);
 					}
 				}
 			}
 		}
+		
 		file.save();
-
 		long t2 = System.currentTimeMillis();
 		System.out.println("Filled in " + (t2 - t1) + " ms");
 	}
@@ -150,10 +149,11 @@ public class OdsFileTest {
 		final Table table = file.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
-			final TableRow row = table.nextRow();
+			final HeavyTableRow row = table.nextRow();
+			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 20; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(random.nextInt(1000));
+				walker.nextCell();
+				walker.setFloatValue(random.nextInt(1000));
 			}
 		}
 
@@ -173,10 +173,11 @@ public class OdsFileTest {
 		final Table table = file.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
-			final TableRow row = table.nextRow();
+			final HeavyTableRow row = table.nextRow();
+			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 300; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(random.nextInt(1000));
+				walker.nextCell();
+				walker.setFloatValue(random.nextInt(1000));
 			}
 		}
 

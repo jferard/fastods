@@ -46,7 +46,7 @@ public class FullList<E> implements List<E> {
 			this.capacity = FullList.DEFAULT_CAPACITY;
 		}
 
-		public FullListBuilder<F> blankElement(F element) {
+		public FullListBuilder<F> blankElement(final F element) {
 			this.blankElement = element;
 			return this;
 		}
@@ -71,7 +71,7 @@ public class FullList<E> implements List<E> {
 		return new FullList<F>(null, FullList.DEFAULT_CAPACITY);
 	}
 
-	public static <F> List<F> newListWithCapacity(int rowCapacity) {
+	public static <F> List<F> newListWithCapacity(final int rowCapacity) {
 		return new FullList<F>(null, rowCapacity);
 	}
 
@@ -226,7 +226,7 @@ public class FullList<E> implements List<E> {
 			result = this.blankElement;
 			if (element != this.blankElement) {
 				if (index > size)
-					this.addMissingBlanks(index - 1);
+					this.addMissingBlanks(index);
 				this.list.add(element);
 			}
 		} else if (index < lastIndex)
@@ -272,7 +272,7 @@ public class FullList<E> implements List<E> {
 		return this.list.toString();
 	}
 
-	/** this.list.size() == index */
+	/** After = this.list.size() == index */
 	private void addMissingBlanks(final int index) {
 		final int count = index - this.list.size();
 		for (int i = 0; i < count; i++)

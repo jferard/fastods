@@ -47,9 +47,12 @@ class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 	 */
 	RegionFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.qLeftRegion = FullList.<FHParagraph>builder().capacity(16).build();
-		this.qCenterRegion = FullList.<FHParagraph>builder().capacity(16).build();
-		this.qRightRegion = FullList.<FHParagraph>builder().capacity(16).build();
+		this.qLeftRegion = FullList.<FHParagraph> builder().capacity(16)
+				.build();
+		this.qCenterRegion = FullList.<FHParagraph> builder().capacity(16)
+				.build();
+		this.qRightRegion = FullList.<FHParagraph> builder().capacity(16)
+				.build();
 	}
 
 	@Override

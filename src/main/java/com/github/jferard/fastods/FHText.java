@@ -52,7 +52,7 @@ public class FHText {
 
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />
-	 * 
+	 *
 	 * @param tagName
 	 *            TODO
 	 *

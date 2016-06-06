@@ -19,23 +19,13 @@
 */
 package com.github.jferard.fastods;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
-import javax.swing.table.DefaultTableModel;
-
-import org.jopendocument.dom.spreadsheet.Sheet;
-import org.jopendocument.dom.spreadsheet.SpreadSheet;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import org.simpleods.ObjectQueue;
-
-import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -55,7 +45,7 @@ public class ProfileIT {
 	@Rule public TestName name = new TestName();
 	
 	@Before
-	public final void setUp() throws InterruptedException {
+	public final void setUp() {
 		this.random = new Random();
 		System.out.println(this.name.getMethodName()+" : filling a " + ROW_COUNT + " rows, "
 				+ COL_COUNT + " columns spreadsheet");
@@ -69,16 +59,17 @@ public class ProfileIT {
 	}
 
 	@Test
-	public final void testFast() throws FastOdsException {
+	public final void testFast() {
 		// Open the file.
 		OdsFile file = OdsFile.create("f20columns.ods");
 		final Table table = file.addTable("test", ProfileIT.ROW_COUNT, ProfileIT.COL_COUNT);
 
 		for (int y = 0; y < ROW_COUNT; y++) {
-			final TableRow row = table.nextRow();
+			final HeavyTableRow row = table.nextRow();
+			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < COL_COUNT; x++) {
-				TableCell cell = row.nextCell();
-				cell.setFloatValue(this.random.nextInt(1000));
+				walker.nextCell();
+				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 

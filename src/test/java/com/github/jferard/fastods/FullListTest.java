@@ -31,6 +31,13 @@ public class FullListTest {
 		l.set(10, null);
 		Assert.assertTrue(l.isEmpty());
 	}
+	
+	@Test
+	public final void testSetOne() {
+		List<String> l = FullList.newList();
+		l.set(1, "a");
+		Assert.assertEquals(Arrays.asList(null, "a"), l);
+	}
 
 	@Test
 	public final void testSetNullBefore() {
@@ -48,6 +55,6 @@ public class FullListTest {
 		List<String> l = FullList.newList();
 		l.set(10, "a");
 		List<String> l2 = Lists.newArrayList(l);
-		Assert.assertEquals(Arrays.asList(null, null, null, null, null, null, null, null, null, "a"), l2);		
+		Assert.assertEquals(Arrays.asList(null, null, null, null, null, null, null, null, null, null, "a"), l2);		
 	}
 }

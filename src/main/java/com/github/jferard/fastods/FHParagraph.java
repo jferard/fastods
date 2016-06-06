@@ -36,7 +36,7 @@ public class FHParagraph {
 	private final List<FHText> texts;
 
 	FHParagraph() {
-		this.texts = FullList.<FHText>builder().capacity(16).build();
+		this.texts = FullList.<FHText> builder().capacity(16).build();
 	}
 
 	public void add(final FHText fHText) {

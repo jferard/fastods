@@ -64,12 +64,14 @@ class ContentEntry implements OdsEntry {
 	}
 
 	/**
-	 * @param sName the name of the table to create
-	 * @param columnCapacity 
-	 * @param rowCapacity 
+	 * @param sName
+	 *            the name of the table to create
+	 * @param columnCapacity
+	 * @param rowCapacity
 	 * @return the table (whether it existed before call or not). Never null
 	 */
-	public Table addTable(final String sName, int rowCapacity, int columnCapacity) {
+	public Table addTable(final String sName, final int rowCapacity,
+			final int columnCapacity) {
 		Table table = this.getTable(sName);
 		if (table == null) {
 			table = new Table(this.odsFile, this.xmlUtil, this.util,
@@ -79,31 +81,35 @@ class ContentEntry implements OdsEntry {
 		return table;
 	}
 
-	/**
-	 * Get the TableCell object from table nTab at position nRow,nCol.<br>
-	 * If no TableCell was present at this nRow,nCol, create a new one with a
-	 * default of TableCell.STYLE_STRING and a content of ""<br>
-	 *
-	 * @param nTab
-	 * @param nRow
-	 * @param nCol
-	 * @return The TableCell
-	 * @throws FastOdsException
-	 */
-	@Deprecated
-	public TableCell getCell(final int nTab, final int nRow, final int nCol)
-			throws FastOdsException {
-		this.checkTableIndex(nTab);
-		final Table tab = this.qTables.get(nTab);
-		return tab.getCell(nRow, nCol);
-	}
+	// /**
+	// * Get the HeavyTableCell object from table nTab at position
+	// nRow,nCol.<br>
+	// * If no HeavyTableCell was present at this nRow,nCol, create a new one
+	// with a
+	// * default of HeavyTableCell.STYLE_STRING and a content of ""<br>
+	// *
+	// * @param nTab
+	// * @param nRow
+	// * @param nCol
+	// * @return The HeavyTableCell
+	// * @throws FastOdsException
+	// */
+	// @Deprecated
+	// public HeavyTableCell getCell(final int nTab, final int nRow, final int
+	// nCol)
+	// throws FastOdsException {
+	// this.checkTableIndex(nTab);
+	// final Table tab = this.qTables.get(nTab);
+	// return tab.getCell(nRow, nCol);
+	// }
 
 	public Table getTable(final int nTab) {
 		return this.qTables.get(nTab);
 	}
 
 	/**
-	 * @param sName the name of the table to find
+	 * @param sName
+	 *            the name of the table to find
 	 * @return the table, or null if none present
 	 */
 	public Table getTable(final String sName) {

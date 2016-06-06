@@ -127,7 +127,7 @@ public class CurrencyStyleBuilder {
 		return this;
 	}
 
-	public CurrencyStyleBuilder locale(final Locale locale) {
+	public final CurrencyStyleBuilder locale(final Locale locale) {
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		if (this.sCurrencySymbol == null)

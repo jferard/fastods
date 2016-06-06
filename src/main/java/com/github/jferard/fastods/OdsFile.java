@@ -74,12 +74,8 @@ public class OdsFile {
 	 * 512 k of buffer before sending data to OutputStreamWriter.
 	 */
 	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024;
-	private static final int DEFAULT_ROW_CAPACITY = 1024;
 	private static final int DEFAULT_COLUMN_CAPACITY = 32;
-
-	public static OdsFile create(final String sName) {
-		return OdsFile.create(Locale.getDefault(), sName);
-	}
+	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
 	public static OdsFile create(final Locale locale, final String sName) {
 		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
@@ -89,6 +85,10 @@ public class OdsFile {
 		return new OdsFile(sName, new Util(), xmlUtil,
 				new LocaleDataStyles(builderFactory, xmlUtil),
 				OdsFile.DEFAULT_BUFFER_SIZE);
+	}
+
+	public static OdsFile create(final String sName) {
+		return OdsFile.create(Locale.getDefault(), sName);
 	}
 
 	private final int bufferSize;
@@ -164,7 +164,8 @@ public class OdsFile {
 				OdsFile.DEFAULT_COLUMN_CAPACITY);
 	}
 
-	public Table addTable(String sName, int rowCapacity, int columnCapacity) {
+	public Table addTable(final String sName, final int rowCapacity,
+			final int columnCapacity) {
 		final Table table = this.contentEntry.addTable(sName, rowCapacity,
 				columnCapacity);
 		this.settingsEntry.setActiveTable(table);
@@ -241,7 +242,7 @@ public class OdsFile {
 	}
 
 	// ----------------------------------------------------------------------
-	// All methods for setCell with TableCell.Type.STRING
+	// All methods for setCell with HeavyTableCell.Type.STRING
 	// ----------------------------------------------------------------------
 
 	/**
@@ -347,10 +348,11 @@ public class OdsFile {
 			throws FastOdsException {
 
 		for (final Table table : this.contentEntry.getTables()) {
-			final TableRow row = table.getRow(nRow);
-			final TableCell cell = row.getCell(nCol);
-			cell.setDateValue(cal);
-			cell.setStyle(ts);
+			final HeavyTableRow row = table.getRow(nRow);
+			final TableCellWalker walker = row.getWalker();
+			walker.to(nCol);
+			walker.setDateValue(cal);
+			walker.setStyle(ts);
 		}
 
 	}
@@ -382,8 +384,8 @@ public class OdsFile {
 	 *            The cell position e.g. 'A1'
 	 * @param nValuetype
 	 *            The value type of sValue,
-	 *            TableCell.Type.STRING,TableCell.Type.FLOAT or
-	 *            TableCell.Type.PERCENTAGE.
+	 *            HeavyTableCell.Type.STRING,HeavyTableCell.Type.FLOAT or
+	 *            HeavyTableCell.Type.PERCENTAGE.
 	 * @param sValue
 	 *            The value to set the cell to
 	 * @param ts
@@ -392,7 +394,7 @@ public class OdsFile {
 	 * @throws FastOdsException
 	 */
 	public void setCellInAllTables(final String sPos,
-			final TableCell.Type nValuetype, final String sValue,
+			final HeavyTableCell.Type nValuetype, final String sValue,
 			final TableCellStyle ts) throws FastOdsException {
 		final Position position = this.util.getPosition(sPos);
 		final int nRow = position.getRow();
@@ -416,10 +418,11 @@ public class OdsFile {
 			final int nRowMerge, final int nColumnMerge)
 			throws FastOdsException {
 		for (final Table table : this.contentEntry.getTables()) {
-			final TableRow row = table.getRow(nRow);
-			final TableCell cell = row.getCell(nCol);
-			cell.setRowsSpanned(nRowMerge);
-			cell.setColumnsSpanned(nColumnMerge);
+			final HeavyTableRow row = table.getRow(nRow);
+			final TableCellWalker walker = row.getWalker();
+			walker.to(nCol);
+			walker.setRowsSpanned(nRowMerge);
+			walker.setColumnsSpanned(nColumnMerge);
 		}
 	}
 

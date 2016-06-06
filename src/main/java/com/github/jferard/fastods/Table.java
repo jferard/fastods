@@ -61,6 +61,7 @@ public class Table implements NamedObject {
 	}
 
 	private final ConfigItem activeSplitRange;
+	private final int columnCapacity;
 	private final ConfigItem cursorPositionX;
 	private final ConfigItem cursorPositionY;
 	private final DataStyles format;
@@ -72,24 +73,23 @@ public class Table implements NamedObject {
 	private final ConfigItem positionLeft;
 	private final ConfigItem positionRight;
 	private final ConfigItem positionTop;
+
 	private final List<TableColumnStyle> qColumnStyles;
-
-	private final List<TableRow> qTableRows;
+	private final List<HeavyTableRow> qTableRows;
 	private String sName;
-	private TableStyle style;
 
+	private TableStyle style;
 	private final Util util;
 	private final ConfigItem verticalSplitMode;
+
 	private final ConfigItem verticalSplitPosition;
 
 	private final ConfigItem zoomType;
-
 	private final ConfigItem zoomValue;
-	private int columnCapacity;
 
 	Table(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
-			final DataStyles format, final String sName, int rowCapacity,
-			int columnCapacity) {
+			final DataStyles format, final String sName, final int rowCapacity,
+			final int columnCapacity) {
 		this.odsFile = odsFile;
 		this.util = util;
 		this.format = format;
@@ -118,8 +118,8 @@ public class Table implements NamedObject {
 				"60");
 
 		this.qColumnStyles = FullList.<TableColumnStyle> builder()
-				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil)).capacity(this.columnCapacity)
-				.build();
+				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
+				.capacity(this.columnCapacity).build();
 		this.qTableRows = FullList.newListWithCapacity(rowCapacity);
 	}
 
@@ -127,22 +127,25 @@ public class Table implements NamedObject {
 		data.addToTable(this);
 	}
 
-	/**
-	 * Get a TableCell, if no TableCell was present at this nRow,nCol, create a
-	 * new one with a default of TableCell.STYLE_STRING and a content of "".
-	 *
-	 * @param nRow
-	 *            The row
-	 * @param nCol
-	 *            The column
-	 * @return The TableCell for this position, maybe a new TableCell
-	 * @throws FastOdsException
-	 */
-	public TableCell getCell(final int nRow, final int nCol)
-			throws FastOdsException {
-		final TableRow tr = this.getRow(nRow);
-		return tr.getCell(nCol);
-	}
+	// /**
+	// * Get a HeavyTableCell, if no HeavyTableCell was present at this
+	// nRow,nCol, create a
+	// * new one with a default of HeavyTableCell.STYLE_STRING and a content of
+	// "".
+	// *
+	// * @param nRow
+	// * The row
+	// * @param nCol
+	// * The column
+	// * @return The HeavyTableCell for this position, maybe a new
+	// HeavyTableCell
+	// * @throws FastOdsException
+	// */
+	// public HeavyTableCell getCell(final int nRow, final int nCol)
+	// throws FastOdsException {
+	// final HeavyTableRow tr = this.getRow(nRow);
+	// return tr.getCell(nCol);
+	// }
 
 	public List<TableColumnStyle> getColumnStyles() {
 		return this.qColumnStyles;
@@ -162,24 +165,25 @@ public class Table implements NamedObject {
 		return this.sName;
 	}
 
-	public TableRow getRow(final int nRow) throws FastOdsException {
+	public HeavyTableRow getRow(final int nRow) throws FastOdsException {
 		Table.checkRow(nRow);
-		TableRow tr = this.qTableRows.get(nRow);
+		HeavyTableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
-			tr = new TableRow(this.odsFile, this.util, this.format, nRow, this.columnCapacity);
+			tr = new HeavyTableRow(this.odsFile, this.util, this.format, nRow,
+					this.columnCapacity);
 			this.qTableRows.set(nRow, tr);
 		}
 		return tr;
 	}
 
-	public TableRow getRow(final String sPos) throws FastOdsException {
+	public HeavyTableRow getRow(final String sPos) throws FastOdsException {
 		final int nRow = this.util.getPosition(sPos).getRow();
 		return this.getRow(nRow);
 	}
 
-	public List<TableRow> getRows() {
-		return this.qTableRows;
-	}
+	// public List<LightTableRow> getRows() {
+	// return this.qTableRows;
+	// }
 
 	/**
 	 * Get the current TableFamilyStyle
@@ -190,10 +194,10 @@ public class Table implements NamedObject {
 		return this.style.getName();
 	}
 
-	public TableRow nextRow() throws FastOdsException {
+	public HeavyTableRow nextRow() {
 		final int nRow = this.qTableRows.size();
-		final TableRow tr = new TableRow(this.odsFile, this.util, this.format,
-				nRow, this.columnCapacity);
+		final HeavyTableRow tr = new HeavyTableRow(this.odsFile, this.util,
+				this.format, nRow, this.columnCapacity);
 		this.qTableRows.add(tr);
 		return tr;
 	}
@@ -266,7 +270,7 @@ public class Table implements NamedObject {
 	private void appendRows(final Appendable appendable, final XMLUtil util)
 			throws IOException {
 		// Loop through all rows
-		for (final TableRow tr : this.getRows()) {
+		for (final HeavyTableRow tr : this.qTableRows) {
 			if (tr == null) {
 				appendable.append("<table:table-row");
 				util.appendEAttribute(appendable, "table:style-name", "ro1");
@@ -287,7 +291,7 @@ public class Table implements NamedObject {
 		util.appendEAttribute(appendable, "form:automatic-focus", false);
 		util.appendEAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
-		// this.appendColumnStyles(appendable, util);
+		this.appendColumnStyles(appendable, util);
 		this.appendRows(appendable, util);
 		appendable.append("</table:table>");
 	}

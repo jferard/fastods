@@ -123,7 +123,7 @@ public class DateStyleBuilder {
 		return this;
 	}
 
-	public DateStyleBuilder locale(final Locale locale) {
+	public final DateStyleBuilder locale(final Locale locale) {
 		this.sCountry = locale.getCountry();
 		this.sLanguage = locale.getLanguage();
 		return this;

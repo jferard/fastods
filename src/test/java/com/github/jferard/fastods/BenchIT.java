@@ -27,16 +27,12 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.simpleods.ObjectQueue;
 import org.simpleods.SimpleOdsException;
-
-import com.google.common.base.Optional;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -58,31 +54,36 @@ public class BenchIT {
 		this.random = new Random();
 	}
 	
-	@After
-	public final void tearDown() {
-	}
-
 	@Test
 	public void test() throws FastOdsException, SimpleOdsException {
 		for (int i = 0 ; i<10 ; i++) {
-			testFast();
-			testSimple();
+			testFast(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
+			testSimple(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
 		}
 	}
 	
-	public final void testFast() throws FastOdsException {
+	@Test
+	public void test2() throws FastOdsException, SimpleOdsException {
+		for (int i = 0 ; i<10 ; i++) {
+			testFast(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
+			testSimple(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
+		}
+	}
+	
+	public final void testFast(final int rowCount, final int colCount) {
 		// Open the file.
-		System.out.println("testFast: filling a " + ROW_COUNT + " rows, "
-				+ COL_COUNT + " columns spreadsheet");
+		System.out.println("testFast: filling a " + rowCount + " rows, "
+				+ colCount + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		OdsFile file = OdsFile.create("f20columns.ods");
-		final Table table = file.addTable("test", BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
+		final Table table = file.addTable("test", rowCount, colCount);
 
-		for (int y = 0; y < ROW_COUNT; y++) {
-			final TableRow row = table.nextRow();
-			for (int x = 0; x < COL_COUNT; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(this.random.nextInt(1000));
+		for (int y = 0; y < rowCount; y++) {
+			final HeavyTableRow row = table.nextRow();
+			TableCellWalker walker = row.getWalker();
+			for (int x = 0; x < colCount; x++) {
+				walker.nextCell();
+				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 
@@ -92,10 +93,10 @@ public class BenchIT {
 	}
 	
 //	@Test
-	public final void testSimple() throws SimpleOdsException {
+	public final void testSimple(int rowCount, int colCount) throws SimpleOdsException {
 		// Open the file.
-		System.out.println("testSimple: filling a " + ROW_COUNT + " rows, "
-				+ COL_COUNT + " columns spreadsheet");
+		System.out.println("testSimple: filling a " + rowCount + " rows, "
+				+ colCount + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
 				"s20columns.ods");
@@ -104,10 +105,10 @@ public class BenchIT {
 				.getTableQueue().get(0);
 
 		final ObjectQueue rows = table.getRows();
-		for (int y = 0; y < ROW_COUNT; y++) {
+		for (int y = 0; y < rowCount; y++) {
 			final org.simpleods.TableRow row = new org.simpleods.TableRow();
 			rows.add(row);
-			for (int x = 0; x < COL_COUNT; x++) {
+			for (int x = 0; x < colCount; x++) {
 				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
 			}
 		}
@@ -124,10 +125,11 @@ public class BenchIT {
 		final Table table = file.addTable("test");
 
 		for (int y = 0; y < 3*ROW_COUNT; y++) {
-			final TableRow row = table.nextRow();
+			final HeavyTableRow row = table.nextRow();
+			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 3*COL_COUNT; x++) {
-				TableCell cell = row.getCell(x);
-				cell.setFloatValue(this.random.nextInt(1000));
+				walker.nextCell();
+				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}
 
