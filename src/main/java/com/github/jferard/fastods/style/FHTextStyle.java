@@ -54,8 +54,8 @@ public class FHTextStyle implements NamedObject {
 	public static final FHTextStyle DEFAULT_TEXT_STYLE = FHTextStyle
 			.builder("Default").build();
 
-	public static FHTextStyleBuilder builder(final String sName) {
-		return new FHTextStyleBuilder(sName);
+	public static FHTextStyleBuilder builder(final String name) {
+		return new FHTextStyleBuilder(name);
 	}
 
 	private final /*@Nullable*/ Underline nFontUnderlineStyle;
@@ -68,10 +68,10 @@ public class FHTextStyle implements NamedObject {
 	private final /*@Nullable*/ String sFontUnderlineColor;
 	private final /*@Nullable*/ String sFontWeight;
 
-	private final String sName;
+	private final String name;
 
 	/**
-	 * Create a new text style with the name sName.<br>
+	 * Create a new text style with the name name.<br>
 	 * Version 0.5.0 Added parameter OdsFile odsFile
 	 *
 	 * @param sStyleName
@@ -79,12 +79,12 @@ public class FHTextStyle implements NamedObject {
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	FHTextStyle(final String sName, final String sFontColor,
+	FHTextStyle(final String name, final String sFontColor,
 			final String sFontName, final String sFontWeight,
 			final String sFontStyle, final String sFontSize,
 			final String sFontUnderlineColor,
 			final Underline nFontUnderlineStyle) {
-		this.sName = sName;
+		this.name = name;
 		this.sFontColor = sFontColor;
 		this.sFontName = sFontName;
 		this.sFontWeight = sFontWeight;
@@ -161,7 +161,7 @@ public class FHTextStyle implements NamedObject {
 		// Do not add the style:style
 		// -------------------------------------------------------------
 		appendable.append("<style:style ");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "text");
 		appendable.append(">");
 
@@ -222,11 +222,11 @@ public class FHTextStyle implements NamedObject {
 	 */
 	@Override
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 
 	public boolean isNotEmpty() {
-		return this.sName != null && this.sName.length() > 0
+		return this.name != null && this.name.length() > 0
 				&& (this.nFontUnderlineStyle != null || this.sFontColor != null
 						|| this.sFontSize != null || this.sFontStyle != null
 						|| this.sFontUnderlineColor != null

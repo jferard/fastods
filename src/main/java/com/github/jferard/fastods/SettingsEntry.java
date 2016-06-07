@@ -199,7 +199,7 @@ public class SettingsEntry implements OdsEntry {
 	 * Set the active table , this is the table that is shown if you open the
 	 * file.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The table name, this table should already exist, otherwise the
 	 *            first table is shown
 	 */

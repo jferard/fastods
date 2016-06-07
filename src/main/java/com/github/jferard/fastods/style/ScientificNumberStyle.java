@@ -21,7 +21,6 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -40,11 +39,13 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class PercentageStyle extends FloatStyle {
+public class ScientificNumberStyle extends NumberStyle {
+	private final int minExponentDigits;
+	private final int decimalPlaces;
+
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces. The number style is
-	 * NumberStyle.NUMBER_NORMAL
+	 * minIntDigits and decimal places is nDecPlaces. 
 	 * 
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
@@ -53,47 +54,39 @@ public class PercentageStyle extends FloatStyle {
 	 * @param nDecPlaces
 	 *            The number of decimal places to be shown.
 	 */
-	PercentageStyle(final String name, final String languageCode,
+	ScientificNumberStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle,
-			final int decimalPlaces, final boolean grouping,
-			final int minIntegerDigits, final String negativeValueColor) {
-		super(name, languageCode, countryCode, volatileStyle, decimalPlaces,
-				grouping, minIntegerDigits, negativeValueColor);
+			final boolean grouping, final int minIntegerDigits,
+			final String negativeValueColor, final int decimalPlaces,
+			final int minExponentDigits) {
+		super(name, languageCode, countryCode, volatileStyle, grouping,
+				minIntegerDigits, negativeValueColor);
+		this.decimalPlaces = decimalPlaces;
+		this.minExponentDigits = minExponentDigits;
 	}
 
 	@Override
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDataStyle(this);
+	protected void appendNumber(final XMLUtil util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<number:scientific-number");
+		util.appendEAttribute(appendable, "number:min-exponent-digits",
+				this.minExponentDigits);
+		util.appendEAttribute(appendable, "number:decimal-places",
+				this.getDecimalPlaces());
+		this.appendNumberAttribute(util, appendable);
+		appendable.append("/>");
 	}
 
 	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
+	 * Get the current number of leading zeros.
 	 *
-	 * @param util
+	 * @return The current number of leading zeros.
 	 */
-	@Override
-	public void appendXMLToStylesEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<number:percentage-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
-		appendable.append(">");
-		this.appendNumber(util, appendable);
-		appendable.append("<number:text>%</number:text>");
-		appendable.append("</number:percentage-style>");
+	public int getMinExponentDigits() {
+		return this.minExponentDigits;
+	}
 
-		if (this.negativeValueColor != null) {
-			appendable.append("<number:percentage-style");
-			util.appendAttribute(appendable, "style:name", this.name + "-neg");
-			this.appendLVAttributes(util, appendable);
-			appendable.append(">");
-			this.appendStyleColor(util, appendable);
-			appendable.append("<number:text>-</number:text>");
-			this.appendNumber(util, appendable);
-			appendable.append("<number:text>%</number:text>");
-			this.appendStyleMap(util, appendable);
-			appendable.append("</number:percentage-style>");
-		}
+	public int getDecimalPlaces() {
+		return this.decimalPlaces;
 	}
 }

@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.style.DataStyleBuilderFactory;
+import com.github.jferard.fastods.style.FloatStyle;
 import com.github.jferard.fastods.style.NumberStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -52,28 +53,28 @@ public class NumberStyleTest {
 
 	@Test
 	public final void testEmpty() throws IOException {
-		NumberStyle ns = this.factory.numberStyleBuilder("test").locale(this.locale).build();
+		FloatStyle ns = this.factory.floatStyleBuilder("test").locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals("<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"
+		Assert.assertEquals("<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 				+ "</number:number-style>", sb.toString());
 	}
 
 	@Test
 	public final void testNegative() throws IOException {
-		NumberStyle ns = this.factory.numberStyleBuilder("test").negativeValuesRed(true).locale(this.locale).build();
+		FloatStyle ns = this.factory.floatStyleBuilder("test").negativeValueRed().locale(this.locale).build();
 		StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
-				"<number:number-style style:name=\"testnn\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"+
+				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"+
 				NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS+
 				"</number:number-style>"+
-				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\">"+
+				"<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"+
 				"<style:text-properties fo:color=\"#FF0000\"/>"+
 				"<number:text>-</number:text>"+
 				NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS+
-				"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"testnn\"/>"+
+				"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"+
 				"</number:number-style>",
 				sb.toString());
 	}

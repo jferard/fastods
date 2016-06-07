@@ -25,8 +25,8 @@ public class LocaleDataStyles implements DataStyles {
 				.dateStyleBuilder("date-data").build();
 		this.dateCellStyle = TableCellStyle.builder(util, "date-style")
 				.dataStyle(dateDataStyle).build();
-		final NumberStyle numberDataStyle = builderFactory
-				.numberStyleBuilder("number-data").build();
+		final FloatStyle numberDataStyle = builderFactory
+				.floatStyleBuilder("float-data").build();
 		this.numberCellStyle = TableCellStyle.builder(util, "number-style")
 				.dataStyle(numberDataStyle).build();
 		final PercentageStyle percentageDataStyle = builderFactory

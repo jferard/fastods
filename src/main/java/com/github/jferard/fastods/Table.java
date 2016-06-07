@@ -76,7 +76,7 @@ public class Table implements NamedObject {
 
 	private final List<TableColumnStyle> qColumnStyles;
 	private final List<HeavyTableRow> qTableRows;
-	private String sName;
+	private String name;
 
 	private TableStyle style;
 	private final Util util;
@@ -88,12 +88,12 @@ public class Table implements NamedObject {
 	private final ConfigItem zoomValue;
 
 	Table(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
-			final DataStyles format, final String sName, final int rowCapacity,
+			final DataStyles format, final String name, final int rowCapacity,
 			final int columnCapacity) {
 		this.odsFile = odsFile;
 		this.util = util;
 		this.format = format;
-		this.sName = sName;
+		this.name = name;
 		this.columnCapacity = columnCapacity;
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
 		this.cursorPositionX = new ConfigItem("CursorPositionX", "int", "0");
@@ -162,7 +162,7 @@ public class Table implements NamedObject {
 	 */
 	@Override
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 
 	public HeavyTableRow getRow(final int nRow) throws FastOdsException {
@@ -227,7 +227,7 @@ public class Table implements NamedObject {
 	 *            The name of this table.
 	 */
 	public void setName(final String name) {
-		this.sName = name;
+		this.name = name;
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class Table implements NamedObject {
 	void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<table:table");
-		util.appendAttribute(appendable, "table:name", this.sName);
+		util.appendAttribute(appendable, "table:name", this.name);
 		util.appendAttribute(appendable, "table:style-name",
 				this.style.getName());
 		util.appendEAttribute(appendable, "table:print", false);
@@ -299,7 +299,7 @@ public class Table implements NamedObject {
 	void appendXMLToSettingsEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
-		util.appendAttribute(appendable, "config:name", this.sName);
+		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		this.cursorPositionX.appendXMLToObject(util, appendable);
 		this.cursorPositionY.appendXMLToObject(util, appendable);

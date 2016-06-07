@@ -60,7 +60,7 @@ public class DateStyleTest {
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
-				"<number:date-style style:name=\"test\" number:automatic-order=\"false\" number:language=\"en\" number:country=\"US\" number:format-source=\"language\"/>",
+				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
 				sb.toString());
 	}
 }

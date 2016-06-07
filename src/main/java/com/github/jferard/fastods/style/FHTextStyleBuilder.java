@@ -43,26 +43,26 @@ public class FHTextStyleBuilder {
 	private String sFontWeightAsian;
 
 	private String sFontWeightComplex;
-	private final String sName;
+	private final String name;
 
 	/**
 	 * Create a new text style without a name.<br>
 	 * This is used by class TableFamilyStyle. Version 0.5.2 Added
 	 * 
-	 * @param sName2
+	 * @param name2
 	 *
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	public FHTextStyleBuilder(final String sName) {
-		if (sName == null)
+	public FHTextStyleBuilder(final String name) {
+		if (name == null)
 			throw new IllegalArgumentException();
 
-		this.sName = sName;
+		this.name = name;
 	}
 
 	public FHTextStyle build() {
-		return new FHTextStyle(this.sName, this.sFontColor, this.sFontName,
+		return new FHTextStyle(this.name, this.sFontColor, this.sFontName,
 				this.sFontWeight, this.sFontStyle, this.sFontSize,
 				this.sFontUnderlineColor, this.nFontUnderlineStyle);
 	}

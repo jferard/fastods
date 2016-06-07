@@ -45,11 +45,11 @@ public class TableRowStyle implements StyleTag {
 	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle
 			.builder("ro1").build();
 
-	public static TableRowStyleBuilder builder(final String sName) {
-		return new TableRowStyleBuilder(sName);
+	public static TableRowStyleBuilder builder(final String name) {
+		return new TableRowStyleBuilder(name);
 	}
 
-	private final String sName;
+	private final String name;
 	private final String sRowHeight;
 
 	/**
@@ -66,7 +66,7 @@ public class TableRowStyle implements StyleTag {
 	 *            The OdsFile to add this style to
 	 */
 	TableRowStyle(final String sStyleName, final String sRowHeight) {
-		this.sName = sStyleName;
+		this.name = sStyleName;
 		this.sRowHeight = sRowHeight;
 	}
 
@@ -78,7 +78,7 @@ public class TableRowStyle implements StyleTag {
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table-row");
 		appendable.append("><style:table-row-properties");
 		if (this.sRowHeight != null)
@@ -92,7 +92,7 @@ public class TableRowStyle implements StyleTag {
 
 	@Override
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 
 	/**

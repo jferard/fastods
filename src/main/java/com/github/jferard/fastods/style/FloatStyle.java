@@ -21,43 +21,53 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Martin Schulz Copyright
- *         2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
  *
- *         This file BooleanStyle.java is part of FastODS.
+ *         This file CurrencyStyle.java is part of FastODS.
  *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/number:
  *         currency-style
  *         styles.xml/office:document-styles/office:styles/number:currency-style
- *
- *         16.27.23 <number:boolean-style>
  */
-public class BooleanStyle extends DataStyle {
-	/**
-	 * @param name name of the style
-	 * @param languageCode language
-	 * @param countryCode country
-	 * @param volatileStyle
-	 */
-	protected BooleanStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle) {
-		super(name, languageCode, countryCode, volatileStyle);
+public class FloatStyle extends NumberStyle {
+	protected final int decimalPlaces;
+	
+	protected FloatStyle(final String name, final String languageCode,
+			final String countryCode, final boolean volatileStyle,
+			final int decimalPlaces, final boolean grouping,
+			final int minIntegerDigits, final String negativeValueColor) {
+		super(name, languageCode, countryCode, volatileStyle, grouping, minIntegerDigits, negativeValueColor);
+		this.decimalPlaces = decimalPlaces;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Get how many digits are to the right of the decimal symbol.
+	 *
+	 * @return The number of digits
+	 */
+	public int getDecimalPlaces() {
+		return this.decimalPlaces;
+	}
+
+	/**
+	 * Appends the number:number element
+	 * @param util XML escaping util
+	 * @param appendable where  to append data
+	 * @throws IOException
 	 */
 	@Override
-	public void appendXMLToStylesEntry(final XMLUtil util,
+	protected void appendNumber(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<number:boolean-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
+		appendable.append("<number:number");
+		util.appendEAttribute(appendable, "number:decimal-places",
+				this.decimalPlaces);
+		this.appendNumberAttribute(util, appendable);
 		appendable.append("/>");
 	}
 }

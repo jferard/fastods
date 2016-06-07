@@ -21,193 +21,30 @@ package com.github.jferard.fastods.style;
 
 import java.util.Locale;
 
-import com.github.jferard.fastods.style.NumberStyle.Type;
-
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public class PercentageStyleBuilder {
-	private boolean bGrouping;
-	private boolean bNegativeValuesRed;
-	private boolean bVolatile;
-	private int nDecimalPlaces;
-	private int nMinDenominatorDigits;
-	private int nMinExponentDigits;
-	private int nMinIntegerDigits;
-	private int nMinNumeratorDigits;
-	private Type numberType;
-	private String sCountry;
-	private String sLanguage;
-	private final String sName;
-	private final String sNegativeValueColor;
-
+public class PercentageStyleBuilder
+		extends FloatStyleBuilder {
 	/**
-	 * Create a new number style with the name sName, minimum integer digits is
-	 * nMinIntDigits and decimal places is nDecPlaces.
+	 * Create a new number style with the name name, minimum integer digits is
+	 * minIntDigits and decimal places is nDecPlaces.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public PercentageStyleBuilder(final String sName, final Locale locale) {
-		if (sName == null)
-			throw new IllegalArgumentException();
-
-		this.sName = sName;
-		this.sNegativeValueColor = "#FF0000";
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		this.nDecimalPlaces = 2;
-		this.nMinIntegerDigits = 1;
-		this.nMinExponentDigits = 0;
-		this.nMinNumeratorDigits = 0;
-		this.nMinDenominatorDigits = 0;
-		this.bGrouping = false;
-		this.bVolatile = false;
-		this.bNegativeValuesRed = false;
+	public PercentageStyleBuilder(final String name, final Locale locale) {
+		super(name, locale);
 	}
 
 	public PercentageStyle build() {
-		return new PercentageStyle(this.sName, this.sNegativeValueColor,
-				this.sLanguage, this.sCountry, this.nDecimalPlaces,
-				this.nMinIntegerDigits, this.nMinExponentDigits,
-				this.nMinNumeratorDigits, this.nMinDenominatorDigits,
-				this.bGrouping, this.bVolatile, this.bNegativeValuesRed);
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 * @return this for fluent style
-	 */
-	public PercentageStyleBuilder country(final String country) {
-		this.sCountry = country.toUpperCase();
-		return this;
-	}
-
-	/**
-	 * Set how many digits are to the right of the decimal symbol.
-	 *
-	 * @param decimalPlaces
-	 *            - The number of digits
-	 * @return this for fluent style
-	 */
-	public final PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.nDecimalPlaces = decimalPlaces;
-		return this;
-	}
-
-	/**
-	 * Add the numerator and denominator values to be shown.<br>
-	 * The number style is set to NUMBER_FRACTION
-	 *
-	 * @param nNumerator
-	 * @param nDenominator
-	 * @return this for fluent style
-	 */
-	public PercentageStyleBuilder fractionValues(final int nNumerator,
-			final int nDenominator) {
-		this.nMinNumeratorDigits = nNumerator;
-		this.nMinDenominatorDigits = nDenominator;
-		this.numberType = NumberStyle.Type.FRACTION;
-		return this;
-	}
-
-	public PercentageStyleBuilder locale(final Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		return this;
-	}
-
-	/**
-	 * Set to true if negative values should be shown in red color.
-	 *
-	 * @param bValue
-	 *            true negative numbers will be shown in red color.
-	 * @return
-	 * @return this for fluent style
-	 *
-	 */
-	public PercentageStyleBuilder negativeValuesRed(final boolean bValue) {
-		this.bNegativeValuesRed = bValue;
-		this.bVolatile = bValue;
-		return this;
-	}
-
-	/**
-	 * Set the number type for this style.<br>
-	 * Valid is one of the following:<br>
-	 * NumberStyle.NUMBER_NORMAL<br>
-	 * NumberStyle.NUMBER_SCIENTIFIC<br>
-	 * NumberStyle.NUMBER_FRACTION<br>
-	 * NumberStyle.NUMBER_PERCENTAGE<br>
-	 *
-	 * @param numberType
-	 *            The number type to be used.
-	 * @return this for fluent style
-	 */
-	public PercentageStyleBuilder numberType(final Type numberType) {
-		this.numberType = numberType;
-		return this;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * <br>
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public void setLanguage(final String language) {
-		this.sLanguage = language.toLowerCase();
-	}
-
-	/**
-	 * Set the number of exponent digits.<br>
-	 * The number style is set to NUMBER_SCIENTIFIC.
-	 *
-	 * @param minExponentDigits
-	 *            The minimum of exponent digits to be used
-	 * @return this for fluent style
-	 */
-	public PercentageStyleBuilder setMinExponentDigits(
-			final int minExponentDigits) {
-		this.nMinExponentDigits = minExponentDigits;
-		this.numberType = NumberStyle.Type.SCIENTIFIC;
-		return this;
-	}
-
-	/**
-	 * Set how many leading zeros are present.
-	 *
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 * @return this for fluent style
-	 */
-	public final PercentageStyleBuilder setMinIntegerDigits(
-			final int minIntegerDigits) {
-		this.nMinIntegerDigits = minIntegerDigits;
-		return this;
-	}
-
-	/**
-	 * If this is set to true, the thousands separator is shown.<br>
-	 * The default is false.
-	 *
-	 * @param grouping
-	 *            true, the thousands separator is shown<br>
-	 *            false, the thousands separator is not shown
-	 * @return this for fluent style
-	 */
-	public PercentageStyleBuilder thousandsSeparator(final boolean grouping) {
-		this.bGrouping = grouping;
-		return this;
+		return new PercentageStyle(this.name, this.languageCode,
+				this.countryCode, this.volatileStyle, this.decimalPlaces,
+				this.grouping, this.minIntegerDigits,
+				this.negativeValueColor);
 	}
 }

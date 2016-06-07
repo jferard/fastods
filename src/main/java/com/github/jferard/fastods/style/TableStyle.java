@@ -40,12 +40,12 @@ public class TableStyle implements StyleTag {
 	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
 			.builder("ta1").build();
 
-	public static TableStyleBuilder builder(final String sName) {
-		return new TableStyleBuilder(sName);
+	public static TableStyleBuilder builder(final String name) {
+		return new TableStyleBuilder(name);
 	}
 
 	private final PageStyle pageStyle;
-	private final String sName;
+	private final String name;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -61,7 +61,7 @@ public class TableStyle implements StyleTag {
 	 *            The OdsFile to add this style to
 	 */
 	TableStyle(final String sStyleName, final PageStyle pageStyle) {
-		this.sName = sStyleName;
+		this.name = sStyleName;
 		this.pageStyle = pageStyle;
 	}
 
@@ -73,7 +73,7 @@ public class TableStyle implements StyleTag {
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table");
 		util.appendEAttribute(appendable, "style:master-page-name",
 				PageStyle.DEFAULT_MASTER_PAGE);
@@ -85,6 +85,6 @@ public class TableStyle implements StyleTag {
 
 	@Override
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 }

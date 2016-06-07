@@ -45,8 +45,8 @@ public class TableColumnStyle implements StyleTag {
 	private static TableColumnStyle defaultColumnStyle;
 
 	public static TableColumnStyleBuilder builder(final XMLUtil xmlUtil,
-			final String sName) {
-		return new TableColumnStyleBuilder(xmlUtil, sName);
+			final String name) {
+		return new TableColumnStyleBuilder(xmlUtil, name);
 	}
 
 	public static TableColumnStyle getDefaultColumnStyle(
@@ -60,7 +60,7 @@ public class TableColumnStyle implements StyleTag {
 
 	private final TableCellStyle defaultCellStyle;
 	private final String sColumnWidth;
-	private final String sName;
+	private final String name;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -78,7 +78,7 @@ public class TableColumnStyle implements StyleTag {
 	 */
 	TableColumnStyle(final String sStyleName, final String sColumnWidth,
 			final TableCellStyle defaultCellStyle) {
-		this.sName = sStyleName;
+		this.name = sStyleName;
 		this.sColumnWidth = sColumnWidth;
 		this.defaultCellStyle = defaultCellStyle;
 	}
@@ -94,7 +94,7 @@ public class TableColumnStyle implements StyleTag {
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table-column");
 		appendable.append("><style:table-column-properties");
 		util.appendAttribute(appendable, "fo:break-before", "auto");
@@ -106,7 +106,7 @@ public class TableColumnStyle implements StyleTag {
 	public void appendXMLToTable(final XMLUtil util,
 			final Appendable appendable, final int nCount) throws IOException {
 		appendable.append("<table:table-column");
-		util.appendAttribute(appendable, "table:style-name", this.sName);
+		util.appendAttribute(appendable, "table:style-name", this.name);
 		if (nCount > 1)
 			util.appendEAttribute(appendable, "table:number-columns-repeated",
 					nCount);
@@ -123,7 +123,7 @@ public class TableColumnStyle implements StyleTag {
 
 		if (obj instanceof TableColumnStyle) {
 			final TableColumnStyle other = (TableColumnStyle) obj;
-			return this.sName.equals(other.sName);
+			return this.name.equals(other.name);
 		} else
 			return false;
 	}
@@ -138,7 +138,7 @@ public class TableColumnStyle implements StyleTag {
 
 	@Override
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class TableColumnStyle implements StyleTag {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ (this.sName == null ? 0 : this.sName.hashCode());
+				+ (this.name == null ? 0 : this.name.hashCode());
 		return result;
 	}
 

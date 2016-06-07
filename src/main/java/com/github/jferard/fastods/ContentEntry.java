@@ -64,18 +64,18 @@ class ContentEntry implements OdsEntry {
 	}
 
 	/**
-	 * @param sName
+	 * @param name
 	 *            the name of the table to create
 	 * @param columnCapacity
 	 * @param rowCapacity
 	 * @return the table (whether it existed before call or not). Never null
 	 */
-	public Table addTable(final String sName, final int rowCapacity,
+	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		Table table = this.getTable(sName);
+		Table table = this.getTable(name);
 		if (table == null) {
 			table = new Table(this.odsFile, this.xmlUtil, this.util,
-					this.format, sName, rowCapacity, columnCapacity);
+					this.format, name, rowCapacity, columnCapacity);
 			this.qTables.add(table);
 		}
 		return table;
@@ -108,12 +108,12 @@ class ContentEntry implements OdsEntry {
 	}
 
 	/**
-	 * @param sName
+	 * @param name
 	 *            the name of the table to find
 	 * @return the table, or null if none present
 	 */
-	public Table getTable(final String sName) {
-		return this.util.findElementByName(this.qTables, sName);
+	public Table getTable(final String name) {
+		return this.util.findElementByName(this.qTables, name);
 	}
 
 	public int getTableCount() {

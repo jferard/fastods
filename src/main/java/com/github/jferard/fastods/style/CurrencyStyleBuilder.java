@@ -31,18 +31,9 @@ import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
  *         This file CurrencyStyleBuilder.java is part of FastODS.
  *
  */
-public class CurrencyStyleBuilder {
-	private boolean bGrouping;
-	private final boolean bNegativeValuesRed;
-	private final boolean bVolatile;
+public class CurrencyStyleBuilder extends FloatStyleBuilder {
 	private SymbolPosition currencyPosition;
-	private int nDecimalPlaces;
-	private int nMinIntegerDigits;
-	private String sCountry;
-	private String sCurrencySymbol;
-	private String sLanguage;
-	private final String sName;
-	private String sNegativeValueColor;
+	private String currencySymbol;
 
 	/**
 	 * The builder
@@ -52,34 +43,18 @@ public class CurrencyStyleBuilder {
 	 * @param locale
 	 */
 	protected CurrencyStyleBuilder(final String name, final Locale locale) {
-		this.sName = name;
+		super(name, locale);
 		this.locale(locale);
-		this.sNegativeValueColor = "#FF0000";
-		this.nDecimalPlaces = 2;
-		this.nMinIntegerDigits = 1;
-		this.bGrouping = false;
-		this.bVolatile = true;
-		this.bNegativeValuesRed = true;
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public CurrencyStyle build() {
-		return new CurrencyStyle(this.sName, this.sCurrencySymbol,
-				this.sNegativeValueColor, this.sLanguage, this.sCountry,
-				this.nDecimalPlaces, this.nMinIntegerDigits, this.bGrouping,
-				this.bVolatile, this.bNegativeValuesRed, this.currencyPosition);
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 */
-	public CurrencyStyleBuilder country(final String country) {
-		this.sCountry = country.toUpperCase();
-		return this;
+		return new CurrencyStyle(this.name, this.languageCode,
+				this.countryCode, this.volatileStyle, this.decimalPlaces,
+				this.grouping, this.minIntegerDigits, this.negativeValueColor,
+				this.currencySymbol, this.currencyPosition);
 	}
 
 	/**
@@ -88,7 +63,7 @@ public class CurrencyStyleBuilder {
 	 * @param currencySymbol
 	 */
 	public CurrencyStyleBuilder currencySymbol(final String currencySymbol) {
-		this.sCurrencySymbol = currencySymbol;
+		this.currencySymbol = currencySymbol;
 		return this;
 	}
 
@@ -104,61 +79,12 @@ public class CurrencyStyleBuilder {
 		return this;
 	}
 
-	/**
-	 * Set how many digits are to the right of the decimal symbol.
-	 *
-	 * @param decimalPlaces
-	 *            - The number of digits
-	 */
-	public CurrencyStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.nDecimalPlaces = decimalPlaces;
-		return this;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public CurrencyStyleBuilder language(final String language) {
-		this.sLanguage = language.toLowerCase();
-		return this;
-	}
-
+	/** {@inheritDoc} */
+	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		if (this.sCurrencySymbol == null)
-			this.sCurrencySymbol = Currency.getInstance(locale).getSymbol();
-		return this;
-	}
-
-	/**
-	 * Set how many leading zeros are present.
-	 *
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 */
-	public CurrencyStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		this.nMinIntegerDigits = minIntegerDigits;
-		return this;
-	}
-
-	public CurrencyStyleBuilder negativeValueColor(
-			final String negativeValueColor) {
-		this.sNegativeValueColor = negativeValueColor;
-		return this;
-	}
-
-	/**
-	 * If this is set to true, the thousands separator is shown.
-	 *
-	 * @param grouping
-	 */
-	public CurrencyStyleBuilder thousandsSeparator(final boolean grouping) {
-		this.bGrouping = grouping;
+		super.locale(locale);
+		if (this.currencySymbol == null)
+			this.currencySymbol = Currency.getInstance(locale).getSymbol();
 		return this;
 	}
 }

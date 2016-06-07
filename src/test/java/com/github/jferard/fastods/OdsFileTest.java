@@ -107,7 +107,7 @@ public class OdsFileTest {
 					case 0:
 						walker.setBooleanValue(true); break;
 					case 1:
-						walker.setCurrencyValue(150.5, "€"); break;
+						walker.setCurrencyValue(150.5, "EUR"); break;
 					case 2:
 						walker.setDateValue(Calendar.getInstance());
 //						final DateStyle build0 = DateStyle.builder("trgfgbf").build();
@@ -125,6 +125,9 @@ public class OdsFileTest {
 				} else if (y == 9) {
 					switch (x) {
 					case 0:
+						walker.setColumnsSpanned(2); break;
+					case 2:
+						walker.setCurrencyValue(-150.5, "EUR"); break;
 					case 3:
 						walker.setStyle(tcls); break;
 					default:

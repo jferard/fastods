@@ -77,18 +77,18 @@ public class OdsFile {
 	private static final int DEFAULT_COLUMN_CAPACITY = 32;
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
-	public static OdsFile create(final Locale locale, final String sName) {
+	public static OdsFile create(final Locale locale, final String name) {
 		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
 		final XMLUtil xmlUtil = new XMLUtil(escaper);
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				locale);
-		return new OdsFile(sName, new Util(), xmlUtil,
+		return new OdsFile(name, new Util(), xmlUtil,
 				new LocaleDataStyles(builderFactory, xmlUtil),
 				OdsFile.DEFAULT_BUFFER_SIZE);
 	}
 
-	public static OdsFile create(final String sName) {
-		return OdsFile.create(Locale.getDefault(), sName);
+	public static OdsFile create(final String name) {
+		return OdsFile.create(Locale.getDefault(), name);
 	}
 
 	private final int bufferSize;
@@ -107,17 +107,17 @@ public class OdsFile {
 	/**
 	 * Create a new ODS file.
 	 *
-	 * @param sName
+	 * @param name
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
 	 * @param util
 	 * @param xmlUtil
 	 */
-	public OdsFile(final String sName, final Util util, final XMLUtil xmlUtil,
+	public OdsFile(final String name, final Util util, final XMLUtil xmlUtil,
 			final DataStyles format, final int bufferSize) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
-		this.newFile(sName);
+		this.newFile(name);
 		this.bufferSize = bufferSize;
 		this.mimetypeEntry = new MimetypeEntry();
 		this.manifestEntry = new ManifestEntry();
@@ -154,19 +154,19 @@ public class OdsFile {
 	 * the program, the active table is the first table that is shown in
 	 * OpenOffice.
 	 *
-	 * @param sName
+	 * @param name
 	 *            - The name of the table to add
 	 * @return the table
 	 * @throws FastOdsException
 	 */
-	public Table addTable(final String sName) throws FastOdsException {
-		return this.addTable(sName, OdsFile.DEFAULT_ROW_CAPACITY,
+	public Table addTable(final String name) throws FastOdsException {
+		return this.addTable(name, OdsFile.DEFAULT_ROW_CAPACITY,
 				OdsFile.DEFAULT_COLUMN_CAPACITY);
 	}
 
-	public Table addTable(final String sName, final int rowCapacity,
+	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		final Table table = this.contentEntry.addTable(sName, rowCapacity,
+		final Table table = this.contentEntry.addTable(name, rowCapacity,
 				columnCapacity);
 		this.settingsEntry.setActiveTable(table);
 		return table;
@@ -197,12 +197,12 @@ public class OdsFile {
 	}
 
 	/**
-	 * @param sName
+	 * @param name
 	 *            the name of the table
 	 * @return the table, or null if not exists
 	 */
-	public Table getTable(final String sName) {
-		final Table table = this.contentEntry.getTable(sName);
+	public Table getTable(final String name) {
+		final Table table = this.contentEntry.getTable(name);
 		if (table != null)
 			this.settingsEntry.setActiveTable(table);
 		return table;
@@ -223,17 +223,17 @@ public class OdsFile {
 	/**
 	 * Search a table by name and return its number.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The name of the table
-	 * @return The number of the table or -1 if sName was not found
+	 * @return The number of the table or -1 if name was not found
 	 */
-	public int getTableNumber(final String sName) {
+	public int getTableNumber(final String name) {
 		final ListIterator<Table> iterator = this.contentEntry.getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getName().equalsIgnoreCase(sName)) {
+			if (tab.getName().equalsIgnoreCase(name)) {
 				return n;
 			}
 		}
@@ -248,18 +248,18 @@ public class OdsFile {
 	/**
 	 * Create a new,empty file, use addTable to add tables.
 	 *
-	 * @param sName
+	 * @param name
 	 *            - The filename of the new spreadsheet file, if this file
 	 *            exists it is overwritten
 	 * @return False, if filename is a directory
 	 */
-	public final boolean newFile(final String sName) {
-		final File f = new File(sName);
-		// Check if sName is a directory and abort if YES
+	public final boolean newFile(final String name) {
+		final File f = new File(name);
+		// Check if name is a directory and abort if YES
 		if (f.isDirectory()) {
 			return false;
 		}
-		this.sFilename = sName;
+		this.sFilename = name;
 		return true;
 	}
 

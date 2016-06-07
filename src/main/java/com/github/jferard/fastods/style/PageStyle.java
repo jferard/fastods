@@ -117,8 +117,8 @@ public class PageStyle {
 	public static final PageStyle DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1")
 			.build();
 	
-	public static PageStyleBuilder builder(final String sName) {
-		return new PageStyleBuilder(sName);
+	public static PageStyleBuilder builder(final String name) {
+		return new PageStyleBuilder(name);
 	}
 
 	private static void appendFooterHeaderStyle(final XMLUtil util,
@@ -141,7 +141,7 @@ public class PageStyle {
 	private final String sMarginLeft;
 	private final String sMarginRight;
 	private final String sMarginTop;
-	private final String sName;
+	private final String name;
 
 	private final String sNumFormat;
 	private final String sPageHeight;
@@ -153,19 +153,19 @@ public class PageStyle {
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsFile o
 	 *
-	 * @param sName
+	 * @param name
 	 *            A unique name for this style
 	 * @param header2
 	 * @param footer
 	 */
-	public PageStyle(final String sName, final String sMarginTop,
+	public PageStyle(final String name, final String sMarginTop,
 			final String sMarginBottom, final String sMarginLeft,
 			final String sMarginRight, final String sPageWidth,
 			final String sPageHeight, final String sNumFormat,
 			final String sBackgroundColor, final FooterHeader footer,
 			final FooterHeader header, final PrintOrientation printOrientation,
 			final PaperFormat paperFormat, final WritingMode writingMode) {
-		this.sName = sName;
+		this.name = name;
 		this.sMarginTop = sMarginTop;
 		this.sMarginBottom = sMarginBottom;
 		this.sMarginLeft = sMarginLeft;
@@ -193,7 +193,7 @@ public class PageStyle {
 	public void appendXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:page-layout");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:name", this.name);
 		appendable.append("><style:page-layout-properties");
 		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
 		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
@@ -241,7 +241,7 @@ public class PageStyle {
 		appendable.append("<style:master-page");
 		util.appendEAttribute(appendable, "style:name",
 				PageStyle.DEFAULT_MASTER_PAGE);
-		util.appendAttribute(appendable, "style:page-layout-name", this.sName);
+		util.appendAttribute(appendable, "style:page-layout-name", this.name);
 		appendable.append("><style:header>");
 		this.getHeader().appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:header>");
@@ -291,7 +291,7 @@ public class PageStyle {
 	 * @return The page style name
 	 */
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 
 	public String getPageHeight() {

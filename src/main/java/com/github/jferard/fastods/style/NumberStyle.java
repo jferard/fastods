@@ -21,7 +21,6 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -40,68 +39,37 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class NumberStyle implements DataStyle {
-	public static enum Type {
-		FRACTION, NORMAL, SCIENTIFIC;
-	}
-
-	public static final Type DEFAULT_TYPE = Type.NORMAL;
-
-	private final boolean bGrouping;
-	private final boolean bNegativeValuesRed;
+public abstract class NumberStyle extends DataStyle {
+	protected final String negativeValueColor;
 	/**
-	 * 19.517 : "The style:volatile attribute specifies whether unused style in
-	 * a document are retained or discarded by consumers."
+	 * 19.348 number:grouping
 	 */
-	private final boolean bVolatile;
-	private final int nDecimalPlaces;
-	private final int nMinDenominatorDigits;
-	private final int nMinExponentDigits;
-	private final int nMinIntegerDigits;
-	private final int nMinNumeratorDigits;
-	private final Type numberType;
-	private final String sCountry;
-	private final String sLanguage;
-	private final String sName;
-	private final String sNegativeValueColor;
+	private final boolean grouping;
+	/**
+	 * 19.352 number:min-integer-digits
+	 */
+	private final int minIntegerDigits;
 
 	/**
-	 * Create a new number style with the name sName, minimum integer digits is
-	 * nMinIntDigits and decimal places is nDecPlaces. The number style is
+	 * Create a new number style with the name name, minimum integer digits is
+	 * minIntDigits and decimal places is nDecPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL
-	 *
+	 * 
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
-	 * @param nMinIntDigits
+	 * @param minIntDigits
 	 *            The minimum integer digits to be shown.
 	 * @param nDecPlaces
 	 *            The number of decimal places to be shown.
 	 */
-	NumberStyle(final String sName, final String sNegativeValueColor,
-			final String sLanguage, final String sCountry,
-			final Type numberType, final int nDecimalPlaces,
-			final int nMinIntegerDigits, final int nMinExponentDigits,
-			final int nMinNumeratorDigits, final int nMinDenominatorDigits,
-			final boolean bGrouping, final boolean bVolatile,
-			final boolean bNegativeValuesRed) {
-		this.sName = sName;
-		this.sNegativeValueColor = sNegativeValueColor;
-		this.sLanguage = sLanguage;
-		this.sCountry = sCountry;
-		this.numberType = numberType;
-		this.nDecimalPlaces = nDecimalPlaces;
-		this.nMinIntegerDigits = nMinIntegerDigits;
-		this.nMinExponentDigits = nMinExponentDigits;
-		this.nMinNumeratorDigits = nMinNumeratorDigits;
-		this.nMinDenominatorDigits = nMinDenominatorDigits;
-		this.bGrouping = bGrouping;
-		this.bVolatile = bVolatile;
-		this.bNegativeValuesRed = bNegativeValuesRed;
-	}
-
-	@Override
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDataStyle(this);
+	NumberStyle(final String name, final String languageCode,
+			final String countryCode, final boolean volatileStyle,
+			final boolean grouping, final int minIntegerDigits,
+			final String negativeValueColor) {
+		super(name, languageCode, countryCode, volatileStyle);
+		this.grouping = grouping;
+		this.negativeValueColor = negativeValueColor;
+		this.minIntegerDigits = minIntegerDigits;
 	}
 
 	/**
@@ -114,106 +82,95 @@ public class NumberStyle implements DataStyle {
 	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:number-style");
-
-		// Only change the given name if bNegativeValuesRed is true and use
-		// this
-		// style as default style for positive numbers
-
-		if (this.bNegativeValuesRed)
-			util.appendAttribute(appendable, "style:name", this.sName + "nn");
-		else
-			util.appendAttribute(appendable, "style:name", this.sName);
-
-		if (this.sLanguage.length() > 0) {
-			util.appendAttribute(appendable, "number:language", this.sLanguage);
-		}
-		if (this.sCountry.length() > 0) {
-			util.appendAttribute(appendable, "number:country", this.sCountry);
-		}
-		if (this.bVolatile)
-			util.appendEAttribute(appendable, "style:volatile", true);
-
+		util.appendAttribute(appendable, "style:name", this.name);
+		this.appendLVAttributes(util, appendable);
 		appendable.append(">");
-		this.appendNumberType(util, appendable);
-		util.appendEAttribute(appendable, "number:min-integer-digits",
-				this.nMinIntegerDigits);
+		this.appendNumber(util, appendable);
+		appendable.append("</number:number-style>");
 
-		if (this.bGrouping) {
-			util.appendEAttribute(appendable, "number:grouping",
-					this.bGrouping);
-		}
-		appendable.append("/></number:number-style>");
-
-		// --------------------------------------------------------------------------
-		// For negative values, this is the default style and
-		// this.sName+'nn' is
-		// the style for positive values
-		// --------------------------------------------------------------------------
-		if (this.bNegativeValuesRed) {
+		if (this.negativeValueColor != null) {
 			appendable.append("<number:number-style");
-
-			util.appendAttribute(appendable, "style:name", this.sName);
-
-			if (this.sLanguage != null) {
-				util.appendAttribute(appendable, "number:language",
-						this.sLanguage);
-			}
-			if (this.sCountry != null) {
-				util.appendAttribute(appendable, "number:country",
-						this.sCountry);
-			}
+			util.appendAttribute(appendable, "style:name", this.name + "-neg");
+			this.appendLVAttributes(util, appendable);
 			appendable.append(">");
-			appendable.append("<style:text-properties");
-			util.appendAttribute(appendable, "fo:color",
-					this.sNegativeValueColor);
-			appendable.append("/>");
+			appendStyleColor(util, appendable);
 			appendable.append("<number:text>-</number:text>");
-
-			this.appendNumberType(util, appendable);
-			util.appendEAttribute(appendable, "number:min-integer-digits",
-					this.nMinIntegerDigits);
-			if (this.bGrouping) {
-				util.appendEAttribute(appendable, "number:grouping",
-						this.bGrouping);
-			}
-			appendable.append("/><style:map");
-			util.appendAttribute(appendable, "style:condition", "value()>=0");
-			util.appendAttribute(appendable, "style:apply-style-name",
-					this.sName + "nn");
-			appendable.append("/></number:number-style>");
+			this.appendNumber(util, appendable);
+			this.appendStyleMap(util, appendable);
+			appendable.append("</number:number-style>");
 		}
 	}
 
+	abstract protected void appendNumber(final XMLUtil util,
+			final Appendable appendable) throws IOException;
+
 	/**
-	 * @return The two letter country code, e.g. 'US'
+	 * Appends 16.3 <style:map> tag.
+	 * 
+	 * @param util
+	 *            XML util for escaping
+	 * @param appendable
+	 *            where to write
+	 * @throws IOException
 	 */
-	public String getCountry() {
-		return this.sCountry;
+	protected void appendStyleMap(final XMLUtil util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<style:map");
+		util.appendAttribute(appendable, "style:condition", "value()>=0");
+		util.appendAttribute(appendable, "style:apply-style-name", this.name);
+		appendable.append("/>");
 	}
 
 	/**
-	 * Get how many digits are to the right of the decimal symbol.
-	 *
-	 * @return The number of digits
+	 * Appends the style color.
+	 * 
+	 * @param util
+	 *            XML util
+	 * @param appendable
+	 *            where to write
+	 * @throws IOException
 	 */
-	public int getDecimalPlaces() {
-		return this.nDecimalPlaces;
+	protected void appendStyleColor(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<style:text-properties");
+		util.appendAttribute(appendable, "fo:color", this.negativeValueColor);
+		appendable.append("/>");
 	}
 
 	/**
-	 * @return The two letter language code, e.g. 'en'
+	 * Get the color if negative value. If none, null
+	 * 
+	 * @return the color in hex format
 	 */
-	public String getLanguage() {
-		return this.sLanguage;
+	public String getNegativeValueColor() {
+		return this.negativeValueColor;
 	}
 
 	/**
-	 * Get the current number of leading zeros.
-	 *
-	 * @return The current number of leading zeros.
+	 * Append the 19.348 number:grouping attribute. Default = false.
+	 * 
+	 * @param util
+	 * @param appendable
+	 * @throws IOException
 	 */
-	public int getMinExponentDigits() {
-		return this.nMinExponentDigits;
+	protected void appendGroupingAttribute(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		if (this.grouping)
+			util.appendEAttribute(appendable, "number:grouping", "true");
+	}
+
+	/**
+	 * @return true if the digits are grouped
+	 */
+	public boolean getGroupThousands() {
+		return this.grouping;
+	}
+
+	protected void appendMinIntegerDigitsAttribute(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		if (this.minIntegerDigits > 0)
+			util.appendEAttribute(appendable, "number:min-integer-digits",
+					this.minIntegerDigits);
 	}
 
 	/**
@@ -222,68 +179,12 @@ public class NumberStyle implements DataStyle {
 	 * @return The number of leading zeros
 	 */
 	public int getMinIntegerDigits() {
-		return this.nMinIntegerDigits;
+		return this.minIntegerDigits;
 	}
-
-	/**
-	 * @return The name of this style.
-	 */
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	/**
-	 * Get the current status of the thousands separator.
-	 *
-	 * @return true The thousands separator will be shown.
-	 */
-	public boolean getThousandsSeparator() {
-		return this.bGrouping;
-	}
-
-	/**
-	 * Check if this style shows a red color for negative numbers.
-	 *
-	 * @return true - for negative numbers the font is red<br>
-	 *         false - for negative numbers the font is not red
-	 */
-	public boolean isNegativeValuesRed() {
-		return this.bNegativeValuesRed;
-	}
-
-	/**
-	 * Add the number type in XML format to the StringBuilder sb.
-	 *
-	 * @param appendable
-	 *            The StringBuilder to which the number format is appended.
-	 * @throws IOException
-	 */
-	private void appendNumberType(final XMLUtil util,
+	
+	protected void appendNumberAttribute(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-
-		switch (this.numberType) {
-		case SCIENTIFIC:
-			appendable.append("<number:scientific-number");
-			util.appendEAttribute(appendable, "number:min-exponent-digits",
-					this.nMinExponentDigits);
-			util.appendEAttribute(appendable, "number:decimal-places",
-					this.nDecimalPlaces);
-			break;
-		case FRACTION:
-			appendable.append("<number:fraction");
-			util.appendEAttribute(appendable, "number:min-numerator-digits",
-					this.nMinNumeratorDigits);
-			util.appendEAttribute(appendable, "number:min-denominator-digits",
-					this.nMinDenominatorDigits);
-			//$FALL-THROUGH$
-		case NORMAL:
-		default:
-			appendable.append("<number:number");
-			util.appendEAttribute(appendable, "number:decimal-places",
-					this.nDecimalPlaces);
-			break;
-		}
-
+		this.appendMinIntegerDigitsAttribute(util, appendable);
+		this.appendGroupingAttribute(util, appendable);
 	}
 }

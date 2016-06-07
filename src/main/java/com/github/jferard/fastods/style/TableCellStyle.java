@@ -65,8 +65,8 @@ public class TableCellStyle implements StyleTag {
 	private static TableCellStyle defaultCellStyle;
 
 	public static TableCellStyleBuilder builder(final XMLUtil util,
-			final String sName) {
-		return new TableCellStyleBuilder(util, sName);
+			final String name) {
+		return new TableCellStyleBuilder(util, name);
 	}
 
 	public static TableCellStyle getDefaultCellStyle(final XMLUtil util) {
@@ -86,7 +86,7 @@ public class TableCellStyle implements StyleTag {
 	// true
 	private final String sDefaultCellStyle;
 
-	private final String sName;
+	private final String name;
 
 	private final FHTextStyle textStyle;
 
@@ -103,13 +103,13 @@ public class TableCellStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableCellStyle(final XMLUtil util, final String sName,
+	TableCellStyle(final XMLUtil util, final String name,
 			final DataStyle dataStyle, final String sBackgroundColor,
 			final FHTextStyle ts, final Align nTextAlign,
 			final VerticalAlign nVerticalAlign, final boolean bWrap,
 			final String sDefaultCellStyle,
 			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
-		this.sName = util.escapeXMLAttribute(sName);
+		this.name = util.escapeXMLAttribute(name);
 		this.dataStyle = dataStyle;
 		this.sBackgroundColor = sBackgroundColor;
 		this.textStyle = ts;
@@ -137,7 +137,7 @@ public class TableCellStyle implements StyleTag {
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
-		util.appendEAttribute(appendable, "style:name", this.sName);
+		util.appendEAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
 		util.appendEAttribute(appendable, "style:parent-style-name", "Default");
 		if (this.dataStyle != null)
@@ -182,7 +182,7 @@ public class TableCellStyle implements StyleTag {
 
 	@Override
 	public String getName() {
-		return this.sName;
+		return this.name;
 	}
 
 	public void setDataStyle(final DataStyle dataStyle) {

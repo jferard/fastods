@@ -45,7 +45,7 @@ public class TableCellStyleBuilder {
 	private String sBackgroundColor;
 	// true
 	private final String sDefaultCellStyle;
-	private final String sName;
+	private final String name;
 	private final FHTextStyleBuilder tsBuilder;
 	private final XMLUtil util;
 
@@ -62,18 +62,18 @@ public class TableCellStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableCellStyleBuilder(final XMLUtil util, final String sName) {
+	public TableCellStyleBuilder(final XMLUtil util, final String name) {
 		this.util = util;
-		if (sName == null)
+		if (name == null)
 			throw new IllegalArgumentException();
 
-		this.sName = sName;
+		this.name = name;
 		this.nTextAlign = TableCellStyle.Align.LEFT;
 		this.nVerticalAlign = TableCellStyle.VerticalAlign.TOP;
 		this.bWrap = false;
 		this.sBackgroundColor = "#FFFFFF";
 
-		this.tsBuilder = new FHTextStyleBuilder("fh" + sName);
+		this.tsBuilder = new FHTextStyleBuilder("fh" + name);
 		this.sDefaultCellStyle = "Default";
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);
@@ -132,10 +132,10 @@ public class TableCellStyleBuilder {
 	}
 
 	public TableCellStyle build() {
-		if (this.sName == null)
+		if (this.name == null)
 			throw new IllegalStateException();
 
-		return new TableCellStyle(this.util, this.sName, this.dataStyle,
+		return new TableCellStyle(this.util, this.name, this.dataStyle,
 				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
 				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
 				this.borderByPosition);

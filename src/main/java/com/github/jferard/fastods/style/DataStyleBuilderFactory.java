@@ -9,38 +9,50 @@ public class DataStyleBuilderFactory {
 		this.locale = locale;
 	}
 
-	public BooleanStyleBuilder booleanStyleBuilder(final String sName) {
-		if (sName == null)
+	public BooleanStyleBuilder booleanStyleBuilder(final String name) {
+		if (name == null)
 			throw new IllegalArgumentException();
-		return new BooleanStyleBuilder(sName, this.locale);
+		return new BooleanStyleBuilder(name, this.locale);
 	}
 
-	public CurrencyStyleBuilder currencyStyleBuilder(final String sName) {
-		if (sName == null)
+	public CurrencyStyleBuilder currencyStyleBuilder(final String name) {
+		if (name == null)
 			throw new IllegalArgumentException();
-		return new CurrencyStyleBuilder(sName, this.locale);
+		return new CurrencyStyleBuilder(name, this.locale);
 	}
 
-	public DateStyleBuilder dateStyleBuilder(final String sName) {
-		if (sName == null)
+	public DateStyleBuilder dateStyleBuilder(final String name) {
+		if (name == null)
 			throw new IllegalArgumentException();
-		return new DateStyleBuilder(sName, this.locale);
+		return new DateStyleBuilder(name, this.locale);
 	}
 
-	public PercentageStyleBuilder percentageStyleBuilder(final String sName) {
-		if (sName == null)
+	public PercentageStyleBuilder percentageStyleBuilder(final String name) {
+		if (name == null)
 			throw new IllegalArgumentException();
-		return new PercentageStyleBuilder(sName, this.locale);
+		return new PercentageStyleBuilder(name, this.locale);
 	}
 
-	public NumberStyleBuilder numberStyleBuilder(final String sName) {
-		if (sName == null)
+	public FloatStyleBuilder floatStyleBuilder(final String name) {
+		if (name == null)
 			throw new IllegalArgumentException();
-		return new NumberStyleBuilder(sName, this.locale);
+		return new FloatStyleBuilder(name, this.locale);
+	}
+	
+	public FractionStyleBuilder fractionStyleBuilder(final String name) {
+		if (name == null)
+			throw new IllegalArgumentException();
+		return new FractionStyleBuilder(name, this.locale);
 	}
 
-	public TimeStyleBuilder timeStyleBuilder(final String sName) {
-		return new TimeStyleBuilder(sName, this.locale);
+	public ScientificNumberStyleBuilder scientificNumberStyleBuilder(final String name) {
+		if (name == null)
+			throw new IllegalArgumentException();
+		return new ScientificNumberStyleBuilder(name, this.locale);
+	}
+	
+	public TimeStyleBuilder timeStyleBuilder(final String name) {
+		return new TimeStyleBuilder(name, this.locale);
 	}
 	
 

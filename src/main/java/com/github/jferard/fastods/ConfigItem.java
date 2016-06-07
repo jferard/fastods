@@ -39,9 +39,9 @@ public class ConfigItem {
 	private final String sType;
 	private final String sValue;
 
-	public ConfigItem(final String sName, final String sType,
+	public ConfigItem(final String name, final String sType,
 			final String sValue) {
-		this.sItemName = sName;
+		this.sItemName = name;
 		this.sType = sType;
 		this.sValue = sValue;
 	}

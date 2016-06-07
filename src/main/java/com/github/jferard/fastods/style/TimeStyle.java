@@ -35,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         date-style
  *         styles.xml/office:document-styles/office:styles/number:date-style
  */
-public class TimeStyle implements DataStyle {
+public class TimeStyle extends DataStyle {
 
 	public static enum Format {
 		/**
@@ -54,39 +54,22 @@ public class TimeStyle implements DataStyle {
 	private static final String MINUTES = "<number:minutes/>";
 	private static final String SECONDS = "<number:seconds/>";
 
-	private final String sCountry;
-	private final String sLanguage;
-	/**
-	 * The name of this style.
-	 */
-	private final String sName;
-
 	private final TimeStyle.Format timeFormat;
 
 	/**
-	 * Create a new date style with the name sName.<br>
+	 * Create a new date style with the name name.<br>
 	 * Version 0.5.1 Added.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The name of the number style.
 	 * @param odsFile
 	 *            The odsFile to which this style belongs to.
 	 */
-	protected TimeStyle(final String sName, final Format timeFormat,
-			final String sCountry, final String sLanguage) {
-		this.sName = sName;
+	protected TimeStyle(final String name, final String languageCode,
+			final String countryCode, final boolean volatileStyle,
+			final Format timeFormat) {
+		super(name, languageCode, countryCode, volatileStyle);
 		this.timeFormat = timeFormat;
-		this.sCountry = sCountry;
-		this.sLanguage = sLanguage;
-	}
-
-	/**
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs to.
-	 */
-	@Override
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDataStyle(this);
 	}
 
 	/**
@@ -98,11 +81,8 @@ public class TimeStyle implements DataStyle {
 	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:time-style");
-		util.appendAttribute(appendable, "style:name", this.sName);
-		if (this.sLanguage != null)
-			util.appendAttribute(appendable, "number:language", this.sLanguage);
-		if (this.sCountry != null)
-			util.appendAttribute(appendable, "number:country", this.sCountry);
+		util.appendAttribute(appendable, "style:name", this.name);
+		this.appendLVAttributes(util, appendable);
 		if (this.timeFormat == null) {
 			util.appendEAttribute(appendable, "number:format-source",
 					"language");
@@ -122,27 +102,5 @@ public class TimeStyle implements DataStyle {
 
 			appendable.append("</number:time-style>");
 		}
-	}
-
-	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'.
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
-	}
-
-	/**
-	 * @return The name of this style.
-	 */
-	@Override
-	public String getName() {
-		return this.sName;
 	}
 }

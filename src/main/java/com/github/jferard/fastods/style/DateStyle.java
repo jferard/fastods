@@ -21,7 +21,6 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -36,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         date-style
  *         styles.xml/office:document-styles/office:styles/number:date-style
  */
-public class DateStyle implements DataStyle {
+public class DateStyle extends DataStyle {
 
 	public static enum Format {
 		/**
@@ -94,42 +93,24 @@ public class DateStyle implements DataStyle {
 
 	private static final String YEAR = "<number:year/>";
 
-	private final boolean bAutomaticOrder;
+	private final boolean automaticOrder;
 	private final Format dateFormat;
-	private final String sCountry;
-	private final String sLanguage;
 
 	/**
-	 * The name of this style.
-	 */
-	private final String sName;
-
-	/**
-	 * Create a new date style with the name sName.<br>
+	 * Create a new date style with the name name.<br>
 	 * Version 0.5.1 Added.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The name of the number style.
 	 * @param odsFile
 	 *            The odsFile to which this style belongs to.
 	 */
-	protected DateStyle(final String sName, final Format dateFormat,
-			final String sCountry, final String sLanguage,
-			final boolean bAutomaticOrder) {
-		this.sName = sName;
+	protected DateStyle(final String name, final String countryCode,
+			final String languageCode, final boolean volatileStyle,
+			final Format dateFormat, final boolean automaticOrder) {
+		super(name, languageCode, countryCode, volatileStyle);
 		this.dateFormat = dateFormat;
-		this.sCountry = sCountry;
-		this.sLanguage = sLanguage;
-		this.bAutomaticOrder = bAutomaticOrder;
-	}
-
-	/**
-	 * @param odsFile
-	 *            The OdsFile to which this style belongs to.
-	 */
-	@Override
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDataStyle(this);
+		this.automaticOrder = automaticOrder;
 	}
 
 	/**
@@ -141,13 +122,10 @@ public class DateStyle implements DataStyle {
 	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:date-style");
-		util.appendAttribute(appendable, "style:name", this.sName);
+		util.appendAttribute(appendable, "style:name", this.name);
+		this.appendLVAttributes(util, appendable);
 		util.appendEAttribute(appendable, "number:automatic-order",
-				this.bAutomaticOrder);
-		if (this.sLanguage != null)
-			util.appendAttribute(appendable, "number:language", this.sLanguage);
-		if (this.sCountry != null)
-			util.appendAttribute(appendable, "number:country", this.sCountry);
+				this.automaticOrder);
 		if (this.dateFormat == null) {
 			util.appendEAttribute(appendable, "number:format-source",
 					"language");
@@ -196,32 +174,10 @@ public class DateStyle implements DataStyle {
 	}
 
 	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	public String getCountry() {
-		return this.sCountry;
-	}
-
-	/**
-	 * @return The two letter language code, e.g. 'en'.
-	 */
-	public String getLanguage() {
-		return this.sLanguage;
-	}
-
-	/**
-	 * @return The name of this style.
-	 */
-	@Override
-	public String getName() {
-		return this.sName;
-	}
-
-	/**
 	 * @return The current value of the automatic order flag
 	 */
 	public boolean isAutomaticOrder() {
-		return this.bAutomaticOrder;
+		return this.automaticOrder;
 	}
 
 }

@@ -33,10 +33,9 @@ package com.github.jferard.fastods;
  */
 class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	/**
-	 * Create a new footer object.
+	 * Create a new simple footer object.
 	 *
-	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
+	 * @param footerHeaderType footer or header ?
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);

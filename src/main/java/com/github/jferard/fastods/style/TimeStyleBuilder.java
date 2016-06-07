@@ -27,71 +27,31 @@ import java.util.Locale;
  *
  *         This file DateStyleBuilder.java is part of FastODS.
  */
-public class TimeStyleBuilder {
-	private String sCountry;
-
-	private String sLanguage;
-
+public class TimeStyleBuilder
+		extends DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
 	/**
-	 * The name of this style.
-	 */
-	private final String sName;
-	/**
-	 * The default date format DATEFORMAT_DDMMYY.
+	 * The date format.
 	 */
 	private TimeStyle.Format timeFormat;
 
 	/**
-	 * Create a new date style with the name sName.<br>
+	 * Create a new date style with the name name.<br>
 	 * Version 0.5.1 Added.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The name of the number style.
 	 */
-	protected TimeStyleBuilder(final String sName, final Locale locale) {
-		if (sName == null)
-			throw new IllegalArgumentException();
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		this.sName = sName;
+	protected TimeStyleBuilder(final String name, final Locale locale) {
+		super(name, locale);
 	}
 
 	/**
-	 * @return the DateStyle
+	 * {@inheritDoc}
 	 */
+	@Override
 	public TimeStyle build() {
-		return new TimeStyle(this.sName, this.timeFormat, this.sCountry,
-				this.sLanguage);
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 */
-	public TimeStyleBuilder country(final String country) {
-		this.sCountry = country.toUpperCase();
-		return this;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public TimeStyleBuilder language(final String language) {
-		this.sLanguage = language.toLowerCase();
-		return this;
-	}
-
-	public TimeStyleBuilder locale(final Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
-		return this;
+		return new TimeStyle(this.name, this.languageCode, this.countryCode,
+				this.volatileStyle, this.timeFormat);
 	}
 
 	/**

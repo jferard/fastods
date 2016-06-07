@@ -36,7 +36,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class TableColumnStyleBuilder {
 	private TableCellStyle defaultCellStyle;
 	private String sColumnWidth;
-	private final String sName;
+	private final String name;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -53,14 +53,14 @@ public class TableColumnStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableColumnStyleBuilder(final XMLUtil xmlUtil, final String sName) {
-		this.sName = xmlUtil.escapeXMLAttribute(sName);
+	public TableColumnStyleBuilder(final XMLUtil xmlUtil, final String name) {
+		this.name = xmlUtil.escapeXMLAttribute(name);
 		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle(xmlUtil);
 	}
 
 	public TableColumnStyle build() {
-		return new TableColumnStyle(this.sName, this.sColumnWidth,
+		return new TableColumnStyle(this.name, this.sColumnWidth,
 				this.defaultCellStyle);
 
 	}

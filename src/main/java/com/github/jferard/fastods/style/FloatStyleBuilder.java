@@ -25,10 +25,12 @@ import java.util.Locale;
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
- *         This file BooleabStyleBuilder.java is part of FastODS.
+ *         This file CurrencyStyleBuilder.java is part of FastODS.
  *
  */
-public class BooleanStyleBuilder extends DataStyleBuilder<BooleanStyle, BooleanStyleBuilder>{
+public class FloatStyleBuilder extends NumberStyleBuilder<FloatStyle, FloatStyleBuilder>{
+	protected int decimalPlaces;
+
 	/**
 	 * The builder
 	 * 
@@ -36,12 +38,27 @@ public class BooleanStyleBuilder extends DataStyleBuilder<BooleanStyle, BooleanS
 	 *            - The name of this style
 	 * @param locale
 	 */
-	protected BooleanStyleBuilder(final String name, final Locale locale) {
+	protected FloatStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
+		this.decimalPlaces = 2;
+		this.minIntegerDigits = 1;
 	}
 
-	public BooleanStyle build() {
-		return new BooleanStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle);
+	/**
+	 * Set how many digits are to the right of the decimal symbol.
+	 *
+	 * @param decimalPlaces
+	 *            - The number of digits
+	 */
+	public FloatStyleBuilder decimalPlaces(final int decimalPlaces) {
+		this.decimalPlaces = decimalPlaces;
+		return this;
+	}
+
+	@Override
+	public FloatStyle build() {
+		return new FloatStyle(this.name, this.languageCode, this.countryCode,
+				this.volatileStyle, this.decimalPlaces, this.grouping,
+				this.minIntegerDigits, this.negativeValueColor);
 	}
 }

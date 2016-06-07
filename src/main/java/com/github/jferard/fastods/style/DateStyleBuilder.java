@@ -27,7 +27,7 @@ import java.util.Locale;
  *
  *         This file DateStyleBuilder.java is part of FastODS.
  */
-public class DateStyleBuilder {
+public class DateStyleBuilder extends DataStyleBuilder<DateStyle, DateStyleBuilder>{
 	private boolean bAutomaticOrder;
 
 	/**
@@ -35,28 +35,16 @@ public class DateStyleBuilder {
 	 */
 	private DateStyle.Format dateFormat;
 
-	private String sCountry;
-
-	private String sLanguage;
 	/**
-	 * The name of this style.
-	 */
-	private final String sName;
-
-	/**
-	 * Create a new date style with the name sName.<br>
+	 * Create a new date style with the name name.<br>
 	 * Version 0.5.1 Added.
 	 *
-	 * @param sName
+	 * @param name
 	 *            The name of the number style.
 	 * @param locale
 	 */
-	protected DateStyleBuilder(final String sName, final Locale locale) {
-		if (sName == null)
-			throw new IllegalArgumentException();
-
-		this.locale(locale);
-		this.sName = sName;
+	protected DateStyleBuilder(final String name, final Locale locale) {
+		super(name, locale);
 		this.bAutomaticOrder = false;
 	}
 
@@ -74,23 +62,12 @@ public class DateStyleBuilder {
 	}
 
 	/**
-	 * @return the DateStyle
+	 * {@inheritDoc}
 	 */
+	@Override
 	public DateStyle build() {
-		return new DateStyle(this.sName, this.dateFormat, this.sCountry,
-				this.sLanguage, this.bAutomaticOrder);
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param country
-	 *            The two letter country code, e.g. 'US'
-	 */
-	public DateStyleBuilder country(final String country) {
-		this.sCountry = country.toUpperCase();
-		return this;
+		return new DateStyle(this.name, this.countryCode, this.languageCode, this.volatileStyle,
+				this.dateFormat, this.bAutomaticOrder);
 	}
 
 	/**
@@ -108,24 +85,6 @@ public class DateStyleBuilder {
 	 */
 	public DateStyleBuilder dateFormat(final DateStyle.Format format) {
 		this.dateFormat = format;
-		return this;
-	}
-
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param language
-	 *            The two letter language code, e.g. 'en'
-	 */
-	public DateStyleBuilder language(final String language) {
-		this.sLanguage = language.toLowerCase();
-		return this;
-	}
-
-	public final DateStyleBuilder locale(final Locale locale) {
-		this.sCountry = locale.getCountry();
-		this.sLanguage = locale.getLanguage();
 		return this;
 	}
 }

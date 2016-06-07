@@ -296,6 +296,20 @@ public class HeavyTableRow {
 		this.types.set(i, HeavyTableCell.Type.CURRENCY);
 		this.setStyle(i, this.dataStyles.getCurrencyStyle());
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(float, java.lang.String)
+	 */
+	public void setCurrencyValue(final int i, final double value,
+			final String currency) {
+		this.values.set(i, Double.toString(value));
+		if (this.currencies == null)
+			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
+
+		this.currencies.set(i, currency); // escape here
+		this.types.set(i, HeavyTableCell.Type.CURRENCY);
+		this.setStyle(i, this.dataStyles.getCurrencyStyle());
+	}
 
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(java.lang.Number, java.lang.String)
@@ -303,6 +317,8 @@ public class HeavyTableRow {
 	public void setCurrencyValue(final int i, final Number value,
 			final String currency) {
 		this.values.set(i, value.toString());
+		if (this.currencies == null)
+			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 		this.currencies.set(i, currency); // escape here
 		this.types.set(i, HeavyTableCell.Type.CURRENCY);
 		this.setStyle(i, this.dataStyles.getCurrencyStyle());
@@ -342,6 +358,15 @@ public class HeavyTableRow {
 	 */
 	public void setFloatValue(final int i, final float value) {
 		this.values.set(i, Float.toString(value));
+		this.types.set(i, HeavyTableCell.Type.FLOAT);
+		this.setStyle(i, this.dataStyles.getNumberStyle());
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.github.jferard.fastods.TableCell#setFloatValue(float)
+	 */
+	public void setFloatValue(final int i, final double value) {
+		this.values.set(i, Double.toString(value));
 		this.types.set(i, HeavyTableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
@@ -396,6 +421,15 @@ public class HeavyTableRow {
 	 */
 	public void setPercentageValue(final int i, final float value) {
 		this.values.set(i, Float.toString(value));
+		this.types.set(i, HeavyTableCell.Type.PERCENTAGE);
+		this.setStyle(i, this.dataStyles.getPercentageStyle());
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.jferard.fastods.TableCell#setPercentageValue(float)
+	 */
+	public void setPercentageValue(final int i, final double value) {
+		this.values.set(i, Double.toString(value));
 		this.types.set(i, HeavyTableCell.Type.PERCENTAGE);
 		this.setStyle(i, this.dataStyles.getPercentageStyle());
 	}

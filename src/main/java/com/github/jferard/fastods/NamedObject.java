@@ -29,5 +29,11 @@ package com.github.jferard.fastods;
  *
  */
 public interface NamedObject {
+
+	/**
+	 * Get the name of this object.
+	 *
+	 * @return The object name
+	 */
 	String getName();
 }

@@ -21,20 +21,16 @@ package com.github.jferard.fastods.style;
 
 import java.util.Locale;
 
-import com.github.jferard.fastods.Color;
-
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public abstract class NumberStyleBuilder<S extends NumberStyle, B extends NumberStyleBuilder<S, B>>
-		extends DataStyleBuilder<S, B> {
-	protected String negativeValueColor;
-	protected boolean grouping;
-	protected int minIntegerDigits;
-
+public class FractionStyleBuilder
+		extends NumberStyleBuilder<FractionStyle, FractionStyleBuilder> {
+	private int minDenominatorDigits;
+	private int minNumeratorDigits;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
@@ -44,55 +40,32 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public NumberStyleBuilder(final String name, final Locale locale) {
+	public FractionStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
-		this.grouping = false;
+		this.minNumeratorDigits = 0;
+		this.minDenominatorDigits = 0;
 	}
-	
-	/**
-	 * Sets the color for negative values
-	 * 
-	 * @param negativeValueColor
-	 *            null if none
-	 * @return
-	 */
-	public B negativeValueColor(
-			final String negativeValueColor) {
-		this.negativeValueColor = negativeValueColor;
-		return (B) this;
+
+	@Override
+	public FractionStyle build() {
+		return new FractionStyle(this.name, this.languageCode,
+				this.countryCode, this.volatileStyle, this.grouping,
+				this.minIntegerDigits, this.negativeValueColor,
+				this.minNumeratorDigits, this.minDenominatorDigits);
 	}
-	
+
 	/**
-	 * Sets the color for negative values
-	 * 
-	 * @param negativeValueColor
-	 *            null if none
-	 * @return
-	 */
-	public B negativeValueRed() {
-		this.negativeValueColor = Color.RED;
-		return (B) this;
-	}
-	
-	/**
-	 * If this is set to true, the thousands separator is shown.
+	 * Add the numerator and denominator values to be shown.<br>
+	 * The number style is set to NUMBER_FRACTION
 	 *
-	 * @param grouping
+	 * @param nNumerator
+	 * @param nDenominator
+	 * @return this for fluent style
 	 */
-	public B groupThousands(final boolean grouping) {
-		this.grouping = grouping;
-		return (B) this;
-	}
-	
-	/**
-	 * Set how many leading zeros are present.
-	 *
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 */
-	public B minIntegerDigits(
-			final int minIntegerDigits) {
-		this.minIntegerDigits = minIntegerDigits;
-		return (B) this;
+	public FractionStyleBuilder fractionValues(final int nNumerator,
+			final int nDenominator) {
+		this.minNumeratorDigits = nNumerator;
+		this.minDenominatorDigits = nDenominator;
+		return this;
 	}
 }
