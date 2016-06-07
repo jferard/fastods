@@ -40,7 +40,9 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class PercentageStyle extends FloatStyle {
+public class PercentageStyle extends DataStyle {
+	private FloatStyle floatStyle;
+
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is nDecPlaces. The number style is
@@ -57,13 +59,9 @@ public class PercentageStyle extends FloatStyle {
 			final String countryCode, final boolean volatileStyle,
 			final int decimalPlaces, final boolean grouping,
 			final int minIntegerDigits, final String negativeValueColor) {
-		super(name, languageCode, countryCode, volatileStyle, decimalPlaces,
+		super(name, languageCode, countryCode, volatileStyle);
+		this.floatStyle = new FloatStyle(name, languageCode, countryCode, volatileStyle, decimalPlaces,
 				grouping, minIntegerDigits, negativeValueColor);
-	}
-
-	@Override
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDataStyle(this);
 	}
 
 	/**
@@ -79,20 +77,20 @@ public class PercentageStyle extends FloatStyle {
 		util.appendAttribute(appendable, "style:name", this.name);
 		this.appendLVAttributes(util, appendable);
 		appendable.append(">");
-		this.appendNumber(util, appendable);
+		this.floatStyle.appendNumber(util, appendable);
 		appendable.append("<number:text>%</number:text>");
 		appendable.append("</number:percentage-style>");
 
-		if (this.negativeValueColor != null) {
+		if (this.floatStyle.negativeValueColor != null) {
 			appendable.append("<number:percentage-style");
 			util.appendAttribute(appendable, "style:name", this.name + "-neg");
 			this.appendLVAttributes(util, appendable);
 			appendable.append(">");
-			this.appendStyleColor(util, appendable);
+			this.floatStyle.appendStyleColor(util, appendable);
 			appendable.append("<number:text>-</number:text>");
-			this.appendNumber(util, appendable);
+			this.floatStyle.appendNumber(util, appendable);
 			appendable.append("<number:text>%</number:text>");
-			this.appendStyleMap(util, appendable);
+			this.floatStyle.appendStyleMap(util, appendable);
 			appendable.append("</number:percentage-style>");
 		}
 	}

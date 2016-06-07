@@ -28,7 +28,9 @@ import java.util.Locale;
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
 public class PercentageStyleBuilder
-		extends FloatStyleBuilder {
+		extends DataStyleBuilder<PercentageStyle, PercentageStyleBuilder> {
+	private FloatStyleBuilder floatStyleBuilder;
+
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is nDecPlaces.
@@ -39,12 +41,36 @@ public class PercentageStyleBuilder
 	 */
 	public PercentageStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
+		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
 
+	@Override
 	public PercentageStyle build() {
 		return new PercentageStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle, this.decimalPlaces,
-				this.grouping, this.minIntegerDigits,
-				this.negativeValueColor);
+				this.countryCode, this.volatileStyle,
+				this.floatStyleBuilder.decimalPlaces,
+				this.floatStyleBuilder.grouping,
+				this.floatStyleBuilder.minIntegerDigits,
+				this.floatStyleBuilder.negativeValueColor);
+	}
+
+	public FloatStyleBuilder decimalPlaces(int decimalPlaces) {
+		return this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+	}
+
+	public FloatStyleBuilder negativeValueColor(String negativeValueColor) {
+		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+	}
+
+	public FloatStyleBuilder negativeValueRed() {
+		return this.floatStyleBuilder.negativeValueRed();
+	}
+
+	public FloatStyleBuilder groupThousands(boolean grouping) {
+		return this.floatStyleBuilder.groupThousands(grouping);
+	}
+
+	public FloatStyleBuilder minIntegerDigits(int minIntegerDigits) {
+		return this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 	}
 }
