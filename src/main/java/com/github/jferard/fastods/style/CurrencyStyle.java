@@ -35,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         currency-style
  *         styles.xml/office:document-styles/office:styles/number:currency-style
  */
-public class CurrencyStyle extends FloatStyle {
+public class CurrencyStyle extends DataStyle {
 
 	public static enum SymbolPosition {
 		BEGIN, END;
@@ -43,6 +43,7 @@ public class CurrencyStyle extends FloatStyle {
 
 	private final SymbolPosition currencyPosition;
 	private final String currencySymbol;
+	private FloatStyle floatStyle;
 
 	protected CurrencyStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle,
@@ -50,7 +51,8 @@ public class CurrencyStyle extends FloatStyle {
 			final int minIntegerDigits, final String negativeValueColor,
 			final String currencySymbol,
 			final SymbolPosition currencyPosition) {
-		super(name, languageCode, countryCode, volatileStyle, decimalPlaces,
+		super(name, languageCode, countryCode, volatileStyle);
+		this.floatStyle = new FloatStyle(name, languageCode, countryCode, volatileStyle, decimalPlaces,
 				grouping, minIntegerDigits, negativeValueColor);
 		this.currencySymbol = currencySymbol;
 		this.currencyPosition = currencyPosition;
@@ -74,15 +76,15 @@ public class CurrencyStyle extends FloatStyle {
 		this.appendCurrency(util, appendable);
 		appendable.append("</number:currency-style>");
 
-		if (this.negativeValueColor != null) {
+		if (this.floatStyle.negativeValueColor != null) {
 			appendable.append("<number:currency-style");
 			util.appendAttribute(appendable, "style:name", this.name + "-neg");
 			this.appendVolatileAttribute(util, appendable);
 			appendable.append(">");
-			this.appendStyleColor(util, appendable);
+			this.floatStyle.appendStyleColor(util, appendable);
 			appendable.append("<number:text>-</number:text>");
 			this.appendCurrency(util, appendable);
-			this.appendStyleMap(util, appendable);
+			this.floatStyle.appendStyleMap(util, appendable);
 			appendable.append("</number:currency-style>");
 		}
 	}
@@ -117,12 +119,12 @@ public class CurrencyStyle extends FloatStyle {
 			throws IOException {
 		// Check where the currency symbol should be positioned
 		if (this.currencyPosition == SymbolPosition.END) {
-			this.appendNumber(util, appendable);
+			this.floatStyle.appendNumber(util, appendable);
 			appendable.append("<number:text> </number:text>");
 			this.appendCurrencySymbol(util, appendable);
 		} else { // SYMBOLPOSITION_BEGIN
 			this.appendCurrencySymbol(util, appendable);
-			this.appendNumber(util, appendable);
+			this.floatStyle.appendNumber(util, appendable);
 		}
 	}
 }

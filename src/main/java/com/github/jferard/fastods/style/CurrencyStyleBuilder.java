@@ -31,7 +31,8 @@ import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
  *         This file CurrencyStyleBuilder.java is part of FastODS.
  *
  */
-public class CurrencyStyleBuilder extends FloatStyleBuilder {
+public class CurrencyStyleBuilder extends DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
+	private FloatStyleBuilder floatStyleBuilder;  
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
 
@@ -44,6 +45,7 @@ public class CurrencyStyleBuilder extends FloatStyleBuilder {
 	 */
 	protected CurrencyStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
+		this.floatStyleBuilder = new FloatStyleBuilder(name, locale); 
 		this.locale(locale);
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
@@ -52,8 +54,8 @@ public class CurrencyStyleBuilder extends FloatStyleBuilder {
 	@Override
 	public CurrencyStyle build() {
 		return new CurrencyStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle, this.decimalPlaces,
-				this.grouping, this.minIntegerDigits, this.negativeValueColor,
+				this.countryCode, this.volatileStyle, this.floatStyleBuilder.decimalPlaces,
+				this.floatStyleBuilder.grouping, this.floatStyleBuilder.minIntegerDigits, this.floatStyleBuilder.negativeValueColor,
 				this.currencySymbol, this.currencyPosition);
 	}
 
@@ -83,8 +85,33 @@ public class CurrencyStyleBuilder extends FloatStyleBuilder {
 	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
 		super.locale(locale);
+		this.floatStyleBuilder.locale(locale);
 		if (this.currencySymbol == null)
 			this.currencySymbol = Currency.getInstance(locale).getSymbol();
+		return this;
+	}
+
+	public CurrencyStyleBuilder decimalPlaces(int decimalPlaces) {
+		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+		return this;
+	}
+
+	public FloatStyleBuilder negativeValueColor(String negativeValueColor) {
+		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+	}
+
+	public CurrencyStyleBuilder negativeValueRed() {
+		this.floatStyleBuilder.negativeValueRed();
+		return this;
+	}
+
+	public CurrencyStyleBuilder groupThousands(boolean grouping) {
+		this.floatStyleBuilder.groupThousands(grouping);
+		return this;
+	}
+
+	public CurrencyStyleBuilder minIntegerDigits(int minIntegerDigits) {
+		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 }

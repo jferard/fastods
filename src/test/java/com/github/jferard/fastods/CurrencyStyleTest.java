@@ -51,7 +51,7 @@ public class CurrencyStyleTest {
 
 	@Test
 	public final void testStylesEntry() throws IOException {
-		CurrencyStyle cs = (CurrencyStyle) this.factory.currencyStyleBuilder("test")
+		CurrencyStyle cs = this.factory.currencyStyleBuilder("test")
 				.locale(this.locale).negativeValueRed().build();
 		StringBuilder sb = new StringBuilder();
 		cs.appendXMLToStylesEntry(this.util, sb);
