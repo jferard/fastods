@@ -17,11 +17,10 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -39,9 +38,12 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class BooleanStyle extends DataStyle {
 	/**
-	 * @param name name of the style
-	 * @param languageCode language
-	 * @param countryCode country
+	 * @param name
+	 *            name of the style
+	 * @param languageCode
+	 *            language
+	 * @param countryCode
+	 *            country
 	 * @param volatileStyle
 	 */
 	protected BooleanStyle(final String name, final String languageCode,

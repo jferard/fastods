@@ -26,9 +26,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.style.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.FloatStyle;
-import com.github.jferard.fastods.style.NumberStyle;
+import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
+import com.github.jferard.fastods.datastyle.FloatStyle;
+import com.github.jferard.fastods.datastyle.NumberStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 

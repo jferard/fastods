@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
@@ -28,51 +28,49 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
  *
- *         This file NumberStyle.java is part of FastODS.
+ *         This file CurrencyStyle.java is part of FastODS.
  *
  *         WHERE ?
  *         content.xml/office:document-content/office:automatic-styles/number:
- *         number-style
- *         content.xml/office:document-content/office:automatic-styles/number:
- *         percentage-style
- *         styles.xml/office:document-styles/office:styles/number:number-style
- *         styles.xml/office:document-styles/office:styles/number:percentage-
- *         style
+ *         currency-style
+ *         styles.xml/office:document-styles/office:styles/number:currency-style
  */
-public class FractionStyle extends NumberStyle {
-	private final int minDenominatorDigits;
-	private final int minNumeratorDigits;
+public class FloatStyle extends NumberStyle {
+	protected final int decimalPlaces;
 
-	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces.
-	 * 
-	 * @param sStyleName
-	 *            The name of the number style, this name must be unique.
-	 * @param minIntDigits
-	 *            The minimum integer digits to be shown.
-	 * @param nDecPlaces
-	 *            The number of decimal places to be shown.
-	 */
-	FractionStyle(final String name, final String languageCode,
+	protected FloatStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle,
-			final boolean grouping, final int minIntegerDigits,
-			final String negativeValueColor, final int minNumeratorDigits,
-			final int minDenominatorDigits) {
+			final int decimalPlaces, final boolean grouping,
+			final int minIntegerDigits, final String negativeValueColor) {
 		super(name, languageCode, countryCode, volatileStyle, grouping,
 				minIntegerDigits, negativeValueColor);
-		this.minNumeratorDigits = minNumeratorDigits;
-		this.minDenominatorDigits = minDenominatorDigits;
+		this.decimalPlaces = decimalPlaces;
 	}
 
+	/**
+	 * Get how many digits are to the right of the decimal symbol.
+	 *
+	 * @return The number of digits
+	 */
+	public int getDecimalPlaces() {
+		return this.decimalPlaces;
+	}
+
+	/**
+	 * Appends the number:number element
+	 * 
+	 * @param util
+	 *            XML escaping util
+	 * @param appendable
+	 *            where to append data
+	 * @throws IOException
+	 */
 	@Override
 	protected void appendNumber(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		appendable.append("<number:fraction");
-		util.appendEAttribute(appendable, "number:min-numerator-digits",
-				this.minNumeratorDigits);
-		util.appendEAttribute(appendable, "number:min-denominator-digits",
-				this.minDenominatorDigits);
+		appendable.append("<number:number");
+		util.appendEAttribute(appendable, "number:decimal-places",
+				this.decimalPlaces);
 		this.appendNumberAttribute(util, appendable);
 		appendable.append("/>");
 	}

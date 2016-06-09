@@ -17,12 +17,12 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Currency;
 import java.util.Locale;
 
-import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
+import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -31,21 +31,22 @@ import com.github.jferard.fastods.style.CurrencyStyle.SymbolPosition;
  *         This file CurrencyStyleBuilder.java is part of FastODS.
  *
  */
-public class CurrencyStyleBuilder extends DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
-	private FloatStyleBuilder floatStyleBuilder;  
+public class CurrencyStyleBuilder
+		extends DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
+	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
 	 * The builder
-	 * 
+	 *
 	 * @param name
 	 *            - The name of this style
 	 * @param locale
 	 */
 	protected CurrencyStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
-		this.floatStyleBuilder = new FloatStyleBuilder(name, locale); 
+		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 		this.locale(locale);
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
@@ -53,10 +54,12 @@ public class CurrencyStyleBuilder extends DataStyleBuilder<CurrencyStyle, Curren
 	/** {@inheritDoc} */
 	@Override
 	public CurrencyStyle build() {
-		return new CurrencyStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle, this.floatStyleBuilder.decimalPlaces,
-				this.floatStyleBuilder.grouping, this.floatStyleBuilder.minIntegerDigits, this.floatStyleBuilder.negativeValueColor,
-				this.currencySymbol, this.currencyPosition);
+		return new CurrencyStyle(this.name, this.languageCode, this.countryCode,
+				this.volatileStyle, this.floatStyleBuilder.decimalPlaces,
+				this.floatStyleBuilder.grouping,
+				this.floatStyleBuilder.minIntegerDigits,
+				this.floatStyleBuilder.negativeValueColor, this.currencySymbol,
+				this.currencyPosition);
 	}
 
 	/**
@@ -81,37 +84,37 @@ public class CurrencyStyleBuilder extends DataStyleBuilder<CurrencyStyle, Curren
 		return this;
 	}
 
+	public CurrencyStyleBuilder decimalPlaces(final int decimalPlaces) {
+		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+		return this;
+	}
+
+	public CurrencyStyleBuilder groupThousands(final boolean grouping) {
+		this.floatStyleBuilder.groupThousands(grouping);
+		return this;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
 		super.locale(locale);
 		this.floatStyleBuilder.locale(locale);
-		if (this.currencySymbol == null)
-			this.currencySymbol = Currency.getInstance(locale).getSymbol();
+		this.currencySymbol = Currency.getInstance(locale).getSymbol();
 		return this;
 	}
 
-	public CurrencyStyleBuilder decimalPlaces(int decimalPlaces) {
-		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+	public CurrencyStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 
-	public FloatStyleBuilder negativeValueColor(String negativeValueColor) {
+	public FloatStyleBuilder negativeValueColor(
+			final String negativeValueColor) {
 		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 	}
 
 	public CurrencyStyleBuilder negativeValueRed() {
 		this.floatStyleBuilder.negativeValueRed();
-		return this;
-	}
-
-	public CurrencyStyleBuilder groupThousands(boolean grouping) {
-		this.floatStyleBuilder.groupThousands(grouping);
-		return this;
-	}
-
-	public CurrencyStyleBuilder minIntegerDigits(int minIntegerDigits) {
-		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 }

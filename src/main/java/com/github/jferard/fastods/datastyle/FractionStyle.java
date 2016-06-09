@@ -17,11 +17,10 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -40,14 +39,14 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         styles.xml/office:document-styles/office:styles/number:percentage-
  *         style
  */
-public class PercentageStyle extends DataStyle {
-	private FloatStyle floatStyle;
+public class FractionStyle extends NumberStyle {
+	private final int minDenominatorDigits;
+	private final int minNumeratorDigits;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces. The number style is
-	 * NumberStyle.NUMBER_NORMAL
-	 * 
+	 * minIntDigits and decimal places is nDecPlaces.
+	 *
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
 	 * @param minIntDigits
@@ -55,43 +54,26 @@ public class PercentageStyle extends DataStyle {
 	 * @param nDecPlaces
 	 *            The number of decimal places to be shown.
 	 */
-	PercentageStyle(final String name, final String languageCode,
+	FractionStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle,
-			final int decimalPlaces, final boolean grouping,
-			final int minIntegerDigits, final String negativeValueColor) {
-		super(name, languageCode, countryCode, volatileStyle);
-		this.floatStyle = new FloatStyle(name, languageCode, countryCode, volatileStyle, decimalPlaces,
-				grouping, minIntegerDigits, negativeValueColor);
+			final boolean grouping, final int minIntegerDigits,
+			final String negativeValueColor, final int minNumeratorDigits,
+			final int minDenominatorDigits) {
+		super(name, languageCode, countryCode, volatileStyle, grouping,
+				minIntegerDigits, negativeValueColor);
+		this.minNumeratorDigits = minNumeratorDigits;
+		this.minDenominatorDigits = minDenominatorDigits;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @param util
-	 */
 	@Override
-	public void appendXMLToStylesEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<number:percentage-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
-		appendable.append(">");
-		this.floatStyle.appendNumber(util, appendable);
-		appendable.append("<number:text>%</number:text>");
-		appendable.append("</number:percentage-style>");
-
-		if (this.floatStyle.negativeValueColor != null) {
-			appendable.append("<number:percentage-style");
-			util.appendAttribute(appendable, "style:name", this.name + "-neg");
-			this.appendLVAttributes(util, appendable);
-			appendable.append(">");
-			this.floatStyle.appendStyleColor(util, appendable);
-			appendable.append("<number:text>-</number:text>");
-			this.floatStyle.appendNumber(util, appendable);
-			appendable.append("<number:text>%</number:text>");
-			this.floatStyle.appendStyleMap(util, appendable);
-			appendable.append("</number:percentage-style>");
-		}
+	protected void appendNumber(final XMLUtil util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<number:fraction");
+		util.appendEAttribute(appendable, "number:min-numerator-digits",
+				this.minNumeratorDigits);
+		util.appendEAttribute(appendable, "number:min-denominator-digits",
+				this.minDenominatorDigits);
+		this.appendNumberAttribute(util, appendable);
+		appendable.append("/>");
 	}
 }

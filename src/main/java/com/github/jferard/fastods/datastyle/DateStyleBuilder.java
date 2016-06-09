@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
 
@@ -27,12 +27,14 @@ import java.util.Locale;
  *
  *         This file DateStyleBuilder.java is part of FastODS.
  */
-public class TimeStyleBuilder
-		extends DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
+public class DateStyleBuilder
+		extends DataStyleBuilder<DateStyle, DateStyleBuilder> {
+	private boolean bAutomaticOrder;
+
 	/**
-	 * The date format.
+	 * The default date format DATEFORMAT_DDMMYY.
 	 */
-	private TimeStyle.Format timeFormat;
+	private DateStyle.Format dateFormat;
 
 	/**
 	 * Create a new date style with the name name.<br>
@@ -40,18 +42,33 @@ public class TimeStyleBuilder
 	 *
 	 * @param name
 	 *            The name of the number style.
+	 * @param locale
 	 */
-	protected TimeStyleBuilder(final String name, final Locale locale) {
+	protected DateStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
+		this.bAutomaticOrder = false;
+	}
+
+	/**
+	 * The automatic-order attribute can be used to automatically order data to
+	 * match the default order<br>
+	 * for the language and country of the date style.
+	 *
+	 * @param bAutomatic
+	 * @return this for fluent style
+	 */
+	public DateStyleBuilder automaticOrder(final boolean bAutomatic) {
+		this.bAutomaticOrder = bAutomatic;
+		return this;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public TimeStyle build() {
-		return new TimeStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle, this.timeFormat);
+	public DateStyle build() {
+		return new DateStyle(this.name, this.countryCode, this.languageCode,
+				this.volatileStyle, this.dateFormat, this.bAutomaticOrder);
 	}
 
 	/**
@@ -67,8 +84,8 @@ public class TimeStyleBuilder
 	 *            The date format to be used.
 	 * @return this for fluent style
 	 */
-	public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
-		this.timeFormat = format;
+	public DateStyleBuilder dateFormat(final DateStyle.Format format) {
+		this.dateFormat = format;
 		return this;
 	}
 }

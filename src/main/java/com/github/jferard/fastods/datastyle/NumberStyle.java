@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
@@ -40,7 +40,6 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         style
  */
 public abstract class NumberStyle extends DataStyle {
-	protected final String negativeValueColor;
 	/**
 	 * 19.348 number:grouping
 	 */
@@ -49,12 +48,13 @@ public abstract class NumberStyle extends DataStyle {
 	 * 19.352 number:min-integer-digits
 	 */
 	private final int minIntegerDigits;
+	protected final String negativeValueColor;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is nDecPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL
-	 * 
+	 *
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
 	 * @param minIntDigits
@@ -93,7 +93,7 @@ public abstract class NumberStyle extends DataStyle {
 			util.appendAttribute(appendable, "style:name", this.name + "-neg");
 			this.appendLVAttributes(util, appendable);
 			appendable.append(">");
-			appendStyleColor(util, appendable);
+			this.appendStyleColor(util, appendable);
 			appendable.append("<number:text>-</number:text>");
 			this.appendNumber(util, appendable);
 			this.appendStyleMap(util, appendable);
@@ -101,29 +101,63 @@ public abstract class NumberStyle extends DataStyle {
 		}
 	}
 
+	/**
+	 * @return true if the digits are grouped
+	 */
+	public boolean getGroupThousands() {
+		return this.grouping;
+	}
+
+	/**
+	 * Get how many leading zeros are present.
+	 *
+	 * @return The number of leading zeros
+	 */
+	public int getMinIntegerDigits() {
+		return this.minIntegerDigits;
+	}
+
+	/**
+	 * Get the color if negative value. If none, null
+	 *
+	 * @return the color in hex format
+	 */
+	public String getNegativeValueColor() {
+		return this.negativeValueColor;
+	}
+
+	/**
+	 * Append the 19.348 number:grouping attribute. Default = false.
+	 *
+	 * @param util
+	 * @param appendable
+	 * @throws IOException
+	 */
+	protected void appendGroupingAttribute(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		if (this.grouping)
+			util.appendEAttribute(appendable, "number:grouping", "true");
+	}
+
+	protected void appendMinIntegerDigitsAttribute(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		if (this.minIntegerDigits > 0)
+			util.appendEAttribute(appendable, "number:min-integer-digits",
+					this.minIntegerDigits);
+	}
+
 	abstract protected void appendNumber(final XMLUtil util,
 			final Appendable appendable) throws IOException;
 
-	/**
-	 * Appends 16.3 <style:map> tag.
-	 * 
-	 * @param util
-	 *            XML util for escaping
-	 * @param appendable
-	 *            where to write
-	 * @throws IOException
-	 */
-	protected void appendStyleMap(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<style:map");
-		util.appendAttribute(appendable, "style:condition", "value()>=0");
-		util.appendAttribute(appendable, "style:apply-style-name", this.name);
-		appendable.append("/>");
+	protected void appendNumberAttribute(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		this.appendMinIntegerDigitsAttribute(util, appendable);
+		this.appendGroupingAttribute(util, appendable);
 	}
 
 	/**
 	 * Appends the style color.
-	 * 
+	 *
 	 * @param util
 	 *            XML util
 	 * @param appendable
@@ -138,53 +172,19 @@ public abstract class NumberStyle extends DataStyle {
 	}
 
 	/**
-	 * Get the color if negative value. If none, null
-	 * 
-	 * @return the color in hex format
-	 */
-	public String getNegativeValueColor() {
-		return this.negativeValueColor;
-	}
-
-	/**
-	 * Append the 19.348 number:grouping attribute. Default = false.
-	 * 
+	 * Appends 16.3 <style:map> tag.
+	 *
 	 * @param util
+	 *            XML util for escaping
 	 * @param appendable
+	 *            where to write
 	 * @throws IOException
 	 */
-	protected void appendGroupingAttribute(final XMLUtil util,
+	protected void appendStyleMap(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.grouping)
-			util.appendEAttribute(appendable, "number:grouping", "true");
-	}
-
-	/**
-	 * @return true if the digits are grouped
-	 */
-	public boolean getGroupThousands() {
-		return this.grouping;
-	}
-
-	protected void appendMinIntegerDigitsAttribute(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		if (this.minIntegerDigits > 0)
-			util.appendEAttribute(appendable, "number:min-integer-digits",
-					this.minIntegerDigits);
-	}
-
-	/**
-	 * Get how many leading zeros are present.
-	 *
-	 * @return The number of leading zeros
-	 */
-	public int getMinIntegerDigits() {
-		return this.minIntegerDigits;
-	}
-	
-	protected void appendNumberAttribute(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		this.appendMinIntegerDigitsAttribute(util, appendable);
-		this.appendGroupingAttribute(util, appendable);
+		appendable.append("<style:map");
+		util.appendAttribute(appendable, "style:condition", "value()>=0");
+		util.appendAttribute(appendable, "style:apply-style-name", this.name);
+		appendable.append("/>");
 	}
 }

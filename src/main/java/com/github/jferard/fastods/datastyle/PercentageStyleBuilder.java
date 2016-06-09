@@ -17,11 +17,9 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
-
-import com.github.jferard.fastods.Color;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -29,12 +27,9 @@ import com.github.jferard.fastods.Color;
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public abstract class NumberStyleBuilder<S extends NumberStyle, B extends NumberStyleBuilder<S, B>>
-		extends DataStyleBuilder<S, B> {
-	protected String negativeValueColor;
-	protected boolean grouping;
-	protected int minIntegerDigits;
-
+public class PercentageStyleBuilder
+		extends DataStyleBuilder<PercentageStyle, PercentageStyleBuilder> {
+	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
@@ -44,55 +39,39 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public NumberStyleBuilder(final String name, final Locale locale) {
+	public PercentageStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
-		this.grouping = false;
+		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
-	
-	/**
-	 * Sets the color for negative values
-	 * 
-	 * @param negativeValueColor
-	 *            null if none
-	 * @return
-	 */
-	public B negativeValueColor(
+
+	@Override
+	public PercentageStyle build() {
+		return new PercentageStyle(this.name, this.languageCode,
+				this.countryCode, this.volatileStyle,
+				this.floatStyleBuilder.decimalPlaces,
+				this.floatStyleBuilder.grouping,
+				this.floatStyleBuilder.minIntegerDigits,
+				this.floatStyleBuilder.negativeValueColor);
+	}
+
+	public FloatStyleBuilder decimalPlaces(final int decimalPlaces) {
+		return this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+	}
+
+	public FloatStyleBuilder groupThousands(final boolean grouping) {
+		return this.floatStyleBuilder.groupThousands(grouping);
+	}
+
+	public FloatStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+		return this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+	}
+
+	public FloatStyleBuilder negativeValueColor(
 			final String negativeValueColor) {
-		this.negativeValueColor = negativeValueColor;
-		return (B) this;
+		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 	}
-	
-	/**
-	 * Sets the color for negative values
-	 * 
-	 * @param negativeValueColor
-	 *            null if none
-	 * @return
-	 */
-	public B negativeValueRed() {
-		this.negativeValueColor = Color.RED;
-		return (B) this;
-	}
-	
-	/**
-	 * If this is set to true, the thousands separator is shown.
-	 *
-	 * @param grouping
-	 */
-	public B groupThousands(final boolean grouping) {
-		this.grouping = grouping;
-		return (B) this;
-	}
-	
-	/**
-	 * Set how many leading zeros are present.
-	 *
-	 * @param minIntegerDigits
-	 *            The number of leading zeros
-	 */
-	public B minIntegerDigits(
-			final int minIntegerDigits) {
-		this.minIntegerDigits = minIntegerDigits;
-		return (B) this;
+
+	public FloatStyleBuilder negativeValueRed() {
+		return this.floatStyleBuilder.negativeValueRed();
 	}
 }

@@ -22,6 +22,7 @@ package com.github.jferard.fastods.style;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -40,12 +41,12 @@ public class TableCellStyleBuilder {
 	// 'top'
 	private boolean bWrap; // No line wrap when false, line wrap when
 	private DataStyle dataStyle;
+	private final String name;
 	private TableCellStyle.Align nTextAlign; // 'center','end','start','justify'
 	private TableCellStyle.VerticalAlign nVerticalAlign; // 'middle', 'bottom',
 	private String sBackgroundColor;
 	// true
 	private final String sDefaultCellStyle;
-	private final String name;
 	private final FHTextStyleBuilder tsBuilder;
 	private final XMLUtil util;
 

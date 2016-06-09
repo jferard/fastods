@@ -38,7 +38,7 @@ public class TableRowStyleBuilder {
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param name
 	 *
 	 * @param nFamily

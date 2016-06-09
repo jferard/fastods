@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.Util;
@@ -67,16 +67,16 @@ public class Table implements NamedObject {
 	private final DataStyles format;
 	private final ConfigItem horizontalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
+	private String name;
 	private final OdsFile odsFile;
 	private final ConfigItem pageViewZoomValue;
 	private final ConfigItem positionBottom;
 	private final ConfigItem positionLeft;
 	private final ConfigItem positionRight;
-	private final ConfigItem positionTop;
 
+	private final ConfigItem positionTop;
 	private final List<TableColumnStyle> qColumnStyles;
 	private final List<HeavyTableRow> qTableRows;
-	private String name;
 
 	private TableStyle style;
 	private final Util util;

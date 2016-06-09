@@ -28,7 +28,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	 */
 	private final ResultSet resultSet;
 
-	private ResultSetDataWrapper(final ResultSet rs, final int max) {
+	public ResultSetDataWrapper(final ResultSet rs, final int max) {
 		this.resultSet = rs;
 		this.max = max;
 		try {
@@ -95,7 +95,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			throws SQLException, IOException {
 		final List<Object> columnValues = this.getColumnValues();
 		final TableCellWalker walker = row.getWalker();
-		for (int j = 1; j <= this.columnCount; j++) {
+		for (int j = 0; j <= this.columnCount-1; j++) {
 			final Object object = columnValues.get(j);
 			walker.nextCell();
 			walker.setObjectValue(object);
@@ -106,7 +106,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			throws SQLException {
 		final List<String> columnNames = this.getColumnNames();
 		final TableCellWalker walker = row.getWalker();
-		for (int j = 1; j <= this.columnCount; j++) {
+		for (int j = 0; j <= this.columnCount-1; j++) {
 			walker.nextCell();
 			final String name = columnNames.get(j);
 			walker.setStringValue(name);
@@ -117,12 +117,12 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	private void writeLastLineDataTo(final HeavyTableRow row, final int count) {
 		final TableCellWalker walker = row.getWalker();
 		if (count == 0) {// no row
-			for (int j = 1; j <= this.columnCount; j++) {
+			for (int j = 0; j <= this.columnCount-1; j++) {
 				walker.nextCell();
 				walker.setStringValue("");
 			}
 		} else if (count > this.max) {
-			for (int j = 1; j <= this.columnCount; j++) {
+			for (int j = 0; j <= this.columnCount-1; j++) {
 				walker.nextCell();
 				walker.setStringValue(String.format("... (%d rows remaining)",
 						count - this.max));

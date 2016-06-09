@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
 
@@ -27,10 +27,10 @@ import java.util.Locale;
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public class FractionStyleBuilder
-		extends NumberStyleBuilder<FractionStyle, FractionStyleBuilder> {
-	private int minDenominatorDigits;
-	private int minNumeratorDigits;
+public class ScientificNumberStyleBuilder
+		extends NumberStyleBuilder<NumberStyle, ScientificNumberStyleBuilder> {
+	private int decimalPlaces;
+	private int minExponentDigits;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
@@ -40,32 +40,39 @@ public class FractionStyleBuilder
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public FractionStyleBuilder(final String name, final Locale locale) {
+	public ScientificNumberStyleBuilder(final String name,
+			final Locale locale) {
 		super(name, locale);
-		this.minNumeratorDigits = 0;
-		this.minDenominatorDigits = 0;
 	}
 
 	@Override
-	public FractionStyle build() {
-		return new FractionStyle(this.name, this.languageCode,
+	public ScientificNumberStyle build() {
+		return new ScientificNumberStyle(this.name, this.languageCode,
 				this.countryCode, this.volatileStyle, this.grouping,
 				this.minIntegerDigits, this.negativeValueColor,
-				this.minNumeratorDigits, this.minDenominatorDigits);
+				this.decimalPlaces, this.minExponentDigits);
 	}
 
 	/**
-	 * Add the numerator and denominator values to be shown.<br>
-	 * The number style is set to NUMBER_FRACTION
-	 *
-	 * @param nNumerator
-	 * @param nDenominator
+	 * @param decimalPlaces
 	 * @return this for fluent style
 	 */
-	public FractionStyleBuilder fractionValues(final int nNumerator,
-			final int nDenominator) {
-		this.minNumeratorDigits = nNumerator;
-		this.minDenominatorDigits = nDenominator;
+	public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
+		this.decimalPlaces = decimalPlaces;
+		return this;
+	}
+
+	/**
+	 * Set the number of exponent digits.<br>
+	 * The number style is set to NUMBER_SCIENTIFIC.
+	 *
+	 * @param minExponentDigits
+	 *            The minimum of exponent digits to be used
+	 * @return this for fluent style
+	 */
+	public ScientificNumberStyleBuilder minExponentDigits(
+			final int minExponentDigits) {
+		this.minExponentDigits = minExponentDigits;
 		return this;
 	}
 }

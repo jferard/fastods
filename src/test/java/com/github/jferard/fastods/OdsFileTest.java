@@ -127,7 +127,7 @@ public class OdsFileTest {
 					case 0:
 						walker.setColumnsSpanned(2); break;
 					case 2:
-						walker.setCurrencyValue(-150.5, "EUR"); break;
+						walker.setCurrencyValue(-150.5, "€"); break;
 					case 3:
 						walker.setStyle(tcls); break;
 					default:

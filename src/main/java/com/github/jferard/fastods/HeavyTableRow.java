@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.jferard.fastods.HeavyTableCell.Type;
-import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.Util;
@@ -43,6 +43,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         table:table/table:table-row
  */
 public class HeavyTableRow {
+	private final int columnCapacity;
 	private List<Integer> columnsSpanned;
 	private List<String> currencies;
 	private DataStyles dataStyles;
@@ -55,7 +56,6 @@ public class HeavyTableRow {
 	private final List<Type> types;
 	private final Util util;
 	private final List<String> values;
-	private int columnCapacity;
 
 	HeavyTableRow(final OdsFile odsFile, final Util util,
 			final DataStyles dataStyles, final int nRow,
@@ -79,18 +79,12 @@ public class HeavyTableRow {
 	 */
 	public void appendXMLToTable(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<table:table-row");
-		if (this.rowStyle != null)
-			util.appendEAttribute(appendable, "table:style-name",
-					this.rowStyle.getName());
-		if (this.defaultCellStyle != null)
-			util.appendEAttribute(appendable, "table:default-cell-style-name",
-					this.defaultCellStyle.getName());
-		appendable.append(">");
-
+		this.appendRowOpenTag(util, appendable);
 		int nNullFieldCounter = 0;
 
-		for (int i = 0; i < this.values.size(); i++) {
+		final int size = this.values.size();
+		final boolean hasSpans = this.rowsSpanned != null || this.columnsSpanned != null;
+		for (int i = 0; i < size; i++) {
 			final String value = this.values.get(i);
 			if (value == null) {
 				nNullFieldCounter++;
@@ -104,16 +98,27 @@ public class HeavyTableRow {
 					appendable.append("/>");
 					nNullFieldCounter = 0;
 				}
-				this.appendXMLToTableRow(i, util, appendable);
+				this.appendXMLToTableRow(util, appendable, i, value, hasSpans);
 			}
 		}
 
 		appendable.append("</table:table-row>");
 	}
 
-	public void appendXMLToTableRow(final int i, final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		final String value = this.values.get(i);
+	private void appendRowOpenTag(final XMLUtil util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<table:table-row");
+		if (this.rowStyle != null)
+			util.appendEAttribute(appendable, "table:style-name",
+					this.rowStyle.getName());
+		if (this.defaultCellStyle != null)
+			util.appendEAttribute(appendable, "table:default-cell-style-name",
+					this.defaultCellStyle.getName());
+		appendable.append(">");
+	}
+
+	public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable,
+			final int i, final String value, final boolean hasSpans) throws IOException {
 		final TableCellStyle style = this.styles.get(i);
 		final Type valueType = this.types.get(i);
 
@@ -126,44 +131,26 @@ public class HeavyTableRow {
 
 		util.appendEAttribute(appendable, "office:value-type",
 				valueType.getAttrValue());
-		switch (valueType) {
-		case BOOLEAN:
-			util.appendEAttribute(appendable, "office:boolean-value", value);
-			break;
-		case CURRENCY:
+		util.appendAttribute(appendable, valueType.getAttrName(), value);
+		if (valueType == Type.CURRENCY) {
 			final String currency = this.currencies.get(i);
 			util.appendAttribute(appendable, "office:currency", currency);
-			//$FALL-THROUGH$
-		case FLOAT:
-		case PERCENTAGE:
-			util.appendEAttribute(appendable, "office:value", value);
-			break;
-		case DATE:
-			util.appendEAttribute(appendable, "office:date-value", value);
-			break;
-		case STRING:
-			util.appendAttribute(appendable, "office:string-value", value);
-			break;
-		case TIME:
-			util.appendEAttribute(appendable, "office:time-value", value);
-			break;
-		case VOID:
-		default:
-			break;
 		}
 
-		if (this.columnsSpanned != null) {
-			final Integer colSpan = this.columnsSpanned.get(i);
-			if (colSpan != null && colSpan > 1) {
-				util.appendEAttribute(appendable,
-						"table:number-columns-spanned", colSpan);
+		if (hasSpans) {
+			if (this.columnsSpanned != null) {
+				final Integer colSpan = this.columnsSpanned.get(i);
+				if (colSpan != null && colSpan > 1) {
+					util.appendEAttribute(appendable,
+							"table:number-columns-spanned", colSpan);
+				}
 			}
-		}
-		if (this.rowsSpanned != null) {
-			final Integer rowSpan = this.rowsSpanned.get(i);
-			if (rowSpan != null && rowSpan > 1) {
-				util.appendEAttribute(appendable, "table:number-rows-spanned",
-						rowSpan);
+			if (this.rowsSpanned != null) {
+				final Integer rowSpan = this.rowsSpanned.get(i);
+				if (rowSpan != null && rowSpan > 1) {
+					util.appendEAttribute(appendable, "table:number-rows-spanned",
+							rowSpan);
+				}
 			}
 		}
 
@@ -286,9 +273,9 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(float, java.lang.String)
 	 */
-	public void setCurrencyValue(final int i, final float value,
+	public void setCurrencyValue(final int i, final double value,
 			final String currency) {
-		this.values.set(i, Float.toString(value));
+		this.values.set(i, Double.toString(value));
 		if (this.currencies == null)
 			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 
@@ -296,13 +283,13 @@ public class HeavyTableRow {
 		this.types.set(i, HeavyTableCell.Type.CURRENCY);
 		this.setStyle(i, this.dataStyles.getCurrencyStyle());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(float, java.lang.String)
 	 */
-	public void setCurrencyValue(final int i, final double value,
+	public void setCurrencyValue(final int i, final float value,
 			final String currency) {
-		this.values.set(i, Double.toString(value));
+		this.values.set(i, Float.toString(value));
 		if (this.currencies == null)
 			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 
@@ -356,17 +343,17 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setFloatValue(float)
 	 */
-	public void setFloatValue(final int i, final float value) {
-		this.values.set(i, Float.toString(value));
+	public void setFloatValue(final int i, final double value) {
+		this.values.set(i, Double.toString(value));
 		this.types.set(i, HeavyTableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setFloatValue(float)
 	 */
-	public void setFloatValue(final int i, final double value) {
-		this.values.set(i, Double.toString(value));
+	public void setFloatValue(final int i, final float value) {
+		this.values.set(i, Float.toString(value));
 		this.types.set(i, HeavyTableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
@@ -419,8 +406,8 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setPercentageValue(float)
 	 */
-	public void setPercentageValue(final int i, final float value) {
-		this.values.set(i, Float.toString(value));
+	public void setPercentageValue(final int i, final double value) {
+		this.values.set(i, Double.toString(value));
 		this.types.set(i, HeavyTableCell.Type.PERCENTAGE);
 		this.setStyle(i, this.dataStyles.getPercentageStyle());
 	}
@@ -428,8 +415,8 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setPercentageValue(float)
 	 */
-	public void setPercentageValue(final int i, final double value) {
-		this.values.set(i, Double.toString(value));
+	public void setPercentageValue(final int i, final float value) {
+		this.values.set(i, Float.toString(value));
 		this.types.set(i, HeavyTableCell.Type.PERCENTAGE);
 		this.setStyle(i, this.dataStyles.getPercentageStyle());
 	}

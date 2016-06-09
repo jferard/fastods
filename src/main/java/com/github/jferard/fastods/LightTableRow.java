@@ -22,7 +22,7 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
-import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.Util;

@@ -59,8 +59,8 @@ public class TableColumnStyle implements StyleTag {
 	}
 
 	private final TableCellStyle defaultCellStyle;
-	private final String sColumnWidth;
 	private final String name;
+	private final String sColumnWidth;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>

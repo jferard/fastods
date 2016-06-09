@@ -35,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         WHERE ?
  *         styles.xml/office:document-styles/office:master-styles/style:master-
  *         page
- * 
+ *
  * @see 16.5 <style:page-layout>
  * @see 16.9 <style:master-page>
  */
@@ -98,8 +98,11 @@ public class PageStyle {
 	public static final PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
 
 	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
-	public static final WritingMode DEFAULT_WRITING_MODE = WritingMode.LRTB;
+	public static final PageStyle DEFAULT_PAGE_STYLE;
+
 	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
+
+	public static final WritingMode DEFAULT_WRITING_MODE = WritingMode.LRTB;
 
 	private static final String A3_H = "42.0cm";
 
@@ -108,14 +111,16 @@ public class PageStyle {
 	private static final String A4_W = "21.0cm";
 
 	private static final String A5_W = "14.8cm";
-
 	private static final String LEGAL_H = "35.57cm";
 
 	private static final String LETTER_H = "27.94cm";
-	private static final String LETTER_W = "21.59cm";
 
-	public static final PageStyle DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1")
+	private static final String LETTER_W = "21.59cm";
+	
+	static {
+		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1")
 			.build();
+	}
 	
 	public static PageStyleBuilder builder(final String name) {
 		return new PageStyleBuilder(name);
@@ -133,15 +138,15 @@ public class PageStyle {
 	private final FooterHeader footer;
 	private final FooterHeader header;
 
+	private final String name;
 	private final PaperFormat paperFormat;
 	private final PrintOrientation printOrientation;
 	private final String sBackgroundColor;
-	private final String sMarginBottom;
 
+	private final String sMarginBottom;
 	private final String sMarginLeft;
 	private final String sMarginRight;
 	private final String sMarginTop;
-	private final String name;
 
 	private final String sNumFormat;
 	private final String sPageHeight;
@@ -179,6 +184,7 @@ public class PageStyle {
 		this.printOrientation = printOrientation;
 		this.paperFormat = paperFormat;
 		this.writingMode = writingMode;
+		System.out.println(this.writingMode);
 	}
 
 	public void addToFile(final OdsFile odsFile) {

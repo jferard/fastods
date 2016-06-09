@@ -1,11 +1,11 @@
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
 
 public class DataStyleBuilderFactory {
 	private final Locale locale;
 
-	public DataStyleBuilderFactory(Locale locale) {
+	public DataStyleBuilderFactory(final Locale locale) {
 		this.locale = locale;
 	}
 
@@ -27,33 +27,33 @@ public class DataStyleBuilderFactory {
 		return new DateStyleBuilder(name, this.locale);
 	}
 
-	public PercentageStyleBuilder percentageStyleBuilder(final String name) {
-		if (name == null)
-			throw new IllegalArgumentException();
-		return new PercentageStyleBuilder(name, this.locale);
-	}
-
 	public FloatStyleBuilder floatStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 		return new FloatStyleBuilder(name, this.locale);
 	}
-	
+
 	public FractionStyleBuilder fractionStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 		return new FractionStyleBuilder(name, this.locale);
 	}
 
-	public ScientificNumberStyleBuilder scientificNumberStyleBuilder(final String name) {
+	public PercentageStyleBuilder percentageStyleBuilder(final String name) {
+		if (name == null)
+			throw new IllegalArgumentException();
+		return new PercentageStyleBuilder(name, this.locale);
+	}
+
+	public ScientificNumberStyleBuilder scientificNumberStyleBuilder(
+			final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 		return new ScientificNumberStyleBuilder(name, this.locale);
 	}
-	
+
 	public TimeStyleBuilder timeStyleBuilder(final String name) {
 		return new TimeStyleBuilder(name, this.locale);
 	}
-	
 
 }

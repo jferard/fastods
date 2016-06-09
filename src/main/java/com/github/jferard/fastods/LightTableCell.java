@@ -20,7 +20,7 @@ public class LightTableCell implements TableCellWalker {
 	@Override
 	public void appendXMLToTableRow(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		this.row.appendXMLToTableRow(this.i, util, appendable);
+//		this.row.appendXMLToTableRow(util, appendable, this.i);
 	}
 
 	@Override

@@ -38,8 +38,6 @@ import com.github.jferard.fastods.NamedObject;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class Util {
-	private static final Charset UTF_8 = Charset.forName("UTF-8");
-
 	public static class Position {
 		private final int column;
 		private final int row;
@@ -57,6 +55,8 @@ public class Util {
 			return this.row;
 		}
 	}
+
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
 
 	public Util() {
 	}
@@ -88,14 +88,16 @@ public class Util {
 	}
 
 	/**
-	 * @param iterable the iterable to look over 
-	 * @param name the name of the object to find
+	 * @param iterable
+	 *            the iterable to look over
+	 * @param name
+	 *            the name of the object to find
 	 * @return the object, otr null if none present
 	 */
 	public <T extends NamedObject> T findElementByName(
 			final Iterable<T> iterable, final String name) {
 		// Check is a style with this name exists and replace if yes
-		for (T curElement : iterable) {
+		for (final T curElement : iterable) {
 			if (curElement.getName().equals(name))
 				return curElement;
 		}

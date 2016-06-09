@@ -44,8 +44,8 @@ public class TableStyle implements StyleTag {
 		return new TableStyleBuilder(name);
 	}
 
-	private final PageStyle pageStyle;
 	private final String name;
+	private final PageStyle pageStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>

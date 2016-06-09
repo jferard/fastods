@@ -17,9 +17,11 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
+
+import com.github.jferard.fastods.Color;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -27,10 +29,11 @@ import java.util.Locale;
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public class ScientificNumberStyleBuilder
-		extends NumberStyleBuilder<NumberStyle, ScientificNumberStyleBuilder> {
-	private int minExponentDigits;
-	private int decimalPlaces;
+public abstract class NumberStyleBuilder<S extends NumberStyle, B extends NumberStyleBuilder<S, B>>
+		extends DataStyleBuilder<S, B> {
+	protected boolean grouping;
+	protected int minIntegerDigits;
+	protected String negativeValueColor;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
@@ -40,37 +43,53 @@ public class ScientificNumberStyleBuilder
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public ScientificNumberStyleBuilder(final String name, final Locale locale) {
+	public NumberStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
-	}
-
-	@Override
-	public ScientificNumberStyle build() {
-		return new ScientificNumberStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle,
-				this.grouping, this.minIntegerDigits, this.negativeValueColor,
-				this.decimalPlaces, this.minExponentDigits);
+		this.grouping = false;
 	}
 
 	/**
-	 * Set the number of exponent digits.<br>
-	 * The number style is set to NUMBER_SCIENTIFIC.
+	 * If this is set to true, the thousands separator is shown.
 	 *
-	 * @param minExponentDigits
-	 *            The minimum of exponent digits to be used
-	 * @return this for fluent style
+	 * @param grouping
 	 */
-	public ScientificNumberStyleBuilder minExponentDigits(final int minExponentDigits) {
-		this.minExponentDigits = minExponentDigits;
-		return this;
+	public B groupThousands(final boolean grouping) {
+		this.grouping = grouping;
+		return (B) this;
 	}
-	
+
 	/**
-	 * @param decimalPlaces
-	 * @return this for fluent style
+	 * Set how many leading zeros are present.
+	 *
+	 * @param minIntegerDigits
+	 *            The number of leading zeros
 	 */
-	public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.decimalPlaces = decimalPlaces;
-		return this;
+	public B minIntegerDigits(final int minIntegerDigits) {
+		this.minIntegerDigits = minIntegerDigits;
+		return (B) this;
+	}
+
+	/**
+	 * Sets the color for negative values
+	 *
+	 * @param negativeValueColor
+	 *            null if none
+	 * @return
+	 */
+	public B negativeValueColor(final String negativeValueColor) {
+		this.negativeValueColor = negativeValueColor;
+		return (B) this;
+	}
+
+	/**
+	 * Sets the color for negative values
+	 *
+	 * @param negativeValueColor
+	 *            null if none
+	 * @return
+	 */
+	public B negativeValueRed() {
+		this.negativeValueColor = Color.RED;
+		return (B) this;
 	}
 }

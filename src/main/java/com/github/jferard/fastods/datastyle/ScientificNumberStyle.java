@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
@@ -40,13 +40,13 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         style
  */
 public class ScientificNumberStyle extends NumberStyle {
-	private final int minExponentDigits;
 	private final int decimalPlaces;
+	private final int minExponentDigits;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces. 
-	 * 
+	 * minIntDigits and decimal places is nDecPlaces.
+	 *
 	 * @param sStyleName
 	 *            The name of the number style, this name must be unique.
 	 * @param minIntDigits
@@ -65,16 +65,8 @@ public class ScientificNumberStyle extends NumberStyle {
 		this.minExponentDigits = minExponentDigits;
 	}
 
-	@Override
-	protected void appendNumber(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<number:scientific-number");
-		util.appendEAttribute(appendable, "number:min-exponent-digits",
-				this.minExponentDigits);
-		util.appendEAttribute(appendable, "number:decimal-places",
-				this.getDecimalPlaces());
-		this.appendNumberAttribute(util, appendable);
-		appendable.append("/>");
+	public int getDecimalPlaces() {
+		return this.decimalPlaces;
 	}
 
 	/**
@@ -86,7 +78,15 @@ public class ScientificNumberStyle extends NumberStyle {
 		return this.minExponentDigits;
 	}
 
-	public int getDecimalPlaces() {
-		return this.decimalPlaces;
+	@Override
+	protected void appendNumber(final XMLUtil util, final Appendable appendable)
+			throws IOException {
+		appendable.append("<number:scientific-number");
+		util.appendEAttribute(appendable, "number:min-exponent-digits",
+				this.minExponentDigits);
+		util.appendEAttribute(appendable, "number:decimal-places",
+				this.getDecimalPlaces());
+		this.appendNumberAttribute(util, appendable);
+		appendable.append("/>");
 	}
 }

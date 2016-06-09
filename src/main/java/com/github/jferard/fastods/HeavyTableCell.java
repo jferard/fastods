@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -46,18 +46,28 @@ public class HeavyTableCell implements TableCell {
 	 * 19.385 office:value-type
 	 */
 	public static enum Type {
-		BOOLEAN("boolean"), CURRENCY("currency"), DATE("date"), FLOAT(
-				"float"), PERCENTAGE("percentage"), STRING(
-						"string"), TIME("time"), VOID("void");
+		BOOLEAN("boolean", "office:boolean-value"), CURRENCY("currency",
+				"office:value"), DATE("date", "office:date-value"), FLOAT(
+						"float", "office:value"), PERCENTAGE("percentage",
+								"office:value"), STRING("string",
+										"office:string-value"), TIME("time",
+												"office:time-value"), VOID(
+														"void", "");
 
-		private final String attrValue;
+		final String attrValue;
+		final String attrName;
 
-		private Type(final String attrValue) {
+		private Type(final String attrValue, final String attrName) {
 			this.attrValue = attrValue;
+			this.attrName = attrName;
 		}
 
 		public String getAttrValue() {
 			return this.attrValue;
+		}
+
+		public String getAttrName() {
+			return this.attrName;
 		}
 	}
 

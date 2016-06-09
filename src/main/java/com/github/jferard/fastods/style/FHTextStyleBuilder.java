@@ -31,6 +31,7 @@ import com.github.jferard.fastods.style.FHTextStyle.Underline;
  */
 
 public class FHTextStyleBuilder {
+	private final String name;
 	private Underline nFontUnderlineStyle;
 	private String sFontColor;
 	private String sFontName;
@@ -40,15 +41,14 @@ public class FHTextStyleBuilder {
 	private String sFontStyle;
 	private String sFontUnderlineColor;
 	private String sFontWeight;
-	private String sFontWeightAsian;
 
+	private String sFontWeightAsian;
 	private String sFontWeightComplex;
-	private final String name;
 
 	/**
 	 * Create a new text style without a name.<br>
 	 * This is used by class TableFamilyStyle. Version 0.5.2 Added
-	 * 
+	 *
 	 * @param name2
 	 *
 	 * @param odsFile

@@ -58,17 +58,17 @@ public class FHTextStyle implements NamedObject {
 		return new FHTextStyleBuilder(name);
 	}
 
+	private final String name;
 	private final /*@Nullable*/ Underline nFontUnderlineStyle;
 	private final /*@Nullable*/ String sFontColor;
 	private final /*@Nullable*/ String sFontName;
+
 	private final /*@Nullable*/ String sFontSize;
 
 	private final /*@Nullable*/ String sFontStyle;
-
 	private final /*@Nullable*/ String sFontUnderlineColor;
-	private final /*@Nullable*/ String sFontWeight;
 
-	private final String name;
+	private final /*@Nullable*/ String sFontWeight;
 
 	/**
 	 * Create a new text style with the name name.<br>

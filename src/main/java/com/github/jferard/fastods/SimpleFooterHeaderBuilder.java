@@ -35,14 +35,15 @@ class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	/**
 	 * Create a new simple footer object.
 	 *
-	 * @param footerHeaderType footer or header ?
+	 * @param footerHeaderType
+	 *            footer or header ?
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
 		this.curRegion = FullList.<FHParagraph> builder().capacity(16).build();
 	}
 
-	/* 
+	/*
 	 * {@inheritDoc}
 	 */
 	@Override

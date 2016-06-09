@@ -1,5 +1,6 @@
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class LocaleDataStyles implements DataStyles {

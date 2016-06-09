@@ -35,13 +35,13 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class TableColumnStyleBuilder {
 	private TableCellStyle defaultCellStyle;
-	private String sColumnWidth;
 	private final String name;
+	private String sColumnWidth;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param xmlUtil
 	 *
 	 * @param nFamily

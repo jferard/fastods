@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
 
@@ -29,24 +29,27 @@ import java.util.Locale;
  *
  */
 public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleBuilder<S, B>> {
+	protected String countryCode;
+	protected String languageCode;
+	protected final String name;
 	/**
 	 * 19.517 : "The style:volatile attribute specifies whether unused style in
 	 * a document are retained or discarded by consumers."
 	 */
 	protected boolean volatileStyle;
-	protected String countryCode;
-	protected String languageCode;
-	protected final String name;
 
 	/**
 	 * The builder
-	 * @param name The name of this style
-	 * @param locale the locale used
+	 * 
+	 * @param name
+	 *            The name of this style
+	 * @param locale
+	 *            the locale used
 	 */
 	protected DataStyleBuilder(final String name, final Locale locale) {
 		if (name == null)
 			throw new IllegalArgumentException();
-		
+
 		this.name = name;
 		this.countryCode = locale.getCountry();
 		this.languageCode = locale.getLanguage();
@@ -83,8 +86,10 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	}
 
 	/**
-	 * Sets the locale (ie languge + country) 
-	 * @param locale the locale to use for langaauge and country
+	 * Sets the locale (ie languge + country)
+	 * 
+	 * @param locale
+	 *            the locale to use for langaauge and country
 	 * @return this
 	 */
 	public B locale(final Locale locale) {

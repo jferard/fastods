@@ -35,11 +35,11 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.github.jferard.fastods.style.DataStyle;
-import com.github.jferard.fastods.style.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
-import com.github.jferard.fastods.style.LocaleDataStyles;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.style.TableCellStyle;

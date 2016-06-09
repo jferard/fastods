@@ -26,8 +26,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.style.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.DateStyle;
+import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
+import com.github.jferard.fastods.datastyle.DateStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 

@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
@@ -43,7 +43,7 @@ public class CurrencyStyle extends DataStyle {
 
 	private final SymbolPosition currencyPosition;
 	private final String currencySymbol;
-	private FloatStyle floatStyle;
+	private final FloatStyle floatStyle;
 
 	protected CurrencyStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle,
@@ -52,8 +52,9 @@ public class CurrencyStyle extends DataStyle {
 			final String currencySymbol,
 			final SymbolPosition currencyPosition) {
 		super(name, languageCode, countryCode, volatileStyle);
-		this.floatStyle = new FloatStyle(name, languageCode, countryCode, volatileStyle, decimalPlaces,
-				grouping, minIntegerDigits, negativeValueColor);
+		this.floatStyle = new FloatStyle(name, languageCode, countryCode,
+				volatileStyle, decimalPlaces, grouping, minIntegerDigits,
+				negativeValueColor);
 		this.currencySymbol = currencySymbol;
 		this.currencyPosition = currencyPosition;
 	}
@@ -71,7 +72,7 @@ public class CurrencyStyle extends DataStyle {
 
 		appendable.append("<number:currency-style");
 		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendVolatileAttribute(util, appendable);
+//		this.appendVolatileAttribute(util, appendable);
 		appendable.append(">");
 		this.appendCurrency(util, appendable);
 		appendable.append("</number:currency-style>");
@@ -79,7 +80,7 @@ public class CurrencyStyle extends DataStyle {
 		if (this.floatStyle.negativeValueColor != null) {
 			appendable.append("<number:currency-style");
 			util.appendAttribute(appendable, "style:name", this.name + "-neg");
-			this.appendVolatileAttribute(util, appendable);
+//			this.appendVolatileAttribute(util, appendable);
 			appendable.append(">");
 			this.floatStyle.appendStyleColor(util, appendable);
 			appendable.append("<number:text>-</number:text>");
@@ -106,15 +107,6 @@ public class CurrencyStyle extends DataStyle {
 		return this.currencyPosition;
 	}
 
-	private void appendCurrencySymbol(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<number:currency-symbol");
-//		this.appendLocaleAttributes(util, appendable);
-		appendable.append(">")
-				.append(util.escapeXMLContent(this.currencySymbol))
-				.append("</number:currency-symbol>");
-	}
-
 	private void appendCurrency(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		// Check where the currency symbol should be positioned
@@ -126,5 +118,14 @@ public class CurrencyStyle extends DataStyle {
 			this.appendCurrencySymbol(util, appendable);
 			this.floatStyle.appendNumber(util, appendable);
 		}
+	}
+
+	private void appendCurrencySymbol(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<number:currency-symbol");
+//		this.appendLocaleAttributes(util, appendable);
+		appendable.append(">")
+				.append(util.escapeXMLContent(this.currencySymbol))
+				.append("</number:currency-symbol>");
 	}
 }

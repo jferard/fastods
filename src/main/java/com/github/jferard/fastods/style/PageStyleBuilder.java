@@ -36,16 +36,16 @@ import com.github.jferard.fastods.style.PageStyle.WritingMode;
 public class PageStyleBuilder {
 	private FooterHeader footer;
 	private FooterHeader header;
+	private final String name;
 	private PaperFormat paperFormat;
 	private PrintOrientation printOrientation;
-	private String sBackgroundColor;
 
+	private String sBackgroundColor;
 	private String sMarginBottom;
 	private String sMarginLeft;
 	private String sMarginRight;
-	private String sMarginTop;
 
-	private final String name;
+	private String sMarginTop;
 	private final String sNumFormat;
 	private String sPageHeight;
 	private String sPageWidth;
@@ -268,6 +268,9 @@ public class PageStyleBuilder {
 	 * @return
 	 */
 	public PageStyleBuilder writingMode(final WritingMode writingMode) {
+		if (writingMode == null)
+			throw new IllegalArgumentException();
+		
 		this.writingMode = writingMode;
 		return this;
 	}

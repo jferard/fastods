@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
 
@@ -27,9 +27,10 @@ import java.util.Locale;
  *
  *         This file NumberStyleBuilder.java is part of FastODS.
  */
-public class PercentageStyleBuilder
-		extends DataStyleBuilder<PercentageStyle, PercentageStyleBuilder> {
-	private FloatStyleBuilder floatStyleBuilder;
+public class FractionStyleBuilder
+		extends NumberStyleBuilder<FractionStyle, FractionStyleBuilder> {
+	private int minDenominatorDigits;
+	private int minNumeratorDigits;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
@@ -39,38 +40,32 @@ public class PercentageStyleBuilder
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public PercentageStyleBuilder(final String name, final Locale locale) {
+	public FractionStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
-		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
+		this.minNumeratorDigits = 0;
+		this.minDenominatorDigits = 0;
 	}
 
 	@Override
-	public PercentageStyle build() {
-		return new PercentageStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle,
-				this.floatStyleBuilder.decimalPlaces,
-				this.floatStyleBuilder.grouping,
-				this.floatStyleBuilder.minIntegerDigits,
-				this.floatStyleBuilder.negativeValueColor);
+	public FractionStyle build() {
+		return new FractionStyle(this.name, this.languageCode, this.countryCode,
+				this.volatileStyle, this.grouping, this.minIntegerDigits,
+				this.negativeValueColor, this.minNumeratorDigits,
+				this.minDenominatorDigits);
 	}
 
-	public FloatStyleBuilder decimalPlaces(int decimalPlaces) {
-		return this.floatStyleBuilder.decimalPlaces(decimalPlaces);
-	}
-
-	public FloatStyleBuilder negativeValueColor(String negativeValueColor) {
-		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
-	}
-
-	public FloatStyleBuilder negativeValueRed() {
-		return this.floatStyleBuilder.negativeValueRed();
-	}
-
-	public FloatStyleBuilder groupThousands(boolean grouping) {
-		return this.floatStyleBuilder.groupThousands(grouping);
-	}
-
-	public FloatStyleBuilder minIntegerDigits(int minIntegerDigits) {
-		return this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+	/**
+	 * Add the numerator and denominator values to be shown.<br>
+	 * The number style is set to NUMBER_FRACTION
+	 *
+	 * @param nNumerator
+	 * @param nDenominator
+	 * @return this for fluent style
+	 */
+	public FractionStyleBuilder fractionValues(final int nNumerator,
+			final int nDenominator) {
+		this.minNumeratorDigits = nNumerator;
+		this.minDenominatorDigits = nDenominator;
+		return this;
 	}
 }

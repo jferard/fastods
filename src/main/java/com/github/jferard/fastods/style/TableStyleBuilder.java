@@ -29,8 +29,8 @@ package com.github.jferard.fastods.style;
  *         <br>
  */
 public class TableStyleBuilder {
-	private PageStyle pageStyle;
 	private final String name;
+	private PageStyle pageStyle;
 
 	/**
 	 * @param name

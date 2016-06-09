@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -80,13 +81,13 @@ public class TableCellStyle implements StyleTag {
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	private final boolean bWrap; // No line wrap when false, line wrap when
 	private DataStyle dataStyle;
+	private final String name;
 	private final Align nTextAlign; // 'center','end','start','justify'
 	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
 	private final String sBackgroundColor;
+
 	// true
 	private final String sDefaultCellStyle;
-
-	private final String name;
 
 	private final FHTextStyle textStyle;
 
