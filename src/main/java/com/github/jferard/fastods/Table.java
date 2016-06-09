@@ -86,11 +86,13 @@ public class Table implements NamedObject {
 
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
+	private XMLUtil xmlUtil;
 
 	Table(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
 			final DataStyles format, final String name, final int rowCapacity,
 			final int columnCapacity) {
 		this.odsFile = odsFile;
+		this.xmlUtil = xmlUtil;
 		this.util = util;
 		this.format = format;
 		this.name = name;
@@ -169,8 +171,8 @@ public class Table implements NamedObject {
 		Table.checkRow(nRow);
 		HeavyTableRow tr = this.qTableRows.get(nRow);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.odsFile, this.util, this.format, nRow,
-					this.columnCapacity);
+			tr = new HeavyTableRow(this.odsFile, this.util, this.xmlUtil,
+					this.format, nRow, this.columnCapacity);
 			this.qTableRows.set(nRow, tr);
 		}
 		return tr;
@@ -197,7 +199,7 @@ public class Table implements NamedObject {
 	public HeavyTableRow nextRow() {
 		final int nRow = this.qTableRows.size();
 		final HeavyTableRow tr = new HeavyTableRow(this.odsFile, this.util,
-				this.format, nRow, this.columnCapacity);
+				this.xmlUtil, this.format, nRow, this.columnCapacity);
 		this.qTableRows.add(tr);
 		return tr;
 	}
@@ -269,14 +271,27 @@ public class Table implements NamedObject {
 
 	private void appendRows(final Appendable appendable, final XMLUtil util)
 			throws IOException {
-		// Loop through all rows
-		for (final HeavyTableRow tr : this.qTableRows) {
+		int nNullFieldCounter = 0;
+
+		final int size = this.qTableRows.size();
+		for (int r = 0; r < size; r++) {
+			final HeavyTableRow tr = this.qTableRows.get(r);
 			if (tr == null) {
-				appendable.append("<table:table-row");
-				util.appendEAttribute(appendable, "table:style-name", "ro1");
-				appendable.append("><table:table-cell/></table:table-row>");
-			} else
+				nNullFieldCounter++;
+			} else {
+				if (nNullFieldCounter > 0) {
+					appendable.append("<table:table-row");
+					if (nNullFieldCounter > 1) {
+						util.appendEAttribute(appendable,
+								"table:number-rows-repeated",
+								nNullFieldCounter);
+					}
+					util.appendEAttribute(appendable, "table:style-name",
+							"ro1");
+					appendable.append("><table:table-cell/></table:table-row>");
+				}
 				tr.appendXMLToTable(util, appendable);
+			}
 		}
 	}
 

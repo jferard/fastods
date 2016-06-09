@@ -184,7 +184,6 @@ public class PageStyle {
 		this.printOrientation = printOrientation;
 		this.paperFormat = paperFormat;
 		this.writingMode = writingMode;
-		System.out.println(this.writingMode);
 	}
 
 	public void addToFile(final OdsFile odsFile) {

@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -290,6 +291,7 @@ public class OdsFile {
 	public boolean save(final OutputStream output) {
 		this.settingsEntry.setTables(this.contentEntry.getTables());
 		final ZipOutputStream zipOut = new ZipOutputStream(output);
+		zipOut.setLevel(Deflater.BEST_SPEED);
 		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
 
 		try {

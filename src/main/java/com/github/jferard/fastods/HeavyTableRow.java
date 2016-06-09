@@ -56,11 +56,13 @@ public class HeavyTableRow {
 	private final List<Type> types;
 	private final Util util;
 	private final List<String> values;
+	private XMLUtil xmlUtil;
 
 	HeavyTableRow(final OdsFile odsFile, final Util util,
-			final DataStyles dataStyles, final int nRow,
-			final int columnCapacity) {
+			XMLUtil xmlUtil, final DataStyles dataStyles,
+			final int nRow, final int columnCapacity) {
 		this.util = util;
+		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
 		this.nRow = nRow;
 		this.odsFile = odsFile;
@@ -131,7 +133,7 @@ public class HeavyTableRow {
 
 		util.appendEAttribute(appendable, "office:value-type",
 				valueType.getAttrValue());
-		util.appendAttribute(appendable, valueType.getAttrName(), value);
+		util.appendEAttribute(appendable, valueType.getAttrName(), value);
 		if (valueType == Type.CURRENCY) {
 			final String currency = this.currencies.get(i);
 			util.appendAttribute(appendable, "office:currency", currency);
@@ -444,7 +446,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setStringValue(java.lang.String)
 	 */
 	public void setStringValue(final int i, final String value) {
-		this.values.set(i, value);// TODO ESCAPE
+		this.values.set(i, this.xmlUtil.escapeXMLAttribute(value));// TODO ESCAPE
 		this.types.set(i, HeavyTableCell.Type.STRING);
 	}
 
