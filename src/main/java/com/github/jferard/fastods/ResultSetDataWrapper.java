@@ -28,8 +28,9 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	 */
 	private final ResultSet resultSet;
 
-	public ResultSetDataWrapper(final ResultSet rs, final int max) {
+	public ResultSetDataWrapper(final ResultSet rs, TableCellStyle headCellStyle, final int max) {
 		this.resultSet = rs;
+		this.headCellStyle = headCellStyle;
 		this.max = max;
 		try {
 			this.metadata = rs.getMetaData();

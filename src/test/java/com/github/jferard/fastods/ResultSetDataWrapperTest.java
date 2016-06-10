@@ -2,6 +2,7 @@ package com.github.jferard.fastods;
 
 import org.junit.Test;
 
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.mockrunner.jdbc.BasicJDBCTestCaseAdapter;
@@ -18,16 +19,22 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		StatementResultSetHandler resultSetHandler = connection
 				.getStatementResultSetHandler();
 		MockResultSet rs = resultSetHandler.createResultSet();
-		rs.addColumn("chiffre");
+		rs.addColumn("number");
+		rs.addColumn("word");
+		rs.addColumn("code");
 		resultSetHandler.prepareGlobalResultSet(rs);
-		rs.addRow(new Integer[] { new Integer(13) });
+		rs.addRow(new Object[] { 13, "a", "13a" });
+		rs.addRow(new Object[] { 14, "b", "13b" });
+		rs.addRow(new Object[] { 15, "c", "13c" });
 
 		OdsFile file = OdsFile.create("7columns.ods");
 		final Table table = file.addTable("test", 50, 5);
 		FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
 		XMLUtil xmlUtil = new XMLUtil(xmlEscaper);
 		
-		DataWrapper data = new ResultSetDataWrapper(rs, 100);
+		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "cc")
+				.backgroundColor("#dddddd").fontWeightBold().build();
+		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
 		
 		table.addData(data);
 		file.save();
