@@ -23,6 +23,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.style.MarginAttribute.Position;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -39,16 +40,17 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class TableCellStyleBuilder {
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	// 'top'
-	private boolean bWrap; // No line wrap when false, line wrap when
+	private boolean wrap; // No line wrap when false, line wrap when
 	private DataStyle dataStyle;
 	private final String name;
-	private TableCellStyle.Align nTextAlign; // 'center','end','start','justify'
-	private TableCellStyle.VerticalAlign nVerticalAlign; // 'middle', 'bottom',
-	private String sBackgroundColor;
+	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
+	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
+	private String backgroundColor;
 	// true
-	private final String sDefaultCellStyle;
+	private String parentCellStyle;
 	private final FHTextStyleBuilder tsBuilder;
 	private final XMLUtil util;
+	private EnumMap<Position, MarginAttribute> marginByPosition;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -68,16 +70,28 @@ public class TableCellStyleBuilder {
 		if (name == null)
 			throw new IllegalArgumentException();
 
-		this.name = name;
-		this.nTextAlign = TableCellStyle.Align.LEFT;
-		this.nVerticalAlign = TableCellStyle.VerticalAlign.TOP;
-		this.bWrap = false;
-		this.sBackgroundColor = "#FFFFFF";
-
-		this.tsBuilder = new FHTextStyleBuilder("fh" + name);
-		this.sDefaultCellStyle = "Default";
+		this.name = util.escapeXMLAttribute(name);
+		this.parentCellStyle = "Default";
+		this.tsBuilder = FHTextStyle.builder("fh" + name);
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);
+		this.marginByPosition = new EnumMap<MarginAttribute.Position, MarginAttribute>(
+				MarginAttribute.Position.class);
+	}
+
+	/**
+	 * Sets the parent cell style
+	 * 
+	 * @param parentCellStyle
+	 * @return this for fluent style.
+	 */
+	public TableCellStyleBuilder parentCellStyle(
+			TableCellStyle tableCellStyle) {
+		if (tableCellStyle == null)
+			this.parentCellStyle = null;
+		else
+			this.parentCellStyle = tableCellStyle.getName();
+		return this;
 	}
 
 	/**
@@ -87,8 +101,24 @@ public class TableCellStyleBuilder {
 	 *            - The border style to be used
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder addBorderStyle(final BorderAttribute bs) {
+	public TableCellStyleBuilder addBorder(final BorderAttribute bs) {
 		this.borderByPosition.put(bs.getPosition(), bs);
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param sSize
+	 *            The size of the margin '0cm'
+	 * @param nPosition
+	 *            - The position of the line in this cell, e.g.
+	 *            BorderAttribute.POSITION_TOP
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder addMargin(final String sSize,
+			final MarginAttribute.Position nPosition) {
+		this.marginByPosition.put(nPosition, new MarginAttribute(sSize, nPosition));
 		return this;
 	}
 
@@ -108,12 +138,12 @@ public class TableCellStyleBuilder {
 	 *            BorderAttribute.POSITION_TOP
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder addBorderStyle(final String sSize,
+	public TableCellStyleBuilder addBorder(final String sSize,
 			final String sBorderColor, final BorderAttribute.Style nStyle,
 			final BorderAttribute.Position nPosition) {
 		final BorderAttribute bs = new BorderAttribute(sSize, sBorderColor,
 				nStyle, nPosition);
-		this.addBorderStyle(bs);
+		this.addBorder(bs);
 		return this;
 	}
 
@@ -128,7 +158,7 @@ public class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder backgroundColor(final String sColor) {
-		this.sBackgroundColor = sColor;
+		this.backgroundColor = sColor;
 		return this;
 	}
 
@@ -137,9 +167,9 @@ public class TableCellStyleBuilder {
 			throw new IllegalStateException();
 
 		return new TableCellStyle(this.util, this.name, this.dataStyle,
-				this.sBackgroundColor, this.tsBuilder.build(), this.nTextAlign,
-				this.nVerticalAlign, this.bWrap, this.sDefaultCellStyle,
-				this.borderByPosition);
+				this.backgroundColor, this.tsBuilder.build(), this.textAlign,
+				this.verticalAlign, this.wrap, this.parentCellStyle,
+				this.borderByPosition, this.marginByPosition);
 
 	}
 
@@ -252,7 +282,7 @@ public class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder fontWrap(final boolean fSetWrap) {
-		this.bWrap = fSetWrap;
+		this.wrap = fSetWrap;
 		return this;
 	}
 
@@ -264,7 +294,7 @@ public class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder textAlign(final TableCellStyle.Align nAlign) {
-		this.nTextAlign = nAlign;
+		this.textAlign = nAlign;
 		return this;
 	}
 
@@ -279,7 +309,7 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder verticalAlign(
 			final TableCellStyle.VerticalAlign nAlign) {
-		this.nVerticalAlign = nAlign;
+		this.verticalAlign = nAlign;
 		return this;
 	}
 }

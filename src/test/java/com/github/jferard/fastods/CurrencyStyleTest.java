@@ -47,7 +47,7 @@ public class CurrencyStyleTest {
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
-		this.factory = new DataStyleBuilderFactory(this.locale);
+		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}
 
 	@Test

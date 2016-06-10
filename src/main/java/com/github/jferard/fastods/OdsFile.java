@@ -82,7 +82,7 @@ public class OdsFile {
 		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
 		final XMLUtil xmlUtil = new XMLUtil(escaper);
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
-				locale);
+				xmlUtil, locale);
 		return new OdsFile(name, new Util(), xmlUtil,
 				new LocaleDataStyles(builderFactory, xmlUtil),
 				OdsFile.DEFAULT_BUFFER_SIZE);

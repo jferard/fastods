@@ -48,21 +48,21 @@ public class XMLUtil {
 	 *
 	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
-	 * @param sElementName
+	 * @param attrName
 	 *            The new element name
-	 * @param sValue
+	 * @param attrRawValue
 	 *            The value of the element
 	 * @throws IOException
 	 */
 	public void appendAttribute(final Appendable appendable,
-			final String sElementName, final String sValue) throws IOException {
-		appendable.append(' ').append(sElementName).append("=\"")
-				.append(this.escaper.escapeXMLAttribute(sValue)).append('"');
+			final String attrName, final String attrRawValue) throws IOException {
+		appendable.append(' ').append(attrName).append("=\"")
+				.append(this.escaper.escapeXMLAttribute(attrRawValue)).append('"');
 	}
 
 	public void appendEAttribute(final Appendable appendable,
-			final String sElementName, final boolean b) throws IOException {
-		this.appendEAttribute(appendable, sElementName, Boolean.toString(b));
+			final String attrName, final boolean attrValue) throws IOException {
+		this.appendEAttribute(appendable, attrName, Boolean.toString(attrValue));
 	}
 
 	/**
@@ -72,25 +72,25 @@ public class XMLUtil {
 	 *
 	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
-	 * @param sElementName
+	 * @param attrName
 	 *            The new element name
-	 * @param nValue
+	 * @param attrValue
 	 *            The value of the element
 	 * @throws IOException
 	 */
 	public void appendEAttribute(final Appendable appendable,
-			final String sElementName, final int nValue) throws IOException {
-		this.appendEAttribute(appendable, sElementName,
-				Integer.toString(nValue));
+			final String attrName, final int attrValue) throws IOException {
+		this.appendEAttribute(appendable, attrName,
+				Integer.toString(attrValue));
 	}
 
 	/**
-	 * @param sValue
+	 * @param attrValue
 	 *            escaped attribute
 	 */
 	public void appendEAttribute(final Appendable appendable,
-			final String sElementName, final String sValue) throws IOException {
-		appendable.append(' ').append(sElementName).append("=\"").append(sValue)
+			final String attrName, final String attrValue) throws IOException {
+		appendable.append(' ').append(attrName).append("=\"").append(attrValue)
 				.append('"');
 	}
 

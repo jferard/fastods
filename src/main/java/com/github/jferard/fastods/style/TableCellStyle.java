@@ -20,8 +20,10 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.Map;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -73,21 +75,28 @@ public class TableCellStyle implements StyleTag {
 	public static TableCellStyle getDefaultCellStyle(final XMLUtil util) {
 		if (TableCellStyle.defaultCellStyle == null)
 			TableCellStyle.defaultCellStyle = TableCellStyle
-					.builder(util, "Default").build();
+					.builder(util, "Default")
+					.textAlign(TableCellStyle.Align.LEFT)
+					.verticalAlign(TableCellStyle.VerticalAlign.TOP)
+					.fontWrap(false).backgroundColor(Color.WHITE)
+					.addMargin("0cm", MarginAttribute.Position.LEFT)
+					.parentCellStyle(null)
+					.build();
 
 		return TableCellStyle.defaultCellStyle;
 	}
 
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
-	private final boolean bWrap; // No line wrap when false, line wrap when
+	private final Map<MarginAttribute.Position, MarginAttribute> marginByPosition;
+	private final boolean wrap; // No line wrap when false, line wrap when
 	private DataStyle dataStyle;
 	private final String name;
-	private final Align nTextAlign; // 'center','end','start','justify'
-	private final VerticalAlign nVerticalAlign; // 'middle', 'bottom', 'top'
-	private final String sBackgroundColor;
+	private final Align textAlign; // 'center','end','start','justify'
+	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
+	private final String backgroundColor;
 
 	// true
-	private final String sDefaultCellStyle;
+	private final String parentCellStyleName;
 
 	private final FHTextStyle textStyle;
 
@@ -108,16 +117,18 @@ public class TableCellStyle implements StyleTag {
 			final DataStyle dataStyle, final String sBackgroundColor,
 			final FHTextStyle ts, final Align nTextAlign,
 			final VerticalAlign nVerticalAlign, final boolean bWrap,
-			final String sDefaultCellStyle,
-			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition) {
+			final String parentCellStyleName,
+			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition,
+			final EnumMap<MarginAttribute.Position, MarginAttribute> marginByPosition) {
+		this.marginByPosition = marginByPosition;
 		this.name = util.escapeXMLAttribute(name);
 		this.dataStyle = dataStyle;
-		this.sBackgroundColor = sBackgroundColor;
+		this.backgroundColor = sBackgroundColor;
 		this.textStyle = ts;
-		this.nTextAlign = nTextAlign;
-		this.nVerticalAlign = nVerticalAlign;
-		this.bWrap = bWrap;
-		this.sDefaultCellStyle = sDefaultCellStyle;
+		this.textAlign = nTextAlign;
+		this.verticalAlign = nVerticalAlign;
+		this.wrap = bWrap;
+		this.parentCellStyleName = parentCellStyleName;
 		this.borderByPosition = borderByPosition;
 	}
 
@@ -140,17 +151,21 @@ public class TableCellStyle implements StyleTag {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
-		util.appendEAttribute(appendable, "style:parent-style-name", "Default");
+		if (this.parentCellStyleName != null)
+			util.appendEAttribute(appendable, "style:parent-style-name",
+					this.parentCellStyleName);
 		if (this.dataStyle != null)
 			util.appendAttribute(appendable, "style:data-style-name",
 					this.dataStyle.getName());
 
 		appendable.append("><style:table-cell-properties");
-		util.appendAttribute(appendable, "fo:background-color",
-				this.sBackgroundColor);
+		if (this.backgroundColor != null)
+			util.appendAttribute(appendable, "fo:background-color",
+					this.backgroundColor);
 
-		util.appendEAttribute(appendable, "style:vertical-align",
-				this.nVerticalAlign.attrValue);
+		if (this.verticalAlign != null)
+			util.appendEAttribute(appendable, "style:vertical-align",
+					this.verticalAlign.attrValue);
 
 		// -----------------------------------------------
 		// Add all border styles
@@ -159,7 +174,7 @@ public class TableCellStyle implements StyleTag {
 			bs.appendXMLToTableCellStyle(util, appendable);
 		}
 
-		if (this.bWrap)
+		if (this.wrap)
 			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
 
 		appendable.append("/>");
@@ -171,9 +186,14 @@ public class TableCellStyle implements StyleTag {
 		}
 
 		appendable.append("<style:paragraph-properties");
-		util.appendEAttribute(appendable, "fo:text-align",
-				this.nTextAlign.attrValue);
-		util.appendEAttribute(appendable, "fo:margin-left", "0cm");
+		if (this.textAlign != null)
+			util.appendEAttribute(appendable, "fo:text-align",
+					this.textAlign.attrValue);
+		
+		for (final MarginAttribute ms : this.marginByPosition.values()) {
+			ms.appendXMLToTableCellStyle(util, appendable);			
+		}
+
 		appendable.append("/></style:style>");
 	}
 
