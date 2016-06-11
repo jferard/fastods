@@ -3,19 +3,19 @@
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- * 
+ *
  * This file is part of FastODS.
- * 
+ *
  * FastODS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or 
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * FastODS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -78,9 +78,9 @@ public class HeavyTableRow {
 	private final List<Type> types;
 	private final Util util;
 	private final List<String> values;
-	private XMLUtil xmlUtil;
+	private final XMLUtil xmlUtil;
 
-	HeavyTableRow(final OdsFile odsFile, final Util util, XMLUtil xmlUtil,
+	HeavyTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
 			final DataStyles dataStyles, final int nRow,
 			final int columnCapacity) {
 		this.util = util;
@@ -128,18 +128,6 @@ public class HeavyTableRow {
 		}
 
 		appendable.append("</table:table-row>");
-	}
-
-	private void appendRowOpenTag(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<table:table-row");
-		if (this.rowStyle != null)
-			util.appendEAttribute(appendable, "table:style-name",
-					this.rowStyle.getName());
-		if (this.defaultCellStyle != null)
-			util.appendEAttribute(appendable, "table:default-cell-style-name",
-					this.defaultCellStyle.getName());
-		appendable.append(">");
 	}
 
 	public void appendXMLToTableRow(final XMLUtil util,
@@ -409,7 +397,7 @@ public class HeavyTableRow {
 		this.dataStyles = format;
 	}
 
-	/* 
+	/*
 	 * FastOds uses the mapping Apache DB project maapping
 	 * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
 	 */
@@ -507,5 +495,17 @@ public class HeavyTableRow {
 		this.values.set(i, this.xmlUtil.formatTimeInterval(timeInMillis));
 		this.types.set(i, HeavyTableCell.Type.TIME);
 		this.setStyle(i, this.dataStyles.getTimeStyle());
+	}
+
+	private void appendRowOpenTag(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<table:table-row");
+		if (this.rowStyle != null)
+			util.appendEAttribute(appendable, "table:style-name",
+					this.rowStyle.getName());
+		if (this.defaultCellStyle != null)
+			util.appendEAttribute(appendable, "table:default-cell-style-name",
+					this.defaultCellStyle.getName());
+		appendable.append(">");
 	}
 }

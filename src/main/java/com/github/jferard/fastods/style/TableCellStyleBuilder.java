@@ -3,19 +3,19 @@
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- * 
+ *
  * This file is part of FastODS.
- * 
+ *
  * FastODS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or 
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * FastODS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -59,19 +59,19 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         0.5.2 Replaced all text properties with a TextStyle object
  */
 public class TableCellStyleBuilder {
-	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
-	// 'top'
-	private boolean wrap; // No line wrap when false, line wrap when
-	private DataStyle dataStyle;
-	private final String name;
-	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
-	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
 	private String backgroundColor;
+	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
+	private DataStyle dataStyle;
+	private final EnumMap<Position, MarginAttribute> marginByPosition;
+	private final String name;
 	// true
 	private String parentCellStyle;
+	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
 	private final FHTextStyleBuilder tsBuilder;
 	private final XMLUtil util;
-	private EnumMap<Position, MarginAttribute> marginByPosition;
+	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
+	// 'top'
+	private boolean wrap; // No line wrap when false, line wrap when
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -101,21 +101,6 @@ public class TableCellStyleBuilder {
 	}
 
 	/**
-	 * Sets the parent cell style
-	 * 
-	 * @param parentCellStyle
-	 * @return this for fluent style.
-	 */
-	public TableCellStyleBuilder parentCellStyle(
-			TableCellStyle tableCellStyle) {
-		if (tableCellStyle == null)
-			this.parentCellStyle = null;
-		else
-			this.parentCellStyle = tableCellStyle.getName();
-		return this;
-	}
-
-	/**
 	 * Add a border style to this cell.
 	 *
 	 * @param bs
@@ -124,22 +109,6 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder addBorder(final BorderAttribute bs) {
 		this.borderByPosition.put(bs.getPosition(), bs);
-		return this;
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param sSize
-	 *            The size of the margin '0cm'
-	 * @param nPosition
-	 *            - The position of the line in this cell, e.g.
-	 *            BorderAttribute.POSITION_TOP
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder addMargin(final String sSize,
-			final MarginAttribute.Position nPosition) {
-		this.marginByPosition.put(nPosition, new MarginAttribute(sSize, nPosition));
 		return this;
 	}
 
@@ -169,6 +138,23 @@ public class TableCellStyleBuilder {
 	}
 
 	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param sSize
+	 *            The size of the margin '0cm'
+	 * @param nPosition
+	 *            - The position of the line in this cell, e.g.
+	 *            BorderAttribute.POSITION_TOP
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder addMargin(final String sSize,
+			final MarginAttribute.Position nPosition) {
+		this.marginByPosition.put(nPosition,
+				new MarginAttribute(sSize, nPosition));
+		return this;
+	}
+
+	/**
 	 * Set the cell background color to sColor.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
@@ -194,20 +180,6 @@ public class TableCellStyleBuilder {
 
 	}
 
-	// /**
-	// * Set the data style for this TableFamilyStyle to cs.<br>
-	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-	// * exception is thrown
-	// *
-	// * @param cs
-	// * The currency style to be used
-	// * @return this for fluent style
-	// */
-	// public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
-	// this.dataStyle = cs;
-	// return this;
-	// }
-
 	/**
 	 * Set the data style for this TableFamilyStyle to ds.<br>
 	 * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
@@ -223,16 +195,16 @@ public class TableCellStyleBuilder {
 	}
 
 	// /**
-	// * Set the data style for this TableFamilyStyle to ns.<br>
+	// * Set the data style for this TableFamilyStyle to cs.<br>
 	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
 	// * exception is thrown
 	// *
-	// * @param ns
-	// * The number style to be used
+	// * @param cs
+	// * The currency style to be used
 	// * @return this for fluent style
 	// */
-	// public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
-	// this.dataStyle = ns;
+	// public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
+	// this.dataStyle = cs;
 	// return this;
 	// }
 
@@ -250,6 +222,20 @@ public class TableCellStyleBuilder {
 		this.tsBuilder.fontColor(sColor);
 		return this;
 	}
+
+	// /**
+	// * Set the data style for this TableFamilyStyle to ns.<br>
+	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+	// * exception is thrown
+	// *
+	// * @param ns
+	// * The number style to be used
+	// * @return this for fluent style
+	// */
+	// public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
+	// this.dataStyle = ns;
+	// return this;
+	// }
 
 	/**
 	 * Set the font weight to italic.<br>
@@ -304,6 +290,21 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder fontWrap(final boolean fSetWrap) {
 		this.wrap = fSetWrap;
+		return this;
+	}
+
+	/**
+	 * Sets the parent cell style
+	 *
+	 * @param parentCellStyle
+	 * @return this for fluent style.
+	 */
+	public TableCellStyleBuilder parentCellStyle(
+			final TableCellStyle tableCellStyle) {
+		if (tableCellStyle == null)
+			this.parentCellStyle = null;
+		else
+			this.parentCellStyle = tableCellStyle.getName();
 		return this;
 	}
 

@@ -3,19 +3,19 @@
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- * 
+ *
  * This file is part of FastODS.
- * 
+ *
  * FastODS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or 
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * FastODS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -40,9 +40,9 @@ import com.github.jferard.fastods.style.TableCellStyle;
  *
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
  * table:table/table:table-row
- * 
+ *
  * Usage :
- * 
+ *
  * <pre>
  * {@code
  * 		OdsFile file = OdsFile.create("7columns.ods");
@@ -52,7 +52,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
  *				.backgroundColor("#dddddd").fontWeightBold().build();
  *		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
  *		DataWrapper data2 = new ResultSetDataWrapper(rs2, tcls, 100);
- *		
+ *
  *		table.addData(data);
  *		table.nextRow();
  *		table.addData(data2);
@@ -60,7 +60,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
  *				.backgroundColor("#dddddd").fontWeightBold().build();
  *		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
  *		DataWrapper data2 = new ResultSetDataWrapper(rs2, tcls, 100);
- *		
+ *
  *		table.addData(data);
  *		table.nextRow();
  *		table.addData(data2);
@@ -68,14 +68,14 @@ import com.github.jferard.fastods.style.TableCellStyle;
  * @author Julien Férard Copyright (C) 2016 J. Férard.
  * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
  *         users.sourceforge.net>
- * 
+ *
  */
 public final class ResultSetDataWrapper implements DataWrapper {
 	/**
 	 * column count of the ResultSet.
 	 */
 	private int columnCount;
-	private TableCellStyle headCellStyle;
+	private final TableCellStyle headCellStyle;
 	/**
 	 * maximum number of lines to be written
 	 */
@@ -90,7 +90,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	private final ResultSet resultSet;
 
 	public ResultSetDataWrapper(final ResultSet rs,
-			TableCellStyle headCellStyle, final int max) {
+			final TableCellStyle headCellStyle, final int max) {
 		this.resultSet = rs;
 		this.headCellStyle = headCellStyle;
 		this.max = max;

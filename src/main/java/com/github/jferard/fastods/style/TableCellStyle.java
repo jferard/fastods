@@ -3,19 +3,19 @@
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- * 
+ *
  * This file is part of FastODS.
- * 
+ *
  * FastODS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or 
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * FastODS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -101,25 +101,24 @@ public class TableCellStyle implements StyleTag {
 					.verticalAlign(TableCellStyle.VerticalAlign.TOP)
 					.fontWrap(false).backgroundColor(Color.WHITE)
 					.addMargin("0cm", MarginAttribute.Position.LEFT)
-					.parentCellStyle(null)
-					.build();
+					.parentCellStyle(null).build();
 
 		return TableCellStyle.defaultCellStyle;
 	}
 
-	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
-	private final Map<MarginAttribute.Position, MarginAttribute> marginByPosition;
-	private final boolean wrap; // No line wrap when false, line wrap when
-	private DataStyle dataStyle;
-	private final String name;
-	private final Align textAlign; // 'center','end','start','justify'
-	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
 	private final String backgroundColor;
-
+	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
+	private DataStyle dataStyle;
+	private final Map<MarginAttribute.Position, MarginAttribute> marginByPosition;
+	private final String name;
 	// true
 	private final String parentCellStyleName;
-
+	private final Align textAlign; // 'center','end','start','justify'
 	private final FHTextStyle textStyle;
+
+	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
+
+	private final boolean wrap; // No line wrap when false, line wrap when
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -210,9 +209,9 @@ public class TableCellStyle implements StyleTag {
 		if (this.textAlign != null)
 			util.appendEAttribute(appendable, "fo:text-align",
 					this.textAlign.attrValue);
-		
+
 		for (final MarginAttribute ms : this.marginByPosition.values()) {
-			ms.appendXMLToTableCellStyle(util, appendable);			
+			ms.appendXMLToTableCellStyle(util, appendable);
 		}
 
 		appendable.append("/></style:style>");

@@ -55,7 +55,7 @@ public class BenchIT {
 	}
 	
 	@Test
-	public void test() throws FastOdsException, SimpleOdsException {
+	public void test() throws SimpleOdsException {
 		for (int i = 0 ; i<10 ; i++) {
 			testFast(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
 			testSimple(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
@@ -63,7 +63,7 @@ public class BenchIT {
 	}
 	
 	@Test
-	public void test2() throws FastOdsException, SimpleOdsException {
+	public void test2() throws SimpleOdsException {
 		for (int i = 0 ; i<10 ; i++) {
 			testFast(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
 			testSimple(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
