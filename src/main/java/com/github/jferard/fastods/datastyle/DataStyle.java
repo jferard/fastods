@@ -2,8 +2,8 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.NamedObject;
 import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public abstract class DataStyle implements NamedObject {

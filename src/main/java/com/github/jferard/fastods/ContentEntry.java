@@ -21,9 +21,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -31,6 +29,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -48,7 +47,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 class ContentEntry implements OdsEntry {
 	private final DataStyles format;
 	private final OdsFile odsFile;
-	private final List<Table> qTables;
+	private final UniqueList<Table> tables;
 	private final Map<String, StyleTag> styleTagByName;
 	private final Util util;
 	private final XMLUtil xmlUtil;
@@ -59,7 +58,7 @@ class ContentEntry implements OdsEntry {
 		this.xmlUtil = xmlUtil;
 		this.util = util;
 		this.format = format;
-		this.qTables = new LinkedList<Table>();
+		this.tables = new UniqueList<Table>();
 		this.styleTagByName = new HashMap<String, StyleTag>();
 	}
 
@@ -72,11 +71,11 @@ class ContentEntry implements OdsEntry {
 	 */
 	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		Table table = this.getTable(name);
+		Table table = this.tables.get(name);
 		if (table == null) {
 			table = new Table(this.odsFile, this.xmlUtil, this.util,
 					this.format, name, rowCapacity, columnCapacity);
-			this.qTables.add(table);
+			this.tables.add(table);
 		}
 		return table;
 	}
@@ -103,8 +102,8 @@ class ContentEntry implements OdsEntry {
 	// return tab.getCell(nRow, nCol);
 	// }
 
-	public Table getTable(final int nTab) {
-		return this.qTables.get(nTab);
+	public Table getTable(final int tableIndex) {
+		return this.tables.get(tableIndex);
 	}
 
 	/**
@@ -113,11 +112,18 @@ class ContentEntry implements OdsEntry {
 	 * @return the table, or null if none present
 	 */
 	public Table getTable(final String name) {
-		return this.util.findElementByName(this.qTables, name);
+		return this.tables.get(name);
 	}
 
+	/**
+	 * @return the list of tables
+	 */
+	public List<Table> getTables() {
+		return this.tables;
+	}
+	
 	public int getTableCount() {
-		return this.qTables.size();
+		return this.tables.size();
 	}
 
 	@Override
@@ -146,8 +152,8 @@ class ContentEntry implements OdsEntry {
 
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
-		for (final Table tab : this.qTables)
-			tab.appendXMLToContentEntry(util, writer);
+		for (final Table table : this.tables)
+			table.appendXMLToContentEntry(util, writer);
 		writer.write("</office:spreadsheet>");
 		writer.write("</office:body>");
 		writer.write("</office:document-content>");
@@ -156,7 +162,7 @@ class ContentEntry implements OdsEntry {
 	}
 
 	private void checkTableIndex(final int nTab) throws FastOdsException {
-		if (nTab < 0 || this.qTables.size() <= nTab) {
+		if (nTab < 0 || this.tables.size() <= nTab) {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(nTab).append("]").toString());
 		}
@@ -164,9 +170,5 @@ class ContentEntry implements OdsEntry {
 
 	void addStyleTag(final StyleTag styleTag) {
 		this.styleTagByName.put(styleTag.getName(), styleTag);
-	}
-
-	List<Table> getTables() {
-		return Collections.unmodifiableList(this.qTables);
 	}
 }

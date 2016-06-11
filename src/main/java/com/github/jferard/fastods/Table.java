@@ -26,6 +26,8 @@ import java.util.List;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 

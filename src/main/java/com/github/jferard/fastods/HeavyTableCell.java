@@ -94,7 +94,7 @@ public class HeavyTableCell implements TableCell {
 
 	private String sValue;
 
-	private final Util util;
+	private final XMLUtil xmlUtil;
 
 	private Type valueType;
 
@@ -106,9 +106,9 @@ public class HeavyTableCell implements TableCell {
 	 * @param value
 	 *            The String content for this cell.
 	 */
-	HeavyTableCell(final OdsFile odsFile, final Util util,
+	HeavyTableCell(final OdsFile odsFile, final XMLUtil xmlUtil,
 			final DataStyles dataStyles, final int nRow, final int nCol) {
-		this.util = util;
+		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
 		this.odsFile = odsFile;
 		// this.nRow = nRow;
@@ -431,7 +431,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setStringValue(final String value) {
-		this.sValue = value;// TODO ESCAPE
+		this.sValue = this.xmlUtil.escapeXMLAttribute(value);
 		this.valueType = HeavyTableCell.Type.STRING;
 	}
 
@@ -455,7 +455,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setTimeValue(final long timeInMillis) {
-		this.sValue = this.util.formatTimeInterval(timeInMillis);
+		this.sValue = this.xmlUtil.formatTimeInterval(timeInMillis);
 		this.valueType = HeavyTableCell.Type.TIME;
 		this.setStyle(this.dataStyles.getTimeStyle());
 	}

@@ -25,6 +25,7 @@ import java.util.List;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -46,11 +47,13 @@ public class LightTableRow {
 	private final OdsFile odsFile;
 	private final List<HeavyTableCell> qTableCells;
 	private TableRowStyle rowStyle;
+	private final XMLUtil xmlUtil;
 	private final Util util;
 
-	LightTableRow(final OdsFile odsFile, final Util util,
+	LightTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
 			final DataStyles format, final int nRow, final int columnCapacity) {
 		this.util = util;
+		this.xmlUtil = xmlUtil;
 		this.format = format;
 		this.nRow = nRow;
 		this.odsFile = odsFile;
@@ -108,7 +111,7 @@ public class LightTableRow {
 	public HeavyTableCell getCell(final int nCol) {
 		HeavyTableCell tc = this.qTableCells.get(nCol);
 		if (tc == null) {
-			tc = new HeavyTableCell(this.odsFile, this.util, this.format,
+			tc = new HeavyTableCell(this.odsFile, this.xmlUtil, this.format,
 					this.nRow, nCol);
 			this.qTableCells.set(nCol, tc);
 		}
@@ -126,7 +129,7 @@ public class LightTableRow {
 
 	public HeavyTableCell nextCell() {
 		final int nCol = this.qTableCells.size();
-		final HeavyTableCell tc = new HeavyTableCell(this.odsFile, this.util,
+		final HeavyTableCell tc = new HeavyTableCell(this.odsFile, this.xmlUtil,
 				this.format, this.nRow, nCol);
 		this.qTableCells.add(tc);
 		return tc;

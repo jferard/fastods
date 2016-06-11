@@ -25,9 +25,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import com.github.jferard.fastods.NamedObject;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -85,53 +82,6 @@ public class Util {
 		} else {
 			return o1.equals(o2);
 		}
-	}
-
-	/**
-	 * @param iterable
-	 *            the iterable to look over
-	 * @param name
-	 *            the name of the object to find
-	 * @return the object, otr null if none present
-	 */
-	public <T extends NamedObject> T findElementByName(
-			final Iterable<T> iterable, final String name) {
-		// Check is a style with this name exists and replace if yes
-		for (final T curElement : iterable) {
-			if (curElement.getName().equals(name))
-				return curElement;
-		}
-		return null;
-	}
-
-	/**
-	 * XML Schema Part 2, 3.2.6 duration
-	 * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
-	 *
-	 * @param milliseconds
-	 * @return
-	 */
-	public String formatTimeInterval(final long milliseconds) {
-		long curMilliseconds = milliseconds;
-		final StringBuilder sb = new StringBuilder().append('P');
-		final long days = TimeUnit.MILLISECONDS.toDays(curMilliseconds);
-		sb.append(days).append("DT");
-		curMilliseconds -= TimeUnit.DAYS.toMillis(days);
-
-		final long hours = TimeUnit.MILLISECONDS.toHours(curMilliseconds);
-		sb.append(hours).append('H');
-		curMilliseconds -= TimeUnit.HOURS.toMillis(hours);
-
-		final long minutes = TimeUnit.MILLISECONDS.toMinutes(curMilliseconds);
-		sb.append(minutes).append('M');
-		curMilliseconds -= TimeUnit.MINUTES.toMillis(minutes);
-
-		final long seconds = TimeUnit.MILLISECONDS.toSeconds(curMilliseconds);
-		sb.append(seconds);
-		curMilliseconds -= TimeUnit.SECONDS.toMillis(seconds);
-
-		sb.append('.').append(curMilliseconds).append('S');
-		return sb.toString();
 	}
 
 	/**

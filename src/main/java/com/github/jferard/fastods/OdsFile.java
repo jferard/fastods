@@ -59,8 +59,6 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  *         This file OdsFile.java is part of FastODS.
  *
- *         This file OdsFile.java is part of FastODS.<br>
- *
  *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw
  *         FastOdsException'. <br>
  *         SimpleOds 0.5.3 Added getMeta().<br>

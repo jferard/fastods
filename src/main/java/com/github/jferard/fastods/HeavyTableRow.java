@@ -28,6 +28,7 @@ import com.github.jferard.fastods.HeavyTableCell.Type;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -58,9 +59,9 @@ public class HeavyTableRow {
 	private final List<String> values;
 	private XMLUtil xmlUtil;
 
-	HeavyTableRow(final OdsFile odsFile, final Util util,
-			XMLUtil xmlUtil, final DataStyles dataStyles,
-			final int nRow, final int columnCapacity) {
+	HeavyTableRow(final OdsFile odsFile, final Util util, XMLUtil xmlUtil,
+			final DataStyles dataStyles, final int nRow,
+			final int columnCapacity) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
@@ -85,7 +86,8 @@ public class HeavyTableRow {
 		int nNullFieldCounter = 0;
 
 		final int size = this.values.size();
-		final boolean hasSpans = this.rowsSpanned != null || this.columnsSpanned != null;
+		final boolean hasSpans = this.rowsSpanned != null
+				|| this.columnsSpanned != null;
 		for (int i = 0; i < size; i++) {
 			final String value = this.values.get(i);
 			if (value == null) {
@@ -107,8 +109,8 @@ public class HeavyTableRow {
 		appendable.append("</table:table-row>");
 	}
 
-	private void appendRowOpenTag(final XMLUtil util, final Appendable appendable)
-			throws IOException {
+	private void appendRowOpenTag(final XMLUtil util,
+			final Appendable appendable) throws IOException {
 		appendable.append("<table:table-row");
 		if (this.rowStyle != null)
 			util.appendEAttribute(appendable, "table:style-name",
@@ -119,8 +121,9 @@ public class HeavyTableRow {
 		appendable.append(">");
 	}
 
-	public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable,
-			final int i, final String value, final boolean hasSpans) throws IOException {
+	public void appendXMLToTableRow(final XMLUtil util,
+			final Appendable appendable, final int i, final String value,
+			final boolean hasSpans) throws IOException {
 		final TableCellStyle style = this.styles.get(i);
 		final Type valueType = this.types.get(i);
 
@@ -150,8 +153,8 @@ public class HeavyTableRow {
 			if (this.rowsSpanned != null) {
 				final Integer rowSpan = this.rowsSpanned.get(i);
 				if (rowSpan != null && rowSpan > 1) {
-					util.appendEAttribute(appendable, "table:number-rows-spanned",
-							rowSpan);
+					util.appendEAttribute(appendable,
+							"table:number-rows-spanned", rowSpan);
 				}
 			}
 		}
@@ -385,8 +388,9 @@ public class HeavyTableRow {
 		this.dataStyles = format;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.github.jferard.fastods.TableCell#setObjectValue(java.lang.Object)
+	/* 
+	 * FastOds uses the mapping Apache DB project maapping
+	 * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
 	 */
 	public void setObjectValue(final int i, final Object value) {
 		if (value == null)
@@ -395,13 +399,17 @@ public class HeavyTableRow {
 		final Object retValue;
 		if (value instanceof String)
 			this.setStringValue(i, (String) value);
-		else if (value instanceof Number)
+		else if (value instanceof Number) // BigDecimal, Byte, Short, Integer,
+											// Long, Float, Double
 			this.setFloatValue(i, (Number) value);
-		else if (value instanceof Date) {
+		else if (value instanceof Boolean)
+			this.setBooleanValue(i, (Boolean) value);
+		else if (value instanceof Date) // java.util.Date & java.sql.Date,
+										// java.sql.Time, java.sql.Timestamp
 			this.setDateValue(i, (Date) value);
-		} else if (value instanceof Calendar) {
+		else if (value instanceof Calendar)
 			this.setDateValue(i, (Calendar) value);
-		} else
+		else // Byte[], ...
 			this.setStringValue(i, value.toString());
 	}
 
@@ -446,7 +454,8 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setStringValue(java.lang.String)
 	 */
 	public void setStringValue(final int i, final String value) {
-		this.values.set(i, this.xmlUtil.escapeXMLAttribute(value));// TODO ESCAPE
+		this.values.set(i, this.xmlUtil.escapeXMLAttribute(value));// TODO
+																	// ESCAPE
 		this.types.set(i, HeavyTableCell.Type.STRING);
 	}
 
@@ -474,7 +483,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setTimeValue(long)
 	 */
 	public void setTimeValue(final int i, final long timeInMillis) {
-		this.values.set(i, this.util.formatTimeInterval(timeInMillis));
+		this.values.set(i, this.xmlUtil.formatTimeInterval(timeInMillis));
 		this.types.set(i, HeavyTableCell.Type.TIME);
 		this.setStyle(i, this.dataStyles.getTimeStyle());
 	}

@@ -1,4 +1,4 @@
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.tool;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -7,8 +7,48 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.jferard.fastods.DataWrapper;
+import com.github.jferard.fastods.HeavyTableRow;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
 
+/**
+ *
+ * This file LightTableRow.java is part of FastODS.
+ *
+ * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
+ * table:table/table:table-row
+ * 
+ * Usage :
+ * 
+ * <pre>
+ * {@code
+ * 		OdsFile file = OdsFile.create("7columns.ods");
+ *		final Table table = file.addTable("test", 50, 5);
+ *		XMLUtil xmlUtil = FastOds.getXMLUtil();
+ *		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")
+ *				.backgroundColor("#dddddd").fontWeightBold().build();
+ *		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
+ *		DataWrapper data2 = new ResultSetDataWrapper(rs2, tcls, 100);
+ *		
+ *		table.addData(data);
+ *		table.nextRow();
+ *		table.addData(data2);
+ *		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")
+ *				.backgroundColor("#dddddd").fontWeightBold().build();
+ *		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
+ *		DataWrapper data2 = new ResultSetDataWrapper(rs2, tcls, 100);
+ *		
+ *		table.addData(data);
+ *		table.nextRow();
+ *		table.addData(data2);
+ *
+ * @author Julien Férard Copyright (C) 2016 J. Férard.
+ * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
+ *         users.sourceforge.net>
+ * 
+ */
 public final class ResultSetDataWrapper implements DataWrapper {
 	/**
 	 * column count of the ResultSet.
@@ -28,7 +68,8 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	 */
 	private final ResultSet resultSet;
 
-	public ResultSetDataWrapper(final ResultSet rs, TableCellStyle headCellStyle, final int max) {
+	public ResultSetDataWrapper(final ResultSet rs,
+			TableCellStyle headCellStyle, final int max) {
 		this.resultSet = rs;
 		this.headCellStyle = headCellStyle;
 		this.max = max;
@@ -96,7 +137,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			throws SQLException, IOException {
 		final List<Object> columnValues = this.getColumnValues();
 		final TableCellWalker walker = row.getWalker();
-		for (int j = 0; j <= this.columnCount-1; j++) {
+		for (int j = 0; j <= this.columnCount - 1; j++) {
 			final Object object = columnValues.get(j);
 			walker.nextCell();
 			walker.setObjectValue(object);
@@ -107,7 +148,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			throws SQLException {
 		final List<String> columnNames = this.getColumnNames();
 		final TableCellWalker walker = row.getWalker();
-		for (int j = 0; j <= this.columnCount-1; j++) {
+		for (int j = 0; j <= this.columnCount - 1; j++) {
 			walker.nextCell();
 			final String name = columnNames.get(j);
 			walker.setStringValue(name);
@@ -118,12 +159,12 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	private void writeLastLineDataTo(final HeavyTableRow row, final int count) {
 		final TableCellWalker walker = row.getWalker();
 		if (count == 0) {// no row
-			for (int j = 0; j <= this.columnCount-1; j++) {
+			for (int j = 0; j <= this.columnCount - 1; j++) {
 				walker.nextCell();
 				walker.setStringValue("");
 			}
 		} else if (count > this.max) {
-			for (int j = 0; j <= this.columnCount-1; j++) {
+			for (int j = 0; j <= this.columnCount - 1; j++) {
 				walker.nextCell();
 				walker.setStringValue(String.format("... (%d rows remaining)",
 						count - this.max));

@@ -19,6 +19,9 @@
  */
 package com.github.jferard.fastods;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Random;
 

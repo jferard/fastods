@@ -19,6 +19,8 @@
 */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.FullList;
+
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  *
