@@ -76,7 +76,7 @@ public class StylesEntry implements OdsEntry {
 		appendable.append("/></style:style>");
 	}
 
-	private final Map<String, DataStyle> qDataStyles;
+	private final Map<String, DataStyle> dataStyles;
 	private final Map<String, PageStyle> qPageStyles;
 	private final Map<String, FHTextStyle> qTextStyles;
 
@@ -85,7 +85,7 @@ public class StylesEntry implements OdsEntry {
 	 *            - The OdsFile where the styles belong to
 	 */
 	public StylesEntry(final OdsFile odsFile) {
-		this.qDataStyles = new HashMap<String, DataStyle>();
+		this.dataStyles = new HashMap<String, DataStyle>();
 		this.qPageStyles = new HashMap<String, PageStyle>();
 		this.qTextStyles = new HashMap<String, FHTextStyle>();
 	}
@@ -99,10 +99,10 @@ public class StylesEntry implements OdsEntry {
 	 */
 	public void addDataStyle(final DataStyle dataStyle) {
 		final String name = dataStyle.getName();
-		if (this.qDataStyles.containsKey(name))
+		if (this.dataStyles.containsKey(name))
 			return;
 
-		this.qDataStyles.put(name, dataStyle);
+		this.dataStyles.put(name, dataStyle);
 	}
 
 	public void addPageStyle(final PageStyle ps) {
@@ -138,7 +138,7 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-		for (final DataStyle bs : this.qDataStyles.values())
+		for (final DataStyle bs : this.dataStyles.values())
 			bs.appendXMLToStylesEntry(util, writer);
 
 		boolean hasHeader = false;

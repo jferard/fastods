@@ -376,7 +376,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setFloatValue(int)
 	 */
 	public void setFloatValue(final int i, final int value) {
-		this.values.set(i, Integer.toString(value));
+		this.values.set(i, this.util.toString(value));
 		this.types.set(i, HeavyTableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}

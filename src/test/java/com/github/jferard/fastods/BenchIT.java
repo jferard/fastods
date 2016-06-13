@@ -35,11 +35,8 @@ import org.simpleods.ObjectQueue;
 import org.simpleods.SimpleOdsException;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard Copyright (C) 2016 J. Férard
  *
- *         This file BenchIT.java is part of FastODS.
- *         
  * mvn -Dtest=BenchIT#test test
  */
 public class BenchIT {

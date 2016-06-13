@@ -190,6 +190,10 @@ class ContentEntry implements OdsEntry {
 	}
 
 	void addStyleTag(final StyleTag styleTag) {
-		this.styleTagByName.put(styleTag.getName(), styleTag);
+		final String name = styleTag.getName();
+		if (this.styleTagByName.containsKey(name))
+			return;
+		
+		this.styleTagByName.put(name, styleTag);
 	}
 }
