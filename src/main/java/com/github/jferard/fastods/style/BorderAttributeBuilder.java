@@ -64,12 +64,12 @@ public class BorderAttributeBuilder {
 	/**
 	 * The border color
 	 */
-	private String sBorderColor;
+	private String borderColor;
 
 	/**
 	 * The border size.
 	 */
-	private String sBorderSize;
+	private String borderSize;
 
 	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
@@ -86,36 +86,36 @@ public class BorderAttributeBuilder {
 	/**
 	 * Set the currently set border color.
 	 *
-	 * @param sBorderColor
+	 * @param borderColor
 	 *            The color in format #rrggbb
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderColor(final String sBorderColor) {
-		this.sBorderColor = sBorderColor;
+	public BorderAttributeBuilder borderColor(final String borderColor) {
+		this.borderColor = borderColor;
 		return this;
 	}
 
 	/**
 	 * Sets the current value of border size in pt.
 	 *
-	 * @param nSize
+	 * @param size
 	 *            The size as int, in pt
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderSize(final int nSize) {
-		this.sBorderSize = new StringBuilder(nSize).append("pt").toString();
+	public BorderAttributeBuilder borderSize(final int size) {
+		this.borderSize = new StringBuilder(size).append("pt").toString();
 		return this;
 	}
 
 	/**
 	 * Sets the current value of border size.
 	 *
-	 * @param sBorderSize
+	 * @param borderSize
 	 *            The size as string, e.g. '0.1cm'
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderSize(final String sBorderSize) {
-		this.sBorderSize = sBorderSize;
+	public BorderAttributeBuilder borderSize(final String borderSize) {
+		this.borderSize = borderSize;
 		return this;
 	}
 
@@ -137,7 +137,7 @@ public class BorderAttributeBuilder {
 	 * @return ths BorderAttribute
 	 */
 	public BorderAttribute build() {
-		return new BorderAttribute(this.sBorderSize, this.sBorderColor,
+		return new BorderAttribute(this.borderSize, this.borderColor,
 				this.style, this.position);
 	}
 

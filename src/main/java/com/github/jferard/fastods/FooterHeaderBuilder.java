@@ -58,25 +58,25 @@ import com.github.jferard.fastods.style.FHTextStyle;
  */
 abstract class FooterHeaderBuilder {
 	/**
-	 * Checks if nParagraph is present in qRegion and return it if yes, if it is
-	 * not present, create a new List and add it to qRegion. Return the new
+	 * Checks if paragraph is present in region and return it if yes, if it is
+	 * not present, create a new List and add it to region. Return the new
 	 * List.
 	 *
 	 * @param curRegion
-	 * @param nParagraph
+	 * @param paragraph
 	 * @return The List with FHText elements.
 	 */
 	protected static FHParagraph checkParagraph(
-			final List<FHParagraph> curRegion, final int nParagraph) {
-		FHParagraph qStyledText = curRegion.get(nParagraph);
+			final List<FHParagraph> curRegion, final int paragraph) {
+		FHParagraph styledText = curRegion.get(paragraph);
 
 		// Check if the paragraph already exists and add a List if not
-		if (qStyledText == null) {
-			qStyledText = new FHParagraph();
-			curRegion.set(nParagraph, qStyledText);
+		if (styledText == null) {
+			styledText = new FHParagraph();
+			curRegion.set(paragraph, styledText);
 		}
 
-		return qStyledText;
+		return styledText;
 	}
 
 	protected List<FHParagraph> curRegion;
@@ -84,11 +84,11 @@ abstract class FooterHeaderBuilder {
 	 * The OdsFile where this object belong to.
 	 */
 	protected final FooterHeader.Type footerHeaderType;
-	protected String sMarginLeft;
-	protected String sMarginRight;
-	protected String sMarginTop;
+	protected String marginLeft;
+	protected String marginRight;
+	protected String marginTop;
 
-	protected String sMinHeight;
+	protected String minHeight;
 
 	/**
 	 * Create a new footer object.
@@ -98,10 +98,10 @@ abstract class FooterHeaderBuilder {
 	 */
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		this.footerHeaderType = footerHeaderType;
-		this.sMinHeight = "0cm";
-		this.sMarginLeft = "0cm";
-		this.sMarginRight = "0cm";
-		this.sMarginTop = "0cm";
+		this.minHeight = "0cm";
+		this.marginLeft = "0cm";
+		this.marginRight = "0cm";
+		this.marginTop = "0cm";
 	}
 
 	public abstract FooterHeader build();
@@ -112,9 +112,9 @@ abstract class FooterHeaderBuilder {
 	}
 
 	public FooterHeaderBuilder pageCount(final FHTextStyle ts,
-			final int nParagraph) {
+			final int paragraph) {
 		this.styledText(ts, "<text:page-count>99</text:page-count>",
-				nParagraph);
+				paragraph);
 		return this;
 	}
 
@@ -124,63 +124,63 @@ abstract class FooterHeaderBuilder {
 	}
 
 	public FooterHeaderBuilder pageNumber(final FHTextStyle ts,
-			final int nParagraph) {
+			final int paragraph) {
 		this.styledText(ts, "<text:page-number>1</text:page-number>",
-				nParagraph);
+				paragraph);
 		return this;
 	}
 
 	/**
 	 * Adds a TextStyle and text to the footer/header region specified by
-	 * nRegion.<br>
-	 * The paragraph to be used is nParagraph.<br>
+	 * region.<br>
+	 * The paragraph to be used is paragraph.<br>
 	 * The text will be shown in the order it was added with this function.
 	 *
 	 * @param ts
 	 *            The text style to be used
-	 * @param sText
+	 * @param text
 	 *            The string with the text
 	 * @param region
 	 *            One of : FooterHeader.FLG_REGION_LEFT,
 	 *            FooterHeader.FLG_REGION_CENTER or
 	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param nParagraph
+	 * @param paragraph
 	 *            The paragraph number to be used
 	 * @return
 	 */
 	public FooterHeaderBuilder styledText(final FHTextStyle ts,
-			final String sText) {
-		final FHParagraph qStyledText = new FHParagraph();
-		final FHText st = new FHText(sText, ts);
-		qStyledText.add(st);
-		this.curRegion.add(qStyledText);
+			final String text) {
+		final FHParagraph styledText = new FHParagraph();
+		final FHText st = new FHText(text, ts);
+		styledText.add(st);
+		this.curRegion.add(styledText);
 		return this;
 	}
 
 	/**
 	 * Adds a TextStyle and text to the footer/header region specified by
-	 * nRegion.<br>
-	 * The paragraph to be used is nParagraph.<br>
+	 * region.<br>
+	 * The paragraph to be used is paragraph.<br>
 	 * The text will be shown in the order it was added with this function.
 	 *
 	 * @param ts
 	 *            The text style to be used
-	 * @param sText
+	 * @param text
 	 *            The string with the text
 	 * @param region
 	 *            One of : FooterHeader.FLG_REGION_LEFT,
 	 *            FooterHeader.FLG_REGION_CENTER or
 	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param nParagraph
+	 * @param paragraph
 	 *            The paragraph number to be used
 	 * @return
 	 */
 	public FooterHeaderBuilder styledText(final FHTextStyle ts,
-			final String sText, final int nParagraph) {
-		final FHParagraph qStyledText = FooterHeaderBuilder
-				.checkParagraph(this.curRegion, nParagraph);
-		final FHText st = new FHText(sText, ts);
-		qStyledText.add(st);
+			final String text, final int paragraph) {
+		final FHParagraph styledText = FooterHeaderBuilder
+				.checkParagraph(this.curRegion, paragraph);
+		final FHText st = new FHText(text, ts);
+		styledText.add(st);
 		return this;
 	}
 }

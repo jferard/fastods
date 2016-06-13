@@ -77,8 +77,8 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	private final Map<String, DataStyle> dataStyles;
-	private final Map<String, PageStyle> qPageStyles;
-	private final Map<String, FHTextStyle> qTextStyles;
+	private final Map<String, PageStyle> pageStyles;
+	private final Map<String, FHTextStyle> textStyles;
 
 	/**
 	 * @param odsFile
@@ -86,8 +86,8 @@ public class StylesEntry implements OdsEntry {
 	 */
 	public StylesEntry(final OdsFile odsFile) {
 		this.dataStyles = new HashMap<String, DataStyle>();
-		this.qPageStyles = new HashMap<String, PageStyle>();
-		this.qTextStyles = new HashMap<String, FHTextStyle>();
+		this.pageStyles = new HashMap<String, PageStyle>();
+		this.textStyles = new HashMap<String, FHTextStyle>();
 	}
 
 	/**
@@ -107,18 +107,18 @@ public class StylesEntry implements OdsEntry {
 
 	public void addPageStyle(final PageStyle ps) {
 		final String name = ps.getName();
-		if (this.qPageStyles.containsKey(name))
+		if (this.pageStyles.containsKey(name))
 			return;
 
-		this.qPageStyles.put(name, ps);
+		this.pageStyles.put(name, ps);
 	}
 
 	public void addTextStyle(final FHTextStyle ts) {
 		final String name = ts.getName();
-		if (this.qTextStyles.containsKey(name))
+		if (this.textStyles.containsKey(name))
 			return;
 
-		this.qTextStyles.put(name, ts);
+		this.textStyles.put(name, ts);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class StylesEntry implements OdsEntry {
 
 		boolean hasHeader = false;
 		boolean hasFooter = false;
-		for (final PageStyle ps : this.qPageStyles.values()) {
+		for (final PageStyle ps : this.pageStyles.values()) {
 			if (hasHeader && hasFooter)
 				break;
 			if (!hasHeader && ps.getHeader() != null)
@@ -172,17 +172,17 @@ public class StylesEntry implements OdsEntry {
 		u.writeString(out, "</number:date-style>");
 		*/
 
-		for (final PageStyle ps : this.qPageStyles.values())
+		for (final PageStyle ps : this.pageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
 
-		for (final FHTextStyle ts : this.qTextStyles.values())
+		for (final FHTextStyle ts : this.textStyles.values())
 			if (ts.isNotEmpty())
 				ts.appendXMLToStylesEntry(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
-		for (final PageStyle ps : this.qPageStyles.values())
+		for (final PageStyle ps : this.pageStyles.values())
 			ps.appendXMLToMasterStyle(util, writer);
 
 		writer.write("</office:master-styles>");

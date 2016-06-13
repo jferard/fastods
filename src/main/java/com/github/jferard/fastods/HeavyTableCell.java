@@ -100,19 +100,19 @@ public class HeavyTableCell implements TableCell {
 			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 	private final DataStyles dataStyles;
-	// private final int nCol;
-	private int nColumnsSpanned;
-	// private final int nRow;
-	private int nRowsSpanned;
+	// private final int col;
+	private int columnsSpanned;
+	// private final int row;
+	private int rowsSpanned;
 	private final OdsFile odsFile;
 	/**
 	 * 19.384 office:value
 	 */
-	private String sCurrency;
+	private String currency;
 
 	private TableCellStyle style;
 
-	private String sValue;
+	private String value;
 
 	private Type valueType;
 
@@ -127,15 +127,15 @@ public class HeavyTableCell implements TableCell {
 	 *            The String content for this cell.
 	 */
 	HeavyTableCell(final OdsFile odsFile, final XMLUtil xmlUtil,
-			final DataStyles dataStyles, final int nRow, final int nCol) {
+			final DataStyles dataStyles, final int row, final int col) {
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
 		this.odsFile = odsFile;
-		// this.nRow = nRow;
-		// this.nCol = nCol;
+		// this.row = row;
+		// this.col = col;
 		this.valueType = HeavyTableCell.DEFAULT_TYPE;
-		this.nColumnsSpanned = 0;
-		this.nRowsSpanned = 0;
+		this.columnsSpanned = 0;
+		this.rowsSpanned = 0;
 	}
 
 	/* (non-Javadoc)
@@ -156,43 +156,43 @@ public class HeavyTableCell implements TableCell {
 		switch (this.valueType) {
 		case BOOLEAN:
 			util.appendEAttribute(appendable, "office:boolean-value",
-					this.sValue);
+					this.value);
 			break;
 		case CURRENCY:
-			util.appendAttribute(appendable, "office:currency", this.sCurrency);
+			util.appendAttribute(appendable, "office:currency", this.currency);
 			//$FALL-THROUGH$
 		case FLOAT:
 		case PERCENTAGE:
-			util.appendEAttribute(appendable, "office:value", this.sValue);
+			util.appendEAttribute(appendable, "office:value", this.value);
 			break;
 		case DATE:
-			util.appendEAttribute(appendable, "office:date-value", this.sValue);
+			util.appendEAttribute(appendable, "office:date-value", this.value);
 			break;
 		case STRING:
 			util.appendAttribute(appendable, "office:string-value",
-					this.sValue);
+					this.value);
 			break;
 		case TIME:
-			util.appendEAttribute(appendable, "office:time-value", this.sValue);
+			util.appendEAttribute(appendable, "office:time-value", this.value);
 			break;
 		case VOID:
 		default:
 			break;
 		}
 
-		if (this.nColumnsSpanned > 0) {
+		if (this.columnsSpanned > 0) {
 			util.appendEAttribute(appendable, "table:number-columns-spanned",
-					this.nColumnsSpanned);
+					this.columnsSpanned);
 		}
-		if (this.nRowsSpanned > 0) {
+		if (this.rowsSpanned > 0) {
 			util.appendEAttribute(appendable, "table:number-rows-spanned",
-					this.nRowsSpanned);
+					this.rowsSpanned);
 		}
 
-		// if (this.sText == null)
+		// if (this.text == null)
 		appendable.append("/>");
 		// else {
-		// appendable.append("><text:p>").append(this.sText)
+		// appendable.append("><text:p>").append(this.text)
 		// .append("</text:p>");
 		// appendable.append("</table:table-cell>");
 		// }
@@ -203,7 +203,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getBooleanValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -211,7 +211,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public int getColumnsSpanned() {
-		return this.nColumnsSpanned;
+		return this.columnsSpanned;
 	}
 
 	/* (non-Javadoc)
@@ -219,7 +219,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getCurrency() {
-		return this.sCurrency;
+		return this.currency;
 	}
 
 	/* (non-Javadoc)
@@ -227,7 +227,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getCurrencyValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -235,7 +235,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getDateValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -243,7 +243,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getFloatValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -251,7 +251,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getPercentageValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -259,7 +259,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public int getRowsSpanned() {
-		return this.nRowsSpanned;
+		return this.rowsSpanned;
 	}
 
 	/* (non-Javadoc)
@@ -267,7 +267,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getStringValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -283,7 +283,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public String getTimeValue() {
-		return this.sValue;
+		return this.value;
 	}
 
 	/* (non-Javadoc)
@@ -299,7 +299,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setBooleanValue(final boolean value) {
-		this.sValue = value ? "true" : "false";
+		this.value = value ? "true" : "false";
 		this.valueType = HeavyTableCell.Type.BOOLEAN;
 		this.setStyle(this.dataStyles.getBooleanStyle());
 	}
@@ -310,9 +310,9 @@ public class HeavyTableCell implements TableCell {
 	@Override
 	public void setColumnsSpanned(final int n) {
 		if (n < 0) {
-			this.nColumnsSpanned = 0;
+			this.columnsSpanned = 0;
 		} else {
-			this.nColumnsSpanned = n;
+			this.columnsSpanned = n;
 		}
 	}
 
@@ -321,8 +321,8 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setCurrencyValue(final float value, final String currency) {
-		this.sValue = Float.toString(value);
-		this.sCurrency = currency; // escape here
+		this.value = Float.toString(value);
+		this.currency = currency; // escape here
 		this.valueType = HeavyTableCell.Type.CURRENCY;
 		this.setStyle(this.dataStyles.getCurrencyStyle());
 	}
@@ -332,8 +332,8 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setCurrencyValue(final int value, final String currency) {
-		this.sValue = Integer.toString(value);
-		this.sCurrency = currency; // escape here
+		this.value = Integer.toString(value);
+		this.currency = currency; // escape here
 		this.valueType = HeavyTableCell.Type.CURRENCY;
 		this.setStyle(this.dataStyles.getCurrencyStyle());
 	}
@@ -343,8 +343,8 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setCurrencyValue(final Number value, final String currency) {
-		this.sValue = value.toString();
-		this.sCurrency = currency; // escape here
+		this.value = value.toString();
+		this.currency = currency; // escape here
 		this.valueType = HeavyTableCell.Type.CURRENCY;
 		this.setStyle(this.dataStyles.getCurrencyStyle());
 	}
@@ -362,7 +362,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setDateValue(final Date value) {
-		this.sValue = HeavyTableCell.DATE_VALUE_FORMAT.format(value);
+		this.value = HeavyTableCell.DATE_VALUE_FORMAT.format(value);
 		this.valueType = HeavyTableCell.Type.DATE;
 		this.setStyle(this.dataStyles.getDateStyle());
 	}
@@ -372,7 +372,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setFloatValue(final float value) {
-		this.sValue = Float.toString(value);
+		this.value = Float.toString(value);
 		this.valueType = HeavyTableCell.Type.FLOAT;
 		this.setStyle(this.dataStyles.getNumberStyle());
 	}
@@ -382,7 +382,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setFloatValue(final int value) {
-		this.sValue = Integer.toString(value);
+		this.value = Integer.toString(value);
 		this.valueType = HeavyTableCell.Type.FLOAT;
 		this.setStyle(this.dataStyles.getNumberStyle());
 	}
@@ -392,7 +392,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setFloatValue(final Number value) {
-		this.sValue = value.toString();
+		this.value = value.toString();
 		this.valueType = HeavyTableCell.Type.FLOAT;
 		this.setStyle(this.dataStyles.getNumberStyle());
 	}
@@ -423,7 +423,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setPercentageValue(final float value) {
-		this.sValue = Float.toString(value);
+		this.value = Float.toString(value);
 		this.valueType = HeavyTableCell.Type.PERCENTAGE;
 		this.setStyle(this.dataStyles.getPercentageStyle());
 	}
@@ -433,7 +433,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setPercentageValue(final Number value) {
-		this.sValue = value.toString();
+		this.value = value.toString();
 		this.valueType = HeavyTableCell.Type.PERCENTAGE;
 		this.setStyle(this.dataStyles.getPercentageStyle());
 	}
@@ -443,7 +443,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setRowsSpanned(final int n) {
-		this.nRowsSpanned = n < 0 ? 0 : n;
+		this.rowsSpanned = n < 0 ? 0 : n;
 	}
 
 	/* (non-Javadoc)
@@ -451,7 +451,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setStringValue(final String value) {
-		this.sValue = this.xmlUtil.escapeXMLAttribute(value);
+		this.value = this.xmlUtil.escapeXMLAttribute(value);
 		this.valueType = HeavyTableCell.Type.STRING;
 	}
 
@@ -475,7 +475,7 @@ public class HeavyTableCell implements TableCell {
 	 */
 	@Override
 	public void setTimeValue(final long timeInMillis) {
-		this.sValue = this.xmlUtil.formatTimeInterval(timeInMillis);
+		this.value = this.xmlUtil.formatTimeInterval(timeInMillis);
 		this.valueType = HeavyTableCell.Type.TIME;
 		this.setStyle(this.dataStyles.getTimeStyle());
 	}

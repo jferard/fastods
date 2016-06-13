@@ -57,7 +57,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         WHERE ? META-INF/manifest.xml/manifest:manifest
  */
 public class ManifestEntry implements OdsEntry {
-	String[] sText = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
+	String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
 			"<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">",
 			"<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
 
@@ -83,7 +83,7 @@ public class ManifestEntry implements OdsEntry {
 	};
 
 	public String[] getManifest() {
-		return this.sText;
+		return this.text;
 	}
 
 	@Override

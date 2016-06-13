@@ -102,25 +102,25 @@ class ContentEntry implements OdsEntry {
 	}
 
 	// /**
-	// * Get the HeavyTableCell object from table nTab at position
-	// nRow,nCol.<br>
-	// * If no HeavyTableCell was present at this nRow,nCol, create a new one
+	// * Get the HeavyTableCell object from table tab at position
+	// row,col.<br>
+	// * If no HeavyTableCell was present at this row,col, create a new one
 	// with a
 	// * default of HeavyTableCell.STYLE_STRING and a content of ""<br>
 	// *
-	// * @param nTab
-	// * @param nRow
-	// * @param nCol
+	// * @param tab
+	// * @param row
+	// * @param col
 	// * @return The HeavyTableCell
 	// * @throws FastOdsException
 	// */
 	// @Deprecated
-	// public HeavyTableCell getCell(final int nTab, final int nRow, final int
-	// nCol)
+	// public HeavyTableCell getCell(final int tab, final int row, final int
+	// col)
 	// throws FastOdsException {
-	// this.checkTableIndex(nTab);
-	// final Table tab = this.qTables.get(nTab);
-	// return tab.getCell(nRow, nCol);
+	// this.checkTableIndex(tab);
+	// final Table tab = this.tables.get(tab);
+	// return tab.getCell(row, col);
 	// }
 
 	public Table getTable(final int tableIndex) {
@@ -182,10 +182,10 @@ class ContentEntry implements OdsEntry {
 		zipOut.closeEntry();
 	}
 
-	private void checkTableIndex(final int nTab) throws FastOdsException {
-		if (nTab < 0 || this.tables.size() <= nTab) {
+	private void checkTableIndex(final int tab) throws FastOdsException {
+		if (tab < 0 || this.tables.size() <= tab) {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
-					.append(nTab).append("]").toString());
+					.append(tab).append("]").toString());
 		}
 	}
 

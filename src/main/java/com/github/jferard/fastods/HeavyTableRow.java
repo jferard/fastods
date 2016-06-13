@@ -70,7 +70,7 @@ public class HeavyTableRow {
 	private List<String> currencies;
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
-	private final int nRow;
+	private final int row;
 	private final OdsFile odsFile;
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
@@ -81,12 +81,12 @@ public class HeavyTableRow {
 	private final XMLUtil xmlUtil;
 
 	HeavyTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
-			final DataStyles dataStyles, final int nRow,
+			final DataStyles dataStyles, final int row,
 			final int columnCapacity) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
-		this.nRow = nRow;
+		this.row = row;
 		this.odsFile = odsFile;
 		this.columnCapacity = columnCapacity;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
@@ -104,7 +104,7 @@ public class HeavyTableRow {
 	public void appendXMLToTable(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		this.appendRowOpenTag(util, appendable);
-		int nNullFieldCounter = 0;
+		int nullFieldCounter = 0;
 
 		final int size = this.values.size();
 		final boolean hasSpans = this.rowsSpanned != null
@@ -112,16 +112,16 @@ public class HeavyTableRow {
 		for (int i = 0; i < size; i++) {
 			final String value = this.values.get(i);
 			if (value == null) {
-				nNullFieldCounter++;
+				nullFieldCounter++;
 			} else {
-				if (nNullFieldCounter > 0) {
+				if (nullFieldCounter > 0) {
 					appendable.append("<table:table-cell");
-					if (nNullFieldCounter > 1)
+					if (nullFieldCounter > 1)
 						util.appendEAttribute(appendable,
 								"table:number-columns-repeated",
-								nNullFieldCounter);
+								nullFieldCounter);
 					appendable.append("/>");
-					nNullFieldCounter = 0;
+					nullFieldCounter = 0;
 				}
 				this.appendXMLToTableRow(util, appendable, i, value, hasSpans);
 			}
@@ -168,10 +168,10 @@ public class HeavyTableRow {
 			}
 		}
 
-		// if (this.sText == null)
+		// if (this.text == null)
 		appendable.append("/>");
 		// else {
-		// appendable.append("><text:p>").append(this.sText)
+		// appendable.append("><text:p>").append(this.text)
 		// .append("</text:p>");
 		// appendable.append("</table:table-cell>");
 		// }
@@ -247,33 +247,33 @@ public class HeavyTableRow {
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param nCol
+	 * @param col
 	 *            The column, 0 is the first column
-	 * @param nRowMerge
-	 * @param nColumnMerge
+	 * @param rowMerge
+	 * @param columnMerge
 	 *
 	 * @throws FastOdsException
 	 */
-	public void setCellMerge(final int nCol, final int nRowMerge,
-			final int nColumnMerge) throws FastOdsException {
-		this.rowsSpanned.set(nCol, nRowMerge);
-		this.columnsSpanned.set(nCol, nColumnMerge);
+	public void setCellMerge(final int col, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		this.rowsSpanned.set(col, rowMerge);
+		this.columnsSpanned.set(col, columnMerge);
 	}
 
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param sPos
+	 * @param pos
 	 *            The cell position e.g. 'A1'
-	 * @param nRowMerge
-	 * @param nColumnMerge
+	 * @param rowMerge
+	 * @param columnMerge
 	 *
 	 * @throws FastOdsException
 	 */
-	public void setCellMerge(final String sPos, final int nRowMerge,
-			final int nColumnMerge) throws FastOdsException {
-		final int nCol = this.util.getPosition(sPos).getColumn();
-		this.setCellMerge(nCol, nRowMerge, nColumnMerge);
+	public void setCellMerge(final String pos, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		final int col = this.util.getPosition(pos).getColumn();
+		this.setCellMerge(col, rowMerge, columnMerge);
 	}
 
 	public void setColumnsSpanned(final int i, final int n) {
@@ -342,9 +342,9 @@ public class HeavyTableRow {
 	}
 
 	/**
-	 * Set the cell rowStyle for the cell at nCol to ts.
+	 * Set the cell rowStyle for the cell at col to ts.
 	 *
-	 * @param nCol
+	 * @param col
 	 *            The column number
 	 * @param ts
 	 *            The table rowStyle to be used

@@ -54,7 +54,7 @@ public class PercentageStyleBuilder
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces.
+	 * minIntDigits and decimal places is decPlaces.
 	 *
 	 * @param name
 	 *            The name of the number style, this name must be unique.

@@ -56,15 +56,15 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         settingsEntry-item-set/config:config-item
  */
 public class ConfigItem {
-	private final String sItemName;
-	private final String sType;
-	private final String sValue;
+	private final String itemName;
+	private final String type;
+	private final String value;
 
-	public ConfigItem(final String name, final String sType,
-			final String sValue) {
-		this.sItemName = name;
-		this.sType = sType;
-		this.sValue = sValue;
+	public ConfigItem(final String name, final String type,
+			final String value) {
+		this.itemName = name;
+		this.type = type;
+		this.value = value;
 	}
 
 	/**
@@ -77,10 +77,10 @@ public class ConfigItem {
 	public void appendXMLToObject(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.sItemName);
-		util.appendAttribute(appendable, "config:type", this.sType);
+		util.appendAttribute(appendable, "config:name", this.itemName);
+		util.appendAttribute(appendable, "config:type", this.type);
 		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.sValue));
+		appendable.append(util.escapeXMLContent(this.value));
 		appendable.append("</config:config-item>");
 	}
 
@@ -90,14 +90,14 @@ public class ConfigItem {
 	 * @return The name of this ConfigItem
 	 */
 	public String getName() {
-		return this.sItemName;
+		return this.itemName;
 	}
 
 	public String getType() {
-		return this.sType;
+		return this.type;
 	}
 
 	public String getValue() {
-		return this.sValue;
+		return this.value;
 	}
 }

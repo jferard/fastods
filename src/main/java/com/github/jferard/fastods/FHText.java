@@ -59,16 +59,16 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         page/style:header/text:p/text:span
  */
 public class FHText {
-	private final String sText;
+	private final String text;
 	private final /*@Nullable*/ FHTextStyle ts;
 
-	public FHText(final String sText) {
-		this(sText, null);
+	public FHText(final String text) {
+		this(text, null);
 	}
 
 	public FHText(final String s, final FHTextStyle t) {
 		this.ts = t;
-		this.sText = s;
+		this.text = s;
 	}
 
 	/**
@@ -82,12 +82,12 @@ public class FHText {
 	public void appendXMLOptionalSpanToParagraph(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.ts == null) {
-			appendable.append(this.sText);
+			appendable.append(this.text);
 		} else {
 			appendable.append("<text:span");
 			util.appendEAttribute(appendable, "text:style-name",
 					this.ts.getName());
-			appendable.append(">").append(this.sText).append("</text:span>");
+			appendable.append(">").append(this.text).append("</text:span>");
 		}
 	}
 
@@ -97,11 +97,11 @@ public class FHText {
 		if (this.ts != null)
 			util.appendEAttribute(appendable, "text:style-name",
 					this.ts.getName());
-		appendable.append(">").append(this.sText).append("</text:p>");
+		appendable.append(">").append(this.text).append("</text:p>");
 	}
 
 	public String getText() {
-		return this.sText;
+		return this.text;
 	}
 
 	public FHTextStyle getTextStyle() {

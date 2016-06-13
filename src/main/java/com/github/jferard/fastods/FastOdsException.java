@@ -51,9 +51,9 @@ package com.github.jferard.fastods;
 public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-	public static FastOdsException unkownTableName(final String sTab) {
+	public static FastOdsException unkownTableName(final String tab) {
 		return new FastOdsException(new StringBuilder("Unknown table name [")
-				.append(sTab).append(']').toString());
+				.append(tab).append(']').toString());
 	}
 
 	public FastOdsException(final String message) {

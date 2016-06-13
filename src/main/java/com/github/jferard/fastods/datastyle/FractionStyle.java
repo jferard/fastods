@@ -66,13 +66,13 @@ public class FractionStyle extends NumberStyle {
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces.
+	 * minIntDigits and decimal places is decPlaces.
 	 *
-	 * @param sStyleName
+	 * @param styleName
 	 *            The name of the number style, this name must be unique.
 	 * @param minIntDigits
 	 *            The minimum integer digits to be shown.
-	 * @param nDecPlaces
+	 * @param decPlaces
 	 *            The number of decimal places to be shown.
 	 */
 	FractionStyle(final String name, final String languageCode,

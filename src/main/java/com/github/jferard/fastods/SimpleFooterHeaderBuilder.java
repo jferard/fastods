@@ -72,7 +72,7 @@ class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	@Override
 	public FooterHeader build() {
 		return new SimpleFooterHeader(this.footerHeaderType, this.curRegion,
-				this.sMarginLeft, this.sMarginRight, this.sMarginTop,
-				this.sMinHeight);
+				this.marginLeft, this.marginRight, this.marginTop,
+				this.minHeight);
 	}
 }

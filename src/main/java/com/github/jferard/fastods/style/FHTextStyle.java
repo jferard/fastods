@@ -80,82 +80,82 @@ public class FHTextStyle implements NamedObject {
 	}
 
 	private final String name;
-	private final /*@Nullable*/ Underline nFontUnderlineStyle;
-	private final /*@Nullable*/ String sFontColor;
-	private final /*@Nullable*/ String sFontName;
+	private final /*@Nullable*/ Underline fontUnderlineStyle;
+	private final /*@Nullable*/ String fontColor;
+	private final /*@Nullable*/ String fontName;
 
-	private final /*@Nullable*/ String sFontSize;
+	private final /*@Nullable*/ String fontSize;
 
-	private final /*@Nullable*/ String sFontStyle;
-	private final /*@Nullable*/ String sFontUnderlineColor;
+	private final /*@Nullable*/ String fontStyle;
+	private final /*@Nullable*/ String fontUnderlineColor;
 
-	private final /*@Nullable*/ String sFontWeight;
+	private final /*@Nullable*/ String fontWeight;
 
 	/**
 	 * Create a new text style with the name name.<br>
 	 * Version 0.5.0 Added parameter OdsFile odsFile
 	 *
-	 * @param sStyleName
+	 * @param styleName
 	 *            The name of the text style.
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	FHTextStyle(final String name, final String sFontColor,
-			final String sFontName, final String sFontWeight,
-			final String sFontStyle, final String sFontSize,
-			final String sFontUnderlineColor,
-			final Underline nFontUnderlineStyle) {
+	FHTextStyle(final String name, final String fontColor,
+			final String fontName, final String fontWeight,
+			final String fontStyle, final String fontSize,
+			final String fontUnderlineColor,
+			final Underline fontUnderlineStyle) {
 		this.name = name;
-		this.sFontColor = sFontColor;
-		this.sFontName = sFontName;
-		this.sFontWeight = sFontWeight;
-		this.sFontStyle = sFontStyle;
-		this.sFontSize = sFontSize;
-		this.sFontUnderlineColor = sFontUnderlineColor;
-		this.nFontUnderlineStyle = nFontUnderlineStyle;
+		this.fontColor = fontColor;
+		this.fontName = fontName;
+		this.fontWeight = fontWeight;
+		this.fontStyle = fontStyle;
+		this.fontSize = fontSize;
+		this.fontUnderlineColor = fontUnderlineColor;
+		this.fontUnderlineStyle = fontUnderlineStyle;
 	}
 
 	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:text-properties");
 		// Check if the font weight should be added
-		if (this.sFontWeight != null) {
+		if (this.fontWeight != null) {
 			util.appendAttribute(appendable, "fo:font-weight",
-					this.sFontWeight);
+					this.fontWeight);
 			util.appendAttribute(appendable, "style:font-weight-asian",
-					this.sFontWeight);
+					this.fontWeight);
 			util.appendAttribute(appendable, "style:font-weight-complex",
-					this.sFontWeight);
+					this.fontWeight);
 		}
 
-		if (this.sFontStyle != null) {
-			util.appendAttribute(appendable, "fo:font-style", this.sFontStyle);
+		if (this.fontStyle != null) {
+			util.appendAttribute(appendable, "fo:font-style", this.fontStyle);
 			util.appendAttribute(appendable, "style:font-style-asian",
-					this.sFontStyle);
+					this.fontStyle);
 			util.appendAttribute(appendable, "style:font-style-complex",
-					this.sFontStyle);
+					this.fontStyle);
 		}
 
 		// Check if a font color should be added
-		if (this.sFontColor != null) {
-			util.appendAttribute(appendable, "fo:color", this.sFontColor);
+		if (this.fontColor != null) {
+			util.appendAttribute(appendable, "fo:color", this.fontColor);
 		}
 		// Check if a font name should be added
-		if (this.sFontName != null) {
-			util.appendAttribute(appendable, "style:font-name", this.sFontName);
+		if (this.fontName != null) {
+			util.appendAttribute(appendable, "style:font-name", this.fontName);
 		}
 		// Check if a font size should be added
-		if (this.sFontSize != null) {
-			util.appendAttribute(appendable, "fo:font-size", this.sFontSize);
+		if (this.fontSize != null) {
+			util.appendAttribute(appendable, "fo:font-size", this.fontSize);
 			util.appendAttribute(appendable, "style:font-size-asian",
-					this.sFontSize);
+					this.fontSize);
 			util.appendAttribute(appendable, "style:font-size-complex",
-					this.sFontSize);
+					this.fontSize);
 		}
 
-		if (this.nFontUnderlineStyle != null) {
+		if (this.fontUnderlineStyle != null) {
 			util.appendEAttribute(appendable, "style:text-underline-style",
-					this.nFontUnderlineStyle.attrValue);
+					this.fontUnderlineStyle.attrValue);
 			util.appendEAttribute(appendable, "style:text-underline-width",
 					"auto");
 
@@ -164,9 +164,9 @@ public class FHTextStyle implements NamedObject {
 			// the
 			// font color
 			// ---------------------------------------------------------------------------------
-			if (this.sFontUnderlineColor != null) {
+			if (this.fontUnderlineColor != null) {
 				util.appendAttribute(appendable, "style:text-underline-color",
-						this.sFontUnderlineColor);
+						this.fontUnderlineColor);
 			} else {
 				util.appendAttribute(appendable, "style:text-underline-color",
 						"font-color");
@@ -199,7 +199,7 @@ public class FHTextStyle implements NamedObject {
 	 * @return The currently set font color as a String in format #rrggbb
 	 */
 	public String getFontColor() {
-		return this.sFontColor;
+		return this.fontColor;
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class FHTextStyle implements NamedObject {
 	 * @return The font size as string, e.g. '10.5pt' or '8pt'
 	 */
 	public String getFontSize() {
-		return this.sFontSize;
+		return this.fontSize;
 	}
 
 	/**
@@ -217,14 +217,14 @@ public class FHTextStyle implements NamedObject {
 	 * @return The color in format #rrggbb
 	 */
 	public String getFontUnderlineColor() {
-		return this.sFontUnderlineColor;
+		return this.fontUnderlineColor;
 	}
 
 	/**
 	 * @return The currently set style for the underline.
 	 */
 	public Underline getFontUnderlineStyle() {
-		return this.nFontUnderlineStyle;
+		return this.fontUnderlineStyle;
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class FHTextStyle implements NamedObject {
 	 * @return The current font weight, normal, bold or italic.
 	 */
 	public String getFontWeight() {
-		return this.sFontWeight;
+		return this.fontWeight;
 	}
 
 	/**
@@ -248,10 +248,10 @@ public class FHTextStyle implements NamedObject {
 
 	public boolean isNotEmpty() {
 		return this.name != null && this.name.length() > 0
-				&& (this.nFontUnderlineStyle != null || this.sFontColor != null
-						|| this.sFontSize != null || this.sFontStyle != null
-						|| this.sFontUnderlineColor != null
-						|| this.sFontWeight != null);
+				&& (this.fontUnderlineStyle != null || this.fontColor != null
+						|| this.fontSize != null || this.fontStyle != null
+						|| this.fontUnderlineColor != null
+						|| this.fontWeight != null);
 	}
 
 	void addToFile(final OdsFile odsFile) {

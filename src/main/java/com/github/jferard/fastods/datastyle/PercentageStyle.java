@@ -65,14 +65,14 @@ public class PercentageStyle extends DataStyle {
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is nDecPlaces. The number style is
+	 * minIntDigits and decimal places is decPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL
 	 *
-	 * @param sStyleName
+	 * @param styleName
 	 *            The name of the number style, this name must be unique.
 	 * @param minIntDigits
 	 *            The minimum integer digits to be shown.
-	 * @param nDecPlaces
+	 * @param decPlaces
 	 *            The number of decimal places to be shown.
 	 */
 	PercentageStyle(final String name, final String languageCode,

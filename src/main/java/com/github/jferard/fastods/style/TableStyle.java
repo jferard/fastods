@@ -72,17 +72,17 @@ public class TableStyle implements StyleTag {
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(final String sStyleName, final PageStyle pageStyle) {
-		this.name = sStyleName;
+	TableStyle(final String styleName, final PageStyle pageStyle) {
+		this.name = styleName;
 		this.pageStyle = pageStyle;
 	}
 

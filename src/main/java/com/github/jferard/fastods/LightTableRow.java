@@ -64,22 +64,22 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class LightTableRow {
 	private TableCellStyle defaultCellStyle;
 	private final DataStyles format;
-	private final int nRow;
+	private final int row;
 	private final OdsFile odsFile;
-	private final List<HeavyTableCell> qTableCells;
+	private final List<HeavyTableCell> tableCells;
 	private TableRowStyle rowStyle;
 	private final Util util;
 	private final XMLUtil xmlUtil;
 
 	LightTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
-			final DataStyles format, final int nRow, final int columnCapacity) {
+			final DataStyles format, final int row, final int columnCapacity) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
 		this.format = format;
-		this.nRow = nRow;
+		this.row = row;
 		this.odsFile = odsFile;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
-		this.qTableCells = FullList.newListWithCapacity(columnCapacity);
+		this.tableCells = FullList.newListWithCapacity(columnCapacity);
 	}
 
 	/**
@@ -99,19 +99,19 @@ public class LightTableRow {
 					this.defaultCellStyle.getName());
 		appendable.append(">");
 
-		int nNullFieldCounter = 0;
-		for (final HeavyTableCell tc : this.qTableCells) {
+		int nullFieldCounter = 0;
+		for (final HeavyTableCell tc : this.tableCells) {
 			if (tc == null) {
-				nNullFieldCounter++;
+				nullFieldCounter++;
 			} else {
-				if (nNullFieldCounter > 0) {
+				if (nullFieldCounter > 0) {
 					appendable.append("<table:table-cell");
-					if (nNullFieldCounter > 1)
+					if (nullFieldCounter > 1)
 						util.appendEAttribute(appendable,
 								"table:number-columns-repeated",
-								nNullFieldCounter);
+								nullFieldCounter);
 					appendable.append("/>");
-					nNullFieldCounter = 0;
+					nullFieldCounter = 0;
 				}
 				tc.appendXMLToTableRow(util, appendable);
 			}
@@ -122,26 +122,26 @@ public class LightTableRow {
 
 	/**
 	 * Added 0.5.1:<br>
-	 * Get a HeavyTableCell, if no HeavyTableCell was present at this nCol,
+	 * Get a HeavyTableCell, if no HeavyTableCell was present at this col,
 	 * create a new one with a default of HeavyTableCell.STYLE_STRING and a
 	 * content of "".
 	 *
-	 * @param nCol
+	 * @param col
 	 * @return The HeavyTableCell for this position, maybe a new HeavyTableCell
 	 */
-	public HeavyTableCell getCell(final int nCol) {
-		HeavyTableCell tc = this.qTableCells.get(nCol);
+	public HeavyTableCell getCell(final int col) {
+		HeavyTableCell tc = this.tableCells.get(col);
 		if (tc == null) {
 			tc = new HeavyTableCell(this.odsFile, this.xmlUtil, this.format,
-					this.nRow, nCol);
-			this.qTableCells.set(nCol, tc);
+					this.row, col);
+			this.tableCells.set(col, tc);
 		}
 		return tc;
 	}
 
-	public HeavyTableCell getCell(final String sPos) {
-		final int nCol = this.util.getPosition(sPos).getColumn();
-		return this.getCell(nCol);
+	public HeavyTableCell getCell(final String pos) {
+		final int col = this.util.getPosition(pos).getColumn();
+		return this.getCell(col);
 	}
 
 	public String getRowStyleName() {
@@ -149,50 +149,50 @@ public class LightTableRow {
 	}
 
 	public HeavyTableCell nextCell() {
-		final int nCol = this.qTableCells.size();
+		final int col = this.tableCells.size();
 		final HeavyTableCell tc = new HeavyTableCell(this.odsFile, this.xmlUtil,
-				this.format, this.nRow, nCol);
-		this.qTableCells.add(tc);
+				this.format, this.row, col);
+		this.tableCells.add(tc);
 		return tc;
 	}
 
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param nCol
+	 * @param col
 	 *            The column, 0 is the first column
-	 * @param nRowMerge
-	 * @param nColumnMerge
+	 * @param rowMerge
+	 * @param columnMerge
 	 *
 	 * @throws FastOdsException
 	 */
-	public void setCellMerge(final int nCol, final int nRowMerge,
-			final int nColumnMerge) throws FastOdsException {
-		final HeavyTableCell tc = this.getCell(nCol);
-		tc.setRowsSpanned(nRowMerge);
-		tc.setColumnsSpanned(nColumnMerge);
+	public void setCellMerge(final int col, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		final HeavyTableCell tc = this.getCell(col);
+		tc.setRowsSpanned(rowMerge);
+		tc.setColumnsSpanned(columnMerge);
 	}
 
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param sPos
+	 * @param pos
 	 *            The cell position e.g. 'A1'
-	 * @param nRowMerge
-	 * @param nColumnMerge
+	 * @param rowMerge
+	 * @param columnMerge
 	 *
 	 * @throws FastOdsException
 	 */
-	public void setCellMerge(final String sPos, final int nRowMerge,
-			final int nColumnMerge) throws FastOdsException {
-		final int nCol = this.util.getPosition(sPos).getColumn();
-		this.setCellMerge(nCol, nRowMerge, nColumnMerge);
+	public void setCellMerge(final String pos, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		final int col = this.util.getPosition(pos).getColumn();
+		this.setCellMerge(col, rowMerge, columnMerge);
 	}
 
 	/**
-	 * Set the cell rowStyle for the cell at nCol to ts.
+	 * Set the cell rowStyle for the cell at col to ts.
 	 *
-	 * @param nCol
+	 * @param col
 	 *            The column number
 	 * @param ts
 	 *            The table rowStyle to be used
@@ -211,18 +211,18 @@ public class LightTableRow {
 	 * @return The List with all HeavyTableCell objects
 	 */
 	protected List<HeavyTableCell> getCells() {
-		return this.qTableCells;
+		return this.tableCells;
 	}
 
 	/**
-	 * Set HeavyTableCell object at position nCol.<br>
+	 * Set HeavyTableCell object at position col.<br>
 	 * If there is already a HeavyTableCell object, the old one is overwritten.
 	 *
-	 * @param nCol
+	 * @param col
 	 *            The column for this cell
 	 * @param tc
 	 */
-	protected void setCell(final int nCol, final HeavyTableCell tc) {
-		this.qTableCells.set(nCol, tc);
+	protected void setCell(final int col, final HeavyTableCell tc) {
+		this.tableCells.set(col, tc);
 	}
 }

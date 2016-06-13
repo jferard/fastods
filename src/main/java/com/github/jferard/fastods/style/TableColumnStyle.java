@@ -81,26 +81,26 @@ public class TableColumnStyle implements StyleTag {
 
 	private final TableCellStyle defaultCellStyle;
 	private final String name;
-	private final String sColumnWidth;
+	private final String columnWidth;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param defaultCellStyle
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableColumnStyle(final String sStyleName, final String sColumnWidth,
+	TableColumnStyle(final String styleName, final String columnWidth,
 			final TableCellStyle defaultCellStyle) {
-		this.name = sStyleName;
-		this.sColumnWidth = sColumnWidth;
+		this.name = styleName;
+		this.columnWidth = columnWidth;
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
@@ -120,17 +120,17 @@ public class TableColumnStyle implements StyleTag {
 		appendable.append("><style:table-column-properties");
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:column-width",
-				this.sColumnWidth);
+				this.columnWidth);
 		appendable.append("/></style:style>");
 	}
 
 	public void appendXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int nCount) throws IOException {
+			final Appendable appendable, final int count) throws IOException {
 		appendable.append("<table:table-column");
 		util.appendAttribute(appendable, "table:style-name", this.name);
-		if (nCount > 1)
+		if (count > 1)
 			util.appendEAttribute(appendable, "table:number-columns-repeated",
-					nCount);
+					count);
 		if (this.defaultCellStyle != null)
 			util.appendAttribute(appendable, "table:default-cell-style-name",
 					this.defaultCellStyle.getName());
@@ -150,7 +150,7 @@ public class TableColumnStyle implements StyleTag {
 	}
 
 	public String getColumnWidth() {
-		return this.sColumnWidth;
+		return this.columnWidth;
 	}
 
 	public String getDefaultCellStyleName() {

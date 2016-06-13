@@ -57,7 +57,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class TableColumnStyleBuilder {
 	private TableCellStyle defaultCellStyle;
 	private final String name;
-	private String sColumnWidth;
+	private String columnWidth;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -65,42 +65,42 @@ public class TableColumnStyleBuilder {
 	 *
 	 * @param xmlUtil
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
 	public TableColumnStyleBuilder(final XMLUtil xmlUtil, final String name) {
 		this.name = xmlUtil.escapeXMLAttribute(name);
-		this.sColumnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
+		this.columnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle(xmlUtil);
 	}
 
 	public TableColumnStyle build() {
-		return new TableColumnStyle(this.name, this.sColumnWidth,
+		return new TableColumnStyle(this.name, this.columnWidth,
 				this.defaultCellStyle);
 
 	}
 
 	/**
 	 * Set the column width of a table column.<br>
-	 * sWidth is a length value expressed as a number followed by a unit of
+	 * width is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 1.5cm or 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param sWidth
+	 * @param width
 	 *            - The width of a column, e.g. '10cm'
 	 * @return true - The width was set, false - this object is no table column,
 	 *         you can not set the default cell to it
 	 */
-	public TableColumnStyleBuilder columnWidth(final String sWidth) {
-		this.sColumnWidth = sWidth;
+	public TableColumnStyleBuilder columnWidth(final String width) {
+		this.columnWidth = width;
 		return this;
 	}
 

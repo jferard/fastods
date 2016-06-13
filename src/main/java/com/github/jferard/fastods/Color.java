@@ -206,19 +206,19 @@ public final class Color {
 	/**
 	 * Helper function to create any available color string from color values.
 	 *
-	 * @param nRed
+	 * @param red
 	 *            The red value, 0-255
-	 * @param nGreen
+	 * @param green
 	 *            The green value, 0-255
-	 * @param nBlue
+	 * @param blue
 	 *            The blue value, 0-255
 	 * @return The hex string in the format '#rrggbb'
 	 */
-	public static String createHexColor(final int nRed, final int nGreen,
-			final int nBlue) {
-		return new StringBuilder('#').append(Color.toHexString(nRed))
-				.append(Color.toHexString(nGreen))
-				.append(Color.toHexString(nBlue)).toString();
+	public static String createHexColor(final int red, final int green,
+			final int blue) {
+		return new StringBuilder('#').append(Color.toHexString(red))
+				.append(Color.toHexString(green))
+				.append(Color.toHexString(blue)).toString();
 
 	}
 

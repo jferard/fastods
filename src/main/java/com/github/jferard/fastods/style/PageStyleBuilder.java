@@ -61,15 +61,15 @@ public class PageStyleBuilder {
 	private PaperFormat paperFormat;
 	private PrintOrientation printOrientation;
 
-	private String sBackgroundColor;
-	private String sMarginBottom;
-	private String sMarginLeft;
-	private String sMarginRight;
+	private String backgroundColor;
+	private String marginBottom;
+	private String marginLeft;
+	private String marginRight;
 
-	private String sMarginTop;
-	private final String sNumFormat;
-	private String sPageHeight;
-	private String sPageWidth;
+	private String marginTop;
+	private final String numFormat;
+	private String pageHeight;
+	private String pageWidth;
 
 	private WritingMode writingMode;
 
@@ -82,14 +82,14 @@ public class PageStyleBuilder {
 			throw new IllegalStateException();
 
 		this.name = name;
-		this.sMarginTop = "1.5cm";
-		this.sMarginBottom = "1.5cm";
-		this.sMarginLeft = "1.5cm";
-		this.sMarginRight = "1.5cm";
+		this.marginTop = "1.5cm";
+		this.marginBottom = "1.5cm";
+		this.marginLeft = "1.5cm";
+		this.marginRight = "1.5cm";
 
 		this.paperFormat(PageStyle.DEFAULT_FORMAT);
-		this.sNumFormat = "1";
-		this.sBackgroundColor = "";
+		this.numFormat = "1";
+		this.backgroundColor = "";
 
 		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
@@ -119,25 +119,25 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the background color to sColor, a six-digit hex value. Example:
+	 * Set the background color to color, a six-digit hex value. Example:
 	 * #aa32f0.<br>
 	 * The background color may also be set to 'transparent' if a background
 	 * image is used (currently unsupported).
 	 *
-	 * @param sColor
+	 * @param color
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder backgroundColor(final String sColor) {
-		this.sBackgroundColor = sColor;
+	public PageStyleBuilder backgroundColor(final String color) {
+		this.backgroundColor = color;
 		return this;
 	}
 
 	public PageStyle build() {
 		// TODO : create MarginAttribute and use a
 		// EnumMap<MarginAtribute.Position, MarginAttribute>
-		return new PageStyle(this.name, this.sMarginTop, this.sMarginBottom,
-				this.sMarginLeft, this.sMarginRight, this.sPageWidth,
-				this.sPageHeight, this.sNumFormat, this.sBackgroundColor,
+		return new PageStyle(this.name, this.marginTop, this.marginBottom,
+				this.marginLeft, this.marginRight, this.pageWidth,
+				this.pageHeight, this.numFormat, this.backgroundColor,
 				this.footer, this.header, this.printOrientation,
 				this.paperFormat, this.writingMode);
 	}
@@ -162,7 +162,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginBottom(final String margin) {
-		this.sMarginBottom = margin;
+		this.marginBottom = margin;
 		return this;
 	}
 
@@ -176,7 +176,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginLeft(final String margin) {
-		this.sMarginLeft = margin;
+		this.marginLeft = margin;
 		return this;
 	}
 
@@ -191,7 +191,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginRight(final String margin) {
-		this.sMarginRight = margin;
+		this.marginRight = margin;
 		return this;
 	}
 
@@ -206,7 +206,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginTop(final String margin) {
-		this.sMarginTop = margin;
+		this.marginTop = margin;
 		return this;
 	}
 
@@ -223,7 +223,7 @@ public class PageStyleBuilder {
 	 */
 	public PageStyleBuilder pageHeight(final String pageHeight) {
 		this.paperFormat = PageStyle.PaperFormat.USER;
-		this.sPageHeight = pageHeight;
+		this.pageHeight = pageHeight;
 		return this;
 	}
 
@@ -242,8 +242,8 @@ public class PageStyleBuilder {
 	 */
 	public final PageStyleBuilder paperFormat(final PaperFormat paperFormat) {
 		this.paperFormat = paperFormat;
-		this.sPageWidth = paperFormat.getHeight();
-		this.sPageHeight = paperFormat.getWidth();
+		this.pageWidth = paperFormat.getHeight();
+		this.pageHeight = paperFormat.getWidth();
 		return this;
 	}
 
@@ -270,7 +270,7 @@ public class PageStyleBuilder {
 	 */
 	public PageStyleBuilder setPageWidth(final String pageWidth) {
 		this.paperFormat = PageStyle.PaperFormat.USER;
-		this.sPageWidth = pageWidth;
+		this.pageWidth = pageWidth;
 		return this;
 	}
 

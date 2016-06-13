@@ -53,18 +53,18 @@ import com.github.jferard.fastods.style.FHTextStyle.Underline;
 
 public class FHTextStyleBuilder {
 	private final String name;
-	private Underline nFontUnderlineStyle;
-	private String sFontColor;
-	private String sFontName;
-	private String sFontSize;
-	private String sFontSizeAsian;
-	private String sFontSizeComplex;
-	private String sFontStyle;
-	private String sFontUnderlineColor;
-	private String sFontWeight;
+	private Underline fontUnderlineStyle;
+	private String fontColor;
+	private String fontName;
+	private String fontSize;
+	private String fontSizeAsian;
+	private String fontSizeComplex;
+	private String fontStyle;
+	private String fontUnderlineColor;
+	private String fontWeight;
 
-	private String sFontWeightAsian;
-	private String sFontWeightComplex;
+	private String fontWeightAsian;
+	private String fontWeightComplex;
 
 	/**
 	 * Create a new text style without a name.<br>
@@ -83,21 +83,21 @@ public class FHTextStyleBuilder {
 	}
 
 	public FHTextStyle build() {
-		return new FHTextStyle(this.name, this.sFontColor, this.sFontName,
-				this.sFontWeight, this.sFontStyle, this.sFontSize,
-				this.sFontUnderlineColor, this.nFontUnderlineStyle);
+		return new FHTextStyle(this.name, this.fontColor, this.fontName,
+				this.fontWeight, this.fontStyle, this.fontSize,
+				this.fontUnderlineColor, this.fontUnderlineStyle);
 	}
 
 	/**
-	 * Set the font color to sColor.
+	 * Set the font color to color.
 	 *
-	 * @param sColor
+	 * @param color
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
 	 *            cell background
 	 * @return this for fluent style
 	 */
-	public FHTextStyleBuilder fontColor(final String sColor) {
-		this.sFontColor = sColor;
+	public FHTextStyleBuilder fontColor(final String color) {
+		this.fontColor = color;
 		return this;
 	}
 
@@ -109,7 +109,7 @@ public class FHTextStyleBuilder {
 	 * @return
 	 */
 	public FHTextStyleBuilder fontName(final String fontName) {
-		this.sFontName = fontName;
+		this.fontName = fontName;
 		return this;
 	}
 
@@ -121,9 +121,9 @@ public class FHTextStyleBuilder {
 	 * @return
 	 */
 	public FHTextStyleBuilder fontSize(final int fontSize) {
-		final String sSize = new StringBuilder(fontSize).append("pt")
+		final String size = new StringBuilder(fontSize).append("pt")
 				.toString();
-		this.sFontSize = sSize;
+		this.fontSize = size;
 		return this;
 	}
 
@@ -137,7 +137,7 @@ public class FHTextStyleBuilder {
 	 * @return
 	 */
 	public FHTextStyleBuilder fontSize(final String fontSize) {
-		this.sFontSize = fontSize;
+		this.fontSize = fontSize;
 		return this;
 	}
 
@@ -147,7 +147,7 @@ public class FHTextStyleBuilder {
 	 * @return true
 	 */
 	public FHTextStyleBuilder fontStyleItalic() {
-		this.sFontStyle = "italic";
+		this.fontStyle = "italic";
 		return this;
 	}
 
@@ -157,21 +157,21 @@ public class FHTextStyleBuilder {
 	 * @return true
 	 */
 	public FHTextStyleBuilder fontStyleNormal() {
-		this.sFontStyle = "normal";
+		this.fontStyle = "normal";
 		return this;
 	}
 
 	/**
-	 * Set the font underline color to sColor. Use an empty string to reset it
+	 * Set the font underline color to color. Use an empty string to reset it
 	 * to 'auto'.
 	 *
-	 * @param sColor
+	 * @param color
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
 	 *            cell background.
 	 * @return
 	 */
-	public FHTextStyleBuilder fontUnderlineColor(final String sColor) {
-		this.sFontUnderlineColor = sColor;
+	public FHTextStyleBuilder fontUnderlineColor(final String color) {
+		this.fontUnderlineColor = color;
 		return this;
 	}
 
@@ -187,12 +187,12 @@ public class FHTextStyleBuilder {
 	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
 	 * Other values are ignored.
 	 *
-	 * @param nStyle
+	 * @param style
 	 *            One of the TextStyle.STYLE_UNDERLINE
 	 * @return
 	 */
-	public FHTextStyleBuilder fontUnderlineStyle(final Underline nStyle) {
-		this.nFontUnderlineStyle = nStyle;
+	public FHTextStyleBuilder fontUnderlineStyle(final Underline style) {
+		this.fontUnderlineStyle = style;
 		return this;
 	}
 
@@ -202,7 +202,7 @@ public class FHTextStyleBuilder {
 	 * @return true
 	 */
 	public FHTextStyleBuilder fontWeightBold() {
-		this.sFontWeight = "bold";
+		this.fontWeight = "bold";
 		return this;
 	}
 
@@ -212,7 +212,7 @@ public class FHTextStyleBuilder {
 	 * @return true -
 	 */
 	public FHTextStyleBuilder fontWeightNormal() {
-		this.sFontWeight = "normal";
+		this.fontWeight = "normal";
 		return this;
 	}
 }

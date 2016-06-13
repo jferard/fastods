@@ -110,18 +110,18 @@ public class Util {
 	/**
 	 * Convert a cell position string like B3 to the column number.
 	 *
-	 * @param sPos
+	 * @param pos
 	 *            The cell position in the range 'A1' to 'IV65536'
 	 * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
 	 *         4
 	 */
-	public Position getPosition(final String sPos) {
-		final String s = sPos.toUpperCase(Locale.US);
+	public Position getPosition(final String pos) {
+		final String s = pos.toUpperCase(Locale.US);
 		final int len = s.length();
 		int status = 0;
 
-		int nRow = 0;
-		int nCol = 0;
+		int row = 0;
+		int col = 0;
 		int n = 0;
 		while (n < len) {
 			final char c = s.charAt(n);
@@ -134,7 +134,7 @@ public class Util {
 				break;
 			case 1: // mand letter
 				if ('A' <= c && c <= 'Z') {
-					nCol = c - 'A' + 1;
+					col = c - 'A' + 1;
 					status = 2;
 					n++;
 				} else
@@ -144,13 +144,13 @@ public class Util {
 				if (c < 'A' || c > 'Z') {
 					status = 3;
 				} else {
-					nCol = nCol * 26 + c - 'A' + 1;
+					col = col * 26 + c - 'A' + 1;
 					n++;
 				}
 				break;
 			case 4: // mand digit
 				if ('0' <= c && c <= '9') {
-					nRow = c - '0';
+					row = c - '0';
 					status = 5;
 					n++;
 				} else
@@ -158,7 +158,7 @@ public class Util {
 				break;
 			case 5: // opt digit
 				if ('0' <= c && c <= '9') {
-					nRow = nRow * 10 + c - '0';
+					row = row * 10 + c - '0';
 					n++;
 				} else
 					return null;
@@ -167,7 +167,7 @@ public class Util {
 				return null;
 			}
 		}
-		return new Position(nRow - 1, nCol - 1);
+		return new Position(row - 1, col - 1);
 	}
 
 	/**

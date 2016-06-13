@@ -161,17 +161,17 @@ public class PageStyle {
 	private final String name;
 	private final PaperFormat paperFormat;
 	private final PrintOrientation printOrientation;
-	private final String sBackgroundColor;
+	private final String backgroundColor;
 
-	private final String sMarginBottom;
-	private final String sMarginLeft;
-	private final String sMarginRight;
-	private final String sMarginTop;
+	private final String marginBottom;
+	private final String marginLeft;
+	private final String marginRight;
+	private final String marginTop;
 
-	private final String sNumFormat;
-	private final String sPageHeight;
+	private final String numFormat;
+	private final String pageHeight;
 
-	private final String sPageWidth;
+	private final String pageWidth;
 
 	private final WritingMode writingMode;
 
@@ -183,22 +183,22 @@ public class PageStyle {
 	 * @param header2
 	 * @param footer
 	 */
-	public PageStyle(final String name, final String sMarginTop,
-			final String sMarginBottom, final String sMarginLeft,
-			final String sMarginRight, final String sPageWidth,
-			final String sPageHeight, final String sNumFormat,
-			final String sBackgroundColor, final FooterHeader footer,
+	public PageStyle(final String name, final String marginTop,
+			final String marginBottom, final String marginLeft,
+			final String marginRight, final String pageWidth,
+			final String pageHeight, final String numFormat,
+			final String backgroundColor, final FooterHeader footer,
 			final FooterHeader header, final PrintOrientation printOrientation,
 			final PaperFormat paperFormat, final WritingMode writingMode) {
 		this.name = name;
-		this.sMarginTop = sMarginTop;
-		this.sMarginBottom = sMarginBottom;
-		this.sMarginLeft = sMarginLeft;
-		this.sMarginRight = sMarginRight;
-		this.sPageWidth = sPageWidth;
-		this.sPageHeight = sPageHeight;
-		this.sNumFormat = sNumFormat;
-		this.sBackgroundColor = sBackgroundColor;
+		this.marginTop = marginTop;
+		this.marginBottom = marginBottom;
+		this.marginLeft = marginLeft;
+		this.marginRight = marginRight;
+		this.pageWidth = pageWidth;
+		this.pageHeight = pageHeight;
+		this.numFormat = numFormat;
+		this.backgroundColor = backgroundColor;
 		this.footer = footer;
 		this.header = header;
 		this.printOrientation = printOrientation;
@@ -220,19 +220,19 @@ public class PageStyle {
 		appendable.append("<style:page-layout");
 		util.appendAttribute(appendable, "style:name", this.name);
 		appendable.append("><style:page-layout-properties");
-		util.appendAttribute(appendable, "fo:page-width", this.sPageWidth);
-		util.appendAttribute(appendable, "fo:page-height", this.sPageHeight);
-		util.appendAttribute(appendable, "style:num-format", this.sNumFormat);
+		util.appendAttribute(appendable, "fo:page-width", this.pageWidth);
+		util.appendAttribute(appendable, "fo:page-height", this.pageHeight);
+		util.appendAttribute(appendable, "style:num-format", this.numFormat);
 		util.appendEAttribute(appendable, "style:writing-mode",
 				this.writingMode.getAttrValue());
 		util.appendEAttribute(appendable, "style:print-orientation",
 				this.printOrientation.getAttrValue());
 		this.appendBackgroundColor(util, appendable);
-		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
+		util.appendAttribute(appendable, "fo:margin-top", this.marginTop);
 		util.appendAttribute(appendable, "fo:margin-bottom",
-				this.sMarginBottom);
-		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
-		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
+				this.marginBottom);
+		util.appendAttribute(appendable, "fo:margin-left", this.marginLeft);
+		util.appendAttribute(appendable, "fo:margin-right", this.marginRight);
 		appendable.append("/>"); // End of page-layout-properties
 
 		PageStyle.appendFooterHeaderStyle(util, appendable, this.getHeader(),
@@ -283,7 +283,7 @@ public class PageStyle {
 	}
 
 	public String getBackgroundColor() {
-		return this.sBackgroundColor;
+		return this.backgroundColor;
 	}
 
 	public FooterHeader getFooter() {
@@ -295,19 +295,19 @@ public class PageStyle {
 	}
 
 	public String getMarginBottom() {
-		return this.sMarginBottom;
+		return this.marginBottom;
 	}
 
 	public String getMarginLeft() {
-		return this.sMarginLeft;
+		return this.marginLeft;
 	}
 
 	public String getMarginRight() {
-		return this.sMarginRight;
+		return this.marginRight;
 	}
 
 	public String getMarginTop() {
-		return this.sMarginTop;
+		return this.marginTop;
 	}
 
 	/**
@@ -320,11 +320,11 @@ public class PageStyle {
 	}
 
 	public String getPageHeight() {
-		return this.sPageHeight;
+		return this.pageHeight;
 	}
 
 	public String getPageWidth() {
-		return this.sPageWidth;
+		return this.pageWidth;
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class PageStyle {
 			final Appendable appendable) throws IOException {
 		if (this.getBackgroundColor().length() > 0) {
 			util.appendAttribute(appendable, "fo:background-color",
-					this.sBackgroundColor);
+					this.backgroundColor);
 		}
 	}
 }

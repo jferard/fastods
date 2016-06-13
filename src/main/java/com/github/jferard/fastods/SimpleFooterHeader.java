@@ -70,11 +70,11 @@ class SimpleFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final List<FHParagraph> region, final String sMarginLeft,
-			final String sMarginRight, final String sMarginTop,
-			final String sMinHeight) {
-		super(footerHeaderType, sMarginLeft, sMarginRight, sMarginTop,
-				sMinHeight);
+			final List<FHParagraph> region, final String marginLeft,
+			final String marginRight, final String marginTop,
+			final String minHeight) {
+		super(footerHeaderType, marginLeft, marginRight, marginTop,
+				minHeight);
 		this.region = region;
 	}
 

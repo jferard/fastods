@@ -67,18 +67,18 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         table:table
  */
 public class Table implements NamedObject {
-	private static void checkCol(final int nCol) throws FastOdsException {
-		if (nCol < 0) {
+	private static void checkCol(final int col) throws FastOdsException {
+		if (col < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative column number exception, column value:[")
-							.append(nCol).append("]").toString());
+							.append(col).append("]").toString());
 		}
 	}
 
-	private static void checkRow(final int nRow) throws FastOdsException {
-		if (nRow < 0) {
+	private static void checkRow(final int row) throws FastOdsException {
+		if (row < 0) {
 			throw new FastOdsException(new StringBuilder(
-					"Negative row number exception, row value:[").append(nRow)
+					"Negative row number exception, row value:[").append(row)
 							.append("]").toString());
 		}
 	}
@@ -98,8 +98,8 @@ public class Table implements NamedObject {
 	private final ConfigItem positionRight;
 
 	private final ConfigItem positionTop;
-	private final List<TableColumnStyle> qColumnStyles;
-	private final List<HeavyTableRow> qTableRows;
+	private final List<TableColumnStyle> columnStyles;
+	private final List<HeavyTableRow> tableRows;
 
 	private TableStyle style;
 	private final Util util;
@@ -142,10 +142,10 @@ public class Table implements NamedObject {
 		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue", "int",
 				"60");
 
-		this.qColumnStyles = FullList.<TableColumnStyle> builder()
+		this.columnStyles = FullList.<TableColumnStyle> builder()
 				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
 				.capacity(this.columnCapacity).build();
-		this.qTableRows = FullList.newListWithCapacity(rowCapacity);
+		this.tableRows = FullList.newListWithCapacity(rowCapacity);
 	}
 
 	public void addData(final DataWrapper data) {
@@ -154,30 +154,30 @@ public class Table implements NamedObject {
 
 	// /**
 	// * Get a HeavyTableCell, if no HeavyTableCell was present at this
-	// nRow,nCol, create a
+	// row,col, create a
 	// * new one with a default of HeavyTableCell.STYLE_STRING and a content of
 	// "".
 	// *
-	// * @param nRow
+	// * @param row
 	// * The row
-	// * @param nCol
+	// * @param col
 	// * The column
 	// * @return The HeavyTableCell for this position, maybe a new
 	// HeavyTableCell
 	// * @throws FastOdsException
 	// */
-	// public HeavyTableCell getCell(final int nRow, final int nCol)
+	// public HeavyTableCell getCell(final int row, final int col)
 	// throws FastOdsException {
-	// final HeavyTableRow tr = this.getRow(nRow);
-	// return tr.getCell(nCol);
+	// final HeavyTableRow tr = this.getRow(row);
+	// return tr.getCell(col);
 	// }
 
 	public List<TableColumnStyle> getColumnStyles() {
-		return this.qColumnStyles;
+		return this.columnStyles;
 	}
 
 	public int getLastRow() {
-		return this.qTableRows.size() - 1;
+		return this.tableRows.size() - 1;
 	}
 
 	/**
@@ -190,24 +190,24 @@ public class Table implements NamedObject {
 		return this.name;
 	}
 
-	public HeavyTableRow getRow(final int nRow) throws FastOdsException {
-		Table.checkRow(nRow);
-		HeavyTableRow tr = this.qTableRows.get(nRow);
+	public HeavyTableRow getRow(final int row) throws FastOdsException {
+		Table.checkRow(row);
+		HeavyTableRow tr = this.tableRows.get(row);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.odsFile, this.util, this.xmlUtil,
-					this.format, nRow, this.columnCapacity);
-			this.qTableRows.set(nRow, tr);
+					this.format, row, this.columnCapacity);
+			this.tableRows.set(row, tr);
 		}
 		return tr;
 	}
 
-	public HeavyTableRow getRow(final String sPos) throws FastOdsException {
-		final int nRow = this.util.getPosition(sPos).getRow();
-		return this.getRow(nRow);
+	public HeavyTableRow getRow(final String pos) throws FastOdsException {
+		final int row = this.util.getPosition(pos).getRow();
+		return this.getRow(row);
 	}
 
 	// public List<LightTableRow> getRows() {
-	// return this.qTableRows;
+	// return this.tableRows;
 	// }
 
 	/**
@@ -220,29 +220,29 @@ public class Table implements NamedObject {
 	}
 
 	public HeavyTableRow nextRow() {
-		final int nRow = this.qTableRows.size();
+		final int row = this.tableRows.size();
 		final HeavyTableRow tr = new HeavyTableRow(this.odsFile, this.util,
-				this.xmlUtil, this.format, nRow, this.columnCapacity);
-		this.qTableRows.add(tr);
+				this.xmlUtil, this.format, row, this.columnCapacity);
+		this.tableRows.add(tr);
 		return tr;
 	}
 
 	/**
 	 * Set the style of a column.
 	 *
-	 * @param nCol
+	 * @param col
 	 *            The column number
 	 * @param ts
 	 *            The style to be used, make sure the style is of type
 	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
 	 * @throws FastOdsException
-	 *             Thrown if nCol has an invalid value.
+	 *             Thrown if col has an invalid value.
 	 */
-	public void setColumnStyle(final int nCol, final TableColumnStyle ts)
+	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
-		Table.checkCol(nCol);
+		Table.checkCol(col);
 		ts.addToFile(this.odsFile);
-		this.qColumnStyles.set(nCol, ts);
+		this.columnStyles.set(col, ts);
 	}
 
 	/**
@@ -273,41 +273,41 @@ public class Table implements NamedObject {
 			return;
 
 		TableColumnStyle ts0 = TableColumnStyle.getDefaultColumnStyle(xmlUtil);
-		int nCount = 1;
+		int count = 1;
 		TableColumnStyle ts1 = iterator.next();
 		while (iterator.hasNext()) {
 			ts0 = ts1;
 			ts1 = iterator.next();
 
 			if (ts0.equals(ts1)) {
-				nCount++;
+				count++;
 			} else {
-				ts0.appendXMLToTable(xmlUtil, appendable, nCount);
-				nCount = 1;
+				ts0.appendXMLToTable(xmlUtil, appendable, count);
+				count = 1;
 			}
 
 		}
-		ts1.appendXMLToTable(xmlUtil, appendable, nCount);
+		ts1.appendXMLToTable(xmlUtil, appendable, count);
 		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
 				.appendXMLToTable(xmlUtil, appendable, 1);
 	}
 
 	private void appendRows(final Appendable appendable, final XMLUtil util)
 			throws IOException {
-		int nNullFieldCounter = 0;
+		int nullFieldCounter = 0;
 
-		final int size = this.qTableRows.size();
+		final int size = this.tableRows.size();
 		for (int r = 0; r < size; r++) {
-			final HeavyTableRow tr = this.qTableRows.get(r);
+			final HeavyTableRow tr = this.tableRows.get(r);
 			if (tr == null) {
-				nNullFieldCounter++;
+				nullFieldCounter++;
 			} else {
-				if (nNullFieldCounter > 0) {
+				if (nullFieldCounter > 0) {
 					appendable.append("<table:table-row");
-					if (nNullFieldCounter > 1) {
+					if (nullFieldCounter > 1) {
 						util.appendEAttribute(appendable,
 								"table:number-rows-repeated",
-								nNullFieldCounter);
+								nullFieldCounter);
 					}
 					util.appendEAttribute(appendable, "table:style-name",
 							"ro1");

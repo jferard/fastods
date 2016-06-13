@@ -54,7 +54,7 @@ package com.github.jferard.fastods.style;
 public class TableRowStyleBuilder {
 
 	private final String name;
-	private String sRowHeight;
+	private String rowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -62,41 +62,41 @@ public class TableRowStyleBuilder {
 	 *
 	 * @param name
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
 	public TableRowStyleBuilder(final String name) {
 		this.name = name;
-		this.sRowHeight = "0.45cm";
+		this.rowHeight = "0.45cm";
 	}
 
 	public TableRowStyle build() {
-		return new TableRowStyle(this.name, this.sRowHeight);
+		return new TableRowStyle(this.name, this.rowHeight);
 
 	}
 
 	/**
 	 * Set the row height to a table row.<br>
-	 * sHeight is a length value expressed as a number followed by a unit of
+	 * height is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 1.5cm or 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param sHeight
+	 * @param height
 	 *            The table row height to be used, e.g. '1.0cm'
 	 * @return true - The height was set,<br>
 	 *         false - his object is no table row, you can not set the height to
 	 *         it
 	 */
-	public TableRowStyleBuilder rowHeight(final String sHeight) {
-		this.sRowHeight = sHeight;
+	public TableRowStyleBuilder rowHeight(final String height) {
+		this.rowHeight = height;
 		return this;
 	}
 }

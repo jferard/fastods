@@ -50,7 +50,7 @@ import java.util.Locale;
  */
 public class DateStyleBuilder
 		extends DataStyleBuilder<DateStyle, DateStyleBuilder> {
-	private boolean bAutomaticOrder;
+	private boolean automaticOrder;
 
 	/**
 	 * The default date format DATEFORMAT_DDMMYY.
@@ -67,7 +67,7 @@ public class DateStyleBuilder
 	 */
 	protected DateStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
-		this.bAutomaticOrder = false;
+		this.automaticOrder = false;
 	}
 
 	/**
@@ -75,11 +75,11 @@ public class DateStyleBuilder
 	 * match the default order<br>
 	 * for the language and country of the date style.
 	 *
-	 * @param bAutomatic
+	 * @param automatic
 	 * @return this for fluent style
 	 */
-	public DateStyleBuilder automaticOrder(final boolean bAutomatic) {
-		this.bAutomaticOrder = bAutomatic;
+	public DateStyleBuilder automaticOrder(final boolean automatic) {
+		this.automaticOrder = automatic;
 		return this;
 	}
 
@@ -89,7 +89,7 @@ public class DateStyleBuilder
 	@Override
 	public DateStyle build() {
 		return new DateStyle(this.name, this.countryCode, this.languageCode,
-				this.volatileStyle, this.dateFormat, this.bAutomaticOrder);
+				this.volatileStyle, this.dateFormat, this.automaticOrder);
 	}
 
 	/**

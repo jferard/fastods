@@ -77,11 +77,11 @@ public class TableCellStyleBuilder {
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
 	 *            The OdsFile to add this style to
@@ -115,24 +115,24 @@ public class TableCellStyleBuilder {
 	/**
 	 * Add a border style to this cell.
 	 *
-	 * @param sSize
+	 * @param size
 	 *            The size of the line e.g. '0.1cm'
-	 * @param sBorderColor
+	 * @param borderColor
 	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
 	 *            red border
-	 * @param nStyle
+	 * @param style
 	 *            - The style of the border line, either
 	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
-	 * @param nPosition
+	 * @param position
 	 *            - The position of the line in this cell, e.g.
 	 *            BorderAttribute.POSITION_TOP
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder addBorder(final String sSize,
-			final String sBorderColor, final BorderAttribute.Style nStyle,
-			final BorderAttribute.Position nPosition) {
-		final BorderAttribute bs = new BorderAttribute(sSize, sBorderColor,
-				nStyle, nPosition);
+	public TableCellStyleBuilder addBorder(final String size,
+			final String borderColor, final BorderAttribute.Style style,
+			final BorderAttribute.Position position) {
+		final BorderAttribute bs = new BorderAttribute(size, borderColor,
+				style, position);
 		this.addBorder(bs);
 		return this;
 	}
@@ -140,32 +140,32 @@ public class TableCellStyleBuilder {
 	/**
 	 * Add a border style to this cell.
 	 *
-	 * @param sSize
+	 * @param size
 	 *            The size of the margin '0cm'
-	 * @param nPosition
+	 * @param position
 	 *            - The position of the line in this cell, e.g.
 	 *            BorderAttribute.POSITION_TOP
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder addMargin(final String sSize,
-			final MarginAttribute.Position nPosition) {
-		this.marginByPosition.put(nPosition,
-				new MarginAttribute(sSize, nPosition));
+	public TableCellStyleBuilder addMargin(final String size,
+			final MarginAttribute.Position position) {
+		this.marginByPosition.put(position,
+				new MarginAttribute(size, position));
 		return this;
 	}
 
 	/**
-	 * Set the cell background color to sColor.<br>
+	 * Set the cell background color to color.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
 	 *
-	 * @param sColor
+	 * @param color
 	 *            - The color to be used in format #rrggbb e.g. #ff0000 for a
 	 *            red cell background
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder backgroundColor(final String sColor) {
-		this.backgroundColor = sColor;
+	public TableCellStyleBuilder backgroundColor(final String color) {
+		this.backgroundColor = color;
 		return this;
 	}
 
@@ -209,17 +209,17 @@ public class TableCellStyleBuilder {
 	// }
 
 	/**
-	 * Set the font color to sColor.<br>
+	 * Set the font color to color.<br>
 	 * The TableFamilyStyle must be of a format of
 	 * TableFamilyStyle.STYLE_TABLECELL
 	 *
-	 * @param sColor
+	 * @param color
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
 	 *            cell background
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder fontColor(final String sColor) {
-		this.tsBuilder.fontColor(sColor);
+	public TableCellStyleBuilder fontColor(final String color) {
+		this.tsBuilder.fontColor(color);
 		return this;
 	}
 
@@ -311,27 +311,27 @@ public class TableCellStyleBuilder {
 	/**
 	 * Set the alignment of text.
 	 *
-	 * @param nAlign
+	 * @param align
 	 *            - The text alignment flag,
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder textAlign(final TableCellStyle.Align nAlign) {
-		this.textAlign = nAlign;
+	public TableCellStyleBuilder textAlign(final TableCellStyle.Align align) {
+		this.textAlign = align;
 		return this;
 	}
 
 	/**
 	 * Set the vertical alignment of text.
 	 *
-	 * @param nAlign
+	 * @param align
 	 *            - The vertical alignment flag,<br>
 	 *            either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or
 	 *            VERTICALALIGN_BOTTOM
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder verticalAlign(
-			final TableCellStyle.VerticalAlign nAlign) {
-		this.verticalAlign = nAlign;
+			final TableCellStyle.VerticalAlign align) {
+		this.verticalAlign = align;
 		return this;
 	}
 }

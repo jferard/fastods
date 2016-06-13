@@ -114,12 +114,12 @@ public class BorderAttribute {
 	/**
 	 * The border color
 	 */
-	private final String sBorderColor;
+	private final String borderColor;
 
 	/**
 	 * The border size.
 	 */
-	private final String sBorderSize;
+	private final String borderSize;
 
 	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
@@ -129,45 +129,45 @@ public class BorderAttribute {
 	private final Style style;
 
 	/**
-	 * sSize is a length value expressed as a number followed by a unit of
+	 * size is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param sSize
+	 * @param size
 	 *            The size of the border
-	 * @param sColor
+	 * @param color
 	 *            The color of the border in format '#rrggbb'
-	 * @param nStyle
+	 * @param style
 	 *            The style of the border, BorderAttribute.BORDER_SOLID or
 	 *            BorderAttribute.BORDER_DOUBLE
-	 * @param nPos
+	 * @param pos
 	 *            The position to put the border on the cell,
 	 *            BorderAttribute.POSITION_TOP,BorderAttribute.POSITION_BOTTOM,
 	 *            BorderAttribute.POSITION_LEFT,BorderAttribute.POSITION_RIGHT
 	 *            or BorderAttribute.POSITION_ALL
 	 */
-	BorderAttribute(final String sSize, final String sColor, final Style style,
+	BorderAttribute(final String size, final String color, final Style style,
 			final Position position) {
-		this.sBorderSize = sSize;
-		this.sBorderColor = sColor;
+		this.borderSize = size;
+		this.borderColor = color;
 		this.style = style;
 		this.position = position;
 	}
 
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.sBorderSize == null && this.sBorderColor == null)
+		if (this.borderSize == null && this.borderColor == null)
 			return;
 
 		final StringBuilder sb = new StringBuilder();
-		if (this.sBorderSize != null)
-			sb.append(this.sBorderSize).append(XMLUtil.SPACE_CHAR);
+		if (this.borderSize != null)
+			sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR);
 
-		if (this.sBorderColor != null)
+		if (this.borderColor != null)
 			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
-					.append(this.sBorderColor);
+					.append(this.borderColor);
 
 		util.appendEAttribute(appendable, this.position.attrName,
 				sb.toString());
@@ -179,7 +179,7 @@ public class BorderAttribute {
 	 * @return The color in format #rrggbb
 	 */
 	public String getBorderColor() {
-		return this.sBorderColor;
+		return this.borderColor;
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class BorderAttribute {
 	 * @return The size as string, e.g. '0.1cm'
 	 */
 	public String getBorderSize() {
-		return this.sBorderSize;
+		return this.borderSize;
 	}
 
 	/**

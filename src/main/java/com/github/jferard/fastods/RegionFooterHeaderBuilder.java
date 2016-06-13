@@ -58,9 +58,9 @@ import com.github.jferard.fastods.util.FullList;
  */
 class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 
-	private final List<FHParagraph> qCenterRegion;
-	private final List<FHParagraph> qLeftRegion;
-	private final List<FHParagraph> qRightRegion;
+	private final List<FHParagraph> centerRegion;
+	private final List<FHParagraph> leftRegion;
+	private final List<FHParagraph> rightRegion;
 
 	/**
 	 * Create a new footer object.
@@ -70,33 +70,33 @@ class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 	 */
 	RegionFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.qLeftRegion = FullList.<FHParagraph> builder().capacity(16)
+		this.leftRegion = FullList.<FHParagraph> builder().capacity(16)
 				.build();
-		this.qCenterRegion = FullList.<FHParagraph> builder().capacity(16)
+		this.centerRegion = FullList.<FHParagraph> builder().capacity(16)
 				.build();
-		this.qRightRegion = FullList.<FHParagraph> builder().capacity(16)
+		this.rightRegion = FullList.<FHParagraph> builder().capacity(16)
 				.build();
 	}
 
 	@Override
 	public FooterHeader build() {
-		return new RegionFooterHeader(this.footerHeaderType, this.qCenterRegion,
-				this.qLeftRegion, this.qRightRegion, this.sMarginLeft,
-				this.sMarginRight, this.sMarginTop, this.sMinHeight);
+		return new RegionFooterHeader(this.footerHeaderType, this.centerRegion,
+				this.leftRegion, this.rightRegion, this.marginLeft,
+				this.marginRight, this.marginTop, this.minHeight);
 	}
 
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {
 		switch (region) {
 		case LEFT: // Use left region
-			this.curRegion = this.qLeftRegion;
+			this.curRegion = this.leftRegion;
 			break;
 		case CENTER: // Use center region
-			this.curRegion = this.qCenterRegion;
+			this.curRegion = this.centerRegion;
 			break;
 		case RIGHT: // Use right region
-			this.curRegion = this.qRightRegion;
+			this.curRegion = this.rightRegion;
 			break;
-		default: // Invalid nFooterRegionValue, use center region as default
+		default: // Invalid footerRegionValue, use center region as default
 			throw new IllegalStateException();
 		}
 		return this;

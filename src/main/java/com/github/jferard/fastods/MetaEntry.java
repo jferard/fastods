@@ -62,49 +62,49 @@ public class MetaEntry implements OdsEntry {
 	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
 
-	private int nCellCount = 1;
-	private int nTableCount = 1;
-	private String sCreator;
-	private String sDateTime;
+	private int cellCount = 1;
+	private int tableCount = 1;
+	private String creator;
+	private String dateTime;
 
-	private final String sEditingCycles;
-	private final String sEditingDuration;
-	private final String sGenerator;
+	private final String editingCycles;
+	private final String editingDuration;
+	private final String generator;
 
 	public MetaEntry() {
 		this.setDateTimeNow();
-		this.sGenerator = "FastOds 0.0.1 2016";
-		this.sCreator = "FastOds 0.0.1";
-		this.sEditingCycles = "1";
-		this.sEditingDuration = "PT1M00S";
+		this.generator = "FastOds 0.0.1 2016";
+		this.creator = "FastOds 0.0.1";
+		this.editingCycles = "1";
+		this.editingDuration = "PT1M00S";
 	}
 
 	public void decCellCount() {
-		if (this.nCellCount > 0) {
-			this.nCellCount--;
+		if (this.cellCount > 0) {
+			this.cellCount--;
 		}
 	}
 
 	public void decTableCount() {
-		if (this.nTableCount > 0) {
-			this.nTableCount--;
+		if (this.tableCount > 0) {
+			this.tableCount--;
 		}
 	}
 
 	public String getCreator() {
-		return this.sCreator;
+		return this.creator;
 	}
 
 	public void incCellCount() {
-		this.nCellCount++;
+		this.cellCount++;
 	}
 
 	public void incTableCount() {
-		this.nTableCount++;
+		this.tableCount++;
 	}
 
-	public void setCreator(final String sCreator) {
-		this.sCreator = sCreator;
+	public void setCreator(final String creator) {
+		this.creator = creator;
 	}
 
 	@Override
@@ -127,18 +127,18 @@ public class MetaEntry implements OdsEntry {
 				"http://openoffice.org/2004/office");
 		util.appendEAttribute(writer, "office:version", "1.1");
 		writer.append("><office:meta>");
-		util.appendTag(writer, "meta:generator", this.sGenerator);
-		util.appendTag(writer, "dc:creator", this.sCreator);
-		util.appendTag(writer, "dc:date", this.sDateTime);
-		util.appendTag(writer, "meta:editing-cycles", this.sEditingCycles);
-		util.appendTag(writer, "meta:editing-duration", this.sEditingDuration);
+		util.appendTag(writer, "meta:generator", this.generator);
+		util.appendTag(writer, "dc:creator", this.creator);
+		util.appendTag(writer, "dc:date", this.dateTime);
+		util.appendTag(writer, "meta:editing-cycles", this.editingCycles);
+		util.appendTag(writer, "meta:editing-duration", this.editingDuration);
 		writer.append("<meta:user-defined meta:name=\"Info 1\"/>")
 				.append("<meta:user-defined meta:name=\"Info 2\"/>")
 				.append("<meta:user-defined meta:name=\"Info 3\"/>")
 				.append("<meta:user-defined meta:name=\"Info 4\"/>")
 				.append("<meta:document-statistic");
-		util.appendEAttribute(writer, "meta:table-count", this.nTableCount);
-		util.appendEAttribute(writer, "meta:cell-count", this.nCellCount);
+		util.appendEAttribute(writer, "meta:table-count", this.tableCount);
+		util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
 		writer.append("/></office:meta>").append("</office:document-meta>");
 		writer.flush();
 		zipOut.closeEntry();
@@ -150,7 +150,7 @@ public class MetaEntry implements OdsEntry {
 	private void setDateTimeNow() {
 		final Date dt = new Date();
 
-		this.sDateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
+		this.dateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
 				.append("T").append(MetaEntry.DF_TIME.format(dt)).toString();
 	}
 }

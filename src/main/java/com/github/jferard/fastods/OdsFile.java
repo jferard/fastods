@@ -83,9 +83,9 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw
  *         FastOdsException'. <br>
  *         SimpleOds 0.5.3 Added getMeta().<br>
- *         SimpleOds Added getCell(final int nTab, final String sPos).<br>
- *         SimpleOds Added getCell(final int nTab, final int nRow, final int
- *         nCol)<br>
+ *         SimpleOds Added getCell(final int tab, final String pos).<br>
+ *         SimpleOds Added getCell(final int tab, final int row, final int
+ *         col)<br>
  *
  *         WHERE ? root !
  */
@@ -117,7 +117,7 @@ public class OdsFile {
 	private final MetaEntry metaEntry;
 	private final MimetypeEntry mimetypeEntry;
 	private final SettingsEntry settingsEntry;
-	private String sFilename;
+	private String filename;
 	private final StylesEntry stylesEntry;
 
 	private final Util util;
@@ -202,7 +202,7 @@ public class OdsFile {
 	 * @return The filename of the spreadsheet file
 	 */
 	public String getName() {
-		return this.sFilename;
+		return this.filename;
 	}
 
 	public Table getTable(final int n) throws FastOdsException {
@@ -279,7 +279,7 @@ public class OdsFile {
 		if (f.isDirectory()) {
 			return false;
 		}
-		this.sFilename = name;
+		this.filename = name;
 		return true;
 	}
 
@@ -292,7 +292,7 @@ public class OdsFile {
 	public boolean save() {
 
 		try {
-			return this.save(new FileOutputStream(this.sFilename));
+			return this.save(new FileOutputStream(this.filename));
 		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
 			return false;
@@ -335,27 +335,27 @@ public class OdsFile {
 	 * Set the active table, this is the table that is shown if you open the
 	 * file.
 	 *
-	 * @param nTab
+	 * @param tableIndex
 	 *            The table number, this table should already exist, otherwise
 	 *            the first table is shown
-	 * @return true - The active table was set, false - nTab has an illegal
+	 * @return true - The active table was set, false - tab has an illegal
 	 *         value
 	 */
-	public boolean setActiveTable(final int nTab) {
-		if (nTab < 0 || nTab >= this.contentEntry.getTableCount())
+	public boolean setActiveTable(final int tableIndex) {
+		if (tableIndex < 0 || tableIndex >= this.contentEntry.getTableCount())
 			return false;
 
-		final Table tab = this.contentEntry.getTable(nTab);
-		this.settingsEntry.setActiveTable(tab);
+		final Table table = this.contentEntry.getTable(tableIndex);
+		this.settingsEntry.setActiveTable(table);
 		return true;
 	}
 
 	/**
 	 * Sets the cell value in all tables to the date from the Calendar object.
 	 *
-	 * @param nRow
+	 * @param rowIndex
 	 *            The row, 0 is the first row
-	 * @param nCol
+	 * @param col
 	 *            The column, 0 is the first column
 	 * @param cal
 	 *            The calendar object with the date
@@ -364,14 +364,14 @@ public class OdsFile {
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
-	public void setCellInAllTables(final int nRow, final int nCol,
+	public void setCellInAllTables(final int rowIndex, final int colIndex,
 			final Calendar cal, final TableCellStyle ts)
 			throws FastOdsException {
 
 		for (final Table table : this.contentEntry.getTables()) {
-			final HeavyTableRow row = table.getRow(nRow);
+			final HeavyTableRow row = table.getRow(rowIndex);
 			final TableCellWalker walker = row.getWalker();
-			walker.to(nCol);
+			walker.to(colIndex);
 			walker.setDateValue(cal);
 			walker.setStyle(ts);
 		}
@@ -381,7 +381,7 @@ public class OdsFile {
 	/**
 	 * Sets the cell value in all tables to the date from the Calendar object.
 	 *
-	 * @param sPos
+	 * @param pos
 	 *            The cell position e.g. 'A1'
 	 * @param cal
 	 *            The calendar object with the date
@@ -390,78 +390,78 @@ public class OdsFile {
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
-	public void setCellInAllTables(final String sPos, final Calendar cal,
+	public void setCellInAllTables(final String pos, final Calendar cal,
 			final TableCellStyle ts) throws FastOdsException {
-		final Position position = this.util.getPosition(sPos);
-		final int nRow = position.getRow();
-		final int nCol = position.getColumn();
-		this.setCellInAllTables(nRow, nCol, cal, ts);
+		final Position position = this.util.getPosition(pos);
+		final int row = position.getRow();
+		final int col = position.getColumn();
+		this.setCellInAllTables(row, col, cal, ts);
 	}
 
 	/**
 	 * Sets the cell value in all tables to the given values.
 	 *
-	 * @param sPos
+	 * @param pos
 	 *            The cell position e.g. 'A1'
-	 * @param nValuetype
-	 *            The value type of sValue,
+	 * @param valuetype
+	 *            The value type of value,
 	 *            HeavyTableCell.Type.STRING,HeavyTableCell.Type.FLOAT or
 	 *            HeavyTableCell.Type.PERCENTAGE.
-	 * @param sValue
+	 * @param value
 	 *            The value to set the cell to
 	 * @param ts
 	 *            The table style for this cell, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
-	public void setCellInAllTables(final String sPos,
-			final HeavyTableCell.Type nValuetype, final String sValue,
+	public void setCellInAllTables(final String pos,
+			final HeavyTableCell.Type valuetype, final String value,
 			final TableCellStyle ts) throws FastOdsException {
-		final Position position = this.util.getPosition(sPos);
-		final int nRow = position.getRow();
-		final int nCol = position.getColumn();
-		// this.setCellInAllTables(nRow, nCol, nValuetype, sValue,
+		final Position position = this.util.getPosition(pos);
+		final int row = position.getRow();
+		final int col = position.getColumn();
+		// this.setCellInAllTables(row, col, valuetype, value,
 		// ts);
 	}
 
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param nRow
+	 * @param rowIndex
 	 *            The row, 0 is the first row
-	 * @param nCol
+	 * @param colIndex
 	 *            The column, 0 is the first column
-	 * @param nRowMerge
-	 * @param nColumnMerge
+	 * @param rowMerge
+	 * @param columnMerge
 	 * @throws FastOdsException
 	 */
-	public void setCellMergeInAllTables(final int nRow, final int nCol,
-			final int nRowMerge, final int nColumnMerge)
+	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
+			final int rowMerge, final int columnMerge)
 			throws FastOdsException {
 		for (final Table table : this.contentEntry.getTables()) {
-			final HeavyTableRow row = table.getRow(nRow);
+			final HeavyTableRow row = table.getRow(rowIndex);
 			final TableCellWalker walker = row.getWalker();
-			walker.to(nCol);
-			walker.setRowsSpanned(nRowMerge);
-			walker.setColumnsSpanned(nColumnMerge);
+			walker.to(colIndex);
+			walker.setRowsSpanned(rowMerge);
+			walker.setColumnsSpanned(columnMerge);
 		}
 	}
 
 	/**
 	 * Set the merging of multiple cells to one cell in all existing tables.
 	 *
-	 * @param sPos
+	 * @param pos
 	 *            The cell position e.g. 'A1'
-	 * @param nRowMerge
-	 * @param nColumnMerge
+	 * @param rowMerge
+	 * @param columnMerge
 	 * @throws FastOdsException
 	 */
-	public void setCellMergeInAllTables(final String sPos, final int nRowMerge,
-			final int nColumnMerge) throws FastOdsException {
-		final Position position = this.util.getPosition(sPos);
-		final int nRow = position.getRow();
-		final int nCol = position.getColumn();
-		this.setCellMergeInAllTables(nRow, nCol, nRowMerge, nColumnMerge);
+	public void setCellMergeInAllTables(final String pos, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		final Position position = this.util.getPosition(pos);
+		final int row = position.getRow();
+		final int col = position.getColumn();
+		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
 	}
 
 	/**

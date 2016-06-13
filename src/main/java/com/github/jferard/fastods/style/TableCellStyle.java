@@ -124,30 +124,30 @@ public class TableCellStyle implements StyleTag {
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
 	TableCellStyle(final XMLUtil util, final String name,
-			final DataStyle dataStyle, final String sBackgroundColor,
-			final FHTextStyle ts, final Align nTextAlign,
-			final VerticalAlign nVerticalAlign, final boolean bWrap,
+			final DataStyle dataStyle, final String backgroundColor,
+			final FHTextStyle ts, final Align textAlign,
+			final VerticalAlign verticalAlign, final boolean wrap,
 			final String parentCellStyleName,
 			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition,
 			final EnumMap<MarginAttribute.Position, MarginAttribute> marginByPosition) {
 		this.marginByPosition = marginByPosition;
 		this.name = util.escapeXMLAttribute(name);
 		this.dataStyle = dataStyle;
-		this.backgroundColor = sBackgroundColor;
+		this.backgroundColor = backgroundColor;
 		this.textStyle = ts;
-		this.textAlign = nTextAlign;
-		this.verticalAlign = nVerticalAlign;
-		this.wrap = bWrap;
+		this.textAlign = textAlign;
+		this.verticalAlign = verticalAlign;
+		this.wrap = wrap;
 		this.parentCellStyleName = parentCellStyleName;
 		this.borderByPosition = borderByPosition;
 	}

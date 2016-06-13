@@ -88,35 +88,35 @@ public class MarginAttribute {
 	/**
 	 * The border size.
 	 */
-	private final String sMarginSize;
+	private final String marginSize;
 
 	/**
-	 * sSize is a length value expressed as a number followed by a unit of
+	 * size is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 0.1cm or 4px.<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param sSize
+	 * @param size
 	 *            The size of the border
-	 * @param nPos
+	 * @param pos
 	 *            The position to put the border on the cell,
 	 *            BorderAttribute.POSITION_TOP,BorderAttribute.POSITION_BOTTOM,
 	 *            BorderAttribute.POSITION_LEFT,BorderAttribute.POSITION_RIGHT
 	 *            or BorderAttribute.POSITION_ALL
 	 */
-	MarginAttribute(final String sSize, final Position position) {
-		this.sMarginSize = sSize;
+	MarginAttribute(final String size, final Position position) {
+		this.marginSize = size;
 		this.position = position;
 	}
 
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.sMarginSize == null)
+		if (this.marginSize == null)
 			return;
 
 		util.appendEAttribute(appendable, this.position.attrName,
-				this.sMarginSize);
+				this.marginSize);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class MarginAttribute {
 	 * @return The size as string, e.g. '0.1cm'
 	 */
 	public String getMarginSize() {
-		return this.sMarginSize;
+		return this.marginSize;
 	}
 
 	/**

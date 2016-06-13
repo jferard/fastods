@@ -65,8 +65,8 @@ public class XMLUtil {
 
 	/**
 	 * Append a new element to StringBuilder sb, the name of the element is
-	 * sElementName<br>
-	 * and the value is sValue.
+	 * elementName<br>
+	 * and the value is value.
 	 *
 	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.
@@ -92,8 +92,8 @@ public class XMLUtil {
 
 	/**
 	 * Append a new element to StringBuilder sb, the name of the element is
-	 * sElementName<br>
-	 * and the value is nValue.
+	 * elementName<br>
+	 * and the value is value.
 	 *
 	 * @param appendable
 	 *            The StringBuilder to which the new element should be added.

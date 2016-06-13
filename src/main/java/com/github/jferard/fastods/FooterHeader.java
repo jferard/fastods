@@ -91,14 +91,14 @@ public abstract class FooterHeader {
 	}
 
 	public static FooterHeader simpleFooter(final FHTextStyle ts,
-			final String sText) {
-		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, sText)
+			final String text) {
+		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, text)
 				.build();
 	}
 
 	public static FooterHeader simpleHeader(final FHTextStyle ts,
-			final String sText) {
-		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, sText)
+			final String text) {
+		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, text)
 				.build();
 	}
 
@@ -118,11 +118,11 @@ public abstract class FooterHeader {
 	 * The OdsFile where this object belong to.
 	 */
 	protected final Type footerHeaderType;
-	protected final String sMarginLeft;
-	protected final String sMarginRight;
-	protected final String sMarginTop;
+	protected final String marginLeft;
+	protected final String marginRight;
+	protected final String marginTop;
 
-	protected final String sMinHeight;
+	protected final String minHeight;
 
 	/**
 	 * Create a new footer object.
@@ -131,13 +131,13 @@ public abstract class FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeader(final FooterHeader.Type footerHeaderType,
-			final String sMarginLeft, final String sMarginRight,
-			final String sMarginTop, final String sMinHeight) {
+			final String marginLeft, final String marginRight,
+			final String marginTop, final String minHeight) {
 		this.footerHeaderType = footerHeaderType;
-		this.sMarginLeft = sMarginLeft;
-		this.sMarginRight = sMarginRight;
-		this.sMarginTop = sMarginTop;
-		this.sMinHeight = sMinHeight;
+		this.marginLeft = marginLeft;
+		this.marginRight = marginRight;
+		this.marginTop = marginTop;
+		this.minHeight = minHeight;
 	}
 
 	public void appendXMLToAutomaticStyle(final XMLUtil util,
@@ -145,10 +145,10 @@ public abstract class FooterHeader {
 		appendable.append("<style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
 		appendable.append("<style:header-footer-properties");
-		util.appendAttribute(appendable, "fo:min-height", this.sMinHeight);
-		util.appendAttribute(appendable, "fo:margin-left", this.sMarginLeft);
-		util.appendAttribute(appendable, "fo:margin-right", this.sMarginRight);
-		util.appendAttribute(appendable, "fo:margin-top", this.sMarginTop);
+		util.appendAttribute(appendable, "fo:min-height", this.minHeight);
+		util.appendAttribute(appendable, "fo:margin-left", this.marginLeft);
+		util.appendAttribute(appendable, "fo:margin-right", this.marginRight);
+		util.appendAttribute(appendable, "fo:margin-top", this.marginTop);
 		appendable.append("/></style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
 	}
@@ -165,28 +165,28 @@ public abstract class FooterHeader {
 	 * @return The current left margin of the footer/header.
 	 */
 	public String getMarginLeft() {
-		return this.sMarginLeft;
+		return this.marginLeft;
 	}
 
 	/**
 	 * @return The current right margin of the footer/header.
 	 */
 	public String getMarginRight() {
-		return this.sMarginRight;
+		return this.marginRight;
 	}
 
 	/**
 	 * @return The current top margin of the footer/header.
 	 */
 	public String getMarginTop() {
-		return this.sMarginTop;
+		return this.marginTop;
 	}
 
 	/**
 	 * @return The current minimum height of the footer/header.
 	 */
 	public String getMinHeight() {
-		return this.sMinHeight;
+		return this.minHeight;
 	}
 
 	public String getTypeName() {

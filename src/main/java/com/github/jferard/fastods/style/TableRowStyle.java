@@ -71,24 +71,24 @@ public class TableRowStyle implements StyleTag {
 	}
 
 	private final String name;
-	private final String sRowHeight;
+	private final String rowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
 	 *
-	 * @param nFamily
+	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param sStyleName
+	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableRowStyle(final String sStyleName, final String sRowHeight) {
-		this.name = sStyleName;
-		this.sRowHeight = sRowHeight;
+	TableRowStyle(final String styleName, final String rowHeight) {
+		this.name = styleName;
+		this.rowHeight = rowHeight;
 	}
 
 	public void addToFile(final OdsFile odsFile) {
@@ -102,9 +102,9 @@ public class TableRowStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table-row");
 		appendable.append("><style:table-row-properties");
-		if (this.sRowHeight != null)
+		if (this.rowHeight != null)
 			util.appendAttribute(appendable, "style:row-height",
-					this.sRowHeight);
+					this.rowHeight);
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:use-optimal-row-height",
 				"true");
@@ -118,15 +118,15 @@ public class TableRowStyle implements StyleTag {
 
 	/**
 	 * Set the row height to a table row.<br>
-	 * sHeight is a length value expressed as a number followed by a unit of
+	 * height is a length value expressed as a number followed by a unit of
 	 * measurement e.g. 1.5cm or 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
 	 *
-	 * @return sHeight The table row height to be used, e.g. '1.0cm'
+	 * @return height The table row height to be used, e.g. '1.0cm'
 	 */
 	public String getRowHeight() {
-		return this.sRowHeight;
+		return this.rowHeight;
 	}
 }
