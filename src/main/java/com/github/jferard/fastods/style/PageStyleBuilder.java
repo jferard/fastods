@@ -47,29 +47,23 @@ import com.github.jferard.fastods.style.PageStyle.WritingMode;
 
 /**
  * @author Julien Férard
- *
- *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
- *         <mtschulz at users.sourceforge.net>
- *
- *         This file PageStyleBuilder.java is part of FastODS.
- *
  */
 public class PageStyleBuilder {
+	private String backgroundColor;
 	private FooterHeader footer;
 	private FooterHeader header;
-	private final String name;
-	private PaperFormat paperFormat;
-	private PrintOrientation printOrientation;
-
-	private String backgroundColor;
 	private String marginBottom;
 	private String marginLeft;
-	private String marginRight;
 
+	private String marginRight;
 	private String marginTop;
+	private final String name;
 	private final String numFormat;
+
 	private String pageHeight;
 	private String pageWidth;
+	private PaperFormat paperFormat;
+	private PrintOrientation printOrientation;
 
 	private WritingMode writingMode;
 

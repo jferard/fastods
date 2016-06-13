@@ -48,13 +48,11 @@ import java.util.zip.ZipOutputStream;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? META-INF/manifest.xml/manifest:manifest
  *
- *         This file ManifestEntry.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ? META-INF/manifest.xml/manifest:manifest
  */
 public class ManifestEntry implements OdsEntry {
 	String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",

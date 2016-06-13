@@ -45,10 +45,7 @@ import java.util.Locale;
 import com.github.jferard.fastods.Color;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file NumberStyleBuilder.java is part of FastODS.
+ * @author Julien Férard
  */
 public abstract class NumberStyleBuilder<S extends NumberStyle, B extends NumberStyleBuilder<S, B>>
 		extends DataStyleBuilder<S, B> {

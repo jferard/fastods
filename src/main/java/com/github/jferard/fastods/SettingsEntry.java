@@ -51,15 +51,10 @@ import java.util.zip.ZipOutputStream;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * /**
+ * WHERE ? settings.xml/office:document-settings
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
- *
- *         This file SettingsEntry.java is part of FastODS.
- *
- *         WHERE ? settings.xml/office:document-settings
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class SettingsEntry implements OdsEntry {

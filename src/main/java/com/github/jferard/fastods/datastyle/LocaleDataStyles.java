@@ -24,6 +24,10 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * @author Julien Férard
+ *
+ */
 public class LocaleDataStyles implements DataStyles {
 	private final TableCellStyle booleanCellStyle;
 	private final TableCellStyle currencyCellStyle;

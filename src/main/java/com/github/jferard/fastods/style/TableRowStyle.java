@@ -46,21 +46,13 @@ import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * /**
+ * WHERE ? content.xml/office:document-content/office:automatic-styles/style:
+ * style content.xml/office:document-content/office:body/office:spreadsheet/
+ * table:table/table:table-column
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         This file TableFamilyStyle.java is part of FastODS. SimpleODS 0.5.1
- *         Changed all 'throw Exception' to 'throw FastOdsException' SimpleODS
- *         0.5.2 Replaced all text properties with a TextStyle object
- *
- *         WHERE ?
- *         content.xml/office:document-content/office:automatic-styles/style:
- *         style
- *         content.xml/office:document-content/office:body/office:spreadsheet/
- *         table:table/table:table-column
  */
 public class TableRowStyle implements StyleTag {
 	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle

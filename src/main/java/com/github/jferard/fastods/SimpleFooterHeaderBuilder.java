@@ -43,16 +43,13 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.util.FullList;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:footer
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:header
  *
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard
  *
- *         This file FooterHeaderBuilder.java is part of FastODS.
- *
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:footer
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:header
  */
 class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
 	/**

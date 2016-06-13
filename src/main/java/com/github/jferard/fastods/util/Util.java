@@ -75,7 +75,7 @@ public class Util {
 	}
 
 	private static final Charset UTF_8 = Charset.forName("UTF-8");
-	private String[] ints;
+	private final String[] ints;
 
 	public Util() {
 		this.ints = new String[2000];
@@ -170,6 +170,17 @@ public class Util {
 		return new Position(row - 1, col - 1);
 	}
 
+	public String toString(final int value) {
+		if (-1000 <= value && value < 1000) {
+			final int i = value + 1000;
+			if (this.ints[i] == null) {
+				this.ints[i] = Integer.toString(value);
+			}
+			return this.ints[i];
+		} else
+			return Integer.toString(value);
+	}
+
 	/**
 	 * Wraps an OutputStream in a BufferedWriter
 	 *
@@ -180,16 +191,5 @@ public class Util {
 	public Writer wrapStream(final OutputStream out, final int size) {
 		return new BufferedWriter(new OutputStreamWriter(out, Util.UTF_8),
 				size);
-	}
-
-	public String toString(int value) {
-		if (-1000 <= value && value < 1000) {
-			final int i = value+1000;
-			if (this.ints[i] == null) {
-				this.ints[i] = Integer.toString(value);
-			}
-			return this.ints[i];
-		} else
-			return Integer.toString(value);
 	}
 }

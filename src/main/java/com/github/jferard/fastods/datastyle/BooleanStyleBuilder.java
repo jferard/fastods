@@ -43,11 +43,7 @@ package com.github.jferard.fastods.datastyle;
 import java.util.Locale;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file BooleabStyleBuilder.java is part of FastODS.
- *
+ * @author Julien Férard
  */
 public class BooleanStyleBuilder
 		extends DataStyleBuilder<BooleanStyle, BooleanStyleBuilder> {

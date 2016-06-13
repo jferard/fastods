@@ -47,12 +47,7 @@ import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- *
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file TextStyleBuilder.java is part of FastODS. SimpleOds Version
- *         0.5.0 Added support for Font underline style
+ * @author Julien Férard
  */
 public class FHParagraph {
 	private final List<FHText> texts;

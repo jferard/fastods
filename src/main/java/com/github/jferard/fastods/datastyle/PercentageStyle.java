@@ -45,20 +45,16 @@ import java.io.IOException;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? content.xml/office:document-content/office:automatic-styles/number:
+ * number-style
+ * content.xml/office:document-content/office:automatic-styles/number:
+ * percentage-style
+ * styles.xml/office:document-styles/office:styles/number:number-style
+ * styles.xml/office:document-styles/office:styles/number:percentage- style
  *
- *         This file NumberStyle.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ?
- *         content.xml/office:document-content/office:automatic-styles/number:
- *         number-style
- *         content.xml/office:document-content/office:automatic-styles/number:
- *         percentage-style
- *         styles.xml/office:document-styles/office:styles/number:number-style
- *         styles.xml/office:document-styles/office:styles/number:percentage-
- *         style
  */
 public class PercentageStyle extends DataStyle {
 	private final FloatStyle floatStyle;

@@ -47,16 +47,16 @@ import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * This file FooterHeader.java is part of FastODS.
  *
- *         This file FooterHeader.java is part of FastODS.
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:footer
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:header
  *
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:footer
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:header
+ * @author Julien Férard
+ * @author Martin Schulz
+ *
  */
 public abstract class FooterHeader {
 	public static enum Region {

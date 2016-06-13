@@ -42,9 +42,9 @@ file.save();
 ## TODO
 * Code cleaning;
 * A lot of testing;
-* Better ResultSet writing;
-* Use the flyweight pattern for cells;
 * Speed up float->string
 * ...
 
-
+## HISTORY
+v. 0.0.1 : first version
+v. 0.0.2 : all existing data types, fast writing.

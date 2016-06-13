@@ -54,15 +54,12 @@ import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
+ * table:table/table:table-row
  *
- *         This file LightTableRow.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ?
- *         content.xml/office:document-content/office:body/office:spreadsheet/
- *         table:table/table:table-row
  */
 public class HeavyTableRow {
 	private final int columnCapacity;
@@ -70,8 +67,8 @@ public class HeavyTableRow {
 	private List<String> currencies;
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
-	private final int row;
 	private final OdsFile odsFile;
+	private final int row;
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;

@@ -27,6 +27,9 @@ import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * @author Julien Férard
+ */
 public abstract class DataStyle implements NamedObject {
 	protected final String countryCode;
 	protected final String languageCode;

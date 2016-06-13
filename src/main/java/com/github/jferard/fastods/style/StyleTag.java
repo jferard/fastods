@@ -25,6 +25,9 @@ import java.io.IOException;
 
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * @author Julien Férard
+ */
 public interface StyleTag {
 	void appendXMLToContentEntry(XMLUtil util, Appendable appendable)
 			throws IOException;

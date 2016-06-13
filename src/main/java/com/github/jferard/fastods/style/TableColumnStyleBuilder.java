@@ -43,21 +43,12 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * /**
- *
  * @author Julien Férard
- *
- *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
- *         <mtschulz at users.sourceforge.net>
- *
- *         This file TableFamilyStyleBuilder.java is part of FastODS. SimpleODS
- *         0.5.1 Changed all 'throw Exception' to 'throw FastOdsException'
- *         SimpleODS 0.5.2 Replaced all text properties with a TextStyle object
  */
 public class TableColumnStyleBuilder {
+	private String columnWidth;
 	private TableCellStyle defaultCellStyle;
 	private final String name;
-	private String columnWidth;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>

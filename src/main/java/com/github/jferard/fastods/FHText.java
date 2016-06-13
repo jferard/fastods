@@ -46,17 +46,13 @@ import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:footer/text:p/text:span
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:header/text:p/text:span
  *
- *         This file FHText.java is part of FastODS.
- *
- *         WHERE ?
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:footer/text:p/text:span
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:header/text:p/text:span
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 public class FHText {
 	private final String text;

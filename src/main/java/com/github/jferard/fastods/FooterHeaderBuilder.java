@@ -45,22 +45,17 @@ import java.util.List;
 import com.github.jferard.fastods.style.FHTextStyle;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:footer
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:header
  *
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file FooterHeaderBuilder.java is part of FastODS.
- *
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:footer
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:header
+ * @author Julien Férard
  */
 abstract class FooterHeaderBuilder {
 	/**
 	 * Checks if paragraph is present in region and return it if yes, if it is
-	 * not present, create a new List and add it to region. Return the new
-	 * List.
+	 * not present, create a new List and add it to region. Return the new List.
 	 *
 	 * @param curRegion
 	 * @param paragraph
@@ -113,8 +108,7 @@ abstract class FooterHeaderBuilder {
 
 	public FooterHeaderBuilder pageCount(final FHTextStyle ts,
 			final int paragraph) {
-		this.styledText(ts, "<text:page-count>99</text:page-count>",
-				paragraph);
+		this.styledText(ts, "<text:page-count>99</text:page-count>", paragraph);
 		return this;
 	}
 

@@ -50,26 +50,23 @@ import java.util.zip.ZipOutputStream;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? meta.xml/office:document-meta
  *
- *         This file MetaEntry.java is part of FastODS.
- *
- *         WHERE ? meta.xml/office:document-meta
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 public class MetaEntry implements OdsEntry {
 	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
 
 	private int cellCount = 1;
-	private int tableCount = 1;
 	private String creator;
 	private String dateTime;
-
 	private final String editingCycles;
+
 	private final String editingDuration;
 	private final String generator;
+	private int tableCount = 1;
 
 	public MetaEntry() {
 		this.setDateTimeNow();

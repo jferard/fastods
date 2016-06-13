@@ -64,11 +64,11 @@ import com.github.jferard.fastods.style.TableCellStyle;
  *		table.addData(data);
  *		table.nextRow();
  *		table.addData(data2);
+ * }
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard.
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * <pre>
  *
+ * @author Julien Férard
  */
 public final class ResultSetDataWrapper implements DataWrapper {
 	/**

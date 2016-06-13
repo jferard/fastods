@@ -46,13 +46,11 @@ import java.io.IOException;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? ../style:style#
  *
- *         This file MarginAttribute.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ? ../style:style#
  */
 public class MarginAttribute {
 	public static enum Position {
@@ -79,16 +77,16 @@ public class MarginAttribute {
 	public static final Position DEFAULT_POSITION = Position.ALL;
 
 	/**
+	 * The border size.
+	 */
+	private final String marginSize;
+
+	/**
 	 * The border position. Either BorderAttribute.POSITION_ALL,
 	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
 	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
 	 */
 	private final Position position;
-
-	/**
-	 * The border size.
-	 */
-	private final String marginSize;
 
 	/**
 	 * size is a length value expressed as a number followed by a unit of

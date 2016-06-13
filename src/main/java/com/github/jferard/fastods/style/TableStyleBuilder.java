@@ -41,13 +41,7 @@
 package com.github.jferard.fastods.style;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file TableStyleBuilder.java is part of FastODS. SimpleOds 0.5.1
- *         Changed all 'throw Exception' to 'throw FastOdsException'<br>
- *         SimpleOds 0.5.2 Replaced all text properties with a TextStyle object
- *         <br>
+ * @author Julien Férard Copyright
  */
 public class TableStyleBuilder {
 	private final String name;

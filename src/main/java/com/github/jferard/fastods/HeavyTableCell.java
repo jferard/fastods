@@ -50,15 +50,12 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
+ * table:table/table:table-row/table:table-cell
  *
- *         This file HeavyTableCell.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ?
- *         content.xml/office:document-content/office:body/office:spreadsheet/
- *         table:table/table:table-row/table:table-cell
  */
 public class HeavyTableCell implements TableCell {
 
@@ -99,16 +96,16 @@ public class HeavyTableCell implements TableCell {
 	static final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
-	private final DataStyles dataStyles;
 	// private final int col;
 	private int columnsSpanned;
-	// private final int row;
-	private int rowsSpanned;
-	private final OdsFile odsFile;
 	/**
 	 * 19.384 office:value
 	 */
 	private String currency;
+	private final DataStyles dataStyles;
+	private final OdsFile odsFile;
+	// private final int row;
+	private int rowsSpanned;
 
 	private TableCellStyle style;
 
@@ -169,8 +166,7 @@ public class HeavyTableCell implements TableCell {
 			util.appendEAttribute(appendable, "office:date-value", this.value);
 			break;
 		case STRING:
-			util.appendAttribute(appendable, "office:string-value",
-					this.value);
+			util.appendAttribute(appendable, "office:string-value", this.value);
 			break;
 		case TIME:
 			util.appendEAttribute(appendable, "office:time-value", this.value);

@@ -44,9 +44,8 @@ package com.github.jferard.fastods;
 /**
  * The Color class provides access to standard LibreOffice colors in hex format.
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 @SuppressWarnings("PMD.CommentRequired")
 public final class Color {

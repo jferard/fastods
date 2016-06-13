@@ -29,6 +29,9 @@ import com.github.jferard.fastods.HeavyTableCell.Type;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * @author Julien Férard
+ */
 public class LightTableCell implements TableCellWalker {
 	private int i;
 	private final HeavyTableRow row;

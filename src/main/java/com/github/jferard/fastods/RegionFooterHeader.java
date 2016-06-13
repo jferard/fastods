@@ -46,16 +46,14 @@ import java.util.List;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:footer
+ * styles.xml/office:document-styles/office:master-styles/style:master-
+ * page/style:header
  *
- *         This file FooterHeader.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:footer
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page/style:header
  */
 class RegionFooterHeader extends FooterHeader {
 	private static void appendRegion(final XMLUtil util,
@@ -65,8 +63,7 @@ class RegionFooterHeader extends FooterHeader {
 			return;
 
 		appendable.append("<style:").append(regionName).append(">");
-		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable,
-				region);
+		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable, region);
 		appendable.append("</style:").append(regionName).append(">");
 	}
 
@@ -90,8 +87,7 @@ class RegionFooterHeader extends FooterHeader {
 			final List<FHParagraph> rightRegion, final String marginLeft,
 			final String marginRight, final String marginTop,
 			final String minHeight) {
-		super(footerHeaderType, marginLeft, marginRight, marginTop,
-				minHeight);
+		super(footerHeaderType, marginLeft, marginRight, marginTop, minHeight);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;

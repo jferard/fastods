@@ -74,20 +74,10 @@ import com.github.jferard.fastods.util.Util.Position;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? root !
  *
- *         This file OdsFile.java is part of FastODS.
- *
- *         SimpleOds 0.5.1 Changed all 'throw Exception' to 'throw
- *         FastOdsException'. <br>
- *         SimpleOds 0.5.3 Added getMeta().<br>
- *         SimpleOds Added getCell(final int tab, final String pos).<br>
- *         SimpleOds Added getCell(final int tab, final int row, final int
- *         col)<br>
- *
- *         WHERE ? root !
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 public class OdsFile {
 	/**
@@ -113,11 +103,11 @@ public class OdsFile {
 
 	private final int bufferSize;
 	private final ContentEntry contentEntry;
+	private String filename;
 	private final ManifestEntry manifestEntry;
 	private final MetaEntry metaEntry;
 	private final MimetypeEntry mimetypeEntry;
 	private final SettingsEntry settingsEntry;
-	private String filename;
 	private final StylesEntry stylesEntry;
 
 	private final Util util;
@@ -338,8 +328,7 @@ public class OdsFile {
 	 * @param tableIndex
 	 *            The table number, this table should already exist, otherwise
 	 *            the first table is shown
-	 * @return true - The active table was set, false - tab has an illegal
-	 *         value
+	 * @return true - The active table was set, false - tab has an illegal value
 	 */
 	public boolean setActiveTable(final int tableIndex) {
 		if (tableIndex < 0 || tableIndex >= this.contentEntry.getTableCount())
@@ -436,8 +425,7 @@ public class OdsFile {
 	 * @throws FastOdsException
 	 */
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
-			final int rowMerge, final int columnMerge)
-			throws FastOdsException {
+			final int rowMerge, final int columnMerge) throws FastOdsException {
 		for (final Table table : this.contentEntry.getTables()) {
 			final HeavyTableRow row = table.getRow(rowIndex);
 			final TableCellWalker walker = row.getWalker();

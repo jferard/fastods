@@ -45,16 +45,13 @@ import java.io.IOException;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? content.xml/office:document-content/office:automatic-styles/number:
+ * currency-style
+ * styles.xml/office:document-styles/office:styles/number:currency-style
  *
- *         This file CurrencyStyle.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ?
- *         content.xml/office:document-content/office:automatic-styles/number:
- *         currency-style
- *         styles.xml/office:document-styles/office:styles/number:currency-style
  */
 public class CurrencyStyle extends DataStyle {
 

@@ -45,15 +45,10 @@ import java.io.IOException;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Martin Schulz Copyright
- *         2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ * content.xml/office:document-content/office:automatic-styles/number:
+ * time-style styles.xml/office:document-styles/office:styles/number:time-style
  *
- *         This file TimeeStyle.java is part of FastODS. SimpleODS 0.5.2 Added
- *         Format.MMYY Added Format.WW Added Format.YYYYMMDD
- *
- *         content.xml/office:document-content/office:automatic-styles/number:
- *         date-style
- *         styles.xml/office:document-styles/office:styles/number:date-style
+ * @author Julien Férard
  */
 public class TimeStyle extends DataStyle {
 

@@ -21,6 +21,9 @@
  ******************************************************************************/
 package com.github.jferard.fastods;
 
+/**
+ * @author Julien Férard
+ */
 public interface TableCellWalker extends TableCell {
 	boolean hasNext();
 

@@ -27,6 +27,9 @@ import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * @author Julien Férard
+ */
 public interface OdsEntry {
 	void write(XMLUtil util, ZipOutputStream out, Writer writer)
 			throws IOException;

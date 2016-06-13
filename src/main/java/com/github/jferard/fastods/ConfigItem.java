@@ -45,15 +45,12 @@ import java.io.IOException;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? settings.xml/office:document-settings/office:settings/settingsEntry:
+ * settingsEntry-item-set/config:config-item
  *
- *         This file ConfigItem.java is part of FastODS.
+ * @author Julien Férard
+ * @author Martin Schulz
  *
- *         WHERE ?
- *         settings.xml/office:document-settings/office:settings/settingsEntry:
- *         settingsEntry-item-set/config:config-item
  */
 public class ConfigItem {
 	private final String itemName;

@@ -43,17 +43,9 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.style.FHTextStyle.Underline;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- *
- *         Copyright 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file TextStyleBuilder.java is part of FastODS. SimpleOds Version
- *         0.5.0 Added support for Font underline style
+ * @author Julien Férard
  */
-
 public class FHTextStyleBuilder {
-	private final String name;
-	private Underline fontUnderlineStyle;
 	private String fontColor;
 	private String fontName;
 	private String fontSize;
@@ -61,10 +53,12 @@ public class FHTextStyleBuilder {
 	private String fontSizeComplex;
 	private String fontStyle;
 	private String fontUnderlineColor;
+	private Underline fontUnderlineStyle;
 	private String fontWeight;
-
 	private String fontWeightAsian;
+
 	private String fontWeightComplex;
+	private final String name;
 
 	/**
 	 * Create a new text style without a name.<br>
@@ -121,8 +115,7 @@ public class FHTextStyleBuilder {
 	 * @return
 	 */
 	public FHTextStyleBuilder fontSize(final int fontSize) {
-		final String size = new StringBuilder(fontSize).append("pt")
-				.toString();
+		final String size = new StringBuilder(fontSize).append("pt").toString();
 		this.fontSize = size;
 		return this;
 	}
@@ -162,8 +155,8 @@ public class FHTextStyleBuilder {
 	}
 
 	/**
-	 * Set the font underline color to color. Use an empty string to reset it
-	 * to 'auto'.
+	 * Set the font underline color to color. Use an empty string to reset it to
+	 * 'auto'.
 	 *
 	 * @param color
 	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red

@@ -43,12 +43,7 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 /**
- *
- * @author Julien Férard Copyright (C) 2016 J. Férard Martin Schulz Copyright
- *         2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file DataStyles.java is part of FastODS.
- *
+ * @author Julien Férard Copyright
  */
 public interface DataStyles {
 	TableCellStyle getBooleanStyle();

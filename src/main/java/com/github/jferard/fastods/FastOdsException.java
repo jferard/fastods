@@ -41,12 +41,8 @@
 package com.github.jferard.fastods;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
- *
- *         This file FastOdsException.java is part of FastODS.
- *
+ * @author Julien Férard
+ * @author Martin Schulz$
  */
 public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;

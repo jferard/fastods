@@ -46,11 +46,7 @@ import java.util.Locale;
 import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file CurrencyStyleBuilder.java is part of FastODS.
- *
+ * @author Julien Férard
  */
 public class CurrencyStyleBuilder
 		extends DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {

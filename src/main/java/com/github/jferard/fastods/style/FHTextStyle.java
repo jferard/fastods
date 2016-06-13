@@ -47,16 +47,11 @@ import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
+ * WHERE ? content.xml/office:document-content/office:automatic-styles/style:
+ * style/style:style
  *
- *         This file TextStyle.java is part of FastODS. SimpleOds Version 0.5.0
- *         Added support for Font underline style
- *
- *         WHERE ?
- *         content.xml/office:document-content/office:automatic-styles/style:
- *         style/style:style
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 public class FHTextStyle implements NamedObject {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
@@ -79,17 +74,17 @@ public class FHTextStyle implements NamedObject {
 		return new FHTextStyleBuilder(name);
 	}
 
-	private final String name;
-	private final /*@Nullable*/ Underline fontUnderlineStyle;
 	private final /*@Nullable*/ String fontColor;
 	private final /*@Nullable*/ String fontName;
-
 	private final /*@Nullable*/ String fontSize;
-
 	private final /*@Nullable*/ String fontStyle;
+
 	private final /*@Nullable*/ String fontUnderlineColor;
 
+	private final /*@Nullable*/ Underline fontUnderlineStyle;
 	private final /*@Nullable*/ String fontWeight;
+
+	private final String name;
 
 	/**
 	 * Create a new text style with the name name.<br>
@@ -120,8 +115,7 @@ public class FHTextStyle implements NamedObject {
 		appendable.append("<style:text-properties");
 		// Check if the font weight should be added
 		if (this.fontWeight != null) {
-			util.appendAttribute(appendable, "fo:font-weight",
-					this.fontWeight);
+			util.appendAttribute(appendable, "fo:font-weight", this.fontWeight);
 			util.appendAttribute(appendable, "style:font-weight-asian",
 					this.fontWeight);
 			util.appendAttribute(appendable, "style:font-weight-complex",

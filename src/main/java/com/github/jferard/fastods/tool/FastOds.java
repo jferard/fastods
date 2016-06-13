@@ -31,7 +31,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 /**
  * A simple utility class for : default dependencies creation, open file.
  *
- * @author Julien Férard Copyright (C) 2016 J. Férard.
+ * @author Julien Férard
  */
 public final class FastOds {
 	private static XMLUtil xmlUtil;

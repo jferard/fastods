@@ -25,6 +25,9 @@ import java.util.Locale;
 
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * @author Julien Férard
+ */
 public class DataStyleBuilderFactory {
 	private final Locale locale;
 	private final XMLUtil util;

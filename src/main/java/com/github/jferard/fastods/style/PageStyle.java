@@ -47,18 +47,14 @@ import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
- *
- *         This file PageStyle.java is part of FastODS.
- *
- *         WHERE ?
- *         styles.xml/office:document-styles/office:master-styles/style:master-
- *         page
+ * WHERE ? styles.xml/office:document-styles/office:master-styles/style:master-
+ * page
  *
  * @see 16.5 <style:page-layout>
  * @see 16.9 <style:master-page>
+ *
+ * @author Julien Férard
+ * @author Martin Schulz
  */
 public class PageStyle {
 	public static enum PaperFormat {
@@ -155,23 +151,23 @@ public class PageStyle {
 			footerHeader.appendXMLToAutomaticStyle(util, appendable);
 	}
 
-	private final FooterHeader footer;
-	private final FooterHeader header;
-
-	private final String name;
-	private final PaperFormat paperFormat;
-	private final PrintOrientation printOrientation;
 	private final String backgroundColor;
+	private final FooterHeader footer;
 
+	private final FooterHeader header;
 	private final String marginBottom;
 	private final String marginLeft;
 	private final String marginRight;
-	private final String marginTop;
 
+	private final String marginTop;
+	private final String name;
 	private final String numFormat;
 	private final String pageHeight;
 
 	private final String pageWidth;
+	private final PaperFormat paperFormat;
+
+	private final PrintOrientation printOrientation;
 
 	private final WritingMode writingMode;
 
@@ -229,8 +225,7 @@ public class PageStyle {
 				this.printOrientation.getAttrValue());
 		this.appendBackgroundColor(util, appendable);
 		util.appendAttribute(appendable, "fo:margin-top", this.marginTop);
-		util.appendAttribute(appendable, "fo:margin-bottom",
-				this.marginBottom);
+		util.appendAttribute(appendable, "fo:margin-bottom", this.marginBottom);
 		util.appendAttribute(appendable, "fo:margin-left", this.marginLeft);
 		util.appendAttribute(appendable, "fo:margin-right", this.marginRight);
 		appendable.append("/>"); // End of page-layout-properties

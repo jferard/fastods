@@ -46,21 +46,8 @@ import com.github.jferard.fastods.style.BorderAttribute.Style;
 
 /**
  * @author Julien Férard
- *
- *         Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin Schulz
- *         <mtschulz at users.sourceforge.net>
- *
- *         This file BorderAttributeBuilder.java is part of FastODS.
- *
  */
 public class BorderAttributeBuilder {
-	/**
-	 * The border position. Either BorderAttribute.POSITION_ALL,
-	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
-	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
-	 */
-	private Position position;
-
 	/**
 	 * The border color
 	 */
@@ -70,6 +57,13 @@ public class BorderAttributeBuilder {
 	 * The border size.
 	 */
 	private String borderSize;
+
+	/**
+	 * The border position. Either BorderAttribute.POSITION_ALL,
+	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
+	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
+	 */
+	private Position position;
 
 	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
