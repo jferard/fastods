@@ -36,7 +36,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 
 /**
  *
- * This file LightTableRow.java is part of FastODS.
+ * This file OldLightTableRow.java is part of FastODS.
  *
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
  * table:table/table:table-row
@@ -116,7 +116,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 				do {
 					row = table.nextRow();
 					if (count <= this.max)
-						this.writeDateLineTo(row);
+						this.writeDataLineTo(row);
 				} while (this.resultSet.next());
 
 				this.writeLastLineDataTo(row, count);
@@ -154,14 +154,17 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		return values;
 	}
 
-	private void writeDateLineTo(final HeavyTableRow row)
+	private void writeDataLineTo(final HeavyTableRow row)
 			throws SQLException, IOException {
 		final List<Object> columnValues = this.getColumnValues();
 		final TableCellWalker walker = row.getWalker();
 		for (int j = 0; j <= this.columnCount - 1; j++) {
 			final Object object = columnValues.get(j);
 			walker.nextCell();
-			walker.setObjectValue(object);
+			if (object == null)
+				walker.setObjectValue("<NULL>");
+			else
+				walker.setObjectValue(object);
 		}
 	}
 

@@ -252,7 +252,7 @@ public class OdsFile {
 	}
 
 	// ----------------------------------------------------------------------
-	// All methods for setCell with HeavyTableCell.Type.STRING
+	// All methods for setCell with OldHeavyTableCell.Type.STRING
 	// ----------------------------------------------------------------------
 
 	/**
@@ -394,8 +394,8 @@ public class OdsFile {
 	 *            The cell position e.g. 'A1'
 	 * @param valuetype
 	 *            The value type of value,
-	 *            HeavyTableCell.Type.STRING,HeavyTableCell.Type.FLOAT or
-	 *            HeavyTableCell.Type.PERCENTAGE.
+	 *            OldHeavyTableCell.Type.STRING,OldHeavyTableCell.Type.FLOAT or
+	 *            OldHeavyTableCell.Type.PERCENTAGE.
 	 * @param value
 	 *            The value to set the cell to
 	 * @param ts
@@ -404,7 +404,7 @@ public class OdsFile {
 	 * @throws FastOdsException
 	 */
 	public void setCellInAllTables(final String pos,
-			final HeavyTableCell.Type valuetype, final String value,
+			final TableCell.Type valuetype, final String value,
 			final TableCellStyle ts) throws FastOdsException {
 		final Position position = this.util.getPosition(pos);
 		final int row = position.getRow();

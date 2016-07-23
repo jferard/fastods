@@ -78,20 +78,20 @@ class ContentEntry implements OdsEntry {
 	}
 
 	// /**
-	// * Get the HeavyTableCell object from table tab at position
+	// * Get the OldHeavyTableCell object from table tab at position
 	// row,col.<br>
-	// * If no HeavyTableCell was present at this row,col, create a new one
+	// * If no OldHeavyTableCell was present at this row,col, create a new one
 	// with a
-	// * default of HeavyTableCell.STYLE_STRING and a content of ""<br>
+	// * default of OldHeavyTableCell.STYLE_STRING and a content of ""<br>
 	// *
 	// * @param tab
 	// * @param row
 	// * @param col
-	// * @return The HeavyTableCell
+	// * @return The OldHeavyTableCell
 	// * @throws FastOdsException
 	// */
 	// @Deprecated
-	// public HeavyTableCell getCell(final int tab, final int row, final int
+	// public OldHeavyTableCell getCell(final int tab, final int row, final int
 	// col)
 	// throws FastOdsException {
 	// this.checkTableIndex(tab);

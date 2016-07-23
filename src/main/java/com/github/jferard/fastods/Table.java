@@ -128,20 +128,20 @@ public class Table implements NamedObject {
 	}
 
 	// /**
-	// * Get a HeavyTableCell, if no HeavyTableCell was present at this
+	// * Get a OldHeavyTableCell, if no OldHeavyTableCell was present at this
 	// row,col, create a
-	// * new one with a default of HeavyTableCell.STYLE_STRING and a content of
+	// * new one with a default of OldHeavyTableCell.STYLE_STRING and a content of
 	// "".
 	// *
 	// * @param row
 	// * The row
 	// * @param col
 	// * The column
-	// * @return The HeavyTableCell for this position, maybe a new
-	// HeavyTableCell
+	// * @return The OldHeavyTableCell for this position, maybe a new
+	// OldHeavyTableCell
 	// * @throws FastOdsException
 	// */
-	// public HeavyTableCell getCell(final int row, final int col)
+	// public OldHeavyTableCell getCell(final int row, final int col)
 	// throws FastOdsException {
 	// final HeavyTableRow tr = this.getRow(row);
 	// return tr.getCell(col);
@@ -181,7 +181,7 @@ public class Table implements NamedObject {
 		return this.getRow(row);
 	}
 
-	// public List<LightTableRow> getRows() {
+	// public List<OldLightTableRow> getRows() {
 	// return this.tableRows;
 	// }
 

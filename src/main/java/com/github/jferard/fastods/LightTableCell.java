@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.github.jferard.fastods.HeavyTableCell.Type;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 

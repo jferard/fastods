@@ -39,17 +39,17 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class LightTableRow {
+public class OldLightTableRow {
 	private TableCellStyle defaultCellStyle;
 	private final DataStyles format;
 	private final OdsFile odsFile;
 	private final int row;
 	private TableRowStyle rowStyle;
-	private final List<HeavyTableCell> tableCells;
+	private final List<OldHeavyTableCell> tableCells;
 	private final Util util;
 	private final XMLUtil xmlUtil;
 
-	LightTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
+	OldLightTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
 			final DataStyles format, final int row, final int columnCapacity) {
 		this.util = util;
 		this.xmlUtil = xmlUtil;
@@ -78,7 +78,7 @@ public class LightTableRow {
 		appendable.append(">");
 
 		int nullFieldCounter = 0;
-		for (final HeavyTableCell tc : this.tableCells) {
+		for (final OldHeavyTableCell tc : this.tableCells) {
 			if (tc == null) {
 				nullFieldCounter++;
 			} else {
@@ -100,24 +100,24 @@ public class LightTableRow {
 
 	/**
 	 * Added 0.5.1:<br>
-	 * Get a HeavyTableCell, if no HeavyTableCell was present at this col,
-	 * create a new one with a default of HeavyTableCell.STYLE_STRING and a
+	 * Get a OldHeavyTableCell, if no OldHeavyTableCell was present at this col,
+	 * create a new one with a default of OldHeavyTableCell.STYLE_STRING and a
 	 * content of "".
 	 *
 	 * @param col
-	 * @return The HeavyTableCell for this position, maybe a new HeavyTableCell
+	 * @return The OldHeavyTableCell for this position, maybe a new OldHeavyTableCell
 	 */
-	public HeavyTableCell getCell(final int col) {
-		HeavyTableCell tc = this.tableCells.get(col);
+	public OldHeavyTableCell getCell(final int col) {
+		OldHeavyTableCell tc = this.tableCells.get(col);
 		if (tc == null) {
-			tc = new HeavyTableCell(this.odsFile, this.xmlUtil, this.format,
+			tc = new OldHeavyTableCell(this.odsFile, this.xmlUtil, this.format,
 					this.row, col);
 			this.tableCells.set(col, tc);
 		}
 		return tc;
 	}
 
-	public HeavyTableCell getCell(final String pos) {
+	public OldHeavyTableCell getCell(final String pos) {
 		final int col = this.util.getPosition(pos).getColumn();
 		return this.getCell(col);
 	}
@@ -126,9 +126,9 @@ public class LightTableRow {
 		return this.rowStyle.getName();
 	}
 
-	public HeavyTableCell nextCell() {
+	public OldHeavyTableCell nextCell() {
 		final int col = this.tableCells.size();
-		final HeavyTableCell tc = new HeavyTableCell(this.odsFile, this.xmlUtil,
+		final OldHeavyTableCell tc = new OldHeavyTableCell(this.odsFile, this.xmlUtil,
 				this.format, this.row, col);
 		this.tableCells.add(tc);
 		return tc;
@@ -146,7 +146,7 @@ public class LightTableRow {
 	 */
 	public void setCellMerge(final int col, final int rowMerge,
 			final int columnMerge) throws FastOdsException {
-		final HeavyTableCell tc = this.getCell(col);
+		final OldHeavyTableCell tc = this.getCell(col);
 		tc.setRowsSpanned(rowMerge);
 		tc.setColumnsSpanned(columnMerge);
 	}
@@ -186,21 +186,21 @@ public class LightTableRow {
 	}
 
 	/**
-	 * @return The List with all HeavyTableCell objects
+	 * @return The List with all OldHeavyTableCell objects
 	 */
-	protected List<HeavyTableCell> getCells() {
+	protected List<OldHeavyTableCell> getCells() {
 		return this.tableCells;
 	}
 
 	/**
-	 * Set HeavyTableCell object at position col.<br>
-	 * If there is already a HeavyTableCell object, the old one is overwritten.
+	 * Set OldHeavyTableCell object at position col.<br>
+	 * If there is already a OldHeavyTableCell object, the old one is overwritten.
 	 *
 	 * @param col
 	 *            The column for this cell
 	 * @param tc
 	 */
-	protected void setCell(final int col, final HeavyTableCell tc) {
+	protected void setCell(final int col, final OldHeavyTableCell tc) {
 		this.tableCells.set(col, tc);
 	}
 }

@@ -22,10 +22,10 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.github.jferard.fastods.HeavyTableCell.Type;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -33,6 +33,40 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  */
 public interface TableCell {
+	/**
+	 * 19.385 office:value-type
+	 */
+	public static enum Type {
+		BOOLEAN("boolean", "office:boolean-value"), CURRENCY("currency",
+				"office:value"), DATE("date", "office:date-value"), FLOAT(
+						"float", "office:value"), PERCENTAGE("percentage",
+								"office:value"), STRING("string",
+										"office:string-value"), TIME("time",
+												"office:time-value"), VOID(
+														"office-value", "");
+
+		final String attrName;
+		final String attrValue;
+
+		private Type(final String attrValue, final String attrName) {
+			this.attrValue = attrValue;
+			this.attrName = attrName;
+		}
+
+		public String getAttrName() {
+			return this.attrName;
+		}
+
+		public String getAttrValue() {
+			return this.attrValue;
+		}
+	}
+
+	/**
+	 * XML Schema Part 2, 3.2.7 dateTime
+	 */
+	static final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 	void appendXMLToTableRow(XMLUtil util, Appendable appendable)
 			throws IOException;
@@ -147,7 +181,7 @@ public interface TableCell {
 	void setCurrencyValue(Number value, String currency);
 
 	/**
-	 * Set the date value for a cell with HeavyTableCell.STYLE_DATE.
+	 * Set the date value for a cell with OldHeavyTableCell.STYLE_DATE.
 	 *
 	 * @param cal
 	 *            - A Calendar object with the date to be used
@@ -157,7 +191,7 @@ public interface TableCell {
 	void setDateValue(Date value);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.FLOAT.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.FLOAT.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -165,7 +199,7 @@ public interface TableCell {
 	void setFloatValue(float value);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.FLOAT.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.FLOAT.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -173,7 +207,7 @@ public interface TableCell {
 	void setFloatValue(int value);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.FLOAT.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.FLOAT.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -181,7 +215,7 @@ public interface TableCell {
 	void setFloatValue(Number value);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.STRING.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.STRING.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -189,7 +223,7 @@ public interface TableCell {
 	void setObjectValue(Object value);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.PERCENTAGE.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.PERCENTAGE.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -197,7 +231,7 @@ public interface TableCell {
 	void setPercentageValue(float value);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.PERCENTAGE.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.PERCENTAGE.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -213,7 +247,7 @@ public interface TableCell {
 	void setRowsSpanned(int n);
 
 	/**
-	 * Set the float value for a cell with HeavyTableCell.Type.STRING.
+	 * Set the float value for a cell with OldHeavyTableCell.Type.STRING.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
