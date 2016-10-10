@@ -56,6 +56,13 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class Util {
+	private static final int OPT_DIGIT = 5;
+	private static final int FIRST_DIGIT = 4;
+	private static final int OPT_SECOND_LETTER = 2;
+	private static final int FIRST_LETTER = 1;
+	private static final int BEGIN_DIGIT = 3;
+	private static final int BEGIN_LETTER = 0;
+
 	public static class Position {
 		private final int column;
 		private final int row;
@@ -126,37 +133,36 @@ public class Util {
 		while (n < len) {
 			final char c = s.charAt(n);
 			switch (status) {
-			case 0: // opt $
-			case 3: // opt $
+			case BEGIN_LETTER: // opt $
+			case BEGIN_DIGIT: // opt $
 				status++;
 				if (c == '$')
 					n++;
 				break;
-			case 1: // mand letter
+			case FIRST_LETTER: // mand letter
 				if ('A' <= c && c <= 'Z') {
 					col = c - 'A' + 1;
-					status = 2;
+					status = OPT_SECOND_LETTER;
 					n++;
 				} else
 					return null;
 				break;
-			case 2: // opt letter
-				if (c < 'A' || c > 'Z') {
-					status = 3;
-				} else {
+			case OPT_SECOND_LETTER: // opt letter
+				if ('A' <= c && c <= 'Z') {
 					col = col * 26 + c - 'A' + 1;
 					n++;
 				}
+				status = BEGIN_DIGIT;
 				break;
-			case 4: // mand digit
+			case FIRST_DIGIT: // mand digit
 				if ('0' <= c && c <= '9') {
 					row = c - '0';
-					status = 5;
+					status = OPT_DIGIT;
 					n++;
 				} else
 					return null;
 				break;
-			case 5: // opt digit
+			case OPT_DIGIT: // opt digit
 				if ('0' <= c && c <= '9') {
 					row = row * 10 + c - '0';
 					n++;

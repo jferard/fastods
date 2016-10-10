@@ -61,5 +61,33 @@ public class UtilTest {
 		Assert.assertNull(position);
 	}
 	
+	@Test
+	public final void testWeirdPos() {
+		Assert.assertNull(this.util.getPosition("_6"));
+		Assert.assertNull(this.util.getPosition("@6"));
+		Assert.assertNull(this.util.getPosition("A@6"));
+		Assert.assertNull(this.util.getPosition("A_6"));
+		
+		Assert.assertNull(this.util.getPosition("AA$."));
+		Assert.assertNull(this.util.getPosition("AA$A"));
+		
+		Assert.assertNull(this.util.getPosition("AA$9."));
+		Assert.assertNull(this.util.getPosition("AA$9A"));
+	}
+	
+	@Test
+	public final void testInt() {
+		Assert.assertEquals("-1001", this.util.toString(-1001));
+		Assert.assertEquals("1001", this.util.toString(1001));
+	}
+	
+	@Test
+	public final void testEquals() {
+		Assert.assertTrue(this.util.equal(null, null));
+		final Object s = "object";
+		Assert.assertFalse(this.util.equal(null, s));
+		Assert.assertFalse(this.util.equal(s, null));
+		Assert.assertTrue(this.util.equal(s, s));
+	}
 	
 }

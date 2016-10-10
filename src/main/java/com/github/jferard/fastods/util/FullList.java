@@ -131,11 +131,6 @@ public class FullList<E> implements List<E> {
 	}
 
 	@Override
-	public Object clone() {
-		return this.list.clone();
-	}
-
-	@Override
 	public boolean contains(final Object o) {
 		return o == this.blankElement || this.list.contains(o);
 	}
@@ -208,22 +203,30 @@ public class FullList<E> implements List<E> {
 		if (index >= this.list.size())
 			return this.blankElement;
 
-		return this.list.remove(index);
+		E e = this.list.remove(index);
+		this.removeTrail();
+		return e;
 	}
 
 	@Override
 	public boolean remove(final Object o) {
-		return this.list.remove(o);
+		boolean result = this.list.remove(o);
+		this.removeTrail();
+		return result;
 	}
 
 	@Override
 	public boolean removeAll(final Collection<?> c) {
-		return this.list.removeAll(c);
+		boolean result = this.list.removeAll(c);
+		this.removeTrail();
+		return result;
 	}
 
 	@Override
 	public boolean retainAll(final Collection<?> c) {
-		return this.list.retainAll(c);
+		boolean result = this.list.retainAll(c);
+		this.removeTrail();
+		return result;
 	}
 
 	@Override

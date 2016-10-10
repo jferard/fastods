@@ -19,25 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-*    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.github.jferard.fastods.util;
 
 import java.util.HashMap;
@@ -53,21 +34,28 @@ import java.util.Map;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class FastOdsXMLEscaper implements XMLEscaper {
 	private static final int BUFFER_SIZE = 65536;
-	private final Map<String, String> attrMap;
+	private final Map<String, String> attrCacheMap;
 
 	private char[] buffer;
+	private final Map<String, String> contentCacheMap;
 
 	public FastOdsXMLEscaper() {
-		this.attrMap = new HashMap<String, String>();
-		this.buffer = new char[FastOdsXMLEscaper.BUFFER_SIZE];
+		this(FastOdsXMLEscaper.BUFFER_SIZE);
 	}
+	
+	public FastOdsXMLEscaper(int bufferSize) {
+		this.attrCacheMap = new HashMap<String, String>();
+		this.contentCacheMap = new HashMap<String, String>();
+		this.buffer = new char[bufferSize];
+	}
+	
 
 	@Override
 	public String escapeXMLAttribute(final String s) {
 		if (s == null)
 			return null;
 
-		String s2 = this.attrMap.get(s);
+		String s2 = this.attrCacheMap.get(s);
 		if (s2 == null) {
 			final int length = s.length();
 			int destIndex = 0;
@@ -79,7 +67,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 			for (int sourceIndex = 0; sourceIndex < length; sourceIndex++) {
 				final char c = s.charAt(sourceIndex);
 				if (c == '&') {
-					copyToIndex = sourceIndex + 1;
+					copyToIndex = sourceIndex + 1; // gobble the ampersand
 					toCopy = "amp;";
 					specialChar = true;
 				} else if (c == '<') {
@@ -117,26 +105,29 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 				}
 				if (specialChar) {
 					oneSpecialChar = true;
-					if (destIndex >= this.buffer.length) {
+					// ensure buffer size
+					if (destIndex + toCopy.length() + 1 >= this.buffer.length - 1) {
 						final char[] newBuffer = new char[2
 								* this.buffer.length];
 						System.arraycopy(this.buffer, 0, newBuffer, 0,
 								destIndex);
 						this.buffer = newBuffer;
 					}
+					// put in the buffer the identical chars
 					if (copyToIndex > copyFromIndex) {
 						s.getChars(copyFromIndex, copyToIndex, this.buffer,
 								destIndex);
 						destIndex += copyToIndex - copyFromIndex;
 					}
-					copyFromIndex = copyToIndex + 1;
+					copyFromIndex = sourceIndex + 1;
 					specialChar = false;
+					// put the new chars in the buffer
 					for (final char c2 : toCopy.toCharArray())
 						this.buffer[destIndex++] = c2;
 				}
 			}
 
-			if (oneSpecialChar) {
+			if (oneSpecialChar) { // at least
 				if (destIndex >= this.buffer.length) {
 					final char[] newBuffer = new char[2 * this.buffer.length];
 					System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
@@ -149,7 +140,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 				s2 = new String(this.buffer, 0, destIndex);
 			} else
 				s2 = s;
-			this.attrMap.put(s, s2);
+			this.attrCacheMap.put(s, s2);
 		}
 		return s2;
 	}
@@ -159,7 +150,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 		if (s == null)
 			return null;
 
-		String s2 = this.attrMap.get(s);
+		String s2 = this.contentCacheMap.get(s);
 		if (s2 == null) {
 			final int length = s.length();
 			int destIndex = 0;
@@ -191,7 +182,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 				}
 				if (specialChar) {
 					oneSpecialChar = true;
-					if (destIndex >= this.buffer.length) {
+					if (destIndex + toCopy.length() + 1 >= this.buffer.length - 1) {
 						final char[] newBuffer = new char[2
 								* this.buffer.length];
 						System.arraycopy(this.buffer, 0, newBuffer, 0,
@@ -201,9 +192,9 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					if (copyToIndex > copyFromIndex) {
 						s.getChars(copyFromIndex, copyToIndex, this.buffer,
 								destIndex);
-						destIndex += copyToIndex - copyFromIndex;
+						destIndex += copyToIndex - copyFromIndex; 
 					}
-					copyFromIndex = copyToIndex + 1;
+					copyFromIndex = sourceIndex + 1;
 					specialChar = false;
 					for (final char c2 : toCopy.toCharArray())
 						this.buffer[destIndex++] = c2;
@@ -223,7 +214,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 				s2 = new String(this.buffer, 0, destIndex);
 			} else
 				s2 = s;
-			this.attrMap.put(s, s2);
+			this.contentCacheMap.put(s, s2);
 		}
 		return s2;
 	}
