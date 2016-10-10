@@ -68,7 +68,7 @@ class ContentEntry implements OdsEntry {
 	 */
 	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		Table table = this.tables.get(name);
+		Table table = this.tables.getByName(name);
 		if (table == null) {
 			table = new Table(this.odsFile, this.xmlUtil, this.util,
 					this.format, name, rowCapacity, columnCapacity);
@@ -109,7 +109,7 @@ class ContentEntry implements OdsEntry {
 	 * @return the table, or null if none present
 	 */
 	public Table getTable(final String name) {
-		return this.tables.get(name);
+		return this.tables.getByName(name);
 	}
 
 	public int getTableCount() {

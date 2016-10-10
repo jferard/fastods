@@ -19,25 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-*    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.github.jferard.fastods.util;
 
 import java.util.ArrayList;
@@ -48,12 +29,16 @@ import java.util.ListIterator;
 import java.util.Spliterator;
 
 /**
+ * The class FullList represents a List that is unlimited, in a specific sense :
+ * at the beginning, every element is set at a determined {@code blankElement}.
+ * When we set an element at a given index, the blank element is replaced by the
+ * new element.
+ * 
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file FullList.java is part of FastODS.
  *
- *         The class FullList represents a List that is unlimited.
  *
  */
 public class FullList<E> implements List<E> {
@@ -100,19 +85,19 @@ public class FullList<E> implements List<E> {
 
 	private final ArrayList<E> list;
 
-	private FullList(final E blankElement, final ArrayList<E> list) {
-		this.blankElement = blankElement;
-		this.list = list;
-	}
-
 	private FullList(final E blankElement, final int capacity) {
 		this.blankElement = blankElement;
 		this.list = new ArrayList<E>(capacity);
+		this.removeTrail();
 	}
 
 	@Override
 	public boolean add(final E e) {
-		return this.list.add(e);
+		final int sizeBefore = this.list.size();
+		this.list.add(e);
+		this.removeTrail();
+		return this.list.size() != sizeBefore;
+
 	}
 
 	@Override
@@ -157,7 +142,10 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public boolean containsAll(final Collection<?> c) {
-		return this.list.containsAll(c);
+		for (Object e : c)
+			if (!contains(e))
+				return false;
+		return true;
 	}
 
 	@Override
@@ -262,6 +250,10 @@ public class FullList<E> implements List<E> {
 		return result;
 	}
 
+	/* 
+	 * @see java.util.List#size()
+	 * @return the size of the underlying list
+	 */
 	@Override
 	public int size() {
 		return this.list.size();
@@ -274,8 +266,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
-		return new FullList<E>(this.blankElement,
-				(ArrayList<E>) this.list.subList(fromIndex, toIndex));
+		return this.list.subList(fromIndex, toIndex);
 	}
 
 	@Override

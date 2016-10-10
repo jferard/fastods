@@ -29,22 +29,36 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * A UniqueList is an ordered set of named objects : ordered as a list, but
+ * with no duplicates names. If a new object having a name that is the name of
+ * an object already present in the list is inserted with {@code add} or
+ * {@code set}, then an {@code IllegalArgumentException} is thrown.
+ * 
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
  *         This file UniqueList.java is part of FastODS.
  *
+ * @param <T>
+ *            a NamedObject type.
  */
 public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		implements List<T> {
 	private final Map<String, T> elementByName;
 	private final List<T> list;
 
+	/**
+	 * Creates the list
+	 */
 	public UniqueList() {
 		this.list = new LinkedList<T>();
 		this.elementByName = new HashMap<String, T>();
 	}
 
+	/* 
+	 * @see java.util.AbstractList#add(int, java.lang.Object)
+	 * @throws IllegalArgumentException if the element exists in the list
+	 */
 	@Override
 	public void add(final int index, final T element) {
 		final String elementName = element.getName();
@@ -56,19 +70,32 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		this.list.add(index, element);
 	}
 
+	/* 
+	 * @see java.util.AbstractList#get(int)
+	 */
 	@Override
 	public T get(final int index) {
 		return this.list.get(index);
 	}
 
-	public T get(final Object o) {
+	/**
+	 * @param o
+	 * @return
+	 */
+	public T getByName(final Object o) {
 		return this.elementByName.get(o);
 	}
 
-	public Set<String> keySet() {
+	/**
+	 * @return the name set of the objects stored in the list
+	 */
+	public Set<String> nameSet() {
 		return this.elementByName.keySet();
 	}
 
+	/*  
+	 * @see java.util.AbstractList#remove(int)
+	 */
 	@Override
 	public T remove(final int index) {
 		final T element = this.list.remove(index);
@@ -76,17 +103,35 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return element;
 	}
 
+	/*  
+	 * @see java.util.AbstractList#remove(int)
+	 */
 	@Override
 	public boolean remove(final Object o) {
-		if (this.elementByName.containsKey(o)) {
-			final T t = this.elementByName.get(o);
-			this.elementByName.remove(o);
-			this.list.remove(t);
+		if (this.elementByName.containsValue(o)) {
+			this.elementByName.remove(((NamedObject) o).getName());
+			this.list.remove(o);
 			return true;
 		} else
 			return false;
 	}
+	
+	/*  
+	 */
+	public T removeByName(final String name) {
+		if (this.elementByName.containsKey(name)) {
+			final T t = this.elementByName.get(name);
+			this.elementByName.remove(name);
+			this.list.remove(t);
+			return t;
+		} else
+			return null;
+	}
+	
 
+	/*  
+	 * @see java.util.AbstractList#remove(int)
+	 */
 	@Override
 	public T set(final int index, final T element) {
 		final String elementName = element.getName();
@@ -98,6 +143,9 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return this.list.set(index, element);
 	}
 
+	/*  
+	 * @see java.util.AbstractList#remove(int)
+	 */
 	@Override
 	public int size() {
 		return this.list.size();
