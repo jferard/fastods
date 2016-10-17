@@ -55,12 +55,14 @@ public final class FastOds {
 	 * @return true if succeeded, false otherwise.
 	 */
 	public static boolean openFile(final File f) {
-		try {
-			Desktop.getDesktop().open(f);
-			return true;
-		} catch (final IOException e) {
-			return false;
+		if (f.exists() && f.isFile()) {
+			try {
+				Desktop.getDesktop().open(f);
+				return true;
+			} catch (final IOException e) {
+			}
 		}
+		return false;
 	}
 
 	private FastOds() {

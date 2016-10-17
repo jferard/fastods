@@ -27,6 +27,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.HeavyTableRow;
@@ -74,69 +76,68 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	/**
 	 * column count of the ResultSet.
 	 */
-	private int columnCount;
 	private final TableCellStyle headCellStyle;
 	/**
 	 * maximum number of lines to be written
 	 */
 	private final int max;
-	/**
-	 * metadata of the ResultSet.
-	 */
-	private ResultSetMetaData metadata;
+
 	/**
 	 * the ResultSet.
 	 */
 	private final ResultSet resultSet;
+	private Logger logger;
+	private ResultSet rs;
 
-	public ResultSetDataWrapper(final ResultSet rs,
+	public ResultSetDataWrapper(final Logger logger, final ResultSet rs,
 			final TableCellStyle headCellStyle, final int max) {
+		this.logger = logger;
 		this.resultSet = rs;
 		this.headCellStyle = headCellStyle;
 		this.max = max;
-		try {
-			this.metadata = rs.getMetaData();
-			this.columnCount = this.metadata.getColumnCount();
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
+		this.rs = rs;
 	}
 
 	@Override
 	public boolean addToTable(final Table table) {
-		if (this.metadata == null)
-			return false;
-
-		final int count = 0;
+		int rowCount = 0; // at least 
 		try {
+			ResultSetMetaData metadata = this.rs.getMetaData();
 			HeavyTableRow row;
-			if (this.resultSet.next()) {
+			try {
 				row = table.nextRow();
-				this.writeFirstLineDataTo(row);
-				do {
-					row = table.nextRow();
-					if (count <= this.max)
-						this.writeDataLineTo(row);
-				} while (this.resultSet.next());
-
-				this.writeLastLineDataTo(row, count);
+				final int columnCount = metadata.getColumnCount();
+				this.writeFirstLineDataTo(metadata, row);
+				if (this.resultSet.next()) {
+					do {
+						if (++rowCount <= this.max) {
+							row = table.nextRow();
+							this.writeDataLineTo(row,
+									columnCount);
+						}
+					} while (this.resultSet.next());
+				}
+				this.writeMaybeLastLineDataTo(columnCount, table, rowCount);
+			} catch (final SQLException e) {
+				this.logger.log(Level.SEVERE, "Can't read ResultSet row", e);
 			}
 		} catch (final SQLException e) {
-			e.printStackTrace();
-		} catch (final IOException e) {
-			e.printStackTrace();
+			this.logger.log(Level.SEVERE, "Can't read ResultSet metadata", e);
 		}
-		return count > 0;
+		return rowCount > 0;
 	}
 
 	/**
+	 * @param metadata
 	 * @return the name of the columns
 	 * @throws SQLException
 	 */
-	private List<String> getColumnNames() throws SQLException {
-		final List<String> names = new ArrayList<String>(this.columnCount);
-		for (int i = 0; i < this.columnCount; i++)
-			names.add(this.metadata.getColumnName(i + 1));
+	private List<String> getColumnNames(ResultSetMetaData metadata)
+			throws SQLException {
+		int columnCount = metadata.getColumnCount();
+		final List<String> names = new ArrayList<String>(columnCount);
+		for (int i = 0; i < columnCount; i++)
+			names.add(metadata.getColumnName(i + 1));
 
 		return names;
 	}
@@ -146,33 +147,35 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	private List<Object> getColumnValues() throws SQLException, IOException {
-		final List<Object> values = new ArrayList<Object>(this.columnCount);
-		for (int i = 0; i < this.metadata.getColumnCount(); i++) {
+	private List<Object> getColumnValues(final int columnCount)
+			throws SQLException {
+		final List<Object> values = new ArrayList<Object>(columnCount);
+		for (int i = 0; i < columnCount; i++) {
 			values.add(this.resultSet.getObject(i + 1));
 		}
 		return values;
 	}
 
-	private void writeDataLineTo(final HeavyTableRow row)
-			throws SQLException, IOException {
-		final List<Object> columnValues = this.getColumnValues();
+	private void writeDataLineTo(final HeavyTableRow row, final int columnCount)
+			throws SQLException {
+		final List<Object> columnValues = this.getColumnValues(columnCount);
 		final TableCellWalker walker = row.getWalker();
-		for (int j = 0; j <= this.columnCount - 1; j++) {
+		for (int j = 0; j <= columnCount - 1; j++) {
 			final Object object = columnValues.get(j);
 			walker.nextCell();
 			if (object == null)
-				walker.setObjectValue("<NULL>");
+				walker.setStringValue("<NULL>");
 			else
 				walker.setObjectValue(object);
 		}
 	}
 
-	private void writeFirstLineDataTo(final HeavyTableRow row)
-			throws SQLException {
-		final List<String> columnNames = this.getColumnNames();
+	private void writeFirstLineDataTo(ResultSetMetaData metadata,
+			final HeavyTableRow row) throws SQLException {
+		final int columnCount = metadata.getColumnCount();
+		final List<String> columnNames = this.getColumnNames(metadata);
 		final TableCellWalker walker = row.getWalker();
-		for (int j = 0; j <= this.columnCount - 1; j++) {
+		for (int j = 0; j <= columnCount - 1; j++) {
 			walker.nextCell();
 			final String name = columnNames.get(j);
 			walker.setStringValue(name);
@@ -180,18 +183,23 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		}
 	}
 
-	private void writeLastLineDataTo(final HeavyTableRow row, final int count) {
-		final TableCellWalker walker = row.getWalker();
-		if (count == 0) {// no row
-			for (int j = 0; j <= this.columnCount - 1; j++) {
+	private void writeMaybeLastLineDataTo(final int columnCount,
+			final Table table, final int rowCount) {
+		HeavyTableRow row;
+		if (rowCount == 0) {// no data row
+			row = table.nextRow();
+			final TableCellWalker walker = row.getWalker();
+			for (int j = 0; j <= columnCount - 1; j++) {
 				walker.nextCell();
 				walker.setStringValue("");
 			}
-		} else if (count > this.max) {
-			for (int j = 0; j <= this.columnCount - 1; j++) {
+		} else if (rowCount > this.max) {
+			row = table.nextRow();
+			final TableCellWalker walker = row.getWalker();
+			for (int j = 0; j <= columnCount - 1; j++) {
 				walker.nextCell();
 				walker.setStringValue(String.format("... (%d rows remaining)",
-						count - this.max));
+						rowCount - this.max));
 			}
 		}
 	}
