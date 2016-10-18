@@ -236,7 +236,7 @@ public class HeavyTableRow {
 
 	public void setBooleanValue(final int i, final boolean value) {
 		this.values.set(i, value ? "true" : "false");
-		this.types.set(i, OldHeavyTableCell.Type.BOOLEAN);
+		this.types.set(i, TableCell.Type.BOOLEAN);
 		this.setStyle(i, this.dataStyles.getBooleanStyle());
 	}
 
@@ -290,7 +290,7 @@ public class HeavyTableRow {
 			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 
 		this.currencies.set(i, currency); // escape here
-		this.types.set(i, OldHeavyTableCell.Type.CURRENCY);
+		this.types.set(i, TableCell.Type.CURRENCY);
 		this.setStyle(i, this.dataStyles.getCurrencyStyle());
 	}
 
@@ -304,7 +304,7 @@ public class HeavyTableRow {
 			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 
 		this.currencies.set(i, currency); // escape here
-		this.types.set(i, OldHeavyTableCell.Type.CURRENCY);
+		this.types.set(i, TableCell.Type.CURRENCY);
 		this.setStyle(i, this.dataStyles.getCurrencyStyle());
 	}
 
@@ -317,7 +317,7 @@ public class HeavyTableRow {
 		if (this.currencies == null)
 			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 		this.currencies.set(i, currency); // escape here
-		this.types.set(i, OldHeavyTableCell.Type.CURRENCY);
+		this.types.set(i, TableCell.Type.CURRENCY);
 		this.setStyle(i, this.dataStyles.getCurrencyStyle());
 	}
 
@@ -332,7 +332,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setDateValue(java.util.Date)
 	 */
 	public void setDateValue(final int i, final Date value) {
-		this.values.set(i, OldHeavyTableCell.DATE_VALUE_FORMAT.format(value));
+		this.values.set(i, TableCell.DATE_VALUE_FORMAT.format(value));
 		this.types.set(i, TableCell.Type.DATE);
 		this.setStyle(i, this.dataStyles.getDateStyle());
 	}
@@ -355,7 +355,7 @@ public class HeavyTableRow {
 	 */
 	public void setFloatValue(final int i, final double value) {
 		this.values.set(i, Double.toString(value));
-		this.types.set(i, OldHeavyTableCell.Type.FLOAT);
+		this.types.set(i, TableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
 
@@ -364,7 +364,7 @@ public class HeavyTableRow {
 	 */
 	public void setFloatValue(final int i, final float value) {
 		this.values.set(i, Float.toString(value));
-		this.types.set(i, OldHeavyTableCell.Type.FLOAT);
+		this.types.set(i, TableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
 
@@ -373,7 +373,7 @@ public class HeavyTableRow {
 	 */
 	public void setFloatValue(final int i, final int value) {
 		this.values.set(i, this.util.toString(value));
-		this.types.set(i, OldHeavyTableCell.Type.FLOAT);
+		this.types.set(i, TableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
 
@@ -382,7 +382,7 @@ public class HeavyTableRow {
 	 */
 	public void setFloatValue(final int i, final Number value) {
 		this.values.set(i, value.toString());
-		this.types.set(i, OldHeavyTableCell.Type.FLOAT);
+		this.types.set(i, TableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}
 
@@ -421,7 +421,7 @@ public class HeavyTableRow {
 	 */
 	public void setPercentageValue(final int i, final double value) {
 		this.values.set(i, Double.toString(value));
-		this.types.set(i, OldHeavyTableCell.Type.PERCENTAGE);
+		this.types.set(i, TableCell.Type.PERCENTAGE);
 		this.setStyle(i, this.dataStyles.getPercentageStyle());
 	}
 
@@ -430,7 +430,7 @@ public class HeavyTableRow {
 	 */
 	public void setPercentageValue(final int i, final float value) {
 		this.values.set(i, Float.toString(value));
-		this.types.set(i, OldHeavyTableCell.Type.PERCENTAGE);
+		this.types.set(i, TableCell.Type.PERCENTAGE);
 		this.setStyle(i, this.dataStyles.getPercentageStyle());
 	}
 
@@ -439,7 +439,7 @@ public class HeavyTableRow {
 	 */
 	public void setPercentageValue(final int i, final Number value) {
 		this.values.set(i, value.toString());
-		this.types.set(i, OldHeavyTableCell.Type.PERCENTAGE);
+		this.types.set(i, TableCell.Type.PERCENTAGE);
 		this.setStyle(i, this.dataStyles.getPercentageStyle());
 	}
 
@@ -459,7 +459,7 @@ public class HeavyTableRow {
 	public void setStringValue(final int i, final String value) {
 		this.values.set(i, this.xmlUtil.escapeXMLAttribute(value));// TODO
 																	// ESCAPE
-		this.types.set(i, OldHeavyTableCell.Type.STRING);
+		this.types.set(i, TableCell.Type.STRING);
 	}
 
 	/* (non-Javadoc)
@@ -487,13 +487,13 @@ public class HeavyTableRow {
 	 */
 	public void setTimeValue(final int i, final long timeInMillis) {
 		this.values.set(i, this.xmlUtil.formatTimeInterval(timeInMillis));
-		this.types.set(i, OldHeavyTableCell.Type.TIME);
+		this.types.set(i, TableCell.Type.TIME);
 		this.setStyle(i, this.dataStyles.getTimeStyle());
 	}
 
 	public void setVoidValue(int i) {
 		this.values.set(i, null);
-		this.types.set(i, OldHeavyTableCell.Type.VOID);
+		this.types.set(i, TableCell.Type.VOID);
 	}
 
 	private void appendRowOpenTag(final XMLUtil util,
