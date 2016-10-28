@@ -81,9 +81,9 @@ public class FooterHeaderTest {
 	}
 
 	@Test
-	public final void testMargins() throws IOException {
+	public final void testMarginsAndMinHeight() throws IOException {
 		FooterHeader header = FooterHeader
-				.simpleBuilder(FooterHeader.Type.HEADER).allMargins("10pt")
+				.simpleBuilder(FooterHeader.Type.HEADER).allMargins("10pt").minHeight("120pt")
 				.styledText(
 						FHTextStyle.builder("style").fontStyleItalic().build(),
 						"text")
@@ -91,7 +91,7 @@ public class FooterHeaderTest {
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertEquals("<style:header-style>"
-				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"10pt\" fo:margin-right=\"10pt\" fo:margin-top=\"10pt\" fo:margin-bottom=\"10pt\"/>"
+				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin-left=\"10pt\" fo:margin-right=\"10pt\" fo:margin-top=\"10pt\" fo:margin-bottom=\"10pt\"/>"
 				+ "</style:header-style>", sb.toString());
 	}
 }

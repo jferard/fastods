@@ -258,4 +258,19 @@ abstract class FooterHeaderBuilder {
 		this.marginTop = margin;
 		return this;
 	}
+	
+	/**
+	 * Set the minimum height. min height is a length value expressed as a number
+	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 *
+	 * @param margin
+	 * @return this for fluent style
+	 */
+	public FooterHeaderBuilder minHeight(final String height) {
+		this.minHeight = height;
+		return this;
+	}
 }
