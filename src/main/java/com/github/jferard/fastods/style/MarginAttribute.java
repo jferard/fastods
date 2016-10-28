@@ -110,9 +110,6 @@ public class MarginAttribute {
 
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.marginSize == null)
-			return;
-
 		util.appendEAttribute(appendable, this.position.attrName,
 				this.marginSize);
 	}

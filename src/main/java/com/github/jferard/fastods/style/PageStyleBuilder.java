@@ -33,11 +33,6 @@ public class PageStyleBuilder {
 	private String backgroundColor;
 	private FooterHeader footer;
 	private FooterHeader header;
-	private String marginBottom;
-	private String marginLeft;
-
-	private String marginRight;
-	private String marginTop;
 	private final String name;
 	private final String numFormat;
 
@@ -47,6 +42,7 @@ public class PageStyleBuilder {
 	private PrintOrientation printOrientation;
 
 	private WritingMode writingMode;
+	private MarginsBuilder marginsBuilder;
 
 	/**
 	 * Create a new page style.
@@ -57,10 +53,8 @@ public class PageStyleBuilder {
 			throw new IllegalStateException();
 
 		this.name = name;
-		this.marginTop = "1.5cm";
-		this.marginBottom = "1.5cm";
-		this.marginLeft = "1.5cm";
-		this.marginRight = "1.5cm";
+		this.marginsBuilder = new MarginsBuilder();
+		this.marginsBuilder.all("1.5cm");
 
 		this.paperFormat(PageStyle.DEFAULT_FORMAT);
 		this.numFormat = "1";
@@ -86,10 +80,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder allMargins(final String margin) {
-		this.marginTop(margin);
-		this.marginBottom(margin);
-		this.marginLeft(margin);
-		this.marginRight(margin);
+		this.marginsBuilder.all(margin);
 		return this;
 	}
 
@@ -110,11 +101,10 @@ public class PageStyleBuilder {
 	public PageStyle build() {
 		// TODO : create MarginAttribute and use a
 		// EnumMap<MarginAtribute.Position, MarginAttribute>
-		return new PageStyle(this.name, this.marginTop, this.marginBottom,
-				this.marginLeft, this.marginRight, this.pageWidth,
-				this.pageHeight, this.numFormat, this.backgroundColor,
-				this.footer, this.header, this.printOrientation,
-				this.paperFormat, this.writingMode);
+		return new PageStyle(this.name, this.marginsBuilder.build(),
+				this.pageWidth, this.pageHeight, this.numFormat,
+				this.backgroundColor, this.footer, this.header,
+				this.printOrientation, this.paperFormat, this.writingMode);
 	}
 
 	public PageStyleBuilder footer(final FooterHeader footer) {
@@ -137,7 +127,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginBottom(final String margin) {
-		this.marginBottom = margin;
+		this.marginsBuilder.bottom(margin);
 		return this;
 	}
 
@@ -151,7 +141,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginLeft(final String margin) {
-		this.marginLeft = margin;
+		this.marginsBuilder.left(margin);
 		return this;
 	}
 
@@ -166,7 +156,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginRight(final String margin) {
-		this.marginRight = margin;
+		this.marginsBuilder.right(margin);
 		return this;
 	}
 
@@ -181,7 +171,7 @@ public class PageStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginTop(final String margin) {
-		this.marginTop = margin;
+		this.marginsBuilder.top(margin);
 		return this;
 	}
 

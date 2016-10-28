@@ -19,37 +19,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.util.FullList;
-
-/**
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
- *
- * @author Julien Férard
- *
- */
-class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
-	/**
-	 * Create a new simple footer object.
-	 *
-	 * @param footerHeaderType
-	 *            footer or header ?
-	 */
-	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
-		super(footerHeaderType);
-		this.curRegion = FullList.<FHParagraph> builder().capacity(16).build();
+public class MarginsBuilder {
+	private String top;
+	private String right;
+	private String bottom;
+	private String left;
+	
+	public MarginsBuilder top(String top) {
+		this.top = top;
+		return this;
 	}
-
-	/*
-	 * {@inheritDoc}
-	 */
-	@Override
-	public FooterHeader build() {
-		return new SimpleFooterHeader(this.footerHeaderType, this.curRegion,
-				this.marginsBuilder.build(), this.minHeight);
+	
+	public MarginsBuilder right(String right) {
+		this.right = right;
+		return this;
+	}
+	
+	public MarginsBuilder bottom(String bottom) {
+		this.bottom = bottom;
+		return this;
+	}
+	
+	public MarginsBuilder left(String left) {
+		this.left = left;
+		return this;
+	}
+	
+	public MarginsBuilder all(String size) {
+		this.top = size;
+		this.right = size;
+		this.bottom = size;
+		this.left = size;
+		return this;
+	}
+	
+	
+	public Margins build() {
+		return new Margins(this.top, this.right, this.bottom, this.left);
 	}
 }

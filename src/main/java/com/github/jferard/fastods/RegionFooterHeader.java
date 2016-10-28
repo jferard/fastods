@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -67,11 +68,9 @@ class RegionFooterHeader extends FooterHeader {
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
 			final List<FHParagraph> centerRegion,
 			final List<FHParagraph> leftRegion,
-			final List<FHParagraph> rightRegion, final String marginLeft,
-			final String marginRight, final String marginTop,
-			final String marginBottom, final String minHeight) {
-		super(footerHeaderType, marginLeft, marginRight, marginTop,
-				marginBottom, minHeight);
+			final List<FHParagraph> rightRegion, final Margins margins,
+			final String minHeight) {
+		super(footerHeaderType, margins, minHeight);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;

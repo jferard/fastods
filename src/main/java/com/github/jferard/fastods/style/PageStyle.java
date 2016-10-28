@@ -136,11 +136,8 @@ public class PageStyle {
 	private final FooterHeader footer;
 
 	private final FooterHeader header;
-	private final String marginBottom;
-	private final String marginLeft;
-	private final String marginRight;
-
-	private final String marginTop;
+	private final Margins margins;
+	
 	private final String name;
 	private final String numFormat;
 	private final String pageHeight;
@@ -160,18 +157,13 @@ public class PageStyle {
 	 * @param header2
 	 * @param footer
 	 */
-	public PageStyle(final String name, final String marginTop,
-			final String marginBottom, final String marginLeft,
-			final String marginRight, final String pageWidth,
+	public PageStyle(final String name, final Margins margins, final String pageWidth,
 			final String pageHeight, final String numFormat,
 			final String backgroundColor, final FooterHeader footer,
 			final FooterHeader header, final PrintOrientation printOrientation,
 			final PaperFormat paperFormat, final WritingMode writingMode) {
 		this.name = name;
-		this.marginTop = marginTop;
-		this.marginBottom = marginBottom;
-		this.marginLeft = marginLeft;
-		this.marginRight = marginRight;
+		this.margins = margins;
 		this.pageWidth = pageWidth;
 		this.pageHeight = pageHeight;
 		this.numFormat = numFormat;
@@ -205,29 +197,13 @@ public class PageStyle {
 		util.appendEAttribute(appendable, "style:print-orientation",
 				this.printOrientation.getAttrValue());
 		this.appendBackgroundColor(util, appendable);
-		util.appendAttribute(appendable, "fo:margin-top", this.marginTop);
-		util.appendAttribute(appendable, "fo:margin-bottom", this.marginBottom);
-		util.appendAttribute(appendable, "fo:margin-left", this.marginLeft);
-		util.appendAttribute(appendable, "fo:margin-right", this.marginRight);
+		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/>"); // End of page-layout-properties
 
 		PageStyle.appendFooterHeaderStyle(util, appendable, this.header,
 				"style:header-style");
 		PageStyle.appendFooterHeaderStyle(util, appendable, this.footer,
 				"style:footer-style");
-		/*
-		if( styles.getFooter()==null ) {
-			sbTemp.append("<style:footer-style />");
-		} else {
-			FooterHeader f = styles.getFooter();
-			sbTemp.append("<style:footer-style>");
-			sbTemp.append("<style:header-footer-properties ");
-			sbTemp.append("fo:min-height=\""+f.getMinHeight()+"\" ");
-			sbTemp.append("fo:margin-left=\""+f.getMarginLeft()+"\" ");
-			sbTemp.append("fo:margin-right=\""+f.getMarginRight()+"\" ");
-			sbTemp.append("fo:margin-top=\""+f.getsMarginTop()+"\"/>");
-			sbTemp.append("</style:footer-style>");
-		}*/
 		appendable.append("</style:page-layout>");
 	}
 
@@ -270,20 +246,8 @@ public class PageStyle {
 		return this.header;
 	}
 
-	public String getMarginBottom() {
-		return this.marginBottom;
-	}
-
-	public String getMarginLeft() {
-		return this.marginLeft;
-	}
-
-	public String getMarginRight() {
-		return this.marginRight;
-	}
-
-	public String getMarginTop() {
-		return this.marginTop;
+	public Margins getMargins() {
+		return this.margins;
 	}
 
 	/**

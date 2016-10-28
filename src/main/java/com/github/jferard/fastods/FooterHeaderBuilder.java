@@ -19,32 +19,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-*    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.github.jferard.fastods;
 
 import java.util.List;
 
 import com.github.jferard.fastods.style.FHTextStyle;
-import com.github.jferard.fastods.style.PageStyleBuilder;
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.style.MarginsBuilder;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -81,10 +61,8 @@ abstract class FooterHeaderBuilder {
 	 * The OdsFile where this object belong to.
 	 */
 	protected final FooterHeader.Type footerHeaderType;
-	protected String marginLeft;
-	protected String marginRight;
-	protected String marginTop;
-	protected String marginBottom;
+	protected MarginsBuilder marginsBuilder;
+
 
 	protected String minHeight;
 
@@ -97,10 +75,8 @@ abstract class FooterHeaderBuilder {
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		this.footerHeaderType = footerHeaderType;
 		this.minHeight = "0cm";
-		this.marginLeft = "0cm";
-		this.marginRight = "0cm";
-		this.marginTop = "0cm";
-		this.marginBottom = "0cm";
+		this.marginsBuilder = new MarginsBuilder();
+		this.marginsBuilder.all("0cm");
 	}
 
 	public abstract FooterHeader build();
@@ -194,10 +170,7 @@ abstract class FooterHeaderBuilder {
 	 * @return this for fluent style
 	 */
 	public FooterHeaderBuilder allMargins(final String margin) {
-		this.marginTop(margin);
-		this.marginBottom(margin);
-		this.marginLeft(margin);
-		this.marginRight(margin);
+		this.marginsBuilder.all(margin);
 		return this;
 	}
 	
@@ -211,7 +184,7 @@ abstract class FooterHeaderBuilder {
 	 * @return this for fluent style
 	 */
 	public FooterHeaderBuilder marginBottom(final String margin) {
-		this.marginBottom = margin;
+		this.marginsBuilder.bottom(margin);
 		return this;
 	}
 
@@ -225,7 +198,7 @@ abstract class FooterHeaderBuilder {
 	 * @return this for fluent style
 	 */
 	public FooterHeaderBuilder marginLeft(final String margin) {
-		this.marginLeft = margin;
+		this.marginsBuilder.left(margin);
 		return this;
 	}
 
@@ -240,7 +213,7 @@ abstract class FooterHeaderBuilder {
 	 * @return this for fluent style
 	 */
 	public FooterHeaderBuilder marginRight(final String margin) {
-		this.marginRight = margin;
+		this.marginsBuilder.right(margin);
 		return this;
 	}
 
@@ -255,7 +228,7 @@ abstract class FooterHeaderBuilder {
 	 * @return this for fluent style
 	 */
 	public FooterHeaderBuilder marginTop(final String margin) {
-		this.marginTop = margin;
+		this.marginsBuilder.top(margin);
 		return this;
 	}
 	

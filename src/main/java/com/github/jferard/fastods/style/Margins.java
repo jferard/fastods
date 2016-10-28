@@ -19,53 +19,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.XMLUtil;
 
-/**
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
- *
- * @author Julien Férard
- * @author Martin Schulz
- *
- */
-class SimpleFooterHeader extends FooterHeader {
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private final List<FHParagraph> region;
-
-	/**
-	 * Create a new footer object.
-	 * @param minHeight2 
-	 *
-	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
-	 */
-	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final List<FHParagraph> region, final Margins margins,
-			final String minHeight) {
-		super(footerHeaderType, margins, minHeight);
-		this.region = region;
+public class Margins {
+	private final String top;
+	private final String right;
+	private final String bottom;
+	private final String left;
+	
+	Margins(final String top, final String right, final String bottom, final String left) {
+		this.top = top;
+		this.right = right;
+		this.bottom = bottom;
+		this.left = left;
 	}
 
-	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
-	 *
-	 * @throws IOException
-	 */
-	@Override
-	public void appendXMLToMasterStyle(final XMLUtil util,
+	public String getTop() {
+		return this.top;
+	}
+
+	public String getRight() {
+		return this.right;
+	}
+
+	public String getBottom() {
+		return this.bottom;
+	}
+
+	public String getLeft() {
+		return this.left;
+	}
+	
+	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable,
-				this.region);
+		if (this.top != null)
+			util.appendAttribute(appendable, "fo:margin-top", this.top);
+		
+		if (this.right != null)
+			util.appendAttribute(appendable, "fo:margin-right", this.right);
+
+		if (this.bottom != null)	
+			util.appendAttribute(appendable, "fo:margin-bottom", this.bottom);
+		
+		if (this.left != null)	
+			util.appendAttribute(appendable, "fo:margin-left", this.left);
 	}
 }
