@@ -211,9 +211,9 @@ public class PageStyle {
 		util.appendAttribute(appendable, "fo:margin-right", this.marginRight);
 		appendable.append("/>"); // End of page-layout-properties
 
-		PageStyle.appendFooterHeaderStyle(util, appendable, this.getHeader(),
+		PageStyle.appendFooterHeaderStyle(util, appendable, this.header,
 				"style:header-style");
-		PageStyle.appendFooterHeaderStyle(util, appendable, this.getFooter(),
+		PageStyle.appendFooterHeaderStyle(util, appendable, this.footer,
 				"style:footer-style");
 		/*
 		if( styles.getFooter()==null ) {

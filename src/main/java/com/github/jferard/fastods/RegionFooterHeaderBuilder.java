@@ -59,7 +59,7 @@ class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
 	public FooterHeader build() {
 		return new RegionFooterHeader(this.footerHeaderType, this.centerRegion,
 				this.leftRegion, this.rightRegion, this.marginLeft,
-				this.marginRight, this.marginTop, this.minHeight);
+				this.marginRight, this.marginTop, this.marginBottom, this.minHeight);
 	}
 
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {

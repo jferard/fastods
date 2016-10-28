@@ -104,20 +104,23 @@ public abstract class FooterHeader {
 	protected final String marginTop;
 
 	protected final String minHeight;
+	private String marginBottom;
 
 	/**
 	 * Create a new footer object.
+	 * @param minHeight2 
 	 *
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeader(final FooterHeader.Type footerHeaderType,
 			final String marginLeft, final String marginRight,
-			final String marginTop, final String minHeight) {
+			final String marginTop, final String marginBottom, final String minHeight) {
 		this.footerHeaderType = footerHeaderType;
 		this.marginLeft = marginLeft;
 		this.marginRight = marginRight;
 		this.marginTop = marginTop;
+		this.marginBottom = marginBottom;
 		this.minHeight = minHeight;
 	}
 
@@ -130,6 +133,7 @@ public abstract class FooterHeader {
 		util.appendAttribute(appendable, "fo:margin-left", this.marginLeft);
 		util.appendAttribute(appendable, "fo:margin-right", this.marginRight);
 		util.appendAttribute(appendable, "fo:margin-top", this.marginTop);
+		util.appendAttribute(appendable, "fo:margin-bottom", this.marginBottom);
 		appendable.append("/></style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
 	}
@@ -161,6 +165,13 @@ public abstract class FooterHeader {
 	 */
 	public String getMarginTop() {
 		return this.marginTop;
+	}
+
+	/**
+	 * @return The current bottom margin of the footer/header.
+	 */
+	public String getMarginBottom() {
+		return this.marginBottom;
 	}
 
 	/**

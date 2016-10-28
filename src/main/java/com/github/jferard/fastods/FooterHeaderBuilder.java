@@ -43,6 +43,8 @@ package com.github.jferard.fastods;
 import java.util.List;
 
 import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.PageStyleBuilder;
+import com.github.jferard.fastods.util.FullList;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -58,17 +60,17 @@ abstract class FooterHeaderBuilder {
 	 * not present, create a new List and add it to region. Return the new List.
 	 *
 	 * @param curRegion
-	 * @param paragraph
+	 * @param paragraphIndex
 	 * @return The List with FHText elements.
 	 */
 	protected static FHParagraph checkParagraph(
-			final List<FHParagraph> curRegion, final int paragraph) {
-		FHParagraph styledText = curRegion.get(paragraph);
+			final List<FHParagraph> curRegion, final int paragraphIndex) {
+		FHParagraph styledText = curRegion.get(paragraphIndex);
 
 		// Check if the paragraph already exists and add a List if not
 		if (styledText == null) {
 			styledText = new FHParagraph();
-			curRegion.set(paragraph, styledText);
+			curRegion.set(paragraphIndex, styledText);
 		}
 
 		return styledText;
@@ -82,6 +84,7 @@ abstract class FooterHeaderBuilder {
 	protected String marginLeft;
 	protected String marginRight;
 	protected String marginTop;
+	protected String marginBottom;
 
 	protected String minHeight;
 
@@ -97,6 +100,7 @@ abstract class FooterHeaderBuilder {
 		this.marginLeft = "0cm";
 		this.marginRight = "0cm";
 		this.marginTop = "0cm";
+		this.marginBottom = "0cm";
 	}
 
 	public abstract FooterHeader build();
@@ -165,16 +169,93 @@ abstract class FooterHeaderBuilder {
 	 *            One of : FooterHeader.FLG_REGION_LEFT,
 	 *            FooterHeader.FLG_REGION_CENTER or
 	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param paragraph
+	 * @param paragraphIndex
 	 *            The paragraph number to be used
 	 * @return
 	 */
 	public FooterHeaderBuilder styledText(final FHTextStyle ts,
-			final String text, final int paragraph) {
+			final String text, final int paragraphIndex) {
 		final FHParagraph styledText = FooterHeaderBuilder
-				.checkParagraph(this.curRegion, paragraph);
+				.checkParagraph(this.curRegion, paragraphIndex);
 		final FHText st = new FHText(text, ts);
 		styledText.add(st);
+		return this;
+	}
+	
+	/**
+	 * Set the margin at the top,bottom,left and right. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 *
+	 * @param margin
+	 * @return this for fluent style
+	 */
+	public FooterHeaderBuilder allMargins(final String margin) {
+		this.marginTop(margin);
+		this.marginBottom(margin);
+		this.marginLeft(margin);
+		this.marginRight(margin);
+		return this;
+	}
+	
+	/**
+	 * Set the margin at the bottom. margin is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 *
+	 * @param margin
+	 * @return this for fluent style
+	 */
+	public FooterHeaderBuilder marginBottom(final String margin) {
+		this.marginBottom = margin;
+		return this;
+	}
+
+	/**
+	 * Set the margin at the left. margin is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 *
+	 * @param margin
+	 * @return this for fluent style
+	 */
+	public FooterHeaderBuilder marginLeft(final String margin) {
+		this.marginLeft = margin;
+		return this;
+	}
+
+	/**
+	 * Set the margin at the right. margin is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 *
+	 * @param margin
+	 * @return this for fluent style
+	 */
+	public FooterHeaderBuilder marginRight(final String margin) {
+		this.marginRight = margin;
+		return this;
+	}
+
+	/**
+	 * Set the margin at the top. margin is a length value expressed as a number
+	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch),<br>
+	 * and pt (points; 72points equal one inch).<br>
+	 *
+	 * @param margin
+	 * @return this for fluent style
+	 */
+	public FooterHeaderBuilder marginTop(final String margin) {
+		this.marginTop = margin;
 		return this;
 	}
 }
