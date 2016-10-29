@@ -203,7 +203,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		final OdsFile file = OdsFile.create("7columns.ods");
 		final Table table = file.addTable("test", 50, 5);
 		final XMLUtil xmlUtil = FastOds.getXMLUtil();
-		final TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")
+		final TableCellStyle tcls = TableCellStyle.builder("rs-head")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		final DataWrapper data = new ResultSetDataWrapper(logger, rs, tcls,
 				100);

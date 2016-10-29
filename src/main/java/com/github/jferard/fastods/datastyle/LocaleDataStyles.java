@@ -41,28 +41,28 @@ public class LocaleDataStyles implements DataStyles {
 
 		final BooleanStyle booleanDataStyle = builderFactory
 				.booleanStyleBuilder("boolean-data").build();
-		this.booleanCellStyle = TableCellStyle.builder(util, "boolean-style")
+		this.booleanCellStyle = TableCellStyle.builder("boolean-style")
 				.dataStyle(booleanDataStyle).build();
 		final CurrencyStyle currencyDataStyle = builderFactory
 				.currencyStyleBuilder("currency-data").build();
-		this.currencyCellStyle = TableCellStyle.builder(util, "currency-style")
+		this.currencyCellStyle = TableCellStyle.builder("currency-style")
 				.dataStyle(currencyDataStyle).build();
 		final DateStyle dateDataStyle = builderFactory
 				.dateStyleBuilder("date-data").build();
-		this.dateCellStyle = TableCellStyle.builder(util, "date-style")
+		this.dateCellStyle = TableCellStyle.builder("date-style")
 				.dataStyle(dateDataStyle).build();
 		final FloatStyle numberDataStyle = builderFactory
 				.floatStyleBuilder("float-data").build();
-		this.numberCellStyle = TableCellStyle.builder(util, "number-style")
+		this.numberCellStyle = TableCellStyle.builder("number-style")
 				.dataStyle(numberDataStyle).build();
 		final PercentageStyle percentageDataStyle = builderFactory
 				.percentageStyleBuilder("percentage-data").build();
 		this.percentageCellStyle = TableCellStyle
-				.builder(util, "percentage-style")
+				.builder("percentage-style")
 				.dataStyle(percentageDataStyle).build();
 		final TimeStyle timeDataStyle = builderFactory
 				.timeStyleBuilder("time-data").build();
-		this.timeCellStyle = TableCellStyle.builder(util, "time-style")
+		this.timeCellStyle = TableCellStyle.builder("time-style")
 				.dataStyle(timeDataStyle).build();
 	}
 

@@ -22,7 +22,6 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
-import java.util.EnumMap;
 import java.util.Map;
 
 import com.github.jferard.fastods.Color;
@@ -60,19 +59,18 @@ public class TableCellStyle implements StyleTag {
 
 	private static TableCellStyle defaultCellStyle;
 
-	public static TableCellStyleBuilder builder(final XMLUtil util,
-			final String name) {
-		return new TableCellStyleBuilder(util, name);
+	public static TableCellStyleBuilder builder(final String name) {
+		return new TableCellStyleBuilder(name);
 	}
 
-	public static TableCellStyle getDefaultCellStyle(final XMLUtil util) {
+	public static TableCellStyle getDefaultCellStyle() {
 		if (TableCellStyle.defaultCellStyle == null)
 			TableCellStyle.defaultCellStyle = TableCellStyle
-					.builder(util, "Default")
+					.builder("Default")
 					.textAlign(TableCellStyle.Align.LEFT)
 					.verticalAlign(TableCellStyle.VerticalAlign.TOP)
 					.fontWrap(false).backgroundColor(Color.WHITE)
-					.addMargin("0cm", MarginAttribute.Position.LEFT)
+					.allMargins("0cm")
 					.parentCellStyle(null).build();
 
 		return TableCellStyle.defaultCellStyle;
@@ -81,7 +79,7 @@ public class TableCellStyle implements StyleTag {
 	private final String backgroundColor;
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	private DataStyle dataStyle;
-	private final Map<MarginAttribute.Position, MarginAttribute> marginByPosition;
+	private final Margins margins;
 	private final String name;
 	// true
 	private final String parentCellStyleName;
@@ -95,7 +93,6 @@ public class TableCellStyle implements StyleTag {
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 *
 	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -105,15 +102,14 @@ public class TableCellStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableCellStyle(final XMLUtil util, final String name,
-			final DataStyle dataStyle, final String backgroundColor,
-			final FHTextStyle ts, final Align textAlign,
-			final VerticalAlign verticalAlign, final boolean wrap,
-			final String parentCellStyleName,
+	TableCellStyle(final String name, final DataStyle dataStyle,
+			final String backgroundColor, final FHTextStyle ts,
+			final Align textAlign, final VerticalAlign verticalAlign,
+			final boolean wrap, final String parentCellStyleName,
 			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition,
-			final EnumMap<MarginAttribute.Position, MarginAttribute> marginByPosition) {
-		this.marginByPosition = marginByPosition;
-		this.name = util.escapeXMLAttribute(name);
+			final Margins margins) {
+		this.margins = margins;
+		this.name = name;
 		this.dataStyle = dataStyle;
 		this.backgroundColor = backgroundColor;
 		this.textStyle = ts;
@@ -182,10 +178,7 @@ public class TableCellStyle implements StyleTag {
 			util.appendEAttribute(appendable, "fo:text-align",
 					this.textAlign.attrValue);
 
-		for (final MarginAttribute ms : this.marginByPosition.values()) {
-			ms.appendXMLToTableCellStyle(util, appendable);
-		}
-
+		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/></style:style>");
 	}
 

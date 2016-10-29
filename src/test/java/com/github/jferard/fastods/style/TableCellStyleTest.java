@@ -26,7 +26,9 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import com.github.jferard.fastods.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -39,33 +41,33 @@ public class TableCellStyleTest {
 	}
 
 	@Test
-	public final void testAllMargins() throws IOException {
-		TableCellStyle tcs = TableCellStyle.builder(this.util, "tcs")
-				.addMargin("10pt", MarginAttribute.Position.ALL).build();
+	public final void testAllMargins() throws IOException, SAXException {
+		TableCellStyle tcs = TableCellStyle.builder("tcs")
+				.allMargins("10pt").build();
 		StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertEquals(
+		Assert.assertTrue(DomTester.equals(
 				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
 						+ "</style:style>",
-				sb.toString());
+				sb.toString()));
 	}
 
 	@Test
-	public final void testMargins() throws IOException {
-		TableCellStyle tcs = TableCellStyle.builder(this.util, "tcs")
-				.addMargin("10pt", MarginAttribute.Position.TOP)
-				.addMargin("11pt", MarginAttribute.Position.RIGHT)
-				.addMargin("12pt", MarginAttribute.Position.BOTTOM)
-				.addMargin("13pt", MarginAttribute.Position.LEFT).build();
+	public final void testMargins() throws IOException, SAXException {
+		TableCellStyle tcs = TableCellStyle.builder("tcs")
+				.marginTop("10pt")
+				.marginRight("11pt")
+				.marginBottom("12pt")
+				.marginLeft("13pt").build();
 		StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertEquals(
+		Assert.assertTrue(DomTester.equals(
 				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
 						+ "</style:style>",
-				sb.toString());
+				sb.toString()));
 	}
 }

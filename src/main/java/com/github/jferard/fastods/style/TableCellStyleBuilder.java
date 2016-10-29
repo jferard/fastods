@@ -25,8 +25,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.MarginAttribute.Position;
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard
@@ -36,21 +34,19 @@ public class TableCellStyleBuilder {
 	private String backgroundColor;
 	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	private DataStyle dataStyle;
-	private final EnumMap<Position, MarginAttribute> marginByPosition;
 	private final String name;
 	// true
 	private String parentCellStyle;
 	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
 	private final FHTextStyleBuilder tsBuilder;
-	private final XMLUtil util;
 	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
 	// 'top'
 	private boolean wrap; // No line wrap when false, line wrap when
+	private MarginsBuilder marginsBuilder;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 *
 	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -60,18 +56,16 @@ public class TableCellStyleBuilder {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	public TableCellStyleBuilder(final XMLUtil util, final String name) {
-		this.util = util;
+	public TableCellStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 
-		this.name = util.escapeXMLAttribute(name);
+		this.name = name;
 		this.parentCellStyle = "Default";
 		this.tsBuilder = FHTextStyle.builder("fh" + name);
 		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
 				BorderAttribute.Position.class);
-		this.marginByPosition = new EnumMap<MarginAttribute.Position, MarginAttribute>(
-				MarginAttribute.Position.class);
+		this.marginsBuilder = new MarginsBuilder();
 	}
 
 	/**
@@ -112,22 +106,65 @@ public class TableCellStyleBuilder {
 	}
 
 	/**
+	 * Add a margin to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder allMargins(final String size) {
+		this.marginsBuilder.all(size);
+		return this;
+	}
+
+	/**
 	 * Add a border style to this cell.
 	 *
 	 * @param size
 	 *            The size of the margin '0cm'
-	 * @param position
-	 *            - The position of the line in this cell, e.g.
-	 *            BorderAttribute.POSITION_TOP
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder addMargin(final String size,
-			final MarginAttribute.Position position) {
-		this.marginByPosition.put(position,
-				new MarginAttribute(size, position));
+	public TableCellStyleBuilder marginTop(final String size) {
+		this.marginsBuilder.top(size);
+		return this;
+	}
+	
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginRight(final String size) {
+		this.marginsBuilder.right(size);
 		return this;
 	}
 
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginBottom(final String size) {
+		this.marginsBuilder.bottom(size);
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginLeft(final String size) {
+		this.marginsBuilder.left(size);
+		return this;
+	}
+	
 	/**
 	 * Set the cell background color to color.<br>
 	 * The TableFamilyStyle must be of a format of
@@ -147,10 +184,10 @@ public class TableCellStyleBuilder {
 		if (this.name == null)
 			throw new IllegalStateException();
 
-		return new TableCellStyle(this.util, this.name, this.dataStyle,
-				this.backgroundColor, this.tsBuilder.build(), this.textAlign,
-				this.verticalAlign, this.wrap, this.parentCellStyle,
-				this.borderByPosition, this.marginByPosition);
+		return new TableCellStyle(this.name, this.dataStyle, this.backgroundColor,
+				this.tsBuilder.build(), this.textAlign, this.verticalAlign,
+				this.wrap, this.parentCellStyle, this.borderByPosition,
+				this.marginsBuilder.build());
 
 	}
 

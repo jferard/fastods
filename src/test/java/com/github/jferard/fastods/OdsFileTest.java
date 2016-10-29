@@ -56,26 +56,26 @@ public class OdsFileTest {
 		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
 //		trs.addToFile(file);
-		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "cc")
+		TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 //		tcls.addToFile(file);
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
-		TableCellStyle tcls2 = TableCellStyle.builder(xmlUtil, "dd").fontColor("#ff0000")
+		TableCellStyle tcls2 = TableCellStyle.builder("dd").fontColor("#ff0000")
 				.build();
 //		tcls2.addToFile(file);
-		TableColumnStyle tcns = TableColumnStyle.builder(xmlUtil, "ccs")
+		TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
 //		tcns.addToFile(file);
 		table.setColumnStyle(0, tcns);
 
-		final TableCellStyle tcs0 = TableCellStyle.builder(xmlUtil, "tcs0")
+		final TableCellStyle tcs0 = TableCellStyle.builder("tcs0")
 				.backgroundColor("#0000ff").build();
-		final TableCellStyle tcs1 = TableCellStyle.builder(xmlUtil, "tcs1")
+		final TableCellStyle tcs1 = TableCellStyle.builder("tcs1")
 				.backgroundColor("#00FF00").build();
-		final TableCellStyle tcs2 = TableCellStyle.builder(xmlUtil, "tcs2")
+		final TableCellStyle tcs2 = TableCellStyle.builder("tcs2")
 				.fontWeightBold().build();
-		final TableCellStyle tcs3 = TableCellStyle.builder(xmlUtil, "tcs3")
+		final TableCellStyle tcs3 = TableCellStyle.builder("tcs3")
 				.fontStyleItalic().build();
 		
 		row = table.getRow(0);

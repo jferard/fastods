@@ -140,7 +140,7 @@ public class OdsFile {
 		TableStyle.DEFAULT_TABLE_STYLE.addToFile(this);
 		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToFile(this);
 		TableColumnStyle.getDefaultColumnStyle(xmlUtil).addToFile(this);
-		TableCellStyle.getDefaultCellStyle(xmlUtil).addToFile(this);
+		TableCellStyle.getDefaultCellStyle().addToFile(this);
 		PageStyle.DEFAULT_PAGE_STYLE.addToFile(this);
 	}
 
