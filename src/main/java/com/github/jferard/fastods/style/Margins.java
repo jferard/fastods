@@ -30,8 +30,10 @@ public class Margins {
 	private final String right;
 	private final String bottom;
 	private final String left;
+	private String all;
 	
-	Margins(final String top, final String right, final String bottom, final String left) {
+	Margins(final String all, final String top, final String right, final String bottom, final String left) {
+		this.all = all;
 		this.top = top;
 		this.right = right;
 		this.bottom = bottom;
@@ -40,6 +42,10 @@ public class Margins {
 
 	public String getTop() {
 		return this.top;
+	}
+
+	public String getAll() {
+		return this.all;
 	}
 
 	public String getRight() {
@@ -56,6 +62,9 @@ public class Margins {
 	
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
+		if (this.all != null)
+			util.appendAttribute(appendable, "fo:margin", this.all);
+
 		if (this.top != null)
 			util.appendAttribute(appendable, "fo:margin-top", this.top);
 		

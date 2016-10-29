@@ -30,7 +30,7 @@ public class FooterHeaderTest {
 		StringBuilder sb = new StringBuilder();
 		footer.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:footer-style>"
-				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:footer-style>", sb.toString()));
 	}
 
@@ -67,7 +67,7 @@ public class FooterHeaderTest {
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:header-style>"
-				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:header-style>", sb.toString()));
 	}
 
@@ -96,7 +96,7 @@ public class FooterHeaderTest {
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:header-style>"
-				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin-left=\"10pt\" fo:margin-right=\"10pt\" fo:margin-top=\"10pt\" fo:margin-bottom=\"10pt\"/>"
+				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"10pt\"/>"
 				+ "</style:header-style>", sb.toString()));
 	}
 }

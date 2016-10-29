@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 public class MarginsBuilder {
+	private String all;
 	private String top;
 	private String right;
 	private String bottom;
@@ -48,15 +49,12 @@ public class MarginsBuilder {
 	}
 	
 	public MarginsBuilder all(String size) {
-		this.top = size;
-		this.right = size;
-		this.bottom = size;
-		this.left = size;
+		this.all = size;
 		return this;
 	}
 	
 	
 	public Margins build() {
-		return new Margins(this.top, this.right, this.bottom, this.left);
+		return new Margins(this.all, this.top, this.right, this.bottom, this.left);
 	}
 }

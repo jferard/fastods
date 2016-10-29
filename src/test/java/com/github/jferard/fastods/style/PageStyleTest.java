@@ -25,7 +25,7 @@ public class PageStyleTest {
 
 	@Test(expected = IllegalStateException.class)
 	public final void testEmpty() {
-		PageStyle pageStyle = PageStyle.builder(null).build();
+		PageStyle.builder(null).build();
 	}
 
 	@Test
@@ -36,11 +36,11 @@ public class PageStyleTest {
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals(
 				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin-top=\"1.5cm\" fo:margin-bottom=\"1.5cm\" fo:margin-left=\"1.5cm\" fo:margin-right=\"1.5cm\"/>"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
 						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sb.toString()));
 	}
@@ -70,11 +70,11 @@ public class PageStyleTest {
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals(
 				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin-top=\"10pt\" fo:margin-bottom=\"10pt\" fo:margin-left=\"10pt\" fo:margin-right=\"10pt\"/>"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"10pt\"/>"
 						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sb.toString()));
 	}
@@ -87,11 +87,11 @@ public class PageStyleTest {
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals(
 				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"10cm\" fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin-top=\"1.5cm\" fo:margin-bottom=\"1.5cm\" fo:margin-left=\"1.5cm\" fo:margin-right=\"1.5cm\"/>"
+						+ "<style:page-layout-properties fo:page-width=\"10cm\" fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
 						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin-left=\"0cm\" fo:margin-right=\"0cm\" fo:margin-top=\"0cm\" fo:margin-bottom=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sb.toString()));
 	}
@@ -110,7 +110,7 @@ public class PageStyleTest {
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(
 				DomTester.equals("<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin-top=\"1.5cm\" fo:margin-bottom=\"1.5cm\" fo:margin-left=\"1.5cm\" fo:margin-right=\"1.5cm\"/>"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
 						+ "</style:page-layout>", sb.toString()));
 		PowerMock.verifyAll();
 	}
