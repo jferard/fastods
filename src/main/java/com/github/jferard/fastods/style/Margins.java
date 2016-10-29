@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Margins {
@@ -31,8 +32,9 @@ public class Margins {
 	private final String bottom;
 	private final String left;
 	private String all;
-	
-	Margins(final String all, final String top, final String right, final String bottom, final String left) {
+
+	Margins(final String all, final String top, final String right,
+			final String bottom, final String left) {
 		this.all = all;
 		this.top = top;
 		this.right = right;
@@ -59,22 +61,37 @@ public class Margins {
 	public String getLeft() {
 		return this.left;
 	}
-	
+
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.all != null)
+		if (this.all == null) {
+			if (this.top != null)
+				util.appendAttribute(appendable, "fo:margin-top", this.top);
+
+			if (this.right != null)
+				util.appendAttribute(appendable, "fo:margin-right", this.right);
+
+			if (this.bottom != null)
+				util.appendAttribute(appendable, "fo:margin-bottom",
+						this.bottom);
+
+			if (this.left != null)
+				util.appendAttribute(appendable, "fo:margin-left", this.left);
+		} else { // this.all != null
 			util.appendAttribute(appendable, "fo:margin", this.all);
+			if (this.top != null && !this.top.equals(this.all))
+				util.appendAttribute(appendable, "fo:margin-top", this.top);
 
-		if (this.top != null)
-			util.appendAttribute(appendable, "fo:margin-top", this.top);
-		
-		if (this.right != null)
-			util.appendAttribute(appendable, "fo:margin-right", this.right);
+			if (this.right != null && !this.right.equals(this.all))
+				util.appendAttribute(appendable, "fo:margin-right", this.right);
 
-		if (this.bottom != null)	
-			util.appendAttribute(appendable, "fo:margin-bottom", this.bottom);
-		
-		if (this.left != null)	
-			util.appendAttribute(appendable, "fo:margin-left", this.left);
+			if (this.bottom != null && !this.bottom.equals(this.all))
+				util.appendAttribute(appendable, "fo:margin-bottom",
+						this.bottom);
+
+			if (this.left != null && !this.left.equals(this.all))
+				util.appendAttribute(appendable, "fo:margin-left", this.left);
+		}
+
 	}
 }

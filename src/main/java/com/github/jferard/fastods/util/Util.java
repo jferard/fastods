@@ -113,6 +113,14 @@ public class Util {
 			return o1.equals(o2);
 		}
 	}
+	
+	public boolean different(final Object o1, final Object o2) {
+		if (o1 == null) {
+			return o2 != null;
+		} else {
+			return !o1.equals(o2);
+		}
+	}
 
 	/**
 	 * Convert a cell position string like B3 to the column number.
