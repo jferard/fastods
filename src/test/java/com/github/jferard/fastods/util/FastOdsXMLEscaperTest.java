@@ -91,13 +91,25 @@ public class FastOdsXMLEscaperTest {
 	@Test
 	public final void testAttrOther() {
 		String s = this.escaper.escapeXMLAttribute("\t\n\r\b");
-		Assert.assertEquals("&#x9;&#xA;&#xD;\uFFFD", s);
+		Assert.assertEquals("&#x9;&#xA;&#xD;\\uFFFD", s);
 	}
 
 	@Test
 	public final void testContentOther() {
 		String s = this.escaper.escapeXMLContent("\t\n\r\b");
-		Assert.assertEquals("\t\n\r\uFFFD", s);
+		Assert.assertEquals("\t\n\r\\uFFFD", s);
+	}
+	
+	@Test
+	public final void testDifferentCaches() {
+		String s = this.escaper.escapeXMLAttribute("\t\n\r\b");
+		Assert.assertEquals("&#x9;&#xA;&#xD;\\uFFFD", s);
+		s = this.escaper.escapeXMLAttribute("\t\n\r\b");
+		Assert.assertEquals("&#x9;&#xA;&#xD;\\uFFFD", s);
+		s = this.escaper.escapeXMLContent("\t\n\r\b");
+		Assert.assertEquals("\t\n\r\\uFFFD", s);
+		s = this.escaper.escapeXMLContent("\t\n\r\b");
+		Assert.assertEquals("\t\n\r\\uFFFD", s);
 	}
 
 	@Test
