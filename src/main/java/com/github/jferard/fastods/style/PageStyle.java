@@ -97,6 +97,7 @@ public class PageStyle {
 
 	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
 	public static final PageStyle DEFAULT_PAGE_STYLE;
+	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
 
 	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
 
@@ -117,6 +118,8 @@ public class PageStyle {
 
 	static {
 		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
+		DEFAULT_MASTER_PAGE_STYLE = PageStyle.builder(DEFAULT_MASTER_PAGE)
+				.build();
 	}
 
 	public static PageStyleBuilder builder(final String name) {
@@ -137,7 +140,7 @@ public class PageStyle {
 
 	private final FooterHeader header;
 	private final Margins margins;
-	
+
 	private final String name;
 	private final String numFormat;
 	private final String pageHeight;
@@ -157,10 +160,11 @@ public class PageStyle {
 	 * @param header2
 	 * @param footer
 	 */
-	public PageStyle(final String name, final Margins margins, final String pageWidth,
-			final String pageHeight, final String numFormat,
-			final String backgroundColor, final FooterHeader footer,
-			final FooterHeader header, final PrintOrientation printOrientation,
+	public PageStyle(final String name, final Margins margins,
+			final String pageWidth, final String pageHeight,
+			final String numFormat, final String backgroundColor,
+			final FooterHeader footer, final FooterHeader header,
+			final PrintOrientation printOrientation,
 			final PaperFormat paperFormat, final WritingMode writingMode) {
 		this.name = name;
 		this.margins = margins;

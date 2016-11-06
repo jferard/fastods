@@ -63,15 +63,15 @@ public class TableColumnStyle implements StyleTag {
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
 	 *            STYLE_TABLECELL
-	 * @param styleName
+	 * @param name
 	 *            A unique name for this style
 	 * @param defaultCellStyle
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableColumnStyle(final String styleName, final String columnWidth,
+	TableColumnStyle(final String name, final String columnWidth,
 			final TableCellStyle defaultCellStyle) {
-		this.name = styleName;
+		this.name = name;
 		this.columnWidth = columnWidth;
 		this.defaultCellStyle = defaultCellStyle;
 	}

@@ -42,6 +42,9 @@ public class TableColumnStyleBuilder {
 	 *            The OdsFile to add this style to
 	 */
 	public TableColumnStyleBuilder(final String name) {
+		if (name == null)
+			throw new IllegalArgumentException();
+		
 		this.name = name;
 		this.columnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle();

@@ -94,4 +94,32 @@ public class Margins {
 		}
 
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Margins))
+			return false;
+
+		Margins other = (Margins) o;
+		return (this.top == null ? other.top == null
+				: this.top.equals(other.top))
+				&& (this.right == null ? other.right == null
+						: this.right.equals(other.right))
+				&& (this.bottom == null ? other.bottom == null
+						: this.bottom.equals(other.bottom))
+				&& (this.left == null ? other.left == null
+						: this.left.equals(other.left))
+				&& (this.all == null ? other.all == null
+						: this.all.equals(other.all));
+	}
+
+	@Override
+	public String toString() {
+		return "Margins[top=" + this.top + ", right=" + this.right + ", bottom="
+				+ this.bottom + ", left=" + this.left + ", all=" + this.all
+				+ "]";
+
+	}
 }
