@@ -31,7 +31,7 @@ public interface TableCellWalker extends TableCell {
 
 	void next();
 
-	void nextCell();
+	void lastCell();
 
 	void previous();
 

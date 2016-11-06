@@ -68,7 +68,7 @@ public class ProfileIT {
 			final HeavyTableRow row = table.nextRow();
 			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < COL_COUNT; x++) {
-				walker.nextCell();
+				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}

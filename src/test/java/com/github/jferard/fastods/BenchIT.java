@@ -79,7 +79,7 @@ public class BenchIT {
 			final HeavyTableRow row = table.nextRow();
 			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < colCount; x++) {
-				walker.nextCell();
+				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}
@@ -125,7 +125,7 @@ public class BenchIT {
 			final HeavyTableRow row = table.nextRow();
 			TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 3*COL_COUNT; x++) {
-				walker.nextCell();
+				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}

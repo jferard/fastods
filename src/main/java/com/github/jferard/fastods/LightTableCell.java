@@ -113,7 +113,7 @@ public class LightTableCell implements TableCellWalker {
 
 	@Override
 	public boolean hasPrevious() {
-		return this.i > 0;
+		return this.i > 0 && this.i <= this.row.getColumnCount();
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void nextCell() {
+	public void lastCell() {
 		this.i = this.row.getColumnCount();
 	}
 

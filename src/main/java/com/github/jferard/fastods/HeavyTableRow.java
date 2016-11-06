@@ -251,7 +251,7 @@ public class HeavyTableRow {
 	 * @throws FastOdsException
 	 */
 	public void setCellMerge(final int col, final int rowMerge,
-			final int columnMerge) throws FastOdsException {
+			final int columnMerge) {
 		this.rowsSpanned.set(col, rowMerge);
 		this.columnsSpanned.set(col, columnMerge);
 	}

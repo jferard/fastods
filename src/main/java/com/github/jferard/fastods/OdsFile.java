@@ -79,6 +79,10 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
+/**
+ * @author Julien
+ *
+ */
 public class OdsFile {
 	/**
 	 * 512 k of buffer before sending data to OutputStreamWriter.
@@ -298,9 +302,13 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream output) {
-		this.settingsEntry.setTables(this.contentEntry.getTables());
 		final ZipOutputStream zipOut = new ZipOutputStream(output);
 		zipOut.setLevel(Deflater.BEST_SPEED);
+		return save(zipOut);
+	}
+
+	protected boolean save(final ZipOutputStream zipOut) {
+		this.settingsEntry.setTables(this.contentEntry.getTables());
 		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
 
 		try {
