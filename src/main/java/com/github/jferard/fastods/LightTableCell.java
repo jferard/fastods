@@ -226,4 +226,14 @@ public class LightTableCell implements TableCellWalker {
 			throw new IndexOutOfBoundsException();
 		this.i = i;
 	}
+
+	@Override
+	public String getTooltip() {
+		return this.row.getTooltip(this.i);
+	}
+
+	@Override
+	public void setTooltip(String tooltip) {
+		this.row.setTooltip(this.i, tooltip);
+	}
 }

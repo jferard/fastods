@@ -110,7 +110,8 @@ public class OdsFileTest {
 					case 0:
 						walker.setBooleanValue(true); break;
 					case 1:
-						walker.setCurrencyValue(150.5, "EUR"); break;
+						walker.setCurrencyValue(150.5, "EUR"); 
+						walker.setTooltip("That's a tooltip !"); break;
 					case 2:
 						walker.setDateValue(Calendar.getInstance());
 //						final DateStyle build0 = DateStyle.builder("trgfgbf").build();

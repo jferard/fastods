@@ -138,6 +138,11 @@ public interface TableCell {
 	 */
 	String getTimeValue();
 
+	/**
+	 * @return the tooltip text or null if no tooltip
+	 */
+	String getTooltip();
+	
 	Type getValueType();
 
 	/**
@@ -257,5 +262,11 @@ public interface TableCell {
 	void setStyle(TableCellStyle style);
 
 	void setTimeValue(long timeInMillis);
-
+	
+	
+	/**
+	 * Add a tooltip to the cell
+	 * @param tooltip the text of the tooltip
+	 */
+	void setTooltip(String tooltip);
 }

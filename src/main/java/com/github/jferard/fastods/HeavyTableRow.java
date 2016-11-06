@@ -74,6 +74,7 @@ public class HeavyTableRow {
 	private final List<TableCell.Type> types;
 	private final Util util;
 	private final List<String> values;
+	private final List<String> tooltips;
 	private final XMLUtil xmlUtil;
 
 	HeavyTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
@@ -87,6 +88,7 @@ public class HeavyTableRow {
 		this.columnCapacity = columnCapacity;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
 		this.values = FullList.newListWithCapacity(columnCapacity);
+		this.tooltips = FullList.newListWithCapacity(columnCapacity);
 		this.styles = FullList.newListWithCapacity(columnCapacity);
 		this.types = FullList.newListWithCapacity(columnCapacity);
 	}
@@ -131,6 +133,7 @@ public class HeavyTableRow {
 			final boolean hasSpans) throws IOException {
 		final TableCellStyle style = this.styles.get(i);
 		final TableCell.Type valueType = this.types.get(i);
+		final String tooltip = this.tooltips.get(i);
 
 		appendable.append("<table:table-cell");
 
@@ -164,14 +167,11 @@ public class HeavyTableRow {
 			}
 		}
 
-		// if (this.text == null)
-		appendable.append("/>");
-		// else {
-		// appendable.append("><text:p>").append(this.text)
-		// .append("</text:p>");
-		// appendable.append("</table:table-cell>");
-		// }
-
+		if (tooltip == null) {
+			appendable.append("/>");
+		} else {
+			appendable.append("><office:annotation><text:p>").append(tooltip).append("</text:p></office:annotation></table:table-cell>");
+		}
 	}
 
 	public String getBooleanValue(final int i) {
@@ -506,5 +506,13 @@ public class HeavyTableRow {
 			util.appendEAttribute(appendable, "table:default-cell-style-name",
 					this.defaultCellStyle.getName());
 		appendable.append(">");
+	}
+
+	public String getTooltip(int i) {
+		return this.tooltips.get(i);
+	}
+
+	public void setTooltip(int i, String tooltip) {
+		this.tooltips.set(i, tooltip);
 	}
 }
