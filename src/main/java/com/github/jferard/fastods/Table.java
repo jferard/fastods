@@ -67,7 +67,7 @@ public class Table implements NamedObject {
 	private final ConfigItem horizontalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
 	private String name;
-	private final OdsFile odsFile;
+	private final ContentEntry contentEntry;
 	private final ConfigItem pageViewZoomValue;
 	private final ConfigItem positionBottom;
 	private final ConfigItem positionLeft;
@@ -85,11 +85,14 @@ public class Table implements NamedObject {
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
+	private StylesEntry stylesEntry;
 
-	Table(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
-			final DataStyles format, final String name, final int rowCapacity,
+	Table(final ContentEntry contentEntry, StylesEntry stylesEntry,
+			final XMLUtil xmlUtil, final Util util, final DataStyles format,
+			final String name, final int rowCapacity,
 			final int columnCapacity) {
-		this.odsFile = odsFile;
+		this.contentEntry = contentEntry;
+		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.util = util;
 		this.format = format;
@@ -127,26 +130,6 @@ public class Table implements NamedObject {
 		data.addToTable(this);
 	}
 
-	// /**
-	// * Get a OldHeavyTableCell, if no OldHeavyTableCell was present at this
-	// row,col, create a
-	// * new one with a default of OldHeavyTableCell.STYLE_STRING and a content of
-	// "".
-	// *
-	// * @param row
-	// * The row
-	// * @param col
-	// * The column
-	// * @return The OldHeavyTableCell for this position, maybe a new
-	// OldHeavyTableCell
-	// * @throws FastOdsException
-	// */
-	// public OldHeavyTableCell getCell(final int row, final int col)
-	// throws FastOdsException {
-	// final HeavyTableRow tr = this.getRow(row);
-	// return tr.getCell(col);
-	// }
-
 	public List<TableColumnStyle> getColumnStyles() {
 		return this.columnStyles;
 	}
@@ -169,8 +152,9 @@ public class Table implements NamedObject {
 		Table.checkRow(row);
 		HeavyTableRow tr = this.tableRows.get(row);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.odsFile, this.util, this.xmlUtil,
-					this.format, row, this.columnCapacity);
+			tr = new HeavyTableRow(this.contentEntry, this.stylesEntry,
+					this.util, this.xmlUtil, this.format, row,
+					this.columnCapacity);
 			this.tableRows.set(row, tr);
 		}
 		return tr;
@@ -196,8 +180,9 @@ public class Table implements NamedObject {
 
 	public HeavyTableRow nextRow() {
 		final int row = this.tableRows.size();
-		final HeavyTableRow tr = new HeavyTableRow(this.odsFile, this.util,
-				this.xmlUtil, this.format, row, this.columnCapacity);
+		final HeavyTableRow tr = new HeavyTableRow(this.contentEntry,
+				this.stylesEntry, this.util, this.xmlUtil, this.format, row,
+				this.columnCapacity);
 		this.tableRows.add(tr);
 		return tr;
 	}
@@ -216,7 +201,7 @@ public class Table implements NamedObject {
 	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
 		Table.checkCol(col);
-		ts.addToFile(this.odsFile);
+		ts.addToContent(this.contentEntry);
 		this.columnStyles.set(col, ts);
 	}
 

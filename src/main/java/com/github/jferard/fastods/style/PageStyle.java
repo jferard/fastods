@@ -24,6 +24,7 @@ package com.github.jferard.fastods.style;
 import java.io.IOException;
 
 import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.OdsEntries;
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -179,8 +180,8 @@ public class PageStyle {
 		this.writingMode = writingMode;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addPageStyle(this);
+	public void addToEntries(final OdsEntries odsEntries) {
+		odsEntries.addPageStyle(this);
 	}
 
 	/**

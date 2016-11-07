@@ -23,7 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.ContentEntry;
+import com.github.jferard.fastods.OdsEntries;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -76,8 +77,8 @@ public class TableColumnStyle implements StyleTag {
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addStyleTag(this);
+	public void addToEntries(final OdsEntries odsEntries) {
+		odsEntries.addStyleTag(this);
 	}
 
 	/**
@@ -141,6 +142,10 @@ public class TableColumnStyle implements StyleTag {
 		result = prime * result
 				+ (this.name == null ? 0 : this.name.hashCode());
 		return result;
+	}
+
+	public void addToContent(ContentEntry contentEntry) {
+		contentEntry.addStyleTag(this);
 	}
 
 }

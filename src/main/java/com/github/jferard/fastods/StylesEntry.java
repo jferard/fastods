@@ -60,10 +60,8 @@ public class StylesEntry implements OdsEntry {
 	private final Map<String, FHTextStyle> textStyles;
 
 	/**
-	 * @param odsFile
-	 *            - The OdsFile where the styles belong to
 	 */
-	public StylesEntry(final OdsFile odsFile) {
+	public StylesEntry() {
 		this.dataStyles = new HashMap<String, DataStyle>();
 		this.pageStyles = new HashMap<String, PageStyle>();
 		this.textStyles = new HashMap<String, FHTextStyle>();

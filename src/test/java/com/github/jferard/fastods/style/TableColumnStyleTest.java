@@ -9,7 +9,7 @@ import org.powermock.api.easymock.PowerMock;
 import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.OdsEntries;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -24,12 +24,13 @@ public class TableColumnStyleTest {
 	@Test
 	public final void testAddEmptyToFile() {
 		TableColumnStyle tcs = TableColumnStyle.builder("test").build();
-		OdsFile f = PowerMock.createMock(OdsFile.class);
+		OdsEntries entries = PowerMock.createMock(OdsEntries.class);
+		final StyleTag styleTag = tcs;
 
-		f.addStyleTag(tcs);
+		entries.addStyleTag(styleTag);
 		PowerMock.replayAll();
 
-		tcs.addToFile(f);
+		tcs.addToEntries(entries);
 
 		PowerMock.verifyAll();
 	}

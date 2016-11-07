@@ -49,8 +49,7 @@ public class OdsFile2Test {
 
 		OdsFile file = OdsFile.create("5columns.ods");
 		final Table table = file.addTable("test", 50, 5);
-		FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
-		XMLUtil xmlUtil = new XMLUtil(xmlEscaper);
+		XMLUtil xmlUtil = XMLUtil.create();
 		
 		HeavyTableRow row = table.getRow(0);
 		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")

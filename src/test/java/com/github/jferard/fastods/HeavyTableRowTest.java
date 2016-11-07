@@ -3,7 +3,6 @@ package com.github.jferard.fastods;
 import java.util.Calendar;
 import java.util.Locale;
 
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,12 +22,13 @@ public class HeavyTableRowTest {
 
 	@Before
 	public void setUp() {
-		OdsFile f = PowerMock.createMock(OdsFile.class);
+		ContentEntry ce = PowerMock.createMock(ContentEntry.class);
+		StylesEntry se = PowerMock.createMock(StylesEntry.class);
 		Util util = new Util();
 		XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		DataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.row = new HeavyTableRow(f, util, xmlUtil, ds, 10, 100);
+		this.row = new HeavyTableRow(ce, se, util, xmlUtil, ds, 10, 100);
 		this.cell = new LightTableCell(this.row);
 	}
 

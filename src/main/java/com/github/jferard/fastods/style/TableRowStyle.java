@@ -23,7 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.ContentEntry;
+import com.github.jferard.fastods.OdsEntries;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -64,8 +65,8 @@ public class TableRowStyle implements StyleTag {
 		this.rowHeight = rowHeight;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addStyleTag(this);
+	public void addToEntries(final OdsEntries odsEntries) {
+		odsEntries.addStyleTag(this);
 	}
 
 	@Override
@@ -101,5 +102,9 @@ public class TableRowStyle implements StyleTag {
 	 */
 	public String getRowHeight() {
 		return this.rowHeight;
+	}
+
+	public void addToContent(ContentEntry contentEntry) {
+		contentEntry.addStyleTag(this);
 	}
 }

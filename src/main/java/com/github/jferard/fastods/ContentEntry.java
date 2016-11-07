@@ -41,17 +41,17 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-class ContentEntry implements OdsEntry {
+public class ContentEntry implements OdsEntry {
 	private final DataStyles format;
-	private final OdsFile odsFile;
 	private final Map<String, StyleTag> styleTagByName;
 	private final UniqueList<Table> tables;
 	private final Util util;
 	private final XMLUtil xmlUtil;
+	private StylesEntry stylesEntry;
 
-	ContentEntry(final OdsFile odsFile, final XMLUtil xmlUtil, final Util util,
+	ContentEntry(StylesEntry stylesEntry, final XMLUtil xmlUtil, final Util util,
 			final DataStyles format) {
-		this.odsFile = odsFile;
+		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.util = util;
 		this.format = format;
@@ -70,7 +70,7 @@ class ContentEntry implements OdsEntry {
 			final int columnCapacity) {
 		Table table = this.tables.getByName(name);
 		if (table == null) {
-			table = new Table(this.odsFile, this.xmlUtil, this.util,
+			table = new Table(this, this.stylesEntry, this.xmlUtil, this.util,
 					this.format, name, rowCapacity, columnCapacity);
 			this.tables.add(table);
 		}
@@ -165,7 +165,7 @@ class ContentEntry implements OdsEntry {
 		}
 	}
 
-	void addStyleTag(final StyleTag styleTag) {
+	public void addStyleTag(final StyleTag styleTag) {
 		final String name = styleTag.getName();
 		if (this.styleTagByName.containsKey(name))
 			return;
