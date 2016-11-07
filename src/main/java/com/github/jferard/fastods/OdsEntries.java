@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -124,4 +125,16 @@ public class OdsEntries {
 		this.settingsEntry.write(xmlUtil, zipOut, writer);
 	}
 
+	public void createEmptyEntries(final ZipOutputStream o)
+			throws IOException {
+		for (final String entry : new String[] { "Thumbnails/",
+				"Configurations2/accelerator/current.xml",
+				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
+				"Configurations2/menubar/", "Configurations2/popupmenu/",
+				"Configurations2/progressbar/", "Configurations2/statusbar/",
+				"Configurations2/toolbar/" }) {
+			o.putNextEntry(new ZipEntry(entry));
+			o.closeEntry();
+		}
+	}
 }

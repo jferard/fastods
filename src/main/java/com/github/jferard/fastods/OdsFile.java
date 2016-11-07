@@ -65,12 +65,14 @@ public class OdsFile {
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
 	public static OdsFile create(final Locale locale, final String name) {
-		final FastOdsXMLEscaper escaper = new FastOdsXMLEscaper();
-		final XMLUtil xmlUtil = new XMLUtil(escaper);
+		final XMLUtil xmlUtil = XMLUtil.create();
+		final Util util = new Util();
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				xmlUtil, locale);
-		return new OdsFile(name, new Util(), xmlUtil,
-				new LocaleDataStyles(builderFactory, xmlUtil),
+		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,
+				xmlUtil);
+		OdsEntries entries = OdsEntries.create(util, xmlUtil, format);
+		return new OdsFile(name, entries, util, xmlUtil,
 				OdsFile.DEFAULT_BUFFER_SIZE);
 	}
 
@@ -92,21 +94,23 @@ public class OdsFile {
 	 * @param name
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
+	 * @param entries2
 	 * @param util
 	 * @param xmlUtil
 	 */
-	public OdsFile(final String name, final Util util, final XMLUtil xmlUtil,
-			final DataStyles format, final int bufferSize) {
+	public OdsFile(final String name, OdsEntries entries, final Util util,
+			final XMLUtil xmlUtil, final int bufferSize) {
+		this.newFile(name);
+		this.entries = entries;
 		this.util = util;
 		this.xmlUtil = xmlUtil;
-		this.newFile(name);
 		this.bufferSize = bufferSize;
-		this.entries = OdsEntries.create(util, xmlUtil, format);
 
 		// Add four default stylesEntry to contentEntry
 		TableStyle.DEFAULT_TABLE_STYLE.addToEntries(this.entries);
 		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToEntries(this.entries);
-		TableColumnStyle.getDefaultColumnStyle(xmlUtil).addToEntries(this.entries);
+		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
+				.addToEntries(this.entries);
 		TableCellStyle.getDefaultCellStyle().addToEntries(this.entries);
 		PageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
 	}
@@ -139,7 +143,8 @@ public class OdsFile {
 
 	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		final Table table = this.entries.addTableToContent(name, rowCapacity, columnCapacity);
+		final Table table = this.entries.addTableToContent(name, rowCapacity,
+				columnCapacity);
 		this.entries.setActiveTable(table);
 		return table;
 	}
@@ -160,8 +165,7 @@ public class OdsFile {
 	public Table getTable(final int n) throws FastOdsException {
 		final List<Table> tableQueue = this.entries.getTables();
 		if (n < 0 || n >= tableQueue.size()) {
-			throw new FastOdsException(new StringBuilder("Wrong table number [")
-					.append(n).append("]").toString());
+			throw new FastOdsException("Wrong table number [" + n + "]");
 		}
 
 		final Table t = tableQueue.get(n);
@@ -172,11 +176,13 @@ public class OdsFile {
 	 * @param name
 	 *            the name of the table
 	 * @return the table, or null if not exists
+	 * @throws FastOdsException
 	 */
-	public Table getTable(final String name) {
+	public Table getTable(final String name) throws FastOdsException {
 		final Table table = this.entries.getTable(name);
-		if (table != null)
-			this.entries.setActiveTable(table);
+		if (table == null) {
+			throw new FastOdsException("Wrong table name [" + name + "]");
+		}
 		return table;
 	}
 
@@ -263,16 +269,25 @@ public class OdsFile {
 		this.entries.setTables();
 		final ZipOutputStream zipOut = new ZipOutputStream(output);
 		zipOut.setLevel(Deflater.BEST_SPEED);
+		return this.save(zipOut);
+	}
+
+	protected boolean save(final ZipOutputStream zipOut) {
 		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
 
 		try {
 			this.entries.writeEntries(this.xmlUtil, zipOut, writer);
-			this.createEmptyEntries(zipOut);
-
-			zipOut.close();
+			this.entries.createEmptyEntries(zipOut);
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			try {
+				zipOut.close();
+			} catch (final IOException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 
 		return true;
@@ -310,6 +325,7 @@ public class OdsFile {
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
+	@Deprecated
 	public void setCellInAllTables(final int rowIndex, final int colIndex,
 			final Calendar cal, final TableCellStyle ts)
 			throws FastOdsException {
@@ -336,6 +352,7 @@ public class OdsFile {
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
+	@Deprecated
 	public void setCellInAllTables(final String pos, final Calendar cal,
 			final TableCellStyle ts) throws FastOdsException {
 		final Position position = this.util.getPosition(pos);
@@ -360,6 +377,7 @@ public class OdsFile {
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
+	@Deprecated
 	public void setCellInAllTables(final String pos,
 			final TableCell.Type valuetype, final String value,
 			final TableCellStyle ts) throws FastOdsException {
@@ -381,6 +399,7 @@ public class OdsFile {
 	 * @param columnMerge
 	 * @throws FastOdsException
 	 */
+	@Deprecated
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
 			final int rowMerge, final int columnMerge) throws FastOdsException {
 		for (final Table table : this.entries.getTables()) {
@@ -401,6 +420,7 @@ public class OdsFile {
 	 * @param columnMerge
 	 * @throws FastOdsException
 	 */
+	@Deprecated
 	public void setCellMergeInAllTables(final String pos, final int rowMerge,
 			final int columnMerge) throws FastOdsException {
 		final Position position = this.util.getPosition(pos);
@@ -417,18 +437,4 @@ public class OdsFile {
 	public int tableCount() {
 		return this.entries.getTableCount();
 	}
-
-	private void createEmptyEntries(final ZipOutputStream o)
-			throws IOException {
-		for (final String entry : new String[] { "Thumbnails/",
-				"Configurations2/accelerator/current.xml",
-				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
-				"Configurations2/menubar/", "Configurations2/popupmenu/",
-				"Configurations2/progressbar/", "Configurations2/statusbar/",
-				"Configurations2/toolbar/" }) {
-			o.putNextEntry(new ZipEntry(entry));
-			o.closeEntry();
-		}
-	}
-
 }
