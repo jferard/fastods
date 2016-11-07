@@ -32,7 +32,7 @@ import com.github.jferard.fastods.util.FullList;
  * @author Julien Férard
  *
  */
-class SimpleFooterHeaderBuilder extends FooterHeaderBuilder {
+class SimpleFooterHeaderBuilder extends FooterHeaderBuilder<SimpleFooterHeaderBuilder> {
 	/**
 	 * Create a new simple footer object.
 	 *

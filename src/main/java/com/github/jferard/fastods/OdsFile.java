@@ -280,13 +280,13 @@ public class OdsFile {
 			this.entries.writeEntries(this.xmlUtil, zipOut, writer);
 			this.entries.createEmptyEntries(zipOut);
 		} catch (final IOException e) {
-			e.printStackTrace();
+			// should catch exceptions into a logger
 			return false;
 		} finally {
 			try {
 				zipOut.close();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				// should catch exceptions into a logger
 				return false;
 			}
 		}

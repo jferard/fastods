@@ -34,7 +34,7 @@ import com.github.jferard.fastods.style.MarginsBuilder;
  *
  * @author Julien Férard
  */
-abstract class FooterHeaderBuilder {
+abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	/**
 	 * Checks if paragraph is present in region and return it if yes, if it is
 	 * not present, create a new List and add it to region. Return the new List.
@@ -81,27 +81,27 @@ abstract class FooterHeaderBuilder {
 
 	public abstract FooterHeader build();
 
-	public FooterHeaderBuilder pageCount(final FHTextStyle ts) {
+	public F pageCount(final FHTextStyle ts) {
 		this.styledText(ts, "<text:page-count>99</text:page-count>");
-		return this;
+		return (F) this;
 	}
 
-	public FooterHeaderBuilder pageCount(final FHTextStyle ts,
+	public F pageCount(final FHTextStyle ts,
 			final int paragraph) {
 		this.styledText(ts, "<text:page-count>99</text:page-count>", paragraph);
-		return this;
+		return (F) this;
 	}
 
-	public FooterHeaderBuilder pageNumber(final FHTextStyle ts) {
+	public F pageNumber(final FHTextStyle ts) {
 		this.styledText(ts, "<text:page-number>1</text:page-number>");
-		return this;
+		return (F) this;
 	}
 
-	public FooterHeaderBuilder pageNumber(final FHTextStyle ts,
+	public F pageNumber(final FHTextStyle ts,
 			final int paragraph) {
 		this.styledText(ts, "<text:page-number>1</text:page-number>",
 				paragraph);
-		return this;
+		return (F) this;
 	}
 
 	/**
@@ -122,13 +122,13 @@ abstract class FooterHeaderBuilder {
 	 *            The paragraph number to be used
 	 * @return
 	 */
-	public FooterHeaderBuilder styledText(final FHTextStyle ts,
+	public F styledText(final FHTextStyle ts,
 			final String text) {
 		final FHParagraph styledText = new FHParagraph();
 		final FHText st = new FHText(text, ts);
 		styledText.add(st);
 		this.curRegion.add(styledText);
-		return this;
+		return (F) this;
 	}
 
 	/**
@@ -149,13 +149,13 @@ abstract class FooterHeaderBuilder {
 	 *            The paragraph number to be used
 	 * @return
 	 */
-	public FooterHeaderBuilder styledText(final FHTextStyle ts,
+	public F styledText(final FHTextStyle ts,
 			final String text, final int paragraphIndex) {
 		final FHParagraph styledText = FooterHeaderBuilder
 				.checkParagraph(this.curRegion, paragraphIndex);
 		final FHText st = new FHText(text, ts);
 		styledText.add(st);
-		return this;
+		return (F) this;
 	}
 	
 	/**
@@ -169,9 +169,9 @@ abstract class FooterHeaderBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public FooterHeaderBuilder allMargins(final String margin) {
+	public F allMargins(final String margin) {
 		this.marginsBuilder.all(margin);
-		return this;
+		return (F) this;
 	}
 	
 	/**
@@ -183,9 +183,9 @@ abstract class FooterHeaderBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public FooterHeaderBuilder marginBottom(final String margin) {
+	public F marginBottom(final String margin) {
 		this.marginsBuilder.bottom(margin);
-		return this;
+		return (F) this;
 	}
 
 	/**
@@ -197,9 +197,9 @@ abstract class FooterHeaderBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public FooterHeaderBuilder marginLeft(final String margin) {
+	public F marginLeft(final String margin) {
 		this.marginsBuilder.left(margin);
-		return this;
+		return (F) this;
 	}
 
 	/**
@@ -212,9 +212,9 @@ abstract class FooterHeaderBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public FooterHeaderBuilder marginRight(final String margin) {
+	public F marginRight(final String margin) {
 		this.marginsBuilder.right(margin);
-		return this;
+		return (F) this;
 	}
 
 	/**
@@ -227,9 +227,9 @@ abstract class FooterHeaderBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public FooterHeaderBuilder marginTop(final String margin) {
+	public F marginTop(final String margin) {
 		this.marginsBuilder.top(margin);
-		return this;
+		return (F) this;
 	}
 	
 	/**
@@ -242,8 +242,8 @@ abstract class FooterHeaderBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public FooterHeaderBuilder minHeight(final String height) {
+	public F minHeight(final String height) {
 		this.minHeight = height;
-		return this;
+		return (F) this;
 	}
 }

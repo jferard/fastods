@@ -21,7 +21,6 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -31,8 +30,6 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.datastyle.DateStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -53,58 +50,153 @@ public class DateStyleTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testWithNoName() {
-		DateStyle ds = this.factory.dateStyleBuilder(null).locale(this.locale).build();
+		DateStyle ds = this.factory.dateStyleBuilder(null).locale(this.locale)
+				.build();
 	}
 
 	@Test
-	public final void testWithLocale() throws IOException {
-		DateStyle ds = this.factory.dateStyleBuilder("test").locale(this.locale).build();
+	public final void testWithLocale() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test").locale(this.locale)
+				.build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals(
+		Assert.assertTrue(DomTester.equals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
-				sb.toString());
+				sb.toString()));
 	}
 
 	@Test
-	public final void testWithLanguage() throws IOException {
-		DateStyle ds = this.factory.dateStyleBuilder("test").language("fr").build();
+	public final void testWithLanguage() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test").language("fr")
+				.build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals(
+		Assert.assertTrue(DomTester.equals(
 				"<number:date-style style:name=\"test\" number:language=\"fr\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
-				sb.toString());
+				sb.toString()));
 	}
-	
+
 	@Test
-	public final void testWithOrder() throws IOException {
-		DateStyle ds = this.factory.dateStyleBuilder("test").automaticOrder(true).build();
+	public final void testWithOrder() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.automaticOrder(true).build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals(
+		Assert.assertTrue(DomTester.equals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"true\" number:format-source=\"language\"/>",
-				sb.toString());
+				sb.toString()));
 	}
-	
+
 	@Test
-	public final void testWithVolatile() throws IOException, ParserConfigurationException, SAXException {
+	public final void testWithVolatile()
+			throws IOException, ParserConfigurationException, SAXException {
 		System.out.println("equals");
-		DateStyle ds = this.factory.dateStyleBuilder("test").volatileStyle(false).build();
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.volatileStyle(false).build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertTrue(DomTester.equals(
 				"<number:date-style number:language=\"en\" style:name=\"test\" number:country=\"US\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
 				sb.toString()));
+		Assert.assertFalse(ds.isAutomaticOrder());
 	}
-	
+
 	@Test
-	public final void testWithFormat() throws IOException {
-		DateStyle ds = this.factory.dateStyleBuilder("test").dateFormat(DateStyle.Format.DDMMYY).build();
+	public final void testWithFormat1() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.DDMMYY).build();
 		StringBuilder sb = new StringBuilder();
 		ds.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals(
-				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\"><number:day number:style=\"long\"/><number:text>.</number:text><number:month number:style=\"long\"/><number:text>.</number:text><number:year/></number:date-style>",
-				sb.toString());
+		Assert.assertTrue(DomTester
+				.equals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\"><number:day number:style=\"long\"/>"
+						+ "<number:text>.</number:text><number:month number:style=\"long\"/>"
+						+ "<number:text>.</number:text><number:year/>"
+						+ "</number:date-style>", sb.toString()));
 	}
-	
+
+	@Test
+	public final void testWithFormat2() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.DDMMYYYY).build();
+		StringBuilder sb = new StringBuilder();
+		ds.appendXMLToStylesEntry(this.util, sb);
+		Assert.assertTrue(DomTester
+				.equals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+						+ "<number:day number:style=\"long\"/>"
+						+ "<number:text>.</number:text>"
+						+ "<number:month number:style=\"long\"/>"
+						+ "<number:text>.</number:text>"
+						+ "<number:year number:style=\"long\"/>"
+						+ "</number:date-style>", sb.toString()));
+	}
+
+	@Test
+	public final void testWithFormat3() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.MMMM).build();
+		StringBuilder sb = new StringBuilder();
+		ds.appendXMLToStylesEntry(this.util, sb);
+		Assert.assertTrue(DomTester
+				.equals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+						+ "<number:month number:style=\"long\" number:textual=\"true\"/>"
+						+ "</number:date-style>", sb.toString()));
+	}
+
+	@Test
+	public final void testWithFormat4() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.MMYY).build();
+		StringBuilder sb = new StringBuilder();
+		ds.appendXMLToStylesEntry(this.util, sb);
+		Assert.assertTrue(
+				DomTester.equals(
+						"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+								+ "<number:month number:style=\"long\"/>"
+								+ "<number:text>.</number:text>"
+								+ "<number:year/>" + "</number:date-style>",
+						sb.toString()));
+	}
+
+	@Test
+	public final void testWithFormat5() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.TMMMMYYYY).build();
+		StringBuilder sb = new StringBuilder();
+		ds.appendXMLToStylesEntry(this.util, sb);
+		Assert.assertTrue(DomTester
+				.equals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+						+ "<number:day/>" + "<number:text>. </number:text>"
+						+ "<number:month number:style=\"long\" number:textual=\"true\"/>"
+						+ "<number:text> </number:text>"
+						+ "<number:year number:style=\"long\"/>"
+						+ "</number:date-style>", sb.toString()));
+	}
+
+	@Test
+	public final void testWithFormat6() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.WW).build();
+		StringBuilder sb = new StringBuilder();
+		ds.appendXMLToStylesEntry(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+						+ "<number:week-of-year/>" + "</number:date-style>",
+				sb.toString()));
+	}
+
+	@Test
+	public final void testWithFormat7() throws IOException, SAXException {
+		DateStyle ds = this.factory.dateStyleBuilder("test")
+				.dateFormat(DateStyle.Format.YYYYMMDD).build();
+		StringBuilder sb = new StringBuilder();
+		ds.appendXMLToStylesEntry(this.util, sb);
+		Assert.assertTrue(DomTester
+				.equals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+						+ "<number:year number:style=\"long\"/>"
+						+ "<number:text>-</number:text>"
+						+ "<number:month number:style=\"long\"/>"
+						+ "<number:text>-</number:text>"
+						+ "<number:day number:style=\"long\"/>"
+						+ "</number:date-style>", sb.toString()));
+	}
 }

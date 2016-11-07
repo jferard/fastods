@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.FullList;
  * @author Julien Férard
  *
  */
-class RegionFooterHeaderBuilder extends FooterHeaderBuilder {
+class RegionFooterHeaderBuilder extends FooterHeaderBuilder<RegionFooterHeaderBuilder> {
 
 	private final List<FHParagraph> centerRegion;
 	private final List<FHParagraph> leftRegion;

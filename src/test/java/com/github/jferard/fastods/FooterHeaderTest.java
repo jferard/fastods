@@ -99,4 +99,32 @@ public class FooterHeaderTest {
 				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"10pt\"/>"
 				+ "</style:header-style>", sb.toString()));
 	}
+
+	@Test
+	public final void testRegions() throws IOException, SAXException {
+		FooterHeader header = FooterHeader
+				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
+				.styledText(
+						FHTextStyle.builder("style1").fontStyleItalic().build(),
+						"left-text")
+				.region(Region.CENTER)
+				.styledText(FHTextStyle.builder("style2").fontStyleNormal()
+						.fontWeightNormal().build(), "center-text")
+				.region(Region.RIGHT)
+				.styledText(
+						FHTextStyle.builder("style3").fontWeightBold().build(),
+						"right-text")
+				.build();
+		StringBuilder sb = new StringBuilder();
+		header.appendXMLToMasterStyle(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<style:region-left>"
+						+ "<text:p text:style-name=\"style1\">left-text</text:p>"
+						+ "</style:region-left>" + "<style:region-center>"
+						+ "<text:p text:style-name=\"style2\">center-text</text:p>"
+						+ "</style:region-center>" + "<style:region-right>"
+						+ "<text:p text:style-name=\"style3\">right-text</text:p>"
+						+ "</style:region-right>",
+				sb.toString()));
+	}
 }
