@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.ContentEntry;
+import com.github.jferard.fastods.OdsEntries;
+import com.github.jferard.fastods.StylesEntry;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -120,10 +122,10 @@ public class TableCellStyle implements StyleTag {
 		this.borderByPosition = borderByPosition;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
+	public void addToEntries(final OdsEntries odsEntries) {
 		if (this.dataStyle != null)
-			this.dataStyle.addToFile(odsFile);
-		odsFile.addStyleTag(this);
+			this.dataStyle.addToEntries(odsEntries);
+		odsEntries.addStyleTag(this);
 	}
 
 	/**
@@ -193,5 +195,11 @@ public class TableCellStyle implements StyleTag {
 
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
+	}
+
+	public void addToContentAndStyles(ContentEntry contentEntry, StylesEntry stylesEntry) {
+		if (this.dataStyle != null)
+			this.dataStyle.addToStyles(stylesEntry);
+		contentEntry.addStyleTag(this);
 	}
 }

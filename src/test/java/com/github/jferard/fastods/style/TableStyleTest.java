@@ -11,6 +11,7 @@ import org.powermock.api.easymock.PowerMock;
 import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
+import com.github.jferard.fastods.OdsEntries;
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -26,12 +27,13 @@ public class TableStyleTest {
 	@Test
 	public final void testAddEmptyToFile() {
 		TableStyle ts = TableStyle.builder("test").build();
-		OdsFile f = PowerMock.createMock(OdsFile.class);
+		OdsEntries entries = PowerMock.createMock(OdsEntries.class);
+		final StyleTag styleTag = ts;
 
-		f.addStyleTag(ts);
+		entries.addStyleTag(styleTag);
 		PowerMock.replayAll();
 
-		ts.addToFile(f);
+		ts.addToEntries(entries);
 
 		PowerMock.verifyAll();
 	}

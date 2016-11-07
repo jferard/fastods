@@ -23,7 +23,9 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.ContentEntry;
+import com.github.jferard.fastods.OdsEntries;
+import com.github.jferard.fastods.StylesEntry;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -48,8 +50,8 @@ public abstract class DataStyle implements NamedObject {
 		this.volatileStyle = volatileStyle;
 	}
 
-	public void addToFile(final OdsFile odsFile) {
-		odsFile.addDataStyle(this);
+	public void addToEntries(final OdsEntries odsEntries) {
+		odsEntries.addDataStyle(this);
 	}
 
 	/**
@@ -109,5 +111,9 @@ public abstract class DataStyle implements NamedObject {
 	 */
 	String getLanguageCode() {
 		return this.languageCode;
+	}
+
+	public void addToStyles(StylesEntry styleEntry) {
+		styleEntry.addDataStyle(this);
 	}
 }

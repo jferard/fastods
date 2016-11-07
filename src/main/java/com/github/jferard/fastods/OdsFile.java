@@ -19,28 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-*    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-*    Changes:
-*    20100117:	Fixed the getName() to return the filename of the ODS files
-*/
 package com.github.jferard.fastods;
 
 import java.io.File;
@@ -63,7 +41,6 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -102,17 +79,12 @@ public class OdsFile {
 	}
 
 	private final int bufferSize;
-	private final ContentEntry contentEntry;
 	private String filename;
-	private final ManifestEntry manifestEntry;
-	private final MetaEntry metaEntry;
-	private final MimetypeEntry mimetypeEntry;
-	private final SettingsEntry settingsEntry;
-	private final StylesEntry stylesEntry;
 
 	private final Util util;
 
 	private final XMLUtil xmlUtil;
+	private OdsEntries entries;
 
 	/**
 	 * Create a new ODS file.
@@ -129,31 +101,22 @@ public class OdsFile {
 		this.xmlUtil = xmlUtil;
 		this.newFile(name);
 		this.bufferSize = bufferSize;
-		this.mimetypeEntry = new MimetypeEntry();
-		this.manifestEntry = new ManifestEntry();
-		this.settingsEntry = new SettingsEntry();
-		this.metaEntry = new MetaEntry();
-		this.contentEntry = new ContentEntry(this, xmlUtil, util, format);
-		this.stylesEntry = new StylesEntry(this);
+		this.entries = OdsEntries.create(util, xmlUtil, format);
 
 		// Add four default stylesEntry to contentEntry
-		TableStyle.DEFAULT_TABLE_STYLE.addToFile(this);
-		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToFile(this);
-		TableColumnStyle.getDefaultColumnStyle(xmlUtil).addToFile(this);
-		TableCellStyle.getDefaultCellStyle().addToFile(this);
-		PageStyle.DEFAULT_PAGE_STYLE.addToFile(this);
+		TableStyle.DEFAULT_TABLE_STYLE.addToEntries(this.entries);
+		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToEntries(this.entries);
+		TableColumnStyle.getDefaultColumnStyle(xmlUtil).addToEntries(this.entries);
+		TableCellStyle.getDefaultCellStyle().addToEntries(this.entries);
+		PageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
-		this.stylesEntry.addDataStyle(dataStyle);
+		this.entries.addDataStyle(dataStyle);
 	}
 
 	public void addPageStyle(final PageStyle pageStyle) {
-		this.stylesEntry.addPageStyle(pageStyle);
-	}
-
-	public void addStyleTag(final StyleTag styleTag) {
-		this.contentEntry.addStyleTag(styleTag);
+		this.entries.addPageStyle(pageStyle);
 	}
 
 	/**
@@ -176,14 +139,13 @@ public class OdsFile {
 
 	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		final Table table = this.contentEntry.addTable(name, rowCapacity,
-				columnCapacity);
-		this.settingsEntry.setActiveTable(table);
+		final Table table = this.entries.addTableToContent(name, rowCapacity, columnCapacity);
+		this.entries.setActiveTable(table);
 		return table;
 	}
 
 	public void addTextStyle(final FHTextStyle fhTextStyle) {
-		this.stylesEntry.addTextStyle(fhTextStyle);
+		this.entries.addTextStyle(fhTextStyle);
 	}
 
 	/**
@@ -196,8 +158,8 @@ public class OdsFile {
 	}
 
 	public Table getTable(final int n) throws FastOdsException {
-		final List<Table> tableQueue = this.contentEntry.getTables();
-		if (n < 0 || tableQueue.size() <= n) {
+		final List<Table> tableQueue = this.entries.getTables();
+		if (n < 0 || n >= tableQueue.size()) {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(n).append("]").toString());
 		}
@@ -212,9 +174,9 @@ public class OdsFile {
 	 * @return the table, or null if not exists
 	 */
 	public Table getTable(final String name) {
-		final Table table = this.contentEntry.getTable(name);
+		final Table table = this.entries.getTable(name);
 		if (table != null)
-			this.settingsEntry.setActiveTable(table);
+			this.entries.setActiveTable(table);
 		return table;
 	}
 
@@ -238,7 +200,7 @@ public class OdsFile {
 	 * @return The number of the table or -1 if name was not found
 	 */
 	public int getTableNumber(final String name) {
-		final ListIterator<Table> iterator = this.contentEntry.getTables()
+		final ListIterator<Table> iterator = this.entries.getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
@@ -298,18 +260,13 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream output) {
-		this.settingsEntry.setTables(this.contentEntry.getTables());
+		this.entries.setTables();
 		final ZipOutputStream zipOut = new ZipOutputStream(output);
 		zipOut.setLevel(Deflater.BEST_SPEED);
 		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
 
 		try {
-			this.mimetypeEntry.write(this.xmlUtil, zipOut, writer);
-			this.manifestEntry.write(this.xmlUtil, zipOut, writer);
-			this.metaEntry.write(this.xmlUtil, zipOut, writer);
-			this.stylesEntry.write(this.xmlUtil, zipOut, writer);
-			this.contentEntry.write(this.xmlUtil, zipOut, writer);
-			this.settingsEntry.write(this.xmlUtil, zipOut, writer);
+			this.entries.writeEntries(this.xmlUtil, zipOut, writer);
 			this.createEmptyEntries(zipOut);
 
 			zipOut.close();
@@ -331,11 +288,11 @@ public class OdsFile {
 	 * @return true - The active table was set, false - tab has an illegal value
 	 */
 	public boolean setActiveTable(final int tableIndex) {
-		if (tableIndex < 0 || tableIndex >= this.contentEntry.getTableCount())
+		if (tableIndex < 0 || tableIndex >= this.entries.getTableCount())
 			return false;
 
-		final Table table = this.contentEntry.getTable(tableIndex);
-		this.settingsEntry.setActiveTable(table);
+		final Table table = this.entries.getTable(tableIndex);
+		this.entries.setActiveTable(table);
 		return true;
 	}
 
@@ -357,7 +314,7 @@ public class OdsFile {
 			final Calendar cal, final TableCellStyle ts)
 			throws FastOdsException {
 
-		for (final Table table : this.contentEntry.getTables()) {
+		for (final Table table : this.entries.getTables()) {
 			final HeavyTableRow row = table.getRow(rowIndex);
 			final TableCellWalker walker = row.getWalker();
 			walker.to(colIndex);
@@ -426,7 +383,7 @@ public class OdsFile {
 	 */
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
 			final int rowMerge, final int columnMerge) throws FastOdsException {
-		for (final Table table : this.contentEntry.getTables()) {
+		for (final Table table : this.entries.getTables()) {
 			final HeavyTableRow row = table.getRow(rowIndex);
 			final TableCellWalker walker = row.getWalker();
 			walker.to(colIndex);
@@ -458,7 +415,7 @@ public class OdsFile {
 	 * @return The number of the last table
 	 */
 	public int tableCount() {
-		return this.contentEntry.getTableCount();
+		return this.entries.getTableCount();
 	}
 
 	private void createEmptyEntries(final ZipOutputStream o)

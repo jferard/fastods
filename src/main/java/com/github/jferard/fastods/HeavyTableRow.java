@@ -19,25 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-*    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.github.jferard.fastods;
 
 import java.io.IOException;
@@ -66,7 +47,7 @@ public class HeavyTableRow {
 	private List<String> currencies;
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
-	private final OdsFile odsFile;
+	private final ContentEntry contentEntry;
 	private final int row;
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
@@ -76,15 +57,17 @@ public class HeavyTableRow {
 	private final List<String> values;
 	private final List<String> tooltips;
 	private final XMLUtil xmlUtil;
+	private StylesEntry stylesEntry;
 
-	HeavyTableRow(final OdsFile odsFile, final Util util, final XMLUtil xmlUtil,
+	HeavyTableRow(final ContentEntry contentEntry, StylesEntry stylesEntry, final Util util, final XMLUtil xmlUtil,
 			final DataStyles dataStyles, final int row,
 			final int columnCapacity) {
+		this.stylesEntry = stylesEntry;
 		this.util = util;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
 		this.row = row;
-		this.odsFile = odsFile;
+		this.contentEntry = contentEntry;
 		this.columnCapacity = columnCapacity;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
 		this.values = FullList.newListWithCapacity(columnCapacity);
@@ -346,7 +329,7 @@ public class HeavyTableRow {
 	 *            The table rowStyle to be used
 	 */
 	public void setDefaultCellStyle(final TableCellStyle ts) {
-		ts.addToFile(this.odsFile);
+		ts.addToContentAndStyles(this.contentEntry, this.stylesEntry);
 		this.defaultCellStyle = ts;
 	}
 
@@ -457,8 +440,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setStringValue(java.lang.String)
 	 */
 	public void setStringValue(final int i, final String value) {
-		this.values.set(i, this.xmlUtil.escapeXMLAttribute(value));// TODO
-																	// ESCAPE
+		this.values.set(i, this.xmlUtil.escapeXMLAttribute(value));
 		this.types.set(i, TableCell.Type.STRING);
 	}
 
@@ -469,7 +451,7 @@ public class HeavyTableRow {
 		if (style == null)
 			return;
 
-		style.addToFile(this.odsFile);
+		style.addToContentAndStyles(this.contentEntry, this.stylesEntry);
 		final TableCellStyle curStyle = this.styles.get(i);
 		if (style.getDataStyle() == null && curStyle != null
 				&& curStyle.getDataStyle() != null)
@@ -478,7 +460,7 @@ public class HeavyTableRow {
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {
-		rowStyle.addToFile(this.odsFile);
+		rowStyle.addToContent(this.contentEntry);
 		this.rowStyle = rowStyle;
 	}
 
