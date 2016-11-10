@@ -19,25 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*
- * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard
- * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-*    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
-*
-*    This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
@@ -72,24 +53,29 @@ public class PercentageStyleBuilder
 				this.floatStyleBuilder.negativeValueColor);
 	}
 
-	public FloatStyleBuilder decimalPlaces(final int decimalPlaces) {
-		return this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+	public PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
+		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+		return this;
 	}
 
-	public FloatStyleBuilder groupThousands(final boolean grouping) {
-		return this.floatStyleBuilder.groupThousands(grouping);
+	public PercentageStyleBuilder groupThousands(final boolean grouping) {
+		this.floatStyleBuilder.groupThousands(grouping);
+		return this;
 	}
 
-	public FloatStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		return this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+	public PercentageStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+		return this;
 	}
 
-	public FloatStyleBuilder negativeValueColor(
+	public PercentageStyleBuilder negativeValueColor(
 			final String negativeValueColor) {
-		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+		return this;
 	}
 
-	public FloatStyleBuilder negativeValueRed() {
-		return this.floatStyleBuilder.negativeValueRed();
+	public PercentageStyleBuilder negativeValueRed() {
+		this.floatStyleBuilder.negativeValueRed();
+		return this;
 	}
 }

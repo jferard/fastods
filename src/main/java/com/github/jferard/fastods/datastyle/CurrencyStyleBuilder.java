@@ -125,9 +125,10 @@ public class CurrencyStyleBuilder
 		return this;
 	}
 
-	public FloatStyleBuilder negativeValueColor(
+	public CurrencyStyleBuilder negativeValueColor(
 			final String negativeValueColor) {
-		return this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+		return this;
 	}
 
 	public CurrencyStyleBuilder negativeValueRed() {
