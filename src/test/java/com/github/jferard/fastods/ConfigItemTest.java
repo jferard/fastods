@@ -44,7 +44,16 @@ public class ConfigItemTest {
 	}
 
 	@Test
-	public final void test() throws IOException {
+	public final void test() {
+		ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean",
+				"false");
+		Assert.assertEquals("LoadReadonly", loadReadonly.getName());
+		Assert.assertEquals("boolean", loadReadonly.getType());
+		Assert.assertEquals("false", loadReadonly.getValue());
+	}
+	
+	@Test
+	public final void testXML() throws IOException {
 		ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean",
 				"false");
 		StringBuilder sb = new StringBuilder();
@@ -55,7 +64,7 @@ public class ConfigItemTest {
 	}
 
 	@Test
-	public final void testEscape() throws IOException {
+	public final void testXMLEscape() throws IOException {
 		ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
 		StringBuilder sb = new StringBuilder();
 		escape.appendXMLToObject(this.util, sb);

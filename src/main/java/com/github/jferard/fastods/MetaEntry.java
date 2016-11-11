@@ -59,14 +59,14 @@ public class MetaEntry implements OdsEntry {
 	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
 
-	private int cellCount = 1;
 	private String creator;
 	private String dateTime;
 	private final String editingCycles;
 
 	private final String editingDuration;
 	private final String generator;
-	private int tableCount = 1;
+//	private int tableCount = 1;
+//	private int cellCount = 1;
 
 	public MetaEntry() {
 		this.setDateTimeNow();
@@ -76,29 +76,29 @@ public class MetaEntry implements OdsEntry {
 		this.editingDuration = "PT1M00S";
 	}
 
-	public void decCellCount() {
-		if (this.cellCount > 0) {
-			this.cellCount--;
-		}
-	}
-
-	public void decTableCount() {
-		if (this.tableCount > 0) {
-			this.tableCount--;
-		}
-	}
-
-	public String getCreator() {
-		return this.creator;
-	}
-
-	public void incCellCount() {
-		this.cellCount++;
-	}
-
-	public void incTableCount() {
-		this.tableCount++;
-	}
+//	public void decCellCount() {
+//		if (this.cellCount > 0) {
+//			this.cellCount--;
+//		}
+//	}
+//
+//	public void decTableCount() {
+//		if (this.tableCount > 0) {
+//			this.tableCount--;
+//		}
+//	}
+//
+//	public String getCreator() {
+//		return this.creator;
+//	}
+//
+//	public void incCellCount() {
+//		this.cellCount++;
+//	}
+//
+//	public void incTableCount() {
+//		this.tableCount++;
+//	}
 
 	public void setCreator(final String creator) {
 		this.creator = creator;
@@ -132,11 +132,12 @@ public class MetaEntry implements OdsEntry {
 		writer.append("<meta:user-defined meta:name=\"Info 1\"/>")
 				.append("<meta:user-defined meta:name=\"Info 2\"/>")
 				.append("<meta:user-defined meta:name=\"Info 3\"/>")
-				.append("<meta:user-defined meta:name=\"Info 4\"/>")
-				.append("<meta:document-statistic");
-		util.appendEAttribute(writer, "meta:table-count", this.tableCount);
-		util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
-		writer.append("/></office:meta>").append("</office:document-meta>");
+				.append("<meta:user-defined meta:name=\"Info 4\"/>");
+//				.append("<meta:document-statistic");
+//		util.appendEAttribute(writer, "meta:table-count", this.tableCount);
+//		util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
+//		writer.append("/>")
+		writer.append("</office:meta>").append("</office:document-meta>");
 		writer.flush();
 		zipOut.closeEntry();
 	}
