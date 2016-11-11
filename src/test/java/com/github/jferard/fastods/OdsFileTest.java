@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.anyInt;
 
 import org.easymock.EasyMock;
@@ -88,7 +88,7 @@ public class OdsFileTest {
 	@Test
 	public final void testSaveToZOS() throws IOException {
 		this.initFile();
-		this.entries.writeEntries(eq(this.xmlUtil), eq(this.zos), anyObject(Writer.class));
+		this.entries.writeEntries(eq(this.xmlUtil), eq(this.zos), isA(Writer.class));
 
 		this.entries.createEmptyEntries(this.zos);
 		this.zos.close();
@@ -105,7 +105,7 @@ public class OdsFileTest {
 	@Test
 	public final void testSaveToZOSException() throws IOException {
 		this.initFile();
-		this.entries.writeEntries(eq(this.xmlUtil), eq(this.zos), anyObject(Writer.class));
+		this.entries.writeEntries(eq(this.xmlUtil), eq(this.zos), isA(Writer.class));
 		EasyMock.expectLastCall().andThrow(new IOException());
 		this.zos.close();
 		PowerMock.replayAll();
@@ -119,7 +119,7 @@ public class OdsFileTest {
 	@Test
 	public final void testSaveToZOSCloseException() throws IOException {
 		this.initFile();
-		this.entries.writeEntries(eq(this.xmlUtil), eq(this.zos), anyObject(Writer.class));
+		this.entries.writeEntries(eq(this.xmlUtil), eq(this.zos), isA(Writer.class));
 		this.zos.close();
 		EasyMock.expectLastCall().andThrow(new IOException());
 		PowerMock.replayAll();
