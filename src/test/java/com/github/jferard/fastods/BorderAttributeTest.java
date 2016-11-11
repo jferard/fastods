@@ -35,50 +35,38 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  *         This file BenchIT.java is part of FastODS.
  */
-public class BorderStyleTest {
+public class BorderAttributeTest {
 	
 	private XMLUtil util;
 
 	@Test
 	public final void basicTest() throws IOException {
-		BorderAttribute bs = BorderAttribute.builder().borderSize("1cm")
+		BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
 				.borderColor(Color.ALICEBLUE)
 				.borderStyle(BorderAttribute.Style.SOLID)
 				.position(BorderAttribute.Position.ALL).build();
-		StringBuilder sb = new StringBuilder();
-		bs.appendXMLToTableCellStyle(this.util, sb);
-		Assert.assertEquals("fo:border=\"1cm solid #F0F8FF\"",
-				sb.toString().trim());
+		Assert.assertEquals("1cm solid #F0F8FF",
+				ba.toXMLAttributeValue());
 	}
 
 	@Test
 	public final void nullTest() throws IOException {
-		BorderAttribute bs = BorderAttribute.builder()
+		BorderAttribute ba = BorderAttribute.builder()
 				.build();
-		StringBuilder sb = new StringBuilder();
-		bs.appendXMLToTableCellStyle(this.util, sb);
-		// was fo:border="[null solid null]" but should be empty
-		Assert.assertEquals("", sb.toString().trim());
+		Assert.assertEquals("", ba.toXMLAttributeValue());
 	}
 
 	@Test
 	public final void nullSizeTest() throws IOException {
-		BorderAttribute bs = BorderAttribute.builder().borderColor(Color.AQUAMARINE).build();
-		StringBuilder sb = new StringBuilder();
-		bs.appendXMLToTableCellStyle(this.util, sb);
-		// was fo:border="null solid #F0F8FF" but should be fo:border="solid
-		// #F0F8FF"
-		Assert.assertEquals("fo:border=\"solid #7FFFD4\"",
-				sb.toString().trim());
+		BorderAttribute ba = BorderAttribute.builder().borderColor(Color.AQUAMARINE).build();
+		Assert.assertEquals("solid #7FFFD4",
+				ba.toXMLAttributeValue());
 	}
 
 	@Test
 	public final void nullColorTest() throws IOException {
-		BorderAttribute bs = BorderAttribute.builder().borderSize("1cm").build();
-		StringBuilder sb = new StringBuilder();
-		bs.appendXMLToTableCellStyle(this.util, sb);
-		// was fo:border="1cm solid null" but should be fo:border="1cm"
-		Assert.assertEquals("fo:border=\"1cm \"", sb.toString().trim());
+		BorderAttribute ba = BorderAttribute.builder().borderSize("1cm").build();
+		Assert.assertEquals("1cm", ba.toXMLAttributeValue());
 	}
 
 	@Before

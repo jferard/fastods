@@ -21,9 +21,6 @@
  ******************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import com.github.jferard.fastods.datastyle.DataStyle;
 
 /**
@@ -32,7 +29,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
  */
 public class TableCellStyleBuilder {
 	private String backgroundColor;
-	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
+	private BordersBuilder bordersBuilder;
 	private DataStyle dataStyle;
 	private final String name;
 	// true
@@ -64,21 +61,8 @@ public class TableCellStyleBuilder {
 		this.name = name;
 		this.parentCellStyle = "Default";
 		this.tsBuilder = FHTextStyle.builder("fh" + name);
-		this.borderByPosition = new EnumMap<BorderAttribute.Position, BorderAttribute>(
-				BorderAttribute.Position.class);
+		this.bordersBuilder = new BordersBuilder();
 		this.marginsBuilder = new MarginsBuilder();
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param bs
-	 *            - The border style to be used
-	 * @return this for fluent style
-	 */
-	private TableCellStyleBuilder addBorder(final BorderAttribute bs) {
-		this.borderByPosition.put(bs.getPosition(), bs);
-		return this;
 	}
 
 	/**
@@ -98,7 +82,7 @@ public class TableCellStyleBuilder {
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
 				BorderAttribute.Position.ALL);
-		this.addBorder(bs);
+		this.bordersBuilder.all(bs);
 		return this;
 	}
 
@@ -106,7 +90,7 @@ public class TableCellStyleBuilder {
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
 				BorderAttribute.Position.TOP);
-		this.addBorder(bs);
+		this.bordersBuilder.top(bs);
 		return this;
 	}
 
@@ -114,7 +98,7 @@ public class TableCellStyleBuilder {
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
 				BorderAttribute.Position.RIGHT);
-		this.addBorder(bs);
+		this.bordersBuilder.right(bs);
 		return this;
 	}
 
@@ -122,7 +106,7 @@ public class TableCellStyleBuilder {
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
 				BorderAttribute.Position.BOTTOM);
-		this.addBorder(bs);
+		this.bordersBuilder.bottom(bs);
 		return this;
 	}
 
@@ -130,7 +114,7 @@ public class TableCellStyleBuilder {
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
 				BorderAttribute.Position.LEFT);
-		this.addBorder(bs);
+		this.bordersBuilder.left(bs);
 		return this;
 	}
 
@@ -213,7 +197,7 @@ public class TableCellStyleBuilder {
 		return new TableCellStyle(this.name, this.dataStyle,
 				this.backgroundColor, this.tsBuilder.build(), this.textAlign,
 				this.verticalAlign, this.wrap, this.parentCellStyle,
-				this.borderByPosition, this.marginsBuilder.build());
+				this.bordersBuilder.build(), this.marginsBuilder.build());
 	}
 
 	/**

@@ -135,10 +135,16 @@ public class BorderAttribute {
 
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.borderSize == null && this.borderColor == null)
-			return;
+		final String string = toXMLAttributeValue();
+		util.appendEAttribute(appendable, this.position.attrName,
+				string);
+	}
 
+	public String toXMLAttributeValue() {
 		final StringBuilder sb = new StringBuilder();
+		if (this.borderSize == null && this.borderColor == null)
+			return "";
+
 		if (this.borderSize != null)
 			sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR);
 
@@ -146,8 +152,7 @@ public class BorderAttribute {
 			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
 					.append(this.borderColor);
 
-		util.appendEAttribute(appendable, this.position.attrName,
-				sb.toString());
+		return sb.toString().trim();
 	}
 
 	/**

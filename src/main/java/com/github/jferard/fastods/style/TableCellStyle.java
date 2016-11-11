@@ -79,7 +79,6 @@ public class TableCellStyle implements StyleTag {
 	}
 
 	private final String backgroundColor;
-	private final Map<BorderAttribute.Position, BorderAttribute> borderByPosition;
 	private DataStyle dataStyle;
 	private final Margins margins;
 	private final String name;
@@ -91,6 +90,7 @@ public class TableCellStyle implements StyleTag {
 	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
 
 	private final boolean wrap; // No line wrap when false, line wrap when
+	private Borders borders;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -108,8 +108,9 @@ public class TableCellStyle implements StyleTag {
 			final String backgroundColor, final FHTextStyle ts,
 			final Align textAlign, final VerticalAlign verticalAlign,
 			final boolean wrap, final String parentCellStyleName,
-			final Map<BorderAttribute.Position, BorderAttribute> borderByPosition,
+			final Borders borders,
 			final Margins margins) {
+		this.borders = borders;
 		this.margins = margins;
 		this.name = name;
 		this.dataStyle = dataStyle;
@@ -119,7 +120,6 @@ public class TableCellStyle implements StyleTag {
 		this.verticalAlign = verticalAlign;
 		this.wrap = wrap;
 		this.parentCellStyleName = parentCellStyleName;
-		this.borderByPosition = borderByPosition;
 	}
 
 	public void addToEntries(final OdsEntries odsEntries) {
@@ -157,12 +157,7 @@ public class TableCellStyle implements StyleTag {
 			util.appendEAttribute(appendable, "style:vertical-align",
 					this.verticalAlign.attrValue);
 
-		// -----------------------------------------------
-		// Add all border styles
-		// -----------------------------------------------
-		for (final BorderAttribute bs : this.borderByPosition.values()) {
-			bs.appendXMLToTableCellStyle(util, appendable);
-		}
+		this.borders.appendXMLToTableCellStyle(util, appendable);
 
 		if (this.wrap)
 			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
