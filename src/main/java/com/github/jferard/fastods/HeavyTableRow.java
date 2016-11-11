@@ -59,9 +59,9 @@ public class HeavyTableRow {
 	private final XMLUtil xmlUtil;
 	private StylesEntry stylesEntry;
 
-	HeavyTableRow(final ContentEntry contentEntry, StylesEntry stylesEntry, final Util util, final XMLUtil xmlUtil,
-			final DataStyles dataStyles, final int row,
-			final int columnCapacity) {
+	HeavyTableRow(final ContentEntry contentEntry, StylesEntry stylesEntry,
+			final Util util, final XMLUtil xmlUtil, final DataStyles dataStyles,
+			final int row, final int columnCapacity) {
 		this.stylesEntry = stylesEntry;
 		this.util = util;
 		this.xmlUtil = xmlUtil;
@@ -153,7 +153,8 @@ public class HeavyTableRow {
 		if (tooltip == null) {
 			appendable.append("/>");
 		} else {
-			appendable.append("><office:annotation><text:p>").append(tooltip).append("</text:p></office:annotation></table:table-cell>");
+			appendable.append("><office:annotation><text:p>").append(tooltip)
+					.append("</text:p></office:annotation></table:table-cell>");
 		}
 	}
 
@@ -235,8 +236,11 @@ public class HeavyTableRow {
 	 */
 	public void setCellMerge(final int col, final int rowMerge,
 			final int columnMerge) {
-		this.rowsSpanned.set(col, rowMerge);
-		this.columnsSpanned.set(col, columnMerge);
+		if (rowMerge > 1)
+			this.setRowsSpanned(col, rowMerge);
+
+		if (columnMerge > 1)
+			this.setColumnsSpanned(col, columnMerge);
 	}
 
 	/**
@@ -256,6 +260,9 @@ public class HeavyTableRow {
 	}
 
 	public void setColumnsSpanned(final int i, final int n) {
+		if (n <= 1)
+			return;
+
 		if (this.columnsSpanned == null)
 			this.columnsSpanned = FullList
 					.newListWithCapacity(this.columnCapacity);
@@ -430,6 +437,9 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setRowsSpanned(int)
 	 */
 	public void setRowsSpanned(final int i, final int n) {
+		if (n <= 1)
+			return;
+
 		if (this.rowsSpanned == null)
 			this.rowsSpanned = FullList
 					.newListWithCapacity(this.columnCapacity);

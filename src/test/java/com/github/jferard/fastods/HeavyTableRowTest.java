@@ -1,5 +1,6 @@
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -21,6 +22,7 @@ public class HeavyTableRowTest {
 	private StylesEntry se;
 	private ContentEntry ce;
 	private DataStyles ds;
+	private XMLUtil util;
 
 	@Before
 	public void setUp() {
@@ -30,7 +32,9 @@ public class HeavyTableRowTest {
 		XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.row = new HeavyTableRow(this.ce, this.se, util, xmlUtil, this.ds, 10, 100);
+		this.row = new HeavyTableRow(this.ce, this.se, util, xmlUtil, this.ds,
+				10, 100);
+		this.util = XMLUtil.create();
 	}
 
 	@Test
@@ -111,11 +115,21 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testFloat() {
+	public final void testFloatDouble() {
 		this.se.addDataStyle(this.ds.getNumberStyle().getDataStyle());
 		this.ce.addStyleTag(this.ds.getNumberStyle());
 		PowerMock.replayAll();
-		this.row.setFloatValue(7, 9.999);
+		this.row.setFloatValue(7, 9.999d);
+		Assert.assertEquals("9.999", this.row.getFloatValue(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testFloatFloat() {
+		this.se.addDataStyle(this.ds.getNumberStyle().getDataStyle());
+		this.ce.addStyleTag(this.ds.getNumberStyle());
+		PowerMock.replayAll();
+		this.row.setFloatValue(7, 9.999f);
 		Assert.assertEquals("9.999", this.row.getFloatValue(7));
 		PowerMock.verifyAll();
 	}
@@ -200,6 +214,30 @@ public class HeavyTableRowTest {
 		PowerMock.replayAll();
 		this.row.setStyle(7, tcs);
 		Assert.assertEquals("test", this.row.getStyleName(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge() {
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(7, 10, 8);
+		Assert.assertEquals(10, this.row.getRowsSpanned(7));
+		Assert.assertEquals(8, this.row.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge2() throws IOException {
+		PowerMock.replayAll();
+		this.row.setStringValue(5, "value");
+		this.row.setCellMerge(5, 10, 8);
+		StringBuilder sbt = new StringBuilder();
+		this.row.appendXMLToTable(this.util, sbt);
+		Assert.assertEquals("<table:table-row table:style-name=\"ro1\">"
+				+ "<table:table-cell table:number-columns-repeated=\"5\"/>"
+				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"value\" table:number-columns-spanned=\"8\" table:number-rows-spanned=\"10\"/>"
+				+ "</table:table-row>", sbt.toString());
 		PowerMock.verifyAll();
 	}
 }
