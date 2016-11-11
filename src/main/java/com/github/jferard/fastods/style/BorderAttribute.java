@@ -21,8 +21,6 @@
  ******************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -92,13 +90,6 @@ public class BorderAttribute {
 	private final String borderSize;
 
 	/**
-	 * The border position. Either BorderAttribute.POSITION_ALL,
-	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
-	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
-	 */
-	private final Position position;
-
-	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
 	 * BorderAttribute.BORDER_DOUBLE.<br>
 	 * Default is BorderAttribute.BORDER_SOLID.
@@ -119,25 +110,11 @@ public class BorderAttribute {
 	 * @param style
 	 *            The style of the border, BorderAttribute.BORDER_SOLID or
 	 *            BorderAttribute.BORDER_DOUBLE
-	 * @param pos
-	 *            The position to put the border on the cell,
-	 *            BorderAttribute.POSITION_TOP,BorderAttribute.POSITION_BOTTOM,
-	 *            BorderAttribute.POSITION_LEFT,BorderAttribute.POSITION_RIGHT
-	 *            or BorderAttribute.POSITION_ALL
 	 */
-	BorderAttribute(final String size, final String color, final Style style,
-			final Position position) {
+	BorderAttribute(final String size, final String color, final Style style) {
 		this.borderSize = size;
 		this.borderColor = color;
 		this.style = style;
-		this.position = position;
-	}
-
-	public void appendXMLToTableCellStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		final String string = toXMLAttributeValue();
-		util.appendEAttribute(appendable, this.position.attrName,
-				string);
 	}
 
 	public String toXMLAttributeValue() {
@@ -171,17 +148,6 @@ public class BorderAttribute {
 	 */
 	public String getBorderSize() {
 		return this.borderSize;
-	}
-
-	/**
-	 * Returns the border positions as numerical value.
-	 *
-	 * @return The position as one of
-	 *         POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
-	 *         POSITION_ALL.
-	 */
-	public Position getPosition() {
-		return this.position;
 	}
 
 	/**

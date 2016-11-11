@@ -29,7 +29,7 @@ public class BordersBuilder {
 	private BorderAttribute left;
 	
 	public BordersBuilder top(String size, String color, BorderAttribute.Style style) {
-		return this.top(new BorderAttribute(size, color, style, null));
+		return this.top(new BorderAttribute(size, color, style));
 	}
 		
 	public BordersBuilder top(BorderAttribute attribute) {
@@ -38,7 +38,7 @@ public class BordersBuilder {
 	}
 
 	public BordersBuilder right(String size, String color, BorderAttribute.Style style) {
-		return this.right(new BorderAttribute(size, color, style, null));
+		return this.right(new BorderAttribute(size, color, style));
 	}
 		
 	public BordersBuilder right(BorderAttribute attribute) {
@@ -47,7 +47,7 @@ public class BordersBuilder {
 	}
 
 	public BordersBuilder bottom(String size, String color, BorderAttribute.Style style) {
-		return this.bottom(new BorderAttribute(size, color, style, null));
+		return this.bottom(new BorderAttribute(size, color, style));
 	}
 		
 	public BordersBuilder bottom(BorderAttribute attribute) {
@@ -56,7 +56,7 @@ public class BordersBuilder {
 	}
 	
 	public BordersBuilder left(String size, String color, BorderAttribute.Style style) {
-		return this.left(new BorderAttribute(size, color, style, null));
+		return this.left(new BorderAttribute(size, color, style));
 	}
 		
 	public BordersBuilder left(BorderAttribute attribute) {
@@ -65,7 +65,7 @@ public class BordersBuilder {
 	}
 	
 	public BordersBuilder all(String size, String color, BorderAttribute.Style style) {
-		return this.all(new BorderAttribute(size, color, style, null));
+		return this.all(new BorderAttribute(size, color, style));
 	}
 		
 	public BordersBuilder all(BorderAttribute attribute) {

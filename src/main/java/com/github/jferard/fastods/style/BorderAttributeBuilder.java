@@ -41,7 +41,6 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.style.BorderAttribute.Position;
 import com.github.jferard.fastods.style.BorderAttribute.Style;
 
 /**
@@ -59,13 +58,6 @@ public class BorderAttributeBuilder {
 	private String borderSize;
 
 	/**
-	 * The border position. Either BorderAttribute.POSITION_ALL,
-	 * BorderAttribute.POSITION_BOTTOM, BorderAttribute.POSITION_TOP,
-	 * BorderAttribute.POSITION_LEFT or BorderAttribute.POSITION_RIGHT.
-	 */
-	private Position position;
-
-	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
 	 * BorderAttribute.BORDER_DOUBLE.<br>
 	 * Default is BorderAttribute.BORDER_SOLID.
@@ -73,7 +65,6 @@ public class BorderAttributeBuilder {
 	private Style style;
 
 	public BorderAttributeBuilder() {
-		this.position = BorderAttribute.DEFAULT_POSITION;
 		this.style = BorderAttribute.DEFAULT_STYLE;
 	}
 
@@ -132,19 +123,6 @@ public class BorderAttributeBuilder {
 	 */
 	public BorderAttribute build() {
 		return new BorderAttribute(this.borderSize, this.borderColor,
-				this.style, this.position);
-	}
-
-	/**
-	 * Sets the border positions as numerical value.
-	 *
-	 * @param position
-	 *            The position as one of
-	 *            POSITION_TOP,POSITION_BOTTOM,POSITION_LEFT,POSITION_RIGHT or
-	 *            POSITION_ALL.
-	 */
-	public BorderAttributeBuilder position(final Position position) {
-		this.position = position;
-		return this;
+				this.style);
 	}
 }

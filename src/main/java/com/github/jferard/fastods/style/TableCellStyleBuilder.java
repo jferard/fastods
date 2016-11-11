@@ -80,40 +80,35 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder borderAll(final String size,
 			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
-				BorderAttribute.Position.ALL);
+		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
 		this.bordersBuilder.all(bs);
 		return this;
 	}
 
 	public TableCellStyleBuilder borderTop(final String size,
 			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
-				BorderAttribute.Position.TOP);
+		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
 		this.bordersBuilder.top(bs);
 		return this;
 	}
 
 	public TableCellStyleBuilder borderRight(final String size,
 			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
-				BorderAttribute.Position.RIGHT);
+		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
 		this.bordersBuilder.right(bs);
 		return this;
 	}
 
 	public TableCellStyleBuilder borderBottom(final String size,
 			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
-				BorderAttribute.Position.BOTTOM);
+		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
 		this.bordersBuilder.bottom(bs);
 		return this;
 	}
 
 	public TableCellStyleBuilder borderLeft(final String size,
 			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style,
-				BorderAttribute.Position.LEFT);
+		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
 		this.bordersBuilder.left(bs);
 		return this;
 	}

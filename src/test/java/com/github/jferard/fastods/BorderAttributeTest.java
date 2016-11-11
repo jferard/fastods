@@ -19,15 +19,10 @@
  */
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.style.BorderAttribute;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -36,42 +31,32 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         This file BenchIT.java is part of FastODS.
  */
 public class BorderAttributeTest {
-	
-	private XMLUtil util;
-
 	@Test
-	public final void basicTest() throws IOException {
+	public final void basicTest() {
 		BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
 				.borderColor(Color.ALICEBLUE)
-				.borderStyle(BorderAttribute.Style.SOLID)
-				.position(BorderAttribute.Position.ALL).build();
+				.borderStyle(BorderAttribute.Style.SOLID).build();
 		Assert.assertEquals("1cm solid #F0F8FF",
 				ba.toXMLAttributeValue());
 	}
 
 	@Test
-	public final void nullTest() throws IOException {
+	public final void nullTest() {
 		BorderAttribute ba = BorderAttribute.builder()
 				.build();
 		Assert.assertEquals("", ba.toXMLAttributeValue());
 	}
 
 	@Test
-	public final void nullSizeTest() throws IOException {
+	public final void nullSizeTest() {
 		BorderAttribute ba = BorderAttribute.builder().borderColor(Color.AQUAMARINE).build();
 		Assert.assertEquals("solid #7FFFD4",
 				ba.toXMLAttributeValue());
 	}
 
 	@Test
-	public final void nullColorTest() throws IOException {
+	public final void nullColorTest() {
 		BorderAttribute ba = BorderAttribute.builder().borderSize("1cm").build();
 		Assert.assertEquals("1cm", ba.toXMLAttributeValue());
 	}
-
-	@Before
-	public void setUp() {
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
-	}
-
 }
