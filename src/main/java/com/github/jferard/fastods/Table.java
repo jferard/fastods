@@ -134,7 +134,7 @@ public class Table implements NamedObject {
 		return this.columnStyles;
 	}
 
-	public int getLastRow() {
+	public int getLastRowNumber() {
 		return this.tableRows.size() - 1;
 	}
 

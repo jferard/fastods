@@ -35,16 +35,23 @@ import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.Util;
 import com.github.jferard.fastods.util.XMLUtil;
 
+/**
+ * The OdsEntries class is simply a facade in front of OdsEntry classes. See GOF
+ * Facade pattern.
+ * 
+ * @author Julien Férard
+ *
+ */
 public class OdsEntries {
-	public static OdsEntries create(final Util util,
-			final XMLUtil xmlUtil, final DataStyles format) {
+	public static OdsEntries create(final Util util, final XMLUtil xmlUtil,
+			final DataStyles format) {
 		final MimetypeEntry mimetypeEntry = new MimetypeEntry();
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
 		final StylesEntry stylesEntry = new StylesEntry();
-		final ContentEntry contentEntry = new ContentEntry(stylesEntry, xmlUtil, util,
-				format);
+		final ContentEntry contentEntry = new ContentEntry(stylesEntry, xmlUtil,
+				util, format);
 		return new OdsEntries(mimetypeEntry, manifestEntry, settingsEntry,
 				metaEntry, contentEntry, stylesEntry);
 	}
@@ -57,7 +64,7 @@ public class OdsEntries {
 
 	private final StylesEntry stylesEntry;
 
-	private OdsEntries(final MimetypeEntry mimetypeEntry,
+	protected OdsEntries(final MimetypeEntry mimetypeEntry,
 			final ManifestEntry manifestEntry,
 			final SettingsEntry settingsEntry, final MetaEntry metaEntry,
 			final ContentEntry contentEntry, final StylesEntry stylesEntry) {
@@ -125,8 +132,7 @@ public class OdsEntries {
 		this.settingsEntry.write(xmlUtil, zipOut, writer);
 	}
 
-	public void createEmptyEntries(final ZipOutputStream o)
-			throws IOException {
+	public void createEmptyEntries(final ZipOutputStream o) throws IOException {
 		for (final String entry : new String[] { "Thumbnails/",
 				"Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
