@@ -313,129 +313,18 @@ public class OdsFile {
 	}
 
 	/**
-	 * Sets the cell value in all tables to the date from the Calendar object.
-	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param col
-	 *            The column, 0 is the first column
-	 * @param cal
-	 *            The calendar object with the date
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	@Deprecated
-	public void setCellInAllTables(final int rowIndex, final int colIndex,
-			final Calendar cal, final TableCellStyle ts)
-			throws FastOdsException {
-
-		for (final Table table : this.entries.getTables()) {
-			final HeavyTableRow row = table.getRow(rowIndex);
-			final TableCellWalker walker = row.getWalker();
-			walker.to(colIndex);
-			walker.setDateValue(cal);
-			walker.setStyle(ts);
-		}
-
-	}
-
-	/**
-	 * Sets the cell value in all tables to the date from the Calendar object.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param cal
-	 *            The calendar object with the date
-	 * @param ts
-	 *            The table style for this cells, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	@Deprecated
-	public void setCellInAllTables(final String pos, final Calendar cal,
-			final TableCellStyle ts) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellInAllTables(row, col, cal, ts);
-	}
-
-	/**
-	 * Sets the cell value in all tables to the given values.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param valuetype
-	 *            The value type of value,
-	 *            OldHeavyTableCell.Type.STRING,OldHeavyTableCell.Type.FLOAT or
-	 *            OldHeavyTableCell.Type.PERCENTAGE.
-	 * @param value
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	@Deprecated
-	public void setCellInAllTables(final String pos,
-			final TableCell.Type valuetype, final String value,
-			final TableCellStyle ts) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		// this.setCellInAllTables(row, col, valuetype, value,
-		// ts);
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
-	 */
-	@Deprecated
-	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
-			final int rowMerge, final int columnMerge) throws FastOdsException {
-		for (final Table table : this.entries.getTables()) {
-			final HeavyTableRow row = table.getRow(rowIndex);
-			final TableCellWalker walker = row.getWalker();
-			walker.to(colIndex);
-			walker.setRowsSpanned(rowMerge);
-			walker.setColumnsSpanned(columnMerge);
-		}
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell in all existing tables.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
-	 */
-	@Deprecated
-	public void setCellMergeInAllTables(final String pos, final int rowMerge,
-			final int columnMerge) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
-	}
-
-	/**
 	 * Gets the number of the last table.
 	 *
 	 * @return The number of the last table
 	 */
 	public int tableCount() {
 		return this.entries.getTableCount();
+	}
+
+	/**
+	 * @return the list of tables
+	 */
+	public List<Table> getTables() {
+		return this.entries.getTables();
 	}
 }

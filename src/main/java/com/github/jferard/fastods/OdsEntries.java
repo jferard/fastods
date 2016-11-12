@@ -109,6 +109,9 @@ public class OdsEntries {
 		return this.contentEntry.getTableCount();
 	}
 
+	/**
+	 * @return the list of tables
+	 */
 	public List<Table> getTables() {
 		return this.contentEntry.getTables();
 	}
