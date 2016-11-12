@@ -72,7 +72,9 @@ public class FHParagraph {
 			break;
 		case 1:
 			final FHText text = this.texts.get(0);
-			text.appendXMLTextPToParagraph(util, appendable);
+			appendable.append("<text:p>");
+			text.appendXMLOptionalSpanToParagraph(util, appendable);
+			appendable.append("</text:p>");
 			break;
 		default:
 			appendable.append("<text:p>");

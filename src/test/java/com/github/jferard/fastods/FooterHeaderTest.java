@@ -29,7 +29,7 @@ public class FooterHeaderTest {
 						FHTextStyle.builder("style").fontWeightBold().build())
 				.build();
 		StringBuilder sb = new StringBuilder();
-		footer.appendXMLToAutomaticStyle(this.util, sb);
+		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:footer-style>"
 				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:footer-style>", sb.toString()));
@@ -45,11 +45,10 @@ public class FooterHeaderTest {
 				.build();
 		StringBuilder sb = new StringBuilder();
 		footer.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:region-center>" + "<text:p text:style-name=\"style\">"
-						+ "<text:page-number>1</text:page-number>" + "</text:p>"
-						+ "</style:region-center>",
-				sb.toString()));
+		Assert.assertTrue(DomTester.equals("<style:region-center>" + "<text:p>"
+				+ "<text:span text:style-name=\"style\">"
+				+ "<text:page-number>1</text:page-number>" + "</text:span>"
+				+ "</text:p>" + "</style:region-center>", sb.toString()));
 	}
 
 	@Test
@@ -79,7 +78,7 @@ public class FooterHeaderTest {
 				.simpleBuilder(FooterHeader.Type.FOOTER)
 				.styledText(ts, text, paragraphIndex).build();
 		StringBuilder sb = new StringBuilder();
-		footer.appendXMLToAutomaticStyle(this.util, sb);
+		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:footer-style>"
 				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:footer-style>", sb.toString()));
@@ -100,7 +99,7 @@ public class FooterHeaderTest {
 		FooterHeader header = FooterHeader.simpleHeader(
 				FHTextStyle.builder("style").fontStyleItalic().build(), "text");
 		StringBuilder sb = new StringBuilder();
-		header.appendXMLToAutomaticStyle(this.util, sb);
+		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:header-style>"
 				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:header-style>", sb.toString()));
@@ -113,9 +112,11 @@ public class FooterHeaderTest {
 				FHTextStyle.builder("style").fontStyleItalic().build(), "text");
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<text:p text:style-name=\"style\">" + "text" + "</text:p>",
-				sb.toString()));
+		Assert.assertTrue(
+				DomTester.equals(
+						"<text:p>" + "<text:span text:style-name=\"style\">"
+								+ "text" + "</text:span>" + "</text:p>",
+						sb.toString()));
 	}
 
 	@Test
@@ -129,7 +130,7 @@ public class FooterHeaderTest {
 						"text")
 				.build();
 		StringBuilder sb = new StringBuilder();
-		header.appendXMLToAutomaticStyle(this.util, sb);
+		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:header-style>"
 				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"10pt\"/>"
 				+ "</style:header-style>", sb.toString()));
@@ -144,12 +145,13 @@ public class FooterHeaderTest {
 				.pageCount(ts2).build();
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<text:p text:style-name=\"test1\">"
-						+ "<text:page-number>1</text:page-number>" + "</text:p>"
-						+ "<text:p text:style-name=\"test2\">"
-						+ "<text:page-count>99</text:page-count>" + "</text:p>",
-				sb.toString()));
+		Assert.assertTrue(DomTester
+				.equals("<text:p>" + "<text:span text:style-name=\"test1\">"
+						+ "<text:page-number>1</text:page-number>"
+						+ "</text:span>" + "</text:p>" + "<text:p>"
+						+ "<text:span text:style-name=\"test2\">"
+						+ "<text:page-count>99</text:page-count>"
+						+ "</text:span>" + "</text:p>", sb.toString()));
 	}
 
 	@Test
@@ -182,7 +184,7 @@ public class FooterHeaderTest {
 						"text")
 				.build();
 		StringBuilder sb = new StringBuilder();
-		header.appendXMLToAutomaticStyle(this.util, sb);
+		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals("<style:header-style>"
 				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"0cm\" fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"/>"
 				+ "</style:header-style>", sb.toString()));
@@ -206,12 +208,16 @@ public class FooterHeaderTest {
 				.build();
 		StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals("<style:region-left>"
-				+ "<text:p text:style-name=\"style1\">left-text</text:p>"
-				+ "</style:region-left>" + "<style:region-center>"
-				+ "<text:p text:style-name=\"style2\">center-text</text:p>"
-				+ "</style:region-center>" + "<style:region-right>"
-				+ "<text:p text:style-name=\"style3\">right-text</text:p>"
-				+ "</style:region-right>", sb.toString()));
+		Assert.assertTrue(DomTester.equals(
+				"<style:region-left>" + "<text:p>"
+						+ "<text:span text:style-name=\"style1\">left-text</text:span>"
+						+ "</text:p>" + "</style:region-left>"
+						+ "<style:region-center>" + "<text:p>"
+						+ "<text:span text:style-name=\"style2\">center-text</text:span>"
+						+ "</text:p>" + "</style:region-center>"
+						+ "<style:region-right>" + "<text:p>"
+						+ "<text:span text:style-name=\"style3\">right-text</text:span>"
+						+ "</text:p>" + "</style:region-right>",
+				sb.toString()));
 	}
 }

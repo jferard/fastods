@@ -133,7 +133,7 @@ public class PageStyle {
 		if (footerHeader == null)
 			appendable.append("<").append(tag).append("/>");
 		else
-			footerHeader.appendXMLToAutomaticStyle(util, appendable);
+			footerHeader.appendStyleFooterHeaderXMLToAutomaticStyle(util, appendable);
 	}
 
 	private final String backgroundColor;
@@ -210,6 +210,12 @@ public class PageStyle {
 		PageStyle.appendFooterHeaderStyle(util, appendable, this.footer,
 				"style:footer-style");
 		appendable.append("</style:page-layout>");
+		
+		if (this.header != null)
+			this.header.appendTextStylesXMLToAutomaticStyle(util, appendable);
+		
+		if (this.footer != null)
+			this.footer.appendTextStylesXMLToAutomaticStyle(util, appendable);
 	}
 
 	/**

@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.Margins;
@@ -103,23 +104,26 @@ public abstract class FooterHeader {
 	protected final Margins margins;
 
 	protected final String minHeight;
+	private Set<FHTextStyle> textStyles;
 
 
 	/**
 	 * Create a new footer object.
+	 * @param textStyles 
 	 * @param minHeight2 
 	 *
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeader(final FooterHeader.Type footerHeaderType,
-			final Margins margins, final String minHeight) {
+			final Margins margins, final String minHeight, Set<FHTextStyle> textStyles) {
 		this.footerHeaderType = footerHeaderType;
 		this.margins = margins;
 		this.minHeight = minHeight;
+		this.textStyles = textStyles;
 	}
 
-	public void appendXMLToAutomaticStyle(final XMLUtil util,
+	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
@@ -130,6 +134,18 @@ public abstract class FooterHeader {
 				.append("-style>");
 	}
 
+	public void appendTextStylesXMLToAutomaticStyle(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		for (FHTextStyle style : this.textStyles) {
+			appendable.append("<style:style");
+			util.appendEAttribute(appendable, "style:name", style.getName());
+			util.appendAttribute(appendable, "style:family", "text");
+			appendable.append('>');
+			style.appendXMLToContentEntry(util, appendable);
+			appendable.append("</style:style>");
+		}
+	}
+	
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
 	 *

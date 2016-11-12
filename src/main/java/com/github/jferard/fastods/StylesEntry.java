@@ -139,16 +139,6 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:styles>");
 		writer.write("<office:automatic-styles>");
 
-		/*
-		u.writeString(out, "<number:date-style style:name=\"N01\" number:automatic-order=\"true\">");
-		u.writeString(out, "<number:day number:style=\"long\"/>");
-		u.writeString(out, "<number:text>.</number:text>");
-		u.writeString(out, "<number:month number:style=\"long\"/>");
-		u.writeString(out, "<number:text>.</number:text>");
-		u.writeString(out, "<number:year/>");
-		u.writeString(out, "</number:date-style>");
-		*/
-
 		for (final PageStyle ps : this.pageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
 

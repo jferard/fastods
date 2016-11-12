@@ -21,7 +21,9 @@
  ******************************************************************************/
 package com.github.jferard.fastods;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.MarginsBuilder;
@@ -65,6 +67,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 
 
 	protected String minHeight;
+	protected Set<FHTextStyle> textStyles;
 
 	/**
 	 * Create a new footer object.
@@ -73,6 +76,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
+		this.textStyles = new HashSet<FHTextStyle>();
 		this.footerHeaderType = footerHeaderType;
 		this.minHeight = "0cm";
 		this.marginsBuilder = new MarginsBuilder();
@@ -82,23 +86,27 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	public abstract FooterHeader build();
 
 	public F pageCount(final FHTextStyle ts) {
+		this.textStyles.add(ts);
 		this.styledText(ts, "<text:page-count>99</text:page-count>");
 		return (F) this;
 	}
 
 	public F pageCount(final FHTextStyle ts,
 			final int paragraph) {
+		this.textStyles.add(ts);
 		this.styledText(ts, "<text:page-count>99</text:page-count>", paragraph);
 		return (F) this;
 	}
 
 	public F pageNumber(final FHTextStyle ts) {
+		this.textStyles.add(ts);
 		this.styledText(ts, "<text:page-number>1</text:page-number>");
 		return (F) this;
 	}
 
 	public F pageNumber(final FHTextStyle ts,
 			final int paragraph) {
+		this.textStyles.add(ts);
 		this.styledText(ts, "<text:page-number>1</text:page-number>",
 				paragraph);
 		return (F) this;
@@ -124,6 +132,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	public F styledText(final FHTextStyle ts,
 			final String text) {
+		this.textStyles.add(ts);
 		final FHParagraph styledText = new FHParagraph();
 		final FHText st = new FHText(text, ts);
 		styledText.add(st);
@@ -151,6 +160,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	public F styledText(final FHTextStyle ts,
 			final String text, final int paragraphIndex) {
+		this.textStyles.add(ts);
 		final FHParagraph styledText = FooterHeaderBuilder
 				.checkParagraph(this.curRegion, paragraphIndex);
 		final FHText st = new FHText(text, ts);

@@ -18,11 +18,13 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 public class PageStyleTest {
 	private static final String MASTER = "<style:master-page style:name=\"DefaultMasterPage\" style:page-layout-name=\"test\">"
-			+ "<style:header>" + "<text:p text:style-name=\"none\">"
+			+ "<style:header>" + "<text:p>"
+			+ "<text:span text:style-name=\"none\">" + "</text:span>"
 			+ "</text:p>" + "</style:header>"
 			+ "<style:header-left style:display=\"false\"/>" + "<style:footer>"
-			+ "<text:p text:style-name=\"none\">" + "</text:p>"
-			+ "</style:footer>" + "<style:footer-left style:display=\"false\"/>"
+			+ "<text:p>" + "<text:span text:style-name=\"none\">" + "</text:span>"
+			+ "</text:p>" + "</style:footer>"
+			+ "<style:footer-left style:display=\"false\"/>"
 			+ "</style:master-page>";
 	private XMLUtil util;
 
@@ -107,8 +109,10 @@ public class PageStyleTest {
 				.footer(footer).build();
 		StringBuilder sb = new StringBuilder();
 
-		header.appendXMLToAutomaticStyle(this.util, sb);
-		footer.appendXMLToAutomaticStyle(this.util, sb);
+		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		header.appendTextStylesXMLToAutomaticStyle(this.util, sb);
+		footer.appendTextStylesXMLToAutomaticStyle(this.util, sb);
 		PowerMock.replayAll();
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(
@@ -174,8 +178,10 @@ public class PageStyleTest {
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sba.toString()));
 		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
-		Assert.assertEquals((new MarginsBuilder()).top("1pt").right("2pt")
-				.bottom("3pt").left("4pt").all("1.5cm").build(), pageStyle.getMargins());
+		Assert.assertEquals(
+				(new MarginsBuilder()).top("1pt").right("2pt").bottom("3pt")
+						.left("4pt").all("1.5cm").build(),
+				pageStyle.getMargins());
 	}
 
 	@Test

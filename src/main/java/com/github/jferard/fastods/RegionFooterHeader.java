@@ -23,7 +23,9 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
+import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -59,6 +61,7 @@ class RegionFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
+	 * @param textStyles 
 	 * 
 	 * @param minHeight2
 	 *
@@ -69,8 +72,8 @@ class RegionFooterHeader extends FooterHeader {
 			final List<FHParagraph> centerRegion,
 			final List<FHParagraph> leftRegion,
 			final List<FHParagraph> rightRegion, final Margins margins,
-			final String minHeight) {
-		super(footerHeaderType, margins, minHeight);
+			final String minHeight, Set<FHTextStyle> textStyles) {
+		super(footerHeaderType, margins, minHeight, textStyles);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;
