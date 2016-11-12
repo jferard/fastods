@@ -19,7 +19,11 @@ It won't even *read* ods files.
 Because it doesn't use XML internally, but only for writing files. That's why it is fast and lightweight.
 
 ## Speed
-Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a simple ODS file.
+Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a small (a single sheet with 5000 rows and 20 columns) simple ODS file. For bigger files, JOpenDocument becomes slower and slower in comparison with FastODS and SimpleODS.
+
+To test it, just type the following command:
+
+```mvn -Dtest=BenchIT test```
 
 ## Example
 ```java
@@ -47,4 +51,5 @@ file.save();
 
 ## HISTORY
 v. 0.0.1 : first version
+
 v. 0.0.2 : all existing data types, fast writing.
