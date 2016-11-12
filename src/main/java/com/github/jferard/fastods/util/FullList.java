@@ -88,7 +88,6 @@ public class FullList<E> implements List<E> {
 	private FullList(final E blankElement, final int capacity) {
 		this.blankElement = blankElement;
 		this.list = new ArrayList<E>(capacity);
-		this.removeTrail();
 	}
 
 	@Override

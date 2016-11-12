@@ -21,9 +21,10 @@ Because it doesn't use XML internally, but only for writing files. That's why it
 ## Speed
 Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a small (a single sheet with 5000 rows and 20 columns) simple ODS file. For bigger files, JOpenDocument becomes slower and slower in comparison with FastODS and SimpleODS.
 
+### Benchmark
 To test it, just type the following command:
 
-```mvn -Dtest=BenchIT test```
+```mvn -Dtest=Benchmark test```
 
 ## Example
 ```java
@@ -43,11 +44,32 @@ for (int y = 0; y < 50; y++) {
 file.save();
 ```
 
+## Profiling with VisualVM
+Download and install VisualVM: https://visualvm.github.io/download.html.
+
+Install and configure the Startup Profiler plugin: https://visualvm.java.net/startupprofiler.html.
+
+### Step 1: Preset
+Create a profiling preset named "fastods" (Preset Name):
+* Do not profile packages: java.*, javax.*, sun.*, sunw.*, com.sun.*
+* Start profiling from classes: org.apache.maven.surefire.booter.ForkedBooter
+
+### Step 2: Launch VisualVM
+Click on the clock icon (Profile startup), and set application configuration, select "fastods" preset for settings, and copy arguments to clipboard.
+
+### Step3: Start the test
+Type the command:
+```mvn -Dmaven.surefire.debug="<copy from clipboard and escape quotes>" -Dtest=ProfileFastODS#testFast test```
+
+Note : if you see a warning: "Profiled application started too soon", just wait for the command line message "Waiting for connection on port 5140". Type a CTRL+C, then click cancel in VisualVM window. 
+
+Currently, the most greedy methods are:
+* ```XMLUtil.appendEAttribute```: 30% of the time, 9.6 million calls
+* ```FullList.init```, ```set```, ```get```: 27% of the time
+* ```HeavyTableRow.appendXMLToTableRow```: 11% of the time, 3.2 million calls
+
 ## TODO
-* Code cleaning;
-* A lot of testing;
-* Speed up float->string
-* ...
+See issues
 
 ## HISTORY
 v. 0.0.1 : first version

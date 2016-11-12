@@ -34,12 +34,9 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
- *
- *         This file BenchIT.java is part of FastODS.
+ * @author Julien Férard 
  */
-public class OdsFile2Test {
+public class OdsFileChecks {
 
 	@Test
 	public final void test50() throws FastOdsException {

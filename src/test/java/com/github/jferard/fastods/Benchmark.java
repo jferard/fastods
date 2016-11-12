@@ -39,7 +39,7 @@ import org.simpleods.SimpleOdsException;
  *
  * mvn -Dtest=BenchIT#test test
  */
-public class BenchIT {
+public class Benchmark {
 	private static final int TIMES = 5;
 	private static final int COL_COUNT = 20;
 	private static final int ROW_COUNT = 5000;
@@ -55,27 +55,27 @@ public class BenchIT {
 	@Test
 	public void test1() throws SimpleOdsException, IOException {
 		for (int i = 0 ; i<TIMES ; i++) {
-			testFast(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
-			testSimple(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
-			testJOpen(BenchIT.ROW_COUNT, BenchIT.COL_COUNT);
+			testFast(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+			testSimple(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+			testJOpen(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
 		}
 	}
 	
 	@Test
 	public void test2() throws SimpleOdsException, IOException {
 		for (int i = 0 ; i<TIMES ; i++) {
-			testFast(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
-			testSimple(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
-			testJOpen(2*BenchIT.ROW_COUNT, 2*BenchIT.COL_COUNT);
+			testFast(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+			testSimple(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+			testJOpen(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
 		}
 	}
 	
 	@Test
 	public void test3() throws SimpleOdsException, IOException {
 		for (int i = 0 ; i<TIMES ; i++) {
-			testFast(3*BenchIT.ROW_COUNT, 3*BenchIT.COL_COUNT);
-			testSimple(3*BenchIT.ROW_COUNT, 3*BenchIT.COL_COUNT);
-			testJOpen(3*BenchIT.ROW_COUNT, 3*BenchIT.COL_COUNT);
+			testFast(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+			testSimple(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+			testJOpen(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
 		}
 	}
 	

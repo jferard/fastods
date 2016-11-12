@@ -28,15 +28,12 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 /**
- * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
- *         Schulz <mtschulz at users.sourceforge.net>
+ * @author Julien Férard
  *
- *         This file BenchIT.java is part of FastODS.
- *         
  * Usage : launch jvisualvm.
- * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileIT#testFast test
+ * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileFastOds#testFast test
  */
-public class ProfileIT {
+public class ProfileFastODS {
 	private static final int COL_COUNT = 40;
 	private static final int ROW_COUNT = 80000;
 	private Random random;
@@ -62,7 +59,7 @@ public class ProfileIT {
 	public final void testFast() {
 		// Open the file.
 		OdsFile file = OdsFile.create("f20columns.ods");
-		final Table table = file.addTable("test", ProfileIT.ROW_COUNT, ProfileIT.COL_COUNT);
+		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
 
 		for (int y = 0; y < ROW_COUNT; y++) {
 			final HeavyTableRow row = table.nextRow();
