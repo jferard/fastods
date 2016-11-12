@@ -36,7 +36,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 /**
  * @author Julien Férard 
  */
-public class OdsFileChecks {
+public class OdsFileCreation {
 
 	@Test
 	public final void test50() throws FastOdsException {
