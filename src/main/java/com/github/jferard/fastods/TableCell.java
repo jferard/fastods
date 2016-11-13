@@ -196,7 +196,7 @@ public interface TableCell {
 	void setDateValue(Date value);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.FLOAT.
+	 * Set the float value for a cell with TableCell.Type.FLOAT.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -204,7 +204,7 @@ public interface TableCell {
 	void setFloatValue(float value);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.FLOAT.
+	 * Set the float value for a cell with TableCell.Type.FLOAT.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -212,7 +212,7 @@ public interface TableCell {
 	void setFloatValue(int value);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.FLOAT.
+	 * Set the float value for a cell with TableCell.Type.FLOAT.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -220,7 +220,7 @@ public interface TableCell {
 	void setFloatValue(Number value);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.STRING.
+	 * Set the float value for a cell with TableCell.Type.STRING.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -228,7 +228,15 @@ public interface TableCell {
 	void setObjectValue(Object value);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.PERCENTAGE.
+	 * Set the float value for a cell with TableCell.Type.STRING.
+	 *
+	 * @param value the value as a CellValue object.
+	 *            
+	 */
+	void setCellValue(CellValue value);
+	
+	/**
+	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -236,7 +244,7 @@ public interface TableCell {
 	void setPercentageValue(float value);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.PERCENTAGE.
+	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used
@@ -252,7 +260,7 @@ public interface TableCell {
 	void setRowsSpanned(int n);
 
 	/**
-	 * Set the float value for a cell with OldHeavyTableCell.Type.STRING.
+	 * Set the float value for a cell with TableCell.Type.STRING.
 	 *
 	 * @param value
 	 *            - A double object with the value to be used

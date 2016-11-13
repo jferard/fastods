@@ -236,4 +236,9 @@ public class LightTableCell implements TableCellWalker {
 	public void setTooltip(String tooltip) {
 		this.row.setTooltip(this.i, tooltip);
 	}
+
+	@Override
+	public void setCellValue(CellValue value) {
+		this.row.setCellValue(this.i, value);
+	}
 }

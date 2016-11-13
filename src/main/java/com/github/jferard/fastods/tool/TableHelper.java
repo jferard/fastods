@@ -25,6 +25,7 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.HeavyTableRow;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil.Position;
@@ -72,8 +73,9 @@ public class TableHelper {
 
 	public void setCellValue(Table table, int rowIndex, int colIndex,
 			CellValue value, TableCellStyle ts) throws FastOdsException {
-		HeavyTableRow row = table.getRow(rowIndex);
-		row.setCellValue(colIndex, value);
+		TableCell cell = this.getCell(table, rowIndex, colIndex);
+		cell.setCellValue(value);
+		cell.setStyle(ts);
 	}
 
 	/**
@@ -90,9 +92,9 @@ public class TableHelper {
 	public void setCellMerge(final Table table, final int rowIndex,
 			final int colIndex, final int rowMerge, final int columnMerge)
 			throws FastOdsException {
-		final TableCellWalker walker = getCell(table, rowIndex, colIndex);
-		walker.setRowsSpanned(rowMerge);
-		walker.setColumnsSpanned(columnMerge);
+		final TableCell cell = getCell(table, rowIndex, colIndex);
+		cell.setRowsSpanned(rowMerge);
+		cell.setColumnsSpanned(columnMerge);
 	}
 
 	/**
