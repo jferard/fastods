@@ -384,26 +384,11 @@ public class HeavyTableRow {
 	}
 
 	/*
-	 * FastOds uses the mapping Apache DB project maapping
+	 * FastOds uses the mapping Apache DB project mapping
 	 * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
 	 */
-	public void setObjectValue(final int i, final Object value) {
-		if (value == null)
-			this.setVoidValue(i);
-		else if (value instanceof String)
-			this.setStringValue(i, (String) value);
-		else if (value instanceof Number) // BigDecimal, Byte, Short, Integer,
-											// Long, Float, Double
-			this.setFloatValue(i, (Number) value);
-		else if (value instanceof Boolean)
-			this.setBooleanValue(i, (Boolean) value);
-		else if (value instanceof Date) // java.util.Date & java.sql.Date,
-										// java.sql.Time, java.sql.Timestamp
-			this.setDateValue(i, (Date) value);
-		else if (value instanceof Calendar)
-			this.setDateValue(i, (Calendar) value);
-		else // Byte[], ...
-			this.setStringValue(i, value.toString());
+	public void setCellValue(final int i, final CellValue value) {
+		value.setToRow(this, i);
 	}
 
 	/* (non-Javadoc)
@@ -506,5 +491,16 @@ public class HeavyTableRow {
 
 	public void setTooltip(int i, String tooltip) {
 		this.tooltips.set(i, tooltip);
+	}
+
+	
+	/**
+	 * @param i
+	 * @param object
+	 * @deprecated Shortcut for {@code setCellValue(i, CellValue.fromObject(object))}
+	 */
+	@Deprecated
+	public void setObjectValue(int i, Object object) {
+		this.setCellValue(i, CellValue.fromObject(object));
 	}
 }

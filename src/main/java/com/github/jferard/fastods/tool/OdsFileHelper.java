@@ -23,6 +23,7 @@ package com.github.jferard.fastods.tool;
 
 import java.util.Calendar;
 
+import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.Table;
@@ -50,19 +51,19 @@ public class OdsFileHelper {
 	 *            The row, 0 is the first row
 	 * @param col
 	 *            The column, 0 is the first column
-	 * @param cal
-	 *            The calendar object with the date
+	 * @param value
+	 *            The cell value
 	 * @param ts
 	 *            The table style for this cell, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
-	public void setCellInAllTables(final int rowIndex, final int colIndex,
-			final Calendar cal, final TableCellStyle ts)
+	public void setCellValueInAllTables(final int rowIndex, final int colIndex,
+			final CellValue value, final TableCellStyle ts)
 			throws FastOdsException {
 
 		for (final Table table : this.odsFile.getTables()) {
-			this.tableHelper.setCell(table, rowIndex, colIndex, cal, ts);
+			this.tableHelper.setCellValue(table, rowIndex, colIndex, value, ts);
 		}
 
 	}
@@ -72,51 +73,19 @@ public class OdsFileHelper {
 	 *
 	 * @param pos
 	 *            The cell position e.g. 'A1'
-	 * @param cal
-	 *            The calendar object with the date
+	 * @param value
+	 *            The cell value
 	 * @param ts
 	 *            The table style for this cells, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException
 	 */
-	public void setCellInAllTables(final String pos, final Calendar cal,
+	public void setCellValueInAllTables(final String pos, final CellValue value,
 			final TableCellStyle ts) throws FastOdsException {
 		final Position position = this.util.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
-		this.setCellInAllTables(row, col, cal, ts);
-	}
-
-	/**
-	 * Sets the cell value in all tables to the given values.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param valuetype
-	 *            The value type of value,
-	 *            OldHeavyTableCell.Type.STRING,OldHeavyTableCell.Type.FLOAT or
-	 *            OldHeavyTableCell.Type.PERCENTAGE.
-	 * @param value
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
-	 */
-	public void setCellInAllTables(final String pos,
-			final TableCell.Type valuetype, final String value,
-			final TableCellStyle ts) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
-		final int rowIndex = position.getRow();
-		final int colIndex = position.getColumn();
-		this.setCellInAllTables(rowIndex, colIndex, valuetype, value, ts);
-	}
-
-	public void setCellInAllTables(int rowIndex, int colIndex, Type valuetype,
-			String value, TableCellStyle ts) throws FastOdsException {
-		for (final Table table : this.odsFile.getTables()) {
-			this.tableHelper.setCell(table, rowIndex, colIndex, valuetype, value, ts);
-		}
+		this.setCellValueInAllTables(row, col, value, ts);
 	}
 
 	/**

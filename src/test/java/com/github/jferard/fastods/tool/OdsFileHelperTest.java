@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import com.github.jferard.fastods.BooleanValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.HeavyTableRow;
 import com.github.jferard.fastods.OdsFile;
@@ -44,32 +45,18 @@ public class OdsFileHelperTest {
 	}
 
 	@Test
-	public final void testCalValueInAllTables() throws FastOdsException {
-		TableCellStyle ts = TableCellStyle.builder("a").build();
-		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(1234567891011l);
-		
-		expect(this.odsFile.getTables()).andReturn(this.l);
-		this.tableHelper.setCell(this.t1, 6, 2, cal, ts);
-		this.tableHelper.setCell(this.t2, 6, 2, cal, ts);
-		this.tableHelper.setCell(this.t3, 6, 2, cal, ts);
-		PowerMock.replayAll();
-		this.helper.setCellInAllTables("C7", cal, ts);
-		PowerMock.verifyAll();
-	}
-
-	@Test
 	public final void testCellValueInAllTables() throws FastOdsException {
 		TableCellStyle ts = TableCellStyle.builder("a").build();
 		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(1234567891011l);
+		BooleanValue v = new BooleanValue(true);
 		
 		expect(this.odsFile.getTables()).andReturn(this.l);
-		this.tableHelper.setCell(this.t1, 6, 2, Type.BOOLEAN, "true", ts);
-		this.tableHelper.setCell(this.t2, 6, 2, Type.BOOLEAN, "true", ts);
-		this.tableHelper.setCell(this.t3, 6, 2, Type.BOOLEAN, "true", ts);
+		this.tableHelper.setCellValue(this.t1, 6, 2, v, ts);
+		this.tableHelper.setCellValue(this.t2, 6, 2, v, ts);
+		this.tableHelper.setCellValue(this.t3, 6, 2, v, ts);
 		PowerMock.replayAll();
-		this.helper.setCellInAllTables("C7", Type.BOOLEAN, "true", ts);
+		this.helper.setCellValueInAllTables("C7", v, ts);
 		PowerMock.verifyAll();
 	}
 	
