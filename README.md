@@ -5,7 +5,16 @@
 
 A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
 
-## Why FastODS ?
+## Table of contents
+* [Why FastODS?](#why-fastods)
+* [Limitations](#limitations)
+* [Installation](#installation)
+* [Speed](#speed)
+* [Example](#example)
+* [Profiling with VisualVM](#profiling-with-visualvm)
+* [HISTORY](#history)
+
+## Why FastODS?
 Because I need to write big and simple ODS files very fast in Java.
 
 There are some very good libraries for [OASIS Open Document Format](https://www.oasis-open.org/standards#opendocumentv1.2), like [Simple ODF](http://incubator.apache.org/odftoolkit/simple/) or [JOpenDocument](www.jopendocument.org/), but they are a little bit slow and cumberstone for only writing **very simple** spreadsheets.
@@ -17,6 +26,11 @@ FastODS is a fork of SimpleODS that aims to be a very fast ODS writing library i
 FastODS won't deal with odt, odg, odf, or other od_ files.
 It won't even *read* ods files. 
 Because it doesn't use XML internally, but only for writing files. That's why it is fast and lightweight.
+
+## Installation
+Just download the latest jar and run:
+
+``` mvn install:install-file -Dfile=fastods-<version>.jar```
 
 ## Speed
 Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a small (a single sheet with 5000 rows and 20 columns) simple ODS file. For bigger files, JOpenDocument becomes slower and slower in comparison with FastODS and SimpleODS.
@@ -67,9 +81,6 @@ Currently, the most greedy methods are:
 * ```XMLUtil.appendEAttribute```: 30% of the time, 9.6 million calls
 * ```FullList.init```, ```set```, ```get```: 27% of the time
 * ```HeavyTableRow.appendXMLToTableRow```: 11% of the time, 3.2 million calls
-
-## TODO
-See issues
 
 ## HISTORY
 v. 0.0.1 : first version
