@@ -30,7 +30,7 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Util;
-import com.github.jferard.fastods.util.Util.Position;
+import com.github.jferard.fastods.util.PositionUtil.Position;
 
 public class OdsFileHelper {
 	private OdsFile odsFile;

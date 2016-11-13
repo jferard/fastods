@@ -33,7 +33,7 @@ public class OdsFileHelperTest {
 
 	@Before
 	public void setUp() {
-		this.util = new Util();
+		this.util = Util.create();
 		this.odsFile = PowerMock.createMock(OdsFile.class);
 		this.tableHelper = PowerMock.createMock(TableHelper.class);
 		this.t1 = PowerMock.createMock(Table.class);

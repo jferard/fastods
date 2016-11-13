@@ -54,7 +54,7 @@ public class OdsFileTest {
 		this.os = new ByteArrayOutputStream();
 		this.zos = PowerMock.createMock(ZipOutputStream.class);
 		this.xmlUtil = XMLUtil.create();
-		this.util = new Util();
+		this.util = Util.create();
 		this.entries = PowerMock.createMock(OdsEntries.class);
 	}
 

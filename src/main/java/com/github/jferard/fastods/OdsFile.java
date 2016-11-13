@@ -27,7 +27,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -44,7 +43,6 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.Util;
-import com.github.jferard.fastods.util.Util.Position;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -67,7 +65,7 @@ public class OdsFile {
 
 	public static OdsFile create(final Locale locale, final String name) {
 		final XMLUtil xmlUtil = XMLUtil.create();
-		final Util util = new Util();
+		final Util util = Util.create();
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				xmlUtil, locale);
 		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,

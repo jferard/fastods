@@ -28,7 +28,7 @@ public class HeavyTableRowTest {
 	public void setUp() {
 		this.ce = PowerMock.createMock(ContentEntry.class);
 		this.se = PowerMock.createMock(StylesEntry.class);
-		Util util = new Util();
+		Util util = Util.create();
 		XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);

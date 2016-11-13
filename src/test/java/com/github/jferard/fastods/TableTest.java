@@ -30,7 +30,7 @@ public class TableTest {
 	public void setUp() {
 		this.ce = PowerMock.createMock(ContentEntry.class);
 		this.se = PowerMock.createMock(StylesEntry.class);
-		Util util = new Util();
+		Util util = Util.create();
 		XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);

@@ -55,45 +55,23 @@ import java.util.Locale;
  *         This file Util.java is part of FastODS.
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
-public class Util {
-	private PositionUtil positionUtil;
-	private WriteUtil writeUtil;
+public class WriteUtil {
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
+	private final String[] ints;
 
-	public Util(PositionUtil positionUtil, WriteUtil writeUtil) {
-		this.positionUtil = positionUtil;
-		this.writeUtil = writeUtil;
-	}
-
-	public boolean equal(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 == null;
-		} else {
-			return o1.equals(o2);
-		}
-	}
-	
-	public boolean different(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 != null;
-		} else {
-			return !o1.equals(o2);
-		}
-	}
-
-	/**
-	 * Convert a cell position string like B3 to the column number.
-	 *
-	 * @param pos
-	 *            The cell position in the range 'A1' to 'IV65536'
-	 * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
-	 *         4
-	 */
-	public PositionUtil.Position getPosition(final String pos) {
-		return this.positionUtil.getPosition(pos);
+	public WriteUtil() {
+		this.ints = new String[2000];
 	}
 
 	public String toString(final int value) {
-		return this.writeUtil.toString(value);
+		if (-1000 <= value && value < 1000) {
+			final int i = value + 1000;
+			if (this.ints[i] == null) {
+				this.ints[i] = Integer.toString(value);
+			}
+			return this.ints[i];
+		} else
+			return Integer.toString(value);
 	}
 
 	/**
@@ -104,10 +82,7 @@ public class Util {
 	 * @return the writer
 	 */
 	public Writer wrapStream(final OutputStream out, final int size) {
-		return this.writeUtil.wrapStream(out, size);
-	}
-
-	public static Util create() {
-		return new Util(new PositionUtil(), new WriteUtil());
+		return new BufferedWriter(new OutputStreamWriter(out, WriteUtil.UTF_8),
+				size);
 	}
 }

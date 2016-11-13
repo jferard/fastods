@@ -40,11 +40,6 @@
 */
 package com.github.jferard.fastods.util;
 
-import java.io.BufferedWriter;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.Locale;
 
 /**
@@ -55,29 +50,45 @@ import java.util.Locale;
  *         This file Util.java is part of FastODS.
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
-public class Util {
-	private PositionUtil positionUtil;
-	private WriteUtil writeUtil;
+public class PositionUtil {
+	private static final int OPT_DIGIT = 5;
+	private static final int FIRST_DIGIT = 4;
+	private static final int OPT_SECOND_LETTER = 2;
+	private static final int FIRST_LETTER = 1;
+	private static final int BEGIN_DIGIT = 3;
+	private static final int BEGIN_LETTER = 0;
 
-	public Util(PositionUtil positionUtil, WriteUtil writeUtil) {
-		this.positionUtil = positionUtil;
-		this.writeUtil = writeUtil;
+	public static class Position {
+		private final int column;
+		private final int row;
+
+		Position(final int row, final int column) {
+			this.row = row;
+			this.column = column;
+		}
+
+		public int getColumn() {
+			return this.column;
+		}
+
+		public int getRow() {
+			return this.row;
+		}
+
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+
+			if (!(o instanceof Position))
+				return false;
+
+			Position other = (Position) o;
+			return this.row == other.row && this.column == other.column;
+		}
+
 	}
 
-	public boolean equal(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 == null;
-		} else {
-			return o1.equals(o2);
-		}
-	}
-	
-	public boolean different(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 != null;
-		} else {
-			return !o1.equals(o2);
-		}
+	public PositionUtil() {
 	}
 
 	/**
@@ -88,26 +99,57 @@ public class Util {
 	 * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
 	 *         4
 	 */
-	public PositionUtil.Position getPosition(final String pos) {
-		return this.positionUtil.getPosition(pos);
-	}
+	public Position getPosition(final String pos) {
+		final String s = pos.toUpperCase(Locale.US);
+		final int len = s.length();
+		int status = 0;
 
-	public String toString(final int value) {
-		return this.writeUtil.toString(value);
-	}
-
-	/**
-	 * Wraps an OutputStream in a BufferedWriter
-	 *
-	 * @param out
-	 *            the stream
-	 * @return the writer
-	 */
-	public Writer wrapStream(final OutputStream out, final int size) {
-		return this.writeUtil.wrapStream(out, size);
-	}
-
-	public static Util create() {
-		return new Util(new PositionUtil(), new WriteUtil());
+		int row = 0;
+		int col = 0;
+		int n = 0;
+		while (n < len) {
+			final char c = s.charAt(n);
+			switch (status) {
+			case BEGIN_LETTER: // opt $
+			case BEGIN_DIGIT: // opt $
+				status++;
+				if (c == '$')
+					n++;
+				break;
+			case FIRST_LETTER: // mand letter
+				if ('A' <= c && c <= 'Z') {
+					col = c - 'A' + 1;
+					status = OPT_SECOND_LETTER;
+					n++;
+				} else
+					return null;
+				break;
+			case OPT_SECOND_LETTER: // opt letter
+				if ('A' <= c && c <= 'Z') {
+					col = col * 26 + c - 'A' + 1;
+					n++;
+				}
+				status = BEGIN_DIGIT;
+				break;
+			case FIRST_DIGIT: // mand digit
+				if ('0' <= c && c <= '9') {
+					row = c - '0';
+					status = OPT_DIGIT;
+					n++;
+				} else
+					return null;
+				break;
+			case OPT_DIGIT: // opt digit
+				if ('0' <= c && c <= '9') {
+					row = row * 10 + c - '0';
+					n++;
+				} else
+					return null;
+				break;
+			default:
+				return null;
+			}
+		}
+		return new Position(row - 1, col - 1);
 	}
 }

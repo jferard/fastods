@@ -1,18 +1,17 @@
 package com.github.jferard.fastods;
 
+import static org.easymock.EasyMock.expect;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.easymock.EasyMock;
-import static org.easymock.EasyMock.expect;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
@@ -55,7 +54,7 @@ public class LightTableCellTest {
 	private HeavyTableRow initRealRow() {
 		ContentEntry ce = PowerMock.createMock(ContentEntry.class);
 		StylesEntry se = PowerMock.createMock(StylesEntry.class);
-		Util util = new Util();
+		Util util = Util.create();
 		XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		LocaleDataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
