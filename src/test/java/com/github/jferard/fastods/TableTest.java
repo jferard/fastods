@@ -15,7 +15,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 
@@ -23,20 +23,20 @@ public class TableTest {
 	private StylesEntry se;
 	private ContentEntry ce;
 	private DataStyles ds;
-	private XMLUtil util;
+	private XMLUtil xmlUtil;
 	private Table table;
 
 	@Before
 	public void setUp() {
 		this.ce = PowerMock.createMock(ContentEntry.class);
 		this.se = PowerMock.createMock(StylesEntry.class);
-		Util util = Util.create();
+		PositionUtil positionUtil = new PositionUtil();
 		XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.table = new Table(this.ce, this.se, xmlUtil, util, this.ds,
+		this.table = new Table(positionUtil, xmlUtil, this.ce, this.se, this.ds,
 				"mytable", 10, 100);
-		this.util = xmlUtil;
+		this.xmlUtil = xmlUtil;
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class TableTest {
 	@Test
 	public final void testSettingsEntry() throws IOException {
 		StringBuilder sb = new StringBuilder();
-		this.table.appendXMLToSettingsEntry(this.util, sb);
+		this.table.appendXMLToSettingsEntry(this.xmlUtil, sb);
 
 		Assert.assertEquals(
 				"<config:config-item-map-entry config:name=\"mytable\">"
@@ -152,7 +152,7 @@ public class TableTest {
 		this.table.getRow(100);
 
 		StringBuilder sb = new StringBuilder();
-		this.table.appendXMLToContentEntry(this.util, sb);
+		this.table.appendXMLToContentEntry(this.xmlUtil, sb);
 
 		Assert.assertEquals(
 				"<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">"

@@ -21,10 +21,8 @@
  ******************************************************************************/
 package com.github.jferard.fastods.tool;
 
-import static org.junit.Assert.fail;
+import static org.easymock.EasyMock.expect;
 
-import org.easymock.EasyMock;
-import static org.easymock.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -37,11 +35,11 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
 
 public class TableHelperTest {
 
-	private Util util;
+	private PositionUtil positionUtil;
 	private Table table;
 	private HeavyTableRow row;
 	private TableCellWalker walker;
@@ -50,12 +48,12 @@ public class TableHelperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.util = Util.create();
+		this.positionUtil = new PositionUtil();
 		this.table = PowerMock.createMock(Table.class);
 		this.row = PowerMock.createMock(HeavyTableRow.class);
 		this.walker = PowerMock.createMock(TableCellWalker.class);
 		this.cell = PowerMock.createMock(TableCell.class);
-		this.tableHelper = new TableHelper(this.util);
+		this.tableHelper = new TableHelper(this.positionUtil);
 	}
 
 	@Test

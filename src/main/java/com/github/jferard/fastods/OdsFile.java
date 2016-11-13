@@ -42,7 +42,8 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -64,14 +65,15 @@ public class OdsFile {
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
 	public static OdsFile create(final Locale locale, final String name) {
+		final PositionUtil positionUtil = new PositionUtil();
+		final WriteUtil writeUtil = new WriteUtil();
 		final XMLUtil xmlUtil = XMLUtil.create();
-		final Util util = Util.create();
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				xmlUtil, locale);
 		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,
 				xmlUtil);
-		OdsEntries entries = OdsEntries.create(util, xmlUtil, format);
-		return new OdsFile(name, entries, util, xmlUtil,
+		OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil, format);
+		return new OdsFile(name, entries, writeUtil, xmlUtil,
 				OdsFile.DEFAULT_BUFFER_SIZE);
 	}
 
@@ -82,7 +84,7 @@ public class OdsFile {
 	private final int bufferSize;
 	private String filename;
 
-	private final Util util;
+	private final WriteUtil writeUtil;
 
 	private final XMLUtil xmlUtil;
 	private OdsEntries entries;
@@ -94,14 +96,14 @@ public class OdsFile {
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
 	 * @param entries2
-	 * @param util
+	 * @param writeUtil
 	 * @param xmlUtil
 	 */
-	public OdsFile(final String name, OdsEntries entries, final Util util,
+	public OdsFile(final String name, OdsEntries entries, final WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final int bufferSize) {
 		this.newFile(name);
 		this.entries = entries;
-		this.util = util;
+		this.writeUtil = writeUtil;
 		this.xmlUtil = xmlUtil;
 		this.bufferSize = bufferSize;
 
@@ -272,7 +274,7 @@ public class OdsFile {
 	}
 
 	protected boolean save(final ZipOutputStream zipOut) {
-		final Writer writer = this.util.wrapStream(zipOut, this.bufferSize);
+		final Writer writer = this.writeUtil.wrapStream(zipOut, this.bufferSize);
 
 		try {
 			this.entries.writeEntries(this.xmlUtil, zipOut, writer);

@@ -30,7 +30,9 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FullList;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.EqualityUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -53,17 +55,19 @@ public class HeavyTableRow {
 	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;
 	private final List<TableCell.Type> types;
-	private final Util util;
+	private final PositionUtil positionUtil;
 	private final List<String> values;
 	private final List<String> tooltips;
 	private final XMLUtil xmlUtil;
 	private StylesEntry stylesEntry;
+	private WriteUtil writeUtil;
 
-	HeavyTableRow(final ContentEntry contentEntry, StylesEntry stylesEntry,
-			final Util util, final XMLUtil xmlUtil, final DataStyles dataStyles,
-			final int row, final int columnCapacity) {
+	HeavyTableRow(final PositionUtil positionUtil, WriteUtil writeUtil,
+			final XMLUtil xmlUtil, final ContentEntry contentEntry, StylesEntry stylesEntry,
+			final DataStyles dataStyles, final int row, final int columnCapacity) {
+		this.writeUtil = writeUtil;
 		this.stylesEntry = stylesEntry;
-		this.util = util;
+		this.positionUtil = positionUtil;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
 		this.row = row;
@@ -255,7 +259,7 @@ public class HeavyTableRow {
 	 */
 	public void setCellMerge(final String pos, final int rowMerge,
 			final int columnMerge) throws FastOdsException {
-		final int col = this.util.getPosition(pos).getColumn();
+		final int col = this.positionUtil.getPosition(pos).getColumn();
 		this.setCellMerge(col, rowMerge, columnMerge);
 	}
 
@@ -362,7 +366,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setFloatValue(int)
 	 */
 	public void setFloatValue(final int i, final int value) {
-		this.values.set(i, this.util.toString(value));
+		this.values.set(i, this.writeUtil.toString(value));
 		this.types.set(i, TableCell.Type.FLOAT);
 		this.setStyle(i, this.dataStyles.getNumberStyle());
 	}

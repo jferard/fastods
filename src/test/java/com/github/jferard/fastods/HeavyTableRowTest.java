@@ -14,7 +14,8 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class HeavyTableRowTest {
@@ -22,19 +23,20 @@ public class HeavyTableRowTest {
 	private StylesEntry se;
 	private ContentEntry ce;
 	private DataStyles ds;
-	private XMLUtil util;
+	private XMLUtil xmlUtil;
 
 	@Before
 	public void setUp() {
 		this.ce = PowerMock.createMock(ContentEntry.class);
 		this.se = PowerMock.createMock(StylesEntry.class);
-		Util util = Util.create();
+		PositionUtil positionUtil = new PositionUtil();
+		final WriteUtil writeUtil = new WriteUtil();
 		XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.row = new HeavyTableRow(this.ce, this.se, util, xmlUtil, this.ds,
-				10, 100);
-		this.util = XMLUtil.create();
+		this.row = new HeavyTableRow(positionUtil, writeUtil, xmlUtil, this.ce, this.se,
+				this.ds, 10, 100);
+		this.xmlUtil = XMLUtil.create();
 	}
 
 	@Test
@@ -233,7 +235,7 @@ public class HeavyTableRowTest {
 		this.row.setStringValue(5, "value");
 		this.row.setCellMerge(5, 10, 8);
 		StringBuilder sbt = new StringBuilder();
-		this.row.appendXMLToTable(this.util, sbt);
+		this.row.appendXMLToTable(this.xmlUtil, sbt);
 		Assert.assertEquals("<table:table-row table:style-name=\"ro1\">"
 				+ "<table:table-cell table:number-columns-repeated=\"5\"/>"
 				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"value\" table:number-columns-spanned=\"8\" table:number-rows-spanned=\"10\"/>"

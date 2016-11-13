@@ -21,27 +21,23 @@
  ******************************************************************************/
 package com.github.jferard.fastods.tool;
 
-import java.util.Calendar;
-
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 
 public class OdsFileHelper {
 	private OdsFile odsFile;
-	private Util util;
+	private PositionUtil positionUtil;
 	private TableHelper tableHelper;
 
-	public OdsFileHelper(OdsFile odsFile, TableHelper tableHelper, Util util) {
+	public OdsFileHelper(OdsFile odsFile, TableHelper tableHelper, PositionUtil positionUtil) {
 		this.odsFile = odsFile;
 		this.tableHelper = tableHelper;
-		this.util = util;
+		this.positionUtil = positionUtil;
 	}
 
 	/**
@@ -82,7 +78,7 @@ public class OdsFileHelper {
 	 */
 	public void setCellValueInAllTables(final String pos, final CellValue value,
 			final TableCellStyle ts) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
+		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValueInAllTables(row, col, value, ts);
@@ -117,7 +113,7 @@ public class OdsFileHelper {
 	 */
 	public void setCellMergeInAllTables(final String pos, final int rowMerge,
 			final int columnMerge) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
+		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);

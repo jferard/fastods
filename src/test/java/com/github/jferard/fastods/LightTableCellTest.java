@@ -15,7 +15,8 @@ import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class LightTableCellTest {
@@ -54,11 +55,12 @@ public class LightTableCellTest {
 	private HeavyTableRow initRealRow() {
 		ContentEntry ce = PowerMock.createMock(ContentEntry.class);
 		StylesEntry se = PowerMock.createMock(StylesEntry.class);
-		Util util = Util.create();
+		PositionUtil positionUtil = new PositionUtil();
 		XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		LocaleDataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		return new HeavyTableRow(ce, se, util, xmlUtil, ds, 10, 100);
+		final WriteUtil writeUtil = new WriteUtil();
+		return new HeavyTableRow(positionUtil, writeUtil, xmlUtil, ce, se, ds, 10, 100);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)

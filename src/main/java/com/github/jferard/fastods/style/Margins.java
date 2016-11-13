@@ -23,7 +23,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Margins {

@@ -32,7 +32,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -43,15 +43,15 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  */
 public class OdsEntries {
-	public static OdsEntries create(final Util util, final XMLUtil xmlUtil,
+	public static OdsEntries create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
 			final DataStyles format) {
 		final MimetypeEntry mimetypeEntry = new MimetypeEntry();
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
 		final StylesEntry stylesEntry = new StylesEntry();
-		final ContentEntry contentEntry = new ContentEntry(stylesEntry, xmlUtil,
-				util, format);
+		final ContentEntry contentEntry = new ContentEntry(stylesEntry, positionUtil,
+				xmlUtil, format);
 		return new OdsEntries(mimetypeEntry, manifestEntry, settingsEntry,
 				metaEntry, contentEntry, stylesEntry);
 	}

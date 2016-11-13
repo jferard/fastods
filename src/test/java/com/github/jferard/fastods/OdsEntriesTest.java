@@ -17,7 +17,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class OdsEntriesTest {

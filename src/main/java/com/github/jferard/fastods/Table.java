@@ -30,7 +30,8 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.Util;
+import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -77,7 +78,7 @@ public class Table implements NamedObject {
 	private TableStyle style;
 
 	private final List<HeavyTableRow> tableRows;
-	private final Util util;
+	private final PositionUtil positionUtil;
 	private final ConfigItem verticalSplitMode;
 
 	private final ConfigItem verticalSplitPosition;
@@ -87,14 +88,14 @@ public class Table implements NamedObject {
 	private final ConfigItem zoomValue;
 	private StylesEntry stylesEntry;
 
-	Table(final ContentEntry contentEntry, StylesEntry stylesEntry,
-			final XMLUtil xmlUtil, final Util util, final DataStyles format,
+	Table(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+			final ContentEntry contentEntry, StylesEntry stylesEntry, final DataStyles format,
 			final String name, final int rowCapacity,
 			final int columnCapacity) {
 		this.contentEntry = contentEntry;
 		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
-		this.util = util;
+		this.positionUtil = positionUtil;
 		this.format = format;
 		this.name = name;
 		this.columnCapacity = columnCapacity;
@@ -152,16 +153,16 @@ public class Table implements NamedObject {
 		Table.checkRow(row);
 		HeavyTableRow tr = this.tableRows.get(row);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.contentEntry, this.stylesEntry,
-					this.util, this.xmlUtil, this.format, row,
-					this.columnCapacity);
+			tr = new HeavyTableRow(this.positionUtil, new WriteUtil(),
+					this.xmlUtil, this.contentEntry, this.stylesEntry, this.format,
+					row, this.columnCapacity);
 			this.tableRows.set(row, tr);
 		}
 		return tr;
 	}
 
 	public HeavyTableRow getRow(final String pos) throws FastOdsException {
-		final int row = this.util.getPosition(pos).getRow();
+		final int row = this.positionUtil.getPosition(pos).getRow();
 		return this.getRow(row);
 	}
 
@@ -180,9 +181,9 @@ public class Table implements NamedObject {
 
 	public HeavyTableRow nextRow() {
 		final int row = this.tableRows.size();
-		final HeavyTableRow tr = new HeavyTableRow(this.contentEntry,
-				this.stylesEntry, this.util, this.xmlUtil, this.format, row,
-				this.columnCapacity);
+		final HeavyTableRow tr = new HeavyTableRow(this.positionUtil,
+				new WriteUtil(), this.xmlUtil, this.contentEntry, this.stylesEntry, this.format,
+				row, this.columnCapacity);
 		this.tableRows.add(tr);
 		return tr;
 	}

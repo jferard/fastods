@@ -28,14 +28,14 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
-import com.github.jferard.fastods.util.Util;
 
 public class TableHelper {
-	private Util util;
+	private PositionUtil positionUtil;
 
-	public TableHelper(Util util) {
-		this.util = util;
+	public TableHelper(PositionUtil positionUtil) {
+		this.positionUtil = positionUtil;
 	}
 
 	private TableCellWalker getCell(final Table table, final int rowIndex,
@@ -65,7 +65,7 @@ public class TableHelper {
 	public void setCellValue(final Table table, final String pos,
 			final CellValue value, final TableCellStyle ts)
 			throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
+		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValue(table, row, col, value, ts);
@@ -108,7 +108,7 @@ public class TableHelper {
 	 */
 	public void setCellMerge(final Table table, final String pos,
 			final int rowMerge, final int columnMerge) throws FastOdsException {
-		final Position position = this.util.getPosition(pos);
+		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellMerge(table, row, col, rowMerge, columnMerge);
