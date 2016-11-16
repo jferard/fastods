@@ -9,9 +9,9 @@ A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
 * [Why FastODS?](#why-fastods)
 * [Limitations](#limitations)
 * [Installation](#installation)
+* [Examples](#examples)
 * [Speed](#speed)
-* [Example](#example)
-* [Profiling with VisualVM](#profiling-with-visualvm)
+* [Technical informations](#technical-informations)
 * [HISTORY](#history)
 
 ## Why FastODS?
@@ -30,17 +30,10 @@ Because it doesn't use XML internally, but only for writing files. That's why it
 ## Installation
 Just download the latest jar and run:
 
-``` mvn install:install-file -Dfile=fastods-<version>.jar```
+```mvn install:install-file -Dfile=fastods-<version>.jar```
 
-## Speed
-Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a small (a single sheet with 5000 rows and 20 columns) simple ODS file. For bigger files, JOpenDocument becomes slower and slower in comparison with FastODS and SimpleODS.
-
-### Benchmark
-To test it, just type the following command:
-
-```mvn -Dtest=Benchmark test```
-
-## Example
+## Examples
+### Basic example
 ```java
 OdsFile file = new OdsFile("5columns.ods");
 Table table = file.addTable("test");
@@ -58,20 +51,53 @@ for (int y = 0; y < 50; y++) {
 file.save();
 ```
 
-## Profiling with VisualVM
+### Other examples
+Two examples are implemented as optional tests, in the ```src/test/java``` folder: ```OdsFileCreation.java``` and ```OdsFileWithHeaderAndFooterCreation.java```. The sources are quite simple.
+
+To test it, one has to run tests manually:
+```
+mvn -Dtest=OdsFileCreation test
+```
+
+And:
+```
+mvn -Dtest=OdsFileWithHeaderAndFooterCreation test
+```
+
+The resulting ods files are written in current directory, and can be opened with LibreOffice or OpenOffice.
+
+## Speed
+Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a small (a single sheet with 5000 rows and 20 columns) simple ODS file. For bigger files, JOpenDocument becomes slower and slower in comparison with FastODS and SimpleODS.
+
+## Technical informations
+### Benchmark
+#### SimpleODS installation
+To benchmark FastODS, you'll have to install the SimpleODS jar, which is present in the ```src/bench/resources``` folder. Use your favourite command-line interface. Assuming that you have just "git cloned" the repo and that you are in the fastods directory, just type the following lines:
+```
+cd src/bench/resources
+mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=simpleODS-0.5.3.jar
+cd ../../..
+```
+#### Run the benchmark
+Then run the benchark:
+```
+mvn -P bench -Dtest=Benchmark test
+```
+
+### Profiling with VisualVM
 Download and install VisualVM: https://visualvm.github.io/download.html.
 
 Install and configure the Startup Profiler plugin: https://visualvm.java.net/startupprofiler.html.
 
-### Step 1: Preset
+#### Step 1: Preset
 Create a profiling preset named "fastods" (Preset Name):
 * Do not profile packages: java.*, javax.*, sun.*, sunw.*, com.sun.*
 * Start profiling from classes: org.apache.maven.surefire.booter.ForkedBooter
 
-### Step 2: Launch VisualVM
+#### Step 2: Launch VisualVM
 Click on the clock icon (Profile startup), and set application configuration, select "fastods" preset for settings, and copy arguments to clipboard.
 
-### Step3: Start the test
+#### Step3: Start the test
 Type the command:
 ```mvn -Dmaven.surefire.debug="<copy from clipboard and escape quotes>" -Dtest=ProfileFastODS#testFast test```
 
@@ -83,6 +109,9 @@ Currently, the most greedy methods are:
 * ```HeavyTableRow.appendXMLToTableRow```: 11% of the time, 3.2 million calls
 
 ## HISTORY
-v. 0.0.1 : first version
 
-v. 0.0.2 : all existing data types, fast writing.
+| version | date | comments |
+| --- | --- | --- |
+| 0.0.1 | 2016 | first version |
+| 0.0.2 | 2016 | all existing data types implemented, fast writing |
+| 0.1.0 | 2016-11-13 | footer and header |
