@@ -16,3 +16,6 @@ simpleods5.3
 *.ods
 *.ods#
 
+# mvn release
+release.properties
+pom.xml.releaseBackup
