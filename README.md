@@ -28,9 +28,27 @@ It won't even *read* ods files.
 Because it doesn't use XML internally, but only for writing files. That's why it is fast and lightweight.
 
 ## Installation
-Just download the latest jar and run:
+Just download the **jar file** from the latest [release](https://github.com/jferard/fastods/releases/).
 
-```mvn install:install-file -Dfile=fastods-<version>.jar```
+### Maven
+Simply run the following command to install the jar in your local repo:
+
+```
+mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=fastods-<version>.jar
+```
+
+In your POM, you'll have to include the following dependency:
+```
+<dependencies>
+	...
+	<dependency>
+		<groupId>com.github.jferard</groupId>
+		<artifactId>fastods</artifactId>
+		<version>[set the version number here]</version>
+	</dependency>
+	...
+</dependencies>
+```
 
 ## Examples
 ### Basic example
