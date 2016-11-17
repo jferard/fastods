@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -38,26 +39,24 @@ import org.xml.sax.SAXException;
 import com.google.common.base.Objects;
 
 public class DomTester {
-	static DomTester tester = new DomTester();
 	private DocumentBuilder builder;
-	private Logger logger;
+	static Logger logger = Logger.getLogger("DomTester");
 
-	private DomTester() {
+	private DomTester() throws ParserConfigurationException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		this.builder = factory.newDocumentBuilder();
+	}
+
+	public static boolean equals(final String s1, final String s2) {
 		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory
-					.newInstance();
-			this.builder = factory.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			DomTester tester = new DomTester();
+			return tester.stringEquals(s1, s2);
+		} catch (Exception e) {
+			DomTester.logger.log(Level.SEVERE, "can't test equality", e);
+			return false;
 		}
-		this.logger = Logger.getLogger(this.getClass().getName());
 	}
 
-	public static boolean equals(final String s1, final String s2)
-			throws SAXException, IOException {
-		return tester.stringEquals(s1, s2);
-	}
-		
 	private boolean stringEquals(final String s1, final String s2)
 			throws SAXException, IOException {
 		Document document1 = this.builder.parse(
@@ -80,7 +79,8 @@ public class DomTester {
 		final int l1 = nodes1.getLength();
 		final int l2 = nodes2.getLength();
 		if (l1 != l2) {
-			this.logger.info("Different children number "+element1+"->"+nodes1+" vs "+element2+"->"+nodes2);
+			DomTester.logger.info("Different children number " + element1 + "->"
+					+ nodes1 + " vs " + element2 + "->" + nodes2);
 			return false;
 		}
 
@@ -88,7 +88,7 @@ public class DomTester {
 			final Node c1 = nodes1.item(i);
 			final Node c2 = nodes2.item(i);
 			if (!this.equals(c1, c2)) {
-				this.logger.info("Different children "+c1+" vs "+c2);
+				DomTester.logger.info("Different children " + c1 + " vs " + c2);
 				return false;
 			}
 		}
@@ -117,8 +117,7 @@ public class DomTester {
 					return false;
 
 				for (int i = 0; i < attributes1.getLength(); i++)
-					if (!this.equals(attributes1.item(i),
-							attributes2.item(i)))
+					if (!this.equals(attributes1.item(i), attributes2.item(i)))
 						return false;
 			}
 		}

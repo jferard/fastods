@@ -22,8 +22,6 @@ package com.github.jferard.fastods.datastyle;
 import java.io.IOException;
 import java.util.Locale;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,8 +47,8 @@ public class DateStyleTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testWithNoName() {
-		DateStyle ds = this.factory.dateStyleBuilder(null).locale(this.locale)
+	public final void testWithNullName() {
+		this.factory.dateStyleBuilder(null).locale(this.locale)
 				.build();
 	}
 
@@ -89,8 +87,7 @@ public class DateStyleTest {
 
 	@Test
 	public final void testWithVolatile()
-			throws IOException, ParserConfigurationException, SAXException {
-		System.out.println("equals");
+			throws IOException, SAXException {
 		DateStyle ds = this.factory.dateStyleBuilder("test")
 				.volatileStyle(false).build();
 		StringBuilder sb = new StringBuilder();

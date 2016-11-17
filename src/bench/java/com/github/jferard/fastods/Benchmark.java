@@ -22,6 +22,7 @@ package com.github.jferard.fastods;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -46,45 +47,47 @@ public class Benchmark {
 	private Random random;
 
 	@Rule public TestName name = new TestName();
+	private Logger logger;
 	
 	@Before
 	public final void setUp() {
 		this.random = new Random();
+		this.logger = Logger.getLogger("Benchmark");
 	}
 
 	@Test
 	public void test1() throws SimpleOdsException, IOException {
 		for (int i = 0 ; i<TIMES ; i++) {
-			testFast(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-			testSimple(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-			testJOpen(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+			this.testFast(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+			this.testSimple(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+			this.testJOpen(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
 		}
 	}
 	
 	@Test
 	public void test2() throws SimpleOdsException, IOException {
 		for (int i = 0 ; i<TIMES ; i++) {
-			testFast(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-			testSimple(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-			testJOpen(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+			this.testFast(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+			this.testSimple(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+			this.testJOpen(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
 		}
 	}
 	
 	@Test
 	public void test3() throws SimpleOdsException, IOException {
 		for (int i = 0 ; i<TIMES ; i++) {
-			testFast(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-			testSimple(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-			testJOpen(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+			this.testFast(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+			this.testSimple(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+			this.testJOpen(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
 		}
 	}
 	
 	public final void testFast(final int rowCount, final int colCount) {
 		// Open the file.
-		System.out.println("testFast: filling a " + rowCount + " rows, "
+		this.logger.info("testFast: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
-		OdsFile file = OdsFile.create("f20columns.ods");
+		OdsFile file = OdsFile.create("fastods_benchmark.ods");
 		final Table table = file.addTable("test", rowCount, colCount);
 
 		for (int y = 0; y < rowCount; y++) {
@@ -98,16 +101,16 @@ public class Benchmark {
 
 		file.save();
 		long t2 = System.currentTimeMillis();
-		System.out.println("Filled in " + (t2 - t1) + " ms");
+		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 	
 	public final void testSimple(int rowCount, int colCount) throws SimpleOdsException {
 		// Open the file.
-		System.out.println("testSimple: filling a " + rowCount + " rows, "
+		this.logger.info("testSimple: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
-				"s20columns.ods");
+				"simpleods_benchmark.ods");
 		file.addTable("test");
 		org.simpleods.Table table = (org.simpleods.Table) file.getContent()
 				.getTableQueue().get(0);
@@ -123,12 +126,12 @@ public class Benchmark {
 
 		file.save();
 		long t2 = System.currentTimeMillis();
-		System.out.println("Filled in " + (t2 - t1) + " ms");
+		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 
 	public final void testJOpen(int rowCount, int colCount) throws IOException {
 		// the file.
-		System.out.println("testJOpen: filling a " + rowCount + " rows, "
+		this.logger.info("testJOpen: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
 		long t1 = System.currentTimeMillis();
 		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel()).getSheet(0);
@@ -140,10 +143,9 @@ public class Benchmark {
 				sheet.setValueAt(String.valueOf(this.random.nextInt(1000)), x, y);
 			}
 		}
-		File outputFile = new File("j20columns.ods");
+		File outputFile = new File("jopendocument_benchmark.ods");
 		sheet.getSpreadSheet().saveAs(outputFile);
 		long t2 = System.currentTimeMillis();
-		System.out.println("Filled in " + (t2 - t1) + " ms");
+		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
-
 }

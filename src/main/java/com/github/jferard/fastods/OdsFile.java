@@ -249,11 +249,9 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save() {
-
 		try {
 			return this.save(new FileOutputStream(this.filename));
 		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
 			return false;
 		}
 	}

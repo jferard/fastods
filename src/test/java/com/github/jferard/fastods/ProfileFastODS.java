@@ -20,6 +20,7 @@
 package com.github.jferard.fastods;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -40,11 +41,13 @@ public class ProfileFastODS {
 	private long t1;
 
 	@Rule public TestName name = new TestName();
+	private Logger logger;
 	
 	@Before
 	public final void setUp() {
+		this.logger = Logger.getLogger("OdsFileCreation");		
 		this.random = new Random();
-		System.out.println(this.name.getMethodName()+" : filling a " + ROW_COUNT + " rows, "
+		this.logger.info(this.name.getMethodName()+" : filling a " + ROW_COUNT + " rows, "
 				+ COL_COUNT + " columns spreadsheet");
 		this.t1 = System.currentTimeMillis();
 	}
@@ -52,13 +55,12 @@ public class ProfileFastODS {
 	@After
 	public final void tearDown() {
 		long t2 = System.currentTimeMillis();
-		System.out.println("Filled in " + (t2 - this.t1) + " ms");
+		this.logger.info("Filled in " + (t2 - this.t1) + " ms");
 	}
 
 	@Test
 	public final void testFast() {
-		// Open the file.
-		OdsFile file = OdsFile.create("f20columns.ods");
+		OdsFile file = OdsFile.create("fastods_profile.ods");
 		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
 
 		for (int y = 0; y < ROW_COUNT; y++) {
