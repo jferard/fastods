@@ -26,11 +26,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
@@ -247,8 +245,7 @@ public class OdsFile {
 	/**
 	 * Save the new file.
 	 *
-	 * @return true - the file was saved<br>
-	 *         false - an exception happened
+	 * @return true if the file was saved and false if an exception happened
 	 */
 	public boolean save() {
 		try {
@@ -258,6 +255,18 @@ public class OdsFile {
 		}
 	}
 
+	/**
+	 * @param builder a builder for the ZipOutputStream and the Writer (buffers, level, ...)
+	 * @return true if the file was saved and false if an exception happened
+	 */
+	public boolean save(ZipUTF8WriterBuilder builder) {
+		try {
+			return this.save(builder.build(new FileOutputStream(this.filename)));
+		} catch (final FileNotFoundException e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * Save the new file.
 	 *
