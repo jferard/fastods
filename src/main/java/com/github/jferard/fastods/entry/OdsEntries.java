@@ -23,6 +23,8 @@ package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 import com.github.jferard.fastods.Table;
@@ -43,17 +45,18 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  *
  */
 public class OdsEntries {
-	public static OdsEntries create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			final DataStyles format) {
+	public static OdsEntries create(final PositionUtil positionUtil,
+			final XMLUtil xmlUtil, final DataStyles format) {
 		final MimetypeEntry mimetypeEntry = new MimetypeEntry();
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
 		final StylesEntry stylesEntry = new StylesEntry();
-		final ContentEntry contentEntry = new ContentEntry(stylesEntry, positionUtil,
-				xmlUtil, format);
-		return new OdsEntries(mimetypeEntry, manifestEntry, settingsEntry,
-				metaEntry, contentEntry, stylesEntry);
+		final ContentEntry contentEntry = new ContentEntry(stylesEntry,
+				positionUtil, xmlUtil, format);
+		return new OdsEntries(Logger.getLogger(OdsEntries.class.getName()),
+				mimetypeEntry, manifestEntry, settingsEntry, metaEntry,
+				contentEntry, stylesEntry);
 	}
 
 	private final ContentEntry contentEntry;
@@ -63,11 +66,13 @@ public class OdsEntries {
 	private final SettingsEntry settingsEntry;
 
 	private final StylesEntry stylesEntry;
+	private Logger logger;
 
-	protected OdsEntries(final MimetypeEntry mimetypeEntry,
+	protected OdsEntries(final Logger logger, final MimetypeEntry mimetypeEntry,
 			final ManifestEntry manifestEntry,
 			final SettingsEntry settingsEntry, final MetaEntry metaEntry,
 			final ContentEntry contentEntry, final StylesEntry stylesEntry) {
+		this.logger = logger;
 		this.mimetypeEntry = mimetypeEntry;
 		this.manifestEntry = manifestEntry;
 		this.settingsEntry = settingsEntry;
@@ -124,24 +129,32 @@ public class OdsEntries {
 		this.settingsEntry.setTables(this.getTables());
 	}
 
-	public void writeEntries(final XMLUtil xmlUtil,
-			final ZipUTF8Writer writer)
+	public void writeEntries(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
 			throws IOException {
+		this.logger.log(Level.FINER, "Writing entry: mimeTypeEntry to zip file");
 		this.mimetypeEntry.write(xmlUtil, writer);
+		this.logger.log(Level.FINER, "Writing entry: manifestEntry to zip file");
 		this.manifestEntry.write(xmlUtil, writer);
+		this.logger.log(Level.FINER, "Writing entry: metaEntry to zip file");
 		this.metaEntry.write(xmlUtil, writer);
+		this.logger.log(Level.FINER, "Writing entry: stylesEntry to zip file");
 		this.stylesEntry.write(xmlUtil, writer);
+		this.logger.log(Level.FINER, "Writing entry: contentEntry to zip file");
 		this.contentEntry.write(xmlUtil, writer);
+		this.logger.log(Level.FINER, "Writing entry: settingsEntry to zip file");
 		this.settingsEntry.write(xmlUtil, writer);
 	}
 
-	public void createEmptyEntries(final ZipUTF8Writer writer) throws IOException {
+	public void createEmptyEntries(final ZipUTF8Writer writer)
+			throws IOException {
+		this.logger.log(Level.FINER, "Writing empty entries to zip file");
 		for (final String entryName : new String[] { "Thumbnails/",
 				"Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
 				"Configurations2/menubar/", "Configurations2/popupmenu/",
 				"Configurations2/progressbar/", "Configurations2/statusbar/",
 				"Configurations2/toolbar/" }) {
+			this.logger.log(Level.FINEST, "Writing entry: {0} to zip file", entryName);
 			writer.putNextEntry(new ZipEntry(entryName));
 			writer.closeEntry();
 		}

@@ -3,6 +3,7 @@ package com.github.jferard.fastods.entry;
 import static org.junit.Assert.*;
 
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -36,6 +37,7 @@ public class OdsEntriesTest {
 
 	@Before
 	public void setUp() {
+		Logger logger = PowerMock.createNiceMock(Logger.class);
 		this.mimetypeEntry = PowerMock.createMock(MimetypeEntry.class);
 		this.manifestEntry = PowerMock.createMock(ManifestEntry.class);
 		this.settingsEntry = PowerMock.createMock(SettingsEntry.class);
@@ -43,7 +45,7 @@ public class OdsEntriesTest {
 		this.contentEntry = PowerMock.createMock(ContentEntry.class);
 		this.stylesEntry = PowerMock.createMock(StylesEntry.class);
 
-		this.oe = new OdsEntries(this.mimetypeEntry, this.manifestEntry, this.settingsEntry,
+		this.oe = new OdsEntries(logger, this.mimetypeEntry, this.manifestEntry, this.settingsEntry,
 				this.metaEntry, this.contentEntry, this.stylesEntry);
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;

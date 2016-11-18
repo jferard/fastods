@@ -19,6 +19,8 @@
  */
 package com.github.jferard.fastods;
 
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Before;
@@ -39,7 +41,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 
 	@Before
 	public void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");		
+		this.logger = Logger.getLogger("OdsFileCreation");
 	}
 
 	@Test
@@ -54,18 +56,16 @@ public class OdsFileWithHeaderAndFooterCreation {
 		final FHTextStyle pnts = FHTextStyle.builder("style").fontWeightBold()
 				.build();
 		FooterHeader header = FooterHeader
-				.regionBuilder(FooterHeader.Type.HEADER)
-				.region(Region.LEFT).styledText(lts, "left header")
-				.region(Region.CENTER).styledText(cts, "center header")
-				.pageNumber(pnts).region(Region.RIGHT)
-				.styledText(rts, "right header").build();
+				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
+				.styledText(lts, "left header").region(Region.CENTER)
+				.styledText(cts, "center header").pageNumber(pnts)
+				.region(Region.RIGHT).styledText(rts, "right header").build();
 
 		FooterHeader footer = FooterHeader
-				.regionBuilder(FooterHeader.Type.FOOTER)
-				.region(Region.LEFT).styledText(cts, "left footer")
-				.region(Region.CENTER).styledText(rts, "center footer")
-				.pageCount(pnts).region(Region.RIGHT)
-				.styledText(lts, "right footer").build();
+				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.LEFT)
+				.styledText(cts, "left footer").region(Region.CENTER)
+				.styledText(rts, "center footer").pageCount(pnts)
+				.region(Region.RIGHT).styledText(lts, "right footer").build();
 
 		PageStyle ps = PageStyle.builder("test").footer(footer).header(header)
 				.build();
@@ -89,6 +89,11 @@ public class OdsFileWithHeaderAndFooterCreation {
 		row.setStringValue(1, "text2");
 		row.setStringValue(2, "text3");
 
+		// let's display logging infos
+		final Logger rootLogger = Logger.getLogger("");
+		rootLogger.setLevel(Level.FINEST);
+		for (Handler h : rootLogger.getHandlers())
+			h.setLevel(Level.FINEST);
 		file.save();
 	}
 }

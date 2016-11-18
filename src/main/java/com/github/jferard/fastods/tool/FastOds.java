@@ -24,6 +24,8 @@ package com.github.jferard.fastods.tool;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -60,6 +62,8 @@ public final class FastOds {
 				Desktop.getDesktop().open(f);
 				return true;
 			} catch (final IOException e) {
+				Logger.getLogger(FastOds.class.getName()).log(Level.SEVERE,
+						"Can't open file "+f+" in appropriate application", e);
 			}
 		}
 		return false;
