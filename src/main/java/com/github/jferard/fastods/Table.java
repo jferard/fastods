@@ -26,6 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.entry.ConfigItem;
+import com.github.jferard.fastods.entry.ContentEntry;
+import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
@@ -88,7 +91,7 @@ public class Table implements NamedObject {
 	private final ConfigItem zoomValue;
 	private StylesEntry stylesEntry;
 
-	Table(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+	public Table(final PositionUtil positionUtil, final XMLUtil xmlUtil,
 			final ContentEntry contentEntry, StylesEntry stylesEntry, final DataStyles format,
 			final String name, final int rowCapacity,
 			final int columnCapacity) {
@@ -278,7 +281,7 @@ public class Table implements NamedObject {
 		}
 	}
 
-	void appendXMLToContentEntry(final XMLUtil util,
+	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.name);
@@ -294,7 +297,7 @@ public class Table implements NamedObject {
 		appendable.append("</table:table>");
 	}
 
-	void appendXMLToSettingsEntry(final XMLUtil util,
+	public void appendXMLToSettingsEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.name);

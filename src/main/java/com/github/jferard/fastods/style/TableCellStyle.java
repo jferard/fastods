@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.ContentEntry;
-import com.github.jferard.fastods.OdsEntries;
-import com.github.jferard.fastods.StylesEntry;
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.entry.ContentEntry;
+import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**

@@ -19,7 +19,6 @@
  */
 package com.github.jferard.fastods;
 
-import java.util.Random;
 import java.util.logging.Logger;
 
 import org.junit.Before;
@@ -31,7 +30,6 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard

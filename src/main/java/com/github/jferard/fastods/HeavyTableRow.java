@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.entry.ContentEntry;
+import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FullList;

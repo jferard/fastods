@@ -19,18 +19,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * @author Julien Férard
  */
 public interface OdsEntry {
-	void write(XMLUtil util, ZipOutputStream out, Writer writer)
+	void write(XMLUtil util, ZipUTF8Writer writer)
 			throws IOException;
 }

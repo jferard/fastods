@@ -17,7 +17,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
 
@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jferard.fastods.entry.ConfigItem;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 

@@ -39,16 +39,16 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * WHERE ? settings.xml/office:document-settings
@@ -229,9 +229,8 @@ public class SettingsEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut,
-			final Writer writer) throws IOException {
-		zipOut.putNextEntry(new ZipEntry("settings.xml"));
+	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		writer.putNextEntry(new ZipEntry("settings.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 		writer.write(
 				"<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:settingsEntry=\"urn:oasis:names:tc:opendocument:xmlns:settingsEntry:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">");
@@ -311,6 +310,6 @@ public class SettingsEntry implements OdsEntry {
 		writer.write("</office:settings>");
 		writer.write("</office:document-settings>");
 		writer.flush();
-		zipOut.closeEntry();
+		writer.closeEntry();
 	}
 }

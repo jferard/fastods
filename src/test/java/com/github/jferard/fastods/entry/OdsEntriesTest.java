@@ -1,4 +1,4 @@
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import static org.junit.Assert.*;
 
@@ -10,11 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
+import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.EqualityUtil;

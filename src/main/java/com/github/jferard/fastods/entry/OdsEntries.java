@@ -19,14 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.FHTextStyle;
@@ -34,6 +33,7 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * The OdsEntries class is simply a facade in front of OdsEntry classes. See GOF
@@ -125,25 +125,25 @@ public class OdsEntries {
 	}
 
 	public void writeEntries(final XMLUtil xmlUtil,
-			final ZipOutputStream zipOut, final Writer writer)
+			final ZipUTF8Writer writer)
 			throws IOException {
-		this.mimetypeEntry.write(xmlUtil, zipOut, writer);
-		this.manifestEntry.write(xmlUtil, zipOut, writer);
-		this.metaEntry.write(xmlUtil, zipOut, writer);
-		this.stylesEntry.write(xmlUtil, zipOut, writer);
-		this.contentEntry.write(xmlUtil, zipOut, writer);
-		this.settingsEntry.write(xmlUtil, zipOut, writer);
+		this.mimetypeEntry.write(xmlUtil, writer);
+		this.manifestEntry.write(xmlUtil, writer);
+		this.metaEntry.write(xmlUtil, writer);
+		this.stylesEntry.write(xmlUtil, writer);
+		this.contentEntry.write(xmlUtil, writer);
+		this.settingsEntry.write(xmlUtil, writer);
 	}
 
-	public void createEmptyEntries(final ZipOutputStream o) throws IOException {
-		for (final String entry : new String[] { "Thumbnails/",
+	public void createEmptyEntries(final ZipUTF8Writer writer) throws IOException {
+		for (final String entryName : new String[] { "Thumbnails/",
 				"Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
 				"Configurations2/menubar/", "Configurations2/popupmenu/",
 				"Configurations2/progressbar/", "Configurations2/statusbar/",
 				"Configurations2/toolbar/" }) {
-			o.putNextEntry(new ZipEntry(entry));
-			o.closeEntry();
+			writer.putNextEntry(new ZipEntry(entryName));
+			writer.closeEntry();
 		}
 	}
 }

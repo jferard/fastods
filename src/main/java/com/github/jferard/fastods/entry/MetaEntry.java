@@ -38,16 +38,15 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * WHERE ? meta.xml/office:document-meta
@@ -76,38 +75,13 @@ public class MetaEntry implements OdsEntry {
 		this.editingDuration = "PT1M00S";
 	}
 
-//	public void decCellCount() {
-//		if (this.cellCount > 0) {
-//			this.cellCount--;
-//		}
-//	}
-//
-//	public void decTableCount() {
-//		if (this.tableCount > 0) {
-//			this.tableCount--;
-//		}
-//	}
-//
-//	public String getCreator() {
-//		return this.creator;
-//	}
-//
-//	public void incCellCount() {
-//		this.cellCount++;
-//	}
-//
-//	public void incTableCount() {
-//		this.tableCount++;
-//	}
-
 	public void setCreator(final String creator) {
 		this.creator = creator;
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut,
-			final Writer writer) throws IOException {
-		zipOut.putNextEntry(new ZipEntry("meta.xml"));
+	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		writer.putNextEntry(new ZipEntry("meta.xml"));
 		writer.append("<?xml");
 		util.appendEAttribute(writer, "version", "1.0");
 		util.appendEAttribute(writer, "encoding", "UTF-8");
@@ -139,7 +113,7 @@ public class MetaEntry implements OdsEntry {
 //		writer.append("/>")
 		writer.append("</office:meta>").append("</office:document-meta>");
 		writer.flush();
-		zipOut.closeEntry();
+		writer.closeEntry();
 	}
 
 	/**

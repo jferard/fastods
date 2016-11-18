@@ -38,14 +38,13 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * WHERE ? META-INF/manifest.xml/manifest:manifest
@@ -85,12 +84,12 @@ public class ManifestEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut,
-			final Writer writer) throws IOException {
-		zipOut.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
+	public void write(final XMLUtil util, final ZipUTF8Writer writer)
+			throws IOException {
+		writer.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
 		for (final String item : this.getManifest())
 			writer.write(item);
 		writer.flush();
-		zipOut.closeEntry();
+		writer.closeEntry();
 	}
 }

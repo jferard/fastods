@@ -56,7 +56,6 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class WriteUtil {
-	private static final Charset UTF_8 = Charset.forName("UTF-8");
 	private final String[] ints;
 
 	public WriteUtil() {
@@ -72,17 +71,5 @@ public class WriteUtil {
 			return this.ints[i];
 		} else
 			return Integer.toString(value);
-	}
-
-	/**
-	 * Wraps an OutputStream in a BufferedWriter
-	 *
-	 * @param out
-	 *            the stream
-	 * @return the writer
-	 */
-	public Writer wrapStream(final OutputStream out, final int size) {
-		return new BufferedWriter(new OutputStreamWriter(out, WriteUtil.UTF_8),
-				size);
 	}
 }

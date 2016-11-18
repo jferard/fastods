@@ -30,12 +30,12 @@ import java.io.Writer;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.zip.Deflater;
 import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
+import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -45,6 +45,8 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
 /**
  * WHERE ? root !
@@ -259,32 +261,30 @@ public class OdsFile {
 	/**
 	 * Save the new file.
 	 *
-	 * @param output
+	 * @param out
 	 *            The OutputStream that should be used.
 	 * @return true - the file was saved<br>
 	 *         false - an exception happened
 	 */
-	public boolean save(final OutputStream output) {
-		this.entries.setTables();
-		final ZipOutputStream zipOut = new ZipOutputStream(output);
-		zipOut.setLevel(Deflater.BEST_SPEED);
-		return this.save(zipOut);
+	public boolean save(final OutputStream out) {
+		ZipUTF8WriterBuilder builder = ZipUTF8Writer.builder();
+		return this.save(builder.build(out));
 	}
 
-	protected boolean save(final ZipOutputStream zipOut) {
-		final Writer writer = this.writeUtil.wrapStream(zipOut, this.bufferSize);
+	public boolean save(ZipUTF8Writer writer) {
+		this.entries.setTables();
 
 		try {
-			this.entries.writeEntries(this.xmlUtil, zipOut, writer);
-			this.entries.createEmptyEntries(zipOut);
+			this.entries.writeEntries(this.xmlUtil, writer);
+			this.entries.createEmptyEntries(writer);
 		} catch (final IOException e) {
-			// should catch exceptions into a logger
+			// TODO should catch exceptions into a logger
 			return false;
 		} finally {
 			try {
-				zipOut.close();
+				writer.close();
 			} catch (final IOException e) {
-				// should catch exceptions into a logger
+				// TODO should catch exceptions into a logger
 				return false;
 			}
 		}

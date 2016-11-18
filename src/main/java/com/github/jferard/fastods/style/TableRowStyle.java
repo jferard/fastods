@@ -23,8 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.ContentEntry;
-import com.github.jferard.fastods.OdsEntries;
+import com.github.jferard.fastods.entry.ContentEntry;
+import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**

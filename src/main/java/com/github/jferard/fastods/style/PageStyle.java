@@ -24,8 +24,8 @@ package com.github.jferard.fastods.style;
 import java.io.IOException;
 
 import com.github.jferard.fastods.FooterHeader;
-import com.github.jferard.fastods.OdsEntries;
 import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**

@@ -38,7 +38,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -46,6 +46,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * WHERE ? mimetype
@@ -56,12 +57,11 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class MimetypeEntry implements OdsEntry {
 	@Override
-	public void write(final XMLUtil util, final ZipOutputStream zipOut,
-			final Writer writer) throws IOException {
-		zipOut.putNextEntry(new ZipEntry("mimetype"));
+	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		writer.putNextEntry(new ZipEntry("mimetype"));
 		writer.write("application/vnd.oasis.opendocument.spreadsheet");
 		writer.flush();
-		zipOut.closeEntry();
+		writer.closeEntry();
 	}
 
 }

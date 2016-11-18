@@ -9,7 +9,7 @@ import org.powermock.api.easymock.PowerMock;
 import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
-import com.github.jferard.fastods.OdsEntries;
+import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
