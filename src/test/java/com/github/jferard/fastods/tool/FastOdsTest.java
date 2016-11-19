@@ -3,6 +3,9 @@ package com.github.jferard.fastods.tool;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -38,6 +41,12 @@ public class FastOdsTest {
 
 	@Test
 	public final void testOpenFileError() throws IOException {
+		// let's hide logging infos
+		final Logger rootLogger = Logger.getLogger("");
+		rootLogger.setLevel(Level.OFF);
+		for (final Handler h : rootLogger.getHandlers())
+			h.setLevel(Level.OFF);
+		
 		PowerMock.mockStatic(Desktop.class);
 		final Desktop d = PowerMock.createMock(Desktop.class);
 		final File f = new File(".\\pom.xml");
