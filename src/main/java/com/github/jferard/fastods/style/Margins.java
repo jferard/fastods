@@ -23,15 +23,14 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Margins {
-	private final String top;
-	private final String right;
+	private final String all;
 	private final String bottom;
 	private final String left;
-	private String all;
+	private final String right;
+	private final String top;
 
 	Margins(final String all, final String top, final String right,
 			final String bottom, final String left) {
@@ -40,26 +39,6 @@ public class Margins {
 		this.right = right;
 		this.bottom = bottom;
 		this.left = left;
-	}
-
-	public String getTop() {
-		return this.top;
-	}
-
-	public String getAll() {
-		return this.all;
-	}
-
-	public String getRight() {
-		return this.right;
-	}
-
-	public String getBottom() {
-		return this.bottom;
-	}
-
-	public String getLeft() {
-		return this.left;
 	}
 
 	public void appendXMLToTableCellStyle(final XMLUtil util,
@@ -96,13 +75,13 @@ public class Margins {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (!(o instanceof Margins))
 			return false;
 
-		Margins other = (Margins) o;
+		final Margins other = (Margins) o;
 		return (this.top == null ? other.top == null
 				: this.top.equals(other.top))
 				&& (this.right == null ? other.right == null
@@ -113,6 +92,26 @@ public class Margins {
 						: this.left.equals(other.left))
 				&& (this.all == null ? other.all == null
 						: this.all.equals(other.all));
+	}
+
+	public String getAll() {
+		return this.all;
+	}
+
+	public String getBottom() {
+		return this.bottom;
+	}
+
+	public String getLeft() {
+		return this.left;
+	}
+
+	public String getRight() {
+		return this.right;
+	}
+
+	public String getTop() {
+		return this.top;
 	}
 
 	@Override

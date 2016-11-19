@@ -32,17 +32,17 @@ import java.util.zip.ZipOutputStream;
 public class ZipUTF8WriterBuilder {
 	private static final int DEFAULT_BUFFER = -1;
 	private static final int NO_BUFFER = -2;
+	private int level;
 	private int writerBufferSize;
 	private int zipBufferSize;
-	private int level;
 
 	ZipUTF8WriterBuilder() {
 		this.level = Deflater.BEST_SPEED;
-		this.writerBufferSize = DEFAULT_BUFFER;
-		this.zipBufferSize = DEFAULT_BUFFER;
+		this.writerBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
+		this.zipBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
 	}
 
-	public ZipUTF8Writer build(OutputStream out) {
+	public ZipUTF8Writer build(final OutputStream out) {
 		final OutputStream bufferedOut;
 		switch (this.zipBufferSize) {
 		case NO_BUFFER:
@@ -55,10 +55,11 @@ public class ZipUTF8WriterBuilder {
 			bufferedOut = new BufferedOutputStream(out, this.zipBufferSize);
 			break;
 		}
-		ZipOutputStream zipOut = new ZipOutputStream(bufferedOut);
+		final ZipOutputStream zipOut = new ZipOutputStream(bufferedOut);
 		zipOut.setMethod(ZipOutputStream.DEFLATED);
 		zipOut.setLevel(this.level);
-		Writer writer = new OutputStreamWriter(zipOut, ZipUTF8Writer.UTF_8);
+		final Writer writer = new OutputStreamWriter(zipOut,
+				ZipUTF8Writer.UTF_8);
 		Writer bufferedWriter;
 		switch (this.writerBufferSize) {
 		case NO_BUFFER:
@@ -74,7 +75,32 @@ public class ZipUTF8WriterBuilder {
 		return new ZipUTF8Writer(zipOut, bufferedWriter);
 	}
 
-	public ZipUTF8WriterBuilder writerBuffer(int size) {
+	public ZipUTF8WriterBuilder defaultWriterBuffer() {
+		this.writerBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
+		return this;
+	}
+
+	public ZipUTF8WriterBuilder defaultZipBuffer() {
+		this.zipBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
+		return this;
+	}
+
+	public ZipUTF8WriterBuilder level(final int level) {
+		this.level = level;
+		return this;
+	}
+
+	public ZipUTF8WriterBuilder noWriterBuffer() {
+		this.writerBufferSize = ZipUTF8WriterBuilder.NO_BUFFER;
+		return this;
+	}
+
+	public ZipUTF8WriterBuilder noZipBuffer() {
+		this.zipBufferSize = ZipUTF8WriterBuilder.NO_BUFFER;
+		return this;
+	}
+
+	public ZipUTF8WriterBuilder writerBuffer(final int size) {
 		if (size < 0)
 			throw new IllegalArgumentException();
 
@@ -82,36 +108,11 @@ public class ZipUTF8WriterBuilder {
 		return this;
 	}
 
-	public ZipUTF8WriterBuilder defaultWriterBuffer() {
-		this.writerBufferSize = DEFAULT_BUFFER;
-		return this;
-	}
-
-	public ZipUTF8WriterBuilder noWriterBuffer() {
-		this.writerBufferSize = NO_BUFFER;
-		return this;
-	}
-
-	public ZipUTF8WriterBuilder zipBuffer(int size) {
+	public ZipUTF8WriterBuilder zipBuffer(final int size) {
 		if (size < 0)
 			throw new IllegalArgumentException();
 
 		this.zipBufferSize = size;
-		return this;
-	}
-
-	public ZipUTF8WriterBuilder defaultZipBuffer() {
-		this.zipBufferSize = DEFAULT_BUFFER;
-		return this;
-	}
-
-	public ZipUTF8WriterBuilder noZipBuffer() {
-		this.zipBufferSize = NO_BUFFER;
-		return this;
-	}
-
-	public ZipUTF8WriterBuilder level(int level) {
-		this.level = level;
 		return this;
 	}
 }

@@ -98,7 +98,8 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void write(final XMLUtil util, final ZipUTF8Writer writer)
+			throws IOException {
 		writer.putNextEntry(new ZipEntry("styles.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(

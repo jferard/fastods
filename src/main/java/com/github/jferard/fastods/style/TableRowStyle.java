@@ -65,6 +65,10 @@ public class TableRowStyle implements StyleTag {
 		this.rowHeight = rowHeight;
 	}
 
+	public void addToContent(final ContentEntry contentEntry) {
+		contentEntry.addStyleTag(this);
+	}
+
 	public void addToEntries(final OdsEntries odsEntries) {
 		odsEntries.addStyleTag(this);
 	}
@@ -102,9 +106,5 @@ public class TableRowStyle implements StyleTag {
 	 */
 	public String getRowHeight() {
 		return this.rowHeight;
-	}
-
-	public void addToContent(ContentEntry contentEntry) {
-		contentEntry.addStyleTag(this);
 	}
 }

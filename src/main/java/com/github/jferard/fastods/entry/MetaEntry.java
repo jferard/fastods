@@ -64,8 +64,8 @@ public class MetaEntry implements OdsEntry {
 
 	private final String editingDuration;
 	private final String generator;
-//	private int tableCount = 1;
-//	private int cellCount = 1;
+	// private int tableCount = 1;
+	// private int cellCount = 1;
 
 	public MetaEntry() {
 		this.setDateTimeNow();
@@ -80,7 +80,8 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void write(final XMLUtil util, final ZipUTF8Writer writer)
+			throws IOException {
 		writer.putNextEntry(new ZipEntry("meta.xml"));
 		writer.append("<?xml");
 		util.appendEAttribute(writer, "version", "1.0");
@@ -107,10 +108,10 @@ public class MetaEntry implements OdsEntry {
 				.append("<meta:user-defined meta:name=\"Info 2\"/>")
 				.append("<meta:user-defined meta:name=\"Info 3\"/>")
 				.append("<meta:user-defined meta:name=\"Info 4\"/>");
-//				.append("<meta:document-statistic");
-//		util.appendEAttribute(writer, "meta:table-count", this.tableCount);
-//		util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
-//		writer.append("/>")
+		// .append("<meta:document-statistic");
+		// util.appendEAttribute(writer, "meta:table-count", this.tableCount);
+		// util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
+		// writer.append("/>")
 		writer.append("</office:meta>").append("</office:document-meta>");
 		writer.flush();
 		writer.closeEntry();

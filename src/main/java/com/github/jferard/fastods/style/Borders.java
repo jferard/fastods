@@ -23,15 +23,14 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Borders {
-	private final BorderAttribute top;
-	private final BorderAttribute right;
+	private final BorderAttribute all;
 	private final BorderAttribute bottom;
 	private final BorderAttribute left;
-	private BorderAttribute all;
+	private final BorderAttribute right;
+	private final BorderAttribute top;
 
 	Borders(final BorderAttribute all, final BorderAttribute top,
 			final BorderAttribute right, final BorderAttribute bottom,
@@ -41,26 +40,6 @@ public class Borders {
 		this.right = right;
 		this.bottom = bottom;
 		this.left = left;
-	}
-
-	public BorderAttribute getTop() {
-		return this.top;
-	}
-
-	public BorderAttribute getAll() {
-		return this.all;
-	}
-
-	public BorderAttribute getRight() {
-		return this.right;
-	}
-
-	public BorderAttribute getBottom() {
-		return this.bottom;
-	}
-
-	public BorderAttribute getLeft() {
-		return this.left;
 	}
 
 	public void appendXMLToTableCellStyle(final XMLUtil util,
@@ -103,13 +82,13 @@ public class Borders {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (!(o instanceof Borders))
 			return false;
 
-		Borders other = (Borders) o;
+		final Borders other = (Borders) o;
 		return (this.top == null ? other.top == null
 				: this.top.equals(other.top))
 				&& (this.right == null ? other.right == null
@@ -120,6 +99,26 @@ public class Borders {
 						: this.left.equals(other.left))
 				&& (this.all == null ? other.all == null
 						: this.all.equals(other.all));
+	}
+
+	public BorderAttribute getAll() {
+		return this.all;
+	}
+
+	public BorderAttribute getBottom() {
+		return this.bottom;
+	}
+
+	public BorderAttribute getLeft() {
+		return this.left;
+	}
+
+	public BorderAttribute getRight() {
+		return this.right;
+	}
+
+	public BorderAttribute getTop() {
+		return this.top;
 	}
 
 	@Override

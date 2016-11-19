@@ -117,21 +117,6 @@ public class BorderAttribute {
 		this.style = style;
 	}
 
-	public String toXMLAttributeValue() {
-		final StringBuilder sb = new StringBuilder();
-		if (this.borderSize == null && this.borderColor == null)
-			return "";
-
-		if (this.borderSize != null)
-			sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR);
-
-		if (this.borderColor != null)
-			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
-					.append(this.borderColor);
-
-		return sb.toString().trim();
-	}
-
 	/**
 	 * Get the currently set border color.
 	 *
@@ -157,5 +142,20 @@ public class BorderAttribute {
 	 */
 	public Style getStyle() {
 		return this.style;
+	}
+
+	public String toXMLAttributeValue() {
+		final StringBuilder sb = new StringBuilder();
+		if (this.borderSize == null && this.borderColor == null)
+			return "";
+
+		if (this.borderSize != null)
+			sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR);
+
+		if (this.borderColor != null)
+			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
+					.append(this.borderColor);
+
+		return sb.toString().trim();
 	}
 }

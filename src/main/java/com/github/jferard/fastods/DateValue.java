@@ -24,14 +24,14 @@ package com.github.jferard.fastods;
 import java.util.Date;
 
 public class DateValue extends CellValue {
-	private Date value;
+	private final Date value;
 
-	public DateValue(Date value) {
+	public DateValue(final Date value) {
 		this.value = value;
 	}
 
 	@Override
-	public void setToRow(HeavyTableRow heavyTableRow, int i) {
+	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setDateValue(i, this.value);
 	}
 }

@@ -142,7 +142,7 @@ public interface TableCell {
 	 * @return the tooltip text or null if no tooltip
 	 */
 	String getTooltip();
-	
+
 	Type getValueType();
 
 	/**
@@ -152,6 +152,15 @@ public interface TableCell {
 	 *            The currency value
 	 */
 	void setBooleanValue(boolean value);
+
+	/**
+	 * Set the float value for a cell with TableCell.Type.STRING.
+	 *
+	 * @param value
+	 *            the value as a CellValue object.
+	 * 
+	 */
+	void setCellValue(CellValue value);
 
 	/**
 	 * To merge cells, set the number of columns that should be merged.
@@ -228,14 +237,6 @@ public interface TableCell {
 	void setObjectValue(Object value);
 
 	/**
-	 * Set the float value for a cell with TableCell.Type.STRING.
-	 *
-	 * @param value the value as a CellValue object.
-	 *            
-	 */
-	void setCellValue(CellValue value);
-	
-	/**
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
 	 * @param value
@@ -270,11 +271,12 @@ public interface TableCell {
 	void setStyle(TableCellStyle style);
 
 	void setTimeValue(long timeInMillis);
-	
-	
+
 	/**
 	 * Add a tooltip to the cell
-	 * @param tooltip the text of the tooltip
+	 * 
+	 * @param tooltip
+	 *            the text of the tooltip
 	 */
 	void setTooltip(String tooltip);
 }

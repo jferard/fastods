@@ -7,7 +7,7 @@ public class FastOdsExceptionTest {
 
 	@Test
 	public final void testUnkownTableName() {
-		Exception e = FastOdsException.unkownTableName("tab");
+		final Exception e = FastOdsException.unkownTableName("tab");
 		Assert.assertEquals("Unknown table name [tab]", e.getMessage());
 	}
 

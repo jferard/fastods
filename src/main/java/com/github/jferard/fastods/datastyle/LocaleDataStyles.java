@@ -57,8 +57,7 @@ public class LocaleDataStyles implements DataStyles {
 				.dataStyle(numberDataStyle).build();
 		final PercentageStyle percentageDataStyle = builderFactory
 				.percentageStyleBuilder("percentage-data").build();
-		this.percentageCellStyle = TableCellStyle
-				.builder("percentage-style")
+		this.percentageCellStyle = TableCellStyle.builder("percentage-style")
 				.dataStyle(percentageDataStyle).build();
 		final TimeStyle timeDataStyle = builderFactory
 				.timeStyleBuilder("time-data").build();

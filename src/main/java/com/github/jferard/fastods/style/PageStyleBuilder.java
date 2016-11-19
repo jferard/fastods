@@ -33,16 +33,16 @@ public class PageStyleBuilder {
 	private String backgroundColor;
 	private FooterHeader footer;
 	private FooterHeader header;
+	private final MarginsBuilder marginsBuilder;
 	private final String name;
-	private final String numFormat;
 
+	private final String numFormat;
 	private String pageHeight;
 	private String pageWidth;
 	private PaperFormat paperFormat;
-	private PrintOrientation printOrientation;
 
+	private PrintOrientation printOrientation;
 	private WritingMode writingMode;
-	private MarginsBuilder marginsBuilder;
 
 	/**
 	 * Create a new page style.
@@ -193,6 +193,23 @@ public class PageStyleBuilder {
 	}
 
 	/**
+	 * Set the page width. pageWidth is a length value expressed as a number
+	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * When using this method, the paper format is set to
+	 * PageStyle.STYLE_PAPERFORMAT_USER
+	 *
+	 * @param pageWidth
+	 * @return this for fluent style
+	 */
+	public PageStyleBuilder pageWidth(final String pageWidth) {
+		this.paperFormat = PageStyle.PaperFormat.USER;
+		this.pageWidth = pageWidth;
+		return this;
+	}
+
+	/**
 	 * Set the paper format to one of<br>
 	 * PageStyle.STYLE_PAPERFORMAT_A3<br>
 	 * PageStyle.STYLE_PAPERFORMAT_A4<br>
@@ -219,23 +236,6 @@ public class PageStyleBuilder {
 
 	public PageStyleBuilder printOrientationVertical() {
 		this.printOrientation = PageStyle.PrintOrientation.VERTICAL;
-		return this;
-	}
-
-	/**
-	 * Set the page width. pageWidth is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
-	 *
-	 * @param pageWidth
-	 * @return this for fluent style
-	 */
-	public PageStyleBuilder pageWidth(final String pageWidth) {
-		this.paperFormat = PageStyle.PaperFormat.USER;
-		this.pageWidth = pageWidth;
 		return this;
 	}
 

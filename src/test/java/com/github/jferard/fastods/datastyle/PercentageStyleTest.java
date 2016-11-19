@@ -12,9 +12,9 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class PercentageStyleTest {
-	private XMLUtil util;
-	private Locale locale;
 	private DataStyleBuilderFactory factory;
+	private Locale locale;
+	private XMLUtil util;
 
 	@Before
 	public void setUp() {
@@ -25,9 +25,9 @@ public class PercentageStyleTest {
 
 	@Test
 	public final void testDecimalPlaces() throws IOException {
-		PercentageStyle ps = this.factory.percentageStyleBuilder("test")
+		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.decimalPlaces(5).build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
@@ -39,9 +39,9 @@ public class PercentageStyleTest {
 
 	@Test
 	public final void testGroupThousands() throws IOException {
-		PercentageStyle ps = this.factory.percentageStyleBuilder("test")
+		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.groupThousands(true).build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
@@ -53,9 +53,9 @@ public class PercentageStyleTest {
 
 	@Test
 	public final void testMinIntegeDigits() throws IOException {
-		PercentageStyle ps = this.factory.percentageStyleBuilder("test")
+		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.minIntegerDigits(8).build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
@@ -67,9 +67,9 @@ public class PercentageStyleTest {
 
 	@Test
 	public final void testNegativeValueColor() throws IOException {
-		PercentageStyle ps = this.factory.percentageStyleBuilder("test")
+		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.negativeValueColor(Color.GREEN).build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
@@ -88,9 +88,9 @@ public class PercentageStyleTest {
 
 	@Test
 	public final void testNegativeValueRed() throws IOException {
-		PercentageStyle ps = this.factory.percentageStyleBuilder("test")
+		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.negativeValueRed().build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"

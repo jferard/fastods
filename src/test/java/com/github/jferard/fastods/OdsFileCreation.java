@@ -31,32 +31,80 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 
 /**
- * @author Julien Férard 
+ * @author Julien Férard
  */
 public class OdsFileCreation {
 	private Logger logger;
 
 	@Before
 	public void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");		
+		this.logger = Logger.getLogger("OdsFileCreation");
+	}
+
+	@Test
+	public final void test1000() throws FastOdsException {
+		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
+		final long t1 = System.currentTimeMillis();
+		final Random random = new Random();
+
+		final OdsFile file = OdsFile.create("fastods_1000_300.ods");
+		final Table table = file.addTable("test");
+
+		for (int y = 0; y < 1000; y++) {
+			final HeavyTableRow row = table.nextRow();
+			final TableCellWalker walker = row.getWalker();
+			for (int x = 0; x < 300; x++) {
+				walker.lastCell();
+				walker.setFloatValue(random.nextInt(1000));
+			}
+		}
+
+		file.save();
+
+		final long t2 = System.currentTimeMillis();
+		this.logger.info("Filled in " + (t2 - t1) + " ms");
+	}
+
+	@Test
+	public final void test100000() throws FastOdsException {
+		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
+		final long t1 = System.currentTimeMillis();
+		final Random random = new Random();
+
+		final OdsFile file = OdsFile.create("fastods_100000_20.ods");
+		final Table table = file.addTable("test");
+
+		for (int y = 0; y < 100000; y++) {
+			final HeavyTableRow row = table.nextRow();
+			final TableCellWalker walker = row.getWalker();
+			for (int x = 0; x < 20; x++) {
+				walker.lastCell();
+				walker.setFloatValue(random.nextInt(1000));
+			}
+		}
+
+		file.save();
+
+		final long t2 = System.currentTimeMillis();
+		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 
 	@Test
 	public final void test50() throws FastOdsException {
 		this.logger.info("Filling a 50 rows, 5 columns spreadsheet");
-		long t1 = System.currentTimeMillis();
+		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		OdsFile file = OdsFile.create("fastods_50_5.ods");
+		final OdsFile file = OdsFile.create("fastods_50_5.ods");
 		final Table table = file.addTable("test", 50, 5);
 		HeavyTableRow row = table.getRow(0);
-		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
+		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
-		TableCellStyle tcls = TableCellStyle.builder("cc")
+		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
-		TableColumnStyle tcns = TableColumnStyle.builder("ccs")
+		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
 		table.setColumnStyle(0, tcns);
 
@@ -68,14 +116,14 @@ public class OdsFileCreation {
 				.fontWeightBold().build();
 		final TableCellStyle tcs3 = TableCellStyle.builder("tcs3")
 				.fontStyleItalic().build();
-		
+
 		row = table.getRow(0);
 		row.setStringValue(0, "éèà");
 		row.setStringValue(1, "€€€€");
 		row.setStringValue(2, "£");
 		for (int y = 1; y < 50; y++) {
 			row = table.getRow(y);
-			TableCellWalker walker = row.getWalker();
+			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 5; x++) {
 				walker.lastCell();
 				walker.setFloatValue(random.nextInt(1000));
@@ -99,84 +147,44 @@ public class OdsFileCreation {
 				} else if (y == 6) {
 					switch (x) {
 					case 0:
-						walker.setBooleanValue(true); break;
+						walker.setBooleanValue(true);
+						break;
 					case 1:
-						walker.setCurrencyValue(150.5, "EUR"); 
-						walker.setTooltip("That's a tooltip !"); break;
+						walker.setCurrencyValue(150.5, "EUR");
+						walker.setTooltip("That's a tooltip !");
+						break;
 					case 2:
 						walker.setDateValue(Calendar.getInstance());
-						 break;
+						break;
 					case 3:
-						walker.setPercentageValue(70.3); break;
+						walker.setPercentageValue(70.3);
+						break;
 					case 4:
-						walker.setStringValue("foobar"); break;
-					default: break;
+						walker.setStringValue("foobar");
+						break;
+					default:
+						break;
 					}
 				} else if (y == 9) {
 					switch (x) {
 					case 0:
-						walker.setColumnsSpanned(2); break;
+						walker.setColumnsSpanned(2);
+						break;
 					case 2:
-						walker.setCurrencyValue(-150.5, "€"); break;
+						walker.setCurrencyValue(-150.5, "€");
+						break;
 					case 3:
-						walker.setStyle(tcls); break;
+						walker.setStyle(tcls);
+						break;
 					default:
-						walker.setTimeValue(x*60*1000);
+						walker.setTimeValue(x * 60 * 1000);
 					}
 				}
 			}
 		}
-		
-		file.save();
-		long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	@Test
-	public final void test100000() throws FastOdsException {
-		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
-		long t1 = System.currentTimeMillis();
-		final Random random = new Random();
-
-		OdsFile file = OdsFile.create("fastods_100000_20.ods");
-		final Table table = file.addTable("test");
-
-		for (int y = 0; y < 100000; y++) {
-			final HeavyTableRow row = table.nextRow();
-			TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < 20; x++) {
-				walker.lastCell();
-				walker.setFloatValue(random.nextInt(1000));
-			}
-		}
 
 		file.save();
-
-		long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	@Test
-	public final void test1000() throws FastOdsException {
-		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
-		long t1 = System.currentTimeMillis();
-		final Random random = new Random();
-
-		OdsFile file = OdsFile.create("fastods_1000_300.ods");
-		final Table table = file.addTable("test");
-
-		for (int y = 0; y < 1000; y++) {
-			final HeavyTableRow row = table.nextRow();
-			TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < 300; x++) {
-				walker.lastCell();
-				walker.setFloatValue(random.nextInt(1000));
-			}
-		}
-
-		file.save();
-
-		long t2 = System.currentTimeMillis();
+		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 }

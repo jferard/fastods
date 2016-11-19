@@ -23,7 +23,7 @@ package com.github.jferard.fastods;
 
 public class VoidValue extends CellValue {
 	@Override
-	public void setToRow(HeavyTableRow heavyTableRow, int i) {
+	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setVoidValue(i);
 	}
 

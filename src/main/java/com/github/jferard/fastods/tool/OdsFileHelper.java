@@ -30,14 +30,51 @@ import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 
 public class OdsFileHelper {
-	private OdsFile odsFile;
-	private PositionUtil positionUtil;
-	private TableHelper tableHelper;
+	private final OdsFile odsFile;
+	private final PositionUtil positionUtil;
+	private final TableHelper tableHelper;
 
-	public OdsFileHelper(OdsFile odsFile, TableHelper tableHelper, PositionUtil positionUtil) {
+	public OdsFileHelper(final OdsFile odsFile, final TableHelper tableHelper,
+			final PositionUtil positionUtil) {
 		this.odsFile = odsFile;
 		this.tableHelper = tableHelper;
 		this.positionUtil = positionUtil;
+	}
+
+	/**
+	 * Set the merging of multiple cells to one cell.
+	 *
+	 * @param rowIndex
+	 *            The row, 0 is the first row
+	 * @param colIndex
+	 *            The column, 0 is the first column
+	 * @param rowMerge
+	 * @param columnMerge
+	 * @throws FastOdsException
+	 */
+	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
+			final int rowMerge, final int columnMerge) throws FastOdsException {
+		for (final Table table : this.odsFile.getTables()) {
+			this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge,
+					columnMerge);
+		}
+	}
+
+	/**
+	 * Set the merging of multiple cells to one cell in all existing tables.
+	 *
+	 * @param pos
+	 *            The cell position e.g. 'A1'
+	 * @param rowMerge
+	 * @param columnMerge
+	 * @throws FastOdsException
+	 */
+	public void setCellMergeInAllTables(final String pos, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		final Position position = this.positionUtil.getPosition(pos);
+		final int row = position.getRow();
+		final int col = position.getColumn();
+		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
 	}
 
 	/**
@@ -82,40 +119,5 @@ public class OdsFileHelper {
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValueInAllTables(row, col, value, ts);
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
-	 */
-	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
-			final int rowMerge, final int columnMerge) throws FastOdsException {
-		for (final Table table : this.odsFile.getTables()) {
-			this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge, columnMerge);
-		}
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell in all existing tables.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
-	 */
-	public void setCellMergeInAllTables(final String pos, final int rowMerge,
-			final int columnMerge) throws FastOdsException {
-		final Position position = this.positionUtil.getPosition(pos);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
 	}
 }

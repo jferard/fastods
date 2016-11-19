@@ -41,14 +41,36 @@ public class FHTextStyleTest {
 
 	@Before
 	public void setUp() {
-		XMLEscaper escaper = new FastOdsXMLEscaper();
+		final XMLEscaper escaper = new FastOdsXMLEscaper();
 		this.util = new XMLUtil(escaper);
 	}
 
 	@Test
+	public final void testAddToFile() {
+		final FHTextStyle style = FHTextStyle.builder("style").build();
+
+		final OdsFile f = PowerMock.createMock(OdsFile.class);
+		f.addTextStyle(style);
+		PowerMock.replayAll();
+		style.addToFile(f);
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testBadSize() throws IOException, SAXException {
+		final Appendable sb = new StringBuilder();
+		final FHTextStyle style = FHTextStyle.builder("style").fontSize("@")
+				.build();
+		style.appendXMLToContentEntry(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<style:text-properties fo:font-size=\"@\" style:font-size-asian=\"@\" style:font-size-complex=\"@\"/>",
+				sb.toString()));
+	}
+
+	@Test
 	public final void testColorNameSize() throws IOException, SAXException {
-		Appendable sb = new StringBuilder();
-		FHTextStyle style = FHTextStyle.builder("style")
+		final Appendable sb = new StringBuilder();
+		final FHTextStyle style = FHTextStyle.builder("style")
 				.fontColor(Color.ALICEBLUE).fontName("Verdana").fontSize(10)
 				.build();
 		style.appendXMLToContentEntry(this.util, sb);
@@ -58,41 +80,8 @@ public class FHTextStyleTest {
 	}
 
 	@Test
-	public final void testBadSize() throws IOException, SAXException {
-		Appendable sb = new StringBuilder();
-		FHTextStyle style = FHTextStyle.builder("style").fontSize("@").build();
-		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:text-properties fo:font-size=\"@\" style:font-size-asian=\"@\" style:font-size-complex=\"@\"/>",
-				sb.toString()));
-	}
-
-	@Test
-	public final void testItalicBold() throws IOException, SAXException {
-		Appendable sb = new StringBuilder();
-		FHTextStyle style = FHTextStyle.builder("style").fontStyleItalic()
-				.fontWeightBold().build();
-		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" fo:font-style=\"italic\" style:font-style-asian=\"italic\" style:font-style-complex=\"italic\"/>",
-				sb.toString()));
-	}
-
-	@Test
-	public final void testUnderline() throws IOException, SAXException {
-		Appendable sb = new StringBuilder();
-		FHTextStyle style = FHTextStyle.builder("style")
-				.fontUnderlineStyle(FHTextStyle.Underline.DASH)
-				.fontUnderlineColor(Color.RED).build();
-		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",
-				sb.toString()));
-	}
-
-	@Test
 	public final void testDefault() {
-		FHTextStyle style = FHTextStyle.builder("style").build();
+		final FHTextStyle style = FHTextStyle.builder("style").build();
 		Assert.assertEquals(null, style.getFontColor());
 		Assert.assertEquals(null, style.getFontSize());
 		Assert.assertEquals(null, style.getFontUnderlineColor());
@@ -102,13 +91,25 @@ public class FHTextStyleTest {
 	}
 
 	@Test
-	public final void testAddToFile() {
-		FHTextStyle style = FHTextStyle.builder("style").build();
+	public final void testItalicBold() throws IOException, SAXException {
+		final Appendable sb = new StringBuilder();
+		final FHTextStyle style = FHTextStyle.builder("style").fontStyleItalic()
+				.fontWeightBold().build();
+		style.appendXMLToContentEntry(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" fo:font-style=\"italic\" style:font-style-asian=\"italic\" style:font-style-complex=\"italic\"/>",
+				sb.toString()));
+	}
 
-		OdsFile f = PowerMock.createMock(OdsFile.class);
-		f.addTextStyle(style);
-		PowerMock.replayAll();
-		style.addToFile(f);
-		PowerMock.verifyAll();
+	@Test
+	public final void testUnderline() throws IOException, SAXException {
+		final Appendable sb = new StringBuilder();
+		final FHTextStyle style = FHTextStyle.builder("style")
+				.fontUnderlineStyle(FHTextStyle.Underline.DASH)
+				.fontUnderlineColor(Color.RED).build();
+		style.appendXMLToContentEntry(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",
+				sb.toString()));
 	}
 }

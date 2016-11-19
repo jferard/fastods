@@ -63,7 +63,8 @@ public final class FastOds {
 				return true;
 			} catch (final IOException e) {
 				Logger.getLogger(FastOds.class.getName()).log(Level.SEVERE,
-						"Can't open file "+f+" in appropriate application", e);
+						"Can't open file " + f + " in appropriate application",
+						e);
 			}
 		}
 		return false;

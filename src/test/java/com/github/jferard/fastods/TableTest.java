@@ -22,18 +22,18 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 
 public class TableTest {
-	private StylesEntry se;
 	private ContentEntry ce;
 	private DataStyles ds;
-	private XMLUtil xmlUtil;
+	private StylesEntry se;
 	private Table table;
+	private XMLUtil xmlUtil;
 
 	@Before
 	public void setUp() {
 		this.ce = PowerMock.createMock(ContentEntry.class);
 		this.se = PowerMock.createMock(StylesEntry.class);
-		PositionUtil positionUtil = new PositionUtil();
-		XMLUtil xmlUtil = XMLUtil.create();
+		final PositionUtil positionUtil = new PositionUtil();
+		final XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
 		this.table = new Table(positionUtil, xmlUtil, this.ce, this.se, this.ds,
@@ -42,19 +42,10 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testDataWrapper() {
-		DataWrapper data = PowerMock.createMock(DataWrapper.class);
-		EasyMock.expect(data.addToTable(this.table)).andReturn(true);
-		PowerMock.replayAll();
-		this.table.addData(data);
-		PowerMock.verifyAll();
-	}
-
-	@Test
 	public final void testColumnStyles() throws FastOdsException {
-		List<TableColumnStyle> tcss = Lists.newArrayList();
+		final List<TableColumnStyle> tcss = Lists.newArrayList();
 		for (int c = 0; c < 10; c++) {
-			TableColumnStyle tcs = TableColumnStyle
+			final TableColumnStyle tcs = TableColumnStyle
 					.builder("test" + Integer.toString(c)).build();
 			this.table.setColumnStyle(c, tcs);
 			tcss.add(tcs);
@@ -63,31 +54,44 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testLastRow() {
-		Assert.assertEquals(-1, this.table.getLastRowNumber());
-		for (int r = 0; r < 7; r++) { // 8 times
-			this.table.nextRow();
+	public final void testContentEntry() throws IOException, FastOdsException {
+		for (int c = 0; c < 3; c++) {
+			final TableColumnStyle tcs = TableColumnStyle
+					.builder("test" + Integer.toString(c)).build();
+			this.table.setColumnStyle(c, tcs);
 		}
-		Assert.assertEquals(6, this.table.getLastRowNumber());
-	}
+		this.table.getRow(100);
 
-	@Test(expected = FastOdsException.class)
-	public final void testGetRowNegative() throws FastOdsException {
-		this.table.getRow(-1);
+		final StringBuilder sb = new StringBuilder();
+		this.table.appendXMLToContentEntry(this.xmlUtil, sb);
+
+		Assert.assertEquals(
+				"<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">"
+						+ "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>"
+						+ "<table:table-column table:style-name=\"test0\" table:default-cell-style-name=\"Default\"/>"
+						+ "<table:table-column table:style-name=\"test1\" table:default-cell-style-name=\"Default\"/>"
+						+ "<table:table-column table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>"
+						+ "<table:table-column table:style-name=\"co1\" table:default-cell-style-name=\"Default\"/>"
+						+ "<table:table-row table:number-rows-repeated=\"100\" table:style-name=\"ro1\">"
+						+ "<table:table-cell/>" + "</table:table-row>"
+						+ "<table:table-row table:style-name=\"ro1\">"
+						+ "</table:table-row>" + "</table:table>",
+				sb.toString());
+
 	}
 
 	@Test
-	public final void testGetRowHundred() throws FastOdsException {
-		for (int r = 0; r < 7; r++) { // 8 times
-			this.table.nextRow();
-		}
-		this.table.getRow(100);
-		Assert.assertEquals(100, this.table.getLastRowNumber());
+	public final void testDataWrapper() {
+		final DataWrapper data = PowerMock.createMock(DataWrapper.class);
+		EasyMock.expect(data.addToTable(this.table)).andReturn(true);
+		PowerMock.replayAll();
+		this.table.addData(data);
+		PowerMock.verifyAll();
 	}
 
 	@Test
 	public final void testGetRow() throws FastOdsException {
-		List<HeavyTableRow> rows = Lists.newArrayList();
+		final List<HeavyTableRow> rows = Lists.newArrayList();
 		for (int r = 0; r < 7; r++) { // 8 times
 			rows.add(this.table.nextRow());
 		}
@@ -99,12 +103,35 @@ public class TableTest {
 
 	@Test
 	public final void testGetRowFromStringPos() throws FastOdsException {
-		List<HeavyTableRow> rows = Lists.newArrayList();
+		final List<HeavyTableRow> rows = Lists.newArrayList();
 		for (int r = 0; r < 7; r++) { // 8 times
 			rows.add(this.table.nextRow());
 		}
 
 		Assert.assertEquals(rows.get(4), this.table.getRow("A5"));
+	}
+
+	@Test
+	public final void testGetRowHundred() throws FastOdsException {
+		for (int r = 0; r < 7; r++) { // 8 times
+			this.table.nextRow();
+		}
+		this.table.getRow(100);
+		Assert.assertEquals(100, this.table.getLastRowNumber());
+	}
+
+	@Test(expected = FastOdsException.class)
+	public final void testGetRowNegative() throws FastOdsException {
+		this.table.getRow(-1);
+	}
+
+	@Test
+	public final void testLastRow() {
+		Assert.assertEquals(-1, this.table.getLastRowNumber());
+		for (int r = 0; r < 7; r++) { // 8 times
+			this.table.nextRow();
+		}
+		Assert.assertEquals(6, this.table.getLastRowNumber());
 	}
 
 	@Test
@@ -118,7 +145,7 @@ public class TableTest {
 
 	@Test
 	public final void testSettingsEntry() throws IOException {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		this.table.appendXMLToSettingsEntry(this.xmlUtil, sb);
 
 		Assert.assertEquals(
@@ -140,33 +167,6 @@ public class TableTest {
 						+ "<config:config-item config:name=\"zoomValue\" config:type=\"int\">100</config:config-item>"
 						+ "<config:config-item config:name=\"pageViewZoomValue\" config:type=\"int\">60</config:config-item>"
 						+ "</config:config-item-map-entry>",
-				sb.toString());
-
-	}
-
-	@Test
-	public final void testContentEntry() throws IOException, FastOdsException {
-		for (int c = 0; c < 3; c++) {
-			TableColumnStyle tcs = TableColumnStyle
-					.builder("test" + Integer.toString(c)).build();
-			this.table.setColumnStyle(c, tcs);
-		}
-		this.table.getRow(100);
-
-		StringBuilder sb = new StringBuilder();
-		this.table.appendXMLToContentEntry(this.xmlUtil, sb);
-
-		Assert.assertEquals(
-				"<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">"
-						+ "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>"
-						+ "<table:table-column table:style-name=\"test0\" table:default-cell-style-name=\"Default\"/>"
-						+ "<table:table-column table:style-name=\"test1\" table:default-cell-style-name=\"Default\"/>"
-						+ "<table:table-column table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>"
-						+ "<table:table-column table:style-name=\"co1\" table:default-cell-style-name=\"Default\"/>"
-						+ "<table:table-row table:number-rows-repeated=\"100\" table:style-name=\"ro1\">"
-						+ "<table:table-cell/>" + "</table:table-row>"
-						+ "<table:table-row table:style-name=\"ro1\">"
-						+ "</table:table-row>" + "</table:table>",
 				sb.toString());
 
 	}

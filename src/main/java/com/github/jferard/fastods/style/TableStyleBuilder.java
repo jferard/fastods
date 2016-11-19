@@ -34,7 +34,7 @@ public class TableStyleBuilder {
 	TableStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
-		
+
 		this.name = name;
 		this.pageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
 	}

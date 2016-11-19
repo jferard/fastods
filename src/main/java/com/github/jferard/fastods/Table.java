@@ -65,35 +65,35 @@ public class Table implements NamedObject {
 	private final ConfigItem activeSplitRange;
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
+	private final ContentEntry contentEntry;
 	private final ConfigItem cursorPositionX;
 	private final ConfigItem cursorPositionY;
 	private final DataStyles format;
 	private final ConfigItem horizontalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
 	private String name;
-	private final ContentEntry contentEntry;
 	private final ConfigItem pageViewZoomValue;
 	private final ConfigItem positionBottom;
 	private final ConfigItem positionLeft;
 
 	private final ConfigItem positionRight;
 	private final ConfigItem positionTop;
-	private TableStyle style;
-
-	private final List<HeavyTableRow> tableRows;
 	private final PositionUtil positionUtil;
+
+	private TableStyle style;
+	private final StylesEntry stylesEntry;
+	private final List<HeavyTableRow> tableRows;
+
 	private final ConfigItem verticalSplitMode;
 
 	private final ConfigItem verticalSplitPosition;
-
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
-	private StylesEntry stylesEntry;
 
 	public Table(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			final ContentEntry contentEntry, StylesEntry stylesEntry, final DataStyles format,
-			final String name, final int rowCapacity,
+			final ContentEntry contentEntry, final StylesEntry stylesEntry,
+			final DataStyles format, final String name, final int rowCapacity,
 			final int columnCapacity) {
 		this.contentEntry = contentEntry;
 		this.stylesEntry = stylesEntry;
@@ -134,6 +134,46 @@ public class Table implements NamedObject {
 		data.addToTable(this);
 	}
 
+	public void appendXMLToContentEntry(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<table:table");
+		util.appendAttribute(appendable, "table:name", this.name);
+		util.appendAttribute(appendable, "table:style-name",
+				this.style.getName());
+		util.appendEAttribute(appendable, "table:print", false);
+		appendable.append("><office:forms");
+		util.appendEAttribute(appendable, "form:automatic-focus", false);
+		util.appendEAttribute(appendable, "form:apply-design-mode", false);
+		appendable.append("/>");
+		this.appendColumnStyles(appendable, util);
+		this.appendRows(appendable, util);
+		appendable.append("</table:table>");
+	}
+
+	public void appendXMLToSettingsEntry(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-entry");
+		util.appendAttribute(appendable, "config:name", this.name);
+		appendable.append(">");
+		this.cursorPositionX.appendXMLToObject(util, appendable);
+		this.cursorPositionY.appendXMLToObject(util, appendable);
+		this.horizontalSplitMode.appendXMLToObject(util, appendable);
+		this.verticalSplitMode.appendXMLToObject(util, appendable);
+		this.horizontalSplitMode.appendXMLToObject(util, appendable);
+		this.verticalSplitMode.appendXMLToObject(util, appendable);
+		this.horizontalSplitPosition.appendXMLToObject(util, appendable);
+		this.verticalSplitPosition.appendXMLToObject(util, appendable);
+		this.activeSplitRange.appendXMLToObject(util, appendable);
+		this.positionLeft.appendXMLToObject(util, appendable);
+		this.positionRight.appendXMLToObject(util, appendable);
+		this.positionTop.appendXMLToObject(util, appendable);
+		this.positionBottom.appendXMLToObject(util, appendable);
+		this.zoomType.appendXMLToObject(util, appendable);
+		this.zoomValue.appendXMLToObject(util, appendable);
+		this.pageViewZoomValue.appendXMLToObject(util, appendable);
+		appendable.append("</config:config-item-map-entry>");
+	}
+
 	public List<TableColumnStyle> getColumnStyles() {
 		return this.columnStyles;
 	}
@@ -152,13 +192,17 @@ public class Table implements NamedObject {
 		return this.name;
 	}
 
+	// public List<OldLightTableRow> getRows() {
+	// return this.tableRows;
+	// }
+
 	public HeavyTableRow getRow(final int row) throws FastOdsException {
 		Table.checkRow(row);
 		HeavyTableRow tr = this.tableRows.get(row);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.positionUtil, new WriteUtil(),
-					this.xmlUtil, this.contentEntry, this.stylesEntry, this.format,
-					row, this.columnCapacity);
+					this.xmlUtil, this.contentEntry, this.stylesEntry,
+					this.format, row, this.columnCapacity);
 			this.tableRows.set(row, tr);
 		}
 		return tr;
@@ -168,10 +212,6 @@ public class Table implements NamedObject {
 		final int row = this.positionUtil.getPosition(pos).getRow();
 		return this.getRow(row);
 	}
-
-	// public List<OldLightTableRow> getRows() {
-	// return this.tableRows;
-	// }
 
 	/**
 	 * Get the current TableFamilyStyle
@@ -185,8 +225,8 @@ public class Table implements NamedObject {
 	public HeavyTableRow nextRow() {
 		final int row = this.tableRows.size();
 		final HeavyTableRow tr = new HeavyTableRow(this.positionUtil,
-				new WriteUtil(), this.xmlUtil, this.contentEntry, this.stylesEntry, this.format,
-				row, this.columnCapacity);
+				new WriteUtil(), this.xmlUtil, this.contentEntry,
+				this.stylesEntry, this.format, row, this.columnCapacity);
 		this.tableRows.add(tr);
 		return tr;
 	}
@@ -279,45 +319,5 @@ public class Table implements NamedObject {
 				tr.appendXMLToTable(util, appendable);
 			}
 		}
-	}
-
-	public void appendXMLToContentEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<table:table");
-		util.appendAttribute(appendable, "table:name", this.name);
-		util.appendAttribute(appendable, "table:style-name",
-				this.style.getName());
-		util.appendEAttribute(appendable, "table:print", false);
-		appendable.append("><office:forms");
-		util.appendEAttribute(appendable, "form:automatic-focus", false);
-		util.appendEAttribute(appendable, "form:apply-design-mode", false);
-		appendable.append("/>");
-		this.appendColumnStyles(appendable, util);
-		this.appendRows(appendable, util);
-		appendable.append("</table:table>");
-	}
-
-	public void appendXMLToSettingsEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item-map-entry");
-		util.appendAttribute(appendable, "config:name", this.name);
-		appendable.append(">");
-		this.cursorPositionX.appendXMLToObject(util, appendable);
-		this.cursorPositionY.appendXMLToObject(util, appendable);
-		this.horizontalSplitMode.appendXMLToObject(util, appendable);
-		this.verticalSplitMode.appendXMLToObject(util, appendable);
-		this.horizontalSplitMode.appendXMLToObject(util, appendable);
-		this.verticalSplitMode.appendXMLToObject(util, appendable);
-		this.horizontalSplitPosition.appendXMLToObject(util, appendable);
-		this.verticalSplitPosition.appendXMLToObject(util, appendable);
-		this.activeSplitRange.appendXMLToObject(util, appendable);
-		this.positionLeft.appendXMLToObject(util, appendable);
-		this.positionRight.appendXMLToObject(util, appendable);
-		this.positionTop.appendXMLToObject(util, appendable);
-		this.positionBottom.appendXMLToObject(util, appendable);
-		this.zoomType.appendXMLToObject(util, appendable);
-		this.zoomValue.appendXMLToObject(util, appendable);
-		this.pageViewZoomValue.appendXMLToObject(util, appendable);
-		appendable.append("</config:config-item-map-entry>");
 	}
 }

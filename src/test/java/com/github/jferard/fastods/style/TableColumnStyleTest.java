@@ -23,8 +23,8 @@ public class TableColumnStyleTest {
 
 	@Test
 	public final void testAddEmptyToFile() {
-		TableColumnStyle tcs = TableColumnStyle.builder("test").build();
-		OdsEntries entries = PowerMock.createMock(OdsEntries.class);
+		final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
+		final OdsEntries entries = PowerMock.createMock(OdsEntries.class);
 		final StyleTag styleTag = tcs;
 
 		entries.addStyleTag(styleTag);
@@ -36,10 +36,25 @@ public class TableColumnStyleTest {
 	}
 
 	@Test
+	public final void testDefaultCellStyle() throws IOException, SAXException {
+		final TableCellStyle cs = TableCellStyle.builder("t").build();
+		final TableColumnStyle tcs = TableColumnStyle.builder("test")
+				.defaultCellStyle(cs).build();
+		final StringBuilder sbt = new StringBuilder();
+
+		tcs.appendXMLToTable(this.util, sbt, -1);
+
+		Assert.assertTrue(DomTester.equals(
+				"<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"t\"/>",
+				sbt.toString()));
+		Assert.assertEquals(cs.getName(), tcs.getDefaultCellStyleName());
+	}
+
+	@Test
 	public final void testEmpty() throws IOException, SAXException {
-		TableColumnStyle tcs = TableColumnStyle.builder("test").build();
-		StringBuilder sbc = new StringBuilder();
-		StringBuilder sbt = new StringBuilder();
+		final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
+		final StringBuilder sbc = new StringBuilder();
+		final StringBuilder sbt = new StringBuilder();
 
 		tcs.appendXMLToContentEntry(this.util, sbc);
 		tcs.appendXMLToTable(this.util, sbt, 1);
@@ -55,8 +70,8 @@ public class TableColumnStyleTest {
 
 	@Test
 	public final void testEmpty2() throws IOException, SAXException {
-		TableColumnStyle tcs = TableColumnStyle.builder("test").build();
-		StringBuilder sbt = new StringBuilder();
+		final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
+		final StringBuilder sbt = new StringBuilder();
 		tcs.appendXMLToTable(this.util, sbt, 2);
 
 		Assert.assertTrue(DomTester.equals(
@@ -66,9 +81,9 @@ public class TableColumnStyleTest {
 
 	@Test
 	public final void testWidth() throws IOException, SAXException {
-		TableColumnStyle tcs = TableColumnStyle.builder("test")
+		final TableColumnStyle tcs = TableColumnStyle.builder("test")
 				.columnWidth("1pt").build();
-		StringBuilder sbc = new StringBuilder();
+		final StringBuilder sbc = new StringBuilder();
 
 		tcs.appendXMLToContentEntry(this.util, sbc);
 
@@ -79,20 +94,5 @@ public class TableColumnStyleTest {
 		Assert.assertEquals("1pt", tcs.getColumnWidth());
 		Assert.assertEquals(tcs, tcs);
 		Assert.assertEquals(tcs.hashCode(), tcs.hashCode());
-	}
-
-	@Test
-	public final void testDefaultCellStyle() throws IOException, SAXException {
-		TableCellStyle cs = TableCellStyle.builder("t").build();
-		TableColumnStyle tcs = TableColumnStyle.builder("test")
-				.defaultCellStyle(cs).build();
-		StringBuilder sbt = new StringBuilder();
-
-		tcs.appendXMLToTable(this.util, sbt, -1);
-
-		Assert.assertTrue(DomTester.equals(
-				"<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"t\"/>",
-				sbt.toString()));
-		Assert.assertEquals(cs.getName(), tcs.getDefaultCellStyleName());
 	}
 }

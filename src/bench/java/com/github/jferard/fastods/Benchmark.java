@@ -38,17 +38,18 @@ import org.simpleods.SimpleOdsException;
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
  *
- * mvn -Dtest=BenchIT#test test
+ *         mvn -Dtest=BenchIT#test test
  */
 public class Benchmark {
-	private static final int TIMES = 5;
 	private static final int COL_COUNT = 20;
 	private static final int ROW_COUNT = 5000;
+	private static final int TIMES = 5;
+	@Rule
+	public TestName name = new TestName();
+
+	private Logger logger;
 	private Random random;
 
-	@Rule public TestName name = new TestName();
-	private Logger logger;
-	
 	@Before
 	public final void setUp() {
 		this.random = new Random();
@@ -57,42 +58,42 @@ public class Benchmark {
 
 	@Test
 	public void test1() throws SimpleOdsException, IOException {
-		for (int i = 0 ; i<TIMES ; i++) {
+		for (int i = 0; i < Benchmark.TIMES; i++) {
 			this.testFast(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
 			this.testSimple(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
 			this.testJOpen(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
 		}
 	}
-	
+
 	@Test
 	public void test2() throws SimpleOdsException, IOException {
-		for (int i = 0 ; i<TIMES ; i++) {
-			this.testFast(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-			this.testSimple(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-			this.testJOpen(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+		for (int i = 0; i < Benchmark.TIMES; i++) {
+			this.testFast(2 * Benchmark.ROW_COUNT, 2 * Benchmark.COL_COUNT);
+			this.testSimple(2 * Benchmark.ROW_COUNT, 2 * Benchmark.COL_COUNT);
+			this.testJOpen(2 * Benchmark.ROW_COUNT, 2 * Benchmark.COL_COUNT);
 		}
 	}
-	
+
 	@Test
 	public void test3() throws SimpleOdsException, IOException {
-		for (int i = 0 ; i<TIMES ; i++) {
-			this.testFast(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-			this.testSimple(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-			this.testJOpen(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+		for (int i = 0; i < Benchmark.TIMES; i++) {
+			this.testFast(3 * Benchmark.ROW_COUNT, 3 * Benchmark.COL_COUNT);
+			this.testSimple(3 * Benchmark.ROW_COUNT, 3 * Benchmark.COL_COUNT);
+			this.testJOpen(3 * Benchmark.ROW_COUNT, 3 * Benchmark.COL_COUNT);
 		}
 	}
-	
+
 	public final void testFast(final int rowCount, final int colCount) {
 		// Open the file.
 		this.logger.info("testFast: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
-		long t1 = System.currentTimeMillis();
-		OdsFile file = OdsFile.create("fastods_benchmark.ods");
+		final long t1 = System.currentTimeMillis();
+		final OdsFile file = OdsFile.create("fastods_benchmark.ods");
 		final Table table = file.addTable("test", rowCount, colCount);
 
 		for (int y = 0; y < rowCount; y++) {
 			final HeavyTableRow row = table.nextRow();
-			TableCellWalker walker = row.getWalker();
+			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < colCount; x++) {
 				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
@@ -100,20 +101,44 @@ public class Benchmark {
 		}
 
 		file.save();
-		long t2 = System.currentTimeMillis();
+		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
-	
-	public final void testSimple(int rowCount, int colCount) throws SimpleOdsException {
+
+	public final void testJOpen(final int rowCount, final int colCount)
+			throws IOException {
+		// the file.
+		this.logger.info("testJOpen: filling a " + rowCount + " rows, "
+				+ colCount + " columns spreadsheet");
+		final long t1 = System.currentTimeMillis();
+		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel())
+				.getSheet(0);
+		sheet.ensureColumnCount(colCount);
+		sheet.ensureRowCount(rowCount);
+
+		for (int y = 0; y < rowCount; y++) {
+			for (int x = 0; x < colCount; x++) {
+				sheet.setValueAt(String.valueOf(this.random.nextInt(1000)), x,
+						y);
+			}
+		}
+		final File outputFile = new File("jopendocument_benchmark.ods");
+		sheet.getSpreadSheet().saveAs(outputFile);
+		final long t2 = System.currentTimeMillis();
+		this.logger.info("Filled in " + (t2 - t1) + " ms");
+	}
+
+	public final void testSimple(final int rowCount, final int colCount)
+			throws SimpleOdsException {
 		// Open the file.
 		this.logger.info("testSimple: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
-		long t1 = System.currentTimeMillis();
-		org.simpleods.OdsFile file = new org.simpleods.OdsFile(
+		final long t1 = System.currentTimeMillis();
+		final org.simpleods.OdsFile file = new org.simpleods.OdsFile(
 				"simpleods_benchmark.ods");
 		file.addTable("test");
-		org.simpleods.Table table = (org.simpleods.Table) file.getContent()
-				.getTableQueue().get(0);
+		final org.simpleods.Table table = (org.simpleods.Table) file
+				.getContent().getTableQueue().get(0);
 
 		final ObjectQueue rows = table.getRows();
 		for (int y = 0; y < rowCount; y++) {
@@ -125,27 +150,7 @@ public class Benchmark {
 		}
 
 		file.save();
-		long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	public final void testJOpen(int rowCount, int colCount) throws IOException {
-		// the file.
-		this.logger.info("testJOpen: filling a " + rowCount + " rows, "
-				+ colCount + " columns spreadsheet");
-		long t1 = System.currentTimeMillis();
-		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel()).getSheet(0);
-		sheet.ensureColumnCount(colCount);
-		sheet.ensureRowCount(rowCount);
-		
-		for (int y = 0; y < rowCount; y++) {
-			for (int x = 0; x < colCount; x++) {
-				sheet.setValueAt(String.valueOf(this.random.nextInt(1000)), x, y);
-			}
-		}
-		File outputFile = new File("jopendocument_benchmark.ods");
-		sheet.getSpreadSheet().saveAs(outputFile);
-		long t2 = System.currentTimeMillis();
+		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 }

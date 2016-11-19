@@ -77,17 +77,17 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	 * column count of the ResultSet.
 	 */
 	private final TableCellStyle headCellStyle;
+	private final Logger logger;
+
 	/**
 	 * maximum number of lines to be written
 	 */
 	private final int max;
-
 	/**
 	 * the ResultSet.
 	 */
 	private final ResultSet resultSet;
-	private Logger logger;
-	private ResultSet rs;
+	private final ResultSet rs;
 
 	public ResultSetDataWrapper(final Logger logger, final ResultSet rs,
 			final TableCellStyle headCellStyle, final int max) {
@@ -100,9 +100,9 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
 	@Override
 	public boolean addToTable(final Table table) {
-		int rowCount = 0; // at least 
+		int rowCount = 0; // at least
 		try {
-			ResultSetMetaData metadata = this.rs.getMetaData();
+			final ResultSetMetaData metadata = this.rs.getMetaData();
 			HeavyTableRow row;
 			try {
 				row = table.nextRow();
@@ -112,8 +112,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 					do {
 						if (++rowCount <= this.max) {
 							row = table.nextRow();
-							this.writeDataLineTo(row,
-									columnCount);
+							this.writeDataLineTo(row, columnCount);
 						}
 					} while (this.resultSet.next());
 				}
@@ -132,9 +131,9 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	 * @return the name of the columns
 	 * @throws SQLException
 	 */
-	private List<String> getColumnNames(ResultSetMetaData metadata)
+	private List<String> getColumnNames(final ResultSetMetaData metadata)
 			throws SQLException {
-		int columnCount = metadata.getColumnCount();
+		final int columnCount = metadata.getColumnCount();
 		final List<String> names = new ArrayList<String>(columnCount);
 		for (int i = 0; i < columnCount; i++)
 			names.add(metadata.getColumnName(i + 1));
@@ -170,7 +169,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		}
 	}
 
-	private void writeFirstLineDataTo(ResultSetMetaData metadata,
+	private void writeFirstLineDataTo(final ResultSetMetaData metadata,
 			final HeavyTableRow row) throws SQLException {
 		final int columnCount = metadata.getColumnCount();
 		final List<String> columnNames = this.getColumnNames(metadata);

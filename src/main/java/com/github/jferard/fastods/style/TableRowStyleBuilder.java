@@ -48,7 +48,7 @@ public class TableRowStyleBuilder {
 	public TableRowStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
-		
+
 		this.name = name;
 		this.rowHeight = "0.45cm";
 	}

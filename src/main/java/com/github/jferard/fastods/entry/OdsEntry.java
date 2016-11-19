@@ -30,6 +30,5 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Julien Férard
  */
 public interface OdsEntry {
-	void write(XMLUtil util, ZipUTF8Writer writer)
-			throws IOException;
+	void write(XMLUtil util, ZipUTF8Writer writer) throws IOException;
 }

@@ -33,15 +33,15 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class XMLUtil {
-	public static XMLUtil create() {
-		XMLEscaper escaper = new FastOdsXMLEscaper();
-		return new XMLUtil(escaper);
-	}
-	
 	/**
 	 * A space char for append
 	 */
 	public static final char SPACE_CHAR = ' ';
+
+	public static XMLUtil create() {
+		final XMLEscaper escaper = new FastOdsXMLEscaper();
+		return new XMLUtil(escaper);
+	}
 
 	private final XMLEscaper escaper;
 

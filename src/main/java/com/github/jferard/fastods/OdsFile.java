@@ -54,15 +54,7 @@ import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
  * @author Julien Férard
  * @author Martin Schulz
  */
-/**
- * @author Julien
- *
- */
 public class OdsFile {
-	/**
-	 * 512 k of buffer before sending data to OutputStreamWriter.
-	 */
-	private static final int DEFAULT_BUFFER_SIZE = 512 * 1024;
 	private static final int DEFAULT_COLUMN_CAPACITY = 32;
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
@@ -74,45 +66,41 @@ public class OdsFile {
 				xmlUtil, locale);
 		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,
 				xmlUtil);
-		OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil, format);
+		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil,
+				format);
 		return new OdsFile(Logger.getLogger(OdsFile.class.getName()), name,
-				entries, writeUtil, xmlUtil, OdsFile.DEFAULT_BUFFER_SIZE);
+				entries, writeUtil, xmlUtil);
 	}
 
 	public static OdsFile create(final String name) {
 		return OdsFile.create(Locale.getDefault(), name);
 	}
 
-	private final int bufferSize;
+	private final OdsEntries entries;
+
 	private String filename;
 
-	private final WriteUtil writeUtil;
-
+	private final Logger logger;
 	private final XMLUtil xmlUtil;
-	private OdsEntries entries;
-	private Logger logger;
 
 	/**
 	 * Create a new ODS file.
-	 * @param logger 
-	 *
+	 * 
+	 * @param logger
 	 * @param name
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
-	 * @param entries2
 	 * @param writeUtil
 	 * @param xmlUtil
+	 * @param entries2
 	 */
-	public OdsFile(Logger logger, final String name, OdsEntries entries,
-			final WriteUtil writeUtil, final XMLUtil xmlUtil,
-			final int bufferSize) {
+	public OdsFile(final Logger logger, final String name,
+			final OdsEntries entries, final WriteUtil writeUtil,
+			final XMLUtil xmlUtil) {
 		this.logger = logger;
 		this.newFile(name);
 		this.entries = entries;
-		this.writeUtil = writeUtil;
 		this.xmlUtil = xmlUtil;
-		this.bufferSize = bufferSize;
-
 		// Add four default stylesEntry to contentEntry
 		TableStyle.DEFAULT_TABLE_STYLE.addToEntries(this.entries);
 		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToEntries(this.entries);
@@ -231,6 +219,13 @@ public class OdsFile {
 	// ----------------------------------------------------------------------
 
 	/**
+	 * @return the list of tables
+	 */
+	public List<Table> getTables() {
+		return this.entries.getTables();
+	}
+
+	/**
 	 * Create a new,empty file, use addTable to add tables.
 	 *
 	 * @param name
@@ -257,23 +252,7 @@ public class OdsFile {
 		try {
 			return this.save(new FileOutputStream(this.filename));
 		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open "+this.filename, e);
-			return false;
-		}
-	}
-
-	/**
-	 * @param builder
-	 *            a builder for the ZipOutputStream and the Writer (buffers,
-	 *            level, ...)
-	 * @return true if the file was saved and false if an exception happened
-	 */
-	public boolean save(ZipUTF8WriterBuilder builder) {
-		try {
-			return this
-					.save(builder.build(new FileOutputStream(this.filename)));
-		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open "+this.filename, e);
+			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
 			return false;
 		}
 	}
@@ -287,11 +266,11 @@ public class OdsFile {
 	 *         false - an exception happened
 	 */
 	public boolean save(final OutputStream out) {
-		ZipUTF8WriterBuilder builder = ZipUTF8Writer.builder();
+		final ZipUTF8WriterBuilder builder = ZipUTF8Writer.builder();
 		return this.save(builder.build(out));
 	}
 
-	public boolean save(ZipUTF8Writer writer) {
+	public boolean save(final ZipUTF8Writer writer) {
 		this.entries.setTables();
 
 		try {
@@ -311,6 +290,22 @@ public class OdsFile {
 		this.logger.log(Level.FINE, "file saved");
 
 		return true;
+	}
+
+	/**
+	 * @param builder
+	 *            a builder for the ZipOutputStream and the Writer (buffers,
+	 *            level, ...)
+	 * @return true if the file was saved and false if an exception happened
+	 */
+	public boolean save(final ZipUTF8WriterBuilder builder) {
+		try {
+			return this
+					.save(builder.build(new FileOutputStream(this.filename)));
+		} catch (final FileNotFoundException e) {
+			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
+			return false;
+		}
 	}
 
 	/**
@@ -338,12 +333,5 @@ public class OdsFile {
 	 */
 	public int tableCount() {
 		return this.entries.getTableCount();
-	}
-
-	/**
-	 * @return the list of tables
-	 */
-	public List<Table> getTables() {
-		return this.entries.getTables();
 	}
 }

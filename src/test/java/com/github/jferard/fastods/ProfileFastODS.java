@@ -31,42 +31,48 @@ import org.junit.rules.TestName;
 /**
  * @author Julien Férard
  *
- * Usage : launch jvisualvm.
- * mvn -Dmaven.surefire.debug="-agentpath:\"C:/Program Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program Files\Java\visualvm_138\profiler\lib\",5140" -Dtest=ProfileFastOds#testFast test
+ *         Usage : launch jvisualvm. mvn
+ *         -Dmaven.surefire.debug="-agentpath:\"C:/Program
+ *         Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program
+ *         Files\Java\visualvm_138\profiler\lib\",5140"
+ *         -Dtest=ProfileFastOds#testFast test
  */
 public class ProfileFastODS {
 	private static final int COL_COUNT = 40;
 	private static final int ROW_COUNT = 80000;
+	@Rule
+	public TestName name = new TestName();
+	private Logger logger;
+
 	private Random random;
 	private long t1;
 
-	@Rule public TestName name = new TestName();
-	private Logger logger;
-	
 	@Before
 	public final void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");		
+		this.logger = Logger.getLogger("OdsFileCreation");
 		this.random = new Random();
-		this.logger.info(this.name.getMethodName()+" : filling a " + ROW_COUNT + " rows, "
-				+ COL_COUNT + " columns spreadsheet");
+		this.logger.info(this.name.getMethodName() + " : filling a "
+				+ ProfileFastODS.ROW_COUNT + " rows, "
+				+ ProfileFastODS.COL_COUNT + " columns spreadsheet");
 		this.t1 = System.currentTimeMillis();
 	}
-	
+
 	@After
 	public final void tearDown() {
-		long t2 = System.currentTimeMillis();
+		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - this.t1) + " ms");
 	}
 
 	@Test
 	public final void testFast() {
-		OdsFile file = OdsFile.create("fastods_profile.ods");
-		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
+		final OdsFile file = OdsFile.create("fastods_profile.ods");
+		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT,
+				ProfileFastODS.COL_COUNT);
 
-		for (int y = 0; y < ROW_COUNT; y++) {
+		for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
 			final HeavyTableRow row = table.nextRow();
-			TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < COL_COUNT; x++) {
+			final TableCellWalker walker = row.getWalker();
+			for (int x = 0; x < ProfileFastODS.COL_COUNT; x++) {
 				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
 			}

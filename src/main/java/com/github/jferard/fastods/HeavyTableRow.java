@@ -33,7 +33,6 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -48,25 +47,26 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class HeavyTableRow {
 	private final int columnCapacity;
 	private List<Integer> columnsSpanned;
+	private final ContentEntry contentEntry;
 	private List<String> currencies;
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
-	private final ContentEntry contentEntry;
+	private final PositionUtil positionUtil;
 	private final int row;
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;
-	private final List<TableCell.Type> types;
-	private final PositionUtil positionUtil;
-	private final List<String> values;
+	private final StylesEntry stylesEntry;
 	private final List<String> tooltips;
+	private final List<TableCell.Type> types;
+	private final List<String> values;
+	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
-	private StylesEntry stylesEntry;
-	private WriteUtil writeUtil;
 
-	HeavyTableRow(final PositionUtil positionUtil, WriteUtil writeUtil,
-			final XMLUtil xmlUtil, final ContentEntry contentEntry, StylesEntry stylesEntry,
-			final DataStyles dataStyles, final int row, final int columnCapacity) {
+	HeavyTableRow(final PositionUtil positionUtil, final WriteUtil writeUtil,
+			final XMLUtil xmlUtil, final ContentEntry contentEntry,
+			final StylesEntry stylesEntry, final DataStyles dataStyles,
+			final int row, final int columnCapacity) {
 		this.writeUtil = writeUtil;
 		this.stylesEntry = stylesEntry;
 		this.positionUtil = positionUtil;
@@ -216,6 +216,10 @@ public class HeavyTableRow {
 		return this.values.get(i);
 	}
 
+	public String getTooltip(final int i) {
+		return this.tooltips.get(i);
+	}
+
 	public TableCell.Type getValueType(final int i) {
 		return this.types.get(i);
 	}
@@ -263,6 +267,14 @@ public class HeavyTableRow {
 			final int columnMerge) throws FastOdsException {
 		final int col = this.positionUtil.getPosition(pos).getColumn();
 		this.setCellMerge(col, rowMerge, columnMerge);
+	}
+
+	/*
+	 * FastOds uses the mapping Apache DB project mapping
+	 * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
+	 */
+	public void setCellValue(final int i, final CellValue value) {
+		value.setToRow(this, i);
 	}
 
 	public void setColumnsSpanned(final int i, final int n) {
@@ -389,12 +401,15 @@ public class HeavyTableRow {
 		this.dataStyles = format;
 	}
 
-	/*
-	 * FastOds uses the mapping Apache DB project mapping
-	 * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
+	/**
+	 * @param i
+	 * @param object
+	 * @deprecated Shortcut for
+	 *             {@code setCellValue(i, CellValue.fromObject(object))}
 	 */
-	public void setCellValue(final int i, final CellValue value) {
-		value.setToRow(this, i);
+	@Deprecated
+	public void setObjectValue(final int i, final Object object) {
+		this.setCellValue(i, CellValue.fromObject(object));
 	}
 
 	/* (non-Javadoc)
@@ -474,7 +489,11 @@ public class HeavyTableRow {
 		this.setStyle(i, this.dataStyles.getTimeStyle());
 	}
 
-	public void setVoidValue(int i) {
+	public void setTooltip(final int i, final String tooltip) {
+		this.tooltips.set(i, tooltip);
+	}
+
+	public void setVoidValue(final int i) {
 		this.values.set(i, null);
 		this.types.set(i, TableCell.Type.VOID);
 	}
@@ -489,24 +508,5 @@ public class HeavyTableRow {
 			util.appendEAttribute(appendable, "table:default-cell-style-name",
 					this.defaultCellStyle.getName());
 		appendable.append(">");
-	}
-
-	public String getTooltip(int i) {
-		return this.tooltips.get(i);
-	}
-
-	public void setTooltip(int i, String tooltip) {
-		this.tooltips.set(i, tooltip);
-	}
-
-	
-	/**
-	 * @param i
-	 * @param object
-	 * @deprecated Shortcut for {@code setCellValue(i, CellValue.fromObject(object))}
-	 */
-	@Deprecated
-	public void setObjectValue(int i, Object object) {
-		this.setCellValue(i, CellValue.fromObject(object));
 	}
 }

@@ -11,9 +11,9 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class TimeStyleTest {
-	private XMLUtil util;
-	private Locale locale;
 	private DataStyleBuilderFactory factory;
+	private Locale locale;
+	private XMLUtil util;
 
 	@Before
 	public void setUp() {
@@ -24,9 +24,9 @@ public class TimeStyleTest {
 
 	@Test
 	public final void testFormat() throws IOException {
-		TimeStyle ps = this.factory.timeStyleBuilder("test")
+		final TimeStyle ps = this.factory.timeStyleBuilder("test")
 				.timeFormat(TimeStyle.Format.HHMMSS).build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"fixed\">"
@@ -38,9 +38,9 @@ public class TimeStyleTest {
 
 	@Test
 	public final void testNullFormat() throws IOException {
-		TimeStyle ps = this.factory.timeStyleBuilder("test").timeFormat(null)
-				.build();
-		StringBuilder sb = new StringBuilder();
+		final TimeStyle ps = this.factory.timeStyleBuilder("test")
+				.timeFormat(null).build();
+		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
 				"<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"language\"/>",

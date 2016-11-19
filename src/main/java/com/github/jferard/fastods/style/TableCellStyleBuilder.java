@@ -29,8 +29,9 @@ import com.github.jferard.fastods.datastyle.DataStyle;
  */
 public class TableCellStyleBuilder {
 	private String backgroundColor;
-	private BordersBuilder bordersBuilder;
+	private final BordersBuilder bordersBuilder;
 	private DataStyle dataStyle;
+	private final MarginsBuilder marginsBuilder;
 	private final String name;
 	// true
 	private String parentCellStyle;
@@ -39,12 +40,11 @@ public class TableCellStyleBuilder {
 	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
 	// 'top'
 	private boolean wrap; // No line wrap when false, line wrap when
-	private MarginsBuilder marginsBuilder;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -66,54 +66,6 @@ public class TableCellStyleBuilder {
 	}
 
 	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param size
-	 *            The size of the line e.g. '0.1cm'
-	 * @param borderColor
-	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
-	 *            red border
-	 * @param style
-	 *            - The style of the border line, either
-	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder borderAll(final String size,
-			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-		this.bordersBuilder.all(bs);
-		return this;
-	}
-
-	public TableCellStyleBuilder borderTop(final String size,
-			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-		this.bordersBuilder.top(bs);
-		return this;
-	}
-
-	public TableCellStyleBuilder borderRight(final String size,
-			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-		this.bordersBuilder.right(bs);
-		return this;
-	}
-
-	public TableCellStyleBuilder borderBottom(final String size,
-			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-		this.bordersBuilder.bottom(bs);
-		return this;
-	}
-
-	public TableCellStyleBuilder borderLeft(final String size,
-			final String borderColor, final BorderAttribute.Style style) {
-		final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-		this.bordersBuilder.left(bs);
-		return this;
-	}
-
-	/**
 	 * Add a margin to this cell.
 	 *
 	 * @param size
@@ -122,54 +74,6 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder allMargins(final String size) {
 		this.marginsBuilder.all(size);
-		return this;
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param size
-	 *            The size of the margin '0cm'
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder marginTop(final String size) {
-		this.marginsBuilder.top(size);
-		return this;
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param size
-	 *            The size of the margin '0cm'
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder marginRight(final String size) {
-		this.marginsBuilder.right(size);
-		return this;
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param size
-	 *            The size of the margin '0cm'
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder marginBottom(final String size) {
-		this.marginsBuilder.bottom(size);
-		return this;
-	}
-
-	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param size
-	 *            The size of the margin '0cm'
-	 * @return this for fluent style
-	 */
-	public TableCellStyleBuilder marginLeft(final String size) {
-		this.marginsBuilder.left(size);
 		return this;
 	}
 
@@ -185,6 +89,59 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder backgroundColor(final String color) {
 		this.backgroundColor = color;
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the line e.g. '0.1cm'
+	 * @param borderColor
+	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
+	 *            red border
+	 * @param style
+	 *            - The style of the border line, either
+	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder borderAll(final String size,
+			final String borderColor, final BorderAttribute.Style style) {
+		final BorderAttribute bs = new BorderAttribute(size, borderColor,
+				style);
+		this.bordersBuilder.all(bs);
+		return this;
+	}
+
+	public TableCellStyleBuilder borderBottom(final String size,
+			final String borderColor, final BorderAttribute.Style style) {
+		final BorderAttribute bs = new BorderAttribute(size, borderColor,
+				style);
+		this.bordersBuilder.bottom(bs);
+		return this;
+	}
+
+	public TableCellStyleBuilder borderLeft(final String size,
+			final String borderColor, final BorderAttribute.Style style) {
+		final BorderAttribute bs = new BorderAttribute(size, borderColor,
+				style);
+		this.bordersBuilder.left(bs);
+		return this;
+	}
+
+	public TableCellStyleBuilder borderRight(final String size,
+			final String borderColor, final BorderAttribute.Style style) {
+		final BorderAttribute bs = new BorderAttribute(size, borderColor,
+				style);
+		this.bordersBuilder.right(bs);
+		return this;
+	}
+
+	public TableCellStyleBuilder borderTop(final String size,
+			final String borderColor, final BorderAttribute.Style style) {
+		final BorderAttribute bs = new BorderAttribute(size, borderColor,
+				style);
+		this.bordersBuilder.top(bs);
 		return this;
 	}
 
@@ -209,20 +166,6 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
-	// /**
-	// * Set the data style for this TableFamilyStyle to cs.<br>
-	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-	// * exception is thrown
-	// *
-	// * @param cs
-	// * The currency style to be used
-	// * @return this for fluent style
-	// */
-	// public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
-	// this.dataStyle = cs;
-	// return this;
-	// }
-
 	/**
 	 * Set the font color to color.<br>
 	 * The TableFamilyStyle must be of a format of
@@ -237,20 +180,6 @@ public class TableCellStyleBuilder {
 		this.tsBuilder.fontColor(color);
 		return this;
 	}
-
-	// /**
-	// * Set the data style for this TableFamilyStyle to ns.<br>
-	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-	// * exception is thrown
-	// *
-	// * @param ns
-	// * The number style to be used
-	// * @return this for fluent style
-	// */
-	// public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
-	// this.dataStyle = ns;
-	// return this;
-	// }
 
 	/**
 	 * Set the font weight to italic.<br>
@@ -282,6 +211,20 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
+	// /**
+	// * Set the data style for this TableFamilyStyle to cs.<br>
+	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+	// * exception is thrown
+	// *
+	// * @param cs
+	// * The currency style to be used
+	// * @return this for fluent style
+	// */
+	// public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
+	// this.dataStyle = cs;
+	// return this;
+	// }
+
 	/**
 	 * Set the font weight to normal.<br>
 	 * The TableFamilyStyle must be of a format of
@@ -294,6 +237,20 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
+	// /**
+	// * Set the data style for this TableFamilyStyle to ns.<br>
+	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
+	// * exception is thrown
+	// *
+	// * @param ns
+	// * The number style to be used
+	// * @return this for fluent style
+	// */
+	// public TableCellStyleBuilder dataStyle(final NumberStyle ns) {
+	// this.dataStyle = ns;
+	// return this;
+	// }
+
 	/**
 	 * /** Set font wrap.
 	 *
@@ -305,6 +262,54 @@ public class TableCellStyleBuilder {
 	 */
 	public TableCellStyleBuilder fontWrap(final boolean fSetWrap) {
 		this.wrap = fSetWrap;
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginBottom(final String size) {
+		this.marginsBuilder.bottom(size);
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginLeft(final String size) {
+		this.marginsBuilder.left(size);
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginRight(final String size) {
+		this.marginsBuilder.right(size);
+		return this;
+	}
+
+	/**
+	 * Add a border style to this cell.
+	 *
+	 * @param size
+	 *            The size of the margin '0cm'
+	 * @return this for fluent style
+	 */
+	public TableCellStyleBuilder marginTop(final String size) {
+		this.marginsBuilder.top(size);
 		return this;
 	}
 

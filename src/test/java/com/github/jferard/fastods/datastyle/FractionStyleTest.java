@@ -15,9 +15,9 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class FractionStyleTest {
-	private XMLUtil util;
-	private Locale locale;
 	private DataStyleBuilderFactory factory;
+	private Locale locale;
+	private XMLUtil util;
 
 	@Before
 	public final void setUp() {
@@ -26,19 +26,14 @@ public class FractionStyleTest {
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public final void testNull() {
-		this.factory.fractionStyleBuilder(null);
-	}
-
 	@Test
 	public final void test1()
 			throws IOException, ParserConfigurationException, SAXException {
-		FractionStyle s = this.factory.fractionStyleBuilder("name")
+		final FractionStyle s = this.factory.fractionStyleBuilder("name")
 				.country("FR").language("en").volatileStyle(true)
 				.fractionValues(1, 3).groupThousands(true).minIntegerDigits(8)
 				.negativeValueRed().build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		s.appendXMLToStylesEntry(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"en\" number:country=\"FR\" style:volatile=\"true\">"
 				+ "<number:fraction number:min-numerator-digits=\"1\" number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
@@ -55,11 +50,11 @@ public class FractionStyleTest {
 	@Test
 	public final void test2()
 			throws IOException, ParserConfigurationException, SAXException {
-		FractionStyle s = this.factory.fractionStyleBuilder("name")
+		final FractionStyle s = this.factory.fractionStyleBuilder("name")
 				.country("FR").language("en").locale(Locale.GERMANY)
 				.volatileStyle(true).fractionValues(1, 3).groupThousands(true)
 				.minIntegerDigits(8).negativeValueRed().build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		s.appendXMLToStylesEntry(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"de\" number:country=\"DE\" style:volatile=\"true\">"
 				+ "<number:fraction number:min-numerator-digits=\"1\" number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
@@ -71,6 +66,11 @@ public class FractionStyleTest {
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
 		Assert.assertTrue(DomTester.equals(str, sb.toString()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testNull() {
+		this.factory.fractionStyleBuilder(null);
 	}
 
 }

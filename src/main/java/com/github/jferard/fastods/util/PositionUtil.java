@@ -51,13 +51,6 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class PositionUtil {
-	private static final int OPT_DIGIT = 5;
-	private static final int FIRST_DIGIT = 4;
-	private static final int OPT_SECOND_LETTER = 2;
-	private static final int FIRST_LETTER = 1;
-	private static final int BEGIN_DIGIT = 3;
-	private static final int BEGIN_LETTER = 0;
-
 	public static class Position {
 		private final int column;
 		private final int row;
@@ -65,6 +58,18 @@ public class PositionUtil {
 		Position(final int row, final int column) {
 			this.row = row;
 			this.column = column;
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			if (this == o)
+				return true;
+
+			if (!(o instanceof Position))
+				return false;
+
+			final Position other = (Position) o;
+			return this.row == other.row && this.column == other.column;
 		}
 
 		public int getColumn() {
@@ -75,18 +80,15 @@ public class PositionUtil {
 			return this.row;
 		}
 
-		public boolean equals(Object o) {
-			if (this == o)
-				return true;
-
-			if (!(o instanceof Position))
-				return false;
-
-			Position other = (Position) o;
-			return this.row == other.row && this.column == other.column;
-		}
-
 	}
+
+	private static final int BEGIN_DIGIT = 3;
+	private static final int BEGIN_LETTER = 0;
+	private static final int FIRST_DIGIT = 4;
+	private static final int FIRST_LETTER = 1;
+	private static final int OPT_DIGIT = 5;
+
+	private static final int OPT_SECOND_LETTER = 2;
 
 	public PositionUtil() {
 	}
@@ -119,7 +121,7 @@ public class PositionUtil {
 			case FIRST_LETTER: // mand letter
 				if ('A' <= c && c <= 'Z') {
 					col = c - 'A' + 1;
-					status = OPT_SECOND_LETTER;
+					status = PositionUtil.OPT_SECOND_LETTER;
 					n++;
 				} else
 					return null;
@@ -129,12 +131,12 @@ public class PositionUtil {
 					col = col * 26 + c - 'A' + 1;
 					n++;
 				}
-				status = BEGIN_DIGIT;
+				status = PositionUtil.BEGIN_DIGIT;
 				break;
 			case FIRST_DIGIT: // mand digit
 				if ('0' <= c && c <= '9') {
 					row = c - '0';
-					status = OPT_DIGIT;
+					status = PositionUtil.OPT_DIGIT;
 					n++;
 				} else
 					return null;

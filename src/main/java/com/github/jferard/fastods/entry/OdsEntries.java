@@ -40,7 +40,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 /**
  * The OdsEntries class is simply a facade in front of OdsEntry classes. See GOF
  * Facade pattern.
- * 
+ *
  * @author Julien Férard
  *
  */
@@ -60,13 +60,13 @@ public class OdsEntries {
 	}
 
 	private final ContentEntry contentEntry;
+	private final Logger logger;
 	private final ManifestEntry manifestEntry;
 	private final MetaEntry metaEntry;
 	private final MimetypeEntry mimetypeEntry;
-	private final SettingsEntry settingsEntry;
 
+	private final SettingsEntry settingsEntry;
 	private final StylesEntry stylesEntry;
-	private Logger logger;
 
 	protected OdsEntries(final Logger logger, final MimetypeEntry mimetypeEntry,
 			final ManifestEntry manifestEntry,
@@ -102,6 +102,22 @@ public class OdsEntries {
 		this.stylesEntry.addTextStyle(fhTextStyle);
 	}
 
+	public void createEmptyEntries(final ZipUTF8Writer writer)
+			throws IOException {
+		this.logger.log(Level.FINER, "Writing empty entries to zip file");
+		for (final String entryName : new String[] { "Thumbnails/",
+				"Configurations2/accelerator/current.xml",
+				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
+				"Configurations2/menubar/", "Configurations2/popupmenu/",
+				"Configurations2/progressbar/", "Configurations2/statusbar/",
+				"Configurations2/toolbar/" }) {
+			this.logger.log(Level.FINEST, "Writing entry: {0} to zip file",
+					entryName);
+			writer.putNextEntry(new ZipEntry(entryName));
+			writer.closeEntry();
+		}
+	}
+
 	public Table getTable(final int tableIndex) {
 		return this.contentEntry.getTable(tableIndex);
 	}
@@ -131,9 +147,11 @@ public class OdsEntries {
 
 	public void writeEntries(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
 			throws IOException {
-		this.logger.log(Level.FINER, "Writing entry: mimeTypeEntry to zip file");
+		this.logger.log(Level.FINER,
+				"Writing entry: mimeTypeEntry to zip file");
 		this.mimetypeEntry.write(xmlUtil, writer);
-		this.logger.log(Level.FINER, "Writing entry: manifestEntry to zip file");
+		this.logger.log(Level.FINER,
+				"Writing entry: manifestEntry to zip file");
 		this.manifestEntry.write(xmlUtil, writer);
 		this.logger.log(Level.FINER, "Writing entry: metaEntry to zip file");
 		this.metaEntry.write(xmlUtil, writer);
@@ -141,22 +159,8 @@ public class OdsEntries {
 		this.stylesEntry.write(xmlUtil, writer);
 		this.logger.log(Level.FINER, "Writing entry: contentEntry to zip file");
 		this.contentEntry.write(xmlUtil, writer);
-		this.logger.log(Level.FINER, "Writing entry: settingsEntry to zip file");
+		this.logger.log(Level.FINER,
+				"Writing entry: settingsEntry to zip file");
 		this.settingsEntry.write(xmlUtil, writer);
-	}
-
-	public void createEmptyEntries(final ZipUTF8Writer writer)
-			throws IOException {
-		this.logger.log(Level.FINER, "Writing empty entries to zip file");
-		for (final String entryName : new String[] { "Thumbnails/",
-				"Configurations2/accelerator/current.xml",
-				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
-				"Configurations2/menubar/", "Configurations2/popupmenu/",
-				"Configurations2/progressbar/", "Configurations2/statusbar/",
-				"Configurations2/toolbar/" }) {
-			this.logger.log(Level.FINEST, "Writing entry: {0} to zip file", entryName);
-			writer.putNextEntry(new ZipEntry(entryName));
-			writer.closeEntry();
-		}
 	}
 }

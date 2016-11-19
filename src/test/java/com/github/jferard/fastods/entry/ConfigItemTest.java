@@ -25,7 +25,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.entry.ConfigItem;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -36,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  *         This file BenchIT.java is part of FastODS.
  */
 public class ConfigItemTest {
-	
+
 	private XMLUtil util;
 
 	@Before
@@ -46,18 +45,18 @@ public class ConfigItemTest {
 
 	@Test
 	public final void test() {
-		ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean",
-				"false");
+		final ConfigItem loadReadonly = new ConfigItem("LoadReadonly",
+				"boolean", "false");
 		Assert.assertEquals("LoadReadonly", loadReadonly.getName());
 		Assert.assertEquals("boolean", loadReadonly.getType());
 		Assert.assertEquals("false", loadReadonly.getValue());
 	}
-	
+
 	@Test
 	public final void testXML() throws IOException {
-		ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean",
-				"false");
-		StringBuilder sb = new StringBuilder();
+		final ConfigItem loadReadonly = new ConfigItem("LoadReadonly",
+				"boolean", "false");
+		final StringBuilder sb = new StringBuilder();
 		loadReadonly.appendXMLToObject(this.util, sb);
 		Assert.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>",
@@ -66,8 +65,8 @@ public class ConfigItemTest {
 
 	@Test
 	public final void testXMLEscape() throws IOException {
-		ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
-		StringBuilder sb = new StringBuilder();
+		final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
+		final StringBuilder sb = new StringBuilder();
 		escape.appendXMLToObject(this.util, sb);
 		Assert.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;</config:config-item>",

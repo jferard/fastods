@@ -33,30 +33,29 @@ import com.github.jferard.fastods.style.BorderAttribute;
 public class BorderAttributeTest {
 	@Test
 	public final void basicTest() {
-		BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
+		final BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
 				.borderColor(Color.ALICEBLUE)
 				.borderStyle(BorderAttribute.Style.SOLID).build();
-		Assert.assertEquals("1cm solid #F0F8FF",
-				ba.toXMLAttributeValue());
-	}
-
-	@Test
-	public final void nullTest() {
-		BorderAttribute ba = BorderAttribute.builder()
-				.build();
-		Assert.assertEquals("", ba.toXMLAttributeValue());
-	}
-
-	@Test
-	public final void nullSizeTest() {
-		BorderAttribute ba = BorderAttribute.builder().borderColor(Color.AQUAMARINE).build();
-		Assert.assertEquals("solid #7FFFD4",
-				ba.toXMLAttributeValue());
+		Assert.assertEquals("1cm solid #F0F8FF", ba.toXMLAttributeValue());
 	}
 
 	@Test
 	public final void nullColorTest() {
-		BorderAttribute ba = BorderAttribute.builder().borderSize("1cm").build();
+		final BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
+				.build();
 		Assert.assertEquals("1cm", ba.toXMLAttributeValue());
+	}
+
+	@Test
+	public final void nullSizeTest() {
+		final BorderAttribute ba = BorderAttribute.builder()
+				.borderColor(Color.AQUAMARINE).build();
+		Assert.assertEquals("solid #7FFFD4", ba.toXMLAttributeValue());
+	}
+
+	@Test
+	public final void nullTest() {
+		final BorderAttribute ba = BorderAttribute.builder().build();
+		Assert.assertEquals("", ba.toXMLAttributeValue());
 	}
 }

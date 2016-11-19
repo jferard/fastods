@@ -44,20 +44,28 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  */
 public class ContentEntry implements OdsEntry {
 	private final DataStyles format;
+	private final PositionUtil positionUtil;
+	private final StylesEntry stylesEntry;
 	private final Map<String, StyleTag> styleTagByName;
 	private final UniqueList<Table> tables;
-	private final PositionUtil positionUtil;
 	private final XMLUtil xmlUtil;
-	private StylesEntry stylesEntry;
 
-	ContentEntry(StylesEntry stylesEntry, final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			final DataStyles format) {
+	ContentEntry(final StylesEntry stylesEntry, final PositionUtil positionUtil,
+			final XMLUtil xmlUtil, final DataStyles format) {
 		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;
 		this.format = format;
 		this.tables = new UniqueList<Table>();
 		this.styleTagByName = new HashMap<String, StyleTag>();
+	}
+
+	public void addStyleTag(final StyleTag styleTag) {
+		final String name = styleTag.getName();
+		if (this.styleTagByName.containsKey(name))
+			return;
+
+		this.styleTagByName.put(name, styleTag);
 	}
 
 	/**
@@ -71,8 +79,9 @@ public class ContentEntry implements OdsEntry {
 			final int columnCapacity) {
 		Table table = this.tables.getByName(name);
 		if (table == null) {
-			table = new Table(this.positionUtil, this.xmlUtil, this, this.stylesEntry,
-					this.format, name, rowCapacity, columnCapacity);
+			table = new Table(this.positionUtil, this.xmlUtil, this,
+					this.stylesEntry, this.format, name, rowCapacity,
+					columnCapacity);
 			this.tables.add(table);
 		}
 		return table;
@@ -103,7 +112,8 @@ public class ContentEntry implements OdsEntry {
 	}
 
 	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void write(final XMLUtil util, final ZipUTF8Writer writer)
+			throws IOException {
 		writer.putNextEntry(new ZipEntry("content.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
@@ -141,13 +151,5 @@ public class ContentEntry implements OdsEntry {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(tab).append("]").toString());
 		}
-	}
-
-	public void addStyleTag(final StyleTag styleTag) {
-		final String name = styleTag.getName();
-		if (this.styleTagByName.containsKey(name))
-			return;
-
-		this.styleTagByName.put(name, styleTag);
 	}
 }

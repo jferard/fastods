@@ -23,38 +23,38 @@ package com.github.jferard.fastods.style;
 
 public class MarginsBuilder {
 	private String all;
-	private String top;
-	private String right;
 	private String bottom;
 	private String left;
-	
-	public MarginsBuilder top(String top) {
-		this.top = top;
-		return this;
-	}
-	
-	public MarginsBuilder right(String right) {
-		this.right = right;
-		return this;
-	}
-	
-	public MarginsBuilder bottom(String bottom) {
-		this.bottom = bottom;
-		return this;
-	}
-	
-	public MarginsBuilder left(String left) {
-		this.left = left;
-		return this;
-	}
-	
-	public MarginsBuilder all(String size) {
+	private String right;
+	private String top;
+
+	public MarginsBuilder all(final String size) {
 		this.all = size;
 		return this;
 	}
-	
-	
+
+	public MarginsBuilder bottom(final String bottom) {
+		this.bottom = bottom;
+		return this;
+	}
+
 	public Margins build() {
-		return new Margins(this.all, this.top, this.right, this.bottom, this.left);
+		return new Margins(this.all, this.top, this.right, this.bottom,
+				this.left);
+	}
+
+	public MarginsBuilder left(final String left) {
+		this.left = left;
+		return this;
+	}
+
+	public MarginsBuilder right(final String right) {
+		this.right = right;
+		return this;
+	}
+
+	public MarginsBuilder top(final String top) {
+		this.top = top;
+		return this;
 	}
 }

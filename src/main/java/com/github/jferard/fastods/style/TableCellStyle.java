@@ -22,7 +22,6 @@
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
-import java.util.Map;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -67,34 +66,33 @@ public class TableCellStyle implements StyleTag {
 
 	public static TableCellStyle getDefaultCellStyle() {
 		if (TableCellStyle.defaultCellStyle == null)
-			TableCellStyle.defaultCellStyle = TableCellStyle
-					.builder("Default")
+			TableCellStyle.defaultCellStyle = TableCellStyle.builder("Default")
 					.textAlign(TableCellStyle.Align.LEFT)
 					.verticalAlign(TableCellStyle.VerticalAlign.TOP)
 					.fontWrap(false).backgroundColor(Color.WHITE)
-					.allMargins("0cm")
-					.parentCellStyle(null).build();
+					.allMargins("0cm").parentCellStyle(null).build();
 
 		return TableCellStyle.defaultCellStyle;
 	}
 
 	private final String backgroundColor;
+	private final Borders borders;
 	private DataStyle dataStyle;
 	private final Margins margins;
 	private final String name;
 	// true
 	private final String parentCellStyleName;
 	private final Align textAlign; // 'center','end','start','justify'
+
 	private final FHTextStyle textStyle;
 
 	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
-
 	private final boolean wrap; // No line wrap when false, line wrap when
-	private Borders borders;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
+	 * 
 	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -108,8 +106,7 @@ public class TableCellStyle implements StyleTag {
 			final String backgroundColor, final FHTextStyle ts,
 			final Align textAlign, final VerticalAlign verticalAlign,
 			final boolean wrap, final String parentCellStyleName,
-			final Borders borders,
-			final Margins margins) {
+			final Borders borders, final Margins margins) {
 		this.borders = borders;
 		this.margins = margins;
 		this.name = name;
@@ -120,6 +117,13 @@ public class TableCellStyle implements StyleTag {
 		this.verticalAlign = verticalAlign;
 		this.wrap = wrap;
 		this.parentCellStyleName = parentCellStyleName;
+	}
+
+	public void addToContentAndStyles(final ContentEntry contentEntry,
+			final StylesEntry stylesEntry) {
+		if (this.dataStyle != null)
+			this.dataStyle.addToStyles(stylesEntry);
+		contentEntry.addStyleTag(this);
 	}
 
 	public void addToEntries(final OdsEntries odsEntries) {
@@ -190,11 +194,5 @@ public class TableCellStyle implements StyleTag {
 
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
-	}
-
-	public void addToContentAndStyles(ContentEntry contentEntry, StylesEntry stylesEntry) {
-		if (this.dataStyle != null)
-			this.dataStyle.addToStyles(stylesEntry);
-		contentEntry.addStyleTag(this);
 	}
 }

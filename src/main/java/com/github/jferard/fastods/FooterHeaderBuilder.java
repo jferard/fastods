@@ -65,7 +65,6 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	protected final FooterHeader.Type footerHeaderType;
 	protected MarginsBuilder marginsBuilder;
 
-
 	protected String minHeight;
 	protected Set<FHTextStyle> textStyles;
 
@@ -83,91 +82,6 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 		this.marginsBuilder.all("0cm");
 	}
 
-	public abstract FooterHeader build();
-
-	public F pageCount(final FHTextStyle ts) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-count>99</text:page-count>");
-		return (F) this;
-	}
-
-	public F pageCount(final FHTextStyle ts,
-			final int paragraph) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-count>99</text:page-count>", paragraph);
-		return (F) this;
-	}
-
-	public F pageNumber(final FHTextStyle ts) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-number>1</text:page-number>");
-		return (F) this;
-	}
-
-	public F pageNumber(final FHTextStyle ts,
-			final int paragraph) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-number>1</text:page-number>",
-				paragraph);
-		return (F) this;
-	}
-
-	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * region.<br>
-	 * The paragraph to be used is paragraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
-	 * @param text
-	 *            The string with the text
-	 * @param region
-	 *            One of : FooterHeader.FLG_REGION_LEFT,
-	 *            FooterHeader.FLG_REGION_CENTER or
-	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param paragraph
-	 *            The paragraph number to be used
-	 * @return
-	 */
-	public F styledText(final FHTextStyle ts,
-			final String text) {
-		this.textStyles.add(ts);
-		final FHParagraph styledText = new FHParagraph();
-		final FHText st = new FHText(text, ts);
-		styledText.add(st);
-		this.curRegion.add(styledText);
-		return (F) this;
-	}
-
-	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * region.<br>
-	 * The paragraph to be used is paragraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
-	 * @param text
-	 *            The string with the text
-	 * @param region
-	 *            One of : FooterHeader.FLG_REGION_LEFT,
-	 *            FooterHeader.FLG_REGION_CENTER or
-	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param paragraphIndex
-	 *            The paragraph number to be used
-	 * @return
-	 */
-	public F styledText(final FHTextStyle ts,
-			final String text, final int paragraphIndex) {
-		this.textStyles.add(ts);
-		final FHParagraph styledText = FooterHeaderBuilder
-				.checkParagraph(this.curRegion, paragraphIndex);
-		final FHText st = new FHText(text, ts);
-		styledText.add(st);
-		return (F) this;
-	}
-	
 	/**
 	 * Set the margin at the top,bottom,left and right. margin is a length value
 	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
@@ -183,7 +97,9 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 		this.marginsBuilder.all(margin);
 		return (F) this;
 	}
-	
+
+	public abstract FooterHeader build();
+
 	/**
 	 * Set the margin at the bottom. margin is a length value expressed as a
 	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
@@ -241,10 +157,10 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 		this.marginsBuilder.top(margin);
 		return (F) this;
 	}
-	
+
 	/**
-	 * Set the minimum height. min height is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * Set the minimum height. min height is a length value expressed as a
+	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch),<br>
 	 * and pt (points; 72points equal one inch).<br>
@@ -254,6 +170,86 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	public F minHeight(final String height) {
 		this.minHeight = height;
+		return (F) this;
+	}
+
+	public F pageCount(final FHTextStyle ts) {
+		this.textStyles.add(ts);
+		this.styledText(ts, "<text:page-count>99</text:page-count>");
+		return (F) this;
+	}
+
+	public F pageCount(final FHTextStyle ts, final int paragraph) {
+		this.textStyles.add(ts);
+		this.styledText(ts, "<text:page-count>99</text:page-count>", paragraph);
+		return (F) this;
+	}
+
+	public F pageNumber(final FHTextStyle ts) {
+		this.textStyles.add(ts);
+		this.styledText(ts, "<text:page-number>1</text:page-number>");
+		return (F) this;
+	}
+
+	public F pageNumber(final FHTextStyle ts, final int paragraph) {
+		this.textStyles.add(ts);
+		this.styledText(ts, "<text:page-number>1</text:page-number>",
+				paragraph);
+		return (F) this;
+	}
+
+	/**
+	 * Adds a TextStyle and text to the footer/header region specified by
+	 * region.<br>
+	 * The paragraph to be used is paragraph.<br>
+	 * The text will be shown in the order it was added with this function.
+	 *
+	 * @param ts
+	 *            The text style to be used
+	 * @param text
+	 *            The string with the text
+	 * @param region
+	 *            One of : FooterHeader.FLG_REGION_LEFT,
+	 *            FooterHeader.FLG_REGION_CENTER or
+	 *            FooterHeader.FLG_REGION_RIGHT
+	 * @param paragraph
+	 *            The paragraph number to be used
+	 * @return
+	 */
+	public F styledText(final FHTextStyle ts, final String text) {
+		this.textStyles.add(ts);
+		final FHParagraph styledText = new FHParagraph();
+		final FHText st = new FHText(text, ts);
+		styledText.add(st);
+		this.curRegion.add(styledText);
+		return (F) this;
+	}
+
+	/**
+	 * Adds a TextStyle and text to the footer/header region specified by
+	 * region.<br>
+	 * The paragraph to be used is paragraph.<br>
+	 * The text will be shown in the order it was added with this function.
+	 *
+	 * @param ts
+	 *            The text style to be used
+	 * @param text
+	 *            The string with the text
+	 * @param region
+	 *            One of : FooterHeader.FLG_REGION_LEFT,
+	 *            FooterHeader.FLG_REGION_CENTER or
+	 *            FooterHeader.FLG_REGION_RIGHT
+	 * @param paragraphIndex
+	 *            The paragraph number to be used
+	 * @return
+	 */
+	public F styledText(final FHTextStyle ts, final String text,
+			final int paragraphIndex) {
+		this.textStyles.add(ts);
+		final FHParagraph styledText = FooterHeaderBuilder
+				.checkParagraph(this.curRegion, paragraphIndex);
+		final FHText st = new FHText(text, ts);
+		styledText.add(st);
 		return (F) this;
 	}
 }

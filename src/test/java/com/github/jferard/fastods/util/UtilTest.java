@@ -7,6 +7,7 @@ import org.powermock.api.easymock.PowerMock;
 
 public class UtilTest {
 	EqualityUtil equalityUtil;
+
 	@Before
 	public void setUp() {
 		PowerMock.createMock(PositionUtil.class);

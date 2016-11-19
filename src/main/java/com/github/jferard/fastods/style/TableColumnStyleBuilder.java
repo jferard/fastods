@@ -32,6 +32,7 @@ public class TableColumnStyleBuilder {
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
+	 * 
 	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -44,7 +45,7 @@ public class TableColumnStyleBuilder {
 	public TableColumnStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
-		
+
 		this.name = name;
 		this.columnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
 		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle();

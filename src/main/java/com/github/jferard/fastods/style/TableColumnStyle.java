@@ -77,6 +77,10 @@ public class TableColumnStyle implements StyleTag {
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
+	public void addToContent(final ContentEntry contentEntry) {
+		contentEntry.addStyleTag(this);
+	}
+
 	public void addToEntries(final OdsEntries odsEntries) {
 		odsEntries.addStyleTag(this);
 	}
@@ -142,10 +146,6 @@ public class TableColumnStyle implements StyleTag {
 		result = prime * result
 				+ (this.name == null ? 0 : this.name.hashCode());
 		return result;
-	}
-
-	public void addToContent(ContentEntry contentEntry) {
-		contentEntry.addStyleTag(this);
 	}
 
 }

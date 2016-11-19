@@ -41,9 +41,7 @@
 package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -57,7 +55,8 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  */
 public class MimetypeEntry implements OdsEntry {
 	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void write(final XMLUtil util, final ZipUTF8Writer writer)
+			throws IOException {
 		writer.putNextEntry(new ZipEntry("mimetype"));
 		writer.write("application/vnd.oasis.opendocument.spreadsheet");
 		writer.flush();

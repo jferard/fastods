@@ -24,7 +24,6 @@ package com.github.jferard.fastods.style;
 import java.io.IOException;
 
 import com.github.jferard.fastods.FooterHeader;
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -97,8 +96,8 @@ public class PageStyle {
 	public static final PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
 
 	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
-	public static final PageStyle DEFAULT_PAGE_STYLE;
 	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
+	public static final PageStyle DEFAULT_PAGE_STYLE;
 
 	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
 
@@ -119,8 +118,8 @@ public class PageStyle {
 
 	static {
 		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
-		DEFAULT_MASTER_PAGE_STYLE = PageStyle.builder(DEFAULT_MASTER_PAGE)
-				.build();
+		DEFAULT_MASTER_PAGE_STYLE = PageStyle
+				.builder(PageStyle.DEFAULT_MASTER_PAGE).build();
 	}
 
 	public static PageStyleBuilder builder(final String name) {
@@ -133,7 +132,8 @@ public class PageStyle {
 		if (footerHeader == null)
 			appendable.append("<").append(tag).append("/>");
 		else
-			footerHeader.appendStyleFooterHeaderXMLToAutomaticStyle(util, appendable);
+			footerHeader.appendStyleFooterHeaderXMLToAutomaticStyle(util,
+					appendable);
 	}
 
 	private final String backgroundColor;
@@ -210,10 +210,10 @@ public class PageStyle {
 		PageStyle.appendFooterHeaderStyle(util, appendable, this.footer,
 				"style:footer-style");
 		appendable.append("</style:page-layout>");
-		
+
 		if (this.header != null)
 			this.header.appendTextStylesXMLToAutomaticStyle(util, appendable);
-		
+
 		if (this.footer != null)
 			this.footer.appendTextStylesXMLToAutomaticStyle(util, appendable);
 	}

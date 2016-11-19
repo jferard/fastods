@@ -61,8 +61,9 @@ class RegionFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 * @param textStyles 
 	 * 
+	 * @param textStyles
+	 *
 	 * @param minHeight2
 	 *
 	 * @param odsFile
@@ -72,7 +73,7 @@ class RegionFooterHeader extends FooterHeader {
 			final List<FHParagraph> centerRegion,
 			final List<FHParagraph> leftRegion,
 			final List<FHParagraph> rightRegion, final Margins margins,
-			final String minHeight, Set<FHTextStyle> textStyles) {
+			final String minHeight, final Set<FHTextStyle> textStyles) {
 		super(footerHeaderType, margins, minHeight, textStyles);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;

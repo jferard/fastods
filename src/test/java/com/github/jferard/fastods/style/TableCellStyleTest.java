@@ -42,10 +42,24 @@ public class TableCellStyleTest {
 	}
 
 	@Test
-	public final void testAllMargins() throws IOException, SAXException {
-		TableCellStyle tcs = TableCellStyle.builder("tcs").allMargins("10pt")
+	public final void testAllBorders() throws IOException, SAXException {
+		final TableCellStyle tcs = TableCellStyle.builder("test")
+				.borderAll("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
 				.build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
+		tcs.appendXMLToContentEntry(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
+						+ "<style:paragraph-properties/>" + "</style:style>",
+				sb.toString()));
+	}
+
+	@Test
+	public final void testAllMargins() throws IOException, SAXException {
+		final TableCellStyle tcs = TableCellStyle.builder("tcs")
+				.allMargins("10pt").build();
+		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
 		Assert.assertTrue(DomTester
 				.equals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
@@ -55,11 +69,29 @@ public class TableCellStyleTest {
 	}
 
 	@Test
-	public final void testMargins() throws IOException, SAXException {
-		TableCellStyle tcs = TableCellStyle.builder("tcs").marginTop("10pt")
-				.marginRight("11pt").marginBottom("12pt").marginLeft("13pt")
+	public final void testBorders() throws IOException, SAXException {
+		final TableCellStyle tcs = TableCellStyle.builder("test")
+				.borderTop("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
+				.borderRight("2pt", Color.BEIGE, BorderAttribute.Style.SOLID)
+				.borderBottom("3pt", Color.CADETBLUE,
+						BorderAttribute.Style.DOUBLE)
+				.borderLeft("4pt", Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
 				.build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
+		tcs.appendXMLToContentEntry(this.util, sb);
+		Assert.assertTrue(DomTester.equals(
+				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+						+ "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
+						+ "<style:paragraph-properties/>" + "</style:style>",
+				sb.toString()));
+	}
+
+	@Test
+	public final void testMargins() throws IOException, SAXException {
+		final TableCellStyle tcs = TableCellStyle.builder("tcs")
+				.marginTop("10pt").marginRight("11pt").marginBottom("12pt")
+				.marginLeft("13pt").build();
+		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
 		Assert.assertTrue(DomTester
 				.equals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
@@ -71,37 +103,5 @@ public class TableCellStyleTest {
 	@Test(expected = IllegalArgumentException.class)
 	public final void testNullName() {
 		TableCellStyle.builder(null);
-	}
-
-	@Test
-	public final void testBorders() throws IOException, SAXException {
-		TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderTop("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
-				.borderRight("2pt", Color.BEIGE, BorderAttribute.Style.SOLID)
-				.borderBottom("3pt", Color.CADETBLUE,
-						BorderAttribute.Style.DOUBLE)
-				.borderLeft("4pt", Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
-				.build();
-		StringBuilder sb = new StringBuilder();
-		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
-						+ "<style:paragraph-properties/>" + "</style:style>",
-				sb.toString()));
-	}
-
-	@Test
-	public final void testAllBorders() throws IOException, SAXException {
-		TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderAll("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
-				.build();
-		StringBuilder sb = new StringBuilder();
-		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
-						+ "<style:paragraph-properties/>" + "</style:style>",
-				sb.toString()));
 	}
 }

@@ -34,7 +34,8 @@ import com.github.jferard.fastods.util.FullList;
  * @author Julien Férard
  *
  */
-class RegionFooterHeaderBuilder extends FooterHeaderBuilder<RegionFooterHeaderBuilder> {
+class RegionFooterHeaderBuilder
+		extends FooterHeaderBuilder<RegionFooterHeaderBuilder> {
 
 	private final List<FHParagraph> centerRegion;
 	private final List<FHParagraph> leftRegion;
@@ -58,7 +59,8 @@ class RegionFooterHeaderBuilder extends FooterHeaderBuilder<RegionFooterHeaderBu
 	@Override
 	public FooterHeader build() {
 		return new RegionFooterHeader(this.footerHeaderType, this.centerRegion,
-				this.leftRegion, this.rightRegion, this.marginsBuilder.build(), this.minHeight, this.textStyles);
+				this.leftRegion, this.rightRegion, this.marginsBuilder.build(),
+				this.minHeight, this.textStyles);
 	}
 
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {

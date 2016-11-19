@@ -32,18 +32,54 @@ import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 
 public class TableHelper {
-	private PositionUtil positionUtil;
+	private final PositionUtil positionUtil;
 
-	public TableHelper(PositionUtil positionUtil) {
+	public TableHelper(final PositionUtil positionUtil) {
 		this.positionUtil = positionUtil;
 	}
 
-	private TableCellWalker getCell(final Table table, final int rowIndex,
-			final int colIndex) throws FastOdsException {
-		final HeavyTableRow row = table.getRow(rowIndex);
-		final TableCellWalker walker = row.getWalker();
-		walker.to(colIndex);
-		return walker;
+	/**
+	 * Set the merging of multiple cells to one cell.
+	 *
+	 * @param rowIndex
+	 *            The row, 0 is the first row
+	 * @param colIndex
+	 *            The column, 0 is the first column
+	 * @param rowMerge
+	 * @param columnMerge
+	 * @throws FastOdsException
+	 */
+	public void setCellMerge(final Table table, final int rowIndex,
+			final int colIndex, final int rowMerge, final int columnMerge)
+			throws FastOdsException {
+		final TableCell cell = this.getCell(table, rowIndex, colIndex);
+		cell.setRowsSpanned(rowMerge);
+		cell.setColumnsSpanned(columnMerge);
+	}
+
+	/**
+	 * Set the merging of multiple cells to one cell in all existing tables.
+	 *
+	 * @param pos
+	 *            The cell position e.g. 'A1'
+	 * @param rowMerge
+	 * @param columnMerge
+	 * @throws FastOdsException
+	 */
+	public void setCellMerge(final Table table, final String pos,
+			final int rowMerge, final int columnMerge) throws FastOdsException {
+		final Position position = this.positionUtil.getPosition(pos);
+		final int row = position.getRow();
+		final int col = position.getColumn();
+		this.setCellMerge(table, row, col, rowMerge, columnMerge);
+	}
+
+	public void setCellValue(final Table table, final int rowIndex,
+			final int colIndex, final CellValue value, final TableCellStyle ts)
+			throws FastOdsException {
+		final TableCell cell = this.getCell(table, rowIndex, colIndex);
+		cell.setCellValue(value);
+		cell.setStyle(ts);
 	}
 
 	/**
@@ -71,46 +107,11 @@ public class TableHelper {
 		this.setCellValue(table, row, col, value, ts);
 	}
 
-	public void setCellValue(Table table, int rowIndex, int colIndex,
-			CellValue value, TableCellStyle ts) throws FastOdsException {
-		TableCell cell = this.getCell(table, rowIndex, colIndex);
-		cell.setCellValue(value);
-		cell.setStyle(ts);
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
-	 */
-	public void setCellMerge(final Table table, final int rowIndex,
-			final int colIndex, final int rowMerge, final int columnMerge)
-			throws FastOdsException {
-		final TableCell cell = getCell(table, rowIndex, colIndex);
-		cell.setRowsSpanned(rowMerge);
-		cell.setColumnsSpanned(columnMerge);
-	}
-
-	/**
-	 * Set the merging of multiple cells to one cell in all existing tables.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
-	 */
-	public void setCellMerge(final Table table, final String pos,
-			final int rowMerge, final int columnMerge) throws FastOdsException {
-		final Position position = this.positionUtil.getPosition(pos);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellMerge(table, row, col, rowMerge, columnMerge);
+	private TableCellWalker getCell(final Table table, final int rowIndex,
+			final int colIndex) throws FastOdsException {
+		final HeavyTableRow row = table.getRow(rowIndex);
+		final TableCellWalker walker = row.getWalker();
+		walker.to(colIndex);
+		return walker;
 	}
 }

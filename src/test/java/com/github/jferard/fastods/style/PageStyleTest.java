@@ -22,8 +22,8 @@ public class PageStyleTest {
 			+ "<text:span text:style-name=\"none\">" + "</text:span>"
 			+ "</text:p>" + "</style:header>"
 			+ "<style:header-left style:display=\"false\"/>" + "<style:footer>"
-			+ "<text:p>" + "<text:span text:style-name=\"none\">" + "</text:span>"
-			+ "</text:p>" + "</style:footer>"
+			+ "<text:p>" + "<text:span text:style-name=\"none\">"
+			+ "</text:span>" + "</text:p>" + "</style:footer>"
 			+ "<style:footer-left style:display=\"false\"/>"
 			+ "</style:master-page>";
 	private XMLUtil util;
@@ -33,16 +33,11 @@ public class PageStyleTest {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 	}
 
-	@Test(expected = IllegalStateException.class)
-	public final void testEmpty() {
-		PageStyle.builder(null).build();
-	}
-
 	@Test
 	public final void testAlmostEmptyToAutomaticStyle()
 			throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test").build();
-		StringBuilder sb = new StringBuilder();
+		final PageStyle pageStyle = PageStyle.builder("test").build();
+		final StringBuilder sb = new StringBuilder();
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals(
 				"<style:page-layout style:name=\"test\">"
@@ -58,56 +53,45 @@ public class PageStyleTest {
 	@Test
 	public final void testAlmostEmptyToMasterStyle()
 			throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test").build();
-		StringBuilder sb = new StringBuilder();
+		final PageStyle pageStyle = PageStyle.builder("test").build();
+		final StringBuilder sb = new StringBuilder();
 		pageStyle.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(MASTER, sb.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sb.toString()));
 	}
 
 	@Test
-	public final void testMargins() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test").allMargins("10pt")
-				.build();
-		StringBuilder sb = new StringBuilder();
-		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
+	public final void testBackground() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test")
+				.backgroundColor(Color.BLANCHEDALMOND).build();
+		final StringBuilder sba = new StringBuilder();
+		final StringBuilder sbm = new StringBuilder();
+
+		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
+		pageStyle.appendXMLToMasterStyle(this.util, sbm);
 		Assert.assertTrue(DomTester.equals(
 				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"10pt\"/>"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:background-color=\"#FFEBCD\" fo:margin=\"1.5cm\"/>"
 						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
-				sb.toString()));
-
-		Assert.assertEquals((new MarginsBuilder()).all("10pt").build(),
-				pageStyle.getMargins());
+				sba.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sbm.toString()));
 	}
 
-	@Test
-	public final void testHeightAndWidth() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test").pageHeight("20cm")
-				.pageWidth("10cm").build();
-		StringBuilder sb = new StringBuilder();
-		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"10cm\" fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
-						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:footer-style>" + "</style:page-layout>",
-				sb.toString()));
+	@Test(expected = IllegalStateException.class)
+	public final void testEmpty() {
+		PageStyle.builder(null).build();
 	}
 
 	@Test
 	public final void testFooterHeader() throws IOException, SAXException {
-		FooterHeader header = PowerMock.createMock(FooterHeader.class);
-		FooterHeader footer = PowerMock.createMock(FooterHeader.class);
-		PageStyle pageStyle = PageStyle.builder("test").header(header)
+		final FooterHeader header = PowerMock.createMock(FooterHeader.class);
+		final FooterHeader footer = PowerMock.createMock(FooterHeader.class);
+		final PageStyle pageStyle = PageStyle.builder("test").header(header)
 				.footer(footer).build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 
 		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
@@ -123,48 +107,50 @@ public class PageStyleTest {
 	}
 
 	@Test
-	public final void testNullFooterHeader() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test").header(null)
-				.footer(null).build();
-		StringBuilder sb = new StringBuilder();
-
-		PowerMock.replayAll();
+	public final void testHeightAndWidth() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test").pageHeight("20cm")
+				.pageWidth("10cm").build();
+		final StringBuilder sb = new StringBuilder();
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
-		Assert.assertTrue(
-				DomTester.equals("<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
-						+ "<style:header-style/>" + "<style:footer-style/>"
-						+ "</style:page-layout>", sb.toString()));
-		PowerMock.verifyAll();
+		Assert.assertTrue(DomTester.equals(
+				"<style:page-layout style:name=\"test\">"
+						+ "<style:page-layout-properties fo:page-width=\"10cm\" fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
+						+ "<style:header-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:header-style>" + "<style:footer-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:footer-style>" + "</style:page-layout>",
+				sb.toString()));
 	}
 
 	@Test
-	public final void testBackground() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test")
-				.backgroundColor(Color.BLANCHEDALMOND).build();
-		StringBuilder sba = new StringBuilder();
-		StringBuilder sbm = new StringBuilder();
-
-		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
-		pageStyle.appendXMLToMasterStyle(this.util, sbm);
+	public final void testMargins() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test").allMargins("10pt")
+				.build();
+		final StringBuilder sb = new StringBuilder();
+		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		Assert.assertTrue(DomTester.equals(
 				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:background-color=\"#FFEBCD\" fo:margin=\"1.5cm\"/>"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"10pt\"/>"
 						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:header-style>" + "<style:footer-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
-				sba.toString()));
-		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
+				sb.toString()));
+
+		Assert.assertEquals(new MarginsBuilder().all("10pt").build(),
+				pageStyle.getMargins());
 	}
 
 	@Test
 	public final void testMargins2() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test").marginTop("1pt")
+		final PageStyle pageStyle = PageStyle.builder("test").marginTop("1pt")
 				.marginRight("2pt").marginBottom("3pt").marginLeft("4pt")
 				.printOrientationVertical().printOrientationHorizontal()
 				.writingMode(WritingMode.PAGE).build();
-		StringBuilder sba = new StringBuilder();
-		StringBuilder sbm = new StringBuilder();
+		final StringBuilder sba = new StringBuilder();
+		final StringBuilder sbm = new StringBuilder();
 
 		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
 		pageStyle.appendXMLToMasterStyle(this.util, sbm);
@@ -177,90 +163,36 @@ public class PageStyleTest {
 						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sba.toString()));
-		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sbm.toString()));
 		Assert.assertEquals(
-				(new MarginsBuilder()).top("1pt").right("2pt").bottom("3pt")
+				new MarginsBuilder().top("1pt").right("2pt").bottom("3pt")
 						.left("4pt").all("1.5cm").build(),
 				pageStyle.getMargins());
 	}
 
 	@Test
-	public final void testPrintOrientationV() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test")
-				.printOrientationVertical().writingMode(WritingMode.PAGE)
-				.build();
-		StringBuilder sba = new StringBuilder();
-		StringBuilder sbm = new StringBuilder();
+	public final void testNullFooterHeader() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test").header(null)
+				.footer(null).build();
+		final StringBuilder sb = new StringBuilder();
 
-		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
-		pageStyle.appendXMLToMasterStyle(this.util, sbm);
-		Assert.assertTrue(DomTester.equals(
-				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
-						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:footer-style>" + "</style:page-layout>",
-				sba.toString()));
-		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
-	}
-
-	@Test
-	public final void testPrintOrientationH() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test")
-				.printOrientationHorizontal().writingMode(WritingMode.PAGE)
-				.build();
-		StringBuilder sba = new StringBuilder();
-		StringBuilder sbm = new StringBuilder();
-
-		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
-		pageStyle.appendXMLToMasterStyle(this.util, sbm);
-		Assert.assertTrue(DomTester.equals(
-				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"landscape\" fo:margin=\"1.5cm\"/>"
-						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:footer-style>" + "</style:page-layout>",
-				sba.toString()));
-		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
-	}
-
-	@Test
-	public final void testWritingMode() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test")
-				.writingMode(WritingMode.PAGE).build();
-		StringBuilder sba = new StringBuilder();
-		StringBuilder sbm = new StringBuilder();
-
-		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
-		pageStyle.appendXMLToMasterStyle(this.util, sbm);
-		Assert.assertTrue(DomTester.equals(
-				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
-						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:footer-style>" + "</style:page-layout>",
-				sba.toString()));
-		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
-		Assert.assertEquals(WritingMode.PAGE, pageStyle.getWritingMode());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public final void testWritingException() throws IOException, SAXException {
-		PageStyle.builder("test").writingMode(null);
+		PowerMock.replayAll();
+		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
+		Assert.assertTrue(
+				DomTester.equals("<style:page-layout style:name=\"test\">"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
+						+ "<style:header-style/>" + "<style:footer-style/>"
+						+ "</style:page-layout>", sb.toString()));
+		PowerMock.verifyAll();
 	}
 
 	@Test
 	public final void testPaperFormat() throws IOException, SAXException {
-		PageStyle pageStyle = PageStyle.builder("test")
+		final PageStyle pageStyle = PageStyle.builder("test")
 				.paperFormat(PaperFormat.A3).build();
-		StringBuilder sba = new StringBuilder();
-		StringBuilder sbm = new StringBuilder();
+		final StringBuilder sba = new StringBuilder();
+		final StringBuilder sbm = new StringBuilder();
 
 		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
 		pageStyle.appendXMLToMasterStyle(this.util, sbm);
@@ -273,9 +205,84 @@ public class PageStyleTest {
 						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sba.toString()));
-		Assert.assertTrue(DomTester.equals(MASTER, sbm.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sbm.toString()));
 		Assert.assertEquals("29.7cm", pageStyle.getPageWidth());
 		Assert.assertEquals("42.0cm", pageStyle.getPageHeight());
 		Assert.assertEquals(PaperFormat.A3, pageStyle.getPaperFormat());
+	}
+
+	@Test
+	public final void testPrintOrientationH() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test")
+				.printOrientationHorizontal().writingMode(WritingMode.PAGE)
+				.build();
+		final StringBuilder sba = new StringBuilder();
+		final StringBuilder sbm = new StringBuilder();
+
+		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
+		pageStyle.appendXMLToMasterStyle(this.util, sbm);
+		Assert.assertTrue(DomTester.equals(
+				"<style:page-layout style:name=\"test\">"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"landscape\" fo:margin=\"1.5cm\"/>"
+						+ "<style:header-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:header-style>" + "<style:footer-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:footer-style>" + "</style:page-layout>",
+				sba.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sbm.toString()));
+	}
+
+	@Test
+	public final void testPrintOrientationV() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test")
+				.printOrientationVertical().writingMode(WritingMode.PAGE)
+				.build();
+		final StringBuilder sba = new StringBuilder();
+		final StringBuilder sbm = new StringBuilder();
+
+		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
+		pageStyle.appendXMLToMasterStyle(this.util, sbm);
+		Assert.assertTrue(DomTester.equals(
+				"<style:page-layout style:name=\"test\">"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
+						+ "<style:header-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:header-style>" + "<style:footer-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:footer-style>" + "</style:page-layout>",
+				sba.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sbm.toString()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public final void testWritingException() throws IOException, SAXException {
+		PageStyle.builder("test").writingMode(null);
+	}
+
+	@Test
+	public final void testWritingMode() throws IOException, SAXException {
+		final PageStyle pageStyle = PageStyle.builder("test")
+				.writingMode(WritingMode.PAGE).build();
+		final StringBuilder sba = new StringBuilder();
+		final StringBuilder sbm = new StringBuilder();
+
+		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
+		pageStyle.appendXMLToMasterStyle(this.util, sbm);
+		Assert.assertTrue(DomTester.equals(
+				"<style:page-layout style:name=\"test\">"
+						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
+						+ "<style:header-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:header-style>" + "<style:footer-style>"
+						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
+						+ "</style:footer-style>" + "</style:page-layout>",
+				sba.toString()));
+		Assert.assertTrue(
+				DomTester.equals(PageStyleTest.MASTER, sbm.toString()));
+		Assert.assertEquals(WritingMode.PAGE, pageStyle.getWritingMode());
 	}
 }

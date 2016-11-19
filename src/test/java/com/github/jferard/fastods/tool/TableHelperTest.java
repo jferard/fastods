@@ -21,8 +21,7 @@
  ******************************************************************************/
 package com.github.jferard.fastods.tool;
 
-import static org.easymock.EasyMock.expect;
-
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -39,12 +38,12 @@ import com.github.jferard.fastods.util.PositionUtil;
 
 public class TableHelperTest {
 
-	private PositionUtil positionUtil;
-	private Table table;
-	private HeavyTableRow row;
-	private TableCellWalker walker;
 	private TableCell cell;
+	private PositionUtil positionUtil;
+	private HeavyTableRow row;
+	private Table table;
 	private TableHelper tableHelper;
+	private TableCellWalker walker;
 
 	@Before
 	public void setUp() throws Exception {
@@ -57,32 +56,32 @@ public class TableHelperTest {
 	}
 
 	@Test
-	public final void testSetCellValue() throws FastOdsException {
-		CellValue value = new StringValue("@");
-		TableCellStyle ts = TableCellStyle.builder("b").build();
-		
-		expect(this.table.getRow(6)).andReturn(this.row);
-		expect(this.row.getWalker()).andReturn(this.walker);
-		this.walker.to(2);
-		this.walker.setCellValue(value);
-		this.walker.setStyle(ts);
-		PowerMock.replayAll();
-		this.tableHelper.setCellValue(this.table, "C7", value, ts);
-		PowerMock.verifyAll();
-	}
-
-	@Test
 	public final void testSetCellMerge() throws FastOdsException {
-		CellValue value = new StringValue("@");
-		TableCellStyle ts = TableCellStyle.builder("b").build();
-		
-		expect(this.table.getRow(6)).andReturn(this.row);
-		expect(this.row.getWalker()).andReturn(this.walker);
+		final CellValue value = new StringValue("@");
+		final TableCellStyle ts = TableCellStyle.builder("b").build();
+
+		EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
+		EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
 		this.walker.to(2);
 		this.walker.setColumnsSpanned(3);
 		this.walker.setRowsSpanned(9);
 		PowerMock.replayAll();
 		this.tableHelper.setCellMerge(this.table, "C7", 9, 3);
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testSetCellValue() throws FastOdsException {
+		final CellValue value = new StringValue("@");
+		final TableCellStyle ts = TableCellStyle.builder("b").build();
+
+		EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
+		EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
+		this.walker.to(2);
+		this.walker.setCellValue(value);
+		this.walker.setStyle(ts);
+		PowerMock.replayAll();
+		this.tableHelper.setCellValue(this.table, "C7", value, ts);
 		PowerMock.verifyAll();
 	}
 }

@@ -91,7 +91,8 @@ public class FHTextStyleBuilder {
 	 * @return
 	 */
 	public FHTextStyleBuilder fontSize(final int fontSize) {
-		this.fontSize = new StringBuilder(8).append(fontSize).append("pt").toString();
+		this.fontSize = new StringBuilder(8).append(fontSize).append("pt")
+				.toString();
 		return this;
 	}
 

@@ -29,19 +29,41 @@ import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class ZipUTF8Writer implements Closeable, Flushable, Appendable, AutoCloseable {
+public class ZipUTF8Writer
+		implements Closeable, Flushable, Appendable, AutoCloseable {
 	public static final Charset UTF_8 = Charset.forName("UTF-8");
-	
+
 	public static ZipUTF8WriterBuilder builder() {
 		return new ZipUTF8WriterBuilder();
 	}
-	
-	private final ZipOutputStream zipStream;
-	private final Writer writer;
 
-	ZipUTF8Writer(ZipOutputStream zipStream, Writer writer) {
+	private final Writer writer;
+	private final ZipOutputStream zipStream;
+
+	ZipUTF8Writer(final ZipOutputStream zipStream, final Writer writer) {
 		this.zipStream = zipStream;
 		this.writer = writer;
+	}
+
+	@Override
+	public Writer append(final char c) throws IOException {
+		return this.writer.append(c);
+	}
+
+	@Override
+	public Writer append(final CharSequence arg0) throws IOException {
+		return this.writer.append(arg0);
+	}
+
+	@Override
+	public Writer append(final CharSequence csq, final int start, final int end)
+			throws IOException {
+		return this.writer.append(csq, start, end);
+	}
+
+	@Override
+	public void close() throws IOException {
+		this.zipStream.close();
 	}
 
 	public void closeEntry() throws IOException {
@@ -54,41 +76,20 @@ public class ZipUTF8Writer implements Closeable, Flushable, Appendable, AutoClos
 		this.zipStream.finish();
 	}
 
-	public void putNextEntry(ZipEntry arg0) throws IOException {
-		this.zipStream.putNextEntry(arg0);
-	}
-
-	public void setComment(String arg0) {
-		this.zipStream.setComment(arg0);
-	}
-
-	@Override
-	public Writer append(char c) throws IOException {
-		return this.writer.append(c);
-	}
-
-	@Override
-	public Writer append(CharSequence csq, int start, int end)
-			throws IOException {
-		return this.writer.append(csq, start, end);
-	}
-
-	@Override
-	public Writer append(CharSequence arg0) throws IOException {
-		return this.writer.append(arg0);
-	}
-
-	@Override
-	public void close() throws IOException {
-		this.zipStream.close();
-	}
-
 	@Override
 	public void flush() throws IOException {
 		this.writer.flush();
 	}
 
-	public void write(String str) throws IOException {
+	public void putNextEntry(final ZipEntry arg0) throws IOException {
+		this.zipStream.putNextEntry(arg0);
+	}
+
+	public void setComment(final String arg0) {
+		this.zipStream.setComment(arg0);
+	}
+
+	public void write(final String str) throws IOException {
 		this.writer.write(str);
 	}
 }

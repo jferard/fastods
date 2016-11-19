@@ -27,10 +27,10 @@ import java.util.Map;
 /**
  * The FastOdsXMLEscaper escapes xml chars as fast as possible. That means : all
  * is grouped in a single method body to avoid unnecessary method calls.
- * 
+ *
  * The design was inspired by Google Guava's Escapers, but the implementation
  * aims to be faster in that specific case.
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard
  *
  *         This file Util.java is part of FastODS.
@@ -38,7 +38,6 @@ import java.util.Map;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class FastOdsXMLEscaper implements XMLEscaper {
 	private static final int BUFFER_SIZE = 65536;
-	private final Map<String, String> attrCacheMap;
 	/**
 	 * <pre>
 	 * & : 0,4
@@ -51,12 +50,13 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 	 * \n : 35,5
 	 * \r : 40,5
 	 * </pre>
-	 * 
+	 *
 	 * Beware to the backlash : it has to be escaped or \uFFFD will be
 	 * interpreted as a single char
 	 */
 	private static final char[] TO_COPY = "amp;&lt;&gt;&apos;&quot;\\uFFFD&#x9;&#xA;&#xD;"
 			.toCharArray();
+	private final Map<String, String> attrCacheMap;
 
 	private char[] buffer;
 	private final Map<String, String> contentCacheMap;
@@ -65,7 +65,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 		this(FastOdsXMLEscaper.BUFFER_SIZE);
 	}
 
-	public FastOdsXMLEscaper(int bufferSize) {
+	public FastOdsXMLEscaper(final int bufferSize) {
 		this.attrCacheMap = new HashMap<String, String>();
 		this.contentCacheMap = new HashMap<String, String>();
 		this.buffer = new char[bufferSize];
@@ -257,7 +257,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 		/*
 		if (s == null)
 			return null;
-		
+
 		String s2 = this.contentCacheMap.get(s);
 		if (s2 == null) {
 			final int length = s.length();
@@ -309,7 +309,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 						this.buffer[destIndex++] = c2;
 				}
 			}
-		
+
 			if (oneSpecialChar) {
 				if (destIndex >= this.buffer.length) {
 					final char[] newBuffer = new char[2 * this.buffer.length];

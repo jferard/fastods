@@ -69,7 +69,8 @@ public class FHText {
 	}
 
 	// DO NOT USE...
-	// WARNING: 19.874.29: style-name refers to a style that has the family "paragraph" !
+	// WARNING: 19.874.29: style-name refers to a style that has the family
+	// "paragraph" !
 	public void appendXMLTextPToParagraph(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<text:p");

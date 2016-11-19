@@ -23,7 +23,6 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.util.NamedObject;
@@ -52,6 +51,10 @@ public abstract class DataStyle implements NamedObject {
 
 	public void addToEntries(final OdsEntries odsEntries) {
 		odsEntries.addDataStyle(this);
+	}
+
+	public void addToStyles(final StylesEntry styleEntry) {
+		styleEntry.addDataStyle(this);
 	}
 
 	/**
@@ -111,9 +114,5 @@ public abstract class DataStyle implements NamedObject {
 	 */
 	String getLanguageCode() {
 		return this.languageCode;
-	}
-
-	public void addToStyles(StylesEntry styleEntry) {
-		styleEntry.addDataStyle(this);
 	}
 }

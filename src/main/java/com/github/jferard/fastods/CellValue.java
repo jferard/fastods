@@ -25,18 +25,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 public abstract class CellValue {
-	public static CellValue fromObject(Object o) {
+	public static CellValue fromObject(final Object o) {
 		if (o == null)
 			return new VoidValue();
 		else if (o instanceof String)
 			return new StringValue((String) o);
 		else if (o instanceof Number) // BigDecimal, Byte, Short, Integer,
-											// Long, Float, Double
+										// Long, Float, Double
 			return new FloatValue((Number) o);
 		else if (o instanceof Boolean)
 			return new BooleanValue((Boolean) o);
 		else if (o instanceof Date) // java.util.Date & java.sql.Date,
-										// java.sql.Time, java.sql.Timestamp
+									// java.sql.Time, java.sql.Timestamp
 			return new DateValue((Date) o);
 		else if (o instanceof Calendar)
 			return new DateValue(((Calendar) o).getTime());
@@ -44,10 +44,10 @@ public abstract class CellValue {
 			return new StringValue(o.toString());
 	}
 
-	public static CellValue fromTypeAndObject(Object o) {
+	public static CellValue fromTypeAndObject(final Object o) {
 		// TODO: use the type hint, with a switch...
 		return CellValue.fromObject(o);
 	}
-	
+
 	public abstract void setToRow(HeavyTableRow heavyTableRow, int i);
 }

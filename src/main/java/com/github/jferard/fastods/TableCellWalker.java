@@ -29,9 +29,9 @@ public interface TableCellWalker extends TableCell {
 
 	boolean hasPrevious();
 
-	void next();
-
 	void lastCell();
+
+	void next();
 
 	void previous();
 

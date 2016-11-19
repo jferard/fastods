@@ -22,14 +22,14 @@
 package com.github.jferard.fastods;
 
 public class BooleanValue extends CellValue {
-	private Boolean value;
+	private final Boolean value;
 
-	public BooleanValue(Boolean value) {
+	public BooleanValue(final Boolean value) {
 		this.value = value;
 	}
 
 	@Override
-	public void setToRow(HeavyTableRow heavyTableRow, int i) {
+	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setBooleanValue(i, this.value);
 	}
 }

@@ -41,20 +41,18 @@
 package com.github.jferard.fastods;
 
 /**
- * file.ods content.xml
- * <office:document-content> <office:automatic-styles> <number:boolean-style>
- * <number:currency-style> <number:date-style> <number:number-style>
- * <number:percentage-style> <number:text-style> <number:time-style>
- * <style:page-layout> <style:style> <style:table-column-properties> --
- * column-width <style:table-row-properties> -- row-height
- * <text:list-style> <office:body> <office:spreadsheet> <table:table>
- * <table:table-column> -- style, visibility
- * <table:table-row> <table:table-cell> # more tables ... styles.xml
- * <office:document-styles> <office:automatic-styles> # see above
+ * file.ods content.xml <office:document-content> <office:automatic-styles>
+ * <number:boolean-style> <number:currency-style> <number:date-style>
+ * <number:number-style> <number:percentage-style> <number:text-style>
+ * <number:time-style> <style:page-layout> <style:style>
+ * <style:table-column-properties> -- column-width <style:table-row-properties>
+ * -- row-height <text:list-style> <office:body> <office:spreadsheet>
+ * <table:table> <table:table-column> -- style, visibility <table:table-row>
+ * <table:table-cell> # more tables ... styles.xml <office:document-styles>
+ * <office:automatic-styles> # see above
  * office:document-content/office:automatic-styles/style:style
  * <office:master-styles> <draw:layerset> <style:handout-master>
  * <style:master-page> <style:footer> <style:header> <office:styles> # like
- * automatic-styles, with more children meta.xml
- * <office:document-meta> <office:meta> settings.xml
- * <office:document-settings> <office:settings>
+ * automatic-styles, with more children meta.xml <office:document-meta>
+ * <office:meta> settings.xml <office:document-settings> <office:settings>
  */

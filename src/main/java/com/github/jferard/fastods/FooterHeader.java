@@ -97,26 +97,27 @@ public abstract class FooterHeader {
 		}
 	}
 
+	private final Set<FHTextStyle> textStyles;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
 	protected final Type footerHeaderType;
+
 	protected final Margins margins;
-
 	protected final String minHeight;
-	private Set<FHTextStyle> textStyles;
-
 
 	/**
 	 * Create a new footer object.
-	 * @param textStyles 
-	 * @param minHeight2 
+	 * 
+	 * @param textStyles
+	 * @param minHeight2
 	 *
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeader(final FooterHeader.Type footerHeaderType,
-			final Margins margins, final String minHeight, Set<FHTextStyle> textStyles) {
+			final Margins margins, final String minHeight,
+			final Set<FHTextStyle> textStyles) {
 		this.footerHeaderType = footerHeaderType;
 		this.margins = margins;
 		this.minHeight = minHeight;
@@ -136,7 +137,7 @@ public abstract class FooterHeader {
 
 	public void appendTextStylesXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		for (FHTextStyle style : this.textStyles) {
+		for (final FHTextStyle style : this.textStyles) {
 			appendable.append("<style:style");
 			util.appendEAttribute(appendable, "style:name", style.getName());
 			util.appendAttribute(appendable, "style:family", "text");
@@ -145,7 +146,7 @@ public abstract class FooterHeader {
 			appendable.append("</style:style>");
 		}
 	}
-	
+
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
 	 *

@@ -26,9 +26,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.datastyle.FloatStyle;
-import com.github.jferard.fastods.datastyle.NumberStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -40,9 +37,9 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class NumberStyleTest {
 	private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
-	private XMLUtil util;
-	private Locale locale;
 	private DataStyleBuilderFactory factory;
+	private Locale locale;
+	private XMLUtil util;
 
 	@Before
 	public void setUp() {
@@ -53,29 +50,33 @@ public class NumberStyleTest {
 
 	@Test
 	public final void testEmpty() throws IOException {
-		FloatStyle ns = this.factory.floatStyleBuilder("test").locale(this.locale).build();
-		StringBuilder sb = new StringBuilder();
+		final FloatStyle ns = this.factory.floatStyleBuilder("test")
+				.locale(this.locale).build();
+		final StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
-		Assert.assertEquals("<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
-				+ NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
-				+ "</number:number-style>", sb.toString());
+		Assert.assertEquals(
+				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
+						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
+						+ "</number:number-style>",
+				sb.toString());
 	}
 
 	@Test
 	public final void testNegative() throws IOException {
-		FloatStyle ns = this.factory.floatStyleBuilder("test").negativeValueRed().locale(this.locale).build();
-		StringBuilder sb = new StringBuilder();
+		final FloatStyle ns = this.factory.floatStyleBuilder("test")
+				.negativeValueRed().locale(this.locale).build();
+		final StringBuilder sb = new StringBuilder();
 		ns.appendXMLToStylesEntry(this.util, sb);
 		Assert.assertEquals(
-				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"+
-				NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS+
-				"</number:number-style>"+
-				"<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"+
-				"<style:text-properties fo:color=\"#FF0000\"/>"+
-				"<number:text>-</number:text>"+
-				NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS+
-				"<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"+
-				"</number:number-style>",
+				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
+						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
+						+ "</number:number-style>"
+						+ "<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
+						+ "<style:text-properties fo:color=\"#FF0000\"/>"
+						+ "<number:text>-</number:text>"
+						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
+						+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"
+						+ "</number:number-style>",
 				sb.toString());
 	}
 }

@@ -33,7 +33,7 @@ import java.util.Spliterator;
  * at the beginning, every element is set at a determined {@code blankElement}.
  * When we set an element at a given index, the blank element is replaced by the
  * new element.
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
@@ -136,8 +136,8 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public boolean containsAll(final Collection<?> c) {
-		for (Object e : c)
-			if (!contains(e))
+		for (final Object e : c)
+			if (!this.contains(e))
 				return false;
 		return true;
 	}
@@ -202,28 +202,28 @@ public class FullList<E> implements List<E> {
 		if (index >= this.list.size())
 			return this.blankElement;
 
-		E e = this.list.remove(index);
+		final E e = this.list.remove(index);
 		this.removeTrail();
 		return e;
 	}
 
 	@Override
 	public boolean remove(final Object o) {
-		boolean result = this.list.remove(o);
+		final boolean result = this.list.remove(o);
 		this.removeTrail();
 		return result;
 	}
 
 	@Override
 	public boolean removeAll(final Collection<?> c) {
-		boolean result = this.list.removeAll(c);
+		final boolean result = this.list.removeAll(c);
 		this.removeTrail();
 		return result;
 	}
 
 	@Override
 	public boolean retainAll(final Collection<?> c) {
-		boolean result = this.list.retainAll(c);
+		final boolean result = this.list.retainAll(c);
 		this.removeTrail();
 		return result;
 	}
@@ -252,7 +252,7 @@ public class FullList<E> implements List<E> {
 		return result;
 	}
 
-	/* 
+	/*
 	 * @see java.util.List#size()
 	 * @return the size of the underlying list
 	 */

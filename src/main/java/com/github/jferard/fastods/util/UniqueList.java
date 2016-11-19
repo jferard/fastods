@@ -29,11 +29,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A UniqueList is an ordered set of named objects : ordered as a list, but
- * with no duplicates names. If a new object having a name that is the name of
- * an object already present in the list is inserted with {@code add} or
+ * A UniqueList is an ordered set of named objects : ordered as a list, but with
+ * no duplicates names. If a new object having a name that is the name of an
+ * object already present in the list is inserted with {@code add} or
  * {@code set}, then an {@code IllegalArgumentException} is thrown.
- * 
+ *
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
  *         Schulz <mtschulz at users.sourceforge.net>
  *
@@ -55,7 +55,7 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		this.elementByName = new HashMap<String, T>();
 	}
 
-	/* 
+	/*
 	 * @see java.util.AbstractList#add(int, java.lang.Object)
 	 * @throws IllegalArgumentException if the element exists in the list
 	 */
@@ -70,7 +70,7 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		this.list.add(index, element);
 	}
 
-	/* 
+	/*
 	 * @see java.util.AbstractList#get(int)
 	 */
 	@Override
@@ -93,7 +93,7 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return this.elementByName.keySet();
 	}
 
-	/*  
+	/*
 	 * @see java.util.AbstractList#remove(int)
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return element;
 	}
 
-	/*  
+	/*
 	 * @see java.util.AbstractList#remove(int)
 	 */
 	@Override
@@ -115,8 +115,8 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		} else
 			return false;
 	}
-	
-	/*  
+
+	/*
 	 */
 	public T removeByName(final String name) {
 		if (this.elementByName.containsKey(name)) {
@@ -127,9 +127,8 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		} else
 			return null;
 	}
-	
 
-	/*  
+	/*
 	 * @see java.util.AbstractList#remove(int)
 	 */
 	@Override
@@ -143,7 +142,7 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return this.list.set(index, element);
 	}
 
-	/*  
+	/*
 	 * @see java.util.AbstractList#remove(int)
 	 */
 	@Override

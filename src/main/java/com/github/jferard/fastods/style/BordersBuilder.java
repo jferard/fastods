@@ -23,57 +23,63 @@ package com.github.jferard.fastods.style;
 
 public class BordersBuilder {
 	private BorderAttribute all;
-	private BorderAttribute top;
-	private BorderAttribute right;
 	private BorderAttribute bottom;
 	private BorderAttribute left;
-	
-	public BordersBuilder top(String size, String color, BorderAttribute.Style style) {
-		return this.top(new BorderAttribute(size, color, style));
-	}
-		
-	public BordersBuilder top(BorderAttribute attribute) {
-		this.top = attribute;
+	private BorderAttribute right;
+	private BorderAttribute top;
+
+	public BordersBuilder all(final BorderAttribute attribute) {
+		this.all = attribute;
 		return this;
 	}
 
-	public BordersBuilder right(String size, String color, BorderAttribute.Style style) {
-		return this.right(new BorderAttribute(size, color, style));
+	public BordersBuilder all(final String size, final String color,
+			final BorderAttribute.Style style) {
+		return this.all(new BorderAttribute(size, color, style));
 	}
-		
-	public BordersBuilder right(BorderAttribute attribute) {
+
+	public BordersBuilder bottom(final BorderAttribute attribute) {
+		this.bottom = attribute;
+		return this;
+	}
+
+	public BordersBuilder bottom(final String size, final String color,
+			final BorderAttribute.Style style) {
+		return this.bottom(new BorderAttribute(size, color, style));
+	}
+
+	public Borders build() {
+		return new Borders(this.all, this.top, this.right, this.bottom,
+				this.left);
+	}
+
+	public BordersBuilder left(final BorderAttribute attribute) {
+		this.left = attribute;
+		return this;
+	}
+
+	public BordersBuilder left(final String size, final String color,
+			final BorderAttribute.Style style) {
+		return this.left(new BorderAttribute(size, color, style));
+	}
+
+	public BordersBuilder right(final BorderAttribute attribute) {
 		this.right = attribute;
 		return this;
 	}
 
-	public BordersBuilder bottom(String size, String color, BorderAttribute.Style style) {
-		return this.bottom(new BorderAttribute(size, color, style));
+	public BordersBuilder right(final String size, final String color,
+			final BorderAttribute.Style style) {
+		return this.right(new BorderAttribute(size, color, style));
 	}
-		
-	public BordersBuilder bottom(BorderAttribute attribute) {
-		this.bottom = attribute;
+
+	public BordersBuilder top(final BorderAttribute attribute) {
+		this.top = attribute;
 		return this;
 	}
-	
-	public BordersBuilder left(String size, String color, BorderAttribute.Style style) {
-		return this.left(new BorderAttribute(size, color, style));
-	}
-		
-	public BordersBuilder left(BorderAttribute attribute) {
-		this.left = attribute;
-		return this;
-	}
-	
-	public BordersBuilder all(String size, String color, BorderAttribute.Style style) {
-		return this.all(new BorderAttribute(size, color, style));
-	}
-		
-	public BordersBuilder all(BorderAttribute attribute) {
-		this.all = attribute;
-		return this;
-	}
-	
-	public Borders build() {
-		return new Borders(this.all, this.top, this.right, this.bottom, this.left);
+
+	public BordersBuilder top(final String size, final String color,
+			final BorderAttribute.Style style) {
+		return this.top(new BorderAttribute(size, color, style));
 	}
 }

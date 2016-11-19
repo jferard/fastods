@@ -22,14 +22,14 @@
 package com.github.jferard.fastods;
 
 public class StringValue extends CellValue {
-	private String value;
+	private final String value;
 
-	public StringValue(String value) {
+	public StringValue(final String value) {
 		this.value = value;
 	}
 
 	@Override
-	public void setToRow(HeavyTableRow heavyTableRow, int i) {
+	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setStringValue(i, this.value);
 	}
 }

@@ -47,15 +47,16 @@ class SimpleFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 * @param textStyles 
-	 * @param minHeight2 
+	 * 
+	 * @param textStyles
+	 * @param minHeight2
 	 *
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
 			final List<FHParagraph> region, final Margins margins,
-			final String minHeight, Set<FHTextStyle> textStyles) {
+			final String minHeight, final Set<FHTextStyle> textStyles) {
 		super(footerHeaderType, margins, minHeight, textStyles);
 		this.region = region;
 	}

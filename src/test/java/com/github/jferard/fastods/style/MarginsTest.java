@@ -10,8 +10,8 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class MarginsTest {
-	private XMLUtil util;
 	private MarginsBuilder builder;
+	private XMLUtil util;
 
 	@Before
 	public void setUp() {
@@ -21,28 +21,28 @@ public class MarginsTest {
 
 	@Test
 	public final void testAll() throws IOException {
-		Margins margins = this.builder.all("10pt").build();
-		StringBuilder sb = new StringBuilder();
+		final Margins margins = this.builder.all("10pt").build();
+		final StringBuilder sb = new StringBuilder();
 		margins.appendXMLToTableCellStyle(this.util, sb);
 		Assert.assertEquals(" fo:margin=\"10pt\"", sb.toString());
 	}
 
 	@Test
 	public final void testTRBL() throws IOException {
-		Margins margins = this.builder.all("10pt").top("10pt").right("11pt")
-				.bottom("12pt").left("13pt").build();
-		StringBuilder sb = new StringBuilder();
+		final Margins margins = this.builder.all("10pt").top("10pt")
+				.right("11pt").bottom("12pt").left("13pt").build();
+		final StringBuilder sb = new StringBuilder();
 		margins.appendXMLToTableCellStyle(this.util, sb);
 		Assert.assertEquals(
 				" fo:margin=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"",
 				sb.toString());
 	}
-	
+
 	@Test
 	public final void testTRBL2() throws IOException {
-		Margins margins = this.builder.top("10pt").right("11pt")
+		final Margins margins = this.builder.top("10pt").right("11pt")
 				.bottom("12pt").left("13pt").build();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		margins.appendXMLToTableCellStyle(this.util, sb);
 		Assert.assertEquals(
 				" fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"",

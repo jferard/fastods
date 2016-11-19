@@ -40,19 +40,20 @@
 */
 package com.github.jferard.fastods.util;
 
-import java.io.OutputStream;
-import java.io.Writer;
-
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
- *
- *         This file Util.java is part of FastODS.
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class EqualityUtil {
 	public EqualityUtil() {
+	}
+
+	public boolean different(final Object o1, final Object o2) {
+		if (o1 == null) {
+			return o2 != null;
+		} else {
+			return !o1.equals(o2);
+		}
 	}
 
 	public boolean equal(final Object o1, final Object o2) {
@@ -60,14 +61,6 @@ public class EqualityUtil {
 			return o2 == null;
 		} else {
 			return o1.equals(o2);
-		}
-	}
-	
-	public boolean different(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 != null;
-		} else {
-			return !o1.equals(o2);
 		}
 	}
 }

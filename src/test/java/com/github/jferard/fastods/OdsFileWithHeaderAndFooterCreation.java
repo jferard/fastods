@@ -47,40 +47,40 @@ public class OdsFileWithHeaderAndFooterCreation {
 	@Test
 	public final void test50() throws FastOdsException {
 		this.logger.info("Creating a file with footer and header");
-		FHTextStyle lts = FHTextStyle.builder("test1").fontColor(Color.RED)
-				.build();
-		FHTextStyle cts = FHTextStyle.builder("test2").fontColor(Color.BLUE)
-				.build();
-		FHTextStyle rts = FHTextStyle.builder("test3").fontColor(Color.GREEN)
-				.build();
+		final FHTextStyle lts = FHTextStyle.builder("test1")
+				.fontColor(Color.RED).build();
+		final FHTextStyle cts = FHTextStyle.builder("test2")
+				.fontColor(Color.BLUE).build();
+		final FHTextStyle rts = FHTextStyle.builder("test3")
+				.fontColor(Color.GREEN).build();
 		final FHTextStyle pnts = FHTextStyle.builder("style").fontWeightBold()
 				.build();
-		FooterHeader header = FooterHeader
+		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
 				.styledText(lts, "left header").region(Region.CENTER)
 				.styledText(cts, "center header").pageNumber(pnts)
 				.region(Region.RIGHT).styledText(rts, "right header").build();
 
-		FooterHeader footer = FooterHeader
+		final FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.LEFT)
 				.styledText(cts, "left footer").region(Region.CENTER)
 				.styledText(rts, "center footer").pageCount(pnts)
 				.region(Region.RIGHT).styledText(lts, "right footer").build();
 
-		PageStyle ps = PageStyle.builder("test").footer(footer).header(header)
-				.build();
+		final PageStyle ps = PageStyle.builder("test").footer(footer)
+				.header(header).build();
 
-		OdsFile file = OdsFile.create("fastods_fh.ods");
+		final OdsFile file = OdsFile.create("fastods_fh.ods");
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
 		HeavyTableRow row = table.getRow(0);
-		TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
+		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
-		TableCellStyle tcls = TableCellStyle.builder("cc")
+		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
-		TableColumnStyle tcns = TableColumnStyle.builder("ccs")
+		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
 		table.setColumnStyle(0, tcns);
 
@@ -92,7 +92,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 		// let's display logging infos
 		final Logger rootLogger = Logger.getLogger("");
 		rootLogger.setLevel(Level.FINEST);
-		for (Handler h : rootLogger.getHandlers())
+		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
 		file.save();
 	}

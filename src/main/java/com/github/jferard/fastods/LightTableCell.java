@@ -102,6 +102,11 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public String getTooltip() {
+		return this.row.getTooltip(this.i);
+	}
+
+	@Override
 	public Type getValueType() {
 		return this.row.getValueType(this.i);
 	}
@@ -117,15 +122,15 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void lastCell() {
+		this.i = this.row.getColumnCount();
+	}
+
+	@Override
 	public void next() {
 		if (this.i >= this.row.getColumnCount() - 1)
 			throw new IndexOutOfBoundsException();
 		this.i++;
-	}
-
-	@Override
-	public void lastCell() {
-		this.i = this.row.getColumnCount();
 	}
 
 	@Override
@@ -138,6 +143,11 @@ public class LightTableCell implements TableCellWalker {
 	@Override
 	public void setBooleanValue(final boolean value) {
 		this.row.setBooleanValue(this.i, value);
+	}
+
+	@Override
+	public void setCellValue(final CellValue value) {
+		this.row.setCellValue(this.i, value);
 	}
 
 	@Override
@@ -221,24 +231,14 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void to(final int i) {
-		if (i < 0)
-			throw new IndexOutOfBoundsException();
-		this.i = i;
-	}
-
-	@Override
-	public String getTooltip() {
-		return this.row.getTooltip(this.i);
-	}
-
-	@Override
-	public void setTooltip(String tooltip) {
+	public void setTooltip(final String tooltip) {
 		this.row.setTooltip(this.i, tooltip);
 	}
 
 	@Override
-	public void setCellValue(CellValue value) {
-		this.row.setCellValue(this.i, value);
+	public void to(final int i) {
+		if (i < 0)
+			throw new IndexOutOfBoundsException();
+		this.i = i;
 	}
 }

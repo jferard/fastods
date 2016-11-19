@@ -22,14 +22,14 @@
 package com.github.jferard.fastods;
 
 public class FloatValue extends CellValue {
-	private Number value;
+	private final Number value;
 
-	public FloatValue(Number value) {
+	public FloatValue(final Number value) {
 		this.value = value;
 	}
 
 	@Override
-	public void setToRow(HeavyTableRow heavyTableRow, int i) {
+	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setFloatValue(i, this.value);
 	}
 }
