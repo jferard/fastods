@@ -90,11 +90,9 @@ Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten 
 ## Technical informations
 ### Benchmark
 #### SimpleODS installation
-To benchmark FastODS, you'll have to install the SimpleODS jar, which is present in the ```src/bench/resources``` folder. Use your favourite command-line interface. Assuming that you have just "git cloned" the repo and that you are in the fastods directory, just type the following lines:
+To benchmark FastODS, you'll have to install the SimpleODS jar, which is present in the ```src/bench/resources``` folder. Assuming that you have just "git cloned" the repo and that you are in the fastods directory, just type the following line in your command-line interface:
 ```
-cd src/bench/resources
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=simpleODS-0.5.3.jar
-cd ../../..
+mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=src/bench/resources/simpleODS-0.5.3.jar
 ```
 #### Run the benchmark
 Then run the benchark:
