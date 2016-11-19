@@ -66,7 +66,7 @@ public class OdsFile {
 				xmlUtil, locale);
 		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,
 				xmlUtil);
-		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil,
+		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil, writeUtil,
 				format);
 		return new OdsFile(Logger.getLogger(OdsFile.class.getName()), name,
 				entries, writeUtil, xmlUtil);

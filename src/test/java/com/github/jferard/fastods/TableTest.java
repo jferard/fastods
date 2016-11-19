@@ -18,6 +18,7 @@ import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 
@@ -36,8 +37,8 @@ public class TableTest {
 		final XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.table = new Table(positionUtil, xmlUtil, this.ce, this.se, this.ds,
-				"mytable", 10, 100);
+		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.ce, this.se,
+				this.ds, "mytable", 10, 100);
 		this.xmlUtil = xmlUtil;
 	}
 

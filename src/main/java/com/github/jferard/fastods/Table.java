@@ -90,14 +90,16 @@ public class Table implements NamedObject {
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
+	private WriteUtil writeUtil;
 
-	public Table(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			final ContentEntry contentEntry, final StylesEntry stylesEntry,
-			final DataStyles format, final String name, final int rowCapacity,
-			final int columnCapacity) {
+	public Table(final PositionUtil positionUtil, WriteUtil writeUtil,
+			final XMLUtil xmlUtil, final ContentEntry contentEntry,
+			final StylesEntry stylesEntry, final DataStyles format, final String name,
+			final int rowCapacity, final int columnCapacity) {
 		this.contentEntry = contentEntry;
 		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
+		this.writeUtil = writeUtil;
 		this.positionUtil = positionUtil;
 		this.format = format;
 		this.name = name;
@@ -200,7 +202,7 @@ public class Table implements NamedObject {
 		Table.checkRow(row);
 		HeavyTableRow tr = this.tableRows.get(row);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.positionUtil, new WriteUtil(),
+			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
 					this.xmlUtil, this.contentEntry, this.stylesEntry,
 					this.format, row, this.columnCapacity);
 			this.tableRows.set(row, tr);
@@ -223,10 +225,10 @@ public class Table implements NamedObject {
 	}
 
 	public HeavyTableRow nextRow() {
-		final int row = this.tableRows.size();
+		final int rowIndex = this.tableRows.size();
 		final HeavyTableRow tr = new HeavyTableRow(this.positionUtil,
-				new WriteUtil(), this.xmlUtil, this.contentEntry,
-				this.stylesEntry, this.format, row, this.columnCapacity);
+				this.writeUtil, this.xmlUtil, this.contentEntry,
+				this.stylesEntry, this.format, rowIndex, this.columnCapacity);
 		this.tableRows.add(tr);
 		return tr;
 	}

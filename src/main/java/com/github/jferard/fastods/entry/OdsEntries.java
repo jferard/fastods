@@ -34,6 +34,7 @@ import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -46,14 +47,14 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  */
 public class OdsEntries {
 	public static OdsEntries create(final PositionUtil positionUtil,
-			final XMLUtil xmlUtil, final DataStyles format) {
+			final XMLUtil xmlUtil, WriteUtil writeUtil, final DataStyles format) {
 		final MimetypeEntry mimetypeEntry = new MimetypeEntry();
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
 		final StylesEntry stylesEntry = new StylesEntry();
-		final ContentEntry contentEntry = new ContentEntry(stylesEntry,
-				positionUtil, xmlUtil, format);
+		final ContentEntry contentEntry = new ContentEntry(positionUtil,
+				xmlUtil, writeUtil, stylesEntry, format);
 		return new OdsEntries(Logger.getLogger(OdsEntries.class.getName()),
 				mimetypeEntry, manifestEntry, settingsEntry, metaEntry,
 				contentEntry, stylesEntry);

@@ -33,6 +33,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
+import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -49,9 +50,11 @@ public class ContentEntry implements OdsEntry {
 	private final Map<String, StyleTag> styleTagByName;
 	private final UniqueList<Table> tables;
 	private final XMLUtil xmlUtil;
+	private WriteUtil writeUtil;
 
-	ContentEntry(final StylesEntry stylesEntry, final PositionUtil positionUtil,
-			final XMLUtil xmlUtil, final DataStyles format) {
+	ContentEntry(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+			WriteUtil writeUtil, final StylesEntry stylesEntry, final DataStyles format) {
+		this.writeUtil = writeUtil;
 		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;
@@ -79,9 +82,9 @@ public class ContentEntry implements OdsEntry {
 			final int columnCapacity) {
 		Table table = this.tables.getByName(name);
 		if (table == null) {
-			table = new Table(this.positionUtil, this.xmlUtil, this,
-					this.stylesEntry, this.format, name, rowCapacity,
-					columnCapacity);
+			table = new Table(this.positionUtil, this.writeUtil, this.xmlUtil,
+					this, this.stylesEntry, this.format, name,
+					rowCapacity, columnCapacity);
 			this.tables.add(table);
 		}
 		return table;

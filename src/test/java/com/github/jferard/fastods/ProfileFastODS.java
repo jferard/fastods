@@ -76,6 +76,8 @@ public class ProfileFastODS {
 				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
 			}
+			if (y % (ROW_COUNT / 50) == 0)
+				this.logger.info("Row "+y);
 		}
 
 		file.save();
