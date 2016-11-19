@@ -21,10 +21,6 @@
  ******************************************************************************/
 package com.github.jferard.fastods;
 
-import java.util.List;
-
-import com.github.jferard.fastods.util.FullList;
-
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
  * page/style:footer
@@ -37,9 +33,9 @@ import com.github.jferard.fastods.util.FullList;
 class RegionFooterHeaderBuilder
 		extends FooterHeaderBuilder<RegionFooterHeaderBuilder> {
 
-	private final List<Paragraph> centerRegion;
-	private final List<Paragraph> leftRegion;
-	private final List<Paragraph> rightRegion;
+	private final TextBuilder centerRegionBuilder;
+	private final TextBuilder leftRegionBuilder;
+	private final TextBuilder rightRegionBuilder;
 
 	/**
 	 * Create a new footer object.
@@ -49,30 +45,29 @@ class RegionFooterHeaderBuilder
 	 */
 	RegionFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.leftRegion = FullList.<Paragraph> builder().capacity(16).build();
-		this.centerRegion = FullList.<Paragraph> builder().capacity(16)
-				.build();
-		this.rightRegion = FullList.<Paragraph> builder().capacity(16)
-				.build();
+		this.leftRegionBuilder = new TextBuilder();
+		this.centerRegionBuilder = new TextBuilder();
+		this.rightRegionBuilder = new TextBuilder();
 	}
 
 	@Override
 	public FooterHeader build() {
-		return new RegionFooterHeader(this.footerHeaderType, this.centerRegion,
-				this.leftRegion, this.rightRegion, this.marginsBuilder.build(),
-				this.minHeight, this.textStyles);
+		return new RegionFooterHeader(this.footerHeaderType,
+				this.centerRegionBuilder.build(),
+				this.leftRegionBuilder.build(), this.rightRegionBuilder.build(),
+				this.marginsBuilder.build(), this.minHeight);
 	}
 
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {
 		switch (region) {
 		case LEFT: // Use left region
-			this.curRegion = this.leftRegion;
+			this.curRegionBuilder = this.leftRegionBuilder;
 			break;
 		case CENTER: // Use center region
-			this.curRegion = this.centerRegion;
+			this.curRegionBuilder = this.centerRegionBuilder;
 			break;
 		case RIGHT: // Use right region
-			this.curRegion = this.rightRegion;
+			this.curRegionBuilder = this.rightRegionBuilder;
 			break;
 		default: // Invalid footerRegionValue, use center region as default
 			throw new IllegalStateException();

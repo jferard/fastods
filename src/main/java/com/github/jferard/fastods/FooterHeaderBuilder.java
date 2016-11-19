@@ -22,7 +22,6 @@
 package com.github.jferard.fastods;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.github.jferard.fastods.style.FHTextStyle;
@@ -37,7 +36,7 @@ import com.github.jferard.fastods.style.MarginsBuilder;
  * @author Julien Férard
  */
 abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
-	protected List<Paragraph> curRegion;
+	protected TextBuilder curRegionBuilder;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -45,8 +44,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	protected MarginsBuilder marginsBuilder;
 
 	protected String minHeight;
-	protected Set<FHTextStyle> textStyles;
-	private Text text;
+	protected Text text;
 
 	/**
 	 * Create a new footer object.
@@ -55,7 +53,6 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
-		this.textStyles = new HashSet<FHTextStyle>();
 		this.footerHeaderType = footerHeaderType;
 		this.minHeight = "0cm";
 		this.marginsBuilder = new MarginsBuilder();
@@ -155,8 +152,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 
 	@Deprecated
 	public F pageCount(final FHTextStyle ts) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-count>99</text:page-count>");
+		this.curRegionBuilder.pageCount(ts);
 		return (F) this;
 	}
 
@@ -167,8 +163,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 
 	@Deprecated
 	public F pageNumber(final FHTextStyle ts) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-number>1</text:page-number>");
+		this.curRegionBuilder.pageNumber(ts);
 		return (F) this;
 	}
 
@@ -197,11 +192,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	@Deprecated
 	public F styledText(final FHTextStyle ts, final String text) {
-		this.textStyles.add(ts);
-		final Paragraph styledText = new Paragraph();
-		final Span st = new Span(text, ts);
-		styledText.add(st);
-		this.curRegion.add(styledText);
+		this.curRegionBuilder.styledSpan(ts, text);
 		return (F) this;
 	}
 
@@ -227,10 +218,5 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	public F styledText(final FHTextStyle ts, final String text,
 			final int paragraphIndex) {
 		return this.styledText(ts, text); // ignore paragraph
-	}
-	
-	public F text(final Text text) {
-		this.text = text;
-		return (F) this;
 	}
 }

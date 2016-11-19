@@ -83,8 +83,7 @@ public class FooterHeaderTest {
 	}
 
 	@Test
-	public final void testPageToMasterStyle2()
-			throws IOException, SAXException {
+	public final void testPageToMasterStyle2() throws IOException {
 		final FHTextStyle ts1 = FHTextStyle.builder("test1").build();
 		final FHTextStyle ts2 = FHTextStyle.builder("test2").build();
 		final FooterHeader header = FooterHeader
@@ -92,17 +91,18 @@ public class FooterHeaderTest {
 				.pageCount(ts2, 3).build();
 		final StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<text:p/>" + "<text:p text:style-name=\"test1\">"
-						+ "<text:page-number>1</text:page-number>" + "</text:p>"
-						+ "<text:p/>" + "<text:p text:style-name=\"test2\">"
-						+ "<text:page-count>99</text:page-count>" + "</text:p>",
-				sb.toString()));
+		Assert.assertEquals(// True(DomTester.equals(
+				"<text:p>" + "<text:span text:style-name=\"test1\">"
+						+ "<text:page-number>1</text:page-number>"
+						+ "</text:span>" + "</text:p>" + "<text:p>"
+						+ "<text:span text:style-name=\"test2\">"
+						+ "<text:page-count>99</text:page-count>"
+						+ "</text:span>" + "</text:p>",
+				sb.toString()); // );
 	}
 
 	@Test
-	public final void testRegionsToMasterStyle()
-			throws IOException, SAXException {
+	public final void testRegionsToMasterStyle() throws IOException {
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
 				.styledText(
@@ -215,9 +215,10 @@ public class FooterHeaderTest {
 				.styledText(ts, text, paragraphIndex).build();
 		final StringBuilder sb = new StringBuilder();
 		footer.appendXMLToMasterStyle(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
-				"<text:p/>" + "<text:p/>"
-						+ "<text:p text:style-name=\"test\">text</text:p>",
-				sb.toString()));
+		Assert.assertEquals(// True(DomTester.equals(
+				"<text:p>"
+						+ "<text:span text:style-name=\"test\">text</text:span>"
+						+ "</text:p>",
+				sb.toString()); // );
 	}
 }

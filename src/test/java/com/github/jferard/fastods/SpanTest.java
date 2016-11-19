@@ -10,7 +10,7 @@ import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
-public class FHTextTest {
+public class SpanTest {
 	private XMLUtil util;
 
 	@Before

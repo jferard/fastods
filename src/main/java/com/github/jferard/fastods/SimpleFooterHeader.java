@@ -22,7 +22,6 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import com.github.jferard.fastods.style.FHTextStyle;
@@ -43,7 +42,7 @@ class SimpleFooterHeader extends FooterHeader {
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private final List<Paragraph> region;
+	private final Text region;
 
 	/**
 	 * Create a new footer object.
@@ -55,9 +54,9 @@ class SimpleFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final List<Paragraph> region, final Margins margins,
-			final String minHeight, final Set<FHTextStyle> textStyles) {
-		super(footerHeaderType, margins, minHeight, textStyles);
+			final Text region, final Margins margins,
+			final String minHeight) {
+		super(footerHeaderType, margins, minHeight);
 		this.region = region;
 	}
 
@@ -69,7 +68,12 @@ class SimpleFooterHeader extends FooterHeader {
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable,
-				this.region);
+		this.region.appendXMLToMasterStyle(util, appendable);
+	}
+
+	@Override
+	public void appendTextStylesXMLToAutomaticStyle(XMLUtil util,
+			Appendable appendable) throws IOException {
+		this.region.appendTextStylesXMLToAutomaticStyle(util, appendable);
 	}
 }

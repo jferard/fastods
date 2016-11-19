@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,6 +33,7 @@ public class TextBuilder {
 	private List<Paragraph> paragraphs;
 
 	public TextBuilder() {
+		this.textStyles = new HashSet<FHTextStyle>();
 		this.paragraphs = new ArrayList<Paragraph>();
 	}
 	
@@ -72,5 +74,9 @@ public class TextBuilder {
 		paragraph.add(span);
 		this.paragraphs.add(paragraph);
 		return this;
+	}
+	
+	public Text build() {
+		return new Text(this.paragraphs, this.textStyles);
 	}
 }

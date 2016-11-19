@@ -138,7 +138,6 @@ public class PageStyle {
 
 	private final String backgroundColor;
 	private final FooterHeader footer;
-
 	private final FooterHeader header;
 	private final Margins margins;
 

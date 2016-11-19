@@ -22,10 +22,7 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 
-import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -41,23 +38,19 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 class RegionFooterHeader extends FooterHeader {
 	private static void appendRegion(final XMLUtil util,
-			final Appendable appendable, final List<Paragraph> region,
+			final Appendable appendable, final Text region,
 			final String regionName) throws IOException {
-		if (region.size() == 0)
+		if (region.isEmpty())
 			return;
 
 		appendable.append("<style:").append(regionName).append(">");
-		FooterHeader.appendXMLRegionBodyToMasterStyle(util, appendable, region);
+		region.appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:").append(regionName).append(">");
 	}
 
-	/**
-	 * The OdsFile where this object belong to.
-	 */
-	private final List<Paragraph> centerRegion;
-	private final List<Paragraph> leftRegion;
-
-	private final List<Paragraph> rightRegion;
+	private final Text centerRegion;
+	private final Text leftRegion;
+	private final Text rightRegion;
 
 	/**
 	 * Create a new footer object.
@@ -70,11 +63,11 @@ class RegionFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
-			final List<Paragraph> centerRegion,
-			final List<Paragraph> leftRegion,
-			final List<Paragraph> rightRegion, final Margins margins,
-			final String minHeight, final Set<FHTextStyle> textStyles) {
-		super(footerHeaderType, margins, minHeight, textStyles);
+			final Text centerRegion,
+			final Text leftRegion,
+			final Text rightRegion, final Margins margins,
+			final String minHeight) {
+		super(footerHeaderType, margins, minHeight);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;
@@ -94,5 +87,13 @@ class RegionFooterHeader extends FooterHeader {
 				"region-center");
 		RegionFooterHeader.appendRegion(util, appendable, this.rightRegion,
 				"region-right");
+	}
+
+	@Override
+	public void appendTextStylesXMLToAutomaticStyle(XMLUtil util,
+			Appendable appendable) throws IOException {
+		this.leftRegion.appendTextStylesXMLToAutomaticStyle(util, appendable);
+		this.centerRegion.appendTextStylesXMLToAutomaticStyle(util, appendable);
+		this.rightRegion.appendTextStylesXMLToAutomaticStyle(util, appendable);
 	}
 }

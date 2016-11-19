@@ -42,15 +42,15 @@ class SimpleFooterHeaderBuilder
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.curRegion = FullList.<Paragraph> builder().capacity(16).build();
+		this.curRegionBuilder = new TextBuilder();
 	}
 
 	/*
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FooterHeader build() {
-		return new SimpleFooterHeader(this.footerHeaderType, this.curRegion,
-				this.marginsBuilder.build(), this.minHeight, this.textStyles);
+	public FooterHeader build() {	
+		return new SimpleFooterHeader(this.footerHeaderType, this.curRegionBuilder.build(),
+				this.marginsBuilder.build(), this.minHeight);
 	}
 }

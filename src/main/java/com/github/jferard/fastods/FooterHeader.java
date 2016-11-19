@@ -22,7 +22,6 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import com.github.jferard.fastods.style.FHTextStyle;
@@ -85,19 +84,6 @@ public abstract class FooterHeader {
 				.build();
 	}
 
-	protected static void appendXMLRegionBodyToMasterStyle(final XMLUtil util,
-			final Appendable appendable, final List<Paragraph> region)
-			throws IOException {
-		for (final Paragraph paragraph : region) {
-			if (paragraph == null)
-				appendable.append("<text:p/>");
-			else {
-				paragraph.appendXMLToRegionBody(util, appendable);
-			}
-		}
-	}
-
-	private final Set<FHTextStyle> textStyles;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -109,19 +95,16 @@ public abstract class FooterHeader {
 	/**
 	 * Create a new footer object.
 	 * 
-	 * @param textStyles
-	 * @param minHeight2
+	 * @param minHeight
 	 *
 	 * @param odsFile
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	FooterHeader(final FooterHeader.Type footerHeaderType,
-			final Margins margins, final String minHeight,
-			final Set<FHTextStyle> textStyles) {
+			final Margins margins, final String minHeight) {
 		this.footerHeaderType = footerHeaderType;
 		this.margins = margins;
 		this.minHeight = minHeight;
-		this.textStyles = textStyles;
 	}
 
 	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,
@@ -133,18 +116,6 @@ public abstract class FooterHeader {
 		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/></style:").append(this.footerHeaderType.typeName)
 				.append("-style>");
-	}
-
-	public void appendTextStylesXMLToAutomaticStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		for (final FHTextStyle style : this.textStyles) {
-			appendable.append("<style:style");
-			util.appendEAttribute(appendable, "style:name", style.getName());
-			util.appendAttribute(appendable, "style:family", "text");
-			appendable.append('>');
-			style.appendXMLToContentEntry(util, appendable);
-			appendable.append("</style:style>");
-		}
 	}
 
 	/**
@@ -173,4 +144,6 @@ public abstract class FooterHeader {
 		return this.footerHeaderType.typeName;
 	}
 
+	public abstract void appendTextStylesXMLToAutomaticStyle(XMLUtil util,
+			Appendable appendable) throws IOException;
 }

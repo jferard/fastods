@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
-public class FHParagraphTest {
+public class ParagraphTest {
 	private XMLUtil util;
 
 	@Before
