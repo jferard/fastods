@@ -42,7 +42,7 @@ public class ScientificNumberStyleTest {
 				+ "<number:scientific-number number:min-exponent-digits=\"1\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
-		Assert.assertTrue(DomTester.equals(str, sb.toString()));
+		DomTester.assertEquals(str, sb.toString());
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ScientificNumberStyleTest {
 				+ "<number:scientific-number number:min-exponent-digits=\"2\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
-		Assert.assertTrue(DomTester.equals(str, sb.toString()));
+		DomTester.assertEquals(str, sb.toString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

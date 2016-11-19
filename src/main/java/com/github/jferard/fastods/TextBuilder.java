@@ -26,57 +26,71 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.TextStyle;
 
 public class TextBuilder {
-	private Set<FHTextStyle> textStyles;
-	private List<Paragraph> paragraphs;
+	private ParagraphBuilder curParagraphBuilder;
+	private final List<Paragraph> paragraphs;
+	private final Set<TextStyle> textStyles;
 
 	public TextBuilder() {
-		this.textStyles = new HashSet<FHTextStyle>();
+		this.textStyles = new HashSet<TextStyle>();
 		this.paragraphs = new ArrayList<Paragraph>();
+		this.curParagraphBuilder = null;
 	}
-	
-	public TextBuilder pageCount(final FHTextStyle ts) {
-		this.textStyles.add(ts);
-		this.styledSpan(ts, "<text:page-count>99</text:page-count>");
+
+	public Text build() {
+		if (this.curParagraphBuilder != null) {
+			this.paragraphs.add(this.curParagraphBuilder.build());
+		}
+		return new Text(this.paragraphs, this.textStyles);
+	}
+
+	public TextBuilder par() {
+		if (this.curParagraphBuilder != null) {
+			this.paragraphs.add(this.curParagraphBuilder.build());
+		}
+		this.curParagraphBuilder = new ParagraphBuilder();
 		return this;
 	}
 
-	public TextBuilder pageNumber(final FHTextStyle ts) {
-		this.textStyles.add(ts);
-		this.styledSpan(ts, "<text:page-number>1</text:page-number>");
+	public TextBuilder span(final String text) {
+		this.curParagraphBuilder.span(text);
 		return this;
 	}
+
+	/*
+	@Deprecated
+	public TextBuilder styledPar(final TextStyle ts) {
+		this.textStyles.add(ts);
+		if (this.curParagraphBuilder != null) {
+			this.paragraphs.add(this.curParagraphBuilder.build());
+		}
+		this.curParagraphBuilder = new ParagraphBuilder().style(ts);
+		return this;
+	}*/
 
 	/**
 	 * Adds a TextStyle and text to the footer/header region specified by
 	 * region.<br>
 	 * The paragraph to be used is paragraph.<br>
 	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
 	 * @param text
 	 *            The string with the text
+	 * @param ts
+	 *            The text style to be used
 	 * @param region
 	 *            One of : FooterHeader.FLG_REGION_LEFT,
 	 *            FooterHeader.FLG_REGION_CENTER or
 	 *            FooterHeader.FLG_REGION_RIGHT
 	 * @param paragraph
 	 *            The paragraph number to be used
+	 *
 	 * @return
 	 */
-	public TextBuilder styledSpan(final FHTextStyle ts, final String text) {
+	public TextBuilder styledSpan(final String text, final TextStyle ts) {
 		this.textStyles.add(ts);
-		final Paragraph paragraph = new Paragraph();
-		final Span span = new Span(text, ts);
-		paragraph.add(span);
-		this.paragraphs.add(paragraph);
+		this.curParagraphBuilder.styledSpan(ts, text);
 		return this;
-	}
-	
-	public Text build() {
-		return new Text(this.paragraphs, this.textStyles);
 	}
 }

@@ -43,50 +43,46 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.List;
 
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard
  */
 public class Paragraph {
-	private final List<Span> texts;
+	private final List<Span> spans;
+	private TextStyle style;
 
-	Paragraph() {
-		this.texts = FullList.<Span> builder().capacity(16).build();
-	}
-
-	public void add(final Span span) {
-		this.texts.add(span);
+	Paragraph(List<Span> spans, TextStyle style) {
+		this.spans = spans;
+		this.style = style;
 	}
 
 	public void add(final String content) {
-		this.texts.add(new Span(content));
+		this.spans.add(new Span(content));
 	}
 
 	public void appendXMLToRegionBody(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		switch (this.texts.size()) {
-		case 0:
+		if (this.spans.isEmpty()) {
 			appendable.append("<text:p/>");
-			break;
-		case 1:
-			final Span text = this.texts.get(0);
-			appendable.append("<text:p>");
-			text.appendXMLOptionalSpanToParagraph(util, appendable);
+		} else {
+			appendable.append("<text:p");
+			if (this.style != null)
+				util.appendAttribute(appendable, "text:style-name",
+						this.style.getName());
+			appendable.append('>');
+			for (final Span span : this.spans)
+				span.appendXMLOptionalSpanToParagraph(util, appendable);
 			appendable.append("</text:p>");
-			break;
-		default:
-			appendable.append("<text:p>");
-			for (final Span textChunk : this.texts)
-				textChunk.appendXMLOptionalSpanToParagraph(util, appendable);
-			appendable.append("</text:p>");
-			break;
 		}
 	}
 
-	public List<Span> getTexts() {
-		return this.texts;
+	public List<Span> getSpans() {
+		return this.spans;
 	}
 
+	public static ParagraphBuilder builder() {
+		return new ParagraphBuilder();
+	}
 }

@@ -30,7 +30,7 @@ import java.util.zip.ZipEntry;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -98,7 +98,7 @@ public class OdsEntries {
 		return this.contentEntry.addTable(name, rowCapacity, columnCapacity);
 	}
 
-	public void addTextStyle(final FHTextStyle fhTextStyle) {
+	public void addTextStyle(final TextStyle fhTextStyle) {
 		this.stylesEntry.addTextStyle(fhTextStyle);
 	}
 

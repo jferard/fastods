@@ -12,7 +12,7 @@ import org.powermock.api.easymock.PowerMock;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -59,7 +59,7 @@ public class OdsEntriesTest {
 
 	@Test
 	public final void testAddTextStyle() {
-		final FHTextStyle ts = FHTextStyle.builder("test").build();
+		final TextStyle ts = TextStyle.builder("test").build();
 
 		this.stylesEntry.addTextStyle(ts);
 		PowerMock.replayAll();

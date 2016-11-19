@@ -21,7 +21,7 @@
  ******************************************************************************/
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.style.FHTextStyle.Underline;
+import com.github.jferard.fastods.style.TextStyle.Underline;
 
 /**
  * @author Julien Férard
@@ -52,8 +52,8 @@ public class FHTextStyleBuilder {
 		this.name = name;
 	}
 
-	public FHTextStyle build() {
-		return new FHTextStyle(this.name, this.fontColor, this.fontName,
+	public TextStyle build() {
+		return new TextStyle(this.name, this.fontColor, this.fontName,
 				this.fontWeight, this.fontStyle, this.fontSize,
 				this.fontUnderlineColor, this.fontUnderlineStyle);
 	}

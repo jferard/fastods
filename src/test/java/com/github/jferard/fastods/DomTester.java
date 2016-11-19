@@ -30,6 +30,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -124,5 +125,10 @@ public class DomTester {
 				new ByteArrayInputStream(("<r>" + s2 + "</r>").getBytes()));
 		return this.equals(document1.getDocumentElement().getFirstChild(),
 				document2.getDocumentElement().getFirstChild());
+	}
+
+	public static void assertEquals(String string1, String string2) {
+		if (!DomTester.equals(string1, string2))
+			Assert.assertEquals(string1, string2); // shows the difference
 	}
 }

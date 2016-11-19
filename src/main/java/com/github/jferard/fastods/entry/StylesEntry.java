@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -56,14 +56,14 @@ public class StylesEntry implements OdsEntry {
 
 	private final Map<String, DataStyle> dataStyles;
 	private final Map<String, PageStyle> pageStyles;
-	private final Map<String, FHTextStyle> textStyles;
+	private final Map<String, TextStyle> textStyles;
 
 	/**
 	 */
 	public StylesEntry() {
 		this.dataStyles = new HashMap<String, DataStyle>();
 		this.pageStyles = new HashMap<String, PageStyle>();
-		this.textStyles = new HashMap<String, FHTextStyle>();
+		this.textStyles = new HashMap<String, TextStyle>();
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class StylesEntry implements OdsEntry {
 		this.pageStyles.put(name, ps);
 	}
 
-	public void addTextStyle(final FHTextStyle ts) {
+	public void addTextStyle(final TextStyle ts) {
 		final String name = ts.getName();
 		if (this.textStyles.containsKey(name))
 			return;
@@ -141,7 +141,7 @@ public class StylesEntry implements OdsEntry {
 		for (final PageStyle ps : this.pageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
 
-		for (final FHTextStyle ts : this.textStyles.values())
+		for (final TextStyle ts : this.textStyles.values())
 			if (ts.isNotEmpty())
 				ts.appendXMLToStylesEntry(util, writer);
 

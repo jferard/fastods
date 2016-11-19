@@ -23,10 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.DomTester;
@@ -42,34 +40,33 @@ public class TableCellStyleTest {
 	}
 
 	@Test
-	public final void testAllBorders() throws IOException, SAXException {
+	public final void testAllBorders() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("test")
 				.borderAll("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
 						+ "<style:paragraph-properties/>" + "</style:style>",
-				sb.toString()));
+				sb.toString());
 	}
 
 	@Test
-	public final void testAllMargins() throws IOException, SAXException {
+	public final void testAllMargins() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs")
 				.allMargins("10pt").build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester
-				.equals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+		DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
-						+ "</style:style>", sb.toString()));
+						+ "</style:style>", sb.toString());
 	}
 
 	@Test
-	public final void testBorders() throws IOException, SAXException {
+	public final void testBorders() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("test")
 				.borderTop("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
 				.borderRight("2pt", Color.BEIGE, BorderAttribute.Style.SOLID)
@@ -79,25 +76,24 @@ public class TableCellStyleTest {
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
 						+ "<style:paragraph-properties/>" + "</style:style>",
-				sb.toString()));
+				sb.toString());
 	}
 
 	@Test
-	public final void testMargins() throws IOException, SAXException {
+	public final void testMargins() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs")
 				.marginTop("10pt").marginRight("11pt").marginBottom("12pt")
 				.marginLeft("13pt").build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester
-				.equals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+		DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
-						+ "</style:style>", sb.toString()));
+						+ "</style:style>", sb.toString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

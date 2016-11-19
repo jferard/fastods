@@ -22,10 +22,9 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.Set;
 
-import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.Margins;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -72,15 +71,17 @@ public abstract class FooterHeader {
 		return new SimpleFooterHeaderBuilder(footerHeaderType);
 	}
 
-	public static FooterHeader simpleFooter(final FHTextStyle ts,
-			final String text) {
-		return new SimpleFooterHeaderBuilder(Type.FOOTER).styledText(ts, text)
+	public static FooterHeader simpleFooter(final String text,
+			final TextStyle ts) {
+		return new SimpleFooterHeaderBuilder(Type.FOOTER)
+				.text(Text.builder().par().styledSpan(text, ts).build())
 				.build();
 	}
 
-	public static FooterHeader simpleHeader(final FHTextStyle ts,
-			final String text) {
-		return new SimpleFooterHeaderBuilder(Type.HEADER).styledText(ts, text)
+	public static FooterHeader simpleHeader(final String text,
+			final TextStyle ts) {
+		return new SimpleFooterHeaderBuilder(Type.HEADER)
+				.text(Text.builder().par().styledSpan(text, ts).build())
 				.build();
 	}
 

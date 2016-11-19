@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
 import com.github.jferard.fastods.entry.OdsEntries;
@@ -36,28 +35,26 @@ public class TableStyleTest {
 	}
 
 	@Test
-	public final void testEmpty() throws IOException, SAXException {
+	public final void testEmpty() throws IOException {
 		final TableStyle ts = TableStyle.builder("test").build();
 		final StringBuilder sb = new StringBuilder();
 		ts.appendXMLToContentEntry(this.util, sb);
 
-		Assert.assertTrue(DomTester
-				.equals("<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"DefaultMasterPage\">"
+		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"DefaultMasterPage\">"
 						+ "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>"
-						+ "</style:style>", sb.toString()));
+						+ "</style:style>", sb.toString());
 	}
 
 	@Test
-	public final void testPageStyle() throws IOException, SAXException {
+	public final void testPageStyle() throws IOException {
 		final PageStyle ps = PageStyle.builder("p").build();
 		final TableStyle ts = TableStyle.builder("test").pageStyle(ps).build();
 		final StringBuilder sb = new StringBuilder();
 		ts.appendXMLToContentEntry(this.util, sb);
 
-		Assert.assertTrue(DomTester
-				.equals("<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">"
+		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">"
 						+ "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>"
-						+ "</style:style>", sb.toString()));
+						+ "</style:style>", sb.toString());
 		Assert.assertEquals("test", ts.getName());
 	}
 }

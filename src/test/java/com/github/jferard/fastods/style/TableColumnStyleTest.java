@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
 import com.github.jferard.fastods.entry.OdsEntries;
@@ -36,7 +35,7 @@ public class TableColumnStyleTest {
 	}
 
 	@Test
-	public final void testDefaultCellStyle() throws IOException, SAXException {
+	public final void testDefaultCellStyle() throws IOException {
 		final TableCellStyle cs = TableCellStyle.builder("t").build();
 		final TableColumnStyle tcs = TableColumnStyle.builder("test")
 				.defaultCellStyle(cs).build();
@@ -44,14 +43,14 @@ public class TableColumnStyleTest {
 
 		tcs.appendXMLToTable(this.util, sbt, -1);
 
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"t\"/>",
-				sbt.toString()));
+				sbt.toString());
 		Assert.assertEquals(cs.getName(), tcs.getDefaultCellStyleName());
 	}
 
 	@Test
-	public final void testEmpty() throws IOException, SAXException {
+	public final void testEmpty() throws IOException {
 		final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
 		final StringBuilder sbc = new StringBuilder();
 		final StringBuilder sbt = new StringBuilder();
@@ -59,28 +58,27 @@ public class TableColumnStyleTest {
 		tcs.appendXMLToContentEntry(this.util, sbc);
 		tcs.appendXMLToTable(this.util, sbt, 1);
 
-		Assert.assertTrue(DomTester
-				.equals("<style:style style:name=\"test\" style:family=\"table-column\">"
+		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table-column\">"
 						+ "<style:table-column-properties fo:break-before=\"auto\" style:column-width=\"2.5cm\"/>"
-						+ "</style:style>", sbc.toString()));
-		Assert.assertTrue(DomTester.equals(
+						+ "</style:style>", sbc.toString());
+		DomTester.assertEquals(
 				"<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"Default\"/>",
-				sbt.toString()));
+				sbt.toString());
 	}
 
 	@Test
-	public final void testEmpty2() throws IOException, SAXException {
+	public final void testEmpty2() throws IOException {
 		final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
 		final StringBuilder sbt = new StringBuilder();
 		tcs.appendXMLToTable(this.util, sbt, 2);
 
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<table:table-column table:style-name=\"test\" table:number-columns-repeated=\"2\" table:default-cell-style-name=\"Default\"/>",
-				sbt.toString()));
+				sbt.toString());
 	}
 
 	@Test
-	public final void testWidth() throws IOException, SAXException {
+	public final void testWidth() throws IOException {
 		final TableColumnStyle tcs = TableColumnStyle.builder("test")
 				.columnWidth("1pt").build();
 		final StringBuilder sbc = new StringBuilder();

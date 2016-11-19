@@ -23,7 +23,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -37,13 +37,13 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class Span {
 	private final String text;
-	private final /*@Nullable*/ FHTextStyle ts;
+	private final /*@Nullable*/ TextStyle ts;
 
 	public Span(final String text) {
 		this(text, null);
 	}
 
-	public Span(final String s, final FHTextStyle t) {
+	public Span(final String s, final TextStyle t) {
 		this.ts = t;
 		this.text = s;
 	}
@@ -84,7 +84,7 @@ public class Span {
 		return this.text;
 	}
 
-	public FHTextStyle getTextStyle() {
+	public TextStyle getTextStyle() {
 		return this.ts;
 	}
 }

@@ -84,7 +84,7 @@ public class TableCellStyle implements StyleTag {
 	private final String parentCellStyleName;
 	private final Align textAlign; // 'center','end','start','justify'
 
-	private final FHTextStyle textStyle;
+	private final TextStyle textStyle;
 
 	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
 	private final boolean wrap; // No line wrap when false, line wrap when
@@ -103,7 +103,7 @@ public class TableCellStyle implements StyleTag {
 	 *            The OdsFile to add this style to
 	 */
 	TableCellStyle(final String name, final DataStyle dataStyle,
-			final String backgroundColor, final FHTextStyle ts,
+			final String backgroundColor, final TextStyle ts,
 			final Align textAlign, final VerticalAlign verticalAlign,
 			final boolean wrap, final String parentCellStyleName,
 			final Borders borders, final Margins margins) {

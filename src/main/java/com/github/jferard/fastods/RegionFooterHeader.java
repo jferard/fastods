@@ -37,10 +37,10 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  */
 class RegionFooterHeader extends FooterHeader {
-	private static void appendRegion(final XMLUtil util,
+	private static void appendRegionXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable, final Text region,
 			final String regionName) throws IOException {
-		if (region.isEmpty())
+		if (region == null || region.isEmpty())
 			return;
 
 		appendable.append("<style:").append(regionName).append(">");
@@ -81,11 +81,11 @@ class RegionFooterHeader extends FooterHeader {
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		RegionFooterHeader.appendRegion(util, appendable, this.leftRegion,
+		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.leftRegion,
 				"region-left");
-		RegionFooterHeader.appendRegion(util, appendable, this.centerRegion,
+		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.centerRegion,
 				"region-center");
-		RegionFooterHeader.appendRegion(util, appendable, this.rightRegion,
+		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.rightRegion,
 				"region-right");
 	}
 

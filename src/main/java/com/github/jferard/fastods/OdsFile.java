@@ -36,7 +36,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.style.FHTextStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -144,7 +144,7 @@ public class OdsFile {
 		return table;
 	}
 
-	public void addTextStyle(final FHTextStyle fhTextStyle) {
+	public void addTextStyle(final TextStyle fhTextStyle) {
 		this.entries.addTextStyle(fhTextStyle);
 	}
 

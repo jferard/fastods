@@ -21,6 +21,8 @@
  ******************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.Box;
+
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
  * page/style:footer
@@ -33,9 +35,9 @@ package com.github.jferard.fastods;
 class RegionFooterHeaderBuilder
 		extends FooterHeaderBuilder<RegionFooterHeaderBuilder> {
 
-	private final TextBuilder centerRegionBuilder;
-	private final TextBuilder leftRegionBuilder;
-	private final TextBuilder rightRegionBuilder;
+	private final Box<Text> centerRegionBox;
+	private final Box<Text> leftRegionBox;
+	private final Box<Text> rightRegionBox;
 
 	/**
 	 * Create a new footer object.
@@ -45,29 +47,29 @@ class RegionFooterHeaderBuilder
 	 */
 	RegionFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.leftRegionBuilder = new TextBuilder();
-		this.centerRegionBuilder = new TextBuilder();
-		this.rightRegionBuilder = new TextBuilder();
+		this.leftRegionBox = new Box<Text>();
+		this.centerRegionBox = new Box<Text>();
+		this.rightRegionBox = new Box<Text>();
 	}
 
 	@Override
 	public FooterHeader build() {
 		return new RegionFooterHeader(this.footerHeaderType,
-				this.centerRegionBuilder.build(),
-				this.leftRegionBuilder.build(), this.rightRegionBuilder.build(),
+				this.centerRegionBox.get(),
+				this.leftRegionBox.get(), this.rightRegionBox.get(),
 				this.marginsBuilder.build(), this.minHeight);
 	}
 
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {
 		switch (region) {
 		case LEFT: // Use left region
-			this.curRegionBuilder = this.leftRegionBuilder;
+			this.curRegionBox = this.leftRegionBox;
 			break;
 		case CENTER: // Use center region
-			this.curRegionBuilder = this.centerRegionBuilder;
+			this.curRegionBox = this.centerRegionBox;
 			break;
 		case RIGHT: // Use right region
-			this.curRegionBuilder = this.rightRegionBuilder;
+			this.curRegionBox = this.rightRegionBox;
 			break;
 		default: // Invalid footerRegionValue, use center region as default
 			throw new IllegalStateException();

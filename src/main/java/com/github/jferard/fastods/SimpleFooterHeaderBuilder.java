@@ -21,7 +21,7 @@
  ******************************************************************************/
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.Box;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -42,7 +42,7 @@ class SimpleFooterHeaderBuilder
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.curRegionBuilder = new TextBuilder();
+		this.curRegionBox = new Box<Text>();
 	}
 
 	/*
@@ -50,7 +50,7 @@ class SimpleFooterHeaderBuilder
 	 */
 	@Override
 	public FooterHeader build() {	
-		return new SimpleFooterHeader(this.footerHeaderType, this.curRegionBuilder.build(),
+		return new SimpleFooterHeader(this.footerHeaderType, this.curRegionBox.get(),
 				this.marginsBuilder.build(), this.minHeight);
 	}
 }

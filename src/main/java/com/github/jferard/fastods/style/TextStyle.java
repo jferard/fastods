@@ -35,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class FHTextStyle implements NamedObject {
+public class TextStyle implements NamedObject {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
 		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
@@ -49,7 +49,7 @@ public class FHTextStyle implements NamedObject {
 		}
 	}
 
-	public static final FHTextStyle DEFAULT_TEXT_STYLE = FHTextStyle
+	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle
 			.builder("Default").build();
 
 	public static FHTextStyleBuilder builder(final String name) {
@@ -71,7 +71,7 @@ public class FHTextStyle implements NamedObject {
 	/**
 	 * Create a new text style with the name name.
 	 */
-	FHTextStyle(final String name, final String fontColor,
+	TextStyle(final String name, final String fontColor,
 			final String fontName, final String fontWeight,
 			final String fontStyle, final String fontSize,
 			final String fontUnderlineColor,

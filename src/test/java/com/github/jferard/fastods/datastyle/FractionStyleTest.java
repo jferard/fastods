@@ -3,12 +3,8 @@ package com.github.jferard.fastods.datastyle;
 import java.io.IOException;
 import java.util.Locale;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
@@ -28,7 +24,7 @@ public class FractionStyleTest {
 
 	@Test
 	public final void test1()
-			throws IOException, ParserConfigurationException, SAXException {
+			throws IOException {
 		final FractionStyle s = this.factory.fractionStyleBuilder("name")
 				.country("FR").language("en").volatileStyle(true)
 				.fractionValues(1, 3).groupThousands(true).minIntegerDigits(8)
@@ -44,12 +40,12 @@ public class FractionStyleTest {
 				+ "<number:fraction number:min-numerator-digits=\"1\" number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
-		Assert.assertTrue(DomTester.equals(str, sb.toString()));
+		DomTester.assertEquals(str, sb.toString());
 	}
 
 	@Test
 	public final void test2()
-			throws IOException, ParserConfigurationException, SAXException {
+			throws IOException {
 		final FractionStyle s = this.factory.fractionStyleBuilder("name")
 				.country("FR").language("en").locale(Locale.GERMANY)
 				.volatileStyle(true).fractionValues(1, 3).groupThousands(true)
@@ -65,7 +61,7 @@ public class FractionStyleTest {
 				+ "<number:fraction number:min-numerator-digits=\"1\" number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
-		Assert.assertTrue(DomTester.equals(str, sb.toString()));
+		DomTester.assertEquals(str, sb.toString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

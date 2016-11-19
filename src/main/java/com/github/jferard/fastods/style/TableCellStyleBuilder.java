@@ -60,7 +60,7 @@ public class TableCellStyleBuilder {
 
 		this.name = name;
 		this.parentCellStyle = "Default";
-		this.tsBuilder = FHTextStyle.builder("fh" + name);
+		this.tsBuilder = TextStyle.builder("fh" + name);
 		this.bordersBuilder = new BordersBuilder();
 		this.marginsBuilder = new MarginsBuilder();
 	}

@@ -27,7 +27,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-import org.xml.sax.SAXException;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.DomTester;
@@ -36,7 +35,7 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
-public class FHTextStyleTest {
+public class TextStyleTest {
 	private XMLUtil util;
 
 	@Before
@@ -47,7 +46,7 @@ public class FHTextStyleTest {
 
 	@Test
 	public final void testAddToFile() {
-		final FHTextStyle style = FHTextStyle.builder("style").build();
+		final TextStyle style = TextStyle.builder("style").build();
 
 		final OdsFile f = PowerMock.createMock(OdsFile.class);
 		f.addTextStyle(style);
@@ -57,31 +56,31 @@ public class FHTextStyleTest {
 	}
 
 	@Test
-	public final void testBadSize() throws IOException, SAXException {
+	public final void testBadSize() throws IOException {
 		final Appendable sb = new StringBuilder();
-		final FHTextStyle style = FHTextStyle.builder("style").fontSize("@")
+		final TextStyle style = TextStyle.builder("style").fontSize("@")
 				.build();
 		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<style:text-properties fo:font-size=\"@\" style:font-size-asian=\"@\" style:font-size-complex=\"@\"/>",
-				sb.toString()));
+				sb.toString());
 	}
 
 	@Test
-	public final void testColorNameSize() throws IOException, SAXException {
+	public final void testColorNameSize() throws IOException {
 		final Appendable sb = new StringBuilder();
-		final FHTextStyle style = FHTextStyle.builder("style")
+		final TextStyle style = TextStyle.builder("style")
 				.fontColor(Color.ALICEBLUE).fontName("Verdana").fontSize(10)
 				.build();
 		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<style:text-properties fo:color=\"#F0F8FF\" style:font-name=\"Verdana\" fo:font-size=\"10pt\" style:font-size-asian=\"10pt\" style:font-size-complex=\"10pt\"/>",
-				sb.toString()));
+				sb.toString());
 	}
 
 	@Test
 	public final void testDefault() {
-		final FHTextStyle style = FHTextStyle.builder("style").build();
+		final TextStyle style = TextStyle.builder("style").build();
 		Assert.assertEquals(null, style.getFontColor());
 		Assert.assertEquals(null, style.getFontSize());
 		Assert.assertEquals(null, style.getFontUnderlineColor());
@@ -91,25 +90,25 @@ public class FHTextStyleTest {
 	}
 
 	@Test
-	public final void testItalicBold() throws IOException, SAXException {
+	public final void testItalicBold() throws IOException {
 		final Appendable sb = new StringBuilder();
-		final FHTextStyle style = FHTextStyle.builder("style").fontStyleItalic()
+		final TextStyle style = TextStyle.builder("style").fontStyleItalic()
 				.fontWeightBold().build();
 		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" fo:font-style=\"italic\" style:font-style-asian=\"italic\" style:font-style-complex=\"italic\"/>",
-				sb.toString()));
+				sb.toString());
 	}
 
 	@Test
-	public final void testUnderline() throws IOException, SAXException {
+	public final void testUnderline() throws IOException {
 		final Appendable sb = new StringBuilder();
-		final FHTextStyle style = FHTextStyle.builder("style")
-				.fontUnderlineStyle(FHTextStyle.Underline.DASH)
+		final TextStyle style = TextStyle.builder("style")
+				.fontUnderlineStyle(TextStyle.Underline.DASH)
 				.fontUnderlineColor(Color.RED).build();
 		style.appendXMLToContentEntry(this.util, sb);
-		Assert.assertTrue(DomTester.equals(
+		DomTester.assertEquals(
 				"<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",
-				sb.toString()));
+				sb.toString());
 	}
 }

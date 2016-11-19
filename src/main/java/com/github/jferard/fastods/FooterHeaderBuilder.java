@@ -21,11 +21,9 @@
  ******************************************************************************/
 package com.github.jferard.fastods;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.MarginsBuilder;
+import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Box;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -35,8 +33,9 @@ import com.github.jferard.fastods.style.MarginsBuilder;
  *
  * @author Julien Férard
  */
+@SuppressWarnings("unchecked")
 abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
-	protected TextBuilder curRegionBuilder;
+	protected Box<Text> curRegionBox;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -44,7 +43,6 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	protected MarginsBuilder marginsBuilder;
 
 	protected String minHeight;
-	protected Text text;
 
 	/**
 	 * Create a new footer object.
@@ -147,76 +145,28 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	public F minHeight(final String height) {
 		this.minHeight = height;
- 		return (F) this;
-	}
-
-	@Deprecated
-	public F pageCount(final FHTextStyle ts) {
-		this.curRegionBuilder.pageCount(ts);
-		return (F) this;
-	}
-
-	@Deprecated
-	public F pageCount(final FHTextStyle ts, final int paragraph) {
-		return this.pageCount(ts); // ignore paragraph
-	}
-
-	@Deprecated
-	public F pageNumber(final FHTextStyle ts) {
-		this.curRegionBuilder.pageNumber(ts);
-		return (F) this;
-	}
-
-	@Deprecated
-	public F pageNumber(final FHTextStyle ts, final int paragraph) {
-		return this.pageNumber(ts); // ignore paragraph
-	}
-
-	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * region.<br>
-	 * The paragraph to be used is paragraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
-	 * @param text
-	 *            The string with the text
-	 * @param region
-	 *            One of : FooterHeader.FLG_REGION_LEFT,
-	 *            FooterHeader.FLG_REGION_CENTER or
-	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param paragraph
-	 *            The paragraph number to be used
-	 * @return
-	 */
-	@Deprecated
-	public F styledText(final FHTextStyle ts, final String text) {
-		this.curRegionBuilder.styledSpan(ts, text);
 		return (F) this;
 	}
 
 	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * region.<br>
-	 * The paragraph to be used is paragraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 *
-	 * @param ts
-	 *            The text style to be used
 	 * @param text
-	 *            The string with the text
-	 * @param region
-	 *            One of : FooterHeader.FLG_REGION_LEFT,
-	 *            FooterHeader.FLG_REGION_CENTER or
-	 *            FooterHeader.FLG_REGION_RIGHT
-	 * @param paragraphIndex
-	 *            The paragraph number to be used
+	 *            The text to write
 	 * @return
 	 */
-	@Deprecated
-	public F styledText(final FHTextStyle ts, final String text,
-			final int paragraphIndex) {
-		return this.styledText(ts, text); // ignore paragraph
+	public F text(final Text text) {
+		this.curRegionBox.set(text);
+		return (F) this;
+	}
+
+	public F styledContent(String string, TextStyle ts) {
+		Text text = Text.builder().par().styledSpan(string, ts).build();
+		this.curRegionBox.set(text);
+		return (F) this;
+	}
+
+	public F content(String string) {
+		Text text = Text.builder().par().span(string).build();
+		this.curRegionBox.set(text);
+		return (F) this;
 	}
 }

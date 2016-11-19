@@ -27,11 +27,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.FooterHeader.Region;
-import com.github.jferard.fastods.style.FHTextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TextStyle;
 
 /**
  * @author Julien Férard
@@ -47,25 +47,38 @@ public class OdsFileWithHeaderAndFooterCreation {
 	@Test
 	public final void test50() throws FastOdsException {
 		this.logger.info("Creating a file with footer and header");
-		final FHTextStyle lts = FHTextStyle.builder("test1")
-				.fontColor(Color.RED).build();
-		final FHTextStyle cts = FHTextStyle.builder("test2")
-				.fontColor(Color.BLUE).build();
-		final FHTextStyle rts = FHTextStyle.builder("test3")
-				.fontColor(Color.GREEN).build();
-		final FHTextStyle pnts = FHTextStyle.builder("style").fontWeightBold()
+		final TextStyle lts = TextStyle.builder("test1").fontColor(Color.RED)
+				.build();
+		final TextStyle cts = TextStyle.builder("test2").fontColor(Color.BLUE)
+				.build();
+		final TextStyle rts = TextStyle.builder("test3").fontColor(Color.GREEN)
+				.build();
+		final TextStyle pnts = TextStyle.builder("style").fontWeightBold()
+				.build();
+
+		Text leftHeader = Text.builder().par().styledSpan("left header", lts)
+				.build();
+		Text centerHeader = Text.builder().par()
+				.styledSpan("center header", cts).span(Text.TEXT_PAGE_NUMBER)
+				.build();
+		Text rightHeader = Text.builder().par().styledSpan("right header", rts)
 				.build();
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
-				.styledText(lts, "left header").region(Region.CENTER)
-				.styledText(cts, "center header").pageNumber(pnts)
-				.region(Region.RIGHT).styledText(rts, "right header").build();
+				.text(leftHeader).region(Region.CENTER).text(centerHeader)
+				.region(Region.RIGHT).text(rightHeader).build();
 
+		Text leftFooter = Text.builder().par().styledSpan("left footer", cts)
+				.build();
+		Text centerFooter = Text.builder().par()
+				.styledSpan("center footer", rts).span(Text.TEXT_PAGE_COUNT)
+				.build();
+		Text rightFooter = Text.builder().par().styledSpan("right footer", lts)
+				.build();
 		final FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.LEFT)
-				.styledText(cts, "left footer").region(Region.CENTER)
-				.styledText(rts, "center footer").pageCount(pnts)
-				.region(Region.RIGHT).styledText(lts, "right footer").build();
+				.text(leftFooter).region(Region.CENTER).text(centerFooter)
+				.region(Region.RIGHT).text(rightFooter).build();
 
 		final PageStyle ps = PageStyle.builder("test").footer(footer)
 				.header(header).build();
