@@ -49,19 +49,19 @@ import com.github.jferard.fastods.util.XMLUtil;
 /**
  * @author Julien Férard
  */
-public class FHParagraph {
-	private final List<FHText> texts;
+public class Paragraph {
+	private final List<Span> texts;
 
-	FHParagraph() {
-		this.texts = FullList.<FHText> builder().capacity(16).build();
+	Paragraph() {
+		this.texts = FullList.<Span> builder().capacity(16).build();
 	}
 
-	public void add(final FHText fHText) {
-		this.texts.add(fHText);
+	public void add(final Span span) {
+		this.texts.add(span);
 	}
 
 	public void add(final String content) {
-		this.texts.add(new FHText(content));
+		this.texts.add(new Span(content));
 	}
 
 	public void appendXMLToRegionBody(final XMLUtil util,
@@ -71,21 +71,21 @@ public class FHParagraph {
 			appendable.append("<text:p/>");
 			break;
 		case 1:
-			final FHText text = this.texts.get(0);
+			final Span text = this.texts.get(0);
 			appendable.append("<text:p>");
 			text.appendXMLOptionalSpanToParagraph(util, appendable);
 			appendable.append("</text:p>");
 			break;
 		default:
 			appendable.append("<text:p>");
-			for (final FHText textChunk : this.texts)
+			for (final Span textChunk : this.texts)
 				textChunk.appendXMLOptionalSpanToParagraph(util, appendable);
 			appendable.append("</text:p>");
 			break;
 		}
 	}
 
-	public List<FHText> getTexts() {
+	public List<Span> getTexts() {
 		return this.texts;
 	}
 

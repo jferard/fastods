@@ -41,7 +41,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 class RegionFooterHeader extends FooterHeader {
 	private static void appendRegion(final XMLUtil util,
-			final Appendable appendable, final List<FHParagraph> region,
+			final Appendable appendable, final List<Paragraph> region,
 			final String regionName) throws IOException {
 		if (region.size() == 0)
 			return;
@@ -54,10 +54,10 @@ class RegionFooterHeader extends FooterHeader {
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private final List<FHParagraph> centerRegion;
-	private final List<FHParagraph> leftRegion;
+	private final List<Paragraph> centerRegion;
+	private final List<Paragraph> leftRegion;
 
-	private final List<FHParagraph> rightRegion;
+	private final List<Paragraph> rightRegion;
 
 	/**
 	 * Create a new footer object.
@@ -70,9 +70,9 @@ class RegionFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
-			final List<FHParagraph> centerRegion,
-			final List<FHParagraph> leftRegion,
-			final List<FHParagraph> rightRegion, final Margins margins,
+			final List<Paragraph> centerRegion,
+			final List<Paragraph> leftRegion,
+			final List<Paragraph> rightRegion, final Margins margins,
 			final String minHeight, final Set<FHTextStyle> textStyles) {
 		super(footerHeaderType, margins, minHeight, textStyles);
 		this.centerRegion = centerRegion;

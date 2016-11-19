@@ -43,7 +43,7 @@ class SimpleFooterHeader extends FooterHeader {
 	/**
 	 * The OdsFile where this object belong to.
 	 */
-	private final List<FHParagraph> region;
+	private final List<Paragraph> region;
 
 	/**
 	 * Create a new footer object.
@@ -55,7 +55,7 @@ class SimpleFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final List<FHParagraph> region, final Margins margins,
+			final List<Paragraph> region, final Margins margins,
 			final String minHeight, final Set<FHTextStyle> textStyles) {
 		super(footerHeaderType, margins, minHeight, textStyles);
 		this.region = region;

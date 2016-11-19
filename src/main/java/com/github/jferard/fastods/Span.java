@@ -35,15 +35,15 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class FHText {
+public class Span {
 	private final String text;
 	private final /*@Nullable*/ FHTextStyle ts;
 
-	public FHText(final String text) {
+	public Span(final String text) {
 		this(text, null);
 	}
 
-	public FHText(final String s, final FHTextStyle t) {
+	public Span(final String s, final FHTextStyle t) {
 		this.ts = t;
 		this.text = s;
 	}

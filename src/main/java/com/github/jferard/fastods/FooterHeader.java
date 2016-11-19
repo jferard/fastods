@@ -86,9 +86,9 @@ public abstract class FooterHeader {
 	}
 
 	protected static void appendXMLRegionBodyToMasterStyle(final XMLUtil util,
-			final Appendable appendable, final List<FHParagraph> region)
+			final Appendable appendable, final List<Paragraph> region)
 			throws IOException {
-		for (final FHParagraph paragraph : region) {
+		for (final Paragraph paragraph : region) {
 			if (paragraph == null)
 				appendable.append("<text:p/>");
 			else {

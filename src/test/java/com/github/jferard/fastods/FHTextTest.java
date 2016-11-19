@@ -21,7 +21,7 @@ public class FHTextTest {
 	@Test
 	public final void testFHTextWithStyle() throws IOException {
 		final FHTextStyle ts = FHTextStyle.builder("test").build();
-		final FHText fhtext = new FHText("text", ts);
+		final Span fhtext = new Span("text", ts);
 		Assert.assertEquals("text", fhtext.getText());
 		Assert.assertEquals(ts, fhtext.getTextStyle());
 		final StringBuilder sbo = new StringBuilder();
@@ -37,7 +37,7 @@ public class FHTextTest {
 
 	@Test
 	public final void testSimpleFHText() throws IOException {
-		final FHText fhtext = new FHText("text");
+		final Span fhtext = new Span("text");
 		Assert.assertEquals("text", fhtext.getText());
 		Assert.assertNull(fhtext.getTextStyle());
 		final StringBuilder sbo = new StringBuilder();

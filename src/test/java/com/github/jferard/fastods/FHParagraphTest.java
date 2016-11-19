@@ -19,13 +19,13 @@ public class FHParagraphTest {
 
 	@Test
 	public final void test() throws IOException {
-		final FHParagraph par = new FHParagraph();
+		final Paragraph par = new Paragraph();
 		par.add("content");
-		final FHText fHText = new FHText("text");
-		par.add(fHText);
+		final Span span = new Span("text");
+		par.add(span);
 		Assert.assertEquals("content", par.getTexts().get(0).getText());
 		Assert.assertNull(par.getTexts().get(0).getTextStyle());
-		Assert.assertEquals(fHText, par.getTexts().get(1));
+		Assert.assertEquals(span, par.getTexts().get(1));
 		final StringBuilder sb = new StringBuilder();
 		par.appendXMLToRegionBody(this.util, sb);
 		Assert.assertEquals("<text:p>contenttext</text:p>", sb.toString());

@@ -42,7 +42,7 @@ class SimpleFooterHeaderBuilder
 	 */
 	SimpleFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
-		this.curRegion = FullList.<FHParagraph> builder().capacity(16).build();
+		this.curRegion = FullList.<Paragraph> builder().capacity(16).build();
 	}
 
 	/*

@@ -37,28 +37,7 @@ import com.github.jferard.fastods.style.MarginsBuilder;
  * @author Julien Férard
  */
 abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
-	/**
-	 * Checks if paragraph is present in region and return it if yes, if it is
-	 * not present, create a new List and add it to region. Return the new List.
-	 *
-	 * @param curRegion
-	 * @param paragraphIndex
-	 * @return The List with FHText elements.
-	 */
-	protected static FHParagraph checkParagraph(
-			final List<FHParagraph> curRegion, final int paragraphIndex) {
-		FHParagraph styledText = curRegion.get(paragraphIndex);
-
-		// Check if the paragraph already exists and add a List if not
-		if (styledText == null) {
-			styledText = new FHParagraph();
-			curRegion.set(paragraphIndex, styledText);
-		}
-
-		return styledText;
-	}
-
-	protected List<FHParagraph> curRegion;
+	protected List<Paragraph> curRegion;
 	/**
 	 * The OdsFile where this object belong to.
 	 */
@@ -67,6 +46,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 
 	protected String minHeight;
 	protected Set<FHTextStyle> textStyles;
+	private Text text;
 
 	/**
 	 * Create a new footer object.
@@ -170,32 +150,31 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	public F minHeight(final String height) {
 		this.minHeight = height;
-		return (F) this;
+ 		return (F) this;
 	}
 
+	@Deprecated
 	public F pageCount(final FHTextStyle ts) {
 		this.textStyles.add(ts);
 		this.styledText(ts, "<text:page-count>99</text:page-count>");
 		return (F) this;
 	}
 
+	@Deprecated
 	public F pageCount(final FHTextStyle ts, final int paragraph) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-count>99</text:page-count>", paragraph);
-		return (F) this;
+		return this.pageCount(ts); // ignore paragraph
 	}
 
+	@Deprecated
 	public F pageNumber(final FHTextStyle ts) {
 		this.textStyles.add(ts);
 		this.styledText(ts, "<text:page-number>1</text:page-number>");
 		return (F) this;
 	}
 
+	@Deprecated
 	public F pageNumber(final FHTextStyle ts, final int paragraph) {
-		this.textStyles.add(ts);
-		this.styledText(ts, "<text:page-number>1</text:page-number>",
-				paragraph);
-		return (F) this;
+		return this.pageNumber(ts); // ignore paragraph
 	}
 
 	/**
@@ -216,10 +195,11 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 *            The paragraph number to be used
 	 * @return
 	 */
+	@Deprecated
 	public F styledText(final FHTextStyle ts, final String text) {
 		this.textStyles.add(ts);
-		final FHParagraph styledText = new FHParagraph();
-		final FHText st = new FHText(text, ts);
+		final Paragraph styledText = new Paragraph();
+		final Span st = new Span(text, ts);
 		styledText.add(st);
 		this.curRegion.add(styledText);
 		return (F) this;
@@ -243,13 +223,14 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 *            The paragraph number to be used
 	 * @return
 	 */
+	@Deprecated
 	public F styledText(final FHTextStyle ts, final String text,
 			final int paragraphIndex) {
-		this.textStyles.add(ts);
-		final FHParagraph styledText = FooterHeaderBuilder
-				.checkParagraph(this.curRegion, paragraphIndex);
-		final FHText st = new FHText(text, ts);
-		styledText.add(st);
+		return this.styledText(ts, text); // ignore paragraph
+	}
+	
+	public F text(final Text text) {
+		this.text = text;
 		return (F) this;
 	}
 }
