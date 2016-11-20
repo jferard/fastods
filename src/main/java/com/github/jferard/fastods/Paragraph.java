@@ -62,7 +62,7 @@ public class Paragraph {
 		this.spans.add(new Span(content));
 	}
 
-	public void appendXMLToRegionBody(final XMLUtil util,
+	public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.spans.isEmpty()) {
 			appendable.append("<text:p/>");

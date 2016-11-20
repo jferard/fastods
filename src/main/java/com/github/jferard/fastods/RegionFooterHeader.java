@@ -44,7 +44,7 @@ class RegionFooterHeader extends FooterHeader {
 			return;
 
 		appendable.append("<style:").append(regionName).append(">");
-		region.appendXMLToMasterStyle(util, appendable);
+		region.appendXMLContent(util, appendable);
 		appendable.append("</style:").append(regionName).append(">");
 	}
 

@@ -53,8 +53,10 @@ public class OdsFileWithHeaderAndFooterCreation {
 				.build();
 		final TextStyle rts = TextStyle.builder("test3").fontColor(Color.GREEN)
 				.build();
-		final TextStyle pnts = TextStyle.builder("style").fontWeightBold()
+		final TextStyle boldStyle = TextStyle.builder("style").fontWeightBold()
 				.build();
+		final TextStyle italicStyle = TextStyle.builder("style2")
+				.fontStyleItalic().build();
 
 		Text leftHeader = Text.styledContent("left header", lts);
 		Text centerHeader = Text.builder().par()
@@ -94,7 +96,10 @@ public class OdsFileWithHeaderAndFooterCreation {
 		table.setColumnStyle(0, tcns);
 
 		row = table.getRow(0);
-		row.setStringValue(0, "text1");
+		row.setTextValue(0,
+				Text.builder().parContent("This is a")
+						.parStyledContent("multiline", italicStyle)
+						.parStyledContent("cell", boldStyle).build());
 		row.setStringValue(1, "text2");
 		row.setStringValue(2, "text3");
 

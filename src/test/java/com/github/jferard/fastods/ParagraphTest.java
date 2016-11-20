@@ -27,7 +27,7 @@ public class ParagraphTest {
 		Assert.assertNull(par.getSpans().get(0).getTextStyle());
 		Assert.assertEquals("text", par.getSpans().get(1).getText());
 		final StringBuilder sb = new StringBuilder();
-		par.appendXMLToRegionBody(this.util, sb);
+		par.appendXMLContent(this.util, sb);
 		Assert.assertEquals("<text:p>contenttext</text:p>", sb.toString());
 	}
 

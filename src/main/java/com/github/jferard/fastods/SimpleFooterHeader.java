@@ -69,7 +69,7 @@ class SimpleFooterHeader extends FooterHeader {
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.region != null)
-			this.region.appendXMLToMasterStyle(util, appendable);
+			this.region.appendXMLContent(util, appendable);
 	}
 
 	@Override

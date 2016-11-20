@@ -52,16 +52,18 @@ public class HeavyTableRow {
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
 	private final PositionUtil positionUtil;
-	private final int row;
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;
 	private final StylesEntry stylesEntry;
-	private final List<String> tooltips;
+	private List<String> tooltips;
 	private final List<TableCell.Type> types;
 	private final List<String> values;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
+	private boolean isComplexRow;
+	private boolean hasSpans;
+	private List<Text> texts;
 
 	HeavyTableRow(final PositionUtil positionUtil, final WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final ContentEntry contentEntry,
@@ -72,14 +74,14 @@ public class HeavyTableRow {
 		this.positionUtil = positionUtil;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
-		this.row = row;
 		this.contentEntry = contentEntry;
 		this.columnCapacity = columnCapacity;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
 		this.values = FullList.newListWithCapacity(columnCapacity);
-		this.tooltips = FullList.newListWithCapacity(columnCapacity);
 		this.styles = FullList.newListWithCapacity(columnCapacity);
 		this.types = FullList.newListWithCapacity(columnCapacity);
+		// other lists are not initialized because...
+		this.isComplexRow = false;
 	}
 
 	/**
@@ -94,8 +96,6 @@ public class HeavyTableRow {
 		int nullFieldCounter = 0;
 
 		final int size = this.values.size();
-		final boolean hasSpans = this.rowsSpanned != null
-				|| this.columnsSpanned != null;
 		for (int i = 0; i < size; i++) {
 			final String value = this.values.get(i);
 			if (value == null) {
@@ -110,19 +110,18 @@ public class HeavyTableRow {
 					appendable.append("/>");
 					nullFieldCounter = 0;
 				}
-				this.appendXMLToTableRow(util, appendable, i, value, hasSpans);
+				this.appendRowXMLToTable(util, appendable, i, value);
 			}
 		}
 
 		appendable.append("</table:table-row>");
 	}
 
-	public void appendXMLToTableRow(final XMLUtil util,
-			final Appendable appendable, final int i, final String value,
-			final boolean hasSpans) throws IOException {
+	protected void appendRowXMLToTable(final XMLUtil util,
+			final Appendable appendable, final int i, final String value)
+			throws IOException {
 		final TableCellStyle style = this.styles.get(i);
 		final TableCell.Type valueType = this.types.get(i);
-		final String tooltip = this.tooltips.get(i);
 
 		appendable.append("<table:table-cell");
 
@@ -139,7 +138,16 @@ public class HeavyTableRow {
 			util.appendAttribute(appendable, "office:currency", currency);
 		}
 
-		if (hasSpans) {
+		if (this.isComplexRow) {
+			this.appendComplexXMLToTable(util, appendable, i);
+		} else {
+			appendable.append("/>");
+		}
+	}
+
+	private void appendComplexXMLToTable(final XMLUtil util,
+			final Appendable appendable, final int i) throws IOException {
+		if (this.hasSpans) {
 			if (this.columnsSpanned != null) {
 				final Integer colSpan = this.columnsSpanned.get(i);
 				if (colSpan != null && colSpan > 1) {
@@ -156,11 +164,25 @@ public class HeavyTableRow {
 			}
 		}
 
-		if (tooltip == null) {
+		if (this.texts == null && this.tooltips == null) {
 			appendable.append("/>");
-		} else {
-			appendable.append("><office:annotation><text:p>").append(tooltip)
-					.append("</text:p></office:annotation></table:table-cell>");
+		} else { // something between <cell> and </cell>
+			appendable.append(">");
+			if (this.texts != null) {
+				final Text text = this.texts.get(i);
+				if (text != null) {
+					text.appendXMLContent(util, appendable);
+				}
+			}
+			if (this.tooltips != null) {
+				final String tooltip = this.tooltips.get(i);
+				if (tooltip != null) {
+					appendable.append("<office:annotation><text:p>")
+							.append(tooltip)
+							.append("</text:p></office:annotation>");
+				}
+			}
+			appendable.append("</table:table-cell>");
 		}
 	}
 
@@ -173,7 +195,10 @@ public class HeavyTableRow {
 	}
 
 	public int getColumnsSpanned(final int i) {
-		return this.columnsSpanned.get(i);
+		if (this.columnsSpanned != null)
+			return this.columnsSpanned.get(i);
+		else
+			return -1;
 	}
 
 	public String getCurrency(final int i) {
@@ -197,7 +222,10 @@ public class HeavyTableRow {
 	}
 
 	public int getRowsSpanned(final int i) {
-		return this.rowsSpanned.get(i);
+		if (this.rowsSpanned != null)
+			return this.rowsSpanned.get(i);
+		else
+			return -1;
 	}
 
 	public String getRowStyleName() {
@@ -217,9 +245,19 @@ public class HeavyTableRow {
 	}
 
 	public String getTooltip(final int i) {
-		return this.tooltips.get(i);
+		if (this.tooltips != null)
+			return this.tooltips.get(i);
+		else
+			return null;
 	}
 
+	public Text getText(final int i) {
+		if (this.texts != null)
+			return this.texts.get(i);
+		else
+			return null;
+	}
+	
 	public TableCell.Type getValueType(final int i) {
 		return this.types.get(i);
 	}
@@ -286,6 +324,8 @@ public class HeavyTableRow {
 					.newListWithCapacity(this.columnCapacity);
 
 		this.columnsSpanned.set(i, n);
+		this.hasSpans = true;
+		this.isComplexRow = true;
 	}
 
 	/* (non-Javadoc)
@@ -450,6 +490,8 @@ public class HeavyTableRow {
 			this.rowsSpanned = FullList
 					.newListWithCapacity(this.columnCapacity);
 		this.rowsSpanned.set(i, n < 0 ? 0 : n);
+		this.hasSpans = true;
+		this.isComplexRow = true;
 	}
 
 	/* (non-Javadoc)
@@ -490,7 +532,11 @@ public class HeavyTableRow {
 	}
 
 	public void setTooltip(final int i, final String tooltip) {
+		if (this.tooltips == null)
+			this.tooltips = FullList.newListWithCapacity(this.columnCapacity);
+
 		this.tooltips.set(i, tooltip);
+		this.isComplexRow = true;
 	}
 
 	public void setVoidValue(final int i) {
@@ -508,5 +554,15 @@ public class HeavyTableRow {
 			util.appendEAttribute(appendable, "table:default-cell-style-name",
 					this.defaultCellStyle.getName());
 		appendable.append(">");
+	}
+
+	public void setTextValue(int i, Text text) {
+		if (this.texts == null)
+			this.texts = FullList.newListWithCapacity(this.columnCapacity);
+
+		this.values.set(i,  "");
+		this.types.set(i, TableCell.Type.STRING);
+		this.texts.set(i, text);
+		this.isComplexRow = true;
 	}
 }

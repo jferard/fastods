@@ -29,13 +29,13 @@ public class Text {
 		return this.paragraphs.isEmpty();
 	}
 
-	public void appendXMLToMasterStyle(XMLUtil util, Appendable appendable)
+	public void appendXMLContent(XMLUtil util, Appendable appendable)
 			throws IOException {
 		for (final Paragraph paragraph : this.paragraphs) {
 			if (paragraph == null)
 				appendable.append("<text:p/>");
 			else {
-				paragraph.appendXMLToRegionBody(util, appendable);
+				paragraph.appendXMLContent(util, appendable);
 			}
 		}
 	}
