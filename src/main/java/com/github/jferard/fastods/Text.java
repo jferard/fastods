@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -43,12 +44,7 @@ public class Text {
 	public void appendTextStylesXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		for (final TextStyle style : this.textStyles) {
-			appendable.append("<style:style");
-			util.appendEAttribute(appendable, "style:name", style.getName());
-			util.appendAttribute(appendable, "style:family", "text");
-			appendable.append('>');
 			style.appendXMLToContentEntry(util, appendable);
-			appendable.append("</style:style>");
 		}
 	}
 
@@ -63,5 +59,10 @@ public class Text {
 	
 	public static TextBuilder builder() {
 		return new TextBuilder();
+	}
+
+	public void addStylesToContent(ContentEntry contentEntry) {
+		for (TextStyle textStyle : this.textStyles)
+			contentEntry.addStyleTag(textStyle);
 	}
 }

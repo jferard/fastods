@@ -167,11 +167,9 @@ public class TableCellStyle implements StyleTag {
 			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
 
 		appendable.append("/>");
-		// ----------------------------------------------------
-		// First check if any text properties should be added
-		// ----------------------------------------------------
+
 		if (this.textStyle != null && this.textStyle.isNotEmpty()) {
-			this.textStyle.appendXMLToContentEntry(util, appendable);
+			this.textStyle.appendAnonymousXMLToContentEntry(util, appendable);
 		}
 
 		appendable.append("<style:paragraph-properties");

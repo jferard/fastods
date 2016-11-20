@@ -24,7 +24,6 @@ package com.github.jferard.fastods.style;
 import java.io.IOException;
 
 import com.github.jferard.fastods.OdsFile;
-import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -35,7 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TextStyle implements NamedObject {
+public class TextStyle implements StyleTag {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
 	public static enum Underline {
 		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
@@ -86,7 +85,7 @@ public class TextStyle implements NamedObject {
 		this.fontUnderlineStyle = fontUnderlineStyle;
 	}
 
-	public void appendXMLToContentEntry(final XMLUtil util,
+	public void appendAnonymousXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:text-properties");
 		// Check if the font weight should be added
@@ -145,21 +144,14 @@ public class TextStyle implements NamedObject {
 		appendable.append("/>");
 	}
 
-	public void appendXMLToStylesEntry(final XMLUtil util,
+	@Override
+	public void appendXMLToContentEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		// -------------------------------------------------------------
-		// The name maybe empty if this style is part of TableFamilyStyle.
-		// Do not add the style:style
-		// -------------------------------------------------------------
 		appendable.append("<style:style ");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "text");
 		appendable.append(">");
-
-		// First check if any text properties should be added
-
-		this.appendXMLToContentEntry(util, appendable);
-
+		this.appendAnonymousXMLToContentEntry(util, appendable);
 		appendable.append("</style:style>");
 	}
 

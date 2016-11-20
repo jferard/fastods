@@ -60,7 +60,7 @@ public class TextStyleTest {
 		final Appendable sb = new StringBuilder();
 		final TextStyle style = TextStyle.builder("style").fontSize("@")
 				.build();
-		style.appendXMLToContentEntry(this.util, sb);
+		style.appendAnonymousXMLToContentEntry(this.util, sb);
 		DomTester.assertEquals(
 				"<style:text-properties fo:font-size=\"@\" style:font-size-asian=\"@\" style:font-size-complex=\"@\"/>",
 				sb.toString());
@@ -72,7 +72,7 @@ public class TextStyleTest {
 		final TextStyle style = TextStyle.builder("style")
 				.fontColor(Color.ALICEBLUE).fontName("Verdana").fontSize(10)
 				.build();
-		style.appendXMLToContentEntry(this.util, sb);
+		style.appendAnonymousXMLToContentEntry(this.util, sb);
 		DomTester.assertEquals(
 				"<style:text-properties fo:color=\"#F0F8FF\" style:font-name=\"Verdana\" fo:font-size=\"10pt\" style:font-size-asian=\"10pt\" style:font-size-complex=\"10pt\"/>",
 				sb.toString());
@@ -94,7 +94,7 @@ public class TextStyleTest {
 		final Appendable sb = new StringBuilder();
 		final TextStyle style = TextStyle.builder("style").fontStyleItalic()
 				.fontWeightBold().build();
-		style.appendXMLToContentEntry(this.util, sb);
+		style.appendAnonymousXMLToContentEntry(this.util, sb);
 		DomTester.assertEquals(
 				"<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" fo:font-style=\"italic\" style:font-style-asian=\"italic\" style:font-style-complex=\"italic\"/>",
 				sb.toString());

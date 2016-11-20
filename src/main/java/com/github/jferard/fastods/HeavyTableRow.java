@@ -563,6 +563,7 @@ public class HeavyTableRow {
 		this.values.set(i,  "");
 		this.types.set(i, TableCell.Type.STRING);
 		this.texts.set(i, text);
+		text.addStylesToContent(this.contentEntry);
 		this.isComplexRow = true;
 	}
 }

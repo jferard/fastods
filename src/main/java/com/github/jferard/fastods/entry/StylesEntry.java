@@ -143,7 +143,7 @@ public class StylesEntry implements OdsEntry {
 
 		for (final TextStyle ts : this.textStyles.values())
 			if (ts.isNotEmpty())
-				ts.appendXMLToStylesEntry(util, writer);
+				ts.appendXMLToContentEntry(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");

@@ -23,14 +23,17 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard
  */
-public interface StyleTag {
+public interface StyleTag extends NamedObject {
+	
 	void appendXMLToContentEntry(XMLUtil util, Appendable appendable)
 			throws IOException;
 
+	@Override
 	String getName();
 }
