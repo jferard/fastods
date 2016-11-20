@@ -45,6 +45,14 @@ public class TextBuilder {
 		}
 		return new Text(this.paragraphs, this.textStyles);
 	}
+	
+	public TextBuilder parContent(String text) {
+		return this.par().span(text);
+	}
+	
+	public TextBuilder parStyledContent(String text, TextStyle ts) {
+		return this.par().styledSpan(text, ts);
+	}
 
 	public TextBuilder par() {
 		if (this.curParagraphBuilder != null) {

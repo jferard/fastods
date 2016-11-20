@@ -74,14 +74,14 @@ public abstract class FooterHeader {
 	public static FooterHeader simpleFooter(final String text,
 			final TextStyle ts) {
 		return new SimpleFooterHeaderBuilder(Type.FOOTER)
-				.text(Text.builder().par().styledSpan(text, ts).build())
+				.text(Text.styledContent(text, ts))
 				.build();
 	}
 
 	public static FooterHeader simpleHeader(final String text,
 			final TextStyle ts) {
 		return new SimpleFooterHeaderBuilder(Type.HEADER)
-				.text(Text.builder().par().styledSpan(text, ts).build())
+				.text(Text.styledContent(text, ts))
 				.build();
 	}
 

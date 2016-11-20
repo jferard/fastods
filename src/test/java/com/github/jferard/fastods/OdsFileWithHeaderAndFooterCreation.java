@@ -56,25 +56,21 @@ public class OdsFileWithHeaderAndFooterCreation {
 		final TextStyle pnts = TextStyle.builder("style").fontWeightBold()
 				.build();
 
-		Text leftHeader = Text.builder().par().styledSpan("left header", lts)
-				.build();
+		Text leftHeader = Text.styledContent("left header", lts);
 		Text centerHeader = Text.builder().par()
 				.styledSpan("center header", cts).span(Text.TEXT_PAGE_NUMBER)
 				.build();
-		Text rightHeader = Text.builder().par().styledSpan("right header", rts)
-				.build();
+		Text rightHeader = Text.styledContent("right header", rts);
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
 				.text(leftHeader).region(Region.CENTER).text(centerHeader)
 				.region(Region.RIGHT).text(rightHeader).build();
 
-		Text leftFooter = Text.builder().par().styledSpan("left footer", cts)
-				.build();
+		Text leftFooter = Text.styledContent("left footer", cts);
 		Text centerFooter = Text.builder().par()
 				.styledSpan("center footer", rts).span(Text.TEXT_PAGE_COUNT)
 				.build();
-		Text rightFooter = Text.builder().par().styledSpan("right footer", lts)
-				.build();
+		Text rightFooter = Text.styledContent("right footer", lts);
 		final FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.LEFT)
 				.text(leftFooter).region(Region.CENTER).text(centerFooter)

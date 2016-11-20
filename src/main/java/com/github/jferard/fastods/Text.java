@@ -22,6 +22,8 @@ public class Text {
 		this.paragraphs = paragraphs;
 		this.textStyles = textStyles;
 	}
+	
+	
 
 	public boolean isEmpty() {
 		return this.paragraphs.isEmpty();
@@ -50,6 +52,15 @@ public class Text {
 		}
 	}
 
+	public static Text styledContent(final String text,
+			final TextStyle ts) {
+		return Text.builder().parStyledContent(text, ts).build();
+	}
+
+	public static Text content(final String text) {
+		return Text.builder().parContent(text).build();
+	}
+	
 	public static TextBuilder builder() {
 		return new TextBuilder();
 	}

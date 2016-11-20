@@ -65,9 +65,9 @@ public class FooterHeaderTest {
 		final TextStyle ts2 = TextStyle.builder("test2").build();
 		final FooterHeader header = FooterHeader
 				.simpleBuilder(FooterHeader.Type.HEADER)
-				.text(Text.builder().par()
-						.styledSpan(Text.TEXT_PAGE_NUMBER, ts1).par()
-						.styledSpan(Text.TEXT_PAGE_COUNT, ts2).build())
+				.text(Text.builder()
+						.parStyledContent(Text.TEXT_PAGE_NUMBER, ts1)
+						.parStyledContent(Text.TEXT_PAGE_COUNT, ts2).build())
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(this.util, sb);

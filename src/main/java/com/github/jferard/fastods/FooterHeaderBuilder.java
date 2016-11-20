@@ -158,15 +158,13 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 		return (F) this;
 	}
 
-	public F styledContent(String string, TextStyle ts) {
-		Text text = Text.builder().par().styledSpan(string, ts).build();
-		this.curRegionBox.set(text);
+	public F styledContent(String text, TextStyle ts) {
+		this.curRegionBox.set(Text.styledContent(text, ts));
 		return (F) this;
 	}
 
 	public F content(String string) {
-		Text text = Text.builder().par().span(string).build();
-		this.curRegionBox.set(text);
+		this.curRegionBox.set(Text.content(string));
 		return (F) this;
 	}
 }
