@@ -45,12 +45,7 @@ import java.io.IOException;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * WHERE ? content.xml/office:document-content/office:automatic-styles/number:
- * number-style
- * content.xml/office:document-content/office:automatic-styles/number:
- * percentage-style
- * styles.xml/office:document-styles/office:styles/number:number-style
- * styles.xml/office:document-styles/office:styles/number:percentage- style
+ * 16.27.2 <number:number-style>
  *
  * @author Julien Férard
  * @author Martin Schulz
