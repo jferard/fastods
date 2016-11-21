@@ -51,8 +51,8 @@ public class TextStyle implements StyleTag {
 	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle
 			.builder("Default").build();
 
-	public static FHTextStyleBuilder builder(final String name) {
-		return new FHTextStyleBuilder(name);
+	public static TextStyleBuilder builder(final String name) {
+		return new TextStyleBuilder(name);
 	}
 
 	private final /*@Nullable*/ String fontColor;

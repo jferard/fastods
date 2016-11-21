@@ -11,8 +11,7 @@ A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
 * [Installation](#installation)
 * [Examples](#examples)
 * [Speed](#speed)
-* [Technical informations](#technical-informations)
-* [HISTORY](#history)
+* [History](#history)
 
 ## Why FastODS?
 Because I need to write big and simple ODS files very fast in Java.
@@ -87,44 +86,7 @@ The resulting ods files are written in current directory, and can be opened with
 ## Speed
 Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing a small (a single sheet with 5000 rows and 20 columns) simple ODS file. For bigger files, JOpenDocument becomes slower and slower in comparison with FastODS and SimpleODS.
 
-## Technical informations
-### Benchmark
-#### SimpleODS installation
-To benchmark FastODS, you'll have to install the SimpleODS jar, which is present in the ```src/bench/resources``` folder. Assuming that you have just "git cloned" the repo and that you are in the fastods directory, just type the following line in your command-line interface:
-```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=src/bench/resources/simpleODS-0.5.3.jar
-```
-#### Run the benchmark
-Then run the benchark:
-```
-mvn -P bench -Dtest=Benchmark test
-```
-
-### Profiling with VisualVM
-Download and install VisualVM: https://visualvm.github.io/download.html.
-
-Install and configure the Startup Profiler plugin: https://visualvm.java.net/startupprofiler.html.
-
-#### Step 1: Preset
-Create a profiling preset named "fastods" (Preset Name):
-* Do not profile packages: java.*, javax.*, sun.*, sunw.*, com.sun.*
-* Start profiling from classes: org.apache.maven.surefire.booter.ForkedBooter
-
-#### Step 2: Launch VisualVM
-Click on the clock icon (Profile startup), and set application configuration, select "fastods" preset for settings, and copy arguments to clipboard.
-
-#### Step3: Start the test
-Type the command:
-```mvn -Dmaven.surefire.debug="<copy from clipboard and escape quotes>" -Dtest=ProfileFastODS#testFast test```
-
-Note : if you see a warning: "Profiled application started too soon", just wait for the command line message "Waiting for connection on port 5140". Type a CTRL+C, then click cancel in VisualVM window. 
-
-Currently, the most greedy methods are:
-* ```XMLUtil.appendEAttribute```: 30% of the time, 9.6 million calls
-* ```FullList.init```, ```set```, ```get```: 27% of the time
-* ```HeavyTableRow.appendXMLToTableRow```: 11% of the time, 3.2 million calls
-
-## HISTORY
+## History
 
 | version | date | comments |
 | --- | --- | --- |

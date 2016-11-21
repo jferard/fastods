@@ -26,7 +26,7 @@ import com.github.jferard.fastods.style.TextStyle.Underline;
 /**
  * @author Julien Férard
  */
-public class FHTextStyleBuilder {
+public class TextStyleBuilder {
 	private String fontColor;
 	private String fontName;
 	private String fontSize;
@@ -45,7 +45,7 @@ public class FHTextStyleBuilder {
 	 * @param odsFile
 	 *            The file to add this style to
 	 */
-	public FHTextStyleBuilder(final String name) {
+	public TextStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 
@@ -66,7 +66,7 @@ public class FHTextStyleBuilder {
 	 *            cell background
 	 * @return this for fluent style
 	 */
-	public FHTextStyleBuilder fontColor(final String color) {
+	public TextStyleBuilder fontColor(final String color) {
 		this.fontColor = color;
 		return this;
 	}
@@ -78,7 +78,7 @@ public class FHTextStyleBuilder {
 	 *            The font name for this TextStyle
 	 * @return
 	 */
-	public FHTextStyleBuilder fontName(final String fontName) {
+	public TextStyleBuilder fontName(final String fontName) {
 		this.fontName = fontName;
 		return this;
 	}
@@ -90,7 +90,7 @@ public class FHTextStyleBuilder {
 	 *            - The font size as int , e.g. 10 or 8
 	 * @return
 	 */
-	public FHTextStyleBuilder fontSize(final int fontSize) {
+	public TextStyleBuilder fontSize(final int fontSize) {
 		this.fontSize = new StringBuilder(8).append(fontSize).append("pt")
 				.toString();
 		return this;
@@ -105,7 +105,7 @@ public class FHTextStyleBuilder {
 	 *            - The font size as string, e.g. '10.5pt' or '8pt'
 	 * @return
 	 */
-	public FHTextStyleBuilder fontSize(final String fontSize) {
+	public TextStyleBuilder fontSize(final String fontSize) {
 		this.fontSize = fontSize;
 		return this;
 	}
@@ -115,7 +115,7 @@ public class FHTextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public FHTextStyleBuilder fontStyleItalic() {
+	public TextStyleBuilder fontStyleItalic() {
 		this.fontStyle = "italic";
 		return this;
 	}
@@ -125,7 +125,7 @@ public class FHTextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public FHTextStyleBuilder fontStyleNormal() {
+	public TextStyleBuilder fontStyleNormal() {
 		this.fontStyle = "normal";
 		return this;
 	}
@@ -139,7 +139,7 @@ public class FHTextStyleBuilder {
 	 *            cell background.
 	 * @return
 	 */
-	public FHTextStyleBuilder fontUnderlineColor(final String color) {
+	public TextStyleBuilder fontUnderlineColor(final String color) {
 		this.fontUnderlineColor = color;
 		return this;
 	}
@@ -160,7 +160,7 @@ public class FHTextStyleBuilder {
 	 *            One of the TextStyle.STYLE_UNDERLINE
 	 * @return
 	 */
-	public FHTextStyleBuilder fontUnderlineStyle(final Underline style) {
+	public TextStyleBuilder fontUnderlineStyle(final Underline style) {
 		this.fontUnderlineStyle = style;
 		return this;
 	}
@@ -170,7 +170,7 @@ public class FHTextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public FHTextStyleBuilder fontWeightBold() {
+	public TextStyleBuilder fontWeightBold() {
 		this.fontWeight = "bold";
 		return this;
 	}
@@ -180,7 +180,7 @@ public class FHTextStyleBuilder {
 	 *
 	 * @return true -
 	 */
-	public FHTextStyleBuilder fontWeightNormal() {
+	public TextStyleBuilder fontWeightNormal() {
 		this.fontWeight = "normal";
 		return this;
 	}

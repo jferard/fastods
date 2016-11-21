@@ -36,7 +36,7 @@ public class TableCellStyleBuilder {
 	// true
 	private String parentCellStyle;
 	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
-	private final FHTextStyleBuilder tsBuilder;
+	private final TextStyleBuilder tsBuilder;
 	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
 	// 'top'
 	private boolean wrap; // No line wrap when false, line wrap when
