@@ -277,6 +277,6 @@ public class LightTableCellTest {
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
 		final WriteUtil writeUtil = new WriteUtil();
 		return new HeavyTableRow(positionUtil, writeUtil, xmlUtil, ce, se, ds,
-				10, 100);
+				null, 10, 100);
 	}
 }

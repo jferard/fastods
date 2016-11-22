@@ -106,7 +106,7 @@ public class TextStyleTest {
 		final TextStyle style = TextStyle.builder("style")
 				.fontUnderlineStyle(TextStyle.Underline.DASH)
 				.fontUnderlineColor(Color.RED).build();
-		style.appendXMLToContentEntry(this.util, sb);
+		style.appendAnonymousXMLToContentEntry(this.util, sb);
 		DomTester.assertEquals(
 				"<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",
 				sb.toString());

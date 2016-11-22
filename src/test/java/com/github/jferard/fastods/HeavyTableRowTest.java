@@ -37,7 +37,7 @@ public class HeavyTableRowTest {
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
 		this.row = new HeavyTableRow(positionUtil, writeUtil, xmlUtil, this.ce,
-				this.se, this.ds, 10, 100);
+				this.se, this.ds, null, 10, 100);
 		this.xmlUtil = XMLUtil.create();
 	}
 

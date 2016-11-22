@@ -94,8 +94,9 @@ public class Table implements NamedObject {
 
 	public Table(final PositionUtil positionUtil, WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final ContentEntry contentEntry,
-			final StylesEntry stylesEntry, final DataStyles format, final String name,
-			final int rowCapacity, final int columnCapacity) {
+			final StylesEntry stylesEntry, final DataStyles format,
+			final String name, final int rowCapacity,
+			final int columnCapacity) {
 		this.contentEntry = contentEntry;
 		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
@@ -198,14 +199,14 @@ public class Table implements NamedObject {
 	// return this.tableRows;
 	// }
 
-	public HeavyTableRow getRow(final int row) throws FastOdsException {
-		Table.checkRow(row);
-		HeavyTableRow tr = this.tableRows.get(row);
+	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException {
+		Table.checkRow(rowIndex);
+		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
-					this.xmlUtil, this.contentEntry, this.stylesEntry,
-					this.format, row, this.columnCapacity);
-			this.tableRows.set(row, tr);
+			tr = new HeavyTableRow(this.positionUtil, this.writeUtil, this.xmlUtil,
+					this.contentEntry, this.stylesEntry, this.format,
+					this, rowIndex, this.columnCapacity);
+			this.tableRows.set(rowIndex, tr);
 		}
 		return tr;
 	}
@@ -226,9 +227,9 @@ public class Table implements NamedObject {
 
 	public HeavyTableRow nextRow() {
 		final int rowIndex = this.tableRows.size();
-		final HeavyTableRow tr = new HeavyTableRow(this.positionUtil,
-				this.writeUtil, this.xmlUtil, this.contentEntry,
-				this.stylesEntry, this.format, rowIndex, this.columnCapacity);
+		final HeavyTableRow tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
+				this.xmlUtil, this.contentEntry, this.stylesEntry,
+				this.format, this, rowIndex, this.columnCapacity);
 		this.tableRows.add(tr);
 		return tr;
 	}

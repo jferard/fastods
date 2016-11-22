@@ -64,17 +64,21 @@ public class HeavyTableRow {
 	private boolean isComplexRow;
 	private boolean hasSpans;
 	private List<Text> texts;
+	private Table parent;
+	private int rowIndex;
 
 	HeavyTableRow(final PositionUtil positionUtil, final WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final ContentEntry contentEntry,
 			final StylesEntry stylesEntry, final DataStyles dataStyles,
-			final int row, final int columnCapacity) {
+			Table parent, final int rowIndex, final int columnCapacity) {
 		this.writeUtil = writeUtil;
 		this.stylesEntry = stylesEntry;
 		this.positionUtil = positionUtil;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
 		this.contentEntry = contentEntry;
+		this.parent = parent;
+		this.rowIndex = rowIndex;
 		this.columnCapacity = columnCapacity;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
 		this.values = FullList.newListWithCapacity(columnCapacity);
