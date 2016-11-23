@@ -122,12 +122,27 @@ public class HeavyTableRow {
 	}
 
 	protected void appendRowXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int i, final String value)
+			final Appendable appendable, final int colIndex, final String value)
 			throws IOException {
-		final TableCellStyle style = this.styles.get(i);
-		final TableCell.Type valueType = this.types.get(i);
+		final TableCellStyle style = this.styles.get(colIndex);
+		final TableCell.Type valueType = this.types.get(colIndex);
 
-		appendable.append("<table:table-cell");
+		boolean covered;
+		if (this.columnsSpanned != null) {
+			Integer s = this.columnsSpanned.get(colIndex);
+			if (s != null && s == -1) // covered-cell
+				covered = true;
+			else
+				covered = false;
+		} else {
+			covered = false;
+		}
+		
+		if (covered) {
+			appendable.append("<table:covered-table-cell");
+		} else {
+			appendable.append("<table:table-cell");
+		}
 
 		if (style != null) {
 			util.appendEAttribute(appendable, "table:style-name",
@@ -138,29 +153,29 @@ public class HeavyTableRow {
 				valueType.getAttrValue());
 		util.appendEAttribute(appendable, valueType.getAttrName(), value);
 		if (valueType == TableCell.Type.CURRENCY) {
-			final String currency = this.currencies.get(i);
+			final String currency = this.currencies.get(colIndex);
 			util.appendAttribute(appendable, "office:currency", currency);
 		}
 
 		if (this.isComplexRow) {
-			this.appendComplexXMLToTable(util, appendable, i);
+			this.appendComplexXMLToTable(util, appendable, colIndex, covered);
 		} else {
 			appendable.append("/>");
 		}
 	}
 
 	private void appendComplexXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int i) throws IOException {
-		if (this.hasSpans) {
+			final Appendable appendable, final int colIndex, final boolean covered) throws IOException {
+		if (this.hasSpans && !covered) {
 			if (this.columnsSpanned != null) {
-				final Integer colSpan = this.columnsSpanned.get(i);
+				final Integer colSpan = this.columnsSpanned.get(colIndex);
 				if (colSpan != null && colSpan > 1) {
 					util.appendEAttribute(appendable,
 							"table:number-columns-spanned", colSpan);
 				}
 			}
 			if (this.rowsSpanned != null) {
-				final Integer rowSpan = this.rowsSpanned.get(i);
+				final Integer rowSpan = this.rowsSpanned.get(colIndex);
 				if (rowSpan != null && rowSpan > 1) {
 					util.appendEAttribute(appendable,
 							"table:number-rows-spanned", rowSpan);
@@ -173,13 +188,13 @@ public class HeavyTableRow {
 		} else { // something between <cell> and </cell>
 			appendable.append(">");
 			if (this.texts != null) {
-				final Text text = this.texts.get(i);
+				final Text text = this.texts.get(colIndex);
 				if (text != null) {
 					text.appendXMLContent(util, appendable);
 				}
 			}
 			if (this.tooltips != null) {
-				final String tooltip = this.tooltips.get(i);
+				final String tooltip = this.tooltips.get(colIndex);
 				if (tooltip != null) {
 					appendable.append("<office:annotation><text:p>")
 							.append(tooltip)
