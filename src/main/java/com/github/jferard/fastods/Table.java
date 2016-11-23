@@ -331,7 +331,7 @@ public class Table implements NamedObject {
 		}
 	}
 
-	private HeavyTableRow getRowSecure(final int rowIndex) {
+	public HeavyTableRow getRowSecure(final int rowIndex) {
 		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,

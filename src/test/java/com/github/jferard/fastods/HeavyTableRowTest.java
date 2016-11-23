@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,18 +27,20 @@ public class HeavyTableRowTest {
 	private HeavyTableRow row;
 	private StylesEntry se;
 	private XMLUtil xmlUtil;
+	private Table table;
 
 	@Before
 	public void setUp() {
 		this.ce = PowerMock.createMock(ContentEntry.class);
 		this.se = PowerMock.createMock(StylesEntry.class);
+		this.table = PowerMock.createMock(Table.class);
 		final PositionUtil positionUtil = new PositionUtil();
 		final WriteUtil writeUtil = new WriteUtil();
 		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
 		this.row = new HeavyTableRow(positionUtil, writeUtil, xmlUtil, this.ce,
-				this.se, this.ds, null, 10, 100);
+				this.se, this.ds, this.table, 10, 100);
 		this.xmlUtil = XMLUtil.create();
 	}
 
@@ -152,6 +155,11 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge() {
+		HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+		
+		// PLAY
+		for (int c = 11; c< 20; c++)
+			EasyMock.expect(this.table.getRowSecure(c)).andReturn(row2);
 		PowerMock.replayAll();
 		this.row.setStringValue(7, "value");
 		this.row.setCellMerge(7, 10, 8);
@@ -162,6 +170,11 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge2() throws IOException {
+		HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+		
+		// PLAY
+		for (int c = 11; c< 20; c++)
+			EasyMock.expect(this.table.getRowSecure(c)).andReturn(row2);
 		PowerMock.replayAll();
 		this.row.setStringValue(5, "value");
 		this.row.setCellMerge(5, 10, 8);

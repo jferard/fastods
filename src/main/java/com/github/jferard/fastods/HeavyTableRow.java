@@ -279,20 +279,52 @@ public class HeavyTableRow {
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param col
+	 * @param colIndex
 	 *            The column, 0 is the first column
 	 * @param rowMerge
 	 * @param columnMerge
-	 *
-	 * @throws FastOdsException
 	 */
-	public void setCellMerge(final int col, final int rowMerge,
+	public void setCellMerge(final int colIndex, final int rowMerge,
 			final int columnMerge) {
-		if (rowMerge > 1)
-			this.setRowsSpanned(col, rowMerge);
+		if (rowMerge <= 1 && columnMerge <= 1)
+			return;
+
+		if (this.columnsSpanned == null) {
+			this.columnsSpanned = FullList
+					.newListWithCapacity(this.columnCapacity);
+		}
+		
+		final Integer s = this.columnsSpanned.get(colIndex);
+		if (s != null && s == -1)
+			return;
+		
+		if (rowMerge > 1) {
+			if (this.rowsSpanned == null)
+				this.rowsSpanned = FullList
+						.newListWithCapacity(this.columnCapacity);
+			this.rowsSpanned.set(colIndex, rowMerge);
+		}
 
 		if (columnMerge > 1)
-			this.setColumnsSpanned(col, columnMerge);
+			this.columnsSpanned.set(colIndex, columnMerge);
+
+		this.hasSpans = true;
+		this.isComplexRow = true;
+		
+		// add negative span for covered cells
+		for (int c = 1; c<columnMerge; c++)
+			this.columnsSpanned.set(colIndex+c, -1);
+		for (int r = 1; r<rowMerge; r++) {
+			HeavyTableRow row = this.parent.getRowSecure(this.rowIndex + r);
+			for (int c = 0; c<columnMerge; c++) {
+				if (row.columnsSpanned == null)
+					row.columnsSpanned = FullList
+							.newListWithCapacity(this.columnCapacity);
+				row.columnsSpanned.set(colIndex+c, -1);
+				row.hasSpans = true;
+				row.isComplexRow = true;
+			}
+		}
 	}
 
 	/**
@@ -302,11 +334,9 @@ public class HeavyTableRow {
 	 *            The cell position e.g. 'A1'
 	 * @param rowMerge
 	 * @param columnMerge
-	 *
-	 * @throws FastOdsException
 	 */
 	public void setCellMerge(final String pos, final int rowMerge,
-			final int columnMerge) throws FastOdsException {
+			final int columnMerge) {
 		final int col = this.positionUtil.getPosition(pos).getColumn();
 		this.setCellMerge(col, rowMerge, columnMerge);
 	}
@@ -319,7 +349,7 @@ public class HeavyTableRow {
 		value.setToRow(this, i);
 	}
 
-	public void setColumnsSpanned(final int i, final int n) {
+	public void setColumnsSpanned(final int colIndex, final int n) {
 		if (n <= 1)
 			return;
 
@@ -327,7 +357,14 @@ public class HeavyTableRow {
 			this.columnsSpanned = FullList
 					.newListWithCapacity(this.columnCapacity);
 
-		this.columnsSpanned.set(i, n);
+		final Integer s = this.columnsSpanned.get(colIndex);
+		if (s != null && s == -1)
+			return;
+		
+		this.columnsSpanned.set(colIndex, n);
+		// add negative span for covered cells
+		for (int c = 1; c<n; c++)
+			this.columnsSpanned.set(colIndex+c, -1);
 		this.hasSpans = true;
 		this.isComplexRow = true;
 	}
@@ -486,14 +523,23 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setRowsSpanned(int)
 	 */
-	public void setRowsSpanned(final int i, final int n) {
+	public void setRowsSpanned(final int colIndex, final int n) {
 		if (n <= 1)
 			return;
 
 		if (this.rowsSpanned == null)
 			this.rowsSpanned = FullList
 					.newListWithCapacity(this.columnCapacity);
-		this.rowsSpanned.set(i, n < 0 ? 0 : n);
+		if (this.columnsSpanned.get(colIndex) == -1)
+			return;
+		
+		this.rowsSpanned.set(colIndex, n);
+		// add negative span for covered cells
+		for (int r = 1; r<n; r++) {
+			HeavyTableRow row = this.parent.getRowSecure(this.rowIndex + r);
+			row.columnsSpanned.set(colIndex, -1);
+		}
+		
 		this.hasSpans = true;
 		this.isComplexRow = true;
 	}
