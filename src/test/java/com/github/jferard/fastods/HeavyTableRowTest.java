@@ -186,7 +186,7 @@ public class HeavyTableRowTest {
 				+ "</table:table-row>", sbt.toString());
 		PowerMock.verifyAll();
 	}
-
+	
 	@Test
 	public final void testObject() {
 		PowerMock.replayAll();

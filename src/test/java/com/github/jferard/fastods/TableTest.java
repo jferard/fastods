@@ -37,8 +37,8 @@ public class TableTest {
 		final XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.ce, this.se,
-				this.ds, "mytable", 10, 100);
+		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.ce,
+				this.se, this.ds, "mytable", 10, 100);
 		this.xmlUtil = xmlUtil;
 	}
 
@@ -170,6 +170,65 @@ public class TableTest {
 						+ "</config:config-item-map-entry>",
 				sb.toString());
 
+	}
+
+	@Test
+	public final void testMerge() throws IOException {
+		// PLAY
+		PowerMock.replayAll();
+		HeavyTableRow row = this.table.nextRow();
+		row.setStringValue(0, "x");
+		row.setStringValue(1, "x");
+		row.setStringValue(2, "x");
+		row.setStringValue(3, "x");
+		row = this.table.nextRow();
+		row.setStringValue(0, "x");
+		row.setStringValue(1, "x");
+		row.setStringValue(2, "x");
+		row.setStringValue(3, "x");
+		row.setCellMerge(1, 2, 2);
+		row = this.table.nextRow();
+		row.setStringValue(0, "x");
+		row.setStringValue(1, "x");
+		row.setStringValue(2, "x");
+		row.setStringValue(3, "x");
+		row = this.table.nextRow();
+		row.setStringValue(0, "x");
+		row.setStringValue(1, "x");
+		row.setStringValue(2, "x");
+		row.setStringValue(3, "x");
+
+		final StringBuilder sb = new StringBuilder();
+		this.table.appendXMLToContentEntry(this.xmlUtil, sb);
+		DomTester.assertEquals(
+				"<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">"
+						+ "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>"
+						+ "<table:table-row table:style-name=\"ro1\">"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "</table:table-row>"
+						+ "<table:table-row table:style-name=\"ro1\">"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\" table:number-columns-spanned=\"2\" table:number-rows-spanned=\"2\"/>"
+						+ "<table:covered-table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "</table:table-row>"
+						+ "<table:table-row table:style-name=\"ro1\">"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:covered-table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:covered-table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "</table:table-row>"
+						+ "<table:table-row table:style-name=\"ro1\">"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "<table:table-cell office:value-type=\"string\" office:string-value=\"x\"/>"
+						+ "</table:table-row>" + "</table:table>",
+				sb.toString());
+		PowerMock.verifyAll();
 	}
 
 }
