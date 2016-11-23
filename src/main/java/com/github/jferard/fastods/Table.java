@@ -180,11 +180,6 @@ public class Table implements NamedObject {
 		appendable.append("</config:config-item-map-entry>");
 	}
 
-	public HeavyTableRow firstRow() {
-		this.curRowIndex = 0;
-		return this.getRowSecure(0);
-	}
-
 	public List<TableColumnStyle> getColumnStyles() {
 		return this.columnStyles;
 	}
@@ -192,10 +187,6 @@ public class Table implements NamedObject {
 	public int getLastRowNumber() {
 		return this.tableRows.size() - 1;
 	}
-
-	// public List<OldLightTableRow> getRows() {
-	// return this.tableRows;
-	// }
 
 	/**
 	 * Get the name of this table.
@@ -226,18 +217,8 @@ public class Table implements NamedObject {
 		return this.style.getName();
 	}
 
-	public HeavyTableRow lastRow() {
-		this.curRowIndex = this.lastRowIndex;
-		return this.getRowSecure(this.curRowIndex);
-	}
-
 	public HeavyTableRow nextRow() {
 		this.curRowIndex++;
-		return this.getRowSecure(this.curRowIndex);
-	}
-
-	public HeavyTableRow previousRow() {
-		this.curRowIndex = this.curRowIndex > 1 ? this.curRowIndex - 1 : 0;
 		return this.getRowSecure(this.curRowIndex);
 	}
 
