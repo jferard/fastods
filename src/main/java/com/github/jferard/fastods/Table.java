@@ -38,8 +38,7 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
- * table:table
+ * @see 9.1.2 <table:table>
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -66,33 +65,35 @@ public class Table implements NamedObject {
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
 	private final ContentEntry contentEntry;
+	private int curRowIndex;
 	private final ConfigItem cursorPositionX;
 	private final ConfigItem cursorPositionY;
 	private final DataStyles format;
 	private final ConfigItem horizontalSplitMode;
 	private final ConfigItem horizontalSplitPosition;
+	private int lastRowIndex;
 	private String name;
 	private final ConfigItem pageViewZoomValue;
+
 	private final ConfigItem positionBottom;
 	private final ConfigItem positionLeft;
-
 	private final ConfigItem positionRight;
+
 	private final ConfigItem positionTop;
 	private final PositionUtil positionUtil;
-
 	private TableStyle style;
+
 	private final StylesEntry stylesEntry;
+
 	private final List<HeavyTableRow> tableRows;
-
 	private final ConfigItem verticalSplitMode;
-
 	private final ConfigItem verticalSplitPosition;
+	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
-	private WriteUtil writeUtil;
 
-	public Table(final PositionUtil positionUtil, WriteUtil writeUtil,
+	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final ContentEntry contentEntry,
 			final StylesEntry stylesEntry, final DataStyles format,
 			final String name, final int rowCapacity,
@@ -131,6 +132,8 @@ public class Table implements NamedObject {
 				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
 				.capacity(this.columnCapacity).build();
 		this.tableRows = FullList.newListWithCapacity(rowCapacity);
+		this.curRowIndex = -1;
+		this.lastRowIndex = -1;
 	}
 
 	public void addData(final DataWrapper data) {
@@ -177,6 +180,11 @@ public class Table implements NamedObject {
 		appendable.append("</config:config-item-map-entry>");
 	}
 
+	public HeavyTableRow firstRow() {
+		this.curRowIndex = 0;
+		return this.getRowSecure(0);
+	}
+
 	public List<TableColumnStyle> getColumnStyles() {
 		return this.columnStyles;
 	}
@@ -184,6 +192,10 @@ public class Table implements NamedObject {
 	public int getLastRowNumber() {
 		return this.tableRows.size() - 1;
 	}
+
+	// public List<OldLightTableRow> getRows() {
+	// return this.tableRows;
+	// }
 
 	/**
 	 * Get the name of this table.
@@ -195,20 +207,9 @@ public class Table implements NamedObject {
 		return this.name;
 	}
 
-	// public List<OldLightTableRow> getRows() {
-	// return this.tableRows;
-	// }
-
 	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException {
 		Table.checkRow(rowIndex);
-		HeavyTableRow tr = this.tableRows.get(rowIndex);
-		if (tr == null) {
-			tr = new HeavyTableRow(this.positionUtil, this.writeUtil, this.xmlUtil,
-					this.contentEntry, this.stylesEntry, this.format,
-					this, rowIndex, this.columnCapacity);
-			this.tableRows.set(rowIndex, tr);
-		}
-		return tr;
+		return this.getRowSecure(rowIndex);
 	}
 
 	public HeavyTableRow getRow(final String pos) throws FastOdsException {
@@ -225,13 +226,19 @@ public class Table implements NamedObject {
 		return this.style.getName();
 	}
 
+	public HeavyTableRow lastRow() {
+		this.curRowIndex = this.lastRowIndex;
+		return this.getRowSecure(this.curRowIndex);
+	}
+
 	public HeavyTableRow nextRow() {
-		final int rowIndex = this.tableRows.size();
-		final HeavyTableRow tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
-				this.xmlUtil, this.contentEntry, this.stylesEntry,
-				this.format, this, rowIndex, this.columnCapacity);
-		this.tableRows.add(tr);
-		return tr;
+		this.curRowIndex++;
+		return this.getRowSecure(this.curRowIndex);
+	}
+
+	public HeavyTableRow previousRow() {
+		this.curRowIndex = this.curRowIndex > 1 ? this.curRowIndex - 1 : 0;
+		return this.getRowSecure(this.curRowIndex);
 	}
 
 	/**
@@ -322,5 +329,18 @@ public class Table implements NamedObject {
 				tr.appendXMLToTable(util, appendable);
 			}
 		}
+	}
+
+	private HeavyTableRow getRowSecure(final int rowIndex) {
+		HeavyTableRow tr = this.tableRows.get(rowIndex);
+		if (tr == null) {
+			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
+					this.xmlUtil, this.contentEntry, this.stylesEntry,
+					this.format, this, rowIndex, this.columnCapacity);
+			this.tableRows.set(rowIndex, tr);
+			if (rowIndex > this.lastRowIndex)
+				this.lastRowIndex = rowIndex;
+		}
+		return tr;
 	}
 }
