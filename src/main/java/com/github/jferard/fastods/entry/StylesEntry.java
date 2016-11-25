@@ -57,7 +57,6 @@ public class StylesEntry implements OdsEntry {
 
 	private final Map<String, DataStyle> dataStyles;
 	private final Map<String, PageStyle> pageStyles;
-	private final Map<String, TextStyle> textStyles;
 	private final Map<String, StyleTag> styleTagByName;
 
 	/**
@@ -65,7 +64,6 @@ public class StylesEntry implements OdsEntry {
 	public StylesEntry() {
 		this.dataStyles = new HashMap<String, DataStyle>();
 		this.pageStyles = new HashMap<String, PageStyle>();
-		this.textStyles = new HashMap<String, TextStyle>();
 		this.styleTagByName = new HashMap<String, StyleTag>();
 	}
 
@@ -218,10 +216,6 @@ public class StylesEntry implements OdsEntry {
 		for (final StyleTag ts : this.styleTagByName.values())
 			ts.appendXMLToStylesEntry(util, writer);
 
-		for (final TextStyle ts : this.textStyles.values())
-			if (ts.isNotEmpty())
-				ts.appendXMLToStylesEntry(util, writer);
-
 		writer.write("</office:styles>");
 		writer.write("<office:automatic-styles>");
 
@@ -238,6 +232,18 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:document-styles>");
 		writer.flush();
 		writer.closeEntry();
+	}
+
+	public Map<String, DataStyle> getDataStyles() {
+		return this.dataStyles;
+	}
+
+	public Map<String, PageStyle> getPageStyles() {
+		return this.pageStyles;
+	}
+
+	public Map<String, StyleTag> getStyleTagByName() {
+		return this.styleTagByName;
 	}
 
 }
