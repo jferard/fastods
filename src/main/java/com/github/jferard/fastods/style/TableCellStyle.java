@@ -119,11 +119,10 @@ public class TableCellStyle implements StyleTag {
 		this.parentCellStyleName = parentCellStyleName;
 	}
 
-	public void addToContentAndStyles(final ContentEntry contentEntry,
-			final StylesEntry stylesEntry) {
+	public void addToStyles(final StylesEntry stylesEntry) {
 		if (this.dataStyle != null)
 			this.dataStyle.addToStyles(stylesEntry);
-		contentEntry.addStyleTag(this);
+		stylesEntry.addStyleTag(this);
 	}
 
 	public void addToEntries(final OdsEntries odsEntries) {
@@ -140,7 +139,7 @@ public class TableCellStyle implements StyleTag {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXMLToContentEntry(final XMLUtil util,
+	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);

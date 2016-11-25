@@ -145,7 +145,7 @@ public class TextStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXMLToContentEntry(final XMLUtil util,
+	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style ");
 		util.appendAttribute(appendable, "style:name", this.name);

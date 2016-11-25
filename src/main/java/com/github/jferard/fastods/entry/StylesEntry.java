@@ -27,8 +27,9 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -57,6 +58,7 @@ public class StylesEntry implements OdsEntry {
 	private final Map<String, DataStyle> dataStyles;
 	private final Map<String, PageStyle> pageStyles;
 	private final Map<String, TextStyle> textStyles;
+	private final Map<String, StyleTag> styleTagByName;
 
 	/**
 	 */
@@ -64,8 +66,16 @@ public class StylesEntry implements OdsEntry {
 		this.dataStyles = new HashMap<String, DataStyle>();
 		this.pageStyles = new HashMap<String, PageStyle>();
 		this.textStyles = new HashMap<String, TextStyle>();
+		this.styleTagByName = new HashMap<String, StyleTag>();
 	}
 
+	public void addStyleTag(final StyleTag styleTag) {
+		final String name = styleTag.getName();
+		if (this.styleTagByName.containsKey(name))
+			return;
+		
+		this.styleTagByName.put(name, styleTag);
+	}	
 	/**
 	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
 	 * is replaced.
@@ -134,16 +144,19 @@ public class StylesEntry implements OdsEntry {
 		if (hasFooter) {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Footer");
 		}
+		
+		for (final StyleTag ts : this.styleTagByName.values())
+			ts.appendXMLToStylesEntry(util, writer);
+
+		for (final TextStyle ts : this.textStyles.values())
+			if (ts.isNotEmpty())
+				ts.appendXMLToStylesEntry(util, writer);
 
 		writer.write("</office:styles>");
 		writer.write("<office:automatic-styles>");
 
 		for (final PageStyle ps : this.pageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
-
-		for (final TextStyle ts : this.textStyles.values())
-			if (ts.isNotEmpty())
-				ts.appendXMLToContentEntry(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");

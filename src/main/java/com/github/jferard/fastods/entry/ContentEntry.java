@@ -47,7 +47,6 @@ public class ContentEntry implements OdsEntry {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesEntry stylesEntry;
-	private final Map<String, StyleTag> styleTagByName;
 	private final UniqueList<Table> tables;
 	private final XMLUtil xmlUtil;
 	private WriteUtil writeUtil;
@@ -60,15 +59,6 @@ public class ContentEntry implements OdsEntry {
 		this.positionUtil = positionUtil;
 		this.format = format;
 		this.tables = new UniqueList<Table>();
-		this.styleTagByName = new HashMap<String, StyleTag>();
-	}
-
-	public void addStyleTag(final StyleTag styleTag) {
-		final String name = styleTag.getName();
-		if (this.styleTagByName.containsKey(name))
-			return;
-
-		this.styleTagByName.put(name, styleTag);
 	}
 
 	/**
@@ -131,13 +121,7 @@ public class ContentEntry implements OdsEntry {
 				"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
 		writer.write("</office:font-face-decls>");
 		/* Office automatic styles */
-		writer.write("<office:automatic-styles>");
-
-		for (final StyleTag ts : this.styleTagByName.values())
-			ts.appendXMLToContentEntry(util, writer);
-
-		writer.write("</office:automatic-styles>");
-
+		writer.write("<office:automatic-styles />");
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
 		for (final Table table : this.tables)

@@ -23,8 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -77,8 +77,8 @@ public class TableColumnStyle implements StyleTag {
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
-	public void addToContent(final ContentEntry contentEntry) {
-		contentEntry.addStyleTag(this);
+	public void addStyle(final StylesEntry stylesEntry) {
+		stylesEntry.addStyleTag(this);
 	}
 
 	public void addToEntries(final OdsEntries odsEntries) {
@@ -89,7 +89,7 @@ public class TableColumnStyle implements StyleTag {
 	 * 17.16 <style:table-column-properties>
 	 */
 	@Override
-	public void appendXMLToContentEntry(final XMLUtil util,
+	public void appendXMLToStylesEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);

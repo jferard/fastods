@@ -450,7 +450,7 @@ public class HeavyTableRow {
 	 *            The table rowStyle to be used
 	 */
 	public void setDefaultCellStyle(final TableCellStyle ts) {
-		ts.addToContentAndStyles(this.contentEntry, this.stylesEntry);
+		ts.addToStyles(this.stylesEntry);
 		this.defaultCellStyle = ts;
 	}
 
@@ -574,7 +574,7 @@ public class HeavyTableRow {
 		if (style == null)
 			return;
 
-		style.addToContentAndStyles(this.contentEntry, this.stylesEntry);
+		style.addToStyles(this.stylesEntry);
 		final TableCellStyle curStyle = this.styles.get(i);
 		if (style.getDataStyle() == null && curStyle != null
 				&& curStyle.getDataStyle() != null)
@@ -583,7 +583,7 @@ public class HeavyTableRow {
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {
-		rowStyle.addToContent(this.contentEntry);
+		rowStyle.addStyle(this.stylesEntry);
 		this.rowStyle = rowStyle;
 	}
 
@@ -628,7 +628,7 @@ public class HeavyTableRow {
 		this.values.set(i,  "");
 		this.types.set(i, TableCell.Type.STRING);
 		this.texts.set(i, text);
-		text.addStylesToContent(this.contentEntry);
+		text.addEmbeddedStyles(this.stylesEntry);
 		this.isComplexRow = true;
 	}
 }

@@ -236,7 +236,7 @@ public class Table implements NamedObject {
 	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
 		Table.checkCol(col);
-		ts.addToContent(this.contentEntry);
+		ts.addStyle(this.stylesEntry);
 		this.columnStyles.set(col, ts);
 	}
 

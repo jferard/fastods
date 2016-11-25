@@ -91,7 +91,7 @@ public class OdsEntries {
 	}
 
 	public void addStyleTag(final StyleTag styleTag) {
-		this.contentEntry.addStyleTag(styleTag);
+		this.stylesEntry.addStyleTag(styleTag);
 	}
 
 	public Table addTableToContent(final String name, final int rowCapacity,
