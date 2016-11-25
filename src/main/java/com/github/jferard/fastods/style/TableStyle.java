@@ -85,4 +85,9 @@ public class TableStyle implements StyleTag {
 	public String getName() {
 		return this.name;
 	}
+
+	@Override
+	public String getFamily() {
+		return "table";
+	}
 }

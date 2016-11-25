@@ -42,7 +42,6 @@ import org.powermock.api.easymock.PowerMock;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -134,6 +133,7 @@ public class OdsFileTest {
 		PowerMock.verifyAll();
 	}
 
+	/*
 	@Test
 	public final void testAddTextStyle() {
 		final TextStyle ts = TextStyle.builder("t").build();
@@ -145,7 +145,7 @@ public class OdsFileTest {
 				this.writeUtil, this.xmlUtil);
 		f.addTextStyle(ts);
 		PowerMock.verifyAll();
-	}
+	}*/
 
 	@Test
 	public final void testGetTable() throws FastOdsException {

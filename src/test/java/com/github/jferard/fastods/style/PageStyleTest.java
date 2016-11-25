@@ -92,8 +92,8 @@ public class PageStyleTest {
 
 		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
-		header.appendTextStylesXMLToAutomaticStyle(this.util, sb);
-		footer.appendTextStylesXMLToAutomaticStyle(this.util, sb);
+/*		header.appendTextStylesXMLToStylesEntry(this.util, sb);
+		footer.appendTextStylesXMLToStylesEntry(this.util, sb); */
 		PowerMock.replayAll();
 		pageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:page-layout style:name=\"test\">"

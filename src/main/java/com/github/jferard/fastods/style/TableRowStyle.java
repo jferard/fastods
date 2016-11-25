@@ -107,4 +107,9 @@ public class TableRowStyle implements StyleTag {
 	public String getRowHeight() {
 		return this.rowHeight;
 	}
+
+	@Override
+	public String getFamily() {
+		return "table-row";
+	}
 }

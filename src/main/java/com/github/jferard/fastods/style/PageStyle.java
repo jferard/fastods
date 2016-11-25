@@ -25,6 +25,8 @@ import java.io.IOException;
 
 import com.github.jferard.fastods.FooterHeader;
 import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.entry.StylesEntry;
+import com.github.jferard.fastods.entry.StylesEntry.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -210,11 +212,13 @@ public class PageStyle {
 				"style:footer-style");
 		appendable.append("</style:page-layout>");
 
+		/*
 		if (this.header != null)
-			this.header.appendTextStylesXMLToAutomaticStyle(util, appendable);
+			this.header..appendTextStyles(util, appendable);
 
 		if (this.footer != null)
-			this.footer.appendTextStylesXMLToAutomaticStyle(util, appendable);
+			this.footer.appendTextStyles(util, appendable);
+		*/
 	}
 
 	/**
@@ -307,5 +311,19 @@ public class PageStyle {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.backgroundColor);
 		}
+	}
+	
+	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry) {
+		if (this.header != null)
+			this.header.addEmbeddedStylesToStylesEntry(stylesEntry);
+		if (this.footer != null)
+			this.footer.addEmbeddedStylesToStylesEntry(stylesEntry);
+	}
+	
+	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry, Mode mode) {
+		if (this.header != null)
+			this.header.addEmbeddedStylesToStylesEntry(stylesEntry, mode);
+		if (this.footer != null)
+			this.footer.addEmbeddedStylesToStylesEntry(stylesEntry, mode);
 	}
 }

@@ -57,6 +57,7 @@ public class OdsEntriesTest {
 		PowerMock.verifyAll();
 	}
 
+	/*
 	@Test
 	public final void testAddTextStyle() {
 		final TextStyle ts = TextStyle.builder("test").build();
@@ -65,7 +66,7 @@ public class OdsEntriesTest {
 		PowerMock.replayAll();
 		this.oe.addTextStyle(ts);
 		PowerMock.verifyAll();
-	}
+	}*/
 
 	@Test
 	public final void testGetTable() {

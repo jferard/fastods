@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.github.jferard.fastods.entry.StylesEntry;
+import com.github.jferard.fastods.entry.StylesEntry.Mode;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -41,13 +42,6 @@ public class Text {
 		}
 	}
 
-	public void appendTextStylesXMLToAutomaticStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		for (final TextStyle style : this.textStyles) {
-			style.appendXMLToStylesEntry(util, appendable);
-		}
-	}
-
 	public static Text styledContent(final String text,
 			final TextStyle ts) {
 		return Text.builder().parStyledContent(text, ts).build();
@@ -64,5 +58,10 @@ public class Text {
 	public void addEmbeddedStyles(StylesEntry stylesEntry) {
 		for (TextStyle textStyle : this.textStyles)
 			stylesEntry.addStyleTag(textStyle);
+	}
+	
+	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry, Mode mode) {
+		for (TextStyle textStyle : this.textStyles)
+			stylesEntry.addStyleTag(textStyle, mode);
 	}
 }

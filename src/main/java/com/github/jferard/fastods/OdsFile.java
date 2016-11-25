@@ -144,9 +144,11 @@ public class OdsFile {
 		return table;
 	}
 
+	/*
 	public void addTextStyle(final TextStyle fhTextStyle) {
 		this.entries.addTextStyle(fhTextStyle);
 	}
+	*/
 
 	/**
 	 * The filename of the spreadsheet file.

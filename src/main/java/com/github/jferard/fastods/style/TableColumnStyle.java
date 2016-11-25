@@ -148,4 +148,8 @@ public class TableColumnStyle implements StyleTag {
 		return result;
 	}
 
+	@Override
+	public String getFamily() {
+		return "table-column";
+	}
 }

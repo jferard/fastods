@@ -23,6 +23,8 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.entry.StylesEntry;
+import com.github.jferard.fastods.entry.StylesEntry.Mode;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -145,6 +147,7 @@ public abstract class FooterHeader {
 		return this.footerHeaderType.typeName;
 	}
 
-	public abstract void appendTextStylesXMLToAutomaticStyle(XMLUtil util,
-			Appendable appendable) throws IOException;
+	public abstract void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry);
+	
+	public abstract void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry, Mode mode);
 }

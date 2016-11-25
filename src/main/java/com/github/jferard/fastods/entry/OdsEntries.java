@@ -99,10 +99,6 @@ public class OdsEntries {
 		return this.contentEntry.addTable(name, rowCapacity, columnCapacity);
 	}
 
-	public void addTextStyle(final TextStyle fhTextStyle) {
-		this.stylesEntry.addTextStyle(fhTextStyle);
-	}
-
 	public void createEmptyEntries(final ZipUTF8Writer writer)
 			throws IOException {
 		this.logger.log(Level.FINER, "Writing empty entries to zip file");

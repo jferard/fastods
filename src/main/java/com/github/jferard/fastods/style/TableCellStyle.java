@@ -192,4 +192,9 @@ public class TableCellStyle implements StyleTag {
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
 	}
+
+	@Override
+	public String getFamily() {
+		return "table-cell";
+	}
 }

@@ -22,9 +22,9 @@
 package com.github.jferard.fastods;
 
 import java.io.IOException;
-import java.util.Set;
 
-import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.entry.StylesEntry;
+import com.github.jferard.fastods.entry.StylesEntry.Mode;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -73,9 +73,12 @@ class SimpleFooterHeader extends FooterHeader {
 	}
 
 	@Override
-	public void appendTextStylesXMLToAutomaticStyle(XMLUtil util,
-			Appendable appendable) throws IOException {
-		if (this.region != null)
-			this.region.appendTextStylesXMLToAutomaticStyle(util, appendable);
+	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry) {
+		this.region.addEmbeddedStyles(stylesEntry);
+	}
+	
+	@Override
+	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry, Mode mode) {
+		this.region.addEmbeddedStylesToStylesEntry(stylesEntry, mode);
 	}
 }

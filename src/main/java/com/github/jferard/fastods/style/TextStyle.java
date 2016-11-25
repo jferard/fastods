@@ -23,7 +23,6 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -216,7 +215,13 @@ public class TextStyle implements StyleTag {
 						|| this.fontWeight != null);
 	}
 
+	/*
 	void addToFile(final OdsFile odsFile) {
 		odsFile.addTextStyle(this);
+	}*/
+
+	@Override
+	public String getFamily() {
+		return "text";
 	}
 }

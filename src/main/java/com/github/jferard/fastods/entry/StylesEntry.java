@@ -69,13 +69,37 @@ public class StylesEntry implements OdsEntry {
 		this.styleTagByName = new HashMap<String, StyleTag>();
 	}
 
+	public enum Mode {
+		CREATE, UPDATE, UPDATE_IF_EXISTS;
+	}
+
 	public void addStyleTag(final StyleTag styleTag) {
 		final String name = styleTag.getName();
-		if (this.styleTagByName.containsKey(name))
-			return;
-		
-		this.styleTagByName.put(name, styleTag);
-	}	
+		final String family = styleTag.getFamily();
+		final String key = family + "@" + name;
+		this.styleTagByName.put(key, styleTag);
+	}
+
+	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
+		final String name = styleTag.getName();
+		final String family = styleTag.getFamily();
+		final String key = family + "@" + name;
+		switch (mode) {
+		case CREATE:
+			if (this.styleTagByName.containsKey(key))
+				return false;
+			break;
+		case UPDATE:
+			if (!this.styleTagByName.containsKey(key))
+				return false;
+			break;
+		default:
+			break;
+		}
+		this.styleTagByName.put(key, styleTag);
+		return true;
+	}
+
 	/**
 	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
 	 * is replaced.
@@ -85,26 +109,72 @@ public class StylesEntry implements OdsEntry {
 	 */
 	public void addDataStyle(final DataStyle dataStyle) {
 		final String name = dataStyle.getName();
-		if (this.dataStyles.containsKey(name))
-			return;
-
 		this.dataStyles.put(name, dataStyle);
 	}
 
-	public void addPageStyle(final PageStyle ps) {
-		final String name = ps.getName();
-		if (this.pageStyles.containsKey(name))
-			return;
-
-		this.pageStyles.put(name, ps);
+	/**
+	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
+	 * is replaced.
+	 *
+	 * @param dataStyle
+	 *            - The data style to be added.
+	 */
+	public boolean addDataStyle(final DataStyle dataStyle, Mode mode) {
+		final String key = dataStyle.getName();
+		switch (mode) {
+		case CREATE:
+			if (this.dataStyles.containsKey(key))
+				return false;
+			break;
+		case UPDATE:
+			if (!this.dataStyles.containsKey(key))
+				return false;
+			break;
+		default:
+			break;
+		}
+		this.dataStyles.put(key, dataStyle);
+		return true;
 	}
 
-	public void addTextStyle(final TextStyle ts) {
-		final String name = ts.getName();
-		if (this.textStyles.containsKey(name))
-			return;
+	/**
+	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
+	 * is replaced.
+	 *
+	 * @param dataStyle
+	 *            - The data style to be added.
+	 */
+	public void addPageStyle(final PageStyle ps) {
+		final String key = ps.getName();
+		this.pageStyles.put(key, ps);
+		ps.addEmbeddedStylesToStylesEntry(this);
+	}
 
-		this.textStyles.put(name, ts);
+	/**
+	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
+	 * is replaced.
+	 *
+	 * @param dataStyle
+	 *            - The data style to be added.
+	 * @return
+	 */
+	public boolean addPageStyle(final PageStyle ps, Mode mode) {
+		final String key = ps.getName();
+		switch (mode) {
+		case CREATE:
+			if (this.pageStyles.containsKey(key))
+				return false;
+			break;
+		case UPDATE:
+			if (!this.pageStyles.containsKey(key))
+				return false;
+			break;
+		default:
+			break;
+		}
+		this.pageStyles.put(key, ps);
+		ps.addEmbeddedStylesToStylesEntry(this, mode);
+		return true;
 	}
 
 	@Override
@@ -144,7 +214,7 @@ public class StylesEntry implements OdsEntry {
 		if (hasFooter) {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Footer");
 		}
-		
+
 		for (final StyleTag ts : this.styleTagByName.values())
 			ts.appendXMLToStylesEntry(util, writer);
 

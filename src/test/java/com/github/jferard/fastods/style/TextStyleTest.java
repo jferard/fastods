@@ -44,6 +44,7 @@ public class TextStyleTest {
 		this.util = new XMLUtil(escaper);
 	}
 
+	/*
 	@Test
 	public final void testAddToFile() {
 		final TextStyle style = TextStyle.builder("style").build();
@@ -53,7 +54,7 @@ public class TextStyleTest {
 		PowerMock.replayAll();
 		style.addToFile(f);
 		PowerMock.verifyAll();
-	}
+	}*/
 
 	@Test
 	public final void testBadSize() throws IOException {
