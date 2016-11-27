@@ -25,8 +25,8 @@ import java.io.IOException;
 
 import com.github.jferard.fastods.FooterHeader;
 import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.entry.OdsEntryWithStyles.Mode;
 import com.github.jferard.fastods.entry.StylesEntry;
-import com.github.jferard.fastods.entry.StylesEntry.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -39,13 +39,13 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageStyle {
+public class MasterPageStyle {
 	public static enum PaperFormat {
-		A3(PageStyle.A3_H, PageStyle.A3_W), A4(PageStyle.A3_W,
-				PageStyle.A4_W), A5(PageStyle.A4_W, PageStyle.A5_W), LEGAL(
-						PageStyle.LEGAL_H,
-						PageStyle.LETTER_W), LETTER(PageStyle.LETTER_H,
-								PageStyle.LETTER_W), USER("", "");
+		A3(MasterPageStyle.A3_H, MasterPageStyle.A3_W), A4(MasterPageStyle.A3_W,
+				MasterPageStyle.A4_W), A5(MasterPageStyle.A4_W, MasterPageStyle.A5_W), LEGAL(
+						MasterPageStyle.LEGAL_H,
+						MasterPageStyle.LETTER_W), LETTER(MasterPageStyle.LETTER_H,
+								MasterPageStyle.LETTER_W), USER("", "");
 
 		private final String height;
 		private final String width;
@@ -98,8 +98,8 @@ public class PageStyle {
 	public static final PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
 
 	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
-	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
-	public static final PageStyle DEFAULT_PAGE_STYLE;
+	public static final MasterPageStyle DEFAULT_MASTER_PAGE_STYLE;
+	public static final MasterPageStyle DEFAULT_PAGE_STYLE;
 
 	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
 
@@ -119,13 +119,13 @@ public class PageStyle {
 	private static final String LETTER_W = "21.59cm";
 
 	static {
-		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
-		DEFAULT_MASTER_PAGE_STYLE = PageStyle
-				.builder(PageStyle.DEFAULT_MASTER_PAGE).build();
+		DEFAULT_PAGE_STYLE = MasterPageStyle.builder("Mpm1").build();
+		DEFAULT_MASTER_PAGE_STYLE = MasterPageStyle
+				.builder(MasterPageStyle.DEFAULT_MASTER_PAGE).build();
 	}
 
-	public static PageStyleBuilder builder(final String name) {
-		return new PageStyleBuilder(name);
+	public static MasterPageStyleBuilder builder(final String name) {
+		return new MasterPageStyleBuilder(name);
 	}
 
 	private static void appendFooterHeaderStyle(final XMLUtil util,
@@ -162,7 +162,7 @@ public class PageStyle {
 	 * @param header2
 	 * @param footer
 	 */
-	public PageStyle(final String name, final Margins margins,
+	public MasterPageStyle(final String name, final Margins margins,
 			final String pageWidth, final String pageHeight,
 			final String numFormat, final String backgroundColor,
 			final FooterHeader footer, final FooterHeader header,
@@ -206,9 +206,9 @@ public class PageStyle {
 		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/>"); // End of page-layout-properties
 
-		PageStyle.appendFooterHeaderStyle(util, appendable, this.header,
+		MasterPageStyle.appendFooterHeaderStyle(util, appendable, this.header,
 				"style:header-style");
-		PageStyle.appendFooterHeaderStyle(util, appendable, this.footer,
+		MasterPageStyle.appendFooterHeaderStyle(util, appendable, this.footer,
 				"style:footer-style");
 		appendable.append("</style:page-layout>");
 

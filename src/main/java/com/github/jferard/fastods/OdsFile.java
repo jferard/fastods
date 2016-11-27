@@ -36,8 +36,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -107,15 +106,15 @@ public class OdsFile {
 		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
 				.addToEntries(this.entries);
 		TableCellStyle.getDefaultCellStyle().addToEntries(this.entries);
-		PageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
+		MasterPageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.entries.addDataStyle(dataStyle);
 	}
 
-	public void addPageStyle(final PageStyle pageStyle) {
-		this.entries.addPageStyle(pageStyle);
+	public void addPageStyle(final MasterPageStyle masterPageStyle) {
+		this.entries.addPageStyle(masterPageStyle);
 	}
 
 	/**

@@ -22,14 +22,14 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.FooterHeader;
-import com.github.jferard.fastods.style.PageStyle.PaperFormat;
-import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
-import com.github.jferard.fastods.style.PageStyle.WritingMode;
+import com.github.jferard.fastods.style.MasterPageStyle.PaperFormat;
+import com.github.jferard.fastods.style.MasterPageStyle.PrintOrientation;
+import com.github.jferard.fastods.style.MasterPageStyle.WritingMode;
 
 /**
  * @author Julien Férard
  */
-public class PageStyleBuilder {
+public class MasterPageStyleBuilder {
 	private String backgroundColor;
 	private FooterHeader footer;
 	private FooterHeader header;
@@ -48,7 +48,7 @@ public class PageStyleBuilder {
 	 * Create a new page style.
 	 *
 	 */
-	public PageStyleBuilder(final String name) {
+	public MasterPageStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalStateException();
 
@@ -56,12 +56,12 @@ public class PageStyleBuilder {
 		this.marginsBuilder = new MarginsBuilder();
 		this.marginsBuilder.all("1.5cm");
 
-		this.paperFormat(PageStyle.DEFAULT_FORMAT);
+		this.paperFormat(MasterPageStyle.DEFAULT_FORMAT);
 		this.numFormat = "1";
 		this.backgroundColor = "";
 
-		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
-		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
+		this.printOrientation = MasterPageStyle.DEFAULT_PRINTORIENTATION;
+		this.writingMode = MasterPageStyle.DEFAULT_WRITING_MODE;
 
 		final TextStyle noneStyle = TextProperties.builder().buildStyle("none");
 		this.header = FooterHeader.simpleHeader("", noneStyle);
@@ -79,7 +79,7 @@ public class PageStyleBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder allMargins(final String margin) {
+	public MasterPageStyleBuilder allMargins(final String margin) {
 		this.marginsBuilder.all(margin);
 		return this;
 	}
@@ -93,26 +93,26 @@ public class PageStyleBuilder {
 	 * @param color
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder backgroundColor(final String color) {
+	public MasterPageStyleBuilder backgroundColor(final String color) {
 		this.backgroundColor = color;
 		return this;
 	}
 
-	public PageStyle build() {
+	public MasterPageStyle build() {
 		// TODO : create MarginAttribute and use a
 		// EnumMap<MarginAtribute.Position, MarginAttribute>
-		return new PageStyle(this.name, this.marginsBuilder.build(),
+		return new MasterPageStyle(this.name, this.marginsBuilder.build(),
 				this.pageWidth, this.pageHeight, this.numFormat,
 				this.backgroundColor, this.footer, this.header,
 				this.printOrientation, this.paperFormat, this.writingMode);
 	}
 
-	public PageStyleBuilder footer(final FooterHeader footer) {
+	public MasterPageStyleBuilder footer(final FooterHeader footer) {
 		this.footer = footer;
 		return this;
 	}
 
-	public PageStyleBuilder header(final FooterHeader header) {
+	public MasterPageStyleBuilder header(final FooterHeader header) {
 		this.header = header;
 		return this;
 	}
@@ -126,7 +126,7 @@ public class PageStyleBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginBottom(final String margin) {
+	public MasterPageStyleBuilder marginBottom(final String margin) {
 		this.marginsBuilder.bottom(margin);
 		return this;
 	}
@@ -140,7 +140,7 @@ public class PageStyleBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginLeft(final String margin) {
+	public MasterPageStyleBuilder marginLeft(final String margin) {
 		this.marginsBuilder.left(margin);
 		return this;
 	}
@@ -155,7 +155,7 @@ public class PageStyleBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginRight(final String margin) {
+	public MasterPageStyleBuilder marginRight(final String margin) {
 		this.marginsBuilder.right(margin);
 		return this;
 	}
@@ -170,7 +170,7 @@ public class PageStyleBuilder {
 	 * @param margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginTop(final String margin) {
+	public MasterPageStyleBuilder marginTop(final String margin) {
 		this.marginsBuilder.top(margin);
 		return this;
 	}
@@ -186,8 +186,8 @@ public class PageStyleBuilder {
 	 * @param pageHeight
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder pageHeight(final String pageHeight) {
-		this.paperFormat = PageStyle.PaperFormat.USER;
+	public MasterPageStyleBuilder pageHeight(final String pageHeight) {
+		this.paperFormat = MasterPageStyle.PaperFormat.USER;
 		this.pageHeight = pageHeight;
 		return this;
 	}
@@ -203,8 +203,8 @@ public class PageStyleBuilder {
 	 * @param pageWidth
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder pageWidth(final String pageWidth) {
-		this.paperFormat = PageStyle.PaperFormat.USER;
+	public MasterPageStyleBuilder pageWidth(final String pageWidth) {
+		this.paperFormat = MasterPageStyle.PaperFormat.USER;
 		this.pageWidth = pageWidth;
 		return this;
 	}
@@ -222,20 +222,20 @@ public class PageStyleBuilder {
 	 * @param paperFormat
 	 * @return this for fluent style
 	 */
-	public final PageStyleBuilder paperFormat(final PaperFormat paperFormat) {
+	public final MasterPageStyleBuilder paperFormat(final PaperFormat paperFormat) {
 		this.paperFormat = paperFormat;
 		this.pageWidth = paperFormat.getWidth();
 		this.pageHeight = paperFormat.getHeight();
 		return this;
 	}
 
-	public PageStyleBuilder printOrientationHorizontal() {
-		this.printOrientation = PageStyle.PrintOrientation.HORIZONTAL;
+	public MasterPageStyleBuilder printOrientationHorizontal() {
+		this.printOrientation = MasterPageStyle.PrintOrientation.HORIZONTAL;
 		return this;
 	}
 
-	public PageStyleBuilder printOrientationVertical() {
-		this.printOrientation = PageStyle.PrintOrientation.VERTICAL;
+	public MasterPageStyleBuilder printOrientationVertical() {
+		this.printOrientation = MasterPageStyle.PrintOrientation.VERTICAL;
 		return this;
 	}
 
@@ -253,7 +253,7 @@ public class PageStyleBuilder {
 	 * @param writingMode
 	 * @return
 	 */
-	public PageStyleBuilder writingMode(final WritingMode writingMode) {
+	public MasterPageStyleBuilder writingMode(final WritingMode writingMode) {
 		if (writingMode == null)
 			throw new IllegalArgumentException();
 

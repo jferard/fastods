@@ -19,32 +19,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.entry;
+
+import com.github.jferard.fastods.style.StyleTag;
 
 /**
- * @author Julien Férard Copyright
+ * @author Julien Férard
  */
-public class TableStyleBuilder {
-	private final String name;
-	private MasterPageStyle masterPageStyle;
-
-	/**
-	 * @param name
-	 */
-	TableStyleBuilder(final String name) {
-		if (name == null)
-			throw new IllegalArgumentException();
-
-		this.name = name;
-		this.masterPageStyle = MasterPageStyle.DEFAULT_MASTER_PAGE_STYLE;
+public interface OdsEntryWithStyles extends OdsEntry {
+	public enum Mode {
+		CREATE, UPDATE, UPDATE_IF_EXISTS;
 	}
+	
+	void addStyleTag(StyleTag styleTag);
 
-	public TableStyle build() {
-		return new TableStyle(this.name, this.masterPageStyle);
-	}
-
-	public TableStyleBuilder masterPageStyle(final MasterPageStyle masterPageStyle) {
-		this.masterPageStyle = masterPageStyle;
-		return this;
-	}
+	boolean addStyleTag(StyleTag styleTag, Mode mode);
 }
+

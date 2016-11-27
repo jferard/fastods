@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com.github.jferard.fastods.entry.StylesEntry;
-import com.github.jferard.fastods.entry.StylesEntry.Mode;
+import com.github.jferard.fastods.entry.OdsEntryWithStyles;
+import com.github.jferard.fastods.entry.OdsEntryWithStyles.Mode;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -55,13 +55,13 @@ public class Text {
 		return new TextBuilder();
 	}
 
-	public void addEmbeddedStyles(StylesEntry stylesEntry) {
+	public void addEmbeddedStyles(OdsEntryWithStyles entry) {
 		for (TextStyle textStyle : this.textStyles)
-			stylesEntry.addStyleTag(textStyle);
+			entry.addStyleTag(textStyle);
 	}
 	
-	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry, Mode mode) {
+	public void addEmbeddedStyles(OdsEntryWithStyles entry, Mode mode) {
 		for (TextStyle textStyle : this.textStyles)
-			stylesEntry.addStyleTag(textStyle, mode);
+			entry.addStyleTag(textStyle, mode);
 	}
 }

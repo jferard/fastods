@@ -47,8 +47,8 @@ public class TableStyleTest {
 
 	@Test
 	public final void testPageStyle() throws IOException {
-		final PageStyle ps = PageStyle.builder("p").build();
-		final TableStyle ts = TableStyle.builder("test").pageStyle(ps).build();
+		final MasterPageStyle ps = MasterPageStyle.builder("p").build();
+		final TableStyle ts = TableStyle.builder("test").masterPageStyle(ps).build();
 		final StringBuilder sb = new StringBuilder();
 		ts.appendXMLToStylesEntry(this.util, sb);
 

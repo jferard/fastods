@@ -42,7 +42,7 @@ import org.powermock.api.easymock.PowerMock;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -90,7 +90,7 @@ public class OdsFileTest {
 
 	@Test
 	public final void testAddPageStyle() {
-		final PageStyle ps = PageStyle.builder("p").build();
+		final MasterPageStyle ps = MasterPageStyle.builder("p").build();
 
 		this.initEntries();
 		this.entries.addPageStyle(ps);
@@ -309,6 +309,6 @@ public class OdsFileTest {
 		TableColumnStyle.getDefaultColumnStyle(this.xmlUtil)
 				.addToEntries(this.entries);
 		TableCellStyle.getDefaultCellStyle().addToEntries(this.entries);
-		PageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
+		MasterPageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
 	}
 }

@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.FooterHeader.Region;
-import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -80,13 +80,13 @@ public class OdsFileWithHeaderAndFooterCreation {
 				.text(leftFooter).region(Region.CENTER).text(centerFooter)
 				.region(Region.RIGHT).text(rightFooter).build();
 
-		final PageStyle ps = PageStyle.builder("test").footer(footer)
+		final MasterPageStyle ps = MasterPageStyle.builder("test").footer(footer)
 				.header(header).build();
 
 		final OdsFile file = OdsFile.create("fastods_fh.ods");
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
-		TableStyle ttts = TableStyle.builder("a").pageStyle(ps).build();
+		TableStyle ttts = TableStyle.builder("a").masterPageStyle(ps).build();
 		table.setStyle(ttts);
 		
 		HeavyTableRow row = table.getRow(0);

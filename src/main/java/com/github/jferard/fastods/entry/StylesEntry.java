@@ -27,9 +27,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.StyleTag;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -40,7 +39,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Martin Schulz
  *
  */
-public class StylesEntry implements OdsEntry {
+public class StylesEntry implements OdsEntryWithStyles {
 	private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
 			final Appendable appendable, final String name) throws IOException {
 		appendable.append("<style:style");
@@ -56,46 +55,26 @@ public class StylesEntry implements OdsEntry {
 	}
 
 	private final Map<String, DataStyle> dataStyles;
-	private final Map<String, PageStyle> pageStyles;
-	private final Map<String, StyleTag> styleTagByName;
+	private final Map<String, MasterPageStyle> masterPageStyles;
+	private StyleTagsContainer styleTagsContainer;
 
 	/**
+	 * @param stylesStyleTagsContainer 
 	 */
-	public StylesEntry() {
+	public StylesEntry(StyleTagsContainer styleTagsContainer) {
 		this.dataStyles = new HashMap<String, DataStyle>();
-		this.pageStyles = new HashMap<String, PageStyle>();
-		this.styleTagByName = new HashMap<String, StyleTag>();
+		this.masterPageStyles = new HashMap<String, MasterPageStyle>();
+		this.styleTagsContainer = styleTagsContainer;
 	}
 
-	public enum Mode {
-		CREATE, UPDATE, UPDATE_IF_EXISTS;
-	}
-
+	@Override
 	public void addStyleTag(final StyleTag styleTag) {
-		final String name = styleTag.getName();
-		final String family = styleTag.getFamily();
-		final String key = family + "@" + name;
-		this.styleTagByName.put(key, styleTag);
+		this.styleTagsContainer.addStyleTag(styleTag);
 	}
 
+	@Override
 	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
-		final String name = styleTag.getName();
-		final String family = styleTag.getFamily();
-		final String key = family + "@" + name;
-		switch (mode) {
-		case CREATE:
-			if (this.styleTagByName.containsKey(key))
-				return false;
-			break;
-		case UPDATE:
-			if (!this.styleTagByName.containsKey(key))
-				return false;
-			break;
-		default:
-			break;
-		}
-		this.styleTagByName.put(key, styleTag);
-		return true;
+		return this.styleTagsContainer.addStyleTag(styleTag, mode);
 	}
 
 	/**
@@ -142,9 +121,9 @@ public class StylesEntry implements OdsEntry {
 	 * @param dataStyle
 	 *            - The data style to be added.
 	 */
-	public void addPageStyle(final PageStyle ps) {
+	public void addPageStyle(final MasterPageStyle ps) {
 		final String key = ps.getName();
-		this.pageStyles.put(key, ps);
+		this.masterPageStyles.put(key, ps);
 		ps.addEmbeddedStylesToStylesEntry(this);
 	}
 
@@ -156,21 +135,21 @@ public class StylesEntry implements OdsEntry {
 	 *            - The data style to be added.
 	 * @return
 	 */
-	public boolean addPageStyle(final PageStyle ps, Mode mode) {
+	public boolean addPageStyle(final MasterPageStyle ps, Mode mode) {
 		final String key = ps.getName();
 		switch (mode) {
 		case CREATE:
-			if (this.pageStyles.containsKey(key))
+			if (this.masterPageStyles.containsKey(key))
 				return false;
 			break;
 		case UPDATE:
-			if (!this.pageStyles.containsKey(key))
+			if (!this.masterPageStyles.containsKey(key))
 				return false;
 			break;
 		default:
 			break;
 		}
-		this.pageStyles.put(key, ps);
+		this.masterPageStyles.put(key, ps);
 		ps.addEmbeddedStylesToStylesEntry(this, mode);
 		return true;
 	}
@@ -197,7 +176,7 @@ public class StylesEntry implements OdsEntry {
 
 		boolean hasHeader = false;
 		boolean hasFooter = false;
-		for (final PageStyle ps : this.pageStyles.values()) {
+		for (final MasterPageStyle ps : this.masterPageStyles.values()) {
 			if (hasHeader && hasFooter)
 				break;
 			if (!hasHeader && ps.getHeader() != null)
@@ -213,19 +192,17 @@ public class StylesEntry implements OdsEntry {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Footer");
 		}
 
-		for (final StyleTag ts : this.styleTagByName.values())
-			ts.appendXMLToStylesEntry(util, writer);
-
 		writer.write("</office:styles>");
 		writer.write("<office:automatic-styles>");
 
-		for (final PageStyle ps : this.pageStyles.values())
+		this.styleTagsContainer.write(util, writer);
+		for (final MasterPageStyle ps : this.masterPageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
-		for (final PageStyle ps : this.pageStyles.values())
+		for (final MasterPageStyle ps : this.masterPageStyles.values())
 			ps.appendXMLToMasterStyle(util, writer);
 
 		writer.write("</office:master-styles>");
@@ -238,12 +215,11 @@ public class StylesEntry implements OdsEntry {
 		return this.dataStyles;
 	}
 
-	public Map<String, PageStyle> getPageStyles() {
-		return this.pageStyles;
+	public Map<String, MasterPageStyle> getPageStyles() {
+		return this.masterPageStyles;
 	}
 
-	public Map<String, StyleTag> getStyleTagByName() {
-		return this.styleTagByName;
+	public StyleTagsContainer getStyleTagsContainer() {
+		return this.styleTagsContainer;
 	}
-
 }

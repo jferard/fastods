@@ -22,9 +22,7 @@
 package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 
 import com.github.jferard.fastods.FastOdsException;
@@ -43,21 +41,23 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class ContentEntry implements OdsEntry {
+public class ContentEntry implements OdsEntryWithStyles {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesEntry stylesEntry;
 	private final UniqueList<Table> tables;
 	private final XMLUtil xmlUtil;
 	private WriteUtil writeUtil;
+	private StyleTagsContainer styleTagsContainer;
 
 	ContentEntry(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			WriteUtil writeUtil, final StylesEntry stylesEntry, final DataStyles format) {
+			WriteUtil writeUtil, final StylesEntry stylesEntry, final DataStyles format, StyleTagsContainer styleTagsContainer) {
 		this.writeUtil = writeUtil;
 		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;
 		this.format = format;
+		this.styleTagsContainer = styleTagsContainer;
 		this.tables = new UniqueList<Table>();
 	}
 
@@ -120,8 +120,11 @@ public class ContentEntry implements OdsEntry {
 		writer.write(
 				"<style:font-face style:name=\"Tahoma\" svg:font-family=\"Tahoma\" style:font-family-generic=\"system\" style:font-pitch=\"variable\"/>");
 		writer.write("</office:font-face-decls>");
-		/* Office automatic styles */
-		writer.write("<office:automatic-styles />");
+		writer.write("<office:automatic-styles>");
+
+		this.styleTagsContainer.write(util, writer);
+		
+		writer.write("</office:automatic-styles>");
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
 		for (final Table table : this.tables)
@@ -138,5 +141,19 @@ public class ContentEntry implements OdsEntry {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(tab).append("]").toString());
 		}
+	}
+
+	@Override
+	public void addStyleTag(final StyleTag styleTag) {
+		this.styleTagsContainer.addStyleTag(styleTag);
+	}
+
+	@Override
+	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
+		return this.styleTagsContainer.addStyleTag(styleTag, mode);
+	}
+	
+	public StyleTagsContainer getStyleTagsContainer() {
+		return this.styleTagsContainer;
 	}
 }

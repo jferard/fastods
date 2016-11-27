@@ -23,8 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -65,8 +65,8 @@ public class TableRowStyle implements StyleTag {
 		this.rowHeight = rowHeight;
 	}
 
-	public void addStyle(final StylesEntry stylesEntry) {
-		stylesEntry.addStyleTag(this);
+	public void addStyleTag(final ContentEntry contentEntry) {
+		contentEntry.addStyleTag(this);
 	}
 
 	public void addToEntries(final OdsEntries odsEntries) {

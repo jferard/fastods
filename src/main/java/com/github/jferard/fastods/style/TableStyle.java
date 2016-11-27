@@ -42,7 +42,7 @@ public class TableStyle implements StyleTag {
 	}
 
 	private final String name;
-	private final PageStyle pageStyle;
+	private final MasterPageStyle masterPageStyle;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -57,9 +57,9 @@ public class TableStyle implements StyleTag {
 	 * @param odsFile
 	 *            The OdsFile to add this style to
 	 */
-	TableStyle(final String styleName, final PageStyle pageStyle) {
+	TableStyle(final String styleName, final MasterPageStyle masterPageStyle) {
 		this.name = styleName;
-		this.pageStyle = pageStyle;
+		this.masterPageStyle = masterPageStyle;
 	}
 
 	public void addToEntries(final OdsEntries odsEntries) {
@@ -72,9 +72,9 @@ public class TableStyle implements StyleTag {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table");
-		if (this.pageStyle != null)
+		if (this.masterPageStyle != null)
 			util.appendEAttribute(appendable, "style:master-page-name",
-					this.pageStyle.getName());
+					this.masterPageStyle.getName());
 		appendable.append("><style:table-properties");
 		util.appendAttribute(appendable, "table:display", "true");
 		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
