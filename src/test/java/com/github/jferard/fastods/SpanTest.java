@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -20,7 +21,7 @@ public class SpanTest {
 
 	@Test
 	public final void testFHTextWithStyle() throws IOException {
-		final TextStyle ts = TextStyle.builder("test").build();
+		final TextStyle ts = TextProperties.builder().buildStyle("test");
 		final Span fhtext = new Span("text", ts);
 		Assert.assertEquals("text", fhtext.getText());
 		Assert.assertEquals(ts, fhtext.getTextStyle());

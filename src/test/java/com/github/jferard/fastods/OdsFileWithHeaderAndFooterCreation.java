@@ -31,6 +31,8 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 
 /**
@@ -47,16 +49,16 @@ public class OdsFileWithHeaderAndFooterCreation {
 	@Test
 	public final void test50() throws FastOdsException {
 		this.logger.info("Creating a file with footer and header");
-		final TextStyle lts = TextStyle.builder("test1").fontColor(Color.RED)
-				.build();
-		final TextStyle cts = TextStyle.builder("test2").fontColor(Color.BLUE)
-				.build();
-		final TextStyle rts = TextStyle.builder("test3").fontColor(Color.GREEN)
-				.build();
-		final TextStyle boldStyle = TextStyle.builder("style").fontWeightBold()
-				.build();
-		final TextStyle italicStyle = TextStyle.builder("style2")
-				.fontStyleItalic().build();
+		final TextStyle lts = TextProperties.builder().fontColor(Color.RED)
+				.buildStyle("test1");
+		final TextStyle cts = TextProperties.builder().fontColor(Color.BLUE)
+				.buildStyle("test2");
+		final TextStyle rts = TextProperties.builder().fontColor(Color.GREEN)
+				.buildStyle("test3");
+		final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
+				.buildStyle("style");
+		final TextStyle italicStyle = TextProperties.builder()
+				.fontStyleItalic().buildStyle("style2");
 
 		Text leftHeader = Text.styledContent("left header", lts);
 		Text centerHeader = Text.builder().par()
@@ -84,6 +86,9 @@ public class OdsFileWithHeaderAndFooterCreation {
 		final OdsFile file = OdsFile.create("fastods_fh.ods");
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
+		TableStyle ttts = TableStyle.builder("a").pageStyle(ps).build();
+		table.setStyle(ttts);
+		
 		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();

@@ -231,7 +231,7 @@ public class PageStyle {
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
 		util.appendEAttribute(appendable, "style:name",
-				PageStyle.DEFAULT_MASTER_PAGE);
+				this.name);
 		util.appendAttribute(appendable, "style:page-layout-name", this.name);
 		appendable.append("><style:header>");
 		this.getHeader().appendXMLToMasterStyle(util, appendable);

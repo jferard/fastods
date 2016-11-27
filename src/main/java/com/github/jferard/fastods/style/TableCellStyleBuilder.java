@@ -36,7 +36,7 @@ public class TableCellStyleBuilder {
 	// true
 	private String parentCellStyle;
 	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
-	private final TextStyleBuilder tsBuilder;
+	private final TextPropertiesBuilder tpBuilder;
 	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
 	// 'top'
 	private boolean wrap; // No line wrap when false, line wrap when
@@ -60,7 +60,7 @@ public class TableCellStyleBuilder {
 
 		this.name = name;
 		this.parentCellStyle = "Default";
-		this.tsBuilder = TextStyle.builder("fh" + name);
+		this.tpBuilder = TextProperties.builder();
 		this.bordersBuilder = new BordersBuilder();
 		this.marginsBuilder = new MarginsBuilder();
 	}
@@ -147,7 +147,7 @@ public class TableCellStyleBuilder {
 
 	public TableCellStyle build() {
 		return new TableCellStyle(this.name, this.dataStyle,
-				this.backgroundColor, this.tsBuilder.build(), this.textAlign,
+				this.backgroundColor, this.tpBuilder.build(), this.textAlign,
 				this.verticalAlign, this.wrap, this.parentCellStyle,
 				this.bordersBuilder.build(), this.marginsBuilder.build());
 	}
@@ -177,7 +177,7 @@ public class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder fontColor(final String color) {
-		this.tsBuilder.fontColor(color);
+		this.tpBuilder.fontColor(color);
 		return this;
 	}
 
@@ -189,12 +189,12 @@ public class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder fontStyleItalic() {
-		this.tsBuilder.fontStyleItalic();
+		this.tpBuilder.fontStyleItalic();
 		return this;
 	}
 
 	public TableCellStyleBuilder fontStyleNormal() {
-		this.tsBuilder.fontStyleNormal();
+		this.tpBuilder.fontStyleNormal();
 		return this;
 	}
 
@@ -207,7 +207,7 @@ public class TableCellStyleBuilder {
 	 *         false - This object is no table cell, you can not set it to bold
 	 */
 	public TableCellStyleBuilder fontWeightBold() {
-		this.tsBuilder.fontWeightBold();
+		this.tpBuilder.fontWeightBold();
 		return this;
 	}
 
@@ -233,7 +233,7 @@ public class TableCellStyleBuilder {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder fontWeightNormal() {
-		this.tsBuilder.fontWeightNormal();
+		this.tpBuilder.fontWeightNormal();
 		return this;
 	}
 

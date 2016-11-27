@@ -34,113 +34,18 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  */
 public class TextStyle implements StyleTag {
-	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
-	public static enum Underline {
-		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
-				"dotted"), LONGDASH("long-dash"), NONE(
-						"none"), SOLID("solid"), WAVE("wave");
-
-		private final String attrValue;
-
-		private Underline(final String attrValue) {
-			this.attrValue = attrValue;
-		}
-	}
-
-	public static final TextStyle DEFAULT_TEXT_STYLE = TextStyle
-			.builder("Default").build();
-
-	public static TextStyleBuilder builder(final String name) {
-		return new TextStyleBuilder(name);
-	}
-
-	private final /*@Nullable*/ String fontColor;
-	private final /*@Nullable*/ String fontName;
-	private final /*@Nullable*/ String fontSize;
-	private final /*@Nullable*/ String fontStyle;
-
-	private final /*@Nullable*/ String fontUnderlineColor;
-
-	private final /*@Nullable*/ Underline fontUnderlineStyle;
-	private final /*@Nullable*/ String fontWeight;
+	public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
+			.buildStyle("Default");
 
 	private final String name;
+	private final TextProperties textProperties;
 
 	/**
 	 * Create a new text style with the name name.
 	 */
-	TextStyle(final String name, final String fontColor,
-			final String fontName, final String fontWeight,
-			final String fontStyle, final String fontSize,
-			final String fontUnderlineColor,
-			final Underline fontUnderlineStyle) {
+	TextStyle(final String name, final TextProperties textProperties) {
 		this.name = name;
-		this.fontColor = fontColor;
-		this.fontName = fontName;
-		this.fontWeight = fontWeight;
-		this.fontStyle = fontStyle;
-		this.fontSize = fontSize;
-		this.fontUnderlineColor = fontUnderlineColor;
-		this.fontUnderlineStyle = fontUnderlineStyle;
-	}
-
-	public void appendAnonymousXMLToContentEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<style:text-properties");
-		// Check if the font weight should be added
-		if (this.fontWeight != null) {
-			util.appendAttribute(appendable, "fo:font-weight", this.fontWeight);
-			util.appendAttribute(appendable, "style:font-weight-asian",
-					this.fontWeight);
-			util.appendAttribute(appendable, "style:font-weight-complex",
-					this.fontWeight);
-		}
-
-		if (this.fontStyle != null) {
-			util.appendAttribute(appendable, "fo:font-style", this.fontStyle);
-			util.appendAttribute(appendable, "style:font-style-asian",
-					this.fontStyle);
-			util.appendAttribute(appendable, "style:font-style-complex",
-					this.fontStyle);
-		}
-
-		// Check if a font color should be added
-		if (this.fontColor != null) {
-			util.appendAttribute(appendable, "fo:color", this.fontColor);
-		}
-		// Check if a font name should be added
-		if (this.fontName != null) {
-			util.appendAttribute(appendable, "style:font-name", this.fontName);
-		}
-		// Check if a font size should be added
-		if (this.fontSize != null) {
-			util.appendAttribute(appendable, "fo:font-size", this.fontSize);
-			util.appendAttribute(appendable, "style:font-size-asian",
-					this.fontSize);
-			util.appendAttribute(appendable, "style:font-size-complex",
-					this.fontSize);
-		}
-
-		if (this.fontUnderlineStyle != null) {
-			util.appendEAttribute(appendable, "style:text-underline-style",
-					this.fontUnderlineStyle.attrValue);
-			util.appendEAttribute(appendable, "style:text-underline-width",
-					"auto");
-
-			// ---------------------------------------------------------------------------------
-			// If any underline color was set, add the color, otherwise use
-			// the
-			// font color
-			// ---------------------------------------------------------------------------------
-			if (this.fontUnderlineColor != null) {
-				util.appendAttribute(appendable, "style:text-underline-color",
-						this.fontUnderlineColor);
-			} else {
-				util.appendAttribute(appendable, "style:text-underline-color",
-						"font-color");
-			}
-		}
-		appendable.append("/>");
+		this.textProperties = textProperties;
 	}
 
 	@Override
@@ -150,51 +55,8 @@ public class TextStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "text");
 		appendable.append(">");
-		this.appendAnonymousXMLToContentEntry(util, appendable);
+		this.getTextProperties().appendXMLContent(util, appendable);
 		appendable.append("</style:style>");
-	}
-
-	/**
-	 * Get the current font color.
-	 *
-	 * @return The currently set font color as a String in format #rrggbb
-	 */
-	public String getFontColor() {
-		return this.fontColor;
-	}
-
-	/**
-	 * Get the font size as string, e.g. '10.5pt' or '8pt'
-	 *
-	 * @return The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public String getFontSize() {
-		return this.fontSize;
-	}
-
-	/**
-	 * Get the currently set underline color.
-	 *
-	 * @return The color in format #rrggbb
-	 */
-	public String getFontUnderlineColor() {
-		return this.fontUnderlineColor;
-	}
-
-	/**
-	 * @return The currently set style for the underline.
-	 */
-	public Underline getFontUnderlineStyle() {
-		return this.fontUnderlineStyle;
-	}
-
-	/**
-	 * Get the current font weight.
-	 *
-	 * @return The current font weight, normal, bold or italic.
-	 */
-	public String getFontWeight() {
-		return this.fontWeight;
 	}
 
 	/**
@@ -209,19 +71,15 @@ public class TextStyle implements StyleTag {
 
 	public boolean isNotEmpty() {
 		return this.name != null && this.name.length() > 0
-				&& (this.fontUnderlineStyle != null || this.fontColor != null
-						|| this.fontSize != null || this.fontStyle != null
-						|| this.fontUnderlineColor != null
-						|| this.fontWeight != null);
+				&& this.getTextProperties().isNotEmpty();
 	}
-
-	/*
-	void addToFile(final OdsFile odsFile) {
-		odsFile.addTextStyle(this);
-	}*/
 
 	@Override
 	public String getFamily() {
 		return "text";
+	}
+
+	public TextProperties getTextProperties() {
+		return this.textProperties;
 	}
 }

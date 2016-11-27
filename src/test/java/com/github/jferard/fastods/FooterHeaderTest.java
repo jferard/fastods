@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.FooterHeader.Region;
+import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -31,8 +32,8 @@ public class FooterHeaderTest {
 	@Test
 	public final void testFourMarginsAndMinHeightToAutomaticStyle()
 			throws IOException {
-		final TextStyle ts = TextStyle.builder("style").fontStyleItalic()
-				.build();
+		final TextStyle ts = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style");
 		final FooterHeader header = FooterHeader
 				.simpleBuilder(FooterHeader.Type.HEADER).marginTop("10pt")
 				.marginRight("11pt").marginBottom("12pt").marginLeft("13pt")
@@ -47,8 +48,8 @@ public class FooterHeaderTest {
 	@Test
 	public final void testMarginsAndMinHeightToAutomaticStyle()
 			throws IOException {
-		final TextStyle ts = TextStyle.builder("style").fontStyleItalic()
-				.build();
+		final TextStyle ts = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style");
 		final FooterHeader header = FooterHeader
 				.simpleBuilder(FooterHeader.Type.HEADER).allMargins("10pt")
 				.minHeight("120pt").styledContent("text", ts).build();
@@ -61,8 +62,8 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testPageToMasterStyle() throws IOException {
-		final TextStyle ts1 = TextStyle.builder("test1").build();
-		final TextStyle ts2 = TextStyle.builder("test2").build();
+		final TextStyle ts1 = TextProperties.builder().buildStyle("test1");
+		final TextStyle ts2 = TextProperties.builder().buildStyle("test2");
 		final FooterHeader header = FooterHeader
 				.simpleBuilder(FooterHeader.Type.HEADER)
 				.text(Text.builder()
@@ -83,8 +84,8 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testPageToMasterStyle2() throws IOException {
-		final TextStyle ts1 = TextStyle.builder("test1").build();
-		final TextStyle ts2 = TextStyle.builder("test2").build();
+		final TextStyle ts1 = TextProperties.builder().buildStyle("test1");
+		final TextStyle ts2 = TextProperties.builder().buildStyle("test2");
 		final FooterHeader header = FooterHeader
 				.simpleBuilder(FooterHeader.Type.HEADER)
 				.text(Text.builder().par()
@@ -103,12 +104,12 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testRegionsToMasterStyle() throws IOException {
-		final TextStyle ts1 = TextStyle.builder("style1").fontStyleItalic()
-				.build();
-		final TextStyle ts2 = TextStyle.builder("style2").fontStyleNormal()
-				.fontWeightNormal().build();
-		final TextStyle ts3 = TextStyle.builder("style3").fontWeightBold()
-				.build();
+		final TextStyle ts1 = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style1");
+		final TextStyle ts2 = TextProperties.builder().fontStyleNormal()
+				.fontWeightNormal().buildStyle("style2");
+		final TextStyle ts3 = TextProperties.builder().fontWeightBold()
+				.buildStyle("style3");
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
 				.styledContent("left-text", ts1).region(Region.CENTER)
@@ -129,8 +130,8 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testRegionToAutomaticStyle() throws IOException {
-		final TextStyle ts = TextStyle.builder("style").fontWeightBold()
-				.build();
+		final TextStyle ts = TextProperties.builder().fontWeightBold()
+				.buildStyle("style");
 		final FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.CENTER)
 				.styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
@@ -143,8 +144,8 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testRegionToMasterStyle() throws IOException {
-		final TextStyle ts = TextStyle.builder("style").fontWeightBold()
-				.build();
+		final TextStyle ts = TextProperties.builder().fontWeightBold()
+				.buildStyle("style");
 		final FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.CENTER)
 				.styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
@@ -158,8 +159,8 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testSimpleFooterToAutomaticStyle() throws IOException {
-		final TextStyle ts = TextStyle.builder("style").fontStyleItalic()
-				.build();
+		final TextStyle ts = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style");
 		final FooterHeader header = FooterHeader.simpleHeader("text", ts);
 		final StringBuilder sb = new StringBuilder();
 		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
@@ -170,8 +171,8 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testSimpleFooterToMasterStyle() throws IOException {
-		final TextStyle ts = TextStyle.builder("style").fontStyleItalic()
-				.build();
+		final TextStyle ts = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style");
 		final FooterHeader header = FooterHeader.simpleHeader("text", ts);
 		final StringBuilder sb = new StringBuilder();
 		header.appendXMLToMasterStyle(this.util, sb);
@@ -185,7 +186,7 @@ public class FooterHeaderTest {
 	@Test
 	public final void testSimpleStyledTextToAutomaticStyle()
 			throws IOException {
-		final TextStyle ts = TextStyle.builder("test").build();
+		final TextStyle ts = TextProperties.builder().buildStyle("test");
 		final String text = "text";
 		final FooterHeader footer = FooterHeader
 				.simpleBuilder(FooterHeader.Type.FOOTER).styledContent(text, ts)
@@ -199,7 +200,7 @@ public class FooterHeaderTest {
 
 	@Test
 	public final void testSimpleStyledTextToMasterStyle() throws IOException {
-		final TextStyle ts = TextStyle.builder("test").build();
+		final TextStyle ts = TextProperties.builder().buildStyle("test");
 		final FooterHeader footer = FooterHeader
 				.simpleBuilder(FooterHeader.Type.FOOTER)
 				.styledContent("text", ts).build();

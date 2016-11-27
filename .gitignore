@@ -15,6 +15,7 @@ simpleods5.3
 *.old
 *.ods
 *.ods#
+content.xml
 
 # mvn release
 release.properties

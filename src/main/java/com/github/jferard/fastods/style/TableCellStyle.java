@@ -84,7 +84,7 @@ public class TableCellStyle implements StyleTag {
 	private final String parentCellStyleName;
 	private final Align textAlign; // 'center','end','start','justify'
 
-	private final TextStyle textStyle;
+	private final TextProperties textProperties;
 
 	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
 	private final boolean wrap; // No line wrap when false, line wrap when
@@ -103,7 +103,7 @@ public class TableCellStyle implements StyleTag {
 	 *            The OdsFile to add this style to
 	 */
 	TableCellStyle(final String name, final DataStyle dataStyle,
-			final String backgroundColor, final TextStyle ts,
+			final String backgroundColor, final TextProperties textProperties,
 			final Align textAlign, final VerticalAlign verticalAlign,
 			final boolean wrap, final String parentCellStyleName,
 			final Borders borders, final Margins margins) {
@@ -112,7 +112,7 @@ public class TableCellStyle implements StyleTag {
 		this.name = name;
 		this.dataStyle = dataStyle;
 		this.backgroundColor = backgroundColor;
-		this.textStyle = ts;
+		this.textProperties = textProperties;
 		this.textAlign = textAlign;
 		this.verticalAlign = verticalAlign;
 		this.wrap = wrap;
@@ -167,8 +167,8 @@ public class TableCellStyle implements StyleTag {
 
 		appendable.append("/>");
 
-		if (this.textStyle != null && this.textStyle.isNotEmpty()) {
-			this.textStyle.appendAnonymousXMLToContentEntry(util, appendable);
+		if (this.textProperties != null && this.textProperties.isNotEmpty()) {
+			this.textProperties.appendXMLContent(util, appendable);
 		}
 
 		appendable.append("<style:paragraph-properties");

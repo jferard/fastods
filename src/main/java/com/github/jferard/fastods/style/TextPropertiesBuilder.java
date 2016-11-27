@@ -21,12 +21,12 @@
  ******************************************************************************/
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.style.TextStyle.Underline;
+import com.github.jferard.fastods.style.TextProperties.Underline;
 
 /**
  * @author Julien Férard
  */
-public class TextStyleBuilder {
+public class TextPropertiesBuilder {
 	private String fontColor;
 	private String fontName;
 	private String fontSize;
@@ -34,28 +34,18 @@ public class TextStyleBuilder {
 	private String fontUnderlineColor;
 	private Underline fontUnderlineStyle;
 	private String fontWeight;
-	private final String name;
 
-	/**
-	 * Create a new text style without a name.<br>
-	 * This is used by class TableFamilyStyle. Version 0.5.2 Added
-	 *
-	 * @param name2
-	 *
-	 * @param odsFile
-	 *            The file to add this style to
-	 */
-	public TextStyleBuilder(final String name) {
-		if (name == null)
-			throw new IllegalArgumentException();
-
-		this.name = name;
-	}
-
-	public TextStyle build() {
-		return new TextStyle(this.name, this.fontColor, this.fontName,
+	public TextProperties build() {
+		return new TextProperties(this.fontColor, this.fontName,
 				this.fontWeight, this.fontStyle, this.fontSize,
 				this.fontUnderlineColor, this.fontUnderlineStyle);
+	}
+	
+	public TextStyle buildStyle(final String name) {
+		TextProperties tp = new TextProperties(this.fontColor, this.fontName,
+				this.fontWeight, this.fontStyle, this.fontSize,
+				this.fontUnderlineColor, this.fontUnderlineStyle);
+		return new TextStyle(name, tp);
 	}
 
 	/**
@@ -66,7 +56,7 @@ public class TextStyleBuilder {
 	 *            cell background
 	 * @return this for fluent style
 	 */
-	public TextStyleBuilder fontColor(final String color) {
+	public TextPropertiesBuilder fontColor(final String color) {
 		this.fontColor = color;
 		return this;
 	}
@@ -78,7 +68,7 @@ public class TextStyleBuilder {
 	 *            The font name for this TextStyle
 	 * @return
 	 */
-	public TextStyleBuilder fontName(final String fontName) {
+	public TextPropertiesBuilder fontName(final String fontName) {
 		this.fontName = fontName;
 		return this;
 	}
@@ -90,7 +80,7 @@ public class TextStyleBuilder {
 	 *            - The font size as int , e.g. 10 or 8
 	 * @return
 	 */
-	public TextStyleBuilder fontSize(final int fontSize) {
+	public TextPropertiesBuilder fontSize(final int fontSize) {
 		this.fontSize = new StringBuilder(8).append(fontSize).append("pt")
 				.toString();
 		return this;
@@ -105,7 +95,7 @@ public class TextStyleBuilder {
 	 *            - The font size as string, e.g. '10.5pt' or '8pt'
 	 * @return
 	 */
-	public TextStyleBuilder fontSize(final String fontSize) {
+	public TextPropertiesBuilder fontSize(final String fontSize) {
 		this.fontSize = fontSize;
 		return this;
 	}
@@ -115,7 +105,7 @@ public class TextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public TextStyleBuilder fontStyleItalic() {
+	public TextPropertiesBuilder fontStyleItalic() {
 		this.fontStyle = "italic";
 		return this;
 	}
@@ -125,7 +115,7 @@ public class TextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public TextStyleBuilder fontStyleNormal() {
+	public TextPropertiesBuilder fontStyleNormal() {
 		this.fontStyle = "normal";
 		return this;
 	}
@@ -139,7 +129,7 @@ public class TextStyleBuilder {
 	 *            cell background.
 	 * @return
 	 */
-	public TextStyleBuilder fontUnderlineColor(final String color) {
+	public TextPropertiesBuilder fontUnderlineColor(final String color) {
 		this.fontUnderlineColor = color;
 		return this;
 	}
@@ -160,7 +150,7 @@ public class TextStyleBuilder {
 	 *            One of the TextStyle.STYLE_UNDERLINE
 	 * @return
 	 */
-	public TextStyleBuilder fontUnderlineStyle(final Underline style) {
+	public TextPropertiesBuilder fontUnderlineStyle(final Underline style) {
 		this.fontUnderlineStyle = style;
 		return this;
 	}
@@ -170,7 +160,7 @@ public class TextStyleBuilder {
 	 *
 	 * @return true
 	 */
-	public TextStyleBuilder fontWeightBold() {
+	public TextPropertiesBuilder fontWeightBold() {
 		this.fontWeight = "bold";
 		return this;
 	}
@@ -180,7 +170,7 @@ public class TextStyleBuilder {
 	 *
 	 * @return true -
 	 */
-	public TextStyleBuilder fontWeightNormal() {
+	public TextPropertiesBuilder fontWeightNormal() {
 		this.fontWeight = "normal";
 		return this;
 	}
