@@ -24,9 +24,10 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 import com.github.jferard.fastods.entry.OdsEntryWithStyles;
-import com.github.jferard.fastods.entry.OdsEntryWithStyles.Mode;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -147,7 +148,7 @@ public abstract class FooterHeader {
 		return this.footerHeaderType.typeName;
 	}
 
-	public abstract void addEmbeddedStylesToStylesEntry(OdsEntryWithStyles entry);
+	public abstract void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer);
 	
-	public abstract void addEmbeddedStylesToStylesEntry(OdsEntryWithStyles entry, Mode mode);
+	public abstract void addEmbeddedStylesToStylesEntry(OdsEntryWithStyles entry, Container.Mode mode);
 }

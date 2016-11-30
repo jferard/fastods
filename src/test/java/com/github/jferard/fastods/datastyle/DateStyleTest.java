@@ -50,7 +50,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.DDMMYY).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\"><number:day number:style=\"long\"/>"
 						+ "<number:text>.</number:text><number:month number:style=\"long\"/>"
 						+ "<number:text>.</number:text><number:year/>"
@@ -62,7 +62,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.DDMMYYYY).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:day number:style=\"long\"/>"
 						+ "<number:text>.</number:text>"
@@ -77,7 +77,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.MMMM).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:month number:style=\"long\" number:textual=\"true\"/>"
@@ -90,7 +90,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.MMYY).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester
 				.assertEquals(
 						"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
@@ -105,7 +105,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.TMMMMYYYY).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:day/>" + "<number:text>. </number:text>"
@@ -121,7 +121,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.WW).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:week-of-year/>" + "</number:date-style>",
@@ -133,7 +133,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.dateFormat(DateStyle.Format.YYYYMMDD).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:year number:style=\"long\"/>"
 						+ "<number:text>-</number:text>"
@@ -148,7 +148,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.language("fr").build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style style:name=\"test\" number:language=\"fr\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
 				sb.toString());
@@ -159,7 +159,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.locale(this.locale).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
 				sb.toString());
@@ -175,7 +175,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.automaticOrder(true).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"true\" number:format-source=\"language\"/>",
 				sb.toString());
@@ -186,7 +186,7 @@ public class DateStyleTest {
 		final DateStyle ds = this.factory.dateStyleBuilder("test")
 				.volatileStyle(false).build();
 		final StringBuilder sb = new StringBuilder();
-		ds.appendXMLToStylesEntry(this.util, sb);
+		ds.appendXMLToCommonStyles(this.util, sb);
 		DomTester.assertEquals(
 				"<number:date-style number:language=\"en\" style:name=\"test\" number:country=\"US\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
 				sb.toString());

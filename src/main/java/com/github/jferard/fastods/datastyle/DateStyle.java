@@ -116,7 +116,7 @@ public class DateStyle extends DataStyle {
 	 *
 	 */
 	@Override
-	public void appendXMLToStylesEntry(final XMLUtil util,
+	public void appendXMLToCommonStyles(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:date-style");
 		util.appendAttribute(appendable, "style:name", this.name);

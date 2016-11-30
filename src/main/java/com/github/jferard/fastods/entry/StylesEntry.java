@@ -29,6 +29,7 @@ import java.util.zip.ZipEntry;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -56,25 +57,25 @@ public class StylesEntry implements OdsEntryWithStyles {
 
 	private final Map<String, DataStyle> dataStyles;
 	private final Map<String, MasterPageStyle> masterPageStyles;
-	private StyleTagsContainer styleTagsContainer;
+	private StylesContainer stylesContainer;
 
 	/**
 	 * @param stylesStyleTagsContainer 
 	 */
-	public StylesEntry(StyleTagsContainer styleTagsContainer) {
+	public StylesEntry(StylesContainer stylesContainer) {
 		this.dataStyles = new HashMap<String, DataStyle>();
 		this.masterPageStyles = new HashMap<String, MasterPageStyle>();
-		this.styleTagsContainer = styleTagsContainer;
+		this.stylesContainer = stylesContainer;
 	}
 
 	@Override
 	public void addStyleTag(final StyleTag styleTag) {
-		this.styleTagsContainer.addStyleTag(styleTag);
+		this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag);
 	}
 
 	@Override
 	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
-		return this.styleTagsContainer.addStyleTag(styleTag, mode);
+		return this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag, mode);
 	}
 
 	/**
@@ -121,10 +122,10 @@ public class StylesEntry implements OdsEntryWithStyles {
 	 * @param dataStyle
 	 *            - The data style to be added.
 	 */
-	public void addPageStyle(final MasterPageStyle ps) {
+	public void addMasterPageStyle(final MasterPageStyle ps) {
 		final String key = ps.getName();
 		this.masterPageStyles.put(key, ps);
-		ps.addEmbeddedStylesToStylesEntry(this);
+		ps.addEmbeddedStylesToStylesEntry(this.stylesContainer);
 	}
 
 	/**
@@ -135,7 +136,7 @@ public class StylesEntry implements OdsEntryWithStyles {
 	 *            - The data style to be added.
 	 * @return
 	 */
-	public boolean addPageStyle(final MasterPageStyle ps, Mode mode) {
+	public boolean addMasterPageStyle(final MasterPageStyle ps, Mode mode) {
 		final String key = ps.getName();
 		switch (mode) {
 		case CREATE:
@@ -157,6 +158,17 @@ public class StylesEntry implements OdsEntryWithStyles {
 	@Override
 	public void write(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
+		boolean hasHeader = false;
+		boolean hasFooter = false;
+		for (final MasterPageStyle ps : this.masterPageStyles.values()) {
+			if (hasHeader && hasFooter)
+				break;
+			if (!hasHeader && ps.getHeader() != null)
+				hasHeader = true;
+			if (!hasFooter && ps.getFooter() != null)
+				hasFooter = true;
+		}
+		
 		writer.putNextEntry(new ZipEntry("styles.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
@@ -172,19 +184,10 @@ public class StylesEntry implements OdsEntryWithStyles {
 		writer.write("<office:styles>");
 
 		for (final DataStyle bs : this.dataStyles.values())
-			bs.appendXMLToStylesEntry(util, writer);
+			bs.appendXMLToCommonStyles(util, writer);
 
-		boolean hasHeader = false;
-		boolean hasFooter = false;
-		for (final MasterPageStyle ps : this.masterPageStyles.values()) {
-			if (hasHeader && hasFooter)
-				break;
-			if (!hasHeader && ps.getHeader() != null)
-				hasHeader = true;
-			if (!hasFooter && ps.getFooter() != null)
-				hasFooter = true;
-		}
-
+		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
+		
 		if (hasHeader) {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Header");
 		}
@@ -195,7 +198,7 @@ public class StylesEntry implements OdsEntryWithStyles {
 		writer.write("</office:styles>");
 		writer.write("<office:automatic-styles>");
 
-		this.styleTagsContainer.write(util, writer);
+		this.stylesContainer.writeStylesAutomaticStyles(util, writer);
 		for (final MasterPageStyle ps : this.masterPageStyles.values())
 			ps.appendXMLToAutomaticStyle(util, writer);
 
@@ -219,7 +222,7 @@ public class StylesEntry implements OdsEntryWithStyles {
 		return this.masterPageStyles;
 	}
 
-	public StyleTagsContainer getStyleTagsContainer() {
-		return this.styleTagsContainer;
+	public StylesContainer getStyleTagsContainer() {
+		return this.stylesContainer;
 	}
 }

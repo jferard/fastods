@@ -13,7 +13,7 @@ import org.powermock.api.easymock.PowerMock;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
-import com.github.jferard.fastods.entry.ContentEntry;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
@@ -23,22 +23,20 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 
 public class TableTest {
-	private ContentEntry ce;
+	private StylesContainer stc;
 	private DataStyles ds;
-	private StylesEntry se;
 	private Table table;
 	private XMLUtil xmlUtil;
 
 	@Before
 	public void setUp() {
-		this.ce = PowerMock.createMock(ContentEntry.class);
-		this.se = PowerMock.createMock(StylesEntry.class);
+		this.stc = PowerMock.createMock(StylesContainer.class);
 		final PositionUtil positionUtil = new PositionUtil();
 		final XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
-		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.ce,
-				this.se, this.ds, "mytable", 10, 100);
+		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.stc,
+				this.ds, "mytable", 10, 100);
 		this.xmlUtil = xmlUtil;
 	}
 

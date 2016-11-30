@@ -27,8 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.entry.ContentEntry;
-import com.github.jferard.fastods.entry.StylesEntry;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FullList;
@@ -47,7 +46,6 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class HeavyTableRow {
 	private final int columnCapacity;
 	private List<Integer> columnsSpanned;
-	private final ContentEntry contentEntry;
 	private List<String> currencies;
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
@@ -55,7 +53,6 @@ public class HeavyTableRow {
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;
-	private final StylesEntry stylesEntry;
 	private List<String> tooltips;
 	private final List<TableCell.Type> types;
 	private final List<String> values;
@@ -66,17 +63,17 @@ public class HeavyTableRow {
 	private List<Text> texts;
 	private Table parent;
 	private int rowIndex;
+	private StylesContainer stylesContainer;
 
 	HeavyTableRow(final PositionUtil positionUtil, final WriteUtil writeUtil,
-			final XMLUtil xmlUtil, final ContentEntry contentEntry,
-			final StylesEntry stylesEntry, final DataStyles dataStyles,
-			Table parent, final int rowIndex, final int columnCapacity) {
+			final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+			final DataStyles dataStyles, Table parent, final int rowIndex,
+			final int columnCapacity) {
 		this.writeUtil = writeUtil;
-		this.stylesEntry = stylesEntry;
+		this.stylesContainer = stylesContainer;
 		this.positionUtil = positionUtil;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
-		this.contentEntry = contentEntry;
 		this.parent = parent;
 		this.rowIndex = rowIndex;
 		this.columnCapacity = columnCapacity;
@@ -137,7 +134,7 @@ public class HeavyTableRow {
 		} else {
 			covered = false;
 		}
-		
+
 		if (covered) {
 			appendable.append("<table:covered-table-cell");
 		} else {
@@ -165,7 +162,8 @@ public class HeavyTableRow {
 	}
 
 	private void appendComplexXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int colIndex, final boolean covered) throws IOException {
+			final Appendable appendable, final int colIndex,
+			final boolean covered) throws IOException {
 		if (this.hasSpans && !covered) {
 			if (this.columnsSpanned != null) {
 				final Integer colSpan = this.columnsSpanned.get(colIndex);
@@ -276,7 +274,7 @@ public class HeavyTableRow {
 		else
 			return null;
 	}
-	
+
 	public TableCell.Type getValueType(final int i) {
 		return this.types.get(i);
 	}
@@ -308,11 +306,11 @@ public class HeavyTableRow {
 			this.columnsSpanned = FullList
 					.newListWithCapacity(this.columnCapacity);
 		}
-		
+
 		final Integer s = this.columnsSpanned.get(colIndex);
 		if (s != null && s == -1)
 			return;
-		
+
 		if (rowMerge > 1) {
 			if (this.rowsSpanned == null)
 				this.rowsSpanned = FullList
@@ -325,17 +323,17 @@ public class HeavyTableRow {
 
 		this.hasSpans = true;
 		this.isComplexRow = true;
-		
+
 		// add negative span for covered cells
-		for (int c = 1; c<columnMerge; c++)
-			this.columnsSpanned.set(colIndex+c, -1);
-		for (int r = 1; r<rowMerge; r++) {
+		for (int c = 1; c < columnMerge; c++)
+			this.columnsSpanned.set(colIndex + c, -1);
+		for (int r = 1; r < rowMerge; r++) {
 			HeavyTableRow row = this.parent.getRowSecure(this.rowIndex + r);
-			for (int c = 0; c<columnMerge; c++) {
+			for (int c = 0; c < columnMerge; c++) {
 				if (row.columnsSpanned == null)
 					row.columnsSpanned = FullList
 							.newListWithCapacity(this.columnCapacity);
-				row.columnsSpanned.set(colIndex+c, -1);
+				row.columnsSpanned.set(colIndex + c, -1);
 				row.hasSpans = true;
 				row.isComplexRow = true;
 			}
@@ -375,11 +373,11 @@ public class HeavyTableRow {
 		final Integer s = this.columnsSpanned.get(colIndex);
 		if (s != null && s == -1)
 			return;
-		
+
 		this.columnsSpanned.set(colIndex, n);
 		// add negative span for covered cells
-		for (int c = 1; c<n; c++)
-			this.columnsSpanned.set(colIndex+c, -1);
+		for (int c = 1; c < n; c++)
+			this.columnsSpanned.set(colIndex + c, -1);
 		this.hasSpans = true;
 		this.isComplexRow = true;
 	}
@@ -450,7 +448,7 @@ public class HeavyTableRow {
 	 *            The table rowStyle to be used
 	 */
 	public void setDefaultCellStyle(final TableCellStyle ts) {
-		ts.addToStyles(this.contentEntry, this.stylesEntry);
+		this.stylesContainer.addStyleToStylesCommonStyles(ts);
 		this.defaultCellStyle = ts;
 	}
 
@@ -547,14 +545,14 @@ public class HeavyTableRow {
 					.newListWithCapacity(this.columnCapacity);
 		if (this.columnsSpanned.get(colIndex) == -1)
 			return;
-		
+
 		this.rowsSpanned.set(colIndex, n);
 		// add negative span for covered cells
-		for (int r = 1; r<n; r++) {
+		for (int r = 1; r < n; r++) {
 			HeavyTableRow row = this.parent.getRowSecure(this.rowIndex + r);
 			row.columnsSpanned.set(colIndex, -1);
 		}
-		
+
 		this.hasSpans = true;
 		this.isComplexRow = true;
 	}
@@ -574,16 +572,21 @@ public class HeavyTableRow {
 		if (style == null)
 			return;
 
-		style.addToStyles(this.stylesEntry, this.stylesEntry);
+		this.stylesContainer.addStyleToStylesCommonStyles(style);
+		// if there is a current style that has a data and new styles does not
+		// have a data style
 		final TableCellStyle curStyle = this.styles.get(i);
 		if (style.getDataStyle() == null && curStyle != null
-				&& curStyle.getDataStyle() != null)
+				&& curStyle.getDataStyle() != null) {
 			style.setDataStyle(curStyle.getDataStyle());
+		}
+		if (style.getDataStyle() != null)
+			this.stylesContainer.addDataStyle(style.getDataStyle());
 		this.styles.set(i, style);
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {
-		rowStyle.addStyleTag(this.contentEntry);
+		this.stylesContainer.addStyleToContentAutomaticStyles(rowStyle);
 		this.rowStyle = rowStyle;
 	}
 
@@ -625,10 +628,10 @@ public class HeavyTableRow {
 		if (this.texts == null)
 			this.texts = FullList.newListWithCapacity(this.columnCapacity);
 
-		this.values.set(i,  "");
+		this.values.set(i, "");
 		this.types.set(i, TableCell.Type.STRING);
 		this.texts.set(i, text);
-		text.addEmbeddedStyles(this.contentEntry);
+		text.addEmbeddedStylesToContentAutomaticStyles(this.stylesContainer);
 		this.isComplexRow = true;
 	}
 }

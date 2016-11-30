@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.github.jferard.fastods.entry.OdsEntryWithStyles;
-import com.github.jferard.fastods.entry.OdsEntryWithStyles.Mode;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Text {
@@ -55,12 +56,17 @@ public class Text {
 		return new TextBuilder();
 	}
 
-	public void addEmbeddedStyles(OdsEntryWithStyles entry) {
+	public void addEmbeddedStylesToContentAutomaticStyles(StylesContainer stylesContainer) {
 		for (TextStyle textStyle : this.textStyles)
-			entry.addStyleTag(textStyle);
+			stylesContainer.addStyleToContentAutomaticStyles(textStyle);
 	}
 	
-	public void addEmbeddedStyles(OdsEntryWithStyles entry, Mode mode) {
+	public void addEmbeddedStylesToStylesAutomaticStyles(StylesContainer stylesContainer) {
+		for (TextStyle textStyle : this.textStyles)
+			stylesContainer.addStyleToStylesAutomaticStyles(textStyle);
+	}
+
+	public void addEmbeddedStyles(OdsEntryWithStyles entry, Container.Mode mode) {
 		for (TextStyle textStyle : this.textStyles)
 			entry.addStyleTag(textStyle, mode);
 	}

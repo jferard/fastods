@@ -22,15 +22,12 @@
 package com.github.jferard.fastods.entry;
 
 import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.util.Container.Mode;
 
 /**
  * @author Julien Férard
  */
 public interface OdsEntryWithStyles extends OdsEntry {
-	public enum Mode {
-		CREATE, UPDATE, UPDATE_IF_EXISTS;
-	}
-	
 	void addStyleTag(StyleTag styleTag);
 
 	boolean addStyleTag(StyleTag styleTag, Mode mode);

@@ -29,6 +29,7 @@ import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -44,20 +45,19 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 public class ContentEntry implements OdsEntryWithStyles {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
-	private final StylesEntry stylesEntry;
 	private final UniqueList<Table> tables;
 	private final XMLUtil xmlUtil;
 	private WriteUtil writeUtil;
-	private StyleTagsContainer styleTagsContainer;
+	private StylesContainer stylesContainer;
 
 	ContentEntry(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			WriteUtil writeUtil, final StylesEntry stylesEntry, final DataStyles format, StyleTagsContainer styleTagsContainer) {
+			WriteUtil writeUtil, final DataStyles format,
+			StylesContainer stylesContainer) {
 		this.writeUtil = writeUtil;
-		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;
 		this.format = format;
-		this.styleTagsContainer = styleTagsContainer;
+		this.stylesContainer = stylesContainer;
 		this.tables = new UniqueList<Table>();
 	}
 
@@ -73,8 +73,8 @@ public class ContentEntry implements OdsEntryWithStyles {
 		Table table = this.tables.getByName(name);
 		if (table == null) {
 			table = new Table(this.positionUtil, this.writeUtil, this.xmlUtil,
-					this, this.stylesEntry, this.format, name,
-					rowCapacity, columnCapacity);
+					this.stylesContainer, this.format, name, rowCapacity,
+					columnCapacity);
 			this.tables.add(table);
 		}
 		return table;
@@ -122,8 +122,8 @@ public class ContentEntry implements OdsEntryWithStyles {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:automatic-styles>");
 
-		this.styleTagsContainer.write(util, writer);
-		
+		this.stylesContainer.writeContentAutomaticStyles(util, writer);
+
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
@@ -145,15 +145,16 @@ public class ContentEntry implements OdsEntryWithStyles {
 
 	@Override
 	public void addStyleTag(final StyleTag styleTag) {
-		this.styleTagsContainer.addStyleTag(styleTag);
+		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
 	@Override
 	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
-		return this.styleTagsContainer.addStyleTag(styleTag, mode);
+		return this.stylesContainer
+				.addStyleToContentAutomaticStyles(styleTag, mode);
 	}
-	
-	public StyleTagsContainer getStyleTagsContainer() {
-		return this.styleTagsContainer;
+
+	public StylesContainer getStyleTagsContainer() {
+		return this.stylesContainer;
 	}
 }

@@ -52,11 +52,11 @@ public class OdsEntries {
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
-		StyleTagsContainer stylesStyleTagsContainer = new StyleTagsContainer();
+		StylesContainer stylesStyleTagsContainer = new StylesContainer();
 		final StylesEntry stylesEntry = new StylesEntry(stylesStyleTagsContainer);
-		StyleTagsContainer contentStyleTagsContainer = new StyleTagsContainer();
+		StylesContainer contentStyleTagsContainer = new StylesContainer();
 		final ContentEntry contentEntry = new ContentEntry(positionUtil,
-				xmlUtil, writeUtil, stylesEntry, format, contentStyleTagsContainer);
+				xmlUtil, writeUtil, format, contentStyleTagsContainer);
 		return new OdsEntries(Logger.getLogger(OdsEntries.class.getName()),
 				mimetypeEntry, manifestEntry, settingsEntry, metaEntry,
 				contentEntry, stylesEntry);
@@ -89,7 +89,7 @@ public class OdsEntries {
 	}
 
 	public void addPageStyle(final MasterPageStyle masterPageStyle) {
-		this.stylesEntry.addPageStyle(masterPageStyle);
+		this.stylesEntry.addMasterPageStyle(masterPageStyle);
 	}
 
 	public void addStyleTag(final StyleTag styleTag) {

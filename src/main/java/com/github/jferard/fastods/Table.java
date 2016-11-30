@@ -27,8 +27,7 @@ import java.util.List;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.entry.ConfigItem;
-import com.github.jferard.fastods.entry.ContentEntry;
-import com.github.jferard.fastods.entry.StylesEntry;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
@@ -64,7 +63,6 @@ public class Table implements NamedObject {
 	private final ConfigItem activeSplitRange;
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
-	private final ContentEntry contentEntry;
 	private int curRowIndex;
 	private final ConfigItem cursorPositionX;
 	private final ConfigItem cursorPositionY;
@@ -83,8 +81,6 @@ public class Table implements NamedObject {
 	private final PositionUtil positionUtil;
 	private TableStyle style;
 
-	private final StylesEntry stylesEntry;
-
 	private final List<HeavyTableRow> tableRows;
 	private final ConfigItem verticalSplitMode;
 	private final ConfigItem verticalSplitPosition;
@@ -92,17 +88,16 @@ public class Table implements NamedObject {
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
+	private StylesContainer stylesContainer;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
-			final XMLUtil xmlUtil, final ContentEntry contentEntry,
-			final StylesEntry stylesEntry, final DataStyles format,
-			final String name, final int rowCapacity,
+			final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+			final DataStyles format, final String name, final int rowCapacity,
 			final int columnCapacity) {
-		this.contentEntry = contentEntry;
-		this.stylesEntry = stylesEntry;
 		this.xmlUtil = xmlUtil;
 		this.writeUtil = writeUtil;
 		this.positionUtil = positionUtil;
+		this.stylesContainer = stylesContainer;
 		this.format = format;
 		this.name = name;
 		this.columnCapacity = columnCapacity;
@@ -236,7 +231,7 @@ public class Table implements NamedObject {
 	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
 		Table.checkCol(col);
-		ts.addStyle(this.stylesEntry);
+		this.stylesContainer.addStyleToContentAutomaticStyles(ts);
 		this.columnStyles.set(col, ts);
 	}
 
@@ -316,8 +311,8 @@ public class Table implements NamedObject {
 		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
-					this.xmlUtil, this.contentEntry, this.stylesEntry,
-					this.format, this, rowIndex, this.columnCapacity);
+					this.xmlUtil, this.stylesContainer, this.format, this,
+					rowIndex, this.columnCapacity);
 			this.tableRows.set(rowIndex, tr);
 			if (rowIndex > this.lastRowIndex)
 				this.lastRowIndex = rowIndex;

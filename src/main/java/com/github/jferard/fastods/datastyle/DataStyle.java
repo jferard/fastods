@@ -53,7 +53,7 @@ public abstract class DataStyle implements NamedObject {
 		odsEntries.addDataStyle(this);
 	}
 
-	public void addToStyles(final StylesEntry styleEntry) {
+	public void addToCommonStyles(final StylesEntry styleEntry) {
 		styleEntry.addDataStyle(this);
 	}
 
@@ -67,7 +67,7 @@ public abstract class DataStyle implements NamedObject {
 	 * @throws IOException
 	 *             if can't write data to file
 	 */
-	public abstract void appendXMLToStylesEntry(final XMLUtil util,
+	public abstract void appendXMLToCommonStyles(final XMLUtil util,
 			final Appendable appendable) throws IOException;
 
 	/*

@@ -32,7 +32,7 @@ public class ScientificNumberStyleTest {
 				.groupThousands(true).minIntegerDigits(8).negativeValueRed()
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		s.appendXMLToStylesEntry(this.util, sb);
+		s.appendXMLToCommonStyles(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"en\" number:country=\"FR\" style:volatile=\"true\">"
 				+ "<number:scientific-number number:min-exponent-digits=\"1\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "</number:number-style>"
@@ -53,7 +53,7 @@ public class ScientificNumberStyleTest {
 				.minExponentDigits(2).groupThousands(true).minIntegerDigits(8)
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		s.appendXMLToStylesEntry(this.util, sb);
+		s.appendXMLToCommonStyles(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"de\" number:country=\"DE\" style:volatile=\"true\">"
 				+ "<number:scientific-number number:min-exponent-digits=\"2\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "</number:number-style>"

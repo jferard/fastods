@@ -122,9 +122,16 @@ public class TableCellStyle implements StyleTag {
 
 	public void addToStyles(OdsEntryWithStyles entry, final StylesEntry stylesEntry) {
 		if (this.dataStyle != null)
-			this.dataStyle.addToStyles(stylesEntry);
+			this.dataStyle.addToCommonStyles(stylesEntry);
 		entry.addStyleTag(this);
 	}
+	
+	/*
+	public void addToStyles(OdsEntryWithStyles entry, final StylesEntry stylesEntry) {
+		if (this.dataStyle != null)
+			this.dataStyle.addToCommonStyles(stylesEntry);
+		entry.addStyleTag(this);
+	}*/
 
 	public void addToEntries(final OdsEntries odsEntries) {
 		if (this.dataStyle != null)

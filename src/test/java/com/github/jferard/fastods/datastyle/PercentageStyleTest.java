@@ -28,7 +28,7 @@ public class PercentageStyleTest {
 		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.decimalPlaces(5).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToStylesEntry(this.util, sb);
+		ps.appendXMLToCommonStyles(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
@@ -42,7 +42,7 @@ public class PercentageStyleTest {
 		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.groupThousands(true).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToStylesEntry(this.util, sb);
+		ps.appendXMLToCommonStyles(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
@@ -56,7 +56,7 @@ public class PercentageStyleTest {
 		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToStylesEntry(this.util, sb);
+		ps.appendXMLToCommonStyles(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
@@ -70,7 +70,7 @@ public class PercentageStyleTest {
 		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.negativeValueColor(Color.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToStylesEntry(this.util, sb);
+		ps.appendXMLToCommonStyles(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
@@ -91,7 +91,7 @@ public class PercentageStyleTest {
 		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToStylesEntry(this.util, sb);
+		ps.appendXMLToCommonStyles(this.util, sb);
 		Assert.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
