@@ -77,10 +77,6 @@ public class TableColumnStyle implements StyleTag {
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
-	public void addStyle(final StylesEntry stylesEntry) {
-		stylesEntry.addStyleTag(this);
-	}
-
 	public void addToEntries(final OdsEntries odsEntries) {
 		odsEntries.addStyleTag(this);
 	}

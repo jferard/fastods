@@ -41,7 +41,6 @@ public class OdsFileCreation {
 		this.logger = Logger.getLogger("OdsFileCreation");
 	}
 
-	@Test
 	public final void test1000() throws FastOdsException {
 		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
@@ -65,7 +64,6 @@ public class OdsFileCreation {
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 
-	@Test
 	public final void test100000() throws FastOdsException {
 		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();

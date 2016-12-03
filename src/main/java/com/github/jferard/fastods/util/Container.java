@@ -8,7 +8,7 @@ public class Container<K, V> {
 		CREATE, UPDATE, CREATE_OR_UPDATE
 	}
 
-	private Map<K, V> valueByKey;
+	private final Map<K, V> valueByKey;
 
 	public Container() {
 		this.valueByKey = new HashMap<K, V>();
@@ -31,5 +31,9 @@ public class Container<K, V> {
 
 	public Iterable<V> getValues() {
 		return this.valueByKey.values();
+	}
+
+	public Map<K, V> getValueByKey() {
+		return valueByKey;
 	}
 }

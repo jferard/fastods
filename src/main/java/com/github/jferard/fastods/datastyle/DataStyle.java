@@ -53,10 +53,6 @@ public abstract class DataStyle implements NamedObject {
 		odsEntries.addDataStyle(this);
 	}
 
-	public void addToCommonStyles(final StylesEntry styleEntry) {
-		styleEntry.addDataStyle(this);
-	}
-
 	/**
 	 * Adds this style to an OdsFile.
 	 *

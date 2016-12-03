@@ -22,14 +22,8 @@
 package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 
-import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.MasterPageStyle;
-import com.github.jferard.fastods.style.StyleTag;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -40,7 +34,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Martin Schulz
  *
  */
-public class StylesEntry implements OdsEntryWithStyles {
+public class StylesEntry implements OdsEntry {
 	private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
 			final Appendable appendable, final String name) throws IOException {
 		appendable.append("<style:style");
@@ -55,119 +49,19 @@ public class StylesEntry implements OdsEntryWithStyles {
 		appendable.append("/></style:style>");
 	}
 
-	private final Map<String, DataStyle> dataStyles;
-	private final Map<String, MasterPageStyle> masterPageStyles;
 	private StylesContainer stylesContainer;
 
 	/**
 	 * @param stylesStyleTagsContainer 
 	 */
 	public StylesEntry(StylesContainer stylesContainer) {
-		this.dataStyles = new HashMap<String, DataStyle>();
-		this.masterPageStyles = new HashMap<String, MasterPageStyle>();
 		this.stylesContainer = stylesContainer;
-	}
-
-	@Override
-	public void addStyleTag(final StyleTag styleTag) {
-		this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag);
-	}
-
-	@Override
-	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
-		return this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag, mode);
-	}
-
-	/**
-	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
-	 * is replaced.
-	 *
-	 * @param dataStyle
-	 *            - The data style to be added.
-	 */
-	public void addDataStyle(final DataStyle dataStyle) {
-		final String name = dataStyle.getName();
-		this.dataStyles.put(name, dataStyle);
-	}
-
-	/**
-	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
-	 * is replaced.
-	 *
-	 * @param dataStyle
-	 *            - The data style to be added.
-	 */
-	public boolean addDataStyle(final DataStyle dataStyle, Mode mode) {
-		final String key = dataStyle.getName();
-		switch (mode) {
-		case CREATE:
-			if (this.dataStyles.containsKey(key))
-				return false;
-			break;
-		case UPDATE:
-			if (!this.dataStyles.containsKey(key))
-				return false;
-			break;
-		default:
-			break;
-		}
-		this.dataStyles.put(key, dataStyle);
-		return true;
-	}
-
-	/**
-	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
-	 * is replaced.
-	 *
-	 * @param dataStyle
-	 *            - The data style to be added.
-	 */
-	public void addMasterPageStyle(final MasterPageStyle ps) {
-		final String key = ps.getName();
-		this.masterPageStyles.put(key, ps);
-		ps.addEmbeddedStylesToStylesEntry(this.stylesContainer);
-	}
-
-	/**
-	 * Add a DataStyle, if a DataStyle with this name already exist, the old one
-	 * is replaced.
-	 *
-	 * @param dataStyle
-	 *            - The data style to be added.
-	 * @return
-	 */
-	public boolean addMasterPageStyle(final MasterPageStyle ps, Mode mode) {
-		final String key = ps.getName();
-		switch (mode) {
-		case CREATE:
-			if (this.masterPageStyles.containsKey(key))
-				return false;
-			break;
-		case UPDATE:
-			if (!this.masterPageStyles.containsKey(key))
-				return false;
-			break;
-		default:
-			break;
-		}
-		this.masterPageStyles.put(key, ps);
-		ps.addEmbeddedStylesToStylesEntry(this, mode);
-		return true;
 	}
 
 	@Override
 	public void write(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
-		boolean hasHeader = false;
-		boolean hasFooter = false;
-		for (final MasterPageStyle ps : this.masterPageStyles.values()) {
-			if (hasHeader && hasFooter)
-				break;
-			if (!hasHeader && ps.getHeader() != null)
-				hasHeader = true;
-			if (!hasFooter && ps.getFooter() != null)
-				hasFooter = true;
-		}
+		final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
 		
 		writer.putNextEntry(new ZipEntry("styles.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -183,15 +77,13 @@ public class StylesEntry implements OdsEntryWithStyles {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-		for (final DataStyle bs : this.dataStyles.values())
-			bs.appendXMLToCommonStyles(util, writer);
-
+		this.stylesContainer.writeDataStyles(util, writer);
 		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
 		
-		if (hasHeader) {
+		if (hasFooterHeader.hasHeader()) {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Header");
 		}
-		if (hasFooter) {
+		if (hasFooterHeader.hasFooter()) {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Footer");
 		}
 
@@ -199,29 +91,18 @@ public class StylesEntry implements OdsEntryWithStyles {
 		writer.write("<office:automatic-styles>");
 
 		this.stylesContainer.writeStylesAutomaticStyles(util, writer);
-		for (final MasterPageStyle ps : this.masterPageStyles.values())
-			ps.appendXMLToAutomaticStyle(util, writer);
+		this.stylesContainer.writeMasterPageStylesToAutomaticStyles(util, writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
-		for (final MasterPageStyle ps : this.masterPageStyles.values())
-			ps.appendXMLToMasterStyle(util, writer);
+		this.stylesContainer.writeMasterPageStylesToMasterStyles(util, writer);
 
 		writer.write("</office:master-styles>");
 		writer.write("</office:document-styles>");
 		writer.flush();
 		writer.closeEntry();
 	}
-
-	public Map<String, DataStyle> getDataStyles() {
-		return this.dataStyles;
-	}
-
-	public Map<String, MasterPageStyle> getPageStyles() {
-		return this.masterPageStyles;
-	}
-
 	public StylesContainer getStyleTagsContainer() {
 		return this.stylesContainer;
 	}

@@ -26,8 +26,7 @@ import java.io.IOException;
 import com.github.jferard.fastods.FooterHeader;
 import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.entry.StylesContainer;
-import com.github.jferard.fastods.entry.StylesEntry;
-import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -321,10 +320,10 @@ public class MasterPageStyle {
 			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer);
 	}
 	
-	public void addEmbeddedStylesToStylesEntry(StylesEntry stylesEntry, Container.Mode mode) {
+	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer, Mode mode) {
 		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesEntry(stylesEntry, mode);
+			this.header.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
 		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesEntry(stylesEntry, mode);
+			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
 	}
 }

@@ -30,7 +30,6 @@ import java.util.zip.ZipEntry;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -52,14 +51,13 @@ public class OdsEntries {
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
-		StylesContainer stylesStyleTagsContainer = new StylesContainer();
-		final StylesEntry stylesEntry = new StylesEntry(stylesStyleTagsContainer);
-		StylesContainer contentStyleTagsContainer = new StylesContainer();
+		StylesContainer stylesContainer = new StylesContainer();
+		final StylesEntry stylesEntry = new StylesEntry(stylesContainer);
 		final ContentEntry contentEntry = new ContentEntry(positionUtil,
-				xmlUtil, writeUtil, format, contentStyleTagsContainer);
+				xmlUtil, writeUtil, format, stylesContainer);
 		return new OdsEntries(Logger.getLogger(OdsEntries.class.getName()),
 				mimetypeEntry, manifestEntry, settingsEntry, metaEntry,
-				contentEntry, stylesEntry);
+				contentEntry, stylesEntry, stylesContainer);
 	}
 
 	private final ContentEntry contentEntry;
@@ -70,11 +68,12 @@ public class OdsEntries {
 
 	private final SettingsEntry settingsEntry;
 	private final StylesEntry stylesEntry;
+	private StylesContainer stylesContainer;
 
 	protected OdsEntries(final Logger logger, final MimetypeEntry mimetypeEntry,
 			final ManifestEntry manifestEntry,
 			final SettingsEntry settingsEntry, final MetaEntry metaEntry,
-			final ContentEntry contentEntry, final StylesEntry stylesEntry) {
+			final ContentEntry contentEntry, final StylesEntry stylesEntry, StylesContainer stylesContainer) {
 		this.logger = logger;
 		this.mimetypeEntry = mimetypeEntry;
 		this.manifestEntry = manifestEntry;
@@ -82,21 +81,22 @@ public class OdsEntries {
 		this.metaEntry = metaEntry;
 		this.contentEntry = contentEntry;
 		this.stylesEntry = stylesEntry;
+		this.stylesContainer = stylesContainer;
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
-		this.stylesEntry.addDataStyle(dataStyle);
+		this.stylesContainer.addDataStyle(dataStyle);
 	}
 
 	public void addPageStyle(final MasterPageStyle masterPageStyle) {
-		this.stylesEntry.addMasterPageStyle(masterPageStyle);
+		this.stylesContainer.addMasterPageStyle(masterPageStyle);
 	}
 
 	public void addStyleTag(final StyleTag styleTag) {
 		if ("table-cell".equals(styleTag.getFamily()))
-			this.stylesEntry.addStyleTag(styleTag);
+			this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag);
 		else
-			this.contentEntry.addStyleTag(styleTag);
+			this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
 	public Table addTableToContent(final String name, final int rowCapacity,

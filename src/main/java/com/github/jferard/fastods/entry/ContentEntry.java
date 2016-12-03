@@ -42,7 +42,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class ContentEntry implements OdsEntryWithStyles {
+public class ContentEntry implements OdsEntry {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final UniqueList<Table> tables;
@@ -141,17 +141,6 @@ public class ContentEntry implements OdsEntryWithStyles {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(tab).append("]").toString());
 		}
-	}
-
-	@Override
-	public void addStyleTag(final StyleTag styleTag) {
-		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
-	}
-
-	@Override
-	public boolean addStyleTag(final StyleTag styleTag, Mode mode) {
-		return this.stylesContainer
-				.addStyleToContentAutomaticStyles(styleTag, mode);
 	}
 
 	public StylesContainer getStyleTagsContainer() {

@@ -25,10 +25,7 @@ import java.io.IOException;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.entry.OdsEntryWithStyles;
-import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -119,19 +116,6 @@ public class TableCellStyle implements StyleTag {
 		this.wrap = wrap;
 		this.parentCellStyleName = parentCellStyleName;
 	}
-
-	public void addToStyles(OdsEntryWithStyles entry, final StylesEntry stylesEntry) {
-		if (this.dataStyle != null)
-			this.dataStyle.addToCommonStyles(stylesEntry);
-		entry.addStyleTag(this);
-	}
-	
-	/*
-	public void addToStyles(OdsEntryWithStyles entry, final StylesEntry stylesEntry) {
-		if (this.dataStyle != null)
-			this.dataStyle.addToCommonStyles(stylesEntry);
-		entry.addStyleTag(this);
-	}*/
 
 	public void addToEntries(final OdsEntries odsEntries) {
 		if (this.dataStyle != null)

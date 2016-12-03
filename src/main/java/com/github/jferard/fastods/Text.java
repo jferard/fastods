@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com.github.jferard.fastods.entry.OdsEntryWithStyles;
 import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Text {
@@ -17,7 +16,7 @@ public class Text {
 	public static final String TEXT_PAGE_NUMBER = "<text:page-number>1</text:page-number>";
 	public static final String TEXT_SHEET_NAME = "<text:sheet-name/>";
 	public static final String TEXT_TIME = "<text:time/>";
-	
+
 	private List<Paragraph> paragraphs;
 	private Set<TextStyle> textStyles;
 
@@ -25,8 +24,6 @@ public class Text {
 		this.paragraphs = paragraphs;
 		this.textStyles = textStyles;
 	}
-	
-	
 
 	public boolean isEmpty() {
 		return this.paragraphs.isEmpty();
@@ -43,31 +40,33 @@ public class Text {
 		}
 	}
 
-	public static Text styledContent(final String text,
-			final TextStyle ts) {
+	public static Text styledContent(final String text, final TextStyle ts) {
 		return Text.builder().parStyledContent(text, ts).build();
 	}
 
 	public static Text content(final String text) {
 		return Text.builder().parContent(text).build();
 	}
-	
+
 	public static TextBuilder builder() {
 		return new TextBuilder();
 	}
 
-	public void addEmbeddedStylesToContentAutomaticStyles(StylesContainer stylesContainer) {
+	public void addEmbeddedStylesToContentAutomaticStyles(
+			StylesContainer stylesContainer) {
 		for (TextStyle textStyle : this.textStyles)
 			stylesContainer.addStyleToContentAutomaticStyles(textStyle);
 	}
-	
-	public void addEmbeddedStylesToStylesAutomaticStyles(StylesContainer stylesContainer) {
+
+	public void addEmbeddedStylesToStylesAutomaticStyles(
+			StylesContainer stylesContainer) {
 		for (TextStyle textStyle : this.textStyles)
 			stylesContainer.addStyleToStylesAutomaticStyles(textStyle);
 	}
 
-	public void addEmbeddedStyles(OdsEntryWithStyles entry, Container.Mode mode) {
+	public void addEmbeddedStylesToStylesAutomaticStyles(
+			StylesContainer stylesContainer, Mode mode) {
 		for (TextStyle textStyle : this.textStyles)
-			entry.addStyleTag(textStyle, mode);
+			stylesContainer.addStyleToStylesAutomaticStyles(textStyle, mode);
 	}
 }

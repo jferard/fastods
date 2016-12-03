@@ -10,9 +10,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -27,6 +25,7 @@ public class OdsEntriesTest {
 	private SettingsEntry settingsEntry;
 	private StylesEntry stylesEntry;
 	private XMLUtil util;
+	private StylesContainer stylesContainer;
 
 	@Before
 	public void setUp() {
@@ -37,24 +36,14 @@ public class OdsEntriesTest {
 		this.metaEntry = PowerMock.createMock(MetaEntry.class);
 		this.contentEntry = PowerMock.createMock(ContentEntry.class);
 		this.stylesEntry = PowerMock.createMock(StylesEntry.class);
+		this.stylesContainer = new StylesContainer();
 
 		this.oe = new OdsEntries(logger, this.mimetypeEntry, this.manifestEntry,
 				this.settingsEntry, this.metaEntry, this.contentEntry,
-				this.stylesEntry);
+				this.stylesEntry, this.stylesContainer);
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
-	}
-
-	@Test
-	public final void testAddDataStyle() {
-		final DataStyle dataStyle = this.factory.booleanStyleBuilder("test")
-				.build();
-
-		this.stylesEntry.addDataStyle(dataStyle);
-		PowerMock.replayAll();
-		this.oe.addDataStyle(dataStyle);
-		PowerMock.verifyAll();
 	}
 
 	/*

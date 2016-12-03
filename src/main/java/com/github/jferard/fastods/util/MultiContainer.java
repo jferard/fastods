@@ -36,6 +36,7 @@ public class MultiContainer<K, V, S extends Enum<S>> {
 		if (subcontainer != curSubcontainer)
 			this.subcontainerByKey.put(key, subcontainer);
 		this.valueByKeyBySubcontainer.get(subcontainer).put(key, value);
+		System.out.println(this.valueByKeyBySubcontainer.get(subcontainer));
 		return true;
 	}
 
