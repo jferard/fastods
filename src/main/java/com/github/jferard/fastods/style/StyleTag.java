@@ -31,7 +31,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public interface StyleTag extends NamedObject {
 	
-	void appendXMLToStylesEntry(XMLUtil util, Appendable appendable)
+	void appendXML(XMLUtil util, Appendable appendable)
 			throws IOException;
 
 	@Override

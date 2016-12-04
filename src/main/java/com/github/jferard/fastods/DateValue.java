@@ -27,7 +27,7 @@ public class DateValue extends CellValue {
 	private final Date value;
 
 	public DateValue(final Date value) {
-		this.value = value;
+		this.value = new Date(value.getTime());
 	}
 
 	@Override

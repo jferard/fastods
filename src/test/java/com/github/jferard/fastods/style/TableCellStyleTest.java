@@ -45,7 +45,7 @@ public class TableCellStyleTest {
 				.borderAll("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLToStylesEntry(this.util, sb);
+		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
@@ -58,7 +58,7 @@ public class TableCellStyleTest {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs")
 				.allMargins("10pt").build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLToStylesEntry(this.util, sb);
+		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
@@ -75,7 +75,7 @@ public class TableCellStyleTest {
 				.borderLeft("4pt", Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLToStylesEntry(this.util, sb);
+		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
@@ -89,7 +89,7 @@ public class TableCellStyleTest {
 				.marginTop("10pt").marginRight("11pt").marginBottom("12pt")
 				.marginLeft("13pt").build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLToStylesEntry(this.util, sb);
+		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"

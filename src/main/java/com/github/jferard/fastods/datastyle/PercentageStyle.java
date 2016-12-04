@@ -69,7 +69,7 @@ public class PercentageStyle extends DataStyle {
 	 * @param util
 	 */
 	@Override
-	public void appendXMLToCommonStyles(final XMLUtil util,
+	public void appendXML(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<number:percentage-style");
 		util.appendAttribute(appendable, "style:name", this.name);

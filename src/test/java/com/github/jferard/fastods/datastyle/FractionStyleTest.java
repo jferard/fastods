@@ -30,7 +30,7 @@ public class FractionStyleTest {
 				.fractionValues(1, 3).groupThousands(true).minIntegerDigits(8)
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		s.appendXMLToCommonStyles(this.util, sb);
+		s.appendXML(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"en\" number:country=\"FR\" style:volatile=\"true\">"
 				+ "<number:fraction number:min-numerator-digits=\"1\" number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "</number:number-style>"
@@ -51,7 +51,7 @@ public class FractionStyleTest {
 				.volatileStyle(true).fractionValues(1, 3).groupThousands(true)
 				.minIntegerDigits(8).negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		s.appendXMLToCommonStyles(this.util, sb);
+		s.appendXML(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"de\" number:country=\"DE\" style:volatile=\"true\">"
 				+ "<number:fraction number:min-numerator-digits=\"1\" number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "</number:number-style>"

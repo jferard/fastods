@@ -63,7 +63,7 @@ public abstract class DataStyle implements NamedObject {
 	 * @throws IOException
 	 *             if can't write data to file
 	 */
-	public abstract void appendXMLToCommonStyles(final XMLUtil util,
+	public abstract void appendXML(final XMLUtil util,
 			final Appendable appendable) throws IOException;
 
 	/*

@@ -53,7 +53,7 @@ public class NumberStyleTest {
 		final FloatStyle ns = this.factory.floatStyleBuilder("test")
 				.locale(this.locale).build();
 		final StringBuilder sb = new StringBuilder();
-		ns.appendXMLToCommonStyles(this.util, sb);
+		ns.appendXML(this.util, sb);
 		Assert.assertEquals(
 				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
@@ -66,7 +66,7 @@ public class NumberStyleTest {
 		final FloatStyle ns = this.factory.floatStyleBuilder("test")
 				.negativeValueRed().locale(this.locale).build();
 		final StringBuilder sb = new StringBuilder();
-		ns.appendXMLToCommonStyles(this.util, sb);
+		ns.appendXML(this.util, sb);
 		Assert.assertEquals(
 				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS

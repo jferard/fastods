@@ -131,7 +131,7 @@ public class TableCellStyle implements StyleTag {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXMLToStylesEntry(final XMLUtil util,
+	public void appendXML(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);

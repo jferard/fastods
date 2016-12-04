@@ -70,7 +70,7 @@ public class TableRowStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXMLToStylesEntry(final XMLUtil util,
+	public void appendXML(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);

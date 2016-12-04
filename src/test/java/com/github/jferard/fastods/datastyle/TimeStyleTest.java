@@ -27,7 +27,7 @@ public class TimeStyleTest {
 		final TimeStyle ps = this.factory.timeStyleBuilder("test")
 				.timeFormat(TimeStyle.Format.HHMMSS).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToCommonStyles(this.util, sb);
+		ps.appendXML(this.util, sb);
 		Assert.assertEquals(
 				"<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"fixed\">"
 						+ "<number:hours/>" + "<number:text>:</number:text>"
@@ -41,7 +41,7 @@ public class TimeStyleTest {
 		final TimeStyle ps = this.factory.timeStyleBuilder("test")
 				.timeFormat(null).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLToCommonStyles(this.util, sb);
+		ps.appendXML(this.util, sb);
 		Assert.assertEquals(
 				"<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"language\"/>",
 				sb.toString());

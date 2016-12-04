@@ -84,7 +84,7 @@ public class CurrencyStyle extends DataStyle {
 	 * @return The XML string for this object.
 	 */
 	@Override
-	public void appendXMLToCommonStyles(final XMLUtil util,
+	public void appendXML(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		// For negative values, this is the default style name + "-neg"
 

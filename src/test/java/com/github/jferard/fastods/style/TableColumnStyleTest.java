@@ -55,7 +55,7 @@ public class TableColumnStyleTest {
 		final StringBuilder sbc = new StringBuilder();
 		final StringBuilder sbt = new StringBuilder();
 
-		tcs.appendXMLToStylesEntry(this.util, sbc);
+		tcs.appendXML(this.util, sbc);
 		tcs.appendXMLToTable(this.util, sbt, 1);
 
 		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table-column\">"
@@ -83,7 +83,7 @@ public class TableColumnStyleTest {
 				.columnWidth("1pt").build();
 		final StringBuilder sbc = new StringBuilder();
 
-		tcs.appendXMLToStylesEntry(this.util, sbc);
+		tcs.appendXML(this.util, sbc);
 
 		Assert.assertTrue(DomTester
 				.equals("<style:style style:name=\"test\" style:family=\"table-column\">"

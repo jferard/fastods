@@ -152,7 +152,7 @@ public class StylesContainer {
 	public void writeDataStyles(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
 		for (final DataStyle dataStyle : this.dataStylesContainer.getValues())
-			dataStyle.appendXMLToCommonStyles(util, writer);
+			dataStyle.appendXML(util, writer);
 	}
 
 	public void writeMasterPageStylesToAutomaticStyles(final XMLUtil util,
@@ -191,7 +191,7 @@ public class StylesContainer {
 	private void write(final Iterable<StyleTag> iterable, final XMLUtil util,
 			final ZipUTF8Writer writer) throws IOException {
 		for (final StyleTag ts : iterable)
-			ts.appendXMLToStylesEntry(util, writer);
+			ts.appendXML(util, writer);
 	}
 
 	public Map<String, MasterPageStyle> getMasterPageStyles() {
