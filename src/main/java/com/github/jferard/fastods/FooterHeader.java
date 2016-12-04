@@ -76,15 +76,13 @@ public abstract class FooterHeader {
 	public static FooterHeader simpleFooter(final String text,
 			final TextStyle ts) {
 		return new SimpleFooterHeaderBuilder(Type.FOOTER)
-				.text(Text.styledContent(text, ts))
-				.build();
+				.text(Text.styledContent(text, ts)).build();
 	}
 
 	public static FooterHeader simpleHeader(final String text,
 			final TextStyle ts) {
 		return new SimpleFooterHeaderBuilder(Type.HEADER)
-				.text(Text.styledContent(text, ts))
-				.build();
+				.text(Text.styledContent(text, ts)).build();
 	}
 
 	/**
@@ -97,7 +95,7 @@ public abstract class FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 * 
+	 *
 	 * @param minHeight
 	 *
 	 * @param odsFile
@@ -109,6 +107,12 @@ public abstract class FooterHeader {
 		this.margins = margins;
 		this.minHeight = minHeight;
 	}
+
+	public abstract void addEmbeddedStylesToStylesEntry(
+			StylesContainer stylesContainer);
+
+	public abstract void addEmbeddedStylesToStylesEntry(
+			StylesContainer stylesContainer, Mode mode);
 
 	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
@@ -146,8 +150,4 @@ public abstract class FooterHeader {
 	public String getTypeName() {
 		return this.footerHeaderType.typeName;
 	}
-
-	public abstract void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer);
-	
-	public abstract void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer, Mode mode);
 }

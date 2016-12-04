@@ -24,7 +24,6 @@ package com.github.jferard.fastods.style;
 import java.io.IOException;
 
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -85,8 +84,8 @@ public class TableColumnStyle implements StyleTag {
 	 * 17.16 <style:table-column-properties>
 	 */
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table-column");
@@ -131,6 +130,11 @@ public class TableColumnStyle implements StyleTag {
 	}
 
 	@Override
+	public String getFamily() {
+		return "table-column";
+	}
+
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -142,10 +146,5 @@ public class TableColumnStyle implements StyleTag {
 		result = prime * result
 				+ (this.name == null ? 0 : this.name.hashCode());
 		return result;
-	}
-
-	@Override
-	public String getFamily() {
-		return "table-column";
 	}
 }

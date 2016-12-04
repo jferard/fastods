@@ -84,8 +84,8 @@ public class CurrencyStyle extends DataStyle {
 	 * @return The XML string for this object.
 	 */
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		// For negative values, this is the default style name + "-neg"
 
 		appendable.append("<number:currency-style");

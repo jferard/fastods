@@ -33,9 +33,9 @@ public class PageStyleTest {
 	}
 
 	@Test
-	public final void testAlmostEmptyToAutomaticStyle()
-			throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").build();
+	public final void testAlmostEmptyToAutomaticStyle() throws IOException {
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals(
@@ -50,9 +50,9 @@ public class PageStyleTest {
 	}
 
 	@Test
-	public final void testAlmostEmptyToMasterStyle()
-			throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").build();
+	public final void testAlmostEmptyToMasterStyle() throws IOException {
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToMasterStyle(this.util, sb);
 		DomTester.assertEquals(PageStyleTest.MASTER, sb.toString());
@@ -86,26 +86,26 @@ public class PageStyleTest {
 	public final void testFooterHeader() throws IOException {
 		final FooterHeader header = PowerMock.createMock(FooterHeader.class);
 		final FooterHeader footer = PowerMock.createMock(FooterHeader.class);
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").header(header)
-				.footer(footer).build();
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.header(header).footer(footer).build();
 		final StringBuilder sb = new StringBuilder();
 
 		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
-/*		header.appendTextStylesXMLToStylesEntry(this.util, sb);
-		footer.appendTextStylesXMLToStylesEntry(this.util, sb); */
+		/*		header.appendTextStylesXMLToStylesEntry(this.util, sb);
+				footer.appendTextStylesXMLToStylesEntry(this.util, sb); */
 		PowerMock.replayAll();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
-						+ "</style:page-layout>", sb.toString());
+				+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
+				+ "</style:page-layout>", sb.toString());
 		PowerMock.verifyAll();
 	}
 
 	@Test
 	public final void testHeightAndWidth() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").pageHeight("20cm")
-				.pageWidth("10cm").build();
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.pageHeight("20cm").pageWidth("10cm").build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals(
@@ -121,8 +121,8 @@ public class PageStyleTest {
 
 	@Test
 	public final void testMargins() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").allMargins("10pt")
-				.build();
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.allMargins("10pt").build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals(
@@ -141,10 +141,11 @@ public class PageStyleTest {
 
 	@Test
 	public final void testMargins2() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").marginTop("1pt")
-				.marginRight("2pt").marginBottom("3pt").marginLeft("4pt")
-				.printOrientationVertical().printOrientationHorizontal()
-				.writingMode(WritingMode.PAGE).build();
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.marginTop("1pt").marginRight("2pt").marginBottom("3pt")
+				.marginLeft("4pt").printOrientationVertical()
+				.printOrientationHorizontal().writingMode(WritingMode.PAGE)
+				.build();
 		final StringBuilder sba = new StringBuilder();
 		final StringBuilder sbm = new StringBuilder();
 
@@ -168,16 +169,16 @@ public class PageStyleTest {
 
 	@Test
 	public final void testNullFooterHeader() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test").header(null)
-				.footer(null).build();
+		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+				.header(null).footer(null).build();
 		final StringBuilder sb = new StringBuilder();
 
 		PowerMock.replayAll();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
-						+ "<style:header-style/>" + "<style:footer-style/>"
-						+ "</style:page-layout>", sb.toString());
+				+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>"
+				+ "<style:header-style/>" + "<style:footer-style/>"
+				+ "</style:page-layout>", sb.toString());
 		PowerMock.verifyAll();
 	}
 

@@ -65,7 +65,7 @@ public interface TableCell {
 	/**
 	 * XML Schema Part 2, 3.2.7 dateTime
 	 */
-	static final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
+	final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 	void appendXMLToTableRow(XMLUtil util, Appendable appendable)
@@ -158,7 +158,7 @@ public interface TableCell {
 	 *
 	 * @param value
 	 *            the value as a CellValue object.
-	 * 
+	 *
 	 */
 	void setCellValue(CellValue value);
 
@@ -274,7 +274,7 @@ public interface TableCell {
 
 	/**
 	 * Add a tooltip to the cell
-	 * 
+	 *
 	 * @param tooltip
 	 *            the text of the tooltip
 	 */

@@ -25,8 +25,8 @@ package com.github.jferard.fastods.style;
  * @author Julien Férard Copyright
  */
 public class TableStyleBuilder {
-	private final String name;
 	private MasterPageStyle masterPageStyle;
+	private final String name;
 
 	/**
 	 * @param name
@@ -43,7 +43,8 @@ public class TableStyleBuilder {
 		return new TableStyle(this.name, this.masterPageStyle);
 	}
 
-	public TableStyleBuilder masterPageStyle(final MasterPageStyle masterPageStyle) {
+	public TableStyleBuilder masterPageStyle(
+			final MasterPageStyle masterPageStyle) {
 		this.masterPageStyle = masterPageStyle;
 		return this;
 	}

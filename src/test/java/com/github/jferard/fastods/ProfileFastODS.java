@@ -19,6 +19,7 @@
 */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -64,7 +65,7 @@ public class ProfileFastODS {
 	}
 
 	@Test
-	public final void testFast() {
+	public final void testFast() throws IOException {
 		final OdsFile file = OdsFile.create("fastods_profile.ods");
 		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT,
 				ProfileFastODS.COL_COUNT);
@@ -76,8 +77,8 @@ public class ProfileFastODS {
 				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
 			}
-			if (y % (ROW_COUNT / 50) == 0)
-				this.logger.info("Row "+y);
+			if (y % (ProfileFastODS.ROW_COUNT / 50) == 0)
+				this.logger.info("Row " + y);
 		}
 
 		file.save();

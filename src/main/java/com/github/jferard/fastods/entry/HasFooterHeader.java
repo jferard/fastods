@@ -1,19 +1,19 @@
 package com.github.jferard.fastods.entry;
 
 class HasFooterHeader {
-	private final boolean hasHeader;
 	private final boolean hasFooter;
+	private final boolean hasHeader;
 
-	HasFooterHeader(boolean hasHeader, boolean hasFooter) {
+	HasFooterHeader(final boolean hasHeader, final boolean hasFooter) {
 		this.hasHeader = hasHeader;
 		this.hasFooter = hasFooter;
 	}
 
-	public boolean hasHeader() {
-		return this.hasHeader;
-	}
-
 	public boolean hasFooter() {
 		return this.hasFooter;
+	}
+
+	public boolean hasHeader() {
+		return this.hasHeader;
 	}
 }

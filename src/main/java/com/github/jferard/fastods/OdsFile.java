@@ -65,10 +65,10 @@ public class OdsFile {
 				xmlUtil, locale);
 		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,
 				xmlUtil);
-		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil, writeUtil,
-				format);
+		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil,
+				writeUtil, format);
 		return new OdsFile(Logger.getLogger(OdsFile.class.getName()), name,
-				entries, writeUtil, xmlUtil);
+				entries, xmlUtil);
 	}
 
 	public static OdsFile create(final String name) {
@@ -84,18 +84,16 @@ public class OdsFile {
 
 	/**
 	 * Create a new ODS file.
-	 * 
+	 *
 	 * @param logger
 	 * @param name
 	 *            - The filename for this file, if this file exists it is
 	 *            overwritten
-	 * @param writeUtil
 	 * @param xmlUtil
 	 * @param entries2
 	 */
 	public OdsFile(final Logger logger, final String name,
-			final OdsEntries entries, final WriteUtil writeUtil,
-			final XMLUtil xmlUtil) {
+			final OdsEntries entries, final XMLUtil xmlUtil) {
 		this.logger = logger;
 		this.newFile(name);
 		this.entries = entries;
@@ -248,13 +246,14 @@ public class OdsFile {
 	 * Save the new file.
 	 *
 	 * @return true if the file was saved and false if an exception happened
+	 * @throws IOException
 	 */
-	public boolean save() {
+	public void save() throws IOException {
 		try {
-			return this.save(new FileOutputStream(this.filename));
+			final FileOutputStream out = new FileOutputStream(this.filename);
+			this.save(out);
 		} catch (final FileNotFoundException e) {
 			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
-			return false;
 		}
 	}
 
@@ -263,49 +262,39 @@ public class OdsFile {
 	 *
 	 * @param out
 	 *            The OutputStream that should be used.
-	 * @return true - the file was saved<br>
-	 *         false - an exception happened
+	 * @throws IOException
+	 *             The file can't be saved.
 	 */
-	public boolean save(final OutputStream out) {
+	public void save(final OutputStream out) throws IOException {
 		final ZipUTF8WriterBuilder builder = ZipUTF8Writer.builder();
-		return this.save(builder.build(out));
+		this.save(builder.build(out));
 	}
 
-	public boolean save(final ZipUTF8Writer writer) {
+	public void save(final ZipUTF8Writer writer) throws IOException {
 		this.entries.setTables();
 
 		try {
 			this.entries.writeEntries(this.xmlUtil, writer);
 			this.entries.createEmptyEntries(writer);
-		} catch (final IOException e) {
-			this.logger.log(Level.SEVERE, "Can't write data", e);
-			return false;
 		} finally {
-			try {
-				writer.close();
-			} catch (final IOException e) {
-				this.logger.log(Level.SEVERE, "Can't close file", e);
-				return false;
-			}
+			writer.close();
 		}
 		this.logger.log(Level.FINE, "file saved");
-
-		return true;
 	}
 
 	/**
 	 * @param builder
 	 *            a builder for the ZipOutputStream and the Writer (buffers,
 	 *            level, ...)
-	 * @return true if the file was saved and false if an exception happened
+	 * @throws IOException
+	 *             if the file was not saved
 	 */
-	public boolean save(final ZipUTF8WriterBuilder builder) {
+	public void save(final ZipUTF8WriterBuilder builder) throws IOException {
 		try {
-			return this
-					.save(builder.build(new FileOutputStream(this.filename)));
+			final FileOutputStream out = new FileOutputStream(this.filename);
+			this.save(builder.build(out));
 		} catch (final FileNotFoundException e) {
 			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
-			return false;
 		}
 	}
 

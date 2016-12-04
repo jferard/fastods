@@ -81,6 +81,7 @@ public class Table implements NamedObject {
 	private final PositionUtil positionUtil;
 	private TableStyle style;
 
+	private final StylesContainer stylesContainer;
 	private final List<HeavyTableRow> tableRows;
 	private final ConfigItem verticalSplitMode;
 	private final ConfigItem verticalSplitPosition;
@@ -88,7 +89,6 @@ public class Table implements NamedObject {
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
-	private StylesContainer stylesContainer;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final StylesContainer stylesContainer,
@@ -203,6 +203,19 @@ public class Table implements NamedObject {
 		return this.getRow(row);
 	}
 
+	public HeavyTableRow getRowSecure(final int rowIndex) {
+		HeavyTableRow tr = this.tableRows.get(rowIndex);
+		if (tr == null) {
+			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
+					this.xmlUtil, this.stylesContainer, this.format, this,
+					rowIndex, this.columnCapacity);
+			this.tableRows.set(rowIndex, tr);
+			if (rowIndex > this.lastRowIndex)
+				this.lastRowIndex = rowIndex;
+		}
+		return tr;
+	}
+
 	/**
 	 * Get the current TableFamilyStyle
 	 *
@@ -305,18 +318,5 @@ public class Table implements NamedObject {
 				tr.appendXMLToTable(util, appendable);
 			}
 		}
-	}
-
-	public HeavyTableRow getRowSecure(final int rowIndex) {
-		HeavyTableRow tr = this.tableRows.get(rowIndex);
-		if (tr == null) {
-			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
-					this.xmlUtil, this.stylesContainer, this.format, this,
-					rowIndex, this.columnCapacity);
-			this.tableRows.set(rowIndex, tr);
-			if (rowIndex > this.lastRowIndex)
-				this.lastRowIndex = rowIndex;
-		}
-		return tr;
 	}
 }

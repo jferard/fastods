@@ -19,6 +19,7 @@
  */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,7 +48,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 	}
 
 	@Test
-	public final void test50() throws FastOdsException {
+	public final void test50() throws FastOdsException, IOException {
 		this.logger.info("Creating a file with footer and header");
 		final TextStyle lts = TextProperties.builder().fontColor(Color.RED)
 				.buildStyle("test1");
@@ -57,38 +58,39 @@ public class OdsFileWithHeaderAndFooterCreation {
 				.buildStyle("test3");
 		final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
 				.buildStyle("style");
-		final TextStyle italicStyle = TextProperties.builder()
-				.fontStyleItalic().buildStyle("style2");
+		final TextStyle italicStyle = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style2");
 
-		Text leftHeader = Text.styledContent("left header", lts);
-		Text centerHeader = Text.builder().par()
+		final Text leftHeader = Text.styledContent("left header", lts);
+		final Text centerHeader = Text.builder().par()
 				.styledSpan("center header", cts).span(Text.TEXT_PAGE_NUMBER)
 				.build();
-		Text rightHeader = Text.styledContent("right header", rts);
+		final Text rightHeader = Text.styledContent("right header", rts);
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
 				.text(leftHeader).region(Region.CENTER).text(centerHeader)
 				.region(Region.RIGHT).text(rightHeader).build();
 
-		Text leftFooter = Text.styledContent("left footer", cts);
-		Text centerFooter = Text.builder().par()
+		final Text leftFooter = Text.styledContent("left footer", cts);
+		final Text centerFooter = Text.builder().par()
 				.styledSpan("center footer", rts).span(Text.TEXT_PAGE_COUNT)
 				.build();
-		Text rightFooter = Text.styledContent("right footer", lts);
+		final Text rightFooter = Text.styledContent("right footer", lts);
 		final FooterHeader footer = FooterHeader
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.LEFT)
 				.text(leftFooter).region(Region.CENTER).text(centerFooter)
 				.region(Region.RIGHT).text(rightFooter).build();
 
-		final MasterPageStyle ps = MasterPageStyle.builder("test").footer(footer)
-				.header(header).build();
+		final MasterPageStyle ps = MasterPageStyle.builder("test")
+				.footer(footer).header(header).build();
 
 		final OdsFile file = OdsFile.create("fastods_fh.ods");
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
-		TableStyle ttts = TableStyle.builder("a").masterPageStyle(ps).build();
+		final TableStyle ttts = TableStyle.builder("a").masterPageStyle(ps)
+				.build();
 		table.setStyle(ttts);
-		
+
 		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();

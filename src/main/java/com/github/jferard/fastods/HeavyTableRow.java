@@ -49,25 +49,25 @@ public class HeavyTableRow {
 	private List<String> currencies;
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
+	private boolean hasSpans;
+	private boolean isComplexRow;
+	private final Table parent;
 	private final PositionUtil positionUtil;
+	private final int rowIndex;
 	private List<Integer> rowsSpanned;
 	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;
+	private final StylesContainer stylesContainer;
+	private List<Text> texts;
 	private List<String> tooltips;
 	private final List<TableCell.Type> types;
 	private final List<String> values;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
-	private boolean isComplexRow;
-	private boolean hasSpans;
-	private List<Text> texts;
-	private Table parent;
-	private int rowIndex;
-	private StylesContainer stylesContainer;
 
 	HeavyTableRow(final PositionUtil positionUtil, final WriteUtil writeUtil,
 			final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-			final DataStyles dataStyles, Table parent, final int rowIndex,
+			final DataStyles dataStyles, final Table parent, final int rowIndex,
 			final int columnCapacity) {
 		this.writeUtil = writeUtil;
 		this.stylesContainer = stylesContainer;
@@ -116,91 +116,6 @@ public class HeavyTableRow {
 		}
 
 		appendable.append("</table:table-row>");
-	}
-
-	protected void appendRowXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int colIndex, final String value)
-			throws IOException {
-		final TableCellStyle style = this.styles.get(colIndex);
-		final TableCell.Type valueType = this.types.get(colIndex);
-
-		boolean covered;
-		if (this.columnsSpanned != null) {
-			Integer s = this.columnsSpanned.get(colIndex);
-			if (s != null && s == -1) // covered-cell
-				covered = true;
-			else
-				covered = false;
-		} else {
-			covered = false;
-		}
-
-		if (covered) {
-			appendable.append("<table:covered-table-cell");
-		} else {
-			appendable.append("<table:table-cell");
-		}
-
-		if (style != null) {
-			util.appendEAttribute(appendable, "table:style-name",
-					style.getName());
-		}
-
-		util.appendEAttribute(appendable, "office:value-type",
-				valueType.getAttrValue());
-		util.appendEAttribute(appendable, valueType.getAttrName(), value);
-		if (valueType == TableCell.Type.CURRENCY) {
-			final String currency = this.currencies.get(colIndex);
-			util.appendAttribute(appendable, "office:currency", currency);
-		}
-
-		if (this.isComplexRow) {
-			this.appendComplexXMLToTable(util, appendable, colIndex, covered);
-		} else {
-			appendable.append("/>");
-		}
-	}
-
-	private void appendComplexXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int colIndex,
-			final boolean covered) throws IOException {
-		if (this.hasSpans && !covered) {
-			if (this.columnsSpanned != null) {
-				final Integer colSpan = this.columnsSpanned.get(colIndex);
-				if (colSpan != null && colSpan > 1) {
-					util.appendEAttribute(appendable,
-							"table:number-columns-spanned", colSpan);
-				}
-			}
-			if (this.rowsSpanned != null) {
-				final Integer rowSpan = this.rowsSpanned.get(colIndex);
-				if (rowSpan != null && rowSpan > 1) {
-					util.appendEAttribute(appendable,
-							"table:number-rows-spanned", rowSpan);
-				}
-			}
-		}
-
-		if (this.texts == null && this.tooltips == null) {
-			appendable.append("/>");
-		} else { // something between <cell> and </cell>
-			appendable.append(">");
-			if (this.texts != null) {
-				final Text text = this.texts.get(colIndex);
-				if (text != null) {
-					text.appendXMLContent(util, appendable);
-				}
-			}
-			if (this.tooltips != null) {
-				final String tooltip = this.tooltips.get(colIndex);
-				if (tooltip != null) {
-					appendable.append("<office:annotation><text:p>")
-							.append(tooltip)
-							.append("</text:p></office:annotation>");
-				}
-			}
-			appendable.append("</table:table-cell>");
-		}
 	}
 
 	public String getBooleanValue(final int i) {
@@ -257,6 +172,13 @@ public class HeavyTableRow {
 		return this.styles.get(i).getName();
 	}
 
+	public Text getText(final int i) {
+		if (this.texts != null)
+			return this.texts.get(i);
+		else
+			return null;
+	}
+
 	public String getTimeValue(final int i) {
 		return this.values.get(i);
 	}
@@ -264,13 +186,6 @@ public class HeavyTableRow {
 	public String getTooltip(final int i) {
 		if (this.tooltips != null)
 			return this.tooltips.get(i);
-		else
-			return null;
-	}
-
-	public Text getText(final int i) {
-		if (this.texts != null)
-			return this.texts.get(i);
 		else
 			return null;
 	}
@@ -328,7 +243,8 @@ public class HeavyTableRow {
 		for (int c = 1; c < columnMerge; c++)
 			this.columnsSpanned.set(colIndex + c, -1);
 		for (int r = 1; r < rowMerge; r++) {
-			HeavyTableRow row = this.parent.getRowSecure(this.rowIndex + r);
+			final HeavyTableRow row = this.parent
+					.getRowSecure(this.rowIndex + r);
 			for (int c = 0; c < columnMerge; c++) {
 				if (row.columnsSpanned == null)
 					row.columnsSpanned = FullList
@@ -549,7 +465,8 @@ public class HeavyTableRow {
 		this.rowsSpanned.set(colIndex, n);
 		// add negative span for covered cells
 		for (int r = 1; r < n; r++) {
-			HeavyTableRow row = this.parent.getRowSecure(this.rowIndex + r);
+			final HeavyTableRow row = this.parent
+					.getRowSecure(this.rowIndex + r);
 			row.columnsSpanned.set(colIndex, -1);
 		}
 
@@ -590,6 +507,17 @@ public class HeavyTableRow {
 		this.rowStyle = rowStyle;
 	}
 
+	public void setTextValue(final int i, final Text text) {
+		if (this.texts == null)
+			this.texts = FullList.newListWithCapacity(this.columnCapacity);
+
+		this.values.set(i, "");
+		this.types.set(i, TableCell.Type.STRING);
+		this.texts.set(i, text);
+		text.addEmbeddedStylesToContentAutomaticStyles(this.stylesContainer);
+		this.isComplexRow = true;
+	}
+
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setTimeValue(long)
 	 */
@@ -612,6 +540,48 @@ public class HeavyTableRow {
 		this.types.set(i, TableCell.Type.VOID);
 	}
 
+	private void appendComplexXMLToTable(final XMLUtil util,
+			final Appendable appendable, final int colIndex,
+			final boolean covered) throws IOException {
+		if (this.hasSpans && !covered) {
+			if (this.columnsSpanned != null) {
+				final Integer colSpan = this.columnsSpanned.get(colIndex);
+				if (colSpan != null && colSpan > 1) {
+					util.appendEAttribute(appendable,
+							"table:number-columns-spanned", colSpan);
+				}
+			}
+			if (this.rowsSpanned != null) {
+				final Integer rowSpan = this.rowsSpanned.get(colIndex);
+				if (rowSpan != null && rowSpan > 1) {
+					util.appendEAttribute(appendable,
+							"table:number-rows-spanned", rowSpan);
+				}
+			}
+		}
+
+		if (this.texts == null && this.tooltips == null) {
+			appendable.append("/>");
+		} else { // something between <cell> and </cell>
+			appendable.append(">");
+			if (this.texts != null) {
+				final Text text = this.texts.get(colIndex);
+				if (text != null) {
+					text.appendXMLContent(util, appendable);
+				}
+			}
+			if (this.tooltips != null) {
+				final String tooltip = this.tooltips.get(colIndex);
+				if (tooltip != null) {
+					appendable.append("<office:annotation><text:p>")
+							.append(tooltip)
+							.append("</text:p></office:annotation>");
+				}
+			}
+			appendable.append("</table:table-cell>");
+		}
+	}
+
 	private void appendRowOpenTag(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<table:table-row");
@@ -624,14 +594,46 @@ public class HeavyTableRow {
 		appendable.append(">");
 	}
 
-	public void setTextValue(int i, Text text) {
-		if (this.texts == null)
-			this.texts = FullList.newListWithCapacity(this.columnCapacity);
+	protected void appendRowXMLToTable(final XMLUtil util,
+			final Appendable appendable, final int colIndex, final String value)
+			throws IOException {
+		final TableCellStyle style = this.styles.get(colIndex);
+		final TableCell.Type valueType = this.types.get(colIndex);
 
-		this.values.set(i, "");
-		this.types.set(i, TableCell.Type.STRING);
-		this.texts.set(i, text);
-		text.addEmbeddedStylesToContentAutomaticStyles(this.stylesContainer);
-		this.isComplexRow = true;
+		boolean covered;
+		if (this.columnsSpanned != null) {
+			final Integer s = this.columnsSpanned.get(colIndex);
+			if (s != null && s == -1) // covered-cell
+				covered = true;
+			else
+				covered = false;
+		} else {
+			covered = false;
+		}
+
+		if (covered) {
+			appendable.append("<table:covered-table-cell");
+		} else {
+			appendable.append("<table:table-cell");
+		}
+
+		if (style != null) {
+			util.appendEAttribute(appendable, "table:style-name",
+					style.getName());
+		}
+
+		util.appendEAttribute(appendable, "office:value-type",
+				valueType.getAttrValue());
+		util.appendEAttribute(appendable, valueType.getAttrName(), value);
+		if (valueType == TableCell.Type.CURRENCY) {
+			final String currency = this.currencies.get(colIndex);
+			util.appendAttribute(appendable, "office:currency", currency);
+		}
+
+		if (this.isComplexRow) {
+			this.appendComplexXMLToTable(util, appendable, colIndex, covered);
+		} else {
+			appendable.append("/>");
+		}
 	}
 }

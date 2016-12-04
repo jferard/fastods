@@ -12,9 +12,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
-import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.entry.StylesContainer;
-import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.PositionUtil;

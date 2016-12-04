@@ -55,9 +55,9 @@ class RegionFooterHeaderBuilder
 	@Override
 	public FooterHeader build() {
 		return new RegionFooterHeader(this.footerHeaderType,
-				this.centerRegionBox.get(),
-				this.leftRegionBox.get(), this.rightRegionBox.get(),
-				this.marginsBuilder.build(), this.minHeight);
+				this.centerRegionBox.get(), this.leftRegionBox.get(),
+				this.rightRegionBox.get(), this.marginsBuilder.build(),
+				this.minHeight);
 	}
 
 	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {

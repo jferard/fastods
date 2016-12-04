@@ -75,6 +75,11 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 
 	public abstract FooterHeader build();
 
+	public F content(final String string) {
+		this.curRegionBox.set(Text.content(string));
+		return (F) this;
+	}
+
 	/**
 	 * Set the margin at the bottom. margin is a length value expressed as a
 	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
@@ -148,6 +153,11 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 		return (F) this;
 	}
 
+	public F styledContent(final String text, final TextStyle ts) {
+		this.curRegionBox.set(Text.styledContent(text, ts));
+		return (F) this;
+	}
+
 	/**
 	 * @param text
 	 *            The text to write
@@ -155,16 +165,6 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 */
 	public F text(final Text text) {
 		this.curRegionBox.set(text);
-		return (F) this;
-	}
-
-	public F styledContent(String text, TextStyle ts) {
-		this.curRegionBox.set(Text.styledContent(text, ts));
-		return (F) this;
-	}
-
-	public F content(String string) {
-		this.curRegionBox.set(Text.content(string));
 		return (F) this;
 	}
 }

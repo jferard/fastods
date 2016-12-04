@@ -40,10 +40,10 @@ public class TextPropertiesBuilder {
 				this.fontWeight, this.fontStyle, this.fontSize,
 				this.fontUnderlineColor, this.fontUnderlineStyle);
 	}
-	
+
 	public TextStyle buildStyle(final String name) {
-		TextProperties tp = new TextProperties(this.fontColor, this.fontName,
-				this.fontWeight, this.fontStyle, this.fontSize,
+		final TextProperties tp = new TextProperties(this.fontColor,
+				this.fontName, this.fontWeight, this.fontStyle, this.fontSize,
 				this.fontUnderlineColor, this.fontUnderlineStyle);
 		return new TextStyle(name, tp);
 	}

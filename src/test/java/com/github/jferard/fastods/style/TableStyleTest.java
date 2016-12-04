@@ -40,21 +40,26 @@ public class TableStyleTest {
 		final StringBuilder sb = new StringBuilder();
 		ts.appendXML(this.util, sb);
 
-		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"DefaultMasterPage\">"
+		DomTester.assertEquals(
+				"<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"DefaultMasterPage\">"
 						+ "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>"
-						+ "</style:style>", sb.toString());
+						+ "</style:style>",
+				sb.toString());
 	}
 
 	@Test
 	public final void testPageStyle() throws IOException {
 		final MasterPageStyle ps = MasterPageStyle.builder("p").build();
-		final TableStyle ts = TableStyle.builder("test").masterPageStyle(ps).build();
+		final TableStyle ts = TableStyle.builder("test").masterPageStyle(ps)
+				.build();
 		final StringBuilder sb = new StringBuilder();
 		ts.appendXML(this.util, sb);
 
-		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">"
+		DomTester.assertEquals(
+				"<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">"
 						+ "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>"
-						+ "</style:style>", sb.toString());
+						+ "</style:style>",
+				sb.toString());
 		Assert.assertEquals("test", ts.getName());
 	}
 }

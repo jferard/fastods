@@ -19,6 +19,7 @@
  */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -41,7 +42,7 @@ public class OdsFileCreation {
 		this.logger = Logger.getLogger("OdsFileCreation");
 	}
 
-	public final void test1000() throws FastOdsException {
+	public final void test1000() throws FastOdsException, IOException {
 		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
@@ -64,7 +65,7 @@ public class OdsFileCreation {
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
 
-	public final void test100000() throws FastOdsException {
+	public final void test100000() throws FastOdsException, IOException {
 		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
@@ -88,7 +89,7 @@ public class OdsFileCreation {
 	}
 
 	@Test
-	public final void test50() throws FastOdsException {
+	public final void test50() throws FastOdsException, IOException {
 		this.logger.info("Filling a 50 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();

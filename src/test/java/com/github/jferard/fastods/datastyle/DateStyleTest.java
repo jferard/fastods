@@ -51,10 +51,12 @@ public class DateStyleTest {
 				.dateFormat(DateStyle.Format.DDMMYY).build();
 		final StringBuilder sb = new StringBuilder();
 		ds.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\"><number:day number:style=\"long\"/>"
+		DomTester.assertEquals(
+				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\"><number:day number:style=\"long\"/>"
 						+ "<number:text>.</number:text><number:month number:style=\"long\"/>"
 						+ "<number:text>.</number:text><number:year/>"
-						+ "</number:date-style>", sb.toString());
+						+ "</number:date-style>",
+				sb.toString());
 	}
 
 	@Test
@@ -63,13 +65,15 @@ public class DateStyleTest {
 				.dateFormat(DateStyle.Format.DDMMYYYY).build();
 		final StringBuilder sb = new StringBuilder();
 		ds.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+		DomTester.assertEquals(
+				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:day number:style=\"long\"/>"
 						+ "<number:text>.</number:text>"
 						+ "<number:month number:style=\"long\"/>"
 						+ "<number:text>.</number:text>"
 						+ "<number:year number:style=\"long\"/>"
-						+ "</number:date-style>", sb.toString());
+						+ "</number:date-style>",
+				sb.toString());
 	}
 
 	@Test
@@ -134,13 +138,15 @@ public class DateStyleTest {
 				.dateFormat(DateStyle.Format.YYYYMMDD).build();
 		final StringBuilder sb = new StringBuilder();
 		ds.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
+		DomTester.assertEquals(
+				"<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">"
 						+ "<number:year number:style=\"long\"/>"
 						+ "<number:text>-</number:text>"
 						+ "<number:month number:style=\"long\"/>"
 						+ "<number:text>-</number:text>"
 						+ "<number:day number:style=\"long\"/>"
-						+ "</number:date-style>", sb.toString());
+						+ "</number:date-style>",
+				sb.toString());
 	}
 
 	@Test

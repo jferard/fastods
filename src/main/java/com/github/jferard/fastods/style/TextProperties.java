@@ -64,10 +64,9 @@ public class TextProperties {
 	/**
 	 * Create a new text style with the name name.
 	 */
-	TextProperties(final String fontColor,
-			final String fontName, final String fontWeight,
-			final String fontStyle, final String fontSize,
-			final String fontUnderlineColor,
+	TextProperties(final String fontColor, final String fontName,
+			final String fontWeight, final String fontStyle,
+			final String fontSize, final String fontUnderlineColor,
 			final Underline fontUnderlineStyle) {
 		this.fontColor = fontColor;
 		this.fontName = fontName;
@@ -182,8 +181,7 @@ public class TextProperties {
 
 	public boolean isNotEmpty() {
 		return this.fontUnderlineStyle != null || this.fontColor != null
-						|| this.fontSize != null || this.fontStyle != null
-						|| this.fontUnderlineColor != null
-						|| this.fontWeight != null;
+				|| this.fontSize != null || this.fontStyle != null
+				|| this.fontUnderlineColor != null || this.fontWeight != null;
 	}
 }

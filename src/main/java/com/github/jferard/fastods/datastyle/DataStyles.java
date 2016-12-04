@@ -43,7 +43,9 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 /**
- * The DataStyles object provides empty TableCellStyles with a simple DataStyle in it. 
+ * The DataStyles object provides empty TableCellStyles with a simple DataStyle
+ * in it.
+ * 
  * @author Julien Férard Copyright
  */
 public interface DataStyles {

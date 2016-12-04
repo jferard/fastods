@@ -22,12 +22,12 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class HeavyTableRowTest {
-	private StylesContainer stc;
 	private DataStyles ds;
 	private HeavyTableRow row;
 	private StylesEntry se;
-	private XMLUtil xmlUtil;
+	private StylesContainer stc;
 	private Table table;
+	private XMLUtil xmlUtil;
 
 	@Before
 	public void setUp() {
@@ -164,10 +164,10 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge() {
-		HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
-		
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
 		// PLAY
-		for (int c = 11; c< 20; c++)
+		for (int c = 11; c < 20; c++)
 			EasyMock.expect(this.table.getRowSecure(c)).andReturn(row2);
 		PowerMock.replayAll();
 		this.row.setStringValue(7, "value");
@@ -179,10 +179,10 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge2() throws IOException {
-		HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
-		
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
 		// PLAY
-		for (int c = 11; c< 20; c++)
+		for (int c = 11; c < 20; c++)
 			EasyMock.expect(this.table.getRowSecure(c)).andReturn(row2);
 		PowerMock.replayAll();
 		this.row.setStringValue(5, "value");
@@ -195,7 +195,7 @@ public class HeavyTableRowTest {
 				+ "</table:table-row>", sbt.toString());
 		PowerMock.verifyAll();
 	}
-	
+
 	@Test
 	public final void testObject() {
 		PowerMock.replayAll();

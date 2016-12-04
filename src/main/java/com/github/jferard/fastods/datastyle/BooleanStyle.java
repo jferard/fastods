@@ -72,8 +72,8 @@ public class BooleanStyle extends DataStyle {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<number:boolean-style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		this.appendLVAttributes(util, appendable);

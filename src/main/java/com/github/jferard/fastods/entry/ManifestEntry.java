@@ -54,7 +54,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  *
  */
 public class ManifestEntry implements OdsEntry {
-	String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
+	final String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
 			"<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">",
 			"<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
 
@@ -79,15 +79,11 @@ public class ManifestEntry implements OdsEntry {
 
 	};
 
-	public String[] getManifest() {
-		return this.text;
-	}
-
 	@Override
 	public void write(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
 		writer.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-		for (final String item : this.getManifest())
+		for (final String item : this.text)
 			writer.write(item);
 		writer.flush();
 		writer.closeEntry();

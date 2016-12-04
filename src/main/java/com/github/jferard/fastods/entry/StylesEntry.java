@@ -49,20 +49,25 @@ public class StylesEntry implements OdsEntry {
 		appendable.append("/></style:style>");
 	}
 
-	private StylesContainer stylesContainer;
+	private final StylesContainer stylesContainer;
 
 	/**
-	 * @param stylesStyleTagsContainer 
+	 * @param stylesStyleTagsContainer
 	 */
-	public StylesEntry(StylesContainer stylesContainer) {
+	public StylesEntry(final StylesContainer stylesContainer) {
 		this.stylesContainer = stylesContainer;
+	}
+
+	public StylesContainer getStyleTagsContainer() {
+		return this.stylesContainer;
 	}
 
 	@Override
 	public void write(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
-		final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
-		
+		final HasFooterHeader hasFooterHeader = this.stylesContainer
+				.hasFooterHeader();
+
 		writer.putNextEntry(new ZipEntry("styles.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
@@ -79,7 +84,7 @@ public class StylesEntry implements OdsEntry {
 
 		this.stylesContainer.writeDataStyles(util, writer);
 		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
-		
+
 		if (hasFooterHeader.hasHeader()) {
 			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Header");
 		}
@@ -91,7 +96,8 @@ public class StylesEntry implements OdsEntry {
 		writer.write("<office:automatic-styles>");
 
 		this.stylesContainer.writeStylesAutomaticStyles(util, writer);
-		this.stylesContainer.writeMasterPageStylesToAutomaticStyles(util, writer);
+		this.stylesContainer.writeMasterPageStylesToAutomaticStyles(util,
+				writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
@@ -102,8 +108,5 @@ public class StylesEntry implements OdsEntry {
 		writer.write("</office:document-styles>");
 		writer.flush();
 		writer.closeEntry();
-	}
-	public StylesContainer getStyleTagsContainer() {
-		return this.stylesContainer;
 	}
 }

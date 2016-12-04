@@ -58,9 +58,11 @@ public class TableColumnStyleTest {
 		tcs.appendXML(this.util, sbc);
 		tcs.appendXMLToTable(this.util, sbt, 1);
 
-		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table-column\">"
+		DomTester.assertEquals(
+				"<style:style style:name=\"test\" style:family=\"table-column\">"
 						+ "<style:table-column-properties fo:break-before=\"auto\" style:column-width=\"2.5cm\"/>"
-						+ "</style:style>", sbc.toString());
+						+ "</style:style>",
+				sbc.toString());
 		DomTester.assertEquals(
 				"<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"Default\"/>",
 				sbt.toString());

@@ -15,29 +15,33 @@ public class ContainerTest {
 	}
 
 	@Test
-	public final void testEmpty() {
-		Assert.assertFalse(this.c.getValues().iterator().hasNext());
+	public final void testCreateThenUpdate() {
+		Assert.assertTrue(this.c.add("a", 1, Mode.CREATE_OR_UPDATE));
+		Assert.assertEquals(Integer.valueOf(1),
+				this.c.getValues().iterator().next());
+		Assert.assertTrue(this.c.add("a", 2, Mode.CREATE_OR_UPDATE));
+		Assert.assertEquals(Integer.valueOf(2),
+				this.c.getValues().iterator().next());
 	}
 
 	@Test
 	public final void testCreateTwice() {
 		Assert.assertTrue(this.c.add("a", 1, Mode.CREATE));
-		Assert.assertEquals(Integer.valueOf(1), this.c.getValues().iterator().next());
+		Assert.assertEquals(Integer.valueOf(1),
+				this.c.getValues().iterator().next());
 		Assert.assertFalse(this.c.add("a", 2, Mode.CREATE));
-		Assert.assertEquals(Integer.valueOf(1), this.c.getValues().iterator().next());
+		Assert.assertEquals(Integer.valueOf(1),
+				this.c.getValues().iterator().next());
 	}
-	
+
+	@Test
+	public final void testEmpty() {
+		Assert.assertFalse(this.c.getValues().iterator().hasNext());
+	}
+
 	@Test
 	public final void testUpdateWithoutCreation() {
 		Assert.assertFalse(this.c.add("a", 1, Mode.UPDATE));
 		Assert.assertFalse(this.c.getValues().iterator().hasNext());
-	}
-	
-	@Test
-	public final void testCreateThenUpdate() {
-		Assert.assertTrue(this.c.add("a", 1, Mode.CREATE_OR_UPDATE));
-		Assert.assertEquals(Integer.valueOf(1), this.c.getValues().iterator().next());
-		Assert.assertTrue(this.c.add("a", 2, Mode.CREATE_OR_UPDATE));
-		Assert.assertEquals(Integer.valueOf(2), this.c.getValues().iterator().next());
 	}
 }

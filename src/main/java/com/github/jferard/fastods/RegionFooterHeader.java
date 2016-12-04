@@ -56,7 +56,7 @@ class RegionFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 * 
+	 *
 	 * @param textStyles
 	 *
 	 * @param minHeight2
@@ -65,14 +65,35 @@ class RegionFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
-			final Text centerRegion,
-			final Text leftRegion,
+			final Text centerRegion, final Text leftRegion,
 			final Text rightRegion, final Margins margins,
 			final String minHeight) {
 		super(footerHeaderType, margins, minHeight);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;
+	}
+
+	@Override
+	public void addEmbeddedStylesToStylesEntry(
+			final StylesContainer stylesContainer) {
+		this.leftRegion
+				.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		this.centerRegion
+				.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		this.rightRegion
+				.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+	}
+
+	@Override
+	public void addEmbeddedStylesToStylesEntry(
+			final StylesContainer stylesContainer, final Container.Mode mode) {
+		this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(
+				stylesContainer, mode);
+		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(
+				stylesContainer, mode);
+		this.rightRegion.addEmbeddedStylesToStylesAutomaticStyles(
+				stylesContainer, mode);
 	}
 
 	/**
@@ -83,25 +104,11 @@ class RegionFooterHeader extends FooterHeader {
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.leftRegion,
-				"region-left");
-		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.centerRegion,
-				"region-center");
-		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.rightRegion,
-				"region-right");
-	}
-
-	@Override
-	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer) {
-		this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-		this.rightRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-	}
-	
-	@Override
-	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer, Container.Mode mode) {
-		this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer, mode);
-		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer, mode);
-		this.rightRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer, mode);
+		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable,
+				this.leftRegion, "region-left");
+		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable,
+				this.centerRegion, "region-center");
+		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable,
+				this.rightRegion, "region-right");
 	}
 }

@@ -46,12 +46,13 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  */
 public class OdsEntries {
 	public static OdsEntries create(final PositionUtil positionUtil,
-			final XMLUtil xmlUtil, WriteUtil writeUtil, final DataStyles format) {
+			final XMLUtil xmlUtil, final WriteUtil writeUtil,
+			final DataStyles format) {
 		final MimetypeEntry mimetypeEntry = new MimetypeEntry();
 		final ManifestEntry manifestEntry = new ManifestEntry();
 		final SettingsEntry settingsEntry = new SettingsEntry();
 		final MetaEntry metaEntry = new MetaEntry();
-		StylesContainer stylesContainer = new StylesContainer();
+		final StylesContainer stylesContainer = new StylesContainer();
 		final StylesEntry stylesEntry = new StylesEntry(stylesContainer);
 		final ContentEntry contentEntry = new ContentEntry(positionUtil,
 				xmlUtil, writeUtil, format, stylesContainer);
@@ -67,13 +68,14 @@ public class OdsEntries {
 	private final MimetypeEntry mimetypeEntry;
 
 	private final SettingsEntry settingsEntry;
+	private final StylesContainer stylesContainer;
 	private final StylesEntry stylesEntry;
-	private StylesContainer stylesContainer;
 
 	protected OdsEntries(final Logger logger, final MimetypeEntry mimetypeEntry,
 			final ManifestEntry manifestEntry,
 			final SettingsEntry settingsEntry, final MetaEntry metaEntry,
-			final ContentEntry contentEntry, final StylesEntry stylesEntry, StylesContainer stylesContainer) {
+			final ContentEntry contentEntry, final StylesEntry stylesEntry,
+			final StylesContainer stylesContainer) {
 		this.logger = logger;
 		this.mimetypeEntry = mimetypeEntry;
 		this.manifestEntry = manifestEntry;

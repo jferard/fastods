@@ -22,7 +22,7 @@ public class ParagraphTest {
 		final ParagraphBuilder parBuilder = Paragraph.builder();
 		parBuilder.span("content");
 		parBuilder.span("text");
-		Paragraph par = parBuilder.build();
+		final Paragraph par = parBuilder.build();
 		Assert.assertEquals("content", par.getSpans().get(0).getText());
 		Assert.assertNull(par.getSpans().get(0).getTextStyle());
 		Assert.assertEquals("text", par.getSpans().get(1).getText());

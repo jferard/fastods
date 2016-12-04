@@ -23,9 +23,9 @@ public class OdsEntriesTest {
 	private MimetypeEntry mimetypeEntry;
 	private OdsEntries oe;
 	private SettingsEntry settingsEntry;
+	private StylesContainer stylesContainer;
 	private StylesEntry stylesEntry;
 	private XMLUtil util;
-	private StylesContainer stylesContainer;
 
 	@Before
 	public void setUp() {
@@ -50,7 +50,7 @@ public class OdsEntriesTest {
 	@Test
 	public final void testAddTextStyle() {
 		final TextStyle ts = TextStyle.builder("test").build();
-
+	
 		this.stylesEntry.addTextStyle(ts);
 		PowerMock.replayAll();
 		this.oe.addTextStyle(ts);

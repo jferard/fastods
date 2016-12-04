@@ -91,8 +91,8 @@ public abstract class NumberStyle extends DataStyle {
 	 * @param util
 	 */
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<number:number-style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		this.appendLVAttributes(util, appendable);

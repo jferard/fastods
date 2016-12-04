@@ -36,7 +36,9 @@ import java.util.zip.ZipInputStream;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -53,6 +55,8 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.google.common.collect.Sets;
 
 public class OdsFileTest {
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	private DataStyleBuilderFactory dataStyleBuilderFactory;
 	private OdsEntries entries;
@@ -83,7 +87,7 @@ public class OdsFileTest {
 		this.entries.addDataStyle(ds);
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		f.addDataStyle(ds);
 		PowerMock.verifyAll();
 	}
@@ -96,7 +100,7 @@ public class OdsFileTest {
 		this.entries.addPageStyle(ps);
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		f.addPageStyle(ps);
 		PowerMock.verifyAll();
 	}
@@ -112,7 +116,7 @@ public class OdsFileTest {
 		this.entries.setActiveTable(t);
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals(t, f.addTable("t1", 100, 100));
 		PowerMock.verifyAll();
 	}
@@ -128,7 +132,7 @@ public class OdsFileTest {
 		this.entries.setActiveTable(t);
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals(t, f.addTable("t1"));
 		PowerMock.verifyAll();
 	}
@@ -158,7 +162,7 @@ public class OdsFileTest {
 		EasyMock.expect(this.entries.getTable("t2")).andReturn(t).anyTimes();
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals(t, f.getTable(3));
 		Assert.assertEquals("t2", f.getTableName(3));
 		f.getTable("t2");
@@ -175,7 +179,7 @@ public class OdsFileTest {
 				.andReturn(Arrays.<Table> asList());
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		f.getTable(3);
 		PowerMock.verifyAll();
 	}
@@ -189,7 +193,7 @@ public class OdsFileTest {
 				.andReturn(Arrays.<Table> asList());
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		f.getTable(-3);
 		PowerMock.verifyAll();
 	}
@@ -201,7 +205,7 @@ public class OdsFileTest {
 		EasyMock.expect(this.entries.getTable("t1")).andReturn(null);
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		f.getTable("t1");
 		PowerMock.verifyAll();
 	}
@@ -214,7 +218,7 @@ public class OdsFileTest {
 				.andReturn(Arrays.<Table> asList());
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals(-1, f.getTableNumber("t1"));
 		PowerMock.verifyAll();
 	}
@@ -229,7 +233,7 @@ public class OdsFileTest {
 
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals("file", f.getName());
 		f.save(this.writer);
 		PowerMock.verifyAll();
@@ -241,12 +245,14 @@ public class OdsFileTest {
 		this.entries.setTables();
 		this.entries.writeEntries(this.xmlUtil, this.writer);
 		this.writer.close();
-		EasyMock.expectLastCall().andThrow(new IOException());
+		EasyMock.expectLastCall().andThrow(new IOException("@"));
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals("file", f.getName());
-		Assert.assertFalse(f.save(this.writer));
+		this.thrown.expect(IOException.class);
+		this.thrown.expectMessage("@");
+		f.save(this.writer);
 		PowerMock.verifyAll();
 	}
 
@@ -282,13 +288,15 @@ public class OdsFileTest {
 		this.initEntries();
 		this.entries.setTables();
 		this.entries.writeEntries(this.xmlUtil, this.writer);
-		EasyMock.expectLastCall().andThrow(new IOException());
+		EasyMock.expectLastCall().andThrow(new IOException("@"));
 		this.writer.close();
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals("file", f.getName());
-		Assert.assertFalse(f.save(this.writer));
+		this.thrown.expect(IOException.class);
+		this.thrown.expectMessage("@");
+		f.save(this.writer);
 		PowerMock.verifyAll();
 	}
 
@@ -298,7 +306,7 @@ public class OdsFileTest {
 		EasyMock.expect(this.entries.getTableCount()).andReturn(11);
 		PowerMock.replayAll();
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
-				this.writeUtil, this.xmlUtil);
+				this.xmlUtil);
 		Assert.assertEquals(11, f.tableCount());
 		PowerMock.verifyAll();
 	}

@@ -3,7 +3,6 @@ package com.github.jferard.fastods.datastyle;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;

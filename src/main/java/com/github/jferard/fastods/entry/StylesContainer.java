@@ -22,7 +22,6 @@
 package com.github.jferard.fastods.entry;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -123,6 +122,10 @@ public class StylesContainer {
 		return this.dataStylesContainer.getValueByKey();
 	}
 
+	public Map<String, MasterPageStyle> getMasterPageStyles() {
+		return this.masterPageStylesContainer.getValueByKey();
+	}
+
 	public Map<String, StyleTag> getStyleTagByName(final Dest dest) {
 		return this.styleTagsContainer.getValueByKey(dest);
 	}
@@ -192,9 +195,5 @@ public class StylesContainer {
 			final ZipUTF8Writer writer) throws IOException {
 		for (final StyleTag ts : iterable)
 			ts.appendXML(util, writer);
-	}
-
-	public Map<String, MasterPageStyle> getMasterPageStyles() {
-		return this.masterPageStylesContainer.getValueByKey();
 	}
 }

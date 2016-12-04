@@ -30,12 +30,11 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  */
 public interface StyleTag extends NamedObject {
-	
-	void appendXML(XMLUtil util, Appendable appendable)
-			throws IOException;
+
+	void appendXML(XMLUtil util, Appendable appendable) throws IOException;
+
+	String getFamily();
 
 	@Override
 	String getName();
-	
-	String getFamily();
 }

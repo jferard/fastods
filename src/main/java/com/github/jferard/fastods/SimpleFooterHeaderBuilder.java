@@ -49,8 +49,9 @@ class SimpleFooterHeaderBuilder
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FooterHeader build() {	
-		return new SimpleFooterHeader(this.footerHeaderType, this.curRegionBox.get(),
-				this.marginsBuilder.build(), this.minHeight);
+	public FooterHeader build() {
+		return new SimpleFooterHeader(this.footerHeaderType,
+				this.curRegionBox.get(), this.marginsBuilder.build(),
+				this.minHeight);
 	}
 }

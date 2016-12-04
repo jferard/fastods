@@ -14,7 +14,6 @@ import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.StylesContainer;
-import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -23,8 +22,8 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 
 public class TableTest {
-	private StylesContainer stc;
 	private DataStyles ds;
+	private StylesContainer stc;
 	private Table table;
 	private XMLUtil xmlUtil;
 
@@ -134,43 +133,6 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testNameAndStyle() {
-		this.table.setName("tname");
-		this.table.setStyle(TableStyle.builder("b").build());
-
-		Assert.assertEquals("tname", this.table.getName());
-		Assert.assertEquals("b", this.table.getStyleName());
-	}
-
-	@Test
-	public final void testSettingsEntry() throws IOException {
-		final StringBuilder sb = new StringBuilder();
-		this.table.appendXMLToSettingsEntry(this.xmlUtil, sb);
-
-		Assert.assertEquals(
-				"<config:config-item-map-entry config:name=\"mytable\">"
-						+ "<config:config-item config:name=\"CursorPositionX\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"cursorPositionY\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"verticalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"verticalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"horizontalSplitPosition\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"verticalSplitPosition\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"activeSplitRange\" config:type=\"short\">2</config:config-item>"
-						+ "<config:config-item config:name=\"positionLeft\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"PositionRight\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"PositionTop\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"positionBottom\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"zoomType\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"zoomValue\" config:type=\"int\">100</config:config-item>"
-						+ "<config:config-item config:name=\"pageViewZoomValue\" config:type=\"int\">60</config:config-item>"
-						+ "</config:config-item-map-entry>",
-				sb.toString());
-
-	}
-
-	@Test
 	public final void testMerge() throws IOException {
 		// PLAY
 		PowerMock.replayAll();
@@ -227,6 +189,43 @@ public class TableTest {
 						+ "</table:table-row>" + "</table:table>",
 				sb.toString());
 		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testNameAndStyle() {
+		this.table.setName("tname");
+		this.table.setStyle(TableStyle.builder("b").build());
+
+		Assert.assertEquals("tname", this.table.getName());
+		Assert.assertEquals("b", this.table.getStyleName());
+	}
+
+	@Test
+	public final void testSettingsEntry() throws IOException {
+		final StringBuilder sb = new StringBuilder();
+		this.table.appendXMLToSettingsEntry(this.xmlUtil, sb);
+
+		Assert.assertEquals(
+				"<config:config-item-map-entry config:name=\"mytable\">"
+						+ "<config:config-item config:name=\"CursorPositionX\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"cursorPositionY\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"verticalSplitMode\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"verticalSplitMode\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"horizontalSplitPosition\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"verticalSplitPosition\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"activeSplitRange\" config:type=\"short\">2</config:config-item>"
+						+ "<config:config-item config:name=\"positionLeft\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"PositionRight\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"PositionTop\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"positionBottom\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"zoomType\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"zoomValue\" config:type=\"int\">100</config:config-item>"
+						+ "<config:config-item config:name=\"pageViewZoomValue\" config:type=\"int\">60</config:config-item>"
+						+ "</config:config-item-map-entry>",
+				sb.toString());
+
 	}
 
 }

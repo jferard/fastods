@@ -41,8 +41,8 @@ public class TableStyle implements StyleTag {
 		return new TableStyleBuilder(name);
 	}
 
-	private final String name;
 	private final MasterPageStyle masterPageStyle;
+	private final String name;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -67,8 +67,8 @@ public class TableStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table");
@@ -82,12 +82,12 @@ public class TableStyle implements StyleTag {
 	}
 
 	@Override
-	public String getName() {
-		return this.name;
+	public String getFamily() {
+		return "table";
 	}
 
 	@Override
-	public String getFamily() {
-		return "table";
+	public String getName() {
+		return this.name;
 	}
 }

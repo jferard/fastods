@@ -59,10 +59,12 @@ public class TableCellStyleTest {
 				.allMargins("10pt").build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXML(this.util, sb);
-		DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+		DomTester.assertEquals(
+				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
-						+ "</style:style>", sb.toString());
+						+ "</style:style>",
+				sb.toString());
 	}
 
 	@Test
@@ -90,10 +92,12 @@ public class TableCellStyleTest {
 				.marginLeft("13pt").build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXML(this.util, sb);
-		DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+		DomTester.assertEquals(
+				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
-						+ "</style:style>", sb.toString());
+						+ "</style:style>",
+				sb.toString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

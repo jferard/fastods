@@ -222,7 +222,8 @@ public class MasterPageStyleBuilder {
 	 * @param paperFormat
 	 * @return this for fluent style
 	 */
-	public final MasterPageStyleBuilder paperFormat(final PaperFormat paperFormat) {
+	public final MasterPageStyleBuilder paperFormat(
+			final PaperFormat paperFormat) {
 		this.paperFormat = paperFormat;
 		this.pageWidth = paperFormat.getWidth();
 		this.pageHeight = paperFormat.getHeight();

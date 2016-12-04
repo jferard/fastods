@@ -6,8 +6,8 @@ public class Box<T> {
 	public T get() {
 		return this.t;
 	}
-	
-	public void set(T t) {
+
+	public void set(final T t) {
 		this.t = t;
 	}
 }

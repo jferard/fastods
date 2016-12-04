@@ -50,10 +50,15 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  */
 public class Paragraph {
-	private final List<Span> spans;
-	private TextStyle style;
+	public static ParagraphBuilder builder() {
+		return new ParagraphBuilder();
+	}
 
-	Paragraph(List<Span> spans, TextStyle style) {
+	private final List<Span> spans;
+
+	private final TextStyle style;
+
+	Paragraph(final List<Span> spans, final TextStyle style) {
 		this.spans = spans;
 		this.style = style;
 	}
@@ -80,9 +85,5 @@ public class Paragraph {
 
 	public List<Span> getSpans() {
 		return this.spans;
-	}
-
-	public static ParagraphBuilder builder() {
-		return new ParagraphBuilder();
 	}
 }

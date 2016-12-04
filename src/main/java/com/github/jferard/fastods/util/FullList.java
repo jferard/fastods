@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Spliterator;
 
 /**
  * The class FullList represents a List that is unlimited, in a specific sense :
@@ -259,11 +258,6 @@ public class FullList<E> implements List<E> {
 	@Override
 	public int size() {
 		return this.list.size();
-	}
-
-	@Override
-	public Spliterator<E> spliterator() {
-		return this.list.spliterator();
 	}
 
 	@Override

@@ -90,7 +90,7 @@ public class TableCellStyle implements StyleTag {
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsFile o
-	 * 
+	 *
 	 * @param family
 	 *            The type of this style, either
 	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
@@ -131,8 +131,8 @@ public class TableCellStyle implements StyleTag {
 	 * @throws IOException
 	 */
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "table-cell");
@@ -177,16 +177,16 @@ public class TableCellStyle implements StyleTag {
 	}
 
 	@Override
+	public String getFamily() {
+		return "table-cell";
+	}
+
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
-	}
-
-	@Override
-	public String getFamily() {
-		return "table-cell";
 	}
 }

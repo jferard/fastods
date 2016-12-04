@@ -257,7 +257,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 		/*
 		if (s == null)
 			return null;
-
+		
 		String s2 = this.contentCacheMap.get(s);
 		if (s2 == null) {
 			final int length = s.length();
@@ -309,7 +309,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 						this.buffer[destIndex++] = c2;
 				}
 			}
-
+		
 			if (oneSpecialChar) {
 				if (destIndex >= this.buffer.length) {
 					final char[] newBuffer = new char[2 * this.buffer.length];

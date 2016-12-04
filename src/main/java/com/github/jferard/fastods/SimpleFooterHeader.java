@@ -46,7 +46,7 @@ class SimpleFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 * 
+	 *
 	 * @param textStyles
 	 * @param minHeight2
 	 *
@@ -54,10 +54,22 @@ class SimpleFooterHeader extends FooterHeader {
 	 *            - The OdsFile to which this footer belongs to.
 	 */
 	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final Text region, final Margins margins,
-			final String minHeight) {
+			final Text region, final Margins margins, final String minHeight) {
 		super(footerHeaderType, margins, minHeight);
 		this.region = region;
+	}
+
+	@Override
+	public void addEmbeddedStylesToStylesEntry(
+			final StylesContainer stylesContainer) {
+		this.region.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+	}
+
+	@Override
+	public void addEmbeddedStylesToStylesEntry(
+			final StylesContainer stylesContainer, final Mode mode) {
+		this.region.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer,
+				mode);
 	}
 
 	/**
@@ -70,15 +82,5 @@ class SimpleFooterHeader extends FooterHeader {
 			final Appendable appendable) throws IOException {
 		if (this.region != null)
 			this.region.appendXMLContent(util, appendable);
-	}
-
-	@Override
-	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer) {
-		this.region.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-	}
-	
-	@Override
-	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer, Mode mode) {
-		this.region.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer, mode);
 	}
 }

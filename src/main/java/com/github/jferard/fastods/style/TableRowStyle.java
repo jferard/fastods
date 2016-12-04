@@ -23,7 +23,6 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.entry.ContentEntry;
 import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -70,8 +69,8 @@ public class TableRowStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table-row");
@@ -83,6 +82,11 @@ public class TableRowStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:use-optimal-row-height",
 				"true");
 		appendable.append("/></style:style>");
+	}
+
+	@Override
+	public String getFamily() {
+		return "table-row";
 	}
 
 	@Override
@@ -102,10 +106,5 @@ public class TableRowStyle implements StyleTag {
 	 */
 	public String getRowHeight() {
 		return this.rowHeight;
-	}
-
-	@Override
-	public String getFamily() {
-		return "table-row";
 	}
 }

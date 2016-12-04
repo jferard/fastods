@@ -42,6 +42,12 @@ import com.google.common.base.Objects;
 public class DomTester {
 	static Logger logger = Logger.getLogger("DomTester");
 
+	public static void assertEquals(final String string1,
+			final String string2) {
+		if (!DomTester.equals(string1, string2))
+			Assert.assertEquals(string1, string2); // shows the difference
+	}
+
 	public static boolean equals(final String s1, final String s2) {
 		try {
 			final DomTester tester = new DomTester();
@@ -125,10 +131,5 @@ public class DomTester {
 				new ByteArrayInputStream(("<r>" + s2 + "</r>").getBytes()));
 		return this.equals(document1.getDocumentElement().getFirstChild(),
 				document2.getDocumentElement().getFirstChild());
-	}
-
-	public static void assertEquals(String string1, String string2) {
-		if (!DomTester.equals(string1, string2))
-			Assert.assertEquals(string1, string2); // shows the difference
 	}
 }

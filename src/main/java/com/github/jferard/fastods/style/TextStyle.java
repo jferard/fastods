@@ -49,14 +49,19 @@ public class TextStyle implements StyleTag {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable)
+			throws IOException {
 		appendable.append("<style:style ");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendEAttribute(appendable, "style:family", "text");
 		appendable.append(">");
 		this.getTextProperties().appendXMLContent(util, appendable);
 		appendable.append("</style:style>");
+	}
+
+	@Override
+	public String getFamily() {
+		return "text";
 	}
 
 	/**
@@ -69,17 +74,12 @@ public class TextStyle implements StyleTag {
 		return this.name;
 	}
 
+	public TextProperties getTextProperties() {
+		return this.textProperties;
+	}
+
 	public boolean isNotEmpty() {
 		return this.name != null && this.name.length() > 0
 				&& this.getTextProperties().isNotEmpty();
-	}
-
-	@Override
-	public String getFamily() {
-		return "text";
-	}
-
-	public TextProperties getTextProperties() {
-		return this.textProperties;
 	}
 }

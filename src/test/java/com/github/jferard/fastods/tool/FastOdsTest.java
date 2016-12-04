@@ -46,7 +46,7 @@ public class FastOdsTest {
 		rootLogger.setLevel(Level.OFF);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.OFF);
-		
+
 		PowerMock.mockStatic(Desktop.class);
 		final Desktop d = PowerMock.createMock(Desktop.class);
 		final File f = new File(".\\pom.xml");

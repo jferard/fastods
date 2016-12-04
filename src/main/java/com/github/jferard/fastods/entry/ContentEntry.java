@@ -28,8 +28,6 @@ import java.util.zip.ZipEntry;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.style.StyleTag;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -45,14 +43,14 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 public class ContentEntry implements OdsEntry {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
+	private final StylesContainer stylesContainer;
 	private final UniqueList<Table> tables;
+	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
-	private WriteUtil writeUtil;
-	private StylesContainer stylesContainer;
 
 	ContentEntry(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			WriteUtil writeUtil, final DataStyles format,
-			StylesContainer stylesContainer) {
+			final WriteUtil writeUtil, final DataStyles format,
+			final StylesContainer stylesContainer) {
 		this.writeUtil = writeUtil;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;
@@ -78,6 +76,10 @@ public class ContentEntry implements OdsEntry {
 			this.tables.add(table);
 		}
 		return table;
+	}
+
+	public StylesContainer getStyleTagsContainer() {
+		return this.stylesContainer;
 	}
 
 	public Table getTable(final int tableIndex) {
@@ -141,9 +143,5 @@ public class ContentEntry implements OdsEntry {
 			throw new FastOdsException(new StringBuilder("Wrong table number [")
 					.append(tab).append("]").toString());
 		}
-	}
-
-	public StylesContainer getStyleTagsContainer() {
-		return this.stylesContainer;
 	}
 }

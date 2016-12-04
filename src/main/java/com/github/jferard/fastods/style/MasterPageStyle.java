@@ -42,10 +42,11 @@ import com.github.jferard.fastods.util.XMLUtil;
 public class MasterPageStyle {
 	public static enum PaperFormat {
 		A3(MasterPageStyle.A3_H, MasterPageStyle.A3_W), A4(MasterPageStyle.A3_W,
-				MasterPageStyle.A4_W), A5(MasterPageStyle.A4_W, MasterPageStyle.A5_W), LEGAL(
-						MasterPageStyle.LEGAL_H,
-						MasterPageStyle.LETTER_W), LETTER(MasterPageStyle.LETTER_H,
-								MasterPageStyle.LETTER_W), USER("", "");
+				MasterPageStyle.A4_W), A5(MasterPageStyle.A4_W,
+						MasterPageStyle.A5_W), LEGAL(MasterPageStyle.LEGAL_H,
+								MasterPageStyle.LETTER_W), LETTER(
+										MasterPageStyle.LETTER_H,
+										MasterPageStyle.LETTER_W), USER("", "");
 
 		private final String height;
 		private final String width;
@@ -181,6 +182,22 @@ public class MasterPageStyle {
 		this.writingMode = writingMode;
 	}
 
+	public void addEmbeddedStylesToStylesEntry(
+			final StylesContainer stylesContainer) {
+		if (this.header != null)
+			this.header.addEmbeddedStylesToStylesEntry(stylesContainer);
+		if (this.footer != null)
+			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer);
+	}
+
+	public void addEmbeddedStylesToStylesEntry(
+			final StylesContainer stylesContainer, final Mode mode) {
+		if (this.header != null)
+			this.header.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
+		if (this.footer != null)
+			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
+	}
+
 	public void addToEntries(final OdsEntries odsEntries) {
 		odsEntries.addPageStyle(this);
 	}
@@ -215,7 +232,7 @@ public class MasterPageStyle {
 		/*
 		if (this.header != null)
 			this.header..appendTextStyles(util, appendable);
-
+		
 		if (this.footer != null)
 			this.footer.appendTextStyles(util, appendable);
 		*/
@@ -230,8 +247,7 @@ public class MasterPageStyle {
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
-		util.appendEAttribute(appendable, "style:name",
-				this.name);
+		util.appendEAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:page-layout-name", this.name);
 		appendable.append("><style:header>");
 		this.getHeader().appendXMLToMasterStyle(util, appendable);
@@ -311,19 +327,5 @@ public class MasterPageStyle {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.backgroundColor);
 		}
-	}
-	
-	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer) {
-		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesEntry(stylesContainer);
-		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer);
-	}
-	
-	public void addEmbeddedStylesToStylesEntry(StylesContainer stylesContainer, Mode mode) {
-		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
-		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
 	}
 }

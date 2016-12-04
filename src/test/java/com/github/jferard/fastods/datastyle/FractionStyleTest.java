@@ -23,8 +23,7 @@ public class FractionStyleTest {
 	}
 
 	@Test
-	public final void test1()
-			throws IOException {
+	public final void test1() throws IOException {
 		final FractionStyle s = this.factory.fractionStyleBuilder("name")
 				.country("FR").language("en").volatileStyle(true)
 				.fractionValues(1, 3).groupThousands(true).minIntegerDigits(8)
@@ -44,8 +43,7 @@ public class FractionStyleTest {
 	}
 
 	@Test
-	public final void test2()
-			throws IOException {
+	public final void test2() throws IOException {
 		final FractionStyle s = this.factory.fractionStyleBuilder("name")
 				.country("FR").language("en").locale(Locale.GERMANY)
 				.volatileStyle(true).fractionValues(1, 3).groupThousands(true)
