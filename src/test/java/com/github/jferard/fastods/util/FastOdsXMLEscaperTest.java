@@ -93,6 +93,24 @@ public class FastOdsXMLEscaperTest {
 		Assert.assertEquals(sb2.toString(),
 				escaper2.escapeXMLContent(sb.toString()));
 	}
+	
+	@Test
+	public final void testContentBuffer2() {
+		final XMLEscaper escaper2 = new FastOdsXMLEscaper(5);
+		final String s = "<ae";
+		final String s2 = "&lt;ae";
+		Assert.assertEquals(s2,
+				escaper2.escapeXMLContent(s));
+	}
+	
+	@Test
+	public final void testAttrBuffer2() {
+		final XMLEscaper escaper2 = new FastOdsXMLEscaper(5);
+		final String s = "<ae";
+		final String s2 = "&lt;ae";
+		Assert.assertEquals(s2,
+				escaper2.escapeXMLAttribute(s));
+	}
 
 	@Test
 	public final void testContentExpression() {

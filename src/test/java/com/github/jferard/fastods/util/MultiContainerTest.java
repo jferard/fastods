@@ -52,8 +52,10 @@ public class MultiContainerTest {
 
 	@Test
 	public final void testEmpty() {
-		for (final Dest s : Dest.values())
+		for (final Dest s : Dest.values()) {
 			Assert.assertFalse(this.c.getValues(s).iterator().hasNext());
+			Assert.assertEquals(0, this.c.getValueByKey(s).size());
+		}
 	}
 
 	@Test

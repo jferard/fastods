@@ -73,4 +73,18 @@ public class PositionUtilTest {
 		Assert.assertNull(this.util.getPosition("AA$9."));
 		Assert.assertNull(this.util.getPosition("AA$9A"));
 	}
+	
+	@Test
+	public final void testEquals() {
+		Position position1 = this.util.getPosition("A5");
+		Assert.assertEquals(position1, position1);
+		Assert.assertNotEquals(position1, null);
+		final Position position2 = this.util.getPosition(4, 0);
+		Assert.assertEquals(position1, position2);
+		final Position position3 = this.util.getPosition(5, 0);
+		Assert.assertNotEquals(position1, position3);
+		final Position position4 = this.util.getPosition(4, 1);
+		Assert.assertNotEquals(position1, position4);
+		Assert.assertEquals(1085, position1.hashCode());
+	}
 }

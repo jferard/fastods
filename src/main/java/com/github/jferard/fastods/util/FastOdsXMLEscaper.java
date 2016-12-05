@@ -78,49 +78,51 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 
 		String s2 = this.attrCacheMap.get(s);
 		if (s2 == null) {
-			final int length = s.length();
-			int destIndex = 0;
-			int copyFromIndex = 0;
-			int copyToIndex = 0;
+			final int sourceLength = s.length();
+			int previousDestIndex = 0;
+			int firstIdenticalCharInSourceIndex = 0;
+			int firstDifferentCharInSourceIndex = 0;
 			boolean oneSpecialChar = false;
-			for (int sourceIndex = 0; sourceIndex < length; sourceIndex++) {
+			for (int sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++) {
 				final char c = s.charAt(sourceIndex);
 				int toCopyIndex;
 				int toCopyLen;
 				if (c == '&') {
-					copyToIndex = sourceIndex + 1; // gobble the ampersand
+					firstDifferentCharInSourceIndex = sourceIndex + 1; // gobble
+																		// the
+																		// ampersand
 					toCopyIndex = 0;
 					toCopyLen = 4;
 				} else if (c == '<') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 4;
 					toCopyLen = 4;
 				} else if (c == '>') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 8;
 					toCopyLen = 4;
 				} else if (c == '\'') { // begin attribute
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 12;
 					toCopyLen = 6;
 				} else if (c == '"') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 18;
 					toCopyLen = 6;
 				} else if (c == '\t') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 30;
 					toCopyLen = 5;
 				} else if (c == '\n') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 35;
 					toCopyLen = 5;
 				} else if (c == '\r') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 40;
 					toCopyLen = 5;
 				} else if (c < 0x20) {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 24;
 					toCopyLen = 6;
 				} else {
@@ -128,42 +130,51 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					toCopyLen = -1;
 				}
 
+				// trigger copy only if a special char appears
 				if (toCopyLen != -1) {
 					oneSpecialChar = true;
-					// ensure buffer size
-					if (destIndex + toCopyLen + 1 >= this.buffer.length - 1) {
+					final int identicalCount = firstDifferentCharInSourceIndex
+							- firstIdenticalCharInSourceIndex;
+
+					// first : ensure buffer size
+					if (previousDestIndex + toCopyLen + identicalCount >= this.buffer.length) {
 						final char[] newBuffer = new char[2
 								* this.buffer.length];
 						System.arraycopy(this.buffer, 0, newBuffer, 0,
-								destIndex);
+								previousDestIndex);
 						this.buffer = newBuffer;
 					}
-					// put in the buffer the identical chars
-					if (copyToIndex > copyFromIndex) {
-						s.getChars(copyFromIndex, copyToIndex, this.buffer,
-								destIndex);
-						destIndex += copyToIndex - copyFromIndex;
+					// second : put in the buffer the identical chars, from sourceIndex
+					// (one exception = &)
+					if (identicalCount > 0) {
+						s.getChars(firstIdenticalCharInSourceIndex,
+								firstDifferentCharInSourceIndex, this.buffer,
+								previousDestIndex);
+						previousDestIndex += identicalCount;
 					}
-					copyFromIndex = sourceIndex + 1;
-					// put the new chars in the buffer
+					// third : put the new chars in the buffer
 					for (int i = 0; i < toCopyLen; i++) {
-						this.buffer[destIndex++] = FastOdsXMLEscaper.TO_COPY[toCopyIndex
+						this.buffer[previousDestIndex++] = FastOdsXMLEscaper.TO_COPY[toCopyIndex
 								+ i];
 					}
+					firstIdenticalCharInSourceIndex = sourceIndex + 1; // next one
 				}
 			}
 
-			if (oneSpecialChar) { // at least
-				if (destIndex >= this.buffer.length) {
+			// we might have some chars to copy
+			if (oneSpecialChar) {
+				final int identicalCount = sourceLength - firstIdenticalCharInSourceIndex;
+				if (previousDestIndex + identicalCount >= this.buffer.length) {
 					final char[] newBuffer = new char[2 * this.buffer.length];
-					System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
+					System.arraycopy(this.buffer, 0, newBuffer, 0, previousDestIndex);
 					this.buffer = newBuffer;
 				}
-				if (length > copyFromIndex) {
-					s.getChars(copyFromIndex, length, this.buffer, destIndex);
-					destIndex += length - copyFromIndex;
+				if (identicalCount > 0) {
+					s.getChars(firstIdenticalCharInSourceIndex, sourceLength,
+							this.buffer, previousDestIndex);
+					previousDestIndex += identicalCount;
 				}
-				s2 = new String(this.buffer, 0, destIndex);
+				s2 = new String(this.buffer, 0, previousDestIndex);
 			} else
 				s2 = s;
 			this.attrCacheMap.put(s, s2);
@@ -178,25 +189,27 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 
 		String s2 = this.contentCacheMap.get(s);
 		if (s2 == null) {
-			final int length = s.length();
-			int destIndex = 0;
-			int copyFromIndex = 0;
-			int copyToIndex = 0;
+			final int sourceLength = s.length();
+			int previousDestIndex = 0;
+			int firstIdenticalCharInSourceIndex = 0;
+			int firstDifferentCharInSourceIndex = 0;
 			boolean oneSpecialChar = false;
-			for (int sourceIndex = 0; sourceIndex < length; sourceIndex++) {
+			for (int sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++) {
 				final char c = s.charAt(sourceIndex);
 				int toCopyIndex;
 				int toCopyLen;
 				if (c == '&') {
-					copyToIndex = sourceIndex + 1; // gobble the ampersand
+					firstDifferentCharInSourceIndex = sourceIndex + 1; // gobble
+																		// the
+																		// ampersand
 					toCopyIndex = 0;
 					toCopyLen = 4;
 				} else if (c == '<') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 4;
 					toCopyLen = 4;
 				} else if (c == '>') {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 8;
 					toCopyLen = 4;
 				} else if (c == '\t' || c == '\n' || c == '\r') {
@@ -204,7 +217,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					toCopyIndex = -1;
 					toCopyLen = -1;
 				} else if (c < 0x20) {
-					copyToIndex = sourceIndex;
+					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 24;
 					toCopyLen = 6;
 				} else {
@@ -212,120 +225,53 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					toCopyLen = -1;
 				}
 
+				// trigger copy only if a special char appears
 				if (toCopyLen != -1) {
 					oneSpecialChar = true;
+					final int identicalCount = firstDifferentCharInSourceIndex
+							- firstIdenticalCharInSourceIndex;
 					// ensure buffer size
-					if (destIndex + toCopyLen + 1 >= this.buffer.length - 1) {
+					if (previousDestIndex + toCopyLen + identicalCount >= this.buffer.length) {
 						final char[] newBuffer = new char[2
 								* this.buffer.length];
 						System.arraycopy(this.buffer, 0, newBuffer, 0,
-								destIndex);
+								previousDestIndex);
 						this.buffer = newBuffer;
 					}
 					// put in the buffer the identical chars
-					if (copyToIndex > copyFromIndex) {
-						s.getChars(copyFromIndex, copyToIndex, this.buffer,
-								destIndex);
-						destIndex += copyToIndex - copyFromIndex;
+					if (identicalCount > 0) {
+						s.getChars(firstIdenticalCharInSourceIndex,
+								firstDifferentCharInSourceIndex, this.buffer,
+								previousDestIndex);
+						previousDestIndex += identicalCount;
 					}
-					copyFromIndex = sourceIndex + 1;
 					// put the new chars in the buffer
 					for (int i = 0; i < toCopyLen; i++) {
-						this.buffer[destIndex++] = FastOdsXMLEscaper.TO_COPY[toCopyIndex
+						this.buffer[previousDestIndex++] = FastOdsXMLEscaper.TO_COPY[toCopyIndex
 								+ i];
 					}
+					firstIdenticalCharInSourceIndex = sourceIndex + 1; // next one
 				}
 			}
 
+			// we might have some chars to copy
 			if (oneSpecialChar) { // at least
-				if (destIndex >= this.buffer.length) {
+				final int identicalCount = sourceLength - firstIdenticalCharInSourceIndex;
+				if (previousDestIndex + identicalCount >= this.buffer.length) {
 					final char[] newBuffer = new char[2 * this.buffer.length];
-					System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
+					System.arraycopy(this.buffer, 0, newBuffer, 0, previousDestIndex);
 					this.buffer = newBuffer;
 				}
-				if (length > copyFromIndex) {
-					s.getChars(copyFromIndex, length, this.buffer, destIndex);
-					destIndex += length - copyFromIndex;
+				if (identicalCount > 0) {
+					s.getChars(firstIdenticalCharInSourceIndex, sourceLength,
+							this.buffer, previousDestIndex);
+					previousDestIndex += identicalCount;
 				}
-				s2 = new String(this.buffer, 0, destIndex);
+				s2 = new String(this.buffer, 0, previousDestIndex);
 			} else
 				s2 = s;
 			this.contentCacheMap.put(s, s2);
 		}
 		return s2;
-
-		/*
-		if (s == null)
-			return null;
-		
-		String s2 = this.contentCacheMap.get(s);
-		if (s2 == null) {
-			final int length = s.length();
-			int destIndex = 0;
-			int copyFromIndex = 0;
-			int copyToIndex = 0;
-			String toCopy = "";
-			boolean specialChar = false;
-			boolean oneSpecialChar = false;
-			for (int sourceIndex = 0; sourceIndex < length; sourceIndex++) {
-				final char c = s.charAt(sourceIndex);
-				if (c == '&') {
-					copyToIndex = sourceIndex + 1;
-					toCopy = "amp;";
-					specialChar = true;
-				} else if (c == '<') {
-					copyToIndex = sourceIndex;
-					toCopy = "&lt;";
-					specialChar = true;
-				} else if (c == '>') {
-					copyToIndex = sourceIndex;
-					toCopy = "&gt;";
-					specialChar = true;
-				} else if (c == '\t' || c == '\n' || c == '\r') {
-					// do nothing !
-				} else if (c < 0x20) {
-					copyToIndex = sourceIndex;
-					toCopy = "\uFFFD";
-					specialChar = true;
-				}
-				if (specialChar) {
-					oneSpecialChar = true;
-					if (destIndex + toCopy.length() + 1 >= this.buffer.length
-							- 1) {
-						final char[] newBuffer = new char[2
-								* this.buffer.length];
-						System.arraycopy(this.buffer, 0, newBuffer, 0,
-								destIndex);
-						this.buffer = newBuffer;
-					}
-					if (copyToIndex > copyFromIndex) {
-						s.getChars(copyFromIndex, copyToIndex, this.buffer,
-								destIndex);
-						destIndex += copyToIndex - copyFromIndex;
-					}
-					copyFromIndex = sourceIndex + 1;
-					specialChar = false;
-					for (final char c2 : toCopy.toCharArray())
-						this.buffer[destIndex++] = c2;
-				}
-			}
-		
-			if (oneSpecialChar) {
-				if (destIndex >= this.buffer.length) {
-					final char[] newBuffer = new char[2 * this.buffer.length];
-					System.arraycopy(this.buffer, 0, newBuffer, 0, destIndex);
-					this.buffer = newBuffer;
-				}
-				if (length > copyFromIndex) {
-					s.getChars(copyFromIndex, length, this.buffer, destIndex);
-					destIndex += length - copyFromIndex;
-				}
-				s2 = new String(this.buffer, 0, destIndex);
-			} else
-				s2 = s;
-			this.contentCacheMap.put(s, s2);
-		}
-		return s2;
-		*/
 	}
 }

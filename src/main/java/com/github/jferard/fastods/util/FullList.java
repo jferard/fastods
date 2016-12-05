@@ -262,7 +262,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
-		return this.list.subList(fromIndex, toIndex);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

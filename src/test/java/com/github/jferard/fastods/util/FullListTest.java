@@ -1,6 +1,7 @@
 package com.github.jferard.fastods.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -133,6 +134,18 @@ public class FullListTest {
 	}
 
 	@Test
+	public final void testRemoveAll() {
+		final String be = "blank";
+		final List<String> fl = FullList.<String> builder().blankElement(be)
+				.capacity(10).build();
+		fl.set(50, "non blank");
+		fl.set(100, "non blank2");
+
+		Assert.assertTrue(fl.removeAll(Arrays.asList("non blank2")));
+		Assert.assertEquals(51, fl.size());
+	}
+
+	@Test
 	public final void testRetain() {
 		final String be = "blank";
 		final List<String> fl = FullList.<String> builder().blankElement(be)
@@ -193,4 +206,31 @@ public class FullListTest {
 		Assert.assertEquals("non blank3", fl.get(110));
 	}
 
+	@Test
+	public void testToString() {
+		final List<String> fl = FullList.<String> builder().build();
+		fl.add("a");
+		fl.add(4, "e");
+
+		Assert.assertEquals("[a, null, null, null, e]", fl.toString());
+	}
+
+	@Test
+	public void testToArray() {
+		final List<String> fl = FullList.<String> builder().build();
+		fl.add("a");
+		fl.add(4, "e");
+
+		Assert.assertArrayEquals(
+				new String[] { "a", null, null, null, "e" },
+				fl.toArray(new String[] {}));
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testSubList() {
+		final List<String> fl = FullList.<String> builder().build();
+		fl.add("a");
+		fl.add(4, "e");
+		fl.subList(1, 3);
+	}
 }

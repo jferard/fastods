@@ -23,10 +23,7 @@ package com.github.jferard.fastods.util;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
- * @author Martin Schulz Copyright 2008-2013 Martin Schulz <mtschulz at
- *         users.sourceforge.net>
  */
-@SuppressWarnings("PMD.UnusedLocalVariable")
 public class WriteUtil {
 	private final String[] ints;
 
