@@ -65,7 +65,7 @@ public interface TableCell {
 	/**
 	 * XML Schema Part 2, 3.2.7 dateTime
 	 */
-	final SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
+	SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 	void appendXMLToTableRow(XMLUtil util, Appendable appendable)

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -136,12 +135,5 @@ public class ContentEntry implements OdsEntry {
 		writer.write("</office:document-content>");
 		writer.flush();
 		writer.closeEntry();
-	}
-
-	private void checkTableIndex(final int tab) throws FastOdsException {
-		if (tab < 0 || this.tables.size() <= tab) {
-			throw new FastOdsException(new StringBuilder("Wrong table number [")
-					.append(tab).append("]").toString());
-		}
 	}
 }

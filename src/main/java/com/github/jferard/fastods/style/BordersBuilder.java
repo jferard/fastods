@@ -21,6 +21,8 @@
  ******************************************************************************/
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.util.EqualityUtil;
+
 public class BordersBuilder {
 	private BorderAttribute all;
 	private BorderAttribute bottom;
@@ -49,7 +51,7 @@ public class BordersBuilder {
 	}
 
 	public Borders build() {
-		return new Borders(this.all, this.top, this.right, this.bottom,
+		return new Borders(new EqualityUtil(), this.all, this.top, this.right, this.bottom,
 				this.left);
 	}
 

@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Borders {
@@ -31,10 +32,12 @@ public class Borders {
 	private final BorderAttribute left;
 	private final BorderAttribute right;
 	private final BorderAttribute top;
+	private EqualityUtil equalityUtil;
 
-	Borders(final BorderAttribute all, final BorderAttribute top,
-			final BorderAttribute right, final BorderAttribute bottom,
-			final BorderAttribute left) {
+	Borders(EqualityUtil equalityUtil, final BorderAttribute all,
+			final BorderAttribute top, final BorderAttribute right,
+			final BorderAttribute bottom, final BorderAttribute left) {
+		this.equalityUtil = equalityUtil;
 		this.all = all;
 		this.top = top;
 		this.right = right;
@@ -89,16 +92,11 @@ public class Borders {
 			return false;
 
 		final Borders other = (Borders) o;
-		return (this.top == null ? other.top == null
-				: this.top.equals(other.top))
-				&& (this.right == null ? other.right == null
-						: this.right.equals(other.right))
-				&& (this.bottom == null ? other.bottom == null
-						: this.bottom.equals(other.bottom))
-				&& (this.left == null ? other.left == null
-						: this.left.equals(other.left))
-				&& (this.all == null ? other.all == null
-						: this.all.equals(other.all));
+		return this.equalityUtil.equal(this.top, other.top)
+				&& this.equalityUtil.equal(this.right, other.right)
+				&& this.equalityUtil.equal(this.bottom, other.bottom)
+				&& this.equalityUtil.equal(this.left, other.left)
+				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
 	public BorderAttribute getAll() {
@@ -127,5 +125,10 @@ public class Borders {
 				+ this.bottom + ", left=" + this.left + ", all=" + this.all
 				+ "]";
 
+	}
+
+	@Override
+	public int hashCode() {
+		return this.equalityUtil.hashObjects(this.all, this.bottom, this.left, this.right, this.top);
 	}
 }

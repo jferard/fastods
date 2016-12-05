@@ -21,6 +21,8 @@
  ******************************************************************************/
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.util.EqualityUtil;
+
 public class MarginsBuilder {
 	private String all;
 	private String bottom;
@@ -39,7 +41,7 @@ public class MarginsBuilder {
 	}
 
 	public Margins build() {
-		return new Margins(this.all, this.top, this.right, this.bottom,
+		return new Margins(new EqualityUtil(), this.all, this.top, this.right, this.bottom,
 				this.left);
 	}
 

@@ -15,6 +15,7 @@ import com.github.jferard.fastods.HeavyTableRow;
 import com.github.jferard.fastods.OdsFile;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 
 public class OdsFileHelperTest {
@@ -22,9 +23,6 @@ public class OdsFileHelperTest {
 	private List<Table> l;
 	private OdsFile odsFile;
 	private PositionUtil positionUtil;
-	private HeavyTableRow r1;
-	private HeavyTableRow r2;
-	private HeavyTableRow r3;
 	private Table t1;
 	private Table t2;
 	private Table t3;
@@ -32,7 +30,7 @@ public class OdsFileHelperTest {
 
 	@Before
 	public void setUp() {
-		this.positionUtil = new PositionUtil();
+		this.positionUtil = new PositionUtil(new EqualityUtil());
 		this.odsFile = PowerMock.createMock(OdsFile.class);
 		this.tableHelper = PowerMock.createMock(TableHelper.class);
 		this.t1 = PowerMock.createMock(Table.class);
@@ -45,7 +43,6 @@ public class OdsFileHelperTest {
 
 	@Test
 	public final void testCellMergeInAllTables() throws FastOdsException {
-		final TableCellStyle ts = TableCellStyle.builder("a").build();
 		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(1234567891011l);
 

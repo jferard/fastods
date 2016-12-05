@@ -11,7 +11,7 @@ public class PositionUtilTest {
 
 	@Before
 	public void setUp() {
-		this.util = new PositionUtil();
+		this.util = new PositionUtil(new EqualityUtil());
 	}
 
 	@Test

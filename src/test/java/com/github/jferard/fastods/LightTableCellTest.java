@@ -14,6 +14,7 @@ import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -269,10 +270,10 @@ public class LightTableCellTest {
 
 	private HeavyTableRow initRealRow() {
 		final StylesContainer stc = PowerMock.createMock(StylesContainer.class);
-		final PositionUtil positionUtil = new PositionUtil();
+		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
 		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		final LocaleDataStyles ds = new LocaleDataStyles(
-				new DataStyleBuilderFactory(xmlUtil, Locale.US), xmlUtil);
+				new DataStyleBuilderFactory(xmlUtil, Locale.US));
 		final WriteUtil writeUtil = new WriteUtil();
 		return new HeavyTableRow(positionUtil, writeUtil, xmlUtil, stc, ds,
 				null, 10, 100);

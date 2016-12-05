@@ -52,10 +52,12 @@ import java.util.Locale;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class PositionUtil {
 	public static class Position {
+		private final EqualityUtil equalityUtil;
 		private final int column;
 		private final int row;
 
-		Position(final int row, final int column) {
+		Position(EqualityUtil equalityUtil, final int row, final int column) {
+			this.equalityUtil = equalityUtil;
 			this.row = row;
 			this.column = column;
 		}
@@ -70,6 +72,11 @@ public class PositionUtil {
 
 			final Position other = (Position) o;
 			return this.row == other.row && this.column == other.column;
+		}
+		
+		@Override
+		public int hashCode() {
+			return this.equalityUtil.hashInts(this.row, this.column);
 		}
 
 		public int getColumn() {
@@ -89,8 +96,10 @@ public class PositionUtil {
 	private static final int OPT_DIGIT = 5;
 
 	private static final int OPT_SECOND_LETTER = 2;
+	private final EqualityUtil equalityUtil;
 
-	public PositionUtil() {
+	public PositionUtil(EqualityUtil equalityUtil) {
+		this.equalityUtil = equalityUtil;
 	}
 
 	/**
@@ -152,6 +161,6 @@ public class PositionUtil {
 				return null;
 			}
 		}
-		return new Position(row - 1, col - 1);
+		return new Position(this.equalityUtil, row - 1, col - 1);
 	}
 }

@@ -63,4 +63,23 @@ public class EqualityUtil {
 			return o1.equals(o2);
 		}
 	}
+
+	public int hashObjects(final Object... objects) {
+		final int prime = 31;
+		int result = 1;
+		for (Object object : objects) {
+			result = prime * result
+					+ ((object == null) ? 0 : object.hashCode());
+		}
+		return result;
+	}
+	
+	public int hashInts(final int... integers) {
+		final int prime = 31;
+		int result = 1;
+		for (int integer : integers)
+			result = prime * result + integer;
+		return result;
+	}
+	
 }

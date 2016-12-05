@@ -41,9 +41,6 @@ public class TimeStyle extends DataStyle {
 	}
 
 	private static final String COLON = "<number:text>:</number:text>";
-	/**
-	 * The default date format Format.DDMMYY.
-	 */
 	private static final String DASH = "<number:text>-</number:text>";
 	private static final String DOT = "<number:text>.</number:text>";
 	private static final String HOURS = "<number:hours/>";

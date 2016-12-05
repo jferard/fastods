@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class Margins {
@@ -31,9 +32,11 @@ public class Margins {
 	private final String left;
 	private final String right;
 	private final String top;
+	private EqualityUtil equalityUtil;
 
-	Margins(final String all, final String top, final String right,
-			final String bottom, final String left) {
+	Margins(EqualityUtil equalityUtil, final String all, final String top,
+			final String right, final String bottom, final String left) {
+		this.equalityUtil = equalityUtil;
 		this.all = all;
 		this.top = top;
 		this.right = right;
@@ -82,16 +85,11 @@ public class Margins {
 			return false;
 
 		final Margins other = (Margins) o;
-		return (this.top == null ? other.top == null
-				: this.top.equals(other.top))
-				&& (this.right == null ? other.right == null
-						: this.right.equals(other.right))
-				&& (this.bottom == null ? other.bottom == null
-						: this.bottom.equals(other.bottom))
-				&& (this.left == null ? other.left == null
-						: this.left.equals(other.left))
-				&& (this.all == null ? other.all == null
-						: this.all.equals(other.all));
+		return this.equalityUtil.equal(this.top, other.top)
+				&& this.equalityUtil.equal(this.right, other.right)
+				&& this.equalityUtil.equal(this.bottom, other.bottom)
+				&& this.equalityUtil.equal(this.left, other.left)
+				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
 	public String getAll() {
@@ -120,5 +118,11 @@ public class Margins {
 				+ this.bottom + ", left=" + this.left + ", all=" + this.all
 				+ "]";
 
+	}
+
+	@Override
+	public int hashCode() {
+		return this.equalityUtil.hashObjects(this.all, this.bottom, this.left,
+				this.right, this.top);
 	}
 }

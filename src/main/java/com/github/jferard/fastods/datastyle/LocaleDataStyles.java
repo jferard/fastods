@@ -22,7 +22,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard
@@ -36,9 +35,7 @@ public class LocaleDataStyles implements DataStyles {
 	private final TableCellStyle percentageCellStyle;
 	private final TableCellStyle timeCellStyle;
 
-	public LocaleDataStyles(final DataStyleBuilderFactory builderFactory,
-			final XMLUtil util) {
-
+	public LocaleDataStyles(final DataStyleBuilderFactory builderFactory) {
 		final BooleanStyle booleanDataStyle = builderFactory
 				.booleanStyleBuilder("boolean-data").build();
 		this.booleanCellStyle = TableCellStyle.builder("boolean-style")

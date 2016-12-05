@@ -41,6 +41,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -58,13 +59,12 @@ public class OdsFile {
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
 	public static OdsFile create(final Locale locale, final String name) {
-		final PositionUtil positionUtil = new PositionUtil();
+		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
 		final WriteUtil writeUtil = new WriteUtil();
 		final XMLUtil xmlUtil = XMLUtil.create();
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				xmlUtil, locale);
-		final LocaleDataStyles format = new LocaleDataStyles(builderFactory,
-				xmlUtil);
+		final LocaleDataStyles format = new LocaleDataStyles(builderFactory);
 		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil,
 				writeUtil, format);
 		return new OdsFile(Logger.getLogger(OdsFile.class.getName()), name,
