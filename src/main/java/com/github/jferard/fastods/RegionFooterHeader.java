@@ -77,23 +77,29 @@ class RegionFooterHeader extends FooterHeader {
 	@Override
 	public void addEmbeddedStylesToStylesEntry(
 			final StylesContainer stylesContainer) {
-		this.leftRegion
-				.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-		this.centerRegion
-				.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-		this.rightRegion
-				.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		if (this.leftRegion != null)
+			this.leftRegion
+					.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		if (this.centerRegion != null)
+			this.centerRegion
+					.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		if (this.rightRegion != null)
+			this.rightRegion
+					.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
 	}
 
 	@Override
 	public void addEmbeddedStylesToStylesEntry(
 			final StylesContainer stylesContainer, final Container.Mode mode) {
-		this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(
-				stylesContainer, mode);
-		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(
-				stylesContainer, mode);
-		this.rightRegion.addEmbeddedStylesToStylesAutomaticStyles(
-				stylesContainer, mode);
+		if (this.leftRegion != null)
+			this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(
+					stylesContainer, mode);
+		if (this.centerRegion != null)
+			this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(
+					stylesContainer, mode);
+		if (this.rightRegion != null)
+			this.rightRegion.addEmbeddedStylesToStylesAutomaticStyles(
+					stylesContainer, mode);
 	}
 
 	/**

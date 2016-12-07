@@ -2,15 +2,18 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
-import org.junit.Assert;
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.FooterHeader.Region;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.Container.Mode;
 
 public class RegionFooterHeaderTest {
 	private XMLUtil util;
@@ -18,6 +21,22 @@ public class RegionFooterHeaderTest {
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
+	}
+
+	@Test
+	public final void testNullOrEmptyRegions() throws IOException {
+		final FooterHeader header = FooterHeader
+				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
+				.content("l").region(Region.CENTER).text(Text.builder().build())
+				.build();
+
+		final StringBuilder sb = new StringBuilder();
+		header.appendXMLToMasterStyle(this.util, sb);
+		DomTester.assertEquals(
+				"<style:region-left>" + "<text:p>l</text:p>"
+						+ "</style:region-left>" + "<style:region-center>"
+						+ "<text:p>" + "</text:p>" + "</style:region-center>",
+				sb.toString());
 	}
 
 	@Test
@@ -73,5 +92,77 @@ public class RegionFooterHeaderTest {
 				+ "<text:span text:style-name=\"style\">"
 				+ "<text:page-number>1</text:page-number>" + "</text:span>"
 				+ "</text:p>" + "</style:region-center>", sb.toString());
+	}
+
+	@Test
+	public final void testEmbedded() throws IOException {
+		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final TextStyle ts1 = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style1");
+		final TextStyle ts2 = TextProperties.builder().fontStyleNormal()
+				.fontWeightNormal().buildStyle("style2");
+		final TextStyle ts3 = TextProperties.builder().fontWeightBold()
+				.buildStyle("style3");
+		final FooterHeader header = FooterHeader
+				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
+				.styledContent("left-text", ts1).region(Region.CENTER)
+				.styledContent("center-text", ts2).region(Region.RIGHT)
+				.styledContent("right-text", ts3).build();
+
+		// play
+		sc.addStyleToStylesAutomaticStyles(ts1);
+		sc.addStyleToStylesAutomaticStyles(ts2);
+		sc.addStyleToStylesAutomaticStyles(ts3);
+		PowerMock.replayAll();
+		header.addEmbeddedStylesToStylesEntry(sc);
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testEmbeddedNull() throws IOException {
+		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final FooterHeader header = FooterHeader
+				.regionBuilder(FooterHeader.Type.HEADER).build();
+
+		// play
+		PowerMock.replayAll();
+		header.addEmbeddedStylesToStylesEntry(sc);
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public final void testEmbeddedMode() throws IOException {
+		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final TextStyle ts1 = TextProperties.builder().fontStyleItalic()
+				.buildStyle("style1");
+		final TextStyle ts2 = TextProperties.builder().fontStyleNormal()
+				.fontWeightNormal().buildStyle("style2");
+		final TextStyle ts3 = TextProperties.builder().fontWeightBold()
+				.buildStyle("style3");
+		final FooterHeader header = FooterHeader
+				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
+				.styledContent("left-text", ts1).region(Region.CENTER)
+				.styledContent("center-text", ts2).region(Region.RIGHT)
+				.styledContent("right-text", ts3).build();
+
+		// play
+		EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts1, Mode.CREATE_OR_UPDATE)).andReturn(true);
+		EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts2, Mode.CREATE_OR_UPDATE)).andReturn(true);
+		EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts3, Mode.CREATE_OR_UPDATE)).andReturn(true);
+		PowerMock.replayAll();
+		header.addEmbeddedStylesToStylesEntry(sc, Mode.CREATE_OR_UPDATE);
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public final void testEmbeddedNullMode() throws IOException {
+		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final FooterHeader header = FooterHeader
+				.regionBuilder(FooterHeader.Type.HEADER).build();
+
+		// play
+		PowerMock.replayAll();
+		header.addEmbeddedStylesToStylesEntry(sc, Mode.CREATE_OR_UPDATE);
+		PowerMock.verifyAll();
 	}
 }
