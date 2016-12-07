@@ -99,7 +99,7 @@ public class TextBuilder {
 	 */
 	public TextBuilder styledSpan(final String text, final TextStyle ts) {
 		this.textStyles.add(ts);
-		this.curParagraphBuilder.styledSpan(ts, text);
+		this.curParagraphBuilder.styledSpan(text, ts);
 		return this;
 	}
 }

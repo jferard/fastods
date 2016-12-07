@@ -29,7 +29,7 @@ public class ParagraphBuilder {
 		return this;
 	}
 
-	public ParagraphBuilder styledSpan(final TextStyle ts, final String text) {
+	public ParagraphBuilder styledSpan(final String text, final TextStyle ts) {
 		final Span span = new Span(text, ts);
 		this.spans.add(span);
 		return this;
