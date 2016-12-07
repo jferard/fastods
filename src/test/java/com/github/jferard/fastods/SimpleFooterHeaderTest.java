@@ -12,7 +12,7 @@ import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
-public class FooterHeaderTest {
+public class SimpleFooterHeaderTest {
 	private XMLUtil util;
 
 	@Before

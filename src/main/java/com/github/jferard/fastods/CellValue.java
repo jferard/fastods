@@ -44,7 +44,7 @@ public abstract class CellValue {
 			return new StringValue(o.toString());
 	}
 
-	public static CellValue fromTypeAndObject(final Object o) {
+	public static CellValue fromTypeAndObject(final TableCell.Type type, final Object o) {
 		// TODO: use the type hint, with a switch...
 		return CellValue.fromObject(o);
 	}
