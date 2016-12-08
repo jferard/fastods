@@ -270,4 +270,21 @@ public class HeavyTableRowTest {
 		Assert.assertEquals("tooltip", this.row.getTooltip(7));
 		PowerMock.verifyAll();
 	}
+	
+	@Test
+	public final void testColumnsSpanned() {
+		PowerMock.replayAll();
+		Assert.assertEquals(0, this.row.getColumnsSpanned(0));
+		this.row.setColumnsSpanned(0, 1); // does nothing
+		Assert.assertEquals(0, this.row.getColumnsSpanned(0));
+		this.row.setColumnsSpanned(0, 10);
+		Assert.assertEquals(10, this.row.getColumnsSpanned(0));
+		for (int i=1; i<10; i++)
+			Assert.assertEquals(-1, this.row.getColumnsSpanned(i));
+		
+		Assert.assertEquals(0, this.row.getColumnsSpanned(10));
+		this.row.setColumnsSpanned(1, 4); // does nothing since cell is already covered
+		Assert.assertEquals(-1, this.row.getColumnsSpanned(1));
+		PowerMock.verifyAll();
+	}
 }

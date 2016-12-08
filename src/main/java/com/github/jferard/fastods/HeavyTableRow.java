@@ -126,11 +126,15 @@ public class HeavyTableRow {
 		return this.values.size();
 	}
 
+	/**
+	 * @param i
+	 * @return 0 if no span, -1 if the cell is a covered cell
+	 */
 	public int getColumnsSpanned(final int i) {
-		if (this.columnsSpanned != null)
-			return this.columnsSpanned.get(i);
+		if (this.columnsSpanned == null)
+			return 0;
 		else
-			return -1;
+			return this.columnsSpanned.get(i);
 	}
 
 	public String getCurrency(final int i) {
@@ -218,8 +222,8 @@ public class HeavyTableRow {
 			return;
 
 		if (this.columnsSpanned == null) {
-			this.columnsSpanned = FullList
-					.newListWithCapacity(this.columnCapacity);
+			this.columnsSpanned = FullList.<Integer>builder().blankElement(0)
+					.capacity(this.columnCapacity).build();
 		}
 
 		final Integer s = this.columnsSpanned.get(colIndex);
@@ -228,8 +232,8 @@ public class HeavyTableRow {
 
 		if (rowMerge > 1) {
 			if (this.rowsSpanned == null)
-				this.rowsSpanned = FullList
-						.newListWithCapacity(this.columnCapacity);
+				this.rowsSpanned = FullList.<Integer>builder().blankElement(0)
+				.capacity(this.rowIndex + this.rowIndex / 2).build();
 			this.rowsSpanned.set(colIndex, rowMerge);
 		}
 
@@ -247,8 +251,8 @@ public class HeavyTableRow {
 					.getRowSecure(this.rowIndex + r);
 			for (int c = 0; c < columnMerge; c++) {
 				if (row.columnsSpanned == null)
-					row.columnsSpanned = FullList
-							.newListWithCapacity(this.columnCapacity);
+					row.columnsSpanned = FullList.<Integer>builder().blankElement(0)
+					.capacity(this.columnCapacity).build();
 				row.columnsSpanned.set(colIndex + c, -1);
 				row.hasSpans = true;
 				row.isComplexRow = true;
@@ -283,8 +287,8 @@ public class HeavyTableRow {
 			return;
 
 		if (this.columnsSpanned == null)
-			this.columnsSpanned = FullList
-					.newListWithCapacity(this.columnCapacity);
+			this.columnsSpanned = FullList.<Integer>builder().blankElement(0)
+			.capacity(this.columnCapacity).build();
 
 		final Integer s = this.columnsSpanned.get(colIndex);
 		if (s != null && s == -1)
@@ -457,8 +461,8 @@ public class HeavyTableRow {
 			return;
 
 		if (this.rowsSpanned == null)
-			this.rowsSpanned = FullList
-					.newListWithCapacity(this.columnCapacity);
+			this.rowsSpanned = FullList.<Integer>builder().blankElement(0)
+			.capacity(this.rowIndex + this.rowIndex / 2).build();
 		if (this.columnsSpanned.get(colIndex) == -1)
 			return;
 
@@ -467,6 +471,8 @@ public class HeavyTableRow {
 		for (int r = 1; r < n; r++) {
 			final HeavyTableRow row = this.parent
 					.getRowSecure(this.rowIndex + r);
+			row.columnsSpanned = FullList.<Integer>builder().blankElement(0)
+			.capacity(this.columnCapacity).build();
 			row.columnsSpanned.set(colIndex, -1);
 		}
 
