@@ -161,7 +161,7 @@ public class HeavyTableRow {
 		if (this.rowsSpanned != null)
 			return this.rowsSpanned.get(i);
 		else
-			return -1;
+			return 0;
 	}
 
 	public String getRowStyleName() {
@@ -463,7 +463,7 @@ public class HeavyTableRow {
 		if (this.rowsSpanned == null)
 			this.rowsSpanned = FullList.<Integer>builder().blankElement(0)
 			.capacity(this.rowIndex + this.rowIndex / 2).build();
-		if (this.columnsSpanned.get(colIndex) == -1)
+		if (this.columnsSpanned != null && this.columnsSpanned.get(colIndex) == -1)
 			return;
 
 		this.rowsSpanned.set(colIndex, n);

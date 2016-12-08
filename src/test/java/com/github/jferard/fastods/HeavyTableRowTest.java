@@ -287,4 +287,18 @@ public class HeavyTableRowTest {
 		Assert.assertEquals(-1, this.row.getColumnsSpanned(1));
 		PowerMock.verifyAll();
 	}
+	
+	@Test
+	public final void testRowsSpanned() {
+		final HeavyTableRow r2 = PowerMock.createMock(HeavyTableRow.class);
+		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt())).andReturn(r2).anyTimes();
+		
+		PowerMock.replayAll();
+		Assert.assertEquals(0, this.row.getRowsSpanned(0));
+		this.row.setRowsSpanned(0, 1); // does nothing
+		Assert.assertEquals(0, this.row.getRowsSpanned(0));
+		this.row.setRowsSpanned(0, 10);
+		Assert.assertEquals(10, this.row.getRowsSpanned(0));
+		PowerMock.verifyAll();
+	}
 }
