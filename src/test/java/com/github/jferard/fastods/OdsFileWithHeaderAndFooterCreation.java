@@ -103,7 +103,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 		table.setColumnStyle(0, tcns);
 
 		row = table.getRow(0);
-		row.setTextValue(0,
+		row.setText(0,
 				Text.builder().parContent("This is a")
 						.parStyledContent("multiline", italicStyle)
 						.parStyledContent("cell", boldStyle).build());

@@ -23,8 +23,11 @@ package com.github.jferard.fastods;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -52,6 +55,7 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import com.google.common.collect.Sets;
 
 public class OdsFileTest {
@@ -141,7 +145,7 @@ public class OdsFileTest {
 	@Test
 	public final void testAddTextStyle() {
 		final TextStyle ts = TextStyle.builder("t").build();
-
+	
 		this.initEntries();
 		this.entries.addTextStyle(ts);
 		PowerMock.replayAll();
@@ -308,6 +312,95 @@ public class OdsFileTest {
 		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
 				this.xmlUtil);
 		Assert.assertEquals(11, f.tableCount());
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testGetTableNumber() {
+		Table t = PowerMock.createMock(Table.class);
+
+		// PLAY
+		this.initEntries();
+		EasyMock.expect(this.entries.getTables()).andReturn(Arrays.asList(t))
+				.anyTimes();
+		EasyMock.expect(t.getName()).andReturn("@t").anyTimes();
+		PowerMock.replayAll();
+		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
+				this.xmlUtil);
+		Assert.assertEquals(-1, f.getTableNumber("@s"));
+		Assert.assertEquals(0, f.getTableNumber("@t"));
+		Assert.assertEquals(-1, f.getTableNumber("@T"));
+		Assert.assertEquals(Arrays.asList(t), f.getTables());
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testSetActiveTable() {
+		Table t = PowerMock.createMock(Table.class);
+
+		// PLAY
+		this.initEntries();
+		EasyMock.expect(this.entries.getTableCount()).andReturn(1).anyTimes();
+		EasyMock.expect(this.entries.getTable(0)).andReturn(t).anyTimes();
+		this.entries.setActiveTable(t);
+		PowerMock.replayAll();
+		final OdsFile f = new OdsFile(this.logger, "file", this.entries,
+				this.xmlUtil);
+		Assert.assertFalse(f.setActiveTable(-1));
+		Assert.assertFalse(f.setActiveTable(1));
+		Assert.assertTrue(f.setActiveTable(0));
+		PowerMock.verifyAll();
+	}
+
+	@Test(expected = IOException.class)
+	public final void testFileIsDir() throws IOException {
+		// PLAY
+		this.initEntries();
+		PowerMock.replayAll();
+		final OdsFile f = new OdsFile(this.logger, ".", this.entries,
+				this.xmlUtil);
+		f.save();
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testSaveWriter() throws IOException {
+		ZipUTF8WriterBuilder zb = PowerMock
+				.createMock(ZipUTF8WriterBuilder.class);
+		ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
+		// PLAY
+		this.initEntries();
+		this.entries.setTables();
+		EasyMock.expect(zb.build(EasyMock.isA(FileOutputStream.class)))
+				.andReturn(z);
+		this.entries.writeEntries(this.xmlUtil, z);
+		this.entries.createEmptyEntries(z);
+		z.close();
+		PowerMock.replayAll();
+		final OdsFile f = new OdsFile(this.logger, "f", this.entries,
+				this.xmlUtil);
+		f.save(zb);
+		PowerMock.verifyAll();
+	}
+
+	@Test // (expected = IOException.class)
+	public final void testSaveWriterWithException() throws IOException {
+		OutputStream o = PowerMock.createMock(OutputStream.class);
+		
+		// PLAY
+		this.initEntries();
+		this.entries.setTables();
+		this.entries.writeEntries(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+		this.entries.createEmptyEntries(EasyMock.isA(ZipUTF8Writer.class));
+		o.write(EasyMock.anyObject(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
+		EasyMock.expectLastCall().anyTimes();
+		o.flush();
+		EasyMock.expectLastCall().anyTimes();
+		o.close();
+		PowerMock.replayAll();
+		final OdsFile f = new OdsFile(this.logger, ".", this.entries,
+				this.xmlUtil);
+		f.save(o);
 		PowerMock.verifyAll();
 	}
 

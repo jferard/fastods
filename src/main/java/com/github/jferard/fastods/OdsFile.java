@@ -49,7 +49,6 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
 /**
- * WHERE ? root !
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -205,7 +204,7 @@ public class OdsFile {
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
 			final Table tab = iterator.next();
-			if (tab.getName().equalsIgnoreCase(name)) {
+			if (tab.getName().equals(name)) {
 				return n;
 			}
 		}
@@ -232,7 +231,7 @@ public class OdsFile {
 	 *            exists it is overwritten
 	 * @return False, if filename is a directory
 	 */
-	public final boolean newFile(final String name) {
+	private final boolean newFile(final String name) {
 		final File f = new File(name);
 		// Check if name is a directory and abort if YES
 		if (f.isDirectory()) {
@@ -245,7 +244,6 @@ public class OdsFile {
 	/**
 	 * Save the new file.
 	 *
-	 * @return true if the file was saved and false if an exception happened
 	 * @throws IOException
 	 */
 	public void save() throws IOException {
@@ -254,6 +252,10 @@ public class OdsFile {
 			this.save(out);
 		} catch (final FileNotFoundException e) {
 			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
+			throw new IOException(e);
+		} catch (final NullPointerException e) {
+			this.logger.log(Level.SEVERE, "No file", e);
+			throw new IOException(e);
 		}
 	}
 
@@ -295,6 +297,7 @@ public class OdsFile {
 			this.save(builder.build(out));
 		} catch (final FileNotFoundException e) {
 			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
+			throw new IOException(e);
 		}
 	}
 

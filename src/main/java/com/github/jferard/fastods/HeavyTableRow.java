@@ -513,7 +513,7 @@ public class HeavyTableRow {
 		this.rowStyle = rowStyle;
 	}
 
-	public void setTextValue(final int i, final Text text) {
+	public void setText(final int i, final Text text) {
 		if (this.texts == null)
 			this.texts = FullList.newListWithCapacity(this.columnCapacity);
 

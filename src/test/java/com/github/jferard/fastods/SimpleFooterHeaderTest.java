@@ -5,10 +5,12 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.FooterHeader.Region;
+import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -154,5 +156,20 @@ public class SimpleFooterHeaderTest {
 		DomTester.assertEquals("<text:p>"
 				+ "<text:span text:style-name=\"test\">text</text:span>"
 				+ "</text:p>", sb.toString());
+	}
+	
+	@Test
+	public final void testAddEmbbeded() throws IOException {
+		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		
+		PowerMock.replayAll();
+		
+		final FooterHeader footer = FooterHeader
+				.simpleBuilder(FooterHeader.Type.FOOTER)
+				.content("text").build();
+
+		footer.addEmbeddedStylesToStylesEntry(sc);
+		footer.addEmbeddedStylesToStylesEntry(sc, Mode.CREATE);
+		PowerMock.verifyAll();
 	}
 }

@@ -179,6 +179,47 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
+	public final void testMerge1b() {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(7, -1, 8);
+		Assert.assertEquals(0, this.row.getRowsSpanned(7));
+		Assert.assertEquals(8, this.row.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1c() {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		for (int c = 11; c < 20; c++)
+			EasyMock.expect(this.table.getRowSecure(c)).andReturn(row2);
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(7, 10, -1);
+		Assert.assertEquals(10, this.row.getRowsSpanned(7));
+		Assert.assertEquals(0, this.row.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public final void testText() {
+		// PLAY
+		PowerMock.replayAll();
+		Assert.assertNull(this.row.getText(0));
+		final Text t0 = Text.content("text0");
+		final Text t1 = Text.content("text1");
+		this.row.setText(0, t0);
+		this.row.setText(1, t1);
+		Assert.assertEquals(t0, this.row.getText(0));
+		PowerMock.verifyAll();
+	}
+	
+	@Test
 	public final void testMerge2() throws IOException {
 		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
 
@@ -270,7 +311,7 @@ public class HeavyTableRowTest {
 		Assert.assertEquals("tooltip", this.row.getTooltip(7));
 		PowerMock.verifyAll();
 	}
-	
+
 	@Test
 	public final void testColumnsSpanned() {
 		PowerMock.replayAll();
@@ -279,26 +320,43 @@ public class HeavyTableRowTest {
 		Assert.assertEquals(0, this.row.getColumnsSpanned(0));
 		this.row.setColumnsSpanned(0, 10);
 		Assert.assertEquals(10, this.row.getColumnsSpanned(0));
-		for (int i=1; i<10; i++)
+		for (int i = 1; i < 10; i++)
 			Assert.assertEquals(-1, this.row.getColumnsSpanned(i));
-		
+
 		Assert.assertEquals(0, this.row.getColumnsSpanned(10));
-		this.row.setColumnsSpanned(1, 4); // does nothing since cell is already covered
+		this.row.setColumnsSpanned(1, 4); // does nothing since cell is already
+											// covered
 		Assert.assertEquals(-1, this.row.getColumnsSpanned(1));
 		PowerMock.verifyAll();
 	}
-	
+
 	@Test
 	public final void testRowsSpanned() {
 		final HeavyTableRow r2 = PowerMock.createMock(HeavyTableRow.class);
-		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt())).andReturn(r2).anyTimes();
-		
+		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt()))
+				.andReturn(r2).anyTimes();
+
 		PowerMock.replayAll();
 		Assert.assertEquals(0, this.row.getRowsSpanned(0));
 		this.row.setRowsSpanned(0, 1); // does nothing
 		Assert.assertEquals(0, this.row.getRowsSpanned(0));
 		this.row.setRowsSpanned(0, 10);
 		Assert.assertEquals(10, this.row.getRowsSpanned(0));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testNullFieldCounter() throws IOException {
+		PowerMock.replayAll();
+		this.row.setStringValue(0, "v1");
+		this.row.setStringValue(2, "v2");
+		final StringBuilder sb = new StringBuilder();
+		this.row.appendXMLToTable(this.xmlUtil, sb);
+		DomTester.assertEquals("<table:table-row  table:style-name=\"ro1\">"
+				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"v1\"/>"
+				+ "<table:table-cell/>"
+				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"v2\"/>"
+				+ "</table:table-row>", sb.toString());
 		PowerMock.verifyAll();
 	}
 }
