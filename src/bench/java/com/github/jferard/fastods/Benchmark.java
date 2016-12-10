@@ -83,7 +83,7 @@ public class Benchmark {
 		}
 	}
 
-	public final void testFast(final int rowCount, final int colCount) {
+	public final void testFast(final int rowCount, final int colCount) throws IOException {
 		// Open the file.
 		this.logger.info("testFast: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
@@ -99,6 +99,7 @@ public class Benchmark {
 				walker.setFloatValue(this.random.nextInt(1000));
 			}
 		}
+
 
 		file.save();
 		final long t2 = System.currentTimeMillis();
