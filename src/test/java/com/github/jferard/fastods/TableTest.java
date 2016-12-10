@@ -36,9 +36,15 @@ public class TableTest {
 		final XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US));
-		this.htcrp = PowerMock.createMock(HeavyTableColdRowProvider.class);
-		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.htcrp, this.stc,
-				this.ds, "mytable", 10, 100);
+		this.htcrp = new HeavyTableColdRowProvider() {
+			@Override
+			public HeavyTableColdRow create(Table parent, int rowIndex,
+					int columnCapacity) {
+				return new HeavyTableColdRow(parent, rowIndex,columnCapacity); 
+			}
+		};
+		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil,
+				this.htcrp, this.stc, this.ds, "mytable", 10, 100);
 		this.xmlUtil = xmlUtil;
 	}
 
@@ -138,6 +144,7 @@ public class TableTest {
 	@Test
 	public final void testMerge() throws IOException {
 		// PLAY
+
 		PowerMock.replayAll();
 		HeavyTableRow row = this.table.nextRow();
 		row.setStringValue(0, "x");

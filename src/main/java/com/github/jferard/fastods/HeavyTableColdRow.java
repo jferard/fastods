@@ -266,7 +266,7 @@ public class HeavyTableColdRow {
 					.capacity(this.columnCapacity).build();
 
 		for (int c = 0; c < n; c++)
-			this.columnsSpanned.set(colIndex, -1);
+			this.columnsSpanned.set(colIndex + c, -1);
 		this.hasSpans = true;
 	}
 }
