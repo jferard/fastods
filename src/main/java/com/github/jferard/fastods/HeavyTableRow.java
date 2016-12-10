@@ -524,4 +524,12 @@ public class HeavyTableRow {
 
 		this.coldRow.setCovered(colIndex);
 	}
+	
+	public void setCovered(int colIndex, int n) {
+		if (this.coldRow == null)
+			this.coldRow = this.coldRowProvider.create(this.parent,
+					this.rowIndex, this.columnCapacity);
+
+		this.coldRow.setCovered(colIndex, n);
+	}
 }

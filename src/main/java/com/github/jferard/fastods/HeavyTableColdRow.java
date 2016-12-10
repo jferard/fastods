@@ -45,7 +45,7 @@ public class HeavyTableColdRow {
 	private List<Integer> rowsSpanned;
 	private List<Text> texts;
 	private List<String> tooltips;
-	
+
 	public HeavyTableColdRow(final Table parent, final int rowIndex,
 			final int columnCapacity) {
 		this.parent = parent;
@@ -65,28 +65,31 @@ public class HeavyTableColdRow {
 	}
 
 	public String getCurrency(final int i) {
-		return this.currencies.get(i);
+		if (this.currencies == null)
+			return null;
+		else
+			return this.currencies.get(i);
 	}
 
 	public int getRowsSpanned(final int i) {
-		if (this.rowsSpanned != null)
-			return this.rowsSpanned.get(i);
-		else
+		if (this.rowsSpanned == null)
 			return 0;
+		else
+			return this.rowsSpanned.get(i);
 	}
 
 	public Text getText(final int i) {
-		if (this.texts != null)
-			return this.texts.get(i);
-		else
+		if (this.texts == null)
 			return null;
+		else
+			return this.texts.get(i);
 	}
 
 	public String getTooltip(final int i) {
-		if (this.tooltips != null)
-			return this.tooltips.get(i);
-		else
+		if (this.tooltips == null)
 			return null;
+		else
+			return this.tooltips.get(i);
 	}
 
 	/**
@@ -99,6 +102,8 @@ public class HeavyTableColdRow {
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
 			final int columnMerge) {
+		if (rowMerge < 0 || columnMerge < 0)
+			return;
 		if (rowMerge <= 1 && columnMerge <= 1)
 			return;
 
@@ -129,9 +134,7 @@ public class HeavyTableColdRow {
 		for (int r = 1; r < rowMerge; r++) {
 			final HeavyTableRow row = this.parent
 					.getRowSecure(this.rowIndex + r);
-			for (int c = 0; c < columnMerge; c++) {
-				row.setCovered(colIndex + c);
-			}
+			row.setCovered(colIndex, columnMerge);
 		}
 	}
 
@@ -251,10 +254,19 @@ public class HeavyTableColdRow {
 
 	public void setCovered(int colIndex) {
 		if (this.columnsSpanned == null)
-			this.columnsSpanned = FullList.<Integer> builder()
-					.blankElement(0).capacity(this.columnCapacity)
-					.build();
+			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
+					.capacity(this.columnCapacity).build();
 		this.columnsSpanned.set(colIndex, -1);
+		this.hasSpans = true;
+	}
+
+	public void setCovered(int colIndex, int n) {
+		if (this.columnsSpanned == null)
+			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
+					.capacity(this.columnCapacity).build();
+
+		for (int c = 0; c < n; c++)
+			this.columnsSpanned.set(colIndex, -1);
 		this.hasSpans = true;
 	}
 }
