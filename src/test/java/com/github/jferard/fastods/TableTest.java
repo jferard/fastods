@@ -27,6 +27,7 @@ public class TableTest {
 	private StylesContainer stc;
 	private Table table;
 	private XMLUtil xmlUtil;
+	private HeavyTableColdRowProvider htcrp;
 
 	@Before
 	public void setUp() {
@@ -35,7 +36,8 @@ public class TableTest {
 		final XMLUtil xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US));
-		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.stc,
+		this.htcrp = PowerMock.createMock(HeavyTableColdRowProvider.class);
+		this.table = new Table(positionUtil, new WriteUtil(), xmlUtil, this.htcrp, this.stc,
 				this.ds, "mytable", 10, 100);
 		this.xmlUtil = xmlUtil;
 	}

@@ -90,14 +90,16 @@ public class Table implements NamedObject {
 	private final XMLUtil xmlUtil;
 	private final ConfigItem zoomType;
 	private final ConfigItem zoomValue;
+	private HeavyTableColdRowProvider coldRowProvider;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
-			final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+			final XMLUtil xmlUtil, final HeavyTableColdRowProvider coldRowProvider, final StylesContainer stylesContainer,
 			final DataStyles format, final String name, final int rowCapacity,
 			final int columnCapacity) {
 		this.xmlUtil = xmlUtil;
 		this.writeUtil = writeUtil;
 		this.positionUtil = positionUtil;
+		this.coldRowProvider = coldRowProvider;
 		this.stylesContainer = stylesContainer;
 		this.format = format;
 		this.name = name;
@@ -207,8 +209,8 @@ public class Table implements NamedObject {
 	public HeavyTableRow getRowSecure(final int rowIndex) {
 		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.positionUtil, this.writeUtil,
-					this.xmlUtil, this.stylesContainer, this.format, this,
+			tr = new HeavyTableRow(this.writeUtil, this.xmlUtil,
+					this.coldRowProvider, this.stylesContainer, this.format, this,
 					rowIndex, this.columnCapacity);
 			this.tableRows.set(rowIndex, tr);
 			if (rowIndex > this.lastRowIndex)

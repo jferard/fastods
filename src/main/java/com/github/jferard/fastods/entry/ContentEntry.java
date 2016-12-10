@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
+import com.github.jferard.fastods.HeavyTableColdRowProvider;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -46,13 +47,16 @@ public class ContentEntry implements OdsEntry {
 	private final UniqueList<Table> tables;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
+	private HeavyTableColdRowProvider coldRowProvider;
 
 	ContentEntry(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			final WriteUtil writeUtil, final DataStyles format,
-			final StylesContainer stylesContainer) {
+			final WriteUtil writeUtil,
+			final HeavyTableColdRowProvider coldRowProvider,
+			final DataStyles format, final StylesContainer stylesContainer) {
 		this.writeUtil = writeUtil;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;
+		this.coldRowProvider = coldRowProvider;
 		this.format = format;
 		this.stylesContainer = stylesContainer;
 		this.tables = new UniqueList<Table>();
@@ -70,8 +74,8 @@ public class ContentEntry implements OdsEntry {
 		Table table = this.tables.getByName(name);
 		if (table == null) {
 			table = new Table(this.positionUtil, this.writeUtil, this.xmlUtil,
-					this.stylesContainer, this.format, name, rowCapacity,
-					columnCapacity);
+					this.coldRowProvider, this.stylesContainer, this.format,
+					name, rowCapacity, columnCapacity);
 			this.tables.add(table);
 		}
 		return table;
