@@ -23,7 +23,7 @@ package com.github.jferard.fastods;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -368,6 +368,8 @@ public class OdsFileTest {
 		ZipUTF8WriterBuilder zb = PowerMock
 				.createMock(ZipUTF8WriterBuilder.class);
 		ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
+		File temp = File.createTempFile("tempfile", ".tmp");
+		
 		// PLAY
 		this.initEntries();
 		this.entries.setTables();
@@ -377,7 +379,7 @@ public class OdsFileTest {
 		this.entries.createEmptyEntries(z);
 		z.close();
 		PowerMock.replayAll();
-		final OdsFile f = new OdsFile(this.logger, "f", this.entries,
+		final OdsFile f = new OdsFile(this.logger, temp.getAbsolutePath(), this.entries,
 				this.xmlUtil);
 		f.save(zb);
 		PowerMock.verifyAll();

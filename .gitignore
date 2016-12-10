@@ -4,6 +4,7 @@
 .pmd
 .ruleset
 .settings
+content.xml
 
 # directories
 .settings
@@ -11,12 +12,13 @@ target
 reports
 simpleods5.3
 
-# files
+# extensions
 *.old
 *.ods
 *.ods#
-content.xml
+**/*.jar
 
 # mvn release
 release.properties
 pom.xml.*
+
