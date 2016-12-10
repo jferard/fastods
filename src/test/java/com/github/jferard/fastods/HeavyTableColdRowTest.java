@@ -214,4 +214,19 @@ public class HeavyTableColdRowTest {
 		Assert.assertEquals(10, this.row.getRowsSpanned(0));
 		PowerMock.verifyAll();
 	}
+
+	@Test
+	public final void testAppendTextAndTooltip() throws IOException {
+		final StringBuilder sb = new StringBuilder();
+
+		// PLAY
+		PowerMock.replayAll();
+		this.row.setText(0, Text.content("c"));
+		this.row.setTooltip(0, "tooltip");
+		this.row.appendXMLToTable(this.xmlUtil, sb, 0, false);
+		Assert.assertEquals(">" + "<text:p>c</text:p>"
+				+ "<office:annotation><text:p>tooltip</text:p></office:annotation>"
+				+ "</table:table-cell>", sb.toString());
+		PowerMock.verifyAll();
+	}
 }
