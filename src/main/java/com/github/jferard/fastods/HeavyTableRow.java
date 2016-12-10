@@ -227,7 +227,7 @@ public class HeavyTableRow {
 		}
 
 		final Integer s = this.columnsSpanned.get(colIndex);
-		if (s != null && s == -1)
+		if (s == -1) // already spanned
 			return;
 
 		if (rowMerge > 1) {
@@ -260,20 +260,6 @@ public class HeavyTableRow {
 		}
 	}
 
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param rowMerge
-	 * @param columnMerge
-	 */
-	public void setCellMerge(final String pos, final int rowMerge,
-			final int columnMerge) {
-		final int col = this.positionUtil.getPosition(pos).getColumn();
-		this.setCellMerge(col, rowMerge, columnMerge);
-	}
-
 	/*
 	 * FastOds uses the mapping Apache DB project mapping
 	 * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
@@ -291,7 +277,7 @@ public class HeavyTableRow {
 			.capacity(this.columnCapacity).build();
 
 		final Integer s = this.columnsSpanned.get(colIndex);
-		if (s != null && s == -1)
+		if (s == -1)
 			return;
 
 		this.columnsSpanned.set(colIndex, n);

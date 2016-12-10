@@ -33,6 +33,7 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.PositionUtil.Position;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -267,6 +268,24 @@ public class Table implements NamedObject {
 	public void setStyle(final TableStyle style) {
 		this.style = style;
 	}
+	
+	/**
+	 * Set the merging of multiple cells to one cell.
+	 *
+	 * @param pos
+	 *            The cell position e.g. 'A1'
+	 * @param rowMerge
+	 * @param columnMerge
+	 * @throws FastOdsException 
+	 */
+	@Deprecated
+	public void setCellMerge(final String pos, final int rowMerge,
+			final int columnMerge) throws FastOdsException {
+		final Position position = this.positionUtil.getPosition(pos);
+		final HeavyTableRow row = this.getRow(position.getRow());
+		row.setCellMerge(position.getColumn(), rowMerge, columnMerge);
+	}
+
 
 	private void appendColumnStyles(final Appendable appendable,
 			final XMLUtil xmlUtil) throws IOException {

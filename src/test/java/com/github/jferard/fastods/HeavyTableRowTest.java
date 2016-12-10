@@ -10,12 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -49,9 +51,13 @@ public class HeavyTableRowTest {
 		final TableCellStyle booleanStyle = this.ds.getBooleanStyle();
 		this.stc.addDataStyle(booleanStyle.getDataStyle());
 		this.stc.addStyleToStylesCommonStyles(booleanStyle);
+		this.stc.addDataStyle(booleanStyle.getDataStyle());
+		this.stc.addStyleToStylesCommonStyles(booleanStyle);
 		PowerMock.replayAll();
 		this.row.setBooleanValue(10, true);
+		this.row.setBooleanValue(11, false);
 		Assert.assertEquals("true", this.row.getBooleanValue(10));
+		Assert.assertEquals("false", this.row.getBooleanValue(11));
 		PowerMock.verifyAll();
 	}
 
@@ -180,8 +186,6 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge1b() {
-		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
-
 		// PLAY
 		PowerMock.replayAll();
 		this.row.setStringValue(7, "value");
@@ -205,6 +209,75 @@ public class HeavyTableRowTest {
 		Assert.assertEquals(0, this.row.getColumnsSpanned(7));
 		PowerMock.verifyAll();
 	}
+
+	@Test
+	public final void testMerge1d() {
+		// PLAY
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(7, -1, -1);
+		Assert.assertEquals(0, this.row.getRowsSpanned(7));
+		Assert.assertEquals(0, this.row.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1e() {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt())).andReturn(row2);
+		EasyMock.expectLastCall().anyTimes();
+		
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(0, 2, 2);
+		this.row.setCellMerge(10, 3, 3);
+		Assert.assertEquals(2, this.row.getRowsSpanned(0));
+		Assert.assertEquals(2, this.row.getColumnsSpanned(0));
+		Assert.assertEquals(3, this.row.getRowsSpanned(10));
+		Assert.assertEquals(3, this.row.getColumnsSpanned(10));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1f() {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+		
+		// PLAY
+		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt())).andReturn(row2);
+		EasyMock.expectLastCall().anyTimes();
+		
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(0, 20, 20);
+		Assert.assertEquals(20, this.row.getRowsSpanned(0));
+		Assert.assertEquals(20, this.row.getColumnsSpanned(0));
+		Assert.assertEquals(-1, this.row.getColumnsSpanned(10));
+
+		this.row.setCellMerge(10, 3, 3);
+		Assert.assertEquals(-1, this.row.getColumnsSpanned(10));
+		PowerMock.verifyAll();
+	}
+
+	/*
+	@Test
+	public final void testMerge1g() {
+		// PLAY
+		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt())).andReturn(row2);
+		EasyMock.expectLastCall().anyTimes();
+		
+		PowerMock.replayAll();
+		this.row.setStringValue(7, "value");
+		this.row.setCellMerge(0, 20, 20);
+		Assert.assertEquals(20, this.row.getRowsSpanned(0));
+		Assert.assertEquals(20, this.row.getColumnsSpanned(0));
+		Assert.assertEquals(-1, this.row.getColumnsSpanned(10));
+
+		this.row.setCellMerge(10, 3, 3);
+		Assert.assertEquals(-1, this.row.getColumnsSpanned(10));
+		PowerMock.verifyAll();
+	}*/
 	
 	@Test
 	public final void testText() {
@@ -357,6 +430,23 @@ public class HeavyTableRowTest {
 				+ "<table:table-cell/>"
 				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"v2\"/>"
 				+ "</table:table-row>", sb.toString());
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public final void testGet() throws IOException {
+		TableRowStyle trs = TableRowStyle.builder("a").build();
+		
+		//PLAY
+		this.stc.addStyleToContentAutomaticStyles(trs);
+		PowerMock.replayAll();
+		this.row.setStyle(trs);
+		this.row.setStringValue(0, "v1");
+		
+		Assert.assertEquals("a", this.row.getRowStyleName());
+		Assert.assertNull("a", this.row.getTooltip(0));
+		Assert.assertEquals(Type.STRING, this.row.getValueType(0));
+		Assert.assertNull(this.row.getValueType(1));
 		PowerMock.verifyAll();
 	}
 }
