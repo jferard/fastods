@@ -275,7 +275,7 @@ public class LightTableCellTest {
 		final LocaleDataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US));
 		final WriteUtil writeUtil = new WriteUtil();
-		return new HeavyTableRow(writeUtil, xmlUtil, null, stc, ds,
-				null, 10, 100);
+		return new HeavyTableRow(writeUtil, xmlUtil, stc, ds, null,
+				10, 100);
 	}
 }

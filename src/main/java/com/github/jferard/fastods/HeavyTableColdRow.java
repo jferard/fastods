@@ -36,6 +36,11 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  */
 public class HeavyTableColdRow {
+	public static HeavyTableColdRow create(final Table parent,
+			final int rowIndex, final int columnCapacity) {
+		return new HeavyTableColdRow(parent, rowIndex, columnCapacity);
+	}
+
 	private final int columnCapacity;
 	private List<Integer> columnsSpanned;
 	private List<String> currencies;

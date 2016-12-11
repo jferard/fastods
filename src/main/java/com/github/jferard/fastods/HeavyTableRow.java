@@ -56,14 +56,12 @@ public class HeavyTableRow {
 	private final List<String> values;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
-	private HeavyTableColdRowProvider coldRowProvider;
 
 	HeavyTableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
-			HeavyTableColdRowProvider coldRowProvider,
-			final StylesContainer stylesContainer, final DataStyles dataStyles,
-			final Table parent, final int rowIndex, final int columnCapacity) {
+			final StylesContainer stylesContainer,
+			final DataStyles dataStyles, final Table parent,
+			final int rowIndex, final int columnCapacity) {
 		this.writeUtil = writeUtil;
-		this.coldRowProvider = coldRowProvider;
 		this.stylesContainer = stylesContainer;
 		this.xmlUtil = xmlUtil;
 		this.dataStyles = dataStyles;
@@ -216,7 +214,7 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 		this.coldRow.setCellMerge(colIndex, rowMerge, columnMerge);
 	}
@@ -234,7 +232,7 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 		this.coldRow.setColumnsSpanned(colIndex, n);
 	}
@@ -246,7 +244,7 @@ public class HeavyTableRow {
 			final String currency) {
 		this.values.set(i, Double.toString(value));
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 
 		this.coldRow.setCurrency(i, currency); // escape here
@@ -261,7 +259,7 @@ public class HeavyTableRow {
 			final String currency) {
 		this.values.set(i, Float.toString(value));
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 
 		this.coldRow.setCurrency(i, currency); // escape here
@@ -276,7 +274,7 @@ public class HeavyTableRow {
 			final String currency) {
 		this.values.set(i, value.toString());
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 
 		this.coldRow.setCurrency(i, currency); // escape here
@@ -402,7 +400,7 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 		this.coldRow.setRowsSpanned(colIndex, n);
 	}
@@ -442,7 +440,7 @@ public class HeavyTableRow {
 
 	public void setText(final int i, final Text text) {
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 		this.coldRow.setText(i, text);
 		this.values.set(i, "");
@@ -461,7 +459,7 @@ public class HeavyTableRow {
 
 	public void setTooltip(final int i, final String tooltip) {
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 		this.coldRow.setTooltip(i, tooltip);
 	}
@@ -519,7 +517,7 @@ public class HeavyTableRow {
 
 	public void setCovered(int colIndex) {
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 
 		this.coldRow.setCovered(colIndex);
@@ -527,7 +525,7 @@ public class HeavyTableRow {
 	
 	public void setCovered(int colIndex, int n) {
 		if (this.coldRow == null)
-			this.coldRow = this.coldRowProvider.create(this.parent,
+			this.coldRow = HeavyTableColdRow.create(this.parent,
 					this.rowIndex, this.columnCapacity);
 
 		this.coldRow.setCovered(colIndex, n);

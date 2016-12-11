@@ -27,8 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
-import com.github.jferard.fastods.HeavyTableColdRow;
-import com.github.jferard.fastods.HeavyTableColdRowProvider;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
@@ -56,17 +54,8 @@ public class OdsEntries {
 		final MetaEntry metaEntry = new MetaEntry();
 		final StylesContainer stylesContainer = new StylesContainer();
 		final StylesEntry stylesEntry = new StylesEntry(stylesContainer);
-		final HeavyTableColdRowProvider coldRowProvider = new HeavyTableColdRowProvider() {
-
-			@Override
-			public HeavyTableColdRow create(Table parent, int rowIndex,
-					int columnCapacity) {
-				return new HeavyTableColdRow(parent, rowIndex, columnCapacity);
-			}
-		};
-
 		final ContentEntry contentEntry = new ContentEntry(positionUtil,
-				xmlUtil, writeUtil, coldRowProvider, format, stylesContainer);
+				xmlUtil, writeUtil, format, stylesContainer);
 		return new OdsEntries(Logger.getLogger(OdsEntries.class.getName()),
 				mimetypeEntry, manifestEntry, settingsEntry, metaEntry,
 				contentEntry, stylesEntry, stylesContainer);

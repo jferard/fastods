@@ -9,45 +9,43 @@ import org.easymock.IAnswer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.StylesContainer;
-import com.github.jferard.fastods.entry.StylesEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(HeavyTableColdRow.class)
 public class HeavyTableRowTest {
 	private DataStyles ds;
 	private HeavyTableRow row;
-	private StylesEntry se;
 	private StylesContainer stc;
 	private Table table;
 	private XMLUtil xmlUtil;
-	private HeavyTableColdRowProvider htrcp;
 
 	@Before
 	public void setUp() {
 		this.stc = PowerMock.createMock(StylesContainer.class);
 		this.table = PowerMock.createMock(Table.class);
-		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
 		final WriteUtil writeUtil = new WriteUtil();
 		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US));
-		this.htrcp = PowerMock.createMock(HeavyTableColdRowProvider.class);
-
-		this.row = new HeavyTableRow(writeUtil, xmlUtil, this.htrcp, this.stc,
-				this.ds, this.table, 10, 100);
+		this.row = new HeavyTableRow(writeUtil, xmlUtil, this.stc, this.ds,
+				this.table, 10, 100);
 		this.xmlUtil = XMLUtil.create();
+		PowerMock.mockStatic(HeavyTableColdRow.class);
 	}
 
 	@Test
@@ -84,7 +82,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		final TableCellStyle currencyStyle = this.ds.getCurrencyStyle();
@@ -110,7 +108,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		final TableCellStyle currencyStyle = this.ds.getCurrencyStyle();
@@ -136,7 +134,7 @@ public class HeavyTableRowTest {
 		final TableCellStyle currencyStyle = this.ds.getCurrencyStyle();
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		this.stc.addDataStyle(currencyStyle.getDataStyle());
@@ -218,7 +216,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(7, 10, 8);
@@ -238,7 +236,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(7, -1, 8);
@@ -258,7 +256,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(7, 10, -1);
@@ -289,7 +287,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(0, 2, 2);
@@ -315,7 +313,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(0, 20, 20);
@@ -365,7 +363,7 @@ public class HeavyTableRowTest {
 		final Text t_0 = Text.content("@text");
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setText(0, t0);
@@ -386,7 +384,7 @@ public class HeavyTableRowTest {
 		final StringBuilder sbt = new StringBuilder();
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(5, 10, 8);
@@ -456,7 +454,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setColumnsSpanned(10, 2);
@@ -503,7 +501,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setTooltip(7, "tooltip");
@@ -522,7 +520,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setColumnsSpanned(0, 10);
@@ -554,7 +552,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setRowsSpanned(0, 10);
@@ -573,7 +571,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setRowsSpanned(0, 10);
@@ -641,7 +639,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCovered(1);
@@ -659,7 +657,7 @@ public class HeavyTableRowTest {
 		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
-		EasyMock.expect(this.htrcp.create(EasyMock.eq(this.table),
+		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCovered(1, 1);
