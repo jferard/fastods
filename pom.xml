@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jferard</groupId>
 	<artifactId>fastods</artifactId>
-	<version>0.1.2-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>FastODS</name>
 	<description>FastODS writer, a Martin Schulz's SimpleODS fork</description>
 
@@ -15,7 +15,7 @@
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/jferard/fastods</developerConnection>
-		<tag>HEAD</tag>
+		<tag>fastods-0.2.0</tag>
 	</scm>
 
 	<dependencies>
