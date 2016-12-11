@@ -1,4 +1,4 @@
-/*******************************************************************************
+/* *****************************************************************************
  * FastODS - a Martin Schulz's SimpleODS fork
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
@@ -6,19 +6,18 @@
  *
  * This file is part of FastODS.
  *
- * FastODS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * FastODS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * FastODS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -42,17 +41,8 @@ public class TableCellStyleBuilder {
 	private boolean wrap; // No line wrap when false, line wrap when
 
 	/**
-	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsFile o
-	 *
-	 * @param family
-	 *            The type of this style, either
-	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
-	 *            STYLE_TABLECELL
-	 * @param styleName
+	 * @param name
 	 *            A unique name for this style
-	 * @param odsFile
-	 *            The OdsFile to add this style to
 	 */
 	public TableCellStyleBuilder(final String name) {
 		if (name == null)
@@ -316,7 +306,7 @@ public class TableCellStyleBuilder {
 	/**
 	 * Sets the parent cell style
 	 *
-	 * @param parentCellStyle
+	 * @param tableCellStyle the parent cell style
 	 * @return this for fluent style.
 	 */
 	public TableCellStyleBuilder parentCellStyle(

@@ -1,4 +1,4 @@
-/*******************************************************************************
+/* *****************************************************************************
  * FastODS - a Martin Schulz's SimpleODS fork
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
@@ -6,19 +6,18 @@
  *
  * This file is part of FastODS.
  *
- * FastODS is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * FastODS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * FastODS is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
 import java.io.IOException;
@@ -30,11 +29,8 @@ import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * WHERE ? styles.xml/office:document-styles/office:master-styles/style:master-
- * page
- *
- * @see 16.5 <style:page-layout>
- * @see 16.9 <style:master-page>
+ * OpenDocument 16.5 style:page-layout
+ * OpenDocument 16.9 style:master-page
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -160,7 +156,7 @@ public class MasterPageStyle {
 	 *
 	 * @param name
 	 *            A unique name for this style
-	 * @param header2
+	 * @param header
 	 * @param footer
 	 */
 	public MasterPageStyle(final String name, final Margins margins,
@@ -241,7 +237,6 @@ public class MasterPageStyle {
 	/**
 	 * Return the master-style informations for this PageStyle.
 	 *
-	 * @return The master style representation for styles.xml
 	 * @throws IOException
 	 */
 	public void appendXMLToMasterStyle(final XMLUtil util,
