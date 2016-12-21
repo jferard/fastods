@@ -78,4 +78,12 @@ public class TextStyle implements StyleTag {
 		return this.name != null && this.name.length() > 0
 				&& this.getTextProperties().isNotEmpty();
 	}
+	
+	private String key;
+	@Override
+	public String getKey() {
+		if (this.key == null)
+			this.key = this.getFamily()+"@"+this.getName();
+		return this.key;
+	}
 }

@@ -36,4 +36,6 @@ public interface StyleTag extends NamedObject {
 
 	@Override
 	String getName();
+	
+	String getKey();
 }

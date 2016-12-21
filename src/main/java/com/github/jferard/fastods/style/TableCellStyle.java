@@ -187,4 +187,12 @@ public class TableCellStyle implements StyleTag {
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
 	}
+
+	private String key;
+	@Override
+	public String getKey() {
+		if (this.key == null)
+			this.key = this.getFamily()+"@"+this.getName();
+		return this.key;
+	}
 }

@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.entry.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -57,9 +58,8 @@ public class HeavyTableRow {
 	private final XMLUtil xmlUtil;
 
 	HeavyTableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
-			final StylesContainer stylesContainer,
-			final DataStyles dataStyles, final Table parent,
-			final int rowIndex, final int columnCapacity) {
+			final StylesContainer stylesContainer, final DataStyles dataStyles,
+			final Table parent, final int rowIndex, final int columnCapacity) {
 		this.writeUtil = writeUtil;
 		this.stylesContainer = stylesContainer;
 		this.xmlUtil = xmlUtil;
@@ -196,7 +196,7 @@ public class HeavyTableRow {
 	public void setBooleanValue(final int i, final boolean value) {
 		this.values.set(i, value ? "true" : "false");
 		this.types.set(i, TableCell.Type.BOOLEAN);
-		this.setStyle(i, this.dataStyles.getBooleanStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getBooleanStyle());
 	}
 
 	/**
@@ -213,8 +213,8 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 		this.coldRow.setCellMerge(colIndex, rowMerge, columnMerge);
 	}
 
@@ -231,8 +231,8 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 		this.coldRow.setColumnsSpanned(colIndex, n);
 	}
 
@@ -243,12 +243,12 @@ public class HeavyTableRow {
 			final String currency) {
 		this.values.set(i, Double.toString(value));
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 
 		this.coldRow.setCurrency(i, currency); // escape here
 		this.types.set(i, TableCell.Type.CURRENCY);
-		this.setStyle(i, this.dataStyles.getCurrencyStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getCurrencyStyle());
 	}
 
 	/* (non-Javadoc)
@@ -258,12 +258,12 @@ public class HeavyTableRow {
 			final String currency) {
 		this.values.set(i, Float.toString(value));
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 
 		this.coldRow.setCurrency(i, currency); // escape here
 		this.types.set(i, TableCell.Type.CURRENCY);
-		this.setStyle(i, this.dataStyles.getCurrencyStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getCurrencyStyle());
 	}
 
 	/* (non-Javadoc)
@@ -273,12 +273,12 @@ public class HeavyTableRow {
 			final String currency) {
 		this.values.set(i, value.toString());
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 
 		this.coldRow.setCurrency(i, currency); // escape here
 		this.types.set(i, TableCell.Type.CURRENCY);
-		this.setStyle(i, this.dataStyles.getCurrencyStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getCurrencyStyle());
 	}
 
 	/* (non-Javadoc)
@@ -294,7 +294,7 @@ public class HeavyTableRow {
 	public void setDateValue(final int i, final Date value) {
 		this.values.set(i, TableCell.DATE_VALUE_FORMAT.format(value));
 		this.types.set(i, TableCell.Type.DATE);
-		this.setStyle(i, this.dataStyles.getDateStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getDateStyle());
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int i, final double value) {
 		this.values.set(i, Double.toString(value));
 		this.types.set(i, TableCell.Type.FLOAT);
-		this.setStyle(i, this.dataStyles.getNumberStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getNumberStyle());
 	}
 
 	/* (non-Javadoc)
@@ -323,7 +323,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int i, final float value) {
 		this.values.set(i, Float.toString(value));
 		this.types.set(i, TableCell.Type.FLOAT);
-		this.setStyle(i, this.dataStyles.getNumberStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getNumberStyle());
 	}
 
 	/* (non-Javadoc)
@@ -332,7 +332,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int i, final int value) {
 		this.values.set(i, this.writeUtil.toString(value));
 		this.types.set(i, TableCell.Type.FLOAT);
-		this.setStyle(i, this.dataStyles.getNumberStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getNumberStyle());
 	}
 
 	/* (non-Javadoc)
@@ -341,7 +341,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int i, final Number value) {
 		this.values.set(i, value.toString());
 		this.types.set(i, TableCell.Type.FLOAT);
-		this.setStyle(i, this.dataStyles.getNumberStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getNumberStyle());
 	}
 
 	/* (non-Javadoc)
@@ -368,7 +368,7 @@ public class HeavyTableRow {
 	public void setPercentageValue(final int i, final double value) {
 		this.values.set(i, Double.toString(value));
 		this.types.set(i, TableCell.Type.PERCENTAGE);
-		this.setStyle(i, this.dataStyles.getPercentageStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getPercentageStyle());
 	}
 
 	/* (non-Javadoc)
@@ -377,7 +377,7 @@ public class HeavyTableRow {
 	public void setPercentageValue(final int i, final float value) {
 		this.values.set(i, Float.toString(value));
 		this.types.set(i, TableCell.Type.PERCENTAGE);
-		this.setStyle(i, this.dataStyles.getPercentageStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getPercentageStyle());
 	}
 
 	/* (non-Javadoc)
@@ -386,7 +386,7 @@ public class HeavyTableRow {
 	public void setPercentageValue(final int i, final Number value) {
 		this.values.set(i, value.toString());
 		this.types.set(i, TableCell.Type.PERCENTAGE);
-		this.setStyle(i, this.dataStyles.getPercentageStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getPercentageStyle());
 	}
 
 	/* (non-Javadoc)
@@ -397,8 +397,8 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 		this.coldRow.setRowsSpanned(colIndex, n);
 	}
 
@@ -413,20 +413,43 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#styles.set(i, com.github.jferard.fastods.style.TableCellStyle)
 	 */
+	private void setDataStyleFromStyle(final int i,
+			final TableCellStyle style) {
+		if (style == null)
+			return;
+
+		final DataStyle dataStyle = style.getDataStyle();
+		assert dataStyle != null;
+
+		final TableCellStyle curStyle = this.styles.get(i);
+		this.stylesContainer.addDataStyle(dataStyle);
+		if (curStyle == null) { // adds the data style
+			this.stylesContainer.addStyleToContentAutomaticStyles(style);
+			this.styles.set(i, style);
+		} else { // keep the style, but use the new data style
+			// to remove the current data style implies a kind of ref counter,
+			// which would be a too complicated feature.
+			curStyle.setDataStyle(dataStyle);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.jferard.fastods.TableCell#styles.set(i, com.github.jferard.fastods.style.TableCellStyle)
+	 */
 	public void setStyle(final int i, final TableCellStyle style) {
 		if (style == null)
 			return;
 
 		this.stylesContainer.addStyleToStylesCommonStyles(style);
-		// if there is a current style that has a data and new styles does not
-		// have a data style
-		final TableCellStyle curStyle = this.styles.get(i);
-		if (style.getDataStyle() == null && curStyle != null
-				&& curStyle.getDataStyle() != null) {
-			style.setDataStyle(curStyle.getDataStyle());
+		final DataStyle dataStyle = style.getDataStyle();
+		if (dataStyle == null) {
+			final TableCellStyle curStyle = this.styles.get(i);
+			if (curStyle != null && curStyle.getDataStyle() != null) {
+				style.setDataStyle(curStyle.getDataStyle());
+			}
+		} else {
+			this.stylesContainer.addDataStyle(dataStyle);
 		}
-		if (style.getDataStyle() != null)
-			this.stylesContainer.addDataStyle(style.getDataStyle());
 		this.styles.set(i, style);
 	}
 
@@ -437,8 +460,8 @@ public class HeavyTableRow {
 
 	public void setText(final int i, final Text text) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 		this.coldRow.setText(i, text);
 		this.values.set(i, "");
 		this.types.set(i, TableCell.Type.STRING);
@@ -451,13 +474,13 @@ public class HeavyTableRow {
 	public void setTimeValue(final int i, final long timeInMillis) {
 		this.values.set(i, this.xmlUtil.formatTimeInterval(timeInMillis));
 		this.types.set(i, TableCell.Type.TIME);
-		this.setStyle(i, this.dataStyles.getTimeStyle());
+		this.setDataStyleFromStyle(i, this.dataStyles.getTimeStyle());
 	}
 
 	public void setTooltip(final int i, final String tooltip) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 		this.coldRow.setTooltip(i, tooltip);
 	}
 
@@ -514,16 +537,16 @@ public class HeavyTableRow {
 
 	public void setCovered(int colIndex) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 
 		this.coldRow.setCovered(colIndex);
 	}
-	
+
 	public void setCovered(int colIndex, int n) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent,
-					this.rowIndex, this.columnCapacity);
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
 
 		this.coldRow.setCovered(colIndex, n);
 	}

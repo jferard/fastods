@@ -146,4 +146,12 @@ public class TableColumnStyle implements StyleTag {
 				+ (this.name == null ? 0 : this.name.hashCode());
 		return result;
 	}
+	
+	private String key;
+	@Override
+	public String getKey() {
+		if (this.key == null)
+			this.key = this.getFamily()+"@"+this.getName();
+		return this.key;
+	}
 }

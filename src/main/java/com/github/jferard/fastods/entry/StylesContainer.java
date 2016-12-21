@@ -78,13 +78,13 @@ public class StylesContainer {
 	}
 
 	public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
-		this.styleTagsContainer.add(this.buildKey(styleTag), styleTag,
+		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
 	}
 
 	public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
 			final Mode mode) {
-		return this.styleTagsContainer.add(this.buildKey(styleTag), styleTag,
+		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.CONTENT_AUTOMATIC_STYLES, mode);
 	}
 
@@ -96,24 +96,24 @@ public class StylesContainer {
 	*/
 
 	public void addStyleToStylesAutomaticStyles(final StyleTag styleTag) {
-		this.styleTagsContainer.add(this.buildKey(styleTag), styleTag,
+		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
 	}
 
 	public boolean addStyleToStylesAutomaticStyles(final StyleTag styleTag,
 			final Mode mode) {
-		return this.styleTagsContainer.add(this.buildKey(styleTag), styleTag,
+		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.STYLES_AUTOMATIC_STYLES, mode);
 	}
 
 	public void addStyleToStylesCommonStyles(final StyleTag styleTag) {
-		this.styleTagsContainer.add(this.buildKey(styleTag), styleTag,
+		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.STYLES_COMMON_STYLES, Mode.CREATE_OR_UPDATE);
 	}
 
 	public boolean addStyleToStylesCommonStyles(final StyleTag styleTag,
 			final Mode mode) {
-		return this.styleTagsContainer.add(this.buildKey(styleTag), styleTag,
+		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.STYLES_COMMON_STYLES, mode);
 	}
 
@@ -182,12 +182,6 @@ public class StylesContainer {
 			final ZipUTF8Writer writer) throws IOException {
 		this.write(this.styleTagsContainer.getValues(Dest.STYLES_COMMON_STYLES),
 				util, writer);
-	}
-
-	private String buildKey(final StyleTag styleTag) {
-		final String name = styleTag.getName();
-		final String family = styleTag.getFamily();
-		return family + "@" + name;
 	}
 
 	private void write(final Iterable<StyleTag> iterable, final XMLUtil util,

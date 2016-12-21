@@ -104,4 +104,24 @@ public class ProfileFastODS {
 
 		file.save();
 	}
+	
+	@Test
+	public final void mediumTestFast() throws IOException {
+		final OdsFile file = OdsFile.create("fastods_profile.ods");
+		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT/2,
+				ProfileFastODS.COL_COUNT/2);
+
+		for (int y = 0; y < ProfileFastODS.ROW_COUNT/2; y++) {
+			final HeavyTableRow row = table.nextRow();
+			final TableCellWalker walker = row.getWalker();
+			for (int x = 0; x < ProfileFastODS.COL_COUNT/2; x++) {
+				walker.lastCell();
+				walker.setFloatValue(this.random.nextInt(1000));
+			}
+			if (y % (ProfileFastODS.ROW_COUNT/100) == 0)
+				this.logger.info("Row " + y);
+		}
+
+		file.save();
+	}
 }

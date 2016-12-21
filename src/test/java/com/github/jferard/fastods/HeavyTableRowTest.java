@@ -72,9 +72,9 @@ public class HeavyTableRowTest {
 	public final void testBoolean() {
 		final TableCellStyle booleanStyle = this.ds.getBooleanStyle();
 		this.stc.addDataStyle(booleanStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(booleanStyle);
+		this.stc.addStyleToContentAutomaticStyles(booleanStyle);
 		this.stc.addDataStyle(booleanStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(booleanStyle);
+		this.stc.addStyleToContentAutomaticStyles(booleanStyle);
 		PowerMock.replayAll();
 		this.row.setBooleanValue(10, true);
 		this.row.setBooleanValue(11, false);
@@ -87,7 +87,7 @@ public class HeavyTableRowTest {
 	public final void testCalendar() {
 		final TableCellStyle dateStyle = this.ds.getDateStyle();
 		this.stc.addDataStyle(dateStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(dateStyle);
+		this.stc.addStyleToContentAutomaticStyles(dateStyle);
 		PowerMock.replayAll();
 		final Calendar d = Calendar.getInstance();
 		d.setTimeInMillis(1234567891011l);
@@ -108,7 +108,7 @@ public class HeavyTableRowTest {
 		final TableCellStyle currencyStyle = this.ds.getCurrencyStyle();
 		this.stc.addDataStyle(currencyStyle.getDataStyle());
 		EasyMock.expectLastCall().times(2);
-		this.stc.addStyleToStylesCommonStyles(currencyStyle);
+		this.stc.addStyleToContentAutomaticStyles(currencyStyle);
 		EasyMock.expectLastCall().times(2);
 		htcr.setCurrency(10, "€");
 		htcr.setCurrency(11, "$");
@@ -134,7 +134,7 @@ public class HeavyTableRowTest {
 		final TableCellStyle currencyStyle = this.ds.getCurrencyStyle();
 		this.stc.addDataStyle(currencyStyle.getDataStyle());
 		EasyMock.expectLastCall().times(2);
-		this.stc.addStyleToStylesCommonStyles(currencyStyle);
+		this.stc.addStyleToContentAutomaticStyles(currencyStyle);
 		EasyMock.expectLastCall().times(2);
 		htcr.setCurrency(7, "€");
 		htcr.setCurrency(8, "$");
@@ -159,7 +159,7 @@ public class HeavyTableRowTest {
 				.anyTimes();
 		this.stc.addDataStyle(currencyStyle.getDataStyle());
 		EasyMock.expectLastCall().times(2);
-		this.stc.addStyleToStylesCommonStyles(currencyStyle);
+		this.stc.addStyleToContentAutomaticStyles(currencyStyle);
 		EasyMock.expectLastCall().times(2);
 		htcr.setCurrency(7, "€");
 		htcr.setCurrency(8, "$");
@@ -177,7 +177,7 @@ public class HeavyTableRowTest {
 	public final void testDate() {
 		final TableCellStyle dateStyle = this.ds.getDateStyle();
 		this.stc.addDataStyle(dateStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(dateStyle);
+		this.stc.addStyleToContentAutomaticStyles(dateStyle);
 		PowerMock.replayAll();
 		final Calendar d = Calendar.getInstance();
 		d.setTimeInMillis(1234567891011l);
@@ -191,7 +191,7 @@ public class HeavyTableRowTest {
 	public final void testDouble() {
 		final TableCellStyle numberStyle = this.ds.getNumberStyle();
 		this.stc.addDataStyle(numberStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(numberStyle);
+		this.stc.addStyleToContentAutomaticStyles(numberStyle);
 		PowerMock.replayAll();
 		this.row.setFloatValue(7, Double.valueOf(10.999));
 		Assert.assertEquals("10.999", this.row.getFloatValue(7));
@@ -202,7 +202,7 @@ public class HeavyTableRowTest {
 	public final void testFloatDouble() {
 		final TableCellStyle numberStyle = this.ds.getNumberStyle();
 		this.stc.addDataStyle(numberStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(numberStyle);
+		this.stc.addStyleToContentAutomaticStyles(numberStyle);
 		PowerMock.replayAll();
 		this.row.setFloatValue(7, 9.999d);
 		Assert.assertEquals("9.999", this.row.getFloatValue(7));
@@ -213,7 +213,7 @@ public class HeavyTableRowTest {
 	public final void testFloatFloat() {
 		final TableCellStyle numberStyle = this.ds.getNumberStyle();
 		this.stc.addDataStyle(numberStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(numberStyle);
+		this.stc.addStyleToContentAutomaticStyles(numberStyle);
 		PowerMock.replayAll();
 		this.row.setFloatValue(7, 9.999f);
 		Assert.assertEquals("9.999", this.row.getFloatValue(7));
@@ -224,7 +224,7 @@ public class HeavyTableRowTest {
 	public final void testInt() {
 		final TableCellStyle numberStyle = this.ds.getNumberStyle();
 		this.stc.addDataStyle(numberStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(numberStyle);
+		this.stc.addStyleToContentAutomaticStyles(numberStyle);
 		PowerMock.replayAll();
 		this.row.setFloatValue(7, 999);
 		Assert.assertEquals("999", this.row.getFloatValue(7));
@@ -440,7 +440,7 @@ public class HeavyTableRowTest {
 	public final void testPercentageFloat() {
 		final TableCellStyle percentageStyle = this.ds.getPercentageStyle();
 		this.stc.addDataStyle(percentageStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(percentageStyle);
+		this.stc.addStyleToContentAutomaticStyles(percentageStyle);
 		PowerMock.replayAll();
 		this.row.setPercentageValue(7, 0.98f);
 		Assert.assertEquals("0.98", this.row.getPercentageValue(7));
@@ -451,7 +451,7 @@ public class HeavyTableRowTest {
 	public final void testPercentageDouble() {
 		final TableCellStyle percentageStyle = this.ds.getPercentageStyle();
 		this.stc.addDataStyle(percentageStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(percentageStyle);
+		this.stc.addStyleToContentAutomaticStyles(percentageStyle);
 		PowerMock.replayAll();
 		this.row.setPercentageValue(7, 0.98d);
 		Assert.assertEquals("0.98", this.row.getPercentageValue(7));
@@ -462,7 +462,7 @@ public class HeavyTableRowTest {
 	public final void testPercentageNumber() {
 		final TableCellStyle percentageStyle = this.ds.getPercentageStyle();
 		this.stc.addDataStyle(percentageStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(percentageStyle);
+		this.stc.addStyleToContentAutomaticStyles(percentageStyle);
 		PowerMock.replayAll();
 		this.row.setPercentageValue(7, Double.valueOf(0.98));
 		Assert.assertEquals("0.98", this.row.getPercentageValue(7));
@@ -509,7 +509,7 @@ public class HeavyTableRowTest {
 	public final void testTime() {
 		final TableCellStyle timeStyle = this.ds.getTimeStyle();
 		this.stc.addDataStyle(timeStyle.getDataStyle());
-		this.stc.addStyleToStylesCommonStyles(timeStyle);
+		this.stc.addStyleToContentAutomaticStyles(timeStyle);
 		PowerMock.replayAll();
 		this.row.setTimeValue(7, 1234567891011l);
 		Assert.assertEquals("P14288DT23H31M31.11S", this.row.getTimeValue(7));
