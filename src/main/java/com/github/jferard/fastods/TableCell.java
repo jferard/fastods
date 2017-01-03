@@ -36,18 +36,18 @@ public interface TableCell {
 	 * 19.385 office:value-type
 	 */
 	public static enum Type {
-		BOOLEAN("boolean", "office:boolean-value"), CURRENCY("currency",
-				"office:value"), DATE("date", "office:date-value"), FLOAT(
-						"float", "office:value"), PERCENTAGE("percentage",
-								"office:value"), STRING("string",
-										"office:string-value"), TIME("time",
-												"office:time-value"), VOID(
-														"office-value", "");
+		BOOLEAN("office:boolean-value", "boolean"), CURRENCY("office:value",
+				"currency"), DATE("office:date-value", "date"), FLOAT(
+						"office:value", "float"), PERCENTAGE("office:value",
+								"percentage"), STRING("office:string-value",
+										"string"), TIME("office:time-value",
+												"time"), VOID(
+														"", "office-value");
 
 		final String attrName;
 		final String attrValue;
 
-		private Type(final String attrValue, final String attrName) {
+		private Type(final String attrName, final String attrValue) {
 			this.attrValue = attrValue;
 			this.attrName = attrName;
 		}

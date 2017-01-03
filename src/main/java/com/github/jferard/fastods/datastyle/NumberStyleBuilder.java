@@ -34,12 +34,10 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	protected String negativeValueColor;
 
 	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is decPlaces.
+	 * Create a new number style with a name and a locale.
 	 *
-	 * @param name
-	 *            The name of the number style, this name must be unique.
-	 * @param locale
+	 * @param name The name of the number style, this name must be unique.
+	 * @param locale the locale to use
 	 */
 	public NumberStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
@@ -47,33 +45,31 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	}
 
 	/**
-	 * If this is set to true, the thousands separator is shown.
-	 *
-	 * @param grouping
+	 * @param grouping if true, the thousands separator is shown.
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B groupThousands(final boolean grouping) {
 		this.grouping = grouping;
 		return (B) this;
 	}
 
 	/**
-	 * Set how many leading zeros are present.
-	 *
 	 * @param minIntegerDigits
-	 *            The number of leading zeros
+	 *            The number of digits for integer part
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B minIntegerDigits(final int minIntegerDigits) {
 		this.minIntegerDigits = minIntegerDigits;
 		return (B) this;
 	}
 
 	/**
-	 * Sets the color for negative values
-	 *
-	 * @param negativeValueColor
-	 *            null if none
-	 * @return
+	 * @param negativeValueColor the color for negative values, null if none
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B negativeValueColor(final String negativeValueColor) {
 		this.negativeValueColor = negativeValueColor;
 		return (B) this;
@@ -83,6 +79,7 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 * Sets the red color for negative values
 	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B negativeValueRed() {
 		this.negativeValueColor = Color.RED;
 		return (B) this;

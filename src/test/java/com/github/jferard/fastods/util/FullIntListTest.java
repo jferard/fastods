@@ -20,25 +20,18 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-
-public class FullByteListTest {
-	public static final byte ZERO = 0;
-	public static final byte ONE = 1;
-	public static final byte TWO = 2;
+public class FullIntListTest {
+	public static final int ZERO = 0;
+	public static final int ONE = 1;
+	public static final int TWO = 2;
 	
 
 	@Test
-	public final void testAddBlank() {
-		final FullByteList fl = new FullByteList(10);
+	public final void testAddZero() {
+		final FullIntList fl = new FullIntList(10);
 		Assert.assertEquals(ZERO, fl.set(100, ONE));
 		Assert.assertEquals(101, fl.size());
 
@@ -48,7 +41,7 @@ public class FullByteListTest {
 
 	@Test
 	public final void testSetAndAdd() {
-		final FullByteList fl = new FullByteList(10);
+		final FullIntList fl = new FullIntList(10);
 
 		Assert.assertEquals(0, fl.size());
 		Assert.assertEquals(ZERO, fl.get(100));
@@ -65,21 +58,21 @@ public class FullByteListTest {
 
 	@Test
 	public final void testGet() {
-		final FullByteList l = new FullByteList();
+		final FullIntList l = new FullIntList();
 		Assert.assertEquals(ZERO, l.get(10));
 		Assert.assertTrue(l.isEmpty());
 	}
 
 	@Test
 	public final void testSetNullAfter() {
-		final FullByteList l = new FullByteList();
+		final FullIntList l = new FullIntList();
 		l.set(10, ZERO);
 		Assert.assertTrue(l.isEmpty());
 	}
 
 	@Test
 	public final void testSetNullBefore() {
-		final FullByteList l = new FullByteList();
+		final FullIntList l = new FullIntList();
 		Assert.assertEquals(ZERO, l.set(0, ONE));
 		Assert.assertEquals(1, l.size());
 		Assert.assertEquals(ONE, l.set(0, ZERO));
@@ -89,19 +82,19 @@ public class FullByteListTest {
 
 	@Test
 	public final void testSize() {
-		final FullByteList l = new FullByteList();
+		final FullIntList l = new FullIntList();
 		Assert.assertEquals(0, l.size());
 		Assert.assertTrue(l.isEmpty());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public final void testInit() {
-		new FullByteList(-1);
+		new FullIntList(-1);
 	}
 	
 	@Test
 	public final void testSetNullBefore2() {
-		final FullByteList l = new FullByteList();
+		final FullIntList l = new FullIntList();
 		Assert.assertEquals(ZERO, l.set(10, ONE));
 		Assert.assertEquals(11, l.size());
 		Assert.assertEquals(ONE, l.set(10, TWO));

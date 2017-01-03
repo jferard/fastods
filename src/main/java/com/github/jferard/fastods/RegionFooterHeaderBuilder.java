@@ -42,7 +42,7 @@ class RegionFooterHeaderBuilder
 	 * Create a new footer object.
 	 *
 	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
+	 *            - The OdsDocument to which this footer belongs to.
 	 */
 	RegionFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);

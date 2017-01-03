@@ -52,7 +52,7 @@ public abstract class DataStyle implements NamedObject {
 	}
 
 	/**
-	 * Adds this style to an OdsFile.
+	 * Adds this style to an OdsDocument.
 	 *
 	 * @param util
 	 *            XML util for escaping characters and write data.

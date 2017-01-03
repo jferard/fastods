@@ -85,7 +85,7 @@ public abstract class FooterHeader {
 	}
 
 	/**
-	 * The OdsFile where this object belong to.
+	 * The OdsDocument where this object belong to.
 	 */
 	protected final Type footerHeaderType;
 
@@ -98,7 +98,7 @@ public abstract class FooterHeader {
 	 * @param minHeight
 	 *
 	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
+	 *            - The OdsDocument to which this footer belongs to.
 	 */
 	FooterHeader(final FooterHeader.Type footerHeaderType,
 			final Margins margins, final String minHeight) {

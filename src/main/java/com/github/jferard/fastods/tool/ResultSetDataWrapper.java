@@ -29,10 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.github.jferard.fastods.DataWrapper;
-import com.github.jferard.fastods.HeavyTableRow;
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 /**
@@ -41,7 +38,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
  *
  * <pre>
  * {@code
- * 		OdsFile file = OdsFile.create("7columns.ods");
+ * 		OdsDocument file = OdsDocument.create("7columns.ods");
  *		final Table table = file.addTable("test", 50, 5);
  *		XMLUtil xmlUtil = FastOds.getXMLUtil();
  *		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")
@@ -158,7 +155,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			if (object == null)
 				walker.setStringValue("<NULL>");
 			else
-				walker.setObjectValue(object);
+				walker.setCellValue(CellValue.fromObject(object));
 		}
 	}
 

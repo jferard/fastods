@@ -23,26 +23,26 @@ package com.github.jferard.fastods.util;
 import java.util.Arrays;
 import java.util.RandomAccess;
 
-public class FullByteList implements RandomAccess {
-	private byte[] arr;
+public class FullIntList implements RandomAccess {
+	private int[] arr;
 	private int size;
 
 	/**
 	 * Empty list with the specified initial capacity.
 	 */
-	public FullByteList(final int capacity) {
+	public FullIntList(final int capacity) {
 		if (capacity < 0)
 			throw new IllegalArgumentException("Capacity cant't be negative: "
 					+ capacity);
-		this.arr = new byte[capacity];
+		this.arr = new int[capacity];
 		this.size = 0;
 	}
 
 	/**
-	 * Constructs an empty list with an initial capacity of twenty bytes.
+	 * Constructs an empty list with an initial capacity of twenty ints.
 	 */
-	public FullByteList() {
-		this.arr = new byte[20];
+	public FullIntList() {
+		this.arr = new int[20];
 		this.size = 0;
 	}
 
@@ -60,7 +60,7 @@ public class FullByteList implements RandomAccess {
 
 	/**
 	 */
-	public byte get(final int index) {
+	public int get(final int index) {
 		if (index >= this.size)
 			return 0;
 		return this.arr[index];
@@ -68,8 +68,8 @@ public class FullByteList implements RandomAccess {
 
 	/**
 	 */
-	public byte set(final int index, byte element) {
-		byte p;
+	public int set(final int index, int element) {
+		int p;
 		if (index >= this.size) {
 			p = 0;
 			if (element != 0) {

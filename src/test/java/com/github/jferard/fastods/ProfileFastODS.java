@@ -67,8 +67,8 @@ public class ProfileFastODS {
 
 	@Test
 	public final void testFast() throws IOException {
-		final OdsFile file = OdsFile.create("fastods_profile.ods");
-		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT,
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT,
 				ProfileFastODS.COL_COUNT);
 
 		for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
@@ -82,13 +82,13 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		file.save();
+		document.saveAs("fastods_profile.ods");
 	}
 	
 	@Test
 	public final void smallTestFast() throws IOException {
-		final OdsFile file = OdsFile.create("fastods_profile.ods");
-		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT/4,
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT/4,
 				ProfileFastODS.COL_COUNT/4);
 
 		for (int y = 0; y < ProfileFastODS.ROW_COUNT/4; y++) {
@@ -102,13 +102,13 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		file.save();
+		document.saveAs("fastods_profile.ods");
 	}
 	
 	@Test
 	public final void mediumTestFast() throws IOException {
-		final OdsFile file = OdsFile.create("fastods_profile.ods");
-		final Table table = file.addTable("test", ProfileFastODS.ROW_COUNT/2,
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT/2,
 				ProfileFastODS.COL_COUNT/2);
 
 		for (int y = 0; y < ProfileFastODS.ROW_COUNT/2; y++) {
@@ -122,6 +122,6 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		file.save();
+		document.saveAs("fastods_profile.ods");
 	}
 }

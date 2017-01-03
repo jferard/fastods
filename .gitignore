@@ -3,10 +3,11 @@
 .classpath
 .pmd
 .ruleset
-.settings
 content.xml
 
 # directories
+.settings
+.idea
 .settings
 target
 reports
@@ -15,8 +16,9 @@ simpleods5.3
 # extensions
 *.old
 *.ods
-*.ods#
+*.*#
 **/*.jar
+*.iml
 
 # mvn release
 release.properties

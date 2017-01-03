@@ -45,7 +45,7 @@ public class TableStyle implements StyleTag {
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsFile o
+	 * Version 0.5.0 Added parameter OdsDocument o
 	 *
 	 * @param family
 	 *            The type of this style, either
@@ -54,7 +54,7 @@ public class TableStyle implements StyleTag {
 	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
-	 *            The OdsFile to add this style to
+	 *            The OdsDocument to add this style to
 	 */
 	TableStyle(final String styleName, final MasterPageStyle masterPageStyle) {
 		this.name = styleName;

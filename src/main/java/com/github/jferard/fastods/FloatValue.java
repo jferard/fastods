@@ -23,8 +23,24 @@ package com.github.jferard.fastods;
 public class FloatValue extends CellValue {
 	private final Number value;
 
-	public FloatValue(final Number value) {
+	FloatValue(final Number value) {
 		this.value = value;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof FloatValue))
+			return false;
+
+		FloatValue other = (FloatValue) o;
+		return this.value.equals(other.value);
+	}
+
+	@Override
+	public final int hashCode() {
+		return this.value.hashCode();
 	}
 
 	@Override

@@ -61,7 +61,7 @@ class RegionFooterHeader extends FooterHeader {
 	 * @param minHeight2
 	 *
 	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
+	 *            - The OdsDocument to which this footer belongs to.
 	 */
 	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
 			final Text centerRegion, final Text leftRegion,

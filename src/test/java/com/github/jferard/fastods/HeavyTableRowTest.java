@@ -48,6 +48,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(HeavyTableColdRow.class)
 public class HeavyTableRowTest {
+	public static final long TIME_IN_MILLIS = 1234567891011L;
 	private DataStyles ds;
 	private HeavyTableRow row;
 	private StylesContainer stc;
@@ -90,7 +91,7 @@ public class HeavyTableRowTest {
 		this.stc.addStyleToContentAutomaticStyles(dateStyle);
 		PowerMock.replayAll();
 		final Calendar d = Calendar.getInstance();
-		d.setTimeInMillis(1234567891011l);
+		d.setTimeInMillis(1234567891011L);
 		this.row.setDateValue(7, d);
 		Assert.assertEquals("2009-02-14T00:31:31.011",
 				this.row.getDateValue(7));
@@ -180,7 +181,7 @@ public class HeavyTableRowTest {
 		this.stc.addStyleToContentAutomaticStyles(dateStyle);
 		PowerMock.replayAll();
 		final Calendar d = Calendar.getInstance();
-		d.setTimeInMillis(1234567891011l);
+		d.setTimeInMillis(TIME_IN_MILLIS);
 		this.row.setDateValue(7, d.getTime());
 		Assert.assertEquals("2009-02-14T00:31:31.011",
 				this.row.getDateValue(7));
@@ -430,6 +431,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public final void testObject() {
 		PowerMock.replayAll();
 		this.row.setObjectValue(7, null);

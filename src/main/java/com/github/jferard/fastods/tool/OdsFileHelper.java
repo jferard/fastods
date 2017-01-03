@@ -22,20 +22,20 @@ package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 
 public class OdsFileHelper {
-	private final OdsFile odsFile;
+	private final OdsDocument odsDocument;
 	private final PositionUtil positionUtil;
 	private final TableHelper tableHelper;
 
-	public OdsFileHelper(final OdsFile odsFile, final TableHelper tableHelper,
-			final PositionUtil positionUtil) {
-		this.odsFile = odsFile;
+	public OdsFileHelper(final OdsDocument odsDocument, final TableHelper tableHelper,
+                         final PositionUtil positionUtil) {
+		this.odsDocument = odsDocument;
 		this.tableHelper = tableHelper;
 		this.positionUtil = positionUtil;
 	}
@@ -53,7 +53,7 @@ public class OdsFileHelper {
 	 */
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
 			final int rowMerge, final int columnMerge) throws FastOdsException {
-		for (final Table table : this.odsFile.getTables()) {
+		for (final Table table : this.odsDocument.getTables()) {
 			this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge,
 					columnMerge);
 		}
@@ -94,7 +94,7 @@ public class OdsFileHelper {
 			final CellValue value, final TableCellStyle ts)
 			throws FastOdsException {
 
-		for (final Table table : this.odsFile.getTables()) {
+		for (final Table table : this.odsDocument.getTables()) {
 			this.tableHelper.setCellValue(table, rowIndex, colIndex, value, ts);
 		}
 

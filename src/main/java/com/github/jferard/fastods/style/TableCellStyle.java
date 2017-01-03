@@ -88,7 +88,7 @@ public class TableCellStyle implements StyleTag {
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsFile o
+	 * Version 0.5.0 Added parameter OdsDocument o
 	 *
 	 * @param family
 	 *            The type of this style, either
@@ -97,7 +97,7 @@ public class TableCellStyle implements StyleTag {
 	 * @param styleName
 	 *            A unique name for this style
 	 * @param odsFile
-	 *            The OdsFile to add this style to
+	 *            The OdsDocument to add this style to
 	 */
 	TableCellStyle(final String name, final DataStyle dataStyle,
 			final String backgroundColor, final TextProperties textProperties,

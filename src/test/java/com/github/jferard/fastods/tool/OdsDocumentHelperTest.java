@@ -31,17 +31,16 @@ import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.BooleanValue;
 import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.HeavyTableRow;
-import com.github.jferard.fastods.OdsFile;
+import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 
-public class OdsFileHelperTest {
+public class OdsDocumentHelperTest {
 	private OdsFileHelper helper;
 	private List<Table> l;
-	private OdsFile odsFile;
+	private OdsDocument odsDocument;
 	private PositionUtil positionUtil;
 	private Table t1;
 	private Table t2;
@@ -51,13 +50,13 @@ public class OdsFileHelperTest {
 	@Before
 	public void setUp() {
 		this.positionUtil = new PositionUtil(new EqualityUtil());
-		this.odsFile = PowerMock.createMock(OdsFile.class);
+		this.odsDocument = PowerMock.createMock(OdsDocument.class);
 		this.tableHelper = PowerMock.createMock(TableHelper.class);
 		this.t1 = PowerMock.createMock(Table.class);
 		this.t2 = PowerMock.createMock(Table.class);
 		this.t3 = PowerMock.createMock(Table.class);
 		this.l = Arrays.asList(this.t1, this.t2, this.t3);
-		this.helper = new OdsFileHelper(this.odsFile, this.tableHelper,
+		this.helper = new OdsFileHelper(this.odsDocument, this.tableHelper,
 				this.positionUtil);
 	}
 
@@ -66,7 +65,7 @@ public class OdsFileHelperTest {
 		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(1234567891011l);
 
-		EasyMock.expect(this.odsFile.getTables()).andReturn(this.l);
+		EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
 		this.tableHelper.setCellMerge(this.t1, 10, 5, 3, 2);
 		this.tableHelper.setCellMerge(this.t2, 10, 5, 3, 2);
 		this.tableHelper.setCellMerge(this.t3, 10, 5, 3, 2);
@@ -82,7 +81,7 @@ public class OdsFileHelperTest {
 		cal.setTimeInMillis(1234567891011l);
 		final BooleanValue v = new BooleanValue(true);
 
-		EasyMock.expect(this.odsFile.getTables()).andReturn(this.l);
+		EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
 		this.tableHelper.setCellValue(this.t1, 6, 2, v, ts);
 		this.tableHelper.setCellValue(this.t2, 6, 2, v, ts);
 		this.tableHelper.setCellValue(this.t3, 6, 2, v, ts);

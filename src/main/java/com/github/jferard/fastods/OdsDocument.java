@@ -20,29 +20,22 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.OdsEntries;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -52,48 +45,23 @@ import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFile {
+public class OdsDocument {
 	private static final int DEFAULT_COLUMN_CAPACITY = 32;
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
-	public static OdsFile create(final Locale locale, final String name) {
-		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
-		final WriteUtil writeUtil = new WriteUtil();
-		final XMLUtil xmlUtil = XMLUtil.create();
-		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
-				xmlUtil, locale);
-		final LocaleDataStyles format = new LocaleDataStyles(builderFactory);
-		final OdsEntries entries = OdsEntries.create(positionUtil, xmlUtil,
-				writeUtil, format);
-		return new OdsFile(Logger.getLogger(OdsFile.class.getName()), name,
-				entries, xmlUtil);
-	}
-
-	public static OdsFile create(final String name) {
-		return OdsFile.create(Locale.getDefault(), name);
-	}
-
 	private final OdsEntries entries;
-
-	private String filename;
-
 	private final Logger logger;
 	private final XMLUtil xmlUtil;
 
 	/**
 	 * Create a new ODS file.
-	 *
-	 * @param logger
-	 * @param name
-	 *            - The filename for this file, if this file exists it is
-	 *            overwritten
+	 *  @param logger
 	 * @param entries
 	 * @param xmlUtil
 	 */
-	public OdsFile(final Logger logger, final String name,
-			final OdsEntries entries, final XMLUtil xmlUtil) {
+	OdsDocument(final Logger logger,
+				final OdsEntries entries, final XMLUtil xmlUtil) {
 		this.logger = logger;
-		this.newFile(name);
 		this.entries = entries;
 		this.xmlUtil = xmlUtil;
 		// Add four default stylesEntry to contentEntry
@@ -127,8 +95,8 @@ public class OdsFile {
 	 * @throws FastOdsException
 	 */
 	public Table addTable(final String name) throws FastOdsException {
-		return this.addTable(name, OdsFile.DEFAULT_ROW_CAPACITY,
-				OdsFile.DEFAULT_COLUMN_CAPACITY);
+		return this.addTable(name, OdsDocument.DEFAULT_ROW_CAPACITY,
+				OdsDocument.DEFAULT_COLUMN_CAPACITY);
 	}
 
 	public Table addTable(final String name, final int rowCapacity,
@@ -144,15 +112,6 @@ public class OdsFile {
 		this.entries.addTextStyle(fhTextStyle);
 	}
 	*/
-
-	/**
-	 * The filename of the spreadsheet file.
-	 *
-	 * @return The filename of the spreadsheet file
-	 */
-	public String getName() {
-		return this.filename;
-	}
 
 	public Table getTable(final int n) throws FastOdsException {
 		final List<Table> tableQueue = this.entries.getTables();
@@ -211,10 +170,6 @@ public class OdsFile {
 		return -1;
 	}
 
-	// ----------------------------------------------------------------------
-	// All methods for setCell with OldHeavyTableCell.Type.STRING
-	// ----------------------------------------------------------------------
-
 	/**
 	 * @return the list of tables
 	 */
@@ -223,34 +178,17 @@ public class OdsFile {
 	}
 
 	/**
-	 * Create a new,empty file, use addTable to add tables.
-	 *
-	 * @param name
-	 *            - The filename of the new spreadsheet file, if this file
-	 *            exists it is overwritten
-	 * @return False, if filename is a directory
-	 */
-	private final boolean newFile(final String name) {
-		final File f = new File(name);
-		// Check if name is a directory and abort if YES
-		if (f.isDirectory()) {
-			return false;
-		}
-		this.filename = name;
-		return true;
-	}
-
-	/**
 	 * Save the new file.
 	 *
 	 * @throws IOException
+	 * @param filename
 	 */
-	public void save() throws IOException {
+	public void saveAs(String filename) throws IOException {
 		try {
-			final FileOutputStream out = new FileOutputStream(this.filename);
+			final FileOutputStream out = new FileOutputStream(filename);
 			this.save(out);
 		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
+			this.logger.log(Level.SEVERE, "Can't open " + filename, e);
 			throw new IOException(e);
 		} catch (final NullPointerException e) {
 			this.logger.log(Level.SEVERE, "No file", e);
@@ -284,18 +222,20 @@ public class OdsFile {
 	}
 
 	/**
+	 *
+	 * @param filename
 	 * @param builder
 	 *            a builder for the ZipOutputStream and the Writer (buffers,
 	 *            level, ...)
 	 * @throws IOException
 	 *             if the file was not saved
 	 */
-	public void save(final ZipUTF8WriterBuilder builder) throws IOException {
+	public void saveAs(String filename, final ZipUTF8WriterBuilder builder) throws IOException {
 		try {
-			final FileOutputStream out = new FileOutputStream(this.filename);
+			final FileOutputStream out = new FileOutputStream(filename);
 			this.save(builder.build(out));
 		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + this.filename, e);
+			this.logger.log(Level.SEVERE, "Can't open " + filename, e);
 			throw new IOException(e);
 		}
 	}
@@ -325,5 +265,9 @@ public class OdsFile {
 	 */
 	public int tableCount() {
 		return this.entries.getTableCount();
+	}
+
+	public Logger getLogger() {
+		return this.logger;
 	}
 }

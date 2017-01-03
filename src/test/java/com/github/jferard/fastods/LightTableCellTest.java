@@ -201,6 +201,7 @@ public class LightTableCellTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public final void testObject() {
 		this.row.setObjectValue(10, null);
 		PowerMock.replayAll();

@@ -36,7 +36,7 @@ import com.github.jferard.fastods.util.Box;
 abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	protected Box<Text> curRegionBox;
 	/**
-	 * The OdsFile where this object belong to.
+	 * The OdsDocument where this object belong to.
 	 */
 	protected final FooterHeader.Type footerHeaderType;
 	protected MarginsBuilder marginsBuilder;
@@ -47,7 +47,7 @@ abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	 * Create a new footer object.
 	 *
 	 * @param odsFile
-	 *            - The OdsFile to which this footer belongs to.
+	 *            - The OdsDocument to which this footer belongs to.
 	 */
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		this.footerHeaderType = footerHeaderType;

@@ -85,7 +85,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 		final MasterPageStyle ps = MasterPageStyle.builder("test")
 				.footer(footer).header(header).build();
 
-		final OdsFile file = OdsFile.create("fastods_fh.ods");
+		final OdsDocument file = new OdsFactory().createDocument();
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
 		final TableStyle ttts = TableStyle.builder("a").masterPageStyle(ps)
@@ -116,6 +116,6 @@ public class OdsFileWithHeaderAndFooterCreation {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		file.save();
+		file.saveAs("fastods_fh.ods");
 	}
 }

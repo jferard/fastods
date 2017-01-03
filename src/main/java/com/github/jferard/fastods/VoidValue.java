@@ -25,5 +25,4 @@ public class VoidValue extends CellValue {
 	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setVoidValue(i);
 	}
-
 }

@@ -52,8 +52,8 @@ In your POM, you'll have to include the following dependency:
 ## Examples
 ### Basic example
 ```java
-OdsFile file = new OdsFile("5columns.ods");
-Table table = file.addTable("test");
+OdsDocument document = new OdsFactory().createDocument();
+Table table = document.addTable("test");
 
 TableCellStyle style = TableCellStyle.builder().name("tcs1").backgroundColor("#00FF00").build()
 for (int y = 0; y < 50; y++) {
@@ -65,7 +65,7 @@ for (int y = 0; y < 50; y++) {
 	}
 }
 
-file.save();
+document.saveAs("5columns.ods");
 ```
 
 ### Other examples

@@ -48,8 +48,8 @@ public class OdsFileCreation {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsFile file = OdsFile.create("fastods_1000_300.ods");
-		final Table table = file.addTable("test");
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
 			final HeavyTableRow row = table.nextRow();
@@ -60,7 +60,7 @@ public class OdsFileCreation {
 			}
 		}
 
-		file.save();
+		document.saveAs("fastods_1000_300.ods");
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -71,8 +71,8 @@ public class OdsFileCreation {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsFile file = OdsFile.create("fastods_100000_20.ods");
-		final Table table = file.addTable("test");
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
 			final HeavyTableRow row = table.nextRow();
@@ -83,7 +83,7 @@ public class OdsFileCreation {
 			}
 		}
 
-		file.save();
+		document.saveAs("fastods_100000_20.ods");
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -95,8 +95,8 @@ public class OdsFileCreation {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsFile file = OdsFile.create("fastods_50_5.ods");
-		final Table table = file.addTable("test", 50, 5);
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test", 50, 5);
 		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
@@ -183,7 +183,7 @@ public class OdsFileCreation {
 			}
 		}
 
-		file.save();
+		document.saveAs("fastods_50_5.ods");
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}

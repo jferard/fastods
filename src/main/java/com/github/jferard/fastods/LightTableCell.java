@@ -31,12 +31,12 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  */
 public class LightTableCell implements TableCellWalker {
-	private int i;
+	private int c;
 	private final HeavyTableRow row;
 
 	LightTableCell(final HeavyTableRow row) {
 		this.row = row;
-		this.i = 0;
+		this.c = 0;
 	}
 
 	@Override
@@ -47,197 +47,199 @@ public class LightTableCell implements TableCellWalker {
 
 	@Override
 	public String getBooleanValue() {
-		return this.row.getBooleanValue(this.i);
+		return this.row.getBooleanValue(this.c);
 	}
 
 	@Override
 	public int getColumnsSpanned() {
-		return this.row.getColumnsSpanned(this.i);
+		return this.row.getColumnsSpanned(this.c);
 	}
 
 	@Override
 	public String getCurrency() {
-		return this.row.getCurrency(this.i);
+		return this.row.getCurrency(this.c);
 	}
 
 	@Override
 	public String getCurrencyValue() {
-		return this.row.getCurrencyValue(this.i);
+		return this.row.getCurrencyValue(this.c);
 	}
 
 	@Override
 	public String getDateValue() {
-		return this.row.getDateValue(this.i);
+		return this.row.getDateValue(this.c);
 	}
 
 	@Override
 	public String getFloatValue() {
-		return this.row.getFloatValue(this.i);
+		return this.row.getFloatValue(this.c);
 	}
 
 	@Override
 	public String getPercentageValue() {
-		return this.row.getPercentageValue(this.i);
+		return this.row.getPercentageValue(this.c);
 	}
 
 	@Override
 	public int getRowsSpanned() {
-		return this.row.getRowsSpanned(this.i);
+		return this.row.getRowsSpanned(this.c);
 	}
 
 	@Override
 	public String getStringValue() {
-		return this.row.getStringValue(this.i);
+		return this.row.getStringValue(this.c);
 	}
 
 	@Override
 	public String getStyleName() {
-		return this.row.getStyleName(this.i);
+		return this.row.getStyleName(this.c);
 	}
 
 	@Override
 	public String getTimeValue() {
-		return this.row.getTimeValue(this.i);
+		return this.row.getTimeValue(this.c);
 	}
 
 	@Override
 	public String getTooltip() {
-		return this.row.getTooltip(this.i);
+		return this.row.getTooltip(this.c);
 	}
 
 	@Override
 	public Type getValueType() {
-		return this.row.getValueType(this.i);
+		return this.row.getValueType(this.c);
 	}
 
 	@Override
 	public boolean hasNext() {
-		return this.i < this.row.getColumnCount() - 1;
+		return this.c < this.row.getColumnCount() - 1;
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		return this.i > 0 && this.i <= this.row.getColumnCount();
+		return this.c > 0 && this.c <= this.row.getColumnCount();
 	}
 
 	@Override
 	public void lastCell() {
-		this.i = this.row.getColumnCount();
+		this.c = this.row.getColumnCount();
 	}
 
 	@Override
 	public void next() {
-		if (this.i >= this.row.getColumnCount() - 1)
+		if (this.c >= this.row.getColumnCount() - 1)
 			throw new IndexOutOfBoundsException();
-		this.i++;
+		this.c++;
 	}
 
 	@Override
 	public void previous() {
-		if (this.i <= 0)
+		if (this.c <= 0)
 			throw new IndexOutOfBoundsException();
-		this.i--;
+		this.c--;
 	}
 
 	@Override
 	public void setBooleanValue(final boolean value) {
-		this.row.setBooleanValue(this.i, value);
+		this.row.setBooleanValue(this.c, value);
 	}
 
 	@Override
 	public void setCellValue(final CellValue value) {
-		this.row.setCellValue(this.i, value);
+		this.row.setCellValue(this.c, value);
 	}
 
 	@Override
 	public void setColumnsSpanned(final int n) {
-		this.row.setColumnsSpanned(this.i, n);
+		this.row.setColumnsSpanned(this.c, n);
 	}
 
 	@Override
 	public void setCurrencyValue(final float value, final String currency) {
-		this.row.setCurrencyValue(this.i, value, currency);
+		this.row.setCurrencyValue(this.c, value, currency);
 	}
 
 	@Override
 	public void setCurrencyValue(final int value, final String currency) {
-		this.row.setCurrencyValue(this.i, value, currency);
+		this.row.setCurrencyValue(this.c, value, currency);
 	}
 
 	@Override
 	public void setCurrencyValue(final Number value, final String currency) {
-		this.row.setCurrencyValue(this.i, value, currency);
+		this.row.setCurrencyValue(this.c, value, currency);
 	}
 
 	@Override
 	public void setDateValue(final Calendar cal) {
-		this.row.setDateValue(this.i, cal);
+		this.row.setDateValue(this.c, cal);
 	}
 
 	@Override
 	public void setDateValue(final Date value) {
-		this.row.setDateValue(this.i, value);
+		this.row.setDateValue(this.c, value);
 	}
 
 	@Override
 	public void setFloatValue(final float value) {
-		this.row.setFloatValue(this.i, value);
+		this.row.setFloatValue(this.c, value);
 	}
 
 	@Override
 	public void setFloatValue(final int value) {
-		this.row.setFloatValue(this.i, value);
+		this.row.setFloatValue(this.c, value);
 	}
 
 	@Override
 	public void setFloatValue(final Number value) {
-		this.row.setFloatValue(this.i, value);
+		this.row.setFloatValue(this.c, value);
 	}
 
+	/** @deprecated Shortcut for {@code setCellValue(c, CellValue.fromObject(object)) */
 	@Override
+	@Deprecated
 	public void setObjectValue(final Object value) {
-		this.row.setObjectValue(this.i, value);
+		this.row.setObjectValue(this.c, value);
 	}
 
 	@Override
 	public void setPercentageValue(final float value) {
-		this.row.setPercentageValue(this.i, value);
+		this.row.setPercentageValue(this.c, value);
 	}
 
 	@Override
 	public void setPercentageValue(final Number value) {
-		this.row.setPercentageValue(this.i, value);
+		this.row.setPercentageValue(this.c, value);
 	}
 
 	@Override
 	public void setRowsSpanned(final int n) {
-		this.row.setRowsSpanned(this.i, n);
+		this.row.setRowsSpanned(this.c, n);
 	}
 
 	@Override
 	public void setStringValue(final String value) {
-		this.row.setStringValue(this.i, value);
+		this.row.setStringValue(this.c, value);
 	}
 
 	@Override
 	public void setStyle(final TableCellStyle style) {
-		this.row.setStyle(this.i, style);
+		this.row.setStyle(this.c, style);
 	}
 
 	@Override
 	public void setTimeValue(final long timeInMillis) {
-		this.row.setTimeValue(this.i, timeInMillis);
+		this.row.setTimeValue(this.c, timeInMillis);
 	}
 
 	@Override
 	public void setTooltip(final String tooltip) {
-		this.row.setTooltip(this.i, tooltip);
+		this.row.setTooltip(this.c, tooltip);
 	}
 
 	@Override
 	public void to(final int i) {
 		if (i < 0)
 			throw new IndexOutOfBoundsException();
-		this.i = i;
+		this.c = i;
 	}
 }

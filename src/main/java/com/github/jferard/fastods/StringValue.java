@@ -28,6 +28,22 @@ public class StringValue extends CellValue {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof StringValue))
+			return false;
+
+		StringValue other = (StringValue) o;
+		return this.value.equals(other.value);
+	}
+
+	@Override
+	public final int hashCode() {
+		return this.value.hashCode();
+	}
+
+	@Override
 	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
 		heavyTableRow.setStringValue(i, this.value);
 	}

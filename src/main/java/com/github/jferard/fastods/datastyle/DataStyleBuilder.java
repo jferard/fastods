@@ -62,9 +62,10 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
 	 *
-	 * @param countryCode
-	 *            The two letter country code, e.g. 'US'
+	 * @param countryCode The two letter country code, e.g. 'US'
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B country(final String countryCode) {
 		this.countryCode = countryCode.toUpperCase();
 		return (B) this;
@@ -74,9 +75,10 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 * Set the country and language if you need to distinguish between different
 	 * countries. E.g. set it to country='US' and language='en'
 	 *
-	 * @param languageCode
-	 *            The two letter language code, e.g. 'en'
+	 * @param languageCode The two letter language code, e.g. 'en'
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B language(final String languageCode) {
 		this.languageCode = languageCode.toLowerCase();
 		return (B) this;
@@ -85,10 +87,10 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	/**
 	 * Sets the locale (ie languge + country)
 	 *
-	 * @param locale
-	 *            the locale to use for langaauge and country
-	 * @return this
+	 * @param locale the locale to use for langaauge and country
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B locale(final Locale locale) {
 		this.countryCode = locale.getCountry();
 		this.languageCode = locale.getLanguage();
@@ -97,7 +99,9 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 
 	/**
 	 * @param volatileStyle
+	 * @return this for fluent style
 	 */
+	@SuppressWarnings("unchecked")
 	public B volatileStyle(final boolean volatileStyle) {
 		this.volatileStyle = volatileStyle;
 		return (B) this;

@@ -8,8 +8,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<jre>1.6</jre>
         <fastods.testSourceDirectory>src/test/java</fastods.testSourceDirectory>
 	</properties>
 
@@ -71,7 +70,20 @@
 
 	<build>
 		<testSourceDirectory>${fastods.testSourceDirectory}</testSourceDirectory>
+
 		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${jre}</source>
+					<target>${jre}</target>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>

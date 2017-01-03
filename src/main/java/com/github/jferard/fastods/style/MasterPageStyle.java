@@ -152,7 +152,7 @@ public class MasterPageStyle {
 	private final WritingMode writingMode;
 
 	/**
-	 * Create a new page style. Version 0.5.0 Added parameter OdsFile o
+	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
 	 *
 	 * @param name
 	 *            A unique name for this style
