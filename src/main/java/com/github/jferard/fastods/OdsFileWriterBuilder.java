@@ -20,14 +20,13 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.FileOpenResult;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -55,6 +54,7 @@ public class OdsFileWriterBuilder {
 
 	/**
 	 */
+	@Deprecated
 	public OdsFileWriterBuilder filename(final String filename) throws FileNotFoundException {
 		this.filename = filename;
 		return this;
@@ -64,6 +64,13 @@ public class OdsFileWriterBuilder {
 	 */
 	public OdsFileWriterBuilder outputStream(final OutputStream out) throws FileNotFoundException {
 		this.out = out;
+		return this;
+	}
+
+	/**
+	 */
+	public OdsFileWriterBuilder lockResult(final FileOpenResult lockResult) throws FileNotFoundException {
+		this.out = lockResult.getStream();
 		return this;
 	}
 

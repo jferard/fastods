@@ -20,14 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.util;
 
-public class Box<T> {
-	private T content;
+import java.io.OutputStream;
 
-	public T get() {
-		return this.content;
+public class FileOpen implements FileOpenResult {
+	private final OutputStream stream;
+
+	public FileOpen(OutputStream stream) {
+		this.stream = stream;
 	}
 
-	public void set(final T content) {
-		this.content = content;
+	public OutputStream getStream() {
+		return this.stream;
 	}
 }

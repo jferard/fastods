@@ -20,14 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.util;
 
-public class Box<T> {
-	private T content;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
 
-	public T get() {
-		return this.content;
-	}
+/**
+ * A FileOpenResult is the result of an attempt to lock a file. There are three cases : 1. the file is a dir:
+ * can't get the stream; 2. the file exists: getStream() will get the lock; 3. the file doesn't exist: thee lock is
+ * immediately put on it.
+ */
+public interface FileOpenResult {
+	public static FileOpenResult FILE_IS_DIR = new FileIsDir();
 
-	public void set(final T content) {
-		this.content = content;
-	}
+	OutputStream getStream() throws FileNotFoundException;
 }

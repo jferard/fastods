@@ -20,14 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.util;
 
-public class Box<T> {
-	private T content;
+import org.junit.Assert;
+import org.junit.Test;
 
-	public T get() {
-		return this.content;
-	}
-
-	public void set(final T content) {
-		this.content = content;
+/**
+ */
+public class BoxTest {
+	@Test
+	public void test() {
+		Box<String> b = new Box<String>();
+		b.set("a");
+		Assert.assertEquals("a", b.get());
 	}
 }

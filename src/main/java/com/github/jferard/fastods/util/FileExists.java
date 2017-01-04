@@ -20,14 +20,24 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.util;
 
-public class Box<T> {
-	private T content;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
-	public T get() {
-		return this.content;
+public class FileExists implements FileOpenResult {
+	private final File file;
+	private OutputStream out;
+
+	public FileExists(File f) {
+		file = f;
 	}
 
-	public void set(final T content) {
-		this.content = content;
+	@Override
+	public OutputStream getStream() throws FileNotFoundException {
+		if (this.out == null)
+			this.out = new FileOutputStream(this.file);
+
+		return this.out;
 	}
 }

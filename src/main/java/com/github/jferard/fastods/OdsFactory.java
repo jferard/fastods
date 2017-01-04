@@ -20,22 +20,18 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Locale;
-import java.util.logging.Logger;
-
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.WriteUtil;
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.*;
 
-import static com.github.jferard.fastods.OdsFactory.FileState.FILE_EXISTS;
-import static com.github.jferard.fastods.OdsFactory.FileState.IS_DIRECTORY;
-import static com.github.jferard.fastods.OdsFactory.FileState.OK;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Locale;
+import java.util.logging.Logger;
+
+import static com.github.jferard.fastods.OdsFactory.FileState.*;
 
 /**
  *
@@ -69,12 +65,10 @@ public class OdsFactory {
 	}
 	
 	/**
-	 * Create a new, empty file, use addTable to add tables.
-	 *
-	 * @param filename
-	 *            - The filename of the new spreadsheet file, if this file
-	 *            exists it is overwritten
+	 * @param filename the name of the file.
+	 * @deprecated
 	 */
+	@Deprecated
 	public FileState checkFile(final String filename) {
 		final File f = new File(filename);
 		if (f.isDirectory())
@@ -84,6 +78,20 @@ public class OdsFactory {
 			return FILE_EXISTS;
 
 		return OK;
+	}
+
+	/**
+	 * @param filename the name of the file.
+	 */
+	public FileOpenResult openFile(final String filename) throws FileNotFoundException {
+		final File f = new File(filename);
+		if (f.isDirectory())
+			return FileOpenResult.FILE_IS_DIR;
+
+		if (f.exists())
+			return new FileExists(f);
+
+		return new FileOpen(new FileOutputStream(f));
 	}
 	
 	/**

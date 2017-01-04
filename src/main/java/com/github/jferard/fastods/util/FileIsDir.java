@@ -20,14 +20,11 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.util;
 
-public class Box<T> {
-	private T content;
+import java.io.OutputStream;
 
-	public T get() {
-		return this.content;
-	}
-
-	public void set(final T content) {
-		this.content = content;
+public class FileIsDir implements FileOpenResult {
+	@Override
+	public OutputStream getStream() {
+		throw new IllegalStateException();
 	}
 }
