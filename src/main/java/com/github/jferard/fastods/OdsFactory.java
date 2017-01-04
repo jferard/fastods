@@ -22,7 +22,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
-import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.*;
 
 import java.io.File;
@@ -98,16 +98,16 @@ public class OdsFactory {
 	 * Create a new, empty document. Use addTable to add tables.
 	 */
 	public OdsDocument createDocument() {
-		OdsEntries entries = OdsEntries.create(this.positionUtil, this.xmlUtil,
+		OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
 				this.writeUtil, this.format);
 		return new OdsDocument(this.logger,
-				entries, this.xmlUtil);
+				odsElements, this.xmlUtil);
 	}
 
 	/**
 	 * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
 	 */
 	public OdsFileWriter createWriter(OdsDocument document, String filename) throws FileNotFoundException {
-		return OdsFileWriter.builder(this.logger, document).filename(filename).build();
+		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename)).build();
 	}
 }

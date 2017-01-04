@@ -20,10 +20,10 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
-import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * content.xml/office:document-content/office:automatic-styles
@@ -47,22 +47,19 @@ public class TableStyle implements StyleTag {
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsDocument o
 	 *
-	 * @param family
-	 *            The type of this style, either
-	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
-	 *            STYLE_TABLECELL
 	 * @param styleName
 	 *            A unique name for this style
-	 * @param odsFile
-	 *            The OdsDocument to add this style to
+	 * @param masterPageStyle
+	 *            The master page style for this table
 	 */
 	TableStyle(final String styleName, final MasterPageStyle masterPageStyle) {
 		this.name = styleName;
 		this.masterPageStyle = masterPageStyle;
 	}
 
-	public void addToEntries(final OdsEntries odsEntries) {
-		odsEntries.addStyleTag(this);
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addStyleTag(this);
 	}
 
 	@Override

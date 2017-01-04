@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.FooterHeader.Region;
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
@@ -134,7 +134,7 @@ public class RegionFooterHeaderTest {
 		sc.addStyleToStylesAutomaticStyles(ts2);
 		sc.addStyleToStylesAutomaticStyles(ts3);
 		PowerMock.replayAll();
-		header.addEmbeddedStylesToStylesEntry(sc);
+		header.addEmbeddedStylesToStylesElement(sc);
 		PowerMock.verifyAll();
 	}
 
@@ -146,7 +146,7 @@ public class RegionFooterHeaderTest {
 
 		// play
 		PowerMock.replayAll();
-		header.addEmbeddedStylesToStylesEntry(sc);
+		header.addEmbeddedStylesToStylesElement(sc);
 		PowerMock.verifyAll();
 	}
 	
@@ -170,7 +170,7 @@ public class RegionFooterHeaderTest {
 		EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts2, Mode.CREATE_OR_UPDATE)).andReturn(true);
 		EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts3, Mode.CREATE_OR_UPDATE)).andReturn(true);
 		PowerMock.replayAll();
-		header.addEmbeddedStylesToStylesEntry(sc, Mode.CREATE_OR_UPDATE);
+		header.addEmbeddedStylesToStylesElement(sc, Mode.CREATE_OR_UPDATE);
 		PowerMock.verifyAll();
 	}
 	
@@ -182,7 +182,7 @@ public class RegionFooterHeaderTest {
 
 		// play
 		PowerMock.replayAll();
-		header.addEmbeddedStylesToStylesEntry(sc, Mode.CREATE_OR_UPDATE);
+		header.addEmbeddedStylesToStylesElement(sc, Mode.CREATE_OR_UPDATE);
 		PowerMock.verifyAll();
 	}
 }

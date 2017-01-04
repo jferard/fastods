@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;

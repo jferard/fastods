@@ -33,7 +33,7 @@ import org.powermock.api.easymock.PowerMock;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
@@ -228,7 +228,7 @@ public class TableTest {
 		this.table.appendXMLToSettingsEntry(this.xmlUtil, sb);
 
 		Assert.assertEquals(
-				"<config:config-item-map-entry config:name=\"mytable\">"
+				"<config:config-item-map-odselement config:name=\"mytable\">"
 						+ "<config:config-item config:name=\"CursorPositionX\" config:type=\"int\">0</config:config-item>"
 						+ "<config:config-item config:name=\"cursorPositionY\" config:type=\"int\">0</config:config-item>"
 						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
@@ -245,7 +245,7 @@ public class TableTest {
 						+ "<config:config-item config:name=\"zoomType\" config:type=\"short\">0</config:config-item>"
 						+ "<config:config-item config:name=\"zoomValue\" config:type=\"int\">100</config:config-item>"
 						+ "<config:config-item config:name=\"pageViewZoomValue\" config:type=\"int\">60</config:config-item>"
-						+ "</config:config-item-map-entry>",
+						+ "</config:config-item-map-odselement>",
 				sb.toString());
 
 	}

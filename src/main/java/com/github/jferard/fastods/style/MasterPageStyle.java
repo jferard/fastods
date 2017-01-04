@@ -20,13 +20,13 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.FooterHeader;
-import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * OpenDocument 16.5 style:page-layout
@@ -35,7 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class MasterPageStyle {
+public class MasterPageStyle implements AddableToOdsElements {
 	public static enum PaperFormat {
 		A3(MasterPageStyle.A3_H, MasterPageStyle.A3_W), A4(MasterPageStyle.A3_W,
 				MasterPageStyle.A4_W), A5(MasterPageStyle.A4_W,
@@ -181,21 +181,23 @@ public class MasterPageStyle {
 	public void addEmbeddedStylesToStylesEntry(
 			final StylesContainer stylesContainer) {
 		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesEntry(stylesContainer);
+			this.header.addEmbeddedStylesToStylesElement(stylesContainer);
 		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer);
+			this.footer.addEmbeddedStylesToStylesElement(stylesContainer);
 	}
 
 	public void addEmbeddedStylesToStylesEntry(
 			final StylesContainer stylesContainer, final Mode mode) {
 		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
+			this.header.addEmbeddedStylesToStylesElement(stylesContainer, mode);
 		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesEntry(stylesContainer, mode);
+			this.footer.addEmbeddedStylesToStylesElement(stylesContainer, mode);
 	}
 
-	public void addToEntries(final OdsEntries odsEntries) {
-		odsEntries.addPageStyle(this);
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addPageStyle(this);
 	}
 
 	/**

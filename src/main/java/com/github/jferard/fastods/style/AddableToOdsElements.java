@@ -18,22 +18,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.style;
 
-class HasFooterHeader {
-	private final boolean hasFooter;
-	private final boolean hasHeader;
+import com.github.jferard.fastods.odselement.OdsElements;
 
-	HasFooterHeader(final boolean hasHeader, final boolean hasFooter) {
-		this.hasHeader = hasHeader;
-		this.hasFooter = hasFooter;
-	}
-
-	public boolean hasFooter() {
-		return this.hasFooter;
-	}
-
-	public boolean hasHeader() {
-		return this.hasHeader;
-	}
+/**
+ */
+public interface AddableToOdsElements {
+	public void addToElements(OdsElements odsElements);
 }

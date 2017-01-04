@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
 import java.util.Locale;
 import java.util.Map;

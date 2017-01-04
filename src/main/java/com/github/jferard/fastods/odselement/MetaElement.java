@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class MetaEntry implements OdsEntry {
+public class MetaElement implements OdsElement {
 	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
 
@@ -47,7 +47,7 @@ public class MetaEntry implements OdsEntry {
 	// private int tableCount = 1;
 	// private int cellCount = 1;
 
-	public MetaEntry() {
+	public MetaElement() {
 		this.setDateTimeNow();
 		this.generator = "FastOds 0.0.1 2016";
 		this.creator = "FastOds 0.0.1";
@@ -98,12 +98,12 @@ public class MetaEntry implements OdsEntry {
 	}
 
 	/**
-	 * Store the date and time of the document creation in the MetaEntry data.
+	 * Store the date and time of the document creation in the MetaElement data.
 	 */
 	private void setDateTimeNow() {
 		final Date dt = new Date();
 
-		this.dateTime = new StringBuilder(MetaEntry.DF_DATE.format(dt))
-				.append("T").append(MetaEntry.DF_TIME.format(dt)).toString();
+		this.dateTime = new StringBuilder(MetaElement.DF_DATE.format(dt))
+				.append("T").append(MetaElement.DF_TIME.format(dt)).toString();
 	}
 }

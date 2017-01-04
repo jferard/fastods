@@ -20,17 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.DomTester;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.DomTester;
-import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 public class TableStyleTest {
 	private XMLUtil util;
@@ -43,13 +42,13 @@ public class TableStyleTest {
 	@Test
 	public final void testAddEmptyToFile() {
 		final TableStyle ts = TableStyle.builder("test").build();
-		final OdsEntries entries = PowerMock.createMock(OdsEntries.class);
+		final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 		final StyleTag styleTag = ts;
 
-		entries.addStyleTag(styleTag);
+		odsElements.addStyleTag(styleTag);
 		PowerMock.replayAll();
 
-		ts.addToEntries(entries);
+		ts.addToElements(odsElements);
 
 		PowerMock.verifyAll();
 	}

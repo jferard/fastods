@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
 import java.util.Locale;
 
@@ -40,13 +40,13 @@ public class StylesEntryTest {
 	private TableCellStyle st1;
 	private TableCellStyle st2;
 	private StylesContainer stylesContainer;
-	private StylesEntry stylesEntry;
+	private StylesElement stylesElement;
 	private XMLUtil util;
 
 	@Before
 	public void setUp() {
 		this.stylesContainer = new StylesContainer();
-		this.stylesEntry = new StylesEntry(this.stylesContainer);
+		this.stylesElement = new StylesElement(this.stylesContainer);
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
 

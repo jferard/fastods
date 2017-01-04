@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,7 +38,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class ContentEntry implements OdsEntry {
+public class ContentElement implements OdsElement {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesContainer stylesContainer;
@@ -46,10 +46,10 @@ public class ContentEntry implements OdsEntry {
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
 
-	ContentEntry(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-			final WriteUtil writeUtil,
-			final DataStyles format,
-			final StylesContainer stylesContainer) {
+	ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+				   final WriteUtil writeUtil,
+				   final DataStyles format,
+				   final StylesContainer stylesContainer) {
 		this.writeUtil = writeUtil;
 		this.xmlUtil = xmlUtil;
 		this.positionUtil = positionUtil;

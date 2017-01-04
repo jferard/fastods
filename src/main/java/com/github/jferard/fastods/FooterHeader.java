@@ -22,7 +22,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -107,10 +107,10 @@ public abstract class FooterHeader {
 		this.minHeight = minHeight;
 	}
 
-	public abstract void addEmbeddedStylesToStylesEntry(
+	public abstract void addEmbeddedStylesToStylesElement(
 			StylesContainer stylesContainer);
 
-	public abstract void addEmbeddedStylesToStylesEntry(
+	public abstract void addEmbeddedStylesToStylesElement(
 			StylesContainer stylesContainer, Mode mode);
 
 	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,

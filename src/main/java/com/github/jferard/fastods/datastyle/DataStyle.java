@@ -20,16 +20,17 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
-import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.style.AddableToOdsElements;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * @author Julien Férard
  */
-public abstract class DataStyle implements NamedObject {
+public abstract class DataStyle implements NamedObject, AddableToOdsElements {
 	protected final String countryCode;
 	protected final String languageCode;
 	protected final String name;
@@ -47,8 +48,9 @@ public abstract class DataStyle implements NamedObject {
 		this.volatileStyle = volatileStyle;
 	}
 
-	public void addToEntries(final OdsEntries odsEntries) {
-		odsEntries.addDataStyle(this);
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
 	}
 
 	/**
@@ -103,8 +105,9 @@ public abstract class DataStyle implements NamedObject {
 	}
 
 	/**
+	 * See http://www.ietf.org/rfc/rfc3066.txt
+	 *
 	 * @return The two letter language code, e.g. 'en'.
-	 * @see http://www.ietf.org/rfc/rfc3066.txt
 	 */
 	String getLanguageCode() {
 		return this.languageCode;

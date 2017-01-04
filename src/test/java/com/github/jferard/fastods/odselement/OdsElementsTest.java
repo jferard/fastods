@@ -18,49 +18,48 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
-import java.util.Locale;
-import java.util.logging.Logger;
-
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.util.Locale;
+import java.util.logging.Logger;
 
-public class OdsEntriesTest {
-	private ContentEntry contentEntry;
+public class OdsElementsTest {
+	private ContentElement contentElement;
 	private DataStyleBuilderFactory factory;
 	private Locale locale;
-	private ManifestEntry manifestEntry;
-	private MetaEntry metaEntry;
-	private MimetypeEntry mimetypeEntry;
-	private OdsEntries oe;
-	private SettingsEntry settingsEntry;
+	private ManifestElement manifestElement;
+	private MetaElement metaElement;
+	private MimetypeElement mimetypeElement;
+	private OdsElements oe;
+	private SettingsElement settingsElement;
 	private StylesContainer stylesContainer;
-	private StylesEntry stylesEntry;
+	private StylesElement stylesElement;
 	private XMLUtil util;
 
 	@Before
 	public void setUp() {
 		final Logger logger = PowerMock.createNiceMock(Logger.class);
-		this.mimetypeEntry = PowerMock.createMock(MimetypeEntry.class);
-		this.manifestEntry = PowerMock.createMock(ManifestEntry.class);
-		this.settingsEntry = PowerMock.createMock(SettingsEntry.class);
-		this.metaEntry = PowerMock.createMock(MetaEntry.class);
-		this.contentEntry = PowerMock.createMock(ContentEntry.class);
-		this.stylesEntry = PowerMock.createMock(StylesEntry.class);
+		this.mimetypeElement = PowerMock.createMock(MimetypeElement.class);
+		this.manifestElement = PowerMock.createMock(ManifestElement.class);
+		this.settingsElement = PowerMock.createMock(SettingsElement.class);
+		this.metaElement = PowerMock.createMock(MetaElement.class);
+		this.contentElement = PowerMock.createMock(ContentElement.class);
+		this.stylesElement = PowerMock.createMock(StylesElement.class);
 		this.stylesContainer = new StylesContainer();
 
-		this.oe = new OdsEntries(logger, this.mimetypeEntry, this.manifestEntry,
-				this.settingsEntry, this.metaEntry, this.contentEntry,
-				this.stylesEntry, this.stylesContainer);
+		this.oe = new OdsElements(logger, this.mimetypeElement, this.manifestElement,
+				this.settingsElement, this.metaElement, this.contentElement,
+				this.stylesElement, this.stylesContainer);
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
@@ -71,7 +70,7 @@ public class OdsEntriesTest {
 	public final void testAddTextStyle() {
 		final TextStyle ts = TextStyle.builder("test").build();
 	
-		this.stylesEntry.addTextStyle(ts);
+		this.stylesElement.addTextStyle(ts);
 		PowerMock.replayAll();
 		this.oe.addTextStyle(ts);
 		PowerMock.verifyAll();
@@ -80,9 +79,9 @@ public class OdsEntriesTest {
 	@Test
 	public final void testGetTable() {
 		final Table t = PowerMock.createMock(Table.class);
-		EasyMock.expect(this.contentEntry.getTable(9)).andReturn(t);
-		EasyMock.expect(this.contentEntry.getTable("nine")).andReturn(t);
-		EasyMock.expect(this.contentEntry.getTableCount()).andReturn(8);
+		EasyMock.expect(this.contentElement.getTable(9)).andReturn(t);
+		EasyMock.expect(this.contentElement.getTable("nine")).andReturn(t);
+		EasyMock.expect(this.contentElement.getTableCount()).andReturn(8);
 		PowerMock.replayAll();
 		Assert.assertEquals(t, this.oe.getTable(9));
 		Assert.assertEquals(t, this.oe.getTable("nine"));

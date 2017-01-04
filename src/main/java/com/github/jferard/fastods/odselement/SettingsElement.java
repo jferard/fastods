@@ -18,25 +18,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
+
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-
 /**
- * WHERE ? settings.xml/office:document-settings
+ * settings.xml/office:document-settings
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class SettingsEntry implements OdsEntry {
+public class SettingsElement implements OdsElement {
 	private final ConfigItem allowPrintJobCancel;
 	private final ConfigItem applyUserData;
 	private final ConfigItem autoCalculate;
@@ -97,7 +97,7 @@ public class SettingsEntry implements OdsEntry {
 
 	private final ConfigItem visibleAreaWidth;
 
-	public SettingsEntry() {
+	public SettingsElement() {
 		this.tables = Collections.emptyList();
 		this.visibleAreaTop = new ConfigItem("VisibleAreaTop", "int", "0");
 		this.visibleAreaLeft = new ConfigItem("VisibleAreaLeft", "int", "0");
@@ -222,7 +222,7 @@ public class SettingsEntry implements OdsEntry {
 		this.visibleAreaHeight.appendXMLToObject(util, writer);
 		writer.write(
 				"<settingsEntry:settingsEntry-item-map-indexed settingsEntry:name=\"Views\">");
-		writer.write("<settingsEntry:settingsEntry-item-map-entry>");
+		writer.write("<settingsEntry:settingsEntry-item-map-odselement>");
 		writer.write(
 				"<settingsEntry:settingsEntry-item settingsEntry:name=\"ViewId\" settingsEntry:type=\"string\">View1</settingsEntry:settingsEntry-item>");
 		writer.write(
@@ -254,7 +254,7 @@ public class SettingsEntry implements OdsEntry {
 
 		this.viewIdRasterSubdivisionY.appendXMLToObject(util, writer);
 		this.viewIdIsRasterAxisSynchronized.appendXMLToObject(util, writer);
-		writer.write("</settingsEntry:settingsEntry-item-map-entry>");
+		writer.write("</settingsEntry:settingsEntry-item-map-odselement>");
 		writer.write("</settingsEntry:settingsEntry-item-map-indexed>");
 		writer.write("</settingsEntry:settingsEntry-item-set>");
 		writer.write(

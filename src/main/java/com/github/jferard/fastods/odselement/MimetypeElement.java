@@ -18,20 +18,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.style;
-
-import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.XMLUtil;
+package com.github.jferard.fastods.odselement;
 
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
+ * WHERE ? mimetype
+ *
  * @author Julien Férard
+ * @author Martin Schulz
+ *
  */
-public interface StyleTag extends NamedObject, AddableToOdsElements {
-	void appendXML(XMLUtil util, Appendable appendable) throws IOException;
+public class MimetypeElement implements OdsElement {
+	@Override
+	public void write(final XMLUtil util, final ZipUTF8Writer writer)
+			throws IOException {
+		writer.putNextEntry(new ZipEntry("mimetype"));
+		writer.write("application/vnd.oasis.opendocument.spreadsheet");
+		writer.flush();
+		writer.closeEntry();
+	}
 
-	String getFamily();
-
-	String getKey();
 }

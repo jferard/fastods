@@ -69,7 +69,7 @@ public class OdsFileWriterBuilder {
 
 	/**
 	 */
-	public OdsFileWriterBuilder lockResult(final FileOpenResult lockResult) throws FileNotFoundException {
+	public OdsFileWriterBuilder openResult(final FileOpenResult lockResult) throws FileNotFoundException {
 		this.out = lockResult.getStream();
 		return this;
 	}

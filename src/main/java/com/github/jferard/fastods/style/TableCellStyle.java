@@ -20,12 +20,12 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * WHERE ? content.xml/office:document-content/office:automatic-styles/style:
@@ -87,17 +87,10 @@ public class TableCellStyle implements StyleTag {
 	private final boolean wrap; // No line wrap when false, line wrap when
 
 	/**
-	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsDocument o
+	 * Create a new cell style
 	 *
-	 * @param family
-	 *            The type of this style, either
-	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
-	 *            STYLE_TABLECELL
-	 * @param styleName
+	 * @param name
 	 *            A unique name for this style
-	 * @param odsFile
-	 *            The OdsDocument to add this style to
 	 */
 	TableCellStyle(final String name, final DataStyle dataStyle,
 			final String backgroundColor, final TextProperties textProperties,
@@ -116,10 +109,11 @@ public class TableCellStyle implements StyleTag {
 		this.parentCellStyleName = parentCellStyleName;
 	}
 
-	public void addToEntries(final OdsEntries odsEntries) {
+	@Override
+	public void addToElements(final OdsElements odsElements) {
 		if (this.dataStyle != null)
-			this.dataStyle.addToEntries(odsEntries);
-		odsEntries.addStyleTag(this);
+			this.dataStyle.addToElements(odsElements);
+		odsElements.addStyleTag(this);
 	}
 
 	/**

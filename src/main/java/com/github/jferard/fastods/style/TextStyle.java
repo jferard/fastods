@@ -20,9 +20,10 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * OpenDocument 16.27.28
@@ -85,5 +86,10 @@ public class TextStyle implements StyleTag {
 		if (this.key == null)
 			this.key = this.getFamily()+"@"+this.getName();
 		return this.key;
+	}
+
+	@Override
+	public void addToElements(OdsElements odsElements) {
+		throw new UnsupportedOperationException();
 	}
 }

@@ -20,6 +20,13 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,17 +35,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.entry.OdsEntries;
-import com.github.jferard.fastods.style.MasterPageStyle;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
 /**
  *
@@ -49,36 +45,36 @@ public class OdsDocument {
 	private static final int DEFAULT_COLUMN_CAPACITY = 32;
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
 
-	private final OdsEntries entries;
+	private final OdsElements odsElements;
 	private final Logger logger;
 	private final XMLUtil xmlUtil;
 
 	/**
 	 * Create a new ODS file.
 	 *  @param logger
-	 * @param entries
+	 * @param odsElements
 	 * @param xmlUtil
 	 */
 	OdsDocument(final Logger logger,
-				final OdsEntries entries, final XMLUtil xmlUtil) {
+				final OdsElements odsElements, final XMLUtil xmlUtil) {
 		this.logger = logger;
-		this.entries = entries;
+		this.odsElements = odsElements;
 		this.xmlUtil = xmlUtil;
 		// Add four default stylesEntry to contentEntry
-		TableStyle.DEFAULT_TABLE_STYLE.addToEntries(this.entries);
-		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToEntries(this.entries);
+		TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
+		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
 		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
-				.addToEntries(this.entries);
-		TableCellStyle.getDefaultCellStyle().addToEntries(this.entries);
-		MasterPageStyle.DEFAULT_PAGE_STYLE.addToEntries(this.entries);
+				.addToElements(this.odsElements);
+		TableCellStyle.getDefaultCellStyle().addToElements(this.odsElements);
+		MasterPageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
-		this.entries.addDataStyle(dataStyle);
+		this.odsElements.addDataStyle(dataStyle);
 	}
 
 	public void addPageStyle(final MasterPageStyle masterPageStyle) {
-		this.entries.addPageStyle(masterPageStyle);
+		this.odsElements.addPageStyle(masterPageStyle);
 	}
 
 	/**
@@ -101,20 +97,20 @@ public class OdsDocument {
 
 	public Table addTable(final String name, final int rowCapacity,
 			final int columnCapacity) {
-		final Table table = this.entries.addTableToContent(name, rowCapacity,
+		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
 				columnCapacity);
-		this.entries.setActiveTable(table);
+		this.odsElements.setActiveTable(table);
 		return table;
 	}
 
 	/*
 	public void addTextStyle(final TextStyle fhTextStyle) {
-		this.entries.addTextStyle(fhTextStyle);
+		this.odsElements.addTextStyle(fhTextStyle);
 	}
 	*/
 
 	public Table getTable(final int n) throws FastOdsException {
-		final List<Table> tableQueue = this.entries.getTables();
+		final List<Table> tableQueue = this.odsElements.getTables();
 		if (n < 0 || n >= tableQueue.size()) {
 			throw new FastOdsException("Wrong table number [" + n + "]");
 		}
@@ -130,7 +126,7 @@ public class OdsDocument {
 	 * @throws FastOdsException
 	 */
 	public Table getTable(final String name) throws FastOdsException {
-		final Table table = this.entries.getTable(name);
+		final Table table = this.odsElements.getTable(name);
 		if (table == null) {
 			throw new FastOdsException("Wrong table name [" + name + "]");
 		}
@@ -157,7 +153,7 @@ public class OdsDocument {
 	 * @return The number of the table or -1 if name was not found
 	 */
 	public int getTableNumber(final String name) {
-		final ListIterator<Table> iterator = this.entries.getTables()
+		final ListIterator<Table> iterator = this.odsElements.getTables()
 				.listIterator();
 		while (iterator.hasNext()) {
 			final int n = iterator.nextIndex();
@@ -174,7 +170,7 @@ public class OdsDocument {
 	 * @return the list of tables
 	 */
 	public List<Table> getTables() {
-		return this.entries.getTables();
+		return this.odsElements.getTables();
 	}
 
 	/**
@@ -210,11 +206,11 @@ public class OdsDocument {
 	}
 
 	public void save(final ZipUTF8Writer writer) throws IOException {
-		this.entries.setTables();
+		this.odsElements.setTables();
 
 		try {
-			this.entries.writeEntries(this.xmlUtil, writer);
-			this.entries.createEmptyEntries(writer);
+			this.odsElements.writeElements(this.xmlUtil, writer);
+			this.odsElements.createEmptyElements(writer);
 		} finally {
 			writer.close();
 		}
@@ -250,11 +246,11 @@ public class OdsDocument {
 	 * @return true - The active table was set, false - tab has an illegal value
 	 */
 	public boolean setActiveTable(final int tableIndex) {
-		if (tableIndex < 0 || tableIndex >= this.entries.getTableCount())
+		if (tableIndex < 0 || tableIndex >= this.odsElements.getTableCount())
 			return false;
 
-		final Table table = this.entries.getTable(tableIndex);
-		this.entries.setActiveTable(table);
+		final Table table = this.odsElements.getTable(tableIndex);
+		this.odsElements.setActiveTable(table);
 		return true;
 	}
 
@@ -264,7 +260,7 @@ public class OdsDocument {
 	 * @return The number of the last table
 	 */
 	public int tableCount() {
-		return this.entries.getTableCount();
+		return this.odsElements.getTableCount();
 	}
 
 	public Logger getLogger() {

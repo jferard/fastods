@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -188,8 +188,8 @@ public class SimpleFooterHeaderTest {
 				.simpleBuilder(FooterHeader.Type.FOOTER)
 				.content("text").build();
 
-		footer.addEmbeddedStylesToStylesEntry(sc);
-		footer.addEmbeddedStylesToStylesEntry(sc, Mode.CREATE);
+		footer.addEmbeddedStylesToStylesElement(sc);
+		footer.addEmbeddedStylesToStylesElement(sc, Mode.CREATE);
 		PowerMock.verifyAll();
 	}
 }

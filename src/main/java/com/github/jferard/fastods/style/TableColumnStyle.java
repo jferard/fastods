@@ -20,10 +20,10 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
-import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * WHERE ? content.xml/office:document-content/office:automatic-styles/style:
@@ -55,18 +55,14 @@ public class TableColumnStyle implements StyleTag {
 	private final String name;
 
 	/**
-	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsDocument o
+	 * Create a new column style
 	 *
-	 * @param family
-	 *            The type of this style, either
-	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
-	 *            STYLE_TABLECELL
 	 * @param name
 	 *            A unique name for this style
+	 * @param columnWidth
+	 *            the width of the column
 	 * @param defaultCellStyle
-	 * @param odsFile
-	 *            The OdsDocument to add this style to
+	 *            the default style for cells
 	 */
 	TableColumnStyle(final String name, final String columnWidth,
 			final TableCellStyle defaultCellStyle) {
@@ -75,8 +71,9 @@ public class TableColumnStyle implements StyleTag {
 		this.defaultCellStyle = defaultCellStyle;
 	}
 
-	public void addToEntries(final OdsEntries odsEntries) {
-		odsEntries.addStyleTag(this);
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addStyleTag(this);
 	}
 
 	/**

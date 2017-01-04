@@ -25,8 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.entry.ConfigItem;
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.ConfigItem;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
@@ -153,7 +153,7 @@ public class Table implements NamedObject {
 
 	public void appendXMLToSettingsEntry(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item-map-entry");
+		appendable.append("<config:config-item-map-odselement");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		this.cursorPositionX.appendXMLToObject(util, appendable);
@@ -172,7 +172,7 @@ public class Table implements NamedObject {
 		this.zoomType.appendXMLToObject(util, appendable);
 		this.zoomValue.appendXMLToObject(util, appendable);
 		this.pageViewZoomValue.appendXMLToObject(util, appendable);
-		appendable.append("</config:config-item-map-entry>");
+		appendable.append("</config:config-item-map-odselement>");
 	}
 
 	public List<TableColumnStyle> getColumnStyles() {

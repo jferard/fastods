@@ -18,29 +18,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
-import java.io.IOException;
-import java.util.zip.ZipEntry;
+class HasFooterHeader {
+	private final boolean hasFooter;
+	private final boolean hasHeader;
 
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-
-/**
- * WHERE ? mimetype
- *
- * @author Julien Férard
- * @author Martin Schulz
- *
- */
-public class MimetypeEntry implements OdsEntry {
-	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer)
-			throws IOException {
-		writer.putNextEntry(new ZipEntry("mimetype"));
-		writer.write("application/vnd.oasis.opendocument.spreadsheet");
-		writer.flush();
-		writer.closeEntry();
+	HasFooterHeader(final boolean hasHeader, final boolean hasFooter) {
+		this.hasHeader = hasHeader;
+		this.hasFooter = hasFooter;
 	}
 
+	public boolean hasFooter() {
+		return this.hasFooter;
+	}
+
+	public boolean hasHeader() {
+		return this.hasHeader;
+	}
 }

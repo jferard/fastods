@@ -22,7 +22,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 
-import com.github.jferard.fastods.entry.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -74,7 +74,7 @@ class RegionFooterHeader extends FooterHeader {
 	}
 
 	@Override
-	public void addEmbeddedStylesToStylesEntry(
+	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer) {
 		if (this.leftRegion != null)
 			this.leftRegion
@@ -88,7 +88,7 @@ class RegionFooterHeader extends FooterHeader {
 	}
 
 	@Override
-	public void addEmbeddedStylesToStylesEntry(
+	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer, final Container.Mode mode) {
 		if (this.leftRegion != null)
 			this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(

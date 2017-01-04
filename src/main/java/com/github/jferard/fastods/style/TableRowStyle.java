@@ -20,16 +20,12 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
-import com.github.jferard.fastods.entry.OdsEntries;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
+import java.io.IOException;
+
 /**
- * WHERE ? content.xml/office:document-content/office:automatic-styles/style:
- * style content.xml/office:document-content/office:body/office:spreadsheet/
- * table:table/table:table-column
- *
  * @author Julien Férard
  * @author Martin Schulz
  *
@@ -49,22 +45,19 @@ public class TableRowStyle implements StyleTag {
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsDocument o
 	 *
-	 * @param family
-	 *            The type of this style, either
-	 *            STYLE_TABLECOLUMN,STYLE_TABLEROW,STYLE_TABLE or
-	 *            STYLE_TABLECELL
 	 * @param styleName
 	 *            A unique name for this style
-	 * @param odsFile
-	 *            The OdsDocument to add this style to
+	 * @param rowHeight
+	 *            The height of the row
 	 */
 	TableRowStyle(final String styleName, final String rowHeight) {
 		this.name = styleName;
 		this.rowHeight = rowHeight;
 	}
 
-	public void addToEntries(final OdsEntries odsEntries) {
-		odsEntries.addStyleTag(this);
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addStyleTag(this);
 	}
 
 	@Override

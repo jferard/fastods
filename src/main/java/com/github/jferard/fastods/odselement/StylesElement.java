@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************/
-package com.github.jferard.fastods.entry;
+package com.github.jferard.fastods.odselement;
 
 import java.io.IOException;
 import java.util.zip.ZipEntry;
@@ -33,7 +33,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Martin Schulz
  *
  */
-public class StylesEntry implements OdsEntry {
+public class StylesElement implements OdsElement {
 	private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
 			final Appendable appendable, final String name) throws IOException {
 		appendable.append("<style:style");
@@ -53,7 +53,7 @@ public class StylesEntry implements OdsEntry {
 	/**
 	 * @param stylesContainer the container for all styles
 	 */
-	public StylesEntry(final StylesContainer stylesContainer) {
+	public StylesElement(final StylesContainer stylesContainer) {
 		this.stylesContainer = stylesContainer;
 	}
 
@@ -85,10 +85,10 @@ public class StylesEntry implements OdsEntry {
 		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
 
 		if (hasFooterHeader.hasHeader()) {
-			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Header");
+			StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Header");
 		}
 		if (hasFooterHeader.hasFooter()) {
-			StylesEntry.appendDefaultFooterHeaderStyle(util, writer, "Footer");
+			StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Footer");
 		}
 
 		writer.write("</office:styles>");

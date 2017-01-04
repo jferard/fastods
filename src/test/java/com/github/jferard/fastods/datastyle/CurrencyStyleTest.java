@@ -20,16 +20,15 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-import java.util.Locale;
-
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
+import java.util.Locale;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -147,7 +146,7 @@ public class CurrencyStyleTest {
 	}
 
 	@Test
-	public final void testStylesEntry() throws IOException {
+	public final void testStylesElements() throws IOException {
 		final CurrencyStyle cs = this.factory.currencyStyleBuilder("test")
 				.locale(this.locale).negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
