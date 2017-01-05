@@ -20,7 +20,7 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.DomTester;
+import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;

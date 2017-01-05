@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.DomTester;
+import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.FooterHeader;
 import com.github.jferard.fastods.style.MasterPageStyle.PaperFormat;
 import com.github.jferard.fastods.style.MasterPageStyle.WritingMode;

@@ -23,57 +23,61 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 3.10.3 config:config-item
- *
- * @author Julien Férard
- * @author Martin Schulz
- *
+ * 3.10.4 config:config-item-map-indexed
  */
-public class ConfigItem implements ConfigBlock {
+public class ConfigItemMapNamed implements ConfigBlock {
 	private final String name;
-	private final String type;
-	private final String value;
+	private final Map<String, ConfigItemMapEntry> map;
 
-	public ConfigItem(final String name, final String type,
-			final String value) {
+	public ConfigItemMapNamed(String name) {
 		this.name = name;
-		this.type = type;
-		this.value = value;
+		this.map = new HashMap<String, ConfigItemMapEntry>();
 	}
 
-	/**
-	 * Write the XML format for this object. This is used while writing the ODS file.
-	 *
-	 * @throws IOException
-	 */
-	@Override
-	public void appendXML(final XMLUtil util,
-						  final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.name);
-		util.appendAttribute(appendable, "config:type", this.type);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.value));
-		appendable.append("</config:config-item>");
-	}
-
-	/**
-	 * Get the name of this ConfigItem.
-	 *
-	 * @return The name of this ConfigItem
-	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	public String getType() {
-		return this.type;
+	public int size() {
+		return map.size();
 	}
 
-	public String getValue() {
-		return this.value;
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+
+	public boolean containsKey(Object key) {
+		return map.containsKey(key);
+	}
+
+	public boolean containsValue(Object value) {
+		return map.containsValue(value);
+	}
+
+	public ConfigItemMapEntry get(Object key) {
+		return map.get(key);
+	}
+
+	public ConfigItemMapEntry put(ConfigItemMapEntry value) {
+		return map.put(value.getName(), value);
+	}
+
+	public ConfigItemMapEntry remove(Object key) {
+		return map.remove(key);
+	}
+
+	@Override
+	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-named");
+		util.appendAttribute(appendable, "config:name", this.name);
+		appendable.append(">");
+		for (ConfigItemMapEntry entry : this.map.values())
+			entry.appendXML(util, appendable);
+		appendable.append("</config:config-item-map-named>");
 	}
 }

@@ -25,55 +25,28 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 3.10.3 config:config-item
- *
- * @author Julien Férard
- * @author Martin Schulz
- *
+ * There is a hierarchy in config block:
+ * <ul>
+ * <li>{@code config:config-item-set} is the root. It may contain any config block</li>
+ * <li>{@code config:config-item} is the simplest config block</li>
+ * <li>{@code config:config-item-map-indexed} is a config block that contains {@code config:config-item-map-entry}</li>
+ * <li>{@code config:config-item-map-named} is a config block that contains {@code config:config-item-map-entry}</li>
+ * <li>{@code config:config-item-map-entry} may contain any config block</li>
+ * </ul>
  */
-public class ConfigItem implements ConfigBlock {
-	private final String name;
-	private final String type;
-	private final String value;
-
-	public ConfigItem(final String name, final String type,
-			final String value) {
-		this.name = name;
-		this.type = type;
-		this.value = value;
-	}
+public interface ConfigBlock {
+	/**
+	 * @return the name of this config block (19.29 config:name)
+	 */
+	String getName();
 
 	/**
-	 * Write the XML format for this object. This is used while writing the ODS file.
+	 * Append a block to an appendable.
 	 *
-	 * @throws IOException
+	 * @param util the XML util to create XML tags
+	 * @param appendable where to add the block
+	 * @throws IOException if the block can't be appended.
 	 */
-	@Override
-	public void appendXML(final XMLUtil util,
-						  final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.name);
-		util.appendAttribute(appendable, "config:type", this.type);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.value));
-		appendable.append("</config:config-item>");
-	}
-
-	/**
-	 * Get the name of this ConfigItem.
-	 *
-	 * @return The name of this ConfigItem
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	public String getType() {
-		return this.type;
-	}
-
-	public String getValue() {
-		return this.value;
-	}
+	void appendXML(final XMLUtil util,
+				   final Appendable appendable) throws IOException;
 }

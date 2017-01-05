@@ -156,22 +156,22 @@ public class Table implements NamedObject {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		this.cursorPositionX.appendXMLToObject(util, appendable);
-		this.cursorPositionY.appendXMLToObject(util, appendable);
-		this.horizontalSplitMode.appendXMLToObject(util, appendable);
-		this.verticalSplitMode.appendXMLToObject(util, appendable);
-		this.horizontalSplitMode.appendXMLToObject(util, appendable);
-		this.verticalSplitMode.appendXMLToObject(util, appendable);
-		this.horizontalSplitPosition.appendXMLToObject(util, appendable);
-		this.verticalSplitPosition.appendXMLToObject(util, appendable);
-		this.activeSplitRange.appendXMLToObject(util, appendable);
-		this.positionLeft.appendXMLToObject(util, appendable);
-		this.positionRight.appendXMLToObject(util, appendable);
-		this.positionTop.appendXMLToObject(util, appendable);
-		this.positionBottom.appendXMLToObject(util, appendable);
-		this.zoomType.appendXMLToObject(util, appendable);
-		this.zoomValue.appendXMLToObject(util, appendable);
-		this.pageViewZoomValue.appendXMLToObject(util, appendable);
+		this.cursorPositionX.appendXML(util, appendable);
+		this.cursorPositionY.appendXML(util, appendable);
+		this.horizontalSplitMode.appendXML(util, appendable);
+		this.verticalSplitMode.appendXML(util, appendable);
+		this.horizontalSplitMode.appendXML(util, appendable);
+		this.verticalSplitMode.appendXML(util, appendable);
+		this.horizontalSplitPosition.appendXML(util, appendable);
+		this.verticalSplitPosition.appendXML(util, appendable);
+		this.activeSplitRange.appendXML(util, appendable);
+		this.positionLeft.appendXML(util, appendable);
+		this.positionRight.appendXML(util, appendable);
+		this.positionTop.appendXML(util, appendable);
+		this.positionBottom.appendXML(util, appendable);
+		this.zoomType.appendXML(util, appendable);
+		this.zoomValue.appendXML(util, appendable);
+		this.pageViewZoomValue.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-entry>");
 	}
 

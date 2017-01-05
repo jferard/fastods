@@ -25,55 +25,30 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 3.10.3 config:config-item
- *
- * @author Julien Férard
- * @author Martin Schulz
- *
+ * 3.10.5 config:config-item-map-entry
  */
-public class ConfigItem implements ConfigBlock {
+public class ConfigItemMapEntry {
 	private final String name;
-	private final String type;
-	private final String value;
+	private ConfigBlock block;
 
-	public ConfigItem(final String name, final String type,
-			final String value) {
+	public ConfigItemMapEntry(String name, final ConfigBlock block) {
 		this.name = name;
-		this.type = type;
-		this.value = value;
+		this.block = block;
 	}
 
-	/**
-	 * Write the XML format for this object. This is used while writing the ODS file.
-	 *
-	 * @throws IOException
-	 */
-	@Override
-	public void appendXML(final XMLUtil util,
-						  final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.name);
-		util.appendAttribute(appendable, "config:type", this.type);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.value));
-		appendable.append("</config:config-item>");
-	}
-
-	/**
-	 * Get the name of this ConfigItem.
-	 *
-	 * @return The name of this ConfigItem
-	 */
-	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	public String getType() {
-		return this.type;
+	public ConfigBlock getBlock() {
+		return block;
 	}
 
-	public String getValue() {
-		return this.value;
+	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-entry");
+		util.appendAttribute(appendable, "config:name", this.name);
+		appendable.append(">");
+		this.block.appendXML(util, appendable);
+		appendable.append("</config:config-item-map-entry>");
 	}
 }

@@ -23,57 +23,57 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
- * 3.10.3 config:config-item
- *
- * @author Julien Férard
- * @author Martin Schulz
- *
+ * 3.10.2 config:config-item-set
  */
-public class ConfigItem implements ConfigBlock {
+public class ConfigItemSet implements ConfigBlock {
+	private final Set<ConfigBlock> set;
 	private final String name;
-	private final String type;
-	private final String value;
 
-	public ConfigItem(final String name, final String type,
-			final String value) {
+	ConfigItemSet(String name) {
 		this.name = name;
-		this.type = type;
-		this.value = value;
+		this.set = new HashSet<ConfigBlock>();
 	}
 
 	/**
-	 * Write the XML format for this object. This is used while writing the ODS file.
-	 *
-	 * @throws IOException
-	 */
-	@Override
-	public void appendXML(final XMLUtil util,
-						  final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.name);
-		util.appendAttribute(appendable, "config:type", this.type);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.value));
-		appendable.append("</config:config-item>");
-	}
-
-	/**
-	 * Get the name of this ConfigItem.
-	 *
-	 * @return The name of this ConfigItem
+	 * @return The name of this ConfigSet
 	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	public String getType() {
-		return this.type;
+	@Override
+	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-set");
+		util.appendAttribute(appendable, "config:name", this.name);
+		appendable.append(">");
+		for (ConfigBlock block : this.set)
+			block.appendXML(util, appendable);
+		appendable.append("</config:config-item-set>");
 	}
 
-	public String getValue() {
-		return this.value;
+	public int size() {
+		return set.size();
+	}
+
+	public boolean isEmpty() {
+		return set.isEmpty();
+	}
+
+	public Iterator<ConfigBlock> iterator() {
+		return set.iterator();
+	}
+
+	public boolean add(ConfigBlock configBlock) {
+		return set.add(configBlock);
+	}
+
+	public boolean remove(Object o) {
+		return set.remove(o);
 	}
 }

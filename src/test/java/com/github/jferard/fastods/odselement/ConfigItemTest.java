@@ -58,7 +58,7 @@ public class ConfigItemTest {
 		final ConfigItem loadReadonly = new ConfigItem("LoadReadonly",
 				"boolean", "false");
 		final StringBuilder sb = new StringBuilder();
-		loadReadonly.appendXMLToObject(this.util, sb);
+		loadReadonly.appendXML(this.util, sb);
 		Assert.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>",
 				sb.toString());
@@ -68,7 +68,7 @@ public class ConfigItemTest {
 	public final void testXMLEscape() throws IOException {
 		final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
 		final StringBuilder sb = new StringBuilder();
-		escape.appendXMLToObject(this.util, sb);
+		escape.appendXML(this.util, sb);
 		Assert.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;</config:config-item>",
 				sb.toString());

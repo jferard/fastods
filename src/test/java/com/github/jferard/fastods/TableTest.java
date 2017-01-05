@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import com.github.jferard.fastods.testutil.DomTester;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;

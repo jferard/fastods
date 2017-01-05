@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
+import com.github.jferard.fastods.testutil.DomTester;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.junit.Assert;

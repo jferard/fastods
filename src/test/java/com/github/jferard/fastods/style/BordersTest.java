@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.DomTester;
 import com.github.jferard.fastods.style.BorderAttribute.Style;
 import com.github.jferard.fastods.util.XMLUtil;
 

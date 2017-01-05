@@ -26,7 +26,7 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.DomTester;
+import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
