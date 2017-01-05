@@ -225,10 +225,10 @@ public class TableTest {
 	@Test
 	public final void testSettingsEntry() throws IOException {
 		final StringBuilder sb = new StringBuilder();
-		this.table.appendXMLToSettingsEntry(this.xmlUtil, sb);
+		this.table.appendXMLToSettingsElement(this.xmlUtil, sb);
 
 		Assert.assertEquals(
-				"<config:config-item-map-odselement config:name=\"mytable\">"
+				"<config:config-item-map-entry config:name=\"mytable\">"
 						+ "<config:config-item config:name=\"CursorPositionX\" config:type=\"int\">0</config:config-item>"
 						+ "<config:config-item config:name=\"cursorPositionY\" config:type=\"int\">0</config:config-item>"
 						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
@@ -245,7 +245,7 @@ public class TableTest {
 						+ "<config:config-item config:name=\"zoomType\" config:type=\"short\">0</config:config-item>"
 						+ "<config:config-item config:name=\"zoomValue\" config:type=\"int\">100</config:config-item>"
 						+ "<config:config-item config:name=\"pageViewZoomValue\" config:type=\"int\">60</config:config-item>"
-						+ "</config:config-item-map-odselement>",
+						+ "</config:config-item-map-entry>",
 				sb.toString());
 
 	}

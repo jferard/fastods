@@ -20,26 +20,25 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.odselement;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
 
+import java.io.IOException;
+
 /**
- * WHERE ? settings.xml/office:document-settings/office:settings/settingsEntry:
- * settingsEntry-item-set/config:config-item
+ * 3.10.3 config:config-item
  *
  * @author Julien Férard
  * @author Martin Schulz
  *
  */
 public class ConfigItem {
-	private final String itemName;
+	private final String name;
 	private final String type;
 	private final String value;
 
 	public ConfigItem(final String name, final String type,
 			final String value) {
-		this.itemName = name;
+		this.name = name;
 		this.type = type;
 		this.value = value;
 	}
@@ -52,7 +51,7 @@ public class ConfigItem {
 	public void appendXMLToObject(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.itemName);
+		util.appendAttribute(appendable, "config:name", this.name);
 		util.appendAttribute(appendable, "config:type", this.type);
 		appendable.append(">");
 		appendable.append(util.escapeXMLContent(this.value));
@@ -65,7 +64,7 @@ public class ConfigItem {
 	 * @return The name of this ConfigItem
 	 */
 	public String getName() {
-		return this.itemName;
+		return this.name;
 	}
 
 	public String getType() {

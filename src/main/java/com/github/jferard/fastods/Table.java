@@ -20,10 +20,6 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.ConfigItem;
 import com.github.jferard.fastods.odselement.StylesContainer;
@@ -35,6 +31,10 @@ import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -151,9 +151,9 @@ public class Table implements NamedObject {
 		appendable.append("</table:table>");
 	}
 
-	public void appendXMLToSettingsEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item-map-odselement");
+	public void appendXMLToSettingsElement(final XMLUtil util,
+										   final Appendable appendable) throws IOException {
+		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		this.cursorPositionX.appendXMLToObject(util, appendable);
@@ -172,7 +172,7 @@ public class Table implements NamedObject {
 		this.zoomType.appendXMLToObject(util, appendable);
 		this.zoomValue.appendXMLToObject(util, appendable);
 		this.pageViewZoomValue.appendXMLToObject(util, appendable);
-		appendable.append("</config:config-item-map-odselement>");
+		appendable.append("</config:config-item-map-entry>");
 	}
 
 	public List<TableColumnStyle> getColumnStyles() {

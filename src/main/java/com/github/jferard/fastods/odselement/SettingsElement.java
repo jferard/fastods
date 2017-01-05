@@ -30,7 +30,31 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 
 /**
- * settings.xml/office:document-settings
+ * 3.1.3.5 office:document-settings and 3.10 office:settings
+ *
+ * A typical {@code settings.xml} file has two {@code config-item-set}s:
+ * <ul>
+ *     <li>{@code ooo:view-settings}
+ *     		<ul>
+ *     		 	   <li>{@code config-item}s for the view settings</li>
+ *     		 	   <li>{@code config-item-map-indexed} with a {@code config-item-map-entry} per view
+ *     					<ul>
+ *     		 	   			<li>{@code config-item}s of the wiew</li>
+ *     		 	   			<li>a {@code config-item-map-named} with a {@code config-item-map-entry} per table
+ * 		    					<ul>
+ *     				 	   			<li>{@code config-item}s of the table in the wiew</li>
+ * 		    					</ul>
+ *     		 	   			</li>
+ *     					</ul>
+ *     		 	   </li>
+ *     		</ul>
+ *     	<li>{@code ooo:configuration-settings}
+ *     		<ul>
+ *     		    <li>{@code config-item}s for the configuration settings</li>
+ *     		</ul>
+ *     	</li>
+ * </ul>
+ * *
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -97,7 +121,7 @@ public class SettingsElement implements OdsElement {
 
 	private final ConfigItem visibleAreaWidth;
 
-	public SettingsElement() {
+	SettingsElement() {
 		this.tables = Collections.emptyList();
 		this.visibleAreaTop = new ConfigItem("VisibleAreaTop", "int", "0");
 		this.visibleAreaLeft = new ConfigItem("VisibleAreaLeft", "int", "0");
@@ -215,23 +239,23 @@ public class SettingsElement implements OdsElement {
 				"<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:settingsEntry=\"urn:oasis:names:tc:opendocument:xmlns:settingsEntry:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">");
 		writer.write("<office:settings>");
 		writer.write(
-				"<settingsEntry:settingsEntry-item-set settingsEntry:name=\"ooo:view-settings\">");
+				"<config:config-item-set config:name=\"ooo:view-settings\">");
 		this.visibleAreaTop.appendXMLToObject(util, writer);
 		this.visibleAreaLeft.appendXMLToObject(util, writer);
 		this.visibleAreaWidth.appendXMLToObject(util, writer);
 		this.visibleAreaHeight.appendXMLToObject(util, writer);
 		writer.write(
-				"<settingsEntry:settingsEntry-item-map-indexed settingsEntry:name=\"Views\">");
-		writer.write("<settingsEntry:settingsEntry-item-map-odselement>");
+				"<config:config-item-map-indexed config:name=\"Views\">");
+		writer.write("<config:config-item-map-entry>");
 		writer.write(
-				"<settingsEntry:settingsEntry-item settingsEntry:name=\"ViewId\" settingsEntry:type=\"string\">View1</settingsEntry:settingsEntry-item>");
+				"<config:config-item config:name=\"ViewId\" settingsEntry:type=\"string\">View1</config:config-item>");
 		writer.write(
-				"<settingsEntry:settingsEntry-item-map-named settingsEntry:name=\"Tables\">");
+				"<config:config-item-map-named config:name=\"Tables\">");
 
 		for (final Table t : this.tables)
-			t.appendXMLToSettingsEntry(util, writer);
+			t.appendXMLToSettingsElement(util, writer);
 
-		writer.write("</settingsEntry:settingsEntry-item-map-named>");
+		writer.write("</config:config-item-map-named>");
 		this.viewIdActiveTable.appendXMLToObject(util, writer);
 		this.viewIdHorizontalScrollbarWidth.appendXMLToObject(util, writer);
 		this.viewIdPageViewZoomValue.appendXMLToObject(util, writer);
@@ -254,11 +278,11 @@ public class SettingsElement implements OdsElement {
 
 		this.viewIdRasterSubdivisionY.appendXMLToObject(util, writer);
 		this.viewIdIsRasterAxisSynchronized.appendXMLToObject(util, writer);
-		writer.write("</settingsEntry:settingsEntry-item-map-odselement>");
-		writer.write("</settingsEntry:settingsEntry-item-map-indexed>");
-		writer.write("</settingsEntry:settingsEntry-item-set>");
+		writer.write("</config:config-item-map-entry>");
+		writer.write("</config:config-item-map-indexed>");
+		writer.write("</config:config-item-set>");
 		writer.write(
-				"<settingsEntry:settingsEntry-item-set settingsEntry:name=\"ooo:configuration-settings\">");
+				"<config:config-item-set config:name=\"ooo:configuration-settings\">");
 		this.showZeroValues.appendXMLToObject(util, writer);
 		this.showNotes.appendXMLToObject(util, writer);
 		this.showGrid.appendXMLToObject(util, writer);
@@ -285,7 +309,7 @@ public class SettingsElement implements OdsElement {
 		this.updateFromTemplate.appendXMLToObject(util, writer);
 		this.allowPrintJobCancel.appendXMLToObject(util, writer);
 		this.loadReadonly.appendXMLToObject(util, writer);
-		writer.write("</settingsEntry:settingsEntry-item-set>");
+		writer.write("</config:config-item-set>");
 		writer.write("</office:settings>");
 		writer.write("</office:document-settings>");
 		writer.flush();
