@@ -21,52 +21,28 @@
 package com.github.jferard.fastods.testutil;
 
 import com.google.common.base.Objects;
-import org.w3c.dom.Attr;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class ChildrenTester {
+	static Logger logger = Logger.getLogger("ChildrenTester");
+
 	protected boolean attributesEquals(final Node element1, final Node element2) {
 		final NamedNodeMap attributes1 = element1.getAttributes();
 		final NamedNodeMap attributes2 = element2.getAttributes();
 		if (attributes1 == null) {
 			return attributes2 == null;
-		} else {
-			if (attributes2 == null)
-				return false;
+		} else if (attributes2 == null)
+			return false;
+		else {
 			if (attributes1.getLength() != attributes2.getLength())
 				return false;
 
-			List<Attr> list1 = new ArrayList<Attr>(attributes1.getLength());
-			List<Attr> list2 = new ArrayList<Attr>(attributes1.getLength());
-			for (int i = 0; i < attributes1.getLength(); i++) {
-				list1.add((Attr) attributes1.item(i));
-				list2.add((Attr) attributes2.item(i));
-			}
-
-			Comparator<Attr> cmp = new Comparator<Attr>() {
-				@Override
-				public int compare(Attr o1, Attr o2) {
-					return 2 * o1.getName().compareTo(o2.getName()) + o1.getValue().compareTo(o2.getValue());
-				}
-			};
-
-			Collections.sort(list1, cmp);
-			Collections.sort(list2, cmp);
-
-			Iterator<Attr> i1 = list1.iterator();
-			Iterator<Attr> i2 = list2.iterator();
-			while (i1.hasNext()) {
-				if (cmp.compare(i1.next(), i2.next()) != 0)
-					return false;
-			}
-			return true;
+			AttrList list1 = new AttrList(attributes1);
+			AttrList list2 = new AttrList(attributes2);
+			return list1.equals(list2);
 		}
 	}
 
@@ -80,14 +56,18 @@ public abstract class ChildrenTester {
 	}
 
 	protected boolean equals(final Node element1, final Node element2) {
+		logger.fine("element1" + UnsortedNodeList.toString(element1) + ",\nelement2" + UnsortedNodeList.toString(element2));
+		logger.fine("" + this.namesEquals(element1, element2)
+				+ this.attributesEquals(element1, element2)
+				+ this.childrenEquals(element1, element2));
 		if (element1 == null)
 			return element2 == null;
 		else if (element2 == null)
 			return false;
 		else // element1 != null && element2 != null
 			return this.namesEquals(element1, element2)
-				&& this.attributesEquals(element1, element2)
-				&& this.childrenEquals(element1, element2);
+					&& this.attributesEquals(element1, element2)
+					&& this.childrenEquals(element1, element2);
 	}
 
 	public abstract boolean childrenEquals(final Node element1, final Node element2);

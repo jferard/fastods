@@ -23,20 +23,20 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Map;
 
 /**
- * 3.10.2 config:config-item-set
+ * 3.10.2 config:config-item-blocks
  */
 public class ConfigItemSet implements ConfigBlock {
-	private final Set<ConfigBlock> set;
+	private final Map<String, ConfigBlock> blockByName;
 	private final String name;
 
 	ConfigItemSet(String name) {
 		this.name = name;
-		this.set = new HashSet<ConfigBlock>();
+		this.blockByName = new HashMap<String, ConfigBlock>();
 	}
 
 	/**
@@ -52,28 +52,28 @@ public class ConfigItemSet implements ConfigBlock {
 		appendable.append("<config:config-item-set");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigBlock block : this.set)
+		for (ConfigBlock block : this.blockByName.values())
 			block.appendXML(util, appendable);
 		appendable.append("</config:config-item-set>");
 	}
 
 	public int size() {
-		return set.size();
+		return blockByName.size();
 	}
 
 	public boolean isEmpty() {
-		return set.isEmpty();
+		return blockByName.isEmpty();
 	}
 
 	public Iterator<ConfigBlock> iterator() {
-		return set.iterator();
+		return blockByName.values().iterator();
 	}
 
-	public boolean add(ConfigBlock configBlock) {
-		return set.add(configBlock);
+	public void add(ConfigBlock configBlock) {
+		blockByName.put(configBlock.getName(), configBlock);
 	}
 
-	public boolean remove(Object o) {
-		return set.remove(o);
+	public void remove(Object o) {
+		blockByName.remove(o);
 	}
 }

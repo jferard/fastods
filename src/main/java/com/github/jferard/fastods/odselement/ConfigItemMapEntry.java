@@ -23,32 +23,57 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * 3.10.5 config:config-item-map-entry
  */
-public class ConfigItemMapEntry {
+public class ConfigItemMapEntry implements ConfigBlock {
 	private final String name;
-	private ConfigBlock block;
+	private final Collection<ConfigBlock> blocks;
 
-	public ConfigItemMapEntry(String name, final ConfigBlock block) {
+	ConfigItemMapEntry(String name, Collection<ConfigBlock> blocks) {
 		this.name = name;
-		this.block = block;
+		this.blocks = blocks;
+	}
+
+	ConfigItemMapEntry(String name, ConfigItem configItem) {
+		this.name = name;
+		this.blocks = new HashSet<ConfigBlock>(1);
+		this.blocks.add(configItem);
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public ConfigBlock getBlock() {
-		return block;
+	public int size() {
+		return blocks.size();
+	}
+
+	public boolean isEmpty() {
+		return blocks.isEmpty();
+	}
+
+	public boolean contains(Object o) {
+		return blocks.contains(o);
+	}
+
+	public boolean add(ConfigBlock block) {
+		return blocks.add(block);
+	}
+
+	public boolean remove(Object o) {
+		return blocks.remove(o);
 	}
 
 	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		this.block.appendXML(util, appendable);
+		for (ConfigBlock block : this.blocks)
+			block.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-entry>");
 	}
 }

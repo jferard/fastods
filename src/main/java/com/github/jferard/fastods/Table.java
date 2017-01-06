@@ -22,6 +22,8 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.ConfigItem;
+import com.github.jferard.fastods.odselement.ConfigItemMapEntry;
+import com.github.jferard.fastods.odselement.ConfigItemSetMapEntry;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
@@ -41,14 +43,15 @@ import java.util.List;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class Table implements NamedObject {
+	private final ConfigItemMapEntry configEntry;
+
 	private static void checkCol(final int col) throws FastOdsException {
 		if (col < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative column number exception, column value:[")
-							.append(col).append("]").toString());
+					.append(col).append("]").toString());
 		}
 	}
 
@@ -56,44 +59,28 @@ public class Table implements NamedObject {
 		if (row < 0) {
 			throw new FastOdsException(new StringBuilder(
 					"Negative row number exception, row value:[").append(row)
-							.append("]").toString());
+					.append("]").toString());
 		}
 	}
 
-	private final ConfigItem activeSplitRange;
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
 	private int curRowIndex;
-	private final ConfigItem cursorPositionX;
-	private final ConfigItem cursorPositionY;
 	private final DataStyles format;
-	private final ConfigItem horizontalSplitMode;
-	private final ConfigItem horizontalSplitPosition;
 	private int lastRowIndex;
 	private String name;
-	private final ConfigItem pageViewZoomValue;
-
-	private final ConfigItem positionBottom;
-	private final ConfigItem positionLeft;
-	private final ConfigItem positionRight;
-
-	private final ConfigItem positionTop;
 	private final PositionUtil positionUtil;
 	private TableStyle style;
 
 	private final StylesContainer stylesContainer;
 	private final List<HeavyTableRow> tableRows;
-	private final ConfigItem verticalSplitMode;
-	private final ConfigItem verticalSplitPosition;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
-	private final ConfigItem zoomType;
-	private final ConfigItem zoomValue;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
-			final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-			final DataStyles format, final String name, final int rowCapacity,
-			final int columnCapacity) {
+				 final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+				 final DataStyles format, final String name, final int rowCapacity,
+				 final int columnCapacity) {
 		this.xmlUtil = xmlUtil;
 		this.writeUtil = writeUtil;
 		this.positionUtil = positionUtil;
@@ -102,28 +89,24 @@ public class Table implements NamedObject {
 		this.name = name;
 		this.columnCapacity = columnCapacity;
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
-		this.cursorPositionX = new ConfigItem("CursorPositionX", "int", "0");
-		this.cursorPositionY = new ConfigItem("cursorPositionY", "int", "0");
-		this.horizontalSplitMode = new ConfigItem("horizontalSplitMode",
-				"short", "0");
-		this.verticalSplitMode = new ConfigItem("verticalSplitMode", "short",
-				"0");
-		this.horizontalSplitPosition = new ConfigItem("horizontalSplitPosition",
-				"int", "0");
-		this.verticalSplitPosition = new ConfigItem("verticalSplitPosition",
-				"int", "0");
-		this.activeSplitRange = new ConfigItem("activeSplitRange", "short",
-				"2");
-		this.positionLeft = new ConfigItem("positionLeft", "int", "0");
-		this.positionRight = new ConfigItem("PositionRight", "int", "0");
-		this.positionTop = new ConfigItem("PositionTop", "int", "0");
-		this.positionBottom = new ConfigItem("positionBottom", "int", "0");
-		this.zoomType = new ConfigItem("zoomType", "short", "0");
-		this.zoomValue = new ConfigItem("zoomValue", "int", "100");
-		this.pageViewZoomValue = new ConfigItem("pageViewZoomValue", "int",
-				"60");
 
-		this.columnStyles = FullList.<TableColumnStyle> builder()
+		this.configEntry = new ConfigItemSetMapEntry(this.name);
+		this.configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
+		this.configEntry.add(new ConfigItem("cursorPositionY", "int", "0"));
+		this.configEntry.add(new ConfigItem("HorizontalSplitMode", "short", "0"));
+		this.configEntry.add(new ConfigItem("VerticalSplitMode", "short", "0"));
+		this.configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
+		this.configEntry.add(new ConfigItem("VerticalSplitPosition", "int", "0"));
+		this.configEntry.add(new ConfigItem("ActiveSplitRange", "short", "2"));
+		this.configEntry.add(new ConfigItem("PositionLeft", "int", "0"));
+		this.configEntry.add(new ConfigItem("PositionRight", "int", "0"));
+		this.configEntry.add(new ConfigItem("PositionTop", "int", "0"));
+		this.configEntry.add(new ConfigItem("PositionBottom", "int", "0"));
+		this.configEntry.add(new ConfigItem("ZoomType", "short", "0"));
+		this.configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
+		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int","60"));
+
+		this.columnStyles = FullList.<TableColumnStyle>builder()
 				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
 				.capacity(this.columnCapacity).build();
 		this.tableRows = FullList.newListWithCapacity(rowCapacity);
@@ -131,12 +114,17 @@ public class Table implements NamedObject {
 		this.lastRowIndex = -1;
 	}
 
+	public void setConfigItem(final String name, final String type,
+							  final String value) {
+		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int","60"));
+	}
+
 	public void addData(final DataWrapper data) {
 		data.addToTable(this);
 	}
 
 	public void appendXMLToContentEntry(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+										final Appendable appendable) throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.name);
 		util.appendAttribute(appendable, "table:style-name",
@@ -153,26 +141,7 @@ public class Table implements NamedObject {
 
 	public void appendXMLToSettingsElement(final XMLUtil util,
 										   final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item-map-entry");
-		util.appendAttribute(appendable, "config:name", this.name);
-		appendable.append(">");
-		this.cursorPositionX.appendXML(util, appendable);
-		this.cursorPositionY.appendXML(util, appendable);
-		this.horizontalSplitMode.appendXML(util, appendable);
-		this.verticalSplitMode.appendXML(util, appendable);
-		this.horizontalSplitMode.appendXML(util, appendable);
-		this.verticalSplitMode.appendXML(util, appendable);
-		this.horizontalSplitPosition.appendXML(util, appendable);
-		this.verticalSplitPosition.appendXML(util, appendable);
-		this.activeSplitRange.appendXML(util, appendable);
-		this.positionLeft.appendXML(util, appendable);
-		this.positionRight.appendXML(util, appendable);
-		this.positionTop.appendXML(util, appendable);
-		this.positionBottom.appendXML(util, appendable);
-		this.zoomType.appendXML(util, appendable);
-		this.zoomValue.appendXML(util, appendable);
-		this.pageViewZoomValue.appendXML(util, appendable);
-		appendable.append("</config:config-item-map-entry>");
+		this.configEntry.appendXML(util, appendable);
 	}
 
 	public List<TableColumnStyle> getColumnStyles() {
@@ -233,13 +202,10 @@ public class Table implements NamedObject {
 	/**
 	 * Set the style of a column.
 	 *
-	 * @param col
-	 *            The column number
-	 * @param ts
-	 *            The style to be used, make sure the style is of type
+	 * @param col The column number
+	 * @param ts  The style to be used, make sure the style is of type
 	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
-	 * @throws FastOdsException
-	 *             Thrown if col has an invalid value.
+	 * @throws FastOdsException Thrown if col has an invalid value.
 	 */
 	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
@@ -251,8 +217,7 @@ public class Table implements NamedObject {
 	/**
 	 * Set the name of this table.
 	 *
-	 * @param name
-	 *            The name of this table.
+	 * @param name The name of this table.
 	 */
 	public void setName(final String name) {
 		this.name = name;
@@ -261,8 +226,7 @@ public class Table implements NamedObject {
 	/**
 	 * Set a new TableFamilyStyle
 	 *
-	 * @param style
-	 *            The new TableStyle to be used
+	 * @param style The new TableStyle to be used
 	 */
 	public void setStyle(final TableStyle style) {
 		this.style = style;
@@ -271,22 +235,21 @@ public class Table implements NamedObject {
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
+	 * @param pos         The cell position e.g. 'A1'
 	 * @param rowMerge
 	 * @param columnMerge
 	 * @throws FastOdsException
 	 */
 	@Deprecated
 	public void setCellMerge(final String pos, final int rowMerge,
-			final int columnMerge) throws FastOdsException {
+							 final int columnMerge) throws FastOdsException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final HeavyTableRow row = this.getRow(position.getRow());
 		row.setCellMerge(position.getColumn(), rowMerge, columnMerge);
 	}
 
 	private void appendColumnStyles(final Appendable appendable,
-			final XMLUtil xmlUtil) throws IOException {
+									final XMLUtil xmlUtil) throws IOException {
 		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
 				.iterator();
 		if (!iterator.hasNext())
