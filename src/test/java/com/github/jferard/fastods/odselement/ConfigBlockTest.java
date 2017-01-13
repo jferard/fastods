@@ -20,6 +20,11 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySingleton;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapIndexed;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapNamed;
+import com.github.jferard.fastods.odselement.config.ConfigItemSet;
 import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -46,10 +51,10 @@ public class ConfigBlockTest {
 		set1.add(new ConfigItem("item2", "string", "str"));
 		cb.add(set1);
 		ConfigItemMapIndexed map1 = new ConfigItemMapIndexed("map1");
-		map1.add(new ConfigItemMapEntry("entry1", new ConfigItem("item3", "short", "0")));
+		map1.add(ConfigItemMapEntrySingleton.createSingleton("entry1", new ConfigItem("item3", "short", "0")));
 		cb.add(map1);
 		ConfigItemMapNamed map2 = new ConfigItemMapNamed("map2");
-		map2.put(new ConfigItemMapEntry("entry2", new ConfigItem("item4", "long", "123456789")));
+		map2.put(ConfigItemMapEntrySingleton.createSingleton("entry2", new ConfigItem("item4", "long", "123456789")));
 		cb.add(map2);
 
 		cb.appendXML(util, sb);

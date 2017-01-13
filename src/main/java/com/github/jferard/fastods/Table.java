@@ -21,10 +21,10 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.odselement.ConfigItem;
-import com.github.jferard.fastods.odselement.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.ConfigItemSetMapEntry;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
@@ -45,7 +45,7 @@ import java.util.List;
  * @author Martin Schulz
  */
 public class Table implements NamedObject {
-	private final ConfigItemMapEntry configEntry;
+	private final ConfigItemMapEntrySet configEntry;
 
 	private static void checkCol(final int col) throws FastOdsException {
 		if (col < 0) {
@@ -90,9 +90,9 @@ public class Table implements NamedObject {
 		this.columnCapacity = columnCapacity;
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
 
-		this.configEntry = new ConfigItemSetMapEntry(this.name);
+		this.configEntry = ConfigItemMapEntrySet.createSet(this.name);
 		this.configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
-		this.configEntry.add(new ConfigItem("cursorPositionY", "int", "0"));
+		this.configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
 		this.configEntry.add(new ConfigItem("HorizontalSplitMode", "short", "0"));
 		this.configEntry.add(new ConfigItem("VerticalSplitMode", "short", "0"));
 		this.configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
@@ -139,6 +139,11 @@ public class Table implements NamedObject {
 		appendable.append("</table:table>");
 	}
 
+	public ConfigItemMapEntry getConfigEntry() {
+		return configEntry;
+	}
+
+	@Deprecated
 	public void appendXMLToSettingsElement(final XMLUtil util,
 										   final Appendable appendable) throws IOException {
 		this.configEntry.appendXML(util, appendable);
@@ -298,5 +303,9 @@ public class Table implements NamedObject {
 				tr.appendXMLToTable(util, appendable);
 			}
 		}
+	}
+
+	public void setSettings(String viewId, String item, String value) {
+		this.configEntry.set(item, value);
 	}
 }

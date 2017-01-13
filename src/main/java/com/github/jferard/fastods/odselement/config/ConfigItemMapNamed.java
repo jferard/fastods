@@ -1,4 +1,4 @@
-/* *****************************************************************************
+/*
  * FastODS - a Martin Schulz's SimpleODS fork
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
@@ -17,63 +17,26 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- * ****************************************************************************/
-package com.github.jferard.fastods.odselement;
+ */
+package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
 /**
  * 3.10.4 config:config-item-map-indexed
  */
-public class ConfigItemMapIndexed implements ConfigBlock {
+public class ConfigItemMapNamed implements ConfigBlock {
 	private final String name;
+	private final Map<String, ConfigItemMapEntry> map;
 
-	public int size() {
-		return list.size();
-	}
-
-	public boolean isEmpty() {
-		return list.isEmpty();
-	}
-
-	public boolean contains(Object o) {
-		return list.contains(o);
-	}
-
-	public Iterator<ConfigItemMapEntry> iterator() {
-		return list.iterator();
-	}
-
-	public boolean add(ConfigItemMapEntry configItemMapEntry) {
-		return list.add(configItemMapEntry);
-	}
-
-	public boolean remove(Object o) {
-		return list.remove(o);
-	}
-
-	public ConfigItemMapEntry get(int index) {
-		return list.get(index);
-	}
-
-	public ConfigItemMapEntry set(int index, ConfigItemMapEntry element) {
-		return list.set(index, element);
-	}
-
-	public void add(int index, ConfigItemMapEntry element) {
-		list.add(index, element);
-	}
-
-	private final List<ConfigItemMapEntry> list;
-
-	public ConfigItemMapIndexed(String name) {
+	public ConfigItemMapNamed(String name) {
 		this.name = name;
-		this.list = new ArrayList<ConfigItemMapEntry>();
+		this.map = new HashMap<String, ConfigItemMapEntry>();
 	}
 
 	@Override
@@ -81,13 +44,45 @@ public class ConfigItemMapIndexed implements ConfigBlock {
 		return this.name;
 	}
 
+	public int size() {
+		return map.size();
+	}
+
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+
+	public boolean contains(String name) {
+		return map.containsKey(name);
+	}
+
+	public ConfigItemMapEntry getByName(String name) {
+		return map.get(name);
+	}
+
+	public ConfigItemMapEntry put(ConfigItemMapEntry value) {
+		return map.put(value.getName(), value);
+	}
+
+	public ConfigItemMapEntry removeByName(String name) {
+		return map.remove(name);
+	}
+
+	public Iterator<ConfigItemMapEntry> iterator() {
+		return map.values().iterator();
+	}
+
 	@Override
 	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
-		appendable.append("<config:config-item-map-indexed");
+		appendable.append("<config:config-item-map-named");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigItemMapEntry entry : this.list)
+		for (ConfigItemMapEntry entry : this.map.values())
 			entry.appendXML(util, appendable);
-		appendable.append("</config:config-item-map-indexed>");
+		appendable.append("</config:config-item-map-named>");
+	}
+
+	public void clear() {
+		this.map.clear();
 	}
 }

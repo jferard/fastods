@@ -22,7 +22,11 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -265,5 +269,9 @@ public class OdsDocument {
 
 	public Logger getLogger() {
 		return this.logger;
+	}
+
+	public void setViewSetting(String viewId, String item, String value) {
+		this.odsElements.setViewSettings(viewId, item, value);
 	}
 }

@@ -22,6 +22,7 @@ package com.github.jferard.fastods.odselement;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.odselement.config.ConfigItem;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

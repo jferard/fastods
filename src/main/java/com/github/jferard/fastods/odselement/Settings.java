@@ -21,9 +21,17 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.odselement.config.ConfigBlock;
+import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapIndexed;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapNamed;
+import com.github.jferard.fastods.odselement.config.ConfigItemSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 3.10 office:settings
@@ -61,14 +69,16 @@ public class Settings {
 	private final ConfigItemMapNamed tablesMap;
 	private final ConfigItemSet configurationSettings;
 	private final ConfigItemSet viewSettings;
-	private final ConfigItemMapEntry firstView;
+	private final ConfigItemMapEntrySet firstView;
 	private final ConfigItemMapIndexed views;
+	private final Map<String, ConfigItemMapEntrySet> viewById;
 
 	Settings() {
 		this.rootBlocks = new ArrayList<ConfigBlock>();
 		this.viewSettings = new ConfigItemSet("ooo:view-settings");
 		this.views = new ConfigItemMapIndexed("Views");
-		this.firstView = new ConfigItemSetMapEntry("");
+		this.viewById = new HashMap<String, ConfigItemMapEntrySet>();
+		this.firstView = ConfigItemMapEntrySet.createSet();
 		this.tablesMap = new ConfigItemMapNamed("Tables");
 		this.configurationSettings = new ConfigItemSet("ooo:configuration-settings");
 
@@ -84,6 +94,7 @@ public class Settings {
 		viewSettings.add(new ConfigItem("VisibleAreaHeight", "int", "400"));
 
 		firstView.add(new ConfigItem("ViewId", "string", "View1"));
+		this.viewById.put("View1", firstView);
 		firstView.add(new ConfigItem("ActiveTable", "string", "Tab1"));
 		firstView.add(new ConfigItem("HorizontalScrollbarWidth", "int", "270"));
 		firstView.add(new ConfigItem("ZoomType", "short", "0"));
@@ -147,5 +158,23 @@ public class Settings {
 	public void setActiveTable(final Table table) {
 		this.firstView.add(new ConfigItem("ActiveTable", "string",
 				table.getName()));
+	}
+
+	public void addTable(final Table table) {
+		this.tablesMap.put(table.getConfigEntry());
+	}
+
+	public void setTables(List<Table> tables) {
+		this.tablesMap.clear();
+		for (Table table : tables)
+			this.tablesMap.put(table.getConfigEntry());
+	}
+
+	public void setViewSettings(String viewId, String item, String value) {
+		ConfigItemMapEntrySet view = this.viewById.get(viewId);
+		if (view == null)
+			return;
+
+		view.set(item, value);
 	}
 }

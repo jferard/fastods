@@ -49,7 +49,7 @@ public class OdsElements {
 									 final DataStyles format) {
 		final MimetypeElement mimetypeElement = new MimetypeElement();
 		final ManifestElement manifestElement = new ManifestElement();
-		final SettingsElement settingsElement = new SettingsElement();
+		final SettingsElement settingsElement = SettingsElement.create();
 		final MetaElement metaElement = new MetaElement();
 		final StylesContainer stylesContainer = new StylesContainer();
 		final StylesElement stylesElement = new StylesElement(stylesContainer);
@@ -165,5 +165,9 @@ public class OdsElements {
 		this.logger.log(Level.FINER,
 				"Writing odselement: settingsElement to zip file");
 		this.settingsElement.write(xmlUtil, writer);
+	}
+
+	public void setViewSettings(String viewId, String item, String value) {
+		this.settingsElement.setViewSettings(viewId, item, value);
 	}
 }

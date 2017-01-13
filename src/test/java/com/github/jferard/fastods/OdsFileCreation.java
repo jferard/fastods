@@ -20,17 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.logging.Logger;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
 
 /**
  * @author Julien Férard
@@ -96,7 +95,9 @@ public class OdsFileCreation {
 		final Random random = new Random();
 
 		final OdsDocument document = new OdsFactory().createDocument();
+		document.setViewSetting("View1", "ZoomValue", "200");
 		final Table table = document.addTable("test", 50, 5);
+		table.setSettings("View1", "ZoomValue", "200");
 		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();

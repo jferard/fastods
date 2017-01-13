@@ -1,4 +1,4 @@
-/* *****************************************************************************
+/*
  * FastODS - a Martin Schulz's SimpleODS fork
  *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
@@ -17,8 +17,8 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- * ****************************************************************************/
-package com.github.jferard.fastods.odselement;
+ */
+package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -34,7 +34,7 @@ public class ConfigItemSet implements ConfigBlock {
 	private final Map<String, ConfigBlock> blockByName;
 	private final String name;
 
-	ConfigItemSet(String name) {
+	public ConfigItemSet(String name) {
 		this.name = name;
 		this.blockByName = new HashMap<String, ConfigBlock>();
 	}
@@ -73,7 +73,15 @@ public class ConfigItemSet implements ConfigBlock {
 		blockByName.put(configBlock.getName(), configBlock);
 	}
 
-	public void remove(Object o) {
-		blockByName.remove(o);
+	public boolean contains(String name) {
+		return blockByName.containsKey(name);
+	}
+
+	public void removeByName(String name) {
+		blockByName.remove(name);
+	}
+
+	public ConfigBlock getByName(String name) {
+		return this.blockByName.get(name);
 	}
 }

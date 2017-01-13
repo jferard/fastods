@@ -20,11 +20,11 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.odselement;
 
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+
+import java.io.IOException;
+import java.util.zip.ZipEntry;
 
 /**
  * WHERE ? META-INF/manifest.xml/manifest:manifest
@@ -36,25 +36,24 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 public class ManifestElement implements OdsElement {
 	final String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
 			"<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">",
-			"<manifest:file-odselement manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
-
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/statusbar/\" />",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/accelerator/current.xml\" />",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/accelerator/\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/floater/\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/popupmenu/\" />",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/progressbar/\" />",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/menubar/\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/toolbar/\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/images/Bitmaps/\" />",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Configurations2/images/\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"application/vnd.sun.xml.ui.configuration\" manifest:full-path=\"Configurations2/\" />",
-			"<manifest:file-odselement manifest:media-type=\"text/xml\" manifest:full-path=\"content.xml\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"text/xml\" manifest:full-path=\"styles.xml\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"text/xml\" manifest:full-path=\"meta.xml\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Thumbnails/thumbnail.png\" />",
-			"<manifest:file-odselement manifest:media-type=\"\" manifest:full-path=\"Thumbnails/\" /> ",
-			"<manifest:file-odselement manifest:media-type=\"text/xml\" manifest:full-path=\"settings.xml\" />",
+			"<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/statusbar/\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/accelerator/current.xml\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/accelerator/\" /> ",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/floater/\" /> ",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/popupmenu/\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/progressbar/\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/menubar/\" /> ",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/toolbar/\" /> ",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/images/Bitmaps/\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/images/\" /> ",
+			"<manifest:file-entry manifest:media-type=\"application/vnd.sun.xml.ui.configuration\" manifest:full-path=\"Configurations2/\" />",
+			"<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"content.xml\" /> ",
+			"<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"styles.xml\" /> ",
+			"<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"meta.xml\" /> ",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Thumbnails/thumbnail.png\" />",
+			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Thumbnails/\" /> ",
+			"<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"settings.xml\" />",
 			"</manifest:manifest>"
 
 	};
