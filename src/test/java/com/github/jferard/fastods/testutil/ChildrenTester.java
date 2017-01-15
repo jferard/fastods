@@ -57,17 +57,18 @@ public abstract class ChildrenTester {
 
 	protected boolean equals(final Node element1, final Node element2) {
 		logger.fine("element1" + UnsortedNodeList.toString(element1) + ",\nelement2" + UnsortedNodeList.toString(element2));
-		logger.fine("" + this.namesEquals(element1, element2)
-				+ this.attributesEquals(element1, element2)
-				+ this.childrenEquals(element1, element2));
 		if (element1 == null)
 			return element2 == null;
 		else if (element2 == null)
 			return false;
-		else // element1 != null && element2 != null
+		else { // element1 != null && element2 != null
+			logger.fine("" + this.namesEquals(element1, element2)
+					+ this.attributesEquals(element1, element2)
+					+ this.childrenEquals(element1, element2));
 			return this.namesEquals(element1, element2)
 					&& this.attributesEquals(element1, element2)
 					&& this.childrenEquals(element1, element2);
+		}
 	}
 
 	public abstract boolean childrenEquals(final Node element1, final Node element2);

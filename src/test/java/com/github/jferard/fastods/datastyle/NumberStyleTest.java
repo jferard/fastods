@@ -20,15 +20,14 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import org.junit.Assert;
+import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
+import java.util.Locale;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -55,7 +54,7 @@ public class NumberStyleTest {
 				.locale(this.locale).build();
 		final StringBuilder sb = new StringBuilder();
 		ns.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 						+ "</number:number-style>",
@@ -68,7 +67,7 @@ public class NumberStyleTest {
 				.negativeValueRed().locale(this.locale).build();
 		final StringBuilder sb = new StringBuilder();
 		ns.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 						+ "</number:number-style>"

@@ -20,16 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.style.TextProperties;
-import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 public class SpanTest {
 	private XMLUtil util;
@@ -47,12 +47,12 @@ public class SpanTest {
 		Assert.assertEquals(ts, fhtext.getTextStyle());
 		final StringBuilder sbo = new StringBuilder();
 		fhtext.appendXMLOptionalSpanToParagraph(this.util, sbo);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<text:span text:style-name=\"test\">text</text:span>",
 				sbo.toString());
 		final StringBuilder sbt = new StringBuilder();
 		fhtext.appendXMLTextPToParagraph(this.util, sbt);
-		Assert.assertEquals("<text:p text:style-name=\"test\">text</text:p>",
+		DomTester.assertEquals("<text:p text:style-name=\"test\">text</text:p>",
 				sbt.toString());
 	}
 
@@ -66,6 +66,6 @@ public class SpanTest {
 		Assert.assertEquals("text", sbo.toString());
 		final StringBuilder sbt = new StringBuilder();
 		fhtext.appendXMLTextPToParagraph(this.util, sbt);
-		Assert.assertEquals("<text:p>text</text:p>", sbt.toString());
+		DomTester.assertEquals("<text:p>text</text:p>", sbt.toString());
 	}
 }

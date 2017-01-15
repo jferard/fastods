@@ -61,4 +61,9 @@ public class DomTesterTest {
 		DomTester.assertUnsortedEquals("<a><b><x/><y/></b><c/></a>", "<a><c/><b><y/><x/></b></a>");
 		DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
 	}
+
+	@Test
+	public void testEuro() {
+		DomTester.assertEquals("<a b=\"€\"/>", "<a b=\"€\"/>");
+	}
 }

@@ -106,10 +106,9 @@ public class TableColumnStyleTest {
 
 		tcs.appendXML(this.util, sbc);
 
-		Assert.assertTrue(DomTester
-				.equals("<style:style style:name=\"test\" style:family=\"table-column\">"
+		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table-column\">"
 						+ "<style:table-column-properties fo:break-before=\"auto\" style:column-width=\"1pt\"/>"
-						+ "</style:style>", sbc.toString()));
+						+ "</style:style>", sbc.toString());
 		Assert.assertEquals("1pt", tcs.getColumnWidth());
 		Assert.assertEquals(tcs, tcs);
 		Assert.assertEquals(tcs.hashCode(), tcs.hashCode());

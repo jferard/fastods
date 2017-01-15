@@ -116,6 +116,9 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 	}
 
 	public static String toString(Node n) {
+		if (n == null)
+			return "[null]";
+
 		NamedNodeMap attributes = n.getAttributes();
 		String s = attributes == null ? "" : new AttrList(attributes).toString();
 		return "Node["+n.getNodeName()+", "+n.getNodeValue()+", "+ s +"]";

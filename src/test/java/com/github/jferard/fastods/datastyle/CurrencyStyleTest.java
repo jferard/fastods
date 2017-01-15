@@ -21,9 +21,9 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +54,7 @@ public class CurrencyStyleTest {
 				.decimalPlaces(5).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>USD</number:currency-symbol>"
@@ -68,7 +68,7 @@ public class CurrencyStyleTest {
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		cs.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:currency-style style:name=\"currency-data\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> </number:text>"
@@ -83,7 +83,7 @@ public class CurrencyStyleTest {
 				.groupThousands(true).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>USD</number:currency-symbol>"
@@ -96,7 +96,7 @@ public class CurrencyStyleTest {
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>USD</number:currency-symbol>"
@@ -109,7 +109,7 @@ public class CurrencyStyleTest {
 				.negativeValueColor(Color.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>USD</number:currency-symbol>"
@@ -130,7 +130,7 @@ public class CurrencyStyleTest {
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>USD</number:currency-symbol>"
@@ -151,7 +151,7 @@ public class CurrencyStyleTest {
 				.locale(this.locale).negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
 		cs.appendXML(this.util, sb);
-		Assert.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>" + "<number:currency-symbol>"
 				+ "USD" + "</number:currency-symbol>"

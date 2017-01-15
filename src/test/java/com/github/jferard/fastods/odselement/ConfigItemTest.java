@@ -20,15 +20,15 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.odselement;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard Copyright 2008-2013 Martin
@@ -60,7 +60,7 @@ public class ConfigItemTest {
 				"boolean", "false");
 		final StringBuilder sb = new StringBuilder();
 		loadReadonly.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>",
 				sb.toString());
 	}
@@ -70,7 +70,7 @@ public class ConfigItemTest {
 		final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
 		final StringBuilder sb = new StringBuilder();
 		escape.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;</config:config-item>",
 				sb.toString());
 	}

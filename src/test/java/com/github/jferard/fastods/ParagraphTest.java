@@ -20,17 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.style.TextProperties;
-import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 public class ParagraphTest {
 	private XMLUtil util;
@@ -60,7 +59,7 @@ public class ParagraphTest {
 		Assert.assertEquals("text", par.getSpans().get(1).getText());
 		final StringBuilder sb = new StringBuilder();
 		par.appendXMLContent(this.util, sb);
-		Assert.assertEquals("<text:p>contenttext</text:p>", sb.toString());
+		DomTester.assertEquals("<text:p>contenttext</text:p>", sb.toString());
 	}
 
 	@Test
@@ -73,7 +72,7 @@ public class ParagraphTest {
 		Assert.assertEquals(1, par.getSpans().size());
 		final StringBuilder sb = new StringBuilder();
 		par.appendXMLContent(this.util, sb);
-		Assert.assertEquals("<text:p text:style-name=\"style\">text</text:p>",
+		DomTester.assertEquals("<text:p text:style-name=\"style\">text</text:p>",
 				sb.toString());
 	}
 

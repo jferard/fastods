@@ -20,11 +20,17 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
-
+import com.github.jferard.fastods.TableCell.Type;
+import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.datastyle.LocaleDataStyles;
+import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.junit.Assert;
@@ -35,16 +41,9 @@ import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.github.jferard.fastods.TableCell.Type;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.LocaleDataStyles;
-import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.WriteUtil;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Locale;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(HeavyTableColdRow.class)
@@ -415,7 +414,7 @@ public class HeavyTableRowTest {
 		EasyMock.expectLastCall().andAnswer(new IAnswer<Void>() {
 			@Override
 			public Void answer() {
-				((StringBuilder) EasyMock.getCurrentArguments()[1]).append("@");
+				((StringBuilder) EasyMock.getCurrentArguments()[1]).append(" htcr=\"@\" />"); // cold row has to return an valid closing tag
 				return null;
 			}
 		});
@@ -424,9 +423,9 @@ public class HeavyTableRowTest {
 		this.row.setStringValue(5, "value");
 		this.row.setCellMerge(5, 10, 8);
 		this.row.appendXMLToTable(this.xmlUtil, sbt);
-		Assert.assertEquals("<table:table-row table:style-name=\"ro1\">"
-				+ "<table:table-cell table:number-columns-repeated=\"5\"/>"
-				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"value\"@"
+		DomTester.assertEquals("<table:table-row table:style-name=\"ro1\">"
+				+ "<table:table-cell table:number-columns-repeated=\"5\" />"
+				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"value\" htcr=\"@\" />"
 				+ "</table:table-row>", sbt.toString());
 		PowerMock.verifyAll();
 	}

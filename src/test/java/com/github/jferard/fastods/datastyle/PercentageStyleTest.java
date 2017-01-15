@@ -20,16 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-import java.util.Locale;
-
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
+import java.util.Locale;
 
 public class PercentageStyleTest {
 	private DataStyleBuilderFactory factory;
@@ -49,7 +49,7 @@ public class PercentageStyleTest {
 				.decimalPlaces(5).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text>%</number:text>"
@@ -63,7 +63,7 @@ public class PercentageStyleTest {
 				.groupThousands(true).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
 						+ "<number:text>%</number:text>"
@@ -77,7 +77,7 @@ public class PercentageStyleTest {
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
 						+ "<number:text>%</number:text>"
@@ -91,7 +91,7 @@ public class PercentageStyleTest {
 				.negativeValueColor(Color.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text>%</number:text>"
@@ -112,7 +112,7 @@ public class PercentageStyleTest {
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text>%</number:text>"

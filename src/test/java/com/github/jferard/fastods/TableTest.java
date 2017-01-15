@@ -84,7 +84,7 @@ public class TableTest {
 		final StringBuilder sb = new StringBuilder();
 		this.table.appendXMLToContentEntry(this.xmlUtil, sb);
 
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">"
 						+ "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>"
 						+ "<table:table-column table:style-name=\"test0\" table:default-cell-style-name=\"Default\"/>"

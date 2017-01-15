@@ -20,15 +20,15 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-import java.util.Locale;
-
+import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
+import java.util.Locale;
 
 public class TimeStyleTest {
 	private DataStyleBuilderFactory factory;
@@ -48,7 +48,7 @@ public class TimeStyleTest {
 				.timeFormat(TimeStyle.Format.HHMMSS).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"fixed\">"
 						+ "<number:hours/>" + "<number:text>:</number:text>"
 						+ "<number:minutes/>" + "<number:text>:</number:text>"
@@ -62,7 +62,7 @@ public class TimeStyleTest {
 				.timeFormat(null).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		Assert.assertEquals(
+		DomTester.assertEquals(
 				"<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"language\"/>",
 				sb.toString());
 	}
