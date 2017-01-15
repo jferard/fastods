@@ -97,7 +97,7 @@
 		<profile>
 			<id>bench</id>
 			<properties>
-                <fastods.testSourceDirectory>src/bench/java</fastods.testSourceDirectory>
+                <fastods.testSourceDirectory>src/misc/bench/java</fastods.testSourceDirectory>
             </properties>
 			<dependencies>
 				<dependency>
@@ -107,7 +107,6 @@
 					<scope>test</scope>
 					<systemPath />
 				</dependency>
-
 				<dependency>
 					<groupId>org.jopendocument</groupId>
 					<artifactId>jOpenDocument</artifactId>
@@ -116,6 +115,12 @@
 					<systemPath />
 				</dependency>
 			</dependencies>
+		</profile>
+		<profile>
+			<id>other</id>
+			<properties>
+                <fastods.testSourceDirectory>src/misc/other/java</fastods.testSourceDirectory>
+            </properties>
 		</profile>
 	</profiles>
 </project>

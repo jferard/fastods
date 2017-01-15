@@ -73,12 +73,12 @@ Two examples are implemented as optional tests, in the ```src/test/java``` folde
 
 To test it, one has to run tests manually:
 ```
-mvn -Dtest=OdsFileCreation test
+mvn -P other -Dtest=OdsFileCreation test
 ```
 
 And:
 ```
-mvn -Dtest=OdsFileWithHeaderAndFooterCreation test
+mvn -P other -Dtest=OdsFileWithHeaderAndFooterCreation test
 ```
 
 The resulting ods files are written in current directory, and can be opened with LibreOffice or OpenOffice.
