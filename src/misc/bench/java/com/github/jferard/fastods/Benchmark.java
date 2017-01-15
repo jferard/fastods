@@ -20,22 +20,16 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-
-import javax.swing.table.DefaultTableModel;
-
-import org.jopendocument.dom.spreadsheet.Sheet;
-import org.jopendocument.dom.spreadsheet.SpreadSheet;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import org.simpleods.ObjectQueue;
-import org.simpleods.SimpleOdsException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * @author Julien Férard Copyright (C) 2016 J. Férard
@@ -45,7 +39,8 @@ import org.simpleods.SimpleOdsException;
 public class Benchmark {
 	private static final int COL_COUNT = 20;
 	private static final int ROW_COUNT = 5000;
-	private static final int TIMES = 5;
+	private static final int TIMES = 10;
+
 	@Rule
 	public TestName name = new TestName();
 
@@ -68,100 +63,50 @@ public class Benchmark {
 	}
 
 	@Test
-	public void test1() throws SimpleOdsException, IOException {
+	public void test1() throws IOException {
+		Bench bench1 = new BenchFast(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+		Bench bench2 = new BenchSimple(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+		Bench bench3 = new BenchJOpen(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
 		for (int i = 0; i < Benchmark.TIMES; i++) {
-			this.testFast(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-			this.testSimple(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-			this.testJOpen(Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
+			bench1.iteration();
+			bench2.iteration();
+			bench3.iteration();
 		}
+
+		this.logger.info(bench1.getWithoutWarmup().toString());
+		this.logger.info(bench2.getWithoutWarmup().toString());
+		this.logger.info(bench3.getWithoutWarmup().toString());
 	}
 
 	@Test
-	public void test2() throws SimpleOdsException, IOException {
+	public void test2() throws IOException {
+		Bench bench1 = new BenchFast(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+		Bench bench2 = new BenchSimple(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
+		Bench bench3 = new BenchJOpen(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
 		for (int i = 0; i < Benchmark.TIMES; i++) {
-			this.testFast(2 * Benchmark.ROW_COUNT, 2 * Benchmark.COL_COUNT);
-			this.testSimple(2 * Benchmark.ROW_COUNT, 2 * Benchmark.COL_COUNT);
-			this.testJOpen(2 * Benchmark.ROW_COUNT, 2 * Benchmark.COL_COUNT);
+			bench1.iteration();
+			bench2.iteration();
+			bench3.iteration();
 		}
+
+		this.logger.info(bench1.getWithoutWarmup().toString());
+		this.logger.info(bench2.getWithoutWarmup().toString());
+		this.logger.info(bench3.getWithoutWarmup().toString());
 	}
 
 	@Test
-	public void test3() throws SimpleOdsException, IOException {
+	public void test3() throws IOException {
+		Bench bench1 = new BenchFast(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+		Bench bench2 = new BenchSimple(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
+		Bench bench3 = new BenchJOpen(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
 		for (int i = 0; i < Benchmark.TIMES; i++) {
-			this.testFast(3 * Benchmark.ROW_COUNT, 3 * Benchmark.COL_COUNT);
-			this.testSimple(3 * Benchmark.ROW_COUNT, 3 * Benchmark.COL_COUNT);
-			this.testJOpen(3 * Benchmark.ROW_COUNT, 3 * Benchmark.COL_COUNT);
-		}
-	}
-
-	public final void testFast(final int rowCount, final int colCount) throws IOException {
-		// Open the file.
-		this.logger.info("testFast: filling a " + rowCount + " rows, "
-				+ colCount + " columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-		final OdsDocument document = new OdsFactory().createDocument();
-		final Table table = document.addTable("test", rowCount, colCount);
-
-		for (int y = 0; y < rowCount; y++) {
-			final HeavyTableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < colCount; x++) {
-				walker.lastCell();
-				walker.setFloatValue(this.random.nextInt(1000));
-			}
+			bench1.iteration();
+			bench2.iteration();
+			bench3.iteration();
 		}
 
-		document.saveAs(new File("generated_files", "fastods_benchmark.ods"));
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	public final void testJOpen(final int rowCount, final int colCount)
-			throws IOException {
-		// the file.
-		this.logger.info("testJOpen: filling a " + rowCount + " rows, "
-				+ colCount + " columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel())
-				.getSheet(0);
-		sheet.ensureColumnCount(colCount);
-		sheet.ensureRowCount(rowCount);
-
-		for (int y = 0; y < rowCount; y++) {
-			for (int x = 0; x < colCount; x++) {
-				sheet.setValueAt(String.valueOf(this.random.nextInt(1000)), x,
-						y);
-			}
-		}
-		final File outputFile = new File("generated_files", "jopendocument_benchmark.ods");
-		sheet.getSpreadSheet().saveAs(outputFile);
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	public final void testSimple(final int rowCount, final int colCount)
-			throws SimpleOdsException {
-		// Open the file.
-		this.logger.info("testSimple: filling a " + rowCount + " rows, "
-				+ colCount + " columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-		final org.simpleods.OdsFile file = new org.simpleods.OdsFile(
-				new File("generated_files", "simpleods_benchmark.ods").getPath());
-		file.addTable("test");
-		final org.simpleods.Table table = (org.simpleods.Table) file
-				.getContent().getTableQueue().get(0);
-
-		final ObjectQueue rows = table.getRows();
-		for (int y = 0; y < rowCount; y++) {
-			final org.simpleods.TableRow row = new org.simpleods.TableRow();
-			rows.add(row);
-			for (int x = 0; x < colCount; x++) {
-				row.setCell(x, String.valueOf(this.random.nextInt(1000)));
-			}
-		}
-
-		file.save();
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
+		this.logger.info(bench1.getWithoutWarmup().toString());
+		this.logger.info(bench2.getWithoutWarmup().toString());
+		this.logger.info(bench3.getWithoutWarmup().toString());
 	}
 }
