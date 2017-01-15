@@ -20,13 +20,14 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
+import java.io.IOException;
+import java.util.List;
+
 /**
+ * 5.1.3 text:p
  * @author Julien Férard
  */
 public class Paragraph {
@@ -34,18 +35,18 @@ public class Paragraph {
 		return new ParagraphBuilder();
 	}
 
-	private final List<Span> spans;
+	private final List<ParagraphElement> paragraphElements;
 
 	private final TextStyle style;
 
-	Paragraph(final List<Span> spans, final TextStyle style) {
-		this.spans = spans;
+	Paragraph(final List<ParagraphElement> paragraphElements, final TextStyle style) {
+		this.paragraphElements = paragraphElements;
 		this.style = style;
 	}
 
 	public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.spans.isEmpty()) {
+		if (this.paragraphElements.isEmpty()) {
 			appendable.append("<text:p/>");
 		} else {
 			appendable.append("<text:p");
@@ -53,13 +54,13 @@ public class Paragraph {
 				util.appendAttribute(appendable, "text:style-name",
 						this.style.getName());
 			appendable.append('>');
-			for (final Span span : this.spans)
-				span.appendXMLOptionalSpanToParagraph(util, appendable);
+			for (final ParagraphElement paragraphElement : this.paragraphElements)
+				paragraphElement.appendXMLToParagraph(util, appendable);
 			appendable.append("</text:p>");
 		}
 	}
 
-	public List<Span> getSpans() {
-		return this.spans;
+	public List<ParagraphElement> getParagraphElements() {
+		return this.paragraphElements;
 	}
 }

@@ -42,7 +42,7 @@ public class ParagraphTest {
 	@Test
 	public final void testNoSpan() throws IOException {
 		final Paragraph par = Paragraph.builder().build();
-		Assert.assertEquals(0, par.getSpans().size());
+		Assert.assertEquals(0, par.getParagraphElements().size());
 		final StringBuilder sb = new StringBuilder();
 		par.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<text:p/>", sb.toString());
@@ -54,9 +54,9 @@ public class ParagraphTest {
 		parBuilder.span("content");
 		parBuilder.span("text");
 		final Paragraph par = parBuilder.build();
-		Assert.assertEquals("content", par.getSpans().get(0).getText());
-		Assert.assertNull(par.getSpans().get(0).getTextStyle());
-		Assert.assertEquals("text", par.getSpans().get(1).getText());
+		Assert.assertEquals("content", par.getParagraphElements().get(0).getText());
+		Assert.assertNull(par.getParagraphElements().get(0).getTextStyle());
+		Assert.assertEquals("text", par.getParagraphElements().get(1).getText());
 		final StringBuilder sb = new StringBuilder();
 		par.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<text:p>contenttext</text:p>", sb.toString());
@@ -69,7 +69,7 @@ public class ParagraphTest {
 
 		final Paragraph par = Paragraph.builder().style(ts).span("text")
 				.build();
-		Assert.assertEquals(1, par.getSpans().size());
+		Assert.assertEquals(1, par.getParagraphElements().size());
 		final StringBuilder sb = new StringBuilder();
 		par.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<text:p text:style-name=\"style\">text</text:p>",

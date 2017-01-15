@@ -20,27 +20,65 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.TextStyle;
+
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.jferard.fastods.style.TextStyle;
-
 public class ParagraphBuilder {
 
-	private final List<Span> spans;
+	private final List<ParagraphElement> paragraphElements;
 	private TextStyle style;
 
 	ParagraphBuilder() {
-		this.spans = new ArrayList<Span>();
+		this.paragraphElements = new ArrayList<ParagraphElement>();
 	}
 
 	public Paragraph build() {
-		return new Paragraph(this.spans, this.style);
+		return new Paragraph(this.paragraphElements, this.style);
 	}
 
 	public ParagraphBuilder span(final String text) {
-		final Span span = new Span(text);
-		this.spans.add(span);
+		final ParagraphElement paragraphElement = new Span(text);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder link(final String text, final Table table) {
+		final ParagraphElement paragraphElement = new Link(text, table);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder styledLink(final String text, final Table table, TextStyle ts) {
+		final ParagraphElement paragraphElement = new Link(text, table, ts);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder link(final String text, final File file) {
+		final ParagraphElement paragraphElement = new Link(text, file);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder styledLink(final String text, final File file, TextStyle ts) {
+		final ParagraphElement paragraphElement = new Link(text, file, ts);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder link(final String text, final URL url) {
+		final ParagraphElement paragraphElement = new Link(text, url);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder styledLink(final String text, final URL url, TextStyle ts) {
+		final ParagraphElement paragraphElement = new Link(text, url, ts);
+		this.paragraphElements.add(paragraphElement);
 		return this;
 	}
 
@@ -50,8 +88,8 @@ public class ParagraphBuilder {
 	}
 
 	public ParagraphBuilder styledSpan(final String text, final TextStyle ts) {
-		final Span span = new Span(text, ts);
-		this.spans.add(span);
+		final ParagraphElement paragraphElement = new Span(text, ts);
+		this.paragraphElements.add(paragraphElement);
 		return this;
 	}
 }

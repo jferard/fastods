@@ -20,21 +20,17 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
+import java.io.IOException;
+
 /**
- * WHERE ? styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer/text:p/text:span
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header/text:p/text:span
- *
+ * 6.1.7 text:span
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class Span {
+public class Span implements ParagraphElement {
 	private final String text;
 	private final /*@Nullable*/ TextStyle ts;
 
@@ -53,8 +49,9 @@ public class Span {
 	 *
 	 * @throws IOException
 	 */
-	public void appendXMLOptionalSpanToParagraph(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	@Override
+	public void appendXMLToParagraph(final XMLUtil util,
+									 final Appendable appendable) throws IOException {
 		if (this.ts == null) {
 			appendable.append(this.text);
 		} else {
@@ -68,6 +65,7 @@ public class Span {
 	// DO NOT USE...
 	// WARNING: 19.874.29: style-name refers to a style that has the family
 	// "paragraph" !
+	@Deprecated
 	public void appendXMLTextPToParagraph(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<text:p");
@@ -77,10 +75,12 @@ public class Span {
 		appendable.append(">").append(this.text).append("</text:p>");
 	}
 
+	@Override
 	public String getText() {
 		return this.text;
 	}
 
+	@Override
 	public TextStyle getTextStyle() {
 		return this.ts;
 	}

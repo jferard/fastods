@@ -34,6 +34,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,6 +99,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 		final OdsDocument file = new OdsFactory().createDocument();
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
+		final Table table2 = file.addTable("target", 1, 1);
 		final TableStyle ttts = TableStyle.builder("a").masterPageStyle(ps)
 				.build();
 		table.setStyle(ttts);
@@ -120,6 +122,13 @@ public class OdsFileWithHeaderAndFooterCreation {
 						.parStyledContent("cell", boldStyle).build());
 		row.setStringValue(1, "text2");
 		row.setStringValue(2, "text3");
+		row = table.getRow(1);
+		row.setText(0,
+				Text.builder().par().span("before link to table: ").link("table", table2).span(" after link to table").build());
+		row.setText(1,
+				Text.builder().par().span("before link to url: ").link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url").build());
+		row.setText(2,
+				Text.builder().par().span("before link to file: ").link("file", new File("generated_files", "fastods_50_5.ods")).span(" after link to file").build());
 
 		// let's display logging infos
 		final Logger rootLogger = Logger.getLogger("");

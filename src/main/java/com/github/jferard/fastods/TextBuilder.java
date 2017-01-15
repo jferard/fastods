@@ -20,12 +20,14 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.TextStyle;
+
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.github.jferard.fastods.style.TextStyle;
 
 public class TextBuilder {
 	private ParagraphBuilder curParagraphBuilder;
@@ -66,16 +68,35 @@ public class TextBuilder {
 		return this;
 	}
 
-	/*
-	@Deprecated
-	public TextBuilder styledPar(final TextStyle ts) {
-		this.textStyles.add(ts);
-		if (this.curParagraphBuilder != null) {
-			this.paragraphs.add(this.curParagraphBuilder.build());
-		}
-		this.curParagraphBuilder = new ParagraphBuilder().style(ts);
+	public TextBuilder link(final String text, final Table table) {
+		this.curParagraphBuilder.link(text, table);
 		return this;
-	}*/
+	}
+
+	public TextBuilder styledLink(final String text, final Table table, TextStyle ts) {
+		this.curParagraphBuilder.styledLink(text, table, ts);
+		return this;
+	}
+
+	public TextBuilder link(final String text, final File file) {
+		this.curParagraphBuilder.link(text, file);
+		return this;
+	}
+
+	public TextBuilder styledLink(final String text, final File file, TextStyle ts) {
+		this.curParagraphBuilder.styledLink(text, file, ts);
+		return this;
+	}
+
+	public TextBuilder link(final String text, final URL url) {
+		this.curParagraphBuilder.link(text, url);
+		return this;
+	}
+
+	public TextBuilder styledLink(final String text, final URL url, TextStyle ts) {
+		this.curParagraphBuilder.styledLink(text, url, ts);
+		return this;
+	}
 
 	/**
 	 * Adds a TextStyle and text to the footer/header region specified by
