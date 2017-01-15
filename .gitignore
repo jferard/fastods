@@ -12,6 +12,7 @@ content.xml
 target
 reports
 simpleods5.3
+generated_files
 
 # extensions
 *.old

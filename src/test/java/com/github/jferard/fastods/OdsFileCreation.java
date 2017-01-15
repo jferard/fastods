@@ -24,8 +24,10 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Random;
@@ -36,6 +38,15 @@ import java.util.logging.Logger;
  */
 public class OdsFileCreation {
 	private Logger logger;
+
+	@BeforeClass
+	public static final void beforeClass() {
+		File generated_files = new File("generated_files");
+		if (generated_files.exists())
+			return;
+
+		generated_files.mkdir();
+	}
 
 	@Before
 	public void setUp() {
@@ -59,7 +70,7 @@ public class OdsFileCreation {
 			}
 		}
 
-		document.saveAs("fastods_1000_300.ods");
+		document.saveAs(new File("generated_files", "fastods_1000_300.ods"));
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -82,7 +93,7 @@ public class OdsFileCreation {
 			}
 		}
 
-		document.saveAs("fastods_100000_20.ods");
+		document.saveAs(new File("generated_files", "fastods_100000_20.ods"));
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -184,7 +195,7 @@ public class OdsFileCreation {
 			}
 		}
 
-		document.saveAs("fastods_50_5.ods");
+		document.saveAs(new File("generated_files", "fastods_50_5.ods"));
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}

@@ -20,6 +20,24 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.CellValue;
+import com.github.jferard.fastods.DataWrapper;
+import com.github.jferard.fastods.HeavyTableRow;
+import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.mockrunner.jdbc.BasicJDBCTestCaseAdapter;
+import com.mockrunner.jdbc.StatementResultSetHandler;
+import com.mockrunner.mock.jdbc.MockConnection;
+import com.mockrunner.mock.jdbc.MockResultSet;
+import org.easymock.EasyMock;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
+
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -30,18 +48,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.github.jferard.fastods.*;
-import org.easymock.EasyMock;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.mockrunner.jdbc.BasicJDBCTestCaseAdapter;
-import com.mockrunner.jdbc.StatementResultSetHandler;
-import com.mockrunner.mock.jdbc.MockConnection;
-import com.mockrunner.mock.jdbc.MockResultSet;
-
 public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
+	private Logger logger;
+	private ResultSet rs;
+	private Table table;
+	private TableCellStyle tcls;
+	private DataWrapper wrapper;
+
+	@BeforeClass
+	public static final void beforeClass() {
+		File generated_files = new File("generated_files");
+		if (generated_files.exists())
+			return;
+
+		generated_files.mkdir();
+	}
+
 	private static MockResultSet createResultSet(
 			final StatementResultSetHandler resultSetHandler,
 			final List<String> head, final List<List<Object>> rows) {
@@ -55,23 +77,16 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		return rs;
 	}
 
-	private Logger logger;
-	private ResultSet rs;
-	private Table table;
-	private TableCellStyle tcls;
-
-	private DataWrapper wrapper;
-
 	@Test
 	@SuppressWarnings("deprecated")
 	public final void testMax() {
 		List<List<Object>> r = new ArrayList<List<Object>>();
-		for (int v=13; v<18; v++) {
+		for (int v = 13; v < 18; v++) {
 			final List<Object> l = Arrays.<Object>asList(v);
 			r.add(l);
 		}
 
-		this.setUpRS(Arrays.<String> asList("number"), r, 3);
+		this.setUpRS(Arrays.<String>asList("number"), r, 3);
 		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -83,7 +98,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		w.setStringValue("number");
 		w.setStyle(this.tcls);
 
-		for (int v=13; v<16; v++) {
+		for (int v = 13; v < 16; v++) {
 			// data row
 			EasyMock.expect(this.table.nextRow()).andReturn(row);
 			EasyMock.expect(row.getWalker()).andReturn(w);
@@ -117,8 +132,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	@Test
 	@SuppressWarnings("unchecked")
 	public final void testNoRow() {
-		this.setUpRS(Arrays.<String> asList("number", "word"),
-				Arrays.<List<Object>> asList(), 100);
+		this.setUpRS(Arrays.<String>asList("number", "word"),
+				Arrays.<List<Object>>asList(), 100);
 		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -150,8 +165,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	public final void testNullValue() {
 		final List<Object> l = new ArrayList<Object>(1);
 		l.add(null);
-		this.setUpRS(Arrays.<String> asList("value"),
-				Arrays.<List<Object>> asList(l), 100);
+		this.setUpRS(Arrays.<String>asList("value"),
+				Arrays.<List<Object>>asList(l), 100);
 		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -176,8 +191,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	@Test
 	@SuppressWarnings("unchecked")
 	public final void testOneRow() {
-		this.setUpRS(Arrays.<String> asList("number", "word"),
-				Arrays.<List<Object>> asList(Arrays.<Object> asList(13, "a")),
+		this.setUpRS(Arrays.<String>asList("number", "word"),
+				Arrays.<List<Object>>asList(Arrays.<Object>asList(13, "a")),
 				100);
 		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
@@ -216,18 +231,18 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 				.getStatementResultSetHandler();
 		final MockResultSet rs = ResultSetDataWrapperTest.createResultSet(
 				resultSetHandler,
-				Arrays.<String> asList("number", "word", "code"),
-				Arrays.<List<Object>> asList(
-						Arrays.<Object> asList(13, "a", "13a"),
-						Arrays.<Object> asList(14, "b", "14b"),
-						Arrays.<Object> asList(15, "c", "15c")));
+				Arrays.<String>asList("number", "word", "code"),
+				Arrays.<List<Object>>asList(
+						Arrays.<Object>asList(13, "a", "13a"),
+						Arrays.<Object>asList(14, "b", "14b"),
+						Arrays.<Object>asList(15, "c", "15c")));
 		final MockResultSet rs2 = ResultSetDataWrapperTest.createResultSet(
 				resultSetHandler,
-				Arrays.<String> asList("number", "word", "code"),
-				Arrays.<List<Object>> asList(
-						Arrays.<Object> asList(13, "a", "13a"),
-						Arrays.<Object> asList(14, "b", "14b"),
-						Arrays.<Object> asList(15, "c", "15c")));
+				Arrays.<String>asList("number", "word", "code"),
+				Arrays.<List<Object>>asList(
+						Arrays.<Object>asList(13, "a", "13a"),
+						Arrays.<Object>asList(14, "b", "14b"),
+						Arrays.<Object>asList(15, "c", "15c")));
 
 		final OdsDocument file = new OdsFactory().createDocument();
 		final Table table = file.addTable("test", 50, 5);
@@ -241,7 +256,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		table.addData(data);
 		table.nextRow();
 		table.addData(data2);
-		file.saveAs("7columns.ods");
+		file.saveAs(new File("generated_files", "7columns.ods"));
 	}
 
 	@Test
@@ -275,7 +290,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	}
 
 	private final void setUpRS(final List<String> head,
-			final List<List<Object>> rows, final int max) {
+							   final List<List<Object>> rows, final int max) {
 		this.logger = PowerMock.createMock(Logger.class);
 		final MockConnection connection = this.getJDBCMockObjectFactory()
 				.getMockConnection();

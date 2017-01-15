@@ -69,7 +69,7 @@ public class SettingsTest {
 						"<config:config-item config:name=\"VisibleAreaWidth\" config:type=\"int\">680</config:config-item>" +
 						"<config:config-item config:name=\"VisibleAreaHeight\" config:type=\"int\">400</config:config-item>" +
 						"<config:config-item-map-indexed config:name=\"Views\">" +
-						"<config:config-item-map-entry config:name=\"\">" +
+						"<config:config-item-map-entry>" +
 						"<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" +
 						"<config:config-item-map-named config:name=\"Tables\" />" +
 						"<config:config-item config:name=\"ActiveTable\" config:type=\"string\">Tab1</config:config-item>" +

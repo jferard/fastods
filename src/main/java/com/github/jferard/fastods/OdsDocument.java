@@ -31,6 +31,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -189,6 +190,25 @@ public class OdsDocument {
 			this.save(out);
 		} catch (final FileNotFoundException e) {
 			this.logger.log(Level.SEVERE, "Can't open " + filename, e);
+			throw new IOException(e);
+		} catch (final NullPointerException e) {
+			this.logger.log(Level.SEVERE, "No file", e);
+			throw new IOException(e);
+		}
+	}
+
+	/**
+	 * Save the new file.
+	 *
+	 * @throws IOException
+	 * @param file
+	 */
+	public void saveAs(File file) throws IOException {
+		try {
+			final FileOutputStream out = new FileOutputStream(file);
+			this.save(out);
+		} catch (final FileNotFoundException e) {
+			this.logger.log(Level.SEVERE, "Can't open " + file, e);
 			throw new IOException(e);
 		} catch (final NullPointerException e) {
 			this.logger.log(Level.SEVERE, "No file", e);

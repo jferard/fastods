@@ -20,28 +20,27 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-import com.github.jferard.fastods.testutil.DomTester;
-import org.easymock.EasyMock;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
+import org.easymock.EasyMock;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class TableTest {
 	private DataStyles ds;
@@ -228,24 +227,22 @@ public class TableTest {
 		final StringBuilder sb = new StringBuilder();
 		this.table.appendXMLToSettingsElement(this.xmlUtil, sb);
 
-		Assert.assertEquals(
+		DomTester.assertUnsortedEquals(
 				"<config:config-item-map-entry config:name=\"mytable\">"
 						+ "<config:config-item config:name=\"CursorPositionX\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"cursorPositionY\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"verticalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"horizontalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"verticalSplitMode\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"horizontalSplitPosition\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"verticalSplitPosition\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"activeSplitRange\" config:type=\"short\">2</config:config-item>"
-						+ "<config:config-item config:name=\"positionLeft\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"CursorPositionY\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"HorizontalSplitMode\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"VerticalSplitMode\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"HorizontalSplitPosition\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"VerticalSplitPosition\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"ActiveSplitRange\" config:type=\"short\">2</config:config-item>"
+						+ "<config:config-item config:name=\"PositionLeft\" config:type=\"int\">0</config:config-item>"
 						+ "<config:config-item config:name=\"PositionRight\" config:type=\"int\">0</config:config-item>"
 						+ "<config:config-item config:name=\"PositionTop\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"positionBottom\" config:type=\"int\">0</config:config-item>"
-						+ "<config:config-item config:name=\"zoomType\" config:type=\"short\">0</config:config-item>"
-						+ "<config:config-item config:name=\"zoomValue\" config:type=\"int\">100</config:config-item>"
-						+ "<config:config-item config:name=\"pageViewZoomValue\" config:type=\"int\">60</config:config-item>"
+						+ "<config:config-item config:name=\"PositionBottom\" config:type=\"int\">0</config:config-item>"
+						+ "<config:config-item config:name=\"ZoomType\" config:type=\"short\">0</config:config-item>"
+						+ "<config:config-item config:name=\"ZoomValue\" config:type=\"int\">100</config:config-item>"
+						+ "<config:config-item config:name=\"PageViewZoomValue\" config:type=\"int\">60</config:config-item>"
 						+ "</config:config-item-map-entry>",
 				sb.toString());
 

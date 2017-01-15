@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -50,6 +51,15 @@ public class Benchmark {
 
 	private Logger logger;
 	private Random random;
+
+	@BeforeClass
+	public static final void beforeClass() {
+		File generated_files = new File("generated_files");
+		if (generated_files.exists())
+			return;
+
+		generated_files.mkdir();
+	}
 
 	@Before
 	public final void setUp() {
@@ -89,8 +99,8 @@ public class Benchmark {
 		this.logger.info("testFast: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final OdsFile file = OdsFile.create("fastods_benchmark.ods");
-		final Table table = file.addTable("test", rowCount, colCount);
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test", rowCount, colCount);
 
 		for (int y = 0; y < rowCount; y++) {
 			final HeavyTableRow row = table.nextRow();
@@ -101,8 +111,7 @@ public class Benchmark {
 			}
 		}
 
-
-		file.save();
+		document.saveAs(new File("generated_files", "fastods_benchmark.ods"));
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
@@ -124,7 +133,7 @@ public class Benchmark {
 						y);
 			}
 		}
-		final File outputFile = new File("jopendocument_benchmark.ods");
+		final File outputFile = new File("generated_files", "jopendocument_benchmark.ods");
 		sheet.getSpreadSheet().saveAs(outputFile);
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -137,7 +146,7 @@ public class Benchmark {
 				+ colCount + " columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 		final org.simpleods.OdsFile file = new org.simpleods.OdsFile(
-				"simpleods_benchmark.ods");
+				new File("generated_files", "simpleods_benchmark.ods").getPath());
 		file.addTable("test");
 		final org.simpleods.Table table = (org.simpleods.Table) file
 				.getContent().getTableQueue().get(0);

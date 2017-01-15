@@ -20,15 +20,17 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * @author Julien Férard
@@ -48,6 +50,15 @@ public class ProfileFastODS {
 
 	private Random random;
 	private long t1;
+
+	@BeforeClass
+	public static final void beforeClass() {
+		File generated_files = new File("generated_files");
+		if (generated_files.exists())
+			return;
+
+		generated_files.mkdir();
+	}
 
 	@Before
 	public final void setUp() {
@@ -82,7 +93,7 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		document.saveAs("fastods_profile.ods");
+		document.saveAs(new File("generated_files", "fastods_profile.ods"));
 	}
 	
 	@Test
@@ -102,7 +113,7 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		document.saveAs("fastods_profile.ods");
+		document.saveAs(new File("generated_files", "fastods_profile.ods"));
 	}
 	
 	@Test
@@ -122,6 +133,6 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		document.saveAs("fastods_profile.ods");
+		document.saveAs(new File("generated_files", "fastods_profile.ods"));
 	}
 }

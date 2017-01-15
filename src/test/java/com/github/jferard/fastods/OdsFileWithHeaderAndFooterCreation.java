@@ -20,14 +20,6 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.github.jferard.fastods.FooterHeader.Region;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -36,12 +28,30 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Julien Férard
  */
 public class OdsFileWithHeaderAndFooterCreation {
 	private Logger logger;
+
+	@BeforeClass
+	public static final void beforeClass() {
+		File generated_files = new File("generated_files");
+		if (generated_files.exists())
+			return;
+
+		generated_files.mkdir();
+	}
 
 	@Before
 	public void setUp() {
@@ -116,6 +126,6 @@ public class OdsFileWithHeaderAndFooterCreation {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		file.saveAs("fastods_fh.ods");
+		file.saveAs(new File("generated_files", "fastods_fh.ods"));
 	}
 }
