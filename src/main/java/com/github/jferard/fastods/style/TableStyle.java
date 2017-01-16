@@ -40,7 +40,7 @@ public class TableStyle implements StyleTag {
 		return new TableStyleBuilder(name);
 	}
 
-	private final MasterPageStyle masterPageStyle;
+	private final PageStyle masterPageStyle;
 	private final String name;
 
 	/**
@@ -52,7 +52,7 @@ public class TableStyle implements StyleTag {
 	 * @param masterPageStyle
 	 *            The master page style for this table
 	 */
-	TableStyle(final String styleName, final MasterPageStyle masterPageStyle) {
+	TableStyle(final String styleName, final PageStyle masterPageStyle) {
 		this.name = styleName;
 		this.masterPageStyle = masterPageStyle;
 	}

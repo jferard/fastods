@@ -33,7 +33,7 @@ import com.github.jferard.fastods.util.Box;
  * @author Julien Férard
  */
 @SuppressWarnings("unchecked")
-abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
+public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	protected Box<Text> curRegionBox;
 	/**
 	 * The OdsDocument where this object belong to.

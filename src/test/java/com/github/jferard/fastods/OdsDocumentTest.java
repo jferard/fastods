@@ -86,7 +86,7 @@ public class OdsDocumentTest {
 
 	@Test
 	public final void testAddPageStyle() {
-		final MasterPageStyle ps = MasterPageStyle.builder("p").build();
+		final PageStyle ps = PageStyle.builder("p").build();
 
 		this.initOdsElements();
 		this.odsElements.addPageStyle(ps);
@@ -397,6 +397,6 @@ public class OdsDocumentTest {
 		TableColumnStyle.getDefaultColumnStyle(this.xmlUtil)
 				.addToElements(this.odsElements);
 		TableCellStyle.getDefaultCellStyle().addToElements(this.odsElements);
-		MasterPageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
+		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 }

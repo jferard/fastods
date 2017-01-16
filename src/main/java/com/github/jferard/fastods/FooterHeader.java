@@ -20,13 +20,13 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * This file FooterHeader.java is part of FastODS.
@@ -40,11 +40,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public abstract class FooterHeader {
-	public static enum Region {
-		CENTER, LEFT, RIGHT;
-	}
-
+public class FooterHeader {
 	/**
 	 * Footer or Header ?
 	 */
@@ -62,8 +58,18 @@ public abstract class FooterHeader {
 		}
 	}
 
+	public static void appendStyleFooterHeaderXMLToAutomaticStyle(final FooterHeader footerHeader, final Type type, final XMLUtil util,
+																  final Appendable appendable) throws IOException {
+		if (footerHeader == null)
+			appendable.append("<style:").append(type.typeName)
+					.append("-style />");
+		else
+			footerHeader.appendStyleFooterHeaderXMLToAutomaticStyle(util,
+					appendable);
+	}
+
 	public static RegionFooterHeaderBuilder regionBuilder(
-			final RegionFooterHeader.Type footerHeaderType) {
+			final FooterHeader.Type footerHeaderType) {
 		return new RegionFooterHeaderBuilder(footerHeaderType);
 	}
 
@@ -84,64 +90,56 @@ public abstract class FooterHeader {
 				.text(Text.styledContent(text, ts)).build();
 	}
 
-	/**
-	 * The OdsDocument where this object belong to.
-	 */
-	protected final Type footerHeaderType;
-
-	protected final Margins margins;
-	protected final String minHeight;
+	private final Type footerHeaderType;
+	private final FooterHeaderContent content;
+	private final FooterHeaderStyle style;
 
 	/**
-	 * Create a new footer object.
-	 *
-	 * @param minHeight
-	 *
-	 * @param odsFile
-	 *            - The OdsDocument to which this footer belongs to.
+	 * Create a new footer/header object.
 	 */
-	FooterHeader(final FooterHeader.Type footerHeaderType,
-			final Margins margins, final String minHeight) {
+	FooterHeader(final FooterHeader.Type footerHeaderType, final FooterHeaderContent content,
+			final FooterHeaderStyle style) {
 		this.footerHeaderType = footerHeaderType;
-		this.margins = margins;
-		this.minHeight = minHeight;
+		this.content = content;
+		this.style = style;
 	}
 
-	public abstract void addEmbeddedStylesToStylesElement(
-			StylesContainer stylesContainer);
+	public void addEmbeddedStylesToStylesElement(
+			StylesContainer stylesContainer) {
+		this.content.addEmbeddedStylesToStylesElement(stylesContainer);
 
-	public abstract void addEmbeddedStylesToStylesElement(
-			StylesContainer stylesContainer, Mode mode);
+	}
+
+	public void addEmbeddedStylesToStylesElement(
+			StylesContainer stylesContainer, Mode mode) {
+		this.content.addEmbeddedStylesToStylesElement(stylesContainer, mode);
+	}
 
 	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		appendable.append("<style:").append(this.footerHeaderType.typeName)
-				.append("-style>");
-		appendable.append("<style:header-footer-properties");
-		util.appendAttribute(appendable, "fo:min-height", this.minHeight);
-		this.margins.appendXMLToTableCellStyle(util, appendable);
-		appendable.append("/></style:").append(this.footerHeaderType.typeName)
-				.append("-style>");
+		this.style.appendFooterHeaderStyleXMLToAutomaticStyle(util, appendable);
 	}
 
 	/**
 	 * @throws IOException
 	 */
-	public abstract void appendXMLToMasterStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException;
+	public void appendXMLToMasterStyle(final XMLUtil util,
+			final Appendable appendable) throws IOException {
+		this.content.appendXMLToMasterStyle(util, appendable);
+	}
 
 	/**
 	 * @return The current margins of the footer/header.
 	 */
 	public Margins getMargins() {
-		return this.margins;
+		return this.style.getMargins();
 	}
 
 	/**
 	 * @return The current minimum height of the footer/header.
 	 */
 	public String getMinHeight() {
-		return this.minHeight;
+		return this.style.getMinHeight();
 	}
 
 	public String getTypeName() {

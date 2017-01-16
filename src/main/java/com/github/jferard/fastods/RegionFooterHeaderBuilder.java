@@ -40,9 +40,6 @@ class RegionFooterHeaderBuilder
 
 	/**
 	 * Create a new footer object.
-	 *
-	 * @param odsFile
-	 *            - The OdsDocument to which this footer belongs to.
 	 */
 	RegionFooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		super(footerHeaderType);
@@ -53,13 +50,15 @@ class RegionFooterHeaderBuilder
 
 	@Override
 	public FooterHeader build() {
-		return new RegionFooterHeader(this.footerHeaderType,
-				this.centerRegionBox.get(), this.leftRegionBox.get(),
-				this.rightRegionBox.get(), this.marginsBuilder.build(),
+		FooterHeaderStyle style = new FooterHeaderStyle(this.footerHeaderType, this.marginsBuilder.build(),
 				this.minHeight);
+		FooterHeaderContent header = new RegionFooterHeader(this.footerHeaderType,
+				this.centerRegionBox.get(), this.leftRegionBox.get(),
+				this.rightRegionBox.get());
+		return new FooterHeader(this.footerHeaderType, header, style);
 	}
 
-	public RegionFooterHeaderBuilder region(final FooterHeader.Region region) {
+	public RegionFooterHeaderBuilder region(final FooterHeaderContent.Region region) {
 		switch (region) {
 		case LEFT: // Use left region
 			this.curRegionBox = this.leftRegionBox;

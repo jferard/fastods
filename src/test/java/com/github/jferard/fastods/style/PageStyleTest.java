@@ -20,20 +20,19 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.style.PageStyle.PaperFormat;
+import com.github.jferard.fastods.style.PageStyle.WritingMode;
+import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.testutil.DomTester;
-import com.github.jferard.fastods.FooterHeader;
-import com.github.jferard.fastods.style.MasterPageStyle.PaperFormat;
-import com.github.jferard.fastods.style.MasterPageStyle.WritingMode;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 public class PageStyleTest {
 	private static final String MASTER = "<style:master-page style:name=\"test\" style:page-layout-name=\"test\">"
@@ -54,7 +53,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testAlmostEmptyToAutomaticStyle() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
@@ -71,7 +70,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testAlmostEmptyToMasterStyle() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToMasterStyle(this.util, sb);
@@ -80,13 +79,13 @@ public class PageStyleTest {
 
 	@Test
 	public final void testBackground() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle pageStyle = PageStyle.builder("test")
 				.backgroundColor(Color.BLANCHEDALMOND).build();
 		final StringBuilder sba = new StringBuilder();
 		final StringBuilder sbm = new StringBuilder();
 
-		masterPageStyle.appendXMLToAutomaticStyle(this.util, sba);
-		masterPageStyle.appendXMLToMasterStyle(this.util, sbm);
+		pageStyle.appendXMLToAutomaticStyle(this.util, sba);
+		pageStyle.appendXMLToMasterStyle(this.util, sbm);
 		DomTester.assertEquals(
 				"<style:page-layout style:name=\"test\">"
 						+ "<style:page-layout-properties fo:page-width=\"21.0cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:background-color=\"#FFEBCD\" fo:margin=\"1.5cm\"/>"
@@ -99,14 +98,14 @@ public class PageStyleTest {
 
 	@Test(expected = IllegalStateException.class)
 	public final void testEmpty() {
-		MasterPageStyle.builder(null).build();
+		PageStyle.builder(null).build();
 	}
 
 	@Test
 	public final void testFooterHeader() throws IOException {
 		final FooterHeader header = PowerMock.createMock(FooterHeader.class);
 		final FooterHeader footer = PowerMock.createMock(FooterHeader.class);
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.header(header).footer(footer).build();
 		final StringBuilder sb = new StringBuilder();
 
@@ -124,7 +123,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testHeightAndWidth() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.pageHeight("20cm").pageWidth("10cm").build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
@@ -141,7 +140,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testMargins() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.allMargins("10pt").build();
 		final StringBuilder sb = new StringBuilder();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
@@ -161,7 +160,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testMargins2() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.marginTop("1pt").marginRight("2pt").marginBottom("3pt")
 				.marginLeft("4pt").printOrientationVertical()
 				.printOrientationHorizontal().writingMode(WritingMode.PAGE)
@@ -189,7 +188,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testNullFooterHeader() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.header(null).footer(null).build();
 		final StringBuilder sb = new StringBuilder();
 
@@ -204,7 +203,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testPaperFormat() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.paperFormat(PaperFormat.A3).build();
 		final StringBuilder sba = new StringBuilder();
 		final StringBuilder sbm = new StringBuilder();
@@ -228,7 +227,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testPrintOrientationH() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.printOrientationHorizontal().writingMode(WritingMode.PAGE)
 				.build();
 		final StringBuilder sba = new StringBuilder();
@@ -250,7 +249,7 @@ public class PageStyleTest {
 
 	@Test
 	public final void testPrintOrientationV() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.printOrientationVertical().writingMode(WritingMode.PAGE)
 				.build();
 		final StringBuilder sba = new StringBuilder();
@@ -272,12 +271,12 @@ public class PageStyleTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testWritingException() {
-		MasterPageStyle.builder("test").writingMode(null);
+		PageStyle.builder("test").writingMode(null);
 	}
 
 	@Test
 	public final void testWritingMode() throws IOException {
-		final MasterPageStyle masterPageStyle = MasterPageStyle.builder("test")
+		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.writingMode(WritingMode.PAGE).build();
 		final StringBuilder sba = new StringBuilder();
 		final StringBuilder sbm = new StringBuilder();

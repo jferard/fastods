@@ -24,6 +24,8 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.PageLayoutStyle;
+import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -89,8 +91,12 @@ public class OdsElements {
 		this.stylesContainer.addDataStyle(dataStyle);
 	}
 
-	public void addPageStyle(final MasterPageStyle masterPageStyle) {
+	public void addMasterPageStyle(MasterPageStyle masterPageStyle) {
 		this.stylesContainer.addMasterPageStyle(masterPageStyle);
+	}
+
+	public void addPageLayoutStyle(PageLayoutStyle pageLayoutStyle) {
+		this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
 	}
 
 	public void addStyleTag(final StyleTag styleTag) {
@@ -169,5 +175,9 @@ public class OdsElements {
 
 	public void setViewSettings(String viewId, String item, String value) {
 		this.settingsElement.setViewSettings(viewId, item, value);
+	}
+
+	public void addPageStyle(PageStyle ps) {
+		this.stylesContainer.addPageStyle(ps);
 	}
 }

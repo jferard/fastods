@@ -20,21 +20,20 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.FooterHeaderContent.Region;
+import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.Container.Mode;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.FooterHeader.Region;
-import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.TextProperties;
-import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.Container.Mode;
+import java.io.IOException;
 
 public class RegionFooterHeaderTest {
 	private XMLUtil util;

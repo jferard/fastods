@@ -20,29 +20,29 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.odselement;
 
-import java.util.Locale;
-import java.util.Map;
-
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
+import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Container.Mode;
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.MasterPageStyle;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Container.Mode;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.util.Locale;
+import java.util.Map;
 
 public class StylesContainerTest {
 	private DataStyle ds1;
 	private DataStyle ds2;
 	private DataStyleBuilderFactory factory;
 	private Locale locale;
-	private MasterPageStyle ps1;
-	private MasterPageStyle ps2;
+	private PageStyle ps1;
+	private PageStyle ps2;
 	private TableCellStyle st1;
 	private TableCellStyle st2;
 	private StylesContainer stylesContainer;
@@ -62,8 +62,8 @@ public class StylesContainerTest {
 		this.ds1 = f.booleanStyleBuilder("a").country("a").build();
 		this.ds2 = f.booleanStyleBuilder("a").country("b").build();
 
-		this.ps1 = MasterPageStyle.builder("a").allMargins("1").build();
-		this.ps2 = MasterPageStyle.builder("a").allMargins("2").build();
+		this.ps1 = PageStyle.builder("a").allMargins("1").build();
+		this.ps2 = PageStyle.builder("a").allMargins("2").build();
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}
 
@@ -137,43 +137,43 @@ public class StylesContainerTest {
 	@Test
 	public final void testPageStyleCreateThenUpdate() {
 		Assert.assertTrue(
-				this.stylesContainer.addMasterPageStyle(this.ps1, Mode.CREATE));
+				this.stylesContainer.addMasterPageStyle(this.ps1.getMasterPageStyle(), Mode.CREATE));
 		Assert.assertTrue(
-				this.stylesContainer.addMasterPageStyle(this.ps2, Mode.UPDATE));
+				this.stylesContainer.addMasterPageStyle(this.ps2.getMasterPageStyle(), Mode.UPDATE));
 		final Map<String, MasterPageStyle> masterPageStyles = this.stylesContainer
 				.getMasterPageStyles();
 		Assert.assertEquals(1, masterPageStyles.size());
-		Assert.assertEquals(this.ps2, masterPageStyles.get("a"));
+		Assert.assertEquals(this.ps2.getMasterPageStyle(), masterPageStyles.get("a"));
 	}
 
 	@Test
 	public final void testPageStyleCreateThenUpdateIfExists() {
 		Assert.assertTrue(
-				this.stylesContainer.addMasterPageStyle(this.ps1, Mode.CREATE));
-		Assert.assertTrue(this.stylesContainer.addMasterPageStyle(this.ps2,
+				this.stylesContainer.addMasterPageStyle(this.ps1.getMasterPageStyle(), Mode.CREATE));
+		Assert.assertTrue(this.stylesContainer.addMasterPageStyle(this.ps2.getMasterPageStyle(),
 				Mode.CREATE_OR_UPDATE));
 		final Map<String, MasterPageStyle> masterPageStyles = this.stylesContainer
 				.getMasterPageStyles();
 		Assert.assertEquals(1, masterPageStyles.size());
-		Assert.assertEquals(this.ps2, masterPageStyles.get("a"));
+		Assert.assertEquals(this.ps2.getMasterPageStyle(), masterPageStyles.get("a"));
 	}
 
 	@Test
 	public final void testPageStyleCreateTwice() {
 		Assert.assertTrue(
-				this.stylesContainer.addMasterPageStyle(this.ps1, Mode.CREATE));
+				this.stylesContainer.addMasterPageStyle(this.ps1.getMasterPageStyle(), Mode.CREATE));
 		Assert.assertFalse(
-				this.stylesContainer.addMasterPageStyle(this.ps2, Mode.CREATE));
+				this.stylesContainer.addMasterPageStyle(this.ps2.getMasterPageStyle(), Mode.CREATE));
 		final Map<String, MasterPageStyle> masterPageStyles = this.stylesContainer
 				.getMasterPageStyles();
 		Assert.assertEquals(1, masterPageStyles.size());
-		Assert.assertEquals(this.ps1, masterPageStyles.get("a"));
+		Assert.assertEquals(this.ps1.getMasterPageStyle(), masterPageStyles.get("a"));
 	}
 
 	@Test
 	public final void testPageStyleUpdate() {
 		Assert.assertFalse(
-				this.stylesContainer.addMasterPageStyle(this.ps2, Mode.UPDATE));
+				this.stylesContainer.addMasterPageStyle(this.ps2.getMasterPageStyle(), Mode.UPDATE));
 		final Map<String, MasterPageStyle> masterPageStyles = this.stylesContainer
 				.getMasterPageStyles();
 		Assert.assertEquals(0, masterPageStyles.size());
@@ -181,12 +181,12 @@ public class StylesContainerTest {
 
 	@Test
 	public final void testPageStyleUpdateIfExists() {
-		Assert.assertTrue(this.stylesContainer.addMasterPageStyle(this.ps2,
+		Assert.assertTrue(this.stylesContainer.addMasterPageStyle(this.ps2.getMasterPageStyle(),
 				Mode.CREATE_OR_UPDATE));
 		final Map<String, MasterPageStyle> masterPageStyles = this.stylesContainer
 				.getMasterPageStyles();
 		Assert.assertEquals(1, masterPageStyles.size());
-		Assert.assertEquals(this.ps2, masterPageStyles.get("a"));
+		Assert.assertEquals(this.ps2.getMasterPageStyle(), masterPageStyles.get("a"));
 	}
 
 }

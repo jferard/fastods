@@ -20,12 +20,11 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -37,7 +36,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-class RegionFooterHeader extends FooterHeader {
+class RegionFooterHeader extends FooterHeaderContent {
 	private static void appendRegionXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable, final Text region,
 			final String regionName) throws IOException {
@@ -55,19 +54,11 @@ class RegionFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 *
-	 * @param textStyles
-	 *
-	 * @param minHeight2
-	 *
-	 * @param odsFile
-	 *            - The OdsDocument to which this footer belongs to.
 	 */
-	RegionFooterHeader(final RegionFooterHeader.Type footerHeaderType,
+	RegionFooterHeader(final FooterHeader.Type footerHeaderType,
 			final Text centerRegion, final Text leftRegion,
-			final Text rightRegion, final Margins margins,
-			final String minHeight) {
-		super(footerHeaderType, margins, minHeight);
+			final Text rightRegion) {
+		super(footerHeaderType);
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;

@@ -20,8 +20,8 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.FooterHeader.Region;
-import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.FooterHeaderContent.Region;
+import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -93,7 +93,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 				.text(leftFooter).region(Region.CENTER).text(centerFooter)
 				.region(Region.RIGHT).text(rightFooter).build();
 
-		final MasterPageStyle ps = MasterPageStyle.builder("test")
+		final PageStyle ps = PageStyle.builder("test")
 				.footer(footer).header(header).build();
 
 		final OdsDocument file = new OdsFactory().createDocument();

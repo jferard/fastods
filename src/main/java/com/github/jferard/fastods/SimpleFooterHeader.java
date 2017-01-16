@@ -37,7 +37,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-class SimpleFooterHeader extends FooterHeader {
+class SimpleFooterHeader extends FooterHeaderContent {
 	/**
 	 * The OdsDocument where this object belong to.
 	 */
@@ -45,16 +45,10 @@ class SimpleFooterHeader extends FooterHeader {
 
 	/**
 	 * Create a new footer object.
-	 *
-	 * @param textStyles
-	 * @param minHeight2
-	 *
-	 * @param odsFile
-	 *            - The OdsDocument to which this footer belongs to.
 	 */
-	SimpleFooterHeader(final SimpleFooterHeader.Type footerHeaderType,
-			final Text region, final Margins margins, final String minHeight) {
-		super(footerHeaderType, margins, minHeight);
+	SimpleFooterHeader(final FooterHeader.Type footerHeaderType,
+			final Text region) {
+		super(footerHeaderType);
 		this.region = region;
 	}
 

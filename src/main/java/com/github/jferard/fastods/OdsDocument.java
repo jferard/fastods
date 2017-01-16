@@ -22,7 +22,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -71,15 +71,11 @@ public class OdsDocument {
 		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
 				.addToElements(this.odsElements);
 		TableCellStyle.getDefaultCellStyle().addToElements(this.odsElements);
-		MasterPageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
+		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.odsElements.addDataStyle(dataStyle);
-	}
-
-	public void addPageStyle(final MasterPageStyle masterPageStyle) {
-		this.odsElements.addPageStyle(masterPageStyle);
 	}
 
 	/**
@@ -293,5 +289,9 @@ public class OdsDocument {
 
 	public void setViewSetting(String viewId, String item, String value) {
 		this.odsElements.setViewSettings(viewId, item, value);
+	}
+
+	public void addPageStyle(PageStyle ps) {
+		this.odsElements.addPageStyle(ps);
 	}
 }
