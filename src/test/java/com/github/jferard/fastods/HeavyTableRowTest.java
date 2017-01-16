@@ -100,7 +100,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testCurrencyFloat() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -126,7 +126,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testCurrencyInt() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -151,7 +151,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testCurrencyNumber() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 		final TableCellStyle currencyStyle = this.ds.getCurrencyStyle();
 
 		// PLAY
@@ -234,7 +234,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -254,7 +254,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge1b() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -274,7 +274,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge1c() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -305,7 +305,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge1e() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -331,7 +331,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge1f() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -378,7 +378,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testText() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 		final Text t0 = Text.content("text0");
 		final Text t1 = Text.content("text1");
 		final Text t_0 = Text.content("@text");
@@ -401,7 +401,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testMerge2() throws IOException {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 		final StringBuilder sbt = new StringBuilder();
 
 		// PLAY
@@ -473,7 +473,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testSpan() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -520,7 +520,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testTooltip() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -539,7 +539,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testColumnsSpanned() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -571,7 +571,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testRowsSpanned() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -590,7 +590,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testRowsSpanned2() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -626,7 +626,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testGet() {
-		TableRowStyle trs = TableRowStyle.builder("a").build();
+		final TableRowStyle trs = TableRowStyle.builder("a").build();
 
 		// PLAY
 		this.stc.addStyleToContentAutomaticStyles(trs);
@@ -643,8 +643,8 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testDefaultCellStyle() {
-		TableCellStyle cs = TableCellStyle.builder("a").build();
-		DataStyles ds = new LocaleDataStyles(
+		final TableCellStyle cs = TableCellStyle.builder("a").build();
+		final DataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));
 
 		// PLAY
@@ -658,7 +658,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testCovered() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -676,7 +676,7 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testCovered2() {
-		HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
+		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
@@ -693,11 +693,11 @@ public class HeavyTableRowTest {
 
 	@Test
 	public final void testRowOpenTag() throws IOException {
-		TableRowStyle trs = TableRowStyle.builder("a").build();
-		TableCellStyle cs = TableCellStyle.builder("b").build();
-		DataStyles ds = new LocaleDataStyles(
+		final TableRowStyle trs = TableRowStyle.builder("a").build();
+		final TableCellStyle cs = TableCellStyle.builder("b").build();
+		final DataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 
 		// PLAY
 		this.stc.addStyleToStylesCommonStyles(cs);

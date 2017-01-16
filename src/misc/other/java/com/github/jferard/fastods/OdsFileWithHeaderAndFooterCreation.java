@@ -47,7 +47,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 
 	@BeforeClass
 	public static final void beforeClass() {
-		File generated_files = new File("generated_files");
+		final File generated_files = new File("generated_files");
 		if (generated_files.exists())
 			return;
 
@@ -96,13 +96,13 @@ public class OdsFileWithHeaderAndFooterCreation {
 		final PageStyle ps = PageStyle.builder("test")
 				.footer(footer).header(header).build();
 
-		final OdsDocument file = new OdsFactory().createDocument();
-		file.addPageStyle(ps);
-		final Table table = file.addTable("test", 1, 5);
-		final Table table2 = file.addTable("target", 1, 1);
+		final OdsDocument document = new OdsFactory().createDocument();
+		final Table table = document.addTable("test", 1, 5);
+		final Table table2 = document.addTable("target", 1, 1);
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
 				.build();
 		table.setStyle(ttts);
+		table2.setStyle(ttts);
 
 		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
@@ -135,6 +135,6 @@ public class OdsFileWithHeaderAndFooterCreation {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		file.saveAs(new File("generated_files", "fastods_fh.ods"));
+		document.saveAs(new File("generated_files", "fastods_fh.ods"));
 	}
 }

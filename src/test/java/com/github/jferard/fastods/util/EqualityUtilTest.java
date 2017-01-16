@@ -60,7 +60,7 @@ public class EqualityUtilTest {
 	@Test
 	public final void testHashObjects() {
 		PowerMock.replayAll();
-		Object[] integers = {null, Integer.valueOf(1), null, Integer.valueOf(2)};
+		final Object[] integers = {null, Integer.valueOf(1), null, Integer.valueOf(2)};
 		Assert.assertEquals(924484, this.equalityUtil.hashObjects(integers));
 		PowerMock.verifyAll();
 	}

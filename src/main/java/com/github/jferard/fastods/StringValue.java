@@ -28,13 +28,13 @@ public class StringValue extends CellValue {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == this)
 			return true;
 		if (!(o instanceof StringValue))
 			return false;
 
-		StringValue other = (StringValue) o;
+		final StringValue other = (StringValue) o;
 		return this.value.equals(other.value);
 	}
 

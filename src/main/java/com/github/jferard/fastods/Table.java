@@ -46,37 +46,18 @@ import java.util.List;
  */
 public class Table implements NamedObject {
 	private final ConfigItemMapEntrySet configEntry;
-
-	private static void checkCol(final int col) throws FastOdsException {
-		if (col < 0) {
-			throw new FastOdsException(new StringBuilder(
-					"Negative column number exception, column value:[")
-					.append(col).append("]").toString());
-		}
-	}
-
-	private static void checkRow(final int row) throws FastOdsException {
-		if (row < 0) {
-			throw new FastOdsException(new StringBuilder(
-					"Negative row number exception, row value:[").append(row)
-					.append("]").toString());
-		}
-	}
-
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
-	private int curRowIndex;
 	private final DataStyles format;
-	private int lastRowIndex;
-	private String name;
 	private final PositionUtil positionUtil;
-	private TableStyle style;
-
 	private final StylesContainer stylesContainer;
 	private final List<HeavyTableRow> tableRows;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
-
+	private int curRowIndex;
+	private int lastRowIndex;
+	private String name;
+	private TableStyle style;
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
 				 final XMLUtil xmlUtil, final StylesContainer stylesContainer,
 				 final DataStyles format, final String name, final int rowCapacity,
@@ -104,7 +85,7 @@ public class Table implements NamedObject {
 		this.configEntry.add(new ConfigItem("PositionBottom", "int", "0"));
 		this.configEntry.add(new ConfigItem("ZoomType", "short", "0"));
 		this.configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
-		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int","60"));
+		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
 
 		this.columnStyles = FullList.<TableColumnStyle>builder()
 				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
@@ -114,9 +95,25 @@ public class Table implements NamedObject {
 		this.lastRowIndex = -1;
 	}
 
+	private static void checkCol(final int col) throws FastOdsException {
+		if (col < 0) {
+			throw new FastOdsException(new StringBuilder(
+					"Negative column number exception, column value:[")
+					.append(col).append("]").toString());
+		}
+	}
+
+	private static void checkRow(final int row) throws FastOdsException {
+		if (row < 0) {
+			throw new FastOdsException(new StringBuilder(
+					"Negative row number exception, row value:[").append(row)
+					.append("]").toString());
+		}
+	}
+
 	public void setConfigItem(final String name, final String type,
 							  final String value) {
-		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int","60"));
+		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
 	}
 
 	public void addData(final DataWrapper data) {
@@ -140,7 +137,7 @@ public class Table implements NamedObject {
 	}
 
 	public ConfigItemMapEntry getConfigEntry() {
-		return configEntry;
+		return this.configEntry;
 	}
 
 	@Deprecated
@@ -165,6 +162,15 @@ public class Table implements NamedObject {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * Set the name of this table.
+	 *
+	 * @param name The name of this table.
+	 */
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException {
@@ -220,20 +226,13 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Set the name of this table.
-	 *
-	 * @param name The name of this table.
-	 */
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	/**
 	 * Set a new TableFamilyStyle
 	 *
 	 * @param style The new TableStyle to be used
 	 */
 	public void setStyle(final TableStyle style) {
+		this.stylesContainer.addPageStyle(style.getPageStyle());
+		this.stylesContainer.addStyleToContentAutomaticStyles(style);
 		this.style = style;
 	}
 
@@ -305,7 +304,7 @@ public class Table implements NamedObject {
 		}
 	}
 
-	public void setSettings(String viewId, String item, String value) {
+	public void setSettings(final String viewId, final String item, final String value) {
 		this.configEntry.set(item, value);
 	}
 }

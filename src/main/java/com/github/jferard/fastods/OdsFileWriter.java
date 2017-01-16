@@ -44,7 +44,7 @@ public class OdsFileWriter {
 	private final OdsDocument document;
 	private final ZipUTF8Writer writer;
 
-	public static OdsFileWriterBuilder builder(final Logger logger, OdsDocument document) {
+	public static OdsFileWriterBuilder builder(final Logger logger, final OdsDocument document) {
 		return new OdsFileWriterBuilder(logger, document);
 	}
 
@@ -54,7 +54,7 @@ public class OdsFileWriter {
 	 * @param document
 	 * @param writer The writer for this file
 	 */
-	OdsFileWriter(final Logger logger, OdsDocument document, final ZipUTF8Writer writer) throws FileNotFoundException {
+	OdsFileWriter(final Logger logger, final OdsDocument document, final ZipUTF8Writer writer) throws FileNotFoundException {
 		this.logger = logger;
 		this.document = document;
 		this.writer = writer;

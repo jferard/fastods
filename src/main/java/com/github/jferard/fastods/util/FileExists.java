@@ -29,7 +29,7 @@ public class FileExists implements FileOpenResult {
 	private final File file;
 	private OutputStream out;
 
-	public FileExists(File f) {
+	public FileExists(final File f) {
 		file = f;
 	}
 

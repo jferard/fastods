@@ -47,7 +47,7 @@ public class EqualityUtil {
 	public int hashObjects(final Object... objects) {
 		final int prime = 31;
 		int result = 1;
-		for (Object object : objects) {
+		for (final Object object : objects) {
 			result = prime * result
 					+ ((object == null) ? 0 : object.hashCode());
 		}
@@ -57,7 +57,7 @@ public class EqualityUtil {
 	public int hashInts(final int... integers) {
 		final int prime = 31;
 		int result = 1;
-		for (int integer : integers)
+		for (final int integer : integers)
 			result = prime * result + integer;
 		return result;
 	}	

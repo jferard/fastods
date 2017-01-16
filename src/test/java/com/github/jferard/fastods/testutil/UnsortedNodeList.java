@@ -36,24 +36,24 @@ import java.util.List;
 public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNodeList> {
 	static Comparator<Node> cmp = new Comparator<Node>() {
 		@Override
-		public int compare(Node o1, Node o2) {
-			int cmpType = o1.getNodeType() - o2.getNodeType();
+		public int compare(final Node o1, final Node o2) {
+			final int cmpType = o1.getNodeType() - o2.getNodeType();
 			if (cmpType != 0)
 				return cmpType;
 
-			int cmpName = o1.getNodeName().compareTo(o2.getNodeName());
+			final int cmpName = o1.getNodeName().compareTo(o2.getNodeName());
 			if (cmpName != 0)
 				return cmpName;
 
-			NamedNodeMap attributes1 = o1.getAttributes();
-			NamedNodeMap attributes2 = o2.getAttributes();
+			final NamedNodeMap attributes1 = o1.getAttributes();
+			final NamedNodeMap attributes2 = o2.getAttributes();
 
 			if (attributes1 == null)
 				return attributes2 == null ? 0 : 1;
 			if (attributes2 == null)
 				return -1;
 
-			int cmpAttrs = new AttrList(attributes1).compareTo(new AttrList(attributes2));
+			final int cmpAttrs = new AttrList(attributes1).compareTo(new AttrList(attributes2));
 			if (cmpAttrs != 0)
 				return cmpAttrs;
 
@@ -79,15 +79,15 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 	}
 
 	@Override
-	public int compareTo(UnsortedNodeList other) {
+	public int compareTo(final UnsortedNodeList other) {
 		if (this.length != other.length)
 			return this.length - other.length;
 
-		Iterator<Node> i1 = this.list.iterator();
-		Iterator<Node> i2 = other.list.iterator();
+		final Iterator<Node> i1 = this.list.iterator();
+		final Iterator<Node> i2 = other.list.iterator();
 
 		while (i1.hasNext()) {
-			int c = cmp.compare(i1.next(), i2.next());
+			final int c = cmp.compare(i1.next(), i2.next());
 			if (c != 0)
 				return c;
 		}
@@ -95,13 +95,13 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (!(o instanceof UnsortedNodeList))
 			return false;
 
-		UnsortedNodeList other = (UnsortedNodeList) o;
+		final UnsortedNodeList other = (UnsortedNodeList) o;
 		return this.compareTo(other) == 0;
 	}
 
@@ -115,12 +115,12 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 		return list.hashCode();
 	}
 
-	public static String toString(Node n) {
+	public static String toString(final Node n) {
 		if (n == null)
 			return "[null]";
 
-		NamedNodeMap attributes = n.getAttributes();
-		String s = attributes == null ? "" : new AttrList(attributes).toString();
+		final NamedNodeMap attributes = n.getAttributes();
+		final String s = attributes == null ? "" : new AttrList(attributes).toString();
 		return "Node["+n.getNodeName()+", "+n.getNodeValue()+", "+ s +"]";
 	}
 

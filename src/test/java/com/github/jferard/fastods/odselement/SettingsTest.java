@@ -54,14 +54,14 @@ public class SettingsTest {
 
 	@Test
 	public void testViewSettings() throws IOException {
-		ConfigBlock block = blocks.get(0);
+		final ConfigBlock block = blocks.get(0);
 		Assert.assertEquals("ooo:view-settings", block.getName());
 	}
 
 	@Test
 	public void testViewSettingsContent() throws IOException {
-		ConfigBlock block = blocks.get(0);
-		Appendable sb = new StringBuilder();
+		final ConfigBlock block = blocks.get(0);
+		final Appendable sb = new StringBuilder();
 		block.appendXML(util, sb);
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item config:name=\"VisibleAreaTop\" config:type=\"int\">0</config:config-item>" +
@@ -101,8 +101,8 @@ public class SettingsTest {
 
 	@Test
 	public void testConfigurationSettingsContent() throws IOException {
-		ConfigBlock block = blocks.get(1);
-		Appendable sb = new StringBuilder();
+		final ConfigBlock block = blocks.get(1);
+		final Appendable sb = new StringBuilder();
 		block.appendXML(util, sb);
 		DomTester.assertUnsortedEquals(		"<config:config-item-set config:name=\"ooo:configuration-settings\">"+
 						"<config:config-item config:name=\"ShowZeroValues\" config:type=\"boolean\">true</config:config-item>"+

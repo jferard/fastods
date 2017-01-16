@@ -49,9 +49,9 @@ class SimpleFooterHeaderBuilder
 	 */
 	@Override
 	public FooterHeader build() {
-		FooterHeaderStyle style = new FooterHeaderStyle(this.footerHeaderType, this.marginsBuilder.build(),
+		final FooterHeaderStyle style = new FooterHeaderStyle(this.footerHeaderType, this.marginsBuilder.build(),
 				this.minHeight);
-		FooterHeaderContent header = new SimpleFooterHeader(this.footerHeaderType,
+		final FooterHeaderContent header = new SimpleFooterHeader(this.footerHeaderType,
 				this.curRegionBox.get());
 		return new FooterHeader(this.footerHeaderType, header, style);
 	}

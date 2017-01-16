@@ -105,13 +105,13 @@ public class FooterHeader {
 	}
 
 	public void addEmbeddedStylesToStylesElement(
-			StylesContainer stylesContainer) {
+			final StylesContainer stylesContainer) {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer);
 
 	}
 
 	public void addEmbeddedStylesToStylesElement(
-			StylesContainer stylesContainer, Mode mode) {
+			final StylesContainer stylesContainer, final Mode mode) {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer, mode);
 	}
 

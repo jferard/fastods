@@ -40,7 +40,7 @@ public class TableStyle implements StyleTag {
 		return new TableStyleBuilder(name);
 	}
 
-	private final PageStyle masterPageStyle;
+	private final PageStyle pageStyle;
 	private final String name;
 
 	/**
@@ -49,12 +49,12 @@ public class TableStyle implements StyleTag {
 	 *
 	 * @param styleName
 	 *            A unique name for this style
-	 * @param masterPageStyle
+	 * @param pageStyle
 	 *            The master page style for this table
 	 */
-	TableStyle(final String styleName, final PageStyle masterPageStyle) {
+	TableStyle(final String styleName, final PageStyle pageStyle) {
 		this.name = styleName;
-		this.masterPageStyle = masterPageStyle;
+		this.pageStyle = pageStyle;
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class TableStyle implements StyleTag {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table");
-		if (this.masterPageStyle != null)
+		if (this.pageStyle != null)
 			util.appendEAttribute(appendable, "style:master-page-name",
-					this.masterPageStyle.getName());
+					this.pageStyle.getName());
 		appendable.append("><style:table-properties");
 		util.appendAttribute(appendable, "table:display", "true");
 		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
@@ -92,5 +92,9 @@ public class TableStyle implements StyleTag {
 		if (this.key == null)
 			this.key = this.getFamily()+"@"+this.getName();
 		return this.key;
+	}
+
+	public PageStyle getPageStyle() {
+		return this.pageStyle;
 	}
 }

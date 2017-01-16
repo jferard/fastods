@@ -32,14 +32,14 @@ public class UnsortedChildrenTester extends ChildrenTester {
 	public boolean childrenEquals(final Node element1, final Node element2) {
 		final NodeList nodes1 = element1.getChildNodes();
 		final NodeList nodes2 = element2.getChildNodes();
-		UnsortedNodeList list1 = new UnsortedNodeList(nodes1);
-		UnsortedNodeList list2 = new UnsortedNodeList(nodes2);
+		final UnsortedNodeList list1 = new UnsortedNodeList(nodes1);
+		final UnsortedNodeList list2 = new UnsortedNodeList(nodes2);
 
 		if (list1.size() != list2.size())
 			return false;
 
-		Iterator<Node> i1 = list1.iterator();
-		Iterator<Node> i2 = list2.iterator();
+		final Iterator<Node> i1 = list1.iterator();
+		final Iterator<Node> i2 = list2.iterator();
 
 		while (i1.hasNext()) {
 			if (!this.equals(i1.next(), i2.next()))

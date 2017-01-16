@@ -181,7 +181,7 @@ public class SimpleFooterHeaderTest {
 	
 	@Test
 	public final void testAddEmbbeded() throws IOException {
-		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
 		
 		PowerMock.replayAll();
 		

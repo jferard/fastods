@@ -20,10 +20,10 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 public class Margins {
 	private final String all;
@@ -31,9 +31,9 @@ public class Margins {
 	private final String left;
 	private final String right;
 	private final String top;
-	private EqualityUtil equalityUtil;
+	private final EqualityUtil equalityUtil;
 
-	Margins(EqualityUtil equalityUtil, final String all, final String top,
+	Margins(final EqualityUtil equalityUtil, final String all, final String top,
 			final String right, final String bottom, final String left) {
 		this.equalityUtil = equalityUtil;
 		this.all = all;

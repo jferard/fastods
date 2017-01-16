@@ -46,7 +46,7 @@ public class OdsFileWriterBuilder {
 	 * @param logger
 	 * @param document
 	 */
-	OdsFileWriterBuilder(final Logger logger, OdsDocument document) {
+	OdsFileWriterBuilder(final Logger logger, final OdsDocument document) {
 		this.logger = logger;
 		this.document = document;
 		this.builder = ZipUTF8Writer.builder();

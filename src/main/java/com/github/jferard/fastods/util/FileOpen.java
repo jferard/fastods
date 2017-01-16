@@ -25,7 +25,7 @@ import java.io.OutputStream;
 public class FileOpen implements FileOpenResult {
 	private final OutputStream stream;
 
-	public FileOpen(OutputStream stream) {
+	public FileOpen(final OutputStream stream) {
 		this.stream = stream;
 	}
 

@@ -302,7 +302,7 @@ public class OdsDocumentTest {
 
 	@Test
 	public final void testGetTableNumber() {
-		Table t = PowerMock.createMock(Table.class);
+		final Table t = PowerMock.createMock(Table.class);
 
 		// PLAY
 		this.initOdsElements();
@@ -321,7 +321,7 @@ public class OdsDocumentTest {
 
 	@Test
 	public final void testSetActiveTable() {
-		Table t = PowerMock.createMock(Table.class);
+		final Table t = PowerMock.createMock(Table.class);
 
 		// PLAY
 		this.initOdsElements();
@@ -350,10 +350,10 @@ public class OdsDocumentTest {
 
 	@Test
 	public final void testSaveWriter() throws IOException {
-		ZipUTF8WriterBuilder zb = PowerMock
+		final ZipUTF8WriterBuilder zb = PowerMock
 				.createMock(ZipUTF8WriterBuilder.class);
-		ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
-		File temp = File.createTempFile("tempfile", ".tmp");
+		final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
+		final File temp = File.createTempFile("tempfile", ".tmp");
 		
 		// PLAY
 		this.initOdsElements();
@@ -372,7 +372,7 @@ public class OdsDocumentTest {
 
 	@Test // (expected = IOException.class)
 	public final void testSaveWriterWithException() throws IOException {
-		OutputStream o = PowerMock.createMock(OutputStream.class);
+		final OutputStream o = PowerMock.createMock(OutputStream.class);
 		
 		// PLAY
 		this.initOdsElements();

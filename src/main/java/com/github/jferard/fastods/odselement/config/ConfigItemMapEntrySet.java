@@ -41,19 +41,19 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 		return new ConfigItemMapEntrySet(new HashSet<ConfigBlock>());
 	}
 
-	public static ConfigItemMapEntrySet createSet(String name) {
+	public static ConfigItemMapEntrySet createSet(final String name) {
 		return new ConfigItemMapEntrySet(name, new HashSet<ConfigBlock>());
 	}
 
 
-	ConfigItemMapEntrySet(Set<ConfigBlock> blocks) {
+	ConfigItemMapEntrySet(final Set<ConfigBlock> blocks) {
 		this(null, blocks);
 	}
 
-	ConfigItemMapEntrySet(String name, Set<ConfigBlock> blocks) {
+	ConfigItemMapEntrySet(final String name, final Set<ConfigBlock> blocks) {
 		this.name = name;
 		this.blockByName = new HashMap<String, ConfigBlock>();
-		for (ConfigBlock block : blocks)
+		for (final ConfigBlock block : blocks)
 			this.blockByName.put(block.getName(), block);
 	}
 
@@ -72,12 +72,12 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 		return blockByName.isEmpty();
 	}
 
-	public boolean contains(String name) {
+	public boolean contains(final String name) {
 		return blockByName.containsKey(name);
 	}
 
 	@Override
-	public boolean add(ConfigBlock block) {
+	public boolean add(final ConfigBlock block) {
 		final String name = block.getName();
 		if (blockByName.containsKey(name))
 			return false;
@@ -86,17 +86,17 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 		return true;
 	}
 
-	public void remove(Object o) {
+	public void remove(final Object o) {
 		blockByName.remove(o);
 	}
 
 	@Override
-	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		if (this.name != null)
 			util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigBlock block : this.blockByName.values())
+		for (final ConfigBlock block : this.blockByName.values())
 			block.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-entry>");
 	}
@@ -106,15 +106,15 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 		return this.blockByName.values().iterator();
 	}
 
-	public ConfigBlock getByName(String name) {
+	public ConfigBlock getByName(final String name) {
 		return this.blockByName.get(name);
 	}
 
-	public String set(String name, String value) {
-		ConfigBlock block = this.blockByName.get(name);
+	public String set(final String name, final String value) {
+		final ConfigBlock block = this.blockByName.get(name);
 		if (block instanceof ConfigItem) {
-			ConfigItem item = (ConfigItem) block;
-			String previousValue = item.getValue();
+			final ConfigItem item = (ConfigItem) block;
+			final String previousValue = item.getValue();
 			item.setValue(value);
 			return previousValue;
 		}
@@ -122,8 +122,8 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 	}
 
 	@Override
-	public boolean add(String name, String type, String value) {
-		ConfigBlock block = this.getByName(name);
+	public boolean add(final String name, final String type, final String value) {
+		final ConfigBlock block = this.getByName(name);
 		if (block instanceof ConfigItem)
 			return false;
 

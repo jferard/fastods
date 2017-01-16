@@ -164,14 +164,14 @@ public class Settings {
 		this.tablesMap.put(table.getConfigEntry());
 	}
 
-	public void setTables(List<Table> tables) {
+	public void setTables(final List<Table> tables) {
 		this.tablesMap.clear();
-		for (Table table : tables)
+		for (final Table table : tables)
 			this.tablesMap.put(table.getConfigEntry());
 	}
 
-	public void setViewSettings(String viewId, String item, String value) {
-		ConfigItemMapEntrySet view = this.viewById.get(viewId);
+	public void setViewSettings(final String viewId, final String item, final String value) {
+		final ConfigItemMapEntrySet view = this.viewById.get(viewId);
 		if (view == null)
 			return;
 

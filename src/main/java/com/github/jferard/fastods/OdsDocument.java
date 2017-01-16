@@ -180,7 +180,7 @@ public class OdsDocument {
 	 * @throws IOException
 	 * @param filename
 	 */
-	public void saveAs(String filename) throws IOException {
+	public void saveAs(final String filename) throws IOException {
 		try {
 			final FileOutputStream out = new FileOutputStream(filename);
 			this.save(out);
@@ -199,7 +199,7 @@ public class OdsDocument {
 	 * @throws IOException
 	 * @param file
 	 */
-	public void saveAs(File file) throws IOException {
+	public void saveAs(final File file) throws IOException {
 		try {
 			final FileOutputStream out = new FileOutputStream(file);
 			this.save(out);
@@ -246,7 +246,7 @@ public class OdsDocument {
 	 * @throws IOException
 	 *             if the file was not saved
 	 */
-	public void saveAs(String filename, final ZipUTF8WriterBuilder builder) throws IOException {
+	public void saveAs(final String filename, final ZipUTF8WriterBuilder builder) throws IOException {
 		try {
 			final FileOutputStream out = new FileOutputStream(filename);
 			this.save(builder.build(out));
@@ -287,11 +287,11 @@ public class OdsDocument {
 		return this.logger;
 	}
 
-	public void setViewSetting(String viewId, String item, String value) {
+	public void setViewSetting(final String viewId, final String item, final String value) {
 		this.odsElements.setViewSettings(viewId, item, value);
 	}
 
-	public void addPageStyle(PageStyle ps) {
+	public void addPageStyle(final PageStyle ps) {
 		this.odsElements.addPageStyle(ps);
 	}
 }

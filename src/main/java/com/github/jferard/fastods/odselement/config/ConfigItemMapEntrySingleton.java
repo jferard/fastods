@@ -35,19 +35,19 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	private final ConfigBlock block;
 	private final String name;
 
-	public static ConfigItemMapEntry createSingleton(String name, ConfigItem configItem) {
+	public static ConfigItemMapEntry createSingleton(final String name, final ConfigItem configItem) {
 		return new ConfigItemMapEntrySingleton(name, configItem);
 	}
 
-	public static ConfigItemMapEntry createSingleton(ConfigItem configItem) {
+	public static ConfigItemMapEntry createSingleton(final ConfigItem configItem) {
 		return new ConfigItemMapEntrySingleton(configItem);
 	}
 
-	ConfigItemMapEntrySingleton(ConfigBlock block) {
+	ConfigItemMapEntrySingleton(final ConfigBlock block) {
 		this(null, block);
 	}
 
-	ConfigItemMapEntrySingleton(String name, ConfigBlock block) {
+	ConfigItemMapEntrySingleton(final String name, final ConfigBlock block) {
 		this.name = name;
 		this.block = block;
 	}
@@ -68,16 +68,16 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	}
 
 	@Override
-	public boolean add(ConfigBlock block) {
+	public boolean add(final ConfigBlock block) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean contains(String name) {
+	public boolean contains(final String name) {
 		return block.getName().equals(name);
 	}
 
 	@Override
-	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		if (this.name != null)
 			util.appendAttribute(appendable, "config:name", this.name);
@@ -92,32 +92,32 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	}
 
 	@Override
-	public boolean add(String name, String type, String value) {
+	public boolean add(final String name, final String type, final String value) {
 		throw new UnsupportedOperationException();
 	}
 
-	public ConfigBlock getByName(String name) {
+	public ConfigBlock getByName(final String name) {
 		if (block.getName().equals(name))
 			return block;
 		else
 			return null;
 	}
 
-	public String set(String name, String value) {
-		ConfigBlock block = this.getByName(name);
+	public String set(final String name, final String value) {
+		final ConfigBlock block = this.getByName(name);
 		if (block instanceof ConfigItem) {
-			ConfigItem item = (ConfigItem) block;
-			String previousValue = item.getValue();
+			final ConfigItem item = (ConfigItem) block;
+			final String previousValue = item.getValue();
 			item.setValue(value);
 			return previousValue;
 		}
 		return null;
 	}
 
-	public String set(String value) {
+	public String set(final String value) {
 		if (block instanceof ConfigItem) {
-			ConfigItem item = (ConfigItem) block;
-			String previousValue = item.getValue();
+			final ConfigItem item = (ConfigItem) block;
+			final String previousValue = item.getValue();
 			item.setValue(value);
 			return previousValue;
 		}

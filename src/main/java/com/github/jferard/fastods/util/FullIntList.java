@@ -68,8 +68,8 @@ public class FullIntList implements RandomAccess {
 
 	/**
 	 */
-	public int set(final int index, int element) {
-		int p;
+	public int set(final int index, final int element) {
+		final int p;
 		if (index >= this.size) {
 			p = 0;
 			if (element != 0) {

@@ -34,7 +34,7 @@ public class ConfigItemMapNamed implements ConfigBlock {
 	private final String name;
 	private final Map<String, ConfigItemMapEntry> map;
 
-	public ConfigItemMapNamed(String name) {
+	public ConfigItemMapNamed(final String name) {
 		this.name = name;
 		this.map = new HashMap<String, ConfigItemMapEntry>();
 	}
@@ -52,19 +52,19 @@ public class ConfigItemMapNamed implements ConfigBlock {
 		return map.isEmpty();
 	}
 
-	public boolean contains(String name) {
+	public boolean contains(final String name) {
 		return map.containsKey(name);
 	}
 
-	public ConfigItemMapEntry getByName(String name) {
+	public ConfigItemMapEntry getByName(final String name) {
 		return map.get(name);
 	}
 
-	public ConfigItemMapEntry put(ConfigItemMapEntry value) {
+	public ConfigItemMapEntry put(final ConfigItemMapEntry value) {
 		return map.put(value.getName(), value);
 	}
 
-	public ConfigItemMapEntry removeByName(String name) {
+	public ConfigItemMapEntry removeByName(final String name) {
 		return map.remove(name);
 	}
 
@@ -73,11 +73,11 @@ public class ConfigItemMapNamed implements ConfigBlock {
 	}
 
 	@Override
-	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-named");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigItemMapEntry entry : this.map.values())
+		for (final ConfigItemMapEntry entry : this.map.values())
 			entry.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-named>");
 	}

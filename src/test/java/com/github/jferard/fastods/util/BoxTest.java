@@ -28,7 +28,7 @@ import org.junit.Test;
 public class BoxTest {
 	@Test
 	public void test() {
-		Box<String> b = new Box<String>();
+		final Box<String> b = new Box<String>();
 		b.set("a");
 		Assert.assertEquals("a", b.get());
 	}

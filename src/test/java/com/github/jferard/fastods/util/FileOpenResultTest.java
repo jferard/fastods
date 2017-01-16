@@ -26,7 +26,7 @@ public class FileOpenResultTest {
 
 	@Test
 	public void testIsDir() throws Exception {
-		FileOpenResult fileOpenResult = odsFactory.openFile(".");
+		final FileOpenResult fileOpenResult = odsFactory.openFile(".");
 
 		Assert.assertTrue(FileOpenResult.FILE_IS_DIR == fileOpenResult);
 		thrown.expect(IllegalStateException.class);
@@ -35,14 +35,14 @@ public class FileOpenResultTest {
 
 	@Test
 	public void testOpen() throws Exception {
-		File aTest = new File("atest");
+		final File aTest = new File("atest");
 
 		try {
-			FileOpenResult fileOpenResult = odsFactory.openFile(aTest.getAbsolutePath());
+			final FileOpenResult fileOpenResult = odsFactory.openFile(aTest.getAbsolutePath());
 			Assert.assertTrue(fileOpenResult instanceof FileOpen);
 			Assert.assertEquals(0, aTest.length());
 			// the file has been touched
-			OutputStream s = fileOpenResult.getStream();
+			final OutputStream s = fileOpenResult.getStream();
 			s.write(new byte[]{'a', 'b','c'});
 			s.close();
 			Assert.assertEquals(3, aTest.length());
@@ -53,7 +53,7 @@ public class FileOpenResultTest {
 
 	@Test
 	public void testExists() throws Exception {
-		File aTest = new File("atest");
+		final File aTest = new File("atest");
 		odsFactory = new OdsFactory();
 
 		// create a file
@@ -62,7 +62,7 @@ public class FileOpenResultTest {
 		s.close();
 		Assert.assertEquals(3, aTest.length());
 		try {
-			FileOpenResult fileOpenResult = odsFactory.openFile(aTest.getAbsolutePath());
+			final FileOpenResult fileOpenResult = odsFactory.openFile(aTest.getAbsolutePath());
 			Assert.assertTrue(fileOpenResult instanceof FileExists);
 			// the file has not been touched
 			Assert.assertEquals(3, aTest.length());

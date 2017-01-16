@@ -33,7 +33,7 @@ public class PositionUtil {
 		private final int column;
 		private final int row;
 
-		Position(EqualityUtil equalityUtil, final int row, final int column) {
+		Position(final EqualityUtil equalityUtil, final int row, final int column) {
 			this.equalityUtil = equalityUtil;
 			this.row = row;
 			this.column = column;
@@ -75,7 +75,7 @@ public class PositionUtil {
 	private static final int OPT_SECOND_LETTER = 2;
 	private final EqualityUtil equalityUtil;
 
-	public PositionUtil(EqualityUtil equalityUtil) {
+	public PositionUtil(final EqualityUtil equalityUtil) {
 		this.equalityUtil = equalityUtil;
 	}
 

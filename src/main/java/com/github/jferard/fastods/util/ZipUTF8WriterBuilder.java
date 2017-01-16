@@ -59,7 +59,7 @@ public class ZipUTF8WriterBuilder {
 		zipOut.setLevel(this.level);
 		final Writer writer = new OutputStreamWriter(zipOut,
 				ZipUTF8Writer.UTF_8);
-		Writer bufferedWriter;
+		final Writer bufferedWriter;
 		switch (this.writerBufferSize) {
 		case NO_BUFFER:
 			bufferedWriter = writer;

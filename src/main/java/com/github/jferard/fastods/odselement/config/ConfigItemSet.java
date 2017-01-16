@@ -34,7 +34,7 @@ public class ConfigItemSet implements ConfigBlock {
 	private final Map<String, ConfigBlock> blockByName;
 	private final String name;
 
-	public ConfigItemSet(String name) {
+	public ConfigItemSet(final String name) {
 		this.name = name;
 		this.blockByName = new HashMap<String, ConfigBlock>();
 	}
@@ -48,11 +48,11 @@ public class ConfigItemSet implements ConfigBlock {
 	}
 
 	@Override
-	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-set");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigBlock block : this.blockByName.values())
+		for (final ConfigBlock block : this.blockByName.values())
 			block.appendXML(util, appendable);
 		appendable.append("</config:config-item-set>");
 	}
@@ -69,19 +69,19 @@ public class ConfigItemSet implements ConfigBlock {
 		return blockByName.values().iterator();
 	}
 
-	public void add(ConfigBlock configBlock) {
+	public void add(final ConfigBlock configBlock) {
 		blockByName.put(configBlock.getName(), configBlock);
 	}
 
-	public boolean contains(String name) {
+	public boolean contains(final String name) {
 		return blockByName.containsKey(name);
 	}
 
-	public void removeByName(String name) {
+	public void removeByName(final String name) {
 		blockByName.remove(name);
 	}
 
-	public ConfigBlock getByName(String name) {
+	public ConfigBlock getByName(final String name) {
 		return this.blockByName.get(name);
 	}
 }

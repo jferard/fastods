@@ -36,6 +36,7 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class MasterPageStyle implements AddableToOdsElements {
+	private final String layoutName;
 	private final FooterHeader footer;
 	private final FooterHeader header;
 
@@ -49,9 +50,10 @@ public class MasterPageStyle implements AddableToOdsElements {
 	 * @param header
 	 * @param footer
 	 */
-	public MasterPageStyle(final String name,
+	public MasterPageStyle(final String name, final String layoutName,
 						   final FooterHeader footer, final FooterHeader header) {
 		this.name = name;
+		this.layoutName = layoutName;
 		this.footer = footer;
 		this.header = header;
 	}
@@ -87,7 +89,7 @@ public class MasterPageStyle implements AddableToOdsElements {
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
 		util.appendEAttribute(appendable, "style:name", this.name);
-		util.appendAttribute(appendable, "style:page-layout-name", this.name);
+		util.appendAttribute(appendable, "style:page-layout-name", this.layoutName);
 		appendable.append("><style:header>");
 		this.header.appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:header>");

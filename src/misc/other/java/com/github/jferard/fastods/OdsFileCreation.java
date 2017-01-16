@@ -41,7 +41,7 @@ public class OdsFileCreation {
 
 	@BeforeClass
 	public static final void beforeClass() {
-		File generated_files = new File("generated_files");
+		final File generated_files = new File("generated_files");
 		if (generated_files.exists())
 			return;
 

@@ -36,38 +36,38 @@ public class Link implements ParagraphElement {
 	private final String content;
 	private final TextStyle ts;
 
-	public Link(String text, Table table, TextStyle ts) {
+	public Link(final String text, final Table table, final TextStyle ts) {
 		this.text = text;
 		this.content = '#'+table.getName();
 		this.ts = ts;
 	}
 
-	public Link(String text, Table table) {
+	public Link(final String text, final Table table) {
 		this(text, table, null);
 	}
 
-	public Link(String text, File file, TextStyle ts) {
+	public Link(final String text, final File file, final TextStyle ts) {
 		this.text = text;
 		this.content = file.toURI().toString();
 		this.ts = ts;
 	}
 
-	public Link(String text, File file) {
+	public Link(final String text, final File file) {
 		this(text, file, null);
 	}
 
-	public Link(String text, URL url, TextStyle ts) {
+	public Link(final String text, final URL url, final TextStyle ts) {
 		this.text = text;
 		this.content = url.toString();
 		this.ts = ts;
 	}
 
-	public Link(String text, URL url) {
+	public Link(final String text, final URL url) {
 		this(text, url, null);
 	}
 
 	@Override
-	public void appendXMLToParagraph(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXMLToParagraph(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<text:a");
 		if (this.ts != null) {
 			util.appendEAttribute(appendable, "text:style-name",

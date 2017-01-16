@@ -57,7 +57,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
 	@BeforeClass
 	public static final void beforeClass() {
-		File generated_files = new File("generated_files");
+		final File generated_files = new File("generated_files");
 		if (generated_files.exists())
 			return;
 
@@ -80,7 +80,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	@Test
 	@SuppressWarnings("deprecated")
 	public final void testMax() {
-		List<List<Object>> r = new ArrayList<List<Object>>();
+		final List<List<Object>> r = new ArrayList<List<Object>>();
 		for (int v = 13; v < 18; v++) {
 			final List<Object> l = Arrays.<Object>asList(v);
 			r.add(l);

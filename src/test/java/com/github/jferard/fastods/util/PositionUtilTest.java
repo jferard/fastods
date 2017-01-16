@@ -96,7 +96,7 @@ public class PositionUtilTest {
 	
 	@Test
 	public final void testEquals() {
-		Position position1 = this.util.getPosition("A5");
+		final Position position1 = this.util.getPosition("A5");
 		Assert.assertEquals(position1, position1);
 		Assert.assertNotEquals(position1, null);
 		final Position position2 = this.util.getPosition(4, 0);

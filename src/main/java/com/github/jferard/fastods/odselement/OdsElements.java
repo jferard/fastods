@@ -91,11 +91,11 @@ public class OdsElements {
 		this.stylesContainer.addDataStyle(dataStyle);
 	}
 
-	public void addMasterPageStyle(MasterPageStyle masterPageStyle) {
+	public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
 		this.stylesContainer.addMasterPageStyle(masterPageStyle);
 	}
 
-	public void addPageLayoutStyle(PageLayoutStyle pageLayoutStyle) {
+	public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
 		this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
 	}
 
@@ -173,11 +173,11 @@ public class OdsElements {
 		this.settingsElement.write(xmlUtil, writer);
 	}
 
-	public void setViewSettings(String viewId, String item, String value) {
+	public void setViewSettings(final String viewId, final String item, final String value) {
 		this.settingsElement.setViewSettings(viewId, item, value);
 	}
 
-	public void addPageStyle(PageStyle ps) {
+	public void addPageStyle(final PageStyle ps) {
 		this.stylesContainer.addPageStyle(ps);
 	}
 }

@@ -52,7 +52,7 @@ public class ParagraphBuilder {
 		return this;
 	}
 
-	public ParagraphBuilder styledLink(final String text, final Table table, TextStyle ts) {
+	public ParagraphBuilder styledLink(final String text, final Table table, final TextStyle ts) {
 		final ParagraphElement paragraphElement = new Link(text, table, ts);
 		this.paragraphElements.add(paragraphElement);
 		return this;
@@ -64,7 +64,7 @@ public class ParagraphBuilder {
 		return this;
 	}
 
-	public ParagraphBuilder styledLink(final String text, final File file, TextStyle ts) {
+	public ParagraphBuilder styledLink(final String text, final File file, final TextStyle ts) {
 		final ParagraphElement paragraphElement = new Link(text, file, ts);
 		this.paragraphElements.add(paragraphElement);
 		return this;
@@ -76,7 +76,7 @@ public class ParagraphBuilder {
 		return this;
 	}
 
-	public ParagraphBuilder styledLink(final String text, final URL url, TextStyle ts) {
+	public ParagraphBuilder styledLink(final String text, final URL url, final TextStyle ts) {
 		final ParagraphElement paragraphElement = new Link(text, url, ts);
 		this.paragraphElements.add(paragraphElement);
 		return this;

@@ -116,7 +116,7 @@ public class RegionFooterHeaderTest {
 
 	@Test
 	public final void testEmbedded() throws IOException {
-		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
 		final TextStyle ts1 = TextProperties.builder().fontStyleItalic()
 				.buildStyle("style1");
 		final TextStyle ts2 = TextProperties.builder().fontStyleNormal()
@@ -140,7 +140,7 @@ public class RegionFooterHeaderTest {
 
 	@Test
 	public final void testEmbeddedNull() throws IOException {
-		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).build();
 
@@ -152,7 +152,7 @@ public class RegionFooterHeaderTest {
 	
 	@Test
 	public final void testEmbeddedMode() throws IOException {
-		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
 		final TextStyle ts1 = TextProperties.builder().fontStyleItalic()
 				.buildStyle("style1");
 		final TextStyle ts2 = TextProperties.builder().fontStyleNormal()
@@ -176,7 +176,7 @@ public class RegionFooterHeaderTest {
 	
 	@Test
 	public final void testEmbeddedNullMode() throws IOException {
-		StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+		final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
 		final FooterHeader header = FooterHeader
 				.regionBuilder(FooterHeader.Type.HEADER).build();
 

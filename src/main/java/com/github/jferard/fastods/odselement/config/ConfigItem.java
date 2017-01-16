@@ -77,7 +77,7 @@ public class ConfigItem implements ConfigBlock {
 		return this.value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 }

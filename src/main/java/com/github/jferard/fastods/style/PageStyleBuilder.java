@@ -98,8 +98,8 @@ public class PageStyleBuilder {
 	}
 
 	public PageStyle build() {
-		MasterPageStyle masterPageStyle = new MasterPageStyle(this.name, this.footer, this.header);
-		PageLayoutStyle pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
+		final MasterPageStyle masterPageStyle = new MasterPageStyle(this.name, this.name, this.footer, this.header);
+		final PageLayoutStyle pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
 				this.pageHeight, this.numFormat, this.backgroundColor, this.footer, this.header, this
 				.printOrientation, this.paperFormat, this.writingMode);
 		return new PageStyle(this.name, masterPageStyle, pageLayoutStyle);

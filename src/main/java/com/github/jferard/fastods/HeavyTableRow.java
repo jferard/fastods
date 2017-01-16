@@ -507,7 +507,7 @@ public class HeavyTableRow {
 		final TableCellStyle style = this.styles.get(colIndex);
 		final TableCell.Type valueType = this.types.get(colIndex);
 
-		boolean covered = this.coldRow != null
+		final boolean covered = this.coldRow != null
 				&& this.coldRow.isCovered(colIndex);
 		if (covered) {
 			appendable.append("<table:covered-table-cell");
@@ -535,7 +535,7 @@ public class HeavyTableRow {
 		}
 	}
 
-	public void setCovered(int colIndex) {
+	public void setCovered(final int colIndex) {
 		if (this.coldRow == null)
 			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
 					this.columnCapacity);
@@ -543,7 +543,7 @@ public class HeavyTableRow {
 		this.coldRow.setCovered(colIndex);
 	}
 
-	public void setCovered(int colIndex, int n) {
+	public void setCovered(final int colIndex, final int n) {
 		if (this.coldRow == null)
 			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
 					this.columnCapacity);

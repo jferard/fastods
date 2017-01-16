@@ -89,7 +89,7 @@ public class TextStyle implements StyleTag {
 	}
 
 	@Override
-	public void addToElements(OdsElements odsElements) {
+	public void addToElements(final OdsElements odsElements) {
 		throw new UnsupportedOperationException();
 	}
 }

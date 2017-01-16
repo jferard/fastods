@@ -41,7 +41,7 @@ public class ConfigItemMapIndexed implements ConfigBlock {
 		return list.isEmpty();
 	}
 
-	public boolean contains(Object o) {
+	public boolean contains(final Object o) {
 		return list.contains(o);
 	}
 
@@ -49,29 +49,29 @@ public class ConfigItemMapIndexed implements ConfigBlock {
 		return list.iterator();
 	}
 
-	public boolean add(ConfigItemMapEntry configItemMapEntry) {
+	public boolean add(final ConfigItemMapEntry configItemMapEntry) {
 		return list.add(configItemMapEntry);
 	}
 
-	public void remove(int index) {
+	public void remove(final int index) {
 		list.remove(index);
 	}
 
-	public ConfigItemMapEntry get(int index) {
+	public ConfigItemMapEntry get(final int index) {
 		return list.get(index);
 	}
 
-	public ConfigItemMapEntry set(int index, ConfigItemMapEntry element) {
+	public ConfigItemMapEntry set(final int index, final ConfigItemMapEntry element) {
 		return list.set(index, element);
 	}
 
-	public void add(int index, ConfigItemMapEntry element) {
+	public void add(final int index, final ConfigItemMapEntry element) {
 		list.add(index, element);
 	}
 
 	private final List<ConfigItemMapEntry> list;
 
-	public ConfigItemMapIndexed(String name) {
+	public ConfigItemMapIndexed(final String name) {
 		this.name = name;
 		this.list = new ArrayList<ConfigItemMapEntry>();
 	}
@@ -82,11 +82,11 @@ public class ConfigItemMapIndexed implements ConfigBlock {
 	}
 
 	@Override
-	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-indexed");
 		util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigItemMapEntry entry : this.list)
+		for (final ConfigItemMapEntry entry : this.list)
 			entry.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-indexed>");
 	}

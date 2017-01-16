@@ -34,13 +34,13 @@ import java.util.Iterator;
 public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 	static Comparator<Attr> cmp = new Comparator<Attr>() {
 		@Override
-		public int compare(Attr o1, Attr o2) {
+		public int compare(final Attr o1, final Attr o2) {
 			if (o1 == null)
 				return o2 == null ? 0 : 1;
 			if (o2 == null)
 				return -1;
 
-			int cmpNames = o1.getName().compareTo(o2.getName());
+			final int cmpNames = o1.getName().compareTo(o2.getName());
 			if (cmpNames != 0)
 				return cmpNames;
 
@@ -81,26 +81,26 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o)
 			return true;
 		if (!(o instanceof AttrList))
 			return false;
 
-		AttrList other = (AttrList) o;
+		final AttrList other = (AttrList) o;
 		return this.compareTo(other) == 0;
 	}
 
 	@Override
-	public int compareTo(AttrList other) {
+	public int compareTo(final AttrList other) {
 		if (this.length != other.length)
 			return this.length - other.length;
 
-		Iterator<Attr> i1 = this.attrs.iterator();
-		Iterator<Attr> i2 = other.attrs.iterator();
+		final Iterator<Attr> i1 = this.attrs.iterator();
+		final Iterator<Attr> i2 = other.attrs.iterator();
 
 		while (i1.hasNext()) {
-			int c = cmp.compare(i1.next(), i2.next());
+			final int c = cmp.compare(i1.next(), i2.next());
 			if (c != 0)
 				return c;
 		}

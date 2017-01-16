@@ -24,7 +24,7 @@ package com.github.jferard.fastods.style;
  * @author Julien Férard Copyright
  */
 public class TableStyleBuilder {
-	private PageStyle masterPageStyle;
+	private PageStyle pageStyle;
 	private final String name;
 
 	/**
@@ -35,16 +35,16 @@ public class TableStyleBuilder {
 			throw new IllegalArgumentException();
 
 		this.name = name;
-		this.masterPageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
+		this.pageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
 	}
 
 	public TableStyle build() {
-		return new TableStyle(this.name, this.masterPageStyle);
+		return new TableStyle(this.name, this.pageStyle);
 	}
 
 	public TableStyleBuilder pageStyle(
 			final PageStyle masterPageStyle) {
-		this.masterPageStyle = masterPageStyle;
+		this.pageStyle = masterPageStyle;
 		return this;
 	}
 }

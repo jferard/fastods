@@ -242,21 +242,21 @@ public class HeavyTableColdRow {
 		}
 	}
 
-	public boolean isCovered(int colIndex) {
+	public boolean isCovered(final int colIndex) {
 		if (this.columnsSpanned == null)
 			return false;
 		else
 			return this.columnsSpanned.get(colIndex) == -1;
 	}
 
-	public void setCurrency(int i, String currency) {
+	public void setCurrency(final int i, final String currency) {
 		if (this.currencies == null)
 			this.currencies = FullList.newListWithCapacity(this.columnCapacity);
 
 		this.currencies.set(i, currency); // escape here
 	}
 
-	public void setCovered(int colIndex) {
+	public void setCovered(final int colIndex) {
 		if (this.columnsSpanned == null)
 			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
 					.capacity(this.columnCapacity).build();
@@ -264,7 +264,7 @@ public class HeavyTableColdRow {
 		this.hasSpans = true;
 	}
 
-	public void setCovered(int colIndex, int n) {
+	public void setCovered(final int colIndex, final int n) {
 		if (this.columnsSpanned == null)
 			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
 					.capacity(this.columnCapacity).build();

@@ -33,7 +33,7 @@ public class Borders {
 	private final BorderAttribute top;
 	private EqualityUtil equalityUtil;
 
-	Borders(EqualityUtil equalityUtil, final BorderAttribute all,
+	Borders(final EqualityUtil equalityUtil, final BorderAttribute all,
 			final BorderAttribute top, final BorderAttribute right,
 			final BorderAttribute bottom, final BorderAttribute left) {
 		this.equalityUtil = equalityUtil;

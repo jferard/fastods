@@ -39,16 +39,16 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 		return new ConfigItemMapEntrySequence(new ArrayList<ConfigBlock>());
 	}
 
-	public static ConfigItemMapEntry createSequence(String name) {
+	public static ConfigItemMapEntry createSequence(final String name) {
 		return new ConfigItemMapEntrySequence(name, new ArrayList<ConfigBlock>());
 	}
 
 
-	ConfigItemMapEntrySequence(List<ConfigBlock> blocks) {
+	ConfigItemMapEntrySequence(final List<ConfigBlock> blocks) {
 		this(null, blocks);
 	}
 
-	ConfigItemMapEntrySequence(String name, List<ConfigBlock> blocks) {
+	ConfigItemMapEntrySequence(final String name, final List<ConfigBlock> blocks) {
 		this.name = name;
 		this.blocks = blocks;
 	}
@@ -69,21 +69,21 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 	}
 
 	@Override
-	public boolean add(ConfigBlock block) {
+	public boolean add(final ConfigBlock block) {
 		return blocks.add(block);
 	}
 
-	public void remove(int i) {
+	public void remove(final int i) {
 		blocks.remove(i);
 	}
 
 	@Override
-	public void appendXML(XMLUtil util, Appendable appendable) throws IOException {
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		if (this.name != null)
 			util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
-		for (ConfigBlock block : this.blocks)
+		for (final ConfigBlock block : this.blocks)
 			block.appendXML(util, appendable);
 		appendable.append("</config:config-item-map-entry>");
 	}
@@ -93,11 +93,11 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 		return this.blocks.iterator();
 	}
 
-	public String set(int i, String value) {
-		ConfigBlock block = this.blocks.get(i);
+	public String set(final int i, final String value) {
+		final ConfigBlock block = this.blocks.get(i);
 		if (block instanceof ConfigItem) {
-			ConfigItem item = (ConfigItem) block;
-			String previousValue = item.getValue();
+			final ConfigItem item = (ConfigItem) block;
+			final String previousValue = item.getValue();
 			item.setValue(value);
 			return previousValue;
 		}
@@ -105,8 +105,8 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 	}
 
 	@Override
-	public boolean add(String name, String type, String value) {
-		ConfigItem item = new ConfigItem(name, type, value);
+	public boolean add(final String name, final String type, final String value) {
+		final ConfigItem item = new ConfigItem(name, type, value);
 		return this.blocks.add(item);
 	}
 }

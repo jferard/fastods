@@ -28,13 +28,13 @@ public class FloatValue extends CellValue {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == this)
 			return true;
 		if (!(o instanceof FloatValue))
 			return false;
 
-		FloatValue other = (FloatValue) o;
+		final FloatValue other = (FloatValue) o;
 		return this.value.equals(other.value);
 	}
 

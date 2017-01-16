@@ -223,7 +223,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public E set(final int index, final E element) {
-		E result;
+		final E result;
 		final int size = this.list.size();
 		final int lastIndex = size - 1;
 		if (index > lastIndex) {

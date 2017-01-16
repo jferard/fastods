@@ -174,7 +174,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
 	private void writeMaybeLastLineDataTo(final int columnCount,
 			final Table table, final int rowCount) {
-		HeavyTableRow row;
+		final HeavyTableRow row;
 		if (rowCount == 0) {// no data row
 			row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();

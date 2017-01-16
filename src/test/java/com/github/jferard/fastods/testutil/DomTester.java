@@ -54,7 +54,7 @@ public class DomTester {
 	}
 
 	public static void assertEquals(final String string1,
-			final String string2, ChildrenTester childrenTester) {
+									final String string2, final ChildrenTester childrenTester) {
 		if (!DomTester.equals(string1, string2, childrenTester)) {
 			Assert.assertEquals(string1, string2); // shows the difference
 			Assert.fail(); // in case there was a bug in DomTester, but strings are equal
@@ -69,7 +69,7 @@ public class DomTester {
 		return DomTester.equals(s1, s2, new UnsortedChildrenTester());
 	}
 
-	public static boolean equals(final String s1, final String s2, ChildrenTester childrenTester) {
+	public static boolean equals(final String s1, final String s2, final ChildrenTester childrenTester) {
 		try {
 			final DomTester tester = new DomTester();
 			return tester.stringEquals(s1, s2, childrenTester);
@@ -87,7 +87,7 @@ public class DomTester {
 		this.builder = factory.newDocumentBuilder();
 	}
 
-	private boolean stringEquals(final String s1, final String s2, ChildrenTester childrenTester)
+	private boolean stringEquals(final String s1, final String s2, final ChildrenTester childrenTester)
 			throws SAXException, IOException {
 		final Document document1 = this.builder.parse(
 				new ByteArrayInputStream(("<r>" + s1 + "</r>").getBytes(UTF_8)));

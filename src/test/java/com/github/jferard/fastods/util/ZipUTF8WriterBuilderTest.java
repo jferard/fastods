@@ -47,7 +47,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testDefault() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.build(this.out);
+		final ZipUTF8Writer writer = this.builder.build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append('c');
 		writer.close();
@@ -58,7 +58,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testNoZipBuffer() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.noZipBuffer().build(this.out);
+		final ZipUTF8Writer writer = this.builder.noZipBuffer().build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append('c');
 		writer.close();
@@ -69,7 +69,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testCustomZipBuffer() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.zipBuffer(1).build(this.out);
+		final ZipUTF8Writer writer = this.builder.zipBuffer(1).build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append('c');
 		writer.close();
@@ -80,7 +80,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testNoWriterBuffer() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.noWriterBuffer().build(this.out);
+		final ZipUTF8Writer writer = this.builder.noWriterBuffer().build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append('c');
 		writer.close();
@@ -91,7 +91,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testCustomWriterBuffer() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.writerBuffer(1).build(this.out);
+		final ZipUTF8Writer writer = this.builder.writerBuffer(1).build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append('c');
 		writer.close();
@@ -102,7 +102,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testExplicitDefault() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.defaultWriterBuffer().defaultZipBuffer().build(this.out);
+		final ZipUTF8Writer writer = this.builder.defaultWriterBuffer().defaultZipBuffer().build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append('c');
 		writer.close();
@@ -131,7 +131,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testLevel0() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.level(0).build(this.out);
+		final ZipUTF8Writer writer = this.builder.level(0).build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append("some long text that can be zipped some long text that can be zipped some long text that can be zipped some long text that can be zipped ");
 		writer.close();
@@ -142,7 +142,7 @@ public class ZipUTF8WriterBuilderTest {
 	@Test
 	public final void testLevel9() throws IOException {
 		PowerMock.replayAll();
-		ZipUTF8Writer writer = this.builder.level(9).build(this.out);
+		final ZipUTF8Writer writer = this.builder.level(9).build(this.out);
 		writer.putNextEntry(new ZipEntry("a"));
 		writer.append("some long text that can be zipped some long text that can be zipped some long text that can be zipped some long text that can be zipped ");
 		writer.close();
@@ -155,7 +155,7 @@ public class ZipUTF8WriterBuilderTest {
 		PowerMock.replayAll();
 		this.thrown.expect(IllegalArgumentException.class);
 		this.thrown.expectMessage("invalid compression level");
-		ZipUTF8Writer writer = this.builder.level(99).build(this.out);
+		final ZipUTF8Writer writer = this.builder.level(99).build(this.out);
 		PowerMock.verifyAll();
 	}
 }

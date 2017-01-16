@@ -98,7 +98,7 @@ public class OdsFactory {
 	 * Create a new, empty document. Use addTable to add tables.
 	 */
 	public OdsDocument createDocument() {
-		OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
+		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
 				this.writeUtil, this.format);
 		return new OdsDocument(this.logger,
 				odsElements, this.xmlUtil);
@@ -107,7 +107,7 @@ public class OdsFactory {
 	/**
 	 * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
 	 */
-	public OdsFileWriter createWriter(OdsDocument document, String filename) throws FileNotFoundException {
+	public OdsFileWriter createWriter(final OdsDocument document, final String filename) throws FileNotFoundException {
 		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename)).build();
 	}
 }

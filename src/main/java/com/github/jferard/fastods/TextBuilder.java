@@ -73,7 +73,7 @@ public class TextBuilder {
 		return this;
 	}
 
-	public TextBuilder styledLink(final String text, final Table table, TextStyle ts) {
+	public TextBuilder styledLink(final String text, final Table table, final TextStyle ts) {
 		this.curParagraphBuilder.styledLink(text, table, ts);
 		return this;
 	}
@@ -83,7 +83,7 @@ public class TextBuilder {
 		return this;
 	}
 
-	public TextBuilder styledLink(final String text, final File file, TextStyle ts) {
+	public TextBuilder styledLink(final String text, final File file, final TextStyle ts) {
 		this.curParagraphBuilder.styledLink(text, file, ts);
 		return this;
 	}
@@ -93,7 +93,7 @@ public class TextBuilder {
 		return this;
 	}
 
-	public TextBuilder styledLink(final String text, final URL url, TextStyle ts) {
+	public TextBuilder styledLink(final String text, final URL url, final TextStyle ts) {
 		this.curParagraphBuilder.styledLink(text, url, ts);
 		return this;
 	}

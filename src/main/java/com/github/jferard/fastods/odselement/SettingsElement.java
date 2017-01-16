@@ -68,7 +68,7 @@ public class SettingsElement implements OdsElement {
 		return new SettingsElement(new Settings());
 	}
 
-	SettingsElement(Settings settings) {
+	SettingsElement(final Settings settings) {
 		this.settings = settings;
 	}
 
@@ -84,7 +84,7 @@ public class SettingsElement implements OdsElement {
 		writer.write(
 				"<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">");
 		writer.write("<office:settings>");
-		for (ConfigBlock block : this.settings.getRootBlocks())
+		for (final ConfigBlock block : this.settings.getRootBlocks())
 			block.appendXML(util, writer);
 		writer.write("</office:settings>");
 		writer.write("</office:document-settings>");
@@ -92,11 +92,11 @@ public class SettingsElement implements OdsElement {
 		writer.closeEntry();
 	}
 
-	public void setActiveTable(Table table) {
+	public void setActiveTable(final Table table) {
 		this.settings.setActiveTable(table);
 	}
 
-	public void setViewSettings(String viewId, String item, String value) {
+	public void setViewSettings(final String viewId, final String item, final String value) {
 		this.settings.setViewSettings(viewId, item, value);
 	}
 }

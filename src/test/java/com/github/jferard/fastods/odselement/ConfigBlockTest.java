@@ -44,16 +44,16 @@ public class ConfigBlockTest {
 
 	@Test
 	public void test() throws IOException {
-		Appendable sb = new StringBuilder();
-		ConfigItemSet cb = new ConfigItemSet("root");
+		final Appendable sb = new StringBuilder();
+		final ConfigItemSet cb = new ConfigItemSet("root");
 		cb.add(new ConfigItem("item1", "int", "1"));
-		ConfigItemSet set1 = new ConfigItemSet("set1");
+		final ConfigItemSet set1 = new ConfigItemSet("set1");
 		set1.add(new ConfigItem("item2", "string", "str"));
 		cb.add(set1);
-		ConfigItemMapIndexed map1 = new ConfigItemMapIndexed("map1");
+		final ConfigItemMapIndexed map1 = new ConfigItemMapIndexed("map1");
 		map1.add(ConfigItemMapEntrySingleton.createSingleton("entry1", new ConfigItem("item3", "short", "0")));
 		cb.add(map1);
-		ConfigItemMapNamed map2 = new ConfigItemMapNamed("map2");
+		final ConfigItemMapNamed map2 = new ConfigItemMapNamed("map2");
 		map2.put(ConfigItemMapEntrySingleton.createSingleton("entry2", new ConfigItem("item4", "long", "123456789")));
 		cb.add(map2);
 

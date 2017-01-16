@@ -84,8 +84,8 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 			boolean oneSpecialChar = false;
 			for (int sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++) {
 				final char c = s.charAt(sourceIndex);
-				int toCopyIndex;
-				int toCopyLen;
+				final int toCopyIndex;
+				final int toCopyLen;
 				if (c == '&') {
 					firstDifferentCharInSourceIndex = sourceIndex + 1; // gobble
 																		// the
@@ -195,8 +195,8 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 			boolean oneSpecialChar = false;
 			for (int sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++) {
 				final char c = s.charAt(sourceIndex);
-				int toCopyIndex;
-				int toCopyLen;
+				final int toCopyIndex;
+				final int toCopyLen;
 				if (c == '&') {
 					firstDifferentCharInSourceIndex = sourceIndex + 1; // gobble
 																		// the

@@ -64,15 +64,15 @@ public class StylesContainer {
 				mode);
 	}
 
-	public boolean addPageLayoutStyle(PageLayoutStyle pageLayoutStyle) {
+	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
 		return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE_OR_UPDATE);
 	}
 
-	public boolean addPageLayoutStyle(PageLayoutStyle pageLayoutStyle, Mode mode) {
+	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
 		return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle, mode);
 	}
 
-	public boolean addMasterPageStyle(MasterPageStyle masterPageStyle) {
+	public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
 		return this.addMasterPageStyle(masterPageStyle, Mode.CREATE_OR_UPDATE);
 	}
 
@@ -202,12 +202,12 @@ public class StylesContainer {
 			ts.appendXML(util, writer);
 	}
 
-	public void addPageStyle(PageStyle ps) {
+	public void addPageStyle(final PageStyle ps) {
 		this.addMasterPageStyle(ps.getMasterPageStyle());
 		this.addPageLayoutStyle(ps.getPageLayoutStyle());
 	}
 
-	public void addPageStyle(PageStyle ps, Mode mode) {
+	public void addPageStyle(final PageStyle ps, final Mode mode) {
 		this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
 		this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
 	}

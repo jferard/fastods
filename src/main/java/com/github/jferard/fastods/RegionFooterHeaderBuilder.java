@@ -50,9 +50,9 @@ public class RegionFooterHeaderBuilder
 
 	@Override
 	public FooterHeader build() {
-		FooterHeaderStyle style = new FooterHeaderStyle(this.footerHeaderType, this.marginsBuilder.build(),
+		final FooterHeaderStyle style = new FooterHeaderStyle(this.footerHeaderType, this.marginsBuilder.build(),
 				this.minHeight);
-		FooterHeaderContent header = new RegionFooterHeader(this.footerHeaderType,
+		final FooterHeaderContent header = new RegionFooterHeader(this.footerHeaderType,
 				this.centerRegionBox.get(), this.leftRegionBox.get(),
 				this.rightRegionBox.get());
 		return new FooterHeader(this.footerHeaderType, header, style);
