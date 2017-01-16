@@ -20,9 +20,9 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.util.Locale;
-
 import com.github.jferard.fastods.Color;
+
+import java.util.Locale;
 
 /**
  * @author Julien Férard
@@ -39,7 +39,7 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 * @param name The name of the number style, this name must be unique.
 	 * @param locale the locale to use
 	 */
-	public NumberStyleBuilder(final String name, final Locale locale) {
+	NumberStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
 		this.grouping = false;
 	}

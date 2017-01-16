@@ -31,7 +31,7 @@ import com.github.jferard.fastods.util.Box;
  * @author Julien Férard
  *
  */
-class RegionFooterHeaderBuilder
+public class RegionFooterHeaderBuilder
 		extends FooterHeaderBuilder<RegionFooterHeaderBuilder> {
 
 	private final Box<Text> centerRegionBox;

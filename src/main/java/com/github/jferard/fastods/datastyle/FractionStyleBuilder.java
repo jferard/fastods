@@ -38,7 +38,7 @@ public class FractionStyleBuilder
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public FractionStyleBuilder(final String name, final Locale locale) {
+	FractionStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
 		this.minNumeratorDigits = 0;
 		this.minDenominatorDigits = 0;

@@ -100,7 +100,7 @@ public class OdsFileWithHeaderAndFooterCreation {
 		file.addPageStyle(ps);
 		final Table table = file.addTable("test", 1, 5);
 		final Table table2 = file.addTable("target", 1, 1);
-		final TableStyle ttts = TableStyle.builder("a").masterPageStyle(ps)
+		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
 				.build();
 		table.setStyle(ttts);
 

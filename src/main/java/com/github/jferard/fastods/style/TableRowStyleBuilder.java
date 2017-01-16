@@ -33,7 +33,7 @@ public class TableRowStyleBuilder {
 	 * @param name
 	 *            A unique name for this style
 	 */
-	public TableRowStyleBuilder(final String name) {
+	TableRowStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 

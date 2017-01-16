@@ -44,7 +44,7 @@ public class TableCellStyleBuilder {
 	 * @param name
 	 *            A unique name for this style
 	 */
-	public TableCellStyleBuilder(final String name) {
+	TableCellStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 

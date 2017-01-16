@@ -42,7 +42,7 @@ public class TableStyleBuilder {
 		return new TableStyle(this.name, this.masterPageStyle);
 	}
 
-	public TableStyleBuilder masterPageStyle(
+	public TableStyleBuilder pageStyle(
 			final PageStyle masterPageStyle) {
 		this.masterPageStyle = masterPageStyle;
 		return this;

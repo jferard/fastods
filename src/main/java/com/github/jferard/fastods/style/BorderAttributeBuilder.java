@@ -43,7 +43,7 @@ public class BorderAttributeBuilder {
 	 */
 	private Style style;
 
-	public BorderAttributeBuilder() {
+	BorderAttributeBuilder() {
 		this.style = BorderAttribute.DEFAULT_STYLE;
 	}
 

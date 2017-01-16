@@ -32,7 +32,7 @@ public class TableColumnStyleBuilder {
 	 * @param name
 	 *            A unique name for this style
 	 */
-	public TableColumnStyleBuilder(final String name) {
+	TableColumnStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalArgumentException();
 

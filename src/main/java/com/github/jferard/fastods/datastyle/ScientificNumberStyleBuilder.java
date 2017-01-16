@@ -38,7 +38,7 @@ public class ScientificNumberStyleBuilder
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public ScientificNumberStyleBuilder(final String name,
+	ScientificNumberStyleBuilder(final String name,
 			final Locale locale) {
 		super(name, locale);
 	}

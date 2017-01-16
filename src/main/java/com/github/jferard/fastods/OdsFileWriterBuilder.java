@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Julien Férard
  * @author Martin Schulz
  */
@@ -43,13 +42,14 @@ public class OdsFileWriterBuilder {
 
 	/**
 	 * Create a new ODS file.
+	 *
 	 * @param logger
 	 * @param document
 	 */
 	OdsFileWriterBuilder(final Logger logger, OdsDocument document) {
 		this.logger = logger;
 		this.document = document;
-		builder = ZipUTF8Writer.builder();
+		this.builder = ZipUTF8Writer.builder();
 	}
 
 	/**
@@ -82,9 +82,8 @@ public class OdsFileWriterBuilder {
 	}
 
 	/**
-	 * @param builder
-	 *            a builder for the ZipOutputStream and the Writer (buffers,
-	 *            level, ...)
+	 * @param builder a builder for the ZipOutputStream and the Writer (buffers,
+	 *                level, ...)
 	 */
 	public void zipBuilder(final ZipUTF8WriterBuilder builder) {
 		this.builder = builder;

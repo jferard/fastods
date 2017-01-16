@@ -69,7 +69,7 @@ public class TableStyleTest {
 	@Test
 	public final void testPageStyle() throws IOException {
 		final PageStyle ps = PageStyle.builder("p").build();
-		final TableStyle ts = TableStyle.builder("test").masterPageStyle(ps)
+		final TableStyle ts = TableStyle.builder("test").pageStyle(ps)
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		ts.appendXML(this.util, sb);

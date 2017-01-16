@@ -37,7 +37,7 @@ public class PercentageStyleBuilder
 	 *            The name of the number style, this name must be unique.
 	 * @param locale
 	 */
-	public PercentageStyleBuilder(final String name, final Locale locale) {
+	PercentageStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}

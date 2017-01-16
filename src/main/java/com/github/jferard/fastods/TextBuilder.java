@@ -34,7 +34,7 @@ public class TextBuilder {
 	private final List<Paragraph> paragraphs;
 	private final Set<TextStyle> textStyles;
 
-	public TextBuilder() {
+	TextBuilder() {
 		this.textStyles = new HashSet<TextStyle>();
 		this.paragraphs = new ArrayList<Paragraph>();
 		this.curParagraphBuilder = null;

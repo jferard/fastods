@@ -47,7 +47,7 @@ public class PageStyleBuilder {
 	 * Create a new page style.
 	 *
 	 */
-	public PageStyleBuilder(final String name) {
+	PageStyleBuilder(final String name) {
 		if (name == null)
 			throw new IllegalStateException();
 
