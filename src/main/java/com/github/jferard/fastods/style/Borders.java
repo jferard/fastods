@@ -31,7 +31,7 @@ public class Borders {
 	private final BorderAttribute left;
 	private final BorderAttribute right;
 	private final BorderAttribute top;
-	private EqualityUtil equalityUtil;
+	private final EqualityUtil equalityUtil;
 
 	Borders(final EqualityUtil equalityUtil, final BorderAttribute all,
 			final BorderAttribute top, final BorderAttribute right,

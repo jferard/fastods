@@ -42,6 +42,8 @@ public class PageStyleBuilder {
 
 	private PrintOrientation printOrientation;
 	private WritingMode writingMode;
+	private MasterPageStyle masterPageStyle;
+	private PageLayoutStyle pageLayoutStyle;
 
 	/**
 	 * Create a new page style.
@@ -98,11 +100,25 @@ public class PageStyleBuilder {
 	}
 
 	public PageStyle build() {
-		final MasterPageStyle masterPageStyle = new MasterPageStyle(this.name, this.name, this.footer, this.header);
-		final PageLayoutStyle pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
+		if (this.masterPageStyle == null)
+			this.masterPageStyle = new MasterPageStyle(this.name, this.name, this.footer, this.header);
+
+		if (this.pageLayoutStyle == null)
+			this.pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this
+				.pageWidth,
 				this.pageHeight, this.numFormat, this.backgroundColor, this.footer, this.header, this
 				.printOrientation, this.paperFormat, this.writingMode);
-		return new PageStyle(this.name, masterPageStyle, pageLayoutStyle);
+		return new PageStyle(this.masterPageStyle, this.pageLayoutStyle);
+	}
+
+	public PageStyleBuilder masterPageStyle(final MasterPageStyle masterPageStyle) {
+		this.masterPageStyle = masterPageStyle;
+		return this;
+	}
+
+	public PageStyleBuilder pageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
+		this.pageLayoutStyle = pageLayoutStyle;
+		return this;
 	}
 
 	public PageStyleBuilder footer(final FooterHeader footer) {

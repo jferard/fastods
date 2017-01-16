@@ -46,9 +46,9 @@ public class OdsFactory {
 
 	private final Logger logger;
 	private final XMLUtil xmlUtil;
-	private LocaleDataStyles format;
-	private WriteUtil writeUtil;
-	private PositionUtil positionUtil;
+	private final LocaleDataStyles format;
+	private final WriteUtil writeUtil;
+	private final PositionUtil positionUtil;
 	
 	public OdsFactory() {
 		this(Locale.getDefault());

@@ -35,7 +35,7 @@ import java.util.Set;
  */
 public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 	private final Map<String, ConfigBlock> blockByName;
-	private String name;
+	private final String name;
 
 	public static ConfigItemMapEntrySet createSet() {
 		return new ConfigItemMapEntrySet(new HashSet<ConfigBlock>());

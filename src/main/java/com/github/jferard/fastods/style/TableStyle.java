@@ -30,31 +30,28 @@ import java.io.IOException;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class TableStyle implements StyleTag {
 	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
 			.builder("ta1").build();
-
-	public static TableStyleBuilder builder(final String name) {
-		return new TableStyleBuilder(name);
-	}
-
 	private final PageStyle pageStyle;
 	private final String name;
+	private String key;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
 	 * Version 0.5.0 Added parameter OdsDocument o
 	 *
-	 * @param styleName
-	 *            A unique name for this style
-	 * @param pageStyle
-	 *            The master page style for this table
+	 * @param styleName A unique name for this style
+	 * @param pageStyle The master page style for this table
 	 */
 	TableStyle(final String styleName, final PageStyle pageStyle) {
 		this.name = styleName;
 		this.pageStyle = pageStyle;
+	}
+
+	public static TableStyleBuilder builder(final String name) {
+		return new TableStyleBuilder(name);
 	}
 
 	@Override
@@ -70,7 +67,7 @@ public class TableStyle implements StyleTag {
 		util.appendAttribute(appendable, "style:family", "table");
 		if (this.pageStyle != null)
 			util.appendEAttribute(appendable, "style:master-page-name",
-					this.pageStyle.getName());
+					this.pageStyle.getMasterName());
 		appendable.append("><style:table-properties");
 		util.appendAttribute(appendable, "table:display", "true");
 		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
@@ -86,11 +83,11 @@ public class TableStyle implements StyleTag {
 	public String getName() {
 		return this.name;
 	}
-	private String key;
+
 	@Override
 	public String getKey() {
 		if (this.key == null)
-			this.key = this.getFamily()+"@"+this.getName();
+			this.key = this.getFamily() + "@" + this.getName();
 		return this.key;
 	}
 

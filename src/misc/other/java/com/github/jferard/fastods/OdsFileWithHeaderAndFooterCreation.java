@@ -98,11 +98,16 @@ public class OdsFileWithHeaderAndFooterCreation {
 
 		final OdsDocument document = new OdsFactory().createDocument();
 		final Table table = document.addTable("test", 1, 5);
-		final Table table2 = document.addTable("target", 1, 1);
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
 				.build();
 		table.setStyle(ttts);
-		table2.setStyle(ttts);
+
+		final Table table2 = document.addTable("target", 1, 1);
+		final PageStyle ps2 = PageStyle.builder("test2")
+				.masterPageStyle(ps.getMasterPageStyle()).pageLayoutStyle(ps.getPageLayoutStyle()).build();
+		final TableStyle ttts2 = TableStyle.builder("a2").pageStyle(ps2)
+				.build();
+		table2.setStyle(ttts2);
 
 		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")

@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 	private final List<ConfigBlock> blocks;
-	private String name;
+	private final String name;
 
 	public static ConfigItemMapEntry createSequence() {
 		return new ConfigItemMapEntrySequence(new ArrayList<ConfigBlock>());
