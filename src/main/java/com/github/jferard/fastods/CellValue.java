@@ -48,5 +48,10 @@ public abstract class CellValue {
 		return CellValue.fromObject(o);
 	}
 
-	public abstract void setToRow(HeavyTableRow heavyTableRow, int i);
+	/**
+	 * Set this value in the row, aat a given position (= column)
+	 * @param heavyTableRow the row where to add this value
+	 * @param c the column index in the row.
+	 */
+	public abstract void setToRow(HeavyTableRow heavyTableRow, int c);
 }

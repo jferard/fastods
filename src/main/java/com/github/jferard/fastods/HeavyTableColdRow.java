@@ -20,11 +20,11 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
@@ -32,40 +32,38 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class HeavyTableColdRow {
-	public static HeavyTableColdRow create(final Table parent,
-			final int rowIndex, final int columnCapacity) {
-		return new HeavyTableColdRow(parent, rowIndex, columnCapacity);
-	}
-
 	private final int columnCapacity;
+	private final Table parent;
+	private final int rowIndex;
 	private List<Integer> columnsSpanned;
 	private List<String> currencies;
 	private boolean hasSpans;
-	private final Table parent;
-	private final int rowIndex;
 	private List<Integer> rowsSpanned;
 	private List<Text> texts;
 	private List<String> tooltips;
-
 	public HeavyTableColdRow(final Table parent, final int rowIndex,
-			final int columnCapacity) {
+							 final int columnCapacity) {
 		this.parent = parent;
 		this.rowIndex = rowIndex;
 		this.columnCapacity = columnCapacity;
 	}
 
+	public static HeavyTableColdRow create(final Table parent,
+										   final int rowIndex, final int columnCapacity) {
+		return new HeavyTableColdRow(parent, rowIndex, columnCapacity);
+	}
+
 	/**
-	 * @param i
+	 * @param c the column index
 	 * @return 0 if no span, -1 if the cell is a covered cell
 	 */
-	public int getColumnsSpanned(final int i) {
+	public int getColumnsSpanned(final int c) {
 		if (this.columnsSpanned == null)
 			return 0;
 		else
-			return this.columnsSpanned.get(i);
+			return this.columnsSpanned.get(c);
 	}
 
 	public String getCurrency(final int i) {
@@ -99,20 +97,19 @@ public class HeavyTableColdRow {
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge
-	 * @param columnMerge
+	 * @param colIndex    The column, 0 is the first column
+	 * @param rowMerge    the number of rows to merge
+	 * @param columnMerge the number of cells to merge
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
-			final int columnMerge) {
+							 final int columnMerge) {
 		if (rowMerge < 0 || columnMerge < 0)
 			return;
 		if (rowMerge <= 1 && columnMerge <= 1)
 			return;
 
 		if (this.columnsSpanned == null) {
-			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
+			this.columnsSpanned = FullList.<Integer>builder().blankElement(0)
 					.capacity(this.columnCapacity).build();
 		}
 
@@ -122,7 +119,7 @@ public class HeavyTableColdRow {
 
 		if (rowMerge > 1) {
 			if (this.rowsSpanned == null)
-				this.rowsSpanned = FullList.<Integer> builder().blankElement(0)
+				this.rowsSpanned = FullList.<Integer>builder().blankElement(0)
 						.capacity(this.columnCapacity).build();
 			this.rowsSpanned.set(colIndex, rowMerge);
 		}
@@ -147,7 +144,7 @@ public class HeavyTableColdRow {
 			return;
 
 		if (this.columnsSpanned == null)
-			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
+			this.columnsSpanned = FullList.<Integer>builder().blankElement(0)
 					.capacity(this.columnCapacity).build();
 
 		final Integer s = this.columnsSpanned.get(colIndex);
@@ -169,7 +166,7 @@ public class HeavyTableColdRow {
 			return;
 
 		if (this.rowsSpanned == null)
-			this.rowsSpanned = FullList.<Integer> builder().blankElement(0)
+			this.rowsSpanned = FullList.<Integer>builder().blankElement(0)
 					.capacity(this.columnCapacity).build();
 		if (this.columnsSpanned != null
 				&& this.columnsSpanned.get(colIndex) == -1)
@@ -201,8 +198,8 @@ public class HeavyTableColdRow {
 	}
 
 	public void appendXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int colIndex,
-			final boolean covered) throws IOException {
+								 final Appendable appendable, final int colIndex,
+								 final boolean covered) throws IOException {
 		if (this.hasSpans && !covered) {
 			if (this.columnsSpanned != null) {
 				final Integer colSpan = this.columnsSpanned.get(colIndex);
@@ -258,7 +255,7 @@ public class HeavyTableColdRow {
 
 	public void setCovered(final int colIndex) {
 		if (this.columnsSpanned == null)
-			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
+			this.columnsSpanned = FullList.<Integer>builder().blankElement(0)
 					.capacity(this.columnCapacity).build();
 		this.columnsSpanned.set(colIndex, -1);
 		this.hasSpans = true;
@@ -266,7 +263,7 @@ public class HeavyTableColdRow {
 
 	public void setCovered(final int colIndex, final int n) {
 		if (this.columnsSpanned == null)
-			this.columnsSpanned = FullList.<Integer> builder().blankElement(0)
+			this.columnsSpanned = FullList.<Integer>builder().blankElement(0)
 					.capacity(this.columnCapacity).build();
 
 		for (int c = 0; c < n; c++)

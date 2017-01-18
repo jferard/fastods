@@ -31,23 +31,36 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public abstract class DataStyle implements NamedObject, AddableToOdsElements {
+	/**
+	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
+	 */
 	protected final String countryCode;
+	/**
+	 * 19.349 number:language : "The number:language attribute specifies a language code"
+	 */
 	protected final String languageCode;
+	/**
+	 * the name of a data style (19.498.2)
+	 */
 	protected final String name;
 	/**
 	 * 19.517 : "The style:volatile attribute specifies whether unused style in
-	 * a document are retained or discarded by consumers."
+	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
+	 * true: consumers should keep unused styles."
 	 */
 	protected final boolean volatileStyle;
 
 	protected DataStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle) {
+						final String countryCode, final boolean volatileStyle) {
 		this.countryCode = countryCode;
 		this.languageCode = languageCode;
 		this.name = name;
 		this.volatileStyle = volatileStyle;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addToElements(final OdsElements odsElements) {
 		odsElements.addDataStyle(this);
@@ -56,15 +69,12 @@ public abstract class DataStyle implements NamedObject, AddableToOdsElements {
 	/**
 	 * Adds this style to an OdsDocument.
 	 *
-	 * @param util
-	 *            XML util for escaping characters and write data.
-	 * @param appendable
-	 *            the destination
-	 * @throws IOException
-	 *             if can't write data to file
+	 * @param util       XML util for escaping characters and write data.
+	 * @param appendable the destination
+	 * @throws IOException if can't write data to file
 	 */
 	public abstract void appendXML(final XMLUtil util,
-			final Appendable appendable) throws IOException;
+								   final Appendable appendable) throws IOException;
 
 	/*
 	 * {@inheritDoc}
@@ -75,7 +85,7 @@ public abstract class DataStyle implements NamedObject, AddableToOdsElements {
 	}
 
 	protected void appendLocaleAttributes(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+										  final Appendable appendable) throws IOException {
 		if (this.languageCode != null)
 			util.appendAttribute(appendable, "number:language",
 					this.languageCode);
@@ -85,13 +95,13 @@ public abstract class DataStyle implements NamedObject, AddableToOdsElements {
 	}
 
 	protected void appendLVAttributes(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+									  final Appendable appendable) throws IOException {
 		this.appendLocaleAttributes(util, appendable);
 		this.appendVolatileAttribute(util, appendable);
 	}
 
 	protected void appendVolatileAttribute(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+										   final Appendable appendable) throws IOException {
 		if (this.volatileStyle)
 			util.appendEAttribute(appendable, "style:volatile",
 					this.volatileStyle);

@@ -30,7 +30,7 @@ public class DateValue extends CellValue {
 	}
 
 	@Override
-	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
-		heavyTableRow.setDateValue(i, this.value);
+	public void setToRow(final HeavyTableRow heavyTableRow, final int c) {
+		heavyTableRow.setDateValue(c, this.value);
 	}
 }

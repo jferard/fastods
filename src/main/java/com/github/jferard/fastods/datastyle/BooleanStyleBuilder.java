@@ -30,9 +30,8 @@ public class BooleanStyleBuilder
 	/**
 	 * The builder
 	 *
-	 * @param name
-	 *            - The name of this style
-	 * @param locale
+	 * @param name   The name of this style
+	 * @param locale The default locale.
 	 */
 	protected BooleanStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);

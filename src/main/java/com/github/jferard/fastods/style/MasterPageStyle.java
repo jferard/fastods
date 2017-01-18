@@ -45,12 +45,12 @@ public class MasterPageStyle implements AddableToOdsElements {
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
 	 *
-	 * @param name
-	 *            A unique name for this style
-	 * @param header
-	 * @param footer
+	 * @param name   A unique name for this style
+	 * @param layoutName the name of the layout linked to this style
+	 * @param header the header for this style
+	 * @param footer the footer for this style
 	 */
-	public MasterPageStyle(final String name, final String layoutName,
+	MasterPageStyle(final String name, final String layoutName,
 						   final FooterHeader footer, final FooterHeader header) {
 		this.name = name;
 		this.layoutName = layoutName;
@@ -83,10 +83,12 @@ public class MasterPageStyle implements AddableToOdsElements {
 	/**
 	 * Return the master-style informations for this PageStyle.
 	 *
-	 * @throws IOException
+	 * @param util a util for XML writing
+	 * @param appendable where to write
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToMasterStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+									   final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
 		util.appendEAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:page-layout-name", this.layoutName);

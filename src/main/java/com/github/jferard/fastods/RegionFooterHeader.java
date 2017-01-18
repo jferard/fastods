@@ -95,7 +95,7 @@ class RegionFooterHeader extends FooterHeaderContent {
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
 	 *
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,

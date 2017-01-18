@@ -20,19 +20,19 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.XMLUtil;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard
  */
 public class LightTableCell implements TableCellWalker {
-	private int c;
 	private final HeavyTableRow row;
+	private int c;
 
 	LightTableCell(final HeavyTableRow row) {
 		this.row = row;
@@ -41,7 +41,7 @@ public class LightTableCell implements TableCellWalker {
 
 	@Override
 	public void appendXMLToTableRow(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+									final Appendable appendable) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 
@@ -51,8 +51,18 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void setBooleanValue(final boolean value) {
+		this.row.setBooleanValue(this.c, value);
+	}
+
+	@Override
 	public int getColumnsSpanned() {
 		return this.row.getColumnsSpanned(this.c);
+	}
+
+	@Override
+	public void setColumnsSpanned(final int n) {
+		this.row.setColumnsSpanned(this.c, n);
 	}
 
 	@Override
@@ -71,8 +81,18 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void setDateValue(final Date value) {
+		this.row.setDateValue(this.c, value);
+	}
+
+	@Override
 	public String getFloatValue() {
 		return this.row.getFloatValue(this.c);
+	}
+
+	@Override
+	public void setFloatValue(final Number value) {
+		this.row.setFloatValue(this.c, value);
 	}
 
 	@Override
@@ -81,13 +101,28 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void setPercentageValue(final Number value) {
+		this.row.setPercentageValue(this.c, value);
+	}
+
+	@Override
 	public int getRowsSpanned() {
 		return this.row.getRowsSpanned(this.c);
 	}
 
 	@Override
+	public void setRowsSpanned(final int n) {
+		this.row.setRowsSpanned(this.c, n);
+	}
+
+	@Override
 	public String getStringValue() {
 		return this.row.getStringValue(this.c);
+	}
+
+	@Override
+	public void setStringValue(final String value) {
+		this.row.setStringValue(this.c, value);
 	}
 
 	@Override
@@ -101,8 +136,18 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void setTimeValue(final long timeInMillis) {
+		this.row.setTimeValue(this.c, timeInMillis);
+	}
+
+	@Override
 	public String getTooltip() {
 		return this.row.getTooltip(this.c);
+	}
+
+	@Override
+	public void setTooltip(final String tooltip) {
+		this.row.setTooltip(this.c, tooltip);
 	}
 
 	@Override
@@ -140,18 +185,8 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void setBooleanValue(final boolean value) {
-		this.row.setBooleanValue(this.c, value);
-	}
-
-	@Override
 	public void setCellValue(final CellValue value) {
 		this.row.setCellValue(this.c, value);
-	}
-
-	@Override
-	public void setColumnsSpanned(final int n) {
-		this.row.setColumnsSpanned(this.c, n);
 	}
 
 	@Override
@@ -175,11 +210,6 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void setDateValue(final Date value) {
-		this.row.setDateValue(this.c, value);
-	}
-
-	@Override
 	public void setFloatValue(final float value) {
 		this.row.setFloatValue(this.c, value);
 	}
@@ -189,12 +219,9 @@ public class LightTableCell implements TableCellWalker {
 		this.row.setFloatValue(this.c, value);
 	}
 
-	@Override
-	public void setFloatValue(final Number value) {
-		this.row.setFloatValue(this.c, value);
-	}
-
-	/** @deprecated Shortcut for {@code setCellValue(c, CellValue.fromObject(object)) */
+	/**
+	 * @deprecated Shortcut for {@code setCellValue(c, CellValue.fromObject(object))}
+	 */
 	@Override
 	@Deprecated
 	public void setObjectValue(final Object value) {
@@ -207,33 +234,8 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void setPercentageValue(final Number value) {
-		this.row.setPercentageValue(this.c, value);
-	}
-
-	@Override
-	public void setRowsSpanned(final int n) {
-		this.row.setRowsSpanned(this.c, n);
-	}
-
-	@Override
-	public void setStringValue(final String value) {
-		this.row.setStringValue(this.c, value);
-	}
-
-	@Override
 	public void setStyle(final TableCellStyle style) {
 		this.row.setStyle(this.c, style);
-	}
-
-	@Override
-	public void setTimeValue(final long timeInMillis) {
-		this.row.setTimeValue(this.c, timeInMillis);
-	}
-
-	@Override
-	public void setTooltip(final String tooltip) {
-		this.row.setTooltip(this.c, tooltip);
 	}
 
 	@Override

@@ -21,4 +21,5 @@
 package com.github.jferard.fastods;
 
 /**
+ * This package contains all data style, ie the parameters for data (boolean, currency, float, ...) display.
  */

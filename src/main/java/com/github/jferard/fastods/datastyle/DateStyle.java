@@ -20,9 +20,9 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * content.xml/office:document-content/office:automatic-styles/number:
@@ -33,7 +33,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class DateStyle extends DataStyle {
 
-	public static enum Format {
+	public enum Format {
 		/**
 		 * Set the date format like '10.07.12'.
 		 */
@@ -69,7 +69,7 @@ public class DateStyle extends DataStyle {
 		/**
 		 * Set the date format like '2012-07-10'.<br>
 		 */
-		YYYYMMDD;
+		YYYYMMDD
 	}
 
 	/**
@@ -89,17 +89,20 @@ public class DateStyle extends DataStyle {
 
 	private static final String YEAR = "<number:year/>";
 
+	/**
+	 * 19.340 number:automatic-order: "specifies whether data is ordered to match the default
+	 order for the language and country of a data style"
+	 */
 	private final boolean automaticOrder;
+
 	private final Format dateFormat;
 
 	/**
-	 * Create a new date style with the name name.<br>
-	 * Version 0.5.1 Added.
-	 *
+	 * Create a new date style with the name name.
 	 * @param name
 	 *            The name of the number style.
 	 */
-	protected DateStyle(final String name, final String countryCode,
+	DateStyle(final String name, final String countryCode,
 			final String languageCode, final boolean volatileStyle,
 			final Format dateFormat, final boolean automaticOrder) {
 		super(name, languageCode, countryCode, volatileStyle);

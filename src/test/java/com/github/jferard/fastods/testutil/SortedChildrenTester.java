@@ -26,6 +26,7 @@ import org.w3c.dom.NodeList;
 /**
  */
 public class SortedChildrenTester extends ChildrenTester {
+	@Override
 	public boolean childrenEquals(final Node element1, final Node element2) {
 		final NodeList nodes1 = element1.getChildNodes();
 		final NodeList nodes2 = element2.getChildNodes();

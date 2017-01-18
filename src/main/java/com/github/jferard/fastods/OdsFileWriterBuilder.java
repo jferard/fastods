@@ -43,8 +43,8 @@ public class OdsFileWriterBuilder {
 	/**
 	 * Create a new ODS file.
 	 *
-	 * @param logger
-	 * @param document
+	 * @param logger   the logger
+	 * @param document the document to write
 	 */
 	OdsFileWriterBuilder(final Logger logger, final OdsDocument document) {
 		this.logger = logger;
@@ -53,6 +53,9 @@ public class OdsFileWriterBuilder {
 	}
 
 	/**
+	 * @param filename the name of the destination file
+	 * @return this for fluent style
+	 * @throws FileNotFoundException if the file can't be found
 	 */
 	@Deprecated
 	public OdsFileWriterBuilder filename(final String filename) throws FileNotFoundException {
@@ -61,13 +64,20 @@ public class OdsFileWriterBuilder {
 	}
 
 	/**
+	 * @param out where to write
+	 * @return this for fluent style
 	 */
-	public OdsFileWriterBuilder outputStream(final OutputStream out) throws FileNotFoundException {
+	public OdsFileWriterBuilder outputStream(final OutputStream out) {
 		this.out = out;
 		return this;
 	}
 
 	/**
+	 * @param lockResult the result of a file lock
+	 * @return this for fluent style
+	 * @throws FileNotFoundException the file exists but is a directory
+	 *                               rather than a regular file, does not exist but cannot
+	 *                               be created, or cannot be opened for any other reason
 	 */
 	public OdsFileWriterBuilder openResult(final FileOpenResult lockResult) throws FileNotFoundException {
 		this.out = lockResult.getStream();

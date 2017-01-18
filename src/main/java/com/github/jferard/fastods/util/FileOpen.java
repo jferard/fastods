@@ -29,6 +29,7 @@ public class FileOpen implements FileOpenResult {
 		this.stream = stream;
 	}
 
+	@Override
 	public OutputStream getStream() {
 		return this.stream;
 	}

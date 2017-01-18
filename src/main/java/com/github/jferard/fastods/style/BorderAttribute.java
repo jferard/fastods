@@ -29,6 +29,9 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  */
 public class BorderAttribute {
+	/**
+	 * The position of the border.
+	 */
 	public static enum Position {
 		ALL("fo:border"), BOTTOM("fo:border-bottom"), LEFT(
 				"fo:border-left"), RIGHT(
@@ -73,7 +76,9 @@ public class BorderAttribute {
 
 	public static final Style DEFAULT_STYLE = Style.SOLID;
 
-	/** a builder */
+	/**
+	 * @return a builder for BorderAttribute
+	 */
 	public static BorderAttributeBuilder builder() {
 		return new BorderAttributeBuilder();
 	}
@@ -143,6 +148,9 @@ public class BorderAttribute {
 		return this.style;
 	}
 
+	/**
+	 * @return the attribute value in XML, see 20.176 fo Border Properties
+	 */
 	public String toXMLAttributeValue() {
 		final StringBuilder sb = new StringBuilder();
 		if (this.borderSize == null && this.borderColor == null)

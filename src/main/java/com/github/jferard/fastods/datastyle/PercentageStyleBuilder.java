@@ -33,9 +33,8 @@ public class PercentageStyleBuilder
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is decPlaces.
 	 *
-	 * @param name
-	 *            The name of the number style, this name must be unique.
-	 * @param locale
+	 * @param name   The name of the number style, this name must be unique.
+	 * @param locale the locale used
 	 */
 	PercentageStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);

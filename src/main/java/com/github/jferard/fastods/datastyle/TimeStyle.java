@@ -20,9 +20,9 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * content.xml/office:document-content/office:automatic-styles/number:
@@ -32,32 +32,23 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class TimeStyle extends DataStyle {
 
-	public static enum Format {
-		/**
-		 * Set the time format like '01:02:03'.
-		 */
-		HHMMSS
-	}
-
 	private static final String COLON = "<number:text>:</number:text>";
 	private static final String DASH = "<number:text>-</number:text>";
 	private static final String DOT = "<number:text>.</number:text>";
 	private static final String HOURS = "<number:hours/>";
 	private static final String MINUTES = "<number:minutes/>";
 	private static final String SECONDS = "<number:seconds/>";
-
 	private final TimeStyle.Format timeFormat;
 
 	/**
 	 * Create a new date style with the name name.<br>
 	 * Version 0.5.1 Added.
 	 *
-	 * @param name
-	 *            The name of the number style.
+	 * @param name The name of the number style.
 	 */
-	protected TimeStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
-			final Format timeFormat) {
+	TimeStyle(final String name, final String languageCode,
+						final String countryCode, final boolean volatileStyle,
+						final Format timeFormat) {
 		super(name, languageCode, countryCode, volatileStyle);
 		this.timeFormat = timeFormat;
 	}
@@ -65,7 +56,6 @@ public class TimeStyle extends DataStyle {
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
-	 *
 	 */
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)
@@ -82,15 +72,22 @@ public class TimeStyle extends DataStyle {
 			appendable.append(">");
 
 			switch (this.timeFormat) {
-			case HHMMSS:
-			default:
-				appendable.append(TimeStyle.HOURS).append(TimeStyle.COLON)
-						.append(TimeStyle.MINUTES).append(TimeStyle.COLON)
-						.append(TimeStyle.SECONDS);
-				break;
+				case HHMMSS:
+				default:
+					appendable.append(TimeStyle.HOURS).append(TimeStyle.COLON)
+							.append(TimeStyle.MINUTES).append(TimeStyle.COLON)
+							.append(TimeStyle.SECONDS);
+					break;
 			}
 
 			appendable.append("</number:time-style>");
 		}
+	}
+
+	public static enum Format {
+		/**
+		 * Set the time format like '01:02:03'.
+		 */
+		HHMMSS
 	}
 }

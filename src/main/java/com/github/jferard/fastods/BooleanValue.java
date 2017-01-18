@@ -23,12 +23,16 @@ package com.github.jferard.fastods;
 public class BooleanValue extends CellValue {
 	private final Boolean value;
 
+	/**
+	 * Builds a BooleanValue from a boolean
+	 * @param value the boolean
+	 */
 	public BooleanValue(final Boolean value) {
 		this.value = value;
 	}
 
 	@Override
-	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
-		heavyTableRow.setBooleanValue(i, this.value);
+	public void setToRow(final HeavyTableRow heavyTableRow, final int c) {
+		heavyTableRow.setBooleanValue(c, this.value);
 	}
 }

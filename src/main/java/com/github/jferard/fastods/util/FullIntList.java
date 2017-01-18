@@ -29,6 +29,7 @@ public class FullIntList implements RandomAccess {
 
 	/**
 	 * Empty list with the specified initial capacity.
+	 * @param capacity the initial capacity of the list
 	 */
 	public FullIntList(final int capacity) {
 		if (capacity < 0)
@@ -47,18 +48,22 @@ public class FullIntList implements RandomAccess {
 	}
 
 	/**
+	 * @return the real size of the list
 	 */
 	public int size() {
 		return this.size;
 	}
 
 	/**
+	 * @return true if the list is empty, ie its real size is 0
 	 */
 	public boolean isEmpty() {
 		return this.size == 0;
 	}
 
 	/**
+	 * @param index the index
+	 * @return the element at the given position
 	 */
 	public int get(final int index) {
 		if (index >= this.size)
@@ -67,6 +72,9 @@ public class FullIntList implements RandomAccess {
 	}
 
 	/**
+	 * @param index the index
+	 * @param element the element to set at the given position
+	 * @return the previous element
 	 */
 	public int set(final int index, final int element) {
 		final int p;

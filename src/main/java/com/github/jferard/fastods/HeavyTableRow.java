@@ -20,11 +20,6 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
@@ -33,6 +28,11 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
@@ -77,7 +77,9 @@ public class HeavyTableRow {
 	 * Write the XML dataStyles for this object.<br>
 	 * This is used while writing the ODS file.
 	 *
-	 * @throws IOException
+	 * @param util a util for XML writing
+	 * @param appendable where to write the XML
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToTable(final XMLUtil util,
 			final Appendable appendable) throws IOException {
@@ -115,7 +117,7 @@ public class HeavyTableRow {
 	}
 
 	/**
-	 * @param c
+	 * @param c the column index
 	 * @return 0 if no span, -1 if the cell is a covered cell
 	 */
 	public int getColumnsSpanned(final int c) {
@@ -204,8 +206,8 @@ public class HeavyTableRow {
 	 *
 	 * @param colIndex
 	 *            The column, 0 is the first column
-	 * @param rowMerge
-	 * @param columnMerge
+	 * @param rowMerge the number of rows to merge
+	 * @param columnMerge the number of cells to merge
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
 			final int columnMerge) {

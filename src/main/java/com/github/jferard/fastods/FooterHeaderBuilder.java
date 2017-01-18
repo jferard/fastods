@@ -34,20 +34,17 @@ import com.github.jferard.fastods.util.Box;
  */
 @SuppressWarnings("unchecked")
 public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
-	protected Box<Text> curRegionBox;
 	/**
 	 * The OdsDocument where this object belong to.
 	 */
 	protected final FooterHeader.Type footerHeaderType;
+	protected Box<Text> curRegionBox;
 	protected MarginsBuilder marginsBuilder;
 
 	protected String minHeight;
 
 	/**
-	 * Create a new footer object.
-	 *
-	 * @param odsFile
-	 *            - The OdsDocument to which this footer belongs to.
+	 * Create a new footer or header object.
 	 */
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		this.footerHeaderType = footerHeaderType;
@@ -57,14 +54,13 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * Set the margin at the top,bottom,left and right. margin is a length value
+	 * <p>Set the margin at the top, bottom, left and right. Margin is a length value
 	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * 12px.</p>
+	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
 	 *
-	 * @param margin
+	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
 	public F allMargins(final String margin) {
@@ -80,12 +76,13 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * Set the margin at the bottom. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * <p>Set the bottom margin. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px.</p>
+	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
 	 *
-	 * @param margin
+	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
 	public F marginBottom(final String margin) {
@@ -94,12 +91,13 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * Set the margin at the left. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
+	 * <p>Set the left margin. Margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px.</p>
+	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
 	 *
-	 * @param margin
+	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
 	public F marginLeft(final String margin) {
@@ -108,13 +106,13 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * Set the margin at the right. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * <p>Set the right margin. Margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px.</p>
+	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
 	 *
-	 * @param margin
+	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
 	public F marginRight(final String margin) {
@@ -123,13 +121,13 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * Set the margin at the top. margin is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * <p>Set the top margin. Margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px.</p>
+	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
 	 *
-	 * @param margin
+	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
 	public F marginTop(final String margin) {
@@ -138,13 +136,13 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * Set the minimum height. min height is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * <p>Set the minimum height. Min height is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px.</p>
+	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
+	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
 	 *
-	 * @param margin
+	 * @param height the height of the footer/header
 	 * @return this for fluent style
 	 */
 	public F minHeight(final String height) {
@@ -152,15 +150,19 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 		return (F) this;
 	}
 
+	/**
+	 * @param text The text to write
+	 * @param ts   the text style
+	 * @return this for fluent style
+	 */
 	public F styledContent(final String text, final TextStyle ts) {
 		this.curRegionBox.set(Text.styledContent(text, ts));
 		return (F) this;
 	}
 
 	/**
-	 * @param text
-	 *            The text to write
-	 * @return
+	 * @param text The text to write
+	 * @return this for fluent style
 	 */
 	public F text(final Text text) {
 		this.curRegionBox.set(text);

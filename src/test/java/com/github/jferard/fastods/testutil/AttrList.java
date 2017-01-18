@@ -32,6 +32,9 @@ import java.util.Iterator;
 /**
  */
 public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
+	/**
+	 * The attributes comparator, on name then on value.
+	 */
 	static Comparator<Attr> cmp = new Comparator<Attr>() {
 		@Override
 		public int compare(final Attr o1, final Attr o2) {
@@ -52,32 +55,35 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 	private final ArrayList<Attr> attrs;
 	private NamedNodeMap attributes;
 
+	/**
+	 * @param attributes the attributes
+	 */
 	AttrList(final NamedNodeMap attributes) {
-		length = attributes.getLength();
-		attrs = new ArrayList<Attr>(length);
-		for (int i = 0; i < length; i++) {
-			attrs.add((Attr) attributes.item(i));
+		this.length = attributes.getLength();
+		this.attrs = new ArrayList<Attr>(this.length);
+		for (int i = 0; i < this.length; i++) {
+			this.attrs.add((Attr) attributes.item(i));
 		}
-		Collections.sort(attrs, cmp);
+		Collections.sort(this.attrs, cmp);
 	}
 
 	public int size() {
-		return length;
+		return this.length;
 	}
 
 	@Override
 	public Iterator<Attr> iterator() {
-		return attrs.iterator();
+		return this.attrs.iterator();
 	}
 
 	@Override
 	public String toString() {
-		return attrs.toString();
+		return this.attrs.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return attrs.hashCode();
+		return this.attrs.hashCode();
 	}
 
 	@Override

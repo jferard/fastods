@@ -28,7 +28,7 @@ public class TableStyleBuilder {
 	private final String name;
 
 	/**
-	 * @param name
+	 * @param name the name of the table style (19.498.2)
 	 */
 	TableStyleBuilder(final String name) {
 		if (name == null)

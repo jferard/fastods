@@ -40,16 +40,15 @@ public class TableHelper {
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
+	 * @param table       the table where the cells to merge are
+	 * @param rowIndex    The row, 0 is the first row
+	 * @param colIndex    The column, 0 is the first column
+	 * @param rowMerge    the number of rows to merge
+	 * @param columnMerge the number of columns to merge
+	 * @throws FastOdsException if the rowIndex or the colIndex is negative
 	 */
 	public void setCellMerge(final Table table, final int rowIndex,
-			final int colIndex, final int rowMerge, final int columnMerge)
+							 final int colIndex, final int rowMerge, final int columnMerge)
 			throws FastOdsException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setRowsSpanned(rowMerge);
@@ -59,14 +58,14 @@ public class TableHelper {
 	/**
 	 * Set the merging of multiple cells to one cell in all existing tables.
 	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
+	 * @param table       the table where the cells to merge are
+	 * @param pos         The cell position e.g. 'A1'
+	 * @param rowMerge    the number of rows to merge
+	 * @param columnMerge the number of cells to merge
+	 * @throws FastOdsException if the row index or the col index is negative
 	 */
 	public void setCellMerge(final Table table, final String pos,
-			final int rowMerge, final int columnMerge) throws FastOdsException {
+							 final int rowMerge, final int columnMerge) throws FastOdsException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -74,7 +73,7 @@ public class TableHelper {
 	}
 
 	public void setCellValue(final Table table, final int rowIndex,
-			final int colIndex, final CellValue value, final TableCellStyle ts)
+							 final int colIndex, final CellValue value, final TableCellStyle ts)
 			throws FastOdsException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setCellValue(value);
@@ -84,19 +83,15 @@ public class TableHelper {
 	/**
 	 * Sets the cell value in all tables to the given values.
 	 *
-	 * @param pos
-	 *            The cell position e.g. 'A1'
-	 * @param table
-	 *            The tlbe where the value is set
-	 * @param value
-	 *            The value to set the cell to
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException
+	 * @param pos   The cell position e.g. 'A1'
+	 * @param table The tlbe where the value is set
+	 * @param value The value to set the cell to
+	 * @param ts    The table style for this cell, must be of type
+	 *              TableCellStyle.STYLEFAMILY_TABLECELL
+	 * @throws FastOdsException if the row index or the col index is negative
 	 */
 	public void setCellValue(final Table table, final String pos,
-			final CellValue value, final TableCellStyle ts)
+							 final CellValue value, final TableCellStyle ts)
 			throws FastOdsException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
@@ -105,7 +100,7 @@ public class TableHelper {
 	}
 
 	private TableCellWalker getCell(final Table table, final int rowIndex,
-			final int colIndex) throws FastOdsException {
+									final int colIndex) throws FastOdsException {
 		final HeavyTableRow row = table.getRow(rowIndex);
 		final TableCellWalker walker = row.getWalker();
 		walker.to(colIndex);

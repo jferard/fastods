@@ -37,7 +37,7 @@ class FooterHeaderStyle {
 	/**
 	 * Create a new footer object.
 	 *
-	 * @param minHeight
+	 * @param minHeight the height of the footer/header
 	 */
 	FooterHeaderStyle(final FooterHeader.Type footerHeaderType,
 					  final Margins margins, final String minHeight) {

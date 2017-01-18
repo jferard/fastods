@@ -70,14 +70,13 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the margin at the top,bottom,left and right. margin is a length value
+	 * Set the margin at the top, bottom, left and right. margin is a length value
 	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
 	 * 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param margin
+	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder allMargins(final String margin) {
@@ -91,7 +90,7 @@ public class PageStyleBuilder {
 	 * The background color may also be set to 'transparent' if a background
 	 * image is used (currently unsupported).
 	 *
-	 * @param color
+	 * @param color the color as an hexadecimal value
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder backgroundColor(final String color) {
@@ -132,12 +131,13 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the margin at the bottom. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * Set the bottom margin. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param margin
+	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginBottom(final String margin) {
@@ -146,12 +146,13 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the margin at the left. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * Set the left margin. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
 	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param margin
+	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginLeft(final String margin) {
@@ -160,13 +161,13 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the margin at the right. margin is a length value expressed as a
-	 * number followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * Set the right margin. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param margin
+	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginRight(final String margin) {
@@ -175,13 +176,13 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the margin at the top. margin is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
+	 * Set the top margin. margin is a length value
+	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
+	 * 12px<br>
 	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
-	 * @param margin
+	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder marginTop(final String margin) {
@@ -197,7 +198,7 @@ public class PageStyleBuilder {
 	 * When using this method, the paper format is set to
 	 * PageStyle.STYLE_PAPERFORMAT_USER
 	 *
-	 * @param pageHeight
+	 * @param pageHeight the height of the page
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder pageHeight(final String pageHeight) {
@@ -214,7 +215,7 @@ public class PageStyleBuilder {
 	 * When using this method, the paper format is set to
 	 * PageStyle.STYLE_PAPERFORMAT_USER
 	 *
-	 * @param pageWidth
+	 * @param pageWidth the page width
 	 * @return this for fluent style
 	 */
 	public PageStyleBuilder pageWidth(final String pageWidth) {
@@ -233,7 +234,7 @@ public class PageStyleBuilder {
 	 * PageStyle.STYLE_PAPERFORMAT_USER , automatically used if you use
 	 * setPageHeight() or setPageWidth().
 	 *
-	 * @param paperFormat
+	 * @param paperFormat the format of the page
 	 * @return this for fluent style
 	 */
 	public final PageStyleBuilder paperFormat(
@@ -265,8 +266,8 @@ public class PageStyleBuilder {
 	 * STYLE_WRITINGMODE_TB<br>
 	 * STYLE_WRITINGMODE_PAGE<br>
 	 *
-	 * @param writingMode
-	 * @return
+	 * @param writingMode the writing mode
+	 * @return this for fluent style
 	 */
 	public PageStyleBuilder writingMode(final WritingMode writingMode) {
 		if (writingMode == null)

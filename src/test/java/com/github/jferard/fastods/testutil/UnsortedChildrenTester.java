@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 public class UnsortedChildrenTester extends ChildrenTester {
 	static Logger logger = Logger.getLogger("DomTester");
 
+	@Override
 	public boolean childrenEquals(final Node element1, final Node element2) {
 		final NodeList nodes1 = element1.getChildNodes();
 		final NodeList nodes2 = element2.getChildNodes();

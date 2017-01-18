@@ -20,11 +20,14 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
+import java.io.IOException;
+
+/**
+ * The class Borders represents the borders of an element.
+ */
 public class Borders {
 	private final BorderAttribute all;
 	private final BorderAttribute bottom;
@@ -44,6 +47,11 @@ public class Borders {
 		this.left = left;
 	}
 
+	/**
+	 * @param util the util for writing XML
+	 * @param appendable where to write
+	 * @throws IOException If an I/O error occurs
+	 */
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.all == null) {
@@ -98,6 +106,9 @@ public class Borders {
 				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
+	/**
+	 * @return the border attribute for all borders, null if none
+	 */
 	public BorderAttribute getAll() {
 		return this.all;
 	}

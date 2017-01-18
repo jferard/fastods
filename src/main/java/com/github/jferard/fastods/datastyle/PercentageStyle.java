@@ -65,7 +65,7 @@ public class PercentageStyle extends DataStyle {
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 *
-	 * @param util
+	 * @param util a util for XML writing
 	 */
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)

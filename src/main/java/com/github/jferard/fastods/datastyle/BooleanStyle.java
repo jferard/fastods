@@ -20,9 +20,9 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * OpenDocument 16.27.23 number:boolean-style
@@ -37,7 +37,8 @@ public class BooleanStyle extends DataStyle {
 	 *            language
 	 * @param countryCode
 	 *            country
-	 * @param volatileStyle
+	 * @param volatileStyle "false: consumers should discard the unused styles, true: consumers should keep unused
+	 *                         styles." (19.517 style:volatile)
 	 */
 	protected BooleanStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle) {

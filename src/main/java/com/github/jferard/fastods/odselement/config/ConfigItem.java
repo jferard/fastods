@@ -46,7 +46,7 @@ public class ConfigItem implements ConfigBlock {
 	/**
 	 * Write the XML format for this object. This is used while writing the ODS file.
 	 *
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	public void appendXML(final XMLUtil util,

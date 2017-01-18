@@ -50,9 +50,8 @@ public class TextPropertiesBuilder {
 	/**
 	 * Set the font color to color.
 	 *
-	 * @param color
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            cell background
+	 * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
+	 *              cell background
 	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontColor(final String color) {
@@ -63,9 +62,8 @@ public class TextPropertiesBuilder {
 	/**
 	 * Set the font name to be used for this style.
 	 *
-	 * @param fontName
-	 *            The font name for this TextStyle
-	 * @return
+	 * @param fontName The font name for this TextStyle
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontName(final String fontName) {
 		this.fontName = fontName;
@@ -75,9 +73,8 @@ public class TextPropertiesBuilder {
 	/**
 	 * Set the font size in points to the given value.
 	 *
-	 * @param fontSize
-	 *            - The font size as int , e.g. 10 or 8
-	 * @return
+	 * @param fontSize - The font size as int , e.g. 10 or 8
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontSize(final int fontSize) {
 		this.fontSize = new StringBuilder(8).append(fontSize).append("pt")
@@ -90,9 +87,8 @@ public class TextPropertiesBuilder {
 	 * fontSize is a length value expressed as a number followed by pt, e.g.
 	 * 12pt
 	 *
-	 * @param fontSize
-	 *            - The font size as string, e.g. '10.5pt' or '8pt'
-	 * @return
+	 * @param fontSize - The font size as string, e.g. '10.5pt' or '8pt'
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontSize(final String fontSize) {
 		this.fontSize = fontSize;
@@ -123,10 +119,9 @@ public class TextPropertiesBuilder {
 	 * Set the font underline color to color. Use an empty string to reset it to
 	 * 'auto'.
 	 *
-	 * @param color
-	 *            The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *            cell background.
-	 * @return
+	 * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
+	 *              cell background.
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontUnderlineColor(final String color) {
 		this.fontUnderlineColor = color;
@@ -134,20 +129,10 @@ public class TextPropertiesBuilder {
 	}
 
 	/**
-	 * Set the style that should be used for the underline. Valid is:<br>
-	 * TextStyle.STYLE_UNDERLINE_NONE<br>
-	 * TextStyle.STYLE_UNDERLINE_SOLID<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTTED<br>
-	 * TextStyle.STYLE_UNDERLINE_DASH<br>
-	 * TextStyle.STYLE_UNDERLINE_LONGDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_DOTDOTDASH<br>
-	 * TextStyle.STYLE_UNDERLINE_WAVE<br>
-	 * Other values are ignored.
+	 * Set the style that should be used for the underline.
 	 *
-	 * @param style
-	 *            One of the TextStyle.STYLE_UNDERLINE
-	 * @return
+	 * @param style One of the TextStyle.STYLE_UNDERLINE
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontUnderlineStyle(final Underline style) {
 		this.fontUnderlineStyle = style;
@@ -157,7 +142,7 @@ public class TextPropertiesBuilder {
 	/**
 	 * Set the font weight to bold.
 	 *
-	 * @return true
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontWeightBold() {
 		this.fontWeight = "bold";
@@ -167,7 +152,7 @@ public class TextPropertiesBuilder {
 	/**
 	 * Set the font weight to normal.
 	 *
-	 * @return true -
+	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontWeightNormal() {
 		this.fontWeight = "normal";

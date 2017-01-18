@@ -18,21 +18,5 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods.odselement.config;
 
-import java.util.Iterator;
-
-/**
- * 3.10.5 config:config-item-map-entry
- */
-public interface ConfigItemMapEntry extends ConfigBlock {
-	int size();
-
-	boolean isEmpty();
-
-	public boolean add(ConfigBlock block);
-
-	public Iterator<ConfigBlock> iterator();
-
-	public boolean add(String name, String type, String value);
-}
+package com.github.jferard.fastods.testutil;

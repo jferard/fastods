@@ -26,22 +26,30 @@ import java.util.Locale;
  * @author Julien Férard
  */
 public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleBuilder<S, B>> {
-	protected String countryCode;
-	protected String languageCode;
-	protected final String name;
 	/**
-	 * OpenDocument 19.517 : "The style:volatile attribute specifies whether unused style in
-	 * a document are retained or discarded by consumers."
+	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
+	 */
+	protected String countryCode;
+	/**
+	 * 19.349 number:language : "The number:language attribute specifies a language code"
+	 */
+	protected String languageCode;
+	/**
+	 * the name of a data style (19.498.2)
+	 */
+	protected String name;
+	/**
+	 * 19.517 : "The style:volatile attribute specifies whether unused style in
+	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
+	 * true: consumers should keep unused styles."
 	 */
 	protected boolean volatileStyle;
 
 	/**
 	 * The builder
 	 *
-	 * @param name
-	 *            The name of this style
-	 * @param locale
-	 *            the locale used
+	 * @param name   The name of this style
+	 * @param locale The locale used
 	 */
 	protected DataStyleBuilder(final String name, final Locale locale) {
 		if (name == null)
@@ -98,7 +106,8 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	}
 
 	/**
-	 * @param volatileStyle
+	 * @param volatileStyle false: consumers should discard the unused styles,
+	 *                      true: consumers should keep unused styles (19.517)
 	 * @return this for fluent style
 	 */
 	@SuppressWarnings("unchecked")

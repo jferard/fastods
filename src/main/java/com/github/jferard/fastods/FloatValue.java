@@ -44,7 +44,7 @@ public class FloatValue extends CellValue {
 	}
 
 	@Override
-	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
-		heavyTableRow.setFloatValue(i, this.value);
+	public void setToRow(final HeavyTableRow heavyTableRow, final int c) {
+		heavyTableRow.setFloatValue(c, this.value);
 	}
 }

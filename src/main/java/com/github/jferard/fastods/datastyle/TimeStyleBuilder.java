@@ -33,13 +33,12 @@ public class TimeStyleBuilder
 	private TimeStyle.Format timeFormat;
 
 	/**
-	 * Create a new date style with the name name.<br>
-	 * Version 0.5.1 Added.
+	 * Create a new date style with the name name.
 	 *
-	 * @param name
-	 *            The name of the number style.
+	 * @param name The name of the number style.
+	 * @param locale the locale used
 	 */
-	protected TimeStyleBuilder(final String name, final Locale locale) {
+	TimeStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
 	}
 
@@ -61,8 +60,7 @@ public class TimeStyleBuilder
 	 * DateStyle.DATEFORMAT_MMMM<br>
 	 * *
 	 *
-	 * @param format
-	 *            The date format to be used.
+	 * @param format The date format to be used.
 	 * @return this for fluent style
 	 */
 	public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {

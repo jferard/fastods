@@ -42,7 +42,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Julien Férard
  * @author Martin Schulz
  */
@@ -56,9 +55,10 @@ public class OdsDocument {
 
 	/**
 	 * Create a new ODS file.
-	 *  @param logger
-	 * @param odsElements
-	 * @param xmlUtil
+	 *
+	 * @param logger      the logger
+	 * @param odsElements the ods elements (file entries in zip archive)
+	 * @param xmlUtil     a util for XML writing
 	 */
 	OdsDocument(final Logger logger,
 				final OdsElements odsElements, final XMLUtil xmlUtil) {
@@ -79,25 +79,21 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Add a new table to the file, the new table is set to the active table.
-	 * <br>
+	 * Add a new table to the file, the new table is set to the active table.<br>
 	 * Use setActiveTable to override the current active table, this has no
-	 * influence to<br>
-	 * the program, the active table is the first table that is shown in
+	 * influence to the program, the active table is the first table that is shown in
 	 * OpenOffice.
 	 *
-	 * @param name
-	 *            - The name of the table to add
+	 * @param name - The name of the table to add
 	 * @return the table
-	 * @throws FastOdsException
 	 */
-	public Table addTable(final String name) throws FastOdsException {
+	public Table addTable(final String name) {
 		return this.addTable(name, OdsDocument.DEFAULT_ROW_CAPACITY,
 				OdsDocument.DEFAULT_COLUMN_CAPACITY);
 	}
 
 	public Table addTable(final String name, final int rowCapacity,
-			final int columnCapacity) {
+						  final int columnCapacity) {
 		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
 				columnCapacity);
 		this.odsElements.setActiveTable(table);
@@ -121,10 +117,9 @@ public class OdsDocument {
 	}
 
 	/**
-	 * @param name
-	 *            the name of the table
-	 * @return the table, or null if not exists
-	 * @throws FastOdsException
+	 * @param name the name of the table
+	 * @return the table
+	 * @throws FastOdsException if the table does not exist.
 	 */
 	public Table getTable(final String name) throws FastOdsException {
 		final Table table = this.odsElements.getTable(name);
@@ -137,9 +132,9 @@ public class OdsDocument {
 	/**
 	 * Returns the name of the table.
 	 *
-	 * @param n
-	 *            The number of the table
+	 * @param n The number of the table
 	 * @return The name of the table
+	 * @throws FastOdsException if n is negative
 	 */
 	public String getTableName(final int n) throws FastOdsException {
 		final Table t = this.getTable(n);
@@ -149,8 +144,7 @@ public class OdsDocument {
 	/**
 	 * Search a table by name and return its number.
 	 *
-	 * @param name
-	 *            The name of the table
+	 * @param name The name of the table
 	 * @return The number of the table or -1 if name was not found
 	 */
 	public int getTableNumber(final String name) {
@@ -177,8 +171,8 @@ public class OdsDocument {
 	/**
 	 * Save the new file.
 	 *
-	 * @throws IOException
-	 * @param filename
+	 * @param filename the name of the destination file
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void saveAs(final String filename) throws IOException {
 		try {
@@ -196,8 +190,8 @@ public class OdsDocument {
 	/**
 	 * Save the new file.
 	 *
-	 * @throws IOException
-	 * @param file
+	 * @param file the destination file
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void saveAs(final File file) throws IOException {
 		try {
@@ -215,10 +209,8 @@ public class OdsDocument {
 	/**
 	 * Save the new file.
 	 *
-	 * @param out
-	 *            The OutputStream that should be used.
-	 * @throws IOException
-	 *             The file can't be saved.
+	 * @param out The OutputStream that should be used.
+	 * @throws IOException The file can't be saved.
 	 */
 	public void save(final OutputStream out) throws IOException {
 		final ZipUTF8WriterBuilder builder = ZipUTF8Writer.builder();
@@ -238,13 +230,10 @@ public class OdsDocument {
 	}
 
 	/**
-	 *
-	 * @param filename
-	 * @param builder
-	 *            a builder for the ZipOutputStream and the Writer (buffers,
-	 *            level, ...)
-	 * @throws IOException
-	 *             if the file was not saved
+	 * @param filename the name of the destination file
+	 * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
+	 *                 level, ...)
+	 * @throws IOException if the file was not saved
 	 */
 	public void saveAs(final String filename, final ZipUTF8WriterBuilder builder) throws IOException {
 		try {
@@ -260,9 +249,8 @@ public class OdsDocument {
 	 * Set the active table, this is the table that is shown if you open the
 	 * file.
 	 *
-	 * @param tableIndex
-	 *            The table number, this table should already exist, otherwise
-	 *            the first table is shown
+	 * @param tableIndex The table number, this table should already exist, otherwise
+	 *                   the first table is shown
 	 * @return true - The active table was set, false - tab has an illegal value
 	 */
 	public boolean setActiveTable(final int tableIndex) {

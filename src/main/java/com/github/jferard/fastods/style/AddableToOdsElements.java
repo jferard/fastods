@@ -23,7 +23,12 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.odselement.OdsElements;
 
 /**
+ * @author Julien Férard
  */
 public interface AddableToOdsElements {
+	/**
+	 * Add this to OdsElements
+	 * @param odsElements the OdsElements instance where to add this.
+	 */
 	public void addToElements(OdsElements odsElements);
 }

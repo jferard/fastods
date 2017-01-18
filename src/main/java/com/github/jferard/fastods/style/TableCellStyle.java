@@ -120,7 +120,7 @@ public class TableCellStyle implements StyleTag {
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 *
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)

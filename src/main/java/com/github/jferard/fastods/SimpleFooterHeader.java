@@ -20,12 +20,11 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -68,7 +67,7 @@ class SimpleFooterHeader extends FooterHeaderContent {
 	/**
 	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
 	 *
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,

@@ -60,9 +60,12 @@ public class PageStyle implements AddableToOdsElements {
 	private final PageLayoutStyle pageLayoutStyle;
 
 	/**
-	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
+	 * Create a new page style.
+	 *
+	 * @param masterPageStyle the master page style
+	 * @param pageLayoutStyle the page layout style
 	 */
-	public PageStyle(final MasterPageStyle masterPageStyle, final PageLayoutStyle pageLayoutStyle) {
+	PageStyle(final MasterPageStyle masterPageStyle, final PageLayoutStyle pageLayoutStyle) {
 		this.masterPageStyle = masterPageStyle;
 		this.pageLayoutStyle = pageLayoutStyle;
 	}
@@ -102,6 +105,10 @@ public class PageStyle implements AddableToOdsElements {
 	/**
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
+	 *
+	 * @param util       a util to write XML
+	 * @param appendable where to write
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToAutomaticStyle(final XMLUtil util,
 										  final Appendable appendable) throws IOException {
@@ -109,9 +116,9 @@ public class PageStyle implements AddableToOdsElements {
 	}
 
 	/**
-	 * Return the master-style informations for this PageStyle.
-	 *
-	 * @throws IOException
+	 * @param util       a util to write XML
+	 * @param appendable where to write
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToMasterStyle(final XMLUtil util,
 									   final Appendable appendable) throws IOException {
@@ -144,6 +151,7 @@ public class PageStyle implements AddableToOdsElements {
 
 	/**
 	 * Get the paper format as one of PageStyle.STYLE_PAPERFORMAT_*.
+	 * @return the format of the paper
 	 */
 	public PaperFormat getPaperFormat() {
 		return this.pageLayoutStyle.getPaperFormat();

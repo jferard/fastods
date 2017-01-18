@@ -20,26 +20,25 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
+
 import java.util.Currency;
 import java.util.Locale;
-
-import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
 
 /**
  * @author Julien Férard
  */
 public class CurrencyStyleBuilder
 		extends DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
+	private final FloatStyleBuilder floatStyleBuilder;
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
-	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
 	 * The builder
 	 *
-	 * @param name
-	 *            - The name of this style
-	 * @param locale
+	 * @param name   The name of this style
+	 * @param locale The locale used
 	 */
 	protected CurrencyStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
@@ -48,7 +47,9 @@ public class CurrencyStyleBuilder
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public CurrencyStyle build() {
 		return new CurrencyStyle(this.name, this.languageCode, this.countryCode,
@@ -62,7 +63,8 @@ public class CurrencyStyleBuilder
 	/**
 	 * Change the currency symbol, e.g. '$'.
 	 *
-	 * @param currencySymbol
+	 * @param currencySymbol 16.27.8 number:currency-symbol
+	 * @return this for fluent style
 	 */
 	public CurrencyStyleBuilder currencySymbol(final String currencySymbol) {
 		this.currencySymbol = currencySymbol;
@@ -70,10 +72,11 @@ public class CurrencyStyleBuilder
 	}
 
 	/**
-	 * Set the position of the currency symbol, either
-	 * CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
+	 * Set the position of the currency symbol
 	 *
-	 * @param symbolPosition
+	 * @param symbolPosition either
+	 *                       CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
+	 * @return this for fluent style
 	 */
 	public CurrencyStyleBuilder currencySymbolPosition(
 			final SymbolPosition symbolPosition) {
@@ -91,7 +94,9 @@ public class CurrencyStyleBuilder
 		return this;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
 		super.locale(locale);

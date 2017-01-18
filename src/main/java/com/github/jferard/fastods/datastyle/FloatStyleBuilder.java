@@ -32,9 +32,8 @@ public class FloatStyleBuilder
 	/**
 	 * The builder
 	 *
-	 * @param name
-	 *            - The name of this style
-	 * @param locale
+	 * @param name   The name of this style
+	 * @param locale The locale used
 	 */
 	protected FloatStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
@@ -52,8 +51,8 @@ public class FloatStyleBuilder
 	/**
 	 * Set how many digits are to the right of the decimal symbol.
 	 *
-	 * @param decimalPlaces
-	 *            - The number of digits
+	 * @param decimalPlaces The number of digits
+	 * @return this for fluent style
 	 */
 	public FloatStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.decimalPlaces = decimalPlaces;

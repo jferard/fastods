@@ -20,9 +20,9 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * 16.27.2 number:number-style
@@ -47,9 +47,9 @@ public abstract class NumberStyle extends DataStyle {
 	 * minIntDigits and decimal places is decPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL
 	 *
-	 * @param styleName
+	 * @param name
 	 *            The name of the number style, this name must be unique.
-	 * @param minIntDigits
+	 * @param minIntegerDigits
 	 *            The minimum integer digits to be shown.
 	 * @param decPlaces
 	 *            The number of decimal places to be shown.
@@ -68,7 +68,7 @@ public abstract class NumberStyle extends DataStyle {
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 *
-	 * @param util
+	 * @param util a util for XML writing
 	 */
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)
@@ -121,9 +121,9 @@ public abstract class NumberStyle extends DataStyle {
 	/**
 	 * Append the 19.348 number:grouping attribute. Default = false.
 	 *
-	 * @param util
-	 * @param appendable
-	 * @throws IOException
+	 * @param util a util for XML writing
+	 * @param appendable where to write
+	 * @throws IOException If an I/O error occurs
 	 */
 	protected void appendGroupingAttribute(final XMLUtil util,
 			final Appendable appendable) throws IOException {
@@ -154,7 +154,7 @@ public abstract class NumberStyle extends DataStyle {
 	 *            XML util
 	 * @param appendable
 	 *            where to write
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	protected void appendStyleColor(final XMLUtil util,
 			final Appendable appendable) throws IOException {
@@ -170,7 +170,7 @@ public abstract class NumberStyle extends DataStyle {
 	 *            XML util for escaping
 	 * @param appendable
 	 *            where to write
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	protected void appendStyleMap(final XMLUtil util,
 			final Appendable appendable) throws IOException {

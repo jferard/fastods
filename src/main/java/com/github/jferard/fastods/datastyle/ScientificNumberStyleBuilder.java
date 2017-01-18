@@ -34,12 +34,11 @@ public class ScientificNumberStyleBuilder
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is decPlaces.
 	 *
-	 * @param name
-	 *            The name of the number style, this name must be unique.
-	 * @param locale
+	 * @param name   The name of the number style, this name must be unique.
+	 * @param locale the locale used
 	 */
 	ScientificNumberStyleBuilder(final String name,
-			final Locale locale) {
+								 final Locale locale) {
 		super(name, locale);
 	}
 
@@ -52,7 +51,7 @@ public class ScientificNumberStyleBuilder
 	}
 
 	/**
-	 * @param decimalPlaces
+	 * @param decimalPlaces The number of decimal places to be shown.
 	 * @return this for fluent style
 	 */
 	public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
@@ -64,8 +63,7 @@ public class ScientificNumberStyleBuilder
 	 * Set the number of exponent digits.<br>
 	 * The number style is set to NUMBER_SCIENTIFIC.
 	 *
-	 * @param minExponentDigits
-	 *            The minimum of exponent digits to be used
+	 * @param minExponentDigits The minimum of exponent digits to be used
 	 * @return this for fluent style
 	 */
 	public ScientificNumberStyleBuilder minExponentDigits(

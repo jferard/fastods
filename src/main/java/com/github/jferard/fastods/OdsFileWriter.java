@@ -20,18 +20,10 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.*;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -50,8 +42,8 @@ public class OdsFileWriter {
 
 	/**
 	 * Create a new ODS file.
-	 *  @param logger
-	 * @param document
+	 *  @param logger the logger
+	 * @param document the document to write
 	 * @param writer The writer for this file
 	 */
 	OdsFileWriter(final Logger logger, final OdsDocument document, final ZipUTF8Writer writer) throws FileNotFoundException {
@@ -63,7 +55,7 @@ public class OdsFileWriter {
 	/**
 	 * Save the new file.
 	 *
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void save() throws IOException {
 		this.document.save(this.writer);

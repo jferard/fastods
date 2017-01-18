@@ -20,9 +20,9 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * WHERE ? content.xml/office:document-content/office:automatic-styles/number:
@@ -31,15 +31,14 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class FloatStyle extends NumberStyle {
 	protected final int decimalPlaces;
 
 	protected FloatStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
-			final int decimalPlaces, final boolean grouping,
-			final int minIntegerDigits, final String negativeValueColor) {
+						 final String countryCode, final boolean volatileStyle,
+						 final int decimalPlaces, final boolean grouping,
+						 final int minIntegerDigits, final String negativeValueColor) {
 		super(name, languageCode, countryCode, volatileStyle, grouping,
 				minIntegerDigits, negativeValueColor);
 		this.decimalPlaces = decimalPlaces;
@@ -57,11 +56,9 @@ public class FloatStyle extends NumberStyle {
 	/**
 	 * Appends the number:number element
 	 *
-	 * @param util
-	 *            XML escaping util
-	 * @param appendable
-	 *            where to append data
-	 * @throws IOException
+	 * @param util       XML escaping util
+	 * @param appendable where to append data
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	protected void appendNumber(final XMLUtil util, final Appendable appendable)

@@ -34,9 +34,8 @@ public class FractionStyleBuilder
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is decPlaces.
 	 *
-	 * @param name
-	 *            The name of the number style, this name must be unique.
-	 * @param locale
+	 * @param name   The name of the number style, this name must be unique.
+	 * @param locale The locale used
 	 */
 	FractionStyleBuilder(final String name, final Locale locale) {
 		super(name, locale);
@@ -56,12 +55,12 @@ public class FractionStyleBuilder
 	 * Add the numerator and denominator values to be shown.<br>
 	 * The number style is set to NUMBER_FRACTION
 	 *
-	 * @param numerator
-	 * @param denominator
+	 * @param numerator   the number of digits for the numerator
+	 * @param denominator the number of digits for the denominator
 	 * @return this for fluent style
 	 */
 	public FractionStyleBuilder fractionValues(final int numerator,
-			final int denominator) {
+											   final int denominator) {
 		this.minNumeratorDigits = numerator;
 		this.minDenominatorDigits = denominator;
 		return this;

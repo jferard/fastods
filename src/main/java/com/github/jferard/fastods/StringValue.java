@@ -44,7 +44,7 @@ public class StringValue extends CellValue {
 	}
 
 	@Override
-	public void setToRow(final HeavyTableRow heavyTableRow, final int i) {
-		heavyTableRow.setStringValue(i, this.value);
+	public void setToRow(final HeavyTableRow heavyTableRow, final int c) {
+		heavyTableRow.setStringValue(c, this.value);
 	}
 }

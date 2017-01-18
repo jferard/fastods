@@ -20,7 +20,13 @@
  * ****************************************************************************/
 package com.github.jferard.fastods.tool;
 
-import java.io.IOException;
+import com.github.jferard.fastods.CellValue;
+import com.github.jferard.fastods.DataWrapper;
+import com.github.jferard.fastods.HeavyTableRow;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.style.TableCellStyle;
+
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -28,9 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.github.jferard.fastods.*;
-import com.github.jferard.fastods.style.TableCellStyle;
 
 /**
  *
@@ -117,9 +120,9 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	}
 
 	/**
-	 * @param metadata
+	 * @param metadata the resultset metadata
 	 * @return the name of the columns
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs
 	 */
 	private List<String> getColumnNames(final ResultSetMetaData metadata)
 			throws SQLException {
@@ -133,8 +136,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
 	/**
 	 * @return the values of the current column
-	 * @throws SQLException
-	 * @throws IOException
+	 * @throws SQLException if a database access error occurs
 	 */
 	private List<Object> getColumnValues(final int columnCount)
 			throws SQLException {

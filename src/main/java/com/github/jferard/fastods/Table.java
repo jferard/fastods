@@ -58,6 +58,7 @@ public class Table implements NamedObject {
 	private int lastRowIndex;
 	private String name;
 	private TableStyle style;
+
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
 				 final XMLUtil xmlUtil, final StylesContainer stylesContainer,
 				 final DataStyles format, final String name, final int rowCapacity,
@@ -240,9 +241,9 @@ public class Table implements NamedObject {
 	 * Set the merging of multiple cells to one cell.
 	 *
 	 * @param pos         The cell position e.g. 'A1'
-	 * @param rowMerge
-	 * @param columnMerge
-	 * @throws FastOdsException
+	 * @param rowMerge    the number of rows to merge
+	 * @param columnMerge the number of cells to merge
+	 * @throws FastOdsException if the row index or the col index is negative
 	 */
 	@Deprecated
 	public void setCellMerge(final String pos, final int rowMerge,

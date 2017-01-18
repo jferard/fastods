@@ -30,7 +30,7 @@ import java.io.IOException;
 
 /**
  * This file FooterHeader.java is part of FastODS.
- *
+ * <p>
  * styles.xml/office:document-styles/office:master-styles/style:master-
  * page/style:footer
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -38,27 +38,24 @@ import java.io.IOException;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class FooterHeader {
+	private final Type footerHeaderType;
+	private final FooterHeaderContent content;
+	private final FooterHeaderStyle style;
+
 	/**
-	 * Footer or Header ?
+	 * Create a new footer/header object.
 	 */
-	public static enum Type {
-		FOOTER("footer"), HEADER("header");
-
-		private final String typeName;
-
-		private Type(final String typeName) {
-			this.typeName = typeName;
-		}
-
-		public String getTypeName() {
-			return this.typeName;
-		}
+	FooterHeader(final FooterHeader.Type footerHeaderType, final FooterHeaderContent content,
+				 final FooterHeaderStyle style) {
+		this.footerHeaderType = footerHeaderType;
+		this.content = content;
+		this.style = style;
 	}
 
-	public static void appendStyleFooterHeaderXMLToAutomaticStyle(final FooterHeader footerHeader, final Type type, final XMLUtil util,
+	public static void appendStyleFooterHeaderXMLToAutomaticStyle(final FooterHeader footerHeader, final Type type,
+																  final XMLUtil util,
 																  final Appendable appendable) throws IOException {
 		if (footerHeader == null)
 			appendable.append("<style:").append(type.typeName)
@@ -79,29 +76,15 @@ public class FooterHeader {
 	}
 
 	public static FooterHeader simpleFooter(final String text,
-			final TextStyle ts) {
+											final TextStyle ts) {
 		return new SimpleFooterHeaderBuilder(Type.FOOTER)
 				.text(Text.styledContent(text, ts)).build();
 	}
 
 	public static FooterHeader simpleHeader(final String text,
-			final TextStyle ts) {
+											final TextStyle ts) {
 		return new SimpleFooterHeaderBuilder(Type.HEADER)
 				.text(Text.styledContent(text, ts)).build();
-	}
-
-	private final Type footerHeaderType;
-	private final FooterHeaderContent content;
-	private final FooterHeaderStyle style;
-
-	/**
-	 * Create a new footer/header object.
-	 */
-	FooterHeader(final FooterHeader.Type footerHeaderType, final FooterHeaderContent content,
-			final FooterHeaderStyle style) {
-		this.footerHeaderType = footerHeaderType;
-		this.content = content;
-		this.style = style;
 	}
 
 	public void addEmbeddedStylesToStylesElement(
@@ -115,16 +98,23 @@ public class FooterHeader {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer, mode);
 	}
 
+	/**
+	 * @param util an instance of the util class for XML writing
+	 * @param appendable the appendable element where the method will write the XML
+	 * @throws IOException If an I/O error occurs
+	 */
 	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+														   final Appendable appendable) throws IOException {
 		this.style.appendFooterHeaderStyleXMLToAutomaticStyle(util, appendable);
 	}
 
 	/**
-	 * @throws IOException
+	 * @param util an instance of the util class for XML writing
+	 * @param appendable the appendable element where the method will write the XML
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToMasterStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+									   final Appendable appendable) throws IOException {
 		this.content.appendXMLToMasterStyle(util, appendable);
 	}
 
@@ -142,7 +132,27 @@ public class FooterHeader {
 		return this.style.getMinHeight();
 	}
 
+	/**
+	 * @return The type name
+	 */
 	public String getTypeName() {
 		return this.footerHeaderType.typeName;
+	}
+
+	/**
+	 * Footer or Header ?
+	 */
+	public static enum Type {
+		FOOTER("footer"), HEADER("header");
+
+		private final String typeName;
+
+		private Type(final String typeName) {
+			this.typeName = typeName;
+		}
+
+		public String getTypeName() {
+			return this.typeName;
+		}
 	}
 }

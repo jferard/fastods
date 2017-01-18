@@ -52,17 +52,24 @@ public class PageLayoutStyle implements AddableToOdsElements {
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
 	 *
-	 * @param name
-	 *            A unique name for this style
-	 * @param header
-	 * @param footer
+	 * @param name             A unique name for this style
+	 * @param header           the header for this style
+	 * @param printOrientation the print orientation
+	 * @param paperFormat      the format of the paper
+	 * @param writingMode      the writing mode
+	 * @param margins          the margins of the page
+	 * @param pageWidth        the width of the page
+	 * @param pageHeight       the height of the page
+	 * @param numFormat        the format of the sequence of page numbers (20.314 style:num-format)
+	 * @param backgroundColor  the color of the background, as an heaxdecimal number
+	 * @param footer           the footer for this style
 	 */
-	public PageLayoutStyle(final String name, final Margins margins,
-						   final String pageWidth, final String pageHeight,
-						   final String numFormat, final String backgroundColor,
-						   final FooterHeader footer, final FooterHeader header,
-						   final PageStyle.PrintOrientation printOrientation,
-						   final PageStyle.PaperFormat paperFormat, final PageStyle.WritingMode writingMode) {
+	PageLayoutStyle(final String name, final Margins margins,
+					final String pageWidth, final String pageHeight,
+					final String numFormat, final String backgroundColor,
+					final FooterHeader footer, final FooterHeader header,
+					final PageStyle.PrintOrientation printOrientation,
+					final PageStyle.PaperFormat paperFormat, final PageStyle.WritingMode writingMode) {
 		this.name = name;
 		this.margins = margins;
 		this.pageWidth = pageWidth;
@@ -85,9 +92,12 @@ public class PageLayoutStyle implements AddableToOdsElements {
 	 * Write the XML format for this object.<br>
 	 * This is used while writing the ODS file.
 	 *
+	 * @param util       a util to write XML
+	 * @param appendable where to write
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToAutomaticStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+										  final Appendable appendable) throws IOException {
 		appendable.append("<style:page-layout");
 		util.appendAttribute(appendable, "style:name", this.name);
 		appendable.append("><style:page-layout-properties");
@@ -102,8 +112,10 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/>"); // End of page-layout-properties
 
-		FooterHeader.appendStyleFooterHeaderXMLToAutomaticStyle(this.header, FooterHeader.Type.HEADER, util, appendable);
-		FooterHeader.appendStyleFooterHeaderXMLToAutomaticStyle(this.footer, FooterHeader.Type.FOOTER, util, appendable);
+		FooterHeader
+				.appendStyleFooterHeaderXMLToAutomaticStyle(this.header, FooterHeader.Type.HEADER, util, appendable);
+		FooterHeader
+				.appendStyleFooterHeaderXMLToAutomaticStyle(this.footer, FooterHeader.Type.FOOTER, util, appendable);
 		appendable.append("</style:page-layout>");
 	}
 
@@ -142,6 +154,7 @@ public class PageLayoutStyle implements AddableToOdsElements {
 
 	/**
 	 * Get the paper format as one of PageStyle.STYLE_PAPERFORMAT_*.
+	 * @return the format of the page
 	 */
 	public PageStyle.PaperFormat getPaperFormat() {
 		return this.paperFormat;
@@ -165,7 +178,7 @@ public class PageLayoutStyle implements AddableToOdsElements {
 	}
 
 	private void appendBackgroundColor(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+									   final Appendable appendable) throws IOException {
 		if (this.getBackgroundColor().length() > 0) {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.backgroundColor);

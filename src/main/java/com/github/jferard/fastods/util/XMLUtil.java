@@ -32,33 +32,28 @@ public class XMLUtil {
 	 * A space char for append
 	 */
 	public static final char SPACE_CHAR = ' ';
-
-	public static XMLUtil create() {
-		final XMLEscaper escaper = new FastOdsXMLEscaper();
-		return new XMLUtil(escaper);
-	}
-
 	private final XMLEscaper escaper;
 
 	public XMLUtil(final XMLEscaper escaper) {
 		this.escaper = escaper;
 	}
 
+	public static XMLUtil create() {
+		final XMLEscaper escaper = new FastOdsXMLEscaper();
+		return new XMLUtil(escaper);
+	}
+
 	/**
-	 * Append a new element to StringBuilder sb, the name of the element is
-	 * elementName<br>
-	 * and the value is value.
+	 * Append a new element to the appendable element, the name of the element is
+	 * attrName and the value is attrRawValue. The value won't be escaped.
 	 *
-	 * @param appendable
-	 *            The StringBuilder to which the new element should be added.
-	 * @param attrName
-	 *            The new element name
-	 * @param attrRawValue
-	 *            The value of the element
-	 * @throws IOException
+	 * @param appendable   The StringBuilder to which the new element should be added.
+	 * @param attrName     The new element name
+	 * @param attrRawValue The value of the element
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendAttribute(final Appendable appendable,
-			final String attrName, final String attrRawValue)
+								final String attrName, final String attrRawValue)
 			throws IOException {
 		appendable.append(' ').append(attrName).append("=\"")
 				.append(this.escaper.escapeXMLAttribute(attrRawValue))
@@ -66,42 +61,40 @@ public class XMLUtil {
 	}
 
 	public void appendEAttribute(final Appendable appendable,
-			final String attrName, final boolean attrValue) throws IOException {
+								 final String attrName, final boolean attrValue) throws IOException {
 		this.appendEAttribute(appendable, attrName,
 				Boolean.toString(attrValue));
 	}
 
 	/**
-	 * Append a new element to StringBuilder sb, the name of the element is
-	 * elementName<br>
-	 * and the value is value.
+	 * Append a new element to the appendable element, the name of the element is
+	 * attrName and the value is attrValue. The value will be escaped if necessary.
 	 *
-	 * @param appendable
-	 *            The StringBuilder to which the new element should be added.
-	 * @param attrName
-	 *            The new element name
-	 * @param attrValue
-	 *            The value of the element
-	 * @throws IOException
+	 * @param appendable The StringBuilder to which the new element should be added.
+	 * @param attrName   The new element name
+	 * @param attrValue  The value of the element
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendEAttribute(final Appendable appendable,
-			final String attrName, final int attrValue) throws IOException {
+								 final String attrName, final int attrValue) throws IOException {
 		this.appendEAttribute(appendable, attrName,
 				Integer.toString(attrValue));
 	}
 
 	/**
-	 * @param attrValue
-	 *            escaped attribute
+	 * @param appendable where to write
+	 * @param attrName   the name of the attribute
+	 * @param attrValue  escaped attribute
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendEAttribute(final Appendable appendable,
-			final String attrName, final String attrValue) throws IOException {
+								 final String attrName, final String attrValue) throws IOException {
 		appendable.append(' ').append(attrName).append("=\"").append(attrValue)
 				.append('"');
 	}
 
 	public void appendTag(final Appendable appendable, final String tagName,
-			final String content) throws IOException {
+						  final String content) throws IOException {
 		appendable.append('<').append(tagName).append('>')
 				.append(this.escaper.escapeXMLContent(content)).append("</")
 				.append(tagName).append('>');
@@ -119,8 +112,8 @@ public class XMLUtil {
 	 * XML Schema Part 2, 3.2.6 duration
 	 * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
 	 *
-	 * @param milliseconds
-	 * @return
+	 * @param milliseconds the interval to format in milliseconds
+	 * @return the string that represents this interval
 	 */
 	public String formatTimeInterval(final long milliseconds) {
 		long curMilliseconds = milliseconds;

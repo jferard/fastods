@@ -84,7 +84,7 @@ abstract class FooterHeaderContent {
 			StylesContainer stylesContainer, Mode mode);
 
 	/**
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	public abstract void appendXMLToMasterStyle(final XMLUtil util,
 												final Appendable appendable) throws IOException;

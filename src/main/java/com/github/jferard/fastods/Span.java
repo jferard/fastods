@@ -47,7 +47,7 @@ public class Span implements ParagraphElement {
 	 * @param util the xml util
 	 * @param appendable where to add str
 	 *
-	 * @throws IOException
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	public void appendXMLToParagraph(final XMLUtil util,

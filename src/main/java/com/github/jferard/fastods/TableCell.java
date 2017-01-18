@@ -20,13 +20,13 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.XMLUtil;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * @author Julien Férard
@@ -171,6 +171,7 @@ public interface TableCell {
 	/**
 	 * Set the currency value and table cell style to STYLE_CURRENCY.
 	 *
+	 * @param value the value as a float
 	 * @param currency
 	 *            The currency value
 	 */
@@ -179,6 +180,7 @@ public interface TableCell {
 	/**
 	 * Set the currency value and table cell style to STYLE_CURRENCY.
 	 *
+	 * @param value the value as an int
 	 * @param currency
 	 *            The currency value
 	 */
@@ -187,6 +189,7 @@ public interface TableCell {
 	/**
 	 * Set the currency value and table cell style to STYLE_CURRENCY.
 	 *
+	 * @param value the value as a Number
 	 * @param currency
 	 *            The currency value
 	 */
