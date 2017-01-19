@@ -1,6 +1,6 @@
-/* *****************************************************************************
+/*
  * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016 J. Férard <https://github.com/jferard>
+ *    Copyright (C) 2016-2017 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
@@ -17,23 +17,13 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- * ****************************************************************************/
+ */
+
 package com.github.jferard.fastods.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The FastOdsXMLEscaper escapes xml chars as fast as possible. That means : all
- * is grouped in a single method body to avoid unnecessary method calls.
- *
- * The design was inspired by Google Guava's Escapers, but the implementation
- * aims to be faster in that specific case.
- *
- * @author Julien Férard Copyright (C) 2016 J. Férard
- *
- *         This file Util.java is part of FastODS.
- */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class FastOdsXMLEscaper implements XMLEscaper {
 	private static final int BUFFER_SIZE = 65536;
