@@ -20,16 +20,6 @@
  */
 package com.github.jferard.fastods;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import org.easymock.EasyMock;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.LocaleDataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
@@ -39,6 +29,15 @@ import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class LightTableCellTest {
 	private LightTableCell cell;
@@ -180,7 +179,7 @@ public class LightTableCellTest {
 		Assert.assertFalse(cell.hasPrevious());
 		cell.next();
 		cell.lastCell();
-		cell.to(48);
+		cell.to(49);
 		Assert.assertTrue(cell.hasNext());
 		cell.next();
 		Assert.assertFalse(cell.hasNext());
@@ -188,6 +187,8 @@ public class LightTableCellTest {
 		Assert.assertFalse(cell.hasPrevious());
 		cell.to(50);
 		Assert.assertTrue(cell.hasPrevious());
+		cell.to(51);
+		Assert.assertFalse(cell.hasPrevious());
 		PowerMock.verifyAll();
 	}
 

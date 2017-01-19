@@ -240,9 +240,9 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void to(final int i) {
-		if (i < 0)
+	public void to(final int c) {
+		if (c < 0)
 			throw new IndexOutOfBoundsException();
-		this.c = i;
+		this.c = c;
 	}
 }

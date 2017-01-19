@@ -154,11 +154,11 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		final TableCellWalker walker = row.getWalker();
 		for (int j = 0; j <= columnCount - 1; j++) {
 			final Object object = columnValues.get(j);
-			walker.lastCell();
 			if (object == null)
 				walker.setStringValue("<NULL>");
 			else
 				walker.setCellValue(CellValue.fromObject(object));
+			walker.next();
 		}
 	}
 
@@ -168,10 +168,10 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		final List<String> columnNames = this.getColumnNames(metadata);
 		final TableCellWalker walker = row.getWalker();
 		for (int j = 0; j <= columnCount - 1; j++) {
-			walker.lastCell();
 			final String name = columnNames.get(j);
 			walker.setStringValue(name);
 			walker.setStyle(this.headCellStyle);
+			walker.next();
 		}
 	}
 
@@ -182,16 +182,16 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int j = 0; j <= columnCount - 1; j++) {
-				walker.lastCell();
 				walker.setStringValue("");
+				walker.next();
 			}
 		} else if (rowCount > this.max) {
 			row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int j = 0; j <= columnCount - 1; j++) {
-				walker.lastCell();
 				walker.setStringValue(String.format("... (%d rows remaining)",
 						rowCount - this.max));
+				walker.next();
 			}
 		}
 	}

@@ -94,7 +94,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		// first row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("number");
 		w.setStyle(this.tcls);
 
@@ -102,14 +102,14 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 			// data row
 			EasyMock.expect(this.table.nextRow()).andReturn(row);
 			EasyMock.expect(row.getWalker()).andReturn(w);
-			w.lastCell();
+			w.next();
 			w.setCellValue(CellValue.fromObject(v));
 		}
 
 		// data row 4 is replaced by the number of rows remaining
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("... (2 rows remaining)");
 
 		PowerMock.replayAll();
@@ -140,19 +140,19 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		// first row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("number");
 		w.setStyle(this.tcls);
-		w.lastCell();
+		w.next();
 		w.setStringValue("word");
 		w.setStyle(this.tcls);
 
 		// empty row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("");
-		w.lastCell();
+		w.next();
 		w.setStringValue("");
 
 		PowerMock.replayAll();
@@ -173,14 +173,14 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		// first row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("value");
 		w.setStyle(this.tcls);
 
 		// second row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("<NULL>");
 
 		PowerMock.replayAll();
@@ -201,19 +201,19 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		// first row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setStringValue("number");
 		w.setStyle(this.tcls);
-		w.lastCell();
+		w.next();
 		w.setStringValue("word");
 		w.setStyle(this.tcls);
 
 		// second row
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
 		EasyMock.expect(row.getWalker()).andReturn(w);
-		w.lastCell();
+		w.next();
 		w.setCellValue(CellValue.fromObject(13));
-		w.lastCell();
+		w.next();
 		w.setCellValue(CellValue.fromObject("a"));
 
 		PowerMock.replayAll();
