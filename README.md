@@ -1,5 +1,5 @@
 # FastODS
-(C) J. Férard 2016
+(C) J. Férard 2016-2017
 
 (C) M. Schulz 2008-2013 for SimpleODS
 
@@ -52,20 +52,21 @@ In your POM, you'll have to include the following dependency:
 ## Examples
 ### Basic example
 ```java
-OdsDocument document = new OdsFactory().createDocument();
-Table table = document.addTable("test");
+final OdsDocument document = new OdsFactory().createDocument();
+final Table table = document.addTable("test");
 
-TableCellStyle style = TableCellStyle.builder().name("tcs1").backgroundColor("#00FF00").build()
+final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
 for (int y = 0; y < 50; y++) {
-	final TableRow row = table.nextRow();
+	final HeavyTableRow row = table.nextRow();
+	final TableCellWalker cell = row.getWalker();
 	for (int x = 0; x < 5; x++) {
-		final TableCell cell = row.nextCell();
-		cell.setFloat(random.nextInt(1000));
+		cell.setFloatValue(x*y);
 		cell.setStyle(style);
+		cell.next();
 	}
 }
 
-document.saveAs("5columns.ods");
+document.saveAs(new File("generated_files", "readme.ods"));
 ```
 
 ### Other examples

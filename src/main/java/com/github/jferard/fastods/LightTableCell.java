@@ -158,7 +158,7 @@ public class LightTableCell implements TableCellWalker {
 
 	@Override
 	public boolean hasNext() {
-		return this.c < this.row.getColumnCount() - 1;
+		return this.c < this.row.getColumnCount();
 	}
 
 	@Override
@@ -168,12 +168,12 @@ public class LightTableCell implements TableCellWalker {
 
 	@Override
 	public void lastCell() {
-		this.c = this.row.getColumnCount();
+		this.c = this.row.getColumnCount() - 1;
 	}
 
 	@Override
 	public void next() {
-		if (this.c >= this.row.getColumnCount() - 1)
+		if (this.c >= this.row.getColumnCount())
 			throw new IndexOutOfBoundsException();
 		this.c++;
 	}
