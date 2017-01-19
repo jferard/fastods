@@ -30,19 +30,18 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUTF8Writer
-		implements Closeable, Flushable, Appendable, AutoCloseable {
+		implements Closeable, Flushable, Appendable {
 	public static final Charset UTF_8 = Charset.forName("UTF-8");
-
-	public static ZipUTF8WriterBuilder builder() {
-		return new ZipUTF8WriterBuilder();
-	}
-
 	private final Writer writer;
 	private final ZipOutputStream zipStream;
 
 	ZipUTF8Writer(final ZipOutputStream zipStream, final Writer writer) {
 		this.zipStream = zipStream;
 		this.writer = writer;
+	}
+
+	public static ZipUTF8WriterBuilder builder() {
+		return new ZipUTF8WriterBuilder();
 	}
 
 	@Override
