@@ -44,9 +44,31 @@ import java.util.zip.ZipEntry;
  * Facade pattern.
  *
  * @author Julien Férard
- *
  */
 public class OdsElements {
+	private final ContentElement contentElement;
+	private final Logger logger;
+	private final ManifestElement manifestElement;
+	private final MetaElement metaElement;
+	private final MimetypeElement mimetypeElement;
+	private final SettingsElement settingsElement;
+	private final StylesContainer stylesContainer;
+	private final StylesElement stylesElement;
+	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
+						  final ManifestElement manifestElement,
+						  final SettingsElement settingsElement, final MetaElement metaElement,
+						  final ContentElement contentElement, final StylesElement stylesElement,
+						  final StylesContainer stylesContainer) {
+		this.logger = logger;
+		this.mimetypeElement = mimetypeElement;
+		this.manifestElement = manifestElement;
+		this.settingsElement = settingsElement;
+		this.metaElement = metaElement;
+		this.contentElement = contentElement;
+		this.stylesElement = stylesElement;
+		this.stylesContainer = stylesContainer;
+	}
+
 	public static OdsElements create(final PositionUtil positionUtil,
 									 final XMLUtil xmlUtil, final WriteUtil writeUtil,
 									 final DataStyles format) {
@@ -61,31 +83,6 @@ public class OdsElements {
 		return new OdsElements(Logger.getLogger(OdsElements.class.getName()),
 				mimetypeElement, manifestElement, settingsElement, metaElement,
 				contentElement, stylesElement, stylesContainer);
-	}
-
-	private final ContentElement contentElement;
-	private final Logger logger;
-	private final ManifestElement manifestElement;
-	private final MetaElement metaElement;
-	private final MimetypeElement mimetypeElement;
-
-	private final SettingsElement settingsElement;
-	private final StylesContainer stylesContainer;
-	private final StylesElement stylesElement;
-
-	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
-						  final ManifestElement manifestElement,
-						  final SettingsElement settingsElement, final MetaElement metaElement,
-						  final ContentElement contentElement, final StylesElement stylesElement,
-						  final StylesContainer stylesContainer) {
-		this.logger = logger;
-		this.mimetypeElement = mimetypeElement;
-		this.manifestElement = manifestElement;
-		this.settingsElement = settingsElement;
-		this.metaElement = metaElement;
-		this.contentElement = contentElement;
-		this.stylesElement = stylesElement;
-		this.stylesContainer = stylesContainer;
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
@@ -108,19 +105,19 @@ public class OdsElements {
 	}
 
 	public Table addTableToContent(final String name, final int rowCapacity,
-			final int columnCapacity) {
+								   final int columnCapacity) {
 		return this.contentElement.addTable(name, rowCapacity, columnCapacity);
 	}
 
 	public void createEmptyElements(final ZipUTF8Writer writer)
 			throws IOException {
 		this.logger.log(Level.FINER, "Writing empty ods elements to zip file");
-		for (final String elementName : new String[] { "Thumbnails/",
+		for (final String elementName : new String[]{"Thumbnails/",
 				"Configurations2/accelerator/current.xml",
 				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
 				"Configurations2/menubar/", "Configurations2/popupmenu/",
 				"Configurations2/progressbar/", "Configurations2/statusbar/",
-				"Configurations2/toolbar/" }) {
+				"Configurations2/toolbar/"}) {
 			this.logger.log(Level.FINEST, "Writing odselement: {0} to zip file",
 					elementName);
 			writer.putNextEntry(new ZipEntry(elementName));

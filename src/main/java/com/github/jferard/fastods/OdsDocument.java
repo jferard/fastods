@@ -23,7 +23,10 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -75,8 +78,44 @@ public class OdsDocument {
 		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 
+	/**
+	 * Add a data style to this document. Use only if you want to flush data before the end of the document
+	 * construction.
+	 *
+	 * @param dataStyle the data style to add to this document
+	 */
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.odsElements.addDataStyle(dataStyle);
+	}
+
+	/**
+	 * Add a master page style to this document. Use only if you want to flush data before the end of the document
+	 * construction.
+	 *
+	 * @param masterPageStyle the master page style to add to this document
+	 */
+	public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
+		this.odsElements.addMasterPageStyle(masterPageStyle);
+	}
+
+	/**
+	 * Add a page layout style to this document. Use only if you want to flush data before the end of the document
+	 * construction.
+	 *
+	 * @param pageLayoutStyle the page layout to add to this document
+	 */
+	public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
+		this.odsElements.addPageLayoutStyle(pageLayoutStyle);
+	}
+
+	/**
+	 * Add a style tag to this document. Use only if you want to flush data before the end of the document
+	 * construction.
+	 *
+	 * @param styleTag the style tag to add to this document
+	 */
+	public void addStyleTag(final StyleTag styleTag) {
+		this.odsElements.addStyleTag(styleTag);
 	}
 
 	/**
