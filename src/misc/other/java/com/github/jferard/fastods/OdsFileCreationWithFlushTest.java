@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -36,8 +37,9 @@ import java.util.logging.Logger;
 /**
  * @author Julien Férard
  */
-public class OdsFileCreation {
+public class OdsFileCreationWithFlushTest {
 	private Logger logger;
+	private OdsFactory odsFactory;
 
 	@BeforeClass
 	public static final void beforeClass() {
@@ -51,6 +53,7 @@ public class OdsFileCreation {
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
+		this.odsFactory = new OdsFactory();
 	}
 
 	public final void test1000() throws FastOdsException, IOException {
@@ -58,19 +61,21 @@ public class OdsFileCreation {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
+		final OdsFileWriter writer =
+				this.odsFactory.createWriter(document, new File("generated_files", "fastods_1000_300.ods"));
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
 			final HeavyTableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 300; x++) {
-				walker.lastCell();
 				walker.setFloatValue(random.nextInt(1000));
+				walker.next();
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_1000_300.ods"));
+		writer.save();
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -81,19 +86,21 @@ public class OdsFileCreation {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
+		final OdsFileWriter writer =
+				this.odsFactory.createWriter(document, new File("generated_files", "fastods_100000_20f.ods"));
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
 			final HeavyTableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 20; x++) {
-				walker.lastCell();
 				walker.setFloatValue(random.nextInt(1000));
+				walker.next();
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_100000_20.ods"));
+		writer.save();
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -105,7 +112,9 @@ public class OdsFileCreation {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
+		final OdsFileWriter writer =
+				this.odsFactory.createWriter(document, new File("generated_files", "fastods_50_5f.ods"));
 		document.setViewSetting("View1", "ZoomValue", "200");
 		final Table table = document.addTable("test", 50, 5);
 		table.setSettings("View1", "ZoomValue", "200");
@@ -137,65 +146,65 @@ public class OdsFileCreation {
 			row = table.getRow(y);
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 5; x++) {
-				walker.lastCell();
 				walker.setFloatValue(random.nextInt(1000));
 				if ((y + 1) % 3 == 0) {
 					switch (x) {
-					case 0:
-						walker.setStyle(tcs0);
-						break;
-					case 1:
-						walker.setStyle(tcs1);
-						break;
-					case 2:
-						walker.setStyle(tcs2);
-						break;
-					case 3:
-						walker.setStyle(tcs3);
-						break;
-					default:
-						break;
+						case 0:
+							walker.setStyle(tcs0);
+							break;
+						case 1:
+							walker.setStyle(tcs1);
+							break;
+						case 2:
+							walker.setStyle(tcs2);
+							break;
+						case 3:
+							walker.setStyle(tcs3);
+							break;
+						default:
+							break;
 					}
 				} else if (y == 6) {
 					switch (x) {
-					case 0:
-						walker.setBooleanValue(true);
-						break;
-					case 1:
-						walker.setCurrencyValue(150.5, "EUR");
-						walker.setTooltip("That's a tooltip !");
-						break;
-					case 2:
-						walker.setDateValue(Calendar.getInstance());
-						break;
-					case 3:
-						walker.setPercentageValue(70.3);
-						break;
-					case 4:
-						walker.setStringValue("foobar");
-						break;
-					default:
-						break;
+						case 0:
+							walker.setBooleanValue(true);
+							break;
+						case 1:
+							walker.setCurrencyValue(150.5, "EUR");
+							walker.setTooltip("That's a tooltip !");
+							break;
+						case 2:
+							walker.setDateValue(Calendar.getInstance());
+							break;
+						case 3:
+							walker.setPercentageValue(70.3);
+							break;
+						case 4:
+							walker.setStringValue("foobar");
+							break;
+						default:
+							break;
 					}
 				} else if (y == 9) {
 					switch (x) {
-					case 0:
-						walker.setColumnsSpanned(2);
-						break;
-					case 2:
-						walker.setCurrencyValue(-150.5, "€");
-						break;
-					case 3:
-						walker.setStyle(tcls);
-						break;
-					default:
-						walker.setTimeValue(x * 60 * 1000);
+						case 0:
+							walker.setColumnsSpanned(2);
+							break;
+						case 2:
+							walker.setCurrencyValue(-150.5, "€");
+							break;
+						case 3:
+							walker.setStyle(tcls);
+							break;
+						default:
+							walker.setTimeValue(x * 60 * 1000);
 					}
 				}
+				walker.next();
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_50_5.ods"));
+		writer.save();
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}

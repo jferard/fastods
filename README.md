@@ -81,16 +81,16 @@ document.saveAs(new File("generated_files", "readme.ods"));
 ```
 
 ### Other examples
-Two examples are implemented as optional tests, in the ```src/test/java``` folder: ```OdsFileCreation.java``` and ```OdsFileWithHeaderAndFooterCreation.java```. The sources are quite simple.
+Two examples are implemented as optional tests, in the ```src/misc/other/java``` folder: ```OdsFileCreationTest.java``` and ```OdsFileWithHeaderAndFooterCreationTest.java```. The sources are quite simple.
 
-To test it, one has to run tests manually:
+To run those examples, one has to set the Maven profile to `other`:
 ```
-mvn -P other -Dtest=OdsFileCreation test
+mvn -P other -Dtest=OdsFileCreationTest test
 ```
 
 And:
 ```
-mvn -P other -Dtest=OdsFileWithHeaderAndFooterCreation test
+mvn -P other -Dtest=OdsFileWithHeaderAndFooterCreationTest test
 ```
 
 The resulting ods files are written in current directory, and can be opened with LibreOffice or OpenOffice.

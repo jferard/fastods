@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 /**
  * @author Julien Férard
  */
-public class OdsFileWithHeaderAndFooterCreation {
+public class OdsFileWithHeaderAndFooterCreationTest {
 	private Logger logger;
 
 	@BeforeClass

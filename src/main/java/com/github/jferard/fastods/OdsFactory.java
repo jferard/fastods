@@ -89,13 +89,22 @@ public class OdsFactory {
 	 */
 	public FileOpenResult openFile(final String filename) throws FileNotFoundException {
 		final File f = new File(filename);
-		if (f.isDirectory())
+		return this.openFile(f);
+	}
+
+	/**
+	 * @param file the file.
+	 * @return the result of the operation
+	 * @throws FileNotFoundException if the file does not exist
+	 */
+	public FileOpenResult openFile(final File file) throws FileNotFoundException {
+		if (file.isDirectory())
 			return FileOpenResult.FILE_IS_DIR;
 
-		if (f.exists())
-			return new FileExists(f);
+		if (file.exists())
+			return new FileExists(file);
 
-		return new FileOpen(new FileOutputStream(f));
+		return new FileOpen(new FileOutputStream(file));
 	}
 
 	/**
@@ -120,6 +129,10 @@ public class OdsFactory {
 	 */
 	public OdsFileWriter createWriter(final OdsDocument document, final String filename) throws FileNotFoundException {
 		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename)).build();
+	}
+
+	public OdsFileWriter createWriter(final OdsDocument document, final File file) throws FileNotFoundException {
+		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
 	}
 
 	public static enum FileState {
