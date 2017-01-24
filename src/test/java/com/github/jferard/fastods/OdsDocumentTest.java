@@ -220,9 +220,11 @@ public class OdsDocumentTest {
 	@Test
 	public final void testSaveTo() throws IOException {
 		this.initOdsElements();
-		this.odsElements.setTables();
-		this.odsElements.writeElements(this.xmlUtil, this.writer);
 		this.odsElements.createEmptyElements(this.writer);
+		this.odsElements.writeImmutableElements(this.xmlUtil, this.writer);
+		this.odsElements.writeEditableElements(this.xmlUtil, this.writer);
+		this.odsElements.writeContent(this.xmlUtil, this.writer);
+		this.odsElements.writeSettings(this.xmlUtil, this.writer);
 		this.writer.close();
 
 		PowerMock.replayAll();
@@ -235,8 +237,11 @@ public class OdsDocumentTest {
 	@Test
 	public final void testSaveToCloseException() throws IOException {
 		this.initOdsElements();
-		this.odsElements.setTables();
-		this.odsElements.writeElements(this.xmlUtil, this.writer);
+		this.odsElements.createEmptyElements(this.writer);
+		this.odsElements.writeImmutableElements(this.xmlUtil, this.writer);
+		this.odsElements.writeEditableElements(this.xmlUtil, this.writer);
+		this.odsElements.writeContent(this.xmlUtil, this.writer);
+		this.odsElements.writeSettings(this.xmlUtil, this.writer);
 		this.writer.close();
 		EasyMock.expectLastCall().andThrow(new IOException("@"));
 		PowerMock.replayAll();
@@ -252,8 +257,7 @@ public class OdsDocumentTest {
 	@Test
 	public final void testSaveWriterException() throws IOException {
 		this.initOdsElements();
-		this.odsElements.setTables();
-		this.odsElements.writeElements(this.xmlUtil, this.writer);
+		this.odsElements.createEmptyElements(this.writer);
 		EasyMock.expectLastCall().andThrow(new IOException("@"));
 		this.writer.close();
 		PowerMock.replayAll();

@@ -54,6 +54,26 @@ public class OdsFileWriter {
 		this.writer = writer;
 	}
 
+	public void finalizeFlush() throws IOException {
+		this.document.finalizeFlush(this.writer);
+	}
+
+	public void flushEditableElements() throws IOException {
+		this.document.flushEditableElements(this.writer);
+	}
+
+	public void flushRows() throws IOException {
+		this.document.flushRows(this.writer);
+	}
+
+	public void flushTables() throws IOException {
+		this.document.flushTables(this.writer);
+	}
+
+	public void prepareForFlush() throws IOException {
+		this.document.prepareForFlush(this.writer);
+	}
+
 	/**
 	 * Save the new file.
 	 *

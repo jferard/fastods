@@ -125,6 +125,14 @@ public class OdsElements {
 		}
 	}
 
+	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		this.contentElement.flushRows(util, writer);
+	}
+
+	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		this.contentElement.flushTables(util, writer);
+	}
+
 	public Table getTable(final int tableIndex) {
 		return this.contentElement.getTable(tableIndex);
 	}
@@ -148,27 +156,41 @@ public class OdsElements {
 		this.settingsElement.setActiveTable(table);
 	}
 
-	public void setTables() {
-		this.settingsElement.setTables(this.getTables());
-	}
-
+	@Deprecated
 	public void writeElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
 			throws IOException {
+		this.writeImmutableElements(xmlUtil, writer);
+		this.writeEditableElements(xmlUtil, writer);
+		this.writeContent(xmlUtil, writer);
+		this.writeSettings(xmlUtil, writer);
+	}
+
+	public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.settingsElement.setTables(this.getTables());
+		this.logger.log(Level.FINER,
+				"Writing odselement: settingsElement to zip file");
+		this.settingsElement.write(xmlUtil, writer);
+	}
+
+	public void writeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.logger.log(Level.FINER, "Writing odselement: contentElement to zip file");
+		this.contentElement.write(xmlUtil, writer);
+	}
+
+	public void writeEditableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.logger.log(Level.FINER, "Writing odselement: metaElement to zip file");
+		this.metaElement.write(xmlUtil, writer);
+		this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
+		this.stylesElement.write(xmlUtil, writer);
+	}
+
+	public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		this.logger.log(Level.FINER,
 				"Writing odselement: mimeTypeEntry to zip file");
 		this.mimetypeElement.write(xmlUtil, writer);
 		this.logger.log(Level.FINER,
 				"Writing odselement: manifestElement to zip file");
 		this.manifestElement.write(xmlUtil, writer);
-		this.logger.log(Level.FINER, "Writing odselement: metaElement to zip file");
-		this.metaElement.write(xmlUtil, writer);
-		this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
-		this.stylesElement.write(xmlUtil, writer);
-		this.logger.log(Level.FINER, "Writing odselement: contentElement to zip file");
-		this.contentElement.write(xmlUtil, writer);
-		this.logger.log(Level.FINER,
-				"Writing odselement: settingsElement to zip file");
-		this.settingsElement.write(xmlUtil, writer);
 	}
 
 	public void setViewSettings(final String viewId, final String item, final String value) {

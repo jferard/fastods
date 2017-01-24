@@ -46,9 +46,25 @@ import java.util.List;
  * @author Martin Schulz
  */
 public class Table implements NamedObject {
-	private final ConfigItemMapEntrySet configEntry;
+	private static void checkCol(final int col) throws FastOdsException {
+		if (col < 0) {
+			throw new FastOdsException(new StringBuilder(
+					"Negative column number exception, column value:[")
+					.append(col).append("]").toString());
+		}
+	}
+
+	private static void checkRow(final int row) throws FastOdsException {
+		if (row < 0) {
+			throw new FastOdsException(new StringBuilder(
+					"Negative row number exception, row value:[").append(row)
+					.append("]").toString());
+		}
+	}
+
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
+	private final ConfigItemMapEntrySet configEntry;
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesContainer stylesContainer;
@@ -58,6 +74,7 @@ public class Table implements NamedObject {
 	private int curRowIndex;
 	private int lastRowIndex;
 	private String name;
+	private int nullFieldCounter;
 	private TableStyle style;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
@@ -97,33 +114,42 @@ public class Table implements NamedObject {
 		this.lastRowIndex = -1;
 	}
 
-	private static void checkCol(final int col) throws FastOdsException {
-		if (col < 0) {
-			throw new FastOdsException(new StringBuilder(
-					"Negative column number exception, column value:[")
-					.append(col).append("]").toString());
-		}
-	}
-
-	private static void checkRow(final int row) throws FastOdsException {
-		if (row < 0) {
-			throw new FastOdsException(new StringBuilder(
-					"Negative row number exception, row value:[").append(row)
-					.append("]").toString());
-		}
-	}
-
-	public void setConfigItem(final String name, final String type,
-							  final String value) {
-		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
-	}
-
 	public void addData(final DataWrapper data) {
 		data.addToTable(this);
 	}
 
-	public void appendXMLToContentEntry(final XMLUtil util,
-										final Appendable appendable) throws IOException {
+	private void appendColumnStyles(final Appendable appendable,
+									final XMLUtil xmlUtil) throws IOException {
+		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
+				.iterator();
+		if (!iterator.hasNext())
+			return;
+
+		TableColumnStyle ts0 = TableColumnStyle.getDefaultColumnStyle(xmlUtil);
+		int count = 1;
+		TableColumnStyle ts1 = iterator.next();
+		while (iterator.hasNext()) {
+			ts0 = ts1;
+			ts1 = iterator.next();
+
+			if (ts0.equals(ts1)) {
+				count++;
+			} else {
+				ts0.appendXMLToTable(xmlUtil, appendable, count);
+				count = 1;
+			}
+
+		}
+		ts1.appendXMLToTable(xmlUtil, appendable, count);
+		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
+				.appendXMLToTable(xmlUtil, appendable, 1);
+	}
+
+	private void appendPostamble(final Appendable appendable) throws IOException {
+		appendable.append("</table:table>");
+	}
+
+	public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.name);
 		util.appendAttribute(appendable, "table:style-name",
@@ -134,12 +160,44 @@ public class Table implements NamedObject {
 		util.appendEAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
 		this.appendColumnStyles(appendable, util);
-		this.appendRows(appendable, util);
-		appendable.append("</table:table>");
 	}
 
-	public ConfigItemMapEntry getConfigEntry() {
-		return this.configEntry;
+	private void appendRows(final XMLUtil util, final Appendable appendable)
+			throws IOException {
+		this.appendRows(util, appendable, 0);
+	}
+
+	private void appendRows(final XMLUtil util, final Appendable appendable, final int firstRowIndex)
+			throws IOException {
+		if (firstRowIndex == 0)
+			this.nullFieldCounter = 0;
+
+		final int size = this.tableRows.size();
+		for (int r = firstRowIndex; r < size; r++) {
+			final HeavyTableRow tr = this.tableRows.get(r);
+			if (tr == null) {
+				this.nullFieldCounter++;
+			} else {
+				if (this.nullFieldCounter > 0) {
+					appendable.append("<table:table-row");
+					if (this.nullFieldCounter > 1) {
+						util.appendEAttribute(appendable,
+								"table:number-rows-repeated", this.nullFieldCounter);
+					}
+					util.appendEAttribute(appendable, "table:style-name",
+							"ro1");
+					appendable.append("><table:table-cell/></table:table-row>");
+				}
+				tr.appendXMLToTable(util, appendable);
+			}
+		}
+	}
+
+	public void appendXMLToContentEntry(final XMLUtil util,
+										final Appendable appendable) throws IOException {
+		this.appendPreamble(util, appendable);
+		this.appendRows(util, appendable);
+		this.appendPostamble(appendable);
 	}
 
 	@Deprecated
@@ -148,8 +206,47 @@ public class Table implements NamedObject {
 		this.configEntry.appendXML(util, appendable);
 	}
 
+	/**
+	 * Open the table, flush all rows from start, but do not close the table
+	 *
+	 * @param util       a XMLUtil instance for writing XML
+	 * @param appendable where to write
+	 */
+	public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable) throws IOException {
+		this.appendPreamble(util, appendable);
+		this.appendRows(util, appendable, 0);
+	}
+
+	/**
+	 * Flush all rows from a given position, and do close the table
+	 *
+	 * @param util       a XMLUtil instance for writing XML
+	 * @param appendable where to write
+	 * @param rowIndex   the first index to use.
+	 */
+	public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
+			throws IOException {
+		this.appendRows(util, appendable, rowIndex);
+		this.appendPostamble(appendable);
+	}
+
+	/**
+	 * Flush all rows from a given position, but do not close the table
+	 *
+	 * @param util       a XMLUtil instance for writing XML
+	 * @param appendable where to write
+	 */
+	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
+			throws IOException {
+		this.appendRows(util, appendable, rowIndex);
+	}
+
 	public List<TableColumnStyle> getColumnStyles() {
 		return this.columnStyles;
+	}
+
+	public ConfigItemMapEntry getConfigEntry() {
+		return this.configEntry;
 	}
 
 	public int getLastRowNumber() {
@@ -164,15 +261,6 @@ public class Table implements NamedObject {
 	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	/**
-	 * Set the name of this table.
-	 *
-	 * @param name The name of this table.
-	 */
-	public void setName(final String name) {
-		this.name = name;
 	}
 
 	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException {
@@ -213,32 +301,6 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Set the style of a column.
-	 *
-	 * @param col The column number
-	 * @param ts  The style to be used, make sure the style is of type
-	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
-	 * @throws FastOdsException Thrown if col has an invalid value.
-	 */
-	public void setColumnStyle(final int col, final TableColumnStyle ts)
-			throws FastOdsException {
-		Table.checkCol(col);
-		this.stylesContainer.addStyleToContentAutomaticStyles(ts);
-		this.columnStyles.set(col, ts);
-	}
-
-	/**
-	 * Set a new TableFamilyStyle
-	 *
-	 * @param style The new TableStyle to be used
-	 */
-	public void setStyle(final TableStyle style) {
-		this.stylesContainer.addPageStyle(style.getPageStyle());
-		this.stylesContainer.addStyleToContentAutomaticStyles(style);
-		this.style = style;
-	}
-
-	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
 	 * @param pos         The cell position e.g. 'A1'
@@ -254,59 +316,47 @@ public class Table implements NamedObject {
 		row.setCellMerge(position.getColumn(), rowMerge, columnMerge);
 	}
 
-	private void appendColumnStyles(final Appendable appendable,
-									final XMLUtil xmlUtil) throws IOException {
-		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
-				.iterator();
-		if (!iterator.hasNext())
-			return;
-
-		TableColumnStyle ts0 = TableColumnStyle.getDefaultColumnStyle(xmlUtil);
-		int count = 1;
-		TableColumnStyle ts1 = iterator.next();
-		while (iterator.hasNext()) {
-			ts0 = ts1;
-			ts1 = iterator.next();
-
-			if (ts0.equals(ts1)) {
-				count++;
-			} else {
-				ts0.appendXMLToTable(xmlUtil, appendable, count);
-				count = 1;
-			}
-
-		}
-		ts1.appendXMLToTable(xmlUtil, appendable, count);
-		TableColumnStyle.getDefaultColumnStyle(xmlUtil)
-				.appendXMLToTable(xmlUtil, appendable, 1);
+	/**
+	 * Set the style of a column.
+	 *
+	 * @param col The column number
+	 * @param ts  The style to be used, make sure the style is of type
+	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
+	 * @throws FastOdsException Thrown if col has an invalid value.
+	 */
+	public void setColumnStyle(final int col, final TableColumnStyle ts)
+			throws FastOdsException {
+		Table.checkCol(col);
+		this.stylesContainer.addStyleToContentAutomaticStyles(ts);
+		this.columnStyles.set(col, ts);
 	}
 
-	private void appendRows(final Appendable appendable, final XMLUtil util)
-			throws IOException {
-		int nullFieldCounter = 0;
+	public void setConfigItem(final String name, final String type,
+							  final String value) {
+		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
+	}
 
-		final int size = this.tableRows.size();
-		for (int r = 0; r < size; r++) {
-			final HeavyTableRow tr = this.tableRows.get(r);
-			if (tr == null) {
-				nullFieldCounter++;
-			} else {
-				if (nullFieldCounter > 0) {
-					appendable.append("<table:table-row");
-					if (nullFieldCounter > 1) {
-						util.appendEAttribute(appendable,
-								"table:number-rows-repeated", nullFieldCounter);
-					}
-					util.appendEAttribute(appendable, "table:style-name",
-							"ro1");
-					appendable.append("><table:table-cell/></table:table-row>");
-				}
-				tr.appendXMLToTable(util, appendable);
-			}
-		}
+	/**
+	 * Set the name of this table.
+	 *
+	 * @param name The name of this table.
+	 */
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public void setSettings(final String viewId, final String item, final String value) {
 		this.configEntry.set(item, value);
+	}
+
+	/**
+	 * Set a new TableFamilyStyle
+	 *
+	 * @param style The new TableStyle to be used
+	 */
+	public void setStyle(final TableStyle style) {
+		this.stylesContainer.addPageStyle(style.getPageStyle());
+		this.stylesContainer.addStyleToContentAutomaticStyles(style);
+		this.style = style;
 	}
 }

@@ -144,6 +144,26 @@ public class OdsDocument {
 		return table;
 	}
 
+	void createEmptyElements(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.createEmptyElements(writer);
+	}
+
+	public void finalizeFlush(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.writeSettings(this.xmlUtil, writer);
+	}
+
+	public void flushEditableElements(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.writeEditableElements(this.xmlUtil, writer);
+	}
+
+	public void flushRows(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.flushRows(this.xmlUtil, writer);
+	}
+
+	public void flushTables(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.flushTables(this.xmlUtil, writer);
+	}
+
 	public Logger getLogger() {
 		return this.logger;
 	}
@@ -210,6 +230,11 @@ public class OdsDocument {
 		return this.odsElements.getTables();
 	}
 
+	public void prepareForFlush(final ZipUTF8Writer writer) throws IOException {
+		this.createEmptyElements(writer);
+		this.odsElements.writeImmutableElements(this.xmlUtil, writer);
+	}
+
 	/**
 	 * Saves a file
 	 *
@@ -217,11 +242,12 @@ public class OdsDocument {
 	 * @throws IOException
 	 */
 	void save(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.setTables();
-
 		try {
-			this.odsElements.writeElements(this.xmlUtil, writer);
-			this.odsElements.createEmptyElements(writer);
+			this.createEmptyElements(writer);
+			this.odsElements.writeImmutableElements(this.xmlUtil, writer);
+			this.odsElements.writeEditableElements(this.xmlUtil, writer);
+			this.odsElements.writeContent(this.xmlUtil, writer);
+			this.odsElements.writeSettings(this.xmlUtil, writer);
 		} finally {
 			writer.close();
 		}

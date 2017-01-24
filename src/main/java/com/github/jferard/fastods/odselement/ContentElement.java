@@ -40,6 +40,7 @@ import java.util.zip.ZipEntry;
  * @author Martin Schulz
  */
 public class ContentElement implements OdsElement {
+	private final FlushPosition flushPosition;
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesContainer stylesContainer;
@@ -57,6 +58,7 @@ public class ContentElement implements OdsElement {
 		this.format = format;
 		this.stylesContainer = stylesContainer;
 		this.tables = new UniqueList<Table>();
+		this.flushPosition = new FlushPosition();
 	}
 
 	/**
@@ -75,6 +77,49 @@ public class ContentElement implements OdsElement {
 			this.tables.add(table);
 		}
 		return table;
+	}
+
+	private void ensureContentBegin(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		if (this.flushPosition.isUndefined()) {
+			this.writePreamble(util, writer);
+			this.flushPosition.set(0, 0);
+		}
+	}
+
+	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		this.ensureContentBegin(util, writer);
+		final int lastTableIndex = this.tables.size() - 1;
+		int tableIndex = this.flushPosition.getTableIndex();
+		Table table = this.tables.get(tableIndex);
+		if (tableIndex < lastTableIndex) {
+			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex()+1);
+			while (tableIndex < lastTableIndex) {
+				table = this.tables.get(tableIndex);
+				table.appendXMLToContentEntry(util, writer);
+				tableIndex++;
+			}
+			table = this.tables.get(lastTableIndex);
+			table.flushAllAvailableRows(util, writer);
+		} else {
+			table.flushSomeAvailableRowsFrom(util, writer, this.flushPosition.getLastRowIndex());
+		}
+		this.flushPosition.set(lastTableIndex, this.tables.get(lastTableIndex).getLastRowNumber());
+	}
+
+	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		this.ensureContentBegin(util, writer);
+		final int lastTableIndex = this.tables.size() - 1;
+		int tableIndex = this.flushPosition.getTableIndex();
+		if (tableIndex < lastTableIndex) {
+			Table table = this.tables.get(tableIndex);
+			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex());
+			while (tableIndex <= lastTableIndex) {
+				table = this.tables.get(tableIndex);
+				table.appendXMLToContentEntry(util, writer);
+				tableIndex++;
+			}
+		}
+		this.flushPosition.set(lastTableIndex + 1, 0);
 	}
 
 	public StylesContainer getStyleTagsContainer() {
@@ -107,6 +152,21 @@ public class ContentElement implements OdsElement {
 	@Override
 	public void write(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
+		this.writePreamble(util, writer);
+		for (final Table table : this.tables)
+			table.appendXMLToContentEntry(util, writer);
+		this.writePostamble(util, writer);
+	}
+
+	private void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		writer.write("</office:spreadsheet>");
+		writer.write("</office:body>");
+		writer.write("</office:document-content>");
+		writer.flush();
+		writer.closeEntry();
+	}
+
+	private void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		writer.putNextEntry(new ZipEntry("content.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
@@ -133,7 +193,8 @@ public class ContentElement implements OdsElement {
 		writer.write("<office:scripts/>");
 		writer.write("<office:font-face-decls>");
 		writer.write(
-				"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\" " +
+				"<style:font-face style:name=\"Arial\" svg:font-family=\"Arial\" style:font-family-generic=\"swiss\"" +
+						" " +
 						"style:font-pitch=\"variable\"/>");
 		writer.write(
 				"<style:font-face style:name=\"Lucida Sans Unicode\" svg:font-family=\"'Lucida Sans Unicode'\" " +
@@ -149,12 +210,5 @@ public class ContentElement implements OdsElement {
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
-		for (final Table table : this.tables)
-			table.appendXMLToContentEntry(util, writer);
-		writer.write("</office:spreadsheet>");
-		writer.write("</office:body>");
-		writer.write("</office:document-content>");
-		writer.flush();
-		writer.closeEntry();
 	}
 }

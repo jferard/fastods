@@ -135,11 +135,13 @@ public class AnonymousOdsFileWriterTest {
 
 		// PLAY
 		this.initOdsElements();
-		this.odsElements.setTables();
 		EasyMock.expect(zb.build(EasyMock.isA(FileOutputStream.class)))
 				.andReturn(z);
-		this.odsElements.writeElements(this.xmlUtil, z);
 		this.odsElements.createEmptyElements(z);
+		this.odsElements.writeImmutableElements(this.xmlUtil, z);
+		this.odsElements.writeEditableElements(this.xmlUtil, z);
+		this.odsElements.writeContent(this.xmlUtil, z);
+		this.odsElements.writeSettings(this.xmlUtil, z);
 		z.close();
 		PowerMock.replayAll();
 		final OdsDocument document = new OdsDocument(this.logger, this.odsElements,
@@ -154,9 +156,11 @@ public class AnonymousOdsFileWriterTest {
 
 		// PLAY
 		this.initOdsElements();
-		this.odsElements.setTables();
-		this.odsElements.writeElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
 		this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
+		this.odsElements.writeImmutableElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+		this.odsElements.writeEditableElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+		this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+		this.odsElements.writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
 		outputStream.write(EasyMock.anyObject(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
 		EasyMock.expectLastCall().anyTimes();
 		outputStream.flush();
