@@ -23,12 +23,16 @@ package com.github.jferard.fastods;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class BenchFast extends Bench {
 
+	private final OdsFactory odsFactory;
+
 	public BenchFast(final Logger logger, final int rowCount, final int colCount) {
 		super(logger, "FastODS", rowCount, colCount);
+		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
 	@Override
@@ -37,21 +41,23 @@ public class BenchFast extends Bench {
 		this.logger.info("testFast: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = odsFactory.createDocument();
+		OdsFileWriter writer =
+				this.odsFactory.createWriter(document, new File("generated_files", "fastods_benchmark.ods"));
 		final Table table = document.addTable("test", rowCount, colCount);
 
 		for (int y = 0; y < rowCount; y++) {
 			final HeavyTableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < colCount; x++) {
-				walker.lastCell();
 				walker.setFloatValue(this.random.nextInt(1000));
+				walker.next();
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_benchmark.ods"));
+		writer.save();
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
-		return t2-t1;
+		return t2 - t1;
 	}
 }

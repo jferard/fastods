@@ -30,6 +30,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -48,9 +49,12 @@ public class OdsFileCreationTest {
 		generated_files.mkdir();
 	}
 
+	private OdsFactory odsFactory;
+
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
+		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
 	public final void test1000() throws FastOdsException, IOException {
@@ -58,7 +62,7 @@ public class OdsFileCreationTest {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
@@ -70,7 +74,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_1000_300.ods"));
+		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_1000_300.ods"));
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -81,7 +85,7 @@ public class OdsFileCreationTest {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
@@ -93,7 +97,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_100000_20.ods"));
+		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_100000_20.ods"));
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -105,7 +109,7 @@ public class OdsFileCreationTest {
 		final long t1 = System.currentTimeMillis();
 		final Random random = new Random();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
 		document.setViewSetting("View1", "ZoomValue", "200");
 		final Table table = document.addTable("test", 50, 5);
 		table.setSettings("View1", "ZoomValue", "200");
@@ -195,7 +199,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		document.saveAs(new File("generated_files", "fastods_50_5.ods"));
+		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_50_5.ods"));
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}

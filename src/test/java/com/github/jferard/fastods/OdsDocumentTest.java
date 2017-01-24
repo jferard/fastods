@@ -23,12 +23,15 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
-import com.google.common.collect.Sets;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,18 +40,16 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class OdsDocumentTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
+	private ZipUTF8WriterBuilder builder;
 
 	private DataStyleBuilderFactory dataStyleBuilderFactory;
 	private OdsElements odsElements;
@@ -68,6 +69,7 @@ public class OdsDocumentTest {
 		this.writer = PowerMock.createMock(ZipUTF8Writer.class);
 		this.xmlUtil = XMLUtil.create();
 		this.odsElements = PowerMock.createMock(OdsElements.class);
+		this.builder = ZipUTF8Writer.builder();
 	}
 
 	@Test
@@ -246,32 +248,6 @@ public class OdsDocumentTest {
 		PowerMock.verifyAll();
 	}
 
-	@Test
-	public final void testSaveToOS() throws IOException {
-		final OdsDocument d = new OdsFactory(Locale.US).createDocument();
-		PowerMock.replayAll();
-
-		d.save(this.os);
-		final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
-		final ZipInputStream zis = new ZipInputStream(is);
-
-		ZipEntry entry = zis.getNextEntry();
-		final Set<String> names = new HashSet<String>();
-		while (entry != null) {
-			names.add(entry.getName());
-			entry = zis.getNextEntry();
-		}
-		Assert.assertEquals(Sets.newHashSet("settings.xml",
-				"Configurations2/images/Bitmaps/", "Configurations2/toolbar/",
-				"META-INF/manifest.xml", "Thumbnails/",
-				"Configurations2/floater/", "Configurations2/menubar/",
-				"mimetype", "meta.xml",
-				"Configurations2/accelerator/current.xml",
-				"Configurations2/popupmenu/", "styles.xml", "content.xml",
-				"Configurations2/progressbar/", "Configurations2/statusbar/"),
-				names);
-		PowerMock.verifyAll();
-	}
 
 	@Test
 	public final void testSaveWriterException() throws IOException {
@@ -334,60 +310,6 @@ public class OdsDocumentTest {
 		Assert.assertFalse(f.setActiveTable(-1));
 		Assert.assertFalse(f.setActiveTable(1));
 		Assert.assertTrue(f.setActiveTable(0));
-		PowerMock.verifyAll();
-	}
-
-	@Test(expected = IOException.class)
-	public final void testFileIsDir() throws IOException {
-		// PLAY
-		this.initOdsElements();
-		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
-				this.xmlUtil);
-		f.saveAs(".");
-		PowerMock.verifyAll();
-	}
-
-	@Test
-	public final void testSaveWriter() throws IOException {
-		final ZipUTF8WriterBuilder zb = PowerMock
-				.createMock(ZipUTF8WriterBuilder.class);
-		final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
-		final File temp = File.createTempFile("tempfile", ".tmp");
-		
-		// PLAY
-		this.initOdsElements();
-		this.odsElements.setTables();
-		EasyMock.expect(zb.build(EasyMock.isA(FileOutputStream.class)))
-				.andReturn(z);
-		this.odsElements.writeElements(this.xmlUtil, z);
-		this.odsElements.createEmptyElements(z);
-		z.close();
-		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
-				this.xmlUtil);
-		f.saveAs("file", zb);
-		PowerMock.verifyAll();
-	}
-
-	@Test // (expected = IOException.class)
-	public final void testSaveWriterWithException() throws IOException {
-		final OutputStream o = PowerMock.createMock(OutputStream.class);
-		
-		// PLAY
-		this.initOdsElements();
-		this.odsElements.setTables();
-		this.odsElements.writeElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-		this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
-		o.write(EasyMock.anyObject(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
-		EasyMock.expectLastCall().anyTimes();
-		o.flush();
-		EasyMock.expectLastCall().anyTimes();
-		o.close();
-		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
-				this.xmlUtil);
-		f.save(o);
 		PowerMock.verifyAll();
 	}
 

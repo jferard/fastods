@@ -33,13 +33,8 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -52,9 +47,8 @@ import java.util.logging.Logger;
 public class OdsDocument {
 	private static final int DEFAULT_COLUMN_CAPACITY = 32;
 	private static final int DEFAULT_ROW_CAPACITY = 1024;
-
-	private final OdsElements odsElements;
 	private final Logger logger;
+	private final OdsElements odsElements;
 	private final XMLUtil xmlUtil;
 
 	/**
@@ -108,6 +102,10 @@ public class OdsDocument {
 		this.odsElements.addPageLayoutStyle(pageLayoutStyle);
 	}
 
+	public void addPageStyle(final PageStyle ps) {
+		this.odsElements.addPageStyle(ps);
+	}
+
 	/**
 	 * Add a style tag to this document. Use only if you want to flush data before the end of the document
 	 * construction.
@@ -132,6 +130,12 @@ public class OdsDocument {
 				OdsDocument.DEFAULT_COLUMN_CAPACITY);
 	}
 
+	/*
+	public void addTextStyle(final TextStyle fhTextStyle) {
+		this.odsElements.addTextStyle(fhTextStyle);
+	}
+	*/
+
 	public Table addTable(final String name, final int rowCapacity,
 						  final int columnCapacity) {
 		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
@@ -140,11 +144,9 @@ public class OdsDocument {
 		return table;
 	}
 
-	/*
-	public void addTextStyle(final TextStyle fhTextStyle) {
-		this.odsElements.addTextStyle(fhTextStyle);
+	public Logger getLogger() {
+		return this.logger;
 	}
-	*/
 
 	public Table getTable(final int n) throws FastOdsException {
 		final List<Table> tableQueue = this.odsElements.getTables();
@@ -209,55 +211,12 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Save the new file.
+	 * Saves a file
 	 *
-	 * @param filename the name of the destination file
-	 * @throws IOException If an I/O error occurs
+	 * @param writer where to write
+	 * @throws IOException
 	 */
-	public void saveAs(final String filename) throws IOException {
-		try {
-			final FileOutputStream out = new FileOutputStream(filename);
-			this.save(out);
-		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + filename, e);
-			throw new IOException(e);
-		} catch (final NullPointerException e) {
-			this.logger.log(Level.SEVERE, "No file", e);
-			throw new IOException(e);
-		}
-	}
-
-	/**
-	 * Save the new file.
-	 *
-	 * @param file the destination file
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void saveAs(final File file) throws IOException {
-		try {
-			final FileOutputStream out = new FileOutputStream(file);
-			this.save(out);
-		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + file, e);
-			throw new IOException(e);
-		} catch (final NullPointerException e) {
-			this.logger.log(Level.SEVERE, "No file", e);
-			throw new IOException(e);
-		}
-	}
-
-	/**
-	 * Save the new file.
-	 *
-	 * @param out The OutputStream that should be used.
-	 * @throws IOException The file can't be saved.
-	 */
-	public void save(final OutputStream out) throws IOException {
-		final ZipUTF8WriterBuilder builder = ZipUTF8Writer.builder();
-		this.save(builder.build(out));
-	}
-
-	public void save(final ZipUTF8Writer writer) throws IOException {
+	void save(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.setTables();
 
 		try {
@@ -267,22 +226,6 @@ public class OdsDocument {
 			writer.close();
 		}
 		this.logger.log(Level.FINE, "file saved");
-	}
-
-	/**
-	 * @param filename the name of the destination file
-	 * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
-	 *                 level, ...)
-	 * @throws IOException if the file was not saved
-	 */
-	public void saveAs(final String filename, final ZipUTF8WriterBuilder builder) throws IOException {
-		try {
-			final FileOutputStream out = new FileOutputStream(filename);
-			this.save(builder.build(out));
-		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + filename, e);
-			throw new IOException(e);
-		}
 	}
 
 	/**
@@ -302,6 +245,10 @@ public class OdsDocument {
 		return true;
 	}
 
+	public void setViewSetting(final String viewId, final String item, final String value) {
+		this.odsElements.setViewSettings(viewId, item, value);
+	}
+
 	/**
 	 * Gets the number of the last table.
 	 *
@@ -309,17 +256,5 @@ public class OdsDocument {
 	 */
 	public int tableCount() {
 		return this.odsElements.getTableCount();
-	}
-
-	public Logger getLogger() {
-		return this.logger;
-	}
-
-	public void setViewSetting(final String viewId, final String item, final String value) {
-		this.odsElements.setViewSettings(viewId, item, value);
-	}
-
-	public void addPageStyle(final PageStyle ps) {
-		this.odsElements.addPageStyle(ps);
 	}
 }

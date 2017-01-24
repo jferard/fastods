@@ -36,6 +36,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,7 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = new OdsFactory();
+		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
 	@Test

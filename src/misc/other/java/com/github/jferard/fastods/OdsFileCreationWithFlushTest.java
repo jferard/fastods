@@ -31,6 +31,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -53,7 +54,7 @@ public class OdsFileCreationWithFlushTest {
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = new OdsFactory();
+		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
 	public final void test1000() throws FastOdsException, IOException {

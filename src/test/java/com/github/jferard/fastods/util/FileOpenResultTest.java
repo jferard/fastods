@@ -27,10 +27,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  */
@@ -42,15 +45,16 @@ public class FileOpenResultTest {
 
 	@Before
 	public void setUp() {
-		this.odsFactory = new OdsFactory();
+		final Logger logger = PowerMock.createMock(Logger.class);
+		this.odsFactory = new OdsFactory(logger, Locale.US);
 	}
 
 	@Test
 	public void testIsDir() throws Exception {
-		final FileOpenResult fileOpenResult = odsFactory.openFile(".");
+		final FileOpenResult fileOpenResult = this.odsFactory.openFile(".");
 
 		Assert.assertTrue(FileOpenResult.FILE_IS_DIR == fileOpenResult);
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		fileOpenResult.getStream();
 	}
 
@@ -59,7 +63,7 @@ public class FileOpenResultTest {
 		final File aTest = new File("atest");
 
 		try {
-			final FileOpenResult fileOpenResult = odsFactory.openFile(aTest.getAbsolutePath());
+			final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
 			Assert.assertTrue(fileOpenResult instanceof FileOpen);
 			Assert.assertEquals(0, aTest.length());
 			// the file has been touched
@@ -75,7 +79,6 @@ public class FileOpenResultTest {
 	@Test
 	public void testExists() throws Exception {
 		final File aTest = new File("atest");
-		odsFactory = new OdsFactory();
 
 		// create a file
 		OutputStream s = new FileOutputStream(aTest);
@@ -83,7 +86,7 @@ public class FileOpenResultTest {
 		s.close();
 		Assert.assertEquals(3, aTest.length());
 		try {
-			final FileOpenResult fileOpenResult = odsFactory.openFile(aTest.getAbsolutePath());
+			final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
 			Assert.assertTrue(fileOpenResult instanceof FileExists);
 			// the file has not been touched
 			Assert.assertEquals(3, aTest.length());

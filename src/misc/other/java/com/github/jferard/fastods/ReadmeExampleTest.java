@@ -26,13 +26,19 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  */
 public class ReadmeExampleTest {
+
+	private OdsFactory odsFactory;
+
 	@Test
 	public void readme() throws IOException {
-		final OdsDocument document = new OdsFactory().createDocument();
+		this.odsFactory = new OdsFactory(Logger.getLogger("example"), Locale.US);
+		final OdsDocument document = this.odsFactory.createDocument();
 		final Table table = document.addTable("test");
 
 		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
@@ -46,6 +52,6 @@ public class ReadmeExampleTest {
 			}
 		}
 
-		document.saveAs(new File("generated_files", "readme.ods"));
+		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "readme.ods"));
 	}
 }

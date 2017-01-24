@@ -33,6 +33,7 @@ import com.mockrunner.jdbc.StatementResultSetHandler;
 import com.mockrunner.mock.jdbc.MockConnection;
 import com.mockrunner.mock.jdbc.MockResultSet;
 import org.easymock.EasyMock;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -45,11 +46,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	private Logger logger;
+	private OdsFactory odsFactory;
 	private ResultSet rs;
 	private Table table;
 	private TableCellStyle tcls;
@@ -62,6 +65,11 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 			return;
 
 		generated_files.mkdir();
+	}
+
+	@Before
+	public final void setUp() {
+		this.odsFactory = new OdsFactory(Logger.getLogger(""), Locale.US);
 	}
 
 	private static MockResultSet createResultSet(
@@ -244,8 +252,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 						Arrays.<Object>asList(14, "b", "14b"),
 						Arrays.<Object>asList(15, "c", "15c")));
 
-		final OdsDocument file = new OdsFactory().createDocument();
-		final Table table = file.addTable("test", 50, 5);
+		final OdsDocument document = this.odsFactory.createDocument();
+		final Table table = document.addTable("test", 50, 5);
 		final TableCellStyle tcls = TableCellStyle.builder("rs-head")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		final DataWrapper data = new ResultSetDataWrapper(logger, rs, tcls,
@@ -256,7 +264,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		table.addData(data);
 		table.nextRow();
 		table.addData(data2);
-		file.saveAs(new File("generated_files", "7columns.ods"));
+		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "7columns.ods"));
 	}
 
 	@Test

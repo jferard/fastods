@@ -63,7 +63,8 @@ In your POM, you'll have to include the following dependency:
 ## Examples
 ### Basic example
 ```java
-final OdsDocument document = new OdsFactory().createDocument();
+this.odsFactory = new OdsFactory(Logger.getLogger("example"), Locale.US);
+final OdsDocument document = this.odsFactory.createDocument();
 final Table table = document.addTable("test");
 
 final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
@@ -77,7 +78,7 @@ for (int y = 0; y < 50; y++) {
 	}
 }
 
-document.saveAs(new File("generated_files", "readme.ods"));
+this.odsFactory.createWriter(document).saveAs(new File("generated_files", "readme.ods"));
 ```
 
 ### Other examples

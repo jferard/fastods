@@ -46,23 +46,24 @@ import static com.github.jferard.fastods.OdsFactory.FileState.OK;
  * @author Julien Férard
  */
 public class OdsFactory {
-	private final Logger logger;
-	private final XMLUtil xmlUtil;
-	private final LocaleDataStyles format;
-	private final WriteUtil writeUtil;
-	private final PositionUtil positionUtil;
-	public OdsFactory() {
-		this(Locale.getDefault());
+	public static OdsFactory create() {
+		return new OdsFactory(Logger.getLogger(OdsDocument.class.getName()), Locale.getDefault());
 	}
 
-	public OdsFactory(final Locale locale) {
+	private final LocaleDataStyles format;
+	private final Logger logger;
+	private final PositionUtil positionUtil;
+	private final WriteUtil writeUtil;
+	private final XMLUtil xmlUtil;
+
+	public OdsFactory(final Logger logger, final Locale locale) {
 		this.positionUtil = new PositionUtil(new EqualityUtil());
 		this.writeUtil = new WriteUtil();
 		this.xmlUtil = XMLUtil.create();
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				this.xmlUtil, locale);
 		this.format = new LocaleDataStyles(builderFactory);
-		this.logger = Logger.getLogger(OdsDocument.class.getName());
+		this.logger = logger;
 	}
 
 	/**
@@ -83,13 +84,35 @@ public class OdsFactory {
 	}
 
 	/**
-	 * @param filename the name of the file.
-	 * @return the result of the operation
-	 * @throws FileNotFoundException if the file does not exist
+	 * Create a new, empty document. Use addTable to add tables.
+	 *
+	 * @return a new document
 	 */
-	public FileOpenResult openFile(final String filename) throws FileNotFoundException {
-		final File f = new File(filename);
-		return this.openFile(f);
+	public OdsDocument createDocument() {
+		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
+				this.writeUtil, this.format);
+		return new OdsDocument(this.logger,
+				odsElements, this.xmlUtil);
+	}
+
+	public AnonymousOdsFileWriter createWriter(final OdsDocument document) {
+		return new AnonymousOdsFileWriter(this.logger, document);
+	}
+
+	/**
+	 * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
+	 *
+	 * @param document the document that will be written
+	 * @param filename the name of the destination file
+	 * @return the ods writer
+	 * @throws FileNotFoundException if the file can't be found
+	 */
+	public OdsFileWriter createWriter(final OdsDocument document, final String filename) throws FileNotFoundException {
+		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename)).build();
+	}
+
+	public OdsFileWriter createWriter(final OdsDocument document, final File file) throws FileNotFoundException {
+		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
 	}
 
 	/**
@@ -108,31 +131,13 @@ public class OdsFactory {
 	}
 
 	/**
-	 * Create a new, empty document. Use addTable to add tables.
-	 *
-	 * @return a new document
+	 * @param filename the name of the file.
+	 * @return the result of the operation
+	 * @throws FileNotFoundException if the file does not exist
 	 */
-	public OdsDocument createDocument() {
-		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
-				this.writeUtil, this.format);
-		return new OdsDocument(this.logger,
-				odsElements, this.xmlUtil);
-	}
-
-	/**
-	 * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
-	 *
-	 * @param document the document that will be written
-	 * @param filename the name of the destination file
-	 * @return the ods writer
-	 * @throws FileNotFoundException if the file can't be found
-	 */
-	public OdsFileWriter createWriter(final OdsDocument document, final String filename) throws FileNotFoundException {
-		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename)).build();
-	}
-
-	public OdsFileWriter createWriter(final OdsDocument document, final File file) throws FileNotFoundException {
-		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
+	public FileOpenResult openFile(final String filename) throws FileNotFoundException {
+		final File f = new File(filename);
+		return this.openFile(f);
 	}
 
 	public static enum FileState {

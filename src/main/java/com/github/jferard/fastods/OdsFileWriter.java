@@ -28,26 +28,27 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class OdsFileWriter {
-	private final Logger logger;
-	private final OdsDocument document;
-	private final ZipUTF8Writer writer;
-
 	public static OdsFileWriterBuilder builder(final Logger logger, final OdsDocument document) {
 		return new OdsFileWriterBuilder(logger, document);
 	}
 
+	private final OdsDocument document;
+	private final Logger logger;
+	private final ZipUTF8Writer writer;
+
 	/**
 	 * Create a new ODS file.
-	 *  @param logger the logger
+	 *
+	 * @param logger   the logger
 	 * @param document the document to write
-	 * @param writer The writer for this file
+	 * @param writer   The writer for this file
 	 */
-	OdsFileWriter(final Logger logger, final OdsDocument document, final ZipUTF8Writer writer) throws FileNotFoundException {
+	OdsFileWriter(final Logger logger, final OdsDocument document, final ZipUTF8Writer writer)
+			throws FileNotFoundException {
 		this.logger = logger;
 		this.document = document;
 		this.writer = writer;

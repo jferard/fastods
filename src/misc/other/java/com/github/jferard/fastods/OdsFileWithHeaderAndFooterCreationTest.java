@@ -35,6 +35,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,9 +55,12 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		generated_files.mkdir();
 	}
 
+	private OdsFactory odsFactory;
+
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
+		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
 	@Test
@@ -96,7 +100,7 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		final PageStyle ps = PageStyle.builder("test")
 				.footer(footer).header(header).build();
 
-		final OdsDocument document = new OdsFactory().createDocument();
+		final OdsDocument document = this.odsFactory.createDocument();
 		final Table table = document.addTable("test", 1, 5);
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
 				.build();
@@ -140,6 +144,6 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		document.saveAs(new File("generated_files", "fastods_fh.ods"));
+		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_fh.ods"));
 	}
 }
