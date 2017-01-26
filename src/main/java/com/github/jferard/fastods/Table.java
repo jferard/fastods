@@ -226,6 +226,8 @@ public class Table implements NamedObject {
 	 */
 	public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
+		if (rowIndex == 0)
+			this.appendPreamble(util, appendable);
 		this.appendRows(util, appendable, rowIndex);
 		this.appendPostamble(appendable);
 	}
@@ -238,6 +240,8 @@ public class Table implements NamedObject {
 	 */
 	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
+		if (rowIndex == 0)
+			this.appendPreamble(util, appendable);
 		this.appendRows(util, appendable, rowIndex);
 	}
 

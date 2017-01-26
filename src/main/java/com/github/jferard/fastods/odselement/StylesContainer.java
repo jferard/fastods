@@ -26,6 +26,7 @@ import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.MultiContainer;
@@ -63,6 +64,11 @@ public class StylesContainer {
 	public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
 		return this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
 				mode);
+	}
+
+	public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
+		this.addStyleToContentAutomaticStyles(style);
+		this.addDataStyle(style.getDataStyle());
 	}
 
 	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {

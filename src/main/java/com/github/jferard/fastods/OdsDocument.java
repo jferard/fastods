@@ -82,6 +82,10 @@ public class OdsDocument {
 		this.odsElements.addDataStyle(dataStyle);
 	}
 
+	public void addDefaultDataStyles() {
+		this.odsElements.addDefaultDataStyles();
+	}
+
 	/**
 	 * Add a master page style to this document. Use only if you want to flush data before the end of the document
 	 * construction.
@@ -146,6 +150,10 @@ public class OdsDocument {
 
 	void createEmptyElements(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.createEmptyElements(writer);
+	}
+
+	public void finalizeContent(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.finalizeContent(this.xmlUtil, writer);
 	}
 
 	public void finalizeFlush(final ZipUTF8Writer writer) throws IOException {

@@ -46,29 +46,6 @@ import java.util.zip.ZipEntry;
  * @author Julien Férard
  */
 public class OdsElements {
-	private final ContentElement contentElement;
-	private final Logger logger;
-	private final ManifestElement manifestElement;
-	private final MetaElement metaElement;
-	private final MimetypeElement mimetypeElement;
-	private final SettingsElement settingsElement;
-	private final StylesContainer stylesContainer;
-	private final StylesElement stylesElement;
-	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
-						  final ManifestElement manifestElement,
-						  final SettingsElement settingsElement, final MetaElement metaElement,
-						  final ContentElement contentElement, final StylesElement stylesElement,
-						  final StylesContainer stylesContainer) {
-		this.logger = logger;
-		this.mimetypeElement = mimetypeElement;
-		this.manifestElement = manifestElement;
-		this.settingsElement = settingsElement;
-		this.metaElement = metaElement;
-		this.contentElement = contentElement;
-		this.stylesElement = stylesElement;
-		this.stylesContainer = stylesContainer;
-	}
-
 	public static OdsElements create(final PositionUtil positionUtil,
 									 final XMLUtil xmlUtil, final WriteUtil writeUtil,
 									 final DataStyles format) {
@@ -84,9 +61,36 @@ public class OdsElements {
 				mimetypeElement, manifestElement, settingsElement, metaElement,
 				contentElement, stylesElement, stylesContainer);
 	}
+	private final ContentElement contentElement;
+	private final Logger logger;
+	private final ManifestElement manifestElement;
+	private final MetaElement metaElement;
+	private final MimetypeElement mimetypeElement;
+	private final SettingsElement settingsElement;
+	private final StylesContainer stylesContainer;
+	private final StylesElement stylesElement;
+
+	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
+						  final ManifestElement manifestElement,
+						  final SettingsElement settingsElement, final MetaElement metaElement,
+						  final ContentElement contentElement, final StylesElement stylesElement,
+						  final StylesContainer stylesContainer) {
+		this.logger = logger;
+		this.mimetypeElement = mimetypeElement;
+		this.manifestElement = manifestElement;
+		this.settingsElement = settingsElement;
+		this.metaElement = metaElement;
+		this.contentElement = contentElement;
+		this.stylesElement = stylesElement;
+		this.stylesContainer = stylesContainer;
+	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.stylesContainer.addDataStyle(dataStyle);
+	}
+
+	public void addDefaultDataStyles() {
+		this.contentElement.addDefaultDataStyles();
 	}
 
 	public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
@@ -97,9 +101,13 @@ public class OdsElements {
 		this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
 	}
 
+	public void addPageStyle(final PageStyle ps) {
+		this.stylesContainer.addPageStyle(ps);
+	}
+
 	public void addStyleTag(final StyleTag styleTag) {
 		if ("table-cell".equals(styleTag.getFamily()))
-			this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag);
+			this.stylesContainer.addStyleToStylesCommonStyles(styleTag);
 		else
 			this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
@@ -123,6 +131,10 @@ public class OdsElements {
 			writer.putNextEntry(new ZipEntry(elementName));
 			writer.closeEntry();
 		}
+	}
+
+	public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.contentElement.writePostamble(xmlUtil, writer);
 	}
 
 	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
@@ -156,20 +168,8 @@ public class OdsElements {
 		this.settingsElement.setActiveTable(table);
 	}
 
-	@Deprecated
-	public void writeElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
-			throws IOException {
-		this.writeImmutableElements(xmlUtil, writer);
-		this.writeEditableElements(xmlUtil, writer);
-		this.writeContent(xmlUtil, writer);
-		this.writeSettings(xmlUtil, writer);
-	}
-
-	public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.settingsElement.setTables(this.getTables());
-		this.logger.log(Level.FINER,
-				"Writing odselement: settingsElement to zip file");
-		this.settingsElement.write(xmlUtil, writer);
+	public void setViewSettings(final String viewId, final String item, final String value) {
+		this.settingsElement.setViewSettings(viewId, item, value);
 	}
 
 	public void writeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
@@ -184,6 +184,15 @@ public class OdsElements {
 		this.stylesElement.write(xmlUtil, writer);
 	}
 
+	@Deprecated
+	public void writeElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+			throws IOException {
+		this.writeImmutableElements(xmlUtil, writer);
+		this.writeEditableElements(xmlUtil, writer);
+		this.writeContent(xmlUtil, writer);
+		this.writeSettings(xmlUtil, writer);
+	}
+
 	public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		this.logger.log(Level.FINER,
 				"Writing odselement: mimeTypeEntry to zip file");
@@ -193,11 +202,10 @@ public class OdsElements {
 		this.manifestElement.write(xmlUtil, writer);
 	}
 
-	public void setViewSettings(final String viewId, final String item, final String value) {
-		this.settingsElement.setViewSettings(viewId, item, value);
-	}
-
-	public void addPageStyle(final PageStyle ps) {
-		this.stylesContainer.addPageStyle(ps);
+	public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.settingsElement.setTables(this.getTables());
+		this.logger.log(Level.FINER,
+				"Writing odselement: settingsElement to zip file");
+		this.settingsElement.write(xmlUtil, writer);
 	}
 }

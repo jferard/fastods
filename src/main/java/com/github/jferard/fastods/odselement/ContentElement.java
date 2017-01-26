@@ -61,6 +61,15 @@ public class ContentElement implements OdsElement {
 		this.flushPosition = new FlushPosition();
 	}
 
+	public void addDefaultDataStyles() {
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getBooleanStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getCurrencyStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getDateStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getNumberStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getPercentageStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getTimeStyle());
+	}
+
 	/**
 	 * @param name           the name of the table to create
 	 * @param columnCapacity the initial capacity in columns: this will be allocated at table creation
@@ -82,7 +91,7 @@ public class ContentElement implements OdsElement {
 	private void ensureContentBegin(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		if (this.flushPosition.isUndefined()) {
 			this.writePreamble(util, writer);
-			this.flushPosition.set(0, 0);
+			this.flushPosition.set(0, -1);
 		}
 	}
 
@@ -92,7 +101,9 @@ public class ContentElement implements OdsElement {
 		int tableIndex = this.flushPosition.getTableIndex();
 		Table table = this.tables.get(tableIndex);
 		if (tableIndex < lastTableIndex) {
-			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex()+1);
+			System.out.println("Moving from table" + tableIndex + " to table " + lastTableIndex);
+			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
+			tableIndex++;
 			while (tableIndex < lastTableIndex) {
 				table = this.tables.get(tableIndex);
 				table.appendXMLToContentEntry(util, writer);
@@ -101,7 +112,7 @@ public class ContentElement implements OdsElement {
 			table = this.tables.get(lastTableIndex);
 			table.flushAllAvailableRows(util, writer);
 		} else {
-			table.flushSomeAvailableRowsFrom(util, writer, this.flushPosition.getLastRowIndex());
+			table.flushSomeAvailableRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
 		}
 		this.flushPosition.set(lastTableIndex, this.tables.get(lastTableIndex).getLastRowNumber());
 	}
@@ -110,16 +121,14 @@ public class ContentElement implements OdsElement {
 		this.ensureContentBegin(util, writer);
 		final int lastTableIndex = this.tables.size() - 1;
 		int tableIndex = this.flushPosition.getTableIndex();
-		if (tableIndex < lastTableIndex) {
-			Table table = this.tables.get(tableIndex);
-			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex());
-			while (tableIndex <= lastTableIndex) {
-				table = this.tables.get(tableIndex);
-				table.appendXMLToContentEntry(util, writer);
-				tableIndex++;
-			}
+		Table table = this.tables.get(tableIndex);
+		table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
+		tableIndex++;
+		while (tableIndex <= lastTableIndex) {
+			table = this.tables.get(tableIndex);
+			table.appendXMLToContentEntry(util, writer);
+			tableIndex++;
 		}
-		this.flushPosition.set(lastTableIndex + 1, 0);
 	}
 
 	public StylesContainer getStyleTagsContainer() {
@@ -158,7 +167,7 @@ public class ContentElement implements OdsElement {
 		this.writePostamble(util, writer);
 	}
 
-	private void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		writer.write("</office:spreadsheet>");
 		writer.write("</office:body>");
 		writer.write("</office:document-content>");

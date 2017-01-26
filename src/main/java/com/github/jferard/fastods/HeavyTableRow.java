@@ -421,17 +421,15 @@ public class HeavyTableRow {
 		if (style == null)
 			return;
 
-		final DataStyle dataStyle = style.getDataStyle();
-		assert dataStyle != null;
-
 		final TableCellStyle curStyle = this.styles.get(c);
-		this.stylesContainer.addDataStyle(dataStyle);
 		if (curStyle == null) { // adds the data style
-			this.stylesContainer.addStyleToContentAutomaticStyles(style);
+			this.stylesContainer.addNewDataStyleFromCellStyle(style);
 			this.styles.set(c, style);
 		} else { // keep the style, but use the new data style
 			// to remove the current data style implies a kind of ref counter,
 			// which would be a too complicated feature.
+			final DataStyle dataStyle = style.getDataStyle();
+			this.stylesContainer.addDataStyle(dataStyle);
 			curStyle.setDataStyle(dataStyle);
 		}
 	}
