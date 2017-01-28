@@ -49,18 +49,19 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 	}
 	private Logger logger;
 	private OdsFactory odsFactory;
+	private Random random;
 
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
 		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.random = new Random(0L);
 	}
 
 	@Test
 	public final void test3Tables() throws FastOdsException, IOException {
 		this.logger.info("Filling a 3 tables, 5 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final Random random = new Random();
 
 		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =

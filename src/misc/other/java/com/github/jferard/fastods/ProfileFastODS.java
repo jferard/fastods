@@ -86,7 +86,8 @@ public class ProfileFastODS {
 	public final void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
 		this.odsFactory = new OdsFactory(this.logger, Locale.US);
-		this.random = new Random();
+		this.random = new Random(); // don't use a fixed seed here, since the profile needs a new sequence each time
+		// to be reliable
 		this.logger.info(this.name.getMethodName() + " : filling a "
 				+ ProfileFastODS.ROW_COUNT + " rows, "
 				+ ProfileFastODS.COL_COUNT + " columns spreadsheet");

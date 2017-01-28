@@ -27,12 +27,12 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 public abstract class Bench {
+	final int colCount;
 	final Logger logger;
 	final Random random;
-	final int colCount;
-	private String name;
 	final int rowCount;
 	final List<Long> times;
+	private final String name;
 
 	public Bench(final Logger logger, final String name, final int rowCount, final int colCount) {
 		this.logger = logger;
@@ -40,14 +40,8 @@ public abstract class Bench {
 		this.rowCount = rowCount;
 		this.colCount = colCount;
 		this.times = new ArrayList<Long>();
-		this.random = new Random();
+		this.random = new Random(); // don't use a fixed seed, since the bench needs a new sequence each time
 	}
-
-	public void iteration() throws IOException {
-		this.times.add(this.test());
-	}
-
-	public abstract long test() throws IOException;
 
 	public Computations getWithWarmup() {
 		return new Computations(this.name, this.times.subList(2, this.times.size()));
@@ -56,4 +50,10 @@ public abstract class Bench {
 	public Computations getWithoutWarmup() {
 		return new Computations(this.name, this.times.subList(2, this.times.size()));
 	}
+
+	public void iteration() throws IOException {
+		this.times.add(this.test());
+	}
+
+	public abstract long test() throws IOException;
 }

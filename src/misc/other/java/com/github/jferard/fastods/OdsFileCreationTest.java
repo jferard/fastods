@@ -50,17 +50,18 @@ public class OdsFileCreationTest {
 	}
 
 	private OdsFactory odsFactory;
+	private Random random;
 
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
 		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.random = new Random(0L);
 	}
 
 	public final void test1000() throws FastOdsException, IOException {
 		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final Random random = new Random();
 
 		final OdsDocument document = this.odsFactory.createDocument();
 		final Table table = document.addTable("test");
@@ -69,7 +70,7 @@ public class OdsFileCreationTest {
 			final HeavyTableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 300; x++) {
-				walker.setFloatValue(random.nextInt(1000));
+				walker.setFloatValue(this.random.nextInt(1000));
 				walker.next();
 			}
 		}
@@ -83,7 +84,6 @@ public class OdsFileCreationTest {
 	public final void test100000() throws FastOdsException, IOException {
 		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final Random random = new Random();
 
 		final OdsDocument document = this.odsFactory.createDocument();
 		final Table table = document.addTable("test");
@@ -92,7 +92,7 @@ public class OdsFileCreationTest {
 			final HeavyTableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 20; x++) {
-				walker.setFloatValue(random.nextInt(1000));
+				walker.setFloatValue(this.random.nextInt(1000));
 				walker.next();
 			}
 		}
@@ -107,7 +107,6 @@ public class OdsFileCreationTest {
 	public final void test50() throws FastOdsException, IOException {
 		this.logger.info("Filling a 50 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final Random random = new Random();
 
 		final OdsDocument document = this.odsFactory.createDocument();
 		document.setViewSetting("View1", "ZoomValue", "200");
@@ -141,7 +140,7 @@ public class OdsFileCreationTest {
 			row = table.getRow(y);
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 5; x++) {
-				walker.setFloatValue(random.nextInt(1000));
+				walker.setFloatValue(this.random.nextInt(1000));
 				if ((y + 1) % 3 == 0) {
 					switch (x) {
 					case 0:
