@@ -48,6 +48,10 @@ public class Borders {
 		this.left = left;
 	}
 
+	public boolean areVoid() {
+		return this.all == null && this.top == null && this.right == null && this.bottom == null && this.left == null;
+	}
+
 	/**
 	 * @param util the util for writing XML
 	 * @param appendable where to write

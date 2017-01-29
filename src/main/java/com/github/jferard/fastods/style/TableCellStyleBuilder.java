@@ -34,7 +34,7 @@ public class TableCellStyleBuilder {
 	private final MarginsBuilder marginsBuilder;
 	private final String name;
 	// true
-	private String parentCellStyle;
+	private String parentCellStyleName;
 	private TableCellStyle.Align textAlign; // 'center','end','start','justify'
 	private final TextPropertiesBuilder tpBuilder;
 	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
@@ -50,7 +50,7 @@ public class TableCellStyleBuilder {
 			throw new IllegalArgumentException();
 
 		this.name = name;
-		this.parentCellStyle = "Default";
+		this.parentCellStyleName = "Default";
 		this.tpBuilder = TextProperties.builder();
 		this.bordersBuilder = new BordersBuilder();
 		this.marginsBuilder = new MarginsBuilder();
@@ -139,7 +139,7 @@ public class TableCellStyleBuilder {
 	public TableCellStyle build() {
 		return new TableCellStyle(this.name, this.dataStyle,
 				this.backgroundColor, this.tpBuilder.build(), this.textAlign,
-				this.verticalAlign, this.wrap, this.parentCellStyle,
+				this.verticalAlign, this.wrap, this.parentCellStyleName,
 				this.bordersBuilder.build(), this.marginsBuilder.build());
 	}
 
@@ -313,9 +313,9 @@ public class TableCellStyleBuilder {
 	public TableCellStyleBuilder parentCellStyle(
 			final TableCellStyle tableCellStyle) {
 		if (tableCellStyle == null)
-			this.parentCellStyle = null;
+			this.parentCellStyleName = null;
 		else
-			this.parentCellStyle = tableCellStyle.getName();
+			this.parentCellStyleName = tableCellStyle.getRealName();
 		return this;
 	}
 

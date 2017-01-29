@@ -21,11 +21,11 @@
 
 package com.github.jferard.fastods.odselement;
 
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+
+import java.io.IOException;
+import java.util.zip.ZipEntry;
 
 /**
  * styles.xml/office:document-styles
@@ -82,7 +82,7 @@ public class StylesElement implements OdsElement {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-		this.stylesContainer.writeDataStyles(util, writer);
+//		this.stylesContainer.writeDataStyles(util, writer);
 		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
 
 		if (hasFooterHeader.hasHeader()) {

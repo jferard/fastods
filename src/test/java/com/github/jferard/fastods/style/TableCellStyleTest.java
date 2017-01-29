@@ -20,15 +20,14 @@
  */
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
 
 public class TableCellStyleTest {
 	private XMLUtil util;
@@ -48,7 +47,7 @@ public class TableCellStyleTest {
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
-						+ "<style:paragraph-properties/>" + "</style:style>",
+						+ "</style:style>",
 				sb.toString());
 	}
 
@@ -60,7 +59,6 @@ public class TableCellStyleTest {
 		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:table-cell-properties/>"
 						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
 						+ "</style:style>",
 				sb.toString());
@@ -79,8 +77,10 @@ public class TableCellStyleTest {
 		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
-						+ "<style:paragraph-properties/>" + "</style:style>",
+						+
+						"<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt " +
+						"double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
+						+ "</style:style>",
 				sb.toString());
 	}
 
@@ -93,8 +93,8 @@ public class TableCellStyleTest {
 		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:table-cell-properties/>"
-						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
+						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" " +
+						"fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
 						+ "</style:style>",
 				sb.toString());
 	}

@@ -160,7 +160,7 @@ public class OdsFileCreationWithFlushTest {
 				row = table.getRow(y);
 				final TableCellWalker walker = row.getWalker();
 				for (int x = 0; x < 5; x++) {
-					walker.setFloatValue(this.random.nextInt(1000));
+					walker.setFloatValue(this.random.nextInt(3000)/3.0);
 					if ((y + 1) % 3 == 0) {
 						switch (x) {
 							case 0:

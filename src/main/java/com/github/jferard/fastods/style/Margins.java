@@ -44,6 +44,10 @@ public class Margins {
 		this.left = left;
 	}
 
+	public boolean areVoid() {
+		return this.all == null && this.top == null && this.right == null && this.bottom == null && this.left == null;
+	}
+
 	public void appendXMLToTableCellStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.all == null) {
