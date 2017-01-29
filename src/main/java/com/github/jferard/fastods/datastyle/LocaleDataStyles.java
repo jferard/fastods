@@ -25,70 +25,106 @@ import com.github.jferard.fastods.style.TableCellStyle;
 
 /**
  * @author Julien Férard
- *
  */
 public class LocaleDataStyles implements DataStyles {
 	private final TableCellStyle booleanCellStyle;
+	private final BooleanStyle booleanDataStyle;
 	private final TableCellStyle currencyCellStyle;
+	private final CurrencyStyle currencyDataStyle;
 	private final TableCellStyle dateCellStyle;
+	private final DateStyle dateDataStyle;
 	private final TableCellStyle numberCellStyle;
+	private final FloatStyle numberDataStyle;
 	private final TableCellStyle percentageCellStyle;
+	private final PercentageStyle percentageDataStyle;
 	private final TableCellStyle timeCellStyle;
+	private final TimeStyle timeDataStyle;
 
 	public LocaleDataStyles(final DataStyleBuilderFactory builderFactory) {
-		final BooleanStyle booleanDataStyle = builderFactory
+		this.booleanDataStyle = builderFactory
 				.booleanStyleBuilder("boolean-data").build();
 		this.booleanCellStyle = TableCellStyle.builder("boolean-style")
-				.dataStyle(booleanDataStyle).build();
-		final CurrencyStyle currencyDataStyle = builderFactory
+				.dataStyle(this.booleanDataStyle).build();
+		this.currencyDataStyle = builderFactory
 				.currencyStyleBuilder("currency-data").build();
 		this.currencyCellStyle = TableCellStyle.builder("currency-style")
-				.dataStyle(currencyDataStyle).build();
-		final DateStyle dateDataStyle = builderFactory
+				.dataStyle(this.currencyDataStyle).build();
+		this.dateDataStyle = builderFactory
 				.dateStyleBuilder("date-data").build();
 		this.dateCellStyle = TableCellStyle.builder("date-style")
-				.dataStyle(dateDataStyle).build();
-		final FloatStyle numberDataStyle = builderFactory
+				.dataStyle(this.dateDataStyle).build();
+		this.numberDataStyle = builderFactory
 				.floatStyleBuilder("float-data").build();
 		this.numberCellStyle = TableCellStyle.builder("number-style")
-				.dataStyle(numberDataStyle).build();
-		final PercentageStyle percentageDataStyle = builderFactory
+				.dataStyle(this.numberDataStyle).build();
+		this.percentageDataStyle = builderFactory
 				.percentageStyleBuilder("percentage-data").build();
 		this.percentageCellStyle = TableCellStyle.builder("percentage-style")
-				.dataStyle(percentageDataStyle).build();
-		final TimeStyle timeDataStyle = builderFactory
-				.timeStyleBuilder("time-data").build();
+				.dataStyle(this.percentageDataStyle).build();
+		this.timeDataStyle =
+				builderFactory
+						.timeStyleBuilder("time-data").build();
 		this.timeCellStyle = TableCellStyle.builder("time-style")
-				.dataStyle(timeDataStyle).build();
+				.dataStyle(this.timeDataStyle).build();
 	}
 
 	@Override
-	public TableCellStyle getBooleanStyle() {
+	public TableCellStyle getBooleanCellStyle() {
 		return this.booleanCellStyle;
 	}
 
 	@Override
-	public TableCellStyle getCurrencyStyle() {
+	public BooleanStyle getBooleanDataStyle() {
+		return this.booleanDataStyle;
+	}
+
+	@Override
+	public TableCellStyle getCurrencyCellStyle() {
 		return this.currencyCellStyle;
 	}
 
 	@Override
-	public TableCellStyle getDateStyle() {
+	public CurrencyStyle getCurrencyDataStyle() {
+		return this.currencyDataStyle;
+	}
+
+	@Override
+	public TableCellStyle getDateCellStyle() {
 		return this.dateCellStyle;
 	}
 
 	@Override
-	public TableCellStyle getNumberStyle() {
+	public DateStyle getDateDataStyle() {
+		return this.dateDataStyle;
+	}
+
+	@Override
+	public TableCellStyle getNumberCellStyle() {
 		return this.numberCellStyle;
 	}
 
 	@Override
-	public TableCellStyle getPercentageStyle() {
+	public FloatStyle getNumberDataStyle() {
+		return this.numberDataStyle;
+	}
+
+	@Override
+	public TableCellStyle getPercentageCellStyle() {
 		return this.percentageCellStyle;
 	}
 
 	@Override
-	public TableCellStyle getTimeStyle() {
+	public PercentageStyle getPercentageDataStyle() {
+		return this.percentageDataStyle;
+	}
+
+	@Override
+	public TableCellStyle getTimeCellStyle() {
 		return this.timeCellStyle;
+	}
+
+	@Override
+	public TimeStyle getTimeDataStyle() {
+		return this.timeDataStyle;
 	}
 }

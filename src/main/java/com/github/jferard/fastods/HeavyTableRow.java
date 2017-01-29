@@ -41,26 +41,25 @@ import java.util.List;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class HeavyTableRow {
 	private final int columnCapacity;
-	private DataStyles dataStyles;
-	private TableCellStyle defaultCellStyle;
 	private final Table parent;
 	private final int rowIndex;
-	private HeavyTableColdRow coldRow;
-	private TableRowStyle rowStyle;
 	private final List<TableCellStyle> styles;
 	private final StylesContainer stylesContainer;
 	private final List<TableCell.Type> types;
 	private final List<String> values;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
+	private HeavyTableColdRow coldRow;
+	private DataStyles dataStyles;
+	private TableCellStyle defaultCellStyle;
+	private TableRowStyle rowStyle;
 
 	HeavyTableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
-			final StylesContainer stylesContainer, final DataStyles dataStyles,
-			final Table parent, final int rowIndex, final int columnCapacity) {
+				  final StylesContainer stylesContainer, final DataStyles dataStyles,
+				  final Table parent, final int rowIndex, final int columnCapacity) {
 		this.writeUtil = writeUtil;
 		this.stylesContainer = stylesContainer;
 		this.xmlUtil = xmlUtil;
@@ -74,16 +73,62 @@ public class HeavyTableRow {
 		this.types = FullList.newListWithCapacity(columnCapacity);
 	}
 
+	private void appendRowOpenTag(final XMLUtil util,
+								  final Appendable appendable) throws IOException {
+		appendable.append("<table:table-row");
+		if (this.rowStyle != null)
+			util.appendEAttribute(appendable, "table:style-name",
+					this.rowStyle.getName());
+		if (this.defaultCellStyle != null)
+			util.appendEAttribute(appendable, "table:default-cell-style-name",
+					this.defaultCellStyle.getName());
+		appendable.append(">");
+	}
+
+	protected void appendRowXMLToTable(final XMLUtil util,
+									   final Appendable appendable, final int colIndex, final String value)
+			throws IOException {
+		final TableCellStyle style = this.styles.get(colIndex);
+		final TableCell.Type valueType = this.types.get(colIndex);
+
+		final boolean covered = this.coldRow != null
+				&& this.coldRow.isCovered(colIndex);
+		if (covered) {
+			appendable.append("<table:covered-table-cell");
+		} else {
+			appendable.append("<table:table-cell");
+		}
+
+		if (style != null) {
+			util.appendEAttribute(appendable, "table:style-name",
+					style.getName());
+		}
+
+		util.appendEAttribute(appendable, "office:value-type",
+				valueType.getAttrValue());
+		util.appendEAttribute(appendable, valueType.getAttrName(), value);
+		if (valueType == TableCell.Type.CURRENCY) {
+			final String currency = this.coldRow.getCurrency(colIndex);
+			util.appendAttribute(appendable, "office:currency", currency);
+		}
+
+		if (this.coldRow == null) {
+			appendable.append("/>");
+		} else {
+			this.coldRow.appendXMLToTable(util, appendable, colIndex, covered);
+		}
+	}
+
 	/**
 	 * Write the XML dataStyles for this object.<br>
 	 * This is used while writing the ODS file.
 	 *
-	 * @param util a util for XML writing
+	 * @param util       a util for XML writing
 	 * @param appendable where to write the XML
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendXMLToTable(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+								 final Appendable appendable) throws IOException {
 		this.appendRowOpenTag(util, appendable);
 		int nullFieldCounter = 0;
 
@@ -151,6 +196,10 @@ public class HeavyTableRow {
 		return this.values.get(c);
 	}
 
+	public String getRowStyleName() {
+		return this.rowStyle.getName();
+	}
+
 	public int getRowsSpanned(final int c) {
 		if (this.coldRow == null)
 			return 0;
@@ -158,16 +207,13 @@ public class HeavyTableRow {
 			return this.coldRow.getRowsSpanned(c);
 	}
 
-	public String getRowStyleName() {
-		return this.rowStyle.getName();
-	}
-
 	public String getStringValue(final int c) {
 		return this.values.get(c);
 	}
 
 	public String getStyleName(final int c) {
-		return this.styles.get(c).getName();
+		final TableCellStyle style = this.styles.get(c);
+		return style == null ? null : style.getName();
 	}
 
 	public Text getText(final int c) {
@@ -199,19 +245,18 @@ public class HeavyTableRow {
 	public void setBooleanValue(final int c, final boolean value) {
 		this.values.set(c, value ? "true" : "false");
 		this.types.set(c, TableCell.Type.BOOLEAN);
-		this.setDataStyleFromStyle(c, this.dataStyles.getBooleanStyle());
+		this.setDataStyle(c, this.dataStyles.getBooleanDataStyle());
 	}
 
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge the number of rows to merge
+	 * @param colIndex    The column, 0 is the first column
+	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
-			final int columnMerge) {
+							 final int columnMerge) {
 		if (rowMerge <= 1 && columnMerge <= 1)
 			return;
 
@@ -239,11 +284,27 @@ public class HeavyTableRow {
 		this.coldRow.setColumnsSpanned(colIndex, n);
 	}
 
+	public void setCovered(final int colIndex) {
+		if (this.coldRow == null)
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
+
+		this.coldRow.setCovered(colIndex);
+	}
+
+	public void setCovered(final int colIndex, final int n) {
+		if (this.coldRow == null)
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+					this.columnCapacity);
+
+		this.coldRow.setCovered(colIndex, n);
+	}
+
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(float, java.lang.String)
 	 */
 	public void setCurrencyValue(final int c, final double value,
-			final String currency) {
+								 final String currency) {
 		this.values.set(c, Double.toString(value));
 		if (this.coldRow == null)
 			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
@@ -251,14 +312,14 @@ public class HeavyTableRow {
 
 		this.coldRow.setCurrency(c, currency); // escape here
 		this.types.set(c, TableCell.Type.CURRENCY);
-		this.setDataStyleFromStyle(c, this.dataStyles.getCurrencyStyle());
+		this.setDataStyle(c, this.dataStyles.getCurrencyDataStyle());
 	}
 
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(float, java.lang.String)
 	 */
 	public void setCurrencyValue(final int c, final float value,
-			final String currency) {
+								 final String currency) {
 		this.values.set(c, Float.toString(value));
 		if (this.coldRow == null)
 			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
@@ -266,14 +327,14 @@ public class HeavyTableRow {
 
 		this.coldRow.setCurrency(c, currency); // escape here
 		this.types.set(c, TableCell.Type.CURRENCY);
-		this.setDataStyleFromStyle(c, this.dataStyles.getCurrencyStyle());
+		this.setDataStyle(c, this.dataStyles.getCurrencyDataStyle());
 	}
 
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setCurrencyValue(java.lang.Number, java.lang.String)
 	 */
 	public void setCurrencyValue(final int c, final Number value,
-			final String currency) {
+								 final String currency) {
 		this.values.set(c, value.toString());
 		if (this.coldRow == null)
 			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
@@ -281,7 +342,46 @@ public class HeavyTableRow {
 
 		this.coldRow.setCurrency(c, currency); // escape here
 		this.types.set(c, TableCell.Type.CURRENCY);
-		this.setDataStyleFromStyle(c, this.dataStyles.getCurrencyStyle());
+		this.setDataStyle(c, this.dataStyles.getCurrencyDataStyle());
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.jferard.fastods.TableCell#styles.set(c, com.github.jferard.fastods.style.TableCellStyle)
+	 */
+	private void setDataStyle(final int c,
+							  final DataStyle dataStyle) {
+		if (dataStyle == null)
+			return;
+
+		TableCellStyle curStyle = this.styles.get(c);
+		if (curStyle == null) // adds the data style
+			curStyle = TableCellStyle.getDefaultCellStyle();
+
+		this.stylesContainer.addDataStyle(dataStyle);
+		final TableCellStyle anonymousStyle = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
+		this.styles.set(c, anonymousStyle);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.jferard.fastods.TableCell#styles.set(c, com.github.jferard.fastods.style.TableCellStyle)
+	 */
+	@Deprecated
+	private void setDataStyleFromStyle(final int c,
+									   final TableCellStyle style) {
+		if (style == null)
+			return;
+
+		final TableCellStyle curStyle = this.styles.get(c);
+		if (curStyle == null) { // adds the data style
+			this.stylesContainer.addNewDataStyleFromCellStyle(style);
+			this.styles.set(c, style);
+		} else { // keep the style, but use the new data style
+			// to remove the current data style implies a kind of ref counter,
+			// which would be a too complicated feature.
+			final DataStyle dataStyle = style.getDataStyle();
+			this.stylesContainer.addDataStyle(dataStyle);
+			curStyle.setDataStyle(dataStyle);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -297,14 +397,13 @@ public class HeavyTableRow {
 	public void setDateValue(final int c, final Date value) {
 		this.values.set(c, TableCell.DATE_VALUE_FORMAT.format(value));
 		this.types.set(c, TableCell.Type.DATE);
-		this.setDataStyleFromStyle(c, this.dataStyles.getDateStyle());
+		this.setDataStyle(c, this.dataStyles.getDateDataStyle());
 	}
 
 	/**
 	 * Set the cell rowStyle for the cell at col to ts.
 	 *
-	 * @param ts
-	 *            The table rowStyle to be used
+	 * @param ts The table rowStyle to be used
 	 */
 	public void setDefaultCellStyle(final TableCellStyle ts) {
 		this.stylesContainer.addStyleToStylesCommonStyles(ts);
@@ -317,7 +416,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int c, final double value) {
 		this.values.set(c, Double.toString(value));
 		this.types.set(c, TableCell.Type.FLOAT);
-		this.setDataStyleFromStyle(c, this.dataStyles.getNumberStyle());
+		this.setDataStyle(c, this.dataStyles.getNumberDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -326,7 +425,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int c, final float value) {
 		this.values.set(c, Float.toString(value));
 		this.types.set(c, TableCell.Type.FLOAT);
-		this.setDataStyleFromStyle(c, this.dataStyles.getNumberStyle());
+		this.setDataStyle(c, this.dataStyles.getNumberDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -335,7 +434,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int c, final int value) {
 		this.values.set(c, this.writeUtil.toString(value));
 		this.types.set(c, TableCell.Type.FLOAT);
-		this.setDataStyleFromStyle(c, this.dataStyles.getNumberStyle());
+		this.setDataStyle(c, this.dataStyles.getNumberDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -344,7 +443,7 @@ public class HeavyTableRow {
 	public void setFloatValue(final int c, final Number value) {
 		this.values.set(c, value.toString());
 		this.types.set(c, TableCell.Type.FLOAT);
-		this.setDataStyleFromStyle(c, this.dataStyles.getNumberStyle());
+		this.setDataStyle(c, this.dataStyles.getNumberDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -355,10 +454,10 @@ public class HeavyTableRow {
 	}
 
 	/**
-	 * @param c the column index, starting from 0
+	 * @param c      the column index, starting from 0
 	 * @param object the object to set at this place
 	 * @deprecated Shortcut for
-	 *             {@code setCellValue(c, CellValue.fromObject(object))}
+	 * {@code setCellValue(c, CellValue.fromObject(object))}
 	 */
 	@Deprecated
 	public void setObjectValue(final int c, final Object object) {
@@ -371,7 +470,7 @@ public class HeavyTableRow {
 	public void setPercentageValue(final int c, final double value) {
 		this.values.set(c, Double.toString(value));
 		this.types.set(c, TableCell.Type.PERCENTAGE);
-		this.setDataStyleFromStyle(c, this.dataStyles.getPercentageStyle());
+		this.setDataStyle(c, this.dataStyles.getPercentageDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -380,7 +479,7 @@ public class HeavyTableRow {
 	public void setPercentageValue(final int c, final float value) {
 		this.values.set(c, Float.toString(value));
 		this.types.set(c, TableCell.Type.PERCENTAGE);
-		this.setDataStyleFromStyle(c, this.dataStyles.getPercentageStyle());
+		this.setDataStyle(c, this.dataStyles.getPercentageDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -389,7 +488,7 @@ public class HeavyTableRow {
 	public void setPercentageValue(final int c, final Number value) {
 		this.values.set(c, value.toString());
 		this.types.set(c, TableCell.Type.PERCENTAGE);
-		this.setDataStyleFromStyle(c, this.dataStyles.getPercentageStyle());
+		this.setDataStyle(c, this.dataStyles.getPercentageDataStyle());
 	}
 
 	/* (non-Javadoc)
@@ -416,42 +515,23 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#styles.set(c, com.github.jferard.fastods.style.TableCellStyle)
 	 */
-	private void setDataStyleFromStyle(final int c,
-			final TableCellStyle style) {
-		if (style == null)
-			return;
-
-		final TableCellStyle curStyle = this.styles.get(c);
-		if (curStyle == null) { // adds the data style
-			this.stylesContainer.addNewDataStyleFromCellStyle(style);
-			this.styles.set(c, style);
-		} else { // keep the style, but use the new data style
-			// to remove the current data style implies a kind of ref counter,
-			// which would be a too complicated feature.
-			final DataStyle dataStyle = style.getDataStyle();
-			this.stylesContainer.addDataStyle(dataStyle);
-			curStyle.setDataStyle(dataStyle);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.github.jferard.fastods.TableCell#styles.set(c, com.github.jferard.fastods.style.TableCellStyle)
-	 */
 	public void setStyle(final int c, final TableCellStyle style) {
 		if (style == null)
 			return;
 
 		this.stylesContainer.addStyleToStylesCommonStyles(style);
-		final DataStyle dataStyle = style.getDataStyle();
-		if (dataStyle == null) {
-			final TableCellStyle curStyle = this.styles.get(c);
-			if (curStyle != null && curStyle.getDataStyle() != null) {
-				style.setDataStyle(curStyle.getDataStyle());
-			}
+		final TableCellStyle curStyle = this.styles.get(c);
+		if (curStyle == null) {
+			this.styles.set(c, style);
 		} else {
-			this.stylesContainer.addDataStyle(dataStyle);
+			final DataStyle dataStyle = curStyle.getDataStyle();
+			if (dataStyle != null) {
+				final TableCellStyle anonymousStyle = this.stylesContainer.addChildCellStyle(style, dataStyle);
+				this.styles.set(c, anonymousStyle);
+			} else {
+				this.styles.set(c, style);
+			}
 		}
-		this.styles.set(c, style);
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {
@@ -475,7 +555,7 @@ public class HeavyTableRow {
 	public void setTimeValue(final int c, final long timeInMillis) {
 		this.values.set(c, this.xmlUtil.formatTimeInterval(timeInMillis));
 		this.types.set(c, TableCell.Type.TIME);
-		this.setDataStyleFromStyle(c, this.dataStyles.getTimeStyle());
+		this.setDataStyle(c, this.dataStyles.getTimeDataStyle());
 	}
 
 	public void setTooltip(final int c, final String tooltip) {
@@ -488,67 +568,5 @@ public class HeavyTableRow {
 	public void setVoidValue(final int c) {
 		this.values.set(c, null);
 		this.types.set(c, TableCell.Type.VOID);
-	}
-
-	private void appendRowOpenTag(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<table:table-row");
-		if (this.rowStyle != null)
-			util.appendEAttribute(appendable, "table:style-name",
-					this.rowStyle.getName());
-		if (this.defaultCellStyle != null)
-			util.appendEAttribute(appendable, "table:default-cell-style-name",
-					this.defaultCellStyle.getName());
-		appendable.append(">");
-	}
-
-	protected void appendRowXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int colIndex, final String value)
-			throws IOException {
-		final TableCellStyle style = this.styles.get(colIndex);
-		final TableCell.Type valueType = this.types.get(colIndex);
-
-		final boolean covered = this.coldRow != null
-				&& this.coldRow.isCovered(colIndex);
-		if (covered) {
-			appendable.append("<table:covered-table-cell");
-		} else {
-			appendable.append("<table:table-cell");
-		}
-
-		if (style != null) {
-			util.appendEAttribute(appendable, "table:style-name",
-					style.getName());
-		}
-
-		util.appendEAttribute(appendable, "office:value-type",
-				valueType.getAttrValue());
-		util.appendEAttribute(appendable, valueType.getAttrName(), value);
-		if (valueType == TableCell.Type.CURRENCY) {
-			final String currency = this.coldRow.getCurrency(colIndex);
-			util.appendAttribute(appendable, "office:currency", currency);
-		}
-
-		if (this.coldRow == null) {
-			appendable.append("/>");
-		} else {
-			this.coldRow.appendXMLToTable(util, appendable, colIndex, covered);
-		}
-	}
-
-	public void setCovered(final int colIndex) {
-		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
-					this.columnCapacity);
-
-		this.coldRow.setCovered(colIndex);
-	}
-
-	public void setCovered(final int colIndex, final int n) {
-		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
-					this.columnCapacity);
-
-		this.coldRow.setCovered(colIndex, n);
 	}
 }

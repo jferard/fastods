@@ -62,12 +62,12 @@ public class ContentElement implements OdsElement {
 	}
 
 	public void addDefaultDataStyles() {
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getBooleanStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getCurrencyStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getDateStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getNumberStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getPercentageStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getTimeStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getBooleanCellStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getCurrencyCellStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getDateCellStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getNumberCellStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getPercentageCellStyle());
+		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getTimeCellStyle());
 	}
 
 	/**
@@ -214,6 +214,7 @@ public class ContentElement implements OdsElement {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:automatic-styles>");
 
+		this.stylesContainer.writeDataStyles(util, writer);
 		this.stylesContainer.writeContentAutomaticStyles(util, writer);
 
 		writer.write("</office:automatic-styles>");

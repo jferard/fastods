@@ -56,6 +56,16 @@ public class StylesContainer {
 		this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
 	}
 
+	public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
+		this.addDataStyle(dataStyle);
+		this.addStyleToStylesCommonStyles(style);
+		final TableCellStyle anonymousStyle =
+				TableCellStyle.builder(style.getRealName() + "@@" + dataStyle.getName()).parentCellStyle(style)
+						.dataStyle(dataStyle).build();
+		this.addStyleToContentAutomaticStyles(anonymousStyle);
+		return anonymousStyle;
+	}
+
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
 				Mode.CREATE_OR_UPDATE);
@@ -64,19 +74,6 @@ public class StylesContainer {
 	public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
 		return this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
 				mode);
-	}
-
-	public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
-		this.addStyleToContentAutomaticStyles(style);
-		this.addDataStyle(style.getDataStyle());
-	}
-
-	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
-		return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE_OR_UPDATE);
-	}
-
-	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
-		return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle, mode);
 	}
 
 	public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
@@ -92,10 +89,40 @@ public class StylesContainer {
 			return false;
 	}
 
+	public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
+		this.addStyleToContentAutomaticStyles(style);
+		this.addDataStyle(style.getDataStyle());
+	}
+
+	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
+		return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE_OR_UPDATE);
+	}
+
+	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
+		return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle, mode);
+	}
+
+	public void addPageStyle(final PageStyle ps) {
+		this.addMasterPageStyle(ps.getMasterPageStyle());
+		this.addPageLayoutStyle(ps.getPageLayoutStyle());
+	}
+
+	public void addPageStyle(final PageStyle ps, final Mode mode) {
+		this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
+		this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
+	}
+
 	public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
 		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
 	}
+
+	/*
+	@Deprecated
+	public Map<String, StyleTag> getStyleTagByName() {
+		return this.contentAutomaticStyleTagByName;
+	}
+	*/
 
 	public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
 													final Mode mode) {
@@ -107,13 +134,6 @@ public class StylesContainer {
 		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
 	}
-
-	/*
-	@Deprecated
-	public Map<String, StyleTag> getStyleTagByName() {
-		return this.contentAutomaticStyleTagByName;
-	}
-	*/
 
 	public boolean addStyleToStylesAutomaticStyles(final StyleTag styleTag,
 												   final Mode mode) {
@@ -164,6 +184,12 @@ public class StylesContainer {
 		return new HasFooterHeader(hasHeader, hasFooter);
 	}
 
+	private void write(final Iterable<StyleTag> iterable, final XMLUtil util,
+					   final ZipUTF8Writer writer) throws IOException {
+		for (final StyleTag ts : iterable)
+			ts.appendXML(util, writer);
+	}
+
 	public void writeContentAutomaticStyles(final XMLUtil util,
 											final ZipUTF8Writer writer) throws IOException {
 		this.write(this.styleTagsContainer
@@ -201,22 +227,6 @@ public class StylesContainer {
 										final ZipUTF8Writer writer) throws IOException {
 		this.write(this.styleTagsContainer.getValues(Dest.STYLES_COMMON_STYLES),
 				util, writer);
-	}
-
-	private void write(final Iterable<StyleTag> iterable, final XMLUtil util,
-					   final ZipUTF8Writer writer) throws IOException {
-		for (final StyleTag ts : iterable)
-			ts.appendXML(util, writer);
-	}
-
-	public void addPageStyle(final PageStyle ps) {
-		this.addMasterPageStyle(ps.getMasterPageStyle());
-		this.addPageLayoutStyle(ps.getPageLayoutStyle());
-	}
-
-	public void addPageStyle(final PageStyle ps, final Mode mode) {
-		this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
-		this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
 	}
 
 	public enum Dest {

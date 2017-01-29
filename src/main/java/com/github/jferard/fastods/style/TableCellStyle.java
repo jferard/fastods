@@ -36,26 +36,6 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableCellStyle implements StyleTag {
-	public static enum Align {
-		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
-
-		private final String attrValue;
-
-		private Align(final String attrValue) {
-			this.attrValue = attrValue;
-		}
-	}
-
-	public static enum VerticalAlign {
-		BOTTOM("bottom"), MIDDLE("middle"), TOP("top");
-
-		private final String attrValue;
-
-		private VerticalAlign(final String attrValue) {
-			this.attrValue = attrValue;
-		}
-	}
-
 	private static TableCellStyle defaultCellStyle;
 
 	public static TableCellStyleBuilder builder(final String name) {
@@ -75,29 +55,27 @@ public class TableCellStyle implements StyleTag {
 
 	private final String backgroundColor;
 	private final Borders borders;
-	private DataStyle dataStyle;
 	private final Margins margins;
 	private final String name;
 	// true
 	private final String parentCellStyleName;
 	private final Align textAlign; // 'center','end','start','justify'
-
 	private final TextProperties textProperties;
-
 	private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
 	private final boolean wrap; // No line wrap when false, line wrap when
+	private DataStyle dataStyle;
+	private String key;
 
 	/**
 	 * Create a new cell style
 	 *
-	 * @param name
-	 *            A unique name for this style
+	 * @param name A unique name for this style
 	 */
 	TableCellStyle(final String name, final DataStyle dataStyle,
-			final String backgroundColor, final TextProperties textProperties,
-			final Align textAlign, final VerticalAlign verticalAlign,
-			final boolean wrap, final String parentCellStyleName,
-			final Borders borders, final Margins margins) {
+				   final String backgroundColor, final TextProperties textProperties,
+				   final Align textAlign, final VerticalAlign verticalAlign,
+				   final boolean wrap, final String parentCellStyleName,
+				   final Borders borders, final Margins margins) {
 		this.borders = borders;
 		this.margins = margins;
 		this.name = name;
@@ -115,6 +93,24 @@ public class TableCellStyle implements StyleTag {
 		if (this.dataStyle != null)
 			this.dataStyle.addToElements(odsElements);
 		odsElements.addStyleTag(this);
+	}
+
+	private void appendCellProperties(final XMLUtil util, final Appendable appendable) throws IOException {
+		appendable.append("<style:table-cell-properties");
+		if (this.backgroundColor != null)
+			util.appendAttribute(appendable, "fo:background-color",
+					this.backgroundColor);
+
+		if (this.verticalAlign != null)
+			util.appendEAttribute(appendable, "style:vertical-align",
+					this.verticalAlign.attrValue);
+
+		this.borders.appendXMLToTableCellStyle(util, appendable);
+
+		if (this.wrap)
+			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
+
+		appendable.append("/>");
 	}
 
 	/**
@@ -136,33 +132,37 @@ public class TableCellStyle implements StyleTag {
 			util.appendAttribute(appendable, "style:data-style-name",
 					this.dataStyle.getName());
 
-		appendable.append("><style:table-cell-properties");
-		if (this.backgroundColor != null)
-			util.appendAttribute(appendable, "fo:background-color",
-					this.backgroundColor);
+		if (this.hasCellProperties() || this.hasTextProperties() || this.hasParagraphProperties()) {
+			appendable.append(">");
+			if (this.hasCellProperties()) {
+				this.appendCellProperties(util, appendable);
+			}
 
-		if (this.verticalAlign != null)
-			util.appendEAttribute(appendable, "style:vertical-align",
-					this.verticalAlign.attrValue);
+			if (this.hasTextProperties()) {
+				this.textProperties.appendXMLContent(util, appendable);
+			}
 
-		this.borders.appendXMLToTableCellStyle(util, appendable);
+			if (this.hasParagraphProperties()) {
+				appendable.append("<style:paragraph-properties");
+				if (this.textAlign != null)
+					util.appendEAttribute(appendable, "fo:text-align",
+							this.textAlign.attrValue);
 
-		if (this.wrap)
-			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
-
-		appendable.append("/>");
-
-		if (this.textProperties != null && this.textProperties.isNotEmpty()) {
-			this.textProperties.appendXMLContent(util, appendable);
+				this.margins.appendXMLToTableCellStyle(util, appendable);
+				appendable.append("/>");
+			}
+			appendable.append("</style:style>");
+		} else {
+			appendable.append("/>");
 		}
+	}
 
-		appendable.append("<style:paragraph-properties");
-		if (this.textAlign != null)
-			util.appendEAttribute(appendable, "fo:text-align",
-					this.textAlign.attrValue);
+	boolean hasTextProperties() {
+		return this.textProperties != null && this.textProperties.isNotEmpty();
+	}
 
-		this.margins.appendXMLToTableCellStyle(util, appendable);
-		appendable.append("/></style:style>");
+	private boolean hasParagraphProperties() {
+		return this.textAlign != null || !this.margins.areVoid();
 	}
 
 	public DataStyle getDataStyle() {
@@ -175,19 +175,50 @@ public class TableCellStyle implements StyleTag {
 	}
 
 	@Override
+	public String getKey() {
+		if (this.key == null)
+			this.key = this.getFamily() + "@" + this.getName();
+		return this.key;
+	}
+
+	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	public String getRealName() {
+		final int index = this.name.indexOf("@@");
+		if (index > 0)
+			return this.name.substring(0, index);
+		else
+			return this.name;
+	}
+
+	private boolean hasCellProperties() {
+		return this.backgroundColor != null || this.verticalAlign != null || !this.borders.areVoid() || this.wrap;
 	}
 
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
 	}
 
-	private String key;
-	@Override
-	public String getKey() {
-		if (this.key == null)
-			this.key = this.getFamily()+"@"+this.getName();
-		return this.key;
+	public static enum Align {
+		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
+
+		private final String attrValue;
+
+		private Align(final String attrValue) {
+			this.attrValue = attrValue;
+		}
+	}
+
+	public static enum VerticalAlign {
+		BOTTOM("bottom"), MIDDLE("middle"), TOP("top");
+
+		private final String attrValue;
+
+		private VerticalAlign(final String attrValue) {
+			this.attrValue = attrValue;
+		}
 	}
 }
