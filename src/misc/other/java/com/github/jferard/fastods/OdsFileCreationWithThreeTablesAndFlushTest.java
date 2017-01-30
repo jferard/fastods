@@ -93,7 +93,6 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 			document.addStyleTag(tcs1);
 			document.addStyleTag(tcs2);
 			document.addStyleTag(tcs3);
-			document.addDefaultDataStyles();
 
 			writer.flushEditableElements();
 

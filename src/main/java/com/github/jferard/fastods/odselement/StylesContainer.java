@@ -58,9 +58,11 @@ public class StylesContainer {
 
 	public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
 		this.addDataStyle(dataStyle);
-		this.addStyleToStylesCommonStyles(style);
+		if (!style.getName().contains("@@"))
+			this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
+		final String name = style.getRealName() + "@@" + dataStyle.getName();
 		final TableCellStyle anonymousStyle =
-				TableCellStyle.builder(style.getRealName() + "@@" + dataStyle.getName()).parentCellStyle(style)
+				TableCellStyle.builder(name).parentCellStyle(style)
 						.dataStyle(dataStyle).build();
 		this.addStyleToContentAutomaticStyles(anonymousStyle);
 		return anonymousStyle;
@@ -117,18 +119,18 @@ public class StylesContainer {
 				Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
 	}
 
+	public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
+													final Mode mode) {
+		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+				Dest.CONTENT_AUTOMATIC_STYLES, mode);
+	}
+
 	/*
 	@Deprecated
 	public Map<String, StyleTag> getStyleTagByName() {
 		return this.contentAutomaticStyleTagByName;
 	}
 	*/
-
-	public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
-													final Mode mode) {
-		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.CONTENT_AUTOMATIC_STYLES, mode);
-	}
 
 	public void addStyleToStylesAutomaticStyles(final StyleTag styleTag) {
 		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
@@ -150,6 +152,20 @@ public class StylesContainer {
 												final Mode mode) {
 		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
 				Dest.STYLES_COMMON_STYLES, mode);
+	}
+
+	public void debug() {
+		this.styleTagsContainer.debug();
+		this.dataStylesContainer.debug();
+		this.masterPageStylesContainer.debug();
+		this.pageLayoutStylesContainer.debug();
+	}
+
+	public void freeze() {
+		this.styleTagsContainer.freeze();
+		this.dataStylesContainer.freeze();
+		this.masterPageStylesContainer.freeze();
+		this.pageLayoutStylesContainer.freeze();
 	}
 
 	public Map<String, DataStyle> getDataStyles() {

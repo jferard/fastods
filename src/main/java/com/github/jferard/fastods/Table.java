@@ -207,7 +207,7 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Open the table, flush all rows from start, but do not close the table
+	 * Open the table, flush all rows from start, but do not freeze the table
 	 *
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write
@@ -218,7 +218,7 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Flush all rows from a given position, and do close the table
+	 * Flush all rows from a given position, and do freeze the table
 	 *
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write
@@ -233,7 +233,7 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Flush all rows from a given position, but do not close the table
+	 * Flush all rows from a given position, but do not freeze the table
 	 *
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write

@@ -21,36 +21,20 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.TableCell;
 
 public interface DataStyles {
-	@Deprecated
-	TableCellStyle getBooleanCellStyle();
-
 	BooleanStyle getBooleanDataStyle();
-
-	@Deprecated
-	TableCellStyle getCurrencyCellStyle();
 
 	CurrencyStyle getCurrencyDataStyle();
 
-	@Deprecated
-	TableCellStyle getDateCellStyle();
+	DataStyle getDataStyle(TableCell.Type type);
 
 	DateStyle getDateDataStyle();
 
-	@Deprecated
-	TableCellStyle getNumberCellStyle();
-
 	FloatStyle getNumberDataStyle();
 
-	@Deprecated
-	TableCellStyle getPercentageCellStyle();
-
 	PercentageStyle getPercentageDataStyle();
-
-	@Deprecated
-	TableCellStyle getTimeCellStyle();
 
 	TimeStyle getTimeDataStyle();
 }

@@ -21,15 +21,17 @@
 
 package com.github.jferard.fastods.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.github.jferard.fastods.util.Container.Mode;
 
-public class MultiContainer<K, V, S extends Enum<S>> {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
+public class MultiContainer<K, V, S extends Enum<S>> {
 	private final Map<K, S> subcontainerByKey;
 	private final Map<S, Map<K, V>> valueByKeyBySubcontainer;
+	private boolean closed;
+	private boolean debug;
 
 	public MultiContainer(final Class<S> clazz) {
 		this.subcontainerByKey = new HashMap<K, S>();
@@ -38,10 +40,12 @@ public class MultiContainer<K, V, S extends Enum<S>> {
 			this.valueByKeyBySubcontainer.put(subcontainer,
 					new HashMap<K, V>());
 		}
+		this.closed = false;
+		this.debug = false;
 	}
 
 	public boolean add(final K key, final V value, final S subcontainer,
-			final Mode mode) {
+					   final Mode mode) {
 		final S curSubcontainer = this.subcontainerByKey.get(key);
 		if (curSubcontainer == null) { // key does not exist
 			if (mode == Mode.UPDATE)
@@ -51,14 +55,36 @@ public class MultiContainer<K, V, S extends Enum<S>> {
 			if (mode == Mode.CREATE)
 				return false;
 
-			if (subcontainer != curSubcontainer)
+			if (subcontainer != curSubcontainer) {
+				if (this.closed)
+					throw new IllegalStateException(
+							"MultiContainer put(" + key + ", " + value + ") in " + subcontainer);
 				this.valueByKeyBySubcontainer.get(curSubcontainer).remove(key);
+			}
 		}
+
 
 		if (subcontainer != curSubcontainer)
 			this.subcontainerByKey.put(key, subcontainer);
-		this.valueByKeyBySubcontainer.get(subcontainer).put(key, value);
+
+		final Map<K, V> valueByKey = this.valueByKeyBySubcontainer.get(subcontainer);
+		if (this.closed && !valueByKey.containsKey(key))
+			throw new IllegalStateException(
+					"MultiContainer put(" + key + ", " + value + ") in " + subcontainer);
+		else if (this.debug && !valueByKey.containsKey(key))
+			Logger.getLogger("debug").severe(
+					"MultiContainer put(" + key + ", " + value + ") in " + subcontainer);
+
+		valueByKey.put(key, value);
 		return true;
+	}
+
+	public void debug() {
+		this.debug = true;
+	}
+
+	public void freeze() {
+		this.closed = true;
 	}
 
 	public Map<K, V> getValueByKey(final S subcontainer) {

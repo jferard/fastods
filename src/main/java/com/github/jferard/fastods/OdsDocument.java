@@ -72,6 +72,14 @@ public class OdsDocument {
 		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 
+	public void addChildCellStyle(final TableCell.Type type) {
+		this.odsElements.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), type);
+	}
+
+	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
+		this.odsElements.addChildCellStyle(style, type);
+	}
+
 	/**
 	 * Add a data style to this document. Use only if you want to flush data before the end of the document
 	 * construction.
@@ -80,10 +88,6 @@ public class OdsDocument {
 	 */
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.odsElements.addDataStyle(dataStyle);
-	}
-
-	public void addDefaultDataStyles() {
-		this.odsElements.addDefaultDataStyles();
 	}
 
 	/**
@@ -152,6 +156,10 @@ public class OdsDocument {
 		this.odsElements.createEmptyElements(writer);
 	}
 
+	public void debugStyles() {
+		this.odsElements.debugStyles();
+	}
+
 	public void finalizeContent(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.finalizeContent(this.xmlUtil, writer);
 	}
@@ -170,6 +178,10 @@ public class OdsDocument {
 
 	public void flushTables(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.flushTables(this.xmlUtil, writer);
+	}
+
+	public void freezeStyles() {
+		this.odsElements.freezeStyles();
 	}
 
 	public Logger getLogger() {

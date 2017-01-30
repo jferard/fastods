@@ -22,7 +22,9 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -61,13 +63,8 @@ public class ContentElement implements OdsElement {
 		this.flushPosition = new FlushPosition();
 	}
 
-	public void addDefaultDataStyles() {
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getBooleanCellStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getCurrencyCellStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getDateCellStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getNumberCellStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getPercentageCellStyle());
-		this.stylesContainer.addNewDataStyleFromCellStyle(this.format.getTimeCellStyle());
+	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
+		this.stylesContainer.addChildCellStyle(style, this.format.getDataStyle(type));
 	}
 
 	/**

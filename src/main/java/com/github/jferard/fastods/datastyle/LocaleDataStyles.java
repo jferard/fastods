@@ -21,56 +21,49 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.TableCell;
+
+import java.util.EnumMap;
 
 /**
  * @author Julien Férard
  */
 public class LocaleDataStyles implements DataStyles {
-	private final TableCellStyle booleanCellStyle;
 	private final BooleanStyle booleanDataStyle;
-	private final TableCellStyle currencyCellStyle;
 	private final CurrencyStyle currencyDataStyle;
-	private final TableCellStyle dateCellStyle;
+	private final EnumMap<TableCell.Type, DataStyle> dataStyleByType;
 	private final DateStyle dateDataStyle;
-	private final TableCellStyle numberCellStyle;
 	private final FloatStyle numberDataStyle;
-	private final TableCellStyle percentageCellStyle;
 	private final PercentageStyle percentageDataStyle;
-	private final TableCellStyle timeCellStyle;
 	private final TimeStyle timeDataStyle;
 
 	public LocaleDataStyles(final DataStyleBuilderFactory builderFactory) {
+		this.dataStyleByType = new EnumMap<TableCell.Type, DataStyle>(TableCell.Type.class);
+
 		this.booleanDataStyle = builderFactory
 				.booleanStyleBuilder("boolean-data").build();
-		this.booleanCellStyle = TableCellStyle.builder("boolean-style")
-				.dataStyle(this.booleanDataStyle).build();
+		this.dataStyleByType.put(TableCell.Type.BOOLEAN, this.booleanDataStyle);
+
 		this.currencyDataStyle = builderFactory
 				.currencyStyleBuilder("currency-data").build();
-		this.currencyCellStyle = TableCellStyle.builder("currency-style")
-				.dataStyle(this.currencyDataStyle).build();
+		this.dataStyleByType.put(TableCell.Type.CURRENCY, this.currencyDataStyle);
+
 		this.dateDataStyle = builderFactory
 				.dateStyleBuilder("date-data").build();
-		this.dateCellStyle = TableCellStyle.builder("date-style")
-				.dataStyle(this.dateDataStyle).build();
+		this.dataStyleByType.put(TableCell.Type.DATE, this.dateDataStyle);
+
 		this.numberDataStyle = builderFactory
 				.floatStyleBuilder("float-data").build();
-		this.numberCellStyle = TableCellStyle.builder("number-style")
-				.dataStyle(this.numberDataStyle).build();
+		this.dataStyleByType.put(TableCell.Type.FLOAT, this.numberDataStyle);
+
 		this.percentageDataStyle = builderFactory
 				.percentageStyleBuilder("percentage-data").build();
-		this.percentageCellStyle = TableCellStyle.builder("percentage-style")
-				.dataStyle(this.percentageDataStyle).build();
+		this.dataStyleByType.put(TableCell.Type.PERCENTAGE, this.percentageDataStyle);
+
 		this.timeDataStyle =
 				builderFactory
 						.timeStyleBuilder("time-data").build();
-		this.timeCellStyle = TableCellStyle.builder("time-style")
-				.dataStyle(this.timeDataStyle).build();
-	}
-
-	@Override
-	public TableCellStyle getBooleanCellStyle() {
-		return this.booleanCellStyle;
+		this.dataStyleByType.put(TableCell.Type.TIME, this.timeDataStyle);
 	}
 
 	@Override
@@ -79,18 +72,13 @@ public class LocaleDataStyles implements DataStyles {
 	}
 
 	@Override
-	public TableCellStyle getCurrencyCellStyle() {
-		return this.currencyCellStyle;
-	}
-
-	@Override
 	public CurrencyStyle getCurrencyDataStyle() {
 		return this.currencyDataStyle;
 	}
 
 	@Override
-	public TableCellStyle getDateCellStyle() {
-		return this.dateCellStyle;
+	public DataStyle getDataStyle(final TableCell.Type type) {
+		return this.dataStyleByType.get(type);
 	}
 
 	@Override
@@ -99,28 +87,13 @@ public class LocaleDataStyles implements DataStyles {
 	}
 
 	@Override
-	public TableCellStyle getNumberCellStyle() {
-		return this.numberCellStyle;
-	}
-
-	@Override
 	public FloatStyle getNumberDataStyle() {
 		return this.numberDataStyle;
 	}
 
 	@Override
-	public TableCellStyle getPercentageCellStyle() {
-		return this.percentageCellStyle;
-	}
-
-	@Override
 	public PercentageStyle getPercentageDataStyle() {
 		return this.percentageDataStyle;
-	}
-
-	@Override
-	public TableCellStyle getTimeCellStyle() {
-		return this.timeCellStyle;
 	}
 
 	@Override

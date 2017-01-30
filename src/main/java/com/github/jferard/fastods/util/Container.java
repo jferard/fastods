@@ -23,16 +23,17 @@ package com.github.jferard.fastods.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Container<K, V> {
-	public enum Mode {
-		CREATE, CREATE_OR_UPDATE, UPDATE
-	}
-
 	private final Map<K, V> valueByKey;
+	private boolean closed;
+	private boolean debug;
 
 	public Container() {
 		this.valueByKey = new HashMap<K, V>();
+		this.closed = false;
+		this.debug = false;
 	}
 
 	public boolean add(final K key, final V value, final Mode mode) {
@@ -46,8 +47,24 @@ public class Container<K, V> {
 				return false;
 		}
 
+		if (this.closed && !this.valueByKey.containsKey(key)) {
+			throw new IllegalStateException(
+					"Container put(" + key + ", " + value + ")");
+		} else if (this.debug && !this.valueByKey.containsKey(key)) {
+			Logger.getLogger("debug").severe(
+					"Container put(" + key + ", " + value + ")");
+		}
+
 		this.valueByKey.put(key, value);
 		return true;
+	}
+
+	public void debug() {
+		this.debug = true;
+	}
+
+	public void freeze() {
+		this.closed = true;
 	}
 
 	public Map<K, V> getValueByKey() {
@@ -56,5 +73,9 @@ public class Container<K, V> {
 
 	public Iterable<V> getValues() {
 		return this.valueByKey.values();
+	}
+
+	public enum Mode {
+		CREATE, CREATE_OR_UPDATE, UPDATE
 	}
 }

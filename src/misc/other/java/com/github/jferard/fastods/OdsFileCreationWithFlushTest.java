@@ -141,7 +141,19 @@ public class OdsFileCreationWithFlushTest {
 			document.addStyleTag(tcs1);
 			document.addStyleTag(tcs2);
 			document.addStyleTag(tcs3);
-			document.addDefaultDataStyles();
+
+			document.addChildCellStyle(TableCell.Type.BOOLEAN);
+			document.addChildCellStyle(TableCell.Type.CURRENCY);
+			document.addChildCellStyle(TableCell.Type.FLOAT);
+			document.addChildCellStyle(TableCell.Type.DATE);
+			document.addChildCellStyle(TableCell.Type.PERCENTAGE);
+			document.addChildCellStyle(TableCell.Type.TIME);
+			document.addChildCellStyle(tcs0, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs1, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs2, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs3, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcls, TableCell.Type.FLOAT);
+			document.debugStyles();
 
 			writer.flushEditableElements();
 

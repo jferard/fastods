@@ -22,12 +22,14 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -85,12 +87,12 @@ public class OdsElements {
 		this.stylesContainer = stylesContainer;
 	}
 
-	public void addDataStyle(final DataStyle dataStyle) {
-		this.stylesContainer.addDataStyle(dataStyle);
+	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
+		this.contentElement.addChildCellStyle(style, type);
 	}
 
-	public void addDefaultDataStyles() {
-		this.contentElement.addDefaultDataStyles();
+	public void addDataStyle(final DataStyle dataStyle) {
+		this.stylesContainer.addDataStyle(dataStyle);
 	}
 
 	public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
@@ -133,6 +135,10 @@ public class OdsElements {
 		}
 	}
 
+	public void debugStyles() {
+		this.stylesContainer.debug();
+	}
+
 	public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		this.contentElement.writePostamble(xmlUtil, writer);
 	}
@@ -143,6 +149,10 @@ public class OdsElements {
 
 	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		this.contentElement.flushTables(util, writer);
+	}
+
+	public void freezeStyles() {
+		this.stylesContainer.freeze();
 	}
 
 	public Table getTable(final int tableIndex) {

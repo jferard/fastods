@@ -232,7 +232,6 @@ public class HeavyTableRowTest {
 	@Test
 	public final void testCurrencyNumber() {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
-		final TableCellStyle currencyStyle = this.ds.getCurrencyCellStyle();
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
