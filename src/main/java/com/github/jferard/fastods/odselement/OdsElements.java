@@ -30,6 +30,7 @@ import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -108,10 +109,17 @@ public class OdsElements {
 	}
 
 	public void addStyleTag(final StyleTag styleTag) {
-		if ("table-cell".equals(styleTag.getFamily()))
+		final String family = styleTag.getFamily();
+		if ("table-cell".equals(family))
 			this.stylesContainer.addStyleToStylesCommonStyles(styleTag);
+		else if ("text".equals(family))
+			this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag);
 		else
 			this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
+	}
+
+	public void addStyleToContentAutomaticStyles(StyleTag styleTag) {
+		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
 	public Table addTableToContent(final String name, final int rowCapacity,

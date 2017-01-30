@@ -44,12 +44,19 @@ public class ReadmeExampleWithFlushTest {
 
 	@Test
 	public void readme() throws IOException {
+		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
+
 		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
 				this.odsFactory.createWriter(document, new File("generated_files", "readme.ods"));
+
+		document.addStyleTag(style);
+		document.addChildCellStyle(TableCell.Type.FLOAT);
+		document.addChildCellStyle(style, TableCell.Type.FLOAT);
+		document.freezeStyles(); // if this crashes, use debugStyles to log the errors
+
 		final Table table = document.addTable("test");
 
-		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
 		for (int y = 0; y < 50; y++) {
 			final HeavyTableRow row = table.nextRow();
 			final TableCellWalker cell = row.getWalker();

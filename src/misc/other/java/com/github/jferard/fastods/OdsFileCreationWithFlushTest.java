@@ -47,6 +47,7 @@ public class OdsFileCreationWithFlushTest {
 
 		generated_files.mkdir();
 	}
+
 	private Logger logger;
 	private OdsFactory odsFactory;
 	private Random random;
@@ -153,7 +154,7 @@ public class OdsFileCreationWithFlushTest {
 			document.addChildCellStyle(tcs2, TableCell.Type.FLOAT);
 			document.addChildCellStyle(tcs3, TableCell.Type.FLOAT);
 			document.addChildCellStyle(tcls, TableCell.Type.FLOAT);
-			document.debugStyles();
+			document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
 			writer.flushEditableElements();
 
@@ -172,7 +173,7 @@ public class OdsFileCreationWithFlushTest {
 				row = table.getRow(y);
 				final TableCellWalker walker = row.getWalker();
 				for (int x = 0; x < 5; x++) {
-					walker.setFloatValue(this.random.nextInt(3000)/3.0);
+					walker.setFloatValue(this.random.nextInt(3000) / 3.0);
 					if ((y + 1) % 3 == 0) {
 						switch (x) {
 							case 0:

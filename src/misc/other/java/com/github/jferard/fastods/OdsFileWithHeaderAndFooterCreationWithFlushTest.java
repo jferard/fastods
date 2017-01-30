@@ -99,31 +99,44 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 
 		final PageStyle ps = PageStyle.builder("test")
 				.footer(footer).header(header).build();
-
-		final OdsDocument document = this.odsFactory.createDocument();
-		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "fastods_fhf.ods"));
-		final Table table = document.addTable("test", 1, 5);
-		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
-				.build();
-		table.setStyle(ttts);
-
-		final Table table2 = document.addTable("target", 1, 1);
 		final PageStyle ps2 = PageStyle.builder("test2")
 				.masterPageStyle(ps.getMasterPageStyle()).pageLayoutStyle(ps.getPageLayoutStyle()).build();
+		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
+				.build();
 		final TableStyle ttts2 = TableStyle.builder("a2").pageStyle(ps2)
 				.build();
-		table2.setStyle(ttts2);
-
-		HeavyTableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 				.build();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
-		row.setStyle(trs);
-		row.setDefaultCellStyle(tcls);
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
+
+		final OdsDocument document = this.odsFactory.createDocument();
+		final OdsFileWriter writer =
+				this.odsFactory.createWriter(document, new File("generated_files", "fastods_fhf.ods"));
+		document.addPageStyle(ps);
+		document.addStyleTag(ttts);
+		document.addStyleTag(ttts2);
+		document.addStyleTag(lts);
+		document.addStyleTag(cts);
+		document.addStyleTag(rts);
+		document.addStyleToContentAutomaticStyles(boldStyle);
+		document.addStyleToContentAutomaticStyles(italicStyle);
+		document.addStyleTag(trs);
+		document.addStyleTag(tcls);
+		document.addStyleTag(tcns);
+		document.freezeStyles();
+
+		final Table table = document.addTable("test", 1, 5);
+		table.setStyle(ttts);
+
+		final Table table2 = document.addTable("target", 1, 1);
+		table2.setStyle(ttts2);
+
+		HeavyTableRow row = table.getRow(0);
+		row.setStyle(trs);
+		row.setDefaultCellStyle(tcls);
 		table.setColumnStyle(0, tcns);
 
 		row = table.getRow(0);

@@ -93,6 +93,12 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 			document.addStyleTag(tcs1);
 			document.addStyleTag(tcs2);
 			document.addStyleTag(tcs3);
+			document.addChildCellStyle(TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs0, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs1, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs2, TableCell.Type.FLOAT);
+			document.addChildCellStyle(tcs3, TableCell.Type.FLOAT);
+			document.freezeStyles();
 
 			writer.flushEditableElements();
 
@@ -112,7 +118,7 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 					row = table.getRow(y);
 					final TableCellWalker walker = row.getWalker();
 					for (int x = 0; x < 5; x++) {
-						walker.setFloatValue(random.nextInt(1000));
+						walker.setFloatValue(this.random.nextInt(1000));
 						if ((y + 1) % 3 == 0) {
 							switch (x) {
 								case 0:
