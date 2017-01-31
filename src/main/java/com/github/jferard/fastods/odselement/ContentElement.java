@@ -92,7 +92,8 @@ public class ContentElement implements OdsElement {
 		}
 	}
 
-	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer, final SettingsElement settingsElement)
+			throws IOException {
 		this.ensureContentBegin(util, writer);
 		final int lastTableIndex = this.tables.size() - 1;
 		int tableIndex = this.flushPosition.getTableIndex();
@@ -100,10 +101,12 @@ public class ContentElement implements OdsElement {
 		if (tableIndex < lastTableIndex) {
 			System.out.println("Moving from table" + tableIndex + " to table " + lastTableIndex);
 			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
+			settingsElement.addTableConfig(table.getConfigEntry());
 			tableIndex++;
 			while (tableIndex < lastTableIndex) {
 				table = this.tables.get(tableIndex);
 				table.appendXMLToContentEntry(util, writer);
+				settingsElement.addTableConfig(table.getConfigEntry());
 				tableIndex++;
 			}
 			table = this.tables.get(lastTableIndex);
@@ -114,16 +117,20 @@ public class ContentElement implements OdsElement {
 		this.flushPosition.set(lastTableIndex, this.tables.get(lastTableIndex).getLastRowNumber());
 	}
 
-	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer, final SettingsElement settingsElement)
+			throws IOException {
 		this.ensureContentBegin(util, writer);
 		final int lastTableIndex = this.tables.size() - 1;
 		int tableIndex = this.flushPosition.getTableIndex();
+
 		Table table = this.tables.get(tableIndex);
 		table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
+		settingsElement.addTableConfig(table.getConfigEntry());
 		tableIndex++;
 		while (tableIndex <= lastTableIndex) {
 			table = this.tables.get(tableIndex);
 			table.appendXMLToContentEntry(util, writer);
+			settingsElement.addTableConfig(table.getConfigEntry());
 			tableIndex++;
 		}
 	}

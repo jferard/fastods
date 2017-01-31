@@ -24,6 +24,7 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.odselement.config.ConfigBlock;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapIndexed;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapNamed;
@@ -66,13 +67,13 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class Settings {
+	private final ConfigItemSet configurationSettings;
+	private final ConfigItemMapEntrySet firstView;
 	private final List<ConfigBlock> rootBlocks;
 	private final ConfigItemMapNamed tablesMap;
-	private final ConfigItemSet configurationSettings;
-	private final ConfigItemSet viewSettings;
-	private final ConfigItemMapEntrySet firstView;
-	private final ConfigItemMapIndexed views;
 	private final Map<String, ConfigItemMapEntrySet> viewById;
+	private final ConfigItemSet viewSettings;
+	private final ConfigItemMapIndexed views;
 
 	Settings() {
 		this.rootBlocks = new ArrayList<ConfigBlock>();
@@ -84,70 +85,79 @@ public class Settings {
 		this.configurationSettings = new ConfigItemSet("ooo:configuration-settings");
 
 		this.rootBlocks.add(this.viewSettings);
-		this.viewSettings.add(views);
-		this.views.add(firstView);
-		this.firstView.add(tablesMap);
+		this.viewSettings.add(this.views);
+		this.views.add(this.firstView);
+		this.firstView.add(this.tablesMap);
 		this.rootBlocks.add(this.configurationSettings);
 
-		viewSettings.add(new ConfigItem("VisibleAreaTop", "int", "0"));
-		viewSettings.add(new ConfigItem("VisibleAreaLeft", "int", "0"));
-		viewSettings.add(new ConfigItem("VisibleAreaWidth", "int", "680"));
-		viewSettings.add(new ConfigItem("VisibleAreaHeight", "int", "400"));
+		this.viewSettings.add(new ConfigItem("VisibleAreaTop", "int", "0"));
+		this.viewSettings.add(new ConfigItem("VisibleAreaLeft", "int", "0"));
+		this.viewSettings.add(new ConfigItem("VisibleAreaWidth", "int", "680"));
+		this.viewSettings.add(new ConfigItem("VisibleAreaHeight", "int", "400"));
 
-		firstView.add(new ConfigItem("ViewId", "string", "View1"));
-		this.viewById.put("View1", firstView);
-		firstView.add(new ConfigItem("ActiveTable", "string", "Tab1"));
-		firstView.add(new ConfigItem("HorizontalScrollbarWidth", "int", "270"));
-		firstView.add(new ConfigItem("ZoomType", "short", "0"));
-		firstView.add(new ConfigItem("ZoomValue", "int", "100"));
-		firstView.add(new ConfigItem("PageViewZoomValue", "int", "60"));
-		firstView.add(new ConfigItem("ShowPageBreakPreview", "boolean", "false"));
-		firstView.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
-		firstView.add(new ConfigItem("ShowNotes", "boolean", "true"));
-		firstView.add(new ConfigItem("ShowGrid", "boolean", "true"));
-		firstView.add(new ConfigItem("GridColor", "long", "12632256"));
-		firstView.add(new ConfigItem("ShowPageBreaks", "boolean", "true"));
-		firstView.add(new ConfigItem("HasColumnRowHeaders", "boolean", "true"));
-		firstView.add(new ConfigItem("HasSheetTabs", "boolean", "true"));
-		firstView.add(new ConfigItem("IsOutlineSymbolsSet", "boolean", "true"));
-		firstView.add(new ConfigItem("IsSnapToRaster", "boolean", "false"));
-		firstView.add(new ConfigItem("RasterIsVisible", "boolean", "false"));
-		firstView.add(new ConfigItem("RasterResolutionX", "int", "1000"));
-		firstView.add(new ConfigItem("RasterResolutionY", "int", "1000"));
-		firstView.add(new ConfigItem("RasterSubdivisionX", "int", "1"));
-		firstView.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
-		firstView.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
+		this.firstView.add(new ConfigItem("ViewId", "string", "View1"));
+		this.viewById.put("View1", this.firstView);
+		this.firstView.add(new ConfigItem("ActiveTable", "string", "Tab1"));
+		this.firstView.add(new ConfigItem("HorizontalScrollbarWidth", "int", "270"));
+		this.firstView.add(new ConfigItem("ZoomType", "short", "0"));
+		this.firstView.add(new ConfigItem("ZoomValue", "int", "100"));
+		this.firstView.add(new ConfigItem("PageViewZoomValue", "int", "60"));
+		this.firstView.add(new ConfigItem("ShowPageBreakPreview", "boolean", "false"));
+		this.firstView.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
+		this.firstView.add(new ConfigItem("ShowNotes", "boolean", "true"));
+		this.firstView.add(new ConfigItem("ShowGrid", "boolean", "true"));
+		this.firstView.add(new ConfigItem("GridColor", "long", "12632256"));
+		this.firstView.add(new ConfigItem("ShowPageBreaks", "boolean", "true"));
+		this.firstView.add(new ConfigItem("HasColumnRowHeaders", "boolean", "true"));
+		this.firstView.add(new ConfigItem("HasSheetTabs", "boolean", "true"));
+		this.firstView.add(new ConfigItem("IsOutlineSymbolsSet", "boolean", "true"));
+		this.firstView.add(new ConfigItem("IsSnapToRaster", "boolean", "false"));
+		this.firstView.add(new ConfigItem("RasterIsVisible", "boolean", "false"));
+		this.firstView.add(new ConfigItem("RasterResolutionX", "int", "1000"));
+		this.firstView.add(new ConfigItem("RasterResolutionY", "int", "1000"));
+		this.firstView.add(new ConfigItem("RasterSubdivisionX", "int", "1"));
+		this.firstView.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
+		this.firstView.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
 
-		configurationSettings.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("ShowNotes", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("ShowGrid", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("GridColor", "long", "12632256"));
-		configurationSettings.add(new ConfigItem("ShowPageBreaks", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("LinkUpdateMode", "short", "3"));
-		configurationSettings.add(new ConfigItem("HasColumnRowHeaders", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("HasSheetTabs", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("IsOutlineSymbolsSet", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("IsSnapToRaster", "boolean", "false"));
-		configurationSettings.add(new ConfigItem("RasterIsVisible", "boolean", "false"));
-		configurationSettings.add(new ConfigItem("RasterResolutionX", "int", "1000"));
-		configurationSettings.add(new ConfigItem("RasterResolutionY", "int", "1000"));
-		configurationSettings.add(new ConfigItem("RasterSubdivisionX", "int", "1"));
-		configurationSettings.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
-		configurationSettings.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("AutoCalculate", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("PrinterName", "string", ""));
-		configurationSettings.add(new ConfigItem("PrinterSetup", "base64Binary", ""));
-		configurationSettings.add(new ConfigItem("ApplyUserData", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("CharacterCompressionType", "short", "0"));
-		configurationSettings.add(new ConfigItem("IsKernAsianPunctuation", "boolean", "false"));
-		configurationSettings.add(new ConfigItem("SaveVersionOnClose", "boolean", "false"));
-		configurationSettings.add(new ConfigItem("UpdateFromTemplate", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("AllowPrintJobCancel", "boolean", "true"));
-		configurationSettings.add(new ConfigItem("LoadReadonly", "boolean", "false"));
+		this.configurationSettings.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("ShowNotes", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("ShowGrid", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("GridColor", "long", "12632256"));
+		this.configurationSettings.add(new ConfigItem("ShowPageBreaks", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("LinkUpdateMode", "short", "3"));
+		this.configurationSettings.add(new ConfigItem("HasColumnRowHeaders", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("HasSheetTabs", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("IsOutlineSymbolsSet", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("IsSnapToRaster", "boolean", "false"));
+		this.configurationSettings.add(new ConfigItem("RasterIsVisible", "boolean", "false"));
+		this.configurationSettings.add(new ConfigItem("RasterResolutionX", "int", "1000"));
+		this.configurationSettings.add(new ConfigItem("RasterResolutionY", "int", "1000"));
+		this.configurationSettings.add(new ConfigItem("RasterSubdivisionX", "int", "1"));
+		this.configurationSettings.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
+		this.configurationSettings.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("AutoCalculate", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("PrinterName", "string", ""));
+		this.configurationSettings.add(new ConfigItem("PrinterSetup", "base64Binary", ""));
+		this.configurationSettings.add(new ConfigItem("ApplyUserData", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("CharacterCompressionType", "short", "0"));
+		this.configurationSettings.add(new ConfigItem("IsKernAsianPunctuation", "boolean", "false"));
+		this.configurationSettings.add(new ConfigItem("SaveVersionOnClose", "boolean", "false"));
+		this.configurationSettings.add(new ConfigItem("UpdateFromTemplate", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("AllowPrintJobCancel", "boolean", "true"));
+		this.configurationSettings.add(new ConfigItem("LoadReadonly", "boolean", "false"));
+	}
+
+	public void addTable(final Table table) {
+		final ConfigItemMapEntry configEntry = table.getConfigEntry();
+		this.addTableConfig(configEntry);
+	}
+
+	public void addTableConfig(final ConfigItemMapEntry configEntry) {
+		this.tablesMap.put(configEntry);
 	}
 
 	public List<ConfigBlock> getRootBlocks() {
-		return rootBlocks;
+		return this.rootBlocks;
 	}
 
 	/**
@@ -161,14 +171,10 @@ public class Settings {
 				table.getName()));
 	}
 
-	public void addTable(final Table table) {
-		this.tablesMap.put(table.getConfigEntry());
-	}
-
 	public void setTables(final List<Table> tables) {
 		this.tablesMap.clear();
 		for (final Table table : tables)
-			this.tablesMap.put(table.getConfigEntry());
+			this.addTableConfig(table.getConfigEntry());
 	}
 
 	public void setViewSettings(final String viewId, final String item, final String value) {

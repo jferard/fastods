@@ -125,7 +125,7 @@ public class OdsDocument {
 		this.odsElements.addStyleTag(styleTag);
 	}
 
-	public void addStyleToContentAutomaticStyles(TextStyle textStyle) {
+	public void addStyleToContentAutomaticStyles(final TextStyle textStyle) {
 		this.odsElements.addStyleToContentAutomaticStyles(textStyle);
 	}
 
@@ -165,23 +165,27 @@ public class OdsDocument {
 		this.odsElements.debugStyles();
 	}
 
-	public void finalizeContent(final ZipUTF8Writer writer) throws IOException {
+	void finalizeContent(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.finalizeContent(this.xmlUtil, writer);
 	}
 
-	public void finalizeFlush(final ZipUTF8Writer writer) throws IOException {
+	void finalizeFlush(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.writeSettings(this.xmlUtil, writer);
 	}
 
-	public void flushEditableElements(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.writeEditableElements(this.xmlUtil, writer);
+	void flushMeta(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.writeMeta(this.xmlUtil, writer);
 	}
 
-	public void flushRows(final ZipUTF8Writer writer) throws IOException {
+	void flushRows(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.flushRows(this.xmlUtil, writer);
 	}
 
-	public void flushTables(final ZipUTF8Writer writer) throws IOException {
+	void flushStyles(final ZipUTF8Writer writer) throws IOException {
+		this.odsElements.writeStyles(this.xmlUtil, writer);
+	}
+
+	void flushTables(final ZipUTF8Writer writer) throws IOException {
 		this.odsElements.flushTables(this.xmlUtil, writer);
 	}
 
@@ -255,7 +259,7 @@ public class OdsDocument {
 		return this.odsElements.getTables();
 	}
 
-	public void prepareForFlush(final ZipUTF8Writer writer) throws IOException {
+	public void prepareFlush(final ZipUTF8Writer writer) throws IOException {
 		this.createEmptyElements(writer);
 		this.odsElements.writeImmutableElements(this.xmlUtil, writer);
 	}
@@ -270,7 +274,8 @@ public class OdsDocument {
 		try {
 			this.createEmptyElements(writer);
 			this.odsElements.writeImmutableElements(this.xmlUtil, writer);
-			this.odsElements.writeEditableElements(this.xmlUtil, writer);
+			this.odsElements.writeMeta(this.xmlUtil, writer);
+			this.odsElements.writeStyles(this.xmlUtil, writer);
 			this.odsElements.writeContent(this.xmlUtil, writer);
 			this.odsElements.writeSettings(this.xmlUtil, writer);
 		} finally {

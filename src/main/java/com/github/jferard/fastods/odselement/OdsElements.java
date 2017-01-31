@@ -30,7 +30,6 @@ import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.StyleTag;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -118,7 +117,7 @@ public class OdsElements {
 			this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
-	public void addStyleToContentAutomaticStyles(StyleTag styleTag) {
+	public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
 		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
@@ -148,15 +147,16 @@ public class OdsElements {
 	}
 
 	public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.contentElement.flushTables(xmlUtil, writer, this.settingsElement);
 		this.contentElement.writePostamble(xmlUtil, writer);
 	}
 
 	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-		this.contentElement.flushRows(util, writer);
+		this.contentElement.flushRows(util, writer, this.settingsElement);
 	}
 
 	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-		this.contentElement.flushTables(util, writer);
+		this.contentElement.flushTables(util, writer, this.settingsElement);
 	}
 
 	public void freezeStyles() {
@@ -195,22 +195,6 @@ public class OdsElements {
 		this.contentElement.write(xmlUtil, writer);
 	}
 
-	public void writeEditableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.logger.log(Level.FINER, "Writing odselement: metaElement to zip file");
-		this.metaElement.write(xmlUtil, writer);
-		this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
-		this.stylesElement.write(xmlUtil, writer);
-	}
-
-	@Deprecated
-	public void writeElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
-			throws IOException {
-		this.writeImmutableElements(xmlUtil, writer);
-		this.writeEditableElements(xmlUtil, writer);
-		this.writeContent(xmlUtil, writer);
-		this.writeSettings(xmlUtil, writer);
-	}
-
 	public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		this.logger.log(Level.FINER,
 				"Writing odselement: mimeTypeEntry to zip file");
@@ -220,10 +204,20 @@ public class OdsElements {
 		this.manifestElement.write(xmlUtil, writer);
 	}
 
+	public void writeMeta(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.logger.log(Level.FINER, "Writing odselement: metaElement to zip file");
+		this.metaElement.write(xmlUtil, writer);
+	}
+
 	public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		this.settingsElement.setTables(this.getTables());
 		this.logger.log(Level.FINER,
 				"Writing odselement: settingsElement to zip file");
 		this.settingsElement.write(xmlUtil, writer);
+	}
+
+	public void writeStyles(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
+		this.stylesElement.write(xmlUtil, writer);
 	}
 }

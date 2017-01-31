@@ -117,9 +117,8 @@ public class OdsFileCreationWithFlushTest {
 				this.odsFactory.createWriter(document, new File("generated_files", "fastods_50_5f.ods"));
 
 		try {
-			document.setViewSetting("View1", "ZoomValue", "200");
-
-			writer.prepareForFlush();
+			writer.prepareFlush();
+			writer.flushMeta();
 
 			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 					.build();
@@ -156,7 +155,7 @@ public class OdsFileCreationWithFlushTest {
 			document.addChildCellStyle(tcls, TableCell.Type.FLOAT);
 			document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
-			writer.flushEditableElements();
+			writer.flushStyles();
 
 			final Table table = document.addTable("test", 50, 5);
 			table.setSettings("View1", "ZoomValue", "200");

@@ -70,7 +70,7 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 		try {
 			document.setViewSetting("View1", "ZoomValue", "200");
 
-			writer.prepareForFlush();
+			writer.prepareFlush();
 
 			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 					.build();
@@ -100,7 +100,8 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 			document.addChildCellStyle(tcs3, TableCell.Type.FLOAT);
 			document.freezeStyles();
 
-			writer.flushEditableElements();
+			writer.flushMeta();
+			writer.flushStyles();
 
 			for (int i = 0; i < 3; i++) {
 				final Table table = document.addTable("test" + i, 5, 5);

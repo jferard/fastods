@@ -222,7 +222,8 @@ public class OdsDocumentTest {
 		this.initOdsElements();
 		this.odsElements.createEmptyElements(this.writer);
 		this.odsElements.writeImmutableElements(this.xmlUtil, this.writer);
-		this.odsElements.writeEditableElements(this.xmlUtil, this.writer);
+		this.odsElements.writeMeta(this.xmlUtil, this.writer);
+		this.odsElements.writeStyles(this.xmlUtil, this.writer);
 		this.odsElements.writeContent(this.xmlUtil, this.writer);
 		this.odsElements.writeSettings(this.xmlUtil, this.writer);
 		this.writer.close();
@@ -239,7 +240,8 @@ public class OdsDocumentTest {
 		this.initOdsElements();
 		this.odsElements.createEmptyElements(this.writer);
 		this.odsElements.writeImmutableElements(this.xmlUtil, this.writer);
-		this.odsElements.writeEditableElements(this.xmlUtil, this.writer);
+		this.odsElements.writeMeta(this.xmlUtil, this.writer);
+		this.odsElements.writeStyles(this.xmlUtil, this.writer);
 		this.odsElements.writeContent(this.xmlUtil, this.writer);
 		this.odsElements.writeSettings(this.xmlUtil, this.writer);
 		this.writer.close();

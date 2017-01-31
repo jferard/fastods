@@ -39,6 +39,7 @@ public class OdsFileWriter {
 	private final OdsDocument document;
 	private final Logger logger;
 	private final ZipUTF8Writer writer;
+	private State state;
 
 	/**
 	 * Create a new ODS file.
@@ -52,6 +53,7 @@ public class OdsFileWriter {
 		this.logger = logger;
 		this.document = document;
 		this.writer = writer;
+		this.state = State.BEFORE;
 	}
 
 	public void close() throws IOException {
@@ -60,25 +62,92 @@ public class OdsFileWriter {
 	}
 
 	public void finalizeFlush() throws IOException {
-		this.document.flushTables(this.writer);
+		this.ensureReadyForContent();
+		this.state = State.FINALIZE;
 		this.document.finalizeContent(this.writer);
 		this.document.finalizeFlush(this.writer);
 	}
 
-	public void flushEditableElements() throws IOException {
-		this.document.flushEditableElements(this.writer);
+	private void ensureReadyForContent() throws IOException {
+		switch (this.state) {
+			case META_AND_STYLES:
+				case CONTENT:
+				break;
+			case META:
+				this.document.flushStyles(this.writer);
+				break;
+			case STYLES:
+				this.document.flushMeta(this.writer);
+				break;
+			case PREPARE:
+				this.document.flushMeta(this.writer);
+				this.document.flushStyles(this.writer);
+				break;
+			case BEFORE:
+				this.document.prepareFlush(this.writer);
+				this.document.flushMeta(this.writer);
+				this.document.flushStyles(this.writer);
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+	}
+
+	public void flushMeta() throws IOException {
+		switch (this.state) {
+			case PREPARE:
+				this.state = State.META;
+				break;
+			case STYLES:
+				this.state = State.META_AND_STYLES;
+				break;
+			case BEFORE:
+				this.document.prepareFlush(this.writer);
+				this.state = State.META;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+		this.document.flushMeta(this.writer);
 	}
 
 	public void flushRows() throws IOException {
+		if (this.state != State.CONTENT) {
+			this.ensureReadyForContent();
+			this.state = State.CONTENT;
+		}
 		this.document.flushRows(this.writer);
 	}
 
+	public void flushStyles() throws IOException {
+		switch (this.state) {
+			case BEFORE:
+				this.document.prepareFlush(this.writer);
+				this.state = State.STYLES;
+				break;
+			case PREPARE:
+				this.state = State.STYLES;
+				break;
+			case META:
+				this.state = State.META_AND_STYLES;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+		this.document.flushStyles(this.writer);
+	}
+
 	public void flushTables() throws IOException {
+		if (this.state != State.CONTENT) {
+			this.ensureReadyForContent();
+			this.state = State.CONTENT;
+		}
 		this.document.flushTables(this.writer);
 	}
 
-	public void prepareForFlush() throws IOException {
-		this.document.prepareForFlush(this.writer);
+	public void prepareFlush() throws IOException {
+		this.state = State.PREPARE;
+		this.document.prepareFlush(this.writer);
 	}
 
 	/**
@@ -88,5 +157,9 @@ public class OdsFileWriter {
 	 */
 	public void save() throws IOException {
 		this.document.save(this.writer);
+	}
+
+	private enum State {
+		BEFORE, PREPARE, META, STYLES, META_AND_STYLES, CONTENT, FINALIZE
 	}
 }

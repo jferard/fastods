@@ -23,6 +23,7 @@ package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.odselement.config.ConfigBlock;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -71,6 +72,10 @@ public class SettingsElement implements OdsElement {
 
 	SettingsElement(final Settings settings) {
 		this.settings = settings;
+	}
+
+	public void addTableConfig(final ConfigItemMapEntry configEntry) {
+		this.settings.addTableConfig(configEntry);
 	}
 
 	public void setTables(final List<Table> tables) {
