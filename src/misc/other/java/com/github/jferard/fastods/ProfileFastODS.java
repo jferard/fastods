@@ -64,7 +64,8 @@ public class ProfileFastODS {
 
 	@Test
 	public final void mediumTestFast() throws IOException {
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT / 2,
 				ProfileFastODS.COL_COUNT / 2);
 
@@ -79,7 +80,7 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_profile.ods"));
+		writer.saveAs(new File("generated_files", "fastods_profile.ods"));
 	}
 
 	@Before
@@ -96,7 +97,8 @@ public class ProfileFastODS {
 
 	@Test
 	public final void smallTestFast() throws IOException {
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT / 4,
 				ProfileFastODS.COL_COUNT / 4);
 
@@ -111,7 +113,7 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_profile.ods"));
+		writer.saveAs(new File("generated_files", "fastods_profile.ods"));
 	}
 
 	@After
@@ -122,7 +124,8 @@ public class ProfileFastODS {
 
 	@Test
 	public final void testFast() throws IOException {
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT,
 				ProfileFastODS.COL_COUNT);
 
@@ -137,6 +140,6 @@ public class ProfileFastODS {
 				this.logger.info("Row " + y);
 		}
 
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_profile.ods"));
+		writer.saveAs(new File("generated_files", "fastods_profile.ods"));
 	}
 }

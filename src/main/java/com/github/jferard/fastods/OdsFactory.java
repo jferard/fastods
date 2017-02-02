@@ -88,31 +88,38 @@ public class OdsFactory {
 	 *
 	 * @return a new document
 	 */
-	public OdsDocument createDocument() {
+	private OdsDocument createDocument() {
 		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
 				this.writeUtil, this.format);
 		return new OdsDocument(this.logger,
 				odsElements, this.xmlUtil);
 	}
 
-	public AnonymousOdsFileWriter createWriter(final OdsDocument document) {
+	public AnonymousOdsFileWriter createWriter() {
+		final OdsDocument document = this.createDocument();
 		return new AnonymousOdsFileWriter(this.logger, document);
 	}
 
 	/**
 	 * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
 	 *
-	 * @param document the document that will be written
 	 * @param filename the name of the destination file
 	 * @return the ods writer
 	 * @throws FileNotFoundException if the file can't be found
 	 */
-	public OdsFileWriter createWriter(final OdsDocument document, final String filename) throws FileNotFoundException {
-		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename)).build();
+	public OdsFileWriter createWriter(final String filename) throws
+			FileNotFoundException {
+		final OdsDocument document = this.createDocument();
+		final OdsFileWriter writer = OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename))
+				.build();
+		return writer;
 	}
 
-	public OdsFileWriter createWriter(final OdsDocument document, final File file) throws FileNotFoundException {
-		return OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
+	public OdsFileWriter createWriter(final File file) throws FileNotFoundException {
+		final OdsDocument document = this.createDocument();
+		final OdsFileWriter writer =
+				OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
+		return writer;
 	}
 
 	/**

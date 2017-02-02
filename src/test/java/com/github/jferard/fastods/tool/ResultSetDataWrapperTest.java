@@ -20,6 +20,7 @@
  */
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.HeavyTableRow;
@@ -252,7 +253,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 						Arrays.<Object>asList(14, "b", "14b"),
 						Arrays.<Object>asList(15, "c", "15c")));
 
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", 50, 5);
 		final TableCellStyle tcls = TableCellStyle.builder("rs-head")
 				.backgroundColor("#dddddd").fontWeightBold().build();
@@ -264,7 +266,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		table.addData(data);
 		table.nextRow();
 		table.addData(data2);
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "7columns.ods"));
+		writer.saveAs(new File("generated_files", "7columns.ods"));
 	}
 
 	@Test

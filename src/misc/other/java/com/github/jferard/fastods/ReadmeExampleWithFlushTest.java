@@ -46,9 +46,9 @@ public class ReadmeExampleWithFlushTest {
 	public void readme() throws IOException {
 		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
 
-		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "readme.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "readme.ods"));
+		final OdsDocument document = writer.document();
 
 		document.addStyleTag(style);
 		document.addChildCellStyle(TableCell.Type.FLOAT);

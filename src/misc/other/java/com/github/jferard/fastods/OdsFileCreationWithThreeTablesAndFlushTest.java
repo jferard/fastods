@@ -63,9 +63,9 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 		this.logger.info("Filling a 3 tables, 5 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "fastods_3t.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_3t.ods"));
+		final OdsDocument document = writer.document();
 
 		try {
 			document.setViewSetting("View1", "ZoomValue", "200");

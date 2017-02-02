@@ -63,14 +63,22 @@ public class AnonymousOdsFileWriterTest {
 	private ZipUTF8WriterBuilder builder;
 
 	private DataStyleBuilderFactory dataStyleBuilderFactory;
-	private OdsElements odsElements;
-
 	private Logger logger;
+	private OdsElements odsElements;
 	private OdsFactory odsFactory;
 	private ByteArrayOutputStream os;
-	private ZipUTF8Writer writer;
 	private WriteUtil writeUtil;
+	private ZipUTF8Writer writer;
 	private XMLUtil xmlUtil;
+
+	protected void initOdsElements() {
+		TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
+		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
+		TableColumnStyle.getDefaultColumnStyle(this.xmlUtil)
+				.addToElements(this.odsElements);
+		TableCellStyle.getDefaultCellStyle().addToElements(this.odsElements);
+		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
+	}
 
 	@Before
 	public final void setUp() {
@@ -85,12 +93,27 @@ public class AnonymousOdsFileWriterTest {
 		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
+	@Test(expected = IOException.class)
+	public final void testFileIsDir() throws IOException {
+		final Logger l = PowerMock.createNiceMock(Logger.class);
+		final OdsFactory of = new OdsFactory(l, Locale.US);
+
+		// PLAY
+		this.initOdsElements();
+		PowerMock.replayAll();
+		final OdsDocument document = new OdsDocument(l, this.odsElements,
+				this.xmlUtil);
+		of.createWriter().saveAs(".");
+		PowerMock.verifyAll();
+	}
+
 	@Test
 	public final void testSaveEmpyDocumentToOutputStream() throws IOException {
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		PowerMock.replayAll();
 
-		this.odsFactory.createWriter(document).save(this.os);
+		writer.save(this.os);
 		final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
 		final ZipInputStream zis = new ZipInputStream(is);
 
@@ -109,20 +132,6 @@ public class AnonymousOdsFileWriterTest {
 				"Configurations2/popupmenu/", "styles.xml", "content.xml",
 				"Configurations2/progressbar/", "Configurations2/statusbar/"),
 				names);
-		PowerMock.verifyAll();
-	}
-
-	@Test(expected = IOException.class)
-	public final void testFileIsDir() throws IOException {
-		final Logger l = PowerMock.createNiceMock(Logger.class);
-		final OdsFactory of = new OdsFactory(l, Locale.US);
-
-		// PLAY
-		this.initOdsElements();
-		PowerMock.replayAll();
-		final OdsDocument document = new OdsDocument(l, this.odsElements,
-				this.xmlUtil);
-		of.createWriter(document).saveAs(".");
 		PowerMock.verifyAll();
 	}
 
@@ -147,7 +156,10 @@ public class AnonymousOdsFileWriterTest {
 		PowerMock.replayAll();
 		final OdsDocument document = new OdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
-		this.odsFactory.createWriter(document).saveAs("file", zb);
+		final OdsFileWriter writer =
+				new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb).filename(temp.getAbsolutePath())
+						.build();
+		writer.save();
 		PowerMock.verifyAll();
 	}
 
@@ -171,16 +183,7 @@ public class AnonymousOdsFileWriterTest {
 		PowerMock.replayAll();
 		final OdsDocument document = new OdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
-		this.odsFactory.createWriter(document).save(outputStream);
+		new AnonymousOdsFileWriter(this.logger, document).save(outputStream);
 		PowerMock.verifyAll();
-	}
-
-	protected void initOdsElements() {
-		TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
-		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
-		TableColumnStyle.getDefaultColumnStyle(this.xmlUtil)
-				.addToElements(this.odsElements);
-		TableCellStyle.getDefaultCellStyle().addToElements(this.odsElements);
-		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 }

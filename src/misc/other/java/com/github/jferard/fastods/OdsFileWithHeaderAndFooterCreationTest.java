@@ -100,7 +100,8 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		final PageStyle ps = PageStyle.builder("test")
 				.footer(footer).header(header).build();
 
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", 1, 5);
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
 				.build();
@@ -144,6 +145,6 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_fh.ods"));
+		this.odsFactory.createWriter().saveAs(new File("generated_files", "fastods_fh.ods"));
 	}
 }

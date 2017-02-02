@@ -56,6 +56,10 @@ public class OdsFileWriter {
 		this.state = State.BEFORE;
 	}
 
+	public OdsDocument document() {
+		return this.document;
+	}
+
 	public void close() throws IOException {
 		this.writer.flush();
 		this.writer.close();

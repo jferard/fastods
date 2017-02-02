@@ -63,9 +63,9 @@ public class OdsFileCreationWithFlushTest {
 		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "fastods_1000_300.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_1000_300.ods"));
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
@@ -87,9 +87,9 @@ public class OdsFileCreationWithFlushTest {
 		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "fastods_100000_20f.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_100000_20f.ods"));
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
@@ -112,9 +112,9 @@ public class OdsFileCreationWithFlushTest {
 		this.logger.info("Filling a 50 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "fastods_50_5f.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_50_5f.ods"));
+		final OdsDocument document = writer.document();
 
 		try {
 			writer.prepareFlush();

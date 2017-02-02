@@ -63,7 +63,8 @@ public class OdsFileCreationTest {
 		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
@@ -75,7 +76,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_1000_300.ods"));
+		writer.saveAs(new File("generated_files", "fastods_1000_300.ods"));
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -85,7 +86,8 @@ public class OdsFileCreationTest {
 		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
@@ -97,7 +99,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_100000_20.ods"));
+		writer.saveAs(new File("generated_files", "fastods_100000_20.ods"));
 
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
@@ -108,7 +110,8 @@ public class OdsFileCreationTest {
 		this.logger.info("Filling a 50 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
-		final OdsDocument document = this.odsFactory.createDocument();
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
 		document.setViewSetting("View1", "ZoomValue", "200");
 		final Table table = document.addTable("test", 50, 5);
 		table.setSettings("View1", "ZoomValue", "200");
@@ -198,7 +201,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		this.odsFactory.createWriter(document).saveAs(new File("generated_files", "fastods_50_5.ods"));
+		writer.saveAs(new File("generated_files", "fastods_50_5.ods"));
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}

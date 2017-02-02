@@ -112,9 +112,9 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth("10cm").defaultCellStyle(tcls).build();
 
-		final OdsDocument document = this.odsFactory.createDocument();
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(document, new File("generated_files", "fastods_fhf.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_fhf.ods"));
+		final OdsDocument document = writer.document();
 		document.addPageStyle(ps);
 		document.addStyleTag(ttts);
 		document.addStyleTag(ttts2);

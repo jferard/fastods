@@ -51,6 +51,10 @@ public class AnonymousOdsFileWriter {
 		this.document = document;
 	}
 
+	public OdsDocument document() {
+		return this.document;
+	}
+
 	/**
 	 * Save the new file.
 	 *
