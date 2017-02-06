@@ -112,6 +112,8 @@ public class OdsFactory {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer = OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename))
 				.build();
+		document.addObserver(writer);
+		document.prepareFlush();
 		return writer;
 	}
 
@@ -119,6 +121,8 @@ public class OdsFactory {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer =
 				OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
+		document.addObserver(writer);
+		document.prepareFlush();
 		return writer;
 	}
 

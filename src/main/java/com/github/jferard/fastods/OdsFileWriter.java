@@ -21,17 +21,20 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Logger;
 
 /**
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFileWriter {
+public class OdsFileWriter implements Observer {
 	public static OdsFileWriterBuilder builder(final Logger logger, final OdsDocument document) {
 		return new OdsFileWriterBuilder(logger, document);
 	}
@@ -39,25 +42,22 @@ public class OdsFileWriter {
 	private final OdsDocument document;
 	private final Logger logger;
 	private final ZipUTF8Writer writer;
-	private State state;
+	private final XMLUtil xmlUtil;
 
 	/**
 	 * Create a new ODS file.
 	 *
 	 * @param logger   the logger
 	 * @param document the document to write
+	 * @param xmlUtil
 	 * @param writer   The writer for this file
 	 */
-	OdsFileWriter(final Logger logger, final OdsDocument document, final ZipUTF8Writer writer)
+	OdsFileWriter(final Logger logger, final OdsDocument document, final XMLUtil xmlUtil, final ZipUTF8Writer writer)
 			throws FileNotFoundException {
 		this.logger = logger;
 		this.document = document;
+		this.xmlUtil = xmlUtil;
 		this.writer = writer;
-		this.state = State.BEFORE;
-	}
-
-	public OdsDocument document() {
-		return this.document;
 	}
 
 	public void close() throws IOException {
@@ -65,94 +65,10 @@ public class OdsFileWriter {
 		this.writer.close();
 	}
 
-	public void finalizeFlush() throws IOException {
-		this.ensureReadyForContent();
-		this.state = State.FINALIZE;
-		this.document.finalizeContent(this.writer);
-		this.document.finalizeFlush(this.writer);
+	public OdsDocument document() {
+		return this.document;
 	}
 
-	private void ensureReadyForContent() throws IOException {
-		switch (this.state) {
-			case META_AND_STYLES:
-				case CONTENT:
-				break;
-			case META:
-				this.document.flushStyles(this.writer);
-				break;
-			case STYLES:
-				this.document.flushMeta(this.writer);
-				break;
-			case PREPARE:
-				this.document.flushMeta(this.writer);
-				this.document.flushStyles(this.writer);
-				break;
-			case BEFORE:
-				this.document.prepareFlush(this.writer);
-				this.document.flushMeta(this.writer);
-				this.document.flushStyles(this.writer);
-				break;
-			default:
-				throw new IllegalStateException();
-		}
-	}
-
-	public void flushMeta() throws IOException {
-		switch (this.state) {
-			case PREPARE:
-				this.state = State.META;
-				break;
-			case STYLES:
-				this.state = State.META_AND_STYLES;
-				break;
-			case BEFORE:
-				this.document.prepareFlush(this.writer);
-				this.state = State.META;
-				break;
-			default:
-				throw new IllegalStateException();
-		}
-		this.document.flushMeta(this.writer);
-	}
-
-	public void flushRows() throws IOException {
-		if (this.state != State.CONTENT) {
-			this.ensureReadyForContent();
-			this.state = State.CONTENT;
-		}
-		this.document.flushRows(this.writer);
-	}
-
-	public void flushStyles() throws IOException {
-		switch (this.state) {
-			case BEFORE:
-				this.document.prepareFlush(this.writer);
-				this.state = State.STYLES;
-				break;
-			case PREPARE:
-				this.state = State.STYLES;
-				break;
-			case META:
-				this.state = State.META_AND_STYLES;
-				break;
-			default:
-				throw new IllegalStateException();
-		}
-		this.document.flushStyles(this.writer);
-	}
-
-	public void flushTables() throws IOException {
-		if (this.state != State.CONTENT) {
-			this.ensureReadyForContent();
-			this.state = State.CONTENT;
-		}
-		this.document.flushTables(this.writer);
-	}
-
-	public void prepareFlush() throws IOException {
-		this.state = State.PREPARE;
-		this.document.prepareFlush(this.writer);
-	}
 
 	/**
 	 * Save the new file.
@@ -163,7 +79,16 @@ public class OdsFileWriter {
 		this.document.save(this.writer);
 	}
 
-	private enum State {
-		BEFORE, PREPARE, META, STYLES, META_AND_STYLES, CONTENT, FINALIZE
+	@Override
+	public void update(final Observable o, final Object arg) {
+		if (arg instanceof OdsFlusher) {
+			final OdsFlusher flusher = (OdsFlusher) arg;
+			try {
+				flusher.flushInto(this.xmlUtil, this.writer);
+			} catch (final IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }
+

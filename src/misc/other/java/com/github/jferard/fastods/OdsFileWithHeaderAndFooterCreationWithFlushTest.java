@@ -164,6 +164,6 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		writer.save();
+		document.save();
 	}
 }

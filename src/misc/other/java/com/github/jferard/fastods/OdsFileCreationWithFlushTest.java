@@ -117,9 +117,6 @@ public class OdsFileCreationWithFlushTest {
 		final OdsDocument document = writer.document();
 
 		try {
-			writer.prepareFlush();
-			writer.flushMeta();
-
 			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 					.build();
 			final TableCellStyle tcls = TableCellStyle.builder("cc")
@@ -154,8 +151,6 @@ public class OdsFileCreationWithFlushTest {
 			document.addChildCellStyle(tcs3, TableCell.Type.FLOAT);
 			document.addChildCellStyle(tcls, TableCell.Type.FLOAT);
 			document.freezeStyles(); // if this crashes, use debugStyles to log the errors
-
-			writer.flushStyles();
 
 			final Table table = document.addTable("test", 50, 5);
 			table.setSettings("View1", "ZoomValue", "200");
@@ -228,11 +223,9 @@ public class OdsFileCreationWithFlushTest {
 					}
 					walker.next();
 				}
-				writer.flushRows();
 			}
-			writer.finalizeFlush();
 		} finally {
-			writer.close();
+			document.save();
 		}
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");

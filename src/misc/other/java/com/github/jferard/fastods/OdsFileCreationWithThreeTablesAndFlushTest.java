@@ -70,8 +70,6 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 		try {
 			document.setViewSetting("View1", "ZoomValue", "200");
 
-			writer.prepareFlush();
-
 			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
 					.build();
 			final TableCellStyle tcls = TableCellStyle.builder("cc")
@@ -99,9 +97,6 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 			document.addChildCellStyle(tcs2, TableCell.Type.FLOAT);
 			document.addChildCellStyle(tcs3, TableCell.Type.FLOAT);
 			document.freezeStyles();
-
-			writer.flushMeta();
-			writer.flushStyles();
 
 			for (int i = 0; i < 3; i++) {
 				final Table table = document.addTable("test" + i, 5, 5);
@@ -175,12 +170,10 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 						}
 						walker.next();
 					}
-					writer.flushRows();
 				}
 			}
-			writer.finalizeFlush();
 		} finally {
-			writer.close();
+			document.save();
 		}
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");

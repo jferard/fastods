@@ -101,6 +101,10 @@ public class OdsDocument {
 		this.odsElements.addMasterPageStyle(masterPageStyle);
 	}
 
+	public void addObserver(final OdsFileWriter writer) {
+		this.odsElements.addObserver(writer);
+	}
+
 	/**
 	 * Add a page layout style to this document. Use only if you want to flush data before the end of the document
 	 * construction.
@@ -157,36 +161,8 @@ public class OdsDocument {
 		return table;
 	}
 
-	void createEmptyElements(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.createEmptyElements(writer);
-	}
-
 	public void debugStyles() {
 		this.odsElements.debugStyles();
-	}
-
-	void finalizeContent(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.finalizeContent(this.xmlUtil, writer);
-	}
-
-	void finalizeFlush(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.writeSettings(this.xmlUtil, writer);
-	}
-
-	void flushMeta(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.writeMeta(this.xmlUtil, writer);
-	}
-
-	void flushRows(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.flushRows(this.xmlUtil, writer);
-	}
-
-	void flushStyles(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.writeStyles(this.xmlUtil, writer);
-	}
-
-	void flushTables(final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.flushTables(this.xmlUtil, writer);
 	}
 
 	public void freezeStyles() {
@@ -259,9 +235,12 @@ public class OdsDocument {
 		return this.odsElements.getTables();
 	}
 
-	public void prepareFlush(final ZipUTF8Writer writer) throws IOException {
-		this.createEmptyElements(writer);
-		this.odsElements.writeImmutableElements(this.xmlUtil, writer);
+	public void prepareFlush() {
+		this.odsElements.prepare();
+	}
+
+	public void save() {
+		this.odsElements.save();
 	}
 
 	/**
@@ -270,9 +249,9 @@ public class OdsDocument {
 	 * @param writer where to write
 	 * @throws IOException
 	 */
-	void save(final ZipUTF8Writer writer) throws IOException {
+	public void save(final ZipUTF8Writer writer) throws IOException {
 		try {
-			this.createEmptyElements(writer);
+			this.odsElements.createEmptyElements(writer);
 			this.odsElements.writeImmutableElements(this.xmlUtil, writer);
 			this.odsElements.writeMeta(this.xmlUtil, writer);
 			this.odsElements.writeStyles(this.xmlUtil, writer);

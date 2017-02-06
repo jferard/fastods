@@ -26,23 +26,23 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-public class BenchFast extends Bench {
+public class BenchFastFlush extends Bench {
 
 	private final OdsFactory odsFactory;
 
-	public BenchFast(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "FastODS", rowCount, colCount);
+	public BenchFastFlush(final Logger logger, final int rowCount, final int colCount) {
+		super(logger, "FastODSFlush", rowCount, colCount);
 		this.odsFactory = new OdsFactory(this.logger, Locale.US);
 	}
 
 	@Override
 	public long test() throws IOException {
 		// Open the file.
-		this.logger.info("testFast: filling a " + rowCount + " rows, "
+		this.logger.info("testFastFlush: filling a " + rowCount + " rows, "
 				+ colCount + " columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final AnonymousOdsFileWriter writer =
-				this.odsFactory.createWriter();
+		final OdsFileWriter writer =
+				this.odsFactory.createWriter(new File("generated_files", "fastods_flush_benchmark.ods"));
 		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", rowCount, colCount);
 
@@ -55,7 +55,7 @@ public class BenchFast extends Bench {
 			}
 		}
 
-		writer.saveAs(new File("generated_files", "fastods_benchmark.ods"));
+		document.save();
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 		return t2 - t1;

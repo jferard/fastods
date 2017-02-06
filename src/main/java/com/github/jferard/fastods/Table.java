@@ -38,6 +38,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -45,7 +46,7 @@ import java.util.List;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class Table implements NamedObject {
+public class Table extends Observable implements NamedObject {
 	private static void checkCol(final int col) throws FastOdsException {
 		if (col < 0) {
 			throw new FastOdsException(new StringBuilder(
@@ -62,6 +63,7 @@ public class Table implements NamedObject {
 		}
 	}
 
+	private final int bufferSize;
 	private final int columnCapacity;
 	private final List<TableColumnStyle> columnStyles;
 	private final ConfigItemMapEntrySet configEntry;
@@ -71,7 +73,9 @@ public class Table implements NamedObject {
 	private final List<HeavyTableRow> tableRows;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
+
 	private int curRowIndex;
+	private int lastFlushedRowIndex;
 	private int lastRowIndex;
 	private String name;
 	private int nullFieldCounter;
@@ -111,7 +115,9 @@ public class Table implements NamedObject {
 				.capacity(this.columnCapacity).build();
 		this.tableRows = FullList.newListWithCapacity(rowCapacity);
 		this.curRowIndex = -1;
+		this.lastFlushedRowIndex = 0;
 		this.lastRowIndex = -1;
+		this.bufferSize = 1024;
 	}
 
 	public void addData(final DataWrapper data) {
@@ -145,7 +151,7 @@ public class Table implements NamedObject {
 				.appendXMLToTable(xmlUtil, appendable, 1);
 	}
 
-	private void appendPostamble(final Appendable appendable) throws IOException {
+	void appendPostamble(final Appendable appendable) throws IOException {
 		appendable.append("</table:table>");
 	}
 
@@ -204,6 +210,12 @@ public class Table implements NamedObject {
 	public void appendXMLToSettingsElement(final XMLUtil util,
 										   final Appendable appendable) throws IOException {
 		this.configEntry.appendXML(util, appendable);
+	}
+
+	public void flush() {
+		this.setChanged();
+		this.notifyObservers(new EndTableFlusher(this, this.tableRows.subList(this.lastFlushedRowIndex, this
+				.tableRows.size())));
 	}
 
 	/**
@@ -286,7 +298,18 @@ public class Table implements NamedObject {
 			this.tableRows.set(rowIndex, tr);
 			if (rowIndex > this.lastRowIndex)
 				this.lastRowIndex = rowIndex;
+
+			if (rowIndex == 0) {
+				this.setChanged();
+				this.notifyObservers(new BeginTableFlusher(this));
+			} else if (rowIndex % this.bufferSize == 0) {
+				this.setChanged();
+				this.notifyObservers(new RowsFlusher(this.tableRows.subList(this.lastFlushedRowIndex,
+						rowIndex))); // (0..1023), (1024..2047)
+				this.lastFlushedRowIndex = rowIndex;
+			}
 		}
+		this.curRowIndex = rowIndex;
 		return tr;
 	}
 
@@ -300,8 +323,7 @@ public class Table implements NamedObject {
 	}
 
 	public HeavyTableRow nextRow() {
-		this.curRowIndex++;
-		return this.getRowSecure(this.curRowIndex);
+		return this.getRowSecure(this.curRowIndex+1);
 	}
 
 	/**

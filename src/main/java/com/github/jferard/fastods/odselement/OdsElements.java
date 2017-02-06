@@ -21,6 +21,9 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.FinalizeFlusher;
+import com.github.jferard.fastods.ImmutableElementsFlusher;
+import com.github.jferard.fastods.MetaAndStylesElementsFlusher;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -37,6 +40,8 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -47,7 +52,7 @@ import java.util.zip.ZipEntry;
  *
  * @author Julien Férard
  */
-public class OdsElements {
+public class OdsElements extends Observable {
 	public static OdsElements create(final PositionUtil positionUtil,
 									 final XMLUtil xmlUtil, final WriteUtil writeUtil,
 									 final DataStyles format) {
@@ -71,6 +76,7 @@ public class OdsElements {
 	private final SettingsElement settingsElement;
 	private final StylesContainer stylesContainer;
 	private final StylesElement stylesElement;
+	private Observer observer;
 
 	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
 						  final ManifestElement manifestElement,
@@ -121,9 +127,26 @@ public class OdsElements {
 		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
+	@Override
+	public void addObserver(Observer o) {
+		super.addObserver(o);
+		this.observer = o;
+	}
+
 	public Table addTableToContent(final String name, final int rowCapacity,
 								   final int columnCapacity) {
-		return this.contentElement.addTable(name, rowCapacity, columnCapacity);
+		final Table previousTable = this.contentElement.getLastTable();
+		final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
+		this.settingsElement.addTableConfig(table.getConfigEntry());
+		this.setChanged();
+		if (previousTable == null)
+			this.notifyObservers(new MetaAndStylesElementsFlusher(this, this.contentElement));
+		else
+			previousTable.flush();
+
+		if (this.observer != null)
+			table.addObserver(this.observer);
+		return table;
 	}
 
 	public void createEmptyElements(final ZipUTF8Writer writer)
@@ -147,7 +170,7 @@ public class OdsElements {
 	}
 
 	public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.contentElement.flushTables(xmlUtil, writer, this.settingsElement);
+		this.contentElement.flushTables(xmlUtil, writer);
 		this.contentElement.writePostamble(xmlUtil, writer);
 	}
 
@@ -156,7 +179,7 @@ public class OdsElements {
 	}
 
 	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-		this.contentElement.flushTables(util, writer, this.settingsElement);
+		this.contentElement.flushTables(util, writer);
 	}
 
 	public void freezeStyles() {
@@ -180,6 +203,20 @@ public class OdsElements {
 	 */
 	public List<Table> getTables() {
 		return this.contentElement.getTables();
+	}
+
+	public void prepare() {
+		this.setChanged();
+		this.notifyObservers(new ImmutableElementsFlusher(this));
+	}
+
+	public void save() {
+		final Table previousTable = this.contentElement.getLastTable();
+		if (previousTable != null)
+			previousTable.flush();
+
+		this.setChanged();
+		this.notifyObservers(new FinalizeFlusher(this.contentElement, this.settingsElement));
 	}
 
 	public void setActiveTable(final Table table) {

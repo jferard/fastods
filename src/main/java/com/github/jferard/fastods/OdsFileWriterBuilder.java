@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.FileOpenResult;
+import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
@@ -89,7 +90,7 @@ public class OdsFileWriterBuilder {
 		if (this.out == null)
 			this.out = new FileOutputStream(this.filename);
 
-		return new OdsFileWriter(this.logger, this.document, this.builder.build(this.out));
+		return new OdsFileWriter(this.logger, this.document, XMLUtil.create(), this.builder.build(this.out));
 	}
 
 	/**

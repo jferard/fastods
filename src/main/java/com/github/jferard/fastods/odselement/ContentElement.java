@@ -117,7 +117,7 @@ public class ContentElement implements OdsElement {
 		this.flushPosition.set(lastTableIndex, this.tables.get(lastTableIndex).getLastRowNumber());
 	}
 
-	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer, final SettingsElement settingsElement)
+	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
 		this.ensureContentBegin(util, writer);
 		final int lastTableIndex = this.tables.size() - 1;
@@ -125,14 +125,17 @@ public class ContentElement implements OdsElement {
 
 		Table table = this.tables.get(tableIndex);
 		table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
-		settingsElement.addTableConfig(table.getConfigEntry());
 		tableIndex++;
 		while (tableIndex <= lastTableIndex) {
 			table = this.tables.get(tableIndex);
 			table.appendXMLToContentEntry(util, writer);
-			settingsElement.addTableConfig(table.getConfigEntry());
 			tableIndex++;
 		}
+	}
+
+	public Table getLastTable() {
+		final int size = this.tables.size();
+		return size <= 0 ? null : this.tables.get(size -1);
 	}
 
 	public StylesContainer getStyleTagsContainer() {
@@ -171,7 +174,7 @@ public class ContentElement implements OdsElement {
 		this.writePostamble(util, writer);
 	}
 
-	void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		writer.write("</office:spreadsheet>");
 		writer.write("</office:body>");
 		writer.write("</office:document-content>");
@@ -179,7 +182,7 @@ public class ContentElement implements OdsElement {
 		writer.closeEntry();
 	}
 
-	private void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		writer.putNextEntry(new ZipEntry("content.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.write(
