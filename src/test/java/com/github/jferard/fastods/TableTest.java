@@ -100,7 +100,7 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testDataWrapper() {
+	public final void testDataWrapper() throws IOException {
 		final DataWrapper data = PowerMock.createMock(DataWrapper.class);
 		EasyMock.expect(data.addToTable(this.table)).andReturn(true);
 		PowerMock.replayAll();
@@ -109,7 +109,7 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testGetRow() throws FastOdsException {
+	public final void testGetRow() throws FastOdsException, IOException {
 		final List<HeavyTableRow> rows = Lists.newArrayList();
 		for (int r = 0; r < 7; r++) { // 8 times
 			rows.add(this.table.nextRow());
@@ -121,7 +121,7 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testGetRowFromStringPos() throws FastOdsException {
+	public final void testGetRowFromStringPos() throws FastOdsException, IOException {
 		final List<HeavyTableRow> rows = Lists.newArrayList();
 		for (int r = 0; r < 7; r++) { // 8 times
 			rows.add(this.table.nextRow());
@@ -131,7 +131,7 @@ public class TableTest {
 	}
 
 	@Test
-	public final void testGetRowHundred() throws FastOdsException {
+	public final void testGetRowHundred() throws FastOdsException, IOException {
 		for (int r = 0; r < 7; r++) { // 8 times
 			this.table.nextRow();
 		}
@@ -140,12 +140,12 @@ public class TableTest {
 	}
 
 	@Test(expected = FastOdsException.class)
-	public final void testGetRowNegative() throws FastOdsException {
+	public final void testGetRowNegative() throws FastOdsException, IOException {
 		this.table.getRow(-1);
 	}
 
 	@Test
-	public final void testLastRow() {
+	public final void testLastRow() throws IOException {
 		Assert.assertEquals(-1, this.table.getLastRowNumber());
 		for (int r = 0; r < 7; r++) { // 8 times
 			this.table.nextRow();

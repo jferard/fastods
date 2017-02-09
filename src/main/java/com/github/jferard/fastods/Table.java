@@ -38,7 +38,6 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -46,7 +45,7 @@ import java.util.Observable;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class Table extends Observable implements NamedObject {
+public class Table implements NamedObject {
 	private static void checkCol(final int col) throws FastOdsException {
 		if (col < 0) {
 			throw new FastOdsException(new StringBuilder(
@@ -79,6 +78,7 @@ public class Table extends Observable implements NamedObject {
 	private int lastRowIndex;
 	private String name;
 	private int nullFieldCounter;
+	private OdsFileWriter observer;
 	private TableStyle style;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
@@ -120,8 +120,12 @@ public class Table extends Observable implements NamedObject {
 		this.bufferSize = 1024;
 	}
 
-	public void addData(final DataWrapper data) {
+	public void addData(final DataWrapper data) throws IOException {
 		data.addToTable(this);
+	}
+
+	public void addObserver(final OdsFileWriter observer) {
+		this.observer = observer;
 	}
 
 	private void appendColumnStyles(final Appendable appendable,
@@ -175,6 +179,7 @@ public class Table extends Observable implements NamedObject {
 
 	private void appendRows(final XMLUtil util, final Appendable appendable, final int firstRowIndex)
 			throws IOException {
+		System.out.println("appendRows("+util+", "+appendable+", "+firstRowIndex);
 		if (firstRowIndex == 0)
 			this.nullFieldCounter = 0;
 
@@ -212,9 +217,8 @@ public class Table extends Observable implements NamedObject {
 		this.configEntry.appendXML(util, appendable);
 	}
 
-	public void flush() {
-		this.setChanged();
-		this.notifyObservers(new EndTableFlusher(this, this.tableRows.subList(this.lastFlushedRowIndex, this
+	public void flush() throws IOException {
+		this.observer.update(new EndTableFlusher(this, this.tableRows.subList(this.lastFlushedRowIndex, this
 				.tableRows.size())));
 	}
 
@@ -279,17 +283,17 @@ public class Table extends Observable implements NamedObject {
 		return this.name;
 	}
 
-	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException {
+	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException, IOException {
 		Table.checkRow(rowIndex);
 		return this.getRowSecure(rowIndex);
 	}
 
-	public HeavyTableRow getRow(final String pos) throws FastOdsException {
+	public HeavyTableRow getRow(final String pos) throws FastOdsException, IOException {
 		final int row = this.positionUtil.getPosition(pos).getRow();
 		return this.getRow(row);
 	}
 
-	public HeavyTableRow getRowSecure(final int rowIndex) {
+	public HeavyTableRow getRowSecure(final int rowIndex) throws IOException {
 		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.writeUtil, this.xmlUtil,
@@ -299,14 +303,14 @@ public class Table extends Observable implements NamedObject {
 			if (rowIndex > this.lastRowIndex)
 				this.lastRowIndex = rowIndex;
 
-			if (rowIndex == 0) {
-				this.setChanged();
-				this.notifyObservers(new BeginTableFlusher(this));
-			} else if (rowIndex % this.bufferSize == 0) {
-				this.setChanged();
-				this.notifyObservers(new RowsFlusher(this.tableRows.subList(this.lastFlushedRowIndex,
-						rowIndex))); // (0..1023), (1024..2047)
-				this.lastFlushedRowIndex = rowIndex;
+			if (this.observer != null) {
+				if (rowIndex == 0) {
+					this.observer.update(new BeginTableFlusher(this));
+				} else if (rowIndex % this.bufferSize == 0) {
+					this.observer.update(new RowsFlusher(this.tableRows.subList(this.lastFlushedRowIndex,
+							rowIndex))); // (0..1023), (1024..2047)
+					this.lastFlushedRowIndex = rowIndex;
+				}
 			}
 		}
 		this.curRowIndex = rowIndex;
@@ -322,8 +326,8 @@ public class Table extends Observable implements NamedObject {
 		return this.style.getName();
 	}
 
-	public HeavyTableRow nextRow() {
-		return this.getRowSecure(this.curRowIndex+1);
+	public HeavyTableRow nextRow() throws IOException {
+		return this.getRowSecure(this.curRowIndex + 1);
 	}
 
 	/**
@@ -336,7 +340,7 @@ public class Table extends Observable implements NamedObject {
 	 */
 	@Deprecated
 	public void setCellMerge(final String pos, final int rowMerge,
-							 final int columnMerge) throws FastOdsException {
+							 final int columnMerge) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final HeavyTableRow row = this.getRow(position.getRow());
 		row.setCellMerge(position.getColumn(), rowMerge, columnMerge);

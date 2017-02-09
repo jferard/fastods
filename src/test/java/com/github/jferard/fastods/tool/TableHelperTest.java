@@ -36,6 +36,8 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 
+import java.io.IOException;
+
 public class TableHelperTest {
 
 	private TableCell cell;
@@ -56,7 +58,7 @@ public class TableHelperTest {
 	}
 
 	@Test
-	public final void testSetCellMerge() throws FastOdsException {
+	public final void testSetCellMerge() throws FastOdsException, IOException {
 		final CellValue value = new StringValue("@");
 		final TableCellStyle ts = TableCellStyle.builder("b").build();
 
@@ -71,7 +73,7 @@ public class TableHelperTest {
 	}
 
 	@Test
-	public final void testSetCellValue() throws FastOdsException {
+	public final void testSetCellValue() throws FastOdsException, IOException {
 		final CellValue value = new StringValue("@");
 		final TableCellStyle ts = TableCellStyle.builder("b").build();
 

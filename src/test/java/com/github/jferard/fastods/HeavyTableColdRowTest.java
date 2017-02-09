@@ -20,16 +20,15 @@
  */
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
+import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 public class HeavyTableColdRowTest {
 	private HeavyTableColdRow row;
@@ -54,7 +53,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testMerge() {
+	public final void testMerge() throws IOException {
 		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
 
 		// PLAY
@@ -70,7 +69,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testMerge1b() {
+	public final void testMerge1b() throws IOException {
 		// PLAY
 		PowerMock.replayAll();
 		this.row.setCellMerge(7, -1, 8);
@@ -80,7 +79,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testMerge1c() {
+	public final void testMerge1c() throws IOException {
 		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
 
 		// PLAY
@@ -92,7 +91,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testMerge1d() {
+	public final void testMerge1d() throws IOException {
 		// PLAY
 		PowerMock.replayAll();
 		this.row.setCellMerge(7, -1, -1);
@@ -102,7 +101,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testMerge1e() {
+	public final void testMerge1e() throws IOException {
 		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
 
 		// PLAY
@@ -126,7 +125,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testMerge1f() {
+	public final void testMerge1f() throws IOException {
 		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
 
 		// PLAY
@@ -219,7 +218,7 @@ public class HeavyTableColdRowTest {
 	}
 
 	@Test
-	public final void testRowsSpanned() {
+	public final void testRowsSpanned() throws IOException {
 		final HeavyTableRow r2 = PowerMock.createMock(HeavyTableRow.class);
 		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt()))
 				.andReturn(r2).anyTimes();

@@ -31,6 +31,8 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 
+import java.io.IOException;
+
 public class TableHelper {
 	private final PositionUtil positionUtil;
 
@@ -50,7 +52,7 @@ public class TableHelper {
 	 */
 	public void setCellMerge(final Table table, final int rowIndex,
 							 final int colIndex, final int rowMerge, final int columnMerge)
-			throws FastOdsException {
+			throws FastOdsException, IOException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setRowsSpanned(rowMerge);
 		cell.setColumnsSpanned(columnMerge);
@@ -66,7 +68,7 @@ public class TableHelper {
 	 * @throws FastOdsException if the row index or the col index is negative
 	 */
 	public void setCellMerge(final Table table, final String pos,
-							 final int rowMerge, final int columnMerge) throws FastOdsException {
+							 final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -75,7 +77,7 @@ public class TableHelper {
 
 	public void setCellValue(final Table table, final int rowIndex,
 							 final int colIndex, final CellValue value, final TableCellStyle ts)
-			throws FastOdsException {
+			throws FastOdsException, IOException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setCellValue(value);
 		cell.setStyle(ts);
@@ -93,7 +95,7 @@ public class TableHelper {
 	 */
 	public void setCellValue(final Table table, final String pos,
 							 final CellValue value, final TableCellStyle ts)
-			throws FastOdsException {
+			throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -101,7 +103,7 @@ public class TableHelper {
 	}
 
 	private TableCellWalker getCell(final Table table, final int rowIndex,
-									final int colIndex) throws FastOdsException {
+									final int colIndex) throws FastOdsException, IOException {
 		final HeavyTableRow row = table.getRow(rowIndex);
 		final TableCellWalker walker = row.getWalker();
 		walker.to(colIndex);

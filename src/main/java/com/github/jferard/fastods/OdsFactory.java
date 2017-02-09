@@ -35,6 +35,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -108,7 +109,7 @@ public class OdsFactory {
 	 * @throws FileNotFoundException if the file can't be found
 	 */
 	public OdsFileWriter createWriter(final String filename) throws
-			FileNotFoundException {
+			IOException {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer = OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename))
 				.build();
@@ -117,7 +118,7 @@ public class OdsFactory {
 		return writer;
 	}
 
-	public OdsFileWriter createWriter(final File file) throws FileNotFoundException {
+	public OdsFileWriter createWriter(final File file) throws IOException {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer =
 				OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();

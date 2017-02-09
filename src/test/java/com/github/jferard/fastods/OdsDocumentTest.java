@@ -100,7 +100,7 @@ public class OdsDocumentTest {
 	}
 
 	@Test
-	public final void testAddTable() {
+	public final void testAddTable() throws IOException {
 		final Table t = PowerMock.createMock(Table.class);
 
 		this.initOdsElements();
@@ -116,7 +116,7 @@ public class OdsDocumentTest {
 	}
 
 	@Test
-	public final void testAddTableDefault() throws FastOdsException {
+	public final void testAddTableDefault() throws FastOdsException, IOException {
 		final Table t = PowerMock.createMock(Table.class);
 
 		this.initOdsElements();

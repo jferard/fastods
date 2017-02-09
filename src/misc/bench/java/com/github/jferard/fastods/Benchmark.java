@@ -64,58 +64,34 @@ public class Benchmark {
 
 	@Test
 	public void test1() throws IOException {
-		Bench bench1 = new BenchFast(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-		Bench bench1b = new BenchFastFlush(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-		Bench bench2 = new BenchSimple(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-		Bench bench3 = new BenchJOpen(this.logger, Benchmark.ROW_COUNT, Benchmark.COL_COUNT);
-		for (int i = 0; i < Benchmark.TIMES; i++) {
+		this.test(Benchmark.ROW_COUNT, Benchmark.COL_COUNT, Benchmark.TIMES);
+	}
+
+	private void test(int rowCount, int colCount, int times) throws IOException {
+		Bench bench1 = new BenchFast(this.logger, rowCount, colCount);
+//		Bench bench1b = new BenchFastFlush(this.logger, rowCount, colCount);
+		Bench bench2 = new BenchSimple(this.logger, rowCount, colCount);
+		Bench bench3 = new BenchJOpen(this.logger, rowCount, colCount);
+		for (int i = 0; i < times; i++) {
 			bench1.iteration();
-			bench1b.iteration();
+//			bench1b.iteration();
 			bench2.iteration();
 			bench3.iteration();
 		}
 
 		this.logger.info(bench1.getWithoutWarmup().toString());
-		this.logger.info(bench1b.getWithoutWarmup().toString());
+//		this.logger.info(bench1b.getWithoutWarmup().toString());
 		this.logger.info(bench2.getWithoutWarmup().toString());
 		this.logger.info(bench3.getWithoutWarmup().toString());
 	}
 
 	@Test
 	public void test2() throws IOException {
-		Bench bench1 = new BenchFast(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-		Bench bench1b = new BenchFastFlush(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-		Bench bench2 = new BenchSimple(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-		Bench bench3 = new BenchJOpen(this.logger, 2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT);
-		for (int i = 0; i < Benchmark.TIMES; i++) {
-			bench1.iteration();
-			bench1b.iteration();
-			bench2.iteration();
-			bench3.iteration();
-		}
-
-		this.logger.info(bench1.getWithoutWarmup().toString());
-		this.logger.info(bench1b.getWithoutWarmup().toString());
-		this.logger.info(bench2.getWithoutWarmup().toString());
-		this.logger.info(bench3.getWithoutWarmup().toString());
+		this.test(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT, Benchmark.TIMES);
 	}
 
 	@Test
 	public void test3() throws IOException {
-		Bench bench1 = new BenchFast(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-		Bench bench1b = new BenchFastFlush(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-		Bench bench2 = new BenchSimple(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-		Bench bench3 = new BenchJOpen(this.logger, 3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT);
-		for (int i = 0; i < Benchmark.TIMES; i++) {
-			bench1.iteration();
-			bench1b.iteration();
-			bench2.iteration();
-			bench3.iteration();
-		}
-
-		this.logger.info(bench1.getWithoutWarmup().toString());
-		this.logger.info(bench1b.getWithoutWarmup().toString());
-		this.logger.info(bench2.getWithoutWarmup().toString());
-		this.logger.info(bench3.getWithoutWarmup().toString());
+		this.test(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT, Benchmark.TIMES);
 	}
 }

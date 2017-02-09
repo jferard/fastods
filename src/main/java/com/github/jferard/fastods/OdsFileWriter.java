@@ -26,15 +26,13 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Logger;
 
 /**
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFileWriter implements Observer {
+public class OdsFileWriter {
 	public static OdsFileWriterBuilder builder(final Logger logger, final OdsDocument document) {
 		return new OdsFileWriterBuilder(logger, document);
 	}
@@ -79,16 +77,7 @@ public class OdsFileWriter implements Observer {
 		this.document.save(this.writer);
 	}
 
-	@Override
-	public void update(final Observable o, final Object arg) {
-		if (arg instanceof OdsFlusher) {
-			final OdsFlusher flusher = (OdsFlusher) arg;
-			try {
-				flusher.flushInto(this.xmlUtil, this.writer);
-			} catch (final IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
+	public void update(final OdsFlusher flusher) throws IOException {
+		flusher.flushInto(this.xmlUtil, this.writer);
 	}
 }
-

@@ -24,6 +24,7 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.FinalizeFlusher;
 import com.github.jferard.fastods.ImmutableElementsFlusher;
 import com.github.jferard.fastods.MetaAndStylesElementsFlusher;
+import com.github.jferard.fastods.OdsFileWriter;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -40,8 +41,6 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -52,7 +51,7 @@ import java.util.zip.ZipEntry;
  *
  * @author Julien Férard
  */
-public class OdsElements extends Observable {
+public class OdsElements {
 	public static OdsElements create(final PositionUtil positionUtil,
 									 final XMLUtil xmlUtil, final WriteUtil writeUtil,
 									 final DataStyles format) {
@@ -68,6 +67,7 @@ public class OdsElements extends Observable {
 				mimetypeElement, manifestElement, settingsElement, metaElement,
 				contentElement, stylesElement, stylesContainer);
 	}
+
 	private final ContentElement contentElement;
 	private final Logger logger;
 	private final ManifestElement manifestElement;
@@ -76,7 +76,7 @@ public class OdsElements extends Observable {
 	private final SettingsElement settingsElement;
 	private final StylesContainer stylesContainer;
 	private final StylesElement stylesElement;
-	private Observer observer;
+	private OdsFileWriter observer;
 
 	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
 						  final ManifestElement manifestElement,
@@ -105,6 +105,10 @@ public class OdsElements extends Observable {
 		this.stylesContainer.addMasterPageStyle(masterPageStyle);
 	}
 
+	public void addObserver(OdsFileWriter o) {
+		this.observer = o;
+	}
+
 	public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
 		this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
 	}
@@ -127,25 +131,18 @@ public class OdsElements extends Observable {
 		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
-	@Override
-	public void addObserver(Observer o) {
-		super.addObserver(o);
-		this.observer = o;
-	}
-
 	public Table addTableToContent(final String name, final int rowCapacity,
-								   final int columnCapacity) {
+								   final int columnCapacity) throws IOException {
 		final Table previousTable = this.contentElement.getLastTable();
 		final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
 		this.settingsElement.addTableConfig(table.getConfigEntry());
-		this.setChanged();
-		if (previousTable == null)
-			this.notifyObservers(new MetaAndStylesElementsFlusher(this, this.contentElement));
-		else
-			previousTable.flush();
-
-		if (this.observer != null)
+		if (this.observer != null) {
+			if (previousTable == null)
+				this.observer.update(new MetaAndStylesElementsFlusher(this, this.contentElement));
+			else
+				previousTable.flush();
 			table.addObserver(this.observer);
+		}
 		return table;
 	}
 
@@ -205,18 +202,16 @@ public class OdsElements extends Observable {
 		return this.contentElement.getTables();
 	}
 
-	public void prepare() {
-		this.setChanged();
-		this.notifyObservers(new ImmutableElementsFlusher(this));
+	public void prepare() throws IOException {
+		this.observer.update(new ImmutableElementsFlusher(this));
 	}
 
-	public void save() {
+	public void save() throws IOException {
 		final Table previousTable = this.contentElement.getLastTable();
 		if (previousTable != null)
 			previousTable.flush();
 
-		this.setChanged();
-		this.notifyObservers(new FinalizeFlusher(this.contentElement, this.settingsElement));
+		this.observer.update(new FinalizeFlusher(this.contentElement, this.settingsElement));
 	}
 
 	public void setActiveTable(final Table table) {

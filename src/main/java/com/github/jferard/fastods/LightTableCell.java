@@ -112,7 +112,7 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void setRowsSpanned(final int n) {
+	public void setRowsSpanned(final int n) throws IOException {
 		this.row.setRowsSpanned(this.c, n);
 	}
 

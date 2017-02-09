@@ -361,7 +361,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testMerge() {
+	public final void testMerge() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
@@ -400,7 +400,7 @@ public class HeavyTableRowTest {
 	}*/
 
 	@Test
-	public final void testMerge1b() {
+	public final void testMerge1b() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
@@ -420,7 +420,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testMerge1c() {
+	public final void testMerge1c() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
@@ -440,7 +440,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testMerge1d() {
+	public final void testMerge1d() throws IOException {
 		// PLAY
 		PowerMock.replayAll();
 		this.row.setStringValue(7, "value");
@@ -451,7 +451,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testMerge1e() {
+	public final void testMerge1e() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
@@ -477,7 +477,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testMerge1f() {
+	public final void testMerge1f() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
@@ -626,7 +626,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testRowsSpanned() {
+	public final void testRowsSpanned() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY
@@ -645,7 +645,7 @@ public class HeavyTableRowTest {
 	}
 
 	@Test
-	public final void testRowsSpanned2() {
+	public final void testRowsSpanned2() throws IOException {
 		final HeavyTableColdRow htcr = PowerMock.createMock(HeavyTableColdRow.class);
 
 		// PLAY

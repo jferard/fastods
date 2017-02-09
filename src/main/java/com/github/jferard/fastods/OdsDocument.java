@@ -142,7 +142,7 @@ public class OdsDocument {
 	 * @param name - The name of the table to add
 	 * @return the table
 	 */
-	public Table addTable(final String name) {
+	public Table addTable(final String name) throws IOException {
 		return this.addTable(name, OdsDocument.DEFAULT_ROW_CAPACITY,
 				OdsDocument.DEFAULT_COLUMN_CAPACITY);
 	}
@@ -154,7 +154,7 @@ public class OdsDocument {
 	*/
 
 	public Table addTable(final String name, final int rowCapacity,
-						  final int columnCapacity) {
+						  final int columnCapacity) throws IOException {
 		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
 				columnCapacity);
 		this.odsElements.setActiveTable(table);
@@ -235,11 +235,11 @@ public class OdsDocument {
 		return this.odsElements.getTables();
 	}
 
-	public void prepareFlush() {
+	public void prepareFlush() throws IOException {
 		this.odsElements.prepare();
 	}
 
-	public void save() {
+	public void save() throws IOException {
 		this.odsElements.save();
 	}
 

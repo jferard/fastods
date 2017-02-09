@@ -20,15 +20,6 @@
  */
 package com.github.jferard.fastods.tool;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-
 import com.github.jferard.fastods.BooleanValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
@@ -36,6 +27,15 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 public class OdsDocumentHelperTest {
 	private OdsFileHelper helper;
@@ -61,7 +61,7 @@ public class OdsDocumentHelperTest {
 	}
 
 	@Test
-	public final void testCellMergeInAllTables() throws FastOdsException {
+	public final void testCellMergeInAllTables() throws FastOdsException, IOException {
 		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(1234567891011l);
 
@@ -75,7 +75,7 @@ public class OdsDocumentHelperTest {
 	}
 
 	@Test
-	public final void testCellValueInAllTables() throws FastOdsException {
+	public final void testCellValueInAllTables() throws FastOdsException, IOException {
 		final TableCellStyle ts = TableCellStyle.builder("a").build();
 		final Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(1234567891011l);

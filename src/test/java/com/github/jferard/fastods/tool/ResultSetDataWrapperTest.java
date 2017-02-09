@@ -88,7 +88,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
 	@Test
 	@SuppressWarnings("deprecated")
-	public final void testMax() {
+	public final void testMax() throws IOException {
 		final List<List<Object>> r = new ArrayList<List<Object>>();
 		for (int v = 13; v < 18; v++) {
 			final List<Object> l = Arrays.<Object>asList(v);
@@ -127,7 +127,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	}
 
 	@Test
-	public final void testMetaDataException() throws SQLException {
+	public final void testMetaDataException() throws SQLException, IOException {
 		this.setUpMocks();
 		final SQLException e = new SQLException();
 		EasyMock.expect(this.rs.getMetaData()).andThrow(e);
@@ -140,7 +140,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public final void testNoRow() {
+	public final void testNoRow() throws IOException {
 		this.setUpRS(Arrays.<String>asList("number", "word"),
 				Arrays.<List<Object>>asList(), 100);
 		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
@@ -171,7 +171,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public final void testNullValue() {
+	public final void testNullValue() throws IOException {
 		final List<Object> l = new ArrayList<Object>(1);
 		l.add(null);
 		this.setUpRS(Arrays.<String>asList("value"),
@@ -199,7 +199,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public final void testOneRow() {
+	public final void testOneRow() throws IOException {
 		this.setUpRS(Arrays.<String>asList("number", "word"),
 				Arrays.<List<Object>>asList(Arrays.<Object>asList(13, "a")),
 				100);
@@ -270,7 +270,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	}
 
 	@Test
-	public final void testRSException() throws SQLException {
+	public final void testRSException() throws SQLException, IOException {
 		this.setUpMocks();
 		final SQLException e = new SQLException();
 		final ResultSetMetaData metaData = PowerMock

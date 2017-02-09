@@ -21,9 +21,11 @@
 
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+
 /**
  * @author Julien Férard
  */
 public interface DataWrapper {
-	boolean addToTable(Table table);
+	boolean addToTable(Table table) throws IOException;
 }

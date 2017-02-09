@@ -256,7 +256,7 @@ public class HeavyTableRow {
 	 * @param columnMerge the number of cells to merge
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
-							 final int columnMerge) {
+							 final int columnMerge) throws IOException {
 		if (rowMerge <= 1 && columnMerge <= 1)
 			return;
 
@@ -494,7 +494,7 @@ public class HeavyTableRow {
 	/* (non-Javadoc)
 	 * @see com.github.jferard.fastods.TableCell#setRowsSpanned(int)
 	 */
-	public void setRowsSpanned(final int colIndex, final int n) {
+	public void setRowsSpanned(final int colIndex, final int n) throws IOException {
 		if (n <= 1)
 			return;
 

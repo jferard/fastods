@@ -28,6 +28,7 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -93,7 +94,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	}
 
 	@Override
-	public boolean addToTable(final Table table) {
+	public boolean addToTable(final Table table) throws IOException {
 		int rowCount = 0; // at least
 		try {
 			final ResultSetMetaData metadata = this.rs.getMetaData();
@@ -176,7 +177,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	}
 
 	private void writeMaybeLastLineDataTo(final int columnCount,
-			final Table table, final int rowCount) {
+			final Table table, final int rowCount) throws IOException {
 		final HeavyTableRow row;
 		if (rowCount == 0) {// no data row
 			row = table.nextRow();
@@ -195,5 +196,4 @@ public final class ResultSetDataWrapper implements DataWrapper {
 			}
 		}
 	}
-
 }

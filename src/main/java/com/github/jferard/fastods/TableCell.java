@@ -260,7 +260,7 @@ public interface TableCell {
 	 * @param n
 	 *            - The number of rows to be merged
 	 */
-	void setRowsSpanned(int n);
+	void setRowsSpanned(int n) throws IOException;
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.STRING.

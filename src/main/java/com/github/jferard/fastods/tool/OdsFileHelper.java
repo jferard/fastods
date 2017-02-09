@@ -29,6 +29,8 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 
+import java.io.IOException;
+
 public class OdsFileHelper {
 	private final OdsDocument odsDocument;
 	private final PositionUtil positionUtil;
@@ -53,7 +55,7 @@ public class OdsFileHelper {
 	 * @throws FastOdsException if the rowIndex or the colIndex is negative
 	 */
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
-			final int rowMerge, final int columnMerge) throws FastOdsException {
+			final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
 		for (final Table table : this.odsDocument.getTables()) {
 			this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge,
 					columnMerge);
@@ -70,7 +72,7 @@ public class OdsFileHelper {
 	 * @throws FastOdsException if the row index or the col index is negative
 	 */
 	public void setCellMergeInAllTables(final String pos, final int rowMerge,
-			final int columnMerge) throws FastOdsException {
+			final int columnMerge) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -93,7 +95,7 @@ public class OdsFileHelper {
 	 */
 	public void setCellValueInAllTables(final int rowIndex, final int colIndex,
 			final CellValue value, final TableCellStyle ts)
-			throws FastOdsException {
+			throws FastOdsException, IOException {
 
 		for (final Table table : this.odsDocument.getTables()) {
 			this.tableHelper.setCellValue(table, rowIndex, colIndex, value, ts);
@@ -114,7 +116,7 @@ public class OdsFileHelper {
 	 * @throws FastOdsException if the row index or the col index is negative
 	 */
 	public void setCellValueInAllTables(final String pos, final CellValue value,
-			final TableCellStyle ts) throws FastOdsException {
+			final TableCellStyle ts) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
