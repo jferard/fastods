@@ -61,16 +61,20 @@ public class StylesContainer {
 		if (!style.getName().contains("@@"))
 			this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
 		final String name = style.getRealName() + "@@" + dataStyle.getName();
-		final TableCellStyle anonymousStyle =
-				TableCellStyle.builder(name).parentCellStyle(style)
-						.dataStyle(dataStyle).build();
-		this.addStyleToContentAutomaticStyles(anonymousStyle);
-		return anonymousStyle;
+		StyleTag anonymousStyle = this.styleTagsContainer.get(name,
+				Dest.CONTENT_AUTOMATIC_STYLES);
+		if (anonymousStyle != null) {
+			anonymousStyle =
+					TableCellStyle.builder(name).parentCellStyle(style)
+							.dataStyle(dataStyle).build();
+			this.addStyleToContentAutomaticStyles(anonymousStyle);
+		}
+		return (TableCellStyle) anonymousStyle;
 	}
 
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
-				Mode.CREATE_OR_UPDATE);
+				Mode.CREATE);
 	}
 
 	public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
@@ -79,7 +83,7 @@ public class StylesContainer {
 	}
 
 	public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
-		return this.addMasterPageStyle(masterPageStyle, Mode.CREATE_OR_UPDATE);
+		return this.addMasterPageStyle(masterPageStyle, Mode.CREATE);
 	}
 
 	public boolean addMasterPageStyle(final MasterPageStyle ps,
@@ -97,7 +101,7 @@ public class StylesContainer {
 	}
 
 	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
-		return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE_OR_UPDATE);
+		return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE);
 	}
 
 	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
@@ -116,7 +120,7 @@ public class StylesContainer {
 
 	public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
 		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
+				Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE);
 	}
 
 	public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
@@ -134,7 +138,7 @@ public class StylesContainer {
 
 	public void addStyleToStylesAutomaticStyles(final StyleTag styleTag) {
 		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE_OR_UPDATE);
+				Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE);
 	}
 
 	public boolean addStyleToStylesAutomaticStyles(final StyleTag styleTag,
@@ -145,7 +149,7 @@ public class StylesContainer {
 
 	public void addStyleToStylesCommonStyles(final StyleTag styleTag) {
 		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.STYLES_COMMON_STYLES, Mode.CREATE_OR_UPDATE);
+				Dest.STYLES_COMMON_STYLES, Mode.CREATE);
 	}
 
 	public boolean addStyleToStylesCommonStyles(final StyleTag styleTag,

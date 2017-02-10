@@ -135,7 +135,7 @@ public class HeavyTableColdRow {
 			this.columnsSpanned.set(colIndex + c, -1);
 		for (int r = 1; r < rowMerge; r++) {
 			final HeavyTableRow row = this.parent
-					.getRowSecure(this.rowIndex + r);
+					.getRowSecure(this.rowIndex + r, false);
 			row.setCovered(colIndex, columnMerge);
 		}
 	}
@@ -177,7 +177,7 @@ public class HeavyTableColdRow {
 		// add negative span for covered cells
 		for (int r = 1; r < n; r++) {
 			final HeavyTableRow row = this.parent
-					.getRowSecure(this.rowIndex + r);
+					.getRowSecure(this.rowIndex + r, true);
 			row.setCovered(colIndex);
 		}
 

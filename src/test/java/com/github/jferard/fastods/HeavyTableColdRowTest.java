@@ -58,7 +58,7 @@ public class HeavyTableColdRowTest {
 
 		// PLAY
 		for (int r = 11; r < 20; r++) {
-			EasyMock.expect(this.table.getRowSecure(r)).andReturn(row2);
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
 			row2.setCovered(7, 8);
 		}
 		PowerMock.replayAll();
@@ -106,11 +106,11 @@ public class HeavyTableColdRowTest {
 
 		// PLAY
 		for (int r = 11; r < 12; r++) {
-			EasyMock.expect(this.table.getRowSecure(r)).andReturn(row2);
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
 			row2.setCovered(0, 2);
 		}
 		for (int r = 11; r < 13; r++) {
-			EasyMock.expect(this.table.getRowSecure(r)).andReturn(row2);
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
 			row2.setCovered(10, 3);
 		}
 
@@ -130,11 +130,11 @@ public class HeavyTableColdRowTest {
 
 		// PLAY
 		for (int r = 11; r < 30; r++) {
-			EasyMock.expect(this.table.getRowSecure(r)).andReturn(row2);
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
 			row2.setCovered(0, 20);
 		}
 		for (int r = 11; r < 4; r++) {
-			EasyMock.expect(this.table.getRowSecure(r)).andReturn(row2);
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
 			row2.setCovered(18, 4);
 		}
 
@@ -170,7 +170,7 @@ public class HeavyTableColdRowTest {
 
 		// PLAY
 		for (int c = 11; c < 20; c++) {
-			EasyMock.expect(this.table.getRowSecure(c)).andReturn(row2);
+			EasyMock.expect(this.table.getRowSecure(c, false)).andReturn(row2);
 			row2.setCovered(5, 8);
 		}
 		PowerMock.replayAll();
@@ -220,7 +220,7 @@ public class HeavyTableColdRowTest {
 	@Test
 	public final void testRowsSpanned() throws IOException {
 		final HeavyTableRow r2 = PowerMock.createMock(HeavyTableRow.class);
-		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt()))
+		EasyMock.expect(this.table.getRowSecure(EasyMock.anyInt(), EasyMock.eq(true)))
 				.andReturn(r2).anyTimes();
 		r2.setCovered(0);
 		EasyMock.expectLastCall().times(9);

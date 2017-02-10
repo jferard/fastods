@@ -67,6 +67,10 @@ public class Container<K, V> {
 		this.closed = true;
 	}
 
+	public V get(final K key) {
+		return this.valueByKey.get(key);
+	}
+
 	public Map<K, V> getValueByKey() {
 		return this.valueByKey;
 	}

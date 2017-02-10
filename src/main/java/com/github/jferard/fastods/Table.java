@@ -179,7 +179,6 @@ public class Table implements NamedObject {
 
 	private void appendRows(final XMLUtil util, final Appendable appendable, final int firstRowIndex)
 			throws IOException {
-		System.out.println("appendRows("+util+", "+appendable+", "+firstRowIndex);
 		if (firstRowIndex == 0)
 			this.nullFieldCounter = 0;
 
@@ -285,7 +284,7 @@ public class Table implements NamedObject {
 
 	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException, IOException {
 		Table.checkRow(rowIndex);
-		return this.getRowSecure(rowIndex);
+		return this.getRowSecure(rowIndex, true);
 	}
 
 	public HeavyTableRow getRow(final String pos) throws FastOdsException, IOException {
@@ -293,7 +292,7 @@ public class Table implements NamedObject {
 		return this.getRow(row);
 	}
 
-	public HeavyTableRow getRowSecure(final int rowIndex) throws IOException {
+	public HeavyTableRow getRowSecure(final int rowIndex, boolean updateRowIndex) throws IOException {
 		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.writeUtil, this.xmlUtil,
@@ -313,7 +312,8 @@ public class Table implements NamedObject {
 				}
 			}
 		}
-		this.curRowIndex = rowIndex;
+		if (updateRowIndex)
+			this.curRowIndex = rowIndex;
 		return tr;
 	}
 
@@ -327,7 +327,7 @@ public class Table implements NamedObject {
 	}
 
 	public HeavyTableRow nextRow() throws IOException {
-		return this.getRowSecure(this.curRowIndex + 1);
+		return this.getRowSecure(this.curRowIndex + 1, true);
 	}
 
 	/**

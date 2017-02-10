@@ -38,10 +38,8 @@ public class RowsFlusher implements OdsFlusher {
 
 	@Override
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		System.out.println("flushRows("+xmlUtil+", "+writer+", "+this.rows.size());
 		for (final HeavyTableRow row : this.rows) {
 			if (row == null) {
-				System.out.println("rows2=" + this.rows);
 				System.exit(0);
 			}
 			row.appendXMLToTable(xmlUtil, writer);

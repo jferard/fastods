@@ -79,6 +79,11 @@ public class MultiContainer<K, V, S extends Enum<S>> {
 		return true;
 	}
 
+	public V get(final K key, final S subcontainer) {
+		final Map<K, V> valueByKey = this.valueByKeyBySubcontainer.get(subcontainer);
+		return valueByKey == null ? null : valueByKey.get(key);
+	}
+
 	public void debug() {
 		this.debug = true;
 	}

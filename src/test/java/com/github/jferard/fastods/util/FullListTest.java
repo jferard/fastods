@@ -20,15 +20,14 @@
  */
 package com.github.jferard.fastods.util;
 
+import com.google.common.collect.Lists;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 public class FullListTest {
 
@@ -246,12 +245,12 @@ public class FullListTest {
 				fl.toArray(new String[] {}));
 	}
 	
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
 	public void testSubList() {
 		final List<String> fl = FullList.<String> builder().build();
 		fl.add("a");
 		fl.add(4, "e");
-		fl.subList(1, 3);
+		Assert.assertEquals(Arrays.asList(null, null), fl.subList(1, 3));
 	}
 	
 	@Test

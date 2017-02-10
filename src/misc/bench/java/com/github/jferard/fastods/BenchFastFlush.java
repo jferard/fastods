@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
+import org.junit.Test;
 
 public class BenchFastFlush extends Bench {
 
@@ -33,6 +34,11 @@ public class BenchFastFlush extends Bench {
 	public BenchFastFlush(final Logger logger, final int rowCount, final int colCount) {
 		super(logger, "FastODSFlush", rowCount, colCount);
 		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+	}
+
+	@Test
+	public void test0() throws IOException  {
+		this.test();
 	}
 
 	@Override
