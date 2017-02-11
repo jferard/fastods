@@ -63,7 +63,7 @@ public class StylesContainer {
 		final String name = style.getRealName() + "@@" + dataStyle.getName();
 		StyleTag anonymousStyle = this.styleTagsContainer.get(name,
 				Dest.CONTENT_AUTOMATIC_STYLES);
-		if (anonymousStyle != null) {
+		if (anonymousStyle == null) {
 			anonymousStyle =
 					TableCellStyle.builder(name).parentCellStyle(style)
 							.dataStyle(dataStyle).build();

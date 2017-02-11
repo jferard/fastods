@@ -189,4 +189,18 @@ public class StylesContainerTest {
 		Assert.assertEquals(this.ps2.getMasterPageStyle(), masterPageStyles.get("a"));
 	}
 
+	@Test
+	public void testAddChildCellStyle() throws Exception {
+		final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
+		final DataStyle ds = this.factory.booleanStyleBuilder("bs").build();
+
+		TableCellStyle childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
+		Assert.assertNotNull(childCellStyle);
+		Assert.assertEquals("tcs@@bs", childCellStyle.getName());
+
+		childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
+		Assert.assertNotNull(childCellStyle);
+		Assert.assertEquals("tcs@@bs", childCellStyle.getName());
+	}
+
 }
