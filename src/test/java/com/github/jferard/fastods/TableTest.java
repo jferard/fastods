@@ -248,4 +248,17 @@ public class TableTest {
 
 	}
 
+	@Test(expected=IllegalStateException.class)
+	public void testSetColumnStyleAfterPreamble() throws IOException, FastOdsException {
+		final StringBuilder sb = new StringBuilder();
+		this.table.appendPreamble(this.xmlUtil, sb);
+		this.table.setColumnStyle(0, TableColumnStyle.builder("a").build());
+	}
+
+	@Test(expected=IllegalStateException.class)
+	public void testSetNameAfterPreamble() throws IOException {
+		final StringBuilder sb = new StringBuilder();
+		this.table.appendPreamble(this.xmlUtil, sb);
+		this.table.setName("t");
+	}
 }

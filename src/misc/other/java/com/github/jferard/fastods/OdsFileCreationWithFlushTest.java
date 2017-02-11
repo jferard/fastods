@@ -154,10 +154,10 @@ public class OdsFileCreationWithFlushTest {
 
 			final Table table = document.addTable("test", 50, 5);
 			table.setSettings("View1", "ZoomValue", "200");
+			table.setColumnStyle(0, tcns);
 			HeavyTableRow row = table.getRow(0);
 			row.setStyle(trs);
 			row.setDefaultCellStyle(tcls);
-			table.setColumnStyle(0, tcns);
 
 			row = table.getRow(0);
 			row.setStringValue(0, "éèà");

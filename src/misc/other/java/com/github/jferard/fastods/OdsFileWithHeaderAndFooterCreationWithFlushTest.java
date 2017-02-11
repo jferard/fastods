@@ -130,6 +130,7 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 
 		final Table table = document.addTable("test", 1, 5);
 		table.setStyle(ttts);
+		table.setColumnStyle(0, tcns);
 
 		final Table table2 = document.addTable("target", 1, 1);
 		table2.setStyle(ttts2);
@@ -137,7 +138,6 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		HeavyTableRow row = table.getRow(0);
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
-		table.setColumnStyle(0, tcns);
 
 		row = table.getRow(0);
 		row.setText(0,

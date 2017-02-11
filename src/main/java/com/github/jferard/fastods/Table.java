@@ -79,6 +79,7 @@ public class Table implements NamedObject {
 	private String name;
 	private int nullFieldCounter;
 	private OdsFileWriter observer;
+	private boolean preambleWritten;
 	private TableStyle style;
 
 	public Table(final PositionUtil positionUtil, final WriteUtil writeUtil,
@@ -118,6 +119,7 @@ public class Table implements NamedObject {
 		this.lastFlushedRowIndex = 0;
 		this.lastRowIndex = -1;
 		this.bufferSize = 1024;
+		this.preambleWritten = false;
 	}
 
 	public void addData(final DataWrapper data) throws IOException {
@@ -159,7 +161,7 @@ public class Table implements NamedObject {
 		appendable.append("</table:table>");
 	}
 
-	public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
+	void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<table:table");
 		util.appendAttribute(appendable, "table:name", this.name);
 		util.appendAttribute(appendable, "table:style-name",
@@ -170,6 +172,7 @@ public class Table implements NamedObject {
 		util.appendEAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
 		this.appendColumnStyles(appendable, util);
+		this.preambleWritten = true;
 	}
 
 	private void appendRows(final XMLUtil util, final Appendable appendable)
@@ -356,6 +359,8 @@ public class Table implements NamedObject {
 	 */
 	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
+		if (this.preambleWritten)
+			throw new IllegalStateException();
 		Table.checkCol(col);
 		this.stylesContainer.addStyleToContentAutomaticStyles(ts);
 		this.columnStyles.set(col, ts);
@@ -372,6 +377,9 @@ public class Table implements NamedObject {
 	 * @param name The name of this table.
 	 */
 	public void setName(final String name) {
+
+		if (this.preambleWritten)
+			throw new IllegalStateException();
 		this.name = name;
 	}
 
