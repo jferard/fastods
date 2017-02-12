@@ -202,5 +202,4 @@ public class StylesContainerTest {
 		Assert.assertNotNull(childCellStyle);
 		Assert.assertEquals("tcs@@bs", childCellStyle.getName());
 	}
-
 }

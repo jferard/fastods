@@ -50,7 +50,7 @@ public class FastOdsTest {
 	public final void testOpenFile() throws IOException {
 		PowerMock.mockStatic(Desktop.class);
 		final Desktop d = PowerMock.createMock(Desktop.class);
-		final File f = new File(".\\pom.xml");
+		final File f = new File(".", "pom.xml");
 
 		EasyMock.expect(Desktop.getDesktop()).andReturn(d);
 		d.open(f);
@@ -69,12 +69,14 @@ public class FastOdsTest {
 
 		PowerMock.mockStatic(Desktop.class);
 		final Desktop d = PowerMock.createMock(Desktop.class);
-		final File f = new File(".\\pom.xml");
+		final File f = new File(".", "pom.xml");
 
+		// PLAY
 		EasyMock.expect(Desktop.getDesktop()).andReturn(d);
 		d.open(f);
 		EasyMock.expectLastCall().andThrow(new IOException());
 		PowerMock.replayAll();
+
 		Assert.assertFalse(FastOds.openFile(f));
 		PowerMock.verifyAll();
 	}
@@ -82,7 +84,7 @@ public class FastOdsTest {
 	@Test
 	public final void testOpenNonExisting() {
 		PowerMock.replayAll();
-		Assert.assertFalse(FastOds.openFile(new File(".\\@")));
+		Assert.assertFalse(FastOds.openFile(new File(".", "@")));
 		PowerMock.verifyAll();
 	}
 
