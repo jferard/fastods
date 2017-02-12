@@ -35,6 +35,7 @@ import org.powermock.api.easymock.PowerMock;
 public class DateValueTest {
 	@Test
 	public final void test() {
+		PowerMock.verifyAll();
 		final HeavyTableRow htr = PowerMock.createMock(HeavyTableRow.class);
 		final Capture<Date> captured = Capture.newInstance();
 		

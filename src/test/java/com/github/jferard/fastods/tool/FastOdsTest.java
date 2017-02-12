@@ -52,6 +52,7 @@ public class FastOdsTest {
 		final Desktop d = PowerMock.createMock(Desktop.class);
 		final File f = new File(".", "pom.xml");
 
+		// PLAY
 		EasyMock.expect(Desktop.getDesktop()).andReturn(d);
 		d.open(f);
 		PowerMock.replayAll();

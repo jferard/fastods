@@ -471,7 +471,6 @@ public class HeavyTableRow {
 		this.values.set(c, Double.toString(value));
 		this.types.set(c, TableCell.Type.PERCENTAGE);
 		this.setDataStyle(c, this.dataStyles.getPercentageDataStyle());
-		System.out.println(this.styles.get(c));
 	}
 
 	/* (non-Javadoc)
@@ -481,7 +480,6 @@ public class HeavyTableRow {
 		this.values.set(c, Float.toString(value));
 		this.types.set(c, TableCell.Type.PERCENTAGE);
 		this.setDataStyle(c, this.dataStyles.getPercentageDataStyle());
-		System.out.println(this.styles.get(c));
 	}
 
 	/* (non-Javadoc)
@@ -491,7 +489,6 @@ public class HeavyTableRow {
 		this.values.set(c, value.toString());
 		this.types.set(c, TableCell.Type.PERCENTAGE);
 		this.setDataStyle(c, this.dataStyles.getPercentageDataStyle());
-		System.out.println(this.styles.get(c));
 	}
 
 	/* (non-Javadoc)
