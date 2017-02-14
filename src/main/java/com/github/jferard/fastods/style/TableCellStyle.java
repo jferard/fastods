@@ -202,6 +202,10 @@ public class TableCellStyle implements StyleTag {
 		this.dataStyle = dataStyle;
 	}
 
+	public boolean hasParent() {
+		return this.parentCellStyleName != null;
+	}
+
 	public static enum Align {
 		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
 

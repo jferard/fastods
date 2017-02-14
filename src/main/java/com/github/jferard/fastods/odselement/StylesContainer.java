@@ -34,6 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -43,213 +44,226 @@ import java.util.Map;
  * @author Martin Schulz
  */
 public class StylesContainer {
-	private final Container<String, DataStyle> dataStylesContainer;
-	private final Container<String, MasterPageStyle> masterPageStylesContainer;
-	private final Container<String, PageLayoutStyle> pageLayoutStylesContainer;
-	private final MultiContainer<String, StyleTag, Dest> styleTagsContainer;
+    private final Map<ChildCellStyle, TableCellStyle> anonymousStyleByChildCellStyle;
 
-	StylesContainer() {
-		this.styleTagsContainer = new MultiContainer<String, StyleTag, Dest>(
-				Dest.class);
-		this.dataStylesContainer = new Container<String, DataStyle>();
-		this.masterPageStylesContainer = new Container<String, MasterPageStyle>();
-		this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
-	}
+    private static class ChildCellStyle {
+        private final TableCellStyle style;
+        private final DataStyle dataStyle;
 
-	public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
-		this.addDataStyle(dataStyle);
-		if (!style.getName().contains("@@"))
-			this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
-		final String name = style.getRealName() + "@@" + dataStyle.getName();
-		StyleTag anonymousStyle = this.styleTagsContainer.get(name,
-				Dest.CONTENT_AUTOMATIC_STYLES);
-		if (anonymousStyle == null) {
-			anonymousStyle =
-					TableCellStyle.builder(name).parentCellStyle(style)
-							.dataStyle(dataStyle).build();
-			this.addStyleToContentAutomaticStyles(anonymousStyle);
-		}
-		return (TableCellStyle) anonymousStyle;
-	}
+        ChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
+            this.style = style;
+            this.dataStyle = dataStyle;
+        }
+    }
 
-	public void addDataStyle(final DataStyle dataStyle) {
-		this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
-				Mode.CREATE);
-	}
+    private final Container<String, DataStyle> dataStylesContainer;
+    private final Container<String, MasterPageStyle> masterPageStylesContainer;
+    private final Container<String, PageLayoutStyle> pageLayoutStylesContainer;
+    private final MultiContainer<String, StyleTag, Dest> styleTagsContainer;
 
-	public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
-		return this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
-				mode);
-	}
+    StylesContainer() {
+        this.styleTagsContainer = new MultiContainer<String, StyleTag, Dest>(
+                Dest.class);
+        this.dataStylesContainer = new Container<String, DataStyle>();
+        this.masterPageStylesContainer = new Container<String, MasterPageStyle>();
+        this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
+        this.anonymousStyleByChildCellStyle = new HashMap<ChildCellStyle, TableCellStyle>();
+    }
 
-	public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
-		return this.addMasterPageStyle(masterPageStyle, Mode.CREATE);
-	}
+    public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
+        final ChildCellStyle childKey = new ChildCellStyle(style, dataStyle);
+        TableCellStyle anonymousStyle = this.anonymousStyleByChildCellStyle.get(childKey);
+        if (anonymousStyle == null) {
+            this.addDataStyle(dataStyle);
+            if (!style.hasParent())
+                this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
+            final String name = style.getRealName() + "@@" + dataStyle.getName();
+            anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style)
+                    .dataStyle(dataStyle).build();
+                this.addStyleToContentAutomaticStyles(anonymousStyle);
+            this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);
+        }
+        return anonymousStyle;
+    }
 
-	public boolean addMasterPageStyle(final MasterPageStyle ps,
-									  final Mode mode) {
-		if (this.masterPageStylesContainer.add(ps.getName(), ps, mode)) {
-			ps.addEmbeddedStylesToStylesContainer(this, mode);
-			return true;
-		} else
-			return false;
-	}
+    public void addDataStyle(final DataStyle dataStyle) {
+        this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
+                Mode.CREATE);
+    }
 
-	public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
-		this.addStyleToContentAutomaticStyles(style);
-		this.addDataStyle(style.getDataStyle());
-	}
+    public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
+        return this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
+                mode);
+    }
 
-	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
-		return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE);
-	}
+    public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
+        return this.addMasterPageStyle(masterPageStyle, Mode.CREATE);
+    }
 
-	public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
-		return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle, mode);
-	}
+    public boolean addMasterPageStyle(final MasterPageStyle ps,
+                                      final Mode mode) {
+        if (this.masterPageStylesContainer.add(ps.getName(), ps, mode)) {
+            ps.addEmbeddedStylesToStylesContainer(this, mode);
+            return true;
+        } else
+            return false;
+    }
 
-	public void addPageStyle(final PageStyle ps) {
-		this.addMasterPageStyle(ps.getMasterPageStyle());
-		this.addPageLayoutStyle(ps.getPageLayoutStyle());
-	}
+    public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
+        this.addStyleToContentAutomaticStyles(style);
+        this.addDataStyle(style.getDataStyle());
+    }
 
-	public void addPageStyle(final PageStyle ps, final Mode mode) {
-		this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
-		this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
-	}
+    public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
+        return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE);
+    }
 
-	public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
-		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE);
-	}
+    public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
+        return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle, mode);
+    }
 
-	public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
-													final Mode mode) {
-		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.CONTENT_AUTOMATIC_STYLES, mode);
-	}
+    public void addPageStyle(final PageStyle ps) {
+        this.addMasterPageStyle(ps.getMasterPageStyle());
+        this.addPageLayoutStyle(ps.getPageLayoutStyle());
+    }
+
+    public void addPageStyle(final PageStyle ps, final Mode mode) {
+        this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
+        this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
+    }
+
+    public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
+        this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+                Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE);
+    }
+
+    public boolean addStyleToContentAutomaticStyles(final StyleTag styleTag,
+                                                    final Mode mode) {
+        return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+                Dest.CONTENT_AUTOMATIC_STYLES, mode);
+    }
 
 	/*
-	@Deprecated
+    @Deprecated
 	public Map<String, StyleTag> getStyleTagByName() {
 		return this.contentAutomaticStyleTagByName;
 	}
 	*/
 
-	public void addStyleToStylesAutomaticStyles(final StyleTag styleTag) {
-		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE);
-	}
+    public void addStyleToStylesAutomaticStyles(final StyleTag styleTag) {
+        this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+                Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE);
+    }
 
-	public boolean addStyleToStylesAutomaticStyles(final StyleTag styleTag,
-												   final Mode mode) {
-		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.STYLES_AUTOMATIC_STYLES, mode);
-	}
+    public boolean addStyleToStylesAutomaticStyles(final StyleTag styleTag,
+                                                   final Mode mode) {
+        return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+                Dest.STYLES_AUTOMATIC_STYLES, mode);
+    }
 
-	public void addStyleToStylesCommonStyles(final StyleTag styleTag) {
-		this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.STYLES_COMMON_STYLES, Mode.CREATE);
-	}
+    public void addStyleToStylesCommonStyles(final StyleTag styleTag) {
+        this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+                Dest.STYLES_COMMON_STYLES, Mode.CREATE);
+    }
 
-	public boolean addStyleToStylesCommonStyles(final StyleTag styleTag,
-												final Mode mode) {
-		return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
-				Dest.STYLES_COMMON_STYLES, mode);
-	}
+    public boolean addStyleToStylesCommonStyles(final StyleTag styleTag,
+                                                final Mode mode) {
+        return this.styleTagsContainer.add(styleTag.getKey(), styleTag,
+                Dest.STYLES_COMMON_STYLES, mode);
+    }
 
-	public void debug() {
-		this.styleTagsContainer.debug();
-		this.dataStylesContainer.debug();
-		this.masterPageStylesContainer.debug();
-		this.pageLayoutStylesContainer.debug();
-	}
+    public void debug() {
+        this.styleTagsContainer.debug();
+        this.dataStylesContainer.debug();
+        this.masterPageStylesContainer.debug();
+        this.pageLayoutStylesContainer.debug();
+    }
 
-	public void freeze() {
-		this.styleTagsContainer.freeze();
-		this.dataStylesContainer.freeze();
-		this.masterPageStylesContainer.freeze();
-		this.pageLayoutStylesContainer.freeze();
-	}
+    public void freeze() {
+        this.styleTagsContainer.freeze();
+        this.dataStylesContainer.freeze();
+        this.masterPageStylesContainer.freeze();
+        this.pageLayoutStylesContainer.freeze();
+    }
 
-	public Map<String, DataStyle> getDataStyles() {
-		return this.dataStylesContainer.getValueByKey();
-	}
+    public Map<String, DataStyle> getDataStyles() {
+        return this.dataStylesContainer.getValueByKey();
+    }
 
-	public Map<String, MasterPageStyle> getMasterPageStyles() {
-		return this.masterPageStylesContainer.getValueByKey();
-	}
+    public Map<String, MasterPageStyle> getMasterPageStyles() {
+        return this.masterPageStylesContainer.getValueByKey();
+    }
 
-	public Map<String, PageLayoutStyle> getPageLayoutStyles() {
-		return this.pageLayoutStylesContainer.getValueByKey();
-	}
+    public Map<String, PageLayoutStyle> getPageLayoutStyles() {
+        return this.pageLayoutStylesContainer.getValueByKey();
+    }
 
-	public Map<String, StyleTag> getStyleTagByName(final Dest dest) {
-		return this.styleTagsContainer.getValueByKey(dest);
-	}
+    public Map<String, StyleTag> getStyleTagByName(final Dest dest) {
+        return this.styleTagsContainer.getValueByKey(dest);
+    }
 
-	public HasFooterHeader hasFooterHeader() {
-		boolean hasHeader = false;
-		boolean hasFooter = false;
+    public HasFooterHeader hasFooterHeader() {
+        boolean hasHeader = false;
+        boolean hasFooter = false;
 
-		for (final MasterPageStyle ps : this.masterPageStylesContainer
-				.getValues()) {
-			if (hasHeader && hasFooter)
-				break;
-			if (!hasHeader && ps.getHeader() != null)
-				hasHeader = true;
-			if (!hasFooter && ps.getFooter() != null)
-				hasFooter = true;
-		}
-		return new HasFooterHeader(hasHeader, hasFooter);
-	}
+        for (final MasterPageStyle ps : this.masterPageStylesContainer
+                .getValues()) {
+            if (hasHeader && hasFooter)
+                break;
+            if (!hasHeader && ps.getHeader() != null)
+                hasHeader = true;
+            if (!hasFooter && ps.getFooter() != null)
+                hasFooter = true;
+        }
+        return new HasFooterHeader(hasHeader, hasFooter);
+    }
 
-	private void write(final Iterable<StyleTag> iterable, final XMLUtil util,
-					   final ZipUTF8Writer writer) throws IOException {
-		for (final StyleTag ts : iterable)
-			ts.appendXML(util, writer);
-	}
+    private void write(final Iterable<StyleTag> iterable, final XMLUtil util,
+                       final ZipUTF8Writer writer) throws IOException {
+        for (final StyleTag ts : iterable)
+            ts.appendXML(util, writer);
+    }
 
-	public void writeContentAutomaticStyles(final XMLUtil util,
-											final ZipUTF8Writer writer) throws IOException {
-		this.write(this.styleTagsContainer
-				.getValues(Dest.CONTENT_AUTOMATIC_STYLES), util, writer);
-	}
+    public void writeContentAutomaticStyles(final XMLUtil util,
+                                            final ZipUTF8Writer writer) throws IOException {
+        this.write(this.styleTagsContainer
+                .getValues(Dest.CONTENT_AUTOMATIC_STYLES), util, writer);
+    }
 
-	public void writeDataStyles(final XMLUtil util, final ZipUTF8Writer writer)
-			throws IOException {
-		for (final DataStyle dataStyle : this.dataStylesContainer.getValues())
-			dataStyle.appendXML(util, writer);
-	}
+    public void writeDataStyles(final XMLUtil util, final ZipUTF8Writer writer)
+            throws IOException {
+        for (final DataStyle dataStyle : this.dataStylesContainer.getValues())
+            dataStyle.appendXML(util, writer);
+    }
 
-	public void writeMasterPageStylesToAutomaticStyles(final XMLUtil util,
-													   final ZipUTF8Writer writer) throws IOException {
-		for (final PageLayoutStyle ps : this.pageLayoutStylesContainer
-				.getValues())
-			ps.appendXMLToAutomaticStyle(util, writer);
-	}
+    public void writeMasterPageStylesToAutomaticStyles(final XMLUtil util,
+                                                       final ZipUTF8Writer writer) throws IOException {
+        for (final PageLayoutStyle ps : this.pageLayoutStylesContainer
+                .getValues())
+            ps.appendXMLToAutomaticStyle(util, writer);
+    }
 
-	public void writeMasterPageStylesToMasterStyles(final XMLUtil util,
-													final ZipUTF8Writer writer) throws IOException {
-		for (final MasterPageStyle ps : this.masterPageStylesContainer
-				.getValues())
-			ps.appendXMLToMasterStyle(util, writer);
-	}
+    public void writeMasterPageStylesToMasterStyles(final XMLUtil util,
+                                                    final ZipUTF8Writer writer) throws IOException {
+        for (final MasterPageStyle ps : this.masterPageStylesContainer
+                .getValues())
+            ps.appendXMLToMasterStyle(util, writer);
+    }
 
-	public void writeStylesAutomaticStyles(final XMLUtil util,
-										   final ZipUTF8Writer writer) throws IOException {
-		this.write(
-				this.styleTagsContainer.getValues(Dest.STYLES_AUTOMATIC_STYLES),
-				util, writer);
-	}
+    public void writeStylesAutomaticStyles(final XMLUtil util,
+                                           final ZipUTF8Writer writer) throws IOException {
+        this.write(
+                this.styleTagsContainer.getValues(Dest.STYLES_AUTOMATIC_STYLES),
+                util, writer);
+    }
 
-	public void writeStylesCommonStyles(final XMLUtil util,
-										final ZipUTF8Writer writer) throws IOException {
-		this.write(this.styleTagsContainer.getValues(Dest.STYLES_COMMON_STYLES),
-				util, writer);
-	}
+    public void writeStylesCommonStyles(final XMLUtil util,
+                                        final ZipUTF8Writer writer) throws IOException {
+        this.write(this.styleTagsContainer.getValues(Dest.STYLES_COMMON_STYLES),
+                util, writer);
+    }
 
-	public enum Dest {
-		CONTENT_AUTOMATIC_STYLES, STYLES_AUTOMATIC_STYLES, STYLES_COMMON_STYLES,
-	}
+    public enum Dest {
+        CONTENT_AUTOMATIC_STYLES, STYLES_AUTOMATIC_STYLES, STYLES_COMMON_STYLES,
+    }
 }
