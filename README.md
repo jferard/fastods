@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/jferard/fastods.svg?branch=master)](https://travis-ci.org/jferard/fastods)
+[![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
+
 # FastODS
 (C) J. Férard 2016-2017
 
