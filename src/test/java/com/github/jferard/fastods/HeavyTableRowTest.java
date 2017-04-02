@@ -98,7 +98,7 @@ public class HeavyTableRowTest {
 				.andReturn(this.tcs);
 
 		PowerMock.replayAll();
-		final Calendar d = Calendar.getInstance();
+		final Calendar d = Calendar.getInstance(Locale.US);
 		d.setTimeInMillis(TIME_IN_MILLIS);
 		this.row.setDateValue(7, d);
 		Assert.assertEquals("2009-02-14T00:31:31.011",
@@ -264,7 +264,7 @@ public class HeavyTableRowTest {
 				.andReturn(this.tcs);
 
 		PowerMock.replayAll();
-		final Calendar d = Calendar.getInstance();
+		final Calendar d = Calendar.getInstance(Locale.US);
 		d.setTimeInMillis(TIME_IN_MILLIS);
 		this.row.setDateValue(7, d.getTime());
 		Assert.assertEquals("2009-02-14T00:31:31.011",
