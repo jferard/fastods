@@ -28,18 +28,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Currency;
 import java.util.Locale;
 
 public class CurrencyStyleTest {
 	private DataStyleBuilderFactory factory;
 	private Locale locale;
 	private XMLUtil util;
+	private String usSymbol;
+	private String frSymbol;
 
 	@Before
 	public void setUp() {
 		this.util = new XMLUtil(new FastOdsXMLEscaper());
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
+		this.usSymbol = Currency.getInstance(this.locale).getSymbol();
+		this.frSymbol = Currency.getInstance(Locale.FRANCE).getSymbol();
 	}
 
 	@Test
@@ -51,7 +56,7 @@ public class CurrencyStyleTest {
 		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "</number:currency-style>", sb.toString());
 	}
 
@@ -66,7 +71,7 @@ public class CurrencyStyleTest {
 				"<number:currency-style style:name=\"currency-data\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> </number:text>"
-						+ "<number:currency-symbol>€</number:currency-symbol>"
+						+ "<number:currency-symbol>" + this.frSymbol + "</number:currency-symbol>"
 						+ "</number:currency-style>",
 				sb.toString());
 	}
@@ -80,12 +85,12 @@ public class CurrencyStyleTest {
 		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "</number:currency-style>", sb.toString());
 	}
 
 	@Test
-	public final void testMinIntegeDigits() throws IOException {
+	public final void testMinIntegerDigits() throws IOException {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
@@ -93,7 +98,7 @@ public class CurrencyStyleTest {
 		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "</number:currency-style>", sb.toString());
 	}
 
@@ -106,7 +111,7 @@ public class CurrencyStyleTest {
 		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "</number:currency-style>"
 				+ "<number:currency-style style:name=\"test-neg\">"
 				+ "<style:text-properties fo:color=\"#008000\"/>"
@@ -127,7 +132,7 @@ public class CurrencyStyleTest {
 		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "</number:currency-style>"
 				+ "<number:currency-style style:name=\"test-neg\">"
 				+ "<style:text-properties fo:color=\"#FF0000\"/>"
@@ -148,14 +153,14 @@ public class CurrencyStyleTest {
 		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>" + "<number:currency-symbol>"
-				+ "USD" + "</number:currency-symbol>"
+				+ this.usSymbol + "</number:currency-symbol>"
 				+ "</number:currency-style>"
 				+ "<number:currency-style style:name=\"test-neg\">"
 				+ "<style:text-properties fo:color=\"#FF0000\"/>"
 				+ "<number:text>-</number:text>"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>" + "<number:currency-symbol>"
-				+ "USD" + "</number:currency-symbol>"
+				+ this.usSymbol + "</number:currency-symbol>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"
 				+ "</number:currency-style>", sb.toString());
 	}
