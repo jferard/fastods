@@ -25,13 +25,27 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @author Julien Férard
  */
 public class LightTableCell implements TableCellWalker {
+	final static SimpleDateFormat DATE_VALUE_FORMAT;
+
+	static {
+		/**
+		 * XML Schema Part 2, 3.2.7 dateTime
+		 * Z and UTC time zone for universal time.
+		 */
+		DATE_VALUE_FORMAT = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+	}
+
 	private final HeavyTableRow row;
 	private int c;
 

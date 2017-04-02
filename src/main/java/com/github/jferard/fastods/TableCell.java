@@ -25,9 +25,11 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @author Julien Férard
@@ -61,12 +63,6 @@ public interface TableCell {
 			return this.attrValue;
 		}
 	}
-
-	/**
-	 * XML Schema Part 2, 3.2.7 dateTime
-	 */
-	SimpleDateFormat DATE_VALUE_FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss.SSS");
 
 	void appendXMLToTableRow(XMLUtil util, Appendable appendable)
 			throws IOException;

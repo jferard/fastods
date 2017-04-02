@@ -395,7 +395,7 @@ public class HeavyTableRow {
 	 * @see com.github.jferard.fastods.TableCell#setDateValue(java.util.Date)
 	 */
 	public void setDateValue(final int c, final Date value) {
-		this.values.set(c, TableCell.DATE_VALUE_FORMAT.format(value));
+		this.values.set(c, LightTableCell.DATE_VALUE_FORMAT.format(value));
 		this.types.set(c, TableCell.Type.DATE);
 		this.setDataStyle(c, this.dataStyles.getDateDataStyle());
 	}
