@@ -37,6 +37,7 @@ import java.util.List;
 public class HeavyTableColdRow {
 	private final int columnCapacity;
 	private final Table parent;
+	private final XMLUtil xmlUtil;
 	private final int rowIndex;
 	private List<Integer> columnsSpanned;
 	private List<String> currencies;
@@ -44,16 +45,18 @@ public class HeavyTableColdRow {
 	private List<Integer> rowsSpanned;
 	private List<Text> texts;
 	private List<String> tooltips;
-	public HeavyTableColdRow(final Table parent, final int rowIndex,
+
+	public HeavyTableColdRow(final Table parent, final XMLUtil xmlUtil, final int rowIndex,
 							 final int columnCapacity) {
 		this.parent = parent;
+		this.xmlUtil = xmlUtil;
 		this.rowIndex = rowIndex;
 		this.columnCapacity = columnCapacity;
 	}
 
 	public static HeavyTableColdRow create(final Table parent,
-										   final int rowIndex, final int columnCapacity) {
-		return new HeavyTableColdRow(parent, rowIndex, columnCapacity);
+										   final XMLUtil xmlUtil, final int rowIndex, final int columnCapacity) {
+		return new HeavyTableColdRow(parent, xmlUtil, rowIndex, columnCapacity);
 	}
 
 	/**
@@ -195,7 +198,12 @@ public class HeavyTableColdRow {
 		if (this.tooltips == null)
 			this.tooltips = FullList.newListWithCapacity(this.columnCapacity);
 
-		this.tooltips.set(i, tooltip);
+		String escapedXMLContent = this.xmlUtil.escapeXMLContent(tooltip);
+		if (escapedXMLContent.contains("\n")) {
+			escapedXMLContent = escapedXMLContent.replaceAll("\r?\n", "</text:p><text:p>");
+		}
+
+		this.tooltips.set(i, escapedXMLContent);
 	}
 
 	public void appendXMLToTable(final XMLUtil util,

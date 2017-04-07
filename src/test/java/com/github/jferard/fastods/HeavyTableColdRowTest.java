@@ -39,8 +39,8 @@ public class HeavyTableColdRowTest {
 	public void setUp() {
 		this.table = PowerMock.createMock(Table.class);
 		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
-		this.row = new HeavyTableColdRow(this.table, 10, 100);
 		this.xmlUtil = XMLUtil.create();
+		this.row = new HeavyTableColdRow(this.table, this.xmlUtil, 10, 100);
 	}
 
 	@Test
@@ -196,6 +196,22 @@ public class HeavyTableColdRowTest {
 		PowerMock.replayAll();
 		this.row.setTooltip(7, "tooltip");
 		Assert.assertEquals("tooltip", this.row.getTooltip(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testTooltipWithSpecialChars() {
+		PowerMock.replayAll();
+		this.row.setTooltip(7, "<tooltip>");
+		Assert.assertEquals("&lt;tooltip&gt;", this.row.getTooltip(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testTooltipWithCR() {
+		PowerMock.replayAll();
+		this.row.setTooltip(7, "tooltip\nline 1\nline2");
+		Assert.assertEquals("<text:p>tooltip</text:p><text:p>line 1</text:p><text:p>line2</text:p>", this.row.getTooltip(7));
 		PowerMock.verifyAll();
 	}
 

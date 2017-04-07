@@ -62,12 +62,11 @@ public class HeavyTableRowTest {
 		this.stc = PowerMock.createMock(StylesContainer.class);
 		this.table = PowerMock.createMock(Table.class);
 		final WriteUtil writeUtil = new WriteUtil();
-		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
-		this.ds = new LocaleDataStyles(
-				new DataStyleBuilderFactory(xmlUtil, Locale.US));
-		this.row = new HeavyTableRow(writeUtil, xmlUtil, this.stc, this.ds,
-				this.table, 10, 100);
 		this.xmlUtil = XMLUtil.create();
+		this.ds = new LocaleDataStyles(
+				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));
+		this.row = new HeavyTableRow(writeUtil, this.xmlUtil, this.stc, this.ds,
+				this.table, 10, 100);
 		this.tcs = TableCellStyle.builder("---").build();
 		PowerMock.mockStatic(HeavyTableColdRow.class);
 	}
@@ -112,7 +111,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setColumnsSpanned(0, 10);
 		EasyMock.expect(htcr.getColumnsSpanned(0)).andReturn(10);
@@ -144,7 +143,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCovered(1);
 		htcr.setCovered(2);
@@ -162,7 +161,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCovered(1, 1);
 		htcr.setCovered(2, 1);
@@ -179,7 +178,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 
 		final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
@@ -208,7 +207,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 
 		final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
@@ -235,7 +234,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
 		this.stc.addDataStyle(currencyDataStyle);
@@ -366,7 +365,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(7, 10, 8);
 		EasyMock.expect(htcr.getRowsSpanned(7)).andReturn(-10);
@@ -405,7 +404,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(7, -1, 8);
 		EasyMock.expect(htcr.getRowsSpanned(7)).andReturn(0);
@@ -425,7 +424,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(7, 10, -1);
 		EasyMock.expect(htcr.getRowsSpanned(7)).andReturn(10);
@@ -456,7 +455,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(0, 2, 2);
 		htcr.setCellMerge(10, 3, 3);
@@ -482,7 +481,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(0, 20, 20);
 		EasyMock.expect(htcr.getRowsSpanned(0)).andReturn(-20);
@@ -511,7 +510,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setCellMerge(5, 10, 8);
 		EasyMock.expect(htcr.isCovered(5)).andReturn(false);
@@ -631,7 +630,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setRowsSpanned(0, 10);
 		EasyMock.expect(htcr.getRowsSpanned(0)).andReturn(10);
@@ -650,7 +649,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setRowsSpanned(0, 10);
 		htcr.setRowsSpanned(1, 10);
@@ -671,7 +670,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setColumnsSpanned(10, 2);
 		EasyMock.expect(htcr.getColumnsSpanned(10)).andReturn(-2);
@@ -710,7 +709,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setText(0, t0);
 		htcr.setText(1, t1);
@@ -745,7 +744,7 @@ public class HeavyTableRowTest {
 
 		// PLAY
 		EasyMock.expect(HeavyTableColdRow.create(EasyMock.eq(this.table),
-				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
+				EasyMock.eq(this.xmlUtil), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(htcr)
 				.anyTimes();
 		htcr.setTooltip(7, "tooltip");
 		htcr.setTooltip(8, "tooltip2");

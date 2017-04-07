@@ -261,7 +261,7 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 		this.coldRow.setCellMerge(colIndex, rowMerge, columnMerge);
 	}
@@ -279,14 +279,14 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 		this.coldRow.setColumnsSpanned(colIndex, n);
 	}
 
 	public void setCovered(final int colIndex) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 
 		this.coldRow.setCovered(colIndex);
@@ -294,7 +294,7 @@ public class HeavyTableRow {
 
 	public void setCovered(final int colIndex, final int n) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 
 		this.coldRow.setCovered(colIndex, n);
@@ -307,7 +307,7 @@ public class HeavyTableRow {
 								 final String currency) {
 		this.values.set(c, Double.toString(value));
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 
 		this.coldRow.setCurrency(c, currency); // escape here
@@ -322,7 +322,7 @@ public class HeavyTableRow {
 								 final String currency) {
 		this.values.set(c, Float.toString(value));
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 
 		this.coldRow.setCurrency(c, currency); // escape here
@@ -337,7 +337,7 @@ public class HeavyTableRow {
 								 final String currency) {
 		this.values.set(c, value.toString());
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 
 		this.coldRow.setCurrency(c, currency); // escape here
@@ -499,7 +499,7 @@ public class HeavyTableRow {
 			return;
 
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 		this.coldRow.setRowsSpanned(colIndex, n);
 	}
@@ -541,7 +541,7 @@ public class HeavyTableRow {
 
 	public void setText(final int c, final Text text) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 		this.coldRow.setText(c, text);
 		this.values.set(c, "");
@@ -560,7 +560,7 @@ public class HeavyTableRow {
 
 	public void setTooltip(final int c, final String tooltip) {
 		if (this.coldRow == null)
-			this.coldRow = HeavyTableColdRow.create(this.parent, this.rowIndex,
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);
 		this.coldRow.setTooltip(c, tooltip);
 	}
