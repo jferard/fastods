@@ -196,6 +196,13 @@ public class OdsFileCreationTest {
 					default:
 						walker.setTimeValue(x * 60 * 1000);
 					}
+				} else if (y == 10) {
+					switch (x) {
+						case 0:
+							walker.setStringValue("formula result");
+							walker.setFormula("1+1");
+							break;
+					}
 				}
 				walker.next();
 			}

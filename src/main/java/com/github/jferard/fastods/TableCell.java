@@ -279,4 +279,18 @@ public interface TableCell {
 	void setTooltip(String tooltip);
 
 	void setTooltip(String tooltip, String width, String height, boolean visible);
+
+	/**
+	 * Sets a formula in an existing cell. The user is responsible for creating the cell and setting the
+	 * correct value, as show below:
+	 * <pre>{@code
+	 *     walker.setFloatValue(2.0);
+	 *     walker.setFormula("1+1");
+	 * }</pre>
+	 *
+	 * One can type Shift+Ctrl+F9 to recalculate the right value in LibreOffice.
+	 *
+	 * @param formula the formula, without '=' sign.
+	 */
+	void setFormula(String formula);
 }

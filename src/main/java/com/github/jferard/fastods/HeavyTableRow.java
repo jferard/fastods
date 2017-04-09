@@ -56,6 +56,7 @@ public class HeavyTableRow {
 	private DataStyles dataStyles;
 	private TableCellStyle defaultCellStyle;
 	private TableRowStyle rowStyle;
+	private String formula;
 
 	HeavyTableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
 				  final StylesContainer stylesContainer, final DataStyles dataStyles,
@@ -111,6 +112,9 @@ public class HeavyTableRow {
 			final String currency = this.coldRow.getCurrency(colIndex);
 			util.appendAttribute(appendable, "office:currency", currency);
 		}
+
+		if (this.formula != null)
+			util.appendAttribute(appendable, "table:formula", "="+this.formula);
 
 		if (this.coldRow == null) {
 			appendable.append("/>");
@@ -575,5 +579,9 @@ public class HeavyTableRow {
 	public void setVoidValue(final int c) {
 		this.values.set(c, null);
 		this.types.set(c, TableCell.Type.VOID);
+	}
+
+	public void setFormula(final String formula) {
+		this.formula = formula;
 	}
 }

@@ -171,6 +171,12 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void setFormula(final String formula) {
+		this.row.setFormula(formula);
+
+	}
+
+	@Override
 	public Type getValueType() {
 		return this.row.getValueType(this.c);
 	}
