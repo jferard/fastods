@@ -166,6 +166,11 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
+	public void setTooltip(final String tooltip, final String width, final String height, final boolean visible) {
+		this.row.setTooltip(this.c, tooltip, width, height, visible);
+	}
+
+	@Override
 	public Type getValueType() {
 		return this.row.getValueType(this.c);
 	}

@@ -45,6 +45,7 @@ public class HeavyTableColdRow {
 	private List<Integer> rowsSpanned;
 	private List<Text> texts;
 	private List<String> tooltips;
+	private List<TooltipParameter> tooltipsParameters;
 
 	public HeavyTableColdRow(final Table parent, final XMLUtil xmlUtil, final int rowIndex,
 							 final int columnCapacity) {
@@ -194,7 +195,7 @@ public class HeavyTableColdRow {
 		this.texts.set(i, text);
 	}
 
-	public void setTooltip(final int i, final String tooltip) {
+	public void setTooltip(final int c, final String tooltip) {
 		if (this.tooltips == null)
 			this.tooltips = FullList.newListWithCapacity(this.columnCapacity);
 
@@ -203,7 +204,16 @@ public class HeavyTableColdRow {
 			escapedXMLContent = escapedXMLContent.replaceAll("\r?\n", "</text:p><text:p>");
 		}
 
-		this.tooltips.set(i, escapedXMLContent);
+		this.tooltips.set(c, escapedXMLContent);
+	}
+
+
+	public void setTooltip(final int c, final String tooltip, final String width, final String height, final boolean visible) {
+		this.setTooltip(c, tooltip);
+		if (this.tooltipsParameters == null)
+			this.tooltipsParameters = FullList.newListWithCapacity(this.columnCapacity);
+
+		this.tooltipsParameters.set(c, TooltipParameter.create(width, height, visible));
 	}
 
 	public void appendXMLToTable(final XMLUtil util,
@@ -239,9 +249,15 @@ public class HeavyTableColdRow {
 			if (this.tooltips != null) {
 				final String tooltip = this.tooltips.get(colIndex);
 				if (tooltip != null) {
-					appendable.append("<office:annotation><text:p>")
-							.append(tooltip)
-							.append("</text:p></office:annotation>");
+					appendable.append("<office:annotation");
+					if (this.tooltipsParameters != null) {
+						final TooltipParameter tooltipParameter = this.tooltipsParameters.get(colIndex);
+						if (tooltipParameter != null)
+							tooltipParameter.appendXMLToTable(util, appendable);
+					}
+					appendable.append("><text:p>")
+						.append(tooltip)
+						.append("</text:p></office:annotation>");
 				}
 			}
 			appendable.append("</table:table-cell>");

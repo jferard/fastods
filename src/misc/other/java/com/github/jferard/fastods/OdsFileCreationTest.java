@@ -168,7 +168,7 @@ public class OdsFileCreationTest {
 						break;
 					case 1:
 						walker.setCurrencyValue(150.5, "EUR");
-						walker.setTooltip("That's a tooltip\nwith a newline !");
+						walker.setTooltip("That's a <tooltip>\nwith a newline !", "3cm", "10cm", true);
 						break;
 					case 2:
 						walker.setDateValue(Calendar.getInstance());
@@ -201,7 +201,7 @@ public class OdsFileCreationTest {
 			}
 		}
 
-		writer.saveAs(new File("generated_files", "fastods_50_5.ods"));
+		writer.saveAs(new File("generated_files", "fastods_50_5_normal.ods"));
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}

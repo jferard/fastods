@@ -277,4 +277,6 @@ public interface TableCell {
 	 *            the text of the tooltip
 	 */
 	void setTooltip(String tooltip);
+
+	void setTooltip(String tooltip, String width, String height, boolean visible);
 }

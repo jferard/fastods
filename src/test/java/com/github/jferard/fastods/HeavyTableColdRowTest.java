@@ -211,7 +211,7 @@ public class HeavyTableColdRowTest {
 	public final void testTooltipWithCR() {
 		PowerMock.replayAll();
 		this.row.setTooltip(7, "tooltip\nline 1\nline2");
-		Assert.assertEquals("<text:p>tooltip</text:p><text:p>line 1</text:p><text:p>line2</text:p>", this.row.getTooltip(7));
+		Assert.assertEquals("tooltip</text:p><text:p>line 1</text:p><text:p>line2", this.row.getTooltip(7));
 		PowerMock.verifyAll();
 	}
 

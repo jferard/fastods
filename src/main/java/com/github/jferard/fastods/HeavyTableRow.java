@@ -565,6 +565,13 @@ public class HeavyTableRow {
 		this.coldRow.setTooltip(c, tooltip);
 	}
 
+	public void setTooltip(final int c, final String tooltip, final String width, final String height, final boolean visible) {
+		if (this.coldRow == null)
+			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
+					this.columnCapacity);
+		this.coldRow.setTooltip(c, tooltip, width, height, visible);
+	}
+
 	public void setVoidValue(final int c) {
 		this.values.set(c, null);
 		this.types.set(c, TableCell.Type.VOID);

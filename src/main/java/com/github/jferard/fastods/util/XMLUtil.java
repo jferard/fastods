@@ -45,7 +45,7 @@ public class XMLUtil {
 	}
 
 	/**
-	 * Append a new element to the appendable element, the name of the element is
+	 * Append a space and new element to the appendable element, the name of the element is
 	 * attrName and the value is attrRawValue. The value won't be escaped.
 	 *
 	 * @param appendable   The StringBuilder to which the new element should be added.
@@ -83,6 +83,9 @@ public class XMLUtil {
 	}
 
 	/**
+	 * Append a space, then a new element to the appendable element, the name of the element is
+	 * attrName and the value is attrValue. The value will be escaped if necessary.
+	 *
 	 * @param appendable where to write
 	 * @param attrName   the name of the attribute
 	 * @param attrValue  escaped attribute
