@@ -252,4 +252,8 @@ public class OdsElements {
 		this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
 		this.stylesElement.write(xmlUtil, writer);
 	}
+
+	public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
+		this.contentElement.addAutofilter(table, r1, c1, r2, c2);
+	}
 }

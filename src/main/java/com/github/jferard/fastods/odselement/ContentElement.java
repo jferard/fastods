@@ -32,6 +32,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
@@ -49,6 +50,7 @@ public class ContentElement implements OdsElement {
 	private final UniqueList<Table> tables;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
+	private List<String> autofilters;
 
 	ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
 				   final WriteUtil writeUtil,
@@ -175,6 +177,8 @@ public class ContentElement implements OdsElement {
 	}
 
 	public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+		if (this.autofilters != null)
+			this.appendAutofilters(writer, util);
 		writer.write("</office:spreadsheet>");
 		writer.write("</office:body>");
 		writer.write("</office:document-content>");
@@ -228,4 +232,23 @@ public class ContentElement implements OdsElement {
 		writer.write("<office:body>");
 		writer.write("<office:spreadsheet>");
 	}
+
+	private void appendAutofilters(final Appendable appendable, final XMLUtil util) throws IOException {
+		appendable.append("<table:database-ranges>");
+		for (final String autofilter : this.autofilters) {
+			appendable.append("<table:database-range");
+			util.appendAttribute(appendable, "table:display-filter-buttons", "true");
+			util.appendAttribute(appendable, "table:target-range-address", autofilter);
+			appendable.append("/>");
+		}
+		appendable.append("</table:database-ranges>");
+	}
+
+	public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
+		if (this.autofilters == null)
+			this.autofilters = new ArrayList<String>();
+
+		this.autofilters.add(this.positionUtil.toRangeAddress(table, r1, c1, r2, c2));
+	}
+
 }

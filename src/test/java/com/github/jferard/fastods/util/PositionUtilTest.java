@@ -20,11 +20,14 @@
  */
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.Table;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.util.PositionUtil.Position;
+import org.powermock.api.easymock.PowerMock;
 
 public class PositionUtilTest {
 	PositionUtil util;
@@ -106,5 +109,41 @@ public class PositionUtilTest {
 		final Position position4 = this.util.getPosition(4, 1);
 		Assert.assertNotEquals(position1, position4);
 		Assert.assertEquals(1085, position1.hashCode());
+	}
+
+	@Test
+	public final void testAddress() {
+		final Position position1 = this.util.getPosition(0,0);
+		Assert.assertEquals("A1", position1.toCellAddress());
+		final Position position2 = this.util.getPosition(1,2);
+		Assert.assertEquals("C2", position2.toCellAddress());
+		final Position position3 = this.util.getPosition(0,25);
+		Assert.assertEquals("Z1", position3.toCellAddress());
+		final Position position4 = this.util.getPosition(0,26);
+		Assert.assertEquals("AA1", position4.toCellAddress());
+		final Position position5 = this.util.getPosition(0,52);
+		Assert.assertEquals("BA1", position5.toCellAddress());
+		final Position position6 = this.util.getPosition(0,1023);
+		Assert.assertEquals("AMJ1", position6.toCellAddress());
+	}
+
+	@Test
+	public final void testRangeAddress() {
+		Assert.assertEquals("A1:K11", this.util.toRangeAddress(0,0, 10, 10));
+	}
+
+	@Test
+	public final void testCellAndRangeAddressInTable() {
+		// CREATE
+		final Table t = PowerMock.createMock(Table.class);
+
+		// PLAY
+		EasyMock.expect(t.getName()).andReturn("n").times(3);
+
+		// TEST
+		PowerMock.replayAll();
+		Assert.assertEquals("n.AMJ1", this.util.toCellAddress(t,0,1023));
+		Assert.assertEquals("n.A1:n.K11", this.util.toRangeAddress(t, 0,0, 10, 10));
+		PowerMock.verifyAll();
 	}
 }

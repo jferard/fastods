@@ -36,6 +36,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -299,5 +300,9 @@ public class OdsDocument {
 	 */
 	public int tableCount() {
 		return this.odsElements.getTableCount();
+	}
+
+	public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
+		this.odsElements.addAutofilter(table, r1, c1, r2, c2);
 	}
 }

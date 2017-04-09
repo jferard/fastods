@@ -207,6 +207,7 @@ public class OdsFileCreationTest {
 				walker.next();
 			}
 		}
+		document.addAutofilter(table, 0,0,49,4);
 
 		writer.saveAs(new File("generated_files", "fastods_50_5_normal.ods"));
 		final long t2 = System.currentTimeMillis();

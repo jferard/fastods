@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.Table;
+
 import java.util.Locale;
 
 /**
@@ -30,6 +32,7 @@ import java.util.Locale;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class PositionUtil {
 	public static class Position {
+		public static final int ORD_A = 'A';
 		private final EqualityUtil equalityUtil;
 		private final int column;
 		private final int row;
@@ -65,6 +68,33 @@ public class PositionUtil {
 			return this.row;
 		}
 
+		/**
+		 * 0 -> A
+		 * ...
+		 * 25 -> Z
+		 * 26 -> AA
+		 * 27 -> AB
+		 * ...
+		 * 52 -> BA
+		 * 1023->AMJ
+		 *
+		 * @return
+		 */
+		public String toCellAddress() {
+			final StringBuilder sb = new StringBuilder();
+			int col = this.column;
+			while (col >= 26) {
+				sb.insert(0, (char) (ORD_A + (col % 26)));
+				col = col/26 - 1;
+			}
+			sb.insert(0, (char) (ORD_A + col));
+			sb.append(this.row+1);
+			return sb.toString();
+		}
+
+		public String toCellAddress(final Table table) {
+			return table.getName()+"."+this.toCellAddress();
+		}
 	}
 
 	private static final int BEGIN_DIGIT = 3;
@@ -145,4 +175,21 @@ public class PositionUtil {
 	public Position getPosition(final int row, final int col) {
 		return new Position(this.equalityUtil, row, col);
 	}
+
+	public String toCellAddress(final int row, final int col) {
+		return this.getPosition(row, col).toCellAddress();
+	}
+
+	public String toCellAddress(final Table table, final int row, final int col) {
+		return this.getPosition(row, col).toCellAddress(table);
+	}
+
+	public String toRangeAddress(final int row1, final int col1, final int row2, final int col2) {
+		return this.toCellAddress(row1, col1)+":"+this.toCellAddress(row2, col2);
+	}
+
+	public String toRangeAddress(final Table table, final int row1, final int col1, final int row2, final int col2) {
+		return this.toCellAddress(table, row1, col1)+":"+this.toCellAddress(table, row2, col2);
+	}
+
 }

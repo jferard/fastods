@@ -36,6 +36,7 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -295,7 +296,7 @@ public class Table implements NamedObject {
 		return this.getRow(row);
 	}
 
-	public HeavyTableRow getRowSecure(final int rowIndex, boolean updateRowIndex) throws IOException {
+	public HeavyTableRow getRowSecure(final int rowIndex, final boolean updateRowIndex) throws IOException {
 		HeavyTableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
 			tr = new HeavyTableRow(this.writeUtil, this.xmlUtil,
