@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 import com.github.jferard.fastods.testutil.DomTester;
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,9 +59,9 @@ public class SimpleFooterHeaderTest {
 		final TextStyle ts = TextProperties.builder().fontStyleItalic()
 				.buildStyle("style");
 		final FooterHeader header = FooterHeader
-				.simpleBuilder(FooterHeader.Type.HEADER).marginTop("10pt")
-				.marginRight("11pt").marginBottom("12pt").marginLeft("13pt")
-				.minHeight("120pt").styledContent("text", ts).build();
+				.simpleBuilder(FooterHeader.Type.HEADER).marginTop(SimpleLength.pt(10.0))
+				.marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0)).marginLeft(SimpleLength.pt(13.0))
+				.minHeight(SimpleLength.pt(120.0)).styledContent("text", ts).build();
 		final StringBuilder sb = new StringBuilder();
 		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:header-style>"
@@ -74,8 +75,8 @@ public class SimpleFooterHeaderTest {
 		final TextStyle ts = TextProperties.builder().fontStyleItalic()
 				.buildStyle("style");
 		final FooterHeader header = FooterHeader
-				.simpleBuilder(FooterHeader.Type.HEADER).allMargins("10pt")
-				.minHeight("120pt").styledContent("text", ts).build();
+				.simpleBuilder(FooterHeader.Type.HEADER).allMargins(SimpleLength.pt(10.0))
+				.minHeight(SimpleLength.pt(120.0)).styledContent("text", ts).build();
 		final StringBuilder sb = new StringBuilder();
 		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:header-style>"

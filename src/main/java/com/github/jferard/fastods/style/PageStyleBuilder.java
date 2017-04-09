@@ -22,9 +22,10 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.FooterHeader;
-import com.github.jferard.fastods.style.PageStyle.PaperFormat;
 import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
+import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.SimpleLength;
 
 /**
  * @author Julien Férard
@@ -37,8 +38,8 @@ public class PageStyleBuilder {
 	private final String name;
 
 	private final String numFormat;
-	private String pageHeight;
-	private String pageWidth;
+	private Length pageHeight;
+	private Length pageWidth;
 	private PaperFormat paperFormat;
 
 	private PrintOrientation printOrientation;
@@ -56,13 +57,15 @@ public class PageStyleBuilder {
 
 		this.name = name;
 		this.marginsBuilder = new MarginsBuilder();
-		this.marginsBuilder.all("1.5cm");
+		this.marginsBuilder.all(SimpleLength.cm(1.5));
 
-		this.paperFormat(PageStyle.DEFAULT_FORMAT);
+		this.paperFormat = PageStyle.DEFAULT_FORMAT;
+		this.pageWidth = PageStyle.DEFAULT_FORMAT.getWidth();
+		this.pageHeight = PageStyle.DEFAULT_FORMAT.getHeight();
 		this.numFormat = "1";
 		this.backgroundColor = "";
 
-		this.printOrientation = PageStyle.DEFAULT_PRINTORIENTATION;
+		this.printOrientation = PageStyle.DEFAULT_PRINT_ORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
 
 		final TextStyle noneStyle = TextProperties.builder().buildStyle("none");
@@ -72,15 +75,11 @@ public class PageStyleBuilder {
 
 	/**
 	 * Set the margin at the top, bottom, left and right. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
 	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder allMargins(final String margin) {
+	public PageStyleBuilder allMargins(final Length margin) {
 		this.marginsBuilder.all(margin);
 		return this;
 	}
@@ -100,14 +99,16 @@ public class PageStyleBuilder {
 	}
 
 	public PageStyle build() {
-		if (this.masterPageStyle == null)
+		if (this.masterPageStyle == null) {
 			this.masterPageStyle = new MasterPageStyle(this.name, this.name, this.footer, this.header);
+		}
 
-		if (this.pageLayoutStyle == null)
+		if (this.pageLayoutStyle == null) {
 			this.pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this
-				.pageWidth,
-				this.pageHeight, this.numFormat, this.backgroundColor, this.footer, this.header, this
-				.printOrientation, this.paperFormat, this.writingMode);
+					.pageWidth,
+					this.pageHeight, this.numFormat, this.backgroundColor, this.footer, this.header, this
+					.printOrientation, this.paperFormat, this.writingMode);
+		}
 		return new PageStyle(this.masterPageStyle, this.pageLayoutStyle);
 	}
 
@@ -133,94 +134,70 @@ public class PageStyleBuilder {
 
 	/**
 	 * Set the bottom margin. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
 	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginBottom(final String margin) {
+	public PageStyleBuilder marginBottom(final Length margin) {
 		this.marginsBuilder.bottom(margin);
 		return this;
 	}
 
 	/**
 	 * Set the left margin. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
 	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginLeft(final String margin) {
+	public PageStyleBuilder marginLeft(final Length margin) {
 		this.marginsBuilder.left(margin);
 		return this;
 	}
 
 	/**
 	 * Set the right margin. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
 	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginRight(final String margin) {
+	public PageStyleBuilder marginRight(final Length margin) {
 		this.marginsBuilder.right(margin);
 		return this;
 	}
 
 	/**
 	 * Set the top margin. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
 	 *
 	 * @param margin the length of the margin
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder marginTop(final String margin) {
+	public PageStyleBuilder marginTop(final Length margin) {
 		this.marginsBuilder.top(margin);
 		return this;
 	}
 
 	/**
-	 * Set the page height. pageHeight is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
+	 * Set the page height. pageHeight is a length value.
+	 * Using this method sets the paper format to PageStyle.STYLE_PAPERFORMAT_USER
 	 *
 	 * @param pageHeight the height of the page
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder pageHeight(final String pageHeight) {
-		this.paperFormat = PageStyle.PaperFormat.USER;
+	public PageStyleBuilder pageHeight(final Length pageHeight) {
+		this.paperFormat = PaperFormat.USER;
 		this.pageHeight = pageHeight;
 		return this;
 	}
 
 	/**
-	 * Set the page width. pageWidth is a length value expressed as a number
-	 * followed by a unit of measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).<br>
-	 * When using this method, the paper format is set to
-	 * PageStyle.STYLE_PAPERFORMAT_USER
+	 * Set the page width. pageWidth is a length value.
+	 * Using this method sets the paper format to PageStyle.STYLE_PAPERFORMAT_USER
 	 *
 	 * @param pageWidth the page width
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder pageWidth(final String pageWidth) {
-		this.paperFormat = PageStyle.PaperFormat.USER;
+	public PageStyleBuilder pageWidth(final Length pageWidth) {
+		this.paperFormat = PaperFormat.USER;
 		this.pageWidth = pageWidth;
 		return this;
 	}

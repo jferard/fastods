@@ -27,6 +27,7 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,8 +63,8 @@ public class StylesContainerTest {
 		this.ds1 = f.booleanStyleBuilder("a").country("a").build();
 		this.ds2 = f.booleanStyleBuilder("a").country("b").build();
 
-		this.ps1 = PageStyle.builder("a").allMargins("1").build();
-		this.ps2 = PageStyle.builder("a").allMargins("2").build();
+		this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
+		this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}
 

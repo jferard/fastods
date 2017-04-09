@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.Margins;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.io.IOException;
 class FooterHeaderStyle {
 	private final FooterHeader.Type footerHeaderType;
 	private final Margins margins;
-	private final String minHeight;
+	private final Length minHeight;
 
 	/**
 	 * Create a new footer object.
@@ -41,7 +42,7 @@ class FooterHeaderStyle {
 	 * @param minHeight the height of the footer/header
 	 */
 	FooterHeaderStyle(final FooterHeader.Type footerHeaderType,
-					  final Margins margins, final String minHeight) {
+					  final Margins margins, final Length minHeight) {
 		this.footerHeaderType = footerHeaderType;
 		this.margins = margins;
 		this.minHeight = minHeight;
@@ -63,7 +64,7 @@ class FooterHeaderStyle {
 		appendable.append("<style:").append(this.footerHeaderType.getTypeName())
 				.append("-style>");
 		appendable.append("<style:header-footer-properties");
-		util.appendAttribute(appendable, "fo:min-height", this.minHeight);
+		util.appendAttribute(appendable, "fo:min-height", this.minHeight.toString());
 		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/></style:").append(this.footerHeaderType.getTypeName())
 				.append("-style>");
@@ -79,7 +80,7 @@ class FooterHeaderStyle {
 	/**
 	 * @return The current minimum height of the footer/header.
 	 */
-	public String getMinHeight() {
+	public Length getMinHeight() {
 		return this.minHeight;
 	}
 

@@ -20,6 +20,7 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ import com.github.jferard.fastods.style.BorderAttribute;
 public class BorderAttributeTest {
 	@Test
 	public final void basicTest() {
-		final BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
+		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
 				.borderColor(Color.ALICEBLUE)
 				.borderStyle(BorderAttribute.Style.SOLID).build();
 		Assert.assertEquals("1cm solid #F0F8FF", ba.toXMLAttributeValue());
@@ -40,7 +41,7 @@ public class BorderAttributeTest {
 
 	@Test
 	public final void nullColorTest() {
-		final BorderAttribute ba = BorderAttribute.builder().borderSize("1cm")
+		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
 				.build();
 		Assert.assertEquals("1cm", ba.toXMLAttributeValue());
 	}

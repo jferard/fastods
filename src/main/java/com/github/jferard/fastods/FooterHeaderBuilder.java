@@ -24,6 +24,8 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.style.MarginsBuilder;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Box;
+import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.SimpleLength;
 
 /**
  * styles.xml/office:document-styles/office:master-styles/style:master-
@@ -42,29 +44,25 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	protected Box<Text> curRegionBox;
 	protected MarginsBuilder marginsBuilder;
 
-	protected String minHeight;
+	protected Length minHeight;
 
 	/**
 	 * Create a new footer or header object.
 	 */
 	FooterHeaderBuilder(final FooterHeader.Type footerHeaderType) {
 		this.footerHeaderType = footerHeaderType;
-		this.minHeight = "0cm";
+		this.minHeight = SimpleLength.cm(0.0);
 		this.marginsBuilder = new MarginsBuilder();
-		this.marginsBuilder.all("0cm");
+		this.marginsBuilder.all(SimpleLength.cm(0.0));
 	}
 
 	/**
-	 * <p>Set the margin at the top, bottom, left and right. Margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px.</p>
-	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
+	 * Set the margin at the top, bottom, left and right.
 	 *
 	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
-	public F allMargins(final String margin) {
+	public F allMargins(final Length margin) {
 		this.marginsBuilder.all(margin);
 		return (F) this;
 	}
@@ -77,76 +75,56 @@ public abstract class FooterHeaderBuilder<F extends FooterHeaderBuilder<F>> {
 	}
 
 	/**
-	 * <p>Set the bottom margin. margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px.</p>
-	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
+	 * Set the bottom margin. margin is a length value
 	 *
 	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
-	public F marginBottom(final String margin) {
+	public F marginBottom(final Length margin) {
 		this.marginsBuilder.bottom(margin);
 		return (F) this;
 	}
 
 	/**
-	 * <p>Set the left margin. Margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px.</p>
-	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
+	 * Set the left margin. Margin is a length value
 	 *
 	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
-	public F marginLeft(final String margin) {
+	public F marginLeft(final Length margin) {
 		this.marginsBuilder.left(margin);
 		return (F) this;
 	}
 
 	/**
-	 * <p>Set the right margin. Margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px.</p>
-	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
+	 * Set the right margin. Margin is a length value
 	 *
 	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
-	public F marginRight(final String margin) {
+	public F marginRight(final Length margin) {
 		this.marginsBuilder.right(margin);
 		return (F) this;
 	}
 
 	/**
-	 * <p>Set the top margin. Margin is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px.</p>
-	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
+	 * Set the top margin. Margin is a length value
 	 *
 	 * @param margin the margin size
 	 * @return this for fluent style
 	 */
-	public F marginTop(final String margin) {
+	public F marginTop(final Length margin) {
 		this.marginsBuilder.top(margin);
 		return (F) this;
 	}
 
 	/**
-	 * <p>Set the minimum height. Min height is a length value
-	 * expressed as a number followed by a unit of measurement e.g. 1.5cm or
-	 * 12px.</p>
-	 * <p>The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch), and pt (points; 72points equal one inch).</p>
+	 * Set the minimum height. Min height is a length value
 	 *
 	 * @param height the height of the footer/header
 	 * @return this for fluent style
 	 */
-	public F minHeight(final String height) {
+	public F minHeight(final Length height) {
 		this.minHeight = height;
 		return (F) this;
 	}

@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.util.Length;
 
 /**
  * @author Julien Férard
@@ -60,10 +61,10 @@ public class TableCellStyleBuilder {
 	 * Add a margin to this cell.
 	 *
 	 * @param size
-	 *            The size of the margin '0cm'
+	 *            The size of the margin
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder allMargins(final String size) {
+	public TableCellStyleBuilder allMargins(final Length size) {
 		this.marginsBuilder.all(size);
 		return this;
 	}
@@ -87,7 +88,7 @@ public class TableCellStyleBuilder {
 	 * Add a border style to this cell.
 	 *
 	 * @param size
-	 *            The size of the line e.g. '0.1cm'
+	 *            The size of the line as a length
 	 * @param borderColor
 	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
 	 *            red border
@@ -96,7 +97,7 @@ public class TableCellStyleBuilder {
 	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder borderAll(final String size,
+	public TableCellStyleBuilder borderAll(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
@@ -104,7 +105,7 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
-	public TableCellStyleBuilder borderBottom(final String size,
+	public TableCellStyleBuilder borderBottom(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
@@ -112,7 +113,7 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
-	public TableCellStyleBuilder borderLeft(final String size,
+	public TableCellStyleBuilder borderLeft(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
@@ -120,7 +121,7 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
-	public TableCellStyleBuilder borderRight(final String size,
+	public TableCellStyleBuilder borderRight(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
@@ -128,7 +129,7 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
-	public TableCellStyleBuilder borderTop(final String size,
+	public TableCellStyleBuilder borderTop(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
@@ -260,10 +261,10 @@ public class TableCellStyleBuilder {
 	 * Add a border style to this cell.
 	 *
 	 * @param size
-	 *            The size of the margin '0cm'
+	 *            The size of the margin as length
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder marginBottom(final String size) {
+	public TableCellStyleBuilder marginBottom(final Length size) {
 		this.marginsBuilder.bottom(size);
 		return this;
 	}
@@ -272,10 +273,10 @@ public class TableCellStyleBuilder {
 	 * Add a border style to this cell.
 	 *
 	 * @param size
-	 *            The size of the margin '0cm'
+	 *            The size of the margin as length
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder marginLeft(final String size) {
+	public TableCellStyleBuilder marginLeft(final Length size) {
 		this.marginsBuilder.left(size);
 		return this;
 	}
@@ -284,10 +285,10 @@ public class TableCellStyleBuilder {
 	 * Add a border style to this cell.
 	 *
 	 * @param size
-	 *            The size of the margin '0cm'
+	 *            The size of the margin as length
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder marginRight(final String size) {
+	public TableCellStyleBuilder marginRight(final Length size) {
 		this.marginsBuilder.right(size);
 		return this;
 	}
@@ -296,10 +297,10 @@ public class TableCellStyleBuilder {
 	 * Add a border style to this cell.
 	 *
 	 * @param size
-	 *            The size of the margin '0cm'
+	 *            The size of the margin as length
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder marginTop(final String size) {
+	public TableCellStyleBuilder marginTop(final Length size) {
 		this.marginsBuilder.top(size);
 		return this;
 	}

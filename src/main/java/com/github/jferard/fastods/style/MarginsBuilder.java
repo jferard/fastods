@@ -22,20 +22,21 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.EqualityUtil;
+import com.github.jferard.fastods.util.Length;
 
 public class MarginsBuilder {
-	private String all;
-	private String bottom;
-	private String left;
-	private String right;
-	private String top;
+	private Length all;
+	private Length bottom;
+	private Length left;
+	private Length right;
+	private Length top;
 
-	public MarginsBuilder all(final String size) {
+	public MarginsBuilder all(final Length size) {
 		this.all = size;
 		return this;
 	}
 
-	public MarginsBuilder bottom(final String bottom) {
+	public MarginsBuilder bottom(final Length bottom) {
 		this.bottom = bottom;
 		return this;
 	}
@@ -45,17 +46,17 @@ public class MarginsBuilder {
 				this.left);
 	}
 
-	public MarginsBuilder left(final String left) {
+	public MarginsBuilder left(final Length left) {
 		this.left = left;
 		return this;
 	}
 
-	public MarginsBuilder right(final String right) {
+	public MarginsBuilder right(final Length right) {
 		this.right = right;
 		return this;
 	}
 
-	public MarginsBuilder top(final String top) {
+	public MarginsBuilder top(final Length top) {
 		this.top = top;
 		return this;
 	}

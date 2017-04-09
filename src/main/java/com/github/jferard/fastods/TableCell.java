@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -278,7 +279,7 @@ public interface TableCell {
 	 */
 	void setTooltip(String tooltip);
 
-	void setTooltip(String tooltip, String width, String height, boolean visible);
+	void setTooltip(String tooltip, Length width, Length height, boolean visible);
 
 	/**
 	 * Sets a formula in an existing cell. The user is responsible for creating the cell and setting the

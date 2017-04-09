@@ -22,6 +22,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,7 @@ public class MarginsTest {
 
 	@Test
 	public final void testAll() throws IOException {
-		final Margins margins = this.builder.all("10pt").build();
+		final Margins margins = this.builder.all(SimpleLength.pt(10.0)).build();
 		final StringBuilder sb = new StringBuilder();
 		margins.appendXMLToTableCellStyle(this.util, sb);
 		Assert.assertEquals(" fo:margin=\"10pt\"", sb.toString());
@@ -49,8 +50,8 @@ public class MarginsTest {
 
 	@Test
 	public final void testTRBL() throws IOException {
-		final Margins margins = this.builder.all("10pt").top("10pt")
-				.right("11pt").bottom("12pt").left("13pt").build();
+		final Margins margins = this.builder.all(SimpleLength.pt(10.0)).top(SimpleLength.pt(10.0))
+				.right(SimpleLength.pt(11.0)).bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
 		final StringBuilder sb = new StringBuilder();
 		margins.appendXMLToTableCellStyle(this.util, sb);
 		Assert.assertEquals(
@@ -60,8 +61,8 @@ public class MarginsTest {
 
 	@Test
 	public final void testTRBL2() throws IOException {
-		final Margins margins = this.builder.top("10pt").right("11pt")
-				.bottom("12pt").left("13pt").build();
+		final Margins margins = this.builder.top(SimpleLength.pt(10.0)).right(SimpleLength.pt(11.0))
+				.bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
 		final StringBuilder sb = new StringBuilder();
 		margins.appendXMLToTableCellStyle(this.util, sb);
 		Assert.assertEquals(

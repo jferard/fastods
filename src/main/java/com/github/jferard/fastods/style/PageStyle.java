@@ -25,6 +25,8 @@ import com.github.jferard.fastods.FooterHeader;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
+import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -37,21 +39,48 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class PageStyle implements AddableToOdsElements {
-	public static final PaperFormat DEFAULT_FORMAT = PaperFormat.A4;
 	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
+	public static final PaperFormat DEFAULT_FORMAT;
+	public static final PrintOrientation DEFAULT_PRINT_ORIENTATION;
+	public static final WritingMode DEFAULT_WRITING_MODE;
 	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
 	public static final PageStyle DEFAULT_PAGE_STYLE;
-	public static final PrintOrientation DEFAULT_PRINTORIENTATION = PrintOrientation.VERTICAL;
-	public static final WritingMode DEFAULT_WRITING_MODE = WritingMode.LRTB;
-	private static final String A3_H = "42.0cm";
-	private static final String A3_W = "29.7cm";
-	private static final String A4_W = "21.0cm";
-	private static final String A5_W = "14.8cm";
-	private static final String LEGAL_H = "35.57cm";
-	private static final String LETTER_H = "27.94cm";
-	private static final String LETTER_W = "21.59cm";
+
+	public enum PrintOrientation {
+		HORIZONTAL("landscape"), VERTICAL("portrait");
+
+		private final String attrValue;
+
+		private PrintOrientation(final String attrValue) {
+			this.attrValue = attrValue;
+		}
+
+		String getAttrValue() {
+			return this.attrValue;
+		}
+	}
+
+	public enum WritingMode {
+		LR("lr"), LRTB("lr-tb"), PAGE("page"), RL("rl"), RLTB("rl-tb"), TB(
+				"tb"), TBLR("tb_lr"), TBRL("tb-rl");
+
+		private final String attrValue;
+
+		private WritingMode(final String attrValue) {
+			this.attrValue = attrValue;
+		}
+
+		String getAttrValue() {
+			return this.attrValue;
+		}
+
+	}
+
 
 	static {
+		DEFAULT_FORMAT = PaperFormat.A4;
+		DEFAULT_WRITING_MODE = WritingMode.LRTB;
+		DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
 		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
 		DEFAULT_MASTER_PAGE_STYLE = PageStyle
 				.builder(PageStyle.DEFAULT_MASTER_PAGE).build();
@@ -142,11 +171,11 @@ public class PageStyle implements AddableToOdsElements {
 		return this.pageLayoutStyle.getMargins();
 	}
 
-	public String getPageHeight() {
+	public Length getPageHeight() {
 		return this.pageLayoutStyle.getPageHeight();
 	}
 
-	public String getPageWidth() {
+	public Length getPageWidth() {
 		return this.pageLayoutStyle.getPageWidth();
 	}
 
@@ -173,61 +202,5 @@ public class PageStyle implements AddableToOdsElements {
 	 */
 	public WritingMode getWritingMode() {
 		return this.pageLayoutStyle.getWritingMode();
-	}
-
-	public static enum PaperFormat {
-		A3(PageStyle.A3_H, PageStyle.A3_W), A4(PageStyle.A3_W,
-				PageStyle.A4_W), A5(PageStyle.A4_W,
-				PageStyle.A5_W), LEGAL(PageStyle.LEGAL_H,
-				PageStyle.LETTER_W), LETTER(
-				PageStyle.LETTER_H,
-				PageStyle.LETTER_W), USER("", "");
-
-		private final String height;
-		private final String width;
-
-		private PaperFormat(final String height, final String width) {
-			this.height = height;
-			this.width = width;
-
-		}
-
-		String getHeight() {
-			return this.height;
-		}
-
-		String getWidth() {
-			return this.width;
-		}
-	}
-
-	public static enum PrintOrientation {
-		HORIZONTAL("landscape"), VERTICAL("portrait");
-
-		private final String attrValue;
-
-		private PrintOrientation(final String attrValue) {
-			this.attrValue = attrValue;
-		}
-
-		String getAttrValue() {
-			return this.attrValue;
-		}
-	}
-
-	public static enum WritingMode {
-		LR("lr"), LRTB("lr-tb"), PAGE("page"), RL("rl"), RLTB("rl-tb"), TB(
-				"tb"), TBLR("tb_lr"), TBRL("tb-rl");
-
-		private final String attrValue;
-
-		private WritingMode(final String attrValue) {
-			this.attrValue = attrValue;
-		}
-
-		String getAttrValue() {
-			return this.attrValue;
-		}
-
 	}
 }

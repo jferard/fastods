@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -101,7 +102,7 @@ public class TableColumnStyleTest {
 	@Test
 	public final void testWidth() throws IOException {
 		final TableColumnStyle tcs = TableColumnStyle.builder("test")
-				.columnWidth("1pt").build();
+				.columnWidth(SimpleLength.pt(1.0)).build();
 		final StringBuilder sbc = new StringBuilder();
 
 		tcs.appendXML(this.util, sbc);
@@ -109,7 +110,7 @@ public class TableColumnStyleTest {
 		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table-column\">"
 						+ "<style:table-column-properties fo:break-before=\"auto\" style:column-width=\"1pt\"/>"
 						+ "</style:style>", sbc.toString());
-		Assert.assertEquals("1pt", tcs.getColumnWidth());
+		Assert.assertEquals(SimpleLength.pt(1.0), tcs.getColumnWidth());
 		Assert.assertEquals(tcs, tcs);
 		Assert.assertEquals(tcs.hashCode(), tcs.hashCode());
 	}

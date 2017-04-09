@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -117,12 +118,12 @@ public class OdsFileCreationWithFlushTest {
 		final OdsDocument document = writer.document();
 
 		try {
-			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
+			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
 					.build();
 			final TableCellStyle tcls = TableCellStyle.builder("cc")
 					.backgroundColor("#dddddd").fontWeightBold().build();
 			final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-					.columnWidth("10cm").defaultCellStyle(tcls).build();
+					.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
 			final TableCellStyle tcs0 = TableCellStyle.builder("tcs0")
 					.backgroundColor("#0000ff").build();
 			final TableCellStyle tcs1 = TableCellStyle.builder("tcs1")

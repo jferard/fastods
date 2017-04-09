@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -166,7 +167,7 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public void setTooltip(final String tooltip, final String width, final String height, final boolean visible) {
+	public void setTooltip(final String tooltip, final Length width, final Length height, final boolean visible) {
 		this.row.setTooltip(this.c, tooltip, width, height, visible);
 	}
 

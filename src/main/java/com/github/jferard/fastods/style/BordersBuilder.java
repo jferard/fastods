@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.EqualityUtil;
+import com.github.jferard.fastods.util.Length;
 
 public class BordersBuilder {
 	private BorderAttribute all;
@@ -35,8 +36,8 @@ public class BordersBuilder {
 		return this;
 	}
 
-	public BordersBuilder all(final String size, final String color,
-			final BorderAttribute.Style style) {
+	public BordersBuilder all(final Length size, final String color,
+							  final BorderAttribute.Style style) {
 		return this.all(new BorderAttribute(size, color, style));
 	}
 
@@ -45,7 +46,7 @@ public class BordersBuilder {
 		return this;
 	}
 
-	public BordersBuilder bottom(final String size, final String color,
+	public BordersBuilder bottom(final Length size, final String color,
 			final BorderAttribute.Style style) {
 		return this.bottom(new BorderAttribute(size, color, style));
 	}
@@ -60,7 +61,7 @@ public class BordersBuilder {
 		return this;
 	}
 
-	public BordersBuilder left(final String size, final String color,
+	public BordersBuilder left(final Length size, final String color,
 			final BorderAttribute.Style style) {
 		return this.left(new BorderAttribute(size, color, style));
 	}
@@ -70,7 +71,7 @@ public class BordersBuilder {
 		return this;
 	}
 
-	public BordersBuilder right(final String size, final String color,
+	public BordersBuilder right(final Length size, final String color,
 			final BorderAttribute.Style style) {
 		return this.right(new BorderAttribute(size, color, style));
 	}
@@ -80,7 +81,7 @@ public class BordersBuilder {
 		return this;
 	}
 
-	public BordersBuilder top(final String size, final String color,
+	public BordersBuilder top(final Length size, final String color,
 			final BorderAttribute.Style style) {
 		return this.top(new BorderAttribute(size, color, style));
 	}

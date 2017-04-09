@@ -22,6 +22,7 @@ package com.github.jferard.fastods.odselement;
 
 import java.util.Locale;
 
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -58,7 +59,7 @@ public class StylesEntryTest {
 		this.ds1 = f.booleanStyleBuilder("a").country("a").build();
 		this.ds2 = f.booleanStyleBuilder("a").country("b").build();
 
-		this.ps1 = PageStyle.builder("a").allMargins("1").build();
-		this.ps2 = PageStyle.builder("a").allMargins("2").build();
+		this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
+		this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
 	}
 }

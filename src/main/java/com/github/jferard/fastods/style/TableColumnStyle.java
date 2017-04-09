@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class TableColumnStyle implements StyleTag {
 		return TableColumnStyle.defaultColumnStyle;
 	}
 
-	private final String columnWidth;
+	private final Length columnWidth;
 	private final TableCellStyle defaultCellStyle;
 	private final String name;
 
@@ -65,7 +66,7 @@ public class TableColumnStyle implements StyleTag {
 	 * @param defaultCellStyle
 	 *            the default style for cells
 	 */
-	TableColumnStyle(final String name, final String columnWidth,
+	TableColumnStyle(final String name, final Length columnWidth,
 			final TableCellStyle defaultCellStyle) {
 		this.name = name;
 		this.columnWidth = columnWidth;
@@ -89,7 +90,7 @@ public class TableColumnStyle implements StyleTag {
 		appendable.append("><style:table-column-properties");
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:column-width",
-				this.columnWidth);
+				this.columnWidth.toString());
 		appendable.append("/></style:style>");
 	}
 
@@ -118,7 +119,7 @@ public class TableColumnStyle implements StyleTag {
 			return false;
 	}
 
-	public String getColumnWidth() {
+	public Length getColumnWidth() {
 		return this.columnWidth;
 	}
 

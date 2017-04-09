@@ -28,6 +28,7 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -115,14 +116,14 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		table2.setStyle(ttts2);
 
 		HeavyTableRow row = table.getRow(0);
-		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
+		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
 				.build();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-				.columnWidth("10cm").defaultCellStyle(tcls).build();
+				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
 		table.setColumnStyle(0, tcns);
 
 		row = table.getRow(0);

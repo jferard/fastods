@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.FooterHeader;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -41,10 +42,10 @@ public class PageLayoutStyle implements AddableToOdsElements {
 
 	private final String name;
 	private final String numFormat;
-	private final String pageHeight;
+	private final Length pageHeight;
 
-	private final String pageWidth;
-	private final PageStyle.PaperFormat paperFormat;
+	private final Length pageWidth;
+	private final PaperFormat paperFormat;
 
 	private final PageStyle.PrintOrientation printOrientation;
 
@@ -66,11 +67,11 @@ public class PageLayoutStyle implements AddableToOdsElements {
 	 * @param footer           the footer for this style
 	 */
 	PageLayoutStyle(final String name, final Margins margins,
-					final String pageWidth, final String pageHeight,
+					final Length pageWidth, final Length pageHeight,
 					final String numFormat, final String backgroundColor,
 					final FooterHeader footer, final FooterHeader header,
 					final PageStyle.PrintOrientation printOrientation,
-					final PageStyle.PaperFormat paperFormat, final PageStyle.WritingMode writingMode) {
+					final PaperFormat paperFormat, final PageStyle.WritingMode writingMode) {
 		this.name = name;
 		this.margins = margins;
 		this.pageWidth = pageWidth;
@@ -102,8 +103,8 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		appendable.append("<style:page-layout");
 		util.appendAttribute(appendable, "style:name", this.name);
 		appendable.append("><style:page-layout-properties");
-		util.appendAttribute(appendable, "fo:page-width", this.pageWidth);
-		util.appendAttribute(appendable, "fo:page-height", this.pageHeight);
+		util.appendAttribute(appendable, "fo:page-width", this.pageWidth.toString());
+		util.appendAttribute(appendable, "fo:page-height", this.pageHeight.toString());
 		util.appendAttribute(appendable, "style:num-format", this.numFormat);
 		util.appendEAttribute(appendable, "style:writing-mode",
 				this.writingMode.getAttrValue());
@@ -145,11 +146,11 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		return this.name;
 	}
 
-	public String getPageHeight() {
+	public Length getPageHeight() {
 		return this.pageHeight;
 	}
 
-	public String getPageWidth() {
+	public Length getPageWidth() {
 		return this.pageWidth;
 	}
 
@@ -157,7 +158,7 @@ public class PageLayoutStyle implements AddableToOdsElements {
 	 * Get the paper format as one of PageStyle.STYLE_PAPERFORMAT_*.
 	 * @return the format of the page
 	 */
-	public PageStyle.PaperFormat getPaperFormat() {
+	public PaperFormat getPaperFormat() {
 		return this.paperFormat;
 	}
 

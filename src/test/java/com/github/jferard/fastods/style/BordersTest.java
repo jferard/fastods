@@ -22,6 +22,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +40,8 @@ public class BordersTest {
 	@Before
 	public void setUp() throws Exception {
 		this.util = XMLUtil.create();
-		this.a1 = new BorderAttribute("10pt", Color.BLACK, Style.DOUBLE);
-		this.a2 = new BorderAttribute("11pt", Color.WHITE, Style.SOLID);
+		this.a1 = new BorderAttribute(SimpleLength.pt(10.0), Color.BLACK, Style.DOUBLE);
+		this.a2 = new BorderAttribute(SimpleLength.pt(11.0), Color.WHITE, Style.SOLID);
 	}
 
 	@Test

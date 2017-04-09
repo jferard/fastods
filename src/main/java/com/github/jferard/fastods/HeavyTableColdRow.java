@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -208,7 +209,7 @@ public class HeavyTableColdRow {
 	}
 
 
-	public void setTooltip(final int c, final String tooltip, final String width, final String height, final boolean visible) {
+	public void setTooltip(final int c, final String tooltip, final Length width, final Length height, final boolean visible) {
 		this.setTooltip(c, tooltip);
 		if (this.tooltipsParameters == null)
 			this.tooltipsParameters = FullList.newListWithCapacity(this.columnCapacity);

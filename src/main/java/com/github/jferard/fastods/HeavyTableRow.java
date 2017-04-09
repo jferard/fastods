@@ -27,6 +27,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -569,7 +570,7 @@ public class HeavyTableRow {
 		this.coldRow.setTooltip(c, tooltip);
 	}
 
-	public void setTooltip(final int c, final String tooltip, final String width, final String height, final boolean visible) {
+	public void setTooltip(final int c, final String tooltip, final Length width, final Length height, final boolean visible) {
 		if (this.coldRow == null)
 			this.coldRow = HeavyTableColdRow.create(this.parent, this.xmlUtil, this.rowIndex,
 					this.columnCapacity);

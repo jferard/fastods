@@ -22,6 +22,8 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.style.BorderAttribute.Style;
+import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.SimpleLength;
 
 /**
  * @author Julien Férard
@@ -35,7 +37,7 @@ public class BorderAttributeBuilder {
 	/**
 	 * The border size.
 	 */
-	private String borderSize;
+	private Length borderSize;
 
 	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
@@ -68,7 +70,7 @@ public class BorderAttributeBuilder {
 	 * @return this for fluent style
 	 */
 	public BorderAttributeBuilder borderSize(final int size) {
-		this.borderSize = new StringBuilder(size).append("pt").toString();
+		this.borderSize = SimpleLength.pt(size);
 		return this;
 	}
 
@@ -76,10 +78,10 @@ public class BorderAttributeBuilder {
 	 * Sets the current value of border size.
 	 *
 	 * @param borderSize
-	 *            The size as string, e.g. '0.1cm'
+	 *            The size as length
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderSize(final String borderSize) {
+	public BorderAttributeBuilder borderSize(final Length borderSize) {
 		this.borderSize = borderSize;
 		return this;
 	}

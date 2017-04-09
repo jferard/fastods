@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -116,14 +117,14 @@ public class OdsFileCreationTest {
 		final Table table = document.addTable("test", 50, 5);
 		table.setSettings("View1", "ZoomValue", "200");
 		HeavyTableRow row = table.getRow(0);
-		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight("5cm")
+		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
 				.build();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-				.columnWidth("10cm").defaultCellStyle(tcls).build();
+				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
 		table.setColumnStyle(0, tcns);
 
 		final TableCellStyle tcs0 = TableCellStyle.builder("tcs0")
@@ -168,7 +169,7 @@ public class OdsFileCreationTest {
 						break;
 					case 1:
 						walker.setCurrencyValue(150.5, "EUR");
-						walker.setTooltip("That's a <tooltip>\nwith a newline !", "3cm", "10cm", true);
+						walker.setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(3.0), SimpleLength.cm(10.0), true);
 						break;
 					case 2:
 						walker.setDateValue(Calendar.getInstance());

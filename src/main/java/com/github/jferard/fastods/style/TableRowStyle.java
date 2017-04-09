@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class TableRowStyle implements StyleTag {
 	}
 
 	private final String name;
-	private final String rowHeight;
+	private final Length rowHeight;
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
@@ -51,7 +52,7 @@ public class TableRowStyle implements StyleTag {
 	 * @param rowHeight
 	 *            The height of the row
 	 */
-	TableRowStyle(final String styleName, final String rowHeight) {
+	TableRowStyle(final String styleName, final Length rowHeight) {
 		this.name = styleName;
 		this.rowHeight = rowHeight;
 	}
@@ -70,7 +71,7 @@ public class TableRowStyle implements StyleTag {
 		appendable.append("><style:table-row-properties");
 		if (this.rowHeight != null)
 			util.appendAttribute(appendable, "style:row-height",
-					this.rowHeight);
+					this.rowHeight.toString());
 		util.appendAttribute(appendable, "fo:break-before", "auto");
 		util.appendAttribute(appendable, "style:use-optimal-row-height",
 				"true");
@@ -89,15 +90,11 @@ public class TableRowStyle implements StyleTag {
 
 	/**
 	 * Set the row height to a table row.<br>
-	 * height is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * height is a length value.
 	 *
-	 * @return height The table row height to be used, e.g. '1.0cm'
+	 * @return height The table row height to be used
 	 */
-	public String getRowHeight() {
+	public Length getRowHeight() {
 		return this.rowHeight;
 	}
 

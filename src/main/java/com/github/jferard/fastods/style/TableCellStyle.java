@@ -24,6 +24,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class TableCellStyle implements StyleTag {
 					.textAlign(TableCellStyle.Align.LEFT)
 					.verticalAlign(TableCellStyle.VerticalAlign.TOP)
 					.fontWrap(false).backgroundColor(Color.WHITE)
-					.allMargins("0cm").parentCellStyle(null).build();
+					.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
 
 		return TableCellStyle.defaultCellStyle;
 	}

@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -29,11 +30,11 @@ import java.io.IOException;
  * Created by jferard on 08/04/17.
  */
 public class TooltipParameter {
-    final String width;
-    final String height;
+    final Length width;
+    final Length height;
     final boolean visible;
 
-    TooltipParameter(final String width, final String height, final boolean visible) {
+    TooltipParameter(final Length width, final Length height, final boolean visible) {
         this.width = width;
         this.height = height;
         this.visible = visible;
@@ -41,11 +42,11 @@ public class TooltipParameter {
 
     public void appendXMLToTable(final XMLUtil util, final Appendable appendable) throws IOException {
         util.appendAttribute(appendable,"office:display", this.visible ? "true" : "false");
-        util.appendAttribute(appendable,"svg:width", this.width);
-        util.appendAttribute(appendable,"svg:height", this.height);
+        util.appendAttribute(appendable,"svg:width", this.width.toString());
+        util.appendAttribute(appendable,"svg:height", this.height.toString());
     }
 
-    public static TooltipParameter create(final String width, final String height, final boolean visible) {
+    public static TooltipParameter create(final Length width, final Length height, final boolean visible) {
         return new TooltipParameter(width, height, visible);
     }
 }

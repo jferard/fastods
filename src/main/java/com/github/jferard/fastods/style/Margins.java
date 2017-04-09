@@ -22,20 +22,21 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.EqualityUtil;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
 public class Margins {
-	private final String all;
-	private final String bottom;
-	private final String left;
-	private final String right;
-	private final String top;
+	private final Length all;
+	private final Length bottom;
+	private final Length left;
+	private final Length right;
+	private final Length top;
 	private final EqualityUtil equalityUtil;
 
-	Margins(final EqualityUtil equalityUtil, final String all, final String top,
-			final String right, final String bottom, final String left) {
+	Margins(final EqualityUtil equalityUtil, final Length all, final Length top,
+			final Length right, final Length bottom, final Length left) {
 		this.equalityUtil = equalityUtil;
 		this.all = all;
 		this.top = top;
@@ -52,31 +53,31 @@ public class Margins {
 			final Appendable appendable) throws IOException {
 		if (this.all == null) {
 			if (this.top != null)
-				util.appendAttribute(appendable, "fo:margin-top", this.top);
+				util.appendAttribute(appendable, "fo:margin-top", this.top.toString());
 
 			if (this.right != null)
-				util.appendAttribute(appendable, "fo:margin-right", this.right);
+				util.appendAttribute(appendable, "fo:margin-right", this.right.toString());
 
 			if (this.bottom != null)
 				util.appendAttribute(appendable, "fo:margin-bottom",
-						this.bottom);
+						this.bottom.toString());
 
 			if (this.left != null)
-				util.appendAttribute(appendable, "fo:margin-left", this.left);
+				util.appendAttribute(appendable, "fo:margin-left", this.left.toString());
 		} else { // this.all != null
-			util.appendAttribute(appendable, "fo:margin", this.all);
+			util.appendAttribute(appendable, "fo:margin", this.all.toString());
 			if (this.top != null && !this.top.equals(this.all))
-				util.appendAttribute(appendable, "fo:margin-top", this.top);
+				util.appendAttribute(appendable, "fo:margin-top", this.top.toString());
 
 			if (this.right != null && !this.right.equals(this.all))
-				util.appendAttribute(appendable, "fo:margin-right", this.right);
+				util.appendAttribute(appendable, "fo:margin-right", this.right.toString());
 
 			if (this.bottom != null && !this.bottom.equals(this.all))
 				util.appendAttribute(appendable, "fo:margin-bottom",
-						this.bottom);
+						this.bottom.toString());
 
 			if (this.left != null && !this.left.equals(this.all))
-				util.appendAttribute(appendable, "fo:margin-left", this.left);
+				util.appendAttribute(appendable, "fo:margin-left", this.left.toString());
 		}
 
 	}
@@ -96,23 +97,23 @@ public class Margins {
 				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
-	public String getAll() {
+	public Length getAll() {
 		return this.all;
 	}
 
-	public String getBottom() {
+	public Length getBottom() {
 		return this.bottom;
 	}
 
-	public String getLeft() {
+	public Length getLeft() {
 		return this.left;
 	}
 
-	public String getRight() {
+	public Length getRight() {
 		return this.right;
 	}
 
-	public String getTop() {
+	public Length getTop() {
 		return this.top;
 	}
 

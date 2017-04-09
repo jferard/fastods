@@ -25,6 +25,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -129,7 +130,7 @@ public class FooterHeader {
 	/**
 	 * @return The current minimum height of the footer/header.
 	 */
-	public String getMinHeight() {
+	public Length getMinHeight() {
 		return this.style.getMinHeight();
 	}
 

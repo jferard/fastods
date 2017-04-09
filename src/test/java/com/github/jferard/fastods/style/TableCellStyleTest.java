@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class TableCellStyleTest {
 	@Test
 	public final void testAllBorders() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderAll("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
+				.borderAll(SimpleLength.pt(1.0), Color.AQUA, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXML(this.util, sb);
@@ -54,7 +55,7 @@ public class TableCellStyleTest {
 	@Test
 	public final void testAllMargins() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs")
-				.allMargins("10pt").build();
+				.allMargins(SimpleLength.pt(10.0)).build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(
@@ -67,11 +68,11 @@ public class TableCellStyleTest {
 	@Test
 	public final void testBorders() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderTop("1pt", Color.AQUA, BorderAttribute.Style.DOUBLE)
-				.borderRight("2pt", Color.BEIGE, BorderAttribute.Style.SOLID)
-				.borderBottom("3pt", Color.CADETBLUE,
+				.borderTop(SimpleLength.pt(1.0), Color.AQUA, BorderAttribute.Style.DOUBLE)
+				.borderRight(SimpleLength.pt(2.0), Color.BEIGE, BorderAttribute.Style.SOLID)
+				.borderBottom(SimpleLength.pt(3.0), Color.CADETBLUE,
 						BorderAttribute.Style.DOUBLE)
-				.borderLeft("4pt", Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
+				.borderLeft(SimpleLength.pt(4.0), Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXML(this.util, sb);
@@ -87,8 +88,8 @@ public class TableCellStyleTest {
 	@Test
 	public final void testMargins() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs")
-				.marginTop("10pt").marginRight("11pt").marginBottom("12pt")
-				.marginLeft("13pt").build();
+				.marginTop(SimpleLength.pt(10.0)).marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0))
+				.marginLeft(SimpleLength.pt(13.0)).build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXML(this.util, sb);
 		DomTester.assertEquals(

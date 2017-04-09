@@ -21,11 +21,14 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.SimpleLength;
+
 /**
  * @author Julien Férard
  */
 public class TableColumnStyleBuilder {
-	private String columnWidth;
+	private Length columnWidth;
 	private TableCellStyle defaultCellStyle;
 	private final String name;
 
@@ -38,7 +41,7 @@ public class TableColumnStyleBuilder {
 			throw new IllegalArgumentException();
 
 		this.name = name;
-		this.columnWidth = "2.5cm"; // 0.5.0 changed from 2,500cm to 2.5cm
+		this.columnWidth = SimpleLength.cm(2.5); // 0.5.0 changed from 2,500cm to 2.5cm
 		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle();
 	}
 
@@ -50,18 +53,14 @@ public class TableColumnStyleBuilder {
 
 	/**
 	 * Set the column width of a table column.<br>
-	 * width is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 1.5cm or 12px<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * width is a length value.
 	 *
 	 * @param width
-	 *            - The width of a column, e.g. '10cm'
+	 *            - The width of a column as a length
 	 * @return true - The width was set, false - this object is no table column,
 	 *         you can not set the default cell to it
 	 */
-	public TableColumnStyleBuilder columnWidth(final String width) {
+	public TableColumnStyleBuilder columnWidth(final Length width) {
 		this.columnWidth = width;
 		return this;
 	}

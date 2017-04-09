@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -71,7 +73,7 @@ public class BorderAttribute {
 	/**
 	 * The border size default is 0.1cm
 	 */
-	public static final String DEFAULT_BORDER_SIZE = "0.1cm";
+	public static final Length DEFAULT_BORDER_SIZE = SimpleLength.mm(1);
 
 	public static final Position DEFAULT_POSITION = Position.ALL;
 
@@ -92,7 +94,7 @@ public class BorderAttribute {
 	/**
 	 * The border size.
 	 */
-	private final String borderSize;
+	private final Length borderSize;
 
 	/**
 	 * The border style. Either BorderAttribute.BORDER_SOLID or
@@ -102,11 +104,7 @@ public class BorderAttribute {
 	private final Style style;
 
 	/**
-	 * size is a length value expressed as a number followed by a unit of
-	 * measurement e.g. 0.1cm or 4px.<br>
-	 * The valid units in OpenDocument are in, cm, mm, px (pixels), pc (picas; 6
-	 * picas equals one inch),<br>
-	 * and pt (points; 72points equal one inch).<br>
+	 * size is a length value
 	 *
 	 * @param size
 	 *            The size of the border
@@ -116,7 +114,7 @@ public class BorderAttribute {
 	 *            The style of the border, BorderAttribute.BORDER_SOLID or
 	 *            BorderAttribute.BORDER_DOUBLE
 	 */
-	BorderAttribute(final String size, final String color, final Style style) {
+	BorderAttribute(final Length size, final String color, final Style style) {
 		this.borderSize = size;
 		this.borderColor = color;
 		this.style = style;
@@ -134,9 +132,9 @@ public class BorderAttribute {
 	/**
 	 * Gets the current value of border size.
 	 *
-	 * @return The size as string, e.g. '0.1cm'
+	 * @return The size as length
 	 */
-	public String getBorderSize() {
+	public Length getBorderSize() {
 		return this.borderSize;
 	}
 
