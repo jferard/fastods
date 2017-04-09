@@ -43,6 +43,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -161,6 +162,27 @@ public class OdsDocumentTest {
 		Assert.assertEquals("t2", f.getTableName(3));
 		f.getTable("t2");
 		f.getTableNumber("t2");
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testGetOrAddTable() throws FastOdsException, IOException {
+		// CREATE
+		final Table t = PowerMock.createMock(Table.class);
+		this.initOdsElements();
+
+		// PLAY
+		EasyMock.expect(this.odsElements.getTable("test")).andReturn(null);
+		EasyMock.expect(this.odsElements.addTableToContent("test", OdsDocument.DEFAULT_ROW_CAPACITY, OdsDocument.DEFAULT_COLUMN_CAPACITY)).andReturn(t);
+		this.odsElements.setActiveTable(t);
+
+		// REPLAY
+		PowerMock.replayAll();
+
+		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+				this.xmlUtil);
+		Assert.assertEquals(t, f.getOrAddTable("test"));
+
 		PowerMock.verifyAll();
 	}
 

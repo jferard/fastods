@@ -46,8 +46,8 @@ import java.util.logging.Logger;
  * @author Martin Schulz
  */
 public class OdsDocument {
-	private static final int DEFAULT_COLUMN_CAPACITY = 32;
-	private static final int DEFAULT_ROW_CAPACITY = 1024;
+	static final int DEFAULT_COLUMN_CAPACITY = 32;
+	static final int DEFAULT_ROW_CAPACITY = 1024;
 	private final Logger logger;
 	private final OdsElements odsElements;
 	private final XMLUtil xmlUtil;
@@ -147,12 +147,6 @@ public class OdsDocument {
 				OdsDocument.DEFAULT_COLUMN_CAPACITY);
 	}
 
-	/*
-	public void addTextStyle(final TextStyle fhTextStyle) {
-		this.odsElements.addTextStyle(fhTextStyle);
-	}
-	*/
-
 	public Table addTable(final String name, final int rowCapacity,
 						  final int columnCapacity) throws IOException {
 		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
@@ -195,6 +189,20 @@ public class OdsDocument {
 		}
 		return table;
 	}
+
+	/**
+	 * @param name the name of the table
+	 * @return the table
+	 * @throws IOException if the table does not exist.
+	 */
+	public Table getOrAddTable(final String name) throws IOException {
+		Table table = this.odsElements.getTable(name);
+		if (table == null) {
+			table = this.addTable(name);
+		}
+		return table;
+	}
+
 
 	/**
 	 * Returns the name of the table.
