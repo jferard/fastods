@@ -133,9 +133,6 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		table.setStyle(ttts);
 		table.setColumnStyle(0, tcns);
 
-		final Table table2 = document.addTable("target", 1, 1);
-		table2.setStyle(ttts2);
-
 		HeavyTableRow row = table.getRow(0);
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
@@ -149,7 +146,7 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		row.setStringValue(2, "text3");
 		row = table.getRow(1);
 		row.setText(0,
-				Text.builder().par().span("before link to table: ").link("table", table2).span(" after link to table")
+				Text.builder().par().span("before link to table: ").link("table", "target").span(" after link to table")
 						.build());
 		row.setText(1,
 				Text.builder().par().span("before link to url: ")
@@ -159,6 +156,12 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 				Text.builder().par().span("before link to file: ")
 						.link("file", new File("generated_files", "fastods_50_5.ods")).span(" after link to file")
 						.build());
+
+		final Table table2 = document.addTable("target", 1, 1);
+		table2.setStyle(ttts2);
+
+		final Table table3 = document.addTable("target2", 1, 1);
+		table3.setStyle(ttts2);
 
 		// let's display logging infos
 		final Logger rootLogger = Logger.getLogger("");

@@ -93,4 +93,10 @@ public class ParagraphBuilder {
 		this.paragraphElements.add(paragraphElement);
 		return this;
 	}
+
+	public ParagraphBuilder link(final String text, final String ref) {
+		final ParagraphElement paragraphElement = new Link(text, ref);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
 }

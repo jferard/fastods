@@ -99,4 +99,9 @@ public class MultiContainer<K, V, S extends Enum<S>> {
 	public Iterable<V> getValues(final S subcontainer) {
 		return this.valueByKeyBySubcontainer.get(subcontainer).values();
 	}
+
+	@Override
+	public String toString() {
+		return this.valueByKeyBySubcontainer.toString();
+	}
 }

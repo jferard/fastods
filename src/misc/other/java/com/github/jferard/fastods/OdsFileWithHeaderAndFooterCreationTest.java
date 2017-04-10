@@ -125,7 +125,6 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
 				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
 		table.setColumnStyle(0, tcns);
-
 		row = table.getRow(0);
 		row.setText(0,
 				Text.builder().parContent("This is a")
@@ -146,6 +145,6 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		this.odsFactory.createWriter().saveAs(new File("generated_files", "fastods_footer_header.ods"));
+		writer.saveAs(new File("generated_files", "fastods_footer_header.ods"));
 	}
 }

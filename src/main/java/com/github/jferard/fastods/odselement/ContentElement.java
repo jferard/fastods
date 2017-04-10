@@ -101,7 +101,6 @@ public class ContentElement implements OdsElement {
 		int tableIndex = this.flushPosition.getTableIndex();
 		Table table = this.tables.get(tableIndex);
 		if (tableIndex < lastTableIndex) {
-			System.out.println("Moving from table" + tableIndex + " to table " + lastTableIndex);
 			table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
 			settingsElement.addTableConfig(table.getConfigEntry());
 			tableIndex++;

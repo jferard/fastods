@@ -221,6 +221,9 @@ public class Table implements NamedObject {
 	}
 
 	public void flush() throws IOException {
+		if (!this.preambleWritten)
+			this.observer.update(new BeginTableFlusher(this));
+
 		this.observer.update(new EndTableFlusher(this, this.tableRows.subList(this.lastFlushedRowIndex, this
 				.tableRows.size())));
 	}

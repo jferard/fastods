@@ -116,4 +116,9 @@ public class TextBuilder {
 		this.curParagraphBuilder.styledSpan(text, ts);
 		return this;
 	}
+
+	public TextBuilder link(final String text, final String ref) {
+		this.curParagraphBuilder.link(text, ref);
+		return this;
+	}
 }

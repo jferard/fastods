@@ -42,8 +42,18 @@ public class Link implements ParagraphElement {
 		this.ts = ts;
 	}
 
+	public Link(final String text, final String ref, final TextStyle ts) {
+		this.text = text;
+		this.content = '#'+ref;
+		this.ts = ts;
+	}
+
 	public Link(final String text, final Table table) {
 		this(text, table, null);
+	}
+
+	public Link(final String text, final String ref) {
+		this(text, ref, null);
 	}
 
 	public Link(final String text, final File file, final TextStyle ts) {
