@@ -47,7 +47,7 @@ public class ReadmeExampleWithFlushTest {
 		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
 
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(new File("generated_files", "readmef.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "readme_with_flush.ods"));
 		final OdsDocument document = writer.document();
 
 		document.addStyleTag(style);

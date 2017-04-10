@@ -37,7 +37,7 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-class RegionFooterHeader extends FooterHeaderContent {
+class RegionFooterHeader extends PageSectionContent {
 	private static void appendRegionXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable, final Text region,
 			final String regionName) throws IOException {
@@ -56,10 +56,9 @@ class RegionFooterHeader extends FooterHeaderContent {
 	/**
 	 * Create a new footer object.
 	 */
-	RegionFooterHeader(final FooterHeader.Type footerHeaderType,
-			final Text centerRegion, final Text leftRegion,
-			final Text rightRegion) {
-		super(footerHeaderType);
+	RegionFooterHeader(final Text centerRegion, final Text leftRegion,
+					   final Text rightRegion) {
+		super();
 		this.centerRegion = centerRegion;
 		this.leftRegion = leftRegion;
 		this.rightRegion = rightRegion;

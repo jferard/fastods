@@ -37,7 +37,7 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-class SimpleFooterHeader extends FooterHeaderContent {
+class SimpleFooterHeader extends PageSectionContent {
 	/**
 	 * The OdsDocument where this object belong to.
 	 */
@@ -46,9 +46,8 @@ class SimpleFooterHeader extends FooterHeaderContent {
 	/**
 	 * Create a new footer object.
 	 */
-	SimpleFooterHeader(final FooterHeader.Type footerHeaderType,
-			final Text region) {
-		super(footerHeaderType);
+	SimpleFooterHeader(final Text region) {
+		super();
 		this.region = region;
 	}
 

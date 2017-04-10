@@ -21,7 +21,9 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.util.Length;
@@ -32,8 +34,8 @@ import com.github.jferard.fastods.util.SimpleLength;
  */
 public class PageStyleBuilder {
 	private String backgroundColor;
-	private FooterHeader footer;
-	private FooterHeader header;
+	private Footer footer;
+	private Header header;
 	private final MarginsBuilder marginsBuilder;
 	private final String name;
 
@@ -69,8 +71,8 @@ public class PageStyleBuilder {
 		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
 
 		final TextStyle noneStyle = TextProperties.builder().buildStyle("none");
-		this.header = FooterHeader.simpleHeader("", noneStyle);
-		this.footer = FooterHeader.simpleFooter("", noneStyle);
+		this.header = PageSection.simpleHeader("", noneStyle);
+		this.footer = PageSection.simpleFooter("", noneStyle);
 	}
 
 	/**
@@ -100,13 +102,13 @@ public class PageStyleBuilder {
 
 	public PageStyle build() {
 		if (this.masterPageStyle == null) {
-			this.masterPageStyle = new MasterPageStyle(this.name, this.name, this.footer, this.header);
+			this.masterPageStyle = new MasterPageStyle(this.name, this.name, this.header, this.footer);
 		}
 
 		if (this.pageLayoutStyle == null) {
 			this.pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this
 					.pageWidth,
-					this.pageHeight, this.numFormat, this.backgroundColor, this.footer, this.header, this
+					this.pageHeight, this.numFormat, this.backgroundColor, this.header, this.footer, this
 					.printOrientation, this.paperFormat, this.writingMode);
 		}
 		return new PageStyle(this.masterPageStyle, this.pageLayoutStyle);
@@ -122,12 +124,12 @@ public class PageStyleBuilder {
 		return this;
 	}
 
-	public PageStyleBuilder footer(final FooterHeader footer) {
+	public PageStyleBuilder footer(final Footer footer) {
 		this.footer = footer;
 		return this;
 	}
 
-	public PageStyleBuilder header(final FooterHeader header) {
+	public PageStyleBuilder header(final Header header) {
 		this.header = header;
 		return this;
 	}

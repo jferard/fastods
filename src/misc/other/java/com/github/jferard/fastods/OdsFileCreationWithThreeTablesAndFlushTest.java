@@ -65,7 +65,7 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 		final long t1 = System.currentTimeMillis();
 
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(new File("generated_files", "fastods_3t.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_3_tables_with_flush.ods"));
 		final OdsDocument document = writer.document();
 
 		try {

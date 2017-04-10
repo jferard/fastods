@@ -21,12 +21,13 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.Length;
-import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -159,11 +160,11 @@ public class PageStyle implements AddableToOdsElements {
 		return this.pageLayoutStyle.getBackgroundColor();
 	}
 
-	public FooterHeader getFooter() {
+	public Footer getFooter() {
 		return this.masterPageStyle.getFooter();
 	}
 
-	public FooterHeader getHeader() {
+	public Header getHeader() {
 		return this.masterPageStyle.getHeader();
 	}
 

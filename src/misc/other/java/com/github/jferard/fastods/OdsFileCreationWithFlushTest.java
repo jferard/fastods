@@ -114,7 +114,7 @@ public class OdsFileCreationWithFlushTest {
 		final long t1 = System.currentTimeMillis();
 
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(new File("generated_files", "fastods_50_5f.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_50_5_with_flush.ods"));
 		final OdsDocument document = writer.document();
 
 		try {

@@ -21,7 +21,9 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -36,8 +38,8 @@ import java.io.IOException;
  */
 public class PageLayoutStyle implements AddableToOdsElements {
 	private final String backgroundColor;
-	private final FooterHeader footer;
-	private final FooterHeader header;
+	private final Footer footer;
+	private final Header header;
 	private final Margins margins;
 
 	private final String name;
@@ -53,23 +55,22 @@ public class PageLayoutStyle implements AddableToOdsElements {
 
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
-	 *
-	 * @param name             A unique name for this style
-	 * @param header           the header for this style
-	 * @param printOrientation the print orientation
-	 * @param paperFormat      the format of the paper
-	 * @param writingMode      the writing mode
+	 *  @param name             A unique name for this style
 	 * @param margins          the margins of the page
 	 * @param pageWidth        the width of the page
 	 * @param pageHeight       the height of the page
 	 * @param numFormat        the format of the sequence of page numbers (20.314 style:num-format)
 	 * @param backgroundColor  the color of the background, as an heaxdecimal number
+	 * @param header           the header for this style
 	 * @param footer           the footer for this style
+	 * @param printOrientation the print orientation
+	 * @param paperFormat      the format of the paper
+	 * @param writingMode      the writing mode
 	 */
 	PageLayoutStyle(final String name, final Margins margins,
 					final Length pageWidth, final Length pageHeight,
 					final String numFormat, final String backgroundColor,
-					final FooterHeader footer, final FooterHeader header,
+					final Header header, final Footer footer,
 					final PageStyle.PrintOrientation printOrientation,
 					final PaperFormat paperFormat, final PageStyle.WritingMode writingMode) {
 		this.name = name;
@@ -114,10 +115,10 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/>"); // End of page-layout-properties
 
-		FooterHeader
-				.appendFooterHeaderStyleXMLToAutomaticStyle(this.header, FooterHeader.Type.HEADER, util, appendable);
-		FooterHeader
-				.appendFooterHeaderStyleXMLToAutomaticStyle(this.footer, FooterHeader.Type.FOOTER, util, appendable);
+		PageSection
+				.appendPageSectionStyleXMLToAutomaticStyle(this.header, util, appendable);
+		PageSection
+				.appendPageSectionStyleXMLToAutomaticStyle(this.footer, util, appendable);
 		appendable.append("</style:page-layout>");
 	}
 
@@ -125,11 +126,11 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		return this.backgroundColor;
 	}
 
-	public FooterHeader getFooter() {
+	public Footer getFooter() {
 		return this.footer;
 	}
 
-	public FooterHeader getHeader() {
+	public Header getHeader() {
 		return this.header;
 	}
 

@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.FooterHeaderContent.Region;
+import com.github.jferard.fastods.PageSectionContent.Region;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -83,8 +83,8 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 				.styledSpan("center header", cts).span(Text.TEXT_PAGE_NUMBER)
 				.build();
 		final Text rightHeader = Text.styledContent("right header", rts);
-		final FooterHeader header = FooterHeader
-				.regionBuilder(FooterHeader.Type.HEADER).region(Region.LEFT)
+		final PageSection headerSection = PageSection
+				.regionBuilder().region(Region.LEFT)
 				.text(leftHeader).region(Region.CENTER).text(centerHeader)
 				.region(Region.RIGHT).text(rightHeader).build();
 
@@ -93,13 +93,13 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 				.styledSpan("center footer", rts).span(Text.TEXT_PAGE_COUNT)
 				.build();
 		final Text rightFooter = Text.styledContent("right footer", lts);
-		final FooterHeader footer = FooterHeader
-				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.LEFT)
+		final PageSection footerSection = PageSection
+				.regionBuilder().region(Region.LEFT)
 				.text(leftFooter).region(Region.CENTER).text(centerFooter)
 				.region(Region.RIGHT).text(rightFooter).build();
 
 		final PageStyle ps = PageStyle.builder("test")
-				.footer(footer).header(header).build();
+				.footer(new Footer(footerSection)).header(new Header(headerSection)).build();
 		final PageStyle ps2 = PageStyle.builder("test2")
 				.masterPageStyle(ps.getMasterPageStyle()).pageLayoutStyle(ps.getPageLayoutStyle()).build();
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
@@ -114,7 +114,7 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
 
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(new File("generated_files", "fastods_fhf.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "fastods_footer_header_with_flush.ods"));
 		final OdsDocument document = writer.document();
 		document.addPageStyle(ps);
 		document.addStyleTag(ttts);

@@ -21,7 +21,9 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.testutil.DomTester;
 import com.github.jferard.fastods.util.FastOdsXMLEscaper;
@@ -103,16 +105,14 @@ public class PageStyleTest {
 
 	@Test
 	public final void testFooterHeader() throws IOException {
-		final FooterHeader header = PowerMock.createMock(FooterHeader.class);
-		final FooterHeader footer = PowerMock.createMock(FooterHeader.class);
+		final Header header = PowerMock.createMock(Header.class);
+		final Footer footer = PowerMock.createMock(Footer.class);
 		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.header(header).footer(footer).build();
 		final StringBuilder sb = new StringBuilder();
 
-		header.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
-		footer.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
-		/*		header.appendTextStylesXMLToStylesEntry(this.util, sb);
-				footer.appendTextStylesXMLToStylesEntry(this.util, sb); */
+		header.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb);
+		footer.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb);
 		PowerMock.replayAll();
 		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:page-layout style:name=\"test\">"

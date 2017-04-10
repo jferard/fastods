@@ -21,7 +21,9 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FooterHeader;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -37,21 +39,20 @@ import java.io.IOException;
  */
 public class MasterPageStyle implements AddableToOdsElements {
 	private final String layoutName;
-	private final FooterHeader footer;
-	private final FooterHeader header;
+	private final Footer footer;
+	private final Header header;
 
 	private final String name;
 
 	/**
 	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
-	 *
-	 * @param name   A unique name for this style
+	 *  @param name   A unique name for this style
 	 * @param layoutName the name of the layout linked to this style
 	 * @param header the header for this style
 	 * @param footer the footer for this style
 	 */
 	MasterPageStyle(final String name, final String layoutName,
-						   final FooterHeader footer, final FooterHeader header) {
+					final Header header, final Footer footer) {
 		this.name = name;
 		this.layoutName = layoutName;
 		this.footer = footer;
@@ -107,11 +108,11 @@ public class MasterPageStyle implements AddableToOdsElements {
 		appendable.append("</style:master-page>");
 	}
 
-	public FooterHeader getFooter() {
+	public Footer getFooter() {
 		return this.footer;
 	}
 
-	public FooterHeader getHeader() {
+	public Header getHeader() {
 		return this.header;
 	}
 
