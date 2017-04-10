@@ -230,6 +230,7 @@ public class Table implements NamedObject {
 	 *
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write
+	 * @throws IOException if an I/O error occurs during the flush
 	 */
 	public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable) throws IOException {
 		this.appendPreamble(util, appendable);
@@ -242,6 +243,7 @@ public class Table implements NamedObject {
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write
 	 * @param rowIndex   the first index to use.
+	 * @throws IOException if an I/O error occurs during the flush
 	 */
 	public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
@@ -256,6 +258,8 @@ public class Table implements NamedObject {
 	 *
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write
+	 * @param rowIndex the index of the row
+	 * @throws IOException if an I/O error occurs during the flush
 	 */
 	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
@@ -341,6 +345,7 @@ public class Table implements NamedObject {
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
 	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	@Deprecated
 	public void setCellMerge(final String pos, final int rowMerge,

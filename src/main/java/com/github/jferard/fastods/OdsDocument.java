@@ -142,6 +142,7 @@ public class OdsDocument {
 	 *
 	 * @param name - The name of the table to add
 	 * @return the table
+	 * @throws IOException if the table can't be added to document
 	 */
 	public Table addTable(final String name) throws IOException {
 		return this.addTable(name, OdsDocument.DEFAULT_ROW_CAPACITY,
@@ -256,7 +257,7 @@ public class OdsDocument {
 	 * Saves a file
 	 *
 	 * @param writer where to write
-	 * @throws IOException
+	 * @throws IOException if the document can't be saved
 	 */
 	public void save(final ZipUTF8Writer writer) throws IOException {
 		try {

@@ -48,14 +48,24 @@ class FooterHeaderStyle {
 		this.minHeight = minHeight;
 	}
 
-	public static void appendFooterHeaderStyleXMLToAutomaticStyle(final FooterHeaderStyle footerHeader,
-																  final FooterHeader.Type type, final XMLUtil util,
+	/**
+	 * Secure version of {@code footerHeaderStyle.appendFooterHeaderStyleXMLToAutomaticStyle}: if the footer (or header) is null,
+	 * then the default type is used.
+	 *
+	 * @param footerHeaderStyle the footer or header style, could be null
+	 * @param defaultType the type if footerHeaderStyle is null.
+	 * @param util
+	 * @param appendable
+	 * @throws IOException
+	 */
+	public static void appendFooterHeaderStyleXMLToAutomaticStyle(final FooterHeaderStyle footerHeaderStyle,
+																  final FooterHeader.Type defaultType, final XMLUtil util,
 																  final Appendable appendable) throws IOException {
-		if (footerHeader == null)
-			appendable.append("</style:").append(type.getTypeName())
+		if (footerHeaderStyle == null)
+			appendable.append("</style:").append(defaultType.getTypeName())
 					.append("-style />");
 		else
-			footerHeader.appendFooterHeaderStyleXMLToAutomaticStyle(util,
+			footerHeaderStyle.appendFooterHeaderStyleXMLToAutomaticStyle(util,
 					appendable);
 	}
 

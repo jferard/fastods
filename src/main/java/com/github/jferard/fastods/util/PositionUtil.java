@@ -69,16 +69,19 @@ public class PositionUtil {
 		}
 
 		/**
-		 * 0 -> A
-		 * ...
-		 * 25 -> Z
-		 * 26 -> AA
-		 * 27 -> AB
-		 * ...
-		 * 52 -> BA
-		 * 1023->AMJ
+		 * Returns the address of a cell, in Excel/OO/LO format. Some examples:
+		 * <ul>
+		 * <li>0 gives "A"</li>
+		 * <li>...</li>
+		 * <li>25 gives "Z"</li>
+		 * <li>26 gives "AA"</li>
+		 * <li>27 gives "AB"</li>
+		 * <li>...</li>
+		 * <li>52 gives "BA"</li>
+		 * <li>1023 gives "AMJ"</li>
+		 * </ul>
 		 *
-		 * @return
+		 * @return the Excel/OO/LO address of a cell
 		 */
 		public String toCellAddress() {
 			final StringBuilder sb = new StringBuilder();

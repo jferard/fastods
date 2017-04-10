@@ -109,8 +109,8 @@ public class PageStyleTest {
 				.header(header).footer(footer).build();
 		final StringBuilder sb = new StringBuilder();
 
-		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
-		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		header.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
+		footer.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
 		/*		header.appendTextStylesXMLToStylesEntry(this.util, sb);
 				footer.appendTextStylesXMLToStylesEntry(this.util, sb); */
 		PowerMock.replayAll();

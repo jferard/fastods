@@ -115,9 +115,9 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		appendable.append("/>"); // End of page-layout-properties
 
 		FooterHeader
-				.appendStyleFooterHeaderXMLToAutomaticStyle(this.header, FooterHeader.Type.HEADER, util, appendable);
+				.appendFooterHeaderStyleXMLToAutomaticStyle(this.header, FooterHeader.Type.HEADER, util, appendable);
 		FooterHeader
-				.appendStyleFooterHeaderXMLToAutomaticStyle(this.footer, FooterHeader.Type.FOOTER, util, appendable);
+				.appendFooterHeaderStyleXMLToAutomaticStyle(this.footer, FooterHeader.Type.FOOTER, util, appendable);
 		appendable.append("</style:page-layout>");
 	}
 

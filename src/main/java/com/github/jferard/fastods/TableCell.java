@@ -254,8 +254,8 @@ public interface TableCell {
 	/**
 	 * To merge cells, set the number of rows that should be merged.
 	 *
-	 * @param n
-	 *            - The number of rows to be merged
+	 * @param n The number of rows to be merged
+	 * @throws IOException if the cells can't be merged
 	 */
 	void setRowsSpanned(int n) throws IOException;
 

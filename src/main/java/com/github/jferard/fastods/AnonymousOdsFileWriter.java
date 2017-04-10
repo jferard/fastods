@@ -51,6 +51,9 @@ public class AnonymousOdsFileWriter {
 		this.document = document;
 	}
 
+	/**
+	 * @return the underlying document
+	 */
 	public OdsDocument document() {
 		return this.document;
 	}
@@ -66,6 +69,10 @@ public class AnonymousOdsFileWriter {
 		this.save(builder.build(out));
 	}
 
+	/**
+	 * @param writer the ZipUTF8Writer that should be used
+	 * @throws IOException If an I/O error occurs during the save
+	 */
 	public void save(final ZipUTF8Writer writer) throws IOException {
 		this.document.save(writer);
 	}
@@ -74,7 +81,7 @@ public class AnonymousOdsFileWriter {
 	 * Save the new file.
 	 *
 	 * @param filename the name of the destination file
-	 * @throws IOException If an I/O error occurs
+	 * @throws IOException If an I/O error occurs during the save
 	 */
 	public void saveAs(final String filename) throws IOException {
 		this.saveAs(new File(filename));

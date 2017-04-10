@@ -34,6 +34,7 @@ import java.io.IOException;
  * <li>{@code config:config-item-map-named} is a config block that contains {@code config:config-item-map-entry}</li>
  * <li>{@code config:config-item-map-entry} may contain any config block</li>
  * </ul>
+ * @author Julien Férard
  */
 public interface ConfigBlock {
 	/**

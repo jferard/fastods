@@ -46,6 +46,9 @@ public class BorderAttributeBuilder {
 	 */
 	private Style style;
 
+	/**
+	 * A new builder
+	 */
 	BorderAttributeBuilder() {
 		this.style = BorderAttribute.DEFAULT_STYLE;
 	}

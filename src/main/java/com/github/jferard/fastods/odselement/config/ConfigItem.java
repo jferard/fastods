@@ -37,6 +37,12 @@ public class ConfigItem implements ConfigBlock {
 	private final String type;
 	private String value;
 
+	/**
+	 * Create an item for name, type and value
+	 * @param name the name of the item
+	 * @param type the type of the item, as a string
+	 * @param value the value of the item
+	 */
 	public ConfigItem(final String name, final String type,
 			final String value) {
 		this.name = name;
@@ -70,14 +76,24 @@ public class ConfigItem implements ConfigBlock {
 		return this.name;
 	}
 
+	/**
+	 * @return the type of the item
+	 */
 	public String getType() {
 		return this.type;
 	}
 
+	/**
+	 * @return the value of the item
+	 */
 	public String getValue() {
 		return this.value;
 	}
 
+	/**
+	 * Set the value of the item
+	 * @param value the vlaue of the item
+	 */
 	public void setValue(final String value) {
 		this.value = value;
 	}

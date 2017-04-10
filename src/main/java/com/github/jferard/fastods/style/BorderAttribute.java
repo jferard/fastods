@@ -35,10 +35,27 @@ public class BorderAttribute {
 	/**
 	 * The position of the border.
 	 */
-	public static enum Position {
-		ALL("fo:border"), BOTTOM("fo:border-bottom"), LEFT(
-				"fo:border-left"), RIGHT(
-						"fo:border-right"), TOP("fo:border-top");
+	public enum Position {
+		/**
+		 * All borders
+		 */
+		ALL("fo:border"),
+		/**
+		* The bottom boder
+		*/
+		BOTTOM("fo:border-bottom"),
+		/**
+		 * The left border
+		 */
+		LEFT("fo:border-left"),
+		/**
+		 * the right border
+		 */
+		RIGHT("fo:border-right"),
+		/**
+		 * The top border
+		 */
+		TOP("fo:border-top");
 
 		private final String attrName;
 
@@ -51,8 +68,18 @@ public class BorderAttribute {
 		}
 	}
 
-	public static enum Style {
-		DOUBLE("double"), SOLID("solid");
+	/**
+	 * The style of the border
+	 */
+	public enum Style {
+		/**
+		 * Double lined border
+		 */
+		DOUBLE("double"),
+		/**
+		 * Solid border
+		 */
+		SOLID("solid");
 
 		private final String attrValue;
 
@@ -75,8 +102,14 @@ public class BorderAttribute {
 	 */
 	public static final Length DEFAULT_BORDER_SIZE = SimpleLength.mm(1);
 
+	/**
+	 * The default position for border
+	 */
 	public static final Position DEFAULT_POSITION = Position.ALL;
 
+	/**
+	 * The default style
+	 */
 	public static final Style DEFAULT_STYLE = Style.SOLID;
 
 	/**

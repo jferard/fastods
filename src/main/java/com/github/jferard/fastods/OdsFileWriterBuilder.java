@@ -96,6 +96,7 @@ public class OdsFileWriterBuilder {
 	/**
 	 * @param builder a builder for the ZipOutputStream and the Writer (buffers,
 	 *                level, ...)
+	 * @return this for fluent style
 	 */
 	public OdsFileWriterBuilder zipBuilder(final ZipUTF8WriterBuilder builder) {
 		this.builder = builder;

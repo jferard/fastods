@@ -49,6 +49,7 @@ public class TableHelper {
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of columns to merge
 	 * @throws FastOdsException if the rowIndex or the colIndex is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMerge(final Table table, final int rowIndex,
 							 final int colIndex, final int rowMerge, final int columnMerge)
@@ -66,6 +67,7 @@ public class TableHelper {
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
 	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMerge(final Table table, final String pos,
 							 final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
@@ -92,6 +94,7 @@ public class TableHelper {
 	 * @param ts    The table style for this cell, must be of type
 	 *              TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellValue(final Table table, final String pos,
 							 final CellValue value, final TableCellStyle ts)

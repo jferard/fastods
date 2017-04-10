@@ -21,6 +21,9 @@
 
 package com.github.jferard.fastods;
 
+/**
+ * @author Julien Férard
+ */
 public class BooleanValue extends CellValue {
 	private final Boolean value;
 

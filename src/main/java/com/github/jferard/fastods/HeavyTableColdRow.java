@@ -106,6 +106,7 @@ public class HeavyTableColdRow {
 	 * @param colIndex    The column, 0 is the first column
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
+	 * @throws IOException if one of the rows was already flushed
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
 							 final int columnMerge) throws IOException {
@@ -217,6 +218,13 @@ public class HeavyTableColdRow {
 		this.tooltipsParameters.set(c, TooltipParameter.create(width, height, visible));
 	}
 
+	/**
+	 * @param util a util class to write XML data
+	 * @param appendable the object to wich data will be appended
+	 * @param colIndex the column index in the row
+	 * @param covered true if the cell is covered
+	 * @throws IOException if data can't be appended
+	 */
 	public void appendXMLToTable(final XMLUtil util,
 								 final Appendable appendable, final int colIndex,
 								 final boolean covered) throws IOException {

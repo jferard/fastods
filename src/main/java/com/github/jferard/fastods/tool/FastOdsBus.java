@@ -27,11 +27,11 @@ import java.util.Queue;
 
 /**
  * Usage:
- * <pre>
- * final FastOdsBus<E> bus = new FastOdsBus<E>();
+ * <pre><code>
+ * final FastOdsBus{@literal <E>} bus = new FastOdsBus{@literal <E>}();
  *
  * Thread consumer = new Thread() {
- *     @Override
+ *     {@literal @}Override
  *     public void run() {
  *     while (!bus.isClosed()) {
  *          final E element = bus.get();
@@ -48,7 +48,9 @@ import java.util.Queue;
  * } catch (final InterruptedException e) {
  *     logger.log(Level.SEVERE, "", e);
  * }
- * </pre>
+ * </code></pre>
+ *
+ * @param <E> the elements in the bus
  */
 public class FastOdsBus<E> {
 	private final Queue<E> elements;

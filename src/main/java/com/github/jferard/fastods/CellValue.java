@@ -24,7 +24,16 @@ package com.github.jferard.fastods;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The value of a cell
+ * @author Julien Férard
+ */
 public abstract class CellValue {
+	/**
+	 * Converts a value to a CellValue
+	 * @param o the value
+	 * @return the CellValue
+	 */
 	public static CellValue fromObject(final Object o) {
 		if (o == null)
 			return new VoidValue();
@@ -44,6 +53,12 @@ public abstract class CellValue {
 			return new StringValue(o.toString());
 	}
 
+	/**
+	 * Converts a value to a CellValue
+	 * @param type a hint
+	 * @param o the value
+	 * @return the CellValue
+	 */
 	public static CellValue fromTypeAndObject(final TableCell.Type type, final Object o) {
 		// TODO: use the type hint, with a switch...
 		return CellValue.fromObject(o);

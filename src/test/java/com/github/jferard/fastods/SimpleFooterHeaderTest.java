@@ -63,7 +63,7 @@ public class SimpleFooterHeaderTest {
 				.marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0)).marginLeft(SimpleLength.pt(13.0))
 				.minHeight(SimpleLength.pt(120.0)).styledContent("text", ts).build();
 		final StringBuilder sb = new StringBuilder();
-		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		header.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:header-style>"
 				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"0cm\" fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"/>"
 				+ "</style:header-style>", sb.toString());
@@ -78,7 +78,7 @@ public class SimpleFooterHeaderTest {
 				.simpleBuilder(FooterHeader.Type.HEADER).allMargins(SimpleLength.pt(10.0))
 				.minHeight(SimpleLength.pt(120.0)).styledContent("text", ts).build();
 		final StringBuilder sb = new StringBuilder();
-		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		header.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:header-style>"
 				+ "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"10pt\"/>"
 				+ "</style:header-style>", sb.toString());
@@ -132,7 +132,7 @@ public class SimpleFooterHeaderTest {
 				.buildStyle("style");
 		final FooterHeader header = FooterHeader.simpleHeader("text", ts);
 		final StringBuilder sb = new StringBuilder();
-		header.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		header.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:header-style>"
 				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:header-style>", sb.toString());
@@ -161,7 +161,7 @@ public class SimpleFooterHeaderTest {
 				.simpleBuilder(FooterHeader.Type.FOOTER).styledContent(text, ts)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		footer.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:footer-style>"
 				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:footer-style>", sb.toString());

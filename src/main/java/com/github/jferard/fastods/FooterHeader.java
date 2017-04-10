@@ -56,14 +56,24 @@ public class FooterHeader {
 		this.style = style;
 	}
 
-	public static void appendStyleFooterHeaderXMLToAutomaticStyle(final FooterHeader footerHeader, final Type type,
+	/**
+	 * Secure version of {@code footerHeader.appendFooterHeaderStyleXMLToAutomaticStyle}: if the footer (or header) is null,
+	 * then the default type is used.
+	 *
+	 * @param footerHeader the footer or header, could be null
+	 * @param defaultType the type if footerHeader is null.
+	 * @param util an util to write XML data
+	 * @param appendable the object ot which append footer/header style
+	 * @throws IOException if footer/header style wasn't appended.
+	 */
+	public static void appendFooterHeaderStyleXMLToAutomaticStyle(final FooterHeader footerHeader, final Type defaultType,
 																  final XMLUtil util,
 																  final Appendable appendable) throws IOException {
 		if (footerHeader == null)
-			appendable.append("<style:").append(type.typeName)
+			appendable.append("<style:").append(defaultType.typeName)
 					.append("-style />");
 		else
-			footerHeader.appendStyleFooterHeaderXMLToAutomaticStyle(util,
+			footerHeader.appendFooterHeaderStyleXMLToAutomaticStyle(util,
 					appendable);
 	}
 
@@ -105,9 +115,9 @@ public class FooterHeader {
 	 * @param appendable the appendable element where the method will write the XML
 	 * @throws IOException If an I/O error occurs
 	 */
-	public void appendStyleFooterHeaderXMLToAutomaticStyle(final XMLUtil util,
+	public void appendFooterHeaderStyleXMLToAutomaticStyle(final XMLUtil util,
 														   final Appendable appendable) throws IOException {
-		this.style.appendFooterHeaderStyleXMLToAutomaticStyle(util, appendable);
+		FooterHeaderStyle.appendFooterHeaderStyleXMLToAutomaticStyle(this.style,  this.footerHeaderType, util, appendable);
 	}
 
 	/**

@@ -26,33 +26,58 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 /**
- * Created by jferard on 09/04/17.
  * See Extensible Stylesheet Language (XSL) Version 1.1, 5.9.13 Definitions of Units of Measure
  * (https://www.w3.org/TR/xsl/#d0e5752)
+ *
+ * @author Julien Férard
  */
 public class AbsoluteLength implements Length {
     private final double mm;
 
+    /**
+     * Create a new length.
+     * @param mm the length in millimeters
+     */
     AbsoluteLength(final double mm) {
         this.mm = mm;
     }
 
+    /**
+     * @param value the length in millimiters
+     * @return the created AbsoluteLength
+     */
     public static AbsoluteLength mm(final double value) {
         return new AbsoluteLength(value);
     }
 
+    /**
+     * @param value the length in centimers
+     * @return the created AbsoluteLength
+     */
     public static AbsoluteLength cm(final double value) {
         return new AbsoluteLength(value*10.0);
     }
 
+    /**
+     * @param value the length in inches
+     * @return the created AbsoluteLength
+     */
     public static AbsoluteLength in(final double value) {
         return new AbsoluteLength(value*25.4); // inch -> cm = *2.54, cm -> mm = *10
     }
 
+    /**
+     * @param value the length in points
+     * @return the created AbsoluteLength
+     */
     public static AbsoluteLength pt(final double value) {
         return new AbsoluteLength(value*25.4/72.0); // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10
     }
 
+    /**
+     * @param value the length in picas
+     * @return the created AbsoluteLength
+     */
     public static AbsoluteLength pc(final double value) {
         return new AbsoluteLength(value*25.4/6.0); // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10
     }

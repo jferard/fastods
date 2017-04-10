@@ -28,6 +28,7 @@ import java.io.IOException;
 
 /**
  * The class Borders represents the borders of an element.
+ * @author Julien Férard
  */
 public class Borders {
 	private final BorderAttribute all;
@@ -37,6 +38,14 @@ public class Borders {
 	private final BorderAttribute top;
 	private final EqualityUtil equalityUtil;
 
+	/**
+	 * @param equalityUtil the util class to compare borders
+	 * @param all all borders
+	 * @param top the top border
+	 * @param right the right border
+	 * @param bottom the bottom border
+	 * @param left the left border
+	 */
 	Borders(final EqualityUtil equalityUtil, final BorderAttribute all,
 			final BorderAttribute top, final BorderAttribute right,
 			final BorderAttribute bottom, final BorderAttribute left) {
@@ -48,6 +57,9 @@ public class Borders {
 		this.left = left;
 	}
 
+	/**
+	 * @return true if all borders are null
+	 */
 	public boolean areVoid() {
 		return this.all == null && this.top == null && this.right == null && this.bottom == null && this.left == null;
 	}
@@ -118,18 +130,30 @@ public class Borders {
 		return this.all;
 	}
 
+	/**
+	 * @return the border attribute for the bottom border, null if none
+	 */
 	public BorderAttribute getBottom() {
 		return this.bottom;
 	}
 
+	/**
+	 * @return the border attribute for the left border, null if none
+	 */
 	public BorderAttribute getLeft() {
 		return this.left;
 	}
 
+	/**
+	 * @return the border attribute for the right border, null if none
+	 */
 	public BorderAttribute getRight() {
 		return this.right;
 	}
 
+	/**
+	 * @return the border attribute for the top border, null if none
+	 */
 	public BorderAttribute getTop() {
 		return this.top;
 	}

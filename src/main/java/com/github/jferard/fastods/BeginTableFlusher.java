@@ -27,10 +27,14 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
+ * @author Julien Férard
  */
 public class BeginTableFlusher implements OdsFlusher {
 	private final Table table;
 
+	/**
+	 * @param table the tableu to flush
+	 */
 	public BeginTableFlusher(final Table table) {
 		this.table = table;
 	}

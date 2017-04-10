@@ -93,7 +93,7 @@ public class RegionFooterHeaderTest {
 				.regionBuilder(FooterHeader.Type.FOOTER).region(Region.CENTER)
 				.styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
 		final StringBuilder sb = new StringBuilder();
-		footer.appendStyleFooterHeaderXMLToAutomaticStyle(this.util, sb);
+		footer.appendFooterHeaderStyleXMLToAutomaticStyle(this.util, sb);
 		DomTester.assertEquals("<style:footer-style>"
 				+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
 				+ "</style:footer-style>", sb.toString());

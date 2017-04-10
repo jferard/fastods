@@ -259,6 +259,7 @@ public class HeavyTableRow {
 	 * @param colIndex    The column, 0 is the first column
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
 							 final int columnMerge) throws IOException {

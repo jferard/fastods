@@ -53,6 +53,7 @@ public class OdsFileHelper {
 	 * @param rowMerge the number of rows to merge
 	 * @param columnMerge the number of columns to merge
 	 * @throws FastOdsException if the rowIndex or the colIndex is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
 			final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
@@ -70,6 +71,7 @@ public class OdsFileHelper {
 	 * @param rowMerge the number of rows to merge
 	 * @param columnMerge the number of columns to merge
 	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMergeInAllTables(final String pos, final int rowMerge,
 			final int columnMerge) throws FastOdsException, IOException {
@@ -92,6 +94,7 @@ public class OdsFileHelper {
 	 *            The table style for this cell, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellValueInAllTables(final int rowIndex, final int colIndex,
 			final CellValue value, final TableCellStyle ts)
@@ -114,6 +117,7 @@ public class OdsFileHelper {
 	 *            The table style for this cells, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
 	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellValueInAllTables(final String pos, final CellValue value,
 			final TableCellStyle ts) throws FastOdsException, IOException {
