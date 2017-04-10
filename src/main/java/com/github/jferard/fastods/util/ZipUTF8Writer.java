@@ -35,7 +35,7 @@ public class ZipUTF8Writer
 	private final Writer writer;
 	private final ZipOutputStream zipStream;
 
-	ZipUTF8Writer(final ZipOutputStream zipStream, final Writer writer) {
+	protected ZipUTF8Writer(final ZipOutputStream zipStream, final Writer writer) {
 		this.zipStream = zipStream;
 		this.writer = writer;
 	}
@@ -45,17 +45,17 @@ public class ZipUTF8Writer
 	}
 
 	@Override
-	public Writer append(final char c) throws IOException {
+	public Appendable append(final char c) throws IOException {
 		return this.writer.append(c);
 	}
 
 	@Override
-	public Writer append(final CharSequence arg0) throws IOException {
+	public Appendable append(final CharSequence arg0) throws IOException {
 		return this.writer.append(arg0);
 	}
 
 	@Override
-	public Writer append(final CharSequence csq, final int start, final int end)
+	public Appendable append(final CharSequence csq, final int start, final int end)
 			throws IOException {
 		return this.writer.append(csq, start, end);
 	}
