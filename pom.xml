@@ -22,7 +22,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jferard</groupId>
 	<artifactId>fastods</artifactId>
-	<version>0.3.2-SNAPSHOT</version>
+	<version>0.3.1-SNAPSHOT</version>
 	<name>FastODS</name>
 	<description>FastODS writer, a Martin Schulz's SimpleODS fork</description>
 
