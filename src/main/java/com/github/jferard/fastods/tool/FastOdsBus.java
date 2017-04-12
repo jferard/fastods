@@ -51,6 +51,7 @@ import java.util.Queue;
  * </code></pre>
  *
  * @param <E> the elements in the bus
+ * @author Julien Férard
  */
 public class FastOdsBus<E> {
 	private final Queue<E> elements;

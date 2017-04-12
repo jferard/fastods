@@ -29,6 +29,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
+ * @author Julien Férard
  */
 public class MetaAndStylesElementsFlusher implements OdsFlusher {
 	private final OdsElements odsElements;

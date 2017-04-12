@@ -28,14 +28,13 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 /**
- * WHERE ? META-INF/manifest.xml/manifest:manifest
- *
+ * See META-INF/manifest.xml/manifest:manifest
  * @author Julien Férard
  * @author Martin Schulz
  *
  */
 public class ManifestElement implements OdsElement {
-	final String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
+	private final String[] text = { "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
 			"<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\">",
 			"<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument.spreadsheet\" manifest:full-path=\"/\" />",
 			"<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Configurations2/statusbar/\" />",

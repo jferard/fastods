@@ -58,6 +58,9 @@ public class StylesElement implements OdsElement {
 		this.stylesContainer = stylesContainer;
 	}
 
+	/**
+	 * @return the container of the styles
+	 */
 	public StylesContainer getStyleTagsContainer() {
 		return this.stylesContainer;
 	}

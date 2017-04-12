@@ -22,7 +22,8 @@
 package com.github.jferard.fastods.util;
 
 /**
- * Created by jferard on 09/04/17.
+ * A blank interface.
+ * @author Julien Férard
  */
 public interface Length {
 }

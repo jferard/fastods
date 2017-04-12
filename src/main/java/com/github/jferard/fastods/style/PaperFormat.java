@@ -25,7 +25,7 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 
 /**
- * Created by jferard on 09/04/17.
+ * @author Julien Férard
  */
 public enum PaperFormat {
     A3(Defaults.A3_H, Defaults.A3_W), A4(Defaults.A3_W,

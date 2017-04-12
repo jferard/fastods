@@ -23,6 +23,7 @@ package com.github.jferard.fastods.odselement;
 
 /**
  * The FlushPosition class represents a position in the flush process of the content.xml file.
+ * @author Julien Férard
  */
 public class FlushPosition {
 	private int lastTableIndex;

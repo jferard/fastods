@@ -59,6 +59,11 @@ public class RegionPageSectionBuilder
 		return new PageSection(header, style);
 	}
 
+	/**
+	 * Switch to a new region
+	 * @param region the region that will be set
+	 * @return this for fluent style
+	 */
 	public RegionPageSectionBuilder region(final PageSectionContent.Region region) {
 		switch (region) {
 		case LEFT: // Use left region

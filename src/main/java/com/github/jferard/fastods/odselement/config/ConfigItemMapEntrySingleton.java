@@ -28,8 +28,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * 3.10.5 config:config-item-map-entry
  * A Single element.
+ * See 3.10.5 config:config-item-map-entry
+ * @author Julien Férard
  */
 public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	private final ConfigBlock block;

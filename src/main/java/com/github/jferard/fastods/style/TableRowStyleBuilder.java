@@ -45,6 +45,9 @@ public class TableRowStyleBuilder {
 		this.rowHeight = SimpleLength.cm(0.45);
 	}
 
+	/**
+	 * @return the table row style
+	 */
 	public TableRowStyle build() {
 		return new TableRowStyle(this.name, this.rowHeight);
 

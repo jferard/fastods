@@ -30,6 +30,7 @@ import java.util.List;
 
 /**
  * 3.10.4 config:config-item-map-indexed
+ * @author Julien Férard
  */
 public class ConfigItemMapIndexed implements ConfigBlock {
 	private final String name;

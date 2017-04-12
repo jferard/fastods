@@ -84,6 +84,12 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	private final ResultSet resultSet;
 	private final ResultSet rs;
 
+	/**
+	 * @param logger a logger
+	 * @param rs the result cell
+	 * @param headCellStyle a style for header
+	 * @param max the maximum number of rows
+	 */
 	public ResultSetDataWrapper(final Logger logger, final ResultSet rs,
 			final TableCellStyle headCellStyle, final int max) {
 		this.logger = logger;

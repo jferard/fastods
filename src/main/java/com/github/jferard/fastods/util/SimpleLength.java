@@ -29,6 +29,7 @@ import java.util.Locale;
  * Created by jferard on 09/04/17.
  * See Extensible Stylesheet Language (XSL) Version 1.1, 5.9.13 Definitions of Units of Measure
  * (https://www.w3.org/TR/xsl/#d0e5752)
+ * @author Julien Férard
  */
 public class SimpleLength implements Length {
     public enum Unit {

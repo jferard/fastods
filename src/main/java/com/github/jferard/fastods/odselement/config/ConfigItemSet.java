@@ -30,6 +30,7 @@ import java.util.Map;
 
 /**
  * 3.10.2 config:config-item-blocks
+ * @author Julien Férard
  */
 public class ConfigItemSet implements ConfigBlock {
 	private final Map<String, ConfigBlock> blockByName;

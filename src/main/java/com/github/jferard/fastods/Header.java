@@ -28,7 +28,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * Created by jferard on 10/04/17.
+ * @author Julien Férard
  */
 public class Header {
     private final PageSection pageSection;

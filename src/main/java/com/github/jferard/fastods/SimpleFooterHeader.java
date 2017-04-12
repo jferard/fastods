@@ -41,26 +41,27 @@ class SimpleFooterHeader extends PageSectionContent {
 	/**
 	 * The OdsDocument where this object belong to.
 	 */
-	private final Text region;
+	private final Text centerRegion;
 
 	/**
 	 * Create a new footer object.
+	 * @param centerRegion the content of the center centerRegion
 	 */
-	SimpleFooterHeader(final Text region) {
+	SimpleFooterHeader(final Text centerRegion) {
 		super();
-		this.region = region;
+		this.centerRegion = centerRegion;
 	}
 
 	@Override
 	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer) {
-		this.region.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
 	}
 
 	@Override
 	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer, final Mode mode) {
-		this.region.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer,
+		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer,
 				mode);
 	}
 
@@ -72,7 +73,7 @@ class SimpleFooterHeader extends PageSectionContent {
 	@Override
 	public void appendXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable) throws IOException {
-		if (this.region != null)
-			this.region.appendXMLContent(util, appendable);
+		if (this.centerRegion != null)
+			this.centerRegion.appendXMLContent(util, appendable);
 	}
 }

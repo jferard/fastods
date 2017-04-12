@@ -53,7 +53,7 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 	}
 
 	/*
-	 * @see java.util.AbstractList#add(int, java.lang.Object)
+	 * @see java.util.List#add(int, java.lang.Object)
 	 * @throws IllegalArgumentException if the element exists in the list
 	 */
 	@Override
@@ -67,9 +67,6 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		this.list.add(index, element);
 	}
 
-	/*
-	 * @see java.util.AbstractList#get(int)
-	 */
 	@Override
 	public T get(final int index) {
 		return this.list.get(index);
@@ -90,9 +87,6 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return this.elementByName.keySet();
 	}
 
-	/*
-	 * @see java.util.AbstractList#remove(int)
-	 */
 	@Override
 	public T remove(final int index) {
 		final T element = this.list.remove(index);
@@ -100,9 +94,6 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return element;
 	}
 
-	/*
-	 * @see java.util.AbstractList#remove(int)
-	 */
 	@Override
 	public boolean remove(final Object o) {
 		if (this.elementByName.containsValue(o)) {
@@ -113,7 +104,9 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 			return false;
 	}
 
-	/*
+	/**
+	 * @param name the name of the element to remove
+	 * @return the previous element of that name, null otherwise.
 	 */
 	public T removeByName(final String name) {
 		if (this.elementByName.containsKey(name)) {
@@ -125,9 +118,6 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 			return null;
 	}
 
-	/*
-	 * @see java.util.AbstractList#remove(int)
-	 */
 	@Override
 	public T set(final int index, final T element) {
 		final String elementName = element.getName();
@@ -139,9 +129,6 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 		return this.list.set(index, element);
 	}
 
-	/*
-	 * @see java.util.AbstractList#remove(int)
-	 */
 	@Override
 	public int size() {
 		return this.list.size();

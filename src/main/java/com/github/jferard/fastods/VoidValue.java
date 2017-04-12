@@ -21,6 +21,10 @@
 
 package com.github.jferard.fastods;
 
+/**
+ * The value in this cell will be void
+ * @author Julien Férard
+ */
 public class VoidValue extends CellValue {
 	@Override
 	public void setToRow(final HeavyTableRow heavyTableRow, final int c) {

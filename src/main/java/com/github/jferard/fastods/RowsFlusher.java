@@ -25,26 +25,34 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
+ * A flusher for a collection of rows
+ * @author Julien Férard
  */
-public class RowsFlusher implements OdsFlusher {
+class RowsFlusher implements OdsFlusher {
 	private final List<HeavyTableRow> rows;
 
+	/**
+	 * @param rows the rows to flush
+	 */
 	public RowsFlusher(final List<HeavyTableRow> rows) {
 		this.rows = rows;
 	}
 
 	@Override
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+		// flush rows
 		for (final HeavyTableRow row : this.rows) {
 			if (row == null) {
 				System.exit(0);
 			}
 			row.appendXMLToTable(xmlUtil, writer);
 		}
-		for (int i=0; i<this.rows.size(); i++)
-			this.rows.set(i, null);
+		// free rows
+		Collections.fill(this.rows, null);
 	}
 }

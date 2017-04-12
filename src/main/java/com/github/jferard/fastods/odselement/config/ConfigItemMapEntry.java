@@ -24,16 +24,43 @@ package com.github.jferard.fastods.odselement.config;
 import java.util.Iterator;
 
 /**
- * 3.10.5 config:config-item-map-entry
+ * A ConfigItemMapEntry represents an entry in the settings. It can be a sequence, a set or a singleton.
+ *
+ * See 3.10.5 config:config-item-map-entry
+ * @author Julien Férard
  */
 public interface ConfigItemMapEntry extends ConfigBlock {
+
+	/**
+	 * @return the number of ConfigBlocks in this entry
+	 */
 	int size();
 
+	/**
+	 * @return true iff size() == 0
+	 */
 	boolean isEmpty();
 
-	public boolean add(ConfigBlock block);
+	/**
+	 * Add a block to this entry.
+	 * @param block the block to add to this entry. May throw
+	 * @return true if the block was added
+	 * @throws UnsupportedOperationException if the entry is a singleton
+	 */
+	boolean add(ConfigBlock block);
 
-	public Iterator<ConfigBlock> iterator();
+	/**
+	 * @return an interator on the block stored in this entry
+	 */
+	Iterator<ConfigBlock> iterator();
 
-	public boolean add(String name, String type, String value);
+	/**
+	 * Add an ConfigItem to this entry. Shortcut for {@code add(new ConfigItem(name, type, value))}.
+	 * @param name the name of the item
+	 * @param type the type of the item
+	 * @param value the value of the item
+	 * @return true if the block was added
+	 * @throws UnsupportedOperationException if the entry is a singleton
+	 */
+	boolean add(String name, String type, String value);
 }

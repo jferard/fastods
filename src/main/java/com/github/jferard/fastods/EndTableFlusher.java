@@ -28,11 +28,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * A flusher for the end of the table. Writes remaining rows and the table postamble.
+ * @author Julien Férard
  */
 public class EndTableFlusher implements OdsFlusher {
 	private final Table table;
 	private final List<HeavyTableRow> rows;
 
+	/**
+	 * @param table the table to end
+	 * @param rows the remaining rows.
+	 */
 	public EndTableFlusher(final Table table, final List<HeavyTableRow> rows) {
 		this.table = table;
 		this.rows = rows;

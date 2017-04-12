@@ -27,6 +27,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
+ * @author Julien Férard
  */
 public interface ParagraphElement {
 	void appendXMLToParagraph(XMLUtil util,

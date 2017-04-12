@@ -27,7 +27,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * Created by jferard on 08/04/17.
+ * @author Julien Férard
  */
 public class TooltipParameter {
     final Length width;

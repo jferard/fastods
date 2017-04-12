@@ -29,11 +29,17 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
+ * The flusher to finalize file. Writes postamble for contents, and the settings.
+ * @author Julien Férard
  */
 public class FinalizeFlusher implements OdsFlusher {
 	private final ContentElement contentElement;
 	private final SettingsElement settingsElements;
 
+	/**
+	 * @param contentElement the content to finalize
+	 * @param settingsElements the settings to create (settings.xml file)
+	 */
 	public FinalizeFlusher(final ContentElement contentElement, final SettingsElement settingsElements) {
 		this.contentElement = contentElement;
 		this.settingsElements = settingsElements;

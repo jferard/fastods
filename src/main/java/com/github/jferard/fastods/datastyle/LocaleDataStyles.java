@@ -26,6 +26,7 @@ import com.github.jferard.fastods.TableCell;
 import java.util.EnumMap;
 
 /**
+ * The data style for the current locale
  * @author Julien Férard
  */
 public class LocaleDataStyles implements DataStyles {
