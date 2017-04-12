@@ -24,6 +24,10 @@ package com.github.jferard.fastods.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The FastOdsXMLEscaper class is an utility class to escape XML special chars.
+ * @author Julien Férard
+ */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class FastOdsXMLEscaper implements XMLEscaper {
 	private static final int BUFFER_SIZE = 65536;
@@ -50,10 +54,17 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 	private char[] buffer;
 	private final Map<String, String> contentCacheMap;
 
-	public FastOdsXMLEscaper() {
-		this(FastOdsXMLEscaper.BUFFER_SIZE);
+	/**
+	 * @return an xml escaper with the default buffer size (65536 bytes)
+	 */
+	public static FastOdsXMLEscaper create() {
+		return new FastOdsXMLEscaper(FastOdsXMLEscaper.BUFFER_SIZE);
 	}
 
+	/**
+	 * Creates an xml escaper with a specified buffer size
+	 * @param bufferSize the buffer size
+	 */
 	public FastOdsXMLEscaper(final int bufferSize) {
 		this.attrCacheMap = new HashMap<String, String>();
 		this.contentCacheMap = new HashMap<String, String>();

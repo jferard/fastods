@@ -29,7 +29,7 @@ public class FastOdsXMLEscaperTest {
 
 	@Before
 	public void setUp() {
-		this.escaper = new FastOdsXMLEscaper();
+		this.escaper = FastOdsXMLEscaper.create();
 	}
 
 	@Test

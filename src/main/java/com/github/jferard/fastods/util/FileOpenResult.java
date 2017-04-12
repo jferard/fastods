@@ -31,7 +31,14 @@ import java.io.OutputStream;
  * @author Julien Férard
  */
 public interface FileOpenResult {
-	public static FileOpenResult FILE_IS_DIR = new FileIsDir();
+	/**
+	 * A constant to return when the file is a dir
+	 */
+	FileOpenResult FILE_IS_DIR = new FileIsDir();
 
+	/**
+	 * @return a stream if the file exists and can be opened
+	 * @throws FileNotFoundException if the file doesn't exist or is locked
+	 */
 	OutputStream getStream() throws FileNotFoundException;
 }

@@ -37,7 +37,7 @@ public class TextPropertiesTest {
 
 	@Before
 	public void setUp() {
-		final XMLEscaper escaper = new FastOdsXMLEscaper();
+		final XMLEscaper escaper = FastOdsXMLEscaper.create();
 		this.util = new XMLUtil(escaper);
 	}
 

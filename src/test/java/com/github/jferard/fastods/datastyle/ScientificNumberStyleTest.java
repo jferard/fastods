@@ -38,7 +38,7 @@ public class ScientificNumberStyleTest {
 
 	@Before
 	public void setUp() {
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}

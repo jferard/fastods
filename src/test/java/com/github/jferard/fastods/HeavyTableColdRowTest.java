@@ -38,7 +38,6 @@ public class HeavyTableColdRowTest {
 	@Before
 	public void setUp() {
 		this.table = PowerMock.createMock(Table.class);
-		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
 		this.xmlUtil = XMLUtil.create();
 		this.row = new HeavyTableColdRow(this.table, this.xmlUtil, 10, 100);
 	}

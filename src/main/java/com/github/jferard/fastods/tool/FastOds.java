@@ -43,7 +43,7 @@ public final class FastOds {
 	 */
 	public static XMLUtil getXMLUtil() {
 		if (FastOds.xmlUtil == null) {
-			final FastOdsXMLEscaper xmlEscaper = new FastOdsXMLEscaper();
+			final FastOdsXMLEscaper xmlEscaper = FastOdsXMLEscaper.create();
 			FastOds.xmlUtil = new XMLUtil(xmlEscaper);
 		}
 		return FastOds.xmlUtil;

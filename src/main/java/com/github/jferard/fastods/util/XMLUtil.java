@@ -40,7 +40,7 @@ public class XMLUtil {
 	}
 
 	public static XMLUtil create() {
-		final XMLEscaper escaper = new FastOdsXMLEscaper();
+		final XMLEscaper escaper = FastOdsXMLEscaper.create();
 		return new XMLUtil(escaper);
 	}
 

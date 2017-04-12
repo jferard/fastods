@@ -37,7 +37,7 @@ public class TableColumnStyleTest {
 
 	@Before
 	public void setUp() {
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 	}
 
 	@Test

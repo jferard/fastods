@@ -293,7 +293,7 @@ public class LightTableCellTest {
 	private HeavyTableRow initRealRow() {
 		final StylesContainer stc = PowerMock.createMock(StylesContainer.class);
 		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
-		final XMLUtil xmlUtil = new XMLUtil(new FastOdsXMLEscaper());
+		final XMLUtil xmlUtil = XMLUtil.create();
 		final LocaleDataStyles ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(xmlUtil, Locale.US));
 		final WriteUtil writeUtil = new WriteUtil();

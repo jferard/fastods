@@ -60,7 +60,7 @@ public class OdsElementsTest {
 		this.oe = new OdsElements(logger, this.mimetypeElement, this.manifestElement,
 				this.settingsElement, this.metaElement, this.contentElement,
 				this.stylesElement, this.stylesContainer);
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}

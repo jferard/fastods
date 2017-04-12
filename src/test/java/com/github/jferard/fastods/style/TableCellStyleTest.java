@@ -35,7 +35,7 @@ public class TableCellStyleTest {
 
 	@Before
 	public final void setUp() {
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 	}
 
 	@Test

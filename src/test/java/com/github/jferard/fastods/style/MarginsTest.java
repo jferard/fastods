@@ -36,7 +36,7 @@ public class MarginsTest {
 
 	@Before
 	public void setUp() {
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 		this.builder = new MarginsBuilder();
 	}
 

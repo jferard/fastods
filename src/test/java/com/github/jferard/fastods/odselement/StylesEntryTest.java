@@ -48,7 +48,7 @@ public class StylesEntryTest {
 	public void setUp() {
 		this.stylesContainer = new StylesContainer();
 		this.stylesElement = new StylesElement(this.stylesContainer);
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 		this.locale = Locale.US;
 
 		this.st1 = TableCellStyle.builder("a").fontStyleItalic().build();

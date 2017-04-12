@@ -22,17 +22,24 @@
 package com.github.jferard.fastods;
 
 /**
+ * FastOdsException represents an exception in FastOds.
  * @author Julien Férard
- * @author Martin Schulz$
+ * @author Martin Schulz
  */
 public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-	public static FastOdsException unkownTableName(final String tab) {
-		return new FastOdsException(new StringBuilder("Unknown table name [")
-				.append(tab).append(']').toString());
+	/**
+	 * @param tableName the name of the table that is unknown
+	 * @return an exception
+	 */
+	public static FastOdsException unkownTableName(final String tableName) {
+		return new FastOdsException("Unknown table name ["+tableName+"]");
 	}
 
+	/**
+	 * @param message the message
+	 */
 	public FastOdsException(final String message) {
 		super(message);
 	}

@@ -43,7 +43,7 @@ public class LinkTest {
 
 	@Before
 	public void setUp() {
-		this.util = new XMLUtil(new FastOdsXMLEscaper());
+		this.util = XMLUtil.create();
 		ts = TextProperties.builder().buildStyle("test");
 	}
 
