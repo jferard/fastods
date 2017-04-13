@@ -35,12 +35,19 @@ public class TextPropertiesBuilder {
 	private Underline fontUnderlineStyle;
 	private String fontWeight;
 
+	/**
+	 * @return the TextProperties
+	 */
 	public TextProperties build() {
 		return new TextProperties(this.fontColor, this.fontName,
 				this.fontWeight, this.fontStyle, this.fontSize,
 				this.fontUnderlineColor, this.fontUnderlineStyle);
 	}
 
+	/**
+	 * @param name the name of the style
+	 * @return the TextStyle of that name
+	 */
 	public TextStyle buildStyle(final String name) {
 		final TextProperties tp = new TextProperties(this.fontColor,
 				this.fontName, this.fontWeight, this.fontStyle, this.fontSize,

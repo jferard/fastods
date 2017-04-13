@@ -34,9 +34,20 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class FloatStyle extends NumberStyle {
-	protected final int decimalPlaces;
+	private final int decimalPlaces;
 
-	protected FloatStyle(final String name, final String languageCode,
+	/**
+	 * Create a float style
+	 * @param name name of the style
+	 * @param languageCode the language code, e.g. fr
+	 * @param countryCode the country code, e.g. FR
+	 * @param volatileStyle true if the consumer (LO) should keep the style even if it is not used
+	 * @param decimalPlaces the number of digits after the separator
+	 * @param grouping true if the numbers should be grouped
+	 * @param minIntegerDigits the minimum of digits of the integer part of the float
+	 * @param negativeValueColor true if negative value cshould be colored.
+	 */
+	public FloatStyle(final String name, final String languageCode,
 						 final String countryCode, final boolean volatileStyle,
 						 final int decimalPlaces, final boolean grouping,
 						 final int minIntegerDigits, final String negativeValueColor) {

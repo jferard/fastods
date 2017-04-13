@@ -33,9 +33,16 @@ import java.io.IOException;
  *
  */
 public class TableRowStyle implements StyleTag {
+	/**
+	 * The default style, see LO.
+	 */
 	public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle
 			.builder("ro1").build();
 
+	/**
+	 * @param name the name of the TableRowStyle to create
+	 * @return the builder for the TableRowStyle
+	 */
 	public static TableRowStyleBuilder builder(final String name) {
 		return new TableRowStyleBuilder(name);
 	}

@@ -28,6 +28,9 @@ import java.util.Locale;
  */
 public class FloatStyleBuilder
 		extends NumberStyleBuilder<FloatStyle, FloatStyleBuilder> {
+	/**
+	 * the number of digits after the separator
+	 */
 	protected int decimalPlaces;
 
 	/**

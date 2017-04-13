@@ -23,9 +23,15 @@ package com.github.jferard.fastods;
 
 import java.util.Date;
 
+/**
+ * A CellValue that contains a date
+ */
 public class DateValue extends CellValue {
 	private final Date value;
 
+	/**
+	 * @param value the date
+	 */
 	public DateValue(final Date value) {
 		this.value = new Date(value.getTime());
 	}

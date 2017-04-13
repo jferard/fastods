@@ -29,7 +29,7 @@ public class WriteUtilTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.util = new WriteUtil();
+		this.util = WriteUtil.create();
 	}
 
 	@Test

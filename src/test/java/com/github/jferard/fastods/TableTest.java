@@ -56,7 +56,7 @@ public class TableTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = new LocaleDataStyles(
                 new DataStyleBuilderFactory(xmlUtil, Locale.US));
-        this.table = new Table(positionUtil, new WriteUtil(), xmlUtil,
+        this.table = new Table(positionUtil, WriteUtil.create(), xmlUtil,
                 this.stc, this.ds, "mytable", 10, 100);
         this.xmlUtil = xmlUtil;
     }

@@ -23,7 +23,10 @@ package com.github.jferard.fastods.datastyle;
 
 import java.util.Locale;
 
+
 /**
+ * @param <S> the DataStyle to build
+ * @param <B> the effective builder
  * @author Julien Férard
  */
 public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleBuilder<S, B>> {

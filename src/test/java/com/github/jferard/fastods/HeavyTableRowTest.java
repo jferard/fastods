@@ -61,7 +61,7 @@ public class HeavyTableRowTest {
 	public void setUp() {
 		this.stc = PowerMock.createMock(StylesContainer.class);
 		this.table = PowerMock.createMock(Table.class);
-		final WriteUtil writeUtil = new WriteUtil();
+		final WriteUtil writeUtil = WriteUtil.create();
 		this.xmlUtil = XMLUtil.create();
 		this.ds = new LocaleDataStyles(
 				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));

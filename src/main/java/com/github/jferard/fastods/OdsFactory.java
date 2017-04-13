@@ -59,7 +59,7 @@ public class OdsFactory {
 
 	public OdsFactory(final Logger logger, final Locale locale) {
 		this.positionUtil = new PositionUtil(new EqualityUtil());
-		this.writeUtil = new WriteUtil();
+		this.writeUtil = WriteUtil.create();
 		this.xmlUtil = XMLUtil.create();
 		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
 				this.xmlUtil, locale);
