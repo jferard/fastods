@@ -23,9 +23,16 @@ package com.github.jferard.fastods.util;
 
 import java.io.OutputStream;
 
+/**
+ * The file is already open as a stream.
+ * @author Julien Férard
+ */
 public class FileOpen implements FileOpenResult {
 	private final OutputStream stream;
 
+	/**
+	 * @param stream the output stream
+	 */
 	public FileOpen(final OutputStream stream) {
 		this.stream = stream;
 	}

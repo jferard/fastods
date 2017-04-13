@@ -26,12 +26,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+/**
+ * The file tested already exists.
+ * @author Julien Férard
+ */
 public class FileExists implements FileOpenResult {
 	private final File file;
 	private OutputStream out;
 
-	public FileExists(final File f) {
-		file = f;
+	/**
+	 * @param file the tested file
+	 */
+	public FileExists(final File file) {
+		this.file = file;
 	}
 
 	@Override
