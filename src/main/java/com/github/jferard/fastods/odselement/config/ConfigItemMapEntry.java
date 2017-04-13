@@ -29,18 +29,7 @@ import java.util.Iterator;
  * See 3.10.5 config:config-item-map-entry
  * @author Julien Férard
  */
-public interface ConfigItemMapEntry extends ConfigBlock {
-
-	/**
-	 * @return the number of ConfigBlocks in this entry
-	 */
-	int size();
-
-	/**
-	 * @return true iff size() == 0
-	 */
-	boolean isEmpty();
-
+public interface ConfigItemMapEntry extends ConfigItemCollection<ConfigBlock> {
 	/**
 	 * Add a block to this entry.
 	 * @param block the block to add to this entry. May throw
@@ -48,11 +37,6 @@ public interface ConfigItemMapEntry extends ConfigBlock {
 	 * @throws UnsupportedOperationException if the entry is a singleton
 	 */
 	boolean add(ConfigBlock block);
-
-	/**
-	 * @return an interator on the block stored in this entry
-	 */
-	Iterator<ConfigBlock> iterator();
 
 	/**
 	 * Add an ConfigItem to this entry. Shortcut for {@code add(new ConfigItem(name, type, value))}.

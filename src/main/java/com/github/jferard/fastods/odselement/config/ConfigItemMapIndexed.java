@@ -29,53 +29,87 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * A Map with indexed elements: no name is required.
  * 3.10.4 config:config-item-map-indexed
  * @author Julien Férard
  */
-public class ConfigItemMapIndexed implements ConfigBlock {
+public class ConfigItemMapIndexed implements ConfigItemCollection<ConfigItemMapEntry> {
 	private final String name;
-
-	public int size() {
-		return list.size();
-	}
-
-	public boolean isEmpty() {
-		return list.isEmpty();
-	}
-
-	public boolean contains(final Object o) {
-		return list.contains(o);
-	}
-
-	public Iterator<ConfigItemMapEntry> iterator() {
-		return list.iterator();
-	}
-
-	public boolean add(final ConfigItemMapEntry configItemMapEntry) {
-		return list.add(configItemMapEntry);
-	}
-
-	public void remove(final int index) {
-		list.remove(index);
-	}
-
-	public ConfigItemMapEntry get(final int index) {
-		return list.get(index);
-	}
-
-	public ConfigItemMapEntry set(final int index, final ConfigItemMapEntry element) {
-		return list.set(index, element);
-	}
-
-	public void add(final int index, final ConfigItemMapEntry element) {
-		list.add(index, element);
-	}
-
 	private final List<ConfigItemMapEntry> list;
 
+	/**
+	 * @param name the name of the item (= map)
+	 */
 	public ConfigItemMapIndexed(final String name) {
 		this.name = name;
 		this.list = new ArrayList<ConfigItemMapEntry>();
+	}
+
+	@Override
+	public int size() {
+		return this.list.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return this.list.isEmpty();
+	}
+
+	/**
+	 * @param o the object to find
+	 * @return true iff the object is in the map
+	 */
+	public boolean contains(final Object o) {
+		return this.list.contains(o);
+	}
+
+	@Override
+	public Iterator<ConfigItemMapEntry> iterator() {
+		return this.list.iterator();
+	}
+
+	/**
+	 * @param configItemMapEntry the entry to add
+	 * @return true if the new entrey was added
+	 */
+	public boolean add(final ConfigItemMapEntry configItemMapEntry) {
+		return this.list.add(configItemMapEntry);
+	}
+
+	/**
+	 * @param index the index of the element to be removed
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 */
+	public void remove(final int index) {
+		this.list.remove(index);
+	}
+
+	/**
+	 * @param index the index of the entry to return
+	 * @return the entry
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 */
+	public ConfigItemMapEntry get(final int index) {
+		return this.list.get(index);
+	}
+
+	/**
+	 * @param index the index of the entry to set
+	 * @param element the new element to set
+	 * @return the previous element
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 */
+	public ConfigItemMapEntry set(final int index, final ConfigItemMapEntry element) {
+		return this.list.set(index, element);
+	}
+
+	/**
+	 * @param index the index of the entry to add
+	 * @param element the new element to add
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 */
+	public void add(final int index, final ConfigItemMapEntry element) {
+		this.list.add(index, element);
 	}
 
 	@Override

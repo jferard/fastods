@@ -36,18 +36,36 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	private final ConfigBlock block;
 	private final String name;
 
+	/**
+	 * Create a named singleton from a ConfigItem
+	 * @param name the name
+	 * @param configItem the ConfigItem
+	 * @return the singleton
+	 */
 	public static ConfigItemMapEntry createSingleton(final String name, final ConfigItem configItem) {
 		return new ConfigItemMapEntrySingleton(name, configItem);
 	}
 
+	/**
+	 * Create an anonymous singleton from a ConfigItem
+	 * @param configItem the ConfigItem
+	 * @return the singleton
+	 */
 	public static ConfigItemMapEntry createSingleton(final ConfigItem configItem) {
 		return new ConfigItemMapEntrySingleton(configItem);
 	}
 
+	/**
+	 * @param block the unique ConfigBlock
+	 */
 	ConfigItemMapEntrySingleton(final ConfigBlock block) {
 		this(null, block);
 	}
 
+	/**
+	 * @param name the name
+	 * @param block the unique ConfigBlock
+	 */
 	ConfigItemMapEntrySingleton(final String name, final ConfigBlock block) {
 		this.name = name;
 		this.block = block;
@@ -73,8 +91,12 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @param name the name
+	 * @return true if the unique ConfigBlock has that name
+	 */
 	public boolean contains(final String name) {
-		return block.getName().equals(name);
+		return this.block.getName().equals(name);
 	}
 
 	@Override
@@ -97,13 +119,22 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @param name the name
+	 * @return the ConfigBlock if it has this name, null otherwise
+	 */
 	public ConfigBlock getByName(final String name) {
-		if (block.getName().equals(name))
-			return block;
+		if (this.block.getName().equals(name))
+			return this.block;
 		else
 			return null;
 	}
 
+	/**
+	 * @param name the name
+	 * @param value the new value
+	 * @return the previous value, null if the ConfigBlock has another name or isn't a ConfigItem
+	 */
 	public String set(final String name, final String value) {
 		final ConfigBlock block = this.getByName(name);
 		if (block instanceof ConfigItem) {
@@ -115,9 +146,13 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 		return null;
 	}
 
+	/**
+	 * @param value the new value
+	 * @return the previous value, null if the ConfigBlock isn't a ConfigItem
+	 */
 	public String set(final String value) {
-		if (block instanceof ConfigItem) {
-			final ConfigItem item = (ConfigItem) block;
+		if (this.block instanceof ConfigItem) {
+			final ConfigItem item = (ConfigItem) this.block;
 			final String previousValue = item.getValue();
 			item.setValue(value);
 			return previousValue;

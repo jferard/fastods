@@ -29,21 +29,22 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * A set of config blocks
  * 3.10.2 config:config-item-blocks
  * @author Julien Férard
  */
-public class ConfigItemSet implements ConfigBlock {
+public class ConfigItemSet implements ConfigItemCollection<ConfigBlock> {
 	private final Map<String, ConfigBlock> blockByName;
 	private final String name;
 
+	/**
+	 * @param name the name of this ConfigSet
+	 */
 	public ConfigItemSet(final String name) {
 		this.name = name;
 		this.blockByName = new HashMap<String, ConfigBlock>();
 	}
 
-	/**
-	 * @return The name of this ConfigSet
-	 */
 	@Override
 	public String getName() {
 		return this.name;
@@ -59,30 +60,47 @@ public class ConfigItemSet implements ConfigBlock {
 		appendable.append("</config:config-item-set>");
 	}
 
+	@Override
 	public int size() {
-		return blockByName.size();
+		return this.blockByName.size();
 	}
 
+	@Override
 	public boolean isEmpty() {
-		return blockByName.isEmpty();
+		return this.blockByName.isEmpty();
 	}
 
+	@Override
 	public Iterator<ConfigBlock> iterator() {
-		return blockByName.values().iterator();
+		return this.blockByName.values().iterator();
 	}
 
+	/**
+	 * @param configBlock the block to add
+	 */
 	public void add(final ConfigBlock configBlock) {
-		blockByName.put(configBlock.getName(), configBlock);
+		this.blockByName.put(configBlock.getName(), configBlock);
 	}
 
+	/**
+	 * @param name the name to look for
+	 * @return true iff an element has that name
+	 */
 	public boolean contains(final String name) {
-		return blockByName.containsKey(name);
+		return this.blockByName.containsKey(name);
 	}
 
+	/**
+	 * @param name the name to look for
+	 */
 	public void removeByName(final String name) {
-		blockByName.remove(name);
+		this.blockByName.remove(name);
 	}
 
+	/**
+	 * @param name the name to look for
+	 * @return the mapped block, null if none
+	 */
 	public ConfigBlock getByName(final String name) {
 		return this.blockByName.get(name);
 	}

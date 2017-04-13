@@ -29,13 +29,17 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * 3.10.4 config:config-item-map-indexed
+ * A map with elements mapped by names
+ * 3.10.4 config:config-item-map-named
  * @author Julien Férard
  */
-public class ConfigItemMapNamed implements ConfigBlock {
+public class ConfigItemMapNamed implements ConfigItemCollection<ConfigItemMapEntry> {
 	private final String name;
 	private final Map<String, ConfigItemMapEntry> map;
 
+	/**
+	 * @param name the name of this item
+	 */
 	public ConfigItemMapNamed(final String name) {
 		this.name = name;
 		this.map = new HashMap<String, ConfigItemMapEntry>();
@@ -46,32 +50,51 @@ public class ConfigItemMapNamed implements ConfigBlock {
 		return this.name;
 	}
 
+	@Override
 	public int size() {
-		return map.size();
+		return this.map.size();
 	}
 
+	@Override
 	public boolean isEmpty() {
-		return map.isEmpty();
+		return this.map.isEmpty();
 	}
 
+	/**
+	 * @param name the name to look for
+	 * @return true iff an element of this item is mapped to the name
+	 */
 	public boolean contains(final String name) {
-		return map.containsKey(name);
+		return this.map.containsKey(name);
 	}
 
+	/**
+	 * @param name the name to look for
+	 * @return the element mapped to this name, null if none
+	 */
 	public ConfigItemMapEntry getByName(final String name) {
-		return map.get(name);
+		return this.map.get(name);
 	}
 
+	/**
+	 * @param value the value to add. It's name will be the key
+	 * @return the previous value with this name
+	 */
 	public ConfigItemMapEntry put(final ConfigItemMapEntry value) {
-		return map.put(value.getName(), value);
+		return this.map.put(value.getName(), value);
 	}
 
+	/**
+	 * @param name the name to look for
+	 * @return the previous value, or null if none.
+	 */
 	public ConfigItemMapEntry removeByName(final String name) {
-		return map.remove(name);
+		return this.map.remove(name);
 	}
 
+	@Override
 	public Iterator<ConfigItemMapEntry> iterator() {
-		return map.values().iterator();
+		return this.map.values().iterator();
 	}
 
 	@Override
@@ -84,6 +107,9 @@ public class ConfigItemMapNamed implements ConfigBlock {
 		appendable.append("</config:config-item-map-named>");
 	}
 
+	/**
+	 * Clears this item.
+	 */
 	public void clear() {
 		this.map.clear();
 	}
