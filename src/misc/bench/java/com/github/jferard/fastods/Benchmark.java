@@ -94,4 +94,9 @@ public class Benchmark {
 	public void test3() throws IOException {
 		this.test(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT, Benchmark.TIMES);
 	}
+
+//	@Test
+	public void test4() throws IOException {
+		this.test(6*Benchmark.ROW_COUNT, 6*Benchmark.COL_COUNT, Benchmark.TIMES);
+	}
 }
