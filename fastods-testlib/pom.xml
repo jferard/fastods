@@ -1,0 +1,190 @@
+<!--
+  ~ FastODS - a Martin Schulz's SimpleODS fork
+  ~    Copyright (C) 2016-2017 J. Férard <https://github.com/jferard>
+  ~ SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
+  ~    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+  ~
+  ~ This file is part of FastODS.
+  ~
+  ~ FastODS is free software: you can redistribute it and/or modify it under the
+  ~ terms of the GNU General Public License as published by the Free Software
+  ~ Foundation, either version 3 of the License, or (at your option) any later
+  ~ version.
+  ~
+  ~ FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+  ~ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with
+  ~ this program. If not, see <http://www.gnu.org/licenses />.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.github.jferard</groupId>
+		<artifactId>fastods-parent</artifactId>
+		<version>0.3.2-SNAPSHOT</version>
+	</parent>
+
+	<groupId>${parent.groupId}</groupId>
+	<artifactId>fastods-testlib</artifactId>
+	<version>${parent.version}</version>
+	<name>FastODS testlib</name>
+	<description>A tiny test library for FastODS</description>
+	<url>https://github.com/jferard/fastods</url>
+
+    <inceptionYear>2016</inceptionYear>
+    <licenses>
+        <license>
+            <name>GPL v3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+            <distribution>repo</distribution>        
+        </license>
+    </licenses>
+
+    <developers>
+            <developer>
+                <id>jferard</id>
+                <name>Julien Férard</name>
+                <timezone>0</timezone>
+                <url>https://github.com/jferard</url>
+            </developer>
+    </developers>
+
+    <issueManagement>
+        <system>github</system>
+        <url>http://github.com/jferard/fastods/issues</url>
+    </issueManagement>
+    <scm>
+        <connection>scm:git:git@github.com:jferard/fastods.git</connection>
+        <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
+        <url>git@github.com:jferard/fastods.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jre>1.6</jre>
+        <fastods.testSourceDirectory>src/test/java</fastods.testSourceDirectory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mockrunner</groupId>
+			<artifactId>mockrunner-jdbc</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-easymock</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- compilation -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${jre}</source>
+					<target>${jre}</target>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+
+			<!-- for OSSRH releases -->
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<!-- misc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
