@@ -37,7 +37,7 @@ import com.github.jferard.fastods.testlib.Bench;
  *
  *         mvn -Dtest=BenchIT#test test
  */
-public class Benchmark {
+public class BenchmarkTest {
 	private static final int COL_COUNT = 20;
 	private static final int ROW_COUNT = 5000;
 	private static final int TIMES = 10;
@@ -65,7 +65,7 @@ public class Benchmark {
 
 	@Test
 	public void test1() throws IOException {
-		this.test(Benchmark.ROW_COUNT, Benchmark.COL_COUNT, Benchmark.TIMES);
+		this.test(BenchmarkTest.ROW_COUNT, BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
 	}
 
 	private void test(int rowCount, int colCount, int times) throws IOException {
@@ -88,16 +88,16 @@ public class Benchmark {
 
 	@Test
 	public void test2() throws IOException {
-		this.test(2*Benchmark.ROW_COUNT, 2*Benchmark.COL_COUNT, Benchmark.TIMES);
+		this.test(2*BenchmarkTest.ROW_COUNT, 2*BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
 	}
 
 	@Test
 	public void test3() throws IOException {
-		this.test(3*Benchmark.ROW_COUNT, 3*Benchmark.COL_COUNT, Benchmark.TIMES);
+		this.test(3*BenchmarkTest.ROW_COUNT, 3*BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
 	}
 
 //	@Test
 	public void test4() throws IOException {
-		this.test(6*Benchmark.ROW_COUNT, 6*Benchmark.COL_COUNT, Benchmark.TIMES);
+		this.test(6*BenchmarkTest.ROW_COUNT, 6*BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
 	}
 }
