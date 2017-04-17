@@ -22,9 +22,8 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.LocaleDataStyles;
+import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -62,8 +61,7 @@ public class HeavyTableRowTest {
 		this.table = PowerMock.createMock(Table.class);
 		final WriteUtil writeUtil = WriteUtil.create();
 		this.xmlUtil = XMLUtil.create();
-		this.ds = new LocaleDataStyles(
-				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));
+		this.ds = DataStylesFactory.create(this.xmlUtil, Locale.US);
 		this.row = new HeavyTableRow(writeUtil, this.xmlUtil, this.stc, this.ds,
 				this.table, 10, 100);
 		this.tcs = TableCellStyle.builder("---").build();
@@ -273,8 +271,7 @@ public class HeavyTableRowTest {
 	@Test
 	public final void testDefaultCellStyle() {
 		final TableCellStyle cs = TableCellStyle.builder("a").build();
-		final DataStyles ds = new LocaleDataStyles(
-				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));
+		final DataStyles ds = DataStylesFactory.create(this.xmlUtil, Locale.US);
 
 		// PLAY
 		this.stc.addStyleToStylesCommonStyles(cs);
@@ -603,8 +600,7 @@ public class HeavyTableRowTest {
 	public final void testRowOpenTag() throws IOException {
 		final TableRowStyle trs = TableRowStyle.builder("a").build();
 		final TableCellStyle cs = TableCellStyle.builder("b").build();
-		final DataStyles ds = new LocaleDataStyles(
-				new DataStyleBuilderFactory(this.xmlUtil, Locale.US));
+		final DataStyles ds = DataStylesFactory.create(this.xmlUtil, Locale.US);
 		final StringBuilder sb = new StringBuilder();
 
 		// PLAY

@@ -21,8 +21,8 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.datastyle.LocaleDataStyles;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FileExists;
@@ -51,7 +51,7 @@ public class OdsFactory {
 		return new OdsFactory(Logger.getLogger(OdsDocument.class.getName()), Locale.getDefault());
 	}
 
-	private final LocaleDataStyles format;
+	private final DataStyles format;
 	private final Logger logger;
 	private final PositionUtil positionUtil;
 	private final WriteUtil writeUtil;
@@ -61,9 +61,7 @@ public class OdsFactory {
 		this.positionUtil = new PositionUtil(new EqualityUtil());
 		this.writeUtil = WriteUtil.create();
 		this.xmlUtil = XMLUtil.create();
-		final DataStyleBuilderFactory builderFactory = new DataStyleBuilderFactory(
-				this.xmlUtil, locale);
-		this.format = new LocaleDataStyles(builderFactory);
+		this.format = DataStylesFactory.create(this.xmlUtil, locale);
 		this.logger = logger;
 	}
 

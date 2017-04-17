@@ -20,9 +20,8 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.LocaleDataStyles;
+import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
@@ -54,8 +53,7 @@ public class TableTest {
         this.stc = PowerMock.createMock(StylesContainer.class);
         final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
-        this.ds = new LocaleDataStyles(
-                new DataStyleBuilderFactory(xmlUtil, Locale.US));
+        this.ds = DataStylesFactory.create(xmlUtil, Locale.US);
         this.table = new Table(positionUtil, WriteUtil.create(), xmlUtil,
                 this.stc, this.ds, "mytable", 10, 100);
         this.xmlUtil = xmlUtil;
