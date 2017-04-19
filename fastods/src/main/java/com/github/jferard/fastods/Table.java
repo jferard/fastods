@@ -317,8 +317,15 @@ public class Table implements NamedObject {
 				if (rowIndex == 0) {
 					this.observer.update(new BeginTableFlusher(this));
 				} else if (rowIndex % this.bufferSize == 0) {
-					this.observer.update(new RowsFlusher(this.tableRows.subList(this.lastFlushedRowIndex,
-							rowIndex))); // (0..1023), (1024..2047)
+					this.observer.update(
+							new RowsFlusher(
+								new ArrayList<HeavyTableRow>(
+										this.tableRows.subList(
+												this.lastFlushedRowIndex, rowIndex
+										)
+								)
+						)
+					); // (0..1023), (1024..2047)
 					this.lastFlushedRowIndex = rowIndex;
 				}
 			}

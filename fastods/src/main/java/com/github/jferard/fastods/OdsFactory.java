@@ -109,7 +109,8 @@ public class OdsFactory {
 	public OdsFileWriter createWriter(final String filename) throws
 			IOException {
 		final OdsDocument document = this.createDocument();
-		final OdsFileWriter writer = OdsFileWriter.builder(this.logger, document).openResult(this.openFile(filename))
+		final OdsFileWriter writer = OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile
+				(filename))
 				.build();
 		document.addObserver(writer);
 		document.prepareFlush();
@@ -119,10 +120,19 @@ public class OdsFactory {
 	public OdsFileWriter createWriter(final File file) throws IOException {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer =
-				OdsFileWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
+				OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile(file)).build();
 		document.addObserver(writer);
 		document.prepareFlush();
 		return writer;
+	}
+
+	public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
+		final OdsDocument document = this.createDocument();
+		final OdsFileWriterAdapter writerAdapter = new OdsFileWriterAdapter(
+				OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile(file)).build());
+		document.addObserver(writerAdapter);
+		document.prepareFlush();
+		return writerAdapter;
 	}
 
 	/**
