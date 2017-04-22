@@ -52,6 +52,20 @@ import java.util.zip.ZipEntry;
  * @author Julien Férard
  */
 public class OdsElements {
+	private static final String[] EMPTY_ELEMENT_NAMES = {"Thumbnails/",
+            "Configurations2/accelerator/current.xml",
+            "Configurations2/floater/", "Configurations2/images/Bitmaps/",
+            "Configurations2/menubar/", "Configurations2/popupmenu/",
+            "Configurations2/progressbar/", "Configurations2/statusbar/",
+            "Configurations2/toolbar/"};
+
+	/**
+	 * @param positionUtil an util for cell addresses (e.g. "A1")
+	 * @param xmlUtil an XML util
+	 * @param writeUtil an util for write
+	 * @param format the data styles
+	 * @return a new OdsElements, with newly build elements.
+	 */
 	public static OdsElements create(final PositionUtil positionUtil,
 									 final XMLUtil xmlUtil, final WriteUtil writeUtil,
 									 final DataStyles format) {
@@ -64,8 +78,8 @@ public class OdsElements {
 		final ContentElement contentElement = new ContentElement(positionUtil,
 				xmlUtil, writeUtil, format, stylesContainer);
 		return new OdsElements(Logger.getLogger(OdsElements.class.getName()),
-				mimetypeElement, manifestElement, settingsElement, metaElement,
-				contentElement, stylesElement, stylesContainer);
+				stylesContainer, mimetypeElement, manifestElement, settingsElement, metaElement,
+				contentElement, stylesElement);
 	}
 
 	private final ContentElement contentElement;
@@ -78,11 +92,21 @@ public class OdsElements {
 	private final StylesElement stylesElement;
 	private OdsFileWriter observer;
 
-	protected OdsElements(final Logger logger, final MimetypeElement mimetypeElement,
-						  final ManifestElement manifestElement,
-						  final SettingsElement settingsElement, final MetaElement metaElement,
-						  final ContentElement contentElement, final StylesElement stylesElement,
-						  final StylesContainer stylesContainer) {
+	/**
+	 * Create a new instance from elements
+	 * @param logger
+	 * @param stylesContainer
+	 * @param mimetypeElement
+	 * @param manifestElement
+	 * @param settingsElement
+	 * @param metaElement
+	 * @param contentElement
+	 * @param stylesElement
+	 */
+	private OdsElements(final Logger logger, final StylesContainer stylesContainer, final MimetypeElement mimetypeElement,
+						final ManifestElement manifestElement,
+						final SettingsElement settingsElement, final MetaElement metaElement,
+						final ContentElement contentElement, final StylesElement stylesElement) {
 		this.logger = logger;
 		this.mimetypeElement = mimetypeElement;
 		this.manifestElement = manifestElement;
@@ -93,19 +117,37 @@ public class OdsElements {
 		this.stylesContainer = stylesContainer;
 	}
 
+	/**
+	 * Create an automatic style for this TableCellStyle and this type of cell.
+	 * @param style the style of the cell (color, data style, etc.)
+	 * @param type the type of the cell
+	 */
 	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
 		this.contentElement.addChildCellStyle(style, type);
 	}
 
+	/**
+	 * Create a new data style into styles container. No duplicate style name is allowed.
+	 * @param dataStyle the data style to add
+	 */
 	public void addDataStyle(final DataStyle dataStyle) {
 		this.stylesContainer.addDataStyle(dataStyle);
 	}
 
+	/**
+	 * Create a new master page style into styles container. No duplicate style name is allowed.
+	 * @param masterPageStyle the data style to add
+	 * @return true if the style was created
+	 */
 	public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
 		this.stylesContainer.addMasterPageStyle(masterPageStyle);
 	}
 
-	public void addObserver(OdsFileWriter o) {
+	/**
+	 * The OdsElements is observable by a writer.
+	 * @param o the file writer
+	 */
+	public void addObserver(final OdsFileWriter o) {
 		this.observer = o;
 	}
 
@@ -131,12 +173,22 @@ public class OdsElements {
 		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
 	}
 
+	/**
+	 * Add a new table to content. The config for this table is added to the settings.
+	 * If the OdsElements is observed, the previous table is flushed. If there is no previous table,
+	 * meta.xml, styles.xml and the preamble of content.xml are written to destination.
+	 * @param name name of the table
+	 * @param rowCapacity estimated rows
+	 * @param columnCapacity estimated columns
+	 * @return the table
+	 * @throws IOException if the OdsElements is observed and there is a write exception
+	 */
 	public Table addTableToContent(final String name, final int rowCapacity,
 								   final int columnCapacity) throws IOException {
-		final Table previousTable = this.contentElement.getLastTable();
 		final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
 		this.settingsElement.addTableConfig(table.getConfigEntry());
 		if (this.observer != null) {
+			final Table previousTable = this.contentElement.getLastTable();
 			if (previousTable == null)
 				this.observer.update(new MetaAndStylesElementsFlusher(this, this.contentElement));
 			else
@@ -146,15 +198,15 @@ public class OdsElements {
 		return table;
 	}
 
+	/**
+	 * Create empty elements for package. Used on save or by the ImmutableElementsFlusher.
+	 * @param writer destination
+	 * @throws IOException if the elements were not created.
+	 */
 	public void createEmptyElements(final ZipUTF8Writer writer)
 			throws IOException {
 		this.logger.log(Level.FINER, "Writing empty ods elements to zip file");
-		for (final String elementName : new String[]{"Thumbnails/",
-				"Configurations2/accelerator/current.xml",
-				"Configurations2/floater/", "Configurations2/images/Bitmaps/",
-				"Configurations2/menubar/", "Configurations2/popupmenu/",
-				"Configurations2/progressbar/", "Configurations2/statusbar/",
-				"Configurations2/toolbar/"}) {
+		for (final String elementName : EMPTY_ELEMENT_NAMES) {
 			this.logger.log(Level.FINEST, "Writing odselement: {0} to zip file",
 					elementName);
 			writer.putNextEntry(new ZipEntry(elementName));

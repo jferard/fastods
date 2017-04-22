@@ -36,7 +36,10 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class CurrencyStyle extends DataStyle {
 
-	public static enum SymbolPosition {
+	/**
+	 * A currency symbol may be at the beginning or the end of the expression
+	 */
+	public enum SymbolPosition {
 		BEGIN, END;
 	}
 
@@ -44,7 +47,20 @@ public class CurrencyStyle extends DataStyle {
 	private final String currencySymbol;
 	private final FloatStyle floatStyle;
 
-	protected CurrencyStyle(final String name, final String languageCode,
+	/**
+	 * Create a new CurrencyStyle.
+	 * @param name
+	 * @param languageCode
+	 * @param countryCode
+	 * @param volatileStyle
+	 * @param decimalPlaces
+	 * @param grouping
+	 * @param minIntegerDigits
+	 * @param negativeValueColor
+	 * @param currencySymbol
+	 * @param currencyPosition
+	 */
+	CurrencyStyle(final String name, final String languageCode,
 			final String countryCode, final boolean volatileStyle,
 			final int decimalPlaces, final boolean grouping,
 			final int minIntegerDigits, final String negativeValueColor,
@@ -58,10 +74,6 @@ public class CurrencyStyle extends DataStyle {
 		this.currencyPosition = currencyPosition;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 */
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)
 			throws IOException {
@@ -97,8 +109,8 @@ public class CurrencyStyle extends DataStyle {
 	/**
 	 * Get the position of the currency symbol.
 	 *
-	 * @return either CurrencyStyle.SYMBOLPOSITION_BEGIN or
-	 *         CurrencyStyle.SYMBOLPOSITION_END
+	 * @return either CurrencyStyle.SymbolPosition.BEGIN or
+	 *         CurrencyStyle.SymbolPosition.END
 	 */
 	public SymbolPosition getCurrencySymbolPosition() {
 		return this.currencyPosition;
@@ -111,7 +123,7 @@ public class CurrencyStyle extends DataStyle {
 			this.floatStyle.appendNumber(util, appendable);
 			appendable.append("<number:text> </number:text>");
 			this.appendCurrencySymbol(util, appendable);
-		} else { // SYMBOLPOSITION_BEGIN
+		} else { // BEGIN
 			this.appendCurrencySymbol(util, appendable);
 			this.floatStyle.appendNumber(util, appendable);
 		}

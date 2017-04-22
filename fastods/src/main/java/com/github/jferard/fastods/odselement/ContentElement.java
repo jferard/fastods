@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 
 /**
- * content.xml/office:document-content
+ * See 3.1.3.2 <office:document-content>.
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -52,6 +52,13 @@ public class ContentElement implements OdsElement {
 	private final XMLUtil xmlUtil;
 	private List<String> autofilters;
 
+	/**
+	 * @param positionUtil an util object for positions (e.g. "A1")
+	 * @param xmlUtil an util object to write xml
+	 * @param writeUtil an util to compute some data
+	 * @param format the format for data styles
+	 * @param stylesContainer a styles container.
+	 */
 	ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
 				   final WriteUtil writeUtil,
 				   final DataStyles format,
@@ -65,6 +72,11 @@ public class ContentElement implements OdsElement {
 		this.flushPosition = new FlushPosition();
 	}
 
+	/**
+	 * Create an automatic style for this TableCellStyle and this type of cell.
+	 * @param style the style of the cell (color, data style, etc.)
+	 * @param type the type of the cell
+	 */
 	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
 		this.stylesContainer.addChildCellStyle(style, this.format.getDataStyle(type));
 	}
@@ -94,6 +106,13 @@ public class ContentElement implements OdsElement {
 		}
 	}
 
+	/**
+	 * Flush the rows from the last position to the current position
+	 * @param util the XML util
+	 * @param writer the destination
+	 * @param settingsElement the settings.xml representation
+	 * @throws IOException if the rows were not flushed
+	 */
 	public void flushRows(final XMLUtil util, final ZipUTF8Writer writer, final SettingsElement settingsElement)
 			throws IOException {
 		this.ensureContentBegin(util, writer);
@@ -118,6 +137,12 @@ public class ContentElement implements OdsElement {
 		this.flushPosition.set(lastTableIndex, this.tables.get(lastTableIndex).getLastRowNumber());
 	}
 
+	/**
+	 * Flush the tables.
+	 * @param util an XML util
+	 * @param writer destination
+	 * @throws IOException if the tables were not flushed
+	 */
 	public void flushTables(final XMLUtil util, final ZipUTF8Writer writer)
 			throws IOException {
 		this.ensureContentBegin(util, writer);
@@ -134,15 +159,25 @@ public class ContentElement implements OdsElement {
 		}
 	}
 
+	/**
+	 * @return the last table in the document
+	 */
 	public Table getLastTable() {
 		final int size = this.tables.size();
 		return size <= 0 ? null : this.tables.get(size -1);
 	}
 
+	/**
+	 * @return the styles container
+	 */
 	public StylesContainer getStyleTagsContainer() {
 		return this.stylesContainer;
 	}
 
+	/**
+	 * @param tableIndex an index of the table
+	 * @return the table at that index
+	 */
 	public Table getTable(final int tableIndex) {
 		return this.tables.get(tableIndex);
 	}
@@ -155,6 +190,9 @@ public class ContentElement implements OdsElement {
 		return this.tables.getByName(name);
 	}
 
+	/**
+	 * @return the number of tables in the document
+	 */
 	public int getTableCount() {
 		return this.tables.size();
 	}
@@ -175,6 +213,12 @@ public class ContentElement implements OdsElement {
 		this.writePostamble(util, writer);
 	}
 
+	/**
+	 * Write the postamble into the given writer. Used by the FinalizeFlusher and by standard write method
+	 * @param util an XML util
+	 * @param writer the destination
+	 * @throws IOException if the postamble was not written
+	 */
 	public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		if (this.autofilters != null)
 			this.appendAutofilters(writer, util);
@@ -185,6 +229,12 @@ public class ContentElement implements OdsElement {
 		writer.closeEntry();
 	}
 
+	/**
+	 * Write the preamble into the given writer. Used by the MetaAndStylesElementsFlusher and by standard write method
+	 * @param util an XML util
+	 * @param writer the destination
+	 * @throws IOException if the preamble was not written
+	 */
 	public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		writer.putNextEntry(new ZipEntry("content.xml"));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -243,6 +293,14 @@ public class ContentElement implements OdsElement {
 		appendable.append("</table:database-ranges>");
 	}
 
+	/**
+	 * Add an autofilter to a table
+	 * @param table the table where the filter goes
+	 * @param r1 first row index (0..n-1)
+	 * @param c1 first col index
+	 * @param r2 last row index
+	 * @param c2 last col index
+	 */
 	public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
 		if (this.autofilters == null)
 			this.autofilters = new ArrayList<String>();

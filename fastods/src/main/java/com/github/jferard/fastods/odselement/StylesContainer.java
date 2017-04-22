@@ -86,6 +86,10 @@ public class StylesContainer {
         return anonymousStyle;
     }
 
+    /**
+     * Create a new data style into styles container. No duplicate style name is allowed.
+     * @param dataStyle the data style to add
+     */
     public void addDataStyle(final DataStyle dataStyle) {
         this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
                 Mode.CREATE);
@@ -96,14 +100,25 @@ public class StylesContainer {
                 mode);
     }
 
+    /**
+     * Create a new master page style into styles container. No duplicate style name is allowed.
+     * @param masterPageStyle the data style to add
+     * @return true if the style was created
+     */
     public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
         return this.addMasterPageStyle(masterPageStyle, Mode.CREATE);
     }
 
-    public boolean addMasterPageStyle(final MasterPageStyle ps,
+    /**
+     * Create a new master page style into styles container. No duplicate style name is allowed.
+     * @param masterPageStyle the data style to add
+     * @param mode create, update or "free"
+     * @return true if the style was created
+     */
+    public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle,
                                       final Mode mode) {
-        if (this.masterPageStylesContainer.add(ps.getName(), ps, mode)) {
-            ps.addEmbeddedStylesToStylesContainer(this, mode);
+        if (this.masterPageStylesContainer.add(masterPageStyle.getName(), masterPageStyle, mode)) {
+            masterPageStyle.addEmbeddedStylesToStylesContainer(this, mode);
             return true;
         } else
             return false;
@@ -224,12 +239,24 @@ public class StylesContainer {
             ts.appendXML(util, writer);
     }
 
+    /**
+     * Write the various styles in the automatic styles.
+     * @param util an XML util
+     * @param writer the destination
+     * @throws IOException if the styles can't be written
+     */
     public void writeContentAutomaticStyles(final XMLUtil util,
                                             final ZipUTF8Writer writer) throws IOException {
         this.write(this.styleTagsContainer
                 .getValues(Dest.CONTENT_AUTOMATIC_STYLES), util, writer);
     }
 
+    /**
+     * Write the data styles in the automatic styles.
+     * @param util an XML util
+     * @param writer the destination
+     * @throws IOException if the styles can't be written
+     */
     public void writeDataStyles(final XMLUtil util, final ZipUTF8Writer writer)
             throws IOException {
         for (final DataStyle dataStyle : this.dataStylesContainer.getValues())

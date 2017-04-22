@@ -21,21 +21,43 @@
 
 package com.github.jferard.fastods.util;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * A Container is a Map like object, but with a mode parameter: one may create, update, or create or update a key-value pair.
+ * The container may be frozen: no new key-value pair is accepted.
+ *
+ * @param <K> key class
+ * @param <V> value class
+ *
+ * @author Julien Férard
+ */
 public class Container<K, V> {
 	private final Map<K, V> valueByKey;
 	private boolean closed;
 	private boolean debug;
 
+	/**
+	 * Builds a default container
+	 */
 	public Container() {
 		this.valueByKey = new HashMap<K, V>();
 		this.closed = false;
 		this.debug = false;
 	}
 
+	/**
+	 * If mode is update, then the key must exist. If the mode is create, then the key must not exist.
+	 * Otherwise, the key may exist. If the container is frozen, no new key-value pair is accepted.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 * @param mode the mode
+	 * @return true if the value was updated
+	 */
 	public boolean add(final K key, final V value, final Mode mode) {
 		final V curValue = this.valueByKey.get(key);
 		if (curValue == null) { // key does not exist
@@ -59,27 +81,57 @@ public class Container<K, V> {
 		return true;
 	}
 
+	/**
+	 * Set the debug mode: every add will be stored
+	 */
 	public void debug() {
 		this.debug = true;
 	}
 
+	/**
+	 * Freeze the container: no new key-value pair is accepted.
+	 */
 	public void freeze() {
 		this.closed = true;
 	}
 
+	/**
+	 * @param key the key to look for
+	 * @return the value mapped to the key
+	 */
 	public V get(final K key) {
 		return this.valueByKey.get(key);
 	}
 
+	/**
+	 * @return the container as a Map
+	 */
 	public Map<K, V> getValueByKey() {
 		return this.valueByKey;
 	}
 
-	public Iterable<V> getValues() {
+	/**
+	 * @return the values
+	 */
+	public Collection<V> getValues() {
 		return this.valueByKey.values();
 	}
 
+	/**
+	 * the mode
+	 */
 	public enum Mode {
-		CREATE, CREATE_OR_UPDATE, UPDATE
+		/**
+		 * to create a new key-value pair.
+		 */
+		CREATE,
+		/**
+		 * to create or update a new key-value pair: works like a standard Map.
+		 */
+		CREATE_OR_UPDATE,
+		/**
+		 * to update only a key-value pair.
+		 */
+		UPDATE
 	}
 }
