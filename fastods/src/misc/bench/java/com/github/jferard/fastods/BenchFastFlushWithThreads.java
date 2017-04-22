@@ -57,9 +57,9 @@ public class BenchFastFlushWithThreads extends Bench {
 			final OdsDocument document = writerAdapter.document();
 			Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
 			Consumer b = new Consumer(writerAdapter);
-			b.start();
-			a.start();
-			a.join();
+//			b.start();
+			a.run(); // start();
+//			a.join();
 			b.join();
 			final long t2 = System.currentTimeMillis();
 
@@ -80,14 +80,22 @@ public class BenchFastFlushWithThreads extends Bench {
 
 		@Override
 		public void run() {
+			long t = 0;
 			try {
 				while (this.writerAdapter.isNotStopped()) {
 					this.writerAdapter.waitForData();
+					final long t1 = System.currentTimeMillis();
 					this.writerAdapter.flushAdaptee();
+					final long t2 = System.currentTimeMillis();
+					t += t2 - t1;
 				}
+				final long t1 = System.currentTimeMillis();
 				this.writerAdapter.flushAdaptee();
+				final long t2 = System.currentTimeMillis();
+				t += t2 - t1;
 			} catch (IOException e) {
 			}
+			System.out.println(">> Write time " + t + " ms");
 		}
 	}
 

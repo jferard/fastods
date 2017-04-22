@@ -318,7 +318,7 @@ public class Table implements NamedObject {
 					this.observer.update(new BeginTableFlusher(this));
 				} else if (rowIndex % this.bufferSize == 0) {
 					this.observer.update(
-							new RowsFlusher(
+							new PreprocessedRowsFlusher(this.xmlUtil,
 								new ArrayList<HeavyTableRow>(
 										this.tableRows.subList(
 												this.lastFlushedRowIndex, rowIndex

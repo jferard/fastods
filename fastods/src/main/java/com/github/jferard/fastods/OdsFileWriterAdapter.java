@@ -55,7 +55,7 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
 	@Override
 	public synchronized void update(final OdsFlusher flusher) throws IOException {
 		this.flushers.add(flusher);
-		this.notifyAll(); // nobody is waiting
+		this.notifyAll();
 	}
 
 	public synchronized void flushAdaptee() throws IOException {
@@ -69,6 +69,11 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
 				this.stopped = true;
 				break;
 			}
+			try {
+				wait();
+			} catch (InterruptedException e) {
+			}
+			this.notifyAll(); //
 			flusher = this.flushers.poll();
 		}
 		if (stopped)
