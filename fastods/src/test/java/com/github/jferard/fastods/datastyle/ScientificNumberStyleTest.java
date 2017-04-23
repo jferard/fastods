@@ -52,12 +52,12 @@ public class ScientificNumberStyleTest {
 		final StringBuilder sb = new StringBuilder();
 		s.appendXML(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"en\" number:country=\"FR\" style:volatile=\"true\">"
-				+ "<number:scientific-number number:min-exponent-digits=\"1\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
+				+ "<number:scientific-number number:min-exponent-digits=\"1\" number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "</number:number-style>"
 				+ "<number:number-style style:name=\"name-neg\" number:language=\"en\" number:country=\"FR\" style:volatile=\"true\">"
 				+ "<style:text-properties fo:color=\"#FF0000\"/>"
 				+ "<number:text>-</number:text>"
-				+ "<number:scientific-number number:min-exponent-digits=\"1\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
+				+ "<number:scientific-number number:min-exponent-digits=\"1\" number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
 		DomTester.assertEquals(str, sb.toString());
@@ -73,12 +73,12 @@ public class ScientificNumberStyleTest {
 		final StringBuilder sb = new StringBuilder();
 		s.appendXML(this.util, sb);
 		final String str = "<number:number-style style:name=\"name\" number:language=\"de\" number:country=\"DE\" style:volatile=\"true\">"
-				+ "<number:scientific-number number:min-exponent-digits=\"2\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
+				+ "<number:scientific-number number:min-exponent-digits=\"2\" number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "</number:number-style>"
 				+ "<number:number-style style:name=\"name-neg\" number:language=\"de\" number:country=\"DE\" style:volatile=\"true\">"
 				+ "<style:text-properties fo:color=\"#FF0000\"/>"
 				+ "<number:text>-</number:text>"
-				+ "<number:scientific-number number:min-exponent-digits=\"2\" number:decimal-places=\"0\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
+				+ "<number:scientific-number number:min-exponent-digits=\"2\" number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"name\"/>"
 				+ "</number:number-style>";
 		DomTester.assertEquals(str, sb.toString());

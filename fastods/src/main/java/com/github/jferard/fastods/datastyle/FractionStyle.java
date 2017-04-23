@@ -23,6 +23,7 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -37,41 +38,68 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class FractionStyle extends NumberStyle {
+public class FractionStyle implements DataStyle {
+	private final NumberStyle numberStyle;
 	private final int minDenominatorDigits;
 	private final int minNumeratorDigits;
 
-	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is decPlaces.
-	 *
-	 * @param styleName
-	 *            The name of the number style, this name must be unique.
-	 * @param minIntDigits
-	 *            The minimum integer digits to be shown.
-	 * @param decPlaces
-	 *            The number of decimal places to be shown.
-	 */
-	FractionStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
-			final boolean grouping, final int minIntegerDigits,
-			final String negativeValueColor, final int minNumeratorDigits,
+	FractionStyle(final NumberStyle numberStyle, final int minNumeratorDigits,
 			final int minDenominatorDigits) {
-		super(name, languageCode, countryCode, volatileStyle, grouping,
-				minIntegerDigits, negativeValueColor);
+		this.numberStyle = numberStyle;
 		this.minNumeratorDigits = minNumeratorDigits;
 		this.minDenominatorDigits = minDenominatorDigits;
 	}
 
 	@Override
-	protected void appendNumber(final XMLUtil util, final Appendable appendable)
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+		final CharSequence number = this.computeNumberTag(util);
+		this.numberStyle.appendXML(util, appendable, "number-style", number);
+	}
+
+	private CharSequence computeNumberTag(final XMLUtil util)
 			throws IOException {
-		appendable.append("<number:fraction");
-		util.appendEAttribute(appendable, "number:min-numerator-digits",
+		final StringBuilder number = new StringBuilder();
+		number.append("<number:fraction");
+		util.appendEAttribute(number, "number:min-numerator-digits",
 				this.minNumeratorDigits);
-		util.appendEAttribute(appendable, "number:min-denominator-digits",
+		util.appendEAttribute(number, "number:min-denominator-digits",
 				this.minDenominatorDigits);
-		this.appendNumberAttribute(util, appendable);
-		appendable.append("/>");
+		this.numberStyle.appendNumberAttribute(util, number);
+		number.append("/>");
+		return number;
+	}
+
+	public boolean getGroupThousands() {
+		return this.numberStyle.getGroupThousands();
+	}
+
+	public int getMinIntegerDigits() {
+		return this.numberStyle.getMinIntegerDigits();
+	}
+
+	public String getNegativeValueColor() {
+		return this.numberStyle.getNegativeValueColor();
+	}
+
+	public boolean isVolatileStyle() {
+		return this.numberStyle.isVolatileStyle();
+	}
+
+	@Override
+	public String getName() {
+		return this.numberStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.numberStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.numberStyle.getLanguageCode();
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
 	}
 }

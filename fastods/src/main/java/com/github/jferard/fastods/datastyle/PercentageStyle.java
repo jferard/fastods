@@ -23,6 +23,7 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -37,29 +38,13 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class PercentageStyle extends DataStyle {
+public class PercentageStyle implements DataStyle {
 	private final FloatStyle floatStyle;
 
 	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is decPlaces. The number style is
-	 * NumberStyle.NUMBER_NORMAL
-	 *
-	 * @param styleName
-	 *            The name of the number style, this name must be unique.
-	 * @param minIntDigits
-	 *            The minimum integer digits to be shown.
-	 * @param decPlaces
-	 *            The number of decimal places to be shown.
 	 */
-	PercentageStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
-			final int decimalPlaces, final boolean grouping,
-			final int minIntegerDigits, final String negativeValueColor) {
-		super(name, languageCode, countryCode, volatileStyle);
-		this.floatStyle = new FloatStyle(name, languageCode, countryCode,
-				volatileStyle, decimalPlaces, grouping, minIntegerDigits,
-				negativeValueColor);
+	PercentageStyle(final FloatStyle floatStyle) {
+		this.floatStyle = floatStyle;
 	}
 
 	/**
@@ -71,25 +56,47 @@ public class PercentageStyle extends DataStyle {
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		appendable.append("<number:percentage-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
-		appendable.append(">");
-		this.floatStyle.appendNumber(util, appendable);
-		appendable.append("<number:text>%</number:text>");
-		appendable.append("</number:percentage-style>");
+		final StringBuilder percentage = new StringBuilder();
+		this.floatStyle.appendNumberTag(util, percentage);
+		percentage.append("<number:text>%</number:text>");
+		this.floatStyle.appendXML(util, appendable, "percentage-style", percentage);
+	}
 
-		if (this.floatStyle.negativeValueColor != null) {
-			appendable.append("<number:percentage-style");
-			util.appendAttribute(appendable, "style:name", this.name + "-neg");
-			this.appendLVAttributes(util, appendable);
-			appendable.append(">");
-			this.floatStyle.appendStyleColor(util, appendable);
-			appendable.append("<number:text>-</number:text>");
-			this.floatStyle.appendNumber(util, appendable);
-			appendable.append("<number:text>%</number:text>");
-			this.floatStyle.appendStyleMap(util, appendable);
-			appendable.append("</number:percentage-style>");
-		}
+	public int getDecimalPlaces() {
+		return this.floatStyle.getDecimalPlaces();
+	}
+
+	@Override
+	public String getName() {
+		return this.floatStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.floatStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.floatStyle.getLanguageCode();
+	}
+
+	public boolean getGroupThousands() {
+		return this.floatStyle.getGroupThousands();
+	}
+
+	public int getMinIntegerDigits() {
+		return this.floatStyle.getMinIntegerDigits();
+	}
+
+	public String getNegativeValueColor() {
+		return this.floatStyle.getNegativeValueColor();
+	}
+
+	public boolean isVolatileStyle() {
+		return this.floatStyle.isVolatileStyle();
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
 	}
 }

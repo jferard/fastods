@@ -26,8 +26,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class PercentageStyleBuilder
-		extends DataStyleBuilder<PercentageStyle, PercentageStyleBuilder> {
+public class PercentageStyleBuilder {
 	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
@@ -38,18 +37,11 @@ public class PercentageStyleBuilder
 	 * @param locale the locale used
 	 */
 	PercentageStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
 
-	@Override
 	public PercentageStyle build() {
-		return new PercentageStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle,
-				this.floatStyleBuilder.decimalPlaces,
-				this.floatStyleBuilder.grouping,
-				this.floatStyleBuilder.minIntegerDigits,
-				this.floatStyleBuilder.negativeValueColor);
+		return new PercentageStyle(this.floatStyleBuilder.build());
 	}
 
 	public PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
@@ -76,5 +68,21 @@ public class PercentageStyleBuilder
 	public PercentageStyleBuilder negativeValueRed() {
 		this.floatStyleBuilder.negativeValueRed();
 		return this;
+	}
+
+	public FloatStyleBuilder country(final String countryCode) {
+		return this.floatStyleBuilder.country(countryCode);
+	}
+
+	public FloatStyleBuilder language(final String languageCode) {
+		return this.floatStyleBuilder.language(languageCode);
+	}
+
+	public FloatStyleBuilder locale(final Locale locale) {
+		return this.floatStyleBuilder.locale(locale);
+	}
+
+	public FloatStyleBuilder volatileStyle(final boolean volatileStyle) {
+		return this.floatStyleBuilder.volatileStyle(volatileStyle);
 	}
 }

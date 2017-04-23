@@ -57,9 +57,9 @@ public class OdsElementsTest {
 		this.stylesElement = PowerMock.createMock(StylesElement.class);
 		this.stylesContainer = new StylesContainer();
 
-		this.oe = new OdsElements(logger, this.mimetypeElement, this.manifestElement,
+		this.oe = new OdsElements(logger, this.stylesContainer, this.mimetypeElement, this.manifestElement,
 				this.settingsElement, this.metaElement, this.contentElement,
-				this.stylesElement, this.stylesContainer);
+				this.stylesElement);
 		this.util = XMLUtil.create();
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);

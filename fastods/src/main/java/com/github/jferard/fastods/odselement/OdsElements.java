@@ -103,7 +103,7 @@ public class OdsElements {
 	 * @param contentElement
 	 * @param stylesElement
 	 */
-	private OdsElements(final Logger logger, final StylesContainer stylesContainer, final MimetypeElement mimetypeElement,
+	OdsElements(final Logger logger, final StylesContainer stylesContainer, final MimetypeElement mimetypeElement,
 						final ManifestElement manifestElement,
 						final SettingsElement settingsElement, final MetaElement metaElement,
 						final ContentElement contentElement, final StylesElement stylesElement) {

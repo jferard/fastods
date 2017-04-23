@@ -28,11 +28,11 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public abstract class NumberStyleBuilder<S extends NumberStyle, B extends NumberStyleBuilder<S, B>>
-		extends DataStyleBuilder<S, B> {
-	protected boolean grouping;
-	protected int minIntegerDigits;
-	protected String negativeValueColor;
+public final class NumberStyleBuilder {
+	private final CoreDataStyleBuilder dataStyleBuilder;
+	private boolean grouping;
+	private int minIntegerDigits;
+	private String negativeValueColor;
 
 	/**
 	 * Create a new number style with a name and a locale.
@@ -41,7 +41,8 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 * @param locale the locale to use
 	 */
 	NumberStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
+		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
+		this.minIntegerDigits = 1;
 		this.grouping = false;
 	}
 
@@ -49,10 +50,9 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 * @param grouping if true, the thousands separator is shown.
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B groupThousands(final boolean grouping) {
+	public NumberStyleBuilder groupThousands(final boolean grouping) {
 		this.grouping = grouping;
-		return (B) this;
+		return this;
 	}
 
 	/**
@@ -60,29 +60,53 @@ public abstract class NumberStyleBuilder<S extends NumberStyle, B extends Number
 	 *            The number of digits for integer part
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B minIntegerDigits(final int minIntegerDigits) {
+	public NumberStyleBuilder minIntegerDigits(final int minIntegerDigits) {
 		this.minIntegerDigits = minIntegerDigits;
-		return (B) this;
+		return this;
 	}
 
 	/**
 	 * @param negativeValueColor the color for negative values, null if none
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B negativeValueColor(final String negativeValueColor) {
+	public NumberStyleBuilder negativeValueColor(final String negativeValueColor) {
 		this.negativeValueColor = negativeValueColor;
-		return (B) this;
+		return this;
 	}
 
 	/**
 	 * Sets the red color for negative values
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B negativeValueRed() {
+	public NumberStyleBuilder negativeValueRed() {
 		this.negativeValueColor = Color.RED;
-		return (B) this;
+		return this;
+	}
+
+	public NumberStyleBuilder country(final String countryCode) {
+		this.dataStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public NumberStyleBuilder language(final String languageCode) {
+		this.dataStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public NumberStyleBuilder locale(final Locale locale) {
+		this.dataStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public NumberStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.dataStyleBuilder.volatileStyle(volatileStyle);
+		return this;
+	}
+
+	/**
+	 * @return a number style
+	 */
+	public NumberStyle build() {
+		return new NumberStyle(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits, this.negativeValueColor);
 	}
 }

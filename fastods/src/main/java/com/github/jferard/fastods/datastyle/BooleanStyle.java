@@ -21,6 +21,9 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.style.AddableToOdsElements;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -30,31 +33,41 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public class BooleanStyle extends DataStyle {
-	/**
-	 * @param name
-	 *            name of the style
-	 * @param languageCode
-	 *            language
-	 * @param countryCode
-	 *            country
-	 * @param volatileStyle "false: consumers should discard the unused styles, true: consumers should keep unused
-	 *                         styles." (19.517 style:volatile)
-	 */
-	protected BooleanStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle) {
-		super(name, languageCode, countryCode, volatileStyle);
+public class BooleanStyle implements DataStyle {
+	private final CoreDataStyle dataStyle;
+
+	protected BooleanStyle(final CoreDataStyle dataStyle) {
+		this.dataStyle = dataStyle;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:boolean-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
+		util.appendAttribute(appendable, "style:name", this.getName());
+		this.dataStyle.appendLVAttributes(util, appendable);
 		appendable.append("/>");
+	}
+
+	public boolean isVolatileStyle() {
+		return this.dataStyle.isVolatileStyle();
+	}
+
+	@Override
+	public String getName() {
+		return this.dataStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.dataStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.dataStyle.getLanguageCode();
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
 	}
 }

@@ -23,6 +23,7 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -37,34 +38,18 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class ScientificNumberStyle extends NumberStyle {
-	private final int decimalPlaces;
+public class ScientificNumberStyle implements DataStyle {
+	private final FloatStyle floatStyle;
 	private final int minExponentDigits;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is decPlaces.
-	 *
-	 * @param styleName
-	 *            The name of the number style, this name must be unique.
-	 * @param minIntDigits
-	 *            The minimum integer digits to be shown.
-	 * @param decPlaces
-	 *            The number of decimal places to be shown.
 	 */
-	ScientificNumberStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
-			final boolean grouping, final int minIntegerDigits,
-			final String negativeValueColor, final int decimalPlaces,
+	ScientificNumberStyle(final FloatStyle floatStyle,
 			final int minExponentDigits) {
-		super(name, languageCode, countryCode, volatileStyle, grouping,
-				minIntegerDigits, negativeValueColor);
-		this.decimalPlaces = decimalPlaces;
+		this.floatStyle = floatStyle;
 		this.minExponentDigits = minExponentDigits;
-	}
-
-	public int getDecimalPlaces() {
-		return this.decimalPlaces;
 	}
 
 	/**
@@ -76,15 +61,60 @@ public class ScientificNumberStyle extends NumberStyle {
 		return this.minExponentDigits;
 	}
 
-	@Override
 	protected void appendNumber(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:scientific-number");
 		util.appendEAttribute(appendable, "number:min-exponent-digits",
 				this.minExponentDigits);
 		util.appendEAttribute(appendable, "number:decimal-places",
-				this.getDecimalPlaces());
-		this.appendNumberAttribute(util, appendable);
+				this.floatStyle.getDecimalPlaces());
+		this.floatStyle.appendNumberAttribute(util, appendable);
 		appendable.append("/>");
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
+	}
+
+	@Override
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+		final StringBuilder number = new StringBuilder();
+		this.appendNumber(util, number);
+		this.floatStyle.appendXML(util, appendable, "number-style", number);
+
+	}
+
+	public int getDecimalPlaces() {
+		return this.floatStyle.getDecimalPlaces();
+	}
+
+	@Override
+	public String getName() {
+		return this.floatStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.floatStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.floatStyle.getLanguageCode();
+	}
+
+	public boolean getGroupThousands() {
+		return this.floatStyle.getGroupThousands();
+	}
+
+	public int getMinIntegerDigits() {
+		return this.floatStyle.getMinIntegerDigits();
+	}
+
+	public String getNegativeValueColor() {
+		return this.floatStyle.getNegativeValueColor();
+	}
+
+	public boolean isVolatileStyle() {
+		return this.floatStyle.isVolatileStyle();
 	}
 }

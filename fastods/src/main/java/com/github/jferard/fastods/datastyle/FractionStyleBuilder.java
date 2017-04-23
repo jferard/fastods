@@ -26,8 +26,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class FractionStyleBuilder
-		extends NumberStyleBuilder<FractionStyle, FractionStyleBuilder> {
+public class FractionStyleBuilder {
+	private final NumberStyleBuilder numberStyleBuilder;
 	private int minDenominatorDigits;
 	private int minNumeratorDigits;
 
@@ -39,16 +39,13 @@ public class FractionStyleBuilder
 	 * @param locale The locale used
 	 */
 	FractionStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
+		this.numberStyleBuilder = new NumberStyleBuilder(name, locale);
 		this.minNumeratorDigits = 0;
 		this.minDenominatorDigits = 0;
 	}
 
-	@Override
 	public FractionStyle build() {
-		return new FractionStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle, this.grouping, this.minIntegerDigits,
-				this.negativeValueColor, this.minNumeratorDigits,
+		return new FractionStyle(this.numberStyleBuilder.build(), this.minNumeratorDigits,
 				this.minDenominatorDigits);
 	}
 
@@ -64,6 +61,46 @@ public class FractionStyleBuilder
 											   final int denominator) {
 		this.minNumeratorDigits = numerator;
 		this.minDenominatorDigits = denominator;
+		return this;
+	}
+
+	public FractionStyleBuilder groupThousands(final boolean grouping) {
+		this.numberStyleBuilder.groupThousands(grouping);
+		return this;
+	}
+
+	public FractionStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+		this.numberStyleBuilder.minIntegerDigits(minIntegerDigits);
+		return this;
+	}
+
+	public FractionStyleBuilder negativeValueColor(final String negativeValueColor) {
+		this.numberStyleBuilder.negativeValueColor(negativeValueColor);
+		return this;
+	}
+
+	public FractionStyleBuilder negativeValueRed() {
+		this.numberStyleBuilder.negativeValueRed();
+		return this;
+	}
+
+	public FractionStyleBuilder country(final String countryCode) {
+		this.numberStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public FractionStyleBuilder language(final String languageCode) {
+		this.numberStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public FractionStyleBuilder locale(final Locale locale) {
+		this.numberStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public FractionStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.numberStyleBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

@@ -26,8 +26,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class DateStyleBuilder
-		extends DataStyleBuilder<DateStyle, DateStyleBuilder> {
+public class DateStyleBuilder {
+	private final CoreDataStyleBuilder dataStyleBuilder;
 	private boolean automaticOrder;
 
 	/**
@@ -43,7 +43,7 @@ public class DateStyleBuilder
 	 * @param locale The locale used
 	 */
 	protected DateStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
+		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 		this.automaticOrder = false;
 	}
 
@@ -62,12 +62,9 @@ public class DateStyleBuilder
 	}
 
 	/**
-	 * {@inheritDoc}
 	 */
-	@Override
 	public DateStyle build() {
-		return new DateStyle(this.name, this.countryCode, this.languageCode,
-				this.volatileStyle, this.dateFormat, this.automaticOrder);
+		return new DateStyle(this.dataStyleBuilder.build(), this.dateFormat, this.automaticOrder);
 	}
 
 	/**
@@ -84,6 +81,26 @@ public class DateStyleBuilder
 	 */
 	public DateStyleBuilder dateFormat(final DateStyle.Format format) {
 		this.dateFormat = format;
+		return this;
+	}
+
+	public DateStyleBuilder country(final String countryCode) {
+		this.dataStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public DateStyleBuilder language(final String languageCode) {
+		this.dataStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public DateStyleBuilder locale(final Locale locale) {
+		this.dataStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public DateStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.dataStyleBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

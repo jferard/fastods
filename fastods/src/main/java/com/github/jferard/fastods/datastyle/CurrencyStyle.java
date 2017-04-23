@@ -23,6 +23,7 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -34,7 +35,9 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class CurrencyStyle extends DataStyle {
+public class CurrencyStyle implements DataStyle {
+
+	public static final String SPACE_TEXT = "<number:text> </number:text>";
 
 	/**
 	 * A currency symbol may be at the beginning or the end of the expression
@@ -49,27 +52,14 @@ public class CurrencyStyle extends DataStyle {
 
 	/**
 	 * Create a new CurrencyStyle.
-	 * @param name
-	 * @param languageCode
-	 * @param countryCode
-	 * @param volatileStyle
-	 * @param decimalPlaces
-	 * @param grouping
-	 * @param minIntegerDigits
-	 * @param negativeValueColor
+	 * @param floatStyle
 	 * @param currencySymbol
 	 * @param currencyPosition
 	 */
-	CurrencyStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
-			final int decimalPlaces, final boolean grouping,
-			final int minIntegerDigits, final String negativeValueColor,
+	CurrencyStyle(final FloatStyle floatStyle,
 			final String currencySymbol,
 			final SymbolPosition currencyPosition) {
-		super(name, languageCode, countryCode, volatileStyle);
-		this.floatStyle = new FloatStyle(name, languageCode, countryCode,
-				volatileStyle, decimalPlaces, grouping, minIntegerDigits,
-				negativeValueColor);
+		this.floatStyle = floatStyle;
 		this.currencySymbol = currencySymbol;
 		this.currencyPosition = currencyPosition;
 	}
@@ -77,26 +67,8 @@ public class CurrencyStyle extends DataStyle {
 	@Override
 	public void appendXML(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		// For negative values, this is the default style name + "-neg"
-
-		appendable.append("<number:currency-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		// this.appendVolatileAttribute(util, appendable);
-		appendable.append(">");
-		this.appendCurrency(util, appendable);
-		appendable.append("</number:currency-style>");
-
-		if (this.floatStyle.negativeValueColor != null) {
-			appendable.append("<number:currency-style");
-			util.appendAttribute(appendable, "style:name", this.name + "-neg");
-			// this.appendVolatileAttribute(util, appendable);
-			appendable.append(">");
-			this.floatStyle.appendStyleColor(util, appendable);
-			appendable.append("<number:text>-</number:text>");
-			this.appendCurrency(util, appendable);
-			this.floatStyle.appendStyleMap(util, appendable);
-			appendable.append("</number:currency-style>");
-		}
+		final CharSequence number = this.computeCurrency(util);
+		this.floatStyle.appendXML(util, appendable, "currency-style", number);
 	}
 
 	/**
@@ -116,17 +88,20 @@ public class CurrencyStyle extends DataStyle {
 		return this.currencyPosition;
 	}
 
-	private void appendCurrency(final XMLUtil util, final Appendable appendable)
+	private StringBuilder computeCurrency(final XMLUtil util)
 			throws IOException {
+		final StringBuilder number = new StringBuilder();
+
 		// Check where the currency symbol should be positioned
 		if (this.currencyPosition == SymbolPosition.END) {
-			this.floatStyle.appendNumber(util, appendable);
-			appendable.append("<number:text> </number:text>");
-			this.appendCurrencySymbol(util, appendable);
+			this.floatStyle.appendNumberTag(util, number);
+			number.append(SPACE_TEXT);
+			this.appendCurrencySymbol(util, number);
 		} else { // BEGIN
-			this.appendCurrencySymbol(util, appendable);
-			this.floatStyle.appendNumber(util, appendable);
+			this.appendCurrencySymbol(util, number);
+			this.floatStyle.appendNumberTag(util, number);
 		}
+		return number;
 	}
 
 	private void appendCurrencySymbol(final XMLUtil util,
@@ -137,4 +112,15 @@ public class CurrencyStyle extends DataStyle {
 				.append(util.escapeXMLContent(this.currencySymbol))
 				.append("</number:currency-symbol>");
 	}
+
+	@Override
+	public String getName() {
+		return this.floatStyle.getName();
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
+	}
+
 }

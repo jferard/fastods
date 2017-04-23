@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -31,26 +32,22 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public class TimeStyle extends DataStyle {
-
+public class TimeStyle implements DataStyle {
 	private static final String COLON = "<number:text>:</number:text>";
 	private static final String DASH = "<number:text>-</number:text>";
 	private static final String DOT = "<number:text>.</number:text>";
 	private static final String HOURS = "<number:hours/>";
 	private static final String MINUTES = "<number:minutes/>";
 	private static final String SECONDS = "<number:seconds/>";
+	private final CoreDataStyle dataStyle;
 	private final TimeStyle.Format timeFormat;
 
 	/**
-	 * Create a new date style with the name name.<br>
-	 * Version 0.5.1 Added.
-	 *
-	 * @param name The name of the number style.
+	 * Create a new date style
 	 */
-	TimeStyle(final String name, final String languageCode,
-						final String countryCode, final boolean volatileStyle,
+	TimeStyle(final CoreDataStyle dataStyle,
 						final Format timeFormat) {
-		super(name, languageCode, countryCode, volatileStyle);
+		this.dataStyle = dataStyle;
 		this.timeFormat = timeFormat;
 	}
 
@@ -62,8 +59,8 @@ public class TimeStyle extends DataStyle {
 	public void appendXML(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:time-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
+		util.appendAttribute(appendable, "style:name", this.dataStyle.getName());
+		this.dataStyle.appendLVAttributes(util, appendable);
 		if (this.timeFormat == null) {
 			util.appendEAttribute(appendable, "number:format-source",
 					"language");
@@ -85,10 +82,32 @@ public class TimeStyle extends DataStyle {
 		}
 	}
 
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
+	}
+
 	public static enum Format {
 		/**
 		 * Set the time format like '01:02:03'.
 		 */
 		HHMMSS
+	}
+
+	public boolean isVolatileStyle() {
+		return this.dataStyle.isVolatileStyle();
+	}
+
+	@Override
+	public String getName() {
+		return this.dataStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.dataStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.dataStyle.getLanguageCode();
 	}
 }

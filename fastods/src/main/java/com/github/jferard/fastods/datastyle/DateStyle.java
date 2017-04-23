@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -32,8 +33,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class DateStyle extends DataStyle {
-
+public class DateStyle implements DataStyle {
 	public enum Format {
 		/**
 		 * Set the date format like '10.07.12'.
@@ -96,17 +96,16 @@ public class DateStyle extends DataStyle {
 	 */
 	private final boolean automaticOrder;
 
+	private final CoreDataStyle dataStyle;
 	private final Format dateFormat;
 
 	/**
 	 * Create a new date style with the name name.
-	 * @param name
-	 *            The name of the number style.
+	 * @param dataStyle the core data style
 	 */
-	DateStyle(final String name, final String countryCode,
-			final String languageCode, final boolean volatileStyle,
+	DateStyle(final CoreDataStyle dataStyle,
 			final Format dateFormat, final boolean automaticOrder) {
-		super(name, languageCode, countryCode, volatileStyle);
+		this.dataStyle = dataStyle;
 		this.dateFormat = dateFormat;
 		this.automaticOrder = automaticOrder;
 	}
@@ -120,8 +119,8 @@ public class DateStyle extends DataStyle {
 	public void appendXML(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:date-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
+		util.appendAttribute(appendable, "style:name", this.dataStyle.getName());
+		this.dataStyle.appendLVAttributes(util, appendable);
 		util.appendEAttribute(appendable, "number:automatic-order",
 				this.automaticOrder);
 		if (this.dateFormat == null) {
@@ -178,4 +177,25 @@ public class DateStyle extends DataStyle {
 		return this.automaticOrder;
 	}
 
+	public boolean isVolatileStyle() {
+		return this.dataStyle.isVolatileStyle();
+	}
+
+	@Override
+	public String getName() {
+		return this.dataStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.dataStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.dataStyle.getLanguageCode();
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
+	}
 }

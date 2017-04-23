@@ -53,7 +53,7 @@ public class CurrencyStyleTest {
 				.decimalPlaces(5).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
@@ -68,7 +68,7 @@ public class CurrencyStyleTest {
 		final StringBuilder sb = new StringBuilder();
 		cs.appendXML(this.util, sb);
 		DomTester.assertEquals(
-				"<number:currency-style style:name=\"currency-data\">"
+				"<number:currency-style style:name=\"currency-data\" number:language=\"fr\" number:country=\"FR\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 						+ "<number:text> </number:text>"
 						+ "<number:currency-symbol>" + this.frSymbol + "</number:currency-symbol>"
@@ -82,7 +82,7 @@ public class CurrencyStyleTest {
 				.groupThousands(true).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
@@ -95,7 +95,7 @@ public class CurrencyStyleTest {
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
@@ -108,7 +108,7 @@ public class CurrencyStyleTest {
 				.negativeValueColor(Color.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
@@ -129,7 +129,7 @@ public class CurrencyStyleTest {
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
 				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
@@ -150,7 +150,7 @@ public class CurrencyStyleTest {
 				.locale(this.locale).negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
 		cs.appendXML(this.util, sb);
-		DomTester.assertEquals("<number:currency-style style:name=\"test\">"
+		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>" + "<number:currency-symbol>"
 				+ this.usSymbol + "</number:currency-symbol>"

@@ -26,8 +26,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class TimeStyleBuilder
-		extends DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
+public class TimeStyleBuilder {
+	private final CoreDataStyleBuilder dataStyleBuilder;
 	/**
 	 * The date format.
 	 */
@@ -40,16 +40,13 @@ public class TimeStyleBuilder
 	 * @param locale the locale used
 	 */
 	TimeStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
+		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 	}
 
 	/**
-	 * {@inheritDoc}
 	 */
-	@Override
 	public TimeStyle build() {
-		return new TimeStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle, this.timeFormat);
+		return new TimeStyle(this.dataStyleBuilder.build(), this.timeFormat);
 	}
 
 	/**
@@ -66,6 +63,26 @@ public class TimeStyleBuilder
 	 */
 	public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
 		this.timeFormat = format;
+		return this;
+	}
+
+	public TimeStyleBuilder country(final String countryCode) {
+		this.dataStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public TimeStyleBuilder language(final String languageCode) {
+		this.dataStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public TimeStyleBuilder locale(final Locale locale) {
+		this.dataStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public TimeStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.dataStyleBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

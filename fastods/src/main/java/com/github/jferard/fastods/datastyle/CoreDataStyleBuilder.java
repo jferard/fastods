@@ -25,29 +25,28 @@ import java.util.Locale;
 
 
 /**
- * @param <S> the DataStyle to build
- * @param <B> the effective builder
+ * A CoreDataStyle builder
  * @author Julien Férard
  */
-public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleBuilder<S, B>> {
+final class CoreDataStyleBuilder {
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
 	 */
-	protected String countryCode;
+	private String countryCode;
 	/**
 	 * 19.349 number:language : "The number:language attribute specifies a language code"
 	 */
-	protected String languageCode;
+	private String languageCode;
 	/**
 	 * the name of a data style (19.498.2)
 	 */
-	protected String name;
+	private final String name;
 	/**
 	 * 19.517 : "The style:volatile attribute specifies whether unused style in
 	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
 	 * true: consumers should keep unused styles."
 	 */
-	protected boolean volatileStyle;
+	private boolean volatileStyle;
 
 	/**
 	 * The builder
@@ -55,7 +54,7 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 * @param name   The name of this style
 	 * @param locale The locale used
 	 */
-	protected DataStyleBuilder(final String name, final Locale locale) {
+	public CoreDataStyleBuilder(final String name, final Locale locale) {
 		if (name == null)
 			throw new IllegalArgumentException();
 
@@ -68,7 +67,10 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	/**
 	 * @return the data style built
 	 */
-	public abstract S build();
+	public CoreDataStyle build() {
+		return new CoreDataStyle(this.name, this.languageCode, this.countryCode, this.volatileStyle);
+
+	}
 
 	/**
 	 * Set the country and language if you need to distinguish between different
@@ -77,10 +79,9 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 * @param countryCode The two letter country code, e.g. 'US'
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B country(final String countryCode) {
+	public CoreDataStyleBuilder country(final String countryCode) {
 		this.countryCode = countryCode.toUpperCase();
-		return (B) this;
+		return this;
 	}
 
 	/**
@@ -90,10 +91,9 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 * @param languageCode The two letter language code, e.g. 'en'
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B language(final String languageCode) {
+	public CoreDataStyleBuilder language(final String languageCode) {
 		this.languageCode = languageCode.toLowerCase();
-		return (B) this;
+		return this;
 	}
 
 	/**
@@ -102,11 +102,10 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 * @param locale the locale to use for langaauge and country
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B locale(final Locale locale) {
+	public CoreDataStyleBuilder locale(final Locale locale) {
 		this.countryCode = locale.getCountry();
 		this.languageCode = locale.getLanguage();
-		return (B) this;
+		return this;
 	}
 
 	/**
@@ -114,9 +113,8 @@ public abstract class DataStyleBuilder<S extends DataStyle, B extends DataStyleB
 	 *                      true: consumers should keep unused styles (19.517)
 	 * @return this for fluent style
 	 */
-	@SuppressWarnings("unchecked")
-	public B volatileStyle(final boolean volatileStyle) {
+	public CoreDataStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.volatileStyle = volatileStyle;
-		return (B) this;
+		return this;
 	}
 }

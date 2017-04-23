@@ -29,8 +29,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class CurrencyStyleBuilder
-		extends DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
+public class CurrencyStyleBuilder {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
@@ -42,22 +41,13 @@ public class CurrencyStyleBuilder
 	 * @param locale The locale used
 	 */
 	protected CurrencyStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
-		this.locale(locale);
+		this.currencySymbol = Currency.getInstance(locale).getSymbol();
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public CurrencyStyle build() {
-		return new CurrencyStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle, this.floatStyleBuilder.decimalPlaces,
-				this.floatStyleBuilder.grouping,
-				this.floatStyleBuilder.minIntegerDigits,
-				this.floatStyleBuilder.negativeValueColor, this.currencySymbol,
+		return new CurrencyStyle(this.floatStyleBuilder.build(), this.currencySymbol,
 				this.currencyPosition);
 	}
 
@@ -95,12 +85,7 @@ public class CurrencyStyleBuilder
 		return this;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
-		super.locale(locale);
 		this.floatStyleBuilder.locale(locale);
 		this.currencySymbol = Currency.getInstance(locale).getSymbol();
 		return this;
@@ -119,6 +104,21 @@ public class CurrencyStyleBuilder
 
 	public CurrencyStyleBuilder negativeValueRed() {
 		this.floatStyleBuilder.negativeValueRed();
+		return this;
+	}
+
+	public CurrencyStyleBuilder country(final String countryCode) {
+		this.floatStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public CurrencyStyleBuilder language(final String languageCode) {
+		this.floatStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public CurrencyStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.floatStyleBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

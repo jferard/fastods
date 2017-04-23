@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -33,26 +34,18 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class FloatStyle extends NumberStyle {
+public class FloatStyle implements DataStyle {
+	private final NumberStyle numberStyle;
 	private final int decimalPlaces;
 
 	/**
 	 * Create a float style
-	 * @param name name of the style
-	 * @param languageCode the language code, e.g. fr
-	 * @param countryCode the country code, e.g. FR
-	 * @param volatileStyle true if the consumer (LO) should keep the style even if it is not used
+	 * @param numberStyle
 	 * @param decimalPlaces the number of digits after the separator
-	 * @param grouping true if the numbers should be grouped
-	 * @param minIntegerDigits the minimum of digits of the integer part of the float
-	 * @param negativeValueColor true if negative value cshould be colored.
 	 */
-	public FloatStyle(final String name, final String languageCode,
-						 final String countryCode, final boolean volatileStyle,
-						 final int decimalPlaces, final boolean grouping,
-						 final int minIntegerDigits, final String negativeValueColor) {
-		super(name, languageCode, countryCode, volatileStyle, grouping,
-				minIntegerDigits, negativeValueColor);
+	public FloatStyle(final NumberStyle numberStyle,
+						 final int decimalPlaces) {
+		this.numberStyle = numberStyle;
 		this.decimalPlaces = decimalPlaces;
 	}
 
@@ -65,20 +58,66 @@ public class FloatStyle extends NumberStyle {
 		return this.decimalPlaces;
 	}
 
-	/**
-	 * Appends the number:number element
-	 *
-	 * @param util       XML escaping util
-	 * @param appendable where to append data
-	 * @throws IOException If an I/O error occurs
-	 */
 	@Override
-	protected void appendNumber(final XMLUtil util, final Appendable appendable)
+	public String getName() {
+		return this.numberStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.numberStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.numberStyle.getLanguageCode();
+	}
+
+	@Override
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
+	}
+
+	@Override
+	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+		final CharSequence number = this.computeNumberTag(util);
+		this.numberStyle.appendXML(util, appendable, "number-style", number);
+	}
+
+	StringBuilder computeNumberTag(final XMLUtil util)
 			throws IOException {
+		final StringBuilder number = new StringBuilder();
+		this.appendNumberTag(util, number);
+		return number;
+	}
+
+	public void appendNumberTag(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<number:number");
 		util.appendEAttribute(appendable, "number:decimal-places",
 				this.decimalPlaces);
-		this.appendNumberAttribute(util, appendable);
+		this.numberStyle.appendNumberAttribute(util, appendable);
 		appendable.append("/>");
+	}
+
+	public void appendXML(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
+		this.numberStyle.appendXML(util, appendable, numberStyleName, number);
+	}
+
+	public boolean getGroupThousands() {
+		return this.numberStyle.getGroupThousands();
+	}
+
+	public int getMinIntegerDigits() {
+		return this.numberStyle.getMinIntegerDigits();
+	}
+
+	public String getNegativeValueColor() {
+		return this.numberStyle.getNegativeValueColor();
+	}
+
+	public boolean isVolatileStyle() {
+		return this.numberStyle.isVolatileStyle();
+	}
+
+	void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
+		this.numberStyle.appendNumberAttribute(util, appendable);
 	}
 }

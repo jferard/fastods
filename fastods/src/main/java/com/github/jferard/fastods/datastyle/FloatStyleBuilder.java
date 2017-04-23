@@ -26,12 +26,12 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class FloatStyleBuilder
-		extends NumberStyleBuilder<FloatStyle, FloatStyleBuilder> {
+public class FloatStyleBuilder {
+	private final NumberStyleBuilder numberStyleBuilder;
 	/**
 	 * the number of digits after the separator
 	 */
-	protected int decimalPlaces;
+	private int decimalPlaces;
 
 	/**
 	 * The builder
@@ -39,17 +39,16 @@ public class FloatStyleBuilder
 	 * @param name   The name of this style
 	 * @param locale The locale used
 	 */
-	protected FloatStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
+	public FloatStyleBuilder(final String name, final Locale locale) {
+		this.numberStyleBuilder = new NumberStyleBuilder(name, locale);
 		this.decimalPlaces = 2;
-		this.minIntegerDigits = 1;
 	}
 
-	@Override
+	/**
+	 * @return a float style
+	 */
 	public FloatStyle build() {
-		return new FloatStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle, this.decimalPlaces, this.grouping,
-				this.minIntegerDigits, this.negativeValueColor);
+		return new FloatStyle(this.numberStyleBuilder.build(), this.decimalPlaces);
 	}
 
 	/**
@@ -60,6 +59,46 @@ public class FloatStyleBuilder
 	 */
 	public FloatStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.decimalPlaces = decimalPlaces;
+		return this;
+	}
+
+	public FloatStyleBuilder groupThousands(final boolean grouping) {
+		this.numberStyleBuilder.groupThousands(grouping);
+		return this;
+	}
+
+	public FloatStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+		this.numberStyleBuilder.minIntegerDigits(minIntegerDigits);
+		return this;
+	}
+
+	public FloatStyleBuilder negativeValueColor(final String negativeValueColor) {
+		this.numberStyleBuilder.negativeValueColor(negativeValueColor);
+		return this;
+	}
+
+	public FloatStyleBuilder negativeValueRed() {
+		this.numberStyleBuilder.negativeValueRed();
+		return this;
+	}
+
+	public FloatStyleBuilder country(final String countryCode) {
+		this.numberStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public FloatStyleBuilder language(final String languageCode) {
+		this.numberStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public FloatStyleBuilder locale(final Locale locale) {
+		this.numberStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public FloatStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.numberStyleBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

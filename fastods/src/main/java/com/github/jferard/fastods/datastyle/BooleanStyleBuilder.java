@@ -26,8 +26,9 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class BooleanStyleBuilder
-		extends DataStyleBuilder<BooleanStyle, BooleanStyleBuilder> {
+public class BooleanStyleBuilder {
+	private final CoreDataStyleBuilder dataStyleBuilder;
+
 	/**
 	 * The builder
 	 *
@@ -35,12 +36,32 @@ public class BooleanStyleBuilder
 	 * @param locale The default locale.
 	 */
 	protected BooleanStyleBuilder(final String name, final Locale locale) {
-		super(name, locale);
+		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 	}
 
-	@Override
 	public BooleanStyle build() {
-		return new BooleanStyle(this.name, this.languageCode, this.countryCode,
-				this.volatileStyle);
+		return new BooleanStyle(this.dataStyleBuilder.build());
 	}
+
+	public BooleanStyleBuilder country(final String countryCode) {
+		this.dataStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public BooleanStyleBuilder language(final String languageCode) {
+		this.dataStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public BooleanStyleBuilder locale(final Locale locale) {
+		this.dataStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public BooleanStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.dataStyleBuilder.volatileStyle(volatileStyle);
+		return this;
+	}
+
 }
+

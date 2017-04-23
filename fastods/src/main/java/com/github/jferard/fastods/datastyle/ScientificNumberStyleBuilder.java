@@ -26,9 +26,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class ScientificNumberStyleBuilder
-		extends NumberStyleBuilder<NumberStyle, ScientificNumberStyleBuilder> {
-	private int decimalPlaces;
+public class ScientificNumberStyleBuilder {
+	private final FloatStyleBuilder floatStyleBuilder;
 	private int minExponentDigits;
 
 	/**
@@ -40,15 +39,11 @@ public class ScientificNumberStyleBuilder
 	 */
 	ScientificNumberStyleBuilder(final String name,
 								 final Locale locale) {
-		super(name, locale);
+		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
 
-	@Override
 	public ScientificNumberStyle build() {
-		return new ScientificNumberStyle(this.name, this.languageCode,
-				this.countryCode, this.volatileStyle, this.grouping,
-				this.minIntegerDigits, this.negativeValueColor,
-				this.decimalPlaces, this.minExponentDigits);
+		return new ScientificNumberStyle(this.floatStyleBuilder.build(), this.minExponentDigits);
 	}
 
 	/**
@@ -56,7 +51,7 @@ public class ScientificNumberStyleBuilder
 	 * @return this for fluent style
 	 */
 	public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.decimalPlaces = decimalPlaces;
+		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
 		return this;
 	}
 
@@ -70,6 +65,46 @@ public class ScientificNumberStyleBuilder
 	public ScientificNumberStyleBuilder minExponentDigits(
 			final int minExponentDigits) {
 		this.minExponentDigits = minExponentDigits;
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder groupThousands(final boolean grouping) {
+		this.floatStyleBuilder.groupThousands(grouping);
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder negativeValueColor(final String negativeValueColor) {
+		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder negativeValueRed() {
+		this.floatStyleBuilder.negativeValueRed();
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder country(final String countryCode) {
+		this.floatStyleBuilder.country(countryCode);
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder language(final String languageCode) {
+		this.floatStyleBuilder.language(languageCode);
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder locale(final Locale locale) {
+		this.floatStyleBuilder.locale(locale);
+		return this;
+	}
+
+	public ScientificNumberStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.floatStyleBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

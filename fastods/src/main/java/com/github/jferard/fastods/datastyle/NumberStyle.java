@@ -32,7 +32,9 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-public abstract class NumberStyle extends DataStyle {
+public final class NumberStyle {
+	private final CoreDataStyle dataStyle;
+
 	/**
 	 * 19.348 number:grouping
 	 */
@@ -41,57 +43,50 @@ public abstract class NumberStyle extends DataStyle {
 	 * 19.352 number:min-integer-digits
 	 */
 	private final int minIntegerDigits;
-	protected final String negativeValueColor;
+	private final String negativeValueColor;
 
 	/**
 	 * Create a new number style with the name name, minimum integer digits is
 	 * minIntDigits and decimal places is decPlaces. The number style is
 	 * NumberStyle.NUMBER_NORMAL
 	 *
-	 * @param name
-	 *            The name of the number style, this name must be unique.
 	 * @param minIntegerDigits
 	 *            The minimum integer digits to be shown.
-	 * @param decPlaces
-	 *            The number of decimal places to be shown.
 	 */
-	NumberStyle(final String name, final String languageCode,
-			final String countryCode, final boolean volatileStyle,
+	NumberStyle(final CoreDataStyle dataStyle,
 			final boolean grouping, final int minIntegerDigits,
 			final String negativeValueColor) {
-		super(name, languageCode, countryCode, volatileStyle);
+		this.dataStyle = dataStyle;
 		this.grouping = grouping;
 		this.negativeValueColor = negativeValueColor;
 		this.minIntegerDigits = minIntegerDigits;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @param util a util for XML writing
-	 */
-	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXML(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number)
 			throws IOException {
-		appendable.append("<number:number-style");
-		util.appendAttribute(appendable, "style:name", this.name);
-		this.appendLVAttributes(util, appendable);
-		appendable.append(">");
-		this.appendNumber(util, appendable);
-		appendable.append("</number:number-style>");
+		this.appendOpenTag(util, appendable, numberStyleName, this.dataStyle.getName());
+		appendable.append(number);
+		this.appendCloseTag(appendable, numberStyleName);
 
 		if (this.negativeValueColor != null) {
-			appendable.append("<number:number-style");
-			util.appendAttribute(appendable, "style:name", this.name + "-neg");
-			this.appendLVAttributes(util, appendable);
-			appendable.append(">");
+			this.appendOpenTag(util, appendable, numberStyleName, this.dataStyle.getName() + "-neg");
 			this.appendStyleColor(util, appendable);
 			appendable.append("<number:text>-</number:text>");
-			this.appendNumber(util, appendable);
+			appendable.append(number);
 			this.appendStyleMap(util, appendable);
-			appendable.append("</number:number-style>");
+			this.appendCloseTag(appendable, numberStyleName);
 		}
+	}
+
+	private void appendCloseTag(final Appendable appendable, final String numberStyleName) throws IOException {
+		appendable.append("</number:").append(numberStyleName).append(">");
+	}
+
+	public void appendOpenTag(final XMLUtil util, final Appendable appendable, final String numberStyleName, final String name) throws IOException {
+		appendable.append("<number:").append(numberStyleName);
+		util.appendAttribute(appendable, "style:name", name);
+		this.dataStyle.appendLVAttributes(util, appendable);
+		appendable.append(">");
 	}
 
 	/**
@@ -132,17 +127,14 @@ public abstract class NumberStyle extends DataStyle {
 			util.appendEAttribute(appendable, "number:grouping", "true");
 	}
 
-	protected void appendMinIntegerDigitsAttribute(final XMLUtil util,
+	public void appendMinIntegerDigitsAttribute(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.minIntegerDigits > 0)
 			util.appendEAttribute(appendable, "number:min-integer-digits",
 					this.minIntegerDigits);
 	}
 
-	abstract protected void appendNumber(final XMLUtil util,
-			final Appendable appendable) throws IOException;
-
-	protected void appendNumberAttribute(final XMLUtil util,
+	public void appendNumberAttribute(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		this.appendMinIntegerDigitsAttribute(util, appendable);
 		this.appendGroupingAttribute(util, appendable);
@@ -157,7 +149,7 @@ public abstract class NumberStyle extends DataStyle {
 	 *            where to write
 	 * @throws IOException If an I/O error occurs
 	 */
-	protected void appendStyleColor(final XMLUtil util,
+	public void appendStyleColor(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:text-properties");
 		util.appendAttribute(appendable, "fo:color", this.negativeValueColor);
@@ -177,7 +169,23 @@ public abstract class NumberStyle extends DataStyle {
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:map");
 		util.appendAttribute(appendable, "style:condition", "value()>=0");
-		util.appendAttribute(appendable, "style:apply-style-name", this.name);
+		util.appendAttribute(appendable, "style:apply-style-name", this.dataStyle.getName());
 		appendable.append("/>");
+	}
+
+	public boolean isVolatileStyle() {
+		return this.dataStyle.isVolatileStyle();
+	}
+
+	public String getName() {
+		return this.dataStyle.getName();
+	}
+
+	public String getCountryCode() {
+		return this.dataStyle.getCountryCode();
+	}
+
+	public String getLanguageCode() {
+		return this.dataStyle.getLanguageCode();
 	}
 }
