@@ -127,6 +127,10 @@ public class Table implements NamedObject {
 		data.addToTable(this);
 	}
 
+	/**
+	 * Add an observer to this table
+	 * @param observer the observer
+	 */
 	public void addObserver(final OdsFileWriter observer) {
 		this.observer = observer;
 	}

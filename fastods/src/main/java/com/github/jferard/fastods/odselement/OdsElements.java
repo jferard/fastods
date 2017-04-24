@@ -185,10 +185,10 @@ public class OdsElements {
 	 */
 	public Table addTableToContent(final String name, final int rowCapacity,
 								   final int columnCapacity) throws IOException {
+		final Table previousTable = this.contentElement.getLastTable();
 		final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
 		this.settingsElement.addTableConfig(table.getConfigEntry());
 		if (this.observer != null) {
-			final Table previousTable = this.contentElement.getLastTable();
 			if (previousTable == null)
 				this.observer.update(new MetaAndStylesElementsFlusher(this, this.contentElement));
 			else

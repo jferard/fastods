@@ -42,22 +42,31 @@ import java.util.Locale;
 public class LightTableCellTest {
 	private LightTableCell cell;
 	private HeavyTableRow row;
+	private XMLUtil util;
+	private StringBuilder sb;
 
 	@Before
 	public void setUp() {
 		this.row = PowerMock.createMock(HeavyTableRow.class);
 		this.cell = new LightTableCell(this.row);
+		this.util = XMLUtil.create();
+		this.sb = new StringBuilder();
 	}
 
 	@Test
 	public final void testBoolean() {
+		// PLAY
 		this.row.setBooleanValue(10, true);
 		EasyMock.expect(this.row.getColumnCount()).andReturn(20);
 		EasyMock.expect(this.row.getBooleanValue(11)).andReturn("false");
+
+		// REPLAY
 		PowerMock.replayAll();
 		this.cell.to(10);
 		this.cell.setBooleanValue(true);
 		this.cell.next();
+
+		// CHECK
 		Assert.assertEquals("false", this.cell.getBooleanValue());
 		PowerMock.verifyAll();
 	}
