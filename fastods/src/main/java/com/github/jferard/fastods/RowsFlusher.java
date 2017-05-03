@@ -33,19 +33,19 @@ import java.util.List;
  * @author Julien Férard
  */
 class RowsFlusher implements OdsFlusher {
-	private final List<HeavyTableRow> rows;
+	private final List<TableRow> rows;
 
 	/**
 	 * @param rows the rows to flush
 	 */
-	public RowsFlusher(final List<HeavyTableRow> rows) {
+	public RowsFlusher(final List<TableRow> rows) {
 		this.rows = rows;
 	}
 
 	@Override
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		// flush rows
-		for (final HeavyTableRow row : this.rows) {
+		for (final TableRow row : this.rows) {
 			if (row == null) {
 				System.exit(0);
 			}

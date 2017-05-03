@@ -36,7 +36,7 @@ public class BooleanValue extends CellValue {
 	}
 
 	@Override
-	public void setToRow(final HeavyTableRow heavyTableRow, final int c) {
-		heavyTableRow.setBooleanValue(c, this.value);
+	public void setToCell(final TableCell tableCell) {
+		tableCell.setBooleanValue(this.value);
 	}
 }

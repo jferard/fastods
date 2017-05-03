@@ -38,13 +38,13 @@ class PreprocessedRowsFlusher implements OdsFlusher {
 	/**
 	 * @param rows the rows to flush
 	 */
-	public PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<HeavyTableRow> rows) throws IOException {
-		sb = new StringBuilder(1024*32);
-		for (final HeavyTableRow row : rows) {
+	public PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows) throws IOException {
+		this.sb = new StringBuilder(1024*32);
+		for (final TableRow row : rows) {
 			if (row == null) {
 				System.exit(0);
 			}
-			row.appendXMLToTable(xmlUtil, sb);
+			row.appendXMLToTable(xmlUtil, this.sb);
 		}
 		// free rows
 		Collections.fill(rows, null);
@@ -52,6 +52,6 @@ class PreprocessedRowsFlusher implements OdsFlusher {
 
 	@Override
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		writer.append(sb);
+		writer.append(this.sb);
 	}
 }

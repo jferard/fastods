@@ -70,7 +70,7 @@ public class Table implements NamedObject {
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesContainer stylesContainer;
-	private final List<HeavyTableRow> tableRows;
+	private final List<TableRow> tableRows;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
 
@@ -192,7 +192,7 @@ public class Table implements NamedObject {
 
 		final int size = this.tableRows.size();
 		for (int r = firstRowIndex; r < size; r++) {
-			final HeavyTableRow tr = this.tableRows.get(r);
+			final TableRow tr = this.tableRows.get(r);
 			if (tr == null) {
 				this.nullFieldCounter++;
 			} else {
@@ -297,46 +297,52 @@ public class Table implements NamedObject {
 		return this.name;
 	}
 
-	public HeavyTableRow getRow(final int rowIndex) throws FastOdsException, IOException {
+	public TableRow getRow(final int rowIndex) throws FastOdsException, IOException {
 		Table.checkRow(rowIndex);
 		return this.getRowSecure(rowIndex, true);
 	}
 
-	public HeavyTableRow getRow(final String pos) throws FastOdsException, IOException {
+	public TableRow getRow(final String pos) throws FastOdsException, IOException {
 		final int row = this.positionUtil.getPosition(pos).getRow();
 		return this.getRow(row);
 	}
 
-	public HeavyTableRow getRowSecure(final int rowIndex, final boolean updateRowIndex) throws IOException {
-		HeavyTableRow tr = this.tableRows.get(rowIndex);
+	public TableRow getRowSecure(final int rowIndex, final boolean updateRowIndex) throws IOException {
+		TableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
-			tr = new HeavyTableRow(this.writeUtil, this.xmlUtil,
+			tr = new TableRow(this.writeUtil, this.xmlUtil,
 					this.stylesContainer, this.format, this, rowIndex,
 					this.columnCapacity);
 			this.tableRows.set(rowIndex, tr);
 			if (rowIndex > this.lastRowIndex)
 				this.lastRowIndex = rowIndex;
 
-			if (this.observer != null) {
-				if (rowIndex == 0) {
-					this.observer.update(new BeginTableFlusher(this));
-				} else if (rowIndex % this.bufferSize == 0) {
-					this.observer.update(
-							new PreprocessedRowsFlusher(this.xmlUtil,
-								new ArrayList<HeavyTableRow>(
-										this.tableRows.subList(
-												this.lastFlushedRowIndex, rowIndex
-										)
-								)
-						)
-					); // (0..1023), (1024..2047)
-					this.lastFlushedRowIndex = rowIndex;
-				}
-			}
+			this.notifyIfHasObserver(rowIndex);
 		}
 		if (updateRowIndex)
 			this.curRowIndex = rowIndex;
 		return tr;
+	}
+
+	private void notifyIfHasObserver(final int rowIndex) throws IOException {
+		if (this.observer != null) {
+            if (rowIndex == 0) {
+                this.observer.update(new BeginTableFlusher(this));
+            } else if (rowIndex % this.bufferSize == 0) {
+                this.observer.update(this.createPreprocessedRowsFlusher(rowIndex)); // (0..1023), (1024..2047)
+                this.lastFlushedRowIndex = rowIndex;
+            }
+        }
+	}
+
+	private PreprocessedRowsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
+		return new PreprocessedRowsFlusher(this.xmlUtil,
+            new ArrayList<TableRow>(
+                    this.tableRows.subList(
+                            this.lastFlushedRowIndex, toRowIndex
+                    )
+            )
+    );
 	}
 
 	/**
@@ -348,7 +354,7 @@ public class Table implements NamedObject {
 		return this.style.getName();
 	}
 
-	public HeavyTableRow nextRow() throws IOException {
+	public TableRow nextRow() throws IOException {
 		return this.getRowSecure(this.curRowIndex + 1, true);
 	}
 
@@ -365,7 +371,7 @@ public class Table implements NamedObject {
 	public void setCellMerge(final String pos, final int rowMerge,
 							 final int columnMerge) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
-		final HeavyTableRow row = this.getRow(position.getRow());
+		final TableRow row = this.getRow(position.getRow());
 		row.setCellMerge(position.getColumn(), rowMerge, columnMerge);
 	}
 

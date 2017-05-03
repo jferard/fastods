@@ -20,7 +20,6 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -31,7 +30,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 
 public class HeavyTableColdRowTest {
-	private HeavyTableColdRow row;
+	private TableColdCell row;
 	private Table table;
 	private XMLUtil xmlUtil;
 
@@ -39,7 +38,7 @@ public class HeavyTableColdRowTest {
 	public void setUp() {
 		this.table = PowerMock.createMock(Table.class);
 		this.xmlUtil = XMLUtil.create();
-		this.row = new HeavyTableColdRow(this.table, this.xmlUtil, 10, 100);
+		this.row = new TableColdCell(this.table, this.xmlUtil, 10, 100);
 	}
 
 	@Test

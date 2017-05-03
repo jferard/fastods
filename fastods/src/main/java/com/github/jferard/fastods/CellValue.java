@@ -65,9 +65,8 @@ public abstract class CellValue {
 	}
 
 	/**
-	 * Set this value in the row, aat a given position (= column)
-	 * @param heavyTableRow the row where to add this value
-	 * @param c the column index in the row.
+	 * Set this value in the cell
+	 * @param tableCell the cell where to add this value
 	 */
-	public abstract void setToRow(HeavyTableRow heavyTableRow, int c);
+	public abstract void setToCell(TableCell tableCell);
 }

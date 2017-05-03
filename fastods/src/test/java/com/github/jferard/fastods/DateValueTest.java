@@ -36,17 +36,17 @@ public class DateValueTest {
 	@Test
 	public final void test() {
 		PowerMock.verifyAll();
-		final HeavyTableRow htr = PowerMock.createMock(HeavyTableRow.class);
+		final TableCell cell = PowerMock.createMock(TableCell.class);
 		final Capture<Date> captured = Capture.newInstance();
 		
 		// PLAY
-		htr.setDateValue(EasyMock.eq(1), EasyMock.capture(captured));
+		cell.setDateValue(EasyMock.capture(captured));
 		PowerMock.replayAll();
 		
 		final Date date = new Date(10);
 		final CellValue dv= new DateValue(date);
 		date.setTime(0);
-		dv.setToRow(htr, 1);
+		dv.setToCell(cell);
 		Assert.assertEquals(10, captured.getValue().getTime());
 
 		PowerMock.verifyAll();

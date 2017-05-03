@@ -34,7 +34,7 @@ import java.util.TimeZone;
 /**
  * @author Julien Férard
  */
-public class LightTableCell implements TableCellWalker {
+public class TableCellWalkerImpl implements TableCellWalker {
 	final static SimpleDateFormat DATE_VALUE_FORMAT;
 
 	static {
@@ -47,10 +47,10 @@ public class LightTableCell implements TableCellWalker {
 		DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 
-	private final HeavyTableRow row;
+	private final TableRow row;
 	private int c;
 
-	LightTableCell(final HeavyTableRow row) {
+	TableCellWalkerImpl(final TableRow row) {
 		this.row = row;
 		this.c = 0;
 	}
@@ -62,18 +62,18 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public String getBooleanValue() {
-		return this.row.getBooleanValue(this.c);
+	public int getColumnsSpanned() {
+		return this.row.getOrCreateCell(this.c).getColumnsSpanned();
+	}
+
+	@Override
+	public int getRowsSpanned() {
+		return this.row.getOrCreateCell(this.c).getRowsSpanned();
 	}
 
 	@Override
 	public void setBooleanValue(final boolean value) {
-		this.row.setBooleanValue(this.c, value);
-	}
-
-	@Override
-	public int getColumnsSpanned() {
-		return this.row.getColumnsSpanned(this.c);
+		this.row.getOrCreateCell(this.c).setBooleanValue(value);
 	}
 
 	@Override
@@ -82,48 +82,18 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public String getCurrency() {
-		return this.row.getCurrency(this.c);
-	}
-
-	@Override
-	public String getCurrencyValue() {
-		return this.row.getCurrencyValue(this.c);
-	}
-
-	@Override
-	public String getDateValue() {
-		return this.row.getDateValue(this.c);
-	}
-
-	@Override
 	public void setDateValue(final Date value) {
-		this.row.setDateValue(this.c, value);
-	}
-
-	@Override
-	public String getFloatValue() {
-		return this.row.getFloatValue(this.c);
+		this.row.getOrCreateCell(this.c).setDateValue(value);
 	}
 
 	@Override
 	public void setFloatValue(final Number value) {
-		this.row.setFloatValue(this.c, value);
-	}
-
-	@Override
-	public String getPercentageValue() {
-		return this.row.getPercentageValue(this.c);
+		this.row.getOrCreateCell(this.c).setFloatValue(value);
 	}
 
 	@Override
 	public void setPercentageValue(final Number value) {
-		this.row.setPercentageValue(this.c, value);
-	}
-
-	@Override
-	public int getRowsSpanned() {
-		return this.row.getRowsSpanned(this.c);
+		this.row.getOrCreateCell(this.c).setPercentageValue(value);
 	}
 
 	@Override
@@ -132,54 +102,54 @@ public class LightTableCell implements TableCellWalker {
 	}
 
 	@Override
-	public String getStringValue() {
-		return this.row.getStringValue(this.c);
+	public void setVoidValue() {
+		this.row.getOrCreateCell(this.c).setVoidValue();
 	}
 
 	@Override
 	public void setStringValue(final String value) {
-		this.row.setStringValue(this.c, value);
-	}
-
-	@Override
-	public String getStyleName() {
-		return this.row.getStyleName(this.c);
-	}
-
-	@Override
-	public String getTimeValue() {
-		return this.row.getTimeValue(this.c);
+		this.row.getOrCreateCell(this.c).setStringValue(value);
 	}
 
 	@Override
 	public void setTimeValue(final long timeInMillis) {
-		this.row.setTimeValue(this.c, timeInMillis);
-	}
-
-	@Override
-	public String getTooltip() {
-		return this.row.getTooltip(this.c);
+		this.row.getOrCreateCell(this.c).setTimeValue(timeInMillis);
 	}
 
 	@Override
 	public void setTooltip(final String tooltip) {
-		this.row.setTooltip(this.c, tooltip);
+		this.row.getOrCreateCell(this.c).setTooltip(tooltip);
 	}
 
 	@Override
 	public void setTooltip(final String tooltip, final Length width, final Length height, final boolean visible) {
-		this.row.setTooltip(this.c, tooltip, width, height, visible);
+		this.row.getOrCreateCell(this.c).setTooltip(tooltip, width, height, visible);
 	}
 
 	@Override
 	public void setFormula(final String formula) {
-		this.row.setFormula(formula);
+		this.row.getOrCreateCell(this.c).setFormula(formula);
 
 	}
 
 	@Override
-	public Type getValueType() {
-		return this.row.getValueType(this.c);
+	public TableCellStyle getStyle() {
+		return this.row.getOrCreateCell(this.c).getStyle();
+	}
+
+	@Override
+	public String getValue() {
+		return this.row.getOrCreateCell(this.c).getValue();
+	}
+
+	@Override
+	public boolean isCovered() {
+		return this.row.getOrCreateCell(this.c).isCovered();
+	}
+
+	@Override
+	public void setCovered() {
+		this.row.getOrCreateCell(this.c).setCovered();
 	}
 
 	@Override
@@ -213,37 +183,37 @@ public class LightTableCell implements TableCellWalker {
 
 	@Override
 	public void setCellValue(final CellValue value) {
-		this.row.setCellValue(this.c, value);
+		this.row.getOrCreateCell(this.c).setCellValue(value);
 	}
 
 	@Override
 	public void setCurrencyValue(final float value, final String currency) {
-		this.row.setCurrencyValue(this.c, value, currency);
+		this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
 	}
 
 	@Override
 	public void setCurrencyValue(final int value, final String currency) {
-		this.row.setCurrencyValue(this.c, value, currency);
+		this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
 	}
 
 	@Override
 	public void setCurrencyValue(final Number value, final String currency) {
-		this.row.setCurrencyValue(this.c, value, currency);
+		this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
 	}
 
 	@Override
 	public void setDateValue(final Calendar cal) {
-		this.row.setDateValue(this.c, cal);
+		this.row.getOrCreateCell(this.c).setDateValue(cal);
 	}
 
 	@Override
 	public void setFloatValue(final float value) {
-		this.row.setFloatValue(this.c, value);
+		this.row.getOrCreateCell(this.c).setFloatValue(value);
 	}
 
 	@Override
 	public void setFloatValue(final int value) {
-		this.row.setFloatValue(this.c, value);
+		this.row.getOrCreateCell(this.c).setFloatValue(value);
 	}
 
 	/**
@@ -252,17 +222,22 @@ public class LightTableCell implements TableCellWalker {
 	@Override
 	@Deprecated
 	public void setObjectValue(final Object value) {
-		this.row.setObjectValue(this.c, value);
+		this.row.getOrCreateCell(this.c).setObjectValue(value);
 	}
 
 	@Override
 	public void setPercentageValue(final float value) {
-		this.row.setPercentageValue(this.c, value);
+		this.row.getOrCreateCell(this.c).setPercentageValue(value);
+	}
+
+	@Override
+	public void setPercentageValue(final int value) {
+		this.row.getOrCreateCell(this.c).setPercentageValue(value);
 	}
 
 	@Override
 	public void setStyle(final TableCellStyle style) {
-		this.row.setStyle(this.c, style);
+		this.row.getOrCreateCell(this.c).setStyle(style);
 	}
 
 	@Override

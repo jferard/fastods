@@ -21,11 +21,7 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.DataWrapper;
-import com.github.jferard.fastods.HeavyTableRow;
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 import java.io.IOException;
@@ -104,7 +100,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		int rowCount = 0; // at least
 		try {
 			final ResultSetMetaData metadata = this.rs.getMetaData();
-			HeavyTableRow row;
+			TableRow row;
 			try {
 				row = table.nextRow();
 				final int columnCount = metadata.getColumnCount();
@@ -155,7 +151,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		return values;
 	}
 
-	private void writeDataLineTo(final HeavyTableRow row, final int columnCount)
+	private void writeDataLineTo(final TableRow row, final int columnCount)
 			throws SQLException {
 		final List<Object> columnValues = this.getColumnValues(columnCount);
 		final TableCellWalker walker = row.getWalker();
@@ -170,7 +166,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	}
 
 	private void writeFirstLineDataTo(final ResultSetMetaData metadata,
-			final HeavyTableRow row) throws SQLException {
+			final TableRow row) throws SQLException {
 		final int columnCount = metadata.getColumnCount();
 		final List<String> columnNames = this.getColumnNames(metadata);
 		final TableCellWalker walker = row.getWalker();
@@ -184,7 +180,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
 	private void writeMaybeLastLineDataTo(final int columnCount,
 			final Table table, final int rowCount) throws IOException {
-		final HeavyTableRow row;
+		final TableRow row;
 		if (rowCount == 0) {// no data row
 			row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();

@@ -28,11 +28,11 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 public class CellValueTest {
-	private HeavyTableRow htr;
+	private TableCell cell;
 
 	@Before
 	public void setUp() {
-		this.htr = PowerMock.createMock(HeavyTableRow.class);
+		this.cell = PowerMock.createMock(TableCell.class);
 	}
 
 	@Test
@@ -40,9 +40,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromTypeAndObject(TableCell.Type.BOOLEAN, true);
 		
 		// PLAY
-		this.htr.setBooleanValue(0, true);
+		this.cell.setBooleanValue(true);
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 
@@ -51,9 +51,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject(null);
 		
 		// PLAY
-		this.htr.setVoidValue(0);
+		this.cell.setVoidValue();
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 
@@ -62,9 +62,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject("str");
 		
 		// PLAY
-		this.htr.setStringValue(0, "str");
+		this.cell.setStringValue("str");
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 	
@@ -73,9 +73,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject(10);
 		
 		// PLAY
-		this.htr.setFloatValue(0, (Number) 10);
+		this.cell.setFloatValue((Number) 10);
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 
@@ -84,9 +84,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject(true);
 		
 		// PLAY
-		this.htr.setBooleanValue(0, true);
+		this.cell.setBooleanValue(true);
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 	
@@ -96,9 +96,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject(d);
 		
 		// PLAY
-		this.htr.setDateValue(0, d);
+		this.cell.setDateValue(d);
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 	
@@ -108,9 +108,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject(c);
 		
 		// PLAY
-		this.htr.setDateValue(0, c.getTime());
+		this.cell.setDateValue(c.getTime());
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 	
@@ -120,9 +120,9 @@ public class CellValueTest {
 		final CellValue v = CellValue.fromObject(j);
 		
 		// PLAY
-		this.htr.setStringValue(0, "j");
+		this.cell.setStringValue("j");
 		PowerMock.replayAll();
-		v.setToRow(this.htr, 0);
+		v.setToCell(this.cell);
 		PowerMock.verifyAll();
 	}
 }

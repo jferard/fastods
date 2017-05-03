@@ -20,18 +20,12 @@
  */
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.*;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.HeavyTableRow;
-import com.github.jferard.fastods.StringValue;
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -42,16 +36,16 @@ public class TableHelperTest {
 
 	private TableCell cell;
 	private PositionUtil positionUtil;
-	private HeavyTableRow row;
 	private Table table;
 	private TableHelper tableHelper;
 	private TableCellWalker walker;
+	private TableRow row;
 
 	@Before
 	public void setUp() throws Exception {
 		this.positionUtil = new PositionUtil(new EqualityUtil());
 		this.table = PowerMock.createMock(Table.class);
-		this.row = PowerMock.createMock(HeavyTableRow.class);
+		this.row = PowerMock.createMock(TableRow.class);
 		this.walker = PowerMock.createMock(TableCellWalker.class);
 		this.cell = PowerMock.createMock(TableCell.class);
 		this.tableHelper = new TableHelper(this.positionUtil);

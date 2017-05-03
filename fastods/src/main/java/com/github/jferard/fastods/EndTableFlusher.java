@@ -33,20 +33,20 @@ import java.util.List;
  */
 public class EndTableFlusher implements OdsFlusher {
 	private final Table table;
-	private final List<HeavyTableRow> rows;
+	private final List<TableRow> rows;
 
 	/**
 	 * @param table the table to end
 	 * @param rows the remaining rows.
 	 */
-	public EndTableFlusher(final Table table, final List<HeavyTableRow> rows) {
+	public EndTableFlusher(final Table table, final List<TableRow> rows) {
 		this.table = table;
 		this.rows = rows;
 	}
 
 	@Override
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		for (final HeavyTableRow row : this.rows)
+		for (final TableRow row : this.rows)
 			row.appendXMLToTable(xmlUtil, writer);
 		this.table.appendPostamble(writer);
 	}

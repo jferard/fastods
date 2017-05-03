@@ -136,7 +136,7 @@ public class TableTest {
     @Test
     public final void testGetRow() throws FastOdsException, IOException {
         PowerMock.replayAll();
-        final List<HeavyTableRow> rows = Lists.newArrayList();
+        final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.table.nextRow());
         }
@@ -150,7 +150,7 @@ public class TableTest {
     @Test
     public final void testGetRowFromStringPos() throws FastOdsException, IOException {
         PowerMock.replayAll();
-        final List<HeavyTableRow> rows = Lists.newArrayList();
+        final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.table.nextRow());
         }
@@ -194,27 +194,29 @@ public class TableTest {
 
         // PLAY
         PowerMock.replayAll();
-        HeavyTableRow row = this.table.nextRow();
-        row.setStringValue(0, "x");
-        row.setStringValue(1, "x");
-        row.setStringValue(2, "x");
-        row.setStringValue(3, "x");
+        TableRow row = this.table.nextRow();
+        final TableCellWalker walker = row.getWalker();
+
+        for (int i=0; i<4; i++) {
+            walker.setStringValue("x");
+            walker.next();
+        }
         row = this.table.nextRow();
-        row.setStringValue(0, "x");
-        row.setStringValue(1, "x");
-        row.setStringValue(2, "x");
-        row.setStringValue(3, "x");
+        for (int i=0; i<4; i++) {
+            walker.setStringValue("x");
+            walker.next();
+        }
         row.setCellMerge(1, 2, 2);
         row = this.table.nextRow();
-        row.setStringValue(0, "x");
-        row.setStringValue(1, "x");
-        row.setStringValue(2, "x");
-        row.setStringValue(3, "x");
+        for (int i=0; i<4; i++) {
+            walker.setStringValue("x");
+            walker.next();
+        }
         row = this.table.nextRow();
-        row.setStringValue(0, "x");
-        row.setStringValue(1, "x");
-        row.setStringValue(2, "x");
-        row.setStringValue(3, "x");
+        for (int i=0; i<4; i++) {
+            walker.setStringValue("x");
+            walker.next();
+        }
 
         this.table.appendXMLToContentEntry(this.xmlUtil, sb);
         DomTester.assertEquals(

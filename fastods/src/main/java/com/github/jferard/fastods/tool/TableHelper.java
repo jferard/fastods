@@ -21,12 +21,7 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.HeavyTableRow;
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
@@ -107,7 +102,7 @@ public class TableHelper {
 
 	private TableCellWalker getCell(final Table table, final int rowIndex,
 									final int colIndex) throws FastOdsException, IOException {
-		final HeavyTableRow row = table.getRow(rowIndex);
+		final TableRow row = table.getRow(rowIndex);
 		final TableCellWalker walker = row.getWalker();
 		walker.to(colIndex);
 		return walker;

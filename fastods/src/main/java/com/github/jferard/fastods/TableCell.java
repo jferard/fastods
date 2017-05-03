@@ -26,11 +26,8 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * @author Julien Férard
@@ -69,78 +66,16 @@ public interface TableCell {
 			throws IOException;
 
 	/**
-	 * Return the currently set boolean value.
-	 *
-	 * @return The currency value
-	 */
-	String getBooleanValue();
-
-	/**
 	 * @return The number of columns that this cell spans overs.
 	 */
+	@Deprecated
 	int getColumnsSpanned();
-
-	/**
-	 * Return the currently set currency value.<br>
-	 * There is no check if this is really a table cell with style
-	 * STYLE_CURRENCY.
-	 *
-	 * @return The currency value
-	 */
-	String getCurrency();
-
-	/**
-	 * Return the currently set currency value.<br>
-	 * There is no check if this is really a table cell with style
-	 * STYLE_CURRENCY.
-	 *
-	 * @return The currency value
-	 */
-	String getCurrencyValue();
-
-	/**
-	 * @return The date value set by setDateValue() or an empty string if
-	 *         nothing was set.
-	 */
-	String getDateValue();
-
-	/**
-	 * @return The float value set by setFloatValue() or an empty string if
-	 *         nothing was set.
-	 */
-	String getFloatValue();
-
-	/**
-	 * @return The percentage value set by setPercentageValue() or an empty
-	 *         string if nothing was set.
-	 */
-	String getPercentageValue();
 
 	/**
 	 * @return The number of rows that this cell spans overs.
 	 */
+	@Deprecated
 	int getRowsSpanned();
-
-	/**
-	 * @return The string value set by setStringValue() or an empty string if
-	 *         nothing was set.
-	 */
-	String getStringValue();
-
-	String getStyleName();
-
-	/**
-	 * @return The timee value set by setTimeValue() or an empty string if
-	 *         nothing was set.
-	 */
-	String getTimeValue();
-
-	/**
-	 * @return the tooltip text or null if no tooltip
-	 */
-	String getTooltip();
-
-	Type getValueType();
 
 	/**
 	 * Set the boolean value
@@ -157,14 +92,6 @@ public interface TableCell {
 	 *
 	 */
 	void setCellValue(CellValue value);
-
-	/**
-	 * To merge cells, set the number of columns that should be merged.
-	 *
-	 * @param n
-	 *            - The number of cells to be merged
-	 */
-	void setColumnsSpanned(int n);
 
 	/**
 	 * Set the currency value and table cell style to STYLE_CURRENCY.
@@ -239,9 +166,17 @@ public interface TableCell {
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
 	 * @param value
-	 *            - A double object with the value to be used
+	 *            - A float object with the value to be used
 	 */
 	void setPercentageValue(float value);
+
+	/**
+	 * Set the int value for a cell with TableCell.Type.PERCENTAGE.
+	 *
+	 * @param value
+	 *            - An int with the value to be used
+	 */
+	void setPercentageValue(int value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
@@ -250,14 +185,6 @@ public interface TableCell {
 	 *            - A double object with the value to be used
 	 */
 	void setPercentageValue(Number value);
-
-	/**
-	 * To merge cells, set the number of rows that should be merged.
-	 *
-	 * @param n The number of rows to be merged
-	 * @throws IOException if the cells can't be merged
-	 */
-	void setRowsSpanned(int n) throws IOException;
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.STRING.
@@ -294,4 +221,18 @@ public interface TableCell {
 	 * @param formula the formula, without '=' sign.
 	 */
 	void setFormula(String formula);
+
+	TableCellStyle getStyle();
+
+	String getValue();
+
+	boolean isCovered();
+
+	void setCovered();
+
+	void setColumnsSpanned(int n);
+
+	void setRowsSpanned(int n) throws IOException;
+
+	void setVoidValue();
 }

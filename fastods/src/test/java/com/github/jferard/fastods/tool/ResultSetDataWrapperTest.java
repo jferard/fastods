@@ -23,7 +23,7 @@ package com.github.jferard.fastods.tool;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
-import com.github.jferard.fastods.HeavyTableRow;
+import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
@@ -96,7 +96,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		}
 
 		this.setUpRS(Arrays.<String>asList("number"), r, 3);
-		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
+		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
 		// REPLAY
@@ -143,7 +143,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	public final void testNoRow() throws IOException {
 		this.setUpRS(Arrays.<String>asList("number", "word"),
 				Arrays.<List<Object>>asList(), 100);
-		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
+		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
 		// first row
@@ -176,7 +176,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		l.add(null);
 		this.setUpRS(Arrays.<String>asList("value"),
 				Arrays.<List<Object>>asList(l), 100);
-		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
+		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
 		// first row
@@ -203,7 +203,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		this.setUpRS(Arrays.<String>asList("number", "word"),
 				Arrays.<List<Object>>asList(Arrays.<Object>asList(13, "a")),
 				100);
-		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
+		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
 		// PLAY
@@ -275,7 +275,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		final SQLException e = new SQLException();
 		final ResultSetMetaData metaData = PowerMock
 				.createMock(ResultSetMetaData.class);
-		final HeavyTableRow row = PowerMock.createMock(HeavyTableRow.class);
+		final TableRow row = PowerMock.createMock(TableRow.class);
 
 		EasyMock.expect(this.rs.getMetaData()).andReturn(metaData);
 		EasyMock.expect(this.table.nextRow()).andReturn(row);
