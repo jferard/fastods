@@ -69,7 +69,7 @@ public class OdsFileCreationTest {
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 1000; y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 300; x++) {
 				walker.setFloatValue(this.random.nextInt(1000));
@@ -92,7 +92,7 @@ public class OdsFileCreationTest {
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 100000; y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < 20; x++) {
 				walker.setFloatValue(this.random.nextInt(1000));
@@ -116,7 +116,7 @@ public class OdsFileCreationTest {
 		document.setViewSetting("View1", "ZoomValue", "200");
 		final Table table = document.addTable("test", 50, 5);
 		table.setSettings("View1", "ZoomValue", "200");
-		HeavyTableRow row = table.getRow(0);
+		TableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
 				.build();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
@@ -137,9 +137,9 @@ public class OdsFileCreationTest {
 				.fontStyleItalic().build();
 
 		row = table.getRow(0);
-		row.setStringValue(0, "éèà");
-		row.setStringValue(1, "€€€€");
-		row.setStringValue(2, "£");
+		row.getOrCreateCell(0).setStringValue("éèà");
+		row.getOrCreateCell(1).setStringValue("€€€€");
+		row.getOrCreateCell(2).setStringValue("£");
 		for (int y = 1; y < 50; y++) {
 			row = table.getRow(y);
 			final TableCellWalker walker = row.getWalker();

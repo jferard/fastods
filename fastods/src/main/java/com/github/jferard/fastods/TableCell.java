@@ -66,18 +66,6 @@ public interface TableCell {
 			throws IOException;
 
 	/**
-	 * @return The number of columns that this cell spans overs.
-	 */
-	@Deprecated
-	int getColumnsSpanned();
-
-	/**
-	 * @return The number of rows that this cell spans overs.
-	 */
-	@Deprecated
-	int getRowsSpanned();
-
-	/**
 	 * Set the boolean value
 	 *
 	 * @param value true or false
@@ -224,8 +212,6 @@ public interface TableCell {
 
 	TableCellStyle getStyle();
 
-	String getValue();
-
 	boolean isCovered();
 
 	void setCovered();
@@ -235,4 +221,8 @@ public interface TableCell {
 	void setRowsSpanned(int n) throws IOException;
 
 	void setVoidValue();
+
+	boolean hasValue();
+
+	void setText(Text text);
 }

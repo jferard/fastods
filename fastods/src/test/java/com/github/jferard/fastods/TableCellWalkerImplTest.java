@@ -225,6 +225,7 @@ public class TableCellWalkerImplTest {
 		PowerMock.verifyAll();
 	}
 
+	/*
 	@Test
 	public final void testSpan() {
 		expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
@@ -277,6 +278,7 @@ public class TableCellWalkerImplTest {
 		this.cellWalker.setTooltip("tooltip");
 		PowerMock.verifyAll();
 	}
+	*/
 
 	private TableRow initRealRow() {
 		final StylesContainer stc = PowerMock.createMock(StylesContainer.class);

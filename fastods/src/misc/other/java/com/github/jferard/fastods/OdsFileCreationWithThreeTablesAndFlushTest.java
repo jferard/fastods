@@ -103,14 +103,14 @@ public class OdsFileCreationWithThreeTablesAndFlushTest {
 				final Table table = document.addTable("test" + i, 5, 5);
 				table.setSettings("View1", "ZoomValue", "200");
 				table.setColumnStyle(0, tcns);
-				HeavyTableRow row = table.getRow(0);
+				TableRow row = table.getRow(0);
 				row.setStyle(trs);
 				row.setDefaultCellStyle(tcls);
 
 				row = table.getRow(0);
-				row.setStringValue(0, "éèà");
-				row.setStringValue(1, "€€€€");
-				row.setStringValue(2, "£");
+				row.getOrCreateCell(0).setStringValue("éèà");
+				row.getOrCreateCell(1).setStringValue("€€€€");
+				row.getOrCreateCell(2).setStringValue("£");
 				for (int y = 1; y < 5; y++) {
 					row = table.getRow(y);
 					final TableCellWalker walker = row.getWalker();

@@ -62,18 +62,13 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	}
 
 	@Override
-	public int getColumnsSpanned() {
-		return this.row.getOrCreateCell(this.c).getColumnsSpanned();
-	}
-
-	@Override
-	public int getRowsSpanned() {
-		return this.row.getOrCreateCell(this.c).getRowsSpanned();
-	}
-
-	@Override
 	public void setBooleanValue(final boolean value) {
 		this.row.getOrCreateCell(this.c).setBooleanValue(value);
+	}
+
+	@Override
+	public void setText(final Text text) {
+		this.row.getOrCreateCell(this.c).setText(text);
 	}
 
 	@Override
@@ -138,8 +133,8 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	}
 
 	@Override
-	public String getValue() {
-		return this.row.getOrCreateCell(this.c).getValue();
+	public boolean hasValue() {
+		return this.row.getOrCreateCell(this.c).hasValue();
 	}
 
 	@Override

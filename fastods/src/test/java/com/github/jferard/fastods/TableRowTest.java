@@ -68,23 +68,33 @@ public class TableRowTest {
 		PowerMock.mockStatic(TableColdCell.class);
 	}
 
+
 	@Test
-	public final void testBoolean() {
+	public final void testRows() throws IOException {
 		final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
 		this.stc.addDataStyle(booleanDataStyle);
-		EasyMock.expectLastCall().times(2);
 		EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), booleanDataStyle))
 				.andReturn(this.tcs);
-		EasyMock.expectLastCall().times(2);
 
 		PowerMock.replayAll();
-		this.row.setBooleanValue(10, true);
-		this.row.setBooleanValue(11, false);
-		Assert.assertEquals("true", this.row.getBooleanValue(10));
-		Assert.assertEquals("false", this.row.getBooleanValue(11));
+		this.row.getOrCreateCell(5).setBooleanValue(true);
+		this.row.getOrCreateCell(10).setStringValue("a");
+		DomTester.assertEquals("<table:table-row table:style-name=\"ro1\">" +
+				"<table:table-cell table:number-columns-repeated=\"5\"/>" +
+				"<table:table-cell table:style-name=\"---\" office:value-type=\"boolean\" office:boolean-value=\"true\"/>" +
+				"<table:table-cell table:number-columns-repeated=\"4\"/>" +
+				"<table:table-cell office:value-type=\"string\" office:string-value=\"a\"/>" +
+				"</table:table-row>", this.getXML());
 		PowerMock.verifyAll();
 	}
 
+	public String getXML() throws IOException {
+		final StringBuilder sb = new StringBuilder();
+		this.row.appendXMLToTable(this.xmlUtil, sb);
+		return sb.toString();
+	}
+
+	/*
 	@Test
 	public final void testCalendar() {
 		// PLAY
@@ -394,6 +404,7 @@ public class TableRowTest {
 		PowerMock.verifyAll();
 	}*/
 
+	/*
 	@Test
 	public final void testMerge1b() throws IOException {
 		final TableColdCell htcr = PowerMock.createMock(TableColdCell.class);
@@ -783,5 +794,108 @@ public class TableRowTest {
 		Assert.assertEquals(-1, this.row.getColumnsSpanned(1));
 		PowerMock.verifyAll();
 	}
+	*/
 
+	/*
+		@Test
+	public final void testMerge() throws IOException {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		for (int r = 11; r < 20; r++) {
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
+			row2.setCovered(7, 8);
+		}
+		PowerMock.replayAll();
+		this.coldCell.setCellMerge(7, 10, 8);
+		Assert.assertEquals(10, this.coldCell.getRowsSpanned(7));
+		Assert.assertEquals(8, this.coldCell.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1b() throws IOException {
+		// PLAY
+		PowerMock.replayAll();
+		this.coldCell.setCellMerge(7, -1, 8);
+		Assert.assertEquals(0, this.coldCell.getRowsSpanned(7));
+		Assert.assertEquals(0, this.coldCell.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1c() throws IOException {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		PowerMock.replayAll();
+		this.coldCell.setCellMerge(7, 10, -1);
+		Assert.assertEquals(0, this.coldCell.getRowsSpanned(7));
+		Assert.assertEquals(0, this.coldCell.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1d() throws IOException {
+		// PLAY
+		PowerMock.replayAll();
+		this.coldCell.setCellMerge(7, -1, -1);
+		Assert.assertEquals(0, this.coldCell.getRowsSpanned(7));
+		Assert.assertEquals(0, this.coldCell.getColumnsSpanned(7));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1e() throws IOException {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		for (int r = 11; r < 12; r++) {
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
+			row2.setCovered(0, 2);
+		}
+		for (int r = 11; r < 13; r++) {
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
+			row2.setCovered(10, 3);
+		}
+
+		PowerMock.replayAll();
+		this.coldCell.setCellMerge(0, 2, 2);
+		this.coldCell.setCellMerge(10, 3, 3);
+		Assert.assertEquals(2, this.coldCell.getRowsSpanned(0));
+		Assert.assertEquals(2, this.coldCell.getColumnsSpanned(0));
+		Assert.assertEquals(3, this.coldCell.getRowsSpanned(10));
+		Assert.assertEquals(3, this.coldCell.getColumnsSpanned(10));
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testMerge1f() throws IOException {
+		final HeavyTableRow row2 = PowerMock.createMock(HeavyTableRow.class);
+
+		// PLAY
+		for (int r = 11; r < 30; r++) {
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
+			row2.setCovered(0, 20);
+		}
+		for (int r = 11; r < 4; r++) {
+			EasyMock.expect(this.table.getRowSecure(r, false)).andReturn(row2);
+			row2.setCovered(18, 4);
+		}
+
+		PowerMock.replayAll();
+		this.coldCell.setCellMerge(0, 20, 20);
+		Assert.assertEquals(20, this.coldCell.getRowsSpanned(0));
+		Assert.assertEquals(20, this.coldCell.getColumnsSpanned(0));
+		Assert.assertEquals(-1, this.coldCell.getColumnsSpanned(10));
+
+		this.coldCell.setCellMerge(18, 4, 4);
+		Assert.assertEquals(-1, this.coldCell.getColumnsSpanned(10));
+		Assert.assertEquals(0, this.coldCell.getColumnsSpanned(21));
+		Assert.assertEquals(0, this.coldCell.getColumnsSpanned(21));
+		PowerMock.verifyAll();
+	}
+
+
+	 */
 }

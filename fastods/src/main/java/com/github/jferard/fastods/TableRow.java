@@ -94,30 +94,32 @@ public class TableRow {
 		final int size = this.cells.size();
 		for (int c = 0; c < size; c++) {
 			final TableCell cell = this.cells.get(c);
-			if (cell == null) {
+			if (this.hasValue(cell)) {
 				nullFieldCounter++;
 				continue;
 			}
-
-			final String value = cell.getValue();
-			if (value == null) {
-				nullFieldCounter++;
-				continue;
-			}
-
-			if (nullFieldCounter > 0) {
-				appendable.append("<table:table-cell");
-				if (nullFieldCounter > 1)
-					util.appendEAttribute(appendable,
-							"table:number-columns-repeated",
-							nullFieldCounter);
-				appendable.append("/>");
-				nullFieldCounter = 0;
-			}
+			this.appendRepeatedCell(util, appendable, nullFieldCounter);
+			nullFieldCounter = 0;
 			cell.appendXMLToTableRow(util, appendable);
 		}
 
 		appendable.append("</table:table-row>");
+	}
+
+	private void appendRepeatedCell(final XMLUtil util, final Appendable appendable, final int nullFieldCounter) throws IOException {
+		if (nullFieldCounter <= 0)
+			return;
+
+		appendable.append("<table:table-cell");
+		if (nullFieldCounter >= 2)
+			util.appendEAttribute(appendable,
+					"table:number-columns-repeated",
+					nullFieldCounter);
+		appendable.append("/>");
+	}
+
+	private boolean hasValue(final TableCell cell) {
+		return cell == null || !cell.hasValue();
 	}
 
 	public TableCellWalker getWalker() {
@@ -216,14 +218,13 @@ public class TableRow {
 	}
 
 	public TableCell getOrCreateCell(final int colIndex) {
-		TableCell cell = this.cells.get(colIndex);
-		if (cell == null) {
-            cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
+		while (this.cells.size() <= colIndex) {
+            final TableCell cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
                     this.stylesContainer, this.dataStyles,
                     this, this.rowIndex, this.columnCapacity);
-            this.cells.set(colIndex, cell);
+            this.cells.add(cell);
         }
-		return cell;
+		return this.cells.get(colIndex);
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {

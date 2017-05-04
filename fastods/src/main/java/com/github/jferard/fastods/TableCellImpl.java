@@ -128,26 +128,6 @@ public class TableCellImpl implements TableCell {
         this.coldCell.setRowsSpanned(n);
     }
 
-    /**
-     * @return 0 if no span, -1 if the cell is a covered cell
-     */
-    public int getColumnsSpanned() {
-        if (this.coldCell == null)
-            return 0;
-        else
-            return this.coldCell.getColumnsSpanned();
-    }
-
-    @Override
-    public int getRowsSpanned() {
-        return 0;
-    }
-
-    @Override
-    public void setBooleanValue(final boolean value) {
-
-    }
-
     private String getCurrency() {
         if (this.coldCell == null)
             return null;
@@ -155,32 +135,12 @@ public class TableCellImpl implements TableCell {
             return this.coldCell.getCurrency();
     }
 
-    public int getRowsSpanned(final int c) {
-        if (this.coldCell == null)
-            return 0;
-        else
-            return this.coldCell.getRowsSpanned();
-    }
-
     public String getStyleName() {
         return this.style == null ? null : this.style.getName();
     }
 
-    private Text getText() {
-        if (this.coldCell == null)
-            return null;
-        else
-            return this.coldCell.getText();
-    }
-
-    public String getTooltip(final int c) {
-        if (this.coldCell == null)
-            return null;
-        else
-            return this.coldCell.getTooltip();
-    }
-
-    public void setBooleanValue(final int c, final boolean value) {
+    @Override
+    public void setBooleanValue(final boolean value) {
         this.value = value ? "true" : "false";
         this.type = TableCell.Type.BOOLEAN;
         this.setDataStyle(this.dataStyles.getBooleanDataStyle());
@@ -338,6 +298,7 @@ public class TableCellImpl implements TableCell {
         }
     }
 
+    @Override
     public void setText(final Text text) {
         this.ensureColdCell();
         this.coldCell.setText(text);
@@ -382,7 +343,7 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public String getValue() {
-        return null;
+    public boolean hasValue() {
+        return this.value != null;
     }
 }

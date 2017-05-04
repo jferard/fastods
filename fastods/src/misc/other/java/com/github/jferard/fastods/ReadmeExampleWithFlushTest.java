@@ -58,7 +58,7 @@ public class ReadmeExampleWithFlushTest {
 		final Table table = document.addTable("test");
 
 		for (int y = 0; y < 50; y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker cell = row.getWalker();
 			for (int x = 0; x < 5; x++) {
 				cell.setFloatValue(x*y);

@@ -70,7 +70,7 @@ public class ProfileFastODS {
 				ProfileFastODS.COL_COUNT / 2);
 
 		for (int y = 0; y < ProfileFastODS.ROW_COUNT / 2; y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < ProfileFastODS.COL_COUNT / 2; x++) {
 				walker.setFloatValue(this.random.nextInt(1000));
@@ -103,7 +103,7 @@ public class ProfileFastODS {
 				ProfileFastODS.COL_COUNT / 4);
 
 		for (int y = 0; y < ProfileFastODS.ROW_COUNT / 4; y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < ProfileFastODS.COL_COUNT / 4; x++) {
 				walker.setFloatValue(this.random.nextInt(1000));
@@ -130,7 +130,7 @@ public class ProfileFastODS {
 				ProfileFastODS.COL_COUNT);
 
 		for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < ProfileFastODS.COL_COUNT; x++) {
 				walker.setFloatValue(this.random.nextInt(1000));

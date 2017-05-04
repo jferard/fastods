@@ -133,26 +133,26 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		table.setStyle(ttts);
 		table.setColumnStyle(0, tcns);
 
-		HeavyTableRow row = table.getRow(0);
+		TableRow row = table.getRow(0);
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
 
 		row = table.getRow(0);
-		row.setText(0,
+		row.getOrCreateCell(0).setText(
 				Text.builder().parContent("This is a")
 						.parStyledContent("multiline", italicStyle)
 						.parStyledContent("cell", boldStyle).build());
-		row.setStringValue(1, "text2");
-		row.setStringValue(2, "text3");
+		row.getOrCreateCell(1).setStringValue("text2");
+		row.getOrCreateCell(2).setStringValue("text3");
 		row = table.getRow(1);
-		row.setText(0,
+		row.getOrCreateCell(0).setText(
 				Text.builder().par().span("before link to table: ").link("table", "target").span(" after link to table")
 						.build());
-		row.setText(1,
+		row.getOrCreateCell(1).setText(
 				Text.builder().par().span("before link to url: ")
 						.link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url")
 						.build());
-		row.setText(2,
+		row.getOrCreateCell(1).setText(
 				Text.builder().par().span("before link to file: ")
 						.link("file", new File("generated_files", "fastods_50_5.ods")).span(" after link to file")
 						.build());

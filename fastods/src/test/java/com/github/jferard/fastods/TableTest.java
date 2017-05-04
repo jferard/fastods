@@ -188,6 +188,7 @@ public class TableTest {
         PowerMock.verifyAll();
     }
 
+    /*
     @Test
     public final void testMerge() throws IOException {
         final StringBuilder sb = new StringBuilder();
@@ -248,7 +249,7 @@ public class TableTest {
                         + "</table:table-row>" + "</table:table>",
                 sb.toString());
         PowerMock.verifyAll();
-    }
+    }*/
 
     @Test
     public final void testNameAndStyle() {

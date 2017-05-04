@@ -59,27 +59,8 @@ public class TableColdCell {
 		return new TableColdCell(parent, xmlUtil, rowIndex);
 	}
 
-	/**
-	 * @return 0 if no span, -1 if the cell is a covered cell
-	 */
-	public int getColumnsSpanned() {
-		return this.columnsSpanned;
-	}
-
 	public String getCurrency() {
 		return this.currency;
-	}
-
-	public int getRowsSpanned() {
-		return this.rowsSpanned;
-	}
-
-	public Text getText() {
-		return this.text;
-	}
-
-	public String getTooltip() {
-		return this.tooltip;
 	}
 
 	public void setColumnsSpanned(final int n) {

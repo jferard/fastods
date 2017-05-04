@@ -115,7 +115,7 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 				.build();
 		table2.setStyle(ttts2);
 
-		HeavyTableRow row = table.getRow(0);
+		TableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
 				.build();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
@@ -126,18 +126,18 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
 		table.setColumnStyle(0, tcns);
 		row = table.getRow(0);
-		row.setText(0,
+		row.getOrCreateCell(0).setText(
 				Text.builder().parContent("This is a")
 						.parStyledContent("multiline", italicStyle)
 						.parStyledContent("cell", boldStyle).build());
-		row.setStringValue(1, "text2");
-		row.setStringValue(2, "text3");
+		row.getOrCreateCell(1).setStringValue("text2");
+		row.getOrCreateCell(2).setStringValue("text3");
 		row = table.getRow(1);
-		row.setText(0,
+		row.getOrCreateCell(0).setText(
 				Text.builder().par().span("before link to table: ").link("table", table2).span(" after link to table").build());
-		row.setText(1,
+		row.getOrCreateCell(1).setText(
 				Text.builder().par().span("before link to url: ").link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url").build());
-		row.setText(2,
+		row.getOrCreateCell(2).setText(
 				Text.builder().par().span("before link to file: ").link("file", new File("generated_files", "fastods_50_5.ods")).span(" after link to file").build());
 
 		// let's display logging infos
