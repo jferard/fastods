@@ -42,8 +42,8 @@ public interface TableCell {
 						"office:value", "float"), PERCENTAGE("office:value",
 								"percentage"), STRING("office:string-value",
 										"string"), TIME("office:time-value",
-												"time"), VOID(
-														"", "office-value");
+												"time"), VOID("office-value",
+														"");
 
 		final String attrName;
 		final String attrValue;

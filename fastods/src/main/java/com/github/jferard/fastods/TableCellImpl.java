@@ -85,12 +85,14 @@ public class TableCellImpl implements TableCell {
                     this.style.getName());
         }
 
-        util.appendEAttribute(appendable, "office:value-type",
-                this.type.getAttrValue());
-        util.appendEAttribute(appendable, this.type.getAttrName(), this.value);
-        if (this.type == TableCell.Type.CURRENCY) {
-            final String currency = this.getCurrency();
-            util.appendAttribute(appendable, "office:currency", currency);
+        if (this.type != null) {
+            util.appendEAttribute(appendable, "office:value-type",
+                    this.type.getAttrValue());
+            util.appendEAttribute(appendable, this.type.getAttrName(), this.value);
+            if (this.type == TableCell.Type.CURRENCY) {
+                final String currency = this.getCurrency();
+                util.appendAttribute(appendable, "office:currency", currency);
+            }
         }
 
         if (this.hasColdCell()) {
@@ -118,12 +120,18 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setColumnsSpanned(final int n) {
+        if (n <= 1)
+            return;
+
         this.ensureColdCell();
         this.coldCell.setColumnsSpanned(n);
     }
 
     @Override
     public void setRowsSpanned(final int n) {
+        if (n <= 1)
+            return;
+
         this.ensureColdCell();
         this.coldCell.setRowsSpanned(n);
     }
@@ -133,10 +141,6 @@ public class TableCellImpl implements TableCell {
             return null;
         else
             return this.coldCell.getCurrency();
-    }
-
-    public String getStyleName() {
-        return this.style == null ? null : this.style.getName();
     }
 
     @Override
@@ -176,11 +180,6 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setCurrencyValue(final Number value, final String currency) {
         this.setCurrencyValue(value.toString(), currency);
-    }
-
-    public void setCovered(final int colIndex) {
-        this.ensureColdCell();
-        this.coldCell.setCovered();
     }
 
     private void ensureColdCell() {
@@ -328,7 +327,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setVoidValue() {
-        this.value = null;
+        this.value = "";
         this.type = TableCell.Type.VOID;
     }
 

@@ -20,18 +20,17 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.easymock.IAnswer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,9 +60,10 @@ public class TableCellTest {
     public void setUp() {
         this.stc = PowerMock.createMock(StylesContainer.class);
         this.table = PowerMock.createMock(Table.class);
-        this.tcc = TableColdCell.create(this.row, this.xmlUtil, 0);
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();
+
+        this.tcc = TableColdCell.create(this.row, this.xmlUtil, 0);
         this.ds = DataStylesFactory.create(this.xmlUtil, Locale.US);
         this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds,
                 this.table, 10, 100);
@@ -105,17 +105,19 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testCovered() {
-        final TableColdCell htcr = PowerMock.createMock(TableColdCell.class);
-
+    public final void testCovered() throws IOException {
         // PLAY
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
-                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(htcr)
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc)
                 .anyTimes();
-        htcr.setCovered();
 
         PowerMock.replayAll();
+        Assert.assertFalse(this.cell.isCovered());
         this.cell.setCovered();
+        Assert.assertTrue(this.cell.isCovered());
+        this.cell.setCovered();
+        Assert.assertEquals("<table:covered-table-cell/>", this.getCellXML());
+
         PowerMock.verifyAll();
 
     }
@@ -132,7 +134,7 @@ public class TableCellTest {
                 EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
 
         PowerMock.replayAll();
-        this.cell.setCurrencyValue(10.0, "€");
+        this.cell.setCurrencyValue(10.0f, "€");
         DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"10.0\" office:currency=\"€\" />", this.getCellXML());
         PowerMock.verifyAll();
     }
@@ -154,7 +156,7 @@ public class TableCellTest {
     }
 
     @Test
-	public final void testCurrencyNumber() throws IOException {
+    public final void testCurrencyNumber() throws IOException {
         final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
         this.stc.addDataStyle(currencyDataStyle);
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), currencyDataStyle))
@@ -163,87 +165,289 @@ public class TableCellTest {
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
                 EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
 
-		PowerMock.replayAll();
-		this.cell.setCurrencyValue(Double.valueOf(10.0), "€");
+        PowerMock.replayAll();
+        this.cell.setCurrencyValue(Double.valueOf(10.0), "€");
         DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"10.0\" office:currency=\"€\" />", this.getCellXML());
-		PowerMock.verifyAll();
-	}
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testDate() throws IOException {
-		// PLAY
-		final DataStyle dateDataStyle = this.ds.getDateDataStyle();
-		this.stc.addDataStyle(dateDataStyle);
-		EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), dateDataStyle))
-				.andReturn(this.tcs);
+    @Test
+    public final void testDate() throws IOException {
+        // PLAY
+        final DataStyle dateDataStyle = this.ds.getDateDataStyle();
+        this.stc.addDataStyle(dateDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), dateDataStyle))
+                .andReturn(this.tcs);
 
-		PowerMock.replayAll();
-		final Calendar d = Calendar.getInstance(Locale.US);
-		d.setTimeInMillis(TIME_IN_MILLIS);
-		this.cell.setDateValue(d.getTime());
-		DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"date\" office:date-value=\"2009-02-13T23:31:31.011Z\"/>",
-				this.getCellXML());
-		PowerMock.verifyAll();
-	}
+        PowerMock.replayAll();
+        final Calendar d = Calendar.getInstance(Locale.US);
+        d.setTimeInMillis(TIME_IN_MILLIS);
+        this.cell.setDateValue(d.getTime());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"date\" office:date-value=\"2009-02-13T23:31:31.011Z\"/>",
+                this.getCellXML());
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testDouble() throws IOException {
-		// PLAY
-		final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
-		this.stc.addDataStyle(numberDataStyle);
-		EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
-				.andReturn(this.tcs);
+    @Test
+    public final void testDouble() throws IOException {
+        // PLAY
+        final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
+        this.stc.addDataStyle(numberDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
+                .andReturn(this.tcs);
 
-		PowerMock.replayAll();
-		this.cell.setFloatValue(Double.valueOf(10.999));
-		Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"10.999\"/>", this.getCellXML());
-		PowerMock.verifyAll();
-	}
+        PowerMock.replayAll();
+        this.cell.setFloatValue(Double.valueOf(10.999));
+        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"10.999\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testFloatDouble() throws IOException {
-		// PLAY
-		final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
-		this.stc.addDataStyle(numberDataStyle);
-		EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
-				.andReturn(this.tcs);
+    @Test
+    public final void testFloatDouble() throws IOException {
+        // PLAY
+        final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
+        this.stc.addDataStyle(numberDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
+                .andReturn(this.tcs);
 
-		PowerMock.replayAll();
-		this.cell.setFloatValue(9.999d);
+        PowerMock.replayAll();
+        this.cell.setFloatValue(9.999d);
         Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
-		PowerMock.verifyAll();
-	}
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testFloatFloat() throws IOException {
-		// PLAY
-		final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
-		this.stc.addDataStyle(numberDataStyle);
-		EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
-				.andReturn(this.tcs);
+    @Test
+    public final void testFloatFloat() throws IOException {
+        // PLAY
+        final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
+        this.stc.addDataStyle(numberDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
+                .andReturn(this.tcs);
 
-		PowerMock.replayAll();
-		this.cell.setFloatValue(9.999f);
+        PowerMock.replayAll();
+        this.cell.setFloatValue(9.999f);
         Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
-		PowerMock.verifyAll();
-	}
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testInt() throws IOException {
-		// PLAY
-		final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
-		this.stc.addDataStyle(numberDataStyle);
-		EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
-				.andReturn(this.tcs);
+    @Test
+    public final void testInt() throws IOException {
+        // PLAY
+        final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
+        this.stc.addDataStyle(numberDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), numberDataStyle))
+                .andReturn(this.tcs);
 
-		PowerMock.replayAll();
-		this.cell.setFloatValue(999);
+        PowerMock.replayAll();
+        this.cell.setFloatValue(999);
         Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"999\"/>", this.getCellXML());
-		PowerMock.verifyAll();
-	}
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testTime() throws IOException {
+        // PLAY
+        final DataStyle timeDataStyle = this.ds.getTimeDataStyle();
+        this.stc.addDataStyle(timeDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), timeDataStyle))
+                .andReturn(this.tcs);
+
+        PowerMock.replayAll();
+        this.cell.setTimeValue(999);
+        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"time\" office:time-value=\"P0DT0H0M0.999S\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testPercentage() throws IOException {
+        final DataStyle percentageDataStyle = this.ds.getPercentageDataStyle();
+
+        // PLAY
+        this.stc.addDataStyle(percentageDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), percentageDataStyle))
+                .andReturn(this.tcs);
+
+        PowerMock.replayAll();
+        this.cell.setPercentageValue(75.7);
+        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"75.7\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testCurrency() throws IOException {
+        final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
+
+        // PLAY
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+        this.stc.addDataStyle(currencyDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.getDefaultCellStyle(), currencyDataStyle))
+                .andReturn(this.tcs);
+
+        PowerMock.replayAll();
+        this.cell.setCurrencyValue(75.7, "€");
+        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"75.7\" office:currency=\"€\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFullTooltip() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        // PLAY
+        PowerMock.replayAll();
+        this.cell.setTooltip("tooltip", SimpleLength.cm(1), SimpleLength.cm(2), true);
+        Assert.assertEquals("<table:table-cell>" +
+                "<office:annotation office:display=\"true\" svg:width=\"1cm\" svg:height=\"2cm\">" +
+                "<text:p>tooltip</text:p>" +
+                "</office:annotation>" +
+                "</table:table-cell>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testTooltip() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        // PLAY
+        PowerMock.replayAll();
+        this.cell.setTooltip("tooltip");
+        Assert.assertEquals("<table:table-cell>" +
+                "<office:annotation>" +
+                "<text:p>tooltip</text:p>" +
+                "</office:annotation>" +
+                "</table:table-cell>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testTextWithStyle() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+        this.stc.addStyleToContentAutomaticStyles(TextStyle.DEFAULT_TEXT_STYLE);
+
+        PowerMock.replayAll();
+        this.cell.setText(Text.styledContent("text", TextStyle.DEFAULT_TEXT_STYLE));
+        Assert.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"\">" +
+                "<text:p><text:span text:style-name=\"Default\">text</text:span></text:p>" +
+                "</table:table-cell>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testNullStyle() throws IOException {
+        PowerMock.replayAll();
+        this.cell.setStyle(null);
+        Assert.assertEquals("<table:table-cell/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testTwoStyles() throws IOException {
+        final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
+        final DataStyle percentageDataStyle = this.ds.getPercentageDataStyle();
+        final TableCellStyle defaultCellStyle = TableCellStyle.getDefaultCellStyle();
+
+        this.stc.addDataStyle(percentageDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(defaultCellStyle, percentageDataStyle))
+                .andReturn(this.tcs);
+        this.stc.addDataStyle(numberDataStyle);
+        EasyMock.expect(this.stc.addChildCellStyle(EasyMock.isA(TableCellStyle.class), EasyMock.eq(numberDataStyle)))
+                .andReturn(this.tcs);
+
+        PowerMock.replayAll();
+        this.cell.setPercentageValue(9.999f);
+        this.cell.setFloatValue(9.999f);
+        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testText() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setText(Text.content("text"));
+        Assert.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"\">" +
+                "<text:p>text</text:p>" +
+                "</table:table-cell>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testVoid() throws IOException {
+        PowerMock.replayAll();
+        this.cell.setVoidValue();
+        Assert.assertEquals("<table:table-cell office:value-type=\"\" office-value=\"\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFormula() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setFormula("1");
+        Assert.assertEquals("<table:table-cell table:formula=\"=1\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testColumnsSpanned() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setColumnsSpanned(2);
+        Assert.assertEquals("<table:table-cell table:number-columns-spanned=\"2\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testNoColumnsSpanned() throws IOException {
+        PowerMock.replayAll();
+        this.cell.setColumnsSpanned(1);
+        Assert.assertEquals("<table:table-cell/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testRowsSpanned() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setRowsSpanned(2);
+        Assert.assertEquals("<table:table-cell table:number-rows-spanned=\"2\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testRowsSpannedTwice() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+                EasyMock.eq(this.xmlUtil), EasyMock.anyInt())).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setRowsSpanned(2);
+        this.cell.setRowsSpanned(4);
+        Assert.assertEquals("<table:table-cell table:number-rows-spanned=\"4\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testNoRowsSpanned() throws IOException {
+        PowerMock.replayAll();
+        this.cell.setRowsSpanned(1);
+        Assert.assertEquals("<table:table-cell/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
 
 	/*
-	@Test
+    @Test
 	public final void testGet() {
 		final TableRowStyle trs = TableRowStyle.builder("a").build();
 
