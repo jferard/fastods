@@ -94,7 +94,7 @@ public class TableRow {
 		final int size = this.cells.size();
 		for (int c = 0; c < size; c++) {
 			final TableCell cell = this.cells.get(c);
-			if (this.hasValue(cell)) {
+			if (this.hasNoValue(cell)) {
 				nullFieldCounter++;
 				continue;
 			}
@@ -118,7 +118,7 @@ public class TableRow {
 		appendable.append("/>");
 	}
 
-	private boolean hasValue(final TableCell cell) {
+	private boolean hasNoValue(final TableCell cell) {
 		return cell == null || !cell.hasValue();
 	}
 
@@ -135,26 +135,18 @@ public class TableRow {
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMerge(final int colIndex, final int rowMerge,
-							 final int columnMerge) throws IOException {
-		if (rowMerge < 0 || columnMerge < 0)
+							 final int columnMerge) throws IOException, FastOdsException {
+		if (rowMerge <= 0 || columnMerge <= 0)
 			return;
 		if (rowMerge <= 1 && columnMerge <= 1)
 			return;
 
-		final TableCell firstCell = this.cells.get(colIndex);
-		if (firstCell.isCovered()) // already spanned
-			return;
-
-		firstCell.setColumnsSpanned(columnMerge);
-		this.coverRightCells(colIndex, columnMerge);
-		this.spanColumnsFromRowsBelow(colIndex, rowMerge, columnMerge);
+		this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
 	}
 
-	private void spanColumnsFromRowsBelow(final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
-		for (int r = 1; r < rowMerge; r++) {
-			final TableRow row = this.parent
-					.getRowSecure(this.rowIndex + r, false);
-			row.setColumnsSpanned(colIndex, columnMerge);
+	private void coverRightCells(final int colIndex, final int n) {
+		for (int c=colIndex+1; c<colIndex+n; c++) {
+			this.getOrCreateCell(c).setCovered();
 		}
 	}
 
@@ -162,18 +154,12 @@ public class TableRow {
 		if (n <= 1)
 			return;
 
-		final TableCell firstCell = this.cells.get(colIndex);
+		final TableCell firstCell = this.getOrCreateCell(colIndex);
 		if (firstCell.isCovered()) // already spanned
 			return;
 
-		firstCell.setColumnsSpanned(n);
+		firstCell.markColumnsSpanned(n);
 		this.coverRightCells(colIndex, n);
-	}
-
-	private void coverRightCells(final int colIndex, final int n) {
-		for (final TableCell cell : this.cells.subList(colIndex+1, colIndex + n)) {
-			cell.setCovered();
-		}
 	}
 
 	/**
@@ -200,30 +186,25 @@ public class TableRow {
 		if (n <= 1)
 			return;
 
-		final TableCell firstCell = this.cells.get(colIndex);
+		final TableCell firstCell = this.getOrCreateCell(colIndex);
 		if (firstCell.isCovered())
 			return;
 
-		firstCell.setRowsSpanned(n);
-		this.coverCellsBelow(colIndex, n);
-	}
-
-	private void coverCellsBelow(final int colIndex, final int n) throws IOException {
-		for (int r = 1; r < n; r++) {
-			final TableRow row = this.parent
-					.getRowSecure(this.rowIndex + r, true);
-			final TableCell cell = row.getOrCreateCell(colIndex);
-			cell.setCovered();
-		}
+		this.parent.setRowsSpanned(this.rowIndex, colIndex, n);
 	}
 
 	public TableCell getOrCreateCell(final int colIndex) {
-		while (this.cells.size() <= colIndex) {
+		if (this.cells.size() <= colIndex) {
+			while (this.cells.size() < colIndex) {
+				this.cells.add(null);
+			}
+			// assert this.cells.size() == colIndex
             final TableCell cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
                     this.stylesContainer, this.dataStyles,
                     this, this.rowIndex, this.columnCapacity);
-            this.cells.add(cell);
-        }
+			this.cells.add(cell);
+
+		}
 		return this.cells.get(colIndex);
 	}
 
@@ -234,5 +215,9 @@ public class TableRow {
 
 	public int getColumnCount() {
 		return this.cells.size();
+	}
+
+	public boolean isCovered(final int colIndex) {
+		return this.cells.get(colIndex).isCovered();
 	}
 }

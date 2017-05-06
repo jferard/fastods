@@ -62,6 +62,11 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	}
 
 	@Override
+	public void markRowsSpanned(final int n) throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void setBooleanValue(final boolean value) {
 		this.row.getOrCreateCell(this.c).setBooleanValue(value);
 	}
@@ -72,8 +77,18 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	}
 
 	@Override
+	public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException, FastOdsException {
+		this.row.setCellMerge(this.c, rowMerge, columnMerge);
+	}
+
+	@Override
 	public void setColumnsSpanned(final int n) {
 		this.row.setColumnsSpanned(this.c, n);
+	}
+
+	@Override
+	public void markColumnsSpanned(final int n) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -125,11 +140,6 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	public void setFormula(final String formula) {
 		this.row.getOrCreateCell(this.c).setFormula(formula);
 
-	}
-
-	@Override
-	public TableCellStyle getStyle() {
-		return this.row.getOrCreateCell(this.c).getStyle();
 	}
 
 	@Override

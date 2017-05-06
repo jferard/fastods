@@ -21,12 +21,10 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
@@ -38,25 +36,22 @@ import java.util.List;
 public class TableColdCell {
 	private final TableRow parent;
 	private final XMLUtil xmlUtil;
-	private final int rowIndex;
 	private int columnsSpanned;
 	private String currency;
-	private boolean hasSpans;
 	private int rowsSpanned;
 	private Text text;
 	private String tooltip;
 	private TooltipParameter tooltipParameter;
 	private String formula;
 
-	public TableColdCell(final TableRow parent, final XMLUtil xmlUtil, final int rowIndex) {
+	public TableColdCell(final TableRow parent, final XMLUtil xmlUtil) {
 		this.parent = parent;
 		this.xmlUtil = xmlUtil;
-		this.rowIndex = rowIndex;
 	}
 
 	public static TableColdCell create(final TableRow parent,
-                                       final XMLUtil xmlUtil, final int rowIndex) {
-		return new TableColdCell(parent, xmlUtil, rowIndex);
+									   final XMLUtil xmlUtil) {
+		return new TableColdCell(parent, xmlUtil);
 	}
 
 	public String getCurrency() {

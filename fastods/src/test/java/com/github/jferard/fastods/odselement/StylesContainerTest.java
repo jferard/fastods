@@ -198,9 +198,11 @@ public class StylesContainerTest {
 		TableCellStyle childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
 		Assert.assertNotNull(childCellStyle);
 		Assert.assertEquals("tcs@@bs", childCellStyle.getName());
+		Assert.assertEquals(ds, childCellStyle.getDataStyle());
 
 		childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
 		Assert.assertNotNull(childCellStyle);
 		Assert.assertEquals("tcs@@bs", childCellStyle.getName());
+		Assert.assertEquals(ds, childCellStyle.getDataStyle());
 	}
 }

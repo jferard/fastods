@@ -45,8 +45,8 @@ public class TableCellImpl implements TableCell {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final StylesContainer stylesContainer;
-    private DataStyles dataStyles;
-    private final int rowIndex;
+    private final DataStyles dataStyles;
+    private final int columnIndex;
     /*
     private TableColdCell coldRow;
 	private TableCellStyle defaultCellStyle;
@@ -60,13 +60,13 @@ public class TableCellImpl implements TableCell {
 
     TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
                   final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final TableRow parent, final int rowIndex, final int columnCapacity) {
+                  final TableRow parent, final int columnIndex, final int columnCapacity) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
         this.parent = parent;
-        this.rowIndex = rowIndex;
+        this.columnIndex = columnIndex;
     }
 
     @Override
@@ -123,18 +123,35 @@ public class TableCellImpl implements TableCell {
         if (n <= 1)
             return;
 
+        this.parent.setColumnsSpanned(this.columnIndex, n);
+    }
+
+    @Override
+    public void markColumnsSpanned(final int n) {
+        if (n <= 1)
+            return;
+
         this.ensureColdCell();
         this.coldCell.setColumnsSpanned(n);
     }
 
     @Override
-    public void setRowsSpanned(final int n) {
+    public void setRowsSpanned(final int n) throws IOException {
+        if (n <= 1)
+            return;
+
+        this.parent.setRowsSpanned(this.columnIndex, n);
+    }
+
+    @Override
+    public void markRowsSpanned(final int n) throws IOException {
         if (n <= 1)
             return;
 
         this.ensureColdCell();
         this.coldCell.setRowsSpanned(n);
     }
+
 
     private String getCurrency() {
         if (this.coldCell == null)
@@ -184,7 +201,7 @@ public class TableCellImpl implements TableCell {
 
     private void ensureColdCell() {
         if (this.coldCell == null)
-            this.coldCell = TableColdCell.create(this.parent, this.xmlUtil, this.rowIndex);
+            this.coldCell = TableColdCell.create(this.parent, this.xmlUtil);
     }
 
     /* (non-Javadoc)
@@ -234,10 +251,6 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setFloatValue(final Number value) {
         this.setFloatValue(value.toString());
-    }
-
-    public void setFormat(final DataStyles format) {
-        this.dataStyles = format;
     }
 
     /**
@@ -307,6 +320,16 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
+    public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException, FastOdsException {
+        if (rowMerge <= 0 || columnMerge <= 0)
+            return;
+        if (rowMerge <= 1 && columnMerge <= 1)
+            return;
+
+        this.parent.setCellMerge(this.columnIndex, rowMerge, columnMerge);
+    }
+
+    @Override
     public void setTimeValue(final long timeInMillis) {
         this.value = this.xmlUtil.formatTimeInterval(timeInMillis);
         this.type = TableCell.Type.TIME;
@@ -337,12 +360,7 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public TableCellStyle getStyle() {
-        return null;
-    }
-
-    @Override
     public boolean hasValue() {
-        return this.value != null;
+        return this.value != null || this.hasColdCell();
     }
 }

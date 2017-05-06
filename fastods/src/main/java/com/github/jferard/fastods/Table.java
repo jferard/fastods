@@ -196,19 +196,25 @@ public class Table implements NamedObject {
 			if (tr == null) {
 				this.nullFieldCounter++;
 			} else {
-				if (this.nullFieldCounter > 0) {
-					appendable.append("<table:table-row");
-					if (this.nullFieldCounter > 1) {
-						util.appendEAttribute(appendable,
-								"table:number-rows-repeated", this.nullFieldCounter);
-					}
-					util.appendEAttribute(appendable, "table:style-name",
-							"ro1");
-					appendable.append("><table:table-cell/></table:table-row>");
-				}
+				this.appendRepeatedRows(util, appendable);
 				tr.appendXMLToTable(util, appendable);
 			}
 		}
+	}
+
+	private void appendRepeatedRows(final XMLUtil util, final Appendable appendable) throws IOException {
+		if (this.nullFieldCounter <= 0)
+			return;
+
+		appendable.append("<table:table-row");
+		if (this.nullFieldCounter > 1) {
+			util.appendEAttribute(appendable,
+					"table:number-rows-repeated", this.nullFieldCounter);
+		}
+		util.appendEAttribute(appendable, "table:style-name",
+				"ro1");
+		appendable.append("><table:table-cell/></table:table-row>");
+		this.nullFieldCounter = 0;
 	}
 
 	public void appendXMLToContentEntry(final XMLUtil util,
@@ -358,6 +364,23 @@ public class Table implements NamedObject {
 		return this.getRowSecure(this.curRowIndex + 1, true);
 	}
 
+	public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
+		final TableRow row = this.getRowSecure(rowIndex, true);
+		if (row.isCovered(colIndex)) // already spanned
+			return;
+
+		row.setColumnsSpanned(colIndex, columnMerge);
+		this.spanColumnsFromRowsBelow(rowIndex, colIndex, rowMerge, columnMerge);
+	}
+
+	private void spanColumnsFromRowsBelow(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
+		for (int r = rowIndex + 1; r < rowIndex + rowMerge; r++) {
+			final TableRow row = this.getRowSecure(r, false);
+			row.setColumnsSpanned(colIndex, columnMerge);
+		}
+	}
+
+
 	/**
 	 * Set the merging of multiple cells to one cell.
 	 *
@@ -371,8 +394,7 @@ public class Table implements NamedObject {
 	public void setCellMerge(final String pos, final int rowMerge,
 							 final int columnMerge) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
-		final TableRow row = this.getRow(position.getRow());
-		row.setCellMerge(position.getColumn(), rowMerge, columnMerge);
+		this.setCellMerge(position.getRow(), position.getColumn(), rowMerge, columnMerge);
 	}
 
 	/**
@@ -422,5 +444,26 @@ public class Table implements NamedObject {
 		this.stylesContainer.addPageStyle(style.getPageStyle());
 		this.stylesContainer.addStyleToContentAutomaticStyles(style);
 		this.style = style;
+	}
+
+    public void setRowsSpanned(final int rowIndex, final int colIndex, final int n) throws IOException {
+		if (n <= 1)
+			return;
+
+		final TableCell firstCell = this.getRowSecure(rowIndex, false).getOrCreateCell(colIndex);
+		if (firstCell.isCovered())
+			return;
+
+		firstCell.markRowsSpanned(n);
+		this.coverCellsBelow(rowIndex, colIndex, n);
+	}
+
+	private void coverCellsBelow(final int rowIndex, final int colIndex, final int n) throws IOException {
+		for (int r = rowIndex + 1; r < rowIndex + n; r++) {
+			final TableRow row = this
+					.getRowSecure(r, false);
+			final TableCell cell = row.getOrCreateCell(colIndex);
+			cell.setCovered();
+		}
 	}
 }

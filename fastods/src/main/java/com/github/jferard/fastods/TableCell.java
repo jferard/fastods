@@ -65,6 +65,8 @@ public interface TableCell {
 	void appendXMLToTableRow(XMLUtil util, Appendable appendable)
 			throws IOException;
 
+	void markRowsSpanned(int n) throws IOException;
+
 	/**
 	 * Set the boolean value
 	 *
@@ -210,13 +212,13 @@ public interface TableCell {
 	 */
 	void setFormula(String formula);
 
-	TableCellStyle getStyle();
-
 	boolean isCovered();
 
 	void setCovered();
 
 	void setColumnsSpanned(int n);
+
+	void markColumnsSpanned(int n);
 
 	void setRowsSpanned(int n) throws IOException;
 
@@ -225,4 +227,7 @@ public interface TableCell {
 	boolean hasValue();
 
 	void setText(Text text);
+
+	void setCellMerge(int rowMerge,
+							 int columnMerge) throws IOException, FastOdsException;
 }

@@ -188,6 +188,77 @@ public class TableTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public final void testRowsSpanned() throws IOException {
+        // PLAY
+
+        PowerMock.replayAll();
+        this.table.setRowsSpanned(10, 11, 12);
+
+        DomTester.assertEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
+                "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                "<table:table-row table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
+                "<table:table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:table-cell table:number-rows-spanned=\"12\"/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" +
+                "</table:table-row>" +
+                "</table:table>", this.getTableXML());
+        PowerMock.verifyAll();
+    }
+
+    private String getTableXML() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        ;
+        this.table.appendXMLToContentEntry(this.xmlUtil, sb);
+        return sb.toString();
+    }
+
     /*
     @Test
     public final void testMerge() throws IOException {
@@ -311,6 +382,28 @@ public class TableTest {
         PowerMock.replayAll();
         this.table.appendPreamble(this.xmlUtil, sb);
         this.table.setName("t");
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testObserver() throws IOException {
+        final OdsFileWriter o = PowerMock.createMock(OdsFileWriter.class);
+
+        o.update(EasyMock.isA(BeginTableFlusher.class));
+        EasyMock.expectLastCall().times(3);
+        o.update(EasyMock.isA(EndTableFlusher.class));
+        EasyMock.expectLastCall().times(3);
+
+        PowerMock.replayAll();
+        this.table.addObserver(o);
+        this.table.flush();
+        this.table.flush();
+
+        final TableRow row = this.table.getRowSecure(10, true);
+        final TableCell cell = row.getOrCreateCell(11);
+        cell.setStringValue("a");
+
+        this.table.flush();
         PowerMock.verifyAll();
     }
 }

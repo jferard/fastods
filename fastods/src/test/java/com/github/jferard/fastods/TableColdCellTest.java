@@ -21,10 +21,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,13 +39,13 @@ public class TableColdCellTest {
 	public void setUp() {
 		this.row = PowerMock.createMock(TableRow.class);
 		this.xmlUtil = XMLUtil.create();
-		this.coldCell = new TableColdCell(this.row, this.xmlUtil, 10);
+		this.coldCell = new TableColdCell(this.row, this.xmlUtil);
 	}
 
 	@Test
 	public final void testCreate() throws IOException {
 		PowerMock.replayAll();
-		this.coldCell = TableColdCell.create(this.row, this.xmlUtil, 10);
+		this.coldCell = TableColdCell.create(this.row, this.xmlUtil);
 		DomTester.assertEquals("<table:table-cell/>", this.getXML());
 		PowerMock.verifyAll();
 	}
