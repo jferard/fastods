@@ -90,7 +90,7 @@ public class ParagraphTest {
 		Assert.assertEquals(4, par.getParagraphElements().size());
 		DomTester.assertEquals("<text:p>" +
 						"<text:a xlink:href=\"#ref\" xlink:type=\"simple\">text1</text:a>" +
-						"<text:a xlink:href=\"file:/home/jferard/prog/java/fastods/fastods/f\" xlink:type=\"simple\">text1</text:a>" +
+						"<text:a xlink:href=\"" + this.getURLStart() + "f\" xlink:type=\"simple\">text1</text:a>" +
 						"<text:a xlink:href=\"http:a/b\" xlink:type=\"simple\">text1</text:a>" +
 						"<text:a xlink:href=\"#tableName\" xlink:type=\"simple\">text1</text:a>" +
 						"</text:p>",
@@ -117,13 +117,18 @@ public class ParagraphTest {
 		Assert.assertEquals(4, par.getParagraphElements().size());
 		DomTester.assertEquals("<text:p>" +
 						"<text:a text:style-name=\"style\" xlink:href=\"#ref\" xlink:type=\"simple\">text1</text:a>" +
-						"<text:a text:style-name=\"style\" xlink:href=\"file:/home/jferard/prog/java/fastods/fastods/f\" xlink:type=\"simple\">text1</text:a>" +
+						"<text:a text:style-name=\"style\" xlink:href=\""+this.getURLStart()+"f\" xlink:type=\"simple\">text1</text:a>" +
 						"<text:a text:style-name=\"style\" xlink:href=\"http:a/b\" xlink:type=\"simple\">text1</text:a>" +
 						"<text:a text:style-name=\"style\" xlink:href=\"#tableName\" xlink:type=\"simple\">text1</text:a>" +
 						"</text:p>",
 				this.getXML());
 
 		PowerMock.verifyAll();
+	}
+
+	private String getURLStart() {
+		final String p = new File(".").toURI().toString();
+		return p.substring(0, p.length()-2);
 	}
 
 	private String getXML() throws IOException {
