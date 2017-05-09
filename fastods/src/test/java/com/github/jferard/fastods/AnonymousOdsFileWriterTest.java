@@ -87,13 +87,13 @@ public class AnonymousOdsFileWriterTest {
 		this.xmlUtil = XMLUtil.create();
 		this.odsElements = PowerMock.createMock(OdsElements.class);
 		this.builder = ZipUTF8WriterImpl.builder();
-		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 	}
 
 	@Test(expected = IOException.class)
 	public final void testFileIsDir() throws IOException {
 		final Logger l = PowerMock.createNiceMock(Logger.class);
-		final OdsFactory of = new OdsFactory(l, Locale.US);
+		final OdsFactory of = OdsFactory.create(l, Locale.US);
 
 		// PLAY
 		this.initOdsElements();

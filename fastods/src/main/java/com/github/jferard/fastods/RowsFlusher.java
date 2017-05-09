@@ -47,7 +47,7 @@ class RowsFlusher implements OdsFlusher {
 		// flush rows
 		for (final TableRow row : this.rows) {
 			if (row == null) {
-				System.exit(0);
+				throw new IllegalArgumentException();
 			}
 			row.appendXMLToTable(xmlUtil, writer);
 		}

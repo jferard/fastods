@@ -25,6 +25,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,14 +36,19 @@ import java.util.List;
 class PreprocessedRowsFlusher implements OdsFlusher {
 	private final StringBuilder sb;
 
+	public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil, final List<TableRow> tableRows) throws IOException {
+		return new PreprocessedRowsFlusher(xmlUtil, tableRows, new StringBuilder(1024 * 32));
+	}
+
 	/**
 	 * @param rows the rows to flush
+	 * @param sb
 	 */
-	public PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows) throws IOException {
-		this.sb = new StringBuilder(1024*32);
+	PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows, final StringBuilder sb) throws IOException {
+		this.sb = sb;
 		for (final TableRow row : rows) {
 			if (row == null) {
-				System.exit(0);
+				throw new IllegalArgumentException();
 			}
 			row.appendXMLToTable(xmlUtil, this.sb);
 		}

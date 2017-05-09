@@ -46,7 +46,7 @@ public class FileOpenResultTest {
 	@Before
 	public void setUp() {
 		final Logger logger = PowerMock.createMock(Logger.class);
-		this.odsFactory = new OdsFactory(logger, Locale.US);
+		this.odsFactory = OdsFactory.create(logger, Locale.US);
 	}
 
 	@Test

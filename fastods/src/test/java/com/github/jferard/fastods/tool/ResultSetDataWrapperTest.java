@@ -70,7 +70,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
 	@Before
 	public final void setUp() {
-		this.odsFactory = new OdsFactory(Logger.getLogger(""), Locale.US);
+		this.odsFactory = OdsFactory.create(Logger.getLogger(""), Locale.US);
 	}
 
 	private static MockResultSet createResultSet(

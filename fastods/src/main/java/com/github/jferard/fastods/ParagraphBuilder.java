@@ -47,6 +47,18 @@ public class ParagraphBuilder {
 		return this;
 	}
 
+	public ParagraphBuilder link(final String text, final String ref) {
+		final ParagraphElement paragraphElement = new Link(text, ref);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
+	public ParagraphBuilder styledLink(final String text, final String ref, final TextStyle ts) {
+		final ParagraphElement paragraphElement = new Link(text, ref, ts);
+		this.paragraphElements.add(paragraphElement);
+		return this;
+	}
+
 	public ParagraphBuilder link(final String text, final Table table) {
 		final ParagraphElement paragraphElement = new Link(text, table);
 		this.paragraphElements.add(paragraphElement);
@@ -90,12 +102,6 @@ public class ParagraphBuilder {
 
 	public ParagraphBuilder styledSpan(final String text, final TextStyle ts) {
 		final ParagraphElement paragraphElement = new Span(text, ts);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
-
-	public ParagraphBuilder link(final String text, final String ref) {
-		final ParagraphElement paragraphElement = new Link(text, ref);
 		this.paragraphElements.add(paragraphElement);
 		return this;
 	}

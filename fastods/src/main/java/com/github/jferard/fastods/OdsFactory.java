@@ -50,7 +50,15 @@ import static com.github.jferard.fastods.OdsFactory.FileState.OK;
  */
 public class OdsFactory {
 	public static OdsFactory create() {
-		return new OdsFactory(Logger.getLogger(OdsDocument.class.getName()), Locale.getDefault());
+		return OdsFactory.create(Logger.getLogger(OdsDocument.class.getName()), Locale.getDefault());
+	}
+
+	public static OdsFactory create(final Logger logger, final Locale locale) {
+		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
+		final WriteUtil writeUtil = WriteUtil.create();
+		final XMLUtil xmlUtil = XMLUtil.create();
+		final DataStyles format = DataStylesFactory.create(xmlUtil, locale);
+		return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format);
 	}
 
 	private final DataStyles format;
@@ -59,12 +67,13 @@ public class OdsFactory {
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
 
-	public OdsFactory(final Logger logger, final Locale locale) {
-		this.positionUtil = new PositionUtil(new EqualityUtil());
-		this.writeUtil = WriteUtil.create();
-		this.xmlUtil = XMLUtil.create();
-		this.format = DataStylesFactory.create(this.xmlUtil, locale);
+
+	public OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil, final DataStyles format) {
 		this.logger = logger;
+		this.positionUtil = positionUtil;
+		this.writeUtil = writeUtil;
+		this.xmlUtil = xmlUtil;
+		this.format = format;
 	}
 
 	/**

@@ -342,13 +342,12 @@ public class Table implements NamedObject {
 	}
 
 	private PreprocessedRowsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
-		return new PreprocessedRowsFlusher(this.xmlUtil,
+		return PreprocessedRowsFlusher.create(this.xmlUtil,
             new ArrayList<TableRow>(
                     this.tableRows.subList(
                             this.lastFlushedRowIndex, toRowIndex
                     )
-            )
-    );
+            ));
 	}
 
 	/**
