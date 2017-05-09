@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -30,13 +31,17 @@ import java.util.Queue;
  * @author Martin Schulz
  */
 public class OdsFileWriterAdapter implements OdsFileWriter {
-	private OdsFileWriter adaptee;
+	private final OdsFileWriter adaptee;
 	private boolean stopped;
-	private Queue<OdsFlusher> flushers;
+	private final Queue<OdsFlusher> flushers;
 
-	public OdsFileWriterAdapter(OdsFileWriter adaptee) {
+	public static OdsFileWriterAdapter create(final OdsFileWriter adaptee) {
+		return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
+	}
+
+	OdsFileWriterAdapter(final OdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
 		this.adaptee = adaptee;
-		this.flushers = new LinkedList<OdsFlusher>();
+		this.flushers = flushers;
 	}
 
 	@Override
@@ -70,13 +75,13 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
 				break;
 			}
 			try {
-				wait();
-			} catch (InterruptedException e) {
+				this.wait();
+			} catch (final InterruptedException e) {
 			}
 			this.notifyAll(); //
 			flusher = this.flushers.poll();
 		}
-		if (stopped)
+		if (this.stopped)
 			this.adaptee.save();
 		this.notifyAll(); // nobody is waiting
 	}
@@ -88,9 +93,10 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
 	public synchronized void waitForData() {
 		while (this.flushers.isEmpty() && this.isNotStopped()) {
 			try {
-				wait();
-			} catch (InterruptedException e) {
+				this.wait();
+			} catch (final InterruptedException e) {
 			}
 		}
 	}
+
 }

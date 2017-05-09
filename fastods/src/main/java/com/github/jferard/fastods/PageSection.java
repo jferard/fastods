@@ -148,20 +148,6 @@ public class PageSection {
 	}
 
 	/**
-	 * @return The current margins of the footer/header.
-	 */
-	public Margins getMargins() {
-		return this.style.getMargins();
-	}
-
-	/**
-	 * @return The current minimum height of the footer/header.
-	 */
-	public Length getMinHeight() {
-		return this.style.getMinHeight();
-	}
-
-	/**
 	 * Footer or Header ?
 	 */
 	public enum Type {
@@ -169,7 +155,7 @@ public class PageSection {
 
 		private final String typeName;
 
-		private Type(final String typeName) {
+		Type(final String typeName) {
 			this.typeName = typeName;
 		}
 

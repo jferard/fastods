@@ -131,7 +131,7 @@ public class OdsFactory {
 	public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
 		final OdsDocument document = this.createDocument();
 		final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
-		final OdsFileWriterAdapter writerAdapter = new OdsFileWriterAdapter(
+		final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(
 				OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile(file)).zipBuilder(
 						zipUTF8Writer)
 						.build());
