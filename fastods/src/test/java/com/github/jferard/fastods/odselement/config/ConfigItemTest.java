@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods.odselement;
+package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.testlib.DomTester;

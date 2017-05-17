@@ -40,25 +40,18 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 	/**
 	 * @return a new sequence
 	 */
-	public static ConfigItemMapEntry createSequence() {
-		return new ConfigItemMapEntrySequence(new ArrayList<ConfigBlock>());
+	public static ConfigItemMapEntrySequence createSequence() {
+		return new ConfigItemMapEntrySequence(null, new ArrayList<ConfigBlock>());
 	}
 
 	/**
 	 * @param name the name of the sequence
 	 * @return a new named sequence
 	 */
-	public static ConfigItemMapEntry createSequence(final String name) {
+	public static ConfigItemMapEntrySequence createSequence(final String name) {
 		return new ConfigItemMapEntrySequence(name, new ArrayList<ConfigBlock>());
 	}
 
-
-	/**
-	 * @param blocks the block sequence, as a list
-	 */
-	ConfigItemMapEntrySequence(final List<ConfigBlock> blocks) {
-		this(null, blocks);
-	}
 
 	/**
 	 * @param name the name of the sequence

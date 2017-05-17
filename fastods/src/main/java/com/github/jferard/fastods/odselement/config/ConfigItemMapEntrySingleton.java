@@ -42,7 +42,7 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	 * @param configItem the ConfigItem
 	 * @return the singleton
 	 */
-	public static ConfigItemMapEntry createSingleton(final String name, final ConfigItem configItem) {
+	public static ConfigItemMapEntrySingleton createSingleton(final String name, final ConfigItem configItem) {
 		return new ConfigItemMapEntrySingleton(name, configItem);
 	}
 
@@ -51,15 +51,8 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	 * @param configItem the ConfigItem
 	 * @return the singleton
 	 */
-	public static ConfigItemMapEntry createSingleton(final ConfigItem configItem) {
-		return new ConfigItemMapEntrySingleton(configItem);
-	}
-
-	/**
-	 * @param block the unique ConfigBlock
-	 */
-	ConfigItemMapEntrySingleton(final ConfigBlock block) {
-		this(null, block);
+	public static ConfigItemMapEntrySingleton createSingleton(final ConfigItem configItem) {
+		return new ConfigItemMapEntrySingleton(null, configItem);
 	}
 
 	/**
