@@ -37,12 +37,17 @@ public class ConfigItemMapEntrySingletonTest {
     private ConfigItemMapEntrySingleton singleton;
     private ConfigItem item;
     private XMLUtil util;
+    private String itemXML;
 
     @Before
     public void setUp() throws Exception {
         this.item = new ConfigItem("n", "t", "v");
         this.singleton = ConfigItemMapEntrySingleton.createSingleton("singleton", this.item);
         this.util = XMLUtil.create();
+
+        final StringBuilder sb = new StringBuilder();
+        this.item.appendXML(this.util, sb);
+        this.itemXML = sb.toString();
     }
 
     @Test
@@ -67,7 +72,7 @@ public class ConfigItemMapEntrySingletonTest {
 
         this.singleton.appendXML(this.util, sb);
         Assert.assertEquals("<config:config-item-map-entry config:name=\"singleton\">" +
-                "<config:config-item config:name=\"n\" config:type=\"t\">v</config:config-item>" +
+                this.itemXML +
                 "</config:config-item-map-entry>", sb.toString());
 
     }
@@ -98,12 +103,25 @@ public class ConfigItemMapEntrySingletonTest {
 
     @Test
     public void getByName() {
-        this.singleton.getByName("x");
+        Assert.assertNull(this.singleton.getByName("x"));
+        Assert.assertEquals(this.item, this.singleton.getByName("n"));
     }
 
     @Test
     public void set() throws Exception {
         Assert.assertEquals("v", this.singleton.set("value"));
         Assert.assertEquals(null, this.singleton.set("name", "value"));
+    }
+
+    @Test
+    public void set2() throws Exception {
+        Assert.assertEquals("v", this.singleton.set("value"));
+        Assert.assertEquals("value", this.singleton.set("n", "value2"));
+    }
+
+    @Test
+    public void set3() throws Exception {
+        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton.createSingleton(this.singleton);
+        Assert.assertNull(sing.set("value"));
     }
 }

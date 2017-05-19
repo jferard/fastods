@@ -37,22 +37,22 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	private final String name;
 
 	/**
-	 * Create a named singleton from a ConfigItem
+	 * Create a named singleton from a ConfigBlock
 	 * @param name the name
-	 * @param configItem the ConfigItem
+	 * @param configBlock the ConfigBlock
 	 * @return the singleton
 	 */
-	public static ConfigItemMapEntrySingleton createSingleton(final String name, final ConfigItem configItem) {
-		return new ConfigItemMapEntrySingleton(name, configItem);
+	public static ConfigItemMapEntrySingleton createSingleton(final String name, final ConfigBlock configBlock) {
+		return new ConfigItemMapEntrySingleton(name, configBlock);
 	}
 
 	/**
-	 * Create an anonymous singleton from a ConfigItem
-	 * @param configItem the ConfigItem
+	 * Create an anonymous singleton from a ConfigBlock
+	 * @param configBlock the ConfigBlock
 	 * @return the singleton
 	 */
-	public static ConfigItemMapEntrySingleton createSingleton(final ConfigItem configItem) {
-		return new ConfigItemMapEntrySingleton(null, configItem);
+	public static ConfigItemMapEntrySingleton createSingleton(final ConfigBlock configBlock) {
+		return new ConfigItemMapEntrySingleton(null, configBlock);
 	}
 
 	/**

@@ -40,6 +40,8 @@ public class ConfigItemMapEntrySequenceTest {
     private ConfigItemMapEntrySequence sequence;
     private ConfigItem item;
     private XMLUtil util;
+    private String itemXML;
+    private String blockXML;
 
     @Before
     public void setUp() throws Exception {
@@ -47,6 +49,14 @@ public class ConfigItemMapEntrySequenceTest {
         this.block = ConfigItemMapEntrySingleton.createSingleton(this.item);
         this.sequence = ConfigItemMapEntrySequence.createSequence("seq");
         this.util = XMLUtil.create();
+
+        final StringBuilder sb = new StringBuilder();
+        this.item.appendXML(this.util, sb);
+        this.itemXML = sb.toString();
+
+        final StringBuilder sb2 = new StringBuilder();
+        this.block.appendXML(this.util, sb2);
+        this.blockXML = sb2.toString();
     }
 
     @Test
@@ -90,10 +100,25 @@ public class ConfigItemMapEntrySequenceTest {
     @Test
     public void appendXML() throws Exception {
         final StringBuilder sb = new StringBuilder();
-        this.sequence.add("name", "type", "value");
+        this.sequence.add(this.item);
+        this.sequence.add(this.block);
         this.sequence.appendXML(this.util, sb);
         Assert.assertEquals("<config:config-item-map-entry config:name=\"seq\">" +
-                "<config:config-item config:name=\"name\" config:type=\"type\">value</config:config-item>" +
+                this.itemXML +
+                this.blockXML +
+                "</config:config-item-map-entry>", sb.toString());
+    }
+
+    @Test
+    public void appendXML2() throws Exception {
+        final StringBuilder sb = new StringBuilder();
+        final ConfigItemMapEntrySequence seq = ConfigItemMapEntrySequence.createSequence();
+        seq.add(this.item);
+        seq.add(this.block);
+        seq.appendXML(this.util, sb);
+        Assert.assertEquals("<config:config-item-map-entry>" +
+                this.itemXML +
+                this.blockXML +
                 "</config:config-item-map-entry>", sb.toString());
     }
 

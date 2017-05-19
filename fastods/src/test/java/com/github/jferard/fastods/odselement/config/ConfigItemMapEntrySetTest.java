@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.util.XMLUtil;
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +37,18 @@ public class ConfigItemMapEntrySetTest {
     private ConfigItemMapEntrySet set;
     private ConfigItem item;
     private XMLUtil util;
+    private String itemXML;
 
     @Before
     public void setUp() throws Exception {
         this.item = new ConfigItem("n", "t", "v");
-        this.block = ConfigItemMapEntrySingleton.createSingleton(this.item);
+        this.block = ConfigItemMapEntrySingleton.createSingleton("b", this.item);
         this.set = ConfigItemMapEntrySet.createSet("seq");
         this.util = XMLUtil.create();
+
+        final StringBuilder sb = new StringBuilder();
+        this.item.appendXML(this.util, sb);
+        this.itemXML = sb.toString();
     }
 
     @Test
@@ -51,6 +57,13 @@ public class ConfigItemMapEntrySetTest {
         Assert.assertEquals(0, s.size());
         Assert.assertTrue(s.isEmpty());
         Assert.assertNull(s.getName());
+    }
+
+    @Test
+    public void createSet2() throws Exception {
+        final ConfigItemMapEntrySet s = new ConfigItemMapEntrySet("n", Sets.<ConfigBlock>newHashSet(this.item));
+        Assert.assertEquals(1, s.size());
+        Assert.assertFalse(s.isEmpty());
     }
 
     @Test
@@ -79,6 +92,13 @@ public class ConfigItemMapEntrySetTest {
     }
 
     @Test
+    public void contains() throws Exception {
+        this.set.add(this.block);
+        Assert.assertTrue(this.set.contains("b"));
+        Assert.assertFalse(this.set.contains("n"));
+    }
+
+    @Test
     public void remove2() throws Exception {
         this.set.remove(new Object());
     }
@@ -86,10 +106,10 @@ public class ConfigItemMapEntrySetTest {
     @Test
     public void appendXML() throws Exception {
         final StringBuilder sb = new StringBuilder();
-        this.set.add("name", "type", "value");
+        this.set.add(this.item);
         this.set.appendXML(this.util, sb);
         Assert.assertEquals("<config:config-item-map-entry config:name=\"seq\">" +
-                "<config:config-item config:name=\"name\" config:type=\"type\">value</config:config-item>" +
+                this.itemXML +
                 "</config:config-item-map-entry>", sb.toString());
     }
 
@@ -97,6 +117,12 @@ public class ConfigItemMapEntrySetTest {
     public void addItem() throws Exception {
         this.set.add("name", "type", "value");
         Assert.assertTrue(this.set.iterator().next() instanceof ConfigItem);
+    }
+
+    @Test
+    public void addItemTwice() throws Exception {
+        Assert.assertTrue(this.set.add("name", "type", "value"));
+        Assert.assertFalse(this.set.add("name", "type", "value"));
     }
 
     @Test

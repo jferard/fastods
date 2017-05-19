@@ -158,7 +158,7 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 	public boolean add(final String name, final String type, final String value) {
 		final ConfigBlock block = this.getByName(name);
 		if (block instanceof ConfigItem)
-			return false;
+			return false; // can't add an item twice, but ok for a different block with the same name
 
 		this.blockByName.put(name, new ConfigItem(name, type, value));
 		return true;
