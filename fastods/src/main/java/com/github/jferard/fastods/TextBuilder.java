@@ -35,9 +35,13 @@ public class TextBuilder {
 	private final List<Paragraph> paragraphs;
 	private final Set<TextStyle> textStyles;
 
-	TextBuilder() {
-		this.textStyles = new HashSet<TextStyle>();
-		this.paragraphs = new ArrayList<Paragraph>();
+	public static TextBuilder create() {
+		return new TextBuilder(new HashSet<TextStyle>(), new ArrayList<Paragraph>());
+	}
+
+	TextBuilder(final Set<TextStyle> textStyles, final List<Paragraph> paragraphs) {
+		this.textStyles = textStyles;
+		this.paragraphs = paragraphs;
 		this.curParagraphBuilder = null;
 	}
 
@@ -99,6 +103,16 @@ public class TextBuilder {
 		return this;
 	}
 
+	public TextBuilder link(final String text, final String ref) {
+		this.curParagraphBuilder.link(text, ref);
+		return this;
+	}
+
+	public TextBuilder styledLink(final String text, final String ref, final TextStyle ts) {
+		this.curParagraphBuilder.styledLink(text, ref, ts);
+		return this;
+	}
+
 	/**
 	 * Adds a TextStyle and text to the footer/header region specified by
 	 * region.<br>
@@ -114,11 +128,6 @@ public class TextBuilder {
 	public TextBuilder styledSpan(final String text, final TextStyle ts) {
 		this.textStyles.add(ts);
 		this.curParagraphBuilder.styledSpan(text, ts);
-		return this;
-	}
-
-	public TextBuilder link(final String text, final String ref) {
-		this.curParagraphBuilder.link(text, ref);
 		return this;
 	}
 }

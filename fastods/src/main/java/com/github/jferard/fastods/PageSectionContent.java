@@ -40,10 +40,11 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 abstract class PageSectionContent {
-	public static enum Region {
+	public enum Region {
 		CENTER, LEFT, RIGHT;
 	}
 
+	/*
 	public static RegionPageSectionBuilder regionBuilder() {
 		return new RegionPageSectionBuilder();
 	}
@@ -65,6 +66,7 @@ abstract class PageSectionContent {
 				.text(Text.styledContent(text, ts)).build();
 		return new Header(pageSection);
 	}
+	*/
 
 	public abstract void addEmbeddedStylesToStylesElement(
 			StylesContainer stylesContainer);

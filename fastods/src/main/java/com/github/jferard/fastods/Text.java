@@ -39,7 +39,7 @@ public class Text {
 	public static final String TEXT_TIME = "<text:time/>";
 
 	public static TextBuilder builder() {
-		return new TextBuilder();
+		return TextBuilder.create();
 	}
 
 	public static Text content(final String text) {
