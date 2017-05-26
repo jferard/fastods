@@ -65,12 +65,12 @@ public class Table implements NamedObject {
 
 	private final int bufferSize;
 	private final int columnCapacity;
-	private final List<TableColumnStyle> columnStyles;
+	private final FullList<TableColumnStyle> columnStyles;
 	private final ConfigItemMapEntrySet configEntry;
 	private final DataStyles format;
 	private final PositionUtil positionUtil;
 	private final StylesContainer stylesContainer;
-	private final List<TableRow> tableRows;
+	private final FullList<TableRow> tableRows;
 	private final WriteUtil writeUtil;
 	private final XMLUtil xmlUtil;
 
@@ -137,8 +137,7 @@ public class Table implements NamedObject {
 
 	private void appendColumnStyles(final Appendable appendable,
 									final XMLUtil xmlUtil) throws IOException {
-		final Iterator<TableColumnStyle> iterator = this.getColumnStyles()
-				.iterator();
+		final Iterator<TableColumnStyle> iterator = this.columnStyles.iterator();
 		if (!iterator.hasNext())
 			return;
 
@@ -190,7 +189,7 @@ public class Table implements NamedObject {
 		if (firstRowIndex == 0)
 			this.nullFieldCounter = 0;
 
-		final int size = this.tableRows.size();
+		final int size = this.tableRows.usedSize();
 		for (int r = firstRowIndex; r < size; r++) {
 			final TableRow tr = this.tableRows.get(r);
 			if (tr == null) {
@@ -235,7 +234,7 @@ public class Table implements NamedObject {
 			this.observer.update(new BeginTableFlusher(this));
 
 		this.observer.update(new EndTableFlusher(this, this.tableRows.subList(this.lastFlushedRowIndex, this
-				.tableRows.size())));
+				.tableRows.usedSize())));
 	}
 
 	/**
@@ -290,7 +289,7 @@ public class Table implements NamedObject {
 	}
 
 	public int getLastRowNumber() {
-		return this.tableRows.size() - 1;
+		return this.tableRows.usedSize() - 1;
 	}
 
 	/**

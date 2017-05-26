@@ -67,11 +67,11 @@ public class FullList<E> implements List<E> {
 		return new FullListBuilder<F>();
 	}
 
-	public static <F> List<F> newList() {
+	public static <F> FullList<F> newList() {
 		return new FullList<F>(null, FullList.DEFAULT_CAPACITY);
 	}
 
-	public static <F> List<F> newListWithCapacity(final int rowCapacity) {
+	public static <F> FullList<F> newListWithCapacity(final int rowCapacity) {
 		return new FullList<F>(null, rowCapacity);
 	}
 
@@ -164,7 +164,7 @@ public class FullList<E> implements List<E> {
 
 	@Override
 	public boolean isEmpty() {
-		return this.list.size() == 0;
+		return false;
 	}
 
 	@Override
@@ -252,8 +252,14 @@ public class FullList<E> implements List<E> {
 	 */
 	@Override
 	public int size() {
+		return Integer.MAX_VALUE;
+	}
+
+	/** @return last non blank element index + 1 */
+	public int usedSize() {
 		return this.list.size();
 	}
+
 
 	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
@@ -275,13 +281,14 @@ public class FullList<E> implements List<E> {
 		return this.list.toString();
 	}
 
-	/** After = this.list.size() == index */
+	/** Postcondition: this.list.size() == index */
 	private void addMissingBlanks(final int index) {
 		final int count = index - this.list.size();
 		for (int i = 0; i < count; i++)
 			this.list.add(this.blankElement);
 	}
 
+	/** Postcondition: this.list.get(this.list.size()-1) != blankElement */
 	private void removeTrail() {
 		int last = this.list.size() - 1;
 		while (last >= 0 && this.list.get(last) == this.blankElement) {

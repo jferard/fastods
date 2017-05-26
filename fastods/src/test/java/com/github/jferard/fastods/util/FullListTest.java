@@ -34,31 +34,36 @@ public class FullListTest {
 	@Test
 	public final void testAddBlank() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		fl.set(100, "non blank");
 
 		Assert.assertFalse(fl.add(be));
-		Assert.assertEquals(101, fl.size());
+		Assert.assertEquals(101, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 
 		fl.add(1000, be);
-		Assert.assertEquals(101, fl.size());
+		Assert.assertEquals(101, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 
 		Assert.assertFalse(fl.addAll(Lists.newArrayList(be, be, be)));
-		Assert.assertEquals(101, fl.size());
+		Assert.assertEquals(101, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 
 		Assert.assertFalse(fl.addAll(1000, Lists.newArrayList(be, be, be)));
-		Assert.assertEquals(101, fl.size());
+		Assert.assertEquals(101, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 	}
 
 	@Test
 	public final void testClear() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		fl.set(100, "non blank2");
 		fl.clear();
-		Assert.assertTrue(fl.isEmpty());
+		Assert.assertEquals(0, fl.usedSize());
+		Assert.assertFalse(fl.isEmpty());
 		Assert.assertEquals(be, fl.get(100));
 	}
 
@@ -80,7 +85,7 @@ public class FullListTest {
 	@Test
 	public final void testContains() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		Assert.assertTrue(fl.contains(be));
 
@@ -88,7 +93,8 @@ public class FullListTest {
 				fl.containsAll(Lists.<String> newArrayList(be, be, be)));
 
 		fl.set(100, "non blank2");
-		Assert.assertEquals(101, fl.size());
+		Assert.assertEquals(101, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 		Assert.assertTrue(fl.contains("non blank2"));
 
 		Assert.assertFalse(fl.contains("non blank3"));
@@ -137,90 +143,94 @@ public class FullListTest {
 	@Test
 	public final void testRemove() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		fl.set(100, "non blank2");
 
 		Assert.assertEquals(be, fl.remove(10));
-		Assert.assertEquals(100, fl.size());
+		Assert.assertEquals(100, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 		Assert.assertEquals(be, fl.remove(1000));
-		Assert.assertEquals(100, fl.size());
+		Assert.assertEquals(100, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 
 		Assert.assertTrue(fl.remove(be));
-		Assert.assertEquals(99, fl.size());
+		Assert.assertEquals(99, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
 		Assert.assertTrue(fl.remove("non blank2"));
-		Assert.assertTrue(fl.isEmpty());
+		Assert.assertFalse(fl.isEmpty());
 	}
 
 	@Test
 	public final void testRemoveAll() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		fl.set(50, "non blank");
 		fl.set(100, "non blank2");
 
 		Assert.assertTrue(fl.removeAll(Arrays.asList("non blank2")));
-		Assert.assertEquals(51, fl.size());
+		Assert.assertEquals(51, fl.usedSize());
 	}
 
 	@Test
 	public final void testRetain() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		fl.set(100, "non blank2");
 		fl.retainAll(Lists.<String> newArrayList("foo"));
-		Assert.assertTrue(fl.isEmpty());
+		Assert.assertEquals(0, fl.usedSize());
+		Assert.assertFalse(fl.isEmpty());
 
 		fl.set(100, "non blank2");
 		fl.retainAll(Lists.<String> newArrayList(be));
-		Assert.assertTrue(fl.isEmpty());
+		Assert.assertEquals(0, fl.usedSize());
 
 		fl.set(100, "non blank2");
 		fl.retainAll(Lists.<String> newArrayList("non blank2"));
-		Assert.assertEquals(1, fl.size());
+		Assert.assertEquals(1, fl.usedSize());
 	}
 
 	@Test
 	public final void testSetAndAdd() {
 		final String be = "blank";
-		final List<String> fl = FullList.<String> builder().blankElement(be)
+		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 
-		Assert.assertEquals(0, fl.size());
+		Assert.assertEquals(0, fl.usedSize());
 		Assert.assertEquals(be, fl.get(100));
 
 		fl.set(100, "non blank");
 		Assert.assertFalse(fl.isEmpty());
-		Assert.assertEquals(101, fl.size());
+		Assert.assertEquals(101, fl.usedSize());
 		Assert.assertEquals("non blank", fl.get(100));
 
 		fl.add("non blank2");
-		Assert.assertEquals(102, fl.size());
+		Assert.assertEquals(102, fl.usedSize());
 		Assert.assertEquals("non blank2", fl.get(101));
 
 		fl.add(be);
-		Assert.assertEquals(102, fl.size());
+		Assert.assertEquals(102, fl.usedSize());
 		Assert.assertEquals(be, fl.get(102));
 
 		fl.set(1000, be);
-		Assert.assertEquals(102, fl.size());
+		Assert.assertEquals(102, fl.usedSize());
 		Assert.assertEquals(be, fl.get(1000));
 
 		fl.addAll(
 				Lists.<String> newArrayList(be, "non blank3", be, be, be, be));
-		Assert.assertEquals(104, fl.size());
+		Assert.assertEquals(104, fl.usedSize());
 		Assert.assertEquals(be, fl.get(104));
 
 		fl.addAll(100,
 				Lists.<String> newArrayList(be, "non blank3", be, be, be, be));
-		Assert.assertEquals(110, fl.size());
+		Assert.assertEquals(110, fl.usedSize());
 		Assert.assertEquals("non blank", fl.get(106));
 		Assert.assertEquals("non blank3", fl.get(109));
 
 		fl.add(100, "non blank4");
-		Assert.assertEquals(111, fl.size());
+		Assert.assertEquals(111, fl.usedSize());
 		Assert.assertEquals("non blank", fl.get(107));
 		Assert.assertEquals("non blank3", fl.get(110));
 	}
@@ -255,9 +265,10 @@ public class FullListTest {
 	
 	@Test
 	public final void testGet() {
-		final List<String> l = FullList.newList();
-		Assert.assertNull(l.get(10));
-		Assert.assertTrue(l.isEmpty());
+		final FullList<String> fl = FullList.newList();
+		Assert.assertNull(fl.get(10));
+		Assert.assertFalse(fl.isEmpty());
+		Assert.assertEquals(0, fl.usedSize());
 	}
 
 	@Test
@@ -267,24 +278,30 @@ public class FullListTest {
 		final List<String> l2 = Lists.newArrayList(l);
 		Assert.assertEquals(Arrays.asList(null, null, null, null, null, null,
 				null, null, null, null, "a"), l2);
+		l.set(10, "b");
+		final List<String> l3 = Lists.newArrayList(l);
+		Assert.assertEquals(Arrays.asList(null, null, null, null, null, null,
+				null, null, null, null, "b"), l3);
 	}
 
 	@Test
 	public final void testSetNullAfter() {
-		final List<String> l = FullList.newList();
-		l.set(10, null);
-		Assert.assertTrue(l.isEmpty());
+		final FullList<String> fl = FullList.newList();
+		fl.set(10, null);
+		Assert.assertFalse(fl.isEmpty());
+		Assert.assertEquals(0, fl.usedSize());
 	}
 
 	@Test
 	public final void testSetNullBefore() {
-		final List<String> l = FullList.newList();
-		l.add("a");
-		l.add("b");
-		Assert.assertEquals("a", l.set(0, null));
-		Assert.assertEquals(Arrays.asList(null, "b"), l);
-		Assert.assertEquals("b", l.set(1, null));
-		Assert.assertTrue(l.isEmpty());
+		final FullList<String> fl = FullList.newList();
+		fl.add("a");
+		fl.add("b");
+		Assert.assertEquals("a", fl.set(0, null));
+		Assert.assertEquals(Arrays.asList(null, "b"), fl);
+		Assert.assertEquals("b", fl.set(1, null));
+		Assert.assertFalse(fl.isEmpty());
+		Assert.assertEquals(0, fl.usedSize());
 	}
 
 	@Test
@@ -296,8 +313,9 @@ public class FullListTest {
 
 	@Test
 	public final void testSize() {
-		final List<String> l = FullList.newList();
-		Assert.assertEquals(0, l.size());
-		Assert.assertTrue(l.isEmpty());
+		final FullList<String> fl = FullList.newList();
+		Assert.assertEquals(0, fl.usedSize());
+		Assert.assertEquals(Integer.MAX_VALUE, fl.size());
+		Assert.assertFalse(fl.isEmpty());
 	}
 }
