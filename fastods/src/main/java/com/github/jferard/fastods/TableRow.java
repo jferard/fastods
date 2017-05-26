@@ -25,6 +25,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -50,7 +51,7 @@ public class TableRow {
 	private TableCellStyle defaultCellStyle;
 	private TableRowStyle rowStyle;
 	private String formula;
-	private final List<TableCell> cells;
+	private final FullList<TableCell> cells;
 
 	TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
              final StylesContainer stylesContainer, final DataStyles dataStyles,
@@ -63,7 +64,7 @@ public class TableRow {
 		this.rowIndex = rowIndex;
 		this.columnCapacity = columnCapacity;
 		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
-		this.cells = new ArrayList<TableCell>(columnCapacity);
+		this.cells = FullList.newListWithCapacity(columnCapacity);
 	}
 
 	private void appendRowOpenTag(final XMLUtil util,
@@ -91,7 +92,7 @@ public class TableRow {
 		this.appendRowOpenTag(util, appendable);
 		int nullFieldCounter = 0;
 
-		final int size = this.cells.size();
+		final int size = this.cells.usedSize();
 		for (int c = 0; c < size; c++) {
 			final TableCell cell = this.cells.get(c);
 			if (this.hasNoValue(cell)) {
@@ -194,18 +195,14 @@ public class TableRow {
 	}
 
 	public TableCell getOrCreateCell(final int colIndex) {
-		if (this.cells.size() <= colIndex) {
-			while (this.cells.size() < colIndex) {
-				this.cells.add(null);
-			}
-			// assert this.cells.size() == colIndex
-            final TableCell cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
+		TableCell cell = this.cells.get(colIndex);
+		if (cell == null) {
+            cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
                     this.stylesContainer, this.dataStyles,
                     this, this.rowIndex, this.columnCapacity);
-			this.cells.add(cell);
-
+			this.cells.set(colIndex, cell);
 		}
-		return this.cells.get(colIndex);
+		return cell;
 	}
 
 	public void setStyle(final TableRowStyle rowStyle) {
@@ -214,7 +211,7 @@ public class TableRow {
 	}
 
 	public int getColumnCount() {
-		return this.cells.size();
+		return this.cells.usedSize();
 	}
 
 	public boolean isCovered(final int colIndex) {
