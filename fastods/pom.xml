@@ -24,7 +24,7 @@
 	<parent>
 		<groupId>com.github.jferard</groupId>
 		<artifactId>fastods-parent</artifactId>
-		<version>0.4.0</version>
+		<version>0.3.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>fastods</artifactId>
@@ -58,7 +58,7 @@
         <connection>scm:git:git@github.com:jferard/fastods.git</connection>
         <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
         <url>git@github.com:jferard/fastods.git</url>
-        <tag>fastods-parent-0.4.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
 	<distributionManagement>
@@ -124,13 +124,13 @@
 		<dependency>
 			<groupId>com.github.jferard</groupId>
 			<artifactId>fastods-testlib</artifactId>
-			<version>0.4.0</version>
+			<version>0.3.2-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.jferard</groupId>
 			<artifactId>fastods-testlib</artifactId>
-			<version>0.4.0</version>
+			<version>0.3.2-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
