@@ -37,7 +37,7 @@ public class ReadmeExampleTest {
 
 	@Test
 	public void readme() throws IOException {
-		this.odsFactory = new OdsFactory(Logger.getLogger("example"), Locale.US);
+		this.odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
 		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
 		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test");
@@ -53,6 +53,6 @@ public class ReadmeExampleTest {
 			}
 		}
 
-		writer.saveAs(new File("generated_files", "readme.ods"));
+		writer.saveAs(new File("generated_files", "readme_example.ods"));
 	}
 }

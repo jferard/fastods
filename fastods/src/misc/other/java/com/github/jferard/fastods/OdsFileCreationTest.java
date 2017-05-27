@@ -56,7 +56,7 @@ public class OdsFileCreationTest {
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 		this.random = new Random(0L);
 	}
 

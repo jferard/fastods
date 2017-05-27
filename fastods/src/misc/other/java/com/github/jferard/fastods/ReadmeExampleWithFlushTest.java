@@ -39,7 +39,7 @@ public class ReadmeExampleWithFlushTest {
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class ReadmeExampleWithFlushTest {
 		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
 
 		final OdsFileWriter writer =
-				this.odsFactory.createWriter(new File("generated_files", "readme_with_flush.ods"));
+				this.odsFactory.createWriter(new File("generated_files", "readme_example_with_flush.ods"));
 		final OdsDocument document = writer.document();
 
 		document.addStyleTag(style);

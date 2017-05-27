@@ -61,7 +61,7 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 	}
 
 	@Test
@@ -152,9 +152,9 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 				Text.builder().par().span("before link to url: ")
 						.link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url")
 						.build());
-		row.getOrCreateCell(1).setText(
+		row.getOrCreateCell(2).setText(
 				Text.builder().par().span("before link to file: ")
-						.link("file", new File("generated_files", "fastods_50_5.ods")).span(" after link to file")
+						.link("file", new File("generated_files", "readme_example.ods")).span(" after link to file")
 						.build());
 
 		final Table table2 = document.addTable("target", 1, 1);
