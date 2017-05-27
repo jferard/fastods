@@ -30,19 +30,17 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
+ * This is the test for the README.md
  */
 public class ReadmeExampleTest {
-
-	private OdsFactory odsFactory;
-
 	@Test
 	public void readme() throws IOException {
-		this.odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
+		final AnonymousOdsFileWriter writer = odsFactory.createWriter();
 		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test");
 
-		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
+		final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00FF00").build();
 		for (int y = 0; y < 50; y++) {
 			final TableRow row = table.nextRow();
 			final TableCellWalker cell = row.getWalker();

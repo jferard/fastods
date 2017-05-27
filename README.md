@@ -1,8 +1,8 @@
-master: 
+master:
 [![Build Status](https://travis-ci.org/jferard/fastods.svg?branch=master)](https://travis-ci.org/jferard/fastods)
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
 
-dev: 
+dev:
 [![Build Status](https://travis-ci.org/jferard/fastods.svg?branch=dev)](https://travis-ci.org/jferard/fastods)
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/dev.svg)](https://codecov.io/github/jferard/fastods?branch=dev)
 
@@ -31,28 +31,34 @@ FastODS is a fork of SimpleODS that aims to be a very fast ODS writing library i
 
 ## Limitations
 FastODS won't deal with odt, odg, odf, or other od_ files.
-It won't even *read* ods files. 
+It won't even *read* ods files.
 Because it doesn't use XML internally, but only for writing files. That's why it is fast and lightweight.
 
 ## Installation
-### Option 1
+### Standard
+Add the following dependency to your POM:
+```
+<dependency>
+		<groupId>com.github.jferard</groupId>
+		<artifactId>fastods</artifactId>
+		<version>0.3.1</version>
+</dependency>```
+
+### From sources
 Type the following command:
-```
-git clone https://github.com/jferard/fastods.git
-```
+
+```git clone https://github.com/jferard/fastods.git```
 
 Then:
-```
-mvn clean install
-```
 
-### Option 2
+```mvn clean install```
+
+### From jar
 First download the **jar file** from the latest [release](https://github.com/jferard/fastods/releases/).
 
 Then run the following command to install the jar in your local repo:
-```
-mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=fastods-<version>.jar
-```
+
+```mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=fastods-<version>.jar```
 
 ### Usage
 In your POM, you'll have to include the following dependency:
@@ -71,13 +77,14 @@ In your POM, you'll have to include the following dependency:
 ## Examples
 ### Basic example
 ```java
-this.odsFactory = new OdsFactory(Logger.getLogger("example"), Locale.US);
-final OdsDocument document = this.odsFactory.createDocument();
+final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
+final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+final OdsDocument document = writer.document();
 final Table table = document.addTable("test");
 
-final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
+final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00FF00").build();
 for (int y = 0; y < 50; y++) {
-	final HeavyTableRow row = table.nextRow();
+	final TableRow row = table.nextRow();
 	final TableCellWalker cell = row.getWalker();
 	for (int x = 0; x < 5; x++) {
 		cell.setFloatValue(x*y);
@@ -86,21 +93,19 @@ for (int y = 0; y < 50; y++) {
 	}
 }
 
-this.odsFactory.createWriter(document).saveAs(new File("generated_files", "readme.ods"));
+writer.saveAs(new File("generated_files", "readme_example.ods"));
 ```
 
 ### Other examples
 Two examples are implemented as optional tests, in the ```src/misc/other/java``` folder: ```OdsFileCreationTest.java``` and ```OdsFileWithHeaderAndFooterCreationTest.java```. The sources are quite simple.
 
-To run those examples, one has to set the Maven profile to `other`:
-```
-mvn -P other -Dtest=OdsFileCreationTest test
-```
+To un those examples, one has to set the Maven profile to `other`:
+
+```mvn -P other -Dtest=OdsFileCreationTest test```
 
 And:
-```
-mvn -P other -Dtest=OdsFileWithHeaderAndFooterCreationTest test
-```
+
+```mvn -P other -Dtest=OdsFileWithHeaderAndFooterCreationTest test```
 
 The resulting ods files are written in current directory, and can be opened with LibreOffice or OpenOffice.
 
@@ -114,9 +119,4 @@ Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten 
 For more details, see https://github.com/jferard/fastods/wiki/Benchmarking-and-profiling.
 
 ## History
-
-| version | date | comments |
-| --- | --- | --- |
-| 0.0.1 | 2016 | first version |
-| 0.0.2 | 2016 | all existing data types implemented, fast writing |
-| 0.1.0 | 2016-11-13 | footer and header |
+See https://github.com/jferard/fastods/releases

@@ -18,10 +18,13 @@ generated_files
 *.old
 *.ods
 *.*#
-**/*.jar
+
+# all jars, but simpleods
+*.jar
+!src/misc/bench/resources/simpleods-0.5.3.jar
+
 *.iml
 
 # mvn release
 release.properties
 pom.xml.*
-
