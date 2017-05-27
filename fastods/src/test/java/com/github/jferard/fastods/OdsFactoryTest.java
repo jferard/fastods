@@ -45,7 +45,7 @@ public class OdsFactoryTest {
     public void setUp() throws Exception {
         final Logger logger = PowerMock.createMock(Logger.class);
         this.odsFactory = OdsFactory.create(logger, Locale.US);
-        this.file = new File("generated_files", "factory_test");
+        this.file = File.createTempFile("factory_test", "tmp");
     }
 
     @Test
