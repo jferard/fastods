@@ -67,7 +67,7 @@ public class SettingsElement implements OdsElement {
 	private List<Table> tables;
 
 	static SettingsElement create() {
-		return new SettingsElement(new Settings());
+		return new SettingsElement(Settings.create());
 	}
 
 	SettingsElement(final Settings settings) {
