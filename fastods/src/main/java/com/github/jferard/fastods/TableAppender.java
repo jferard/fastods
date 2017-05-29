@@ -21,13 +21,10 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.util.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -38,55 +35,52 @@ import java.util.Iterator;
  */
 class TableAppender {
 	private boolean preambleWritten;
+	private final TableBuilder builder;
 	private int nullFieldCounter;
 
-	TableAppender(final PositionUtil positionUtil, final WriteUtil writeUtil,
-                  final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-                  final DataStyles format, final String name, final int rowCapacity,
-                  final int columnCapacity) {
+	TableAppender(final TableBuilder builder) {
 		this.preambleWritten = false;
+		this.builder = builder;
 	}
 
 	public void appendPostamble(final Appendable appendable) throws IOException {
 		appendable.append("</table:table>");
 	}
 
-	public void appendPreamble(final TableBuilder builder, final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
 		if (this.preambleWritten)
 			return;
 
 		appendable.append("<table:table");
-		util.appendAttribute(appendable, "table:name", builder.getName());
+		util.appendAttribute(appendable, "table:name", this.builder.getName());
 		util.appendAttribute(appendable, "table:style-name",
-				builder.getStyleName());
+				this.builder.getStyleName());
 		util.appendEAttribute(appendable, "table:print", false);
 		appendable.append("><office:forms");
 		util.appendEAttribute(appendable, "form:automatic-focus", false);
 		util.appendEAttribute(appendable, "form:apply-design-mode", false);
 		appendable.append("/>");
-		this.appendColumnStyles(builder.getColumnStyles(), appendable, util);
+		this.appendColumnStyles(this.builder.getColumnStyles(), appendable, util);
 		this.preambleWritten = true;
 	}
 
-	public void appendXMLToContentEntry(final TableBuilder builder, final XMLUtil util,
+	public void appendXMLToContentEntry(final XMLUtil util,
 										final Appendable appendable) throws IOException {
-		this.appendPreamble(builder, util, appendable);
-		this.appendRows(builder, util, appendable);
+		this.appendPreamble(util, appendable);
+		this.appendRows(util, appendable);
 		this.appendPostamble(appendable);
 	}
 
 	/**
 	 * Open the table, flush all rows from start, but do not freeze the table
 	 *
-	 *
-	 * @param builder
 	 * @param util       a XMLUtil instance for writing XML
 	 * @param appendable where to write
 	 * @throws IOException if an I/O error occurs during the flush
 	 */
-	public void flushAllAvailableRows(final TableBuilder builder, final XMLUtil util, final Appendable appendable) throws IOException {
-		this.appendPreamble(builder, util, appendable);
-		this.appendRows(builder, util, appendable, 0);
+	public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable) throws IOException {
+		this.appendPreamble(util, appendable);
+		this.appendRows(util, appendable, 0);
 	}
 
 	/**
@@ -97,11 +91,11 @@ class TableAppender {
 	 * @param rowIndex   the first index to use.
 	 * @throws IOException if an I/O error occurs during the flush
 	 */
-	public void flushRemainingRowsFrom(final TableBuilder builder, final XMLUtil util, final Appendable appendable, final int rowIndex)
+	public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
 		if (rowIndex == 0)
-			this.appendPreamble(builder, util, appendable);
-		this.appendRows(builder, util, appendable, rowIndex);
+			this.appendPreamble(util, appendable);
+		this.appendRows(util, appendable, rowIndex);
 		this.appendPostamble(appendable);
 	}
 
@@ -113,11 +107,11 @@ class TableAppender {
 	 * @param rowIndex the index of the row
 	 * @throws IOException if an I/O error occurs during the flush
 	 */
-	public void flushSomeAvailableRowsFrom(final TableBuilder builder, final XMLUtil util, final Appendable appendable, final int rowIndex)
+	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
 		if (rowIndex == 0)
-			this.appendPreamble(builder, util, appendable);
-		this.appendRows(builder, util, appendable, rowIndex);
+			this.appendPreamble(util, appendable);
+		this.appendRows(util, appendable, rowIndex);
 	}
 
 	private void appendColumnStyles(final FullList<TableColumnStyle> columnStyles, final Appendable appendable,
@@ -146,19 +140,19 @@ class TableAppender {
 				.appendXMLToTable(xmlUtil, appendable, 1);
 	}
 
-	private void appendRows(final TableBuilder builder, final XMLUtil util, final Appendable appendable)
+	private void appendRows(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		this.appendRows(builder, util, appendable, 0);
+		this.appendRows(util, appendable, 0);
 	}
 
-	private void appendRows(final TableBuilder builder, final XMLUtil util, final Appendable appendable, final int firstRowIndex)
+	private void appendRows(final XMLUtil util, final Appendable appendable, final int firstRowIndex)
 			throws IOException {
 		if (firstRowIndex == 0)
 			this.nullFieldCounter = 0;
 
-		final int size = builder.getTableRowsUsedSize();
+		final int size = this.builder.getTableRowsUsedSize();
 		for (int r = firstRowIndex; r < size; r++) {
-			final TableRow tr = builder.getTableRow(r);
+			final TableRow tr = this.builder.getTableRow(r);
 			if (tr == null) {
 				this.nullFieldCounter++;
 			} else {
@@ -181,5 +175,9 @@ class TableAppender {
 				"ro1");
 		appendable.append("><table:table-cell/></table:table-row>");
 		this.nullFieldCounter = 0;
+	}
+
+	public boolean isPreambleWritten() {
+		return this.preambleWritten;
 	}
 }

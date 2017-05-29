@@ -124,7 +124,7 @@ class TableBuilder {
 	}
 
 	public void flushBeginTable(final TableAppender appender) throws IOException {
-		this.observer.update(new BeginTableFlusher(this, appender));
+		this.observer.update(new BeginTableFlusher(appender));
 	}
 
 	public void flushEndTable(final TableAppender appender) throws IOException {
@@ -144,17 +144,18 @@ class TableBuilder {
 		return this.tableRows.usedSize() - 1;
 	}
 
-	public TableRow getRow(final Table table, final int rowIndex) throws FastOdsException, IOException {
+	public TableRow getRow(final Table table, final TableAppender appender, final int rowIndex) throws FastOdsException, IOException {
 		TableBuilder.checkRow(rowIndex);
-		return this.getRowSecure(table, rowIndex, true);
+		return this.getRowSecure(table, appender, rowIndex, true);
 	}
 
-	public TableRow getRow(final Table table, final String pos) throws FastOdsException, IOException {
+	public TableRow getRow(final Table table, final TableAppender appender, final String pos) throws FastOdsException, IOException {
 		final int row = this.positionUtil.getPosition(pos).getRow();
-		return this.getRow(table, row);
+		return this.getRow(table, appender,row);
 	}
 
-	public TableRow getRowSecure(final Table table, final int rowIndex, final boolean updateRowIndex) throws IOException {
+	private TableRow getRowSecure(final Table table, final TableAppender appender,
+								  final int rowIndex, final boolean updateRowIndex) throws IOException {
 		TableRow tr = this.tableRows.get(rowIndex);
 		if (tr == null) {
 			tr = new TableRow(this.writeUtil, this.xmlUtil,
@@ -164,7 +165,7 @@ class TableBuilder {
 			if (rowIndex > this.lastRowIndex)
 				this.lastRowIndex = rowIndex;
 
-			this.notifyIfHasObserver(table.getAppender(), rowIndex);
+			this.notifyIfHasObserver(appender, rowIndex);
 		}
 		if (updateRowIndex)
 			this.curRowIndex = rowIndex;
@@ -174,7 +175,7 @@ class TableBuilder {
 	private void notifyIfHasObserver(final TableAppender appender, final int rowIndex) throws IOException {
 		if (this.observer != null) {
             if (rowIndex == 0) {
-                this.observer.update(new BeginTableFlusher(this, appender));
+                this.observer.update(new BeginTableFlusher(appender));
             } else if (rowIndex % this.bufferSize == 0) {
                 this.observer.update(this.createPreprocessedRowsFlusher(rowIndex)); // (0..1023), (1024..2047)
                 this.lastFlushedRowIndex = rowIndex;
@@ -200,22 +201,22 @@ class TableBuilder {
 		return this.style.getName();
 	}
 
-	public TableRow nextRow(final Table table) throws IOException {
-		return this.getRowSecure(table, this.curRowIndex + 1, true);
+	public TableRow nextRow(final Table table, final TableAppender appender) throws IOException {
+		return this.getRowSecure(table, appender, this.curRowIndex + 1, true);
 	}
 
-	public void setCellMerge(final Table table, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
-		final TableRow row = this.getRowSecure(table, rowIndex, true);
+	public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
+		final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
 		if (row.isCovered(colIndex)) // already spanned
 			return;
 
 		row.setColumnsSpanned(colIndex, columnMerge);
-		this.spanColumnsFromRowsBelow(table, rowIndex, colIndex, rowMerge, columnMerge);
+		this.spanColumnsFromRowsBelow(table, appender, rowIndex, colIndex, rowMerge, columnMerge);
 	}
 
-	private void spanColumnsFromRowsBelow(final Table table, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
+	private void spanColumnsFromRowsBelow(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
 		for (int r = rowIndex + 1; r < rowIndex + rowMerge; r++) {
-			final TableRow row = this.getRowSecure(table, r, false);
+			final TableRow row = this.getRowSecure(table, appender, r, false);
 			row.setColumnsSpanned(colIndex, columnMerge);
 		}
 	}
@@ -231,10 +232,10 @@ class TableBuilder {
 	 * @throws IOException if the cells can't be merged
 	 */
 	@Deprecated
-	public void setCellMerge(final Table table, final String pos, final int rowMerge,
+	public void setCellMerge(final Table table, final TableAppender appender, final String pos, final int rowMerge,
 							 final int columnMerge) throws FastOdsException, IOException {
 		final Position position = this.positionUtil.getPosition(pos);
-		this.setCellMerge(table, position.getRow(), position.getColumn(), rowMerge, columnMerge);
+		this.setCellMerge(table, appender, position.getRow(), position.getColumn(), rowMerge, columnMerge);
 	}
 
 	/**
@@ -281,22 +282,22 @@ class TableBuilder {
 		this.style = style;
 	}
 
-    public void setRowsSpanned(final Table table, final int rowIndex, final int colIndex, final int n) throws IOException {
+    public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int n) throws IOException {
 		if (n <= 1)
 			return;
 
-		final TableCell firstCell = this.getRowSecure(table, rowIndex, false).getOrCreateCell(colIndex);
+		final TableCell firstCell = this.getRowSecure(table, appender, rowIndex, false).getOrCreateCell(colIndex);
 		if (firstCell.isCovered())
 			return;
 
 		firstCell.markRowsSpanned(n);
-		this.coverCellsBelow(table, rowIndex, colIndex, n);
+		this.coverCellsBelow(table, appender, rowIndex, colIndex, n);
 	}
 
-	private void coverCellsBelow(final Table table, final int rowIndex, final int colIndex, final int n) throws IOException {
+	private void coverCellsBelow(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int n) throws IOException {
 		for (int r = rowIndex + 1; r < rowIndex + n; r++) {
 			final TableRow row = this
-					.getRowSecure(table, r, false);
+					.getRowSecure(table, appender, r, false);
 			final TableCell cell = row.getOrCreateCell(colIndex);
 			cell.setCovered();
 		}

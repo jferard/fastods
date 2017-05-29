@@ -44,30 +44,21 @@ public class Table implements NamedObject {
 	private final TableBuilder builder;
 	private final TableAppender appender;
 
-	private int curRowIndex;
-	private int lastFlushedRowIndex;
-	private int lastRowIndex;
 	private String name;
-	private int nullFieldCounter;
-	private OdsFileWriter observer;
-	private boolean preambleWritten;
-	private TableStyle style;
 
 	public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
 							   final StylesContainer stylesContainer, final DataStyles format,
 							   final String name, final int rowCapacity, final int columnCapacity) {
 		final TableBuilder builder = new TableBuilder(positionUtil, writeUtil,
 				xmlUtil, stylesContainer, format, name, rowCapacity, columnCapacity);
-		final TableAppender appender = new TableAppender(positionUtil, writeUtil,
-				xmlUtil, stylesContainer, format, name, rowCapacity, columnCapacity);
-		return new Table(name, builder, appender);
+		return new Table(name, builder);
 	}
 
 
-	public Table(final String name, final TableBuilder builder, final TableAppender appender) {
+	public Table(final String name, final TableBuilder builder) {
 		this.name = name;
 		this.builder = builder;
-		this.appender = appender;
+		this.appender = new TableAppender(builder);
 	}
 
 
@@ -85,7 +76,7 @@ public class Table implements NamedObject {
 
 	public void appendXMLToContentEntry(final XMLUtil util,
 										final Appendable appendable) throws IOException {
-		this.appender.appendXMLToContentEntry(this.builder, util, appendable);
+		this.appender.appendXMLToContentEntry(util, appendable);
 	}
 
 	public void flush() throws IOException {
@@ -101,7 +92,7 @@ public class Table implements NamedObject {
 	 * @throws IOException if an I/O error occurs during the flush
 	 */
 	public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable) throws IOException {
-		this.appender.flushAllAvailableRows(this.builder, util, appendable);
+		this.appender.flushAllAvailableRows(util, appendable);
 	}
 
 	/**
@@ -114,7 +105,7 @@ public class Table implements NamedObject {
 	 */
 	public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
-		this.appender.flushRemainingRowsFrom(this.builder, util, appendable, rowIndex);
+		this.appender.flushRemainingRowsFrom(util, appendable, rowIndex);
 	}
 
 	/**
@@ -127,7 +118,7 @@ public class Table implements NamedObject {
 	 */
 	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
-		this.appender.flushSomeAvailableRowsFrom(this.builder, util, appendable, rowIndex);
+		this.appender.flushSomeAvailableRowsFrom(util, appendable, rowIndex);
 	}
 
 	public List<TableColumnStyle> getColumnStyles() {
@@ -153,11 +144,11 @@ public class Table implements NamedObject {
 	}
 
 	public TableRow getRow(final int rowIndex) throws FastOdsException, IOException {
-		return this.builder.getRow(this, rowIndex);
+		return this.builder.getRow(this, this.appender, rowIndex);
 	}
 
 	public TableRow getRow(final String pos) throws FastOdsException, IOException {
-		return this.builder.getRow(this, pos);
+		return this.builder.getRow(this, this.appender, pos);
 	}
 
 	/**
@@ -170,11 +161,11 @@ public class Table implements NamedObject {
 	}
 
 	public TableRow nextRow() throws IOException {
-		return this.builder.nextRow(this);
+		return this.builder.nextRow(this, this.appender);
 	}
 
 	public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
-		this.builder.setCellMerge(this, rowIndex, colIndex, rowMerge, columnMerge);
+		this.builder.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
 	}
 
 	/**
@@ -189,7 +180,7 @@ public class Table implements NamedObject {
 	@Deprecated
 	public void setCellMerge(final String pos, final int rowMerge,
 							 final int columnMerge) throws FastOdsException, IOException {
-		this.builder.setCellMerge(this, pos, rowMerge, columnMerge);
+		this.builder.setCellMerge(this, this.appender, pos, rowMerge, columnMerge);
 	}
 
 	/**
@@ -202,8 +193,9 @@ public class Table implements NamedObject {
 	 */
 	public void setColumnStyle(final int col, final TableColumnStyle ts)
 			throws FastOdsException {
-		if (this.preambleWritten)
+		if (this.appender.isPreambleWritten())
 			throw new IllegalStateException();
+
 		this.builder.setColumnStyle(col, ts);
 	}
 
@@ -218,8 +210,9 @@ public class Table implements NamedObject {
 	 * @param name The name of this table.
 	 */
 	public void setName(final String name) {
-		if (this.preambleWritten)
+		if (this.appender.isPreambleWritten())
 			throw new IllegalStateException();
+
 		this.name = name;
 	}
 
@@ -237,10 +230,6 @@ public class Table implements NamedObject {
 	}
 
     public void setRowsSpanned(final int rowIndex, final int colIndex, final int n) throws IOException {
-		this.builder.setRowsSpanned(this, rowIndex, colIndex, n);
-	}
-
-	public TableAppender getAppender() {
-		return this.appender;
+		this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
 	}
 }
