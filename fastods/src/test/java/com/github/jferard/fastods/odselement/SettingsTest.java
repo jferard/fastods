@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.odselement.config.ConfigBlock;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,27 +44,27 @@ public class SettingsTest {
 
 	@Before
 	public void setUp() {
-		s = new Settings();
-		blocks = s.getRootBlocks();
-		util = XMLUtil.create();
+		this.s = new Settings();
+		this.blocks = this.s.getRootBlocks();
+		this.util = XMLUtil.create();
 	}
 
 	@Test
 	public void testSize() {
-		Assert.assertEquals(2, blocks.size());
+		Assert.assertEquals(2, this.blocks.size());
 	}
 
 	@Test
 	public void testViewSettings() throws IOException {
-		final ConfigBlock block = blocks.get(0);
+		final ConfigBlock block = this.blocks.get(0);
 		Assert.assertEquals("ooo:view-settings", block.getName());
 	}
 
 	@Test
 	public void testViewSettingsContent() throws IOException {
-		final ConfigBlock block = blocks.get(0);
+		final ConfigBlock block = this.blocks.get(0);
 		final Appendable sb = new StringBuilder();
-		block.appendXML(util, sb);
+		block.appendXML(this.util, sb);
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item config:name=\"VisibleAreaTop\" config:type=\"int\">0</config:config-item>" +
 						"<config:config-item config:name=\"VisibleAreaLeft\" config:type=\"int\">0</config:config-item>" +
@@ -101,9 +103,9 @@ public class SettingsTest {
 
 	@Test
 	public void testConfigurationSettingsContent() throws IOException {
-		final ConfigBlock block = blocks.get(1);
+		final ConfigBlock block = this.blocks.get(1);
 		final Appendable sb = new StringBuilder();
-		block.appendXML(util, sb);
+		block.appendXML(this.util, sb);
 		DomTester.assertUnsortedEquals(		"<config:config-item-set config:name=\"ooo:configuration-settings\">"+
 						"<config:config-item config:name=\"ShowZeroValues\" config:type=\"boolean\">true</config:config-item>"+
 						"<config:config-item config:name=\"ShowNotes\" config:type=\"boolean\">true</config:config-item>"+

@@ -91,7 +91,7 @@ public class ContentElement implements OdsElement {
 						  final int columnCapacity) {
 		Table table = this.tables.getByName(name);
 		if (table == null) {
-			table = new Table(this.positionUtil, this.writeUtil, this.xmlUtil,
+			table = Table.create(this.positionUtil, this.writeUtil, this.xmlUtil,
 					this.stylesContainer, this.format, name,
 					rowCapacity, columnCapacity);
 			this.tables.add(table);

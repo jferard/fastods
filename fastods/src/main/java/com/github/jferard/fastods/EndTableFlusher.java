@@ -32,15 +32,15 @@ import java.util.List;
  * @author Julien Férard
  */
 public class EndTableFlusher implements OdsFlusher {
-	private final Table table;
+	private final TableAppender appender;
 	private final List<TableRow> rows;
 
 	/**
-	 * @param table the table to end
+	 * @param appender the table to end
 	 * @param rows the remaining rows.
 	 */
-	public EndTableFlusher(final Table table, final List<TableRow> rows) {
-		this.table = table;
+	public EndTableFlusher(final TableAppender appender, final List<TableRow> rows) {
+		this.appender = appender;
 		this.rows = rows;
 	}
 
@@ -48,6 +48,6 @@ public class EndTableFlusher implements OdsFlusher {
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		for (final TableRow row : this.rows)
 			row.appendXMLToTable(xmlUtil, writer);
-		this.table.appendPostamble(writer);
+		this.appender.appendPostamble(writer);
 	}
 }
