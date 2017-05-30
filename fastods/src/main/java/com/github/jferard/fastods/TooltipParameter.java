@@ -44,6 +44,8 @@ public class TooltipParameter {
         util.appendAttribute(appendable,"office:display", this.visible ? "true" : "false");
         util.appendAttribute(appendable,"svg:width", this.width.toString());
         util.appendAttribute(appendable,"svg:height", this.height.toString());
+        // weird patch for LO bug
+        util.appendAttribute(appendable,"svg:x", "");
     }
 
     public static TooltipParameter create(final Length width, final Length height, final boolean visible) {

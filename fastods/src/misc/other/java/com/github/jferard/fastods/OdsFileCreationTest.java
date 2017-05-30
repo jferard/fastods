@@ -169,7 +169,7 @@ public class OdsFileCreationTest {
 						break;
 					case 1:
 						walker.setCurrencyValue(150.5, "EUR");
-						walker.setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(3.0), SimpleLength.cm(10.0), true);
+						walker.setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0), true);
 						break;
 					case 2:
 						walker.setDateValue(Calendar.getInstance());
