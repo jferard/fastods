@@ -92,12 +92,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -126,11 +120,6 @@
 			<artifactId>fastods-testlib</artifactId>
 			<version>0.4.1-SNAPSHOT</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jferard</groupId>
-			<artifactId>fastods-testlib</artifactId>
-			<version>0.4.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

@@ -116,7 +116,7 @@ public class TableCellTest {
         this.cell.setCovered();
         Assert.assertTrue(this.cell.isCovered());
         this.cell.setCovered();
-        Assert.assertEquals("<table:covered-table-cell/>", this.getCellXML());
+        DomTester.assertEquals("<table:covered-table-cell/>", this.getCellXML());
 
         PowerMock.verifyAll();
 
@@ -198,7 +198,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFloatValue(Double.valueOf(10.999));
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"10.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"10.999\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -212,7 +212,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999d);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -226,7 +226,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999f);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -240,7 +240,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFloatValue(999);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"999\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -254,7 +254,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setTimeValue(999);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"time\" office:time-value=\"P0DT0H0M0.999S\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"time\" office:time-value=\"P0DT0H0M0.999S\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -269,7 +269,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setPercentageValue(75.7);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"75.7\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"75.7\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -284,7 +284,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setObjectValue(1);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"1\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"1\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -299,7 +299,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setPercentageValue(75);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"75\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"75\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -316,7 +316,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setCurrencyValue(75.7, "€");
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"75.7\" office:currency=\"€\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"75.7\" office:currency=\"€\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -328,8 +328,8 @@ public class TableCellTest {
         // PLAY
         PowerMock.replayAll();
         this.cell.setTooltip("tooltip", SimpleLength.cm(1), SimpleLength.cm(2), true);
-        Assert.assertEquals("<table:table-cell>" +
-                "<office:annotation office:display=\"true\" svg:width=\"1cm\" svg:height=\"2cm\">" +
+        DomTester.assertEquals("<table:table-cell>" +
+                "<office:annotation office:display=\"true\" svg:width=\"1cm\" svg:height=\"2cm\" svg:x=\"\">" +
                 "<text:p>tooltip</text:p>" +
                 "</office:annotation>" +
                 "</table:table-cell>", this.getCellXML());
@@ -344,7 +344,7 @@ public class TableCellTest {
         // PLAY
         PowerMock.replayAll();
         this.cell.setTooltip("tooltip");
-        Assert.assertEquals("<table:table-cell>" +
+        DomTester.assertEquals("<table:table-cell>" +
                 "<office:annotation>" +
                 "<text:p>tooltip</text:p>" +
                 "</office:annotation>" +
@@ -360,7 +360,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setText(Text.styledContent("text", TextStyle.DEFAULT_TEXT_STYLE));
-        Assert.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"\">" +
+        DomTester.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"\">" +
                 "<text:p><text:span text:style-name=\"Default\">text</text:span></text:p>" +
                 "</table:table-cell>", this.getCellXML());
         PowerMock.verifyAll();
@@ -370,7 +370,7 @@ public class TableCellTest {
     public final void testNullStyle() throws IOException {
         PowerMock.replayAll();
         this.cell.setStyle(null);
-        Assert.assertEquals("<table:table-cell/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -389,9 +389,9 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setPercentageValue(9.999f);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"9.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"9.999\"/>", this.getCellXML());
         this.cell.setFloatValue(9.999f);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -411,9 +411,9 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999f);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
         this.cell.setStyle(style);
-        Assert.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -424,7 +424,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setText(Text.content("text"));
-        Assert.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"\">" +
+        DomTester.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"\">" +
                 "<text:p>text</text:p>" +
                 "</table:table-cell>", this.getCellXML());
         PowerMock.verifyAll();
@@ -434,7 +434,7 @@ public class TableCellTest {
     public final void testVoid() throws IOException {
         PowerMock.replayAll();
         this.cell.setVoidValue();
-        Assert.assertEquals("<table:table-cell office:value-type=\"\" office-value=\"\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell office:value-type=\"\" office-value=\"\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -445,7 +445,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFormula("1");
-        Assert.assertEquals("<table:table-cell table:formula=\"=1\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:formula=\"=1\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -457,7 +457,7 @@ public class TableCellTest {
         PowerMock.replayAll();
         this.cell.setColumnsSpanned(8);
         this.cell.markColumnsSpanned(8);
-        Assert.assertEquals("<table:table-cell table:number-columns-spanned=\"8\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:number-columns-spanned=\"8\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -465,7 +465,7 @@ public class TableCellTest {
     public final void testNoColumnsSpanned() throws IOException {
         PowerMock.replayAll();
         this.cell.setColumnsSpanned(1);
-        Assert.assertEquals("<table:table-cell/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -481,7 +481,7 @@ public class TableCellTest {
         this.cell.setRowsSpanned(1);
         this.cell.setRowsSpanned(2);
         this.cell.markRowsSpanned(2);
-        Assert.assertEquals("<table:table-cell table:number-rows-spanned=\"2\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:number-rows-spanned=\"2\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -496,7 +496,7 @@ public class TableCellTest {
         this.cell.setRowsSpanned(2);
         this.cell.setRowsSpanned(4);
         this.cell.markRowsSpanned(4);
-        Assert.assertEquals("<table:table-cell table:number-rows-spanned=\"4\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:number-rows-spanned=\"4\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 
@@ -504,7 +504,7 @@ public class TableCellTest {
     public final void testNoRowsSpanned() throws IOException {
         PowerMock.replayAll();
         this.cell.setRowsSpanned(1);
-        Assert.assertEquals("<table:table-cell/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 

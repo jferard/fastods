@@ -74,7 +74,7 @@ public class TableColdCellTest {
 		PowerMock.replayAll();
 		final Text t0 = Text.content("text0");
 		this.coldCell.setText(t0);
-		Assert.assertEquals("<table:table-cell><text:p>text0</text:p></table:table-cell>", this.getXML());
+		DomTester.assertEquals("<table:table-cell><text:p>text0</text:p></table:table-cell>", this.getXML());
 		PowerMock.verifyAll();
 	}
 
@@ -82,7 +82,7 @@ public class TableColdCellTest {
 	public final void testFormula() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setFormula("1");
-		Assert.assertEquals("<table:table-cell table:formula=\"=1\"/>", this.getXML());
+		DomTester.assertEquals("<table:table-cell table:formula=\"=1\"/>", this.getXML());
 		PowerMock.verifyAll();
 	}
 
@@ -90,7 +90,7 @@ public class TableColdCellTest {
 	public final void testColSpan() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setColumnsSpanned(2);
-		Assert.assertEquals("<table:table-cell table:number-columns-spanned=\"2\"/>", this.getXML());
+		DomTester.assertEquals("<table:table-cell table:number-columns-spanned=\"2\"/>", this.getXML());
 		PowerMock.verifyAll();
 	}
 
@@ -98,7 +98,7 @@ public class TableColdCellTest {
 	public final void testRowSpan() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setRowsSpanned(8);
-		Assert.assertEquals("<table:table-cell table:number-rows-spanned=\"8\"/>", this.getXML());
+		DomTester.assertEquals("<table:table-cell table:number-rows-spanned=\"8\"/>", this.getXML());
 		PowerMock.verifyAll();
 	}
 
@@ -106,7 +106,7 @@ public class TableColdCellTest {
 	public final void testTooltip() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setTooltip("tooltip");
-		Assert.assertEquals("<table:table-cell><office:annotation>" +
+		DomTester.assertEquals("<table:table-cell><office:annotation>" +
 				"<text:p>tooltip</text:p>" +
 				"</office:annotation></table:table-cell>", this.getXML());
 		PowerMock.verifyAll();
@@ -116,8 +116,8 @@ public class TableColdCellTest {
 	public final void testTooltipWithSize() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setTooltip("tooltip", SimpleLength.cm(1), SimpleLength.cm(2), true);
-		Assert.assertEquals("<table:table-cell>" +
-				"<office:annotation office:display=\"true\" svg:width=\"1cm\" svg:height=\"2cm\">" +
+		DomTester.assertEquals("<table:table-cell>" +
+				"<office:annotation office:display=\"true\" svg:width=\"1cm\" svg:height=\"2cm\" svg:x=\"\">" +
 				"<text:p>tooltip</text:p>" +
 				"</office:annotation>" +
 				"</table:table-cell>", this.getXML());
@@ -128,7 +128,7 @@ public class TableColdCellTest {
 	public final void testTooltipWithSpecialChars() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setTooltip("<tooltip>");
-		Assert.assertEquals("<table:table-cell><office:annotation>" +
+		DomTester.assertEquals("<table:table-cell><office:annotation>" +
 				"<text:p>&lt;tooltip&gt;</text:p>" +
 				"</office:annotation></table:table-cell>", this.getXML());
 		PowerMock.verifyAll();
@@ -138,7 +138,7 @@ public class TableColdCellTest {
 	public final void testTooltipWithCR() throws IOException {
 		PowerMock.replayAll();
 		this.coldCell.setTooltip("tooltip\nline 1\nline2");
-		Assert.assertEquals("<table:table-cell><office:annotation>" +
+		DomTester.assertEquals("<table:table-cell><office:annotation>" +
 				"<text:p>tooltip</text:p><text:p>line 1</text:p><text:p>line2</text:p>" +
 				"</office:annotation></table:table-cell>", this.getXML());
 		PowerMock.verifyAll();
@@ -150,7 +150,7 @@ public class TableColdCellTest {
 		PowerMock.replayAll();
 		this.coldCell.setText(Text.content("c"));
 		this.coldCell.setTooltip("tooltip");
-		Assert.assertEquals("<table:table-cell>" +
+		DomTester.assertEquals("<table:table-cell>" +
 				"<text:p>c</text:p>" +
 				"<office:annotation><text:p>tooltip</text:p></office:annotation>" +
 				"</table:table-cell>", this.getXML());
