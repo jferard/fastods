@@ -23,20 +23,12 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.MasterPageStyle;
-import com.github.jferard.fastods.style.PageLayoutStyle;
-import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.StyleTag;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -121,13 +113,13 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Add a style tag to this document. Use only if you want to flush data before the end of the document
+	 * Add an object style to this document. Use only if you want to flush data before the end of the document
 	 * construction.
 	 *
-	 * @param styleTag the style tag to add to this document
+	 * @param objectStyle the object style to add to this document
 	 */
-	public void addStyleTag(final StyleTag styleTag) {
-		this.odsElements.addStyleTag(styleTag);
+	public void addObjectStyle(final ObjectStyle objectStyle) {
+		this.odsElements.addObjectStyle(objectStyle);
 	}
 
 	public void addStyleToContentAutomaticStyles(final TextStyle textStyle) {

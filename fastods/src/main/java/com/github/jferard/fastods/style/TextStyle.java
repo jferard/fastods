@@ -31,7 +31,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TextStyle implements StyleTag {
+public class TextStyle implements ObjectStyle {
 	public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
 			.buildStyle("Default");
 

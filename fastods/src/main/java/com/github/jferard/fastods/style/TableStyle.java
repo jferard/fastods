@@ -32,7 +32,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableStyle implements StyleTag {
+public class TableStyle implements ObjectStyle {
 	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
 			.builder("ta1").build();
 	private final PageStyle pageStyle;
@@ -57,7 +57,7 @@ public class TableStyle implements StyleTag {
 
 	@Override
 	public void addToElements(final OdsElements odsElements) {
-		odsElements.addStyleTag(this);
+		odsElements.addObjectStyle(this);
 	}
 
 	@Override

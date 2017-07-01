@@ -29,11 +29,8 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.style.MasterPageStyle;
-import com.github.jferard.fastods.style.PageLayoutStyle;
-import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.StyleTag;
-import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -159,18 +156,18 @@ public class OdsElements {
 		this.stylesContainer.addPageStyle(ps);
 	}
 
-	public void addStyleTag(final StyleTag styleTag) {
-		final String family = styleTag.getFamily();
+	public void addObjectStyle(final ObjectStyle objectStyle) {
+		final String family = objectStyle.getFamily();
 		if ("table-cell".equals(family))
-			this.stylesContainer.addStyleToStylesCommonStyles(styleTag);
+			this.stylesContainer.addStyleToStylesCommonStyles(objectStyle);
 		else if ("text".equals(family))
-			this.stylesContainer.addStyleToStylesAutomaticStyles(styleTag);
+			this.stylesContainer.addStyleToStylesAutomaticStyles(objectStyle);
 		else
-			this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
+			this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
 	}
 
-	public void addStyleToContentAutomaticStyles(final StyleTag styleTag) {
-		this.stylesContainer.addStyleToContentAutomaticStyles(styleTag);
+	public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
+		this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
 	}
 
 	/**

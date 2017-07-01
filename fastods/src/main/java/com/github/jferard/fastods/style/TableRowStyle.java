@@ -32,7 +32,7 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-public class TableRowStyle implements StyleTag {
+public class TableRowStyle implements ObjectStyle {
 	/**
 	 * The default style, see LO.
 	 */
@@ -66,7 +66,7 @@ public class TableRowStyle implements StyleTag {
 
 	@Override
 	public void addToElements(final OdsElements odsElements) {
-		odsElements.addStyleTag(this);
+		odsElements.addObjectStyle(this);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-public interface StyleTag extends NamedObject, AddableToOdsElements {
+public interface ObjectStyle extends NamedObject, AddableToOdsElements {
 	void appendXML(XMLUtil util, Appendable appendable) throws IOException;
 
 	String getFamily();

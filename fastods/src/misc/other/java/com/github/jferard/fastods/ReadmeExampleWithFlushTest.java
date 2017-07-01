@@ -50,7 +50,7 @@ public class ReadmeExampleWithFlushTest {
 				this.odsFactory.createWriter(new File("generated_files", "readme_example_with_flush.ods"));
 		final OdsDocument document = writer.document();
 
-		document.addStyleTag(style);
+		document.addObjectStyle(style);
 		document.addChildCellStyle(TableCell.Type.FLOAT);
 		document.addChildCellStyle(style, TableCell.Type.FLOAT);
 		document.freezeStyles(); // if this crashes, use debugStyles to log the errors

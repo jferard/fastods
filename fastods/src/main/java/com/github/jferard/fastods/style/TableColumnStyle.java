@@ -36,7 +36,7 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-public class TableColumnStyle implements StyleTag {
+public class TableColumnStyle implements ObjectStyle {
 	private static TableColumnStyle defaultColumnStyle;
 
 	public static TableColumnStyleBuilder builder(final String name) {
@@ -75,7 +75,7 @@ public class TableColumnStyle implements StyleTag {
 
 	@Override
 	public void addToElements(final OdsElements odsElements) {
-		odsElements.addStyleTag(this);
+		odsElements.addObjectStyle(this);
 	}
 
 	/**

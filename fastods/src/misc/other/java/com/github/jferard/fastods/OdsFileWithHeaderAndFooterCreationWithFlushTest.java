@@ -117,16 +117,16 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 				this.odsFactory.createWriter(new File("generated_files", "fastods_footer_header_with_flush.ods"));
 		final OdsDocument document = writer.document();
 		document.addPageStyle(ps);
-		document.addStyleTag(ttts);
-		document.addStyleTag(ttts2);
-		document.addStyleTag(lts);
-		document.addStyleTag(cts);
-		document.addStyleTag(rts);
+		document.addObjectStyle(ttts);
+		document.addObjectStyle(ttts2);
+		document.addObjectStyle(lts);
+		document.addObjectStyle(cts);
+		document.addObjectStyle(rts);
 		document.addStyleToContentAutomaticStyles(boldStyle);
 		document.addStyleToContentAutomaticStyles(italicStyle);
-		document.addStyleTag(trs);
-		document.addStyleTag(tcls);
-		document.addStyleTag(tcns);
+		document.addObjectStyle(trs);
+		document.addObjectStyle(tcls);
+		document.addObjectStyle(tcns);
 		document.freezeStyles();
 
 		final Table table = document.addTable("test", 1, 5);

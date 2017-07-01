@@ -132,13 +132,13 @@ public class OdsFileCreationWithFlushTest {
 					.fontWeightBold().build();
 			final TableCellStyle tcs3 = TableCellStyle.builder("tcs3")
 					.fontStyleItalic().build();
-			document.addStyleTag(trs);
-			document.addStyleTag(tcls);
-			document.addStyleTag(tcns);
-			document.addStyleTag(tcs0);
-			document.addStyleTag(tcs1);
-			document.addStyleTag(tcs2);
-			document.addStyleTag(tcs3);
+			document.addObjectStyle(trs);
+			document.addObjectStyle(tcls);
+			document.addObjectStyle(tcns);
+			document.addObjectStyle(tcs0);
+			document.addObjectStyle(tcs1);
+			document.addObjectStyle(tcs2);
+			document.addObjectStyle(tcs3);
 
 			document.addChildCellStyle(TableCell.Type.BOOLEAN);
 			document.addChildCellStyle(TableCell.Type.CURRENCY);

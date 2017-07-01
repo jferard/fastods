@@ -36,7 +36,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableCellStyle implements StyleTag {
+public class TableCellStyle implements ObjectStyle {
 	private static TableCellStyle defaultCellStyle;
 
 	public static TableCellStyleBuilder builder(final String name) {
@@ -93,7 +93,7 @@ public class TableCellStyle implements StyleTag {
 	public void addToElements(final OdsElements odsElements) {
 		if (this.dataStyle != null)
 			this.dataStyle.addToElements(odsElements);
-		odsElements.addStyleTag(this);
+		odsElements.addObjectStyle(this);
 	}
 
 	private void appendCellProperties(final XMLUtil util, final Appendable appendable) throws IOException {
