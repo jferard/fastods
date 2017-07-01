@@ -45,13 +45,11 @@ class PreprocessedRowsFlusher implements OdsFlusher {
 	 * @param sb
 	 */
 	PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows, final StringBuilder sb) throws IOException {
+		// use an appender
 		this.sb = sb;
-		for (final TableRow row : rows) {
-			if (row == null) {
-				throw new IllegalArgumentException();
-			}
-			row.appendXMLToTable(xmlUtil, this.sb);
-		}
+		for (final TableRow row : rows)
+			TableRow.appendXMLToTable(row, xmlUtil, this.sb);
+
 		// free rows
 		Collections.fill(rows, null);
 	}

@@ -158,6 +158,7 @@ class TableAppender {
 			} else {
 				this.appendRepeatedRows(util, appendable);
 				tr.appendXMLToTable(util, appendable);
+				this.nullFieldCounter = 0;
 			}
 		}
 	}

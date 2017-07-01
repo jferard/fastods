@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -90,14 +91,18 @@ public class PreprocessedRowsFlusherTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void flushIntoNullRow() throws Exception {
         final List<TableRow> rows = new ArrayList<TableRow>();
         rows.add(null);
 
+        final Capture<CharSequence> capturedArgument = EasyMock.newCapture();
+        EasyMock.expect(this.w.append(EasyMock.capture(capturedArgument))).andReturn(this.w);
+
         PowerMock.replayAll();
         final PreprocessedRowsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
         flusher.flushInto(this.util, this.w);
+        Assert.assertEquals("<row />", capturedArgument.getValue().toString());
         PowerMock.verifyAll();
     }
 }

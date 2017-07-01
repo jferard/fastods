@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class TableTest {
+public class TableAppenderTest {
     private DataStyles ds;
     private StylesContainer stc;
     private Table table;

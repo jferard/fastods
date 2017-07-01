@@ -49,7 +49,7 @@ public class Table implements NamedObject {
 	public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
 							   final StylesContainer stylesContainer, final DataStyles format,
 							   final String name, final int rowCapacity, final int columnCapacity) {
-		final TableBuilder builder = new TableBuilder(positionUtil, writeUtil,
+		final TableBuilder builder = TableBuilder.create(positionUtil, writeUtil,
 				xmlUtil, stylesContainer, format, name, rowCapacity, columnCapacity);
 		return new Table(name, builder);
 	}
@@ -119,10 +119,6 @@ public class Table implements NamedObject {
 	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
 			throws IOException {
 		this.appender.flushSomeAvailableRowsFrom(util, appendable, rowIndex);
-	}
-
-	public List<TableColumnStyle> getColumnStyles() {
-		return this.builder.getColumnStyles();
 	}
 
 	public ConfigItemMapEntry getConfigEntry() {

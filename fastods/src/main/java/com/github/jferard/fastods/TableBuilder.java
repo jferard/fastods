@@ -58,6 +58,27 @@ class TableBuilder {
 		}
 	}
 
+	public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer, final DataStyles format, final String name, final int rowCapacity, final int columnCapacity) {
+		final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
+		configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
+		configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
+		configEntry.add(new ConfigItem("HorizontalSplitMode", "short", "0"));
+		configEntry.add(new ConfigItem("VerticalSplitMode", "short", "0"));
+		configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
+		configEntry.add(new ConfigItem("VerticalSplitPosition", "int", "0"));
+		configEntry.add(new ConfigItem("ActiveSplitRange", "short", "2"));
+		configEntry.add(new ConfigItem("PositionLeft", "int", "0"));
+		configEntry.add(new ConfigItem("PositionRight", "int", "0"));
+		configEntry.add(new ConfigItem("PositionTop", "int", "0"));
+		configEntry.add(new ConfigItem("PositionBottom", "int", "0"));
+		configEntry.add(new ConfigItem("ZoomType", "short", "0"));
+		configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
+		configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
+
+		return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name, rowCapacity, columnCapacity, configEntry, 102);
+	}
+
+
 	private OdsFileWriter observer;
 	private final int bufferSize;
 	private final int columnCapacity;
@@ -77,9 +98,9 @@ class TableBuilder {
 	private TableStyle style;
 
 	TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil,
-                 final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-                 final DataStyles format, final String name, final int rowCapacity,
-                 final int columnCapacity) {
+				 final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+				 final DataStyles format, final String name, final int rowCapacity,
+				 final int columnCapacity, final ConfigItemMapEntrySet configEntry, final int bufferSize) {
 		this.xmlUtil = xmlUtil;
 		this.writeUtil = writeUtil;
 		this.positionUtil = positionUtil;
@@ -87,23 +108,8 @@ class TableBuilder {
 		this.format = format;
 		this.name = name;
 		this.columnCapacity = columnCapacity;
+		this.configEntry = configEntry;
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
-
-		this.configEntry = ConfigItemMapEntrySet.createSet(this.name);
-		this.configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
-		this.configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
-		this.configEntry.add(new ConfigItem("HorizontalSplitMode", "short", "0"));
-		this.configEntry.add(new ConfigItem("VerticalSplitMode", "short", "0"));
-		this.configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
-		this.configEntry.add(new ConfigItem("VerticalSplitPosition", "int", "0"));
-		this.configEntry.add(new ConfigItem("ActiveSplitRange", "short", "2"));
-		this.configEntry.add(new ConfigItem("PositionLeft", "int", "0"));
-		this.configEntry.add(new ConfigItem("PositionRight", "int", "0"));
-		this.configEntry.add(new ConfigItem("PositionTop", "int", "0"));
-		this.configEntry.add(new ConfigItem("PositionBottom", "int", "0"));
-		this.configEntry.add(new ConfigItem("ZoomType", "short", "0"));
-		this.configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
-		this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
 
 		this.columnStyles = FullList.<TableColumnStyle>builder()
 				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
@@ -112,7 +118,7 @@ class TableBuilder {
 		this.curRowIndex = -1;
 		this.lastFlushedRowIndex = 0;
 		this.lastRowIndex = -1;
-		this.bufferSize = 1024;
+		this.bufferSize = bufferSize;
 	}
 
 	/**
@@ -314,4 +320,5 @@ class TableBuilder {
 	public TableRow getTableRow(final int r) {
 		return this.tableRows.get(r);
 	}
+
 }
