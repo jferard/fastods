@@ -30,17 +30,17 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class BeginTableFlusher implements OdsFlusher {
-	private final Table table;
+	private final TableAppender appender;
 
 	/**
-	 * @param table the tableu to flush
+	 * @param appender the tableu to flush
 	 */
-	public BeginTableFlusher(final Table table) {
-		this.table = table;
+	public BeginTableFlusher(final TableAppender appender) {
+		this.appender = appender;
 	}
 
 	@Override
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.table.appendPreamble(xmlUtil, writer);
+		this.appender.appendPreamble(xmlUtil, writer);
 	}
 }

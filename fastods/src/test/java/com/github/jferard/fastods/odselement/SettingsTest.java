@@ -48,7 +48,6 @@ public class SettingsTest {
 		this.defaultSettings = Settings.create();
 		this.blocks = this.defaultSettings.getRootBlocks();
 		this.util = XMLUtil.create();
-
 	}
 
 	@Test

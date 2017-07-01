@@ -118,15 +118,16 @@ public class TextBuilderTest {
 
     @Test
     public void linkTable() throws Exception {
-        final Table table = new Table(null, null,null,null,null,"n", 0, 0);
+        final Table table = Table.create(null, null,null,null,null,"n", 0, 0);
         final Text t = TextBuilder.create().par().link("a", table).build();
         final String c = this.getXMLContent(t);
+        Assert.assertEquals("n", table.getName());
         DomTester.assertEquals("<text:p><text:a xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>", c);
     }
 
     @Test
     public void styledLinkTable() throws Exception {
-        final Table table = new Table(null, null,null,null,null,"n", 0, 0);
+        final Table table = Table.create(null, null,null,null,null,"n", 0, 0);
         final Text t = TextBuilder.create().par().styledLink("a", table, this.ts).build();
         final String c = this.getXMLContent(t);
         DomTester.assertEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>", c);

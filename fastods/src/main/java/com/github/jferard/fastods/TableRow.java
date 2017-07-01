@@ -30,8 +30,6 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
@@ -41,180 +39,189 @@ import java.util.List;
  * @author Martin Schulz
  */
 public class TableRow {
-	private final int columnCapacity;
-	private final Table parent;
-	private final int rowIndex;
-	private final StylesContainer stylesContainer;
-	private final WriteUtil writeUtil;
-	private final XMLUtil xmlUtil;
-	private DataStyles dataStyles;
-	private TableCellStyle defaultCellStyle;
-	private TableRowStyle rowStyle;
-	private String formula;
-	private final FullList<TableCell> cells;
+    public static void appendXMLToTable(final TableRow row, final XMLUtil xmlUtil, final Appendable appendable) throws IOException {
+        if (row == null)
+            appendable.append("<row />");
+        else
+            row.appendXMLToTable(xmlUtil, appendable);
+    }
 
-	TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
+
+    private final int columnCapacity;
+    private final Table parent;
+    private final int rowIndex;
+    private final StylesContainer stylesContainer;
+    private final WriteUtil writeUtil;
+    private final XMLUtil xmlUtil;
+    private final FullList<TableCell> cells;
+    private DataStyles dataStyles;
+    private TableCellStyle defaultCellStyle;
+    private TableRowStyle rowStyle;
+    private String formula;
+
+    TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
              final StylesContainer stylesContainer, final DataStyles dataStyles,
              final Table parent, final int rowIndex, final int columnCapacity) {
-		this.writeUtil = writeUtil;
-		this.stylesContainer = stylesContainer;
-		this.xmlUtil = xmlUtil;
-		this.dataStyles = dataStyles;
-		this.parent = parent;
-		this.rowIndex = rowIndex;
-		this.columnCapacity = columnCapacity;
-		this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
-		this.cells = FullList.newListWithCapacity(columnCapacity);
-	}
+        this.writeUtil = writeUtil;
+        this.stylesContainer = stylesContainer;
+        this.xmlUtil = xmlUtil;
+        this.dataStyles = dataStyles;
+        this.parent = parent;
+        this.rowIndex = rowIndex;
+        this.columnCapacity = columnCapacity;
+        this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
+        this.cells = FullList.newListWithCapacity(columnCapacity);
+    }
 
-	private void appendRowOpenTag(final XMLUtil util,
-								  final Appendable appendable) throws IOException {
-		appendable.append("<table:table-row");
-		if (this.rowStyle != null)
-			util.appendEAttribute(appendable, "table:style-name",
-					this.rowStyle.getName());
-		if (this.defaultCellStyle != null)
-			util.appendEAttribute(appendable, "table:default-cell-style-name",
-					this.defaultCellStyle.getName());
-		appendable.append(">");
-	}
+    private void appendRowOpenTag(final XMLUtil util,
+                                  final Appendable appendable) throws IOException {
+        appendable.append("<table:table-row");
+        if (this.rowStyle != null)
+            util.appendEAttribute(appendable, "table:style-name",
+                    this.rowStyle.getName());
+        if (this.defaultCellStyle != null)
+            util.appendEAttribute(appendable, "table:default-cell-style-name",
+                    this.defaultCellStyle.getName());
+        appendable.append(">");
+    }
 
-	/**
-	 * Write the XML dataStyles for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @param util       a util for XML writing
-	 * @param appendable where to write the XML
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendXMLToTable(final XMLUtil util,
-								 final Appendable appendable) throws IOException {
-		this.appendRowOpenTag(util, appendable);
-		int nullFieldCounter = 0;
+    /**
+     * Write the XML dataStyles for this object.<br>
+     * This is used while writing the ODS file.
+     *
+     * @param util       a util for XML writing
+     * @param appendable where to write the XML
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendXMLToTable(final XMLUtil util,
+                                 final Appendable appendable) throws IOException {
+        this.appendRowOpenTag(util, appendable);
+        int nullFieldCounter = 0;
 
-		final int size = this.cells.usedSize();
-		for (int c = 0; c < size; c++) {
-			final TableCell cell = this.cells.get(c);
-			if (this.hasNoValue(cell)) {
-				nullFieldCounter++;
-				continue;
-			}
-			this.appendRepeatedCell(util, appendable, nullFieldCounter);
-			nullFieldCounter = 0;
-			cell.appendXMLToTableRow(util, appendable);
-		}
+        final int size = this.cells.usedSize();
+        for (int c = 0; c < size; c++) {
+            final TableCell cell = this.cells.get(c);
+            if (this.hasNoValue(cell)) {
+                nullFieldCounter++;
+                continue;
+            }
+            this.appendRepeatedCell(util, appendable, nullFieldCounter);
+            nullFieldCounter = 0;
+            cell.appendXMLToTableRow(util, appendable);
+        }
 
-		appendable.append("</table:table-row>");
-	}
+        appendable.append("</table:table-row>");
+    }
 
-	private void appendRepeatedCell(final XMLUtil util, final Appendable appendable, final int nullFieldCounter) throws IOException {
-		if (nullFieldCounter <= 0)
-			return;
+    private void appendRepeatedCell(final XMLUtil util, final Appendable appendable, final int nullFieldCounter) throws IOException {
+        if (nullFieldCounter <= 0)
+            return;
 
-		appendable.append("<table:table-cell");
-		if (nullFieldCounter >= 2)
-			util.appendEAttribute(appendable,
-					"table:number-columns-repeated",
-					nullFieldCounter);
-		appendable.append("/>");
-	}
+        appendable.append("<table:table-cell");
+        if (nullFieldCounter >= 2)
+            util.appendEAttribute(appendable,
+                    "table:number-columns-repeated",
+                    nullFieldCounter);
+        appendable.append("/>");
+    }
 
-	private boolean hasNoValue(final TableCell cell) {
-		return cell == null || !cell.hasValue();
-	}
+    private boolean hasNoValue(final TableCell cell) {
+        return cell == null || !cell.hasValue();
+    }
 
-	public TableCellWalker getWalker() {
-		return new TableCellWalkerImpl(this);
-	}
+    public TableCellWalker getWalker() {
+        return new TableCellWalkerImpl(this);
+    }
 
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param colIndex    The column, 0 is the first column
-	 * @param rowMerge    the number of rows to merge
-	 * @param columnMerge the number of cells to merge
-	 * @throws IOException if the cells can't be merged
-	 */
-	public void setCellMerge(final int colIndex, final int rowMerge,
-							 final int columnMerge) throws IOException, FastOdsException {
-		if (rowMerge <= 0 || columnMerge <= 0)
-			return;
-		if (rowMerge <= 1 && columnMerge <= 1)
-			return;
+    /**
+     * Set the merging of multiple cells to one cell.
+     *
+     * @param colIndex    The column, 0 is the first column
+     * @param rowMerge    the number of rows to merge
+     * @param columnMerge the number of cells to merge
+     * @throws IOException if the cells can't be merged
+     */
+    public void setCellMerge(final int colIndex, final int rowMerge,
+                             final int columnMerge) throws IOException, FastOdsException {
+        if (rowMerge <= 0 || columnMerge <= 0)
+            return;
+        if (rowMerge <= 1 && columnMerge <= 1)
+            return;
 
-		this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
-	}
+        this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
+    }
 
-	private void coverRightCells(final int colIndex, final int n) {
-		for (int c=colIndex+1; c<colIndex+n; c++) {
-			this.getOrCreateCell(c).setCovered();
-		}
-	}
+    private void coverRightCells(final int colIndex, final int n) {
+        for (int c = colIndex + 1; c < colIndex + n; c++) {
+            this.getOrCreateCell(c).setCovered();
+        }
+    }
 
-	public void setColumnsSpanned(final int colIndex, final int n) {
-		if (n <= 1)
-			return;
+    public void setColumnsSpanned(final int colIndex, final int n) {
+        if (n <= 1)
+            return;
 
-		final TableCell firstCell = this.getOrCreateCell(colIndex);
-		if (firstCell.isCovered()) // already spanned
-			return;
+        final TableCell firstCell = this.getOrCreateCell(colIndex);
+        if (firstCell.isCovered()) // already spanned
+            return;
 
-		firstCell.markColumnsSpanned(n);
-		this.coverRightCells(colIndex, n);
-	}
+        firstCell.markColumnsSpanned(n);
+        this.coverRightCells(colIndex, n);
+    }
 
-	/**
-	 * Set the cell rowStyle for the cell at col to ts.
-	 *
-	 * @param ts The table rowStyle to be used
-	 */
-	public void setDefaultCellStyle(final TableCellStyle ts) {
-		this.stylesContainer.addStyleToStylesCommonStyles(ts);
-		this.defaultCellStyle = ts;
-	}
+    /**
+     * Set the cell rowStyle for the cell at col to ts.
+     *
+     * @param ts The table rowStyle to be used
+     */
+    public void setDefaultCellStyle(final TableCellStyle ts) {
+        this.stylesContainer.addStyleToStylesCommonStyles(ts);
+        this.defaultCellStyle = ts;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.github.jferard.fastods.TableCell#setFormat(com.github.jferard.fastods.style.DataStyles)
-	 */
-	public void setFormat(final DataStyles format) {
-		this.dataStyles = format;
-	}
+    /* (non-Javadoc)
+     * @see com.github.jferard.fastods.TableCell#setFormat(com.github.jferard.fastods.style.DataStyles)
+     */
+    public void setFormat(final DataStyles format) {
+        this.dataStyles = format;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.github.jferard.fastods.TableCell#setRowsSpanned(int)
-	 */
-	public void setRowsSpanned(final int colIndex, final int n) throws IOException {
-		if (n <= 1)
-			return;
+    /* (non-Javadoc)
+     * @see com.github.jferard.fastods.TableCell#setRowsSpanned(int)
+     */
+    public void setRowsSpanned(final int colIndex, final int n) throws IOException {
+        if (n <= 1)
+            return;
 
-		final TableCell firstCell = this.getOrCreateCell(colIndex);
-		if (firstCell.isCovered())
-			return;
+        final TableCell firstCell = this.getOrCreateCell(colIndex);
+        if (firstCell.isCovered())
+            return;
 
-		this.parent.setRowsSpanned(this.rowIndex, colIndex, n);
-	}
+        this.parent.setRowsSpanned(this.rowIndex, colIndex, n);
+    }
 
-	public TableCell getOrCreateCell(final int colIndex) {
-		TableCell cell = this.cells.get(colIndex);
-		if (cell == null) {
+    public TableCell getOrCreateCell(final int colIndex) {
+        TableCell cell = this.cells.get(colIndex);
+        if (cell == null) {
             cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
                     this.stylesContainer, this.dataStyles,
                     this, this.rowIndex, this.columnCapacity);
-			this.cells.set(colIndex, cell);
-		}
-		return cell;
-	}
+            this.cells.set(colIndex, cell);
+        }
+        return cell;
+    }
 
-	public void setStyle(final TableRowStyle rowStyle) {
-		this.stylesContainer.addStyleToContentAutomaticStyles(rowStyle);
-		this.rowStyle = rowStyle;
-	}
+    public void setStyle(final TableRowStyle rowStyle) {
+        this.stylesContainer.addStyleToContentAutomaticStyles(rowStyle);
+        this.rowStyle = rowStyle;
+    }
 
-	public int getColumnCount() {
-		return this.cells.usedSize();
-	}
+    public int getColumnCount() {
+        return this.cells.usedSize();
+    }
 
-	public boolean isCovered(final int colIndex) {
-		return this.cells.get(colIndex).isCovered();
-	}
+    public boolean isCovered(final int colIndex) {
+        final TableCell cell = this.cells.get(colIndex);
+        return cell != null && cell.isCovered();
+    }
 }
