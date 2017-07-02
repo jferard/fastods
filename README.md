@@ -44,7 +44,7 @@ Add the following dependency to your POM:
 		<version>0.3.1</version>
 </dependency>
 ```
-***IMPORTANT NOTE*: the parent POM from version 0.4.0 was not upload to Maven Central Repository. You have to compile 0.4.0 version from sources (see above).**
+***IMPORTANT NOTE*: the parent POM from version 0.4.0 was not uploaded to Maven Central Repository. You have to compile 0.4.0 version from sources (see above).**
 
 ### From sources
 Type the following command:
