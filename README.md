@@ -42,16 +42,18 @@ Add the following dependency to your POM:
 		<groupId>com.github.jferard</groupId>
 		<artifactId>fastods</artifactId>
 		<version>0.3.1</version>
-</dependency>```
+</dependency>
+```
+***IMPORTANT NOTE*: the parent POM from version 0.4.0 was not upload to Maven Central Repository. You have to compile 0.4.0 version from sources (see above).**
 
 ### From sources
 Type the following command:
 
-```git clone https://github.com/jferard/fastods.git```
+`git clone https://github.com/jferard/fastods.git`
 
 Then:
 
-```mvn clean install```
+`mvn clean install`
 
 ### From jar
 First download the **jar file** from the latest [release](https://github.com/jferard/fastods/releases/).
