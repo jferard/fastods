@@ -119,11 +119,11 @@ public class OdsFileCreationWithFlushTest {
 
 		try {
 			final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
-					.build();
+					.buildHidden();
 			final TableCellStyle tcls = TableCellStyle.builder("cc")
 					.backgroundColor("#dddddd").fontWeightBold().build();
 			final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-					.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
+					.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).buildHidden();
 			final TableCellStyle tcs0 = TableCellStyle.builder("tcs0")
 					.backgroundColor("#0000ff").build();
 			final TableCellStyle tcs1 = TableCellStyle.builder("tcs1")

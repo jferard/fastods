@@ -118,13 +118,13 @@ public class OdsFileCreationTest {
 		table.setSettings("View1", "ZoomValue", "200");
 		TableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
-				.build();
+				.buildHidden();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
+				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).buildHidden();
 		table.setColumnStyle(0, tcns);
 
 		final TableCellStyle tcs0 = TableCellStyle.builder("tcs0")

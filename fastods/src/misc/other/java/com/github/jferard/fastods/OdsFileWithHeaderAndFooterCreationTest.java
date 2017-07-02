@@ -68,15 +68,15 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 	public final void test50() throws FastOdsException, IOException {
 		this.logger.info("Creating a file with footer and header");
 		final TextStyle lts = TextProperties.builder().fontColor(Color.RED)
-				.buildStyle("test1");
+				.buildHiddenStyle("test1");
 		final TextStyle cts = TextProperties.builder().fontColor(Color.BLUE)
-				.buildStyle("test2");
+				.buildHiddenStyle("test2");
 		final TextStyle rts = TextProperties.builder().fontColor(Color.GREEN)
-				.buildStyle("test3");
+				.buildHiddenStyle("test3");
 		final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
-				.buildStyle("style");
+				.buildHiddenStyle("style");
 		final TextStyle italicStyle = TextProperties.builder().fontStyleItalic()
-				.buildStyle("style2");
+				.buildHiddenStyle("style2");
 
 		final Text leftHeader = Text.styledContent("left header", lts);
 		final Text centerHeader = Text.builder().par()
@@ -105,25 +105,25 @@ public class OdsFileWithHeaderAndFooterCreationTest {
 		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", 1, 5);
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
-				.build();
+				.buildHidden();
 		table.setStyle(ttts);
 
 		final Table table2 = document.addTable("target", 1, 1);
 		final PageStyle ps2 = PageStyle.builder("test2")
 				.masterPageStyle(ps.getMasterPageStyle()).pageLayoutStyle(ps.getPageLayoutStyle()).build();
 		final TableStyle ttts2 = TableStyle.builder("a2").pageStyle(ps2)
-				.build();
+				.buildHidden();
 		table2.setStyle(ttts2);
 
 		TableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
-				.build();
+				.buildHidden();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		row.setStyle(trs);
 		row.setDefaultCellStyle(tcls);
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
+				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).buildHidden();
 		table.setColumnStyle(0, tcns);
 		row = table.getRow(0);
 		row.getOrCreateCell(0).setText(

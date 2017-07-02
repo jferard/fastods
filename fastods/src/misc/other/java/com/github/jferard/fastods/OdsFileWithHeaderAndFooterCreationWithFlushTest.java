@@ -68,15 +68,15 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 	public final void test50() throws FastOdsException, IOException {
 		this.logger.info("Creating a file with footer and header");
 		final TextStyle lts = TextProperties.builder().fontColor(Color.RED)
-				.buildStyle("test1");
+				.buildHiddenStyle("test1");
 		final TextStyle cts = TextProperties.builder().fontColor(Color.BLUE)
-				.buildStyle("test2");
+				.buildHiddenStyle("test2");
 		final TextStyle rts = TextProperties.builder().fontColor(Color.GREEN)
-				.buildStyle("test3");
+				.buildHiddenStyle("test3");
 		final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
-				.buildStyle("style");
+				.buildHiddenStyle("style");
 		final TextStyle italicStyle = TextProperties.builder().fontStyleItalic()
-				.buildStyle("style2");
+				.buildHiddenStyle("style2");
 
 		final Text leftHeader = Text.styledContent("left header", lts);
 		final Text centerHeader = Text.builder().par()
@@ -103,15 +103,15 @@ public class OdsFileWithHeaderAndFooterCreationWithFlushTest {
 		final PageStyle ps2 = PageStyle.builder("test2")
 				.masterPageStyle(ps.getMasterPageStyle()).pageLayoutStyle(ps.getPageLayoutStyle()).build();
 		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
-				.build();
+				.buildHidden();
 		final TableStyle ttts2 = TableStyle.builder("a2").pageStyle(ps2)
-				.build();
+				.buildHidden();
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
-				.build();
+				.buildHidden();
 		final TableCellStyle tcls = TableCellStyle.builder("cc")
 				.backgroundColor("#dddddd").fontWeightBold().build();
 		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).build();
+				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).buildHidden();
 
 		final OdsFileWriter writer =
 				this.odsFactory.createWriter(new File("generated_files", "fastods_footer_header_with_flush.ods"));
