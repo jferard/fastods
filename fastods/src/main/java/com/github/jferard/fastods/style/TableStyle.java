@@ -35,6 +35,7 @@ import java.io.IOException;
 public class TableStyle implements ObjectStyle {
 	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
 			.builder("ta1").build();
+	private final boolean hidden;
 	private final PageStyle pageStyle;
 	private final String name;
 	private String key;
@@ -46,8 +47,9 @@ public class TableStyle implements ObjectStyle {
 	 * @param styleName A unique name for this style
 	 * @param pageStyle The master page style for this table
 	 */
-	TableStyle(final String styleName, final PageStyle pageStyle) {
+	TableStyle(final String styleName, final boolean hidden, final PageStyle pageStyle) {
 		this.name = styleName;
+		this.hidden = hidden;
 		this.pageStyle = pageStyle;
 	}
 
@@ -90,6 +92,11 @@ public class TableStyle implements ObjectStyle {
 		if (this.key == null)
 			this.key = this.getFamily() + "@" + this.getName();
 		return this.key;
+	}
+
+	@Override
+	public boolean isHidden() {
+		return this.hidden;
 	}
 
 	public PageStyle getPageStyle() {

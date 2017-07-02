@@ -70,4 +70,9 @@ public class BooleanStyle implements DataStyle {
 	public void addToElements(final OdsElements odsElements) {
 		odsElements.addDataStyle(this);
 	}
+
+	@Override
+	public boolean isHidden() {
+		return this.dataStyle.isHidden();
+	}
 }

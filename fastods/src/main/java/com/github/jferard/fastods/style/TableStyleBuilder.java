@@ -24,6 +24,7 @@ package com.github.jferard.fastods.style;
 public class TableStyleBuilder {
 	private PageStyle pageStyle;
 	private final String name;
+	private boolean hidden;
 
 	/**
 	 * @param name the name of the table style (19.498.2)
@@ -37,7 +38,12 @@ public class TableStyleBuilder {
 	}
 
 	public TableStyle build() {
-		return new TableStyle(this.name, this.pageStyle);
+		return new TableStyle(this.name, this.hidden, this.pageStyle);
+	}
+
+	public TableStyle buildHidden() {
+		this.hidden = true;
+		return this.build();
 	}
 
 	public TableStyleBuilder pageStyle(

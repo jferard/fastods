@@ -35,14 +35,17 @@ public class TextStyle implements ObjectStyle {
 	public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
 			.buildStyle("Default");
 
+	private String key;
 	private final String name;
+	private final boolean hidden;
 	private final TextProperties textProperties;
 
 	/**
 	 * Create a new text style with the name name.
 	 */
-	TextStyle(final String name, final TextProperties textProperties) {
+	TextStyle(final String name, final boolean hidden, final TextProperties textProperties) {
 		this.name = name;
+		this.hidden = hidden;
 		this.textProperties = textProperties;
 	}
 
@@ -72,21 +75,31 @@ public class TextStyle implements ObjectStyle {
 		return this.name;
 	}
 
+	/**
+	 * @return the text properties of this style
+	 */
 	public TextProperties getTextProperties() {
 		return this.textProperties;
 	}
 
+	/**
+	 * @return true if this style has a name and a least one text property is set
+	 */
 	public boolean isNotEmpty() {
 		return this.name != null && this.name.length() > 0
 				&& this.getTextProperties().isNotEmpty();
 	}
 	
-	private String key;
 	@Override
 	public String getKey() {
 		if (this.key == null)
 			this.key = this.getFamily()+"@"+this.getName();
 		return this.key;
+	}
+
+	@Override
+	public boolean isHidden() {
+		return this.hidden;
 	}
 
 	@Override

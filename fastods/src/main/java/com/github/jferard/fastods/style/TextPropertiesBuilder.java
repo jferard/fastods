@@ -34,6 +34,7 @@ public class TextPropertiesBuilder {
 	private String fontUnderlineColor;
 	private Underline fontUnderlineStyle;
 	private String fontWeight;
+	private boolean hidden;
 
 	/**
 	 * @return the TextProperties
@@ -52,7 +53,16 @@ public class TextPropertiesBuilder {
 		final TextProperties tp = new TextProperties(this.fontColor,
 				this.fontName, this.fontWeight, this.fontStyle, this.fontSize,
 				this.fontUnderlineColor, this.fontUnderlineStyle);
-		return new TextStyle(name, tp);
+		return new TextStyle(name, this.hidden, tp);
+	}
+
+	/**
+	 * @param name the name of the style
+	 * @return the TextStyle of that name
+	 */
+	public TextStyle buildHiddenStyle(final String name) {
+		this.hidden = true;
+		return this.buildStyle(name);
 	}
 
 	/**

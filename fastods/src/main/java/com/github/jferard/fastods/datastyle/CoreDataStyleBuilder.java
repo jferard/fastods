@@ -47,6 +47,7 @@ final class CoreDataStyleBuilder {
 	 * true: consumers should keep unused styles."
 	 */
 	private boolean volatileStyle;
+	private boolean hidden;
 
 	/**
 	 * The builder
@@ -68,7 +69,7 @@ final class CoreDataStyleBuilder {
 	 * @return the data style built
 	 */
 	public CoreDataStyle build() {
-		return new CoreDataStyle(this.name, this.languageCode, this.countryCode, this.volatileStyle);
+		return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
 
 	}
 

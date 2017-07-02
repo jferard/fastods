@@ -32,6 +32,7 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public final class CoreDataStyle {
+	private boolean hidden;
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
 	 */
@@ -59,11 +60,12 @@ public final class CoreDataStyle {
 	 */
 	protected final boolean volatileStyle;
 
-	protected CoreDataStyle(final String name, final String languageCode,
+	protected CoreDataStyle(final String name, final boolean hidden, final String languageCode,
 						final String countryCode, final boolean volatileStyle) {
+		this.name = name;
+		this.hidden = hidden;
 		this.countryCode = countryCode;
 		this.languageCode = languageCode;
-		this.name = name;
 		this.volatileStyle = volatileStyle;
 	}
 
@@ -108,5 +110,13 @@ public final class CoreDataStyle {
 	 */
 	String getLanguageCode() {
 		return this.languageCode;
+	}
+
+	/**
+	 * See DataStyle#isHidden.
+	 * @return true if the style is an automatic style.
+	 */
+	public boolean isHidden() {
+		return this.hidden;
 	}
 }

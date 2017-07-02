@@ -85,6 +85,11 @@ public class ScientificNumberStyle implements DataStyle {
 
 	}
 
+	@Override
+	public boolean isHidden() {
+		return this.floatStyle.isHidden();
+	}
+
 	public int getDecimalPlaces() {
 		return this.floatStyle.getDecimalPlaces();
 	}

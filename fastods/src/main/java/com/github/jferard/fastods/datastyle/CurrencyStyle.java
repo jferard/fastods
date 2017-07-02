@@ -71,6 +71,11 @@ public class CurrencyStyle implements DataStyle {
 		this.floatStyle.appendXML(util, appendable, "currency-style", number);
 	}
 
+	@Override
+	public boolean isHidden() {
+		return this.floatStyle.isHidden();
+	}
+
 	/**
 	 * @return The currency symbol that is used. e.g. '$'.
 	 */

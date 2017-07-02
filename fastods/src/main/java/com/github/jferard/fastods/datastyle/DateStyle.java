@@ -170,6 +170,11 @@ public class DateStyle implements DataStyle {
 		}
 	}
 
+	@Override
+	public boolean isHidden() {
+		return this.dataStyle.isHidden();
+	}
+
 	/**
 	 * @return The current value of the automatic order flag
 	 */

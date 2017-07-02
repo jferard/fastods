@@ -32,6 +32,7 @@ public class TableRowStyleBuilder {
 
 	private final String name;
 	private Length rowHeight;
+	private boolean hidden;
 
 	/**
 	 * @param name
@@ -49,8 +50,16 @@ public class TableRowStyleBuilder {
 	 * @return the table row style
 	 */
 	public TableRowStyle build() {
-		return new TableRowStyle(this.name, this.rowHeight);
+		return new TableRowStyle(this.name, this.hidden, this.rowHeight);
 
+	}
+
+	/**
+	 * @return the table row style
+	 */
+	public TableRowStyle buildHidden() {
+		this.hidden = true;
+		return this.build();
 	}
 
 	/**

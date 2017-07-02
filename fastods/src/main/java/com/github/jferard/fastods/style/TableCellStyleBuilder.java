@@ -41,6 +41,7 @@ public class TableCellStyleBuilder {
 	private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
 	// 'top'
 	private boolean wrap; // No line wrap when false, line wrap when
+	private boolean hidden;
 
 	/**
 	 * @param name
@@ -138,10 +139,15 @@ public class TableCellStyleBuilder {
 	}
 
 	public TableCellStyle build() {
-		return new TableCellStyle(this.name, this.dataStyle,
+		return new TableCellStyle(this.name, this.hidden, this.dataStyle,
 				this.backgroundColor, this.tpBuilder.build(), this.textAlign,
 				this.verticalAlign, this.wrap, this.parentCellStyleName,
 				this.bordersBuilder.build(), this.marginsBuilder.build());
+	}
+
+	public TableCellStyle buildHidden() {
+		this.hidden = true;
+		return this.build();
 	}
 
 	/**

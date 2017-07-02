@@ -188,4 +188,8 @@ public final class NumberStyle {
 	public String getLanguageCode() {
 		return this.dataStyle.getLanguageCode();
 	}
+
+    public boolean isHidden() {
+        return this.dataStyle.isHidden();
+    }
 }

@@ -52,6 +52,7 @@ public class TableColumnStyle implements ObjectStyle {
 		return TableColumnStyle.defaultColumnStyle;
 	}
 
+	private final boolean hidden;
 	private final Length columnWidth;
 	private final TableCellStyle defaultCellStyle;
 	private final String name;
@@ -66,9 +67,10 @@ public class TableColumnStyle implements ObjectStyle {
 	 * @param defaultCellStyle
 	 *            the default style for cells
 	 */
-	TableColumnStyle(final String name, final Length columnWidth,
+	TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
 			final TableCellStyle defaultCellStyle) {
 		this.name = name;
+		this.hidden = hidden;
 		this.columnWidth = columnWidth;
 		this.defaultCellStyle = defaultCellStyle;
 	}
@@ -152,5 +154,10 @@ public class TableColumnStyle implements ObjectStyle {
 		if (this.key == null)
 			this.key = this.getFamily()+"@"+this.getName();
 		return this.key;
+	}
+
+	@Override
+	public boolean isHidden() {
+		return this.hidden;
 	}
 }

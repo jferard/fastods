@@ -30,9 +30,28 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public interface ObjectStyle extends NamedObject, AddableToOdsElements {
+	/**
+	 * Append the style to an appendable
+	 * @param util a helper object
+	 * @param appendable the appendable to append data to
+	 * @throws IOException if the style can't be added
+	 */
 	void appendXML(XMLUtil util, Appendable appendable) throws IOException;
 
+	/**
+	 * 19.476 style:family
+	 * @return the famlily name of this style
+	 */
 	String getFamily();
 
+	/**
+	 * The identifier of this style ius built on the name (19.498 style:name) and the family
+	 * @return a unique identifier for this style
+	 */
 	String getKey();
+
+	/**
+	 * @return true if the style is an automatic style (3.15.3. office:automatic-styles)
+	 */
+	boolean isHidden();
 }

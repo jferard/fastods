@@ -39,10 +39,18 @@ import java.io.IOException;
 public class TableCellStyle implements ObjectStyle {
 	private static TableCellStyle defaultCellStyle;
 
+	/**
+	 * Create a builder
+	 * @param name the name of the builder
+	 * @return the builder
+	 */
 	public static TableCellStyleBuilder builder(final String name) {
 		return new TableCellStyleBuilder(name);
 	}
 
+	/**
+	 * @return the default cell style
+	 */
 	public static TableCellStyle getDefaultCellStyle() {
 		if (TableCellStyle.defaultCellStyle == null)
 			TableCellStyle.defaultCellStyle = TableCellStyle.builder("Default")
@@ -55,6 +63,7 @@ public class TableCellStyle implements ObjectStyle {
 	}
 
 	private final String backgroundColor;
+	private final boolean hidden;
 	private final Borders borders;
 	private final Margins margins;
 	private final String name;
@@ -72,11 +81,12 @@ public class TableCellStyle implements ObjectStyle {
 	 *
 	 * @param name A unique name for this style
 	 */
-	TableCellStyle(final String name, final DataStyle dataStyle,
+	TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle,
 				   final String backgroundColor, final TextProperties textProperties,
 				   final Align textAlign, final VerticalAlign verticalAlign,
 				   final boolean wrap, final String parentCellStyleName,
 				   final Borders borders, final Margins margins) {
+		this.hidden = hidden;
 		this.borders = borders;
 		this.margins = margins;
 		this.name = name;
@@ -158,7 +168,7 @@ public class TableCellStyle implements ObjectStyle {
 		}
 	}
 
-	boolean hasTextProperties() {
+	private boolean hasTextProperties() {
 		return this.textProperties != null && this.textProperties.isNotEmpty();
 	}
 
@@ -166,6 +176,9 @@ public class TableCellStyle implements ObjectStyle {
 		return this.textAlign != null || !this.margins.areVoid();
 	}
 
+	/**
+	 * @return the data style inside this cell style
+	 */
 	public DataStyle getDataStyle() {
 		return this.dataStyle;
 	}
@@ -187,6 +200,9 @@ public class TableCellStyle implements ObjectStyle {
 		return this.name;
 	}
 
+	/**
+	 * @return the name without a suffix for data style
+	 */
 	public String getRealName() {
 		final int index = this.name.indexOf("@@");
 		if (index > 0)
@@ -199,30 +215,50 @@ public class TableCellStyle implements ObjectStyle {
 		return this.backgroundColor != null || this.verticalAlign != null || !this.borders.areVoid() || this.wrap;
 	}
 
+	/**
+	 * Set the data style of this cell style
+	 * @param dataStyle the data style to set
+	 */
 	public void setDataStyle(final DataStyle dataStyle) {
 		this.dataStyle = dataStyle;
 	}
 
+	/**
+	 * @return true if this is a derived cell style
+	 */
 	public boolean hasParent() {
 		return this.parentCellStyleName != null;
 	}
 
-	public static enum Align {
+	@Override
+	public boolean isHidden() {
+		return this.hidden;
+	}
+
+	/**
+	 * An horizontal alignment.
+	 * 20.216 fo:text-align
+	 */
+	public enum Align {
 		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
 
 		private final String attrValue;
 
-		private Align(final String attrValue) {
+		Align(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 	}
 
-	public static enum VerticalAlign {
+	/**
+	 * A vertical alignment
+	 * 20.386 style:vertical-align
+	 */
+	public enum VerticalAlign {
 		BOTTOM("bottom"), MIDDLE("middle"), TOP("top");
 
 		private final String attrValue;
 
-		private VerticalAlign(final String attrValue) {
+		VerticalAlign(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 	}

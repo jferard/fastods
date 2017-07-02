@@ -48,6 +48,7 @@ public class TableRowStyle implements ObjectStyle {
 	}
 
 	private final String name;
+	private final boolean hidden;
 	private final Length rowHeight;
 
 	/**
@@ -59,8 +60,9 @@ public class TableRowStyle implements ObjectStyle {
 	 * @param rowHeight
 	 *            The height of the row
 	 */
-	TableRowStyle(final String styleName, final Length rowHeight) {
+	TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight) {
 		this.name = styleName;
+		this.hidden = hidden;
 		this.rowHeight = rowHeight;
 	}
 
@@ -111,5 +113,10 @@ public class TableRowStyle implements ObjectStyle {
 		if (this.key == null)
 			this.key = this.getFamily()+"@"+this.getName();
 		return this.key;
+	}
+
+	@Override
+	public boolean isHidden() {
+		return this.hidden;
 	}
 }

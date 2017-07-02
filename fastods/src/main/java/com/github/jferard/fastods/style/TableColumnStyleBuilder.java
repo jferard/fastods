@@ -31,6 +31,7 @@ public class TableColumnStyleBuilder {
 	private Length columnWidth;
 	private TableCellStyle defaultCellStyle;
 	private final String name;
+	private boolean hidden;
 
 	/**
 	 * @param name
@@ -46,9 +47,13 @@ public class TableColumnStyleBuilder {
 	}
 
 	public TableColumnStyle build() {
-		return new TableColumnStyle(this.name, this.columnWidth,
+		return new TableColumnStyle(this.name, this.hidden, this.columnWidth,
 				this.defaultCellStyle);
+	}
 
+	public TableColumnStyle buildHidden() {
+		this.hidden = true;
+		return this.build();
 	}
 
 	/**

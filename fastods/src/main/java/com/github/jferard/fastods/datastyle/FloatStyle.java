@@ -82,6 +82,11 @@ public class FloatStyle implements DataStyle {
 		this.numberStyle.appendXML(util, appendable, "number-style", number);
 	}
 
+	@Override
+	public boolean isHidden() {
+		return this.numberStyle.isHidden();
+	}
+
 	StringBuilder computeNumberTag(final XMLUtil util)
 			throws IOException {
 		final StringBuilder number = new StringBuilder();

@@ -83,6 +83,11 @@ public class TimeStyle implements DataStyle {
 	}
 
 	@Override
+	public boolean isHidden() {
+		return this.dataStyle.isHidden();
+	}
+
+	@Override
 	public void addToElements(final OdsElements odsElements) {
 		odsElements.addDataStyle(this);
 	}

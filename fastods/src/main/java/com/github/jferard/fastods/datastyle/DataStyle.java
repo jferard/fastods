@@ -28,7 +28,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * An empty data style
+ * A data style. 16.27. Data Styles
  * @author Julien Férard
  */
 public interface DataStyle extends NamedObject, AddableToOdsElements {
@@ -41,4 +41,9 @@ public interface DataStyle extends NamedObject, AddableToOdsElements {
      */
     void appendXML(final XMLUtil util,
                    final Appendable appendable) throws IOException;
+
+    /**
+     * @return true if the style is an automatic style (3.15.3. office:automatic-styles)
+     */
+    boolean isHidden();
 }
