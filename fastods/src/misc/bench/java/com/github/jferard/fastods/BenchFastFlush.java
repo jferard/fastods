@@ -35,7 +35,7 @@ public class BenchFastFlush extends Bench {
 	public BenchFastFlush(final Logger logger, final int rowCount, final int colCount) {
 		super(logger, "FastODSFlush", rowCount, colCount);
 		this.logger = logger;
-		this.odsFactory = new OdsFactory(this.logger, Locale.US);
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class BenchFastFlush extends Bench {
 		final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
 
 		for (int y = 0; y < this.getRowCount(); y++) {
-			final HeavyTableRow row = table.nextRow();
+			final TableRow row = table.nextRow();
 			final TableCellWalker walker = row.getWalker();
 			for (int x = 0; x < this.getColCount(); x++) {
 				walker.setFloatValue(this.getRandom().nextInt(1000));
