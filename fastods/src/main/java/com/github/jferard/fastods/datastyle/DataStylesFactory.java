@@ -35,7 +35,7 @@ public class DataStylesFactory {
 	 * @return the DataStyles associated with this locale
 	 */
 	public static DataStyles create(final Locale locale) {
-		DataStyleBuilderFactory dataStyleBuilderFactory = new DataStyleBuilderFactory(
+		final DataStyleBuilderFactory dataStyleBuilderFactory = new DataStyleBuilderFactory(
 				XMLUtil.create(), locale);
 		return DataStylesFactory.create(dataStyleBuilderFactory);
 	}
@@ -46,7 +46,7 @@ public class DataStylesFactory {
 	 * @return the DataStyles associated with this locale
 	 */
 	public static DataStyles create(final XMLUtil util, final Locale locale) {
-		DataStyleBuilderFactory dataStyleBuilderFactory = new DataStyleBuilderFactory(
+		final DataStyleBuilderFactory dataStyleBuilderFactory = new DataStyleBuilderFactory(
 				util, locale);
 		return DataStylesFactory.create(dataStyleBuilderFactory);
 	}
@@ -56,17 +56,17 @@ public class DataStylesFactory {
 	 * @return the DataStyles associated with this locale
 	 */
 	public static DataStyles create(final DataStyleBuilderFactory builderFactory) {
-		BooleanStyle booleanDataStyle = builderFactory
+		final BooleanStyle booleanDataStyle = builderFactory
 				.booleanStyleBuilder("boolean-data").build();
-		CurrencyStyle currencyDataStyle = builderFactory
+		final CurrencyStyle currencyDataStyle = builderFactory
 				.currencyStyleBuilder("currency-data").build();
-		DateStyle dateDataStyle = builderFactory
+		final DateStyle dateDataStyle = builderFactory
 				.dateStyleBuilder("date-data").build();
-		FloatStyle numberDataStyle = builderFactory
+		final FloatStyle numberDataStyle = builderFactory
 				.floatStyleBuilder("float-data").build();
-		PercentageStyle percentageDataStyle = builderFactory
+		final PercentageStyle percentageDataStyle = builderFactory
 				.percentageStyleBuilder("percentage-data").build();
-		TimeStyle timeDataStyle = builderFactory
+		final TimeStyle timeDataStyle = builderFactory
 				.timeStyleBuilder("time-data").build();
 		return new DataStyles(booleanDataStyle, currencyDataStyle, dateDataStyle, numberDataStyle,
 				percentageDataStyle, timeDataStyle);

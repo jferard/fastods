@@ -76,7 +76,7 @@ public class StylesContainer {
                 this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
             final String name = style.getRealName() + "@@" + dataStyle.getName();
             anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style)
-                    .dataStyle(dataStyle).build();
+                    .dataStyle(dataStyle).buildHidden();
                 this.addStyleToContentAutomaticStyles(anonymousStyle);
             this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);
         }
@@ -145,12 +145,14 @@ public class StylesContainer {
     }
 
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
+        assert objectStyle.isHidden() : objectStyle.toString();
         this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
                 Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE);
     }
 
     public boolean addStyleToContentAutomaticStyles(final ObjectStyle objectStyle,
                                                     final Mode mode) {
+        assert objectStyle.isHidden();
         return this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
                 Dest.CONTENT_AUTOMATIC_STYLES, mode);
     }
@@ -163,12 +165,14 @@ public class StylesContainer {
 	*/
 
     public void addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle) {
+        assert objectStyle.isHidden();
         this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
                 Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE);
     }
 
     public boolean addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle,
                                                    final Mode mode) {
+        assert objectStyle.isHidden() : objectStyle.toString();
         return this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
                 Dest.STYLES_AUTOMATIC_STYLES, mode);
     }
@@ -180,6 +184,7 @@ public class StylesContainer {
 
     public boolean addStyleToStylesCommonStyles(final ObjectStyle objectStyle,
                                                 final Mode mode) {
+        assert !objectStyle.isHidden();
         return this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
                 Dest.STYLES_COMMON_STYLES, mode);
     }

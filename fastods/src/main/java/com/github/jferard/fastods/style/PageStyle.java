@@ -47,6 +47,10 @@ public class PageStyle implements AddableToOdsElements {
 	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
 	public static final PageStyle DEFAULT_PAGE_STYLE;
 
+	public boolean isHidden() {
+		return hidden;
+	}
+
 	public enum PrintOrientation {
 		HORIZONTAL("landscape"), VERTICAL("portrait");
 
@@ -82,11 +86,12 @@ public class PageStyle implements AddableToOdsElements {
 		DEFAULT_FORMAT = PaperFormat.A4;
 		DEFAULT_WRITING_MODE = WritingMode.LRTB;
 		DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
-		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
+		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").buildHidden();
 		DEFAULT_MASTER_PAGE_STYLE = PageStyle
 				.builder(PageStyle.DEFAULT_MASTER_PAGE).build();
 	}
 
+	private final boolean hidden;
 	private final MasterPageStyle masterPageStyle;
 	private final PageLayoutStyle pageLayoutStyle;
 
@@ -96,7 +101,8 @@ public class PageStyle implements AddableToOdsElements {
 	 * @param masterPageStyle the master page style
 	 * @param pageLayoutStyle the page layout style
 	 */
-	PageStyle(final MasterPageStyle masterPageStyle, final PageLayoutStyle pageLayoutStyle) {
+	PageStyle(final boolean hidden, final MasterPageStyle masterPageStyle, final PageLayoutStyle pageLayoutStyle) {
+		this.hidden = hidden;
 		this.masterPageStyle = masterPageStyle;
 		this.pageLayoutStyle = pageLayoutStyle;
 	}

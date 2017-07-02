@@ -112,7 +112,7 @@ class TableBuilder {
 		this.style = TableStyle.DEFAULT_TABLE_STYLE;
 
 		this.columnStyles = FullList.<TableColumnStyle>builder()
-				.blankElement(TableColumnStyle.getDefaultColumnStyle(xmlUtil))
+				.blankElement(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE)
 				.capacity(this.columnCapacity).build();
 		this.tableRows = FullList.newListWithCapacity(rowCapacity);
 		this.curRowIndex = -1;

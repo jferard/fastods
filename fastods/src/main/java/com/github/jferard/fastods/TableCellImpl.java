@@ -214,7 +214,7 @@ public class TableCellImpl implements TableCell {
 
         TableCellStyle curStyle = this.style;
         if (curStyle == null) // adds the data style
-            curStyle = TableCellStyle.getDefaultCellStyle();
+            curStyle = TableCellStyle.DEFAULT_CELL_STYLE;
 
         this.stylesContainer.addDataStyle(dataStyle);
         final TableCellStyle anonymousStyle = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);

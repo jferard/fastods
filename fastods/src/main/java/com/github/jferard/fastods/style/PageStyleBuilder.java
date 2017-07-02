@@ -48,6 +48,7 @@ public class PageStyleBuilder {
 	private WritingMode writingMode;
 	private MasterPageStyle masterPageStyle;
 	private PageLayoutStyle pageLayoutStyle;
+	private boolean hidden;
 
 	/**
 	 * Create a new page style.
@@ -70,7 +71,7 @@ public class PageStyleBuilder {
 		this.printOrientation = PageStyle.DEFAULT_PRINT_ORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
 
-		final TextStyle noneStyle = TextProperties.builder().buildStyle("none");
+		final TextStyle noneStyle = TextProperties.builder().buildHiddenStyle("none");
 		this.header = PageSection.simpleHeader("", noneStyle);
 		this.footer = PageSection.simpleFooter("", noneStyle);
 	}
@@ -111,8 +112,14 @@ public class PageStyleBuilder {
 					this.pageHeight, this.numFormat, this.backgroundColor, this.header, this.footer, this
 					.printOrientation, this.paperFormat, this.writingMode);
 		}
-		return new PageStyle(this.masterPageStyle, this.pageLayoutStyle);
+		return new PageStyle(this.hidden, this.masterPageStyle, this.pageLayoutStyle);
 	}
+
+	public PageStyle buildHidden() {
+		this.hidden = true;
+		return this.build();
+	}
+
 
 	public PageStyleBuilder masterPageStyle(final MasterPageStyle masterPageStyle) {
 		this.masterPageStyle = masterPageStyle;

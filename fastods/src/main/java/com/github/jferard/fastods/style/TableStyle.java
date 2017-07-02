@@ -34,7 +34,8 @@ import java.io.IOException;
  */
 public class TableStyle implements ObjectStyle {
 	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
-			.builder("ta1").build();
+			.builder("ta1").buildHidden();
+
 	private final boolean hidden;
 	private final PageStyle pageStyle;
 	private final String name;

@@ -37,7 +37,17 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableCellStyle implements ObjectStyle {
-	private static TableCellStyle defaultCellStyle;
+	public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
+			.textAlign(TableCellStyle.Align.LEFT)
+			.verticalAlign(TableCellStyle.VerticalAlign.TOP)
+			.fontWrap(false).backgroundColor(Color.WHITE)
+			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
+
+	public static final TableCellStyle DEFAULT_HIDDEN_CELL_STYLE = TableCellStyle.builder("Default")
+			.textAlign(TableCellStyle.Align.LEFT)
+			.verticalAlign(TableCellStyle.VerticalAlign.TOP)
+			.fontWrap(false).backgroundColor(Color.WHITE)
+			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).buildHidden();
 
 	/**
 	 * Create a builder
@@ -46,20 +56,6 @@ public class TableCellStyle implements ObjectStyle {
 	 */
 	public static TableCellStyleBuilder builder(final String name) {
 		return new TableCellStyleBuilder(name);
-	}
-
-	/**
-	 * @return the default cell style
-	 */
-	public static TableCellStyle getDefaultCellStyle() {
-		if (TableCellStyle.defaultCellStyle == null)
-			TableCellStyle.defaultCellStyle = TableCellStyle.builder("Default")
-					.textAlign(TableCellStyle.Align.LEFT)
-					.verticalAlign(TableCellStyle.VerticalAlign.TOP)
-					.fontWrap(false).backgroundColor(Color.WHITE)
-					.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
-
-		return TableCellStyle.defaultCellStyle;
 	}
 
 	private final String backgroundColor;

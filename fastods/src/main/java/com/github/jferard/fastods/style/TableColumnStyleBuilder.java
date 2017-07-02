@@ -43,7 +43,7 @@ public class TableColumnStyleBuilder {
 
 		this.name = name;
 		this.columnWidth = SimpleLength.cm(2.5); // 0.5.0 changed from 2,500cm to 2.5cm
-		this.defaultCellStyle = TableCellStyle.getDefaultCellStyle();
+		this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
 	}
 
 	public TableColumnStyle build() {

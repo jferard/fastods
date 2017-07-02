@@ -37,19 +37,16 @@ import java.io.IOException;
  *
  */
 public class TableColumnStyle implements ObjectStyle {
+	/**
+	 * The default style, see LO.
+	 */
+	public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
+			.builder("co1").buildHidden();
+
 	private static TableColumnStyle defaultColumnStyle;
 
 	public static TableColumnStyleBuilder builder(final String name) {
 		return new TableColumnStyleBuilder(name);
-	}
-
-	public static TableColumnStyle getDefaultColumnStyle(
-			final XMLUtil xmlUtil) {
-		if (TableColumnStyle.defaultColumnStyle == null)
-			TableColumnStyle.defaultColumnStyle = TableColumnStyle
-					.builder("co1").build();
-
-		return TableColumnStyle.defaultColumnStyle;
 	}
 
 	private final boolean hidden;
