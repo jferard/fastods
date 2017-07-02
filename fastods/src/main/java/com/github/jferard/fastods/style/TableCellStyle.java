@@ -182,8 +182,8 @@ public class TableCellStyle implements ObjectStyle {
 	}
 
 	@Override
-	public String getFamily() {
-		return "table-cell";
+	public ObjectStyleFamily getFamily() {
+		return ObjectStyleFamily.TABLE_CELL;
 	}
 
 	@Override

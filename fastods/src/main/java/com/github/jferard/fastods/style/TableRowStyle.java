@@ -88,8 +88,8 @@ public class TableRowStyle implements ObjectStyle {
 	}
 
 	@Override
-	public String getFamily() {
-		return "table-row";
+	public ObjectStyleFamily getFamily() {
+		return ObjectStyleFamily.TABLE_ROW;
 	}
 
 	@Override

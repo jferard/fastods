@@ -79,8 +79,8 @@ public class TableStyle implements ObjectStyle {
 	}
 
 	@Override
-	public String getFamily() {
-		return "table";
+	public ObjectStyleFamily getFamily() {
+		return ObjectStyleFamily.TABLE;
 	}
 
 	@Override

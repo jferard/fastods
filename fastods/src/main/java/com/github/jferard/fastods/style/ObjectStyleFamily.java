@@ -21,25 +21,21 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.Style;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
-
 /**
+ * 19.476 style:family
  * @author Julien Férard
  */
-public interface ObjectStyle extends Style {
-	/**
-	 * 19.476 style:family
-	 * @return the famlily name of this style
-	 */
-	ObjectStyleFamily getFamily();
+public enum ObjectStyleFamily {
+    PARAGRAPH("paragraph"), TABLE("table"), TABLE_CELL("table-cell"), TABLE_COLUMN("table-column"),
+    TABLE_ROW("table-row"), TEXT("text");
 
-	/**
-	 * The identifier of this style ius built on the name (19.498 style:name) and the family
-	 * @return a unique identifier for this style
-	 */
-	String getKey();
+    private final String attributeName;
+
+    ObjectStyleFamily(final String attributeName) {
+        this.attributeName = attributeName;
+    }
+
+    public String getName() {
+        return this.attributeName;
+    }
 }

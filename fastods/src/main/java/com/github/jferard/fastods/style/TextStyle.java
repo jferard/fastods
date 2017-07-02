@@ -61,8 +61,8 @@ public class TextStyle implements ObjectStyle {
 	}
 
 	@Override
-	public String getFamily() {
-		return "text";
+	public ObjectStyleFamily getFamily() {
+		return ObjectStyleFamily.TEXT;
 	}
 
 	/**

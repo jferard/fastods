@@ -127,8 +127,8 @@ public class TableColumnStyle implements ObjectStyle {
 	}
 
 	@Override
-	public String getFamily() {
-		return "table-column";
+	public ObjectStyleFamily getFamily() {
+		return ObjectStyleFamily.TABLE_COLUMN;
 	}
 
 	@Override
