@@ -21,7 +21,9 @@
 
 package com.github.jferard.fastods.style;
 
-public class TableStyleBuilder {
+import com.github.jferard.fastods.util.StyleBuilder;
+
+public class TableStyleBuilder implements StyleBuilder<TableStyle> {
 	private PageStyle pageStyle;
 	private final String name;
 	private boolean hidden;
@@ -37,10 +39,12 @@ public class TableStyleBuilder {
 		this.pageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
 	}
 
+	@Override
 	public TableStyle build() {
 		return new TableStyle(this.name, this.hidden, this.pageStyle);
 	}
 
+	@Override
 	public TableStyle buildHidden() {
 		this.hidden = true;
 		return this.build();

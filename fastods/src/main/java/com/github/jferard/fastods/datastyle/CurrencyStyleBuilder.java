@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
+import com.github.jferard.fastods.util.StyleBuilder;
 
 import java.util.Currency;
 import java.util.Locale;
@@ -29,7 +30,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class CurrencyStyleBuilder {
+public class CurrencyStyleBuilder implements StyleBuilder<CurrencyStyle> {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
@@ -46,8 +47,15 @@ public class CurrencyStyleBuilder {
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
 
+	@Override
 	public CurrencyStyle build() {
 		return new CurrencyStyle(this.floatStyleBuilder.build(), this.currencySymbol,
+				this.currencyPosition);
+	}
+
+	@Override
+	public CurrencyStyle buildHidden() {
+		return new CurrencyStyle(this.floatStyleBuilder.buildHidden(), this.currencySymbol,
 				this.currencyPosition);
 	}
 

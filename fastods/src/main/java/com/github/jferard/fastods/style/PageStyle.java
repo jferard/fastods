@@ -23,7 +23,6 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
-import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -48,7 +47,7 @@ public class PageStyle implements AddableToOdsElements {
 	public static final PageStyle DEFAULT_PAGE_STYLE;
 
 	public boolean isHidden() {
-		return hidden;
+		return this.hidden;
 	}
 
 	public enum PrintOrientation {
@@ -86,7 +85,7 @@ public class PageStyle implements AddableToOdsElements {
 		DEFAULT_FORMAT = PaperFormat.A4;
 		DEFAULT_WRITING_MODE = WritingMode.LRTB;
 		DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
-		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").buildHidden();
+		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
 		DEFAULT_MASTER_PAGE_STYLE = PageStyle
 				.builder(PageStyle.DEFAULT_MASTER_PAGE).build();
 	}

@@ -23,12 +23,14 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.util.Style;
+import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableRowStyleBuilder {
+public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle> {
 
 	private final String name;
 	private Length rowHeight;
@@ -46,17 +48,13 @@ public class TableRowStyleBuilder {
 		this.rowHeight = SimpleLength.cm(0.45);
 	}
 
-	/**
-	 * @return the table row style
-	 */
+	@Override
 	public TableRowStyle build() {
 		return new TableRowStyle(this.name, this.hidden, this.rowHeight);
 
 	}
 
-	/**
-	 * @return the table row style
-	 */
+	@Override
 	public TableRowStyle buildHidden() {
 		this.hidden = true;
 		return this.build();

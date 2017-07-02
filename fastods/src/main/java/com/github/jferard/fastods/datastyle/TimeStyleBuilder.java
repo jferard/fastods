@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class TimeStyleBuilder {
+class TimeStyleBuilder implements StyleBuilder<TimeStyle> {
 	private final CoreDataStyleBuilder dataStyleBuilder;
 	/**
 	 * The date format.
@@ -43,10 +45,14 @@ public class TimeStyleBuilder {
 		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 	}
 
-	/**
-	 */
+	@Override
 	public TimeStyle build() {
 		return new TimeStyle(this.dataStyleBuilder.build(), this.timeFormat);
+	}
+
+	@Override
+	public TimeStyle buildHidden() {
+		return new TimeStyle(this.dataStyleBuilder.buildHidden(), this.timeFormat);
 	}
 
 	/**

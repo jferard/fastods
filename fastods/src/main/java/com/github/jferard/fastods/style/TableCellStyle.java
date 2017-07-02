@@ -43,11 +43,13 @@ public class TableCellStyle implements ObjectStyle {
 			.fontWrap(false).backgroundColor(Color.WHITE)
 			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
 
+	/*
 	public static final TableCellStyle DEFAULT_HIDDEN_CELL_STYLE = TableCellStyle.builder("Default")
 			.textAlign(TableCellStyle.Align.LEFT)
 			.verticalAlign(TableCellStyle.VerticalAlign.TOP)
 			.fontWrap(false).backgroundColor(Color.WHITE)
 			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).buildHidden();
+			*/
 
 	/**
 	 * Create a builder

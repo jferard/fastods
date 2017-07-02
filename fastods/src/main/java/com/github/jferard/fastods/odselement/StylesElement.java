@@ -85,7 +85,6 @@ public class StylesElement implements OdsElement {
 		writer.write("</office:font-face-decls>");
 		writer.write("<office:styles>");
 
-//		this.stylesContainer.writeDataStyles(util, writer);
 		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
 
 		if (hasFooterHeader.hasHeader()) {

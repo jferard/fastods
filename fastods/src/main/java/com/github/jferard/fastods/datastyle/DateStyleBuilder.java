@@ -21,86 +21,92 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class DateStyleBuilder {
-	private final CoreDataStyleBuilder dataStyleBuilder;
-	private boolean automaticOrder;
+public class DateStyleBuilder implements StyleBuilder<DateStyle> {
+    private final CoreDataStyleBuilder dataStyleBuilder;
+    private boolean automaticOrder;
 
-	/**
-	 * The default date format DATEFORMAT_DDMMYY.
-	 */
-	private DateStyle.Format dateFormat;
+    /**
+     * The default date format DATEFORMAT_DDMMYY.
+     */
+    private DateStyle.Format dateFormat;
 
-	/**
-	 * Create a new date style with the name name.<br>
-	 * Version 0.5.1 Added.
-	 *
-	 * @param name   The name of the number style.
-	 * @param locale The locale used
-	 */
-	protected DateStyleBuilder(final String name, final Locale locale) {
-		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
-		this.automaticOrder = false;
-	}
+    /**
+     * Create a new date style with the name name.<br>
+     * Version 0.5.1 Added.
+     *
+     * @param name   The name of the number style.
+     * @param locale The locale used
+     */
+    protected DateStyleBuilder(final String name, final Locale locale) {
+        this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
+        this.automaticOrder = false;
+    }
 
-	/**
-	 * The automatic-order attribute can be used to automatically order data to
-	 * match the default order<br>
-	 * for the language and country of the date style.
-	 *
-	 * @param automatic specifies whether data is ordered to match the default
-	 *                  order for the language and country of a data style (19.340 number:automatic-order).
-	 * @return this for fluent style
-	 */
-	public DateStyleBuilder automaticOrder(final boolean automatic) {
-		this.automaticOrder = automatic;
-		return this;
-	}
+    /**
+     * The automatic-order attribute can be used to automatically order data to
+     * match the default order<br>
+     * for the language and country of the date style.
+     *
+     * @param automatic specifies whether data is ordered to match the default
+     *                  order for the language and country of a data style (19.340 number:automatic-order).
+     * @return this for fluent style
+     */
+    public DateStyleBuilder automaticOrder(final boolean automatic) {
+        this.automaticOrder = automatic;
+        return this;
+    }
 
-	/**
-	 */
-	public DateStyle build() {
-		return new DateStyle(this.dataStyleBuilder.build(), this.dateFormat, this.automaticOrder);
-	}
+    @Override
+    public DateStyle build() {
+        return new DateStyle(this.dataStyleBuilder.build(), this.dateFormat, this.automaticOrder);
+    }
 
-	/**
-	 * Set the date format.<br>
-	 * Valid is one of the following:<br>
-	 * DateStyle.DATEFORMAT_DDMMYYYY<br>
-	 * DateStyle.DATEFORMAT_DDMMYY<br>
-	 * DateStyle.DATEFORMAT_TMMMMYYYY<br>
-	 * DateStyle.DATEFORMAT_MMMM<br>
-	 * *
-	 *
-	 * @param format The date format to be used.
-	 * @return this for fluent style
-	 */
-	public DateStyleBuilder dateFormat(final DateStyle.Format format) {
-		this.dateFormat = format;
-		return this;
-	}
+    @Override
+    public DateStyle buildHidden() {
+        return new DateStyle(this.dataStyleBuilder.buildHidden(), this.dateFormat, this.automaticOrder);
+    }
 
-	public DateStyleBuilder country(final String countryCode) {
-		this.dataStyleBuilder.country(countryCode);
-		return this;
-	}
+    /**
+     * Set the date format.<br>
+     * Valid is one of the following:<br>
+     * DateStyle.DATEFORMAT_DDMMYYYY<br>
+     * DateStyle.DATEFORMAT_DDMMYY<br>
+     * DateStyle.DATEFORMAT_TMMMMYYYY<br>
+     * DateStyle.DATEFORMAT_MMMM<br>
+     * *
+     *
+     * @param format The date format to be used.
+     * @return this for fluent style
+     */
+    public DateStyleBuilder dateFormat(final DateStyle.Format format) {
+        this.dateFormat = format;
+        return this;
+    }
 
-	public DateStyleBuilder language(final String languageCode) {
-		this.dataStyleBuilder.language(languageCode);
-		return this;
-	}
+    public DateStyleBuilder country(final String countryCode) {
+        this.dataStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	public DateStyleBuilder locale(final Locale locale) {
-		this.dataStyleBuilder.locale(locale);
-		return this;
-	}
+    public DateStyleBuilder language(final String languageCode) {
+        this.dataStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	public DateStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.dataStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    public DateStyleBuilder locale(final Locale locale) {
+        this.dataStyleBuilder.locale(locale);
+        return this;
+    }
+
+    public DateStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.dataStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
 }

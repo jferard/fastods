@@ -26,7 +26,6 @@ import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Container.Mode;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -60,8 +59,8 @@ public class StylesContainerTest {
 
 		final DataStyleBuilderFactory f = new DataStyleBuilderFactory(this.util,
 				this.locale);
-		this.ds1 = f.booleanStyleBuilder("a").country("a").build();
-		this.ds2 = f.booleanStyleBuilder("a").country("b").build();
+		this.ds1 = f.booleanStyleBuilder("a").country("a").buildHidden();
+		this.ds2 = f.booleanStyleBuilder("a").country("b").buildHidden();
 
 		this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
 		this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
@@ -72,7 +71,7 @@ public class StylesContainerTest {
 	@Test
 	public final void testAddDataStyle() {
 		final DataStyle dataStyle = this.factory.booleanStyleBuilder("test")
-				.build();
+				.buildHidden();
 
 		this.stylesContainer.addDataStyle(dataStyle);
 		PowerMock.replayAll();
@@ -193,7 +192,7 @@ public class StylesContainerTest {
 	@Test
 	public void testAddChildCellStyle() throws Exception {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
-		final DataStyle ds = this.factory.booleanStyleBuilder("bs").build();
+		final DataStyle ds = this.factory.booleanStyleBuilder("bs").buildHidden();
 
 		TableCellStyle childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
 		Assert.assertNotNull(childCellStyle);

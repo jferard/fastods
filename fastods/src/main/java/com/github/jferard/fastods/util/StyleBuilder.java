@@ -19,18 +19,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.datastyle;
-
-import com.github.jferard.fastods.style.AddableToOdsElements;
-import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.Style;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
+package com.github.jferard.fastods.util;
 
 /**
- * A data style. 16.27. Data Styles
+ * A style builder
  * @author Julien Férard
  */
-public interface DataStyle extends Style {
+public interface StyleBuilder<S extends Style> {
+    /**
+     * @return a new S
+     */
+    S build();
+
+    S buildHidden();
 }

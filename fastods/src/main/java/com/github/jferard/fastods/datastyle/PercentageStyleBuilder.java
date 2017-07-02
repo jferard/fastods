@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class PercentageStyleBuilder {
+public class PercentageStyleBuilder implements StyleBuilder<PercentageStyle> {
 	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
@@ -40,8 +42,14 @@ public class PercentageStyleBuilder {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
 
+	@Override
 	public PercentageStyle build() {
 		return new PercentageStyle(this.floatStyleBuilder.build());
+	}
+
+	@Override
+	public PercentageStyle buildHidden() {
+		return new PercentageStyle(this.floatStyleBuilder.buildHidden());
 	}
 
 	public PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {

@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.NamedObject;
+import com.github.jferard.fastods.util.Style;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -29,15 +30,7 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-public interface ObjectStyle extends NamedObject, AddableToOdsElements {
-	/**
-	 * Append the style to an appendable
-	 * @param util a helper object
-	 * @param appendable the appendable to append data to
-	 * @throws IOException if the style can't be added
-	 */
-	void appendXML(XMLUtil util, Appendable appendable) throws IOException;
-
+public interface ObjectStyle extends Style {
 	/**
 	 * 19.476 style:family
 	 * @return the famlily name of this style
@@ -49,9 +42,4 @@ public interface ObjectStyle extends NamedObject, AddableToOdsElements {
 	 * @return a unique identifier for this style
 	 */
 	String getKey();
-
-	/**
-	 * @return true if the style is an automatic style (3.15.3. office:automatic-styles)
-	 */
-	boolean isHidden();
 }

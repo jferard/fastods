@@ -187,4 +187,8 @@ public class PageLayoutStyle implements AddableToOdsElements {
 					this.backgroundColor);
 		}
 	}
+
+	public boolean isHidden() {
+		return true;
+	}
 }

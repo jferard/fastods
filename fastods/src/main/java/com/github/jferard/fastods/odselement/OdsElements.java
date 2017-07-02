@@ -158,12 +158,16 @@ public class OdsElements {
 
 	public void addObjectStyle(final ObjectStyle objectStyle) {
 		final String family = objectStyle.getFamily();
-		if ("table-cell".equals(family))
+		if ("table-cell".equals(family)) {
+			assert !objectStyle.isHidden() : objectStyle.toString();
 			this.stylesContainer.addStyleToStylesCommonStyles(objectStyle);
-		else if ("text".equals(family))
+		} else if ("text".equals(family)) {
+			assert objectStyle.isHidden() : objectStyle.toString();
 			this.stylesContainer.addStyleToStylesAutomaticStyles(objectStyle);
-		else
+		} else {
+			assert objectStyle.isHidden() : objectStyle.toString();
 			this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
+		}
 	}
 
 	public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {

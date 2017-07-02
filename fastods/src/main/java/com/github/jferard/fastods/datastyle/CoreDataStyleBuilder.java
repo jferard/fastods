@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 
@@ -70,6 +72,15 @@ final class CoreDataStyleBuilder {
 	 */
 	public CoreDataStyle build() {
 		return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
+
+	}
+
+	/**
+	 * @return the data style built
+	 */
+	public CoreDataStyle buildHidden() {
+		this.hidden = true;
+		return this.build();
 
 	}
 

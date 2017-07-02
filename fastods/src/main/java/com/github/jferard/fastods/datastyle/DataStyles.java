@@ -29,88 +29,88 @@ import java.util.EnumMap;
  * The {@code DataStyles} class represents a set of {@code DataStyle}s.
  */
 public class DataStyles {
-	private final BooleanStyle booleanDataStyle;
-	private final CurrencyStyle currencyDataStyle;
-	private final EnumMap<TableCell.Type, DataStyle> dataStyleByType;
-	private final DateStyle dateDataStyle;
-	private final FloatStyle numberDataStyle;
-	private final PercentageStyle percentageDataStyle;
-	private final TimeStyle timeDataStyle;
+    private final BooleanStyle booleanDataStyle;
+    private final CurrencyStyle currencyDataStyle;
+    private final EnumMap<TableCell.Type, DataStyle> dataStyleByType;
+    private final DateStyle dateDataStyle;
+    private final FloatStyle numberDataStyle;
+    private final PercentageStyle percentageDataStyle;
+    private final TimeStyle timeDataStyle;
 
-	/**
-	 * @param booleanDataStyle the style for booleans
-	 * @param currencyDataStyle the style for currencies
-	 * @param dateDataStyle the style for dates
-	 * @param numberDataStyle the style for numbers
-	 * @param percentageDataStyle the style for percentages
-	 * @param timeDataStyle the style for times
-	 */
-	public DataStyles(BooleanStyle booleanDataStyle, CurrencyStyle currencyDataStyle,
-					  DateStyle dateDataStyle,
-					  FloatStyle numberDataStyle, PercentageStyle percentageDataStyle, TimeStyle timeDataStyle) {
-		this.booleanDataStyle = booleanDataStyle;
-		this.currencyDataStyle = currencyDataStyle;
-		this.dateDataStyle = dateDataStyle;
-		this.numberDataStyle = numberDataStyle;
-		this.percentageDataStyle = percentageDataStyle;
-		this.timeDataStyle = timeDataStyle;
+    /**
+     * @param booleanDataStyle    the style for booleans
+     * @param currencyDataStyle   the style for currencies
+     * @param dateDataStyle       the style for dates
+     * @param numberDataStyle     the style for numbers
+     * @param percentageDataStyle the style for percentages
+     * @param timeDataStyle       the style for times
+     */
+    public DataStyles(final BooleanStyle booleanDataStyle, final CurrencyStyle currencyDataStyle,
+                      final DateStyle dateDataStyle,
+                      final FloatStyle numberDataStyle, final PercentageStyle percentageDataStyle, final TimeStyle timeDataStyle) {
+        this.booleanDataStyle = booleanDataStyle;
+        this.currencyDataStyle = currencyDataStyle;
+        this.dateDataStyle = dateDataStyle;
+        this.numberDataStyle = numberDataStyle;
+        this.percentageDataStyle = percentageDataStyle;
+        this.timeDataStyle = timeDataStyle;
 
-		this.dataStyleByType = new EnumMap<TableCell.Type, DataStyle>(TableCell.Type.class);
-		this.dataStyleByType.put(TableCell.Type.BOOLEAN, this.booleanDataStyle);
-		this.dataStyleByType.put(TableCell.Type.CURRENCY, this.currencyDataStyle);
-		this.dataStyleByType.put(TableCell.Type.DATE, this.dateDataStyle);
-		this.dataStyleByType.put(TableCell.Type.FLOAT, this.numberDataStyle);
-		this.dataStyleByType.put(TableCell.Type.PERCENTAGE, this.percentageDataStyle);
-		this.dataStyleByType.put(TableCell.Type.TIME, this.timeDataStyle);
-	}
+        this.dataStyleByType = new EnumMap<TableCell.Type, DataStyle>(TableCell.Type.class);
+        this.dataStyleByType.put(TableCell.Type.BOOLEAN, this.booleanDataStyle);
+        this.dataStyleByType.put(TableCell.Type.CURRENCY, this.currencyDataStyle);
+        this.dataStyleByType.put(TableCell.Type.DATE, this.dateDataStyle);
+        this.dataStyleByType.put(TableCell.Type.FLOAT, this.numberDataStyle);
+        this.dataStyleByType.put(TableCell.Type.PERCENTAGE, this.percentageDataStyle);
+        this.dataStyleByType.put(TableCell.Type.TIME, this.timeDataStyle);
+    }
 
-	/**
-	 * @return the style for booleans
-	 */
-	public BooleanStyle getBooleanDataStyle() {
-		return booleanDataStyle;
-	}
+    /**
+     * @return the style for booleans
+     */
+    public BooleanStyle getBooleanDataStyle() {
+        return this.booleanDataStyle;
+    }
 
-	/**
-	 * @return the style for currencies
-	 */
-	public CurrencyStyle getCurrencyDataStyle() {
-		return currencyDataStyle;
-	}
+    /**
+     * @return the style for currencies
+     */
+    public CurrencyStyle getCurrencyDataStyle() {
+        return this.currencyDataStyle;
+    }
 
-	/**
-	 * @param type a data style type
-	 * @return the data style for the given type
-	 */
-	public DataStyle getDataStyle(final TableCell.Type type) {
-		return this.dataStyleByType.get(type);
-	}
+    /**
+     * @param type a data style type
+     * @return the data style for the given type
+     */
+    public DataStyle getDataStyle(final TableCell.Type type) {
+        return this.dataStyleByType.get(type);
+    }
 
-	/**
-	 * @return the style for dates
-	 */
-	public DateStyle getDateDataStyle() {
-		return dateDataStyle;
-	}
+    /**
+     * @return the style for dates
+     */
+    public DateStyle getDateDataStyle() {
+        return this.dateDataStyle;
+    }
 
-	/**
-	 * @return the style for numbers
-	 */
-	public FloatStyle getNumberDataStyle() {
-		return numberDataStyle;
-	}
+    /**
+     * @return the style for numbers
+     */
+    public FloatStyle getNumberDataStyle() {
+        return this.numberDataStyle;
+    }
 
-	/**
-	 * @return the style for percentages
-	 */
-	public PercentageStyle getPercentageDataStyle() {
-		return percentageDataStyle;
-	}
+    /**
+     * @return the style for percentages
+     */
+    public PercentageStyle getPercentageDataStyle() {
+        return this.percentageDataStyle;
+    }
 
-	/**
-	 * @return the style for times
-	 */
-	public TimeStyle getTimeDataStyle() {
-		return timeDataStyle;
-	}
+    /**
+     * @return the style for times
+     */
+    public TimeStyle getTimeDataStyle() {
+        return this.timeDataStyle;
+    }
 }

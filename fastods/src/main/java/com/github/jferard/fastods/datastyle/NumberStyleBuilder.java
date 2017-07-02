@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.util.StyleBuilder;
 
 import java.util.Locale;
 
@@ -108,5 +109,12 @@ public final class NumberStyleBuilder {
 	 */
 	public NumberStyle build() {
 		return new NumberStyle(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits, this.negativeValueColor);
+	}
+
+	/**
+	 * @return a number style
+	 */
+	public NumberStyle buildHidden() {
+		return new NumberStyle(this.dataStyleBuilder.buildHidden(), this.grouping, this.minIntegerDigits, this.negativeValueColor);
 	}
 }

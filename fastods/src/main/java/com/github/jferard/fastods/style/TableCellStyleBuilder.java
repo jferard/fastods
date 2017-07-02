@@ -23,12 +23,13 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableCellStyleBuilder {
+public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	private String backgroundColor;
 	private final BordersBuilder bordersBuilder;
 	private DataStyle dataStyle;
@@ -138,6 +139,7 @@ public class TableCellStyleBuilder {
 		return this;
 	}
 
+	@Override
 	public TableCellStyle build() {
 		return new TableCellStyle(this.name, this.hidden, this.dataStyle,
 				this.backgroundColor, this.tpBuilder.build(), this.textAlign,
@@ -145,6 +147,7 @@ public class TableCellStyleBuilder {
 				this.bordersBuilder.build(), this.marginsBuilder.build());
 	}
 
+	@Override
 	public TableCellStyle buildHidden() {
 		this.hidden = true;
 		return this.build();

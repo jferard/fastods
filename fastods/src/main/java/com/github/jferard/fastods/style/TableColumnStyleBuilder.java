@@ -23,11 +23,12 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
  * @author Julien Férard
  */
-public class TableColumnStyleBuilder {
+public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
 	private Length columnWidth;
 	private TableCellStyle defaultCellStyle;
 	private final String name;
@@ -46,11 +47,13 @@ public class TableColumnStyleBuilder {
 		this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
 	}
 
+	@Override
 	public TableColumnStyle build() {
 		return new TableColumnStyle(this.name, this.hidden, this.columnWidth,
 				this.defaultCellStyle);
 	}
 
+	@Override
 	public TableColumnStyle buildHidden() {
 		this.hidden = true;
 		return this.build();

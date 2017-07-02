@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class FractionStyleBuilder {
+public class FractionStyleBuilder implements StyleBuilder<FractionStyle> {
 	private final NumberStyleBuilder numberStyleBuilder;
 	private int minDenominatorDigits;
 	private int minNumeratorDigits;
@@ -44,8 +46,15 @@ public class FractionStyleBuilder {
 		this.minDenominatorDigits = 0;
 	}
 
+	@Override
 	public FractionStyle build() {
 		return new FractionStyle(this.numberStyleBuilder.build(), this.minNumeratorDigits,
+				this.minDenominatorDigits);
+	}
+
+	@Override
+	public FractionStyle buildHidden() {
+		return new FractionStyle(this.numberStyleBuilder.buildHidden(), this.minNumeratorDigits,
 				this.minDenominatorDigits);
 	}
 

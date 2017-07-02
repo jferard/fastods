@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class BooleanStyleBuilder {
+public class BooleanStyleBuilder implements StyleBuilder<BooleanStyle> {
 	private final CoreDataStyleBuilder dataStyleBuilder;
 
 	/**
@@ -39,8 +41,14 @@ public class BooleanStyleBuilder {
 		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 	}
 
+	@Override
 	public BooleanStyle build() {
 		return new BooleanStyle(this.dataStyleBuilder.build());
+	}
+
+	@Override
+	public BooleanStyle buildHidden() {
+		return new BooleanStyle(this.dataStyleBuilder.buildHidden());
 	}
 
 	public BooleanStyleBuilder country(final String countryCode) {

@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class ScientificNumberStyleBuilder {
+public class ScientificNumberStyleBuilder implements StyleBuilder<ScientificNumberStyle> {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private int minExponentDigits;
 
@@ -42,8 +44,14 @@ public class ScientificNumberStyleBuilder {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
 
+	@Override
 	public ScientificNumberStyle build() {
 		return new ScientificNumberStyle(this.floatStyleBuilder.build(), this.minExponentDigits);
+	}
+
+	@Override
+	public ScientificNumberStyle buildHidden() {
+		return new ScientificNumberStyle(this.floatStyleBuilder.buildHidden(), this.minExponentDigits);
 	}
 
 	/**

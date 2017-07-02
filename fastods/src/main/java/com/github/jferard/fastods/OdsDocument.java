@@ -62,7 +62,7 @@ public class OdsDocument {
 		TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
 		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
 		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToElements(this.odsElements);
-		TableCellStyle.DEFAULT_HIDDEN_CELL_STYLE.addToElements(this.odsElements);
+		TableCellStyle.DEFAULT_CELL_STYLE.addToElements(this.odsElements);
 		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 

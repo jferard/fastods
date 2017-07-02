@@ -57,17 +57,17 @@ public class DataStylesFactory {
 	 */
 	public static DataStyles create(final DataStyleBuilderFactory builderFactory) {
 		final BooleanStyle booleanDataStyle = builderFactory
-				.booleanStyleBuilder("boolean-data").build();
+				.booleanStyleBuilder("boolean-data").buildHidden();
 		final CurrencyStyle currencyDataStyle = builderFactory
-				.currencyStyleBuilder("currency-data").build();
+				.currencyStyleBuilder("currency-data").buildHidden();
 		final DateStyle dateDataStyle = builderFactory
-				.dateStyleBuilder("date-data").build();
+				.dateStyleBuilder("date-data").buildHidden();
 		final FloatStyle numberDataStyle = builderFactory
-				.floatStyleBuilder("float-data").build();
+				.floatStyleBuilder("float-data").buildHidden();
 		final PercentageStyle percentageDataStyle = builderFactory
-				.percentageStyleBuilder("percentage-data").build();
+				.percentageStyleBuilder("percentage-data").buildHidden();
 		final TimeStyle timeDataStyle = builderFactory
-				.timeStyleBuilder("time-data").build();
+				.timeStyleBuilder("time-data").buildHidden();
 		return new DataStyles(booleanDataStyle, currencyDataStyle, dateDataStyle, numberDataStyle,
 				percentageDataStyle, timeDataStyle);
 	}

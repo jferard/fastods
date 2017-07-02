@@ -24,6 +24,7 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.style.AddableToOdsElements;
 import com.github.jferard.fastods.util.NamedObject;
+import com.github.jferard.fastods.util.Style;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public final class CoreDataStyle {
-	private boolean hidden;
+	private final boolean hidden;
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
 	 */
