@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jferard</groupId>
     <artifactId>fastods-parent</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2-SNAPSHOT</version>
     <name>FastODS parent</name>
     <packaging>pom</packaging>
     <description>FastODS writer, a Martin Schulz's SimpleODS fork - parent</description>
@@ -54,7 +54,7 @@
         <connection>scm:git:git@github.com:jferard/fastods.git</connection>
         <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
         <url>git@github.com:jferard/fastods.git</url>
-        <tag>fastods-parent-0.4.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
