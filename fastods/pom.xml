@@ -181,9 +181,9 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>other</id>
+			<id>profile</id>
 			<properties>
-                <fastods.testSourceDirectory>src/misc/other/java</fastods.testSourceDirectory>
+                <fastods.testSourceDirectory>src/misc/profile/java</fastods.testSourceDirectory>
             </properties>
 		</profile>
 		<profile>
