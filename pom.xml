@@ -72,6 +72,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jre>1.6</jre>
         <powermock.version>1.7.1</powermock.version>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencyManagement>
