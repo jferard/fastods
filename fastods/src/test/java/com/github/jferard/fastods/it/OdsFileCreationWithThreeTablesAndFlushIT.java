@@ -19,8 +19,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.it;
 
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -39,7 +40,7 @@ import java.util.logging.Logger;
 /**
  * @author Julien Férard
  */
-public class OdsFileCreationWithThreeTablesAndFlushTest {
+public class OdsFileCreationWithThreeTablesAndFlushIT {
 	@BeforeClass
 	public static final void beforeClass() {
 		final File generated_files = new File("generated_files");

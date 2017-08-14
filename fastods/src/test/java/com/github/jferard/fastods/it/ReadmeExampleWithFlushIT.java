@@ -19,8 +19,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.it;
 
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
 
 /**
  */
-public class ReadmeExampleWithFlushTest {
+public class ReadmeExampleWithFlushIT {
 	private Logger logger;
 	private OdsFactory odsFactory;
 

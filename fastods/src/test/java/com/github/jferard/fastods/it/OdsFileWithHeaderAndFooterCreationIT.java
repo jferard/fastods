@@ -18,8 +18,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.it;
 
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.PageSectionContent.Region;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -44,7 +45,7 @@ import java.util.logging.Logger;
 /**
  * @author Julien Férard
  */
-public class OdsFileWithHeaderAndFooterCreationTest {
+public class OdsFileWithHeaderAndFooterCreationIT {
 	private Logger logger;
 
 	@BeforeClass

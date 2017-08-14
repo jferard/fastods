@@ -39,7 +39,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-abstract class PageSectionContent {
+public abstract class PageSectionContent {
 	public enum Region {
 		CENTER, LEFT, RIGHT;
 	}
