@@ -25,6 +25,7 @@ import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.testlib.Fibonacci;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -34,7 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -51,13 +51,13 @@ public class OdsFileCreationWithThreeTablesAndFlushIT {
 	}
 	private Logger logger;
 	private OdsFactory odsFactory;
-	private Random random;
+	private Fibonacci fibonacci;
 
 	@Before
 	public void setUp() {
 		this.logger = Logger.getLogger("OdsFileCreation");
 		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-		this.random = new Random(0L);
+		this.fibonacci = Fibonacci.create();
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class OdsFileCreationWithThreeTablesAndFlushIT {
 					row = table.getRow(y);
 					final TableCellWalker walker = row.getWalker();
 					for (int x = 0; x < 5; x++) {
-						walker.setFloatValue(this.random.nextInt(1000));
+						walker.setFloatValue(this.fibonacci.nextInt(100000));
 						if ((y + 1) % 3 == 0) {
 							switch (x) {
 								case 0:
