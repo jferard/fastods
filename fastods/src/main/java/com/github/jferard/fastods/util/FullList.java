@@ -71,16 +71,18 @@ public class FullList<E> implements List<E> {
 		return new FullList<F>(null, FullList.DEFAULT_CAPACITY);
 	}
 
-	public static <F> FullList<F> newListWithCapacity(final int rowCapacity) {
-		return new FullList<F>(null, rowCapacity);
+	public static <F> FullList<F> newListWithCapacity(final int capacity) {
+		return new FullList<F>(null, capacity);
 	}
 
 	private final E blankElement;
 
 	private final ArrayList<E> list;
+	private int capacity;
 
 	private FullList(final E blankElement, final int capacity) {
 		this.blankElement = blankElement;
+		this.capacity = capacity;
 		this.list = new ArrayList<E>(capacity);
 	}
 
@@ -296,4 +298,11 @@ public class FullList<E> implements List<E> {
 			last = this.list.size() - 1;
 		}
 	}
+
+    public int capacity() {
+		if (this.capacity < this.list.size())
+			this.capacity = this.list.size();
+
+		return this.capacity;
+    }
 }

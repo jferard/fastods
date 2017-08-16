@@ -118,8 +118,11 @@ class TableAppender {
     private void appendColumnStyles(final FullList<TableColumnStyle> columnStyles, final Appendable appendable,
                                     final XMLUtil xmlUtil) throws IOException {
         final Iterator<TableColumnStyle> iterator = columnStyles.iterator();
-        if (!iterator.hasNext())
+        if (!iterator.hasNext()) {
+            TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
+                    .appendXMLToTable(xmlUtil, appendable, columnStyles.capacity());
             return;
+        }
 
         TableColumnStyle ts0 = TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE;
         int count = 1;

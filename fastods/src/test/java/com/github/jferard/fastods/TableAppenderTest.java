@@ -173,6 +173,7 @@ public class TableAppenderTest {
 
         DomTester.assertEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
                 "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"100\" table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-row table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" +
                 "</table:table-row>" +

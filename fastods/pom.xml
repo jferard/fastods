@@ -18,36 +18,37 @@
   ~ You should have received a copy of the GNU General Public License along with
   ~ this program. If not, see <http://www.gnu.org/licenses />.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.github.jferard</groupId>
-		<artifactId>fastods-parent</artifactId>
-		<version>0.4.2-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.github.jferard</groupId>
+        <artifactId>fastods-parent</artifactId>
+        <version>0.4.2-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>fastods</artifactId>
-	<name>FastODS</name>
-	<description>FastODS writer, a Martin Schulz's SimpleODS fork</description>
-	<url>https://github.com/jferard/fastods</url>
+    <artifactId>fastods</artifactId>
+    <name>FastODS</name>
+    <description>FastODS writer, a Martin Schulz's SimpleODS fork</description>
+    <url>https://github.com/jferard/fastods</url>
 
     <inceptionYear>2016</inceptionYear>
     <licenses>
         <license>
             <name>GPL v3</name>
             <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
-            <distribution>repo</distribution>        
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
     <developers>
-            <developer>
-                <id>jferard</id>
-                <name>Julien Férard</name>
-                <timezone>0</timezone>
-                <url>https://github.com/jferard</url>
-            </developer>
+        <developer>
+            <id>jferard</id>
+            <name>Julien Férard</name>
+            <timezone>0</timezone>
+            <url>https://github.com/jferard</url>
+        </developer>
     </developers>
 
     <issueManagement>
@@ -61,180 +62,187 @@
         <tag>HEAD</tag>
     </scm>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jre>1.6</jre>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jre>1.6</jre>
         <fastods.testSourceDirectory>src/test/java</fastods.testSourceDirectory>
-	</properties>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.mockrunner</groupId>
-			<artifactId>mockrunner-jdbc</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>com.mockrunner</groupId>
+            <artifactId>mockrunner-jdbc</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-easymock</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-easymock</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.easymock</groupId>
-			<artifactId>easymock</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.github.jferard</groupId>
-			<artifactId>fastods-testlib</artifactId>
-			<version>0.4.2-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.github.jferard</groupId>
+            <artifactId>fastods-testlib</artifactId>
+            <version>0.4.2-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
 
-	<build>
-		<testSourceDirectory>${fastods.testSourceDirectory}</testSourceDirectory>
+        <dependency>
+            <groupId>org.apache.odftoolkit</groupId>
+            <artifactId>simple-odf</artifactId>
+            <version>0.7-incubating</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-		<plugins>
-			<!-- compilation -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
+    <build>
+        <testSourceDirectory>${fastods.testSourceDirectory}</testSourceDirectory>
 
-			<!-- for OSSRH releases -->
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-			</plugin>
+        <plugins>
+            <!-- compilation -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
 
-			<!-- misc -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+            <!-- for OSSRH releases -->
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
 
-	<profiles>
-		<profile>
-			<id>bench</id>
-			<properties>
+            <!-- misc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>bench</id>
+            <properties>
                 <fastods.testSourceDirectory>src/misc/bench/java</fastods.testSourceDirectory>
             </properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.simpleods</groupId>
-					<artifactId>simpleODS</artifactId>
-					<version>0.5.3</version>
-					<scope>test</scope>
-					<systemPath />
-				</dependency>
-				<dependency>
-					<groupId>org.jopendocument</groupId>
-					<artifactId>jOpenDocument</artifactId>
-					<version>1.3</version>
-					<scope>test</scope>
-					<systemPath />
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>profile</id>
-			<properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.simpleods</groupId>
+                    <artifactId>simpleODS</artifactId>
+                    <version>0.5.3</version>
+                    <scope>test</scope>
+                    <systemPath/>
+                </dependency>
+                <dependency>
+                    <groupId>org.jopendocument</groupId>
+                    <artifactId>jOpenDocument</artifactId>
+                    <version>1.3</version>
+                    <scope>test</scope>
+                    <systemPath/>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>profile</id>
+            <properties>
                 <fastods.testSourceDirectory>src/misc/profile/java</fastods.testSourceDirectory>
             </properties>
-		</profile>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
-						<configuration>
-							<aggregate>false</aggregate>
-						</configuration>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <configuration>
+                            <aggregate>false</aggregate>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
