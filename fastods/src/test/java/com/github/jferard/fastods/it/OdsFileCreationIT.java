@@ -54,61 +54,20 @@ public class OdsFileCreationIT {
 	private OdsFactory odsFactory;
 	private Fibonacci fibonacci;
 
-	@Before
-	public void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+	@Test
+	public final void test50() throws FastOdsException, IOException {
+		this.standardDocument();
+		this.validateStandardDocument();
+	}
+
+	private void validateStandardDocument() {
 		this.fibonacci = Fibonacci.create();
 	}
 
-	public final void test1000() throws FastOdsException, IOException {
-		this.logger.info("Filling a 10000 rows, 300 columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test");
-
-		for (int y = 0; y < 1000; y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < 300; x++) {
-				walker.setFloatValue(this.fibonacci.nextInt(100000));
-				walker.next();
-			}
-		}
-
-		writer.saveAs(new File("generated_files", "fastods_1000_300.ods"));
-
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	public final void test100000() throws FastOdsException, IOException {
-		this.logger.info("Filling a 100000 rows, 20 columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test");
-
-		for (int y = 0; y < 100000; y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < 20; x++) {
-				walker.setFloatValue(this.fibonacci.nextInt(100000));
-				walker.next();
-			}
-		}
-
-		writer.saveAs(new File("generated_files", "fastods_100000_20.ods"));
-
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-	}
-
-	@Test
-	public final void test50() throws FastOdsException, IOException {
+	private void standardDocument() throws IOException, FastOdsException {
+		this.logger = Logger.getLogger("OdsFileCreation");
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+		this.fibonacci = Fibonacci.create();
 		this.logger.info("Filling a 50 rows, 5 columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
 
@@ -138,9 +97,9 @@ public class OdsFileCreationIT {
 				.fontStyleItalic().build();
 
 		row = table.getRow(0);
-		row.getOrCreateCell(0).setStringValue("éèà");
-		row.getOrCreateCell(1).setStringValue("€€€€");
-		row.getOrCreateCell(2).setStringValue("£");
+		row.getOrCreateCell(0).setStringValue("Accented characters: àäéèëêïîöôüûÿÿ");
+		row.getOrCreateCell(1).setStringValue("Symbols: €");
+		row.getOrCreateCell(2).setStringValue("Symbols: £");
 		for (int y = 1; y < 50; y++) {
 			row = table.getRow(y);
 			final TableCellWalker walker = row.getWalker();
