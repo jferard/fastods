@@ -28,7 +28,10 @@ import java.io.File;
  */
 public class Util {
     public static void mkdir(final String fname) {
-        final File file = new File(fname);
+        mkdir(new File(fname));
+    }
+
+    private static void mkdir(final File file) {
         if (file.exists()) {
             if (file.isDirectory())
                 return;

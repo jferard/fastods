@@ -23,8 +23,10 @@ package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
@@ -44,10 +46,9 @@ public class ReadmeExampleWithFlushIT {
 	private Logger logger;
 	private OdsFactory odsFactory;
 
-	@Before
-	public void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+	@BeforeClass
+	public static final void beforeClass() {
+		Util.mkdir("generated_files");
 	}
 
 	@Test
@@ -82,6 +83,8 @@ public class ReadmeExampleWithFlushIT {
 	}
 
 	private void readme() throws IOException {
+		this.logger = Logger.getLogger("OdsFileCreation");
+		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 		final TableCellStyle style = TableCellStyle.builder("tcs1").backgroundColor("#00FF00").build();
 
 		final OdsFileWriter writer =

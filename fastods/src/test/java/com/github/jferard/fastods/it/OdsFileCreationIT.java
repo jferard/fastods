@@ -25,6 +25,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Fibonacci;
+import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -44,11 +45,7 @@ public class OdsFileCreationIT {
 
 	@BeforeClass
 	public static final void beforeClass() {
-		final File generated_files = new File("generated_files");
-		if (generated_files.exists())
-			return;
-
-		generated_files.mkdir();
+		Util.mkdir("generated_files");
 	}
 
 	private OdsFactory odsFactory;

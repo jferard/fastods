@@ -24,7 +24,9 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
@@ -42,6 +44,14 @@ import java.util.logging.Logger;
  * This is the test for the README.md
  */
 public class ReadmeExampleIT {
+	public static final String README_EXAMPLE_ODS = "readme_example.ods";
+	public static final String GENERATED_FILES = "generated_files";
+
+	@BeforeClass
+	public static final void beforeClass() {
+		Util.mkdir(GENERATED_FILES);
+	}
+
 	@Test
 	public void readmeIT() throws Exception {
 		this.readme();
@@ -49,7 +59,7 @@ public class ReadmeExampleIT {
 	}
 
 	private void validateReadme() throws Exception {
-		final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File("generated_files", "readme_example.ods"));
+		final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, README_EXAMPLE_ODS));
 		Assert.assertEquals(1, document.getSheetCount());
 		final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
 		Assert.assertNotNull(sheet);
@@ -90,6 +100,6 @@ public class ReadmeExampleIT {
 			}
 		}
 
-		writer.saveAs(new File("generated_files", "readme_example.ods"));
+		writer.saveAs(new File(GENERATED_FILES, README_EXAMPLE_ODS));
 	}
 }
