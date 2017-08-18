@@ -27,9 +27,21 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Fibonacci;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.SimpleLength;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.odftoolkit.odfdom.dom.OdfContentDom;
+import org.odftoolkit.odfdom.dom.OdfSettingsDom;
+import org.odftoolkit.odfdom.dom.OdfStylesDom;
+import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
+import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
+import org.odftoolkit.odfdom.incubator.doc.office.OdfOfficeAutomaticStyles;
+import org.odftoolkit.odfdom.incubator.doc.office.OdfOfficeStyles;
+import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
+import org.odftoolkit.simple.SpreadsheetDocument;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,24 +53,51 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class OdsFileCreationIT {
+	public static final String GENERATED_FILES = "generated_files";
+	public static final String FASTODS_50_5_NORMAL_ODS = "fastods_50_5_normal.ods";
 	private Logger logger;
 
 	@BeforeClass
 	public static final void beforeClass() {
-		Util.mkdir("generated_files");
+		Util.mkdir(GENERATED_FILES);
 	}
 
 	private OdsFactory odsFactory;
 	private Fibonacci fibonacci;
 
 	@Test
-	public final void test50() throws FastOdsException, IOException {
+	public final void test50() throws Exception {
 		this.standardDocument();
 		this.validateStandardDocument();
 	}
 
-	private void validateStandardDocument() {
+	private void validateStandardDocument() throws Exception {
 		this.fibonacci = Fibonacci.create();
+		final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, FASTODS_50_5_NORMAL_ODS));
+		Assert.assertEquals(1, document.getSheetCount());
+		final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
+		Assert.assertNotNull(sheet);
+		Assert.assertEquals(5, sheet.getRowCount());
+
+		final OdfSettingsDom settingsDom = document.getSettingsDom();
+		Assert.assertEquals("207", settingsDom.getXPath().evaluate("//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
+		Assert.assertEquals("206", settingsDom.getXPath().evaluate("//config:config-item-map-entry[@config:name='test']//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
+		final OdfContentDom contentDom = document.getContentDom();
+		Assert.assertEquals("5cm",contentDom.getXPath().evaluate("//style:style[@style:name='rr']//style:table-row-properties/@style:row-height", contentDom.getRootElement()));
+
+		final OdfStylesDom stylesDom = document.getStylesDom();
+		Assert.assertEquals("#dddddd",stylesDom.getXPath().evaluate("//style:style[@style:name='cc']//@fo:background-color", stylesDom.getRootElement()));
+		Assert.assertEquals("bold",stylesDom.getXPath().evaluate("//style:style[@style:name='cc']//@fo:font-weight", stylesDom.getRootElement()));
+
+		Assert.assertEquals("#0000ff",stylesDom.getXPath().evaluate("//style:style[@style:name='tcs0']//@fo:background-color", stylesDom.getRootElement()));
+		Assert.assertEquals("#00FF00",stylesDom.getXPath().evaluate("//style:style[@style:name='tcs1']//@fo:background-color", stylesDom.getRootElement()));
+		Assert.assertEquals("bold",stylesDom.getXPath().evaluate("//style:style[@style:name='tcs2']//@fo:font-weight", stylesDom.getRootElement()));
+		Assert.assertEquals("italic",stylesDom.getXPath().evaluate("//style:style[@style:name='tcs3']//@fo:font-style", stylesDom.getRootElement()));
+
+
+
+		// filter
+		Assert.assertEquals("test.A1:test.F4",contentDom.getXPath().evaluate("//table:database-range[@table:display-filter-buttons='true']//@table:target-range-address", contentDom.getRootElement()));
 	}
 
 	private void standardDocument() throws IOException, FastOdsException {
@@ -70,9 +109,9 @@ public class OdsFileCreationIT {
 
 		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
 		final OdsDocument document = writer.document();
-		document.setViewSetting("View1", "ZoomValue", "200");
+		document.setViewSetting("View1", "ZoomValue", "207");
 		final Table table = document.addTable("test", 50, 5);
-		table.setSettings("View1", "ZoomValue", "200");
+		table.setSettings("View1", "ZoomValue", "206");
 		TableRow row = table.getRow(0);
 		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
 				.buildHidden();
@@ -93,81 +132,56 @@ public class OdsFileCreationIT {
 		final TableCellStyle tcs3 = TableCellStyle.builder("tcs3")
 				.fontStyleItalic().build();
 
+		// FIRST ROW
 		row = table.getRow(0);
 		row.getOrCreateCell(0).setStringValue("Accented characters: àäéèëêïîöôüûÿÿ");
 		row.getOrCreateCell(1).setStringValue("Symbols: €");
 		row.getOrCreateCell(2).setStringValue("Symbols: £");
-		for (int y = 1; y < 50; y++) {
-			row = table.getRow(y);
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < 5; x++) {
-				walker.setFloatValue(this.fibonacci.nextInt(100000));
-				if ((y + 1) % 3 == 0) {
-					switch (x) {
-					case 0:
-						walker.setStyle(tcs0);
-						break;
-					case 1:
-						walker.setStyle(tcs1);
-						break;
-					case 2:
-						walker.setStyle(tcs2);
-						break;
-					case 3:
-						walker.setStyle(tcs3);
-						break;
-					default:
-						break;
-					}
-				} else if (y == 6) {
-					switch (x) {
-					case 0:
-						walker.setBooleanValue(true);
-						break;
-					case 1:
-						walker.setCurrencyValue(150.5, "EUR");
-						walker.setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0), true);
-						break;
-					case 2:
-						walker.setDateValue(Calendar.getInstance());
-						break;
-					case 3:
-						walker.setPercentageValue(70.3);
-						break;
-					case 4:
-						walker.setStringValue("foobar");
-						break;
-					default:
-						break;
-					}
-				} else if (y == 9) {
-					switch (x) {
-					case 0:
-						walker.setColumnsSpanned(2);
-						break;
-					case 2:
-						walker.setCurrencyValue(-150.5, "€");
-						break;
-					case 3:
-						walker.setStyle(tcls);
-						break;
-					default:
-						walker.setTimeValue(x * 60 * 1000);
-					}
-				} else if (y == 10) {
-					switch (x) {
-						case 0:
-							walker.setStringValue("formula result");
-							walker.setFormula("1+1");
-							break;
-					}
-				}
-				walker.next();
-			}
-		}
-		document.addAutofilter(table, 0,0,49,4);
 
-		writer.saveAs(new File("generated_files", "fastods_50_5_normal.ods"));
+		// SECOND ROW
+		row = table.getRow(1);
+		TableCell c = row.getOrCreateCell(0);
+		c.setFloatValue(this.fibonacci.nextInt(100000));
+		c.setStyle(tcs0);
+		c = row.getOrCreateCell(1);
+		c.setFloatValue(this.fibonacci.nextInt(100000));
+		c.setStyle(tcs1);
+		c = row.getOrCreateCell(2);
+		c.setFloatValue(this.fibonacci.nextInt(100000));
+		c.setStyle(tcs2);
+		c = row.getOrCreateCell(3);
+		c.setFloatValue(this.fibonacci.nextInt(100000));
+		c.setStyle(tcs3);
+
+		// THIRD ROW
+		row = table.getRow(2);
+		row.getOrCreateCell(0).setBooleanValue(true);
+		row.getOrCreateCell(1).setBooleanValue(true);
+		c = row.getOrCreateCell(2);
+		c.setCurrencyValue(150.5, "EUR");
+		final Calendar cal = Calendar.getInstance(Locale.US);
+		cal.setTimeInMillis(123456789L);
+		row.getOrCreateCell(3).setDateValue(cal);
+		row.getOrCreateCell(4).setPercentageValue(70.3);
+		row.getOrCreateCell(5).setStringValue("foobar");
+
+		// FOURTH ROW
+		row = table.getRow(3);
+		row.getOrCreateCell(0).setColumnsSpanned(2);
+		row.getOrCreateCell(1).setCurrencyValue(-150.5, "€");
+		row.getOrCreateCell(2).setStyle(tcls);
+		row.getOrCreateCell(3).setTimeValue(3 * 60 * 1000);
+		c = row.getOrCreateCell(4);
+		c.setStringValue("formula result");
+		c.setFormula("1+1");
+
+		// FIFTH ROW
+		row = table.getRow(4);
+		row.getOrCreateCell(0).setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0), true);
+
+		document.addAutofilter(table, 0,0,3,5);
+
+		writer.saveAs(new File(GENERATED_FILES, FASTODS_50_5_NORMAL_ODS));
 		final long t2 = System.currentTimeMillis();
 		this.logger.info("Filled in " + (t2 - t1) + " ms");
 	}
