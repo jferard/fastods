@@ -1,0 +1,38 @@
+/*
+ * FastODS - a Martin Schulz's SimpleODS fork
+ *    Copyright (C) 2016-2017 J. Férard <https://github.com/jferard>
+ * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
+ *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *
+ * This file is part of FastODS.
+ *
+ * FastODS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.github.jferard.fastods.testlib;
+
+import org.odftoolkit.simple.table.Cell;
+
+/**
+ * Created by jferard on 18/08/17.
+ */
+public class OdfToolkitUtil {
+    public static String getStringValue(final Cell cell) {
+        return cell.getOdfElement().getOfficeStringValueAttribute();
+    }
+
+    public static String getParentStyleName(final Cell cell) {
+        final String styleName = cell.getOdfElement().getTableStyleNameAttribute();
+        return styleName.split("@@")[0];
+    }
+}

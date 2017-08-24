@@ -35,6 +35,7 @@ import java.util.Iterator;
  * @author Martin Schulz
  */
 class TableAppender {
+    private static final int MAX_COLUMN_COUNT = 1024;
     private final TableBuilder builder;
     private boolean preambleWritten;
     private int nullFieldCounter;
@@ -120,12 +121,13 @@ class TableAppender {
         final Iterator<TableColumnStyle> iterator = columnStyles.iterator();
         if (!iterator.hasNext()) {
             TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
-                    .appendXMLToTable(xmlUtil, appendable, columnStyles.capacity());
+                    .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT);
             return;
         }
 
         TableColumnStyle ts0 = TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE;
         int count = 1;
+        int globalCount = 0;
         TableColumnStyle ts1 = iterator.next();
         while (iterator.hasNext()) {
             ts0 = ts1;
@@ -135,13 +137,15 @@ class TableAppender {
                 count++;
             } else {
                 ts0.appendXMLToTable(xmlUtil, appendable, count);
+                globalCount += count;
                 count = 1;
             }
 
         }
         ts1.appendXMLToTable(xmlUtil, appendable, count);
+        globalCount += count;
         TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
-                .appendXMLToTable(xmlUtil, appendable, 1);
+                .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT-globalCount);
     }
 
     private void appendRows(final XMLUtil util, final Appendable appendable)
