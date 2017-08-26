@@ -205,7 +205,7 @@ public class TableRow {
         if (cell == null) {
             cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
                     this.stylesContainer, this.dataStyles,
-                    this, this.rowIndex, this.columnCapacity);
+                    this, colIndex, this.columnCapacity);
             this.cells.set(colIndex, cell);
         }
         return cell;
