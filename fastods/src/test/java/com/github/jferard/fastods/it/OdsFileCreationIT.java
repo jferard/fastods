@@ -143,12 +143,14 @@ public class OdsFileCreationIT {
 
 		// FOURTH ROW
 		row = sheet.getRowByIndex(3);
-//		Assert.assertEquals(2, row.getCellByIndex(0).getColumnSpannedNumber());
+		Assert.assertEquals(2, row.getCellByIndex(0).getColumnSpannedNumber());
 		c = row.getCellByIndex(1);
 		Assert.assertEquals(-150.5, c.getCurrencyValue().doubleValue(), 0.01);
 		Assert.assertEquals("€", c.getCurrencyCode());
-//		Assert.assertEquals("cc", row.getCellByIndex(2).getStyleName());
-//		Assert.assertEquals(3 * 60 * 1000, row.getCellByIndex(3).getTimeValue());
+		c = row.getCellByIndex(2);
+		Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
+		Assert.assertEquals("cc", c.getStyleName());
+		Assert.assertEquals(3 * 60 * 1000, row.getCellByIndex(3).getTimeValue().getTimeInMillis()+3600000);
 		c = row.getCellByIndex(4);
 		Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
 		Assert.assertEquals("=1+1", c.getFormula());
@@ -230,7 +232,9 @@ public class OdsFileCreationIT {
 		row = table.getRow(3);
 		row.getOrCreateCell(0).setColumnsSpanned(2);
 		row.getOrCreateCell(1).setCurrencyValue(-150.5, "€");
-		row.getOrCreateCell(2).setStyle(tcls);
+		c = row.getOrCreateCell(2);
+		c.setStringValue("x");
+		c.setStyle(tcls);
 		row.getOrCreateCell(3).setTimeValue(3 * 60 * 1000);
 		c = row.getOrCreateCell(4);
 		c.setStringValue("formula result");

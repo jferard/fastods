@@ -115,30 +115,36 @@ public class XMLUtil {
 	/**
 	 * XML Schema Part 2, 3.2.6 duration
 	 * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
+	 * Remark: removed days since OdfToolkit can't handle it
 	 *
 	 * @param milliseconds the interval to format in milliseconds
 	 * @return the string that represents this interval
 	 */
 	public String formatTimeInterval(final long milliseconds) {
 		long curMilliseconds = milliseconds;
-		final StringBuilder sb = new StringBuilder().append('P');
-		final long days = TimeUnit.MILLISECONDS.toDays(curMilliseconds);
-		sb.append(days).append("DT");
-		curMilliseconds -= TimeUnit.DAYS.toMillis(days);
-
+		final StringBuilder sb = new StringBuilder().append("PT");
 		final long hours = TimeUnit.MILLISECONDS.toHours(curMilliseconds);
+		if (hours < 10)
+			sb.append('0');
 		sb.append(hours).append('H');
 		curMilliseconds -= TimeUnit.HOURS.toMillis(hours);
 
 		final long minutes = TimeUnit.MILLISECONDS.toMinutes(curMilliseconds);
+		if (minutes < 10)
+			sb.append('0');
 		sb.append(minutes).append('M');
 		curMilliseconds -= TimeUnit.MINUTES.toMillis(minutes);
 
 		final long seconds = TimeUnit.MILLISECONDS.toSeconds(curMilliseconds);
+		if (seconds < 10)
+			sb.append('0');
 		sb.append(seconds);
 		curMilliseconds -= TimeUnit.SECONDS.toMillis(seconds);
 
-		sb.append('.').append(curMilliseconds).append('S');
+		if (curMilliseconds > 0)
+			sb.append('.').append(curMilliseconds);
+
+		sb.append('S');
 		return sb.toString();
 	}
 }

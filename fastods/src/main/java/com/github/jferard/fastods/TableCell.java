@@ -186,6 +186,10 @@ public interface TableCell {
 
 	void setStyle(TableCellStyle style);
 
+	/**
+	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
+	 * @param timeInMillis the duration in milliseconds
+	 */
 	void setTimeValue(long timeInMillis);
 
 	/**
