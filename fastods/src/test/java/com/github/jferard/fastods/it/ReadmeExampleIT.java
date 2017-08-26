@@ -22,10 +22,10 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.*;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
@@ -44,62 +44,99 @@ import java.util.logging.Logger;
  * This is the test for the README.md
  */
 public class ReadmeExampleIT {
-	public static final String README_EXAMPLE_ODS = "readme_example.ods";
-	public static final String GENERATED_FILES = "generated_files";
+    public static final String GENERATED_FILES = "generated_files";
+    public static final String README_EXAMPLE_ODS = "readme_example.ods";
+    public static final String README_EXAMPLE_WITH_FLUSH_ODS = "readme_example_with_flush.ods";
+    public static final String GREEN_CELL_STYLE = "green cell style";
+    public static final String GREEN_COLOR = "#00FF00";
 
-	@BeforeClass
-	public static final void beforeClass() {
-		Util.mkdir(GENERATED_FILES);
-	}
+    @BeforeClass
+    public static final void beforeClass() {
+        Util.mkdir(GENERATED_FILES);
+    }
+    private Logger logger;
+    private OdsFactory odsFactory;
+    private TableCellStyle style;
 
-	@Test
-	public void readmeIT() throws Exception {
-		this.readme();
-		this.validateReadme();
-	}
+    @Before
+    public void setUp() {
+        this.logger = Logger.getLogger("readme example");
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+        this.style = TableCellStyle.builder(GREEN_CELL_STYLE).backgroundColor(GREEN_COLOR).build();
+    }
 
-	private void validateReadme() throws Exception {
-		final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, README_EXAMPLE_ODS));
-		Assert.assertEquals(1, document.getSheetCount());
-		final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
-		Assert.assertNotNull(sheet);
-		Assert.assertEquals(50, sheet.getRowCount());
-		final OdfStyle gcs = document.getStylesDom().getOfficeStyles().getStyle("green cell style", OdfStyleFamily.TableCell);
-		Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
-		final Node properties = gcs.getElementsByTagName("style:table-cell-properties").item(0);
-		final NamedNodeMap attributes = properties.getAttributes();
-		Assert.assertEquals("#00FF00", attributes.getNamedItem("fo:background-color").getTextContent());
-		for (int y = 0; y < 50; y++) {
-			for (int x = 0; x < 5; x++) {
-				final org.odftoolkit.simple.table.Cell cell = sheet.getCellByPosition(x, y);
-				Assert.assertEquals(Double.valueOf(x*y), cell.getDoubleValue());
-				Assert.assertEquals("float", cell.getValueType());
 
-				final TableTableCellElementBase element = cell.getOdfElement();
-				Assert.assertEquals("green cell style@@float-data", element.getStyleName());
-				Assert.assertEquals("table-cell", element.getStyleFamily().toString());
-				Assert.assertEquals("green cell style", element.getAutomaticStyle().getStyleParentStyleNameAttribute());
-			}
-		}
-	}
+    @Test
+    public void readmeIT() throws Exception {
+        this.readme();
+        this.validateReadme();
+    }
 
-	private void readme() throws IOException {
-		final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
-		final AnonymousOdsFileWriter writer = odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test");
+    @Test
+    public void readmeWithFlushIT() throws Exception {
+        this.readmeWithFlush();
+        this.validateReadme();
+    }
 
-		final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00FF00").build();
-		for (int y = 0; y < 50; y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker cell = row.getWalker();
-			for (int x = 0; x < 5; x++) {
-				cell.setFloatValue(x*y);
-				cell.setStyle(style);
-				cell.next();
-			}
-		}
+    private void validateReadme() throws Exception {
+        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, README_EXAMPLE_ODS));
+        Assert.assertEquals(1, document.getSheetCount());
+        final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
+        Assert.assertNotNull(sheet);
+        Assert.assertEquals(50, sheet.getRowCount());
+        final OdfStyle gcs = document.getStylesDom().getOfficeStyles().getStyle(GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
+        Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
+        final Node properties = gcs.getElementsByTagName("style:table-cell-properties").item(0);
+        final NamedNodeMap attributes = properties.getAttributes();
+        Assert.assertEquals(GREEN_COLOR, attributes.getNamedItem("fo:background-color").getTextContent());
+        for (int y = 0; y < 50; y++) {
+            for (int x = 0; x < 5; x++) {
+                final org.odftoolkit.simple.table.Cell cell = sheet.getCellByPosition(x, y);
+                Assert.assertEquals(Double.valueOf(x * y), cell.getDoubleValue());
+                Assert.assertEquals("float", cell.getValueType());
 
-		writer.saveAs(new File(GENERATED_FILES, README_EXAMPLE_ODS));
-	}
+                final TableTableCellElementBase element = cell.getOdfElement();
+                Assert.assertEquals(GREEN_CELL_STYLE + "@@float-data", element.getStyleName());
+                Assert.assertEquals("table-cell", element.getStyleFamily().toString());
+                Assert.assertEquals(GREEN_CELL_STYLE, element.getAutomaticStyle().getStyleParentStyleNameAttribute());
+            }
+        }
+    }
+
+    private void readme() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+
+        this.createTable(document);
+
+        writer.saveAs(new File(GENERATED_FILES, README_EXAMPLE_ODS));
+    }
+
+    private void createTable(final OdsDocument document) throws IOException {
+        final Table table = document.addTable("test");
+        for (int y = 0; y < 50; y++) {
+            final TableRow row = table.nextRow();
+            final TableCellWalker cell = row.getWalker();
+            for (int x = 0; x < 5; x++) {
+                cell.setFloatValue(x * y);
+                cell.setStyle(this.style);
+                cell.next();
+            }
+        }
+    }
+
+    private void readmeWithFlush() throws IOException {
+        final OdsFileWriter writer =
+                this.odsFactory.createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
+        final OdsDocument document = writer.document();
+
+        document.addObjectStyle(this.style);
+        document.addChildCellStyle(TableCell.Type.FLOAT);
+        document.addChildCellStyle(this.style, TableCell.Type.FLOAT);
+        document.freezeStyles(); // if this crashes, use debugStyles to log the errors
+
+        this.createTable(document);
+
+        document.save();
+    }
 }
