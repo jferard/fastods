@@ -254,7 +254,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setTimeValue(999);
-        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"time\" office:time-value=\"P0DT0H0M0.999S\"/>", this.getCellXML());
+        DomTester.assertEquals("<table:table-cell table:style-name=\"$name\" office:value-type=\"time\" office:time-value=\"PT00H00M00.999S\"/>", this.getCellXML());
         PowerMock.verifyAll();
     }
 

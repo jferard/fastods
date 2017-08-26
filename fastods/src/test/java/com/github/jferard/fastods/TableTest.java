@@ -91,7 +91,7 @@ public class TableTest {
                         + "<table:table-column table:style-name=\"test0\" table:default-cell-style-name=\"Default\"/>"
                         + "<table:table-column table:style-name=\"test1\" table:default-cell-style-name=\"Default\"/>"
                         + "<table:table-column table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>"
-                        + "<table:table-column table:style-name=\"co1\" table:default-cell-style-name=\"Default\"/>"
+                        + "<table:table-column table:style-name=\"co1\" table:default-cell-style-name=\"Default\" table:number-columns-repeated=\"1021\"/>"
                         + "<table:table-row table:number-rows-repeated=\"100\" table:style-name=\"ro1\">"
                         + "<table:table-cell/>" + "</table:table-row>"
                         + "<table:table-row table:style-name=\"ro1\">"
@@ -173,7 +173,7 @@ public class TableTest {
 
         DomTester.assertEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
                 "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"100\" table:default-cell-style-name=\"Default\"/>" +
+                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-row table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" +
                 "</table:table-row>" +
