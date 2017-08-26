@@ -55,6 +55,7 @@ public class OdsFileCreationIT {
     public static final void beforeClass() {
         Util.mkdir(GENERATED_FILES);
     }
+
     private Logger logger;
     private OdsFactory odsFactory;
     private Fibonacci fibonacci;

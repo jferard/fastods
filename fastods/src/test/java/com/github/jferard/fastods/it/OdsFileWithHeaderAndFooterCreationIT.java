@@ -29,7 +29,9 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.SimpleLength;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,106 +48,180 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class OdsFileWithHeaderAndFooterCreationIT {
-	private Logger logger;
+	public static final String GENERATED_FILES = "generated_files";
+	public static final String FASTODS_FOOTER_HEADER_ODS = "fastods_footer_header.ods";
+	public static final String FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS = "fastods_footer_header_with_flush.ods";
 
 	@BeforeClass
 	public static final void beforeClass() {
-		final File generated_files = new File("generated_files");
-		if (generated_files.exists())
-			return;
-
-		generated_files.mkdir();
+		Util.mkdir(GENERATED_FILES);
 	}
 
+	private Logger logger;
 	private OdsFactory odsFactory;
+	private TextStyle lts;
+	private TextStyle cts;
+	private TextStyle rts;
+	private TextStyle boldStyle;
+	private TextStyle italicStyle;
+	private Text leftHeader;
+	private Text centerHeader;
+	private Text rightHeader;
+	private PageSection headerSection;
+	private Text leftFooter;
+	private Text centerFooter;
+	private Text rightFooter;
+	private PageStyle ps;
+	private TableStyle ttts;
+	private PageStyle ps2;
+	private TableStyle ttts2;
+	private TableRowStyle trs;
+	private TableCellStyle tcls;
+	private TableColumnStyle tcns;
+	private PageSection footerSection;
 
 	@Before
 	public void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");
+		this.logger = Logger.getLogger("footer and header");
 		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+		this.logger.info("Creating a file with footer and header");
 	}
 
-	@Test
-	public final void test50() throws FastOdsException, IOException {
-		this.logger.info("Creating a file with footer and header");
-		final TextStyle lts = TextProperties.builder().fontColor(Color.RED)
-				.buildHiddenStyle("test1");
-		final TextStyle cts = TextProperties.builder().fontColor(Color.BLUE)
-				.buildHiddenStyle("test2");
-		final TextStyle rts = TextProperties.builder().fontColor(Color.GREEN)
-				.buildHiddenStyle("test3");
-		final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
-				.buildHiddenStyle("style");
-		final TextStyle italicStyle = TextProperties.builder().fontStyleItalic()
-				.buildHiddenStyle("style2");
-
-		final Text leftHeader = Text.styledContent("left header", lts);
-		final Text centerHeader = Text.builder().par()
-				.styledSpan("center header", cts).span(Text.TEXT_PAGE_NUMBER)
-				.build();
-		final Text rightHeader = Text.styledContent("right header", rts);
-		final PageSection headerSection = PageSection
-				.regionBuilder().region(Region.LEFT)
-				.text(leftHeader).region(Region.CENTER).text(centerHeader)
-				.region(Region.RIGHT).text(rightHeader).build();
-
-		final Text leftFooter = Text.styledContent("left footer", cts);
-		final Text centerFooter = Text.builder().par()
-				.styledSpan("center footer", rts).span(Text.TEXT_PAGE_COUNT)
-				.build();
-		final Text rightFooter = Text.styledContent("right footer", lts);
-		final PageSection footerSection = PageSection
-				.regionBuilder().region(Region.LEFT)
-				.text(leftFooter).region(Region.CENTER).text(centerFooter)
-				.region(Region.RIGHT).text(rightFooter).build();
-
-		final PageStyle ps = PageStyle.builder("test")
-				.footer(new Footer(footerSection)).header(new Header(headerSection)).build();
-
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test", 1, 5);
-		final TableStyle ttts = TableStyle.builder("a").pageStyle(ps)
-				.buildHidden();
-		table.setStyle(ttts);
-
-		final Table table2 = document.addTable("target", 1, 1);
-		final PageStyle ps2 = PageStyle.builder("test2")
-				.masterPageStyle(ps.getMasterPageStyle()).pageLayoutStyle(ps.getPageLayoutStyle()).build();
-		final TableStyle ttts2 = TableStyle.builder("a2").pageStyle(ps2)
-				.buildHidden();
-		table2.setStyle(ttts2);
-
-		TableRow row = table.getRow(0);
-		final TableRowStyle trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
-				.buildHidden();
-		final TableCellStyle tcls = TableCellStyle.builder("cc")
-				.backgroundColor("#dddddd").fontWeightBold().build();
-		row.setStyle(trs);
-		row.setDefaultCellStyle(tcls);
-		final TableColumnStyle tcns = TableColumnStyle.builder("ccs")
-				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(tcls).buildHidden();
-		table.setColumnStyle(0, tcns);
-		row = table.getRow(0);
-		row.getOrCreateCell(0).setText(
-				Text.builder().parContent("This is a")
-						.parStyledContent("multiline", italicStyle)
-						.parStyledContent("cell", boldStyle).build());
-		row.getOrCreateCell(1).setStringValue("text2");
-		row.getOrCreateCell(2).setStringValue("text3");
-		row = table.getRow(1);
-		row.getOrCreateCell(0).setText(
-				Text.builder().par().span("before link to table: ").link("table", table2).span(" after link to table").build());
-		row.getOrCreateCell(1).setText(
-				Text.builder().par().span("before link to url: ").link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url").build());
-		row.getOrCreateCell(2).setText(
-				Text.builder().par().span("before link to file: ").link("file", new File("generated_files", "readme_example.ods")).span(" after link to file").build());
-
+	@After
+	public void tearDown() {
 		// let's display logging infos
 		final Logger rootLogger = Logger.getLogger("");
 		rootLogger.setLevel(Level.FINEST);
 		for (final Handler h : rootLogger.getHandlers())
 			h.setLevel(Level.FINEST);
-		writer.saveAs(new File("generated_files", "fastods_footer_header.ods"));
+	}
+
+	@Test
+	public final void createDocumentWithFooterAndHeaderIT() throws FastOdsException, IOException {
+		this.createDocumentWithFooterAndHeader();
+		this.validateDocument(FASTODS_FOOTER_HEADER_ODS);
+	}
+
+	@Test
+	public final void createDocumentWithFooterAndHeaderWithFlushIT() throws FastOdsException, IOException {
+		this.createDocumentWithFooterAndHeaderWithFlush();
+		this.validateDocument(FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS);
+	}
+
+
+	private void validateDocument(final String documentName) {
+	}
+
+	private final void createDocumentWithFooterAndHeader() throws FastOdsException, IOException {
+		this.createStyles();
+
+		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+		final OdsDocument document = writer.document();
+
+		this.fillDocument(document);
+
+		writer.saveAs(new File(GENERATED_FILES, FASTODS_FOOTER_HEADER_ODS));
+	}
+
+	private void fillDocument(final OdsDocument document) throws IOException, FastOdsException {
+		final Table table = document.addTable("test", 1, 5);
+		table.setStyle(this.ttts);
+		table.setColumnStyle(0, this.tcns);
+		TableRow row = table.getRow(0);
+		row.setStyle(this.trs);
+		row.setDefaultCellStyle(this.tcls);
+
+		row = table.getRow(0);
+		row.getOrCreateCell(0).setText(
+				Text.builder().parContent("This is a")
+						.parStyledContent("multiline", this.italicStyle)
+						.parStyledContent("cell", this.boldStyle).build());
+		row.getOrCreateCell(1).setStringValue("text2");
+		row.getOrCreateCell(2).setStringValue("text3");
+		row = table.getRow(1);
+		row.getOrCreateCell(0).setText(
+				Text.builder().par().span("before link to table: ").link("table", "target").span(" after link to table").build());
+		row.getOrCreateCell(1).setText(
+				Text.builder().par().span("before link to url: ").link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url").build());
+		row.getOrCreateCell(2).setText(
+				Text.builder().par().span("before link to file: ").link("file", new File("generated_files", "readme_example.ods")).span(" after link to file").build());
+
+
+		final Table table2 = document.addTable("target", 1, 1);
+		table2.setStyle(this.ttts2);
+
+		final Table table3 = document.addTable("target2", 1, 1);
+		table3.setStyle(this.ttts2);
+	}
+
+	private void createStyles() {
+		this.lts = TextProperties.builder().fontColor(Color.RED)
+				.buildHiddenStyle("test1");
+		this.cts = TextProperties.builder().fontColor(Color.BLUE)
+				.buildHiddenStyle("test2");
+		this.rts = TextProperties.builder().fontColor(Color.GREEN)
+				.buildHiddenStyle("test3");
+		this.boldStyle = TextProperties.builder().fontWeightBold()
+				.buildHiddenStyle("style");
+		this.italicStyle = TextProperties.builder().fontStyleItalic()
+				.buildHiddenStyle("style2");
+
+		this.leftHeader = Text.styledContent("left header", this.lts);
+		this.centerHeader = Text.builder().par()
+				.styledSpan("center header", this.cts).span(Text.TEXT_PAGE_NUMBER)
+				.build();
+		this.rightHeader = Text.styledContent("right header", this.rts);
+		this.headerSection = PageSection
+				.regionBuilder().region(Region.LEFT)
+				.text(this.leftHeader).region(Region.CENTER).text(this.centerHeader)
+				.region(Region.RIGHT).text(this.rightHeader).build();
+
+		this.leftFooter = Text.styledContent("left footer", this.cts);
+		this.centerFooter = Text.builder().par()
+				.styledSpan("center footer", this.rts).span(Text.TEXT_PAGE_COUNT)
+				.build();
+		this.rightFooter = Text.styledContent("right footer", this.lts);
+		this.footerSection = PageSection
+				.regionBuilder().region(Region.LEFT)
+				.text(this.leftFooter).region(Region.CENTER).text(this.centerFooter)
+				.region(Region.RIGHT).text(this.rightFooter).build();
+
+		this.ps = PageStyle.builder("test")
+				.footer(new Footer(this.footerSection)).header(new Header(this.headerSection)).build();
+		this.ttts = TableStyle.builder("a").pageStyle(this.ps)
+				.buildHidden();
+		this.ps2 = PageStyle.builder("test2")
+				.masterPageStyle(this.ps.getMasterPageStyle()).pageLayoutStyle(this.ps.getPageLayoutStyle()).build();
+		this.ttts2 = TableStyle.builder("a2").pageStyle(this.ps2)
+				.buildHidden();
+		this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
+				.buildHidden();
+		this.tcls = TableCellStyle.builder("cc")
+				.backgroundColor("#dddddd").fontWeightBold().build();
+		this.tcns = TableColumnStyle.builder("ccs")
+				.columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(this.tcls).buildHidden();
+	}
+
+	private void createDocumentWithFooterAndHeaderWithFlush() throws IOException, FastOdsException {
+		this.createStyles();
+		final OdsFileWriter writer =
+				this.odsFactory.createWriter(new File(GENERATED_FILES, FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS));
+		final OdsDocument document = writer.document();
+		document.addPageStyle(this.ps);
+		document.addObjectStyle(this.ttts);
+		document.addObjectStyle(this.ttts2);
+		document.addObjectStyle(this.lts);
+		document.addObjectStyle(this.cts);
+		document.addObjectStyle(this.rts);
+		document.addStyleToContentAutomaticStyles(this.boldStyle);
+		document.addStyleToContentAutomaticStyles(this.italicStyle);
+		document.addObjectStyle(this.trs);
+		document.addObjectStyle(this.tcls);
+		document.addObjectStyle(this.tcns);
+		document.freezeStyles();
+
+		this.fillDocument(document);
+
+		document.save();
 	}
 }
