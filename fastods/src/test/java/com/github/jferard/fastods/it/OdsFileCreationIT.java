@@ -48,6 +48,10 @@ import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -100,7 +104,6 @@ public class OdsFileCreationIT {
 
 		// FIRST ROW
 		Row row = sheet.getRowByIndex(0);
-		System.out.println(row);
 		Assert.assertEquals("Accented characters: àäéèëêïîöôüûÿÿ", OdfToolkitUtil.getStringValue(row.getCellByIndex(0)));
 		Assert.assertEquals("Symbols: €", OdfToolkitUtil.getStringValue(row.getCellByIndex(1)));
 		Assert.assertEquals("Symbols: £", OdfToolkitUtil.getStringValue(row.getCellByIndex(2)));
@@ -127,10 +130,14 @@ public class OdsFileCreationIT {
 		c = row.getCellByIndex(2);
 		Assert.assertEquals(150.5, c.getCurrencyValue().doubleValue(), 0.01);
 		Assert.assertEquals("EUR", c.getCurrencyCode());
-		final Calendar cal = Calendar.getInstance(Locale.US);
+		final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
 		cal.setTimeInMillis(1234567891011L);
-		cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-//		Assert.assertEquals(cal, row.getCellByIndex(3).getDateValue());
+		cal.set(Calendar.HOUR_OF_DAY, -1);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		final Calendar actualCal = row.getCellByIndex(3).getDateValue();
+		Assert.assertEquals(cal.getTime(), actualCal.getTime());
 		Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue().doubleValue(), 0.01);
 		Assert.assertEquals("foobar", OdfToolkitUtil.getStringValue(row.getCellByIndex(5)));
 
@@ -213,7 +220,7 @@ public class OdsFileCreationIT {
 		row.getOrCreateCell(1).setBooleanValue(true);
 		c = row.getOrCreateCell(2);
 		c.setCurrencyValue(150.5, "EUR");
-		final Calendar cal = Calendar.getInstance(Locale.US);
+		final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
 		cal.setTimeInMillis(1234567891011L);
 		row.getOrCreateCell(3).setDateValue(cal);
 		row.getOrCreateCell(4).setPercentageValue(70.3);
