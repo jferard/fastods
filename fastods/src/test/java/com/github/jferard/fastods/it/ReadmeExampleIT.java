@@ -69,17 +69,17 @@ public class ReadmeExampleIT {
     @Test
     public void readmeIT() throws Exception {
         this.readme();
-        this.validateReadme();
+        this.validateReadme(README_EXAMPLE_ODS);
     }
 
     @Test
     public void readmeWithFlushIT() throws Exception {
         this.readmeWithFlush();
-        this.validateReadme();
+        this.validateReadme(README_EXAMPLE_WITH_FLUSH_ODS);
     }
 
-    private void validateReadme() throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, README_EXAMPLE_ODS));
+    private void validateReadme(final String documentName) throws Exception {
+        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
