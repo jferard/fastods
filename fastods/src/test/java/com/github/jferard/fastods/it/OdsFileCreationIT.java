@@ -173,8 +173,10 @@ public class OdsFileCreationIT {
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             cal.set(Calendar.MILLISECOND, 0);
+            Assert.assertEquals(1234483200000L, cal.getTimeInMillis());
+
             final Calendar actualCal = row.getCellByIndex(3).getDateValue();
-            Assert.assertEquals(cal.getTime(), actualCal.getTime());
+            Assert.assertEquals(cal.getTimeInMillis(), actualCal.getTimeInMillis()+actualCal.getTimeZone().getRawOffset());
             Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue().doubleValue(), 0.01);
             Assert.assertEquals("foobar", OdfToolkitUtil.getStringValue(row.getCellByIndex(5)));
 
@@ -187,7 +189,8 @@ public class OdsFileCreationIT {
             c = row.getCellByIndex(2);
             Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("cc", c.getStyleName());
-            Assert.assertEquals(3 * 60 * 1000, row.getCellByIndex(3).getTimeValue().getTimeInMillis());
+            Calendar timeValue = row.getCellByIndex(3).getTimeValue();
+            Assert.assertEquals(3 * 60 * 1000, timeValue.getTimeInMillis()+timeValue.getTimeZone().getRawOffset());
             c = row.getCellByIndex(4);
             Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("=1+1", c.getFormula());
