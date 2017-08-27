@@ -108,6 +108,7 @@ public class OdsFileCreationIT {
         Assert.assertEquals("206", settingsDom.getXPath().evaluate("//config:config-item-map-entry[@config:name='test']//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
         final OdfContentDom contentDom = document.getContentDom();
         Assert.assertEquals("5cm", contentDom.getXPath().evaluate("//style:style[@style:name='rr']//style:table-row-properties/@style:row-height", contentDom.getRootElement()));
+        Assert.assertEquals("10cm", contentDom.getXPath().evaluate("//style:style[@style:name='ccs']//style:table-column-properties/@style:column-width", contentDom.getRootElement()));
 
         final OdfStylesDom stylesDom = document.getStylesDom();
         Assert.assertEquals("#dddddd", stylesDom.getXPath().evaluate("//style:style[@style:name='cc']//@fo:background-color", stylesDom.getRootElement()));
