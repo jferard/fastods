@@ -21,7 +21,13 @@
 
 package com.github.jferard.fastods.testlib;
 
+import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
+import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
+import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * Created by jferard on 18/08/17.
@@ -32,7 +38,27 @@ public class OdfToolkitUtil {
     }
 
     public static String getParentStyleName(final Cell cell) {
-        final String styleName = cell.getOdfElement().getTableStyleNameAttribute();
-        return styleName.split("@@")[0];
+        return cell.getOdfElement().getAutomaticStyle().getStyleParentStyleNameAttribute();
+    }
+
+    public static OdfStyle getDocumentStyle(final SpreadsheetDocument document, final String styleName, final OdfStyleFamily styleFamily) throws Exception {
+        return document.getStylesDom().getOfficeStyles().getStyle(styleName, styleFamily);
+    }
+
+    public static Node getFirstElement(final Element element, final String tagname) {
+        return element.getElementsByTagName(tagname).item(0);
+    }
+
+    public static String getAttribute(final Node node, final String sattributeName) {
+        final NamedNodeMap attributes = node.getAttributes();
+        return attributes.getNamedItem(sattributeName).getTextContent();
+    }
+
+    public static String getStyleName(final Cell cell) {
+        return cell.getOdfElement().getStyleName();
+    }
+
+    public static String getStyleFamilyName(final Cell cell) {
+        return cell.getOdfElement().getStyleFamily().getName();
     }
 }

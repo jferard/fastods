@@ -23,6 +23,7 @@ package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +33,7 @@ import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
 import org.odftoolkit.simple.SpreadsheetDocument;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -84,11 +86,10 @@ public class ReadmeExampleIT {
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
         Assert.assertEquals(50, sheet.getRowCount());
-        final OdfStyle gcs = document.getStylesDom().getOfficeStyles().getStyle(GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
+        final OdfStyle gcs = OdfToolkitUtil.getDocumentStyle(document, GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
         Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
-        final Node properties = gcs.getElementsByTagName("style:table-cell-properties").item(0);
-        final NamedNodeMap attributes = properties.getAttributes();
-        Assert.assertEquals(GREEN_COLOR, attributes.getNamedItem("fo:background-color").getTextContent());
+        final Node properties = OdfToolkitUtil.getFirstElement(gcs, "style:table-cell-properties");
+        Assert.assertEquals(GREEN_COLOR, OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
         for (int y = 0; y < 50; y++) {
             for (int x = 0; x < 5; x++) {
                 final org.odftoolkit.simple.table.Cell cell = sheet.getCellByPosition(x, y);
@@ -96,9 +97,9 @@ public class ReadmeExampleIT {
                 Assert.assertEquals("float", cell.getValueType());
 
                 final TableTableCellElementBase element = cell.getOdfElement();
-                Assert.assertEquals(GREEN_CELL_STYLE + "@@float-data", element.getStyleName());
-                Assert.assertEquals("table-cell", element.getStyleFamily().toString());
-                Assert.assertEquals(GREEN_CELL_STYLE, element.getAutomaticStyle().getStyleParentStyleNameAttribute());
+                Assert.assertEquals(GREEN_CELL_STYLE + "@@float-data", OdfToolkitUtil.getStyleName(cell));
+                Assert.assertEquals("table-cell", OdfToolkitUtil.getStyleFamilyName(cell));
+                Assert.assertEquals(GREEN_CELL_STYLE, OdfToolkitUtil.getParentStyleName(cell));
             }
         }
     }
