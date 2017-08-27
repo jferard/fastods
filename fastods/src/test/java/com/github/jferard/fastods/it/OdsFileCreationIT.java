@@ -110,7 +110,13 @@ public class OdsFileCreationIT {
         final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(output);
 
         final OdfSettingsDom settingsDom = document.getSettingsDom();
-        Assert.assertEquals("207", settingsDom.getXPath().evaluate("//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
+        final String completePath = "/office:document-settings" +
+                "/office:settings" +
+                "/config:config-item-set[@config:name='ooo:view-settings']" +
+                "/config:config-item-map-indexed[@config:name='Views']" +
+                "/config:config-item-map-entry" +
+                "/config:config-item[@config:name='ZoomValue']";
+        Assert.assertEquals("207", settingsDom.getXPath().evaluate(completePath, settingsDom.getRootElement()));
         for (int i=0; i<n; i++) {
             Assert.assertEquals("206", settingsDom.getXPath().evaluate("//config:config-item-map-entry[@config:name='table"+i+"']//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
         }
