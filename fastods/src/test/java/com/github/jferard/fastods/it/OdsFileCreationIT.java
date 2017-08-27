@@ -48,8 +48,6 @@ import java.util.logging.Logger;
  */
 public class OdsFileCreationIT {
     public static final String GENERATED_FILES = "generated_files";
-    public static final String STANDARD_DOCUMENT_ODS = "standard_document.ods";
-    public static final String STANDARD_DOCUMENT_WITH_FLUSH_ODS = "standard_document_with_flush.ods";
 
     @BeforeClass
     public static final void beforeClass() {
@@ -85,27 +83,37 @@ public class OdsFileCreationIT {
 
     @Test
     public final void testStandardIT() throws Exception {
-        this.standardDocument();
-        this.validateStandardDocument(STANDARD_DOCUMENT_ODS);
+        final File output = this.standardDocument(1);
+        this.validateStandardDocument(1, output);
     }
 
     @Test
     public final void testStandardWithFlushIT() throws Exception {
-        this.standardDocumentWithFlush();
-        this.validateStandardDocument(STANDARD_DOCUMENT_WITH_FLUSH_ODS);
+        final File output = this.standardDocumentWithFlush(1);
+        this.validateStandardDocument(1, output);
     }
 
-    private void validateStandardDocument(final String documentName) throws Exception {
+    @Test
+    public final void testStandardThreeTablesIT() throws Exception {
+        final File output = this.standardDocument(3);
+        this.validateStandardDocument(3, output);
+    }
+
+    @Test
+    public final void testStandardWithFlushThreeTablesIT() throws Exception {
+        final File output = this.standardDocumentWithFlush(3);
+        this.validateStandardDocument(3, output);
+    }
+
+    private void validateStandardDocument(final int n, final File output) throws Exception {
         final Fibonacci validateFibonacci = Fibonacci.create();
-        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
-        Assert.assertEquals(1, document.getSheetCount());
-        final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
-        Assert.assertNotNull(sheet);
-        Assert.assertEquals(5, sheet.getRowCount());
+        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(output);
 
         final OdfSettingsDom settingsDom = document.getSettingsDom();
         Assert.assertEquals("207", settingsDom.getXPath().evaluate("//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
-        Assert.assertEquals("206", settingsDom.getXPath().evaluate("//config:config-item-map-entry[@config:name='test']//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
+        for (int i=0; i<n; i++) {
+            Assert.assertEquals("206", settingsDom.getXPath().evaluate("//config:config-item-map-entry[@config:name='table"+i+"']//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
+        }
         final OdfContentDom contentDom = document.getContentDom();
         Assert.assertEquals("5cm", contentDom.getXPath().evaluate("//style:style[@style:name='rr']//style:table-row-properties/@style:row-height", contentDom.getRootElement()));
         Assert.assertEquals("10cm", contentDom.getXPath().evaluate("//style:style[@style:name='ccs']//style:table-column-properties/@style:column-width", contentDom.getRootElement()));
@@ -119,75 +127,88 @@ public class OdsFileCreationIT {
         Assert.assertEquals("bold", stylesDom.getXPath().evaluate("//style:style[@style:name='tcs2']//@fo:font-weight", stylesDom.getRootElement()));
         Assert.assertEquals("italic", stylesDom.getXPath().evaluate("//style:style[@style:name='tcs3']//@fo:font-style", stylesDom.getRootElement()));
 
-        // FIRST ROW
-        Row row = sheet.getRowByIndex(0);
-        Assert.assertEquals("Accented characters: àäéèëêïîöôüûÿÿ", OdfToolkitUtil.getStringValue(row.getCellByIndex(0)));
-        Assert.assertEquals("Symbols: €", OdfToolkitUtil.getStringValue(row.getCellByIndex(1)));
-        Assert.assertEquals("Symbols: £", OdfToolkitUtil.getStringValue(row.getCellByIndex(2)));
+        Assert.assertEquals(n, document.getSheetCount());
+        for (int i=0; i<n; i++) {
+            final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("table" + i);
+            Assert.assertNotNull(sheet);
+            Assert.assertEquals(5, sheet.getRowCount());
 
-        // SECOND ROW
-        row = sheet.getRowByIndex(1);
-        Cell c = row.getCellByIndex(0);
-        Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-        Assert.assertEquals("tcs0", OdfToolkitUtil.getParentStyleName(c));
-        c = row.getCellByIndex(1);
-        Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-        Assert.assertEquals("tcs1", OdfToolkitUtil.getParentStyleName(c));
-        c = row.getCellByIndex(2);
-        Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-        Assert.assertEquals("tcs2", OdfToolkitUtil.getParentStyleName(c));
-        c = row.getCellByIndex(3);
-        Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-        Assert.assertEquals("tcs3", OdfToolkitUtil.getParentStyleName(c));
+            // FIRST ROW
+            Row row = sheet.getRowByIndex(0);
+            Assert.assertEquals("Accented characters: àäéèëêïîöôüûÿÿ", OdfToolkitUtil.getStringValue(row.getCellByIndex(0)));
+            Assert.assertEquals("Symbols: €", OdfToolkitUtil.getStringValue(row.getCellByIndex(1)));
+            Assert.assertEquals("Symbols: £", OdfToolkitUtil.getStringValue(row.getCellByIndex(2)));
 
-        // THIRD ROW
-        row = sheet.getRowByIndex(2);
-        Assert.assertEquals(true, row.getCellByIndex(0).getBooleanValue());
-        Assert.assertEquals(true, row.getCellByIndex(1).getBooleanValue());
-        c = row.getCellByIndex(2);
-        Assert.assertEquals(150.5, c.getCurrencyValue().doubleValue(), 0.01);
-        Assert.assertEquals("EUR", c.getCurrencyCode());
-        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
-        cal.setTimeInMillis(1234567891011L);
-        cal.set(Calendar.HOUR_OF_DAY, -1);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        final Calendar actualCal = row.getCellByIndex(3).getDateValue();
-        Assert.assertEquals(cal.getTime(), actualCal.getTime());
-        Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue().doubleValue(), 0.01);
-        Assert.assertEquals("foobar", OdfToolkitUtil.getStringValue(row.getCellByIndex(5)));
+            // SECOND ROW
+            row = sheet.getRowByIndex(1);
+            Cell c = row.getCellByIndex(0);
+            Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
+            Assert.assertEquals("tcs0", OdfToolkitUtil.getParentStyleName(c));
+            c = row.getCellByIndex(1);
+            Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
+            Assert.assertEquals("tcs1", OdfToolkitUtil.getParentStyleName(c));
+            c = row.getCellByIndex(2);
+            Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
+            Assert.assertEquals("tcs2", OdfToolkitUtil.getParentStyleName(c));
+            c = row.getCellByIndex(3);
+            Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
+            Assert.assertEquals("tcs3", OdfToolkitUtil.getParentStyleName(c));
 
-        // FOURTH ROW
-        row = sheet.getRowByIndex(3);
-        Assert.assertEquals(2, row.getCellByIndex(0).getColumnSpannedNumber());
-        c = row.getCellByIndex(1);
-        Assert.assertEquals(-150.5, c.getCurrencyValue().doubleValue(), 0.01);
-        Assert.assertEquals("€", c.getCurrencyCode());
-        c = row.getCellByIndex(2);
-        Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
-        Assert.assertEquals("cc", c.getStyleName());
-        Assert.assertEquals(3 * 60 * 1000, row.getCellByIndex(3).getTimeValue().getTimeInMillis() + 3600000);
-        c = row.getCellByIndex(4);
-        Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
-        Assert.assertEquals("=1+1", c.getFormula());
+            // THIRD ROW
+            row = sheet.getRowByIndex(2);
+            Assert.assertEquals(true, row.getCellByIndex(0).getBooleanValue());
+            Assert.assertEquals(true, row.getCellByIndex(1).getBooleanValue());
+            c = row.getCellByIndex(2);
+            Assert.assertEquals(150.5, c.getCurrencyValue().doubleValue(), 0.01);
+            Assert.assertEquals("EUR", c.getCurrencyCode());
+            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
+            cal.setTimeInMillis(1234567891011L);
+            cal.set(Calendar.HOUR_OF_DAY, -1);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            final Calendar actualCal = row.getCellByIndex(3).getDateValue();
+            Assert.assertEquals(cal.getTime(), actualCal.getTime());
+            Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue().doubleValue(), 0.01);
+            Assert.assertEquals("foobar", OdfToolkitUtil.getStringValue(row.getCellByIndex(5)));
 
-        // FIFTH ROW
-        row = sheet.getRowByIndex(4);
-        Assert.assertEquals("That's a <tooltip>with a newline !", row.getCellByIndex(0).getNoteText());
+            // FOURTH ROW
+            row = sheet.getRowByIndex(3);
+            Assert.assertEquals(2, row.getCellByIndex(0).getColumnSpannedNumber());
+            c = row.getCellByIndex(1);
+            Assert.assertEquals(-150.5, c.getCurrencyValue().doubleValue(), 0.01);
+            Assert.assertEquals("€", c.getCurrencyCode());
+            c = row.getCellByIndex(2);
+            Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
+            Assert.assertEquals("cc", c.getStyleName());
+            Assert.assertEquals(3 * 60 * 1000, row.getCellByIndex(3).getTimeValue().getTimeInMillis() + 3600000);
+            c = row.getCellByIndex(4);
+            Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
+            Assert.assertEquals("=1+1", c.getFormula());
 
-        // filter
-        Assert.assertEquals("test.A1:test.F4", contentDom.getXPath().evaluate("//table:database-range[@table:display-filter-buttons='true']//@table:target-range-address", contentDom.getRootElement()));
+            // FIFTH ROW
+            row = sheet.getRowByIndex(4);
+            Assert.assertEquals("That's a <tooltip>with a newline !", row.getCellByIndex(0).getNoteText());
+
+            // filter
+            Assert.assertEquals("table"+i+".A1:table"+i+".F4", contentDom.getXPath().evaluate("//table:database-range["+(i+1)+"]//@table:target-range-address", contentDom.getRootElement()));
+        }
     }
 
-    private void standardDocument() throws IOException, FastOdsException {
+    private File standardDocument(final int n) throws IOException, FastOdsException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final OdsDocument document = writer.document();
         this.createStyles();
 
-        this.fillDocument(document);
+        this.fillDocument(document, n);
 
-        writer.saveAs(new File(GENERATED_FILES, STANDARD_DOCUMENT_ODS));
+        final File output = new File(GENERATED_FILES, this.standadDocumentName(false, n));
+        writer.saveAs(output);
+        return output;
+    }
+
+    private String standadDocumentName(final boolean flush, final int n) {
+        return "standard_document"+(flush?"with_flush":"")+"_"+n+".ods";
     }
 
     private void createStyles() {
@@ -207,70 +228,74 @@ public class OdsFileCreationIT {
                 .fontStyleItalic().build();
     }
 
-    private void fillDocument(final OdsDocument document) throws IOException, FastOdsException {
+    private void fillDocument(final OdsDocument document, final int n) throws IOException, FastOdsException {
         document.setViewSetting("View1", "ZoomValue", "207");
-        final Table table = document.addTable("test", 50, 5);
-        table.setColumnStyle(0, this.tcns);
-        table.setSettings("View1", "ZoomValue", "206");
-        TableRow row = table.getRow(0);
-        row.setStyle(this.trs);
-        row.setDefaultCellStyle(this.tcls);
 
-        // FIRST ROW
-        row = table.getRow(0);
-        row.getOrCreateCell(0).setStringValue("Accented characters: àäéèëêïîöôüûÿÿ");
-        row.getOrCreateCell(1).setStringValue("Symbols: €");
-        row.getOrCreateCell(2).setStringValue("Symbols: £");
+        for (int i=0; i<n; i++) {
+            final Table table = document.addTable("table"+i, 50, 5);
+            table.setColumnStyle(0, this.tcns);
+            table.setSettings("View1", "ZoomValue", "206");
+            TableRow row = table.getRow(0);
+            row.setStyle(this.trs);
+            row.setDefaultCellStyle(this.tcls);
 
-        // SECOND ROW
-        row = table.getRow(1);
-        TableCell c = row.getOrCreateCell(0);
-        c.setFloatValue(this.fibonacci.nextInt(100000));
-        c.setStyle(this.tcs0);
-        c = row.getOrCreateCell(1);
-        c.setFloatValue(this.fibonacci.nextInt(100000));
-        c.setStyle(this.tcs1);
-        c = row.getOrCreateCell(2);
-        c.setFloatValue(this.fibonacci.nextInt(100000));
-        c.setStyle(this.tcs2);
-        c = row.getOrCreateCell(3);
-        c.setFloatValue(this.fibonacci.nextInt(100000));
-        c.setStyle(this.tcs3);
+            // FIRST ROW
+            row = table.getRow(0);
+            row.getOrCreateCell(0).setStringValue("Accented characters: àäéèëêïîöôüûÿÿ");
+            row.getOrCreateCell(1).setStringValue("Symbols: €");
+            row.getOrCreateCell(2).setStringValue("Symbols: £");
 
-        // THIRD ROW
-        row = table.getRow(2);
-        row.getOrCreateCell(0).setBooleanValue(true);
-        row.getOrCreateCell(1).setBooleanValue(true);
-        c = row.getOrCreateCell(2);
-        c.setCurrencyValue(150.5, "EUR");
-        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
-        cal.setTimeInMillis(1234567891011L);
-        row.getOrCreateCell(3).setDateValue(cal);
-        row.getOrCreateCell(4).setPercentageValue(70.3);
-        row.getOrCreateCell(5).setStringValue("foobar");
+            // SECOND ROW
+            row = table.getRow(1);
+            TableCell c = row.getOrCreateCell(0);
+            c.setFloatValue(this.fibonacci.nextInt(100000));
+            c.setStyle(this.tcs0);
+            c = row.getOrCreateCell(1);
+            c.setFloatValue(this.fibonacci.nextInt(100000));
+            c.setStyle(this.tcs1);
+            c = row.getOrCreateCell(2);
+            c.setFloatValue(this.fibonacci.nextInt(100000));
+            c.setStyle(this.tcs2);
+            c = row.getOrCreateCell(3);
+            c.setFloatValue(this.fibonacci.nextInt(100000));
+            c.setStyle(this.tcs3);
 
-        // FOURTH ROW
-        row = table.getRow(3);
-        row.getOrCreateCell(0).setColumnsSpanned(2);
-        row.getOrCreateCell(1).setCurrencyValue(-150.5, "€");
-        c = row.getOrCreateCell(2);
-        c.setStringValue("x");
-        c.setStyle(this.tcls);
-        row.getOrCreateCell(3).setTimeValue(3 * 60 * 1000);
-        c = row.getOrCreateCell(4);
-        c.setStringValue("formula result");
-        c.setFormula("1+1");
+            // THIRD ROW
+            row = table.getRow(2);
+            row.getOrCreateCell(0).setBooleanValue(true);
+            row.getOrCreateCell(1).setBooleanValue(true);
+            c = row.getOrCreateCell(2);
+            c.setCurrencyValue(150.5, "EUR");
+            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
+            cal.setTimeInMillis(1234567891011L);
+            row.getOrCreateCell(3).setDateValue(cal);
+            row.getOrCreateCell(4).setPercentageValue(70.3);
+            row.getOrCreateCell(5).setStringValue("foobar");
 
-        // FIFTH ROW
-        row = table.getRow(4);
-        row.getOrCreateCell(0).setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0), true);
+            // FOURTH ROW
+            row = table.getRow(3);
+            row.getOrCreateCell(0).setColumnsSpanned(2);
+            row.getOrCreateCell(1).setCurrencyValue(-150.5, "€");
+            c = row.getOrCreateCell(2);
+            c.setStringValue("x");
+            c.setStyle(this.tcls);
+            row.getOrCreateCell(3).setTimeValue(3 * 60 * 1000);
+            c = row.getOrCreateCell(4);
+            c.setStringValue("formula result");
+            c.setFormula("1+1");
 
-        document.addAutofilter(table, 0, 0, 3, 5);
+            // FIFTH ROW
+            row = table.getRow(4);
+            row.getOrCreateCell(0).setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0), true);
+
+            document.addAutofilter(table, 0, 0, 3, 5);
+        }
     }
 
-    private void standardDocumentWithFlush() throws FastOdsException, IOException {
+    private File standardDocumentWithFlush(final int n) throws FastOdsException, IOException {
+        final File output = new File("generated_files", this.standadDocumentName(true, n));
         final OdsFileWriter writer =
-                this.odsFactory.createWriter(new File("generated_files", STANDARD_DOCUMENT_WITH_FLUSH_ODS));
+                this.odsFactory.createWriter(output);
         final OdsDocument document = writer.document();
 
         this.createStyles();
@@ -295,8 +320,9 @@ public class OdsFileCreationIT {
         document.addChildCellStyle(TableCell.Type.TIME);
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
-        this.fillDocument(document);
+        this.fillDocument(document, n);
 
         document.save();
+        return output;
     }
 }
