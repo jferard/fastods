@@ -27,28 +27,30 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * The flusher to finalize file. Writes postamble for contents, and the settings.
+ *
  * @author Julien Férard
  */
 public class FinalizeFlusher implements OdsFlusher {
-	private final ContentElement contentElement;
-	private final SettingsElement settingsElements;
+    private final ContentElement contentElement;
+    private final SettingsElement settingsElements;
 
-	/**
-	 * @param contentElement the content to finalize
-	 * @param settingsElements the settings to create (settings.xml file)
-	 */
-	public FinalizeFlusher(final ContentElement contentElement, final SettingsElement settingsElements) {
-		this.contentElement = contentElement;
-		this.settingsElements = settingsElements;
-	}
+    /**
+     * @param contentElement   the content to finalize
+     * @param settingsElements the settings to create (settings.xml file)
+     */
+    public FinalizeFlusher(final ContentElement contentElement, final SettingsElement settingsElements) {
+        this.contentElement = contentElement;
+        this.settingsElements = settingsElements;
+    }
 
-	@Override
-	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.contentElement.writePostamble(xmlUtil, writer);
-		this.settingsElements.write(xmlUtil, writer);
-		writer.close();
-	}
+    @Override
+    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+        this.contentElement.writePostamble(xmlUtil, writer);
+        this.settingsElements.write(xmlUtil, writer);
+        writer.close();
+    }
 }

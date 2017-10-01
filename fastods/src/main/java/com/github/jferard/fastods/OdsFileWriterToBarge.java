@@ -21,9 +21,12 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.charbarge.AppendableConsumer;
+import com.github.jferard.charbarge.CharBarge;
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * The OdsFileWriterAdapter class represents an adapter to a writer. It stores a queue of flushers. Usage:
@@ -43,20 +46,24 @@ import java.util.Queue;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFileWriterAdapter implements OdsFileWriter {
-	private final OdsFileWriter adaptee;
-	private boolean stopped;
-	private final Queue<OdsFlusher> flushers;
-	private boolean producerAlive;
+public class OdsFileWriterToBarge implements OdsFileWriter {
+	private final ZipUTF8Writer zipUTF8Writer;
+	private final XMLUtil xmlUtil;
+	private final OdsDocument document;
+	private final CharBarge barge;
+	private ZipUTF8Writer bargeWrapper;
 
-	public static OdsFileWriterAdapter create(final OdsFileWriter adaptee) {
-		return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
+	public static OdsFileWriterToBarge create(final OdsDocument document, final ZipUTF8Writer zipUTF8Writer) {
+		return new OdsFileWriterToBarge(document, zipUTF8Writer, XMLUtil.create(), CharBarge.create(256*1024));
 	}
 
-	OdsFileWriterAdapter(final OdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
-		this.adaptee = adaptee;
-		this.flushers = flushers;
-		this.producerAlive = true;
+
+	OdsFileWriterToBarge(final OdsDocument document, final ZipUTF8Writer zipUTF8Writer, final XMLUtil xmlUtil, final CharBarge barge) {
+		this.zipUTF8Writer = zipUTF8Writer;
+		this.xmlUtil = xmlUtil;
+		this.document = document;
+		this.barge = barge;
+		this.bargeWrapper = new BargeWrapper(this.barge, this.zipUTF8Writer);
 	}
 
 	@Override
@@ -65,57 +72,17 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
 
 	@Override
 	public OdsDocument document() {
-		return this.adaptee.document();
+		return this.document;
 	}
+
+	public AppendableConsumer consumer() { return new AppendableConsumer(this.barge, this.zipUTF8Writer); }
 
 	@Override
 	public synchronized void save() throws IOException {
 	}
 
 	@Override
-	public synchronized void update(final OdsFlusher flusher) throws IOException {
-		this.flushers.add(flusher);
-		if (flusher instanceof FinalizeFlusher)
-			this.producerAlive = false;
-		this.notifyAll();
+	public void update(final OdsFlusher flusher) throws IOException {
+		flusher.flushInto(this.xmlUtil, this.bargeWrapper);
 	}
-
-	public synchronized void flushAdaptee() throws IOException {
-		OdsFlusher flusher = this.flushers.poll();
-		if (flusher == null)
-			return;
-
-		while (flusher != null) {
-			this.adaptee.update(flusher);
-			if (flusher instanceof FinalizeFlusher) {
-				this.stopped = true;
-				break;
-			}
-			if (this.producerAlive) {
-				try {
-					this.wait();
-				} catch (final InterruptedException e) {
-				}
-			}
-			this.notifyAll(); //
-			flusher = this.flushers.poll();
-		}
-		if (this.stopped)
-			this.adaptee.save();
-		this.notifyAll(); // nobody is waiting
-	}
-
-	public synchronized boolean isNotStopped() {
-		return !this.stopped;
-	}
-
-	public synchronized void waitForData() {
-		while (this.flushers.isEmpty() && this.isNotStopped()) {
-			try {
-				this.wait();
-			} catch (final InterruptedException e) {
-			}
-		}
-	}
-
 }

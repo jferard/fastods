@@ -25,6 +25,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author Julien Férard

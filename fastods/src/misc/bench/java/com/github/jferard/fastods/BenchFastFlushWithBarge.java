@@ -21,20 +21,22 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.charbarge.AppendableConsumer;
+import com.github.jferard.fastods.testlib.Bench;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.logging.Logger;
-import org.junit.Test;
-import com.github.jferard.fastods.testlib.Bench;
 import java.util.Random;
+import java.util.logging.Logger;
 
-public class BenchFastFlushWithThreads extends Bench {
+public class BenchFastFlushWithBarge extends Bench {
 	private final Logger logger;
 	private final OdsFactory odsFactory;
 
-	public BenchFastFlushWithThreads(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "FastODSFlushWithThreads", rowCount, colCount);
+	public BenchFastFlushWithBarge(final Logger logger, final int rowCount, final int colCount) {
+		super(logger, "FastODSFlushWithBarge", rowCount, colCount);
 		this.logger = logger;
 		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
 	}
@@ -48,17 +50,17 @@ public class BenchFastFlushWithThreads extends Bench {
 	public long test() throws IOException {
 		try {
 			// Open the file.
-			this.logger.info("testFastFlushThread: filling a " + this.getRowCount() + " rows, "
+			this.logger.info("testFastFlushBarge: filling a " + this.getRowCount() + " rows, "
 					+ this.getColCount() + " columns spreadsheet");
 			final long t1 = System.currentTimeMillis();
-			final OdsFileWriterAdapter writerAdapter =
-					this.odsFactory.createWriterAdapter(new File("generated_files", "fastods_flush_thread_benchmark" +
+			final OdsFileWriterToBarge writerToBarge =
+					this.odsFactory.createWriterToBarge(new File("generated_files", "fastods_flush_barge_benchmark" +
 							".ods"));
-			final OdsDocument document = writerAdapter.document();
+			final OdsDocument document = writerToBarge.document();
 			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
-			final Consumer b = new Consumer(writerAdapter);
+			final AppendableConsumer b = writerToBarge.consumer();
 			b.start();
-			a.start();
+			a.start(); // start();
 			b.join();
 			final long t2 = System.currentTimeMillis();
 
@@ -68,34 +70,6 @@ public class BenchFastFlushWithThreads extends Bench {
 			e.printStackTrace();
 		}
 		return 0;
-	}
-
-	class Consumer extends Thread {
-		private final OdsFileWriterAdapter writerAdapter;
-
-		public Consumer(final OdsFileWriterAdapter writerAdapter) {
-			this.writerAdapter = writerAdapter;
-		}
-
-		@Override
-		public void run() {
-			long t = 0;
-			try {
-				while (this.writerAdapter.isNotStopped()) {
-					this.writerAdapter.waitForData();
-					final long t1 = System.currentTimeMillis();
-					this.writerAdapter.flushAdaptee();
-					final long t2 = System.currentTimeMillis();
-					t += t2 - t1;
-				}
-				final long t1 = System.currentTimeMillis();
-				this.writerAdapter.flushAdaptee();
-				final long t2 = System.currentTimeMillis();
-				t += t2 - t1;
-			} catch (final IOException e) {
-			}
-			System.out.println(">> Write time " + t + " ms");
-		}
 	}
 
 	class Producer extends Thread {
@@ -124,6 +98,7 @@ public class BenchFastFlushWithThreads extends Bench {
 						walker.next();
 					}
 				}
+
 				this.document.save();
 			} catch (final IOException e) {
 				e.printStackTrace();

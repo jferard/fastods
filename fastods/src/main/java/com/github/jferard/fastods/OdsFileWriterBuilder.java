@@ -95,8 +95,8 @@ public class OdsFileWriterBuilder {
 		if (this.out == null)
 			this.out = new FileOutputStream(this.filename);
 
-		ZipUTF8Writer writer = this.builder.build(this.out);
-		return new OdsFileWriterImpl(this.logger, this.document, XMLUtil.create(), writer);
+		final ZipUTF8Writer writer = this.builder.build(this.out);
+		return new OdsFileDirectWriter(this.logger, this.document, XMLUtil.create(), writer);
 	}
 
 	/**

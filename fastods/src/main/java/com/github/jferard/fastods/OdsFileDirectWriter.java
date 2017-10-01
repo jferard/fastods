@@ -29,10 +29,12 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
+ * The OdsFileDirectWriter class represents a direct writer. It asks the flusher to flush its data directly into the
+ * zip writer.
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFileWriterImpl implements OdsFileWriter {
+public class OdsFileDirectWriter implements OdsFileWriter {
 	public static OdsFileWriterBuilder builder(final Logger logger, final OdsDocument document) {
 		return new OdsFileWriterBuilder(logger, document);
 	}
@@ -50,7 +52,7 @@ public class OdsFileWriterImpl implements OdsFileWriter {
 	 * @param xmlUtil
 	 * @param writer   The writer for this file
 	 */
-	OdsFileWriterImpl(final Logger logger, final OdsDocument document, final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+	OdsFileDirectWriter(final Logger logger, final OdsDocument document, final XMLUtil xmlUtil, final ZipUTF8Writer writer)
 			throws FileNotFoundException {
 		this.logger = logger;
 		this.document = document;

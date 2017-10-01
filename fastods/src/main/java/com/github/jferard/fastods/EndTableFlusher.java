@@ -25,12 +25,14 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 /**
  * A flusher for the end of the table. Writes remaining rows and the table postamble.
  * @author Julien Férard
  */
+
 public class EndTableFlusher implements OdsFlusher {
 	private final TableAppender appender;
 	private final List<TableRow> rows;

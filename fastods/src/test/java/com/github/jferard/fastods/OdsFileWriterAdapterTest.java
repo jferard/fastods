@@ -28,10 +28,8 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by jferard on 09/05/17.
@@ -40,7 +38,7 @@ public class OdsFileWriterAdapterTest {
     private OdsFileWriter w;
     private OdsFlusher f;
     private OdsFileWriterAdapter wa;
-    private Queue<OdsFlusher> flushers;
+    private Deque<OdsFlusher> flushers;
     private OdsDocument d;
 
     @Before
