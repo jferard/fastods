@@ -55,7 +55,7 @@ public class BenchFastFlushWithBarge extends Bench {
 			final long t1 = System.currentTimeMillis();
 			final OdsFileWriterToBarge writerToBarge =
 					this.odsFactory.createWriterToBarge(new File("generated_files", "fastods_flush_barge_benchmark" +
-							".ods"));
+							".ods"), 1024*1024);
 			final OdsDocument document = writerToBarge.document();
 			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
 			final AppendableConsumer b = writerToBarge.consumer();
@@ -87,7 +87,6 @@ public class BenchFastFlushWithBarge extends Bench {
 
 		@Override
 		public void run() {
-			System.out.println("enter producer");
 			try {
 				final Table table = this.document.addTable("test", this.rowCount, this.colCount);
 
@@ -104,7 +103,6 @@ public class BenchFastFlushWithBarge extends Bench {
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("leave producer");
 		}
 	}
 }

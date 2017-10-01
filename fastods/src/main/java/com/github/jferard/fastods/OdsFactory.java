@@ -145,10 +145,10 @@ public class OdsFactory {
 	 * @return
 	 * @throws IOException
 	 */
-	public OdsFileWriterToBarge createWriterToBarge(final File file) throws IOException {
+	public OdsFileWriterToBarge createWriterToBarge(final File file, final int size) throws IOException {
 		final OdsDocument document = this.createDocument();
-		final ZipUTF8Writer zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer().build(new FileOutputStream(file));
-		final OdsFileWriterToBarge writerToBarge = OdsFileWriterToBarge.create(document, zipUTF8Writer);
+		final ZipUTF8Writer zipUTF8Writer = ZipUTF8WriterImpl.builder().noZipBuffer().noWriterBuffer().build(new FileOutputStream(file));
+		final OdsFileWriterToBarge writerToBarge = OdsFileWriterToBarge.create(document, zipUTF8Writer, size);
 		document.addObserver(writerToBarge);
 		document.prepareFlush();
 		return writerToBarge;

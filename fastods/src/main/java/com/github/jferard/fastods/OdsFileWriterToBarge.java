@@ -53,8 +53,8 @@ public class OdsFileWriterToBarge implements OdsFileWriter {
 	private final CharBarge barge;
 	private final ZipUTF8Writer bargeWrapper;
 
-	public static OdsFileWriterToBarge create(final OdsDocument document, final ZipUTF8Writer zipUTF8Writer) {
-		return new OdsFileWriterToBarge(document, zipUTF8Writer, XMLUtil.create(), CharBarge.create(256*1024));
+	public static OdsFileWriterToBarge create(final OdsDocument document, final ZipUTF8Writer zipUTF8Writer, final int size) {
+		return new OdsFileWriterToBarge(document, zipUTF8Writer, XMLUtil.create(), CharBarge.create(size));
 	}
 
 

@@ -68,6 +68,7 @@ public class BargeWrapper implements ZipUTF8Writer {
 
     @Override
     public void close() throws IOException {
+        this.barge.close();
         this.zipUTF8Writer.close();
     }
 
