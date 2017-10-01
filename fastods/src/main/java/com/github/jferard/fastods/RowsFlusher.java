@@ -30,28 +30,34 @@ import java.util.List;
 
 /**
  * A flusher for a collection of rows
+ *
  * @author Julien Férard
  */
 class RowsFlusher implements OdsFlusher {
-	private final List<TableRow> rows;
+    private final List<TableRow> rows;
 
-	/**
-	 * @param rows the rows to flush
-	 */
-	public RowsFlusher(final List<TableRow> rows) {
-		this.rows = rows;
-	}
+    /**
+     * @param rows the rows to flush
+     */
+    public RowsFlusher(final List<TableRow> rows) {
+        this.rows = rows;
+    }
 
-	@Override
-	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		// flush rows
-		for (final TableRow row : this.rows) {
-			if (row == null) {
-				throw new IllegalArgumentException();
-			}
-			row.appendXMLToTable(xmlUtil, writer);
-		}
-		// free rows
-		Collections.fill(this.rows, null);
-	}
+    @Override
+    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+        // flush rows
+        for (final TableRow row : this.rows) {
+            if (row == null) {
+                throw new IllegalArgumentException();
+            }
+            row.appendXMLToTable(xmlUtil, writer);
+        }
+        // free rows
+        Collections.fill(this.rows, null);
+    }
+
+    @Override
+    public boolean isEnd() {
+        return false;
+    }
 }

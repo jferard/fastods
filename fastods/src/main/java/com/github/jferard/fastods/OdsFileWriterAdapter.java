@@ -23,80 +23,97 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
+ * The OdsFileWriterAdapter class represents an adapter to a writer. It stores a queue of flushers. Usage:
+ * <ul>
+ * <li>A producer thread that writes on a OdsFileWriterAdapter.document()</li>
+ * <li>A consumer thread that uses the following stucture</li>
+ * </ul>
+ * <p>
+ * <pre>
+ * while (this.writerAdapter.isNotStopped()) {
+ *     this.writerAdapter.waitForData();
+ *     this.writerAdapter.flushAdaptee();
+ * }
+ * this.writerAdapter.flushAdaptee();
+ * </pre>
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class OdsFileWriterAdapter implements OdsFileWriter {
-	private final OdsFileWriter adaptee;
-	private boolean stopped;
-	private final Queue<OdsFlusher> flushers;
+    public static OdsFileWriterAdapter create(final OdsFileWriter adaptee) {
+        return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
+    }
 
-	public static OdsFileWriterAdapter create(final OdsFileWriter adaptee) {
-		return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
-	}
+    private final OdsFileWriter adaptee;
+    private final Queue<OdsFlusher> flushers;
+    private boolean stopped;
 
-	OdsFileWriterAdapter(final OdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
-		this.adaptee = adaptee;
-		this.flushers = flushers;
-	}
+    OdsFileWriterAdapter(final OdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
+        this.adaptee = adaptee;
+        this.flushers = flushers;
+    }
 
-	@Override
-	public void close() throws IOException {
-	}
+    @Override
+    public void close() throws IOException {
+    }
 
-	@Override
-	public OdsDocument document() {
-		return this.adaptee.document();
-	}
+    @Override
+    public OdsDocument document() {
+        return this.adaptee.document();
+    }
 
-	@Override
-	public synchronized void save() throws IOException {
-	}
+    @Override
+    public synchronized void save() throws IOException {
+    }
 
-	@Override
-	public synchronized void update(final OdsFlusher flusher) throws IOException {
-		this.flushers.add(flusher);
-		this.notifyAll();
-	}
+    @Override
+    public synchronized void update(final OdsFlusher flusher) throws IOException {
+        this.flushers.add(flusher);
+        this.notifyAll();
+    }
 
-	public synchronized void flushAdaptee() throws IOException {
-		OdsFlusher flusher = this.flushers.poll();
-		if (flusher == null)
-			return;
+    /**
+     * Flushes all available flushers to the adaptee writer.
+     * The thread falls asleep if we reach the end of the queue without a FinalizeFlusher.
+     *
+     * @throws IOException
+     */
+    public synchronized void flushAdaptee() throws IOException {
+        OdsFlusher flusher = this.flushers.poll();
+        if (flusher == null)
+            return;
 
-		while (flusher != null) {
-			this.adaptee.update(flusher);
-			if (flusher instanceof FinalizeFlusher) {
-				this.stopped = true;
-				break;
-			}
-			try {
-				this.wait();
-			} catch (final InterruptedException e) {
-			}
-			this.notifyAll(); //
-			flusher = this.flushers.poll();
-		}
-		if (this.stopped)
-			this.adaptee.save();
-		this.notifyAll(); // nobody is waiting
-	}
+        while (flusher != null) {
+            this.adaptee.update(flusher);
+            if (flusher.isEnd()) {
+                this.adaptee.save();
+                this.notifyAll(); // wakes up other threads: end of game
+                return;
+            }
+            flusher = this.flushers.poll();
+        }
+        try {
+            this.wait();
+        } catch (final InterruptedException e) {
+        }
+        this.notifyAll(); // wakes up other threads: no flusher left
+    }
 
-	public synchronized boolean isNotStopped() {
-		return !this.stopped;
-	}
+    public synchronized boolean isNotStopped() {
+        return !this.stopped;
+    }
 
-	public synchronized void waitForData() {
-		while (this.flushers.isEmpty() && this.isNotStopped()) {
-			try {
-				this.wait();
-			} catch (final InterruptedException e) {
-			}
-		}
-	}
+    public synchronized void waitForData() {
+        while (this.flushers.isEmpty() && this.isNotStopped()) {
+            try {
+                this.wait();
+            } catch (final InterruptedException e) {
+            }
+        }
+    }
 
 }

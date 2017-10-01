@@ -51,4 +51,9 @@ public class FinalizeFlusher implements OdsFlusher {
 		this.settingsElements.write(xmlUtil, writer);
 		writer.close();
 	}
+
+	@Override
+	public boolean isEnd() {
+		return true;
+	}
 }

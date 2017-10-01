@@ -120,7 +120,7 @@ public class OdsFactory {
 	public OdsFileWriter createWriter(final String filename) throws
 			IOException {
 		final OdsDocument document = this.createDocument();
-		final OdsFileWriter writer = OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile
+		final OdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile
 				(filename))
 				.build();
 		document.addObserver(writer);
@@ -131,7 +131,7 @@ public class OdsFactory {
 	public OdsFileWriter createWriter(final File file) throws IOException {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer =
-				OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile(file)).build();
+				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
 		document.addObserver(writer);
 		document.prepareFlush();
 		return writer;
@@ -141,7 +141,7 @@ public class OdsFactory {
 		final OdsDocument document = this.createDocument();
 		final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
 		final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(
-				OdsFileWriterImpl.builder(this.logger, document).openResult(this.openFile(file)).zipBuilder(
+				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).zipBuilder(
 						zipUTF8Writer)
 						.build());
 		document.addObserver(writerAdapter);

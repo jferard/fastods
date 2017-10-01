@@ -29,25 +29,31 @@ import java.util.List;
 
 /**
  * A flusher for the end of the table. Writes remaining rows and the table postamble.
+ *
  * @author Julien Férard
  */
 public class EndTableFlusher implements OdsFlusher {
-	private final TableAppender appender;
-	private final List<TableRow> rows;
+    private final TableAppender appender;
+    private final List<TableRow> rows;
 
-	/**
-	 * @param appender the table to end
-	 * @param rows the remaining rows.
-	 */
-	public EndTableFlusher(final TableAppender appender, final List<TableRow> rows) {
-		this.appender = appender;
-		this.rows = rows;
-	}
+    /**
+     * @param appender the table to end
+     * @param rows     the remaining rows.
+     */
+    public EndTableFlusher(final TableAppender appender, final List<TableRow> rows) {
+        this.appender = appender;
+        this.rows = rows;
+    }
 
-	@Override
-	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		for (final TableRow row : this.rows)
-			row.appendXMLToTable(xmlUtil, writer);
-		this.appender.appendPostamble(writer);
-	}
+    @Override
+    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+        for (final TableRow row : this.rows)
+            row.appendXMLToTable(xmlUtil, writer);
+        this.appender.appendPostamble(writer);
+    }
+
+    @Override
+    public boolean isEnd() {
+        return false;
+    }
 }

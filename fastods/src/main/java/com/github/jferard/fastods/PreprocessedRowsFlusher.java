@@ -25,37 +25,41 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * A flusher for a collection of rows
+ *
  * @author Julien Férard
  */
 class PreprocessedRowsFlusher implements OdsFlusher {
-	private final StringBuilder sb;
+    public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil, final List<TableRow> tableRows) throws IOException {
+        return new PreprocessedRowsFlusher(xmlUtil, tableRows, new StringBuilder(1024 * 32));
+    }
+    private final StringBuilder sb;
 
-	public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil, final List<TableRow> tableRows) throws IOException {
-		return new PreprocessedRowsFlusher(xmlUtil, tableRows, new StringBuilder(1024 * 32));
-	}
+    /**
+     * @param rows the rows to flush
+     * @param sb
+     */
+    PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows, final StringBuilder sb) throws IOException {
+        // use an appender
+        this.sb = sb;
+        for (final TableRow row : rows)
+            TableRow.appendXMLToTable(row, xmlUtil, this.sb);
 
-	/**
-	 * @param rows the rows to flush
-	 * @param sb
-	 */
-	PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows, final StringBuilder sb) throws IOException {
-		// use an appender
-		this.sb = sb;
-		for (final TableRow row : rows)
-			TableRow.appendXMLToTable(row, xmlUtil, this.sb);
+        // free rows
+        Collections.fill(rows, null);
+    }
 
-		// free rows
-		Collections.fill(rows, null);
-	}
+    @Override
+    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+        writer.append(this.sb);
+    }
 
-	@Override
-	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		writer.append(this.sb);
-	}
+    @Override
+    public boolean isEnd() {
+        return false;
+    }
 }

@@ -24,21 +24,28 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 /**
+ * An OdsFileWriter may be a direct writer or an adapter for a writer thread
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public interface OdsFileWriter {
-	void close() throws IOException;
+    void close() throws IOException;
 
-	OdsDocument document();
+    OdsDocument document();
 
+
+    /**
+     * Save the new file.
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    void save() throws IOException;
 
 	/**
-	 * Save the new file.
-	 *
-	 * @throws IOException If an I/O error occurs
-	 */
-	void save() throws IOException;
-
-	void update(final OdsFlusher flusher) throws IOException;
+     * Update the writer with a flusher
+     * @param flusher the chosen flusher
+     * @throws IOException
+     */
+    void update(final OdsFlusher flusher) throws IOException;
 }

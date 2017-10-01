@@ -30,5 +30,7 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public interface OdsFlusher {
-	void flushInto(XMLUtil xmlUtil, ZipUTF8Writer writer) throws IOException;
+    void flushInto(XMLUtil xmlUtil, ZipUTF8Writer writer) throws IOException;
+
+    boolean isEnd();
 }
