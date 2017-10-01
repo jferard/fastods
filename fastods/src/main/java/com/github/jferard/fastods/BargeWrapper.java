@@ -47,6 +47,7 @@ public class BargeWrapper implements ZipUTF8Writer {
     @Override
     public void finish() throws IOException {
         this.barge.forceFlushTo(this.zipUTF8Writer);
+        this.barge.close();
         this.zipUTF8Writer.finish();
     }
 

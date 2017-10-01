@@ -30,15 +30,20 @@ import java.io.IOException;
 /**
  */
 public class ImmutableElementsFlusher implements OdsFlusher {
-	private final OdsElements odsElements;
+    private final OdsElements odsElements;
 
-	public ImmutableElementsFlusher(final OdsElements odsElements) {
-		this.odsElements = odsElements;
-	}
+    public ImmutableElementsFlusher(final OdsElements odsElements) {
+        this.odsElements = odsElements;
+    }
 
-	@Override
-	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.createEmptyElements(writer);
-		this.odsElements.writeImmutableElements(xmlUtil, writer);
-	}
+    @Override
+    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+        this.odsElements.createEmptyElements(writer);
+        this.odsElements.writeImmutableElements(xmlUtil, writer);
+    }
+
+    @Override
+    public boolean isEnd() {
+        return false;
+    }
 }

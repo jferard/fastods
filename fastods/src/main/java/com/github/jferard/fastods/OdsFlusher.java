@@ -32,4 +32,6 @@ import java.io.Writer;
  */
 public interface OdsFlusher {
 	void flushInto(XMLUtil xmlUtil, ZipUTF8Writer writer) throws IOException;
+
+    boolean isEnd();
 }

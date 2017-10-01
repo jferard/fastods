@@ -87,6 +87,7 @@ public class BenchFastFlushWithBarge extends Bench {
 
 		@Override
 		public void run() {
+			System.out.println("enter producer");
 			try {
 				final Table table = this.document.addTable("test", this.rowCount, this.colCount);
 
@@ -103,6 +104,7 @@ public class BenchFastFlushWithBarge extends Bench {
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println("leave producer");
 		}
 	}
 }

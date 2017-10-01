@@ -44,4 +44,9 @@ public class BeginTableFlusher implements OdsFlusher {
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		this.appender.appendPreamble(xmlUtil, writer);
 	}
+
+	@Override
+	public boolean isEnd() {
+		return false;
+	}
 }

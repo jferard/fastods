@@ -57,4 +57,9 @@ class PreprocessedRowsFlusher implements OdsFlusher {
 	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
 		writer.append(this.sb);
 	}
+
+	@Override
+	public boolean isEnd() {
+		return false;
+	}
 }

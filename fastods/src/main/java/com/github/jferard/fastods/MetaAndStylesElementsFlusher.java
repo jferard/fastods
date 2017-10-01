@@ -32,18 +32,23 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class MetaAndStylesElementsFlusher implements OdsFlusher {
-	private final OdsElements odsElements;
-	private final ContentElement contentElement;
+    private final OdsElements odsElements;
+    private final ContentElement contentElement;
 
-	public MetaAndStylesElementsFlusher(final OdsElements odsElements, final ContentElement contentElement) {
-		this.odsElements = odsElements;
-		this.contentElement = contentElement;
-	}
+    public MetaAndStylesElementsFlusher(final OdsElements odsElements, final ContentElement contentElement) {
+        this.odsElements = odsElements;
+        this.contentElement = contentElement;
+    }
 
-	@Override
-	public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-		this.odsElements.writeMeta(xmlUtil, writer);
-		this.odsElements.writeStyles(xmlUtil, writer);
-		this.contentElement.writePreamble(xmlUtil, writer);
-	}
+    @Override
+    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+        this.odsElements.writeMeta(xmlUtil, writer);
+        this.odsElements.writeStyles(xmlUtil, writer);
+        this.contentElement.writePreamble(xmlUtil, writer);
+    }
+
+    @Override
+    public boolean isEnd() {
+        return false;
+    }
 }

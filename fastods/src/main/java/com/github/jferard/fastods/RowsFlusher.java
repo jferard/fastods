@@ -54,4 +54,9 @@ class RowsFlusher implements OdsFlusher {
 		// free rows
 		Collections.fill(this.rows, null);
 	}
+
+	@Override
+	public boolean isEnd() {
+		return false;
+	}
 }

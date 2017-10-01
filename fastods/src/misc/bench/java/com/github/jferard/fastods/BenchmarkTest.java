@@ -115,4 +115,13 @@ public class BenchmarkTest {
 		}
 		this.logger.info(bench1c.getWithoutWarmup().toString());
 	}
+
+//	@Test
+	public void checkBarge() throws IOException {
+		final Bench bench1c = new BenchFastFlushWithBarge(this.logger, 15, 20);
+		for (int i = 0; i < 1000; i++) {
+			bench1c.iteration();
+		}
+		this.logger.info(bench1c.getWithoutWarmup().toString());
+	}
 }

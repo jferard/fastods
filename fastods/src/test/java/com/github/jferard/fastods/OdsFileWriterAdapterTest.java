@@ -98,6 +98,8 @@ public class OdsFileWriterAdapterTest {
 
         final FinalizeFlusher ff = PowerMock.createMock(FinalizeFlusher.class);
         this.flushers.add(ff);
+        EasyMock.expect(ff.isEnd()).andReturn(true);
+
         // PLAY
         this.w.update(ff);
         this.w.save();
@@ -127,6 +129,9 @@ public class OdsFileWriterAdapterTest {
                 }
             }
         };
+
+        EasyMock.expect(this.f.isEnd()).andReturn(false);
+        EasyMock.expect(ff.isEnd()).andReturn(true);
 
         // PLAY
         this.w.update(this.f);
