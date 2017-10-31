@@ -49,6 +49,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 	 */
 	private static final char[] TO_COPY = "amp;&lt;&gt;&apos;&quot;\\uFFFD&#x9;&#xA;&#xD;"
 			.toCharArray();
+	public static final int SPACE = 0x20;
 	private final Map<String, String> attrCacheMap;
 
 	private char[] buffer;
@@ -121,7 +122,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 40;
 					toCopyLen = 5;
-				} else if (c < 0x20) {
+				} else if (c < SPACE) {
 					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 24;
 					toCopyLen = 6;
@@ -216,7 +217,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 					// do nothing, but avoid replacement by \\uFFFD
 					toCopyIndex = -1;
 					toCopyLen = -1;
-				} else if (c < 0x20) {
+				} else if (c < SPACE) {
 					firstDifferentCharInSourceIndex = sourceIndex;
 					toCopyIndex = 24;
 					toCopyLen = 6;

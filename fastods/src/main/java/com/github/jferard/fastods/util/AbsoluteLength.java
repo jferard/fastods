@@ -32,15 +32,11 @@ import java.util.Locale;
  * @author Julien Férard
  */
 public class AbsoluteLength implements Length {
-    private final double mm;
-
-    /**
-     * Create a new length.
-     * @param mm the length in millimeters
-     */
-    AbsoluteLength(final double mm) {
-        this.mm = mm;
-    }
+    private static final double CM_FACTOR = 10.0;
+    private static final double INCH_FACTOR = 2.54 * CM_FACTOR; // inch -> cm = *2.54, cm -> mm = *10
+    private static final double PT_FACTOR = INCH_FACTOR / 72.0; // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
+    private static final double PC_FACTOR = PT_FACTOR * 12.0; // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
+    private static final double MIN_DELTA = 0.001;
 
     /**
      * @param value the length in millimiters
@@ -55,7 +51,7 @@ public class AbsoluteLength implements Length {
      * @return the created AbsoluteLength
      */
     public static AbsoluteLength cm(final double value) {
-        return new AbsoluteLength(value*10.0);
+        return new AbsoluteLength(value * CM_FACTOR);
     }
 
     /**
@@ -63,7 +59,7 @@ public class AbsoluteLength implements Length {
      * @return the created AbsoluteLength
      */
     public static AbsoluteLength in(final double value) {
-        return new AbsoluteLength(value*25.4); // inch -> cm = *2.54, cm -> mm = *10
+        return new AbsoluteLength(value * INCH_FACTOR);
     }
 
     /**
@@ -71,7 +67,7 @@ public class AbsoluteLength implements Length {
      * @return the created AbsoluteLength
      */
     public static AbsoluteLength pt(final double value) {
-        return new AbsoluteLength(value*25.4/72.0); // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10
+        return new AbsoluteLength(value * PT_FACTOR);
     }
 
     /**
@@ -79,7 +75,17 @@ public class AbsoluteLength implements Length {
      * @return the created AbsoluteLength
      */
     public static AbsoluteLength pc(final double value) {
-        return new AbsoluteLength(value*25.4/6.0); // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10
+        return new AbsoluteLength(value * PC_FACTOR);
+    }
+    private final double mm;
+
+    /**
+     * Create a new length.
+     *
+     * @param mm the length in millimeters
+     */
+    AbsoluteLength(final double mm) {
+        this.mm = mm;
     }
 
     public boolean equals(final Object o) {
@@ -87,10 +93,10 @@ public class AbsoluteLength implements Length {
             return false;
 
         final AbsoluteLength other = (AbsoluteLength) o;
-        return this.mm - other.mm < 0.001 || other.mm - this.mm < 0.001;
+        return this.mm - other.mm < MIN_DELTA || other.mm - this.mm < MIN_DELTA;
     }
 
     public String toString() {
-        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm)+"mm";
+        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) + "mm";
     }
 }

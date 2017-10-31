@@ -181,6 +181,8 @@ public final class Color {
 	public final static String WHITESMOKE = "#F5F5F5";
 	public final static String YELLOW = "#FFFF00";
 	public final static String YELLOWGREEN = "#9ACD32";
+	public static final int X_FF = 255;
+	public static final int X_F = 15;
 
 	/**
 	 * Helper function to create any available color string from color values.
@@ -204,11 +206,11 @@ public final class Color {
 	private static String toHexString(final int n) {
 		if (n < 0)
 			return "00";
-		if (n > 255)
+		if (n > X_FF)
 			return "ff";
 
 		final StringBuilder sbReturn = new StringBuilder();
-		if (n < 16)
+		if (n <= X_F)
 			sbReturn.append('0');
 		sbReturn.append(Integer.toHexString(n));
 		return sbReturn.toString();

@@ -34,8 +34,10 @@ import java.util.List;
  * @author Julien Férard
  */
 class PreprocessedRowsFlusher implements OdsFlusher {
+    private static final int STRING_BUILDER_SIZE = 1024 * 32;
+
     public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil, final List<TableRow> tableRows) throws IOException {
-        return new PreprocessedRowsFlusher(xmlUtil, tableRows, new StringBuilder(1024 * 32));
+        return new PreprocessedRowsFlusher(xmlUtil, tableRows, new StringBuilder(STRING_BUILDER_SIZE));
     }
     private final StringBuilder sb;
 

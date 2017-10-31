@@ -29,6 +29,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  */
 public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
+	private static final Length DEFAULT_COLUMN_WIDTH = SimpleLength.cm(2.5); // 0.5.0 changed from 2,500cm to 2.5cm
 	private Length columnWidth;
 	private TableCellStyle defaultCellStyle;
 	private final String name;
@@ -43,7 +44,7 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
 			throw new IllegalArgumentException();
 
 		this.name = name;
-		this.columnWidth = SimpleLength.cm(2.5); // 0.5.0 changed from 2,500cm to 2.5cm
+		this.columnWidth = DEFAULT_COLUMN_WIDTH;
 		this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
 	}
 

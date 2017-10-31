@@ -32,6 +32,9 @@ import java.util.Locale;
  * @author Julien Férard
  */
 public class SimpleLength implements Length {
+
+    public static final double MAX_DELTA = 0.001;
+
     public enum Unit {
         MM, CM, IN, PT, PC
     }
@@ -71,7 +74,7 @@ public class SimpleLength implements Length {
         final SimpleLength other = (SimpleLength) o;
         if (this.unit == other.unit) {
             final double delta = this.value - other.value;
-            return (delta >= 0.0) ? (delta < 0.001) : (delta > -0.001);
+            return (delta >= 0.0) ? (delta < MAX_DELTA) : (delta > -MAX_DELTA);
         } else
             return false;
 

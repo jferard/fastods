@@ -31,7 +31,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Martin Schulz
  */
 public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle> {
-
+	private static final Length DEFAULT_ROW_HEIGHT = SimpleLength.cm(0.45);
 	private final String name;
 	private Length rowHeight;
 	private boolean hidden;
@@ -45,7 +45,7 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle> {
 			throw new IllegalArgumentException();
 
 		this.name = name;
-		this.rowHeight = SimpleLength.cm(0.45);
+		this.rowHeight = DEFAULT_ROW_HEIGHT;
 	}
 
 	@Override

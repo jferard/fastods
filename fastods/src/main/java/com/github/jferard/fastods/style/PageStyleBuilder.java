@@ -34,6 +34,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  */
 public class PageStyleBuilder {
+	private static final Length DEFAULT_MARGIN_SIZE = SimpleLength.cm(1.5);
 	private String backgroundColor;
 	private Footer footer;
 	private Header header;
@@ -61,7 +62,7 @@ public class PageStyleBuilder {
 
 		this.name = name;
 		this.marginsBuilder = new MarginsBuilder();
-		this.marginsBuilder.all(SimpleLength.cm(1.5));
+		this.marginsBuilder.all(DEFAULT_MARGIN_SIZE);
 
 		this.paperFormat = PageStyle.DEFAULT_FORMAT;
 		this.pageWidth = PageStyle.DEFAULT_FORMAT.getWidth();

@@ -31,8 +31,10 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class PositionUtil {
+	public static final int ALPHABET_SIZE = 26;
+	public static final int ORD_A = 'A';
+
 	public static class Position {
-		public static final int ORD_A = 'A';
 		private final EqualityUtil equalityUtil;
 		private final int column;
 		private final int row;
@@ -86,9 +88,9 @@ public class PositionUtil {
 		public String toCellAddress() {
 			final StringBuilder sb = new StringBuilder();
 			int col = this.column;
-			while (col >= 26) {
-				sb.insert(0, (char) (ORD_A + (col % 26)));
-				col = col/26 - 1;
+			while (col >= ALPHABET_SIZE) {
+				sb.insert(0, (char) (ORD_A + (col % ALPHABET_SIZE)));
+				col = col/ ALPHABET_SIZE - 1;
 			}
 			sb.insert(0, (char) (ORD_A + col));
 			sb.append(this.row+1);
@@ -148,7 +150,7 @@ public class PositionUtil {
 				break;
 			case OPT_SECOND_LETTER: // opt letter
 				if ('A' <= c && c <= 'Z') {
-					col = col * 26 + c - 'A' + 1;
+					col = col * ALPHABET_SIZE + c - ORD_A + 1;
 					n++;
 				}
 				status = PositionUtil.BEGIN_DIGIT;
