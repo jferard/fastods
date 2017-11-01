@@ -23,7 +23,6 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
-import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;

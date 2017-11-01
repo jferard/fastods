@@ -23,7 +23,6 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
-import com.github.jferard.fastods.util.Style;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**

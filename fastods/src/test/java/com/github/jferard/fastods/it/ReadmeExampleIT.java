@@ -53,7 +53,7 @@ public class ReadmeExampleIT {
     public static final String GREEN_COLOR = "#00FF00";
 
     @BeforeClass
-    public static final void beforeClass() {
+    public static void beforeClass() {
         Util.mkdir(GENERATED_FILES);
     }
     private Logger logger;

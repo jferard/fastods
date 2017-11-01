@@ -124,7 +124,7 @@ public class Settings {
         return Settings.create(viewSettings, firstView, configurationSettings);
     }
 
-    final static Settings create(final ConfigItemSet viewSettings, final ConfigItemMapEntrySet firstView,
+    static Settings create(final ConfigItemSet viewSettings, final ConfigItemMapEntrySet firstView,
                                  final ConfigItemSet configurationSettings) {
         final List<ConfigBlock> rootBlocks = new ArrayList<ConfigBlock>();
         final ConfigItemMapIndexed views = new ConfigItemMapIndexed("Views");
@@ -134,33 +134,27 @@ public class Settings {
         return new Settings(rootBlocks, viewSettings, views, viewById, firstView, tablesMap, configurationSettings);
     }
 
-    private final ConfigItemSet configurationSettings;
     private final ConfigItemMapEntrySet firstView;
     private final List<ConfigBlock> rootBlocks;
     private final ConfigItemMapNamed tablesMap;
     private final Map<String, ConfigItemMapEntrySet> viewById;
-    private final ConfigItemSet viewSettings;
-    private final ConfigItemMapIndexed views;
 
     Settings(final List<ConfigBlock> rootBlocks, final ConfigItemSet viewSettings, final ConfigItemMapIndexed views,
              final Map<String, ConfigItemMapEntrySet> viewById, final ConfigItemMapEntrySet firstView,
              final ConfigItemMapNamed tablesMap,
              final ConfigItemSet configurationSettings) {
         this.rootBlocks = rootBlocks;
-        this.viewSettings = viewSettings;
-        this.views = views;
         this.viewById = viewById;
         this.firstView = firstView;
         this.tablesMap = tablesMap;
-        this.configurationSettings = configurationSettings;
 
         // build tree
-        this.rootBlocks.add(this.viewSettings);
-        this.viewSettings.add(this.views);
-        this.views.add(this.firstView);
+        views.add(this.firstView);
+        viewSettings.add(views);
+        this.rootBlocks.add(viewSettings);
         this.viewById.put(((ConfigItem) firstView.getByName("ViewId")).getValue(), firstView);
         this.firstView.add(this.tablesMap);
-        this.rootBlocks.add(this.configurationSettings);
+        this.rootBlocks.add(configurationSettings);
     }
 
     public void addTable(final Table table) {

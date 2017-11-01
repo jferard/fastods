@@ -21,10 +21,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.AddableToOdsElements;
-import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.Style;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

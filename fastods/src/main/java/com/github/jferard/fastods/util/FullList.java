@@ -35,7 +35,7 @@ import java.util.ListIterator;
  *
  * @author Julien Férard
  */
-public class FullList<E> implements List<E> {
+public final class FullList<E> implements List<E> {
 	public static class FullListBuilder<F> {
 
 		private F blankElement;

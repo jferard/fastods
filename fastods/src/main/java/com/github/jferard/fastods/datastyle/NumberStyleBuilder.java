@@ -22,7 +22,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.util.StyleBuilder;
 
 import java.util.Locale;
 

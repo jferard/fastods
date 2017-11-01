@@ -32,7 +32,6 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * OpenDocument 9.1.2 table:table

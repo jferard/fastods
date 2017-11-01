@@ -50,7 +50,7 @@ public class OdsFileCreationIT {
     public static final String GENERATED_FILES = "generated_files";
 
     @BeforeClass
-    public static final void beforeClass() {
+    public static void beforeClass() {
         Util.mkdir(GENERATED_FILES);
     }
 

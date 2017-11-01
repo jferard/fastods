@@ -69,7 +69,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
 
 	@BeforeClass
-	public static final void beforeClass() {
+	public static void beforeClass() {
 		Util.mkdir(GENERATED_FILES);
 	}
 
@@ -197,7 +197,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 		Assert.assertEquals(" after link to table", nodes.item(2).getTextContent());
 	}
 
-	private final void createDocumentWithFooterAndHeader() throws FastOdsException, IOException {
+	private void createDocumentWithFooterAndHeader() throws FastOdsException, IOException {
 		this.createStyles();
 
 		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();

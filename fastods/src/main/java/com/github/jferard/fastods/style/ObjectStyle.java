@@ -21,11 +21,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.Style;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
 
 /**
  * @author Julien Férard

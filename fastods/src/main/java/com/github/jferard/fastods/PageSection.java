@@ -22,10 +22,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.Margins;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
-import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

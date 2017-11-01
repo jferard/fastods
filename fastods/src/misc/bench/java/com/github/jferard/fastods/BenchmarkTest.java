@@ -43,8 +43,8 @@ public class BenchmarkTest {
     private static final int TIMES = 10;
 
     @BeforeClass
-    public static final void beforeClass() {
-        File generated_files = new File("generated_files");
+    public static void beforeClass() {
+        final File generated_files = new File("generated_files");
         if (generated_files.exists())
             return;
 

@@ -60,7 +60,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	private DataWrapper wrapper;
 
 	@BeforeClass
-	public static final void beforeClass() {
+	public static void beforeClass() {
 		final File generated_files = new File("generated_files");
 		if (generated_files.exists())
 			return;
@@ -95,7 +95,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 			r.add(l);
 		}
 
-		this.setUpRS(Arrays.<String>asList("number"), r, 3);
+		this.setUpRS(Arrays.asList("number"), r, 3);
 		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -141,7 +141,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	@Test
 	@SuppressWarnings("unchecked")
 	public final void testNoRow() throws IOException {
-		this.setUpRS(Arrays.<String>asList("number", "word"),
+		this.setUpRS(Arrays.asList("number", "word"),
 				Arrays.<List<Object>>asList(), 100);
 		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
@@ -174,8 +174,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	public final void testNullValue() throws IOException {
 		final List<Object> l = new ArrayList<Object>(1);
 		l.add(null);
-		this.setUpRS(Arrays.<String>asList("value"),
-				Arrays.<List<Object>>asList(l), 100);
+		this.setUpRS(Arrays.asList("value"),
+				Arrays.asList(l), 100);
 		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -290,7 +290,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		PowerMock.verifyAll();
 	}
 
-	private final void setUpMocks() {
+	private void setUpMocks() {
 		this.logger = PowerMock.createMock(Logger.class);
 		this.rs = PowerMock.createMock(ResultSet.class);
 		this.tcls = PowerMock.createNiceMock(TableCellStyle.class);
@@ -299,7 +299,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		this.table = PowerMock.createMock(Table.class);
 	}
 
-	private final void setUpRS(final List<String> head,
+	private void setUpRS(final List<String> head,
 							   final List<List<Object>> rows, final int max) {
 		this.logger = PowerMock.createMock(Logger.class);
 		final MockConnection connection = this.getJDBCMockObjectFactory()

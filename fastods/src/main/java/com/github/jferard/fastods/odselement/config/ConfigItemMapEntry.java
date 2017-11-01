@@ -21,8 +21,6 @@
 
 package com.github.jferard.fastods.odselement.config;
 
-import java.util.Iterator;
-
 /**
  * A ConfigItemMapEntry represents an entry in the settings. It can be a sequence, a set or a singleton.
  *

@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
 import com.github.jferard.fastods.testlib.Bench;
@@ -55,8 +56,8 @@ public class BenchFastFlushWithThreads extends Bench {
 					this.odsFactory.createWriterAdapter(new File("generated_files", "fastods_flush_thread_benchmark" +
 							".ods"));
 			final OdsDocument document = writerAdapter.document();
-			Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
-			Consumer b = new Consumer(writerAdapter);
+			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
+			final Consumer b = new Consumer(writerAdapter);
 			b.start();
 			a.start();
 			a.join();
@@ -65,8 +66,8 @@ public class BenchFastFlushWithThreads extends Bench {
 
 			this.logger.info("Filled in " + (t2 - t1) + " ms");
 			return t2 - t1;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (final InterruptedException e) {
+			this.logger.log(Level.SEVERE, "", e);
 		}
 		return 0;
 	}
@@ -93,7 +94,7 @@ public class BenchFastFlushWithThreads extends Bench {
 				this.writerAdapter.flushAdaptee();
 				final long t2 = System.currentTimeMillis();
 				t += t2 - t1;
-			} catch (IOException e) {
+			} catch (final IOException e) {
 			}
 			System.out.println(">> Write time " + t + " ms");
 		}
@@ -101,9 +102,9 @@ public class BenchFastFlushWithThreads extends Bench {
 
 	class Producer extends Thread {
 		private final OdsDocument document;
-		private int rowCount;
-		private int colCount;
-		private Random random;
+		private final int rowCount;
+		private final int colCount;
+		private final Random random;
 
 		public Producer(final OdsDocument document, final int rowCount, final int colCount, final Random random) {
 			this.document = document;
@@ -115,7 +116,7 @@ public class BenchFastFlushWithThreads extends Bench {
 		@Override
 		public void run() {
 			try {
-				final Table table = document.addTable("test", this.rowCount, this.colCount);
+				final Table table = this.document.addTable("test", this.rowCount, this.colCount);
 
 				for (int y = 0; y < this.rowCount; y++) {
 					final TableRow row = table.nextRow();
@@ -126,8 +127,8 @@ public class BenchFastFlushWithThreads extends Bench {
 					}
 				}
 
-				document.save();
-			} catch (IOException e) {
+				this.document.save();
+			} catch (final IOException e) {
 				e.printStackTrace();
 			}
 		}
