@@ -31,5 +31,5 @@ public interface AddableToOdsElements {
 	 * Add this to OdsElements
 	 * @param odsElements the OdsElements instance where to add this.
 	 */
-	public void addToElements(OdsElements odsElements);
+	void addToElements(OdsElements odsElements);
 }

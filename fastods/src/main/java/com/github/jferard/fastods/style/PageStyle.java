@@ -55,7 +55,7 @@ public class PageStyle implements AddableToOdsElements {
 
 		private final String attrValue;
 
-		private PrintOrientation(final String attrValue) {
+		PrintOrientation(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 
@@ -70,7 +70,7 @@ public class PageStyle implements AddableToOdsElements {
 
 		private final String attrValue;
 
-		private WritingMode(final String attrValue) {
+		WritingMode(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 

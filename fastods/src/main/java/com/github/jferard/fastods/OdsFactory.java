@@ -174,7 +174,7 @@ public class OdsFactory {
 		return this.openFile(f);
 	}
 
-	public static enum FileState {
+	public enum FileState {
 		IS_DIRECTORY,
 		FILE_EXISTS,
 		OK

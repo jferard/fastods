@@ -54,7 +54,7 @@ public class XMLUtil {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendAttribute(final Appendable appendable,
-								final String attrName, final String attrRawValue)
+								final CharSequence attrName, final String attrRawValue)
 			throws IOException {
 		appendable.append(' ').append(attrName).append("=\"")
 				.append(this.escaper.escapeXMLAttribute(attrRawValue))
@@ -92,12 +92,12 @@ public class XMLUtil {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendEAttribute(final Appendable appendable,
-								 final String attrName, final String attrValue) throws IOException {
+								 final CharSequence attrName, final CharSequence attrValue) throws IOException {
 		appendable.append(' ').append(attrName).append("=\"").append(attrValue)
 				.append('"');
 	}
 
-	public void appendTag(final Appendable appendable, final String tagName,
+	public void appendTag(final Appendable appendable, final CharSequence tagName,
 						  final String content) throws IOException {
 		appendable.append('<').append(tagName).append('>')
 				.append(this.escaper.escapeXMLContent(content)).append("</")

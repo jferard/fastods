@@ -32,14 +32,14 @@ import com.github.jferard.fastods.util.XMLUtil;
  */
 public class TextProperties {
 	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
-	public static enum Underline {
+	public enum Underline {
 		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
 				"dotted"), LONGDASH("long-dash"), NONE(
 						"none"), SOLID("solid"), WAVE("wave");
 
 		private final String attrValue;
 
-		private Underline(final String attrValue) {
+		Underline(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 	}

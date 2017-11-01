@@ -95,8 +95,7 @@ public class TextPropertiesBuilder {
 	 * @return this for fluent style
 	 */
 	public TextPropertiesBuilder fontSize(final int fontSize) {
-		this.fontSize = new StringBuilder(8).append(fontSize).append("pt")
-				.toString();
+		this.fontSize = String.valueOf(fontSize) + "pt";
 		return this;
 	}
 

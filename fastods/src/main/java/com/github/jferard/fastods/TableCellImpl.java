@@ -217,8 +217,7 @@ public class TableCellImpl implements TableCell {
             curStyle = TableCellStyle.DEFAULT_CELL_STYLE;
 
         this.stylesContainer.addDataStyle(dataStyle);
-        final TableCellStyle anonymousStyle = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
-        this.style = anonymousStyle;
+        this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
     }
 
     public void setDateValue(final Calendar cal) {
@@ -302,8 +301,7 @@ public class TableCellImpl implements TableCell {
         } else {
             final DataStyle dataStyle = curStyle.getDataStyle();
             if (dataStyle != null) {
-                final TableCellStyle anonymousStyle = this.stylesContainer.addChildCellStyle(style, dataStyle);
-                this.style = anonymousStyle;
+                this.style = this.stylesContainer.addChildCellStyle(style, dataStyle);
             } else {
                 this.style = style;
             }

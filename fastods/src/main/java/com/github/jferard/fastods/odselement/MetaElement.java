@@ -21,13 +21,13 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
-
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 /**
  * WHERE ? meta.xml/office:document-meta
@@ -36,75 +36,73 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
  * @author Martin Schulz
  */
 public class MetaElement implements OdsElement {
-	final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
-	final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
+    final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+    final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
+    private final String editingCycles;
+    private final String editingDuration;
+    private final String generator;
+    private String creator;
+    private String dateTime;
+    // private int tableCount = 1;
+    // private int cellCount = 1;
 
-	private String creator;
-	private String dateTime;
-	private final String editingCycles;
+    public MetaElement() {
+        this.setDateTimeNow();
+        this.generator = "FastOds 0.0.1 2016";
+        this.creator = "FastOds 0.0.1";
+        this.editingCycles = "1";
+        this.editingDuration = "PT1M00S";
+    }
 
-	private final String editingDuration;
-	private final String generator;
-	// private int tableCount = 1;
-	// private int cellCount = 1;
+    public void setCreator(final String creator) {
+        this.creator = creator;
+    }
 
-	public MetaElement() {
-		this.setDateTimeNow();
-		this.generator = "FastOds 0.0.1 2016";
-		this.creator = "FastOds 0.0.1";
-		this.editingCycles = "1";
-		this.editingDuration = "PT1M00S";
-	}
+    @Override
+    public void write(final XMLUtil util, final ZipUTF8Writer writer)
+            throws IOException {
+        writer.putNextEntry(new ZipEntry("meta.xml"));
+        writer.append("<?xml");
+        util.appendEAttribute(writer, "version", "1.0");
+        util.appendEAttribute(writer, "encoding", "UTF-8");
+        writer.append("?><office:document-meta");
+        util.appendEAttribute(writer, "xmlns:office",
+                "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
+        util.appendEAttribute(writer, "xmlns:xlink",
+                "http://www.w3.org/1999/xlink");
+        util.appendEAttribute(writer, "xmlns:dc",
+                "http://purl.org/dc/elements/1.1/");
+        util.appendEAttribute(writer, "xmlns:meta",
+                "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
+        util.appendEAttribute(writer, "xmlns:ooo",
+                "http://openoffice.org/2004/office");
+        util.appendEAttribute(writer, "office:version", "1.1");
+        writer.append("><office:meta>");
+        util.appendTag(writer, "meta:generator", this.generator);
+        util.appendTag(writer, "dc:creator", this.creator);
+        util.appendTag(writer, "dc:date", this.dateTime);
+        util.appendTag(writer, "meta:editing-cycles", this.editingCycles);
+        util.appendTag(writer, "meta:editing-duration", this.editingDuration);
+        writer.append("<meta:user-defined meta:name=\"Info 1\"/>")
+                .append("<meta:user-defined meta:name=\"Info 2\"/>")
+                .append("<meta:user-defined meta:name=\"Info 3\"/>")
+                .append("<meta:user-defined meta:name=\"Info 4\"/>");
+        // .append("<meta:document-statistic");
+        // util.appendEAttribute(writer, "meta:table-count", this.tableCount);
+        // util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
+        // writer.append("/>")
+        writer.append("</office:meta>").append("</office:document-meta>");
+        writer.flush();
+        writer.closeEntry();
+    }
 
-	public void setCreator(final String creator) {
-		this.creator = creator;
-	}
+    /**
+     * Store the date and time of the document creation in the MetaElement data.
+     */
+    private void setDateTimeNow() {
+        final Date dt = new Date();
 
-	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer)
-			throws IOException {
-		writer.putNextEntry(new ZipEntry("meta.xml"));
-		writer.append("<?xml");
-		util.appendEAttribute(writer, "version", "1.0");
-		util.appendEAttribute(writer, "encoding", "UTF-8");
-		writer.append("?><office:document-meta");
-		util.appendEAttribute(writer, "xmlns:office",
-				"urn:oasis:names:tc:opendocument:xmlns:office:1.0");
-		util.appendEAttribute(writer, "xmlns:xlink",
-				"http://www.w3.org/1999/xlink");
-		util.appendEAttribute(writer, "xmlns:dc",
-				"http://purl.org/dc/elements/1.1/");
-		util.appendEAttribute(writer, "xmlns:meta",
-				"urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
-		util.appendEAttribute(writer, "xmlns:ooo",
-				"http://openoffice.org/2004/office");
-		util.appendEAttribute(writer, "office:version", "1.1");
-		writer.append("><office:meta>");
-		util.appendTag(writer, "meta:generator", this.generator);
-		util.appendTag(writer, "dc:creator", this.creator);
-		util.appendTag(writer, "dc:date", this.dateTime);
-		util.appendTag(writer, "meta:editing-cycles", this.editingCycles);
-		util.appendTag(writer, "meta:editing-duration", this.editingDuration);
-		writer.append("<meta:user-defined meta:name=\"Info 1\"/>")
-				.append("<meta:user-defined meta:name=\"Info 2\"/>")
-				.append("<meta:user-defined meta:name=\"Info 3\"/>")
-				.append("<meta:user-defined meta:name=\"Info 4\"/>");
-		// .append("<meta:document-statistic");
-		// util.appendEAttribute(writer, "meta:table-count", this.tableCount);
-		// util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
-		// writer.append("/>")
-		writer.append("</office:meta>").append("</office:document-meta>");
-		writer.flush();
-		writer.closeEntry();
-	}
-
-	/**
-	 * Store the date and time of the document creation in the MetaElement data.
-	 */
-	private void setDateTimeNow() {
-		final Date dt = new Date();
-
-		this.dateTime = new StringBuilder(MetaElement.DF_DATE.format(dt))
-				.append("T").append(MetaElement.DF_TIME.format(dt)).toString();
-	}
+        this.dateTime = MetaElement.DF_DATE.format(dt) +
+                "T" + MetaElement.DF_TIME.format(dt);
+    }
 }

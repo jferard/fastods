@@ -36,7 +36,7 @@ public interface TableCell {
 	/**
 	 * 19.385 office:value-type
 	 */
-	public static enum Type {
+	enum Type {
 		BOOLEAN("office:boolean-value", "boolean"), CURRENCY("office:value",
 				"currency"), DATE("office:date-value", "date"), FLOAT(
 						"office:value", "float"), PERCENTAGE("office:value",
@@ -48,7 +48,7 @@ public interface TableCell {
 		final String attrName;
 		final String attrValue;
 
-		private Type(final String attrName, final String attrValue) {
+		Type(final String attrName, final String attrValue) {
 			this.attrValue = attrValue;
 			this.attrName = attrName;
 		}

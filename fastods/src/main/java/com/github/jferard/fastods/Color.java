@@ -197,9 +197,9 @@ public final class Color {
 	 */
 	public static String createHexColor(final int red, final int green,
 			final int blue) {
-		return new StringBuilder("#").append(Color.toHexString(red))
-				.append(Color.toHexString(green))
-				.append(Color.toHexString(blue)).toString();
+		return "#" + Color.toHexString(red) +
+				Color.toHexString(green) +
+				Color.toHexString(blue);
 
 	}
 

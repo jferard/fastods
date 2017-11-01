@@ -174,8 +174,7 @@ public class OdsDocument {
 			throw new FastOdsException("Wrong table number [" + n + "]");
 		}
 
-		final Table t = tableQueue.get(n);
-		return t;
+		return tableQueue.get(n);
 	}
 
 	/**

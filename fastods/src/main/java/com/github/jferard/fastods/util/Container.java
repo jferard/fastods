@@ -113,7 +113,7 @@ public class Container<K, V> {
 	/**
 	 * @return the values
 	 */
-	public Collection<V> getValues() {
+	public Iterable<V> getValues() {
 		return this.valueByKey.values();
 	}
 

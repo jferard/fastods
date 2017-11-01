@@ -59,7 +59,7 @@ public class BorderAttribute {
 
 		private final String attrName;
 
-		private Position(final String attrName) {
+		Position(final String attrName) {
 			this.attrName = attrName;
 		}
 
@@ -83,7 +83,7 @@ public class BorderAttribute {
 
 		private final String attrValue;
 
-		private Style(final String attrValue) {
+		Style(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 

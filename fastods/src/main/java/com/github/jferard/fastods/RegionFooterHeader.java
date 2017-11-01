@@ -40,7 +40,7 @@ import java.io.IOException;
 class RegionFooterHeader extends PageSectionContent {
 	private static void appendRegionXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable, final Text region,
-			final String regionName) throws IOException {
+			final CharSequence regionName) throws IOException {
 		if (region == null || region.isEmpty())
 			return;
 

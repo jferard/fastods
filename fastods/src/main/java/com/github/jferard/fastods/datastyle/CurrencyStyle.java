@@ -43,7 +43,7 @@ public class CurrencyStyle implements DataStyle {
 	 * A currency symbol may be at the beginning or the end of the expression
 	 */
 	public enum SymbolPosition {
-		BEGIN, END;
+		BEGIN, END
 	}
 
 	private final SymbolPosition currencyPosition;

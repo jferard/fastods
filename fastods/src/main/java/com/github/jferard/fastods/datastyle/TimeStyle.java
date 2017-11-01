@@ -92,7 +92,7 @@ public class TimeStyle implements DataStyle {
 		odsElements.addDataStyle(this);
 	}
 
-	public static enum Format {
+	public enum Format {
 		/**
 		 * Set the time format like '01:02:03'.
 		 */

@@ -48,17 +48,16 @@ class TableBuilder {
 
     private static void checkCol(final int col) throws FastOdsException {
         if (col < 0) {
-            throw new FastOdsException(new StringBuilder(
-                    "Negative column number exception, column value:[")
-                    .append(col).append("]").toString());
+            throw new FastOdsException("Negative column number exception, column value:[" +
+                    col + "]");
         }
     }
 
     private static void checkRow(final int row) throws FastOdsException {
         if (row < 0) {
-            throw new FastOdsException(new StringBuilder(
-                    "Negative row number exception, row value:[").append(row)
-                    .append("]").toString());
+            throw new FastOdsException("Negative row number exception, row value:[" +
+                    row +
+                    "]");
         }
     }
 
@@ -191,7 +190,7 @@ class TableBuilder {
         }
     }
 
-    private PreprocessedRowsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
+    private OdsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
         return PreprocessedRowsFlusher.create(this.xmlUtil,
                 new ArrayList<TableRow>(
                         this.tableRows.subList(

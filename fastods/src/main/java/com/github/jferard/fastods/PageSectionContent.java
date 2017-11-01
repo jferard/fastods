@@ -40,7 +40,7 @@ import java.io.IOException;
  */
 public abstract class PageSectionContent {
 	public enum Region {
-		CENTER, LEFT, RIGHT;
+		CENTER, LEFT, RIGHT
 	}
 
 	/*

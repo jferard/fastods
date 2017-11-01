@@ -29,7 +29,7 @@ import java.util.zip.ZipEntry;
 
 public interface ZipUTF8Writer
 		extends Closeable, Flushable, Appendable {
-	public static final Charset UTF_8 = Charset.forName("UTF-8");
+	Charset UTF_8 = Charset.forName("UTF-8");
 
 	void closeEntry() throws IOException;
 
