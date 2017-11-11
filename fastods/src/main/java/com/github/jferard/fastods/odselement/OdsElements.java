@@ -37,8 +37,8 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 /**
- * The OdsElements class is simply a facade in front of OdsElement classes. See GOF
- * Facade pattern.
+ * The OdsElements class is simply a facade in front of various OdsElement classes (ContentElement, StylesElement, ...).
+ * See GOF Facade pattern.
  *
  * @author Julien Férard
  */
@@ -86,14 +86,14 @@ public class OdsElements {
     /**
      * Create a new instance from elements
      *
-     * @param logger
-     * @param stylesContainer
-     * @param mimetypeElement
-     * @param manifestElement
-     * @param settingsElement
-     * @param metaElement
-     * @param contentElement
-     * @param stylesElement
+     * @param logger          the logger
+     * @param stylesContainer the styles container (before dispatch to styles.xml and content.xml)
+     * @param mimetypeElement the mimetype element
+     * @param manifestElement the manifest element
+     * @param settingsElement the settings.xml element
+     * @param metaElement     the meta element
+     * @param contentElement  the content.xml element
+     * @param stylesElement   the styles.xml element
      */
     OdsElements(final Logger logger, final StylesContainer stylesContainer, final MimetypeElement mimetypeElement,
                 final ManifestElement manifestElement,
@@ -132,7 +132,6 @@ public class OdsElements {
      * Create a new master page style into styles container. No duplicate style name is allowed.
      *
      * @param masterPageStyle the data style to add
-     * @return true if the style was created
      */
     public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
         this.stylesContainer.addMasterPageStyle(masterPageStyle);
@@ -147,10 +146,20 @@ public class OdsElements {
         this.observer = o;
     }
 
+    /**
+     * Add a page layout style
+     *
+     * @param pageLayoutStyle the style
+     */
     public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
         this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
     }
 
+    /**
+     * Add a page style
+     *
+     * @param ps the style
+     */
     public void addPageStyle(final PageStyle ps) {
         this.stylesContainer.addPageStyle(ps);
     }
@@ -160,6 +169,7 @@ public class OdsElements {
      * If it is a table cell style, then add it to styles.xml > common-styles.
      * If the style is a text style, then add it to styles.xml > automatic-styles
      * Else add it to content.xml > automatic-styles
+     *
      * @param objectStyle the style to add
      */
     public void addObjectStyle(final ObjectStyle objectStyle) {
@@ -178,6 +188,11 @@ public class OdsElements {
         }
     }
 
+    /**
+     * Add a style to content.xml/automatic-styles
+     *
+     * @param objectStyle the style
+     */
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
         this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
     }
@@ -225,35 +240,77 @@ public class OdsElements {
         }
     }
 
+    /**
+     * Activate style debugging (for flushers)
+     */
     public void debugStyles() {
         this.stylesContainer.debug();
     }
 
+    /**
+     * Flush tables and write end of document
+     *
+     * @param xmlUtil the util
+     * @param writer  the stream to write
+     * @throws IOException when write fails
+     */
     public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.contentElement.flushTables(xmlUtil, writer);
         this.contentElement.writePostamble(xmlUtil, writer);
     }
 
+    /**
+     * Flush the rows
+     *
+     * @param util   the util
+     * @param writer the stream to write
+     * @throws IOException when write fails
+     */
     public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         this.contentElement.flushRows(util, writer, this.settingsElement);
     }
 
+    /**
+     * Flush the tables
+     *
+     * @param util   the util
+     * @param writer the stream to write
+     * @throws IOException when write fails
+     */
     public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         this.contentElement.flushTables(util, writer);
     }
 
+    /**
+     * Freeze the styles: adding a new style to the container will generate an IllegalStateException
+     */
     public void freezeStyles() {
         this.stylesContainer.freeze();
     }
 
+    /**
+     * Return a table from an index
+     *
+     * @param tableIndex the index
+     * @return the table
+     */
     public Table getTable(final int tableIndex) {
         return this.contentElement.getTable(tableIndex);
     }
 
+    /**
+     * Return a table from a name
+     *
+     * @param name the name
+     * @return the table
+     */
     public Table getTable(final String name) {
         return this.contentElement.getTable(name);
     }
 
+    /**
+     * @return the table count
+     */
     public int getTableCount() {
         return this.contentElement.getTableCount();
     }
@@ -265,10 +322,19 @@ public class OdsElements {
         return this.contentElement.getTables();
     }
 
+    /**
+     * Prepare the elements fro writing.
+     *
+     * @throws IOException if the preparation fails
+     */
     public void prepare() throws IOException {
         this.observer.update(new ImmutableElementsFlusher(this));
     }
 
+    /**
+     * Save the elements
+     * @throws IOException if the write fails
+     */
     public void save() throws IOException {
         final Table previousTable = this.contentElement.getLastTable();
         if (previousTable != null)
@@ -277,19 +343,41 @@ public class OdsElements {
         this.observer.update(new FinalizeFlusher(this.contentElement, this.settingsElement));
     }
 
+    /**
+     * Set a new active table
+     * @param table the table
+     */
     public void setActiveTable(final Table table) {
         this.settingsElement.setActiveTable(table);
     }
 
-    public void setViewSettings(final String viewId, final String item, final String value) {
-        this.settingsElement.setViewSettings(viewId, item, value);
+    /**
+     * Set a view setting
+     * @param viewId the id of the view
+     * @param item the item name
+     * @param value the item value
+     */
+    public void setViewSetting(final String viewId, final String item, final String value) {
+        this.settingsElement.setViewSetting(viewId, item, value);
     }
 
+    /**
+     * Write the content element to a writer.
+     * @param xmlUtil the xml util
+     * @param writer the writer
+     * @throws IOException if write fails
+     */
     public void writeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing odselement: contentElement to zip file");
         this.contentElement.write(xmlUtil, writer);
     }
 
+    /**
+     * Write the mimetype and manifest elements to a writer.
+     * @param xmlUtil the xml util
+     * @param writer the writer
+     * @throws IOException if write fails
+     */
     public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER,
                 "Writing odselement: mimeTypeEntry to zip file");
@@ -299,11 +387,23 @@ public class OdsElements {
         this.manifestElement.write(xmlUtil, writer);
     }
 
+    /**
+     * Write the meta element to a writer.
+     * @param xmlUtil the xml util
+     * @param writer the writer
+     * @throws IOException if write fails
+     */
     public void writeMeta(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing odselement: metaElement to zip file");
         this.metaElement.write(xmlUtil, writer);
     }
 
+    /**
+     * Write the settings element to a writer.
+     * @param xmlUtil the xml util
+     * @param writer the writer
+     * @throws IOException if write fails
+     */
     public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.settingsElement.setTables(this.getTables());
         this.logger.log(Level.FINER,
@@ -311,11 +411,25 @@ public class OdsElements {
         this.settingsElement.write(xmlUtil, writer);
     }
 
+    /**
+     * Write the styles element to a writer.
+     * @param xmlUtil the xml util
+     * @param writer the writer
+     * @throws IOException if write fails
+     */
     public void writeStyles(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
         this.stylesElement.write(xmlUtil, writer);
     }
 
+    /**
+     * Add an autofilter to a table
+     * @param table the table
+     * @param r1 from row
+     * @param c1 from col
+     * @param r2 to row
+     * @param c2 to col
+     */
     public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
         this.contentElement.addAutofilter(table, r1, c1, r2, c2);
     }

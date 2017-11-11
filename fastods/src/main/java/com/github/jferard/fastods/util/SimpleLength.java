@@ -29,44 +29,86 @@ import java.util.Locale;
  * Created by jferard on 09/04/17.
  * See Extensible Stylesheet Language (XSL) Version 1.1, 5.9.13 Definitions of Units of Measure
  * (https://www.w3.org/TR/xsl/#d0e5752)
+ *
  * @author Julien Férard
  */
 public class SimpleLength implements Length {
 
+    /**
+     * For double comparison. d1 == d2 iff abs(d1-d2) < MAX_DELTA.
+     */
     public static final double MAX_DELTA = 0.001;
 
-    public enum Unit {
-        MM, CM, IN, PT, PC
+    /**
+     * Create an simple lenght in millimeters
+     *
+     * @param value the length in millimeters
+     * @return the length
+     */
+    public static SimpleLength mm(final double value) {
+        return new SimpleLength(value, Unit.MM);
     }
 
+    /**
+     * Create an simple lenght in centimeters
+     *
+     * @param value the length in centimeters
+     * @return the length
+     */
+    public static SimpleLength cm(final double value) {
+        return new SimpleLength(value, Unit.CM);
+    }
+
+    /**
+     * Create an simple lenght in inches
+     *
+     * @param value the length in inches
+     * @return the length
+     */
+    public static SimpleLength in(final double value) {
+        return new SimpleLength(value, Unit.IN);
+    }
+
+    /**
+     * Create an simple lenght in points
+     *
+     * @param value the length in points
+     * @return the length
+     */
+    public static SimpleLength pt(final double value) {
+        return new SimpleLength(value, Unit.PT);
+    }
+
+    /**
+     * Create an simple lenght in picas
+     *
+     * @param value the length in picas
+     * @return the length
+     */
+    public static SimpleLength pc(final double value) {
+        return new SimpleLength(value, Unit.PC);
+    }
     private final double value;
     private final Unit unit;
 
+    /**
+     * Create a new simple length
+     *
+     * @param value the value
+     * @param unit  the unit
+     */
     SimpleLength(final double value, final Unit unit) {
         this.value = value;
         this.unit = unit;
     }
 
-    public static SimpleLength mm(final double value) {
-        return new SimpleLength(value, Unit.MM);
-    }
-
-    public static SimpleLength cm(final double value) {
-        return new SimpleLength(value, Unit.CM);
-    }
-
-    public static SimpleLength in(final double value) {
-        return new SimpleLength(value, Unit.IN);
-    }
-
-    public static SimpleLength pt(final double value) {
-        return new SimpleLength(value, Unit.PT);
-    }
-
-    public static SimpleLength pc(final double value) {
-        return new SimpleLength(value, Unit.PC);
-    }
-
+    /**
+     * Warning: this method does not compare different units.
+     * {@code SimpleLength.mm(10).equals(SimpleLenght.cm(1))} is false.
+     *
+     * @param o the object
+     * @return true if the object is a SimpleLength with the same unit and same value as this one.
+     */
     public boolean equals(final Object o) {
         if (!(o instanceof SimpleLength))
             return false;
@@ -80,7 +122,36 @@ public class SimpleLength implements Length {
 
     }
 
+    /**
+     * @return a representation of this unit
+     */
     public String toString() {
-        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value)+this.unit.toString().toLowerCase(Locale.US);
+        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value) + this.unit.toString().toLowerCase(Locale.US);
+    }
+
+    /**
+     * A unit
+     */
+    public enum Unit {
+        /**
+         * millimeter
+         */
+        MM,
+        /**
+         * centimeter
+         */
+        CM,
+        /**
+         * inch
+         */
+        IN,
+        /**
+         * point
+         */
+        PT,
+        /**
+         * pica
+         */
+        PC
     }
 }

@@ -30,8 +30,10 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
@@ -41,6 +43,21 @@ import java.util.Date;
  * @author Martin Schulz
  */
 public class TableCellImpl implements TableCell {
+    /**
+     * The default date format
+     */
+    final static SimpleDateFormat DATE_VALUE_FORMAT;
+
+    static {
+		/*
+		 * XML Schema Part 2, 3.2.7 dateTime
+		 * Z and UTC time zone for universal time.
+		 */
+        DATE_VALUE_FORMAT = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
     private final TableRow parent;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
@@ -58,9 +75,18 @@ public class TableCellImpl implements TableCell {
     private TableColdCell coldCell;
     private String value;
 
+    /**
+     * Create the table cell implementation
+     * @param writeUtil an util
+     * @param xmlUtil an util
+     * @param stylesContainer the styles containers that will dispatch styles to document.xml and styles.xml
+     * @param dataStyles the styles
+     * @param parent the parent row
+     * @param columnIndex index in parent row
+     */
     TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
                   final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final TableRow parent, final int columnIndex, final int columnCapacity) {
+                  final TableRow parent, final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -226,7 +252,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setDateValue(final Date value) {
-        this.value = TableCellWalkerImpl.DATE_VALUE_FORMAT.format(value);
+        this.value = TableCellImpl.DATE_VALUE_FORMAT.format(value);
         this.type = TableCell.Type.DATE;
         this.setDataStyle(this.dataStyles.getDateDataStyle());
     }
@@ -318,7 +344,7 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException, FastOdsException {
+    public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
         if (rowMerge <= 0 || columnMerge <= 0)
             return;
         if (rowMerge <= 1 && columnMerge <= 1)

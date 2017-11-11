@@ -39,6 +39,13 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableRow {
+    /**
+     * Append the XML corresponding to a given row to the appendable
+     * @param row a TableRow
+     * @param xmlUtil an instance of xml util
+     * @param appendable where to append the row XML
+     * @throws IOException
+     */
     public static void appendXMLToTable(final TableRow row, final XMLUtil xmlUtil, final Appendable appendable) throws IOException {
         if (row == null)
             appendable.append("<row />");
@@ -58,6 +65,16 @@ public class TableRow {
     private TableCellStyle defaultCellStyle;
     private TableRowStyle rowStyle;
 
+    /**
+     * Create a new TableRow
+     * @param writeUtil
+     * @param xmlUtil
+     * @param stylesContainer
+     * @param dataStyles
+     * @param parent
+     * @param rowIndex
+     * @param columnCapacity
+     */
     TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
              final StylesContainer stylesContainer, final DataStyles dataStyles,
              final Table parent, final int rowIndex, final int columnCapacity) {
@@ -128,6 +145,9 @@ public class TableRow {
         return cell == null || !cell.hasValue();
     }
 
+    /**
+     * @return a CellWalker on the row
+     */
     public TableCellWalker getWalker() {
         return new TableCellWalkerImpl(this);
     }
@@ -141,7 +161,7 @@ public class TableRow {
      * @throws IOException if the cells can't be merged
      */
     public void setCellMerge(final int colIndex, final int rowMerge,
-                             final int columnMerge) throws IOException, FastOdsException {
+                             final int columnMerge) throws IOException {
         if (rowMerge <= 0 || columnMerge <= 0)
             return;
         if (rowMerge <= 1 && columnMerge <= 1)
@@ -156,6 +176,11 @@ public class TableRow {
         }
     }
 
+    /**
+     * Add a span across columns
+     * @param colIndex the index of the first column
+     * @param n the number of columns in the span
+     */
     public void setColumnsSpanned(final int colIndex, final int n) {
         if (n <= 1)
             return;
@@ -178,47 +203,66 @@ public class TableRow {
         this.defaultCellStyle = ts;
     }
 
-    /* (non-Javadoc)
-     * @see com.github.jferard.fastods.TableCell#setFormat(com.github.jferard.fastods.style.DataStyles)
+    /**
+     * Add a format to this TableRow
+     * @param format the format
      */
     public void setFormat(final DataStyles format) {
         this.dataStyles = format;
     }
 
-    /* (non-Javadoc)
-     * @see com.github.jferard.fastods.TableCell#setRowsSpanned(int)
+    /**
+     * Add a span across rows
+     * @param rowIndex the index of the first row
+     * @param n the number of rows in the span
      */
-    public void setRowsSpanned(final int colIndex, final int n) throws IOException {
+    public void setRowsSpanned(final int rowIndex, final int n) throws IOException {
         if (n <= 1)
             return;
 
-        final TableCell firstCell = this.getOrCreateCell(colIndex);
+        final TableCell firstCell = this.getOrCreateCell(rowIndex);
         if (firstCell.isCovered())
             return;
 
-        this.parent.setRowsSpanned(this.rowIndex, colIndex, n);
+        this.parent.setRowsSpanned(this.rowIndex, rowIndex, n);
     }
 
+    /**
+     * Get the cell at given index. If the cell was not created before, then it is created by this method.
+     * @param colIndex the index of the cell in the row
+     * @return a cell
+     */
     public TableCell getOrCreateCell(final int colIndex) {
         TableCell cell = this.cells.get(colIndex);
         if (cell == null) {
             cell = new TableCellImpl(this.writeUtil, this.xmlUtil,
                     this.stylesContainer, this.dataStyles,
-                    this, colIndex, this.columnCapacity);
+                    this, colIndex);
             this.cells.set(colIndex, cell);
         }
         return cell;
     }
 
+    /**
+     * Set the row style
+     * @param rowStyle
+     */
     public void setStyle(final TableRowStyle rowStyle) {
         this.stylesContainer.addStyleToContentAutomaticStyles(rowStyle);
         this.rowStyle = rowStyle;
     }
 
+    /**
+     * @return the current column count
+     */
     public int getColumnCount() {
         return this.cells.usedSize();
     }
 
+    /**
+     * @param colIndex the index to look for
+     * @return true if the cell at the colIndex is covered by a span
+     */
     public boolean isCovered(final int colIndex) {
         final TableCell cell = this.cells.get(colIndex);
         return cell != null && cell.isCovered();

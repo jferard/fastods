@@ -38,7 +38,7 @@ import com.github.jferard.fastods.util.SimpleLength;
 @SuppressWarnings("unchecked")
 public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {
 	protected Box<Text> curRegionBox;
-	protected MarginsBuilder marginsBuilder;
+	protected final MarginsBuilder marginsBuilder;
 
 	protected Length minHeight;
 

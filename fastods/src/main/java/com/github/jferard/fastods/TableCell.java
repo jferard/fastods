@@ -233,5 +233,5 @@ public interface TableCell {
 	void setText(Text text);
 
 	void setCellMerge(int rowMerge,
-							 int columnMerge) throws IOException, FastOdsException;
+							 int columnMerge) throws IOException;
 }

@@ -27,10 +27,19 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
+ * An OdsFLusher flushes data to a writer
  * @author Julien Férard
  */
 public interface OdsFlusher {
+    /**
+     * @param xmlUtil an instance of the util class
+     * @param writer where to write data
+     * @throws IOException if the flush goes wrong
+     */
     void flushInto(XMLUtil xmlUtil, ZipUTF8Writer writer) throws IOException;
 
+    /**
+     * @return true if the flusher has finished his job
+     */
     boolean isEnd();
 }

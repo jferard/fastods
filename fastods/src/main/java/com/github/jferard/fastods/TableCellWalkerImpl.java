@@ -26,30 +26,20 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * @author Julien Férard
  */
 public class TableCellWalkerImpl implements TableCellWalker {
-	final static SimpleDateFormat DATE_VALUE_FORMAT;
-
-	static {
-		/*
-		 * XML Schema Part 2, 3.2.7 dateTime
-		 * Z and UTC time zone for universal time.
-		 */
-		DATE_VALUE_FORMAT = new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-		DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-	}
-
 	private final TableRow row;
 	private int c;
 
+	/**
+	 * Create a walker on the given row
+	 * @param row the row
+	 */
 	TableCellWalkerImpl(final TableRow row) {
 		this.row = row;
 		this.c = 0;
@@ -77,7 +67,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	}
 
 	@Override
-	public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException, FastOdsException {
+	public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
 		this.row.setCellMerge(this.c, rowMerge, columnMerge);
 	}
 

@@ -68,7 +68,7 @@ public class TableCellTest {
         this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds,
                 this.table, 10, 100);
         this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds,
-                this.row, 11, 100);
+                this.row, 11);
         this.tcs = TableCellStyle.builder("$name").build();
         PowerMock.mockStatic(TableColdCell.class);
     }

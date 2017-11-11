@@ -25,6 +25,7 @@ import java.util.Date;
 
 /**
  * A CellValue that contains a date
+ * @author Julien Férard
  */
 public class DateValue extends CellValue {
 	private final Date value;

@@ -19,36 +19,4 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
-
-import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-
-import java.io.IOException;
-
-/**
- * A flusher for mimetype and meta elements.
- * @author Julien Férard
- */
-public class ImmutableElementsFlusher implements OdsFlusher {
-    private final OdsElements odsElements;
-
-    /**
-     * @param odsElements
-     */
-    public ImmutableElementsFlusher(final OdsElements odsElements) {
-        this.odsElements = odsElements;
-    }
-
-    @Override
-    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.odsElements.createEmptyElements(writer);
-        this.odsElements.writeImmutableElements(xmlUtil, writer);
-    }
-
-    @Override
-    public boolean isEnd() {
-        return false;
-    }
-}
+package com.github.jferard.fastods.odselement.config;

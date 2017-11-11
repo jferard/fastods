@@ -176,7 +176,7 @@ public class SettingsTest {
 		final Appendable sb = new StringBuilder();
 
 		final Settings s = this.createVoidSettings();
-		s.setViewSettings("vId", "i", "v");
+		s.setViewSetting("vId", "i", "v");
 		s.getRootBlocks().get(0).appendXML(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
@@ -197,7 +197,7 @@ public class SettingsTest {
 		final Appendable sb = new StringBuilder();
 
 		final Settings s = this.createVoidSettings();
-		s.setViewSettings("View1", "i", "v");
+		s.setViewSetting("View1", "i", "v");
 		s.getRootBlocks().get(0).appendXML(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
@@ -218,7 +218,7 @@ public class SettingsTest {
 		final Appendable sb = new StringBuilder();
 
 		final Settings s = this.createVoidSettings();
-		s.setViewSettings("View1", "ViewId", "View2");
+		s.setViewSetting("View1", "ViewId", "View2");
 		s.getRootBlocks().get(0).appendXML(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +

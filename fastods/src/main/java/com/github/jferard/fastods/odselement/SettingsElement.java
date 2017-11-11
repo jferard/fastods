@@ -102,7 +102,7 @@ public class SettingsElement implements OdsElement {
 		this.settings.setActiveTable(table);
 	}
 
-	public void setViewSettings(final String viewId, final String item, final String value) {
-		this.settings.setViewSettings(viewId, item, value);
+	public void setViewSetting(final String viewId, final String item, final String value) {
+		this.settings.setViewSetting(viewId, item, value);
 	}
 }

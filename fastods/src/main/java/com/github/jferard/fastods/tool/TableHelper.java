@@ -28,9 +28,17 @@ import com.github.jferard.fastods.util.PositionUtil.Position;
 
 import java.io.IOException;
 
+/**
+ * A table helper
+ * @author Julien Férard
+ */
 public class TableHelper {
 	private final PositionUtil positionUtil;
 
+	/**
+	 * Create the table helper.
+	 * @param positionUtil an util
+	 */
 	public TableHelper(final PositionUtil positionUtil) {
 		this.positionUtil = positionUtil;
 	}

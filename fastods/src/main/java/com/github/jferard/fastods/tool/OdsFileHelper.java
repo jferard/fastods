@@ -31,11 +31,21 @@ import com.github.jferard.fastods.util.PositionUtil.Position;
 
 import java.io.IOException;
 
+/**
+ * An helper for multi table work.
+ * @author Julien Férard
+ */
 public class OdsFileHelper {
 	private final OdsDocument odsDocument;
 	private final PositionUtil positionUtil;
 	private final TableHelper tableHelper;
 
+	/**
+	 * Create the helper.
+	 * @param odsDocument the document
+	 * @param tableHelper a sub helper
+	 * @param positionUtil an util
+	 */
 	public OdsFileHelper(final OdsDocument odsDocument, final TableHelper tableHelper,
                          final PositionUtil positionUtil) {
 		this.odsDocument = odsDocument;

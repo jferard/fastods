@@ -288,7 +288,7 @@ public class OdsDocument {
 	}
 
 	public void setViewSetting(final String viewId, final String item, final String value) {
-		this.odsElements.setViewSettings(viewId, item, value);
+		this.odsElements.setViewSetting(viewId, item, value);
 	}
 
 	/**

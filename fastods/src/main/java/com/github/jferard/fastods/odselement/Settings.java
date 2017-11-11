@@ -187,7 +187,7 @@ public class Settings {
             this.addTableConfig(table.getConfigEntry());
     }
 
-    public void setViewSettings(final String viewId, final String item, final String value) {
+    public void setViewSetting(final String viewId, final String item, final String value) {
         final ConfigItemMapEntrySet view = this.viewById.get(viewId);
         if (view == null)
             return;

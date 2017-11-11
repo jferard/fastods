@@ -57,15 +57,25 @@ public class FastOdsBus<E> {
 	private final Queue<E> elements;
 	private boolean closed;
 
+	/**
+	 * Create a new bus
+	 */
 	public FastOdsBus() {
 		this.elements = new LinkedList<E>();
 		this.closed = false;
 	}
 
+	/**
+	 * close the bus
+	 */
 	public void close() {
 		this.closed = true;
 	}
 
+	/**
+	 * Get an element from the bus. Blocking method.
+	 * @return the next element in the bus
+	 */
 	synchronized public E get() {
 		if (this.isClosed())
 			throw new NoSuchElementException();
@@ -81,10 +91,17 @@ public class FastOdsBus<E> {
 		return this.elements.remove();
 	}
 
+	/**
+	 * @return true if the bus was closed
+	 */
 	synchronized public boolean isClosed() {
 		return this.closed && this.elements.isEmpty();
 	}
 
+	/**
+	 * Add an element to the bus
+	 * @param element the element
+	 */
 	synchronized public void put(final E element) {
 		this.elements.add(element);
 		this.notifyAll();
