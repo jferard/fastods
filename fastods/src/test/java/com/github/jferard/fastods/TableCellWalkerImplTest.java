@@ -74,7 +74,7 @@ public class TableCellWalkerImplTest {
 	@Test
 	public final void testCalendar() {
 		final Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(1234567891011l);
+		c.setTimeInMillis(1234567891011L);
 
 		expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
 		this.cell.setDateValue(c);
@@ -118,7 +118,7 @@ public class TableCellWalkerImplTest {
 	@Test
 	public final void testDate() {
 		final Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(1234567891011l);
+		c.setTimeInMillis(1234567891011L);
 		final Date date = c.getTime();
 
 		expect(this.row.getOrCreateCell(10)).andReturn(this.cell);

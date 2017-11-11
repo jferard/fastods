@@ -63,7 +63,7 @@ public class OdsDocumentHelperTest {
 	@Test
 	public final void testCellMergeInAllTables() throws FastOdsException, IOException {
 		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(1234567891011l);
+		cal.setTimeInMillis(1234567891011L);
 
 		EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
 		this.tableHelper.setCellMerge(this.t1, 10, 5, 3, 2);
@@ -78,7 +78,7 @@ public class OdsDocumentHelperTest {
 	public final void testCellValueInAllTables() throws FastOdsException, IOException {
 		final TableCellStyle ts = TableCellStyle.builder("a").build();
 		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(1234567891011l);
+		cal.setTimeInMillis(1234567891011L);
 		final BooleanValue v = new BooleanValue(true);
 
 		EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);

@@ -200,8 +200,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 	@Test
 	@SuppressWarnings("unchecked")
 	public final void testOneRow() throws IOException {
-		this.setUpRS(Arrays.<String>asList("number", "word"),
-				Arrays.<List<Object>>asList(Arrays.<Object>asList(13, "a")),
+		this.setUpRS(Arrays.asList("number", "word"),
+				Arrays.asList(Arrays.<Object>asList(13, "a")),
 				100);
 		final TableRow row = PowerMock.createMock(TableRow.class);
 		final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
@@ -240,15 +240,15 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 				.getStatementResultSetHandler();
 		final MockResultSet rs = ResultSetDataWrapperTest.createResultSet(
 				resultSetHandler,
-				Arrays.<String>asList("number", "word", "code"),
-				Arrays.<List<Object>>asList(
+				Arrays.asList("number", "word", "code"),
+				Arrays.asList(
 						Arrays.<Object>asList(13, "a", "13a"),
 						Arrays.<Object>asList(14, "b", "14b"),
 						Arrays.<Object>asList(15, "c", "15c")));
 		final MockResultSet rs2 = ResultSetDataWrapperTest.createResultSet(
 				resultSetHandler,
-				Arrays.<String>asList("number", "word", "code"),
-				Arrays.<List<Object>>asList(
+				Arrays.asList("number", "word", "code"),
+				Arrays.asList(
 						Arrays.<Object>asList(13, "a", "13a"),
 						Arrays.<Object>asList(14, "b", "14b"),
 						Arrays.<Object>asList(15, "c", "15c")));

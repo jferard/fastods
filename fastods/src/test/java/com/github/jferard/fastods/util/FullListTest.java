@@ -90,7 +90,7 @@ public class FullListTest {
 		Assert.assertTrue(fl.contains(be));
 
 		Assert.assertTrue(
-				fl.containsAll(Lists.<String> newArrayList(be, be, be)));
+				fl.containsAll(Lists.newArrayList(be, be, be)));
 
 		fl.set(100, "non blank2");
 		Assert.assertEquals(101, fl.usedSize());
@@ -99,7 +99,7 @@ public class FullListTest {
 
 		Assert.assertFalse(fl.contains("non blank3"));
 		Assert.assertFalse(
-				fl.containsAll(Lists.<String> newArrayList(be, "non blank3")));
+				fl.containsAll(Lists.newArrayList(be, "non blank3")));
 	}
 
 	@Test
@@ -179,16 +179,16 @@ public class FullListTest {
 		final FullList<String> fl = FullList.<String> builder().blankElement(be)
 				.capacity(10).build();
 		fl.set(100, "non blank2");
-		fl.retainAll(Lists.<String> newArrayList("foo"));
+		fl.retainAll(Lists.newArrayList("foo"));
 		Assert.assertEquals(0, fl.usedSize());
 		Assert.assertFalse(fl.isEmpty());
 
 		fl.set(100, "non blank2");
-		fl.retainAll(Lists.<String> newArrayList(be));
+		fl.retainAll(Lists.newArrayList(be));
 		Assert.assertEquals(0, fl.usedSize());
 
 		fl.set(100, "non blank2");
-		fl.retainAll(Lists.<String> newArrayList("non blank2"));
+		fl.retainAll(Lists.newArrayList("non blank2"));
 		Assert.assertEquals(1, fl.usedSize());
 	}
 
@@ -219,12 +219,12 @@ public class FullListTest {
 		Assert.assertEquals(be, fl.get(1000));
 
 		fl.addAll(
-				Lists.<String> newArrayList(be, "non blank3", be, be, be, be));
+				Lists.newArrayList(be, "non blank3", be, be, be, be));
 		Assert.assertEquals(104, fl.usedSize());
 		Assert.assertEquals(be, fl.get(104));
 
 		fl.addAll(100,
-				Lists.<String> newArrayList(be, "non blank3", be, be, be, be));
+				Lists.newArrayList(be, "non blank3", be, be, be, be));
 		Assert.assertEquals(110, fl.usedSize());
 		Assert.assertEquals("non blank", fl.get(106));
 		Assert.assertEquals("non blank3", fl.get(109));

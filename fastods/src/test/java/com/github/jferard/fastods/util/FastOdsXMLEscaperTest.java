@@ -49,8 +49,8 @@ public class FastOdsXMLEscaperTest {
 	@Test
 	public final void testAttrBuffer() {
 		final XMLEscaper escaper2 = new FastOdsXMLEscaper(124);
-		final StringBuilder sb = new StringBuilder(8 * (2 >> 5));
-		final StringBuilder sb2 = new StringBuilder(8 * (2 >> 5));
+		final StringBuilder sb = new StringBuilder(8 * (2 << 5));
+		final StringBuilder sb2 = new StringBuilder(8 * (2 << 5));
 		sb.append("'ae< >");
 		sb2.append("&apos;ae&lt; &gt;");
 		for (int i = 0; i < 5; i++) {
@@ -101,8 +101,8 @@ public class FastOdsXMLEscaperTest {
 	@Test
 	public final void testContentBuffer() {
 		final XMLEscaper escaper2 = new FastOdsXMLEscaper(124);
-		final StringBuilder sb = new StringBuilder(8 * (2 >> 5));
-		final StringBuilder sb2 = new StringBuilder(8 * (2 >> 5));
+		final StringBuilder sb = new StringBuilder(8 * (2 << 5));
+		final StringBuilder sb2 = new StringBuilder(8 * (2 << 5));
 		sb.append("'ae< >");
 		sb2.append("'ae&lt; &gt;");
 		for (int i = 0; i < 5; i++) {
