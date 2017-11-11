@@ -24,7 +24,7 @@ package com.github.jferard.fastods.odselement.config;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -104,7 +104,7 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 
 	@Override
 	public Iterator<ConfigBlock> iterator() {
-		return Arrays.asList(this.block).iterator();
+		return Collections.singletonList(this.block).iterator();
 	}
 
 	@Override

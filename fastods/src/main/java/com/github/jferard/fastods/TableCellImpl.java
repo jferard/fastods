@@ -201,7 +201,7 @@ public class TableCellImpl implements TableCell {
 
     private void ensureColdCell() {
         if (this.coldCell == null)
-            this.coldCell = TableColdCell.create(this.parent, this.xmlUtil);
+            this.coldCell = TableColdCell.create(this.xmlUtil);
     }
 
     /* (non-Javadoc)

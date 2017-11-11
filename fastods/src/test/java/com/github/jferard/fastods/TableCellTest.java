@@ -63,7 +63,7 @@ public class TableCellTest {
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();
 
-        this.tcc = TableColdCell.create(this.row, this.xmlUtil);
+        this.tcc = TableColdCell.create(this.xmlUtil);
         this.ds = DataStylesFactory.create(this.xmlUtil, Locale.US);
         this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds,
                 this.table, 10, 100);
@@ -107,7 +107,7 @@ public class TableCellTest {
     @Test
     public final void testCovered() throws IOException {
         // PLAY
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc)
                 .anyTimes();
 
@@ -130,7 +130,7 @@ public class TableCellTest {
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, currencyDataStyle))
                 .andReturn(this.tcs);
 
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         PowerMock.replayAll();
@@ -146,7 +146,7 @@ public class TableCellTest {
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, currencyDataStyle))
                 .andReturn(this.tcs);
 
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         PowerMock.replayAll();
@@ -162,7 +162,7 @@ public class TableCellTest {
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, currencyDataStyle))
                 .andReturn(this.tcs);
 
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         PowerMock.replayAll();
@@ -308,7 +308,7 @@ public class TableCellTest {
         final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
 
         // PLAY
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
         this.stc.addDataStyle(currencyDataStyle);
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, currencyDataStyle))
@@ -322,7 +322,7 @@ public class TableCellTest {
 
     @Test
     public final void testFullTooltip() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         // PLAY
@@ -338,7 +338,7 @@ public class TableCellTest {
 
     @Test
     public final void testTooltip() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         // PLAY
@@ -354,7 +354,7 @@ public class TableCellTest {
 
     @Test
     public final void testTextWithStyle() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
         this.stc.addStyleToContentAutomaticStyles(TextStyle.DEFAULT_TEXT_STYLE);
 
@@ -419,7 +419,7 @@ public class TableCellTest {
 
     @Test
     public final void testText() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         PowerMock.replayAll();
@@ -440,7 +440,7 @@ public class TableCellTest {
 
     @Test
     public final void testFormula() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
         PowerMock.replayAll();
@@ -451,7 +451,7 @@ public class TableCellTest {
 
     @Test
     public final void testColumnsSpanned() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc).times(9);
 
         PowerMock.replayAll();
@@ -472,7 +472,7 @@ public class TableCellTest {
     @Test
     public final void testRowsSpanned() throws IOException {
         // PLAY
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
         this.table.setRowsSpanned(10, 11, 2);
 
@@ -487,7 +487,7 @@ public class TableCellTest {
 
     @Test
     public final void testRowsSpannedTwice() throws IOException {
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
         this.table.setRowsSpanned(10, 11, 2);
         this.table.setRowsSpanned(10, 11, 4);
@@ -917,7 +917,7 @@ public class TableCellTest {
     @Test
     public final void testMerge() throws IOException, FastOdsException {
         // PLAY
-        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.row),
+        EasyMock.expect(TableColdCell.create(
                 EasyMock.eq(this.xmlUtil))).andReturn(this.tcc)
                 .anyTimes();
         this.table.setCellMerge(10, 11, 7, 12);

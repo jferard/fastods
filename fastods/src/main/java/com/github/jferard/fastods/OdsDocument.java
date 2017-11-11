@@ -27,7 +27,6 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageStyle;
@@ -129,8 +128,8 @@ public class OdsDocument {
 		this.odsElements.addObjectStyle(objectStyle);
 	}
 
-	public void addStyleToContentAutomaticStyles(final TextStyle textStyle) {
-		this.odsElements.addStyleToContentAutomaticStyles(textStyle);
+	public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
+		this.odsElements.addStyleToContentAutomaticStyles(objectStyle);
 	}
 
 	/**

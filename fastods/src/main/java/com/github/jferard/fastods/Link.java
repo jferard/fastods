@@ -22,6 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class Link implements ParagraphElement {
 	private final String content;
 	private final TextStyle ts;
 
-	public Link(final String text, final Table table, final TextStyle ts) {
+	public Link(final String text, final NamedObject table, final TextStyle ts) {
 		this.text = text;
 		this.content = '#'+table.getName();
 		this.ts = ts;

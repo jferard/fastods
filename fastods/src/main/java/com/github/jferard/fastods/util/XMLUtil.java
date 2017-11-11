@@ -62,7 +62,7 @@ public class XMLUtil {
 	}
 
 	public void appendEAttribute(final Appendable appendable,
-								 final String attrName, final boolean attrValue) throws IOException {
+								 final CharSequence attrName, final boolean attrValue) throws IOException {
 		this.appendEAttribute(appendable, attrName,
 				Boolean.toString(attrValue));
 	}
@@ -77,7 +77,7 @@ public class XMLUtil {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendEAttribute(final Appendable appendable,
-								 final String attrName, final int attrValue) throws IOException {
+								 final CharSequence attrName, final int attrValue) throws IOException {
 		this.appendEAttribute(appendable, attrName,
 				Integer.toString(attrValue));
 	}

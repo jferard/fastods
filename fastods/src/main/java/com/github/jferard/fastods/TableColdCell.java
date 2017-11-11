@@ -34,7 +34,6 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableColdCell {
-	private final TableRow parent;
 	private final XMLUtil xmlUtil;
 	private int columnsSpanned;
 	private String currency;
@@ -44,14 +43,12 @@ public class TableColdCell {
 	private TooltipParameter tooltipParameter;
 	private String formula;
 
-	public TableColdCell(final TableRow parent, final XMLUtil xmlUtil) {
-		this.parent = parent;
+	public TableColdCell(final XMLUtil xmlUtil) {
 		this.xmlUtil = xmlUtil;
 	}
 
-	public static TableColdCell create(final TableRow parent,
-									   final XMLUtil xmlUtil) {
-		return new TableColdCell(parent, xmlUtil);
+	public static TableColdCell create(final XMLUtil xmlUtil) {
+		return new TableColdCell(xmlUtil);
 	}
 
 	public String getCurrency() {

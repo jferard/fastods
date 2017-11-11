@@ -97,7 +97,7 @@ public class PositionUtil {
 			return sb.toString();
 		}
 
-		public String toCellAddress(final Table table) {
+		public String toCellAddress(final NamedObject table) {
 			return table.getName()+"."+this.toCellAddress();
 		}
 	}

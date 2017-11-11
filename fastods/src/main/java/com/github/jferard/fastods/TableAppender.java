@@ -26,7 +26,6 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -116,7 +115,7 @@ class TableAppender {
         this.appendRows(util, appendable, rowIndex);
     }
 
-    private void appendColumnStyles(final List<TableColumnStyle> columnStyles, final Appendable appendable,
+    private void appendColumnStyles(final Iterable<TableColumnStyle> columnStyles, final Appendable appendable,
                                     final XMLUtil xmlUtil) throws IOException {
         final Iterator<TableColumnStyle> iterator = columnStyles.iterator();
         if (!iterator.hasNext()) {

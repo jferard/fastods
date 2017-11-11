@@ -39,13 +39,13 @@ public class TableColdCellTest {
 	public void setUp() {
 		this.row = PowerMock.createMock(TableRow.class);
 		this.xmlUtil = XMLUtil.create();
-		this.coldCell = new TableColdCell(this.row, this.xmlUtil);
+		this.coldCell = new TableColdCell(this.xmlUtil);
 	}
 
 	@Test
 	public final void testCreate() throws IOException {
 		PowerMock.replayAll();
-		this.coldCell = TableColdCell.create(this.row, this.xmlUtil);
+		this.coldCell = TableColdCell.create(this.xmlUtil);
 		DomTester.assertEquals("<table:table-cell/>", this.getXML());
 		PowerMock.verifyAll();
 	}
