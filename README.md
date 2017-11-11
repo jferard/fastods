@@ -1,10 +1,5 @@
-master:
 [![Build Status](https://travis-ci.org/jferard/fastods.svg?branch=master)](https://travis-ci.org/jferard/fastods)
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
-
-dev:
-[![Build Status](https://travis-ci.org/jferard/fastods.svg?branch=dev)](https://travis-ci.org/jferard/fastods)
-[![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/dev.svg)](https://codecov.io/github/jferard/fastods?branch=dev)
 
 # FastODS
 (C) J. Férard 2016-2017
@@ -12,6 +7,8 @@ dev:
 (C) M. Schulz 2008-2013 for SimpleODS
 
 A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
+
+**Please note that FastODS is almost ready for production use. The version 1.0 is comming.**
 
 ## Table of contents
 * [Why FastODS?](#why-fastods)
