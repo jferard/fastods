@@ -57,7 +57,6 @@ public class TableRow {
     private DataStyles dataStyles;
     private TableCellStyle defaultCellStyle;
     private TableRowStyle rowStyle;
-    private String formula;
 
     TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
              final StylesContainer stylesContainer, final DataStyles dataStyles,

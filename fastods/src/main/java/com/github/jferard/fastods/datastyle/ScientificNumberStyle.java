@@ -61,7 +61,7 @@ public class ScientificNumberStyle implements DataStyle {
 		return this.minExponentDigits;
 	}
 
-	protected void appendNumber(final XMLUtil util, final Appendable appendable)
+	private void appendNumber(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:scientific-number");
 		util.appendEAttribute(appendable, "number:min-exponent-digits",

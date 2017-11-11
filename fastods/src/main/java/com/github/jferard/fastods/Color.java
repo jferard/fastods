@@ -181,8 +181,9 @@ public final class Color {
 	public final static String WHITESMOKE = "#F5F5F5";
 	public final static String YELLOW = "#FFFF00";
 	public final static String YELLOWGREEN = "#9ACD32";
-	public static final int X_FF = 255;
-	public static final int X_F = 15;
+
+	private static final int X_FF = 255;
+	private static final int X_F = 15;
 
 	/**
 	 * Helper function to create any available color string from color values.

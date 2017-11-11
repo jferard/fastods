@@ -49,7 +49,7 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 	 */
 	private static final char[] TO_COPY = "amp;&lt;&gt;&apos;&quot;\\uFFFD&#x9;&#xA;&#xD;"
 			.toCharArray();
-	public static final int SPACE = 0x20;
+	private static final int SPACE = 0x20;
 	private final Map<String, String> attrCacheMap;
 
 	private char[] buffer;

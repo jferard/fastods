@@ -159,7 +159,7 @@ public class Table implements NamedObject {
 		return this.builder.nextRow(this, this.appender);
 	}
 
-	public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
+	public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
 		this.builder.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
 	}
 

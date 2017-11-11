@@ -19,8 +19,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
-
 /**
  * This package contains all data style, ie the parameters for data (boolean, currency, float, ...) display.
  */
+package com.github.jferard.fastods;
+

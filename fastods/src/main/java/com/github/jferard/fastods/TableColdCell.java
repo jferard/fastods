@@ -142,7 +142,7 @@ public class TableColdCell {
 		this.formula = formula;
 	}
 
-	public void setRowsSpanned(int n) {
+	public void setRowsSpanned(final int n) {
 		this.rowsSpanned = n;
 	}
 }

@@ -38,7 +38,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	final static SimpleDateFormat DATE_VALUE_FORMAT;
 
 	static {
-		/**
+		/*
 		 * XML Schema Part 2, 3.2.7 dateTime
 		 * Z and UTC time zone for universal time.
 		 */
@@ -62,7 +62,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
 	}
 
 	@Override
-	public void markRowsSpanned(final int n) throws IOException {
+	public void markRowsSpanned(final int n) {
 		throw new UnsupportedOperationException();
 	}
 

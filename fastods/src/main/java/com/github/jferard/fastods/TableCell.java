@@ -65,7 +65,7 @@ public interface TableCell {
 	void appendXMLToTableRow(XMLUtil util, Appendable appendable)
 			throws IOException;
 
-	void markRowsSpanned(int n) throws IOException;
+	void markRowsSpanned(int n);
 
 	/**
 	 * Set the boolean value

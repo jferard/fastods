@@ -41,7 +41,7 @@ public class CurrencyStyleBuilder implements StyleBuilder<CurrencyStyle> {
 	 * @param name   The name of this style
 	 * @param locale The locale used
 	 */
-	protected CurrencyStyleBuilder(final String name, final Locale locale) {
+	CurrencyStyleBuilder(final String name, final Locale locale) {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 		this.currencySymbol = Currency.getInstance(locale).getSymbol();
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;

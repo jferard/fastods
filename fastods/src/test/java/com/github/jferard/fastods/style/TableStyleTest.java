@@ -42,9 +42,8 @@ public class TableStyleTest {
 	public final void testAddEmptyToFile() {
 		final TableStyle ts = TableStyle.builder("test").build();
 		final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
-		final ObjectStyle objectStyle = ts;
 
-		odsElements.addObjectStyle(objectStyle);
+		odsElements.addObjectStyle(ts);
 		PowerMock.replayAll();
 
 		ts.addToElements(odsElements);

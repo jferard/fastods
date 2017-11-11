@@ -53,8 +53,7 @@ public class OdsFileDirectWriter implements OdsFileWriter {
      * @param xmlUtil
      * @param writer   The writer for this file
      */
-    OdsFileDirectWriter(final Logger logger, final OdsDocument document, final XMLUtil xmlUtil, final ZipUTF8Writer writer)
-            throws FileNotFoundException {
+    OdsFileDirectWriter(final Logger logger, final OdsDocument document, final XMLUtil xmlUtil, final ZipUTF8Writer writer) {
         this.logger = logger;
         this.document = document;
         this.xmlUtil = xmlUtil;

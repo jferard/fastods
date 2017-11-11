@@ -144,7 +144,7 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void markRowsSpanned(final int n) throws IOException {
+    public void markRowsSpanned(final int n) {
         if (n <= 1)
             return;
 

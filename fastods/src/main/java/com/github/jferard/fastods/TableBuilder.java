@@ -212,7 +212,7 @@ class TableBuilder {
         return this.getRowSecure(table, appender, this.curRowIndex + 1, true);
     }
 
-    public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
+    public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
         final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
         if (row.isCovered(colIndex)) // already spanned
             return;

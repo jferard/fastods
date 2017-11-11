@@ -84,18 +84,18 @@ public class Link implements ParagraphElement {
 			util.appendEAttribute(appendable, "text:style-name",
 					this.ts.getName());
 		}
-		util.appendAttribute(appendable, "xlink:href", content);
+		util.appendAttribute(appendable, "xlink:href", this.content);
 		util.appendAttribute(appendable, "xlink:type", "simple");
 		appendable.append(">").append(this.text).append("</text:a>");
 	}
 
 	@Override
 	public TextStyle getTextStyle() {
-		return ts;
+		return this.ts;
 	}
 
 	@Override
 	public String getText() {
-		return text;
+		return this.text;
 	}
 }

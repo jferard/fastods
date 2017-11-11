@@ -44,7 +44,7 @@ public class DateStyleBuilder implements StyleBuilder<DateStyle> {
      * @param name   The name of the number style.
      * @param locale The locale used
      */
-    protected DateStyleBuilder(final String name, final Locale locale) {
+    DateStyleBuilder(final String name, final Locale locale) {
         this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
         this.automaticOrder = false;
     }
