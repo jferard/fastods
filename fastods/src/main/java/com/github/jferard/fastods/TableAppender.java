@@ -126,7 +126,7 @@ class TableAppender {
         }
 
         int count = 1;
-        int globalCount = 0;
+        int endCount = MAX_COLUMN_COUNT;
         TableColumnStyle prevTCS;
         TableColumnStyle curTCS = iterator.next(); // will be shifted to prevTCS
         while (iterator.hasNext()) {
@@ -137,15 +137,15 @@ class TableAppender {
                 count++;
             } else {
                 prevTCS.appendXMLToTable(xmlUtil, appendable, count);
-                globalCount += count;
+                endCount -= count;
                 count = 1;
             }
 
         }
         curTCS.appendXMLToTable(xmlUtil, appendable, count);
-        globalCount += count;
+        endCount -= count;
         TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
-                .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT-globalCount);
+                .appendXMLToTable(xmlUtil, appendable, endCount);
     }
 
     private void appendRows(final XMLUtil util, final Appendable appendable)

@@ -21,11 +21,7 @@
 
 package com.github.jferard.fastods.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * The class FullList represents a List that is unlimited, in a specific sense :
@@ -67,12 +63,20 @@ public final class FullList<E> implements List<E> {
 		return new FullListBuilder<F>();
 	}
 
-	public static <F> FullList<F> newList() {
-		return new FullList<F>(null, FullList.DEFAULT_CAPACITY);
+	public static <F> FullList<F> newList(final F... elements) {
+		final FullList<F> l = new FullList<F>(null, FullList.DEFAULT_CAPACITY);
+		l.addAll(Arrays.asList(elements));
+		return l;
 	}
 
 	public static <F> FullList<F> newListWithCapacity(final int capacity) {
 		return new FullList<F>(null, capacity);
+	}
+
+	public static <F> FullList<F> newListWithCapacity(final int capacity, final F... elements) {
+		final FullList<F> l = new FullList<F>(null, capacity);
+		l.addAll(Arrays.asList(elements));
+		return l;
 	}
 
 	private final E blankElement;
