@@ -20,19 +20,15 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.TableCell.Type;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.easymock.IAnswer;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +37,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Locale;
 
 @RunWith(PowerMockRunner.class)

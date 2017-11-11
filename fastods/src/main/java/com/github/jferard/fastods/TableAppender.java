@@ -22,7 +22,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

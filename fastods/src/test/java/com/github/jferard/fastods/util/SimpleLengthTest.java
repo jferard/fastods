@@ -24,8 +24,6 @@ package com.github.jferard.fastods.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jferard on 09/04/17.
  */

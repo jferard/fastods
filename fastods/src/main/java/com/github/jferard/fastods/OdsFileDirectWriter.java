@@ -24,7 +24,6 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 

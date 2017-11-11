@@ -74,6 +74,8 @@ public class FastOdsBus<E> {
 			try {
 				this.wait();
 			} catch (final InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new RuntimeException(e);
 			}
 		}
 		return this.elements.remove();

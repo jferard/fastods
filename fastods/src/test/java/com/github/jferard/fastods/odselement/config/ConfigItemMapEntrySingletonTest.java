@@ -22,11 +22,9 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.util.XMLUtil;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import java.util.Iterator;
 

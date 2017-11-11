@@ -24,7 +24,6 @@ import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;

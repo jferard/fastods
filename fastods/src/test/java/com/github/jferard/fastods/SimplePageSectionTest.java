@@ -33,7 +33,6 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class SimplePageSectionTest {

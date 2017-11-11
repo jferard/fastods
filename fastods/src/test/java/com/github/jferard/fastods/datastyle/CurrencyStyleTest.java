@@ -22,7 +22,6 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;

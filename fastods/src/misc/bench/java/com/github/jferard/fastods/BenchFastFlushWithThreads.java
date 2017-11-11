@@ -57,7 +57,7 @@ public class BenchFastFlushWithThreads extends Bench {
 							".ods"));
 			final OdsDocument document = writerAdapter.document();
 			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
-			final Consumer b = new Consumer(writerAdapter);
+			final Consumer b = new Consumer(this.logger, writerAdapter);
 			b.start();
 			a.start();
 			a.join();
@@ -73,9 +73,11 @@ public class BenchFastFlushWithThreads extends Bench {
 	}
 
 	class Consumer extends Thread {
+		private final Logger logger;
 		private final OdsFileWriterAdapter writerAdapter;
 
-		public Consumer(final OdsFileWriterAdapter writerAdapter) {
+		public Consumer(final Logger logger, final OdsFileWriterAdapter writerAdapter) {
+			this.logger = logger;
 			this.writerAdapter = writerAdapter;
 		}
 
@@ -95,6 +97,7 @@ public class BenchFastFlushWithThreads extends Bench {
 				final long t2 = System.currentTimeMillis();
 				t += t2 - t1;
 			} catch (final IOException e) {
+				this.logger.log(Level.SEVERE, "", e);
 			}
 			System.out.println(">> Write time " + t + " ms");
 		}

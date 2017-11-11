@@ -22,7 +22,6 @@ package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;

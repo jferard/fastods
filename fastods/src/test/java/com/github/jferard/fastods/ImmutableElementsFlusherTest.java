@@ -22,11 +22,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.testlib.ZipUTF8WriterMock;
-import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 

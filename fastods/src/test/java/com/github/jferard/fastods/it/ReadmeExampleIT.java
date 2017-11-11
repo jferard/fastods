@@ -33,8 +33,6 @@ import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
 import org.odftoolkit.simple.SpreadsheetDocument;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.io.File;

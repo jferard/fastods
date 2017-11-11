@@ -35,9 +35,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.isA;
-
 /**
  * Created by jferard on 09/05/17.
  */

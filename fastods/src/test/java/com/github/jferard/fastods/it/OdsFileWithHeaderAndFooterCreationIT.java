@@ -21,27 +21,17 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.*;
-import com.github.jferard.fastods.Footer;
-import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSectionContent.Region;
-import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextProperties;
-import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.style.*;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.*;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
 import org.odftoolkit.odfdom.dom.OdfStylesDom;
-import org.odftoolkit.odfdom.dom.element.text.TextParagraphElementBase;
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
-import org.odftoolkit.simple.text.*;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
@@ -176,7 +166,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 		Row row = sheet.getRowByIndex(0);
 		Cell cell = row.getCellByIndex(0);
 		Assert.assertEquals("", OdfToolkitUtil.getStringValue(cell));
-		Iterator<org.odftoolkit.simple.text.Paragraph> it = cell.getParagraphIterator();
+		final Iterator<org.odftoolkit.simple.text.Paragraph> it = cell.getParagraphIterator();
 		Assert.assertEquals("This is a", it.next().getTextContent());
 		Assert.assertEquals("multiline", it.next().getOdfElement().getFirstElementChild().getTextContent());
 		Assert.assertEquals("cell", it.next().getOdfElement().getFirstElementChild().getTextContent());

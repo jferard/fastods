@@ -25,8 +25,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jferard on 09/05/17.
  */

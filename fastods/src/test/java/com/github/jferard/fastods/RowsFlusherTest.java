@@ -21,21 +21,16 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.odselement.ContentElement;
-import com.github.jferard.fastods.odselement.SettingsElement;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by jferard on 09/05/17.

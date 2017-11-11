@@ -33,8 +33,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jferard on 20/05/17.
  */

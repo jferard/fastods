@@ -28,8 +28,6 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jferard on 19/05/17.
  */

@@ -31,8 +31,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jferard on 09/05/17.
  */

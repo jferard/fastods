@@ -21,11 +21,8 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by jferard on 29/05/17.

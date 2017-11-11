@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 public class FractionStyleTest {

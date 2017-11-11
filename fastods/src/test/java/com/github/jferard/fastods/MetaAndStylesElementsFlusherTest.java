@@ -30,8 +30,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jferard on 09/05/17.
  */

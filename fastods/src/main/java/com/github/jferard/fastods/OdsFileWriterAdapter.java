@@ -80,7 +80,7 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
      * Flushes all available flushers to the adaptee writer.
      * The thread falls asleep if we reach the end of the queue without a FinalizeFlusher.
      *
-     * @throws IOException
+     * @throws IOException if the adaptee throws an IOException
      */
     public synchronized void flushAdaptee() throws IOException {
         OdsFlusher flusher = this.flushers.poll();
@@ -99,6 +99,8 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
         try {
             this.wait();
         } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
         }
         this.notifyAll(); // wakes up other threads: no flusher left
     }
@@ -112,6 +114,8 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
             try {
                 this.wait();
             } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
             }
         }
     }
