@@ -66,12 +66,12 @@ public class BenchmarkTest {
         this.test(BenchmarkTest.ROW_COUNT, BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
     }
 
-    private void test(int rowCount, int colCount, int times) throws IOException {
-        Bench bench1 = new BenchFast(this.logger, rowCount, colCount);
-        Bench bench1b = new BenchFastFlush(this.logger, rowCount, colCount);
-        Bench bench1c = new BenchFastFlushWithThreads(this.logger, rowCount, colCount);
-        Bench bench2 = new BenchSimple(this.logger, rowCount, colCount);
-        Bench bench3 = new BenchJOpen(this.logger, rowCount, colCount);
+    private void test(final int rowCount, final int colCount, final int times) throws IOException {
+        final Bench bench1 = new BenchFast(this.logger, rowCount, colCount);
+        final Bench bench1b = new BenchFastFlush(this.logger, rowCount, colCount);
+        final Bench bench1c = new BenchFastFlushWithThreads(this.logger, rowCount, colCount);
+        final Bench bench2 = new BenchSimple(this.logger, rowCount, colCount);
+        final Bench bench3 = new BenchJOpen(this.logger, rowCount, colCount);
         for (int i = 0; i < times; i++) {
             bench1.iteration();
             bench1b.iteration();

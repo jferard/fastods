@@ -125,24 +125,24 @@ class TableAppender {
             return;
         }
 
-        TableColumnStyle ts0 = TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE;
         int count = 1;
         int globalCount = 0;
-        TableColumnStyle ts1 = iterator.next();
+        TableColumnStyle prevTCS;
+        TableColumnStyle curTCS = iterator.next(); // will be shifted to prevTCS
         while (iterator.hasNext()) {
-            ts0 = ts1;
-            ts1 = iterator.next();
+            prevTCS = curTCS;
+            curTCS = iterator.next();
 
-            if (ts0.equals(ts1)) {
+            if (curTCS.equals(prevTCS)) {
                 count++;
             } else {
-                ts0.appendXMLToTable(xmlUtil, appendable, count);
+                prevTCS.appendXMLToTable(xmlUtil, appendable, count);
                 globalCount += count;
                 count = 1;
             }
 
         }
-        ts1.appendXMLToTable(xmlUtil, appendable, count);
+        curTCS.appendXMLToTable(xmlUtil, appendable, count);
         globalCount += count;
         TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
                 .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT-globalCount);
