@@ -8,7 +8,7 @@
 
 A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
 
-**Please note that FastODS is almost ready for production use. The version 1.0 is comming.**
+**Please note that FastODS is almost ready for production use. The version 1.0 is coming.**
 
 ## Table of contents
 * [Why FastODS?](#why-fastods)
