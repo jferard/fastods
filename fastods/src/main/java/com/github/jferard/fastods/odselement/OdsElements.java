@@ -323,7 +323,7 @@ public class OdsElements {
     }
 
     /**
-     * Prepare the elements fro writing.
+     * Prepare the elements for writing.
      *
      * @throws IOException if the preparation fails
      */

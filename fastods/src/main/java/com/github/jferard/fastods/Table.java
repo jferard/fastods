@@ -45,6 +45,18 @@ public class Table implements NamedObject {
 
 	private String name;
 
+	/**
+	 * Create a new Table with a name and a row/column capacity
+	 * @param positionUtil an util
+	 * @param writeUtil an util
+	 * @param xmlUtil an util
+	 * @param stylesContainer the container for styles
+	 * @param format the data styles
+	 * @param name the name of the tables
+	 * @param rowCapacity the row capacity
+	 * @param columnCapacity the column capacity
+	 * @return the table
+	 */
 	public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
 							   final StylesContainer stylesContainer, final DataStyles format,
 							   final String name, final int rowCapacity, final int columnCapacity) {
@@ -54,13 +66,23 @@ public class Table implements NamedObject {
 	}
 
 
-	public Table(final String name, final TableBuilder builder) {
+	/**
+	 * Create an new table with a given builder
+	 * @param name the name of the table
+	 * @param builder the builder
+	 */
+	Table(final String name, final TableBuilder builder) {
 		this.name = name;
 		this.builder = builder;
 		this.appender = new TableAppender(builder);
 	}
 
 
+	/**
+	 *
+	 * @param data
+	 * @throws IOException
+	 */
 	public void addData(final DataWrapper data) throws IOException {
 		data.addToTable(this);
 	}
@@ -73,11 +95,21 @@ public class Table implements NamedObject {
 		this.builder.addObserver(observer);
 	}
 
+	/**
+	 * Add XML to an output
+	 * @param util an util
+	 * @param appendable the output
+	 * @throws IOException if the XML could not be written
+	 */
 	public void appendXMLToContentEntry(final XMLUtil util,
 										final Appendable appendable) throws IOException {
 		this.appender.appendXMLToContentEntry(util, appendable);
 	}
 
+	/**
+	 * Flush the XML
+	 * @throws IOException if an error occurs
+	 */
 	public void flush() throws IOException {
 		this.builder.flushBeginTable(this.appender);
 		this.builder.flushEndTable(this.appender);
@@ -120,6 +152,9 @@ public class Table implements NamedObject {
 		this.appender.flushSomeAvailableRowsFrom(util, appendable, rowIndex);
 	}
 
+	/**
+	 * @return the config item map of this table
+	 */
 	public ConfigItemMapEntry getConfigEntry() {
 		return this.builder.getConfigEntry();
 	}
@@ -138,10 +173,24 @@ public class Table implements NamedObject {
 		return this.name;
 	}
 
+	/**
+	 * Return a row from an index
+	 * @param rowIndex the index
+	 * @return the row
+	 * @throws FastOdsException if the index is invalid
+	 * @throws IOException if the row was flushed
+	 */
 	public TableRow getRow(final int rowIndex) throws FastOdsException, IOException {
 		return this.builder.getRow(this, this.appender, rowIndex);
 	}
 
+	/**
+	 * Return a row from a position
+	 * @param pos the position, e.g. A5
+	 * @return the row
+	 * @throws FastOdsException if the index is invalid
+	 * @throws IOException if the row was flushed
+	 */
 	public TableRow getRow(final String pos) throws FastOdsException, IOException {
 		return this.builder.getRow(this, this.appender, pos);
 	}
@@ -155,10 +204,22 @@ public class Table implements NamedObject {
 		return this.builder.getStyleName();
 	}
 
+	/**
+	 * @return the next row
+	 * @throws IOException
+	 */
 	public TableRow nextRow() throws IOException {
 		return this.builder.nextRow(this, this.appender);
 	}
 
+	/**
+	 * Set a span over cells
+	 * @param rowIndex the top row
+	 * @param colIndex the leftmost col
+	 * @param rowMerge the number of rows
+	 * @param columnMerge the number of cols
+	 * @throws IOException if an error occurs
+	 */
 	public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
 		this.builder.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
 	}
@@ -194,6 +255,12 @@ public class Table implements NamedObject {
 		this.builder.setColumnStyle(col, ts);
 	}
 
+	/**
+	 * Set a config item
+	 * @param name the item name
+	 * @param type the item type
+	 * @param value the item value
+	 */
 	public void setConfigItem(final String name, final String type,
 							  final String value) {
 		this.builder.setConfigItem(name, type, value);
@@ -211,6 +278,12 @@ public class Table implements NamedObject {
 		this.name = name;
 	}
 
+	/**
+	 * Set one of the settings
+	 * @param viewId the id of the view
+	 * @param item the item name
+	 * @param value the item value
+	 */
 	public void setSettings(final String viewId, final String item, final String value) {
 		this.builder.setSettings(viewId, item, value);
 	}
@@ -224,7 +297,14 @@ public class Table implements NamedObject {
 		this.builder.setStyle(style);
 	}
 
-    public void setRowsSpanned(final int rowIndex, final int colIndex, final int n) throws IOException {
+	/**
+	 * Set a span over rows
+	 * @param rowIndex the row index
+	 * @param colIndex the col index
+	 * @param n the number of rows
+	 * @throws IOException if an error occurs
+	 */
+	public void setRowsSpanned(final int rowIndex, final int colIndex, final int n) throws IOException {
 		this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
 	}
 }

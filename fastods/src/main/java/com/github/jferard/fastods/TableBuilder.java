@@ -44,8 +44,16 @@ import java.util.ArrayList;
  * @author Martin Schulz
  */
 class TableBuilder {
+    /**
+     * The size of the buffer
+     */
     public static final int BUFFER_SIZE = 8*1024;
 
+    /**
+     * Check if a col index is valid, otherwise throws an exception
+     * @param col the index
+     * @throws FastOdsException if the index is invalid
+     */
     private static void checkCol(final int col) throws FastOdsException {
         if (col < 0) {
             throw new FastOdsException("Negative column number exception, column value:[" +
@@ -53,6 +61,11 @@ class TableBuilder {
         }
     }
 
+    /**
+     * Check if a row index is valid, otherwise throws an exception
+     * @param row the index
+     * @throws FastOdsException if the index is invalid
+     */
     private static void checkRow(final int row) throws FastOdsException {
         if (row < 0) {
             throw new FastOdsException("Negative row number exception, row value:[" +
@@ -61,7 +74,21 @@ class TableBuilder {
         }
     }
 
-    public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer, final DataStyles format, final String name, final int rowCapacity, final int columnCapacity) {
+    /**
+     * Create a new table builder
+     * @param positionUtil an util
+     * @param writeUtil an util
+     * @param xmlUtil an util
+     * @param stylesContainer the container
+     * @param format the available data styles
+     * @param name the name of the table
+     * @param rowCapacity the row capacity of the table
+     * @param columnCapacity the column capacity of the table
+     * @return
+     */
+    public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
+                                      final StylesContainer stylesContainer, final DataStyles format, final String name,
+                                      final int rowCapacity, final int columnCapacity) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
         configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
         configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
@@ -80,6 +107,7 @@ class TableBuilder {
 
         return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
     }
+
     private final int bufferSize;
     private final int columnCapacity;
     private final FullList<TableColumnStyle> columnStyles;
@@ -97,6 +125,19 @@ class TableBuilder {
     private String name;
     private TableStyle style;
 
+    /**
+     * Create a new table builder
+     * @param positionUtil an util
+     * @param writeUtil an util
+     * @param xmlUtil an util
+     * @param stylesContainer the container
+     * @param format the available data styles
+     * @param name the name of the table
+     * @param rowCapacity the row capacity of the table
+     * @param columnCapacity the column capacity of the table
+     * @param configEntry the config
+     * @param bufferSize the buffer size
+     */
     TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil,
                  final XMLUtil xmlUtil, final StylesContainer stylesContainer,
                  final DataStyles format, final String name, final int rowCapacity,
@@ -130,23 +171,42 @@ class TableBuilder {
         this.observer = observer;
     }
 
+    /**
+     * Flush the begin of the table
+     * @param appender the destination
+     * @throws IOException if an error occurs
+     */
     public void flushBeginTable(final TableAppender appender) throws IOException {
         this.observer.update(new BeginTableFlusher(appender));
     }
 
+    /**
+     * Flush the end of the table
+     * @param appender the destination
+     * @throws IOException if an error occurs
+     */
     public void flushEndTable(final TableAppender appender) throws IOException {
         this.observer.update(new EndTableFlusher(appender, this.tableRows.subList(this.lastFlushedRowIndex, this
                 .tableRows.usedSize())));
     }
 
+    /**
+     * @return the list of the column styles
+     */
     public FullList<TableColumnStyle> getColumnStyles() {
         return this.columnStyles;
     }
 
+    /**
+     * @return the config entry
+     */
     public ConfigItemMapEntry getConfigEntry() {
         return this.configEntry;
     }
 
+    /**
+     * @return the index of the last used row
+     */
     public int getLastRowNumber() {
         return this.tableRows.usedSize() - 1;
     }
@@ -260,11 +320,23 @@ class TableBuilder {
         this.columnStyles.set(col, ts);
     }
 
+    /**
+     * Set a config item
+     * @param name the item name
+     * @param type the item type
+     * @param value the item value
+     */
     public void setConfigItem(final String name, final String type,
                               final String value) {
         this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
     }
 
+    /**
+     * Set one of the settings
+     * @param viewId the id of the view
+     * @param item the item name
+     * @param value the item value
+     */
     public void setSettings(final String viewId, final String item, final String value) {
         this.configEntry.set(item, value);
     }
@@ -280,6 +352,13 @@ class TableBuilder {
         this.style = style;
     }
 
+    /**
+     * Set a span over rows
+     * @param rowIndex the row index
+     * @param colIndex the col index
+     * @param n the number of rows
+     * @throws IOException if an error occurs
+     */
     public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int n) throws IOException {
         if (n <= 1)
             return;
@@ -301,6 +380,9 @@ class TableBuilder {
         }
     }
 
+    /**
+     * @return the name of the table to build
+     */
     public String getName() {
         return this.name;
     }
@@ -314,10 +396,18 @@ class TableBuilder {
         this.name = name;
     }
 
+    /**
+     * @return the number if rows
+     */
     public int getTableRowsUsedSize() {
         return this.tableRows.usedSize();
     }
 
+    /**
+     * Return a table row from its index
+     * @param r the index
+     * @return the row
+     */
     public TableRow getTableRow(final int r) {
         return this.tableRows.get(r);
     }

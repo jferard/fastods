@@ -72,6 +72,9 @@ public class StylesContainer {
 
     private final MultiContainer<String, ObjectStyle, Dest> objectStylesContainer;
 
+    /**
+     * Create a styles container
+     */
     StylesContainer() {
         this.objectStylesContainer = new MultiContainer<String, ObjectStyle, Dest>(
                 Dest.class);
@@ -81,6 +84,12 @@ public class StylesContainer {
         this.anonymousStyleByChildCellStyle = new HashMap<ChildCellStyle, TableCellStyle>();
     }
 
+    /**
+     * Add a child style that mixes the cell style with a data style to the container
+     * @param style the cell style
+     * @param dataStyle the data style
+     * @return the mixed cell style
+     */
     public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
         final ChildCellStyle childKey = new ChildCellStyle(style, dataStyle);
         TableCellStyle anonymousStyle = this.anonymousStyleByChildCellStyle.get(childKey);
@@ -108,6 +117,12 @@ public class StylesContainer {
                 Mode.CREATE);
     }
 
+    /**
+     * Try to add a data style to the container
+     * @param dataStyle the data style
+     * @param mode the mode (one of CREATE, CREATE_OR_UPDATE, UPDATE)
+     * @return true if the style was added
+     */
     public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
         assert dataStyle.isHidden() : dataStyle.toString();
         return this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
@@ -140,6 +155,10 @@ public class StylesContainer {
             return false;
     }
 
+    /**
+     * Add the data style taken from a cell style
+     * @param style the cell style
+     */
     public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
         this.addStyleToContentAutomaticStyles(style);
         this.addDataStyle(style.getDataStyle());

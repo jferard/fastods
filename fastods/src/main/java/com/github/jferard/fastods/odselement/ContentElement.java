@@ -217,9 +217,9 @@ public class ContentElement implements OdsElement {
 	 * Write the postamble into the given writer. Used by the FinalizeFlusher and by standard write method
 	 * @param util an XML util
 	 * @param writer the destination
-	 * @throws IOException if the postamble was not written
+	 * @throws IOException if the postamble could not be written
 	 */
-	public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+	public void  writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
 		if (this.autofilters != null)
 			this.appendAutofilters(writer, util);
 		writer.write("</office:spreadsheet>");

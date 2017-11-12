@@ -30,46 +30,93 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * A TableCell represents a cell in a spreadsheet sheet.
  * @author Julien Férard
  */
 public interface TableCell {
 	/**
-	 * 19.385 office:value-type
+	 * 19.385 office:value-type.
+	 * Javadoc text below is taken from Open Document Format for Office Applications (OpenDocument) Version 1.2
 	 */
 	enum Type {
-		BOOLEAN("office:boolean-value", "boolean"), CURRENCY("office:value",
-				"currency"), DATE("office:date-value", "date"), FLOAT(
-						"office:value", "float"), PERCENTAGE("office:value",
-								"percentage"), STRING("office:string-value",
-										"string"), TIME("office:time-value",
-												"time"), VOID("office-value",
-														"");
+		/**
+		 * a boolean: "true or false"
+		 */
+		BOOLEAN("office:boolean-value", "boolean"),
+		/**
+		 * a currency: "Numeric value and currency symbol"
+		 */
+		CURRENCY("office:value", "currency"),
+		/**
+		 * a date: "Date value as specified in §3.2.9 of [xmlschema-2], or date and time value as
+		 * specified in §3.2.7 of [xmlschema-2]"
+		 */
+		DATE("office:date-value", "date"),
+		/**
+		 * a float: "Numeric value"
+		 */
+		FLOAT("office:value", "float"),
+		/**
+		 * a percentage: "Numeric value"
+		 */
+		PERCENTAGE("office:value", "percentage"),
+		/**
+		 * a string: "String"
+		 */
+		STRING("office:string-value", "string"),
+		/**
+		 * a time: "Duration, as specified in §3.2.6 of [xmlschema-2]"
+		 */
+		TIME("office:time-value", "time"),
+		/**
+		 * a void cell value: nothing.
+		 */
+		VOID("office-value", "");
 
-		final String attrName;
-		final String attrValue;
+		final String valueType;
+		final String valueAttribute;
 
-		Type(final String attrName, final String attrValue) {
-			this.attrValue = attrValue;
-			this.attrName = attrName;
+		/**
+		 * @param valueType the value type. Will produce office:value-type="float"
+		 * @param valueAttribute the value attribute. Will store the value as in: office:string-value="xyz".
+		 */
+		Type(final String valueType, final String valueAttribute) {
+			this.valueAttribute = valueAttribute;
+			this.valueType = valueType;
 		}
 
-		public String getAttrName() {
-			return this.attrName;
+        /**
+         * @return the value type
+         */
+        public String getValueType() {
+			return this.valueType;
 		}
 
-		public String getAttrValue() {
-			return this.attrValue;
+        /**
+         * @return the value attribute
+         */
+        public String getValueAttribute() {
+			return this.valueAttribute;
 		}
 	}
 
-	void appendXMLToTableRow(XMLUtil util, Appendable appendable)
+    /**
+     * Generate the XML for the table cell.
+     * @param util an util.
+     * @param appendable the appendable to fill
+     * @throws IOException if an error occurs
+     */
+    void appendXMLToTableRow(XMLUtil util, Appendable appendable)
 			throws IOException;
 
-	void markRowsSpanned(int n);
+    /**
+     * Marks a number of rows with a span
+     * @param n the number of rows
+     */
+    void markRowsSpanned(int n);
 
 	/**
 	 * Set the boolean value
-	 *
 	 * @param value true or false
 	 */
 	void setBooleanValue(boolean value);
@@ -105,86 +152,84 @@ public interface TableCell {
 	 * Set the currency value and table cell style to STYLE_CURRENCY.
 	 *
 	 * @param value the value as a Number
-	 * @param currency
-	 *            The currency value
+	 * @param currency the currency value
 	 */
 	void setCurrencyValue(Number value, String currency);
 
 	/**
-	 * Set the date value for a cell with OldHeavyTableCell.STYLE_DATE.
+	 * Set the date value for a cell with TableCell.STYLE_DATE.
 	 *
-	 * @param cal
-	 *            - A Calendar object with the date to be used
+	 * @param cal a Calendar object with the date to be used
 	 */
 	void setDateValue(Calendar cal);
 
-	void setDateValue(Date value);
+    /**
+     * Set the date value for a cell with TableCell.STYLE_DATE.
+     * @param date a Date object
+     */
+    void setDateValue(Date date);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.FLOAT.
 	 *
-	 * @param value
-	 *            - A double object with the value to be used
+	 * @param value a double object with the value to be used
 	 */
 	void setFloatValue(float value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.FLOAT.
 	 *
-	 * @param value
-	 *            - A double object with the value to be used
+	 * @param value a double object with the value to be used
 	 */
 	void setFloatValue(int value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.FLOAT.
 	 *
-	 * @param value
-	 *            - A double object with the value to be used
+	 * @param value a double object with the value to be used
 	 */
 	void setFloatValue(Number value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.STRING.
 	 *
-	 * @param value
-	 *            - A double object with the value to be used
+	 * @param value a double object with the value to be used
 	 */
 	void setObjectValue(Object value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
-	 * @param value
-	 *            - A float object with the value to be used
+	 * @param value a float object with the value to be used
 	 */
 	void setPercentageValue(float value);
 
 	/**
 	 * Set the int value for a cell with TableCell.Type.PERCENTAGE.
 	 *
-	 * @param value
-	 *            - An int with the value to be used
+	 * @param value an int with the value to be used
 	 */
 	void setPercentageValue(int value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
-	 * @param value
-	 *            - A double object with the value to be used
+	 * @param value a double object with the value to be used
 	 */
 	void setPercentageValue(Number value);
 
 	/**
 	 * Set the float value for a cell with TableCell.Type.STRING.
 	 *
-	 * @param value
-	 *            - A double object with the value to be used
+	 * @param value a double object with the value to be used
 	 */
 	void setStringValue(String value);
 
-	void setStyle(TableCellStyle style);
+    /**
+     * Set a style for this cell
+     * @param style the style
+     */
+    void setStyle(TableCellStyle style);
 
 	/**
 	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
@@ -195,11 +240,18 @@ public interface TableCell {
 	/**
 	 * Add a tooltip to the cell
 	 *
-	 * @param tooltip
-	 *            the text of the tooltip
+	 * @param tooltip the text of the tooltip
 	 */
 	void setTooltip(String tooltip);
 
+    /**
+     * Add a tooltip to the cell
+     *
+     * @param tooltip the text of the tooltip
+     * @param width the width of the tooltip
+     * @param height the height of the tooltip
+     * @param visible if the tooltip should be visible.
+     */
 	void setTooltip(String tooltip, Length width, Length height, boolean visible);
 
 	/**
@@ -216,22 +268,57 @@ public interface TableCell {
 	 */
 	void setFormula(String formula);
 
-	boolean isCovered();
+    /**
+     * @return true if the cell is covered by a span
+     */
+    boolean isCovered();
 
-	void setCovered();
+    /**
+     * Set the cell covered flag
+     */
+    void setCovered();
 
-	void setColumnsSpanned(int n);
+    /**
+     * Create a span over cells at the right
+     * @param n the number of cells to be spanned
+     */
+    void setColumnsSpanned(int n);
 
-	void markColumnsSpanned(int n);
+    /**
+     * Mark the columns a spanned
+     * @param n the number of columns
+     */
+    void markColumnsSpanned(int n);
 
+    /**
+     * Create a span over cells below
+     * @param n the number of cells to be spanned
+     * @throws IOException if the cell can't be merged (only when flushing data)
+     */
 	void setRowsSpanned(int n) throws IOException;
 
-	void setVoidValue();
+    /**
+     * Set a void value in this cell
+     */
+    void setVoidValue();
 
-	boolean hasValue();
+    /**
+     * @return true if the cell has a value. A void value is a value
+     */
+    boolean hasValue();
 
-	void setText(Text text);
+    /**
+     * Set a text in this cell
+     * @param text the text
+     */
+    void setText(Text text);
 
-	void setCellMerge(int rowMerge,
+    /**
+     * Merge cells
+     * @param rowMerge number of rows below
+     * @param columnMerge number of rows at the right
+     * @throws IOException if the cell can't be merged (only when flushing data)
+     */
+    void setCellMerge(int rowMerge,
 							 int columnMerge) throws IOException;
 }
