@@ -65,6 +65,7 @@ public class Link implements ParagraphElement {
      * @param text the text content
      * @param ts the style
      * @param ref the ref
+     * @return the link
      */
 	public static Link create(final String text, final TextStyle ts, final String ref) {
         return new Link(text, ts, '#'+ref);
@@ -74,6 +75,7 @@ public class Link implements ParagraphElement {
      * Create a new link to a given ref
      * @param text the text content
      * @param ref the ref
+     * @return the link
      */
 	public static Link create(final String text, final String ref) {
 		return new Link(text, null, '#'+ref);
@@ -84,6 +86,7 @@ public class Link implements ParagraphElement {
      * @param text the text content
      * @param ts the style
      * @param file the file
+     * @return the link
      */
 	public static Link create(final String text, final TextStyle ts, final File file) {
 		return new Link(text, ts, file.toURI().toString());
@@ -93,6 +96,7 @@ public class Link implements ParagraphElement {
      * Create a new link to a given file
      * @param text the text content
      * @param file the file
+     * @return the link
      */
 	public static Link create(final String text, final File file) {
         return new Link(text, null, file.toURI().toString());
@@ -103,6 +107,7 @@ public class Link implements ParagraphElement {
      * @param text the text content
      * @param ts the style
      * @param url the file
+     * @return the link
      */
 	public static Link create(final String text, final TextStyle ts, final URL url) {
 		return new Link(text, ts, url.toString());
@@ -112,6 +117,7 @@ public class Link implements ParagraphElement {
      * Create a new link to a given url
      * @param text the text content
      * @param url the file
+     * @return the link
      */
 	public static Link create(final String text, final URL url) {
         return new Link(text, null, url.toString());

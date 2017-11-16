@@ -28,12 +28,12 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 
 /**
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
+ * A builder for a page section
+ *
+ * @param <F> L-bound for the page section builder itself
  *
  * @author Julien Férard
+ *
  */
 @SuppressWarnings("unchecked")
 public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {

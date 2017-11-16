@@ -35,13 +35,22 @@ public class Span implements ParagraphElement {
 	private final String text;
 	private final /*@Nullable*/ TextStyle ts;
 
+	/**
+	 * Create a span with some text
+	 * @param text the text
+	 */
 	public Span(final String text) {
 		this(text, null);
 	}
 
-	public Span(final String s, final TextStyle t) {
-		this.ts = t;
-		this.text = s;
+	/**
+	 * Create a span with some text
+	 * @param text the text
+	 * @param ts the style
+	 */
+	public Span(final String text, final TextStyle ts) {
+		this.ts = ts;
+		this.text = text;
 	}
 
 	/**
@@ -63,9 +72,10 @@ public class Span implements ParagraphElement {
 		}
 	}
 
-	// DO NOT USE...
-	// WARNING: 19.874.29: style-name refers to a style that has the family
-	// "paragraph" !
+	/** DO NOT USE...
+	 *  WARNING: 19.874.29: style-name refers to a style that has the family
+	 "paragraph" !
+	 */
 	@Deprecated
 	public void appendXMLTextPToParagraph(final XMLUtil util,
 			final Appendable appendable) throws IOException {

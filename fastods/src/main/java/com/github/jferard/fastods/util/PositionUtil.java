@@ -31,14 +31,29 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class PositionUtil {
+	/**
+	 * a..z -> 26 letters
+	 */
 	public static final int ALPHABET_SIZE = 26;
+	/**
+	 * the base for computing
+	 */
 	public static final int ORD_A = 'A';
 
+	/**
+	 * A position (row + col)
+	 */
 	public static class Position {
 		private final EqualityUtil equalityUtil;
 		private final int column;
 		private final int row;
 
+		/**
+		 * Create a position
+		 * @param equalityUtil an util
+		 * @param row the row
+		 * @param column the column
+		 */
 		Position(final EqualityUtil equalityUtil, final int row, final int column) {
 			this.equalityUtil = equalityUtil;
 			this.row = row;
@@ -62,10 +77,16 @@ public class PositionUtil {
 			return this.equalityUtil.hashInts(this.row, this.column);
 		}
 
+		/**
+		 * @return the column
+		 */
 		public int getColumn() {
 			return this.column;
 		}
 
+		/**
+		 * @return the row
+		 */
 		public int getRow() {
 			return this.row;
 		}
@@ -83,7 +104,7 @@ public class PositionUtil {
 		 * <li>1023 gives "AMJ"</li>
 		 * </ul>
 		 *
-		 * @return the Excel/OO/LO address of a cell
+		 * @return the Excel/OO/LO address
 		 */
 		public String toCellAddress() {
 			final StringBuilder sb = new StringBuilder();
@@ -97,6 +118,11 @@ public class PositionUtil {
 			return sb.toString();
 		}
 
+		/**
+		 * Return the Excel/OO/LO address of a cell, preceeded by the table name
+		 * @param table the table
+		 * @return the Excel/OO/LO address
+		 */
 		public String toCellAddress(final NamedObject table) {
 			return table.getName()+"."+this.toCellAddress();
 		}
@@ -111,6 +137,10 @@ public class PositionUtil {
 	private static final int OPT_SECOND_LETTER = 2;
 	private final EqualityUtil equalityUtil;
 
+	/**
+	 * Create a new position util
+	 * @param equalityUtil an util
+	 */
 	public PositionUtil(final EqualityUtil equalityUtil) {
 		this.equalityUtil = equalityUtil;
 	}
@@ -176,23 +206,58 @@ public class PositionUtil {
 		}
 		return new Position(this.equalityUtil, row - 1, col - 1);
 	}
-	
+
+	/**
+	 * @param row the row
+	 * @param col the col
+	 * @return the position
+	 */
 	public Position getPosition(final int row, final int col) {
 		return new Position(this.equalityUtil, row, col);
 	}
 
+	/**
+	 * Return the Excel/OO/LO address of a cell
+	 * @param row the row
+	 * @param col the col
+	 * @return the Excel/OO/LO address
+	 */
 	public String toCellAddress(final int row, final int col) {
 		return this.getPosition(row, col).toCellAddress();
 	}
 
+	/**
+	 * the Excel/OO/LO address of a cell, preceeded by the table name
+	 * @param row the row
+	 * @param col the col
+	 * @param table the table
+	 * @return the Excel/OO/LO address
+	 */
 	public String toCellAddress(final Table table, final int row, final int col) {
 		return this.getPosition(row, col).toCellAddress(table);
 	}
 
+	/**
+	 * Return the Excel/OO/LO address of a range
+	 * @param row1 the first row
+	 * @param col1 the first col
+	 * @param row2 the last row
+	 * @param col2 the last col
+	 * @return the Excel/OO/LO address
+	 */
 	public String toRangeAddress(final int row1, final int col1, final int row2, final int col2) {
 		return this.toCellAddress(row1, col1)+":"+this.toCellAddress(row2, col2);
 	}
 
+	/**
+	 * Return the Excel/OO/LO address of a range, preceeded by the table name
+	 * @param row1 the first row
+	 * @param col1 the first col
+	 * @param row2 the last row
+	 * @param col2 the last col
+	 * @param table the table
+	 * @return the Excel/OO/LO address
+	 */
 	public String toRangeAddress(final Table table, final int row1, final int col1, final int row2, final int col2) {
 		return this.toCellAddress(table, row1, col1)+":"+this.toCellAddress(table, row2, col2);
 	}

@@ -38,44 +38,41 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public abstract class PageSectionContent {
-	public enum Region {
-		CENTER, LEFT, RIGHT
-	}
+public interface PageSectionContent {
+    /**
+     * Add the styles of this page section to the styles container
+     * @param stylesContainer the styles container
+     */
+    void addEmbeddedStylesToStylesElement(StylesContainer stylesContainer);
 
-	/*
-	public static RegionPageSectionBuilder regionBuilder() {
-		return new RegionPageSectionBuilder();
-	}
+    /**
+     * Add the styles of this page section to the styles container
+     * @param stylesContainer the styles container
+     * @param mode (CREATE, CREATE_OR_UPDATE, UPDATE)
+     */
+    void addEmbeddedStylesToStylesElement(StylesContainer stylesContainer, Mode mode);
 
-	public static SimplePageSectionBuilder simpleBuilder() {
-		return new SimplePageSectionBuilder();
-	}
+    /**
+     * Append the XML representation of a page section to a stream
+     * @param util an util
+     * @param appendable the stream
+     * @throws IOException If an I/O error occurs
+     */
+    void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException;
 
-	public static Footer simpleFooter(final String text,
-                                           final TextStyle ts) {
-		final PageSection pageSection = new SimplePageSectionBuilder()
-				.text(Text.styledContent(text, ts)).build();
-		return new Footer(pageSection);
-	}
-
-	public static Header simpleHeader(final String text,
-                                           final TextStyle ts) {
-		final PageSection pageSection = new SimplePageSectionBuilder()
-				.text(Text.styledContent(text, ts)).build();
-		return new Header(pageSection);
-	}
-	*/
-
-	public abstract void addEmbeddedStylesToStylesElement(
-			StylesContainer stylesContainer);
-
-	public abstract void addEmbeddedStylesToStylesElement(
-			StylesContainer stylesContainer, Mode mode);
-
-	/**
-	 * @throws IOException If an I/O error occurs
-	 */
-	public abstract void appendXMLToMasterStyle(final XMLUtil util,
-												final Appendable appendable) throws IOException;
+    /**
+     * A region of the header/footer.
+     */
+    enum Region {
+        /**
+         * the center region
+         */
+        CENTER, /**
+         * the left region
+         */
+        LEFT, /**
+         * the right region
+         */
+        RIGHT
+    }
 }

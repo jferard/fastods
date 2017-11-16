@@ -37,7 +37,7 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-class RegionFooterHeader extends PageSectionContent {
+class RegionFooterHeader implements PageSectionContent {
 	private static void appendRegionXMLToMasterStyle(final XMLUtil util,
 			final Appendable appendable, final Text region,
 			final CharSequence regionName) throws IOException {

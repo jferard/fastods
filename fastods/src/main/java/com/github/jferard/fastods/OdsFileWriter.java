@@ -30,8 +30,15 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public interface OdsFileWriter {
+    /**
+     * Close this writer
+     * @throws IOException if an I/O error occurs
+     */
     void close() throws IOException;
 
+    /**
+     * @return the inner document
+     */
     OdsDocument document();
 
 
@@ -45,7 +52,7 @@ public interface OdsFileWriter {
 	/**
      * Update the writer with a flusher
      * @param flusher the chosen flusher
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     void update(final OdsFlusher flusher) throws IOException;
 }

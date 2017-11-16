@@ -37,7 +37,7 @@ import java.io.IOException;
  * @author Martin Schulz
  *
  */
-class SimpleFooterHeader extends PageSectionContent {
+class SimpleFooterHeader implements PageSectionContent {
 	/**
 	 * The OdsDocument where this object belong to.
 	 */

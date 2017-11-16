@@ -66,18 +66,32 @@ public class SettingsElement implements OdsElement {
 	private final Settings settings;
 	private List<Table> tables;
 
+	/**
+	 * @return a settings.xml element
+	 */
 	static SettingsElement create() {
 		return new SettingsElement(Settings.create());
 	}
 
+	/**
+	 * Create a settings.xml element
+	 */
 	SettingsElement(final Settings settings) {
 		this.settings = settings;
 	}
 
+	/**
+	 * Add a table config
+	 * @param configEntry the config
+	 */
 	public void addTableConfig(final ConfigItemMapEntry configEntry) {
 		this.settings.addTableConfig(configEntry);
 	}
 
+	/**
+	 * Set the tables
+	 * @param tables the tables
+	 */
 	public void setTables(final List<Table> tables) {
 		this.settings.setTables(tables);
 	}
@@ -98,10 +112,20 @@ public class SettingsElement implements OdsElement {
 		writer.closeEntry();
 	}
 
+	/**
+	 * Set the active table
+	 * @param table the table
+	 */
 	public void setActiveTable(final Table table) {
 		this.settings.setActiveTable(table);
 	}
 
+	/**
+	 * Set a view setting
+	 * @param viewId the view id
+	 * @param item the item name
+	 * @param value the item value
+	 */
 	public void setViewSetting(final String viewId, final String item, final String value) {
 		this.settings.setViewSetting(viewId, item, value);
 	}

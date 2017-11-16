@@ -52,13 +52,11 @@ public class TableRowStyle implements ObjectStyle {
 	private final Length rowHeight;
 
 	/**
-	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsDocument o
+	 * Create a new table row style.
 	 *
-	 * @param styleName
-	 *            A unique name for this style
-	 * @param rowHeight
-	 *            The height of the row
+	 * @param styleName A unique name for this style
+	 * @param hidden true if the row is hidden
+	 * @param rowHeight The height of the row
 	 */
 	TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight) {
 		this.name = styleName;

@@ -21,9 +21,17 @@
 
 package com.github.jferard.fastods;
 
+/**
+ * A value of type float
+ *
+ * @author Julien Férard
+ */
 public class FloatValue extends CellValue {
 	private final Number value;
 
+	/**
+	 * @param value the float
+	 */
 	FloatValue(final Number value) {
 		this.value = value;
 	}

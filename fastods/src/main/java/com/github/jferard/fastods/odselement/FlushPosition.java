@@ -29,23 +29,40 @@ public class FlushPosition {
 	private int lastTableIndex;
 	private int lastRowIndex;
 
+	/**
+	 * Create a new undefined position
+	 */
 	FlushPosition() {
 		this.lastTableIndex = -1;
 		this.lastRowIndex = -1;
 	}
 
+	/**
+	 * @return the last written row index
+	 */
 	public int getLastRowIndex() {
 		return this.lastRowIndex;
 	}
 
+	/**
+	 * @return the last written table index
+	 */
 	public int getTableIndex() {
 		return this.lastTableIndex;
 	}
 
+	/**
+	 * @return true if {@code set} was never called
+	 */
 	public boolean isUndefined() {
 		return this.lastTableIndex == -1 && this.lastRowIndex == -1;
 	}
 
+	/**
+	 * Set the position
+	 * @param lastTableIndex the table index
+	 * @param lastRowIndex the row index
+	 */
 	public void set(final int lastTableIndex, final int lastRowIndex) {
 		this.lastTableIndex = lastTableIndex;
 		this.lastRowIndex = lastRowIndex;

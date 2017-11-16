@@ -21,9 +21,17 @@
 
 package com.github.jferard.fastods;
 
+/**
+ * A cell value of string type
+ *
+ * @author Julien Férard
+ */
 public class StringValue extends CellValue {
 	private final String value;
 
+	/**
+	 * @param value the string
+	 */
 	public StringValue(final String value) {
 		this.value = value;
 	}

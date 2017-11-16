@@ -21,19 +21,33 @@
 
 package com.github.jferard.fastods.odselement;
 
+/**
+ * A "double boolean" used by the styles.xml
+ */
 class HasFooterHeader {
 	private final boolean hasFooter;
 	private final boolean hasHeader;
 
+	/**
+	 * Create a new "double boolean"
+	 * @param hasHeader true if has header
+	 * @param hasFooter true if has footer
+	 */
 	HasFooterHeader(final boolean hasHeader, final boolean hasFooter) {
 		this.hasHeader = hasHeader;
 		this.hasFooter = hasFooter;
 	}
 
+	/**
+	 * @return true if has footer
+	 */
 	public boolean hasFooter() {
 		return this.hasFooter;
 	}
 
+	/**
+	 * @return true if has header
+	 */
 	public boolean hasHeader() {
 		return this.hasHeader;
 	}

@@ -45,8 +45,14 @@ import java.util.logging.Logger;
  * @author Martin Schulz
  */
 public class OdsDocument {
-	static final int DEFAULT_COLUMN_CAPACITY = 32;
-	static final int DEFAULT_ROW_CAPACITY = 1024;
+    /**
+     * the default column capacity.
+     */
+    static final int DEFAULT_COLUMN_CAPACITY = 32;
+    /**
+     * the default row capacity.
+     */
+    static final int DEFAULT_ROW_CAPACITY = 1024;
 	private final Logger logger;
 	private final OdsElements odsElements;
 	private final XMLUtil xmlUtil;
@@ -72,10 +78,19 @@ public class OdsDocument {
 		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
 	}
 
+	/**
+	 * Add a cell style for a given data type
+	 * @param type the data type
+	 */
 	public void addChildCellStyle(final TableCell.Type type) {
 		this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, type);
 	}
 
+	/**
+	 * Add a cell style for a given data type
+	 * @param style the style
+	 * @param type the data type
+	 */
 	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
 		this.odsElements.addChildCellStyle(style, type);
 	}
@@ -100,6 +115,10 @@ public class OdsDocument {
 		this.odsElements.addMasterPageStyle(masterPageStyle);
 	}
 
+	/**
+	 * Add an observer (see Observer pattern).
+	 * @param writer the writer where data will be flushed
+	 */
 	public void addObserver(final OdsFileWriter writer) {
 		this.odsElements.addObserver(writer);
 	}
@@ -114,6 +133,10 @@ public class OdsDocument {
 		this.odsElements.addPageLayoutStyle(pageLayoutStyle);
 	}
 
+	/**
+	 * Add a page style to this document
+	 * @param ps the page style
+	 */
 	public void addPageStyle(final PageStyle ps) {
 		this.odsElements.addPageStyle(ps);
 	}
@@ -128,6 +151,10 @@ public class OdsDocument {
 		this.odsElements.addObjectStyle(objectStyle);
 	}
 
+	/**
+	 * Add a style to content.xml > automatic-styles
+	 * @param objectStyle the style
+	 */
 	public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
 		this.odsElements.addStyleToContentAutomaticStyles(objectStyle);
 	}
@@ -147,6 +174,18 @@ public class OdsDocument {
 				OdsDocument.DEFAULT_COLUMN_CAPACITY);
 	}
 
+	/**
+	 * Add a new table to the file, the new table is set to the active table.<br>
+	 * Use setActiveTable to override the current active table, this has no
+	 * influence to the program, the active table is the first table that is shown in
+	 * OpenOffice.
+	 *
+	 * @param name - The name of the table to add
+	 * @param rowCapacity the initial row capacity
+	 * @param columnCapacity the initial column capacity
+	 * @return the table
+	 * @throws IOException if the table can't be added to document
+	 */
 	public Table addTable(final String name, final int rowCapacity,
 						  final int columnCapacity) throws IOException {
 		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
@@ -155,28 +194,37 @@ public class OdsDocument {
 		return table;
 	}
 
+	/**
+	 * Enable styles debugging
+	 */
 	public void debugStyles() {
 		this.odsElements.debugStyles();
 	}
 
+	/**
+	 * Enable styles freeze
+	 */
 	public void freezeStyles() {
 		this.odsElements.freezeStyles();
 	}
 
-	public Logger getLogger() {
-		return this.logger;
-	}
-
+	/**
+	 * Get a table by index
+	 * @param n the index
+	 * @return the table
+	 * @throws FastOdsException if the table index is negative or >= number of tables
+	 */
 	public Table getTable(final int n) throws FastOdsException {
-		final List<Table> tableQueue = this.odsElements.getTables();
-		if (n < 0 || n >= tableQueue.size()) {
+		final List<Table> tables = this.odsElements.getTables();
+		if (n < 0 || n >= tables.size()) {
 			throw new FastOdsException("Wrong table number [" + n + "]");
 		}
 
-		return tableQueue.get(n);
+		return tables.get(n);
 	}
 
 	/**
+	 * Get a table by name
 	 * @param name the name of the table
 	 * @return the table
 	 * @throws FastOdsException if the table does not exist.
@@ -242,10 +290,18 @@ public class OdsDocument {
 		return this.odsElements.getTables();
 	}
 
+	/**
+	 * Prepare the document for flush (ie write empty elements, manifest, mimetype, ...)
+	 * @throws IOException if an element can't be written
+	 */
 	public void prepareFlush() throws IOException {
 		this.odsElements.prepare();
 	}
 
+	/**
+	 * Save the document
+	 * @throws IOException if the save fails
+	 */
 	public void save() throws IOException {
 		this.odsElements.save();
 	}
@@ -287,6 +343,12 @@ public class OdsDocument {
 		return true;
 	}
 
+	/**
+	 * Set a view setting
+	 * @param viewId
+	 * @param item
+	 * @param value
+	 */
 	public void setViewSetting(final String viewId, final String item, final String value) {
 		this.odsElements.setViewSetting(viewId, item, value);
 	}

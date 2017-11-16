@@ -41,6 +41,8 @@ public class PageSection {
 
 	/**
 	 * Create a new footer/header object.
+     * @param content the content of the footer/header
+     * @param style the style
 	 */
 	PageSection(final PageSectionContent content,
 				final PageSectionStyle style) {
@@ -87,21 +89,41 @@ public class PageSection {
 	}
 
 
-	public static RegionPageSectionBuilder regionBuilder() {
+    /**
+     * Create a builder for a region builder, ie a builder for a footer/header with left, center and right
+     * @return the builder
+     */
+    public static RegionPageSectionBuilder regionBuilder() {
 		return new RegionPageSectionBuilder();
 	}
 
+    /**
+     * Create a builder for a simple builder, ie a builder for a footer/header with only a center region
+     * @return the builder
+     */
 	public static SimplePageSectionBuilder simpleBuilder() {
 		return new SimplePageSectionBuilder();
 	}
 
-	public static Footer simpleFooter(final String text,
+    /**
+     * Create a simple footer, with a styled text
+     * @param text the text
+     * @param ts the style
+     * @return the footer
+     */
+    public static Footer simpleFooter(final String text,
 										   final TextStyle ts) {
 		final PageSection pageSection = new SimplePageSectionBuilder()
 				.text(Text.styledContent(text, ts)).build();
 		return new Footer(pageSection);
 	}
 
+    /**
+     * Create a simple header, with a styled text
+     * @param text the text
+     * @param ts the style
+     * @return the header
+     */
 	public static Header simpleHeader(final String text,
 										   final TextStyle ts) {
 		final PageSection pageSection = new SimplePageSectionBuilder()
@@ -109,12 +131,21 @@ public class PageSection {
 		return new Header(pageSection);
 	}
 
-	public void addEmbeddedStylesToStylesElement(
+    /**
+     * Add the styles contained in the footer/header to a styles containes
+     * @param stylesContainer the styles container
+     */
+    public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer) {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer);
 
 	}
 
+    /**
+     * Add the styles contained in the footer/header to a styles containes
+     * @param stylesContainer the styles container
+     * @param mode one of CREATE, UPDATE, CREATE_OR_UPDATE
+     */
 	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer, final Mode mode) {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer, mode);
@@ -123,7 +154,7 @@ public class PageSection {
 	/**
 	 * @param util an instance of the util class for XML writing
 	 * @param appendable the appendable element where the method will write the XML
-	 * @param pageSectionType
+	 * @param pageSectionType the type (FOOTER or HEADER)
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util,
@@ -145,15 +176,29 @@ public class PageSection {
 	 * Footer or Header ?
 	 */
 	public enum Type {
-		FOOTER("footer"), HEADER("header");
+        /**
+         * Footer
+         */
+        FOOTER("footer"),
+        /**
+         * Header
+         */
+        HEADER("header");
 
 		private final String typeName;
 
-		Type(final String typeName) {
+        /**
+         * create a type
+         * @param typeName the name
+         */
+        Type(final String typeName) {
 			this.typeName = typeName;
 		}
 
-		public String getTypeName() {
+        /**
+         * @return the type name
+         */
+        public String getTypeName() {
 			return this.typeName;
 		}
 	}

@@ -79,9 +79,9 @@ public class Table implements NamedObject {
 
 
 	/**
-	 *
-	 * @param data
-	 * @throws IOException
+	 * Add a wrapped data
+	 * @param data the wrapped data
+	 * @throws IOException if an error occurs
 	 */
 	public void addData(final DataWrapper data) throws IOException {
 		data.addToTable(this);
@@ -159,6 +159,9 @@ public class Table implements NamedObject {
 		return this.builder.getConfigEntry();
 	}
 
+	/**
+	 * @return the number of the last row (0..)
+	 */
 	public int getLastRowNumber() {
 		return this.builder.getLastRowNumber();
 	}
@@ -206,7 +209,7 @@ public class Table implements NamedObject {
 
 	/**
 	 * @return the next row
-	 * @throws IOException
+	 * @throws IOException if an error occurs
 	 */
 	public TableRow nextRow() throws IOException {
 		return this.builder.nextRow(this, this.appender);
