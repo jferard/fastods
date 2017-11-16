@@ -109,10 +109,10 @@ public class ParagraphTest {
 
 		PowerMock.replayAll();
 		final Paragraph par = this.parBuilder
-				.styledLink("text1", "ref", ts)
-				.styledLink("text1", new File("f"), ts)
-				.styledLink("text1", new URL("http:a/b"), ts)
-				.styledLink("text1", table, ts)
+				.styledLink("text1", ts, "ref")
+				.styledLink("text1", ts, new File("f"))
+				.styledLink("text1", ts, new URL("http:a/b"))
+				.styledLink("text1", ts, table)
 				.build();
 		Assert.assertEquals(4, par.getParagraphElements().size());
 		DomTester.assertEquals("<text:p>" +

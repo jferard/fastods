@@ -38,47 +38,92 @@ public class Link implements ParagraphElement {
 	private final String content;
 	private final TextStyle ts;
 
-	public Link(final String text, final NamedObject table, final TextStyle ts) {
-		this.text = text;
-		this.content = '#'+table.getName();
-		this.ts = ts;
+    /**
+     * Create a new styled Link to a table
+     * @param text the text content
+     * @param ts the style
+     * @param table the destination
+     * @return the link
+     */
+    public static Link create(final String text, final TextStyle ts, final NamedObject table) {
+		return new Link(text, ts, '#'+table.getName());
 	}
 
-	public Link(final String text, final String ref, final TextStyle ts) {
-		this.text = text;
-		this.content = '#'+ref;
-		this.ts = ts;
+    /**
+     * Create a new Link to a table
+     * @param text the text content
+     * @param table the destination
+     * @return the link
+     */
+    public static Link create(final String text, final NamedObject table) {
+        return new Link(text, null, '#'+table.getName());
+    }
+
+
+    /**
+     * Create a new styled link to a given ref
+     * @param text the text content
+     * @param ts the style
+     * @param ref the ref
+     */
+	public static Link create(final String text, final TextStyle ts, final String ref) {
+        return new Link(text, ts, '#'+ref);
 	}
 
-	public Link(final String text, final Table table) {
-		this(text, table, null);
+    /**
+     * Create a new link to a given ref
+     * @param text the text content
+     * @param ref the ref
+     */
+	public static Link create(final String text, final String ref) {
+		return new Link(text, null, '#'+ref);
 	}
 
-	public Link(final String text, final String ref) {
-		this(text, ref, null);
+    /**
+     * Create a new styled link to a given file
+     * @param text the text content
+     * @param ts the style
+     * @param file the file
+     */
+	public static Link create(final String text, final TextStyle ts, final File file) {
+		return new Link(text, ts, file.toURI().toString());
 	}
 
-	public Link(final String text, final File file, final TextStyle ts) {
-		this.text = text;
-		this.content = file.toURI().toString();
-		this.ts = ts;
+    /**
+     * Create a new link to a given file
+     * @param text the text content
+     * @param file the file
+     */
+	public static Link create(final String text, final File file) {
+        return new Link(text, null, file.toURI().toString());
 	}
 
-	public Link(final String text, final File file) {
-		this(text, file, null);
+    /**
+     * Create a new styled link to a given url
+     * @param text the text content
+     * @param ts the style
+     * @param url the file
+     */
+	public static Link create(final String text, final TextStyle ts, final URL url) {
+		return new Link(text, ts, url.toString());
 	}
 
-	public Link(final String text, final URL url, final TextStyle ts) {
-		this.text = text;
-		this.content = url.toString();
-		this.ts = ts;
+    /**
+     * Create a new link to a given url
+     * @param text the text content
+     * @param url the file
+     */
+	public static Link create(final String text, final URL url) {
+        return new Link(text, null, url.toString());
 	}
 
-	public Link(final String text, final URL url) {
-		this(text, url, null);
-	}
+    private Link(final String text, final TextStyle ts, final String content) {
+        this.text = text;
+        this.content = content;
+        this.ts = ts;
+    }
 
-	@Override
+    @Override
 	public void appendXMLToParagraph(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<text:a");
 		if (this.ts != null) {

@@ -79,7 +79,7 @@ public class TextBuilderTest {
 
     @Test
     public void styledLinkRef() throws Exception {
-        final Text t = TextBuilder.create().par().styledLink("a", "ref", this.ts).build();
+        final Text t = TextBuilder.create().par().styledLink("a", this.ts, "ref").build();
         final String c = this.getXMLContent(t);
         DomTester.assertEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#ref\" xlink:type=\"simple\">a</text:a></text:p>", c);
     }
@@ -93,7 +93,7 @@ public class TextBuilderTest {
 
     @Test
     public void styledLinkURL() throws Exception {
-        final Text t = TextBuilder.create().par().styledLink("a", new URL("http://url"), this.ts).build();
+        final Text t = TextBuilder.create().par().styledLink("a", this.ts, new URL("http://url")).build();
         final String c = this.getXMLContent(t);
         DomTester.assertEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"http://url\" xlink:type=\"simple\">a</text:a></text:p>", c);
     }
@@ -109,7 +109,7 @@ public class TextBuilderTest {
     @Test
     public void styledLinkFile() throws Exception {
         final File f = new File("f");
-        final Text t = TextBuilder.create().par().styledLink("a", f, this.ts).build();
+        final Text t = TextBuilder.create().par().styledLink("a", this.ts, f).build();
         final String c = this.getXMLContent(t);
         DomTester.assertEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"" + f.toURI().toString() + "\" xlink:type=\"simple\">a</text:a></text:p>", c);
     }
@@ -126,7 +126,7 @@ public class TextBuilderTest {
     @Test
     public void styledLinkTable() throws Exception {
         final Table table = Table.create(null, null,null,null,null,"n", 0, 0);
-        final Text t = TextBuilder.create().par().styledLink("a", table, this.ts).build();
+        final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
         final String c = this.getXMLContent(t);
         DomTester.assertEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>", c);
     }

@@ -80,6 +80,15 @@ public class TableHelper {
 		this.setCellMerge(table, row, col, rowMerge, columnMerge);
 	}
 
+	/**
+	 * @param table       the table where the cells to merge are
+	 * @param rowIndex    The row, 0 is the first row
+	 * @param colIndex    The column, 0 is the first column
+	 * @param value       the value to set
+	 * @param ts          the cell style
+	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cell value can't be set
+	 */
 	public void setCellValue(final Table table, final int rowIndex,
 							 final int colIndex, final CellValue value, final TableCellStyle ts)
 			throws FastOdsException, IOException {

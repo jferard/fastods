@@ -30,104 +30,191 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A text builder builds a text block: list of paragraphs.
+ *
+ * @author Julien Férard
+ */
 public class TextBuilder {
-	private ParagraphBuilder curParagraphBuilder;
-	private final List<Paragraph> paragraphs;
-	private final Set<TextStyle> textStyles;
+    /**
+     * @return an empty text builder
+     */
+    public static TextBuilder create() {
+        return new TextBuilder(new ArrayList<Paragraph>(), new HashSet<TextStyle>());
+    }
 
-	public static TextBuilder create() {
-		return new TextBuilder(new HashSet<TextStyle>(), new ArrayList<Paragraph>());
-	}
+    private final List<Paragraph> paragraphs;
+    private final Set<TextStyle> textStyles;
+    private ParagraphBuilder curParagraphBuilder;
 
-	TextBuilder(final Set<TextStyle> textStyles, final List<Paragraph> paragraphs) {
-		this.textStyles = textStyles;
-		this.paragraphs = paragraphs;
-		this.curParagraphBuilder = null;
-	}
+    /**
+     * Build a text builder with given styles and paragrapps
+     * @param paragraphs the paragraphs
+     * @param textStyles the styles
+     */
+    TextBuilder(final List<Paragraph> paragraphs, final Set<TextStyle> textStyles) {
+        this.textStyles = textStyles;
+        this.paragraphs = paragraphs;
+        this.curParagraphBuilder = null;
+    }
 
-	public Text build() {
-		if (this.curParagraphBuilder != null) {
-			this.paragraphs.add(this.curParagraphBuilder.build());
-		}
-		return new Text(this.paragraphs, this.textStyles);
-	}
+    /**
+     * @return the text
+     */
+    public Text build() {
+        // flush the current paragraph
+        if (this.curParagraphBuilder != null) {
+            this.paragraphs.add(this.curParagraphBuilder.build());
+        }
+        return new Text(this.paragraphs, this.textStyles);
+    }
 
-	public TextBuilder par() {
-		if (this.curParagraphBuilder != null) {
-			this.paragraphs.add(this.curParagraphBuilder.build());
-		}
-		this.curParagraphBuilder = new ParagraphBuilder();
-		return this;
-	}
+    /**
+     * Create a new paragraph
+     * @return this for fluent style
+     */
+    public TextBuilder par() {
+        if (this.curParagraphBuilder != null) {
+            this.paragraphs.add(this.curParagraphBuilder.build());
+        }
+        this.curParagraphBuilder = new ParagraphBuilder();
+        return this;
+    }
 
-	public TextBuilder parContent(final String text) {
-		return this.par().span(text);
-	}
+    /**
+     * Create a new paragraph with a text content
+     * @param text the text
+     * @return this for fluent style
+     */
+    public TextBuilder parContent(final String text) {
+        return this.par().span(text);
+    }
 
-	public TextBuilder parStyledContent(final String text, final TextStyle ts) {
-		return this.par().styledSpan(text, ts);
-	}
+    /**
+     * Create a new paragraph with a text content
+     * @param text the text
+     * @param ts the style
+     * @return this for fluent style
+     */
+    public TextBuilder parStyledContent(final String text, final TextStyle ts) {
+        return this.par().styledSpan(text, ts);
+    }
 
-	public TextBuilder span(final String text) {
-		this.curParagraphBuilder.span(text);
-		return this;
-	}
+    /**
+     * Create a span in the current paragraph.
+     * @param text the text
+     * @return this for fluent style
+     */
+    public TextBuilder span(final String text) {
+        this.curParagraphBuilder.span(text);
+        return this;
+    }
 
-	public TextBuilder link(final String text, final Table table) {
-		this.curParagraphBuilder.link(text, table);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     * @param text the text
+     * @param table the destination
+     * @return this for fluent style
+     */
+    public TextBuilder link(final String text, final Table table) {
+        this.curParagraphBuilder.link(text, table);
+        return this;
+    }
 
-	public TextBuilder styledLink(final String text, final Table table, final TextStyle ts) {
-		this.curParagraphBuilder.styledLink(text, table, ts);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     * @param text the text
+     * @param ts the style
+     * @param table the destination
+     * @return this for fluent style
+     */
+    public TextBuilder styledLink(final String text, final TextStyle ts, final Table table) {
+        this.curParagraphBuilder.styledLink(text, ts, table);
+        return this;
+    }
 
-	public TextBuilder link(final String text, final File file) {
-		this.curParagraphBuilder.link(text, file);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     * @param text the text
+     * @param file the destination
+     * @return this for fluent style
+     */
+    public TextBuilder link(final String text, final File file) {
+        this.curParagraphBuilder.link(text, file);
+        return this;
+    }
 
-	public TextBuilder styledLink(final String text, final File file, final TextStyle ts) {
-		this.curParagraphBuilder.styledLink(text, file, ts);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     * @param text the text
+     * @param ts the style
+     * @param file the destination
+     * @return this for fluent style
+     */
+    public TextBuilder styledLink(final String text, final TextStyle ts, final File file) {
+        this.curParagraphBuilder.styledLink(text, ts, file);
+        return this;
+    }
 
-	public TextBuilder link(final String text, final URL url) {
-		this.curParagraphBuilder.link(text, url);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     * @param text the text
+     * @param url the destination
+     * @return this for fluent style
+     */
+    public TextBuilder link(final String text, final URL url) {
+        this.curParagraphBuilder.link(text, url);
+        return this;
+    }
 
-	public TextBuilder styledLink(final String text, final URL url, final TextStyle ts) {
-		this.curParagraphBuilder.styledLink(text, url, ts);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     * @param text the text
+     * @param ts the style
+     * @param url the destination
+     * @return this for fluent style
+     */
+    public TextBuilder styledLink(final String text, final TextStyle ts, final URL url) {
+        this.curParagraphBuilder.styledLink(text, ts, url);
+        return this;
+    }
 
-	public TextBuilder link(final String text, final String ref) {
-		this.curParagraphBuilder.link(text, ref);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     * @param text the text
+     * @param ref the destination
+     * @return this for fluent style
+     */
+    public TextBuilder link(final String text, final String ref) {
+        this.curParagraphBuilder.link(text, ref);
+        return this;
+    }
 
-	public TextBuilder styledLink(final String text, final String ref, final TextStyle ts) {
-		this.curParagraphBuilder.styledLink(text, ref, ts);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     * @param text the text
+     * @param ts the style
+     * @param ref the destination
+     * @return this for fluent style
+     */
+    public TextBuilder styledLink(final String text, final TextStyle ts, final String ref) {
+        this.curParagraphBuilder.styledLink(text, ts, ref);
+        return this;
+    }
 
-	/**
-	 * Adds a TextStyle and text to the footer/header region specified by
-	 * region.<br>
-	 * The paragraph to be used is paragraph.<br>
-	 * The text will be shown in the order it was added with this function.
-	 * 
-	 * @param text
-	 *            The string with the text
-	 * @param ts
-	 *            The text style to be used
-	 * @return this for fluent style
-	 */
-	public TextBuilder styledSpan(final String text, final TextStyle ts) {
-		this.textStyles.add(ts);
-		this.curParagraphBuilder.styledSpan(text, ts);
-		return this;
-	}
+    /**
+     * Adds a TextStyle and text to the footer/header region specified by
+     * region.<br>
+     * The paragraph to be used is paragraph.<br>
+     * The text will be shown in the order it was added with this function.
+     *
+     * @param text The string with the text
+     * @param ts   The text style to be used
+     * @return this for fluent style
+     */
+    public TextBuilder styledSpan(final String text, final TextStyle ts) {
+        this.textStyles.add(ts);
+        this.curParagraphBuilder.styledSpan(text, ts);
+        return this;
+    }
 }
