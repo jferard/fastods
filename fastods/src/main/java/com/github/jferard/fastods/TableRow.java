@@ -44,7 +44,7 @@ public class TableRow {
      * @param row a TableRow
      * @param xmlUtil an instance of xml util
      * @param appendable where to append the row XML
-     * @throws IOException
+     * @throws IOException if an error occurs
      */
     public static void appendXMLToTable(final TableRow row, final XMLUtil xmlUtil, final Appendable appendable) throws IOException {
         if (row == null)
@@ -67,13 +67,13 @@ public class TableRow {
 
     /**
      * Create a new TableRow
-     * @param writeUtil
-     * @param xmlUtil
-     * @param stylesContainer
-     * @param dataStyles
-     * @param parent
-     * @param rowIndex
-     * @param columnCapacity
+     * @param writeUtil an util
+     * @param xmlUtil an util
+     * @param stylesContainer the styles containes
+     * @param dataStyles the data styles
+     * @param parent the parent table
+     * @param rowIndex the index of this row
+     * @param columnCapacity the max column
      */
     TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
              final StylesContainer stylesContainer, final DataStyles dataStyles,
@@ -215,6 +215,7 @@ public class TableRow {
      * Add a span across rows
      * @param rowIndex the index of the first row
      * @param n the number of rows in the span
+     * @throws IOException if the cells can't be merged
      */
     public void setRowsSpanned(final int rowIndex, final int n) throws IOException {
         if (n <= 1)
@@ -245,7 +246,7 @@ public class TableRow {
 
     /**
      * Set the row style
-     * @param rowStyle
+     * @param rowStyle the style
      */
     public void setStyle(final TableRowStyle rowStyle) {
         this.stylesContainer.addStyleToContentAutomaticStyles(rowStyle);

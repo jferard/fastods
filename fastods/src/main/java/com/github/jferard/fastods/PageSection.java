@@ -29,12 +29,8 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * This file PageSection.java is part of FastODS.
- * <p>
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
+ * 16.10<style:header>
+ * 16.11<style:footer>
  *
  * @author Julien Férard
  * @author Martin Schulz

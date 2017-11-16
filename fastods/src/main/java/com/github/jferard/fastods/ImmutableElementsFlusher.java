@@ -35,7 +35,7 @@ public class ImmutableElementsFlusher implements OdsFlusher {
     private final OdsElements odsElements;
 
     /**
-     * @param odsElements
+     * @param odsElements content.xml, styles.xml, ...
      */
     public ImmutableElementsFlusher(final OdsElements odsElements) {
         this.odsElements = odsElements;

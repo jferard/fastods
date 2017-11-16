@@ -28,28 +28,37 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
+ * Represents the footer of a print page.
  * @author Julien Férard
  */
-public class Footer {
+public class Footer implements HeaderOrFooter {
     private final PageSection pageSection;
 
+    /**
+     * Create a new footer from a page section
+     * @param pageSection the page section
+     */
     public Footer(final PageSection pageSection) {
         this.pageSection = pageSection;
     }
 
 
+    @Override
     public void addEmbeddedStylesToStylesElement(final StylesContainer stylesContainer) {
         this.pageSection.addEmbeddedStylesToStylesElement(stylesContainer);
     }
 
+    @Override
     public void addEmbeddedStylesToStylesElement(final StylesContainer stylesContainer, final Container.Mode mode) {
         this.pageSection.addEmbeddedStylesToStylesElement(stylesContainer, mode);
     }
 
+    @Override
     public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
         this.pageSection.appendXMLToMasterStyle(util, appendable);
     }
 
+    @Override
     public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util, final Appendable appendable) throws IOException {
         this.pageSection.appendPageSectionStyleXMLToAutomaticStyle(util, appendable, PageSection.Type.FOOTER);
     }
