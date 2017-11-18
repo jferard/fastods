@@ -27,7 +27,7 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  * @author Martin Schulz
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "JavaDoc"})
 public final class Color {
 	public final static String ALICEBLUE = "#F0F8FF";
 
@@ -82,10 +82,6 @@ public final class Color {
 	public final static String GOLD = "#FFD700";
 	public final static String GOLDENROD = "#DAA520";
 	public final static String GRAY = "#808080";
-	/**
-	 * All colors
-	 */
-	// Gray
 	public final static String GRAY16 = "#292929";
 	public final static String GRAY32 = "#525252";
 	public final static String GRAY48 = "#7A7A7A";
@@ -219,5 +215,4 @@ public final class Color {
 
 	private Color() {
 	}
-
 }

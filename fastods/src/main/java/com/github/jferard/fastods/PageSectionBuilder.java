@@ -28,7 +28,7 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 
 /**
- * A builder for a page section
+ * A builder for a page section. It will build a header or a footer
  *
  * @param <F> L-bound for the page section builder itself
  *
@@ -37,9 +37,18 @@ import com.github.jferard.fastods.util.SimpleLength;
  */
 @SuppressWarnings("unchecked")
 public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {
+	/**
+	 * The region box that is currently written
+	 */
 	protected Box<Text> curRegionBox;
+	/**
+	 * a margins builder
+	 */
 	protected final MarginsBuilder marginsBuilder;
 
+	/**
+	 * the minimum height of the page section
+	 */
 	protected Length minHeight;
 
 	/**
@@ -62,8 +71,17 @@ public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {
 		return (F) this;
 	}
 
-	public abstract PageSection build();
+	/**
+	 * For public calls, see buildFooter or buildHeader
+	 * @return the page section
+	 */
+	protected abstract PageSection build();
 
+	/**
+	 * Set the text content of the section
+	 * @param string the text
+	 * @return this for fluent style
+	 */
 	public F content(final String string) {
 		this.curRegionBox.set(Text.content(string));
 		return (F) this;
@@ -143,10 +161,16 @@ public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {
 		return (F) this;
 	}
 
+	/**
+	 * @return the header
+	 */
 	public Header buildHeader() {
 		return new Header(this.build());
 	}
 
+	/**
+	 * @return the footer
+	 */
 	public Footer buildFooter() {
 		return new Footer(this.build());
 	}

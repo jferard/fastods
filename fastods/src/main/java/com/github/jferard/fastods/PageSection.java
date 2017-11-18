@@ -113,9 +113,8 @@ public class PageSection {
      */
     public static Footer simpleFooter(final String text,
 										   final TextStyle ts) {
-		final PageSection pageSection = new SimplePageSectionBuilder()
-				.text(Text.styledContent(text, ts)).build();
-		return new Footer(pageSection);
+		return new SimplePageSectionBuilder()
+				.text(Text.styledContent(text, ts)).buildFooter();
 	}
 
     /**
@@ -126,9 +125,8 @@ public class PageSection {
      */
 	public static Header simpleHeader(final String text,
 										   final TextStyle ts) {
-		final PageSection pageSection = new SimplePageSectionBuilder()
-				.text(Text.styledContent(text, ts)).build();
-		return new Header(pageSection);
+		return new SimplePageSectionBuilder()
+				.text(Text.styledContent(text, ts)).buildHeader();
 	}
 
     /**
