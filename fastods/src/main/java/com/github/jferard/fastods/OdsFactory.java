@@ -46,13 +46,23 @@ import static com.github.jferard.fastods.OdsFactory.FileState.IS_DIRECTORY;
 import static com.github.jferard.fastods.OdsFactory.FileState.OK;
 
 /**
+ * An OdsFactory is the entry point for creating ods documents.
  * @author Julien Férard
  */
 public class OdsFactory {
+	/**
+	 * @return a default ods factory
+	 */
 	public static OdsFactory create() {
 		return OdsFactory.create(Logger.getLogger(OdsDocument.class.getName()), Locale.getDefault());
 	}
 
+	/**
+	 * create an ods factory
+	 * @param logger the logger
+	 * @param locale the locale
+	 * @return the factory
+	 */
 	public static OdsFactory create(final Logger logger, final Locale locale) {
 		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
 		final WriteUtil writeUtil = WriteUtil.create();
@@ -68,7 +78,15 @@ public class OdsFactory {
 	private final XMLUtil xmlUtil;
 
 
-	public OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil, final DataStyles format) {
+    /**
+     * Create a new OdsFactory
+     * @param logger the logger
+     * @param positionUtil an util
+     * @param writeUtil an util
+     * @param xmlUtil an util
+     * @param format the data styles
+     */
+    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil, final DataStyles format) {
 		this.logger = logger;
 		this.positionUtil = positionUtil;
 		this.writeUtil = writeUtil;
@@ -105,7 +123,10 @@ public class OdsFactory {
 				odsElements, this.xmlUtil);
 	}
 
-	public AnonymousOdsFileWriter createWriter() {
+    /**
+     * @return a new writer, but with no actual name
+     */
+    public AnonymousOdsFileWriter createWriter() {
 		final OdsDocument document = this.createDocument();
 		return new AnonymousOdsFileWriter(this.logger, document);
 	}
@@ -128,7 +149,13 @@ public class OdsFactory {
 		return writer;
 	}
 
-	public OdsFileWriter createWriter(final File file) throws IOException {
+    /**
+     * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
+     * @param file the destination file
+     * @return the ods writer
+     * @throws IOException if an I/O error occurs
+     */
+    public OdsFileWriter createWriter(final File file) throws IOException {
 		final OdsDocument document = this.createDocument();
 		final OdsFileWriter writer =
 				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
@@ -137,7 +164,13 @@ public class OdsFactory {
 		return writer;
 	}
 
-	public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
+    /**
+     * Create an adapter for a writer.
+     * @param file the file
+     * @return the adapter
+     * @throws IOException if an I/O error occurs
+     */
+    public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
 		final OdsDocument document = this.createDocument();
 		final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
 		final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(
@@ -174,7 +207,12 @@ public class OdsFactory {
 		return this.openFile(f);
 	}
 
-	public enum FileState {
+    /**
+     * the file state
+     * @deprecated
+     */
+    @Deprecated
+    public enum FileState {
 		IS_DIRECTORY,
 		FILE_EXISTS,
 		OK

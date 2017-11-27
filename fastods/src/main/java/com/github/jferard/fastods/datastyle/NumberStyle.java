@@ -45,14 +45,11 @@ public final class NumberStyle {
     private final String negativeValueColor;
 
     /**
-     * Create a new number style with the name name, minimum integer digits is
-     * minIntDigits and decimal places is decPlaces. The number style is
-     * NumberStyle.NUMBER_NORMAL
+     * Create a new number style
      *
      * @param minIntegerDigits The minimum integer digits to be shown.
      */
-    NumberStyle(final CoreDataStyle dataStyle,
-                final boolean grouping, final int minIntegerDigits,
+    NumberStyle(final CoreDataStyle dataStyle, final boolean grouping, final int minIntegerDigits,
                 final String negativeValueColor) {
         this.dataStyle = dataStyle;
         this.grouping = grouping;
@@ -60,8 +57,8 @@ public final class NumberStyle {
         this.minIntegerDigits = minIntegerDigits;
     }
 
-    public void appendXML(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number)
-            throws IOException {
+    public void appendXML(final XMLUtil util, final Appendable appendable, final String numberStyleName,
+                          final CharSequence number) throws IOException {
         this.appendOpenTag(util, appendable, numberStyleName, this.dataStyle.getName());
         appendable.append(number);
         this.appendCloseTag(appendable, numberStyleName);
@@ -80,7 +77,8 @@ public final class NumberStyle {
         appendable.append("</number:").append(numberStyleName).append(">");
     }
 
-    public void appendOpenTag(final XMLUtil util, final Appendable appendable, final CharSequence numberStyleName, final String name) throws IOException {
+    public void appendOpenTag(final XMLUtil util, final Appendable appendable, final CharSequence numberStyleName,
+                              final String name) throws IOException {
         appendable.append("<number:").append(numberStyleName);
         util.appendAttribute(appendable, "style:name", name);
         this.dataStyle.appendLVAttributes(util, appendable);
@@ -119,21 +117,16 @@ public final class NumberStyle {
      * @param appendable where to write
      * @throws IOException If an I/O error occurs
      */
-    protected void appendGroupingAttribute(final XMLUtil util,
-                                           final Appendable appendable) throws IOException {
-        if (this.grouping)
-            util.appendEAttribute(appendable, "number:grouping", "true");
+    protected void appendGroupingAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
+        if (this.grouping) util.appendEAttribute(appendable, "number:grouping", "true");
     }
 
-    public void appendMinIntegerDigitsAttribute(final XMLUtil util,
-                                                final Appendable appendable) throws IOException {
+    public void appendMinIntegerDigitsAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
         if (this.minIntegerDigits > 0)
-            util.appendEAttribute(appendable, "number:min-integer-digits",
-                    this.minIntegerDigits);
+            util.appendEAttribute(appendable, "number:min-integer-digits", this.minIntegerDigits);
     }
 
-    public void appendNumberAttribute(final XMLUtil util,
-                                      final Appendable appendable) throws IOException {
+    public void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
         this.appendMinIntegerDigitsAttribute(util, appendable);
         this.appendGroupingAttribute(util, appendable);
     }
@@ -145,8 +138,7 @@ public final class NumberStyle {
      * @param appendable where to write
      * @throws IOException If an I/O error occurs
      */
-    public void appendStyleColor(final XMLUtil util,
-                                 final Appendable appendable) throws IOException {
+    public void appendStyleColor(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<style:text-properties");
         util.appendAttribute(appendable, "fo:color", this.negativeValueColor);
         appendable.append("/>");
@@ -159,8 +151,7 @@ public final class NumberStyle {
      * @param appendable where to write
      * @throws IOException If an I/O error occurs
      */
-    protected void appendStyleMap(final XMLUtil util,
-                                  final Appendable appendable) throws IOException {
+    protected void appendStyleMap(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<style:map");
         util.appendAttribute(appendable, "style:condition", "value()>=0");
         util.appendAttribute(appendable, "style:apply-style-name", this.dataStyle.getName());

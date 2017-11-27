@@ -345,9 +345,9 @@ public class OdsDocument {
 
 	/**
 	 * Set a view setting
-	 * @param viewId
-	 * @param item
-	 * @param value
+	 * @param viewId the view id
+	 * @param item the item name
+	 * @param value the value
 	 */
 	public void setViewSetting(final String viewId, final String item, final String value) {
 		this.odsElements.setViewSetting(viewId, item, value);
@@ -362,6 +362,14 @@ public class OdsDocument {
 		return this.odsElements.getTableCount();
 	}
 
+	/**
+	 * Add an autofilter to a range address
+	 * @param table the table
+	 * @param r1 the top row
+	 * @param c1 the left column
+	 * @param r2 the bottom row
+	 * @param c2 the right column
+	 */
 	public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
 		this.odsElements.addAutofilter(table, r1, c1, r2, c2);
 	}

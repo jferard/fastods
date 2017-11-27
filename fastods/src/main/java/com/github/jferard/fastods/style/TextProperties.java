@@ -176,6 +176,9 @@ public class TextProperties {
 		return this.fontWeight;
 	}
 
+	/**
+	 * @return true if at least one property was set
+	 */
 	public boolean isNotEmpty() {
 		return this.fontUnderlineStyle != null || this.fontColor != null
 				|| this.fontSize != null || this.fontStyle != null

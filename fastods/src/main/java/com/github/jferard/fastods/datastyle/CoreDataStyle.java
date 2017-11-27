@@ -28,36 +28,34 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-public final class CoreDataStyle {
+final class CoreDataStyle {
 	private final boolean hidden;
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
 	 */
-	protected final String countryCode;
+	private final String countryCode;
 	/**
 	 * 19.349 number:language : "The number:language attribute specifies a language code"
 	 */
-	protected final String languageCode;
+	private final String languageCode;
 	/**
 	 * the name of a data style (19.498.2)
 	 */
-	protected final String name;
+	private final String name;
 
 	/**
+	 * 19.517 : "The style:volatile attribute specifies whether unused style in
+	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
+	 * true: consumers should keep unused styles."
 	 * @return true if this style is volatile, i.e. will be saved even if not used.
 	 */
 	public boolean isVolatileStyle() {
 		return this.volatileStyle;
 	}
 
-	/**
-	 * 19.517 : "The style:volatile attribute specifies whether unused style in
-	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
-	 * true: consumers should keep unused styles."
-	 */
-	protected final boolean volatileStyle;
+	private final boolean volatileStyle;
 
-	protected CoreDataStyle(final String name, final boolean hidden, final String languageCode,
+	CoreDataStyle(final String name, final boolean hidden, final String languageCode,
 						final String countryCode, final boolean volatileStyle) {
 		this.name = name;
 		this.hidden = hidden;
