@@ -37,19 +37,14 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableCellStyle implements ObjectStyle {
+	/**
+	 * This is the default cell style: left and top align, no wrap.
+	 */
 	public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
 			.textAlign(TableCellStyle.Align.LEFT)
 			.verticalAlign(TableCellStyle.VerticalAlign.TOP)
 			.fontWrap(false).backgroundColor(Color.WHITE)
 			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
-
-	/*
-	public static final TableCellStyle DEFAULT_HIDDEN_CELL_STYLE = TableCellStyle.builder("Default")
-			.textAlign(TableCellStyle.Align.LEFT)
-			.verticalAlign(TableCellStyle.VerticalAlign.TOP)
-			.fontWrap(false).backgroundColor(Color.WHITE)
-			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).buildHidden();
-			*/
 
 	/**
 	 * Create a builder
@@ -78,6 +73,16 @@ public class TableCellStyle implements ObjectStyle {
 	 * Create a new cell style
 	 *
 	 * @param name A unique name for this style
+	 * @param hidden true if the style is automatic
+	 * @param dataStyle the style of the data
+	 * @param backgroundColor the background color
+	 * @param textProperties the text properties
+	 * @param textAlign horizontal align
+	 * @param verticalAlign vertical align
+	 * @param wrap true if the text is wrapped
+	 * @param parentCellStyleName the name of the parent style
+	 * @param borders the borders of the cell
+	 * @param margins the margins of the cell
 	 */
 	TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle,
 				   final String backgroundColor, final TextProperties textProperties,
@@ -229,13 +234,35 @@ public class TableCellStyle implements ObjectStyle {
 
 	/**
 	 * An horizontal alignment.
-	 * 20.216 fo:text-align
+	 * 20.216 fo:text-align. See https://www.w3.org/TR/2001/REC-xsl-20011015/slice7.html#text-align
 	 */
 	public enum Align {
-		CENTER("center"), JUSTIFY("justify"), LEFT("start"), RIGHT("end");
+		/**
+		 * The text is centered
+		 */
+		CENTER("center"),
+
+		/**
+		 * The text is justified
+		 */
+		JUSTIFY("justify"),
+
+		/**
+		 * The text is left aligned
+		 */
+		LEFT("start"),
+
+		/**
+		 * The text is right aligned
+		 */
+		RIGHT("end");
 
 		private final String attrValue;
 
+		/**
+		 * A new horizontal align
+		 * @param attrValue the align attribute
+		 */
 		Align(final String attrValue) {
 			this.attrValue = attrValue;
 		}
@@ -246,10 +273,27 @@ public class TableCellStyle implements ObjectStyle {
 	 * 20.386 style:vertical-align
 	 */
 	public enum VerticalAlign {
-		BOTTOM("bottom"), MIDDLE("middle"), TOP("top");
+		/**
+		 * "bottom: to the bottom of the line."
+		 */
+		BOTTOM("bottom"),
+
+		/**
+		 * "middle: to the center of the line."
+		 */
+		MIDDLE("middle"),
+
+		/**
+		 * "top: to the top of the line."
+		 */
+		TOP("top");
 
 		private final String attrValue;
 
+		/**
+		 * A new vertical align
+		 * @param attrValue the align attribute
+		 */
 		VerticalAlign(final String attrValue) {
 			this.attrValue = attrValue;
 		}

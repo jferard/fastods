@@ -26,6 +26,8 @@ package com.github.jferard.fastods.util;
  * A style that may be hidden.
  * "An automatic style is one contains formatting properties that are considered to
  * be properties of the object to which the style is assigned."
+ *
+ * @author Julien Férard
  */
 public interface Hidable {
     /**

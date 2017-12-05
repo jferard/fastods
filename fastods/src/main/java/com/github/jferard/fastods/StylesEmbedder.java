@@ -26,6 +26,8 @@ import com.github.jferard.fastods.util.Container;
 
 /**
  * An element that embeds styles
+ *
+ * @author Julien Férard
  */
 public interface StylesEmbedder {
     /**
