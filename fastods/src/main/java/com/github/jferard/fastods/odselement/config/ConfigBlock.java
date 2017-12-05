@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -36,19 +37,9 @@ import java.io.IOException;
  * </ul>
  * @author Julien Férard
  */
-public interface ConfigBlock {
+public interface ConfigBlock extends XMLConvertible {
 	/**
 	 * @return the name of this config block (19.29 config:name)
 	 */
 	String getName();
-
-	/**
-	 * Append a block to an appendable.
-	 *
-	 * @param util the XML util to create XML tags
-	 * @param appendable where to add the block
-	 * @throws IOException if the block can't be appended.
-	 */
-	void appendXML(final XMLUtil util,
-				   final Appendable appendable) throws IOException;
 }

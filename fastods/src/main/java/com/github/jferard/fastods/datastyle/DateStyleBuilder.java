@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class DateStyleBuilder implements StyleBuilder<DateStyle> {
+public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBuilder> {
     private final CoreDataStyleBuilder dataStyleBuilder;
     private boolean automaticOrder;
 
@@ -90,21 +90,25 @@ public class DateStyleBuilder implements StyleBuilder<DateStyle> {
         return this;
     }
 
+    @Override
     public DateStyleBuilder country(final String countryCode) {
         this.dataStyleBuilder.country(countryCode);
         return this;
     }
 
+    @Override
     public DateStyleBuilder language(final String languageCode) {
         this.dataStyleBuilder.language(languageCode);
         return this;
     }
 
+    @Override
     public DateStyleBuilder locale(final Locale locale) {
         this.dataStyleBuilder.locale(locale);
         return this;
     }
 
+    @Override
     public DateStyleBuilder volatileStyle(final boolean volatileStyle) {
         this.dataStyleBuilder.volatileStyle(volatileStyle);
         return this;

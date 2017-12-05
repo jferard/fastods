@@ -77,11 +77,8 @@ public class TableColumnStyle implements ObjectStyle {
 		odsElements.addObjectStyle(this);
 	}
 
-	/**
-	 * OpenDocument 17.16 style:table-column-properties
-	 */
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);

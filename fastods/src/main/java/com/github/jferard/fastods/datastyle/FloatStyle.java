@@ -63,10 +63,12 @@ public class FloatStyle implements DataStyle {
 		return this.numberStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.numberStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.numberStyle.getLanguageCode();
 	}
@@ -77,9 +79,9 @@ public class FloatStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		final CharSequence number = this.computeNumberTag(util);
-		this.numberStyle.appendXML(util, appendable, "number-style", number);
+		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
 	}
 
 	@Override
@@ -102,8 +104,8 @@ public class FloatStyle implements DataStyle {
 		appendable.append("/>");
 	}
 
-	public void appendXML(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
-		this.numberStyle.appendXML(util, appendable, numberStyleName, number);
+	void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
+		this.numberStyle.appendXMLHelper(util, appendable, numberStyleName, number);
 	}
 
 	public boolean getGroupThousands() {
@@ -118,6 +120,7 @@ public class FloatStyle implements DataStyle {
 		return this.numberStyle.getNegativeValueColor();
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.numberStyle.isVolatileStyle();
 	}

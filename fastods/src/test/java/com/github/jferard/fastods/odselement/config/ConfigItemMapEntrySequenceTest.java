@@ -47,11 +47,11 @@ public class ConfigItemMapEntrySequenceTest {
         this.util = XMLUtil.create();
 
         final StringBuilder sb = new StringBuilder();
-        this.item.appendXML(this.util, sb);
+        this.item.appendXMLRepresentation(this.util, sb);
         this.itemXML = sb.toString();
 
         final StringBuilder sb2 = new StringBuilder();
-        this.block.appendXML(this.util, sb2);
+        this.block.appendXMLRepresentation(this.util, sb2);
         this.blockXML = sb2.toString();
     }
 
@@ -98,7 +98,7 @@ public class ConfigItemMapEntrySequenceTest {
         final StringBuilder sb = new StringBuilder();
         this.sequence.add(this.item);
         this.sequence.add(this.block);
-        this.sequence.appendXML(this.util, sb);
+        this.sequence.appendXMLRepresentation(this.util, sb);
         Assert.assertEquals("<config:config-item-map-entry config:name=\"seq\">" +
                 this.itemXML +
                 this.blockXML +
@@ -111,7 +111,7 @@ public class ConfigItemMapEntrySequenceTest {
         final ConfigItemMapEntrySequence seq = ConfigItemMapEntrySequence.createSequence();
         seq.add(this.item);
         seq.add(this.block);
-        seq.appendXML(this.util, sb);
+        seq.appendXMLRepresentation(this.util, sb);
         Assert.assertEquals("<config:config-item-map-entry>" +
                 this.itemXML +
                 this.blockXML +

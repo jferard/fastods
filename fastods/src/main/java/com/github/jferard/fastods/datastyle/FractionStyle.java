@@ -51,9 +51,9 @@ public class FractionStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		final CharSequence number = this.computeNumberTag(util);
-		this.numberStyle.appendXML(util, appendable, "number-style", number);
+		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
 	}
 
 	@Override
@@ -86,6 +86,7 @@ public class FractionStyle implements DataStyle {
 		return this.numberStyle.getNegativeValueColor();
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.numberStyle.isVolatileStyle();
 	}
@@ -95,10 +96,12 @@ public class FractionStyle implements DataStyle {
 		return this.numberStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.numberStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.numberStyle.getLanguageCode();
 	}

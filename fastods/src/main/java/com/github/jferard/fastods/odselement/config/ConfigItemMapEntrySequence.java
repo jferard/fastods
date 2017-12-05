@@ -92,13 +92,13 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		if (this.name != null)
 			util.appendAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		for (final ConfigBlock block : this.blocks)
-			block.appendXML(util, appendable);
+			block.appendXMLRepresentation(util, appendable);
 		appendable.append("</config:config-item-map-entry>");
 	}
 

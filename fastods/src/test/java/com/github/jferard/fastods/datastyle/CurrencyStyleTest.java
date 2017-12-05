@@ -51,7 +51,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.decimalPlaces(5).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXML(this.util, sb);
+		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
@@ -65,7 +65,7 @@ public class CurrencyStyleTest {
 				.currencyStyleBuilder("currency-data").locale(Locale.FRANCE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		cs.appendXML(this.util, sb);
+		cs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<number:currency-style style:name=\"currency-data\" number:language=\"fr\" number:country=\"FR\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
@@ -80,7 +80,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.groupThousands(true).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXML(this.util, sb);
+		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
 				+ "<number:text> </number:text>"
@@ -93,7 +93,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXML(this.util, sb);
+		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
 				+ "<number:text> </number:text>"
@@ -106,7 +106,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.negativeValueColor(Color.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXML(this.util, sb);
+		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
@@ -127,7 +127,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXML(this.util, sb);
+		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
@@ -148,7 +148,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle cs = this.factory.currencyStyleBuilder("test")
 				.locale(this.locale).negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		cs.appendXML(this.util, sb);
+		cs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>" + "<number:currency-symbol>"

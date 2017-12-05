@@ -110,13 +110,8 @@ public class DateStyle implements DataStyle {
 		this.automaticOrder = automaticOrder;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 */
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:date-style");
 		util.appendAttribute(appendable, "style:name", this.dataStyle.getName());
@@ -182,6 +177,7 @@ public class DateStyle implements DataStyle {
 		return this.automaticOrder;
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.dataStyle.isVolatileStyle();
 	}
@@ -191,10 +187,12 @@ public class DateStyle implements DataStyle {
 		return this.dataStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.dataStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.dataStyle.getLanguageCode();
 	}

@@ -46,7 +46,7 @@ public class ConfigItemMapNamedTest {
         this.util = XMLUtil.create();
 
         final StringBuilder sb = new StringBuilder();
-        this.set.appendXML(this.util, sb);
+        this.set.appendXMLRepresentation(this.util, sb);
         this.setXML = sb.toString();
     }
 
@@ -109,7 +109,7 @@ public class ConfigItemMapNamedTest {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         final StringBuilder sb = new StringBuilder();
-        m.appendXML(this.util, sb);
+        m.appendXMLRepresentation(this.util, sb);
         Assert.assertEquals("<config:config-item-map-named config:name=\"mapnamed\">" +
                 this.setXML+
                 "</config:config-item-map-named>", sb.toString());

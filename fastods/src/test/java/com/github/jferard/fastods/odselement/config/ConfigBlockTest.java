@@ -57,7 +57,7 @@ public class ConfigBlockTest {
 		map2.put(ConfigItemMapEntrySingleton.createSingleton("entry2", new ConfigItem("item4", "long", "123456789")));
 		cb.add(map2);
 
-		cb.appendXML(util, sb);
+		cb.appendXMLRepresentation(util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"root\">" +
 				"<config:config-item config:name=\"item1\" config:type=\"int\">1</config:config-item>" +

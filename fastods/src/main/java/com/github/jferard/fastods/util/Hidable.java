@@ -19,23 +19,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.datastyle;
-
-import com.github.jferard.fastods.util.Style;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
+package com.github.jferard.fastods.util;
 
 /**
- * A data style. 16.27. Data Styles
- * @author Julien Férard
+ * 3.15.3 office:automatic-styles
+ * A style that may be hidden.
+ * "An automatic style is one contains formatting properties that are considered to
+ * be properties of the object to which the style is assigned."
  */
-public interface DataStyle extends Style, Localized {
+public interface Hidable {
     /**
-     * 19.517 style:volatile
-     * "The style:volatile attribute specifies whether unused style in a document are retained or discarded by consumers."
-     * @return true if this style is volatile
+     * @return true if the style is automatic
      */
-    boolean isVolatileStyle();
-
+    boolean isHidden();
 }

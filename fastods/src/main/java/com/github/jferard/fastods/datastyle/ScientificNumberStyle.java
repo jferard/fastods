@@ -78,10 +78,10 @@ public class ScientificNumberStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		final StringBuilder number = new StringBuilder();
 		this.appendNumber(util, number);
-		this.floatStyle.appendXML(util, appendable, "number-style", number);
+		this.floatStyle.appendXMLHelper(util, appendable, "number-style", number);
 
 	}
 
@@ -99,10 +99,12 @@ public class ScientificNumberStyle implements DataStyle {
 		return this.floatStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.floatStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.floatStyle.getLanguageCode();
 	}
@@ -119,6 +121,7 @@ public class ScientificNumberStyle implements DataStyle {
 		return this.floatStyle.getNegativeValueColor();
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.floatStyle.isVolatileStyle();
 	}

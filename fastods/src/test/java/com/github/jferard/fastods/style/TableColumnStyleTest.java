@@ -73,7 +73,7 @@ public class TableColumnStyleTest {
 		final StringBuilder sbc = new StringBuilder();
 		final StringBuilder sbt = new StringBuilder();
 
-		tcs.appendXML(this.util, sbc);
+		tcs.appendXMLRepresentation(this.util, sbc);
 		tcs.appendXMLToTable(this.util, sbt, 1);
 
 		DomTester.assertEquals(
@@ -103,7 +103,7 @@ public class TableColumnStyleTest {
 				.columnWidth(SimpleLength.pt(1.0)).build();
 		final StringBuilder sbc = new StringBuilder();
 
-		tcs.appendXML(this.util, sbc);
+		tcs.appendXMLRepresentation(this.util, sbc);
 
 		DomTester.assertEquals("<style:style style:name=\"test\" style:family=\"table-column\">"
 						+ "<style:table-column-properties fo:break-before=\"auto\" style:column-width=\"1pt\"/>"

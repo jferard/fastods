@@ -50,13 +50,8 @@ public class ConfigItem implements ConfigBlock {
 		this.value = value;
 	}
 
-	/**
-	 * Write the XML format for this object. This is used while writing the ODS file.
-	 *
-	 * @throws IOException If an I/O error occurs
-	 */
 	@Override
-	public void appendXML(final XMLUtil util,
+	public void appendXMLRepresentation(final XMLUtil util,
 						  final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item");
 		util.appendAttribute(appendable, "config:name", this.name);

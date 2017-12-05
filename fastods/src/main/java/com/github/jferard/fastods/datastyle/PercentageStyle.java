@@ -47,19 +47,13 @@ public class PercentageStyle implements DataStyle {
 		this.floatStyle = floatStyle;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @param util a util for XML writing
-	 */
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		final StringBuilder percentage = new StringBuilder();
 		this.floatStyle.appendNumberTag(util, percentage);
 		percentage.append("<number:text>%</number:text>");
-		this.floatStyle.appendXML(util, appendable, "percentage-style", percentage);
+		this.floatStyle.appendXMLHelper(util, appendable, "percentage-style", percentage);
 	}
 
 	@Override
@@ -76,10 +70,12 @@ public class PercentageStyle implements DataStyle {
 		return this.floatStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.floatStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.floatStyle.getLanguageCode();
 	}
@@ -96,6 +92,7 @@ public class PercentageStyle implements DataStyle {
 		return this.floatStyle.getNegativeValueColor();
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.floatStyle.isVolatileStyle();
 	}

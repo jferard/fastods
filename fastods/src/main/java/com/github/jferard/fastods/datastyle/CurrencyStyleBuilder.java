@@ -30,7 +30,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class CurrencyStyleBuilder implements StyleBuilder<CurrencyStyle> {
+public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
@@ -93,6 +93,7 @@ public class CurrencyStyleBuilder implements StyleBuilder<CurrencyStyle> {
 		return this;
 	}
 
+	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
 		this.floatStyleBuilder.locale(locale);
 		this.currencySymbol = Currency.getInstance(locale).getSymbol();
@@ -115,16 +116,19 @@ public class CurrencyStyleBuilder implements StyleBuilder<CurrencyStyle> {
 		return this;
 	}
 
+	@Override
 	public CurrencyStyleBuilder country(final String countryCode) {
 		this.floatStyleBuilder.country(countryCode);
 		return this;
 	}
 
+	@Override
 	public CurrencyStyleBuilder language(final String languageCode) {
 		this.floatStyleBuilder.language(languageCode);
 		return this;
 	}
 
+	@Override
 	public CurrencyStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.floatStyleBuilder.volatileStyle(volatileStyle);
 		return this;

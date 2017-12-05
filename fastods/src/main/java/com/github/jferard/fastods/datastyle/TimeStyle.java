@@ -51,12 +51,8 @@ public class TimeStyle implements DataStyle {
 		this.timeFormat = timeFormat;
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 */
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:time-style");
 		util.appendAttribute(appendable, "style:name", this.dataStyle.getName());
@@ -99,6 +95,7 @@ public class TimeStyle implements DataStyle {
 		HHMMSS
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.dataStyle.isVolatileStyle();
 	}
@@ -108,10 +105,12 @@ public class TimeStyle implements DataStyle {
 		return this.dataStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.dataStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.dataStyle.getLanguageCode();
 	}

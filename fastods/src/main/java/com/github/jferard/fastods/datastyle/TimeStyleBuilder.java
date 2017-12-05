@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-class TimeStyleBuilder implements StyleBuilder<TimeStyle> {
+class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
 	private final CoreDataStyleBuilder dataStyleBuilder;
 	/**
 	 * The date format.
@@ -72,21 +72,25 @@ class TimeStyleBuilder implements StyleBuilder<TimeStyle> {
 		return this;
 	}
 
+	@Override
 	public TimeStyleBuilder country(final String countryCode) {
 		this.dataStyleBuilder.country(countryCode);
 		return this;
 	}
 
+	@Override
 	public TimeStyleBuilder language(final String languageCode) {
 		this.dataStyleBuilder.language(languageCode);
 		return this;
 	}
 
+	@Override
 	public TimeStyleBuilder locale(final Locale locale) {
 		this.dataStyleBuilder.locale(locale);
 		return this;
 	}
 
+	@Override
 	public TimeStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.dataStyleBuilder.volatileStyle(volatileStyle);
 		return this;

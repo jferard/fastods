@@ -122,14 +122,8 @@ public class TableCellStyle implements ObjectStyle {
 		appendable.append("/>");
 	}
 
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @throws IOException If an I/O error occurs
-	 */
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);

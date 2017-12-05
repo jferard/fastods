@@ -65,7 +65,7 @@ public class SettingsTest {
 	public void testViewSettingsContent() throws IOException {
 		final ConfigBlock block = this.blocks.get(0);
 		final Appendable sb = new StringBuilder();
-		block.appendXML(this.util, sb);
+		block.appendXMLRepresentation(this.util, sb);
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item config:name=\"VisibleAreaTop\" config:type=\"int\">0</config:config-item>" +
 						"<config:config-item config:name=\"VisibleAreaLeft\" config:type=\"int\">0</config:config-item>" +
@@ -106,7 +106,7 @@ public class SettingsTest {
 	public void testConfigurationSettingsContent() throws IOException {
 		final ConfigBlock block = this.blocks.get(1);
 		final Appendable sb = new StringBuilder();
-		block.appendXML(this.util, sb);
+		block.appendXMLRepresentation(this.util, sb);
 		DomTester.assertUnsortedEquals(		"<config:config-item-set config:name=\"ooo:configuration-settings\">"+
 						"<config:config-item config:name=\"ShowZeroValues\" config:type=\"boolean\">true</config:config-item>"+
 						"<config:config-item config:name=\"ShowNotes\" config:type=\"boolean\">true</config:config-item>"+
@@ -152,7 +152,7 @@ public class SettingsTest {
 
 		final Settings s = this.createVoidSettings();
 		s.addTable(table);
-		s.getRootBlocks().get(0).appendXML(this.util, sb);
+		s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item-map-indexed config:name=\"Views\">" +
@@ -177,7 +177,7 @@ public class SettingsTest {
 
 		final Settings s = this.createVoidSettings();
 		s.setViewSetting("vId", "i", "v");
-		s.getRootBlocks().get(0).appendXML(this.util, sb);
+		s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item-map-indexed config:name=\"Views\">" +
@@ -198,7 +198,7 @@ public class SettingsTest {
 
 		final Settings s = this.createVoidSettings();
 		s.setViewSetting("View1", "i", "v");
-		s.getRootBlocks().get(0).appendXML(this.util, sb);
+		s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item-map-indexed config:name=\"Views\">" +
@@ -219,7 +219,7 @@ public class SettingsTest {
 
 		final Settings s = this.createVoidSettings();
 		s.setViewSetting("View1", "ViewId", "View2");
-		s.getRootBlocks().get(0).appendXML(this.util, sb);
+		s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"ooo:view-settings\">" +
 						"<config:config-item-map-indexed config:name=\"Views\">" +

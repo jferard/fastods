@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class ScientificNumberStyleBuilder implements StyleBuilder<ScientificNumberStyle> {
+public class ScientificNumberStyleBuilder implements DataStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder> {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private int minExponentDigits;
 
@@ -96,21 +96,25 @@ public class ScientificNumberStyleBuilder implements StyleBuilder<ScientificNumb
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder country(final String countryCode) {
 		this.floatStyleBuilder.country(countryCode);
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder language(final String languageCode) {
 		this.floatStyleBuilder.language(languageCode);
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder locale(final Locale locale) {
 		this.floatStyleBuilder.locale(locale);
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.floatStyleBuilder.volatileStyle(volatileStyle);
 		return this;

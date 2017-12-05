@@ -25,6 +25,7 @@ import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -36,7 +37,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageLayoutStyle implements AddableToOdsElements {
+public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 	private final String backgroundColor;
 	private final Footer footer;
 	private final Header header;
@@ -188,6 +189,7 @@ public class PageLayoutStyle implements AddableToOdsElements {
 		}
 	}
 
+	@Override
 	public boolean isHidden() {
 		return true;
 	}

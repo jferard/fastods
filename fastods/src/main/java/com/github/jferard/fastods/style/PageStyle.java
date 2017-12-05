@@ -23,9 +23,11 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.StylesEmbedder;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
+import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -38,43 +40,119 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageStyle implements AddableToOdsElements {
-	public static final String DEFAULT_MASTER_PAGE = "DefaultMasterPage";
+public class PageStyle implements AddableToOdsElements, StylesEmbedder, Hidable {
+	/**
+	 * The classic default master page name
+	 */
+	public static final String DEFAULT_MASTER_PAGE_NAME = "DefaultMasterPage";
+	/**
+	 * The default format (A4)
+	 */
 	public static final PaperFormat DEFAULT_FORMAT;
+	/**
+	 * The default print orientation (VERTICAL)
+	 */
 	public static final PrintOrientation DEFAULT_PRINT_ORIENTATION;
+	/**
+	 * The default writing mode (left to right and top to bottom)
+	 */
 	public static final WritingMode DEFAULT_WRITING_MODE;
+	/**
+	 * The default master page style
+	 */
 	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
+	/**
+	 * The default style
+	 */
 	public static final PageStyle DEFAULT_PAGE_STYLE;
 
+	@Override
 	public boolean isHidden() {
 		return this.hidden;
 	}
 
+	/**
+	 * 20.325style:print-orientation
+	 * The print orientation of the page (either landscape or portrait)
+	 */
 	public enum PrintOrientation {
-		HORIZONTAL("landscape"), VERTICAL("portrait");
+		/**
+		 * "a page is printed in landscape orientation"
+		 */
+		HORIZONTAL("landscape"),
+        /**
+		 * "a page is printed in portrait orientation"
+		 */
+		VERTICAL("portrait");
 
 		private final String attrValue;
 
+		/**
+		 * @param attrValue landscape|portrait
+		 */
 		PrintOrientation(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 
-		String getAttrValue() {
+        /**
+         * @return landscape|portrait
+         */
+        String getAttrValue() {
 			return this.attrValue;
 		}
 	}
 
-	public enum WritingMode {
-		LR("lr"), LRTB("lr-tb"), PAGE("page"), RL("rl"), RLTB("rl-tb"), TB(
-				"tb"), TBLR("tb_lr"), TBRL("tb-rl");
+    /**
+     * 20.394 style:writing-mode
+     * see See §7.27.7 of [XSL] (https://www.w3.org/TR/2001/REC-xsl-20011015/slice7.html#writing-mode-related)
+     */
+    public enum WritingMode {
+        /**
+         * "Shorthand for lr-tb"
+         */
+        LR("lr"),
+        /**
+         * left to right then top to bottom
+         */
+        LRTB("lr-tb"),
+        /**
+         * page means inherit
+         */
+        PAGE("page"),
+        /**
+         * "Shorthand for rl-tb"
+         */
+        RL("rl"),
+        /**
+         * right to left then top to bottom
+         */
+        RLTB("rl-tb"),
+        /**
+         * "Shorthand for tb-rl"
+         */
+        TB("tb"),
+        /**
+         * top to bottom then left to right
+         */
+        TBLR("tb-lr"),
+        /**
+         * top to bottom then right to left
+         */
+        TBRL("tb-rl");
 
 		private final String attrValue;
 
-		WritingMode(final String attrValue) {
+        /**
+         * @param attrValue the value See §7.27.7 of [XSL]
+         */
+        WritingMode(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 
-		String getAttrValue() {
+        /**
+         * @return the value See §7.27.7 of [XSL]
+         */
+        String getAttrValue() {
 			return this.attrValue;
 		}
 
@@ -87,7 +165,7 @@ public class PageStyle implements AddableToOdsElements {
 		DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
 		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
 		DEFAULT_MASTER_PAGE_STYLE = PageStyle
-				.builder(PageStyle.DEFAULT_MASTER_PAGE).build();
+				.builder(PageStyle.DEFAULT_MASTER_PAGE_NAME).build();
 	}
 
 	private final boolean hidden;
@@ -97,6 +175,7 @@ public class PageStyle implements AddableToOdsElements {
 	/**
 	 * Create a new page style.
 	 *
+     * @param hidden if the page style is hidden (automatic)
 	 * @param masterPageStyle the master page style
 	 * @param pageLayoutStyle the page layout style
 	 */
@@ -106,28 +185,44 @@ public class PageStyle implements AddableToOdsElements {
 		this.pageLayoutStyle = pageLayoutStyle;
 	}
 
-	public static PageStyleBuilder builder(final String name) {
+    /**
+     * Create a new builder
+     * @param name the name of the style to build
+     * @return the builder
+     */
+    public static PageStyleBuilder builder(final String name) {
 		return new PageStyleBuilder(name);
 	}
 
-	public MasterPageStyle getMasterPageStyle() {
+    /**
+     * @return the contained master style
+     */
+    public MasterPageStyle getMasterPageStyle() {
 		return this.masterPageStyle;
 	}
 
-	public PageLayoutStyle getPageLayoutStyle() {
+    /**
+     * @return the contained page layout
+     */
+    public PageLayoutStyle getPageLayoutStyle() {
 		return this.pageLayoutStyle;
 	}
 
-	public String getMasterName() {
+    /**
+     * @return the name of the contained master style
+     */
+    public String getMasterName() {
 		return this.masterPageStyle.getName();
 	}
 
-	public void addEmbeddedStylesToStylesEntry(
+	@Override
+    public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer) {
 		this.masterPageStyle.addEmbeddedStylesToStylesContainer(stylesContainer);
 	}
 
-	public void addEmbeddedStylesToStylesEntry(
+    @Override
+    public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer, final Mode mode) {
 		this.masterPageStyle.addEmbeddedStylesToStylesContainer(stylesContainer, mode);
 	}
@@ -159,54 +254,5 @@ public class PageStyle implements AddableToOdsElements {
 	public void appendXMLToMasterStyle(final XMLUtil util,
 									   final Appendable appendable) throws IOException {
 		this.masterPageStyle.appendXMLToMasterStyle(util, appendable);
-	}
-
-	public String getBackgroundColor() {
-		return this.pageLayoutStyle.getBackgroundColor();
-	}
-
-	public Footer getFooter() {
-		return this.masterPageStyle.getFooter();
-	}
-
-	public Header getHeader() {
-		return this.masterPageStyle.getHeader();
-	}
-
-	public Margins getMargins() {
-		return this.pageLayoutStyle.getMargins();
-	}
-
-	public Length getPageHeight() {
-		return this.pageLayoutStyle.getPageHeight();
-	}
-
-	public Length getPageWidth() {
-		return this.pageLayoutStyle.getPageWidth();
-	}
-
-	/**
-	 * Get the paper format as one of PageStyle.STYLE_PAPERFORMAT_*.
-	 * @return the format of the paper
-	 */
-	public PaperFormat getPaperFormat() {
-		return this.pageLayoutStyle.getPaperFormat();
-	}
-
-	/**
-	 * Get the writing mode<br>
-	 * . STYLE_WRITINGMODE_LRTB lr-tb (left to right; top to bottom)<br>
-	 * STYLE_WRITINGMODE_RLTB<br>
-	 * STYLE_WRITINGMODE_TBRL<br>
-	 * STYLE_WRITINGMODE_TBLR<br>
-	 * STYLE_WRITINGMODE_LR<br>
-	 * STYLE_WRITINGMODE_RL<br>
-	 * STYLE_WRITINGMODE_TB<br>
-	 * STYLE_WRITINGMODE_PAGE<br>
-	 *
-	 * @return The current writing mode.
-	 */
-	public WritingMode getWritingMode() {
-		return this.pageLayoutStyle.getWritingMode();
 	}
 }

@@ -21,46 +21,22 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
 /**
- * This file PageSection.java is part of FastODS.
- * <p>
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
+ * An object that is convertible to XML
  *
  * @author Julien Férard
- * @author Martin Schulz
  */
-public interface PageSectionContent extends StylesEmbedder {
-
+public interface XMLConvertible {
     /**
-     * Append the XML representation of a page section to a stream
-     * @param util an util
-     * @param appendable the stream
-     * @throws IOException If an I/O error occurs
+     * Write the XML format for this object. This is used while writing the ODS file.
+     * @param util a helper object
+     * @param appendable the appendable to append data to
+     * @throws IOException if the style can't be added
      */
-    void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException;
-
-    /**
-     * A region of the header/footer.
-     */
-    enum Region {
-        /**
-         * the center region
-         */
-        CENTER, /**
-         * the left region
-         */
-        LEFT, /**
-         * the right region
-         */
-        RIGHT
-    }
+    void appendXMLRepresentation(XMLUtil util, Appendable appendable)
+            throws IOException;
 }

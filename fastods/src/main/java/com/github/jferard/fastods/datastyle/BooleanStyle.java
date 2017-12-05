@@ -31,7 +31,7 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public class BooleanStyle implements DataStyle {
+public class BooleanStyle implements DataStyle, Localized {
 	private final CoreDataStyle dataStyle;
 
 	protected BooleanStyle(final CoreDataStyle dataStyle) {
@@ -39,7 +39,7 @@ public class BooleanStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:boolean-style");
 		util.appendAttribute(appendable, "style:name", this.getName());
@@ -47,6 +47,7 @@ public class BooleanStyle implements DataStyle {
 		appendable.append("/>");
 	}
 
+	@Override
 	public boolean isVolatileStyle() {
 		return this.dataStyle.isVolatileStyle();
 	}
@@ -56,10 +57,12 @@ public class BooleanStyle implements DataStyle {
 		return this.dataStyle.getName();
 	}
 
+	@Override
 	public String getCountryCode() {
 		return this.dataStyle.getCountryCode();
 	}
 
+	@Override
 	public String getLanguageCode() {
 		return this.dataStyle.getLanguageCode();
 	}

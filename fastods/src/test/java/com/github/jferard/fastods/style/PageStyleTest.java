@@ -137,54 +137,6 @@ public class PageStyleTest {
 	}
 
 	@Test
-	public final void testMargins() throws IOException {
-		final PageStyle masterPageStyle = PageStyle.builder("test")
-				.allMargins(SimpleLength.pt(10.0)).build();
-		final StringBuilder sb = new StringBuilder();
-		masterPageStyle.appendXMLToAutomaticStyle(this.util, sb);
-		DomTester.assertEquals(
-				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"10pt\"/>"
-						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:footer-style>" + "</style:page-layout>",
-				sb.toString());
-
-		Assert.assertEquals(new MarginsBuilder().all(SimpleLength.pt(10.0)).build(),
-				masterPageStyle.getMargins());
-	}
-
-	@Test
-	public final void testMargins2() throws IOException {
-		final PageStyle masterPageStyle = PageStyle.builder("test")
-				.marginTop(SimpleLength.pt(1.0)).marginRight(SimpleLength.pt(2.0)).marginBottom(SimpleLength.pt(3.0))
-				.marginLeft(SimpleLength.pt(4.0)).printOrientationVertical()
-				.printOrientationHorizontal().writingMode(WritingMode.PAGE)
-				.build();
-		final StringBuilder sba = new StringBuilder();
-		final StringBuilder sbm = new StringBuilder();
-
-		masterPageStyle.appendXMLToAutomaticStyle(this.util, sba);
-		masterPageStyle.appendXMLToMasterStyle(this.util, sbm);
-		DomTester.assertEquals(
-				"<style:page-layout style:name=\"test\">"
-						+ "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" style:print-orientation=\"landscape\" fo:margin=\"1.5cm\" fo:margin-top=\"1pt\" fo:margin-right=\"2pt\" fo:margin-bottom=\"3pt\" fo:margin-left=\"4pt\"/>"
-						+ "<style:header-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:header-style>" + "<style:footer-style>"
-						+ "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-						+ "</style:footer-style>" + "</style:page-layout>",
-				sba.toString());
-		DomTester.assertEquals(PageStyleTest.MASTER, sbm.toString());
-		Assert.assertEquals(
-				new MarginsBuilder().top(SimpleLength.pt(1.0)).right(SimpleLength.pt(2.0)).bottom(SimpleLength.pt(3.0))
-						.left(SimpleLength.pt(4.0)).all(SimpleLength.cm(1.5)).build(),
-				masterPageStyle.getMargins());
-	}
-
-	@Test
 	public final void testNullFooterHeader() throws IOException {
 		final PageStyle masterPageStyle = PageStyle.builder("test")
 				.header(null).footer(null).build();
@@ -218,9 +170,6 @@ public class PageStyleTest {
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sba.toString());
 		DomTester.assertEquals(PageStyleTest.MASTER, sbm.toString());
-		Assert.assertEquals(SimpleLength.cm(29.7), masterPageStyle.getPageWidth());
-		Assert.assertEquals(SimpleLength.cm(42), masterPageStyle.getPageHeight());
-		Assert.assertEquals(PaperFormat.A3, masterPageStyle.getPaperFormat());
 	}
 
 	@Test
@@ -291,6 +240,5 @@ public class PageStyleTest {
 						+ "</style:footer-style>" + "</style:page-layout>",
 				sba.toString());
 		DomTester.assertEquals(PageStyleTest.MASTER, sbm.toString());
-		Assert.assertEquals(WritingMode.PAGE, masterPageStyle.getWritingMode());
 	}
 }

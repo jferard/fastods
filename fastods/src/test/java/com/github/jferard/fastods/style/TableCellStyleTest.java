@@ -43,7 +43,7 @@ public class TableCellStyleTest {
 				.borderAll(SimpleLength.pt(1.0), Color.AQUA, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXML(this.util, sb);
+		tcs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
@@ -56,7 +56,7 @@ public class TableCellStyleTest {
 		final TableCellStyle tcs = TableCellStyle.builder("tcs")
 				.allMargins(SimpleLength.pt(10.0)).build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXML(this.util, sb);
+		tcs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
@@ -74,7 +74,7 @@ public class TableCellStyleTest {
 				.borderLeft(SimpleLength.pt(4.0), Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXML(this.util, sb);
+		tcs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+
@@ -90,7 +90,7 @@ public class TableCellStyleTest {
 				.marginTop(SimpleLength.pt(10.0)).marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0))
 				.marginLeft(SimpleLength.pt(13.0)).build();
 		final StringBuilder sb = new StringBuilder();
-		tcs.appendXML(this.util, sb);
+		tcs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
 						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" " +

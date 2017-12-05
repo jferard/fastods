@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.Hidable;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -31,7 +33,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public final class NumberStyle {
+public final class NumberStyle implements Hidable, Localized, NamedObject {
     private final CoreDataStyle dataStyle;
 
     /**
@@ -57,8 +59,8 @@ public final class NumberStyle {
         this.minIntegerDigits = minIntegerDigits;
     }
 
-    public void appendXML(final XMLUtil util, final Appendable appendable, final String numberStyleName,
-                          final CharSequence number) throws IOException {
+    void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName,
+                         final CharSequence number) throws IOException {
         this.appendOpenTag(util, appendable, numberStyleName, this.dataStyle.getName());
         appendable.append(number);
         this.appendCloseTag(appendable, numberStyleName);
@@ -162,18 +164,22 @@ public final class NumberStyle {
         return this.dataStyle.isVolatileStyle();
     }
 
+    @Override
     public String getName() {
         return this.dataStyle.getName();
     }
 
+    @Override
     public String getCountryCode() {
         return this.dataStyle.getCountryCode();
     }
 
+    @Override
     public String getLanguageCode() {
         return this.dataStyle.getLanguageCode();
     }
 
+    @Override
     public boolean isHidden() {
         return this.dataStyle.isHidden();
     }

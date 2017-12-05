@@ -21,21 +21,41 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.util.Style;
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.StyleBuilder;
 
-import java.io.IOException;
+import java.util.Locale;
 
 /**
- * A data style. 16.27. Data Styles
+ * A data style builder
  * @author Julien Férard
  */
-public interface DataStyle extends Style, Localized {
+public interface DataStyleBuilder<S extends DataStyle, T> extends StyleBuilder<S> {
+    /**
+     * Set the country code
+     * @param countryCode The two letter country code, e.g. 'US'
+     * @return this for fluent style
+     */
+    T country(final String countryCode);
+
+    /**
+     * Set the language code
+     * @param languageCode The two letter language code, e.g. 'en'. See http://www.ietf.org/rfc/rfc3066.txt
+     * @return this for fluent style
+     */
+    T language(final String languageCode);
+
+    /**
+     * Set the locale
+     * @param locale the locale
+     * @return this for fluent style
+     */
+    T locale(final Locale locale);
+
     /**
      * 19.517 style:volatile
      * "The style:volatile attribute specifies whether unused style in a document are retained or discarded by consumers."
-     * @return true if this style is volatile
+     * @param volatileStyle true if "consumers should keep unused styles", false otherwise.
+     * @return this for fluent style
      */
-    boolean isVolatileStyle();
-
+    T volatileStyle(final boolean volatileStyle);
 }

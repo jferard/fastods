@@ -27,19 +27,16 @@ import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * WHERE ? content.xml/office:document-content/office:automatic-styles/number:
- * currency-style
- * styles.xml/office:document-styles/office:styles/number:currency-style
+ * 16.27.7 number:currency-style
  *
  * @author Julien Férard
  * @author Martin Schulz
  *
  */
 public class CurrencyStyle implements DataStyle {
-
 	public static final String SPACE_TEXT = "<number:text> </number:text>";
 
-	/**
+    /**
 	 * A currency symbol may be at the beginning or the end of the expression
 	 */
 	public enum SymbolPosition {
@@ -65,10 +62,10 @@ public class CurrencyStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXML(final XMLUtil util, final Appendable appendable)
+	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		final CharSequence number = this.computeCurrency(util);
-		this.floatStyle.appendXML(util, appendable, "currency-style", number);
+		this.floatStyle.appendXMLHelper(util, appendable, "currency-style", number);
 	}
 
 	@Override
@@ -128,4 +125,18 @@ public class CurrencyStyle implements DataStyle {
 		odsElements.addDataStyle(this);
 	}
 
+	@Override
+	public String getCountryCode() {
+		return null;
+	}
+
+	@Override
+	public String getLanguageCode() {
+		return null;
+	}
+
+    @Override
+    public boolean isVolatileStyle() {
+        return this.floatStyle.isVolatileStyle();
+    }
 }

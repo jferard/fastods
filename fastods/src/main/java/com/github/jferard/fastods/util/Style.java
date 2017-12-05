@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.style.AddableToOdsElements;
 import java.io.IOException;
 
@@ -28,17 +29,5 @@ import java.io.IOException;
  * A style (data style or object style)
  * @author Julien Férard
  */
-public interface Style extends NamedObject, AddableToOdsElements {
-    /**
-     * Append the style to an appendable
-     * @param util a helper object
-     * @param appendable the appendable to append data to
-     * @throws IOException if the style can't be added
-     */
-    void appendXML(XMLUtil util, Appendable appendable) throws IOException;
-
-    /**
-     * @return true if the style is automatic
-     */
-    boolean isHidden();
+public interface Style extends NamedObject, AddableToOdsElements, XMLConvertible, Hidable {
 }

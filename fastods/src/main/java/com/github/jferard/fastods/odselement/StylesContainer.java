@@ -277,7 +277,7 @@ public class StylesContainer {
     private void write(final Iterable<ObjectStyle> iterable, final XMLUtil util,
                        final ZipUTF8Writer writer) throws IOException {
         for (final ObjectStyle os : iterable)
-            os.appendXML(util, writer);
+            os.appendXMLRepresentation(util, writer);
     }
 
     /**
@@ -308,7 +308,7 @@ public class StylesContainer {
             throws IOException {
         for (final DataStyle dataStyle : this.dataStylesContainer.getValues()) {
             assert dataStyle.isHidden() : dataStyle.toString();
-            dataStyle.appendXML(util, writer);
+            dataStyle.appendXMLRepresentation(util, writer);
         }
     }
 

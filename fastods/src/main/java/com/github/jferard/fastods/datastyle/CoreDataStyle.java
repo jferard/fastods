@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.Hidable;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -28,7 +30,7 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-final class CoreDataStyle {
+final class CoreDataStyle implements NamedObject, Hidable, Localized {
 	private final boolean hidden;
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
@@ -91,26 +93,17 @@ final class CoreDataStyle {
 					this.volatileStyle);
 	}
 
-	/**
-	 * @return The two letter country code, e.g. 'US'
-	 */
-	String getCountryCode() {
+	@Override
+	public String getCountryCode() {
 		return this.countryCode;
 	}
 
-	/**
-	 * See http://www.ietf.org/rfc/rfc3066.txt
-	 *
-	 * @return The two letter language code, e.g. 'en'.
-	 */
-	String getLanguageCode() {
+	@Override
+	public String getLanguageCode() {
 		return this.languageCode;
 	}
 
-	/**
-	 * See DataStyle#isHidden.
-	 * @return true if the style is an automatic style.
-	 */
+	@Override
 	public boolean isHidden() {
 		return this.hidden;
 	}

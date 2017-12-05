@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class PercentageStyleBuilder implements StyleBuilder<PercentageStyle> {
+public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle, PercentageStyleBuilder> {
 	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
@@ -78,19 +78,27 @@ public class PercentageStyleBuilder implements StyleBuilder<PercentageStyle> {
 		return this;
 	}
 
-	public FloatStyleBuilder country(final String countryCode) {
-		return this.floatStyleBuilder.country(countryCode);
+	@Override
+	public PercentageStyleBuilder country(final String countryCode) {
+		this.floatStyleBuilder.country(countryCode);
+		return this;
 	}
 
-	public FloatStyleBuilder language(final String languageCode) {
-		return this.floatStyleBuilder.language(languageCode);
+	@Override
+	public PercentageStyleBuilder language(final String languageCode) {
+		this.floatStyleBuilder.language(languageCode);
+		return this;
 	}
 
-	public FloatStyleBuilder locale(final Locale locale) {
-		return this.floatStyleBuilder.locale(locale);
+	@Override
+	public PercentageStyleBuilder locale(final Locale locale) {
+		this.floatStyleBuilder.locale(locale);
+		return this;
 	}
 
-	public FloatStyleBuilder volatileStyle(final boolean volatileStyle) {
-		return this.floatStyleBuilder.volatileStyle(volatileStyle);
+	@Override
+	public PercentageStyleBuilder volatileStyle(final boolean volatileStyle) {
+		this.floatStyleBuilder.volatileStyle(volatileStyle);
+		return this;
 	}
 }

@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class FloatStyleBuilder implements StyleBuilder<FloatStyle> {
+public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyleBuilder> {
     private final NumberStyleBuilder numberStyleBuilder;
     /**
      * the number of digits after the separator
@@ -87,21 +87,25 @@ public class FloatStyleBuilder implements StyleBuilder<FloatStyle> {
         return this;
     }
 
+    @Override
     public FloatStyleBuilder country(final String countryCode) {
         this.numberStyleBuilder.country(countryCode);
         return this;
     }
 
+    @Override
     public FloatStyleBuilder language(final String languageCode) {
         this.numberStyleBuilder.language(languageCode);
         return this;
     }
 
+    @Override
     public FloatStyleBuilder locale(final Locale locale) {
         this.numberStyleBuilder.locale(locale);
         return this;
     }
 
+    @Override
     public FloatStyleBuilder volatileStyle(final boolean volatileStyle) {
         this.numberStyleBuilder.volatileStyle(volatileStyle);
         return this;

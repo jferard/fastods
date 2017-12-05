@@ -55,7 +55,7 @@ public class TableStyleTest {
 	public final void testEmpty() throws IOException {
 		final TableStyle ts = TableStyle.builder("test").build();
 		final StringBuilder sb = new StringBuilder();
-		ts.appendXML(this.util, sb);
+		ts.appendXMLRepresentation(this.util, sb);
 
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"DefaultMasterPage\">"
@@ -70,7 +70,7 @@ public class TableStyleTest {
 		final TableStyle ts = TableStyle.builder("test").pageStyle(ps)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		ts.appendXML(this.util, sb);
+		ts.appendXMLRepresentation(this.util, sb);
 
 		DomTester.assertEquals(
 				"<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">"

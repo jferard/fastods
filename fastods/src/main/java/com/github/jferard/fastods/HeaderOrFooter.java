@@ -31,20 +31,7 @@ import java.io.IOException;
  * Represents the header/footer of a print page.
  * @author Julien Férard
  */
-public interface HeaderOrFooter {
-    /**
-     * Add the styles of the header/footer to the given styles container
-     * @param stylesContainer the styles container (destination)
-     */
-    void addEmbeddedStylesToStylesElement(StylesContainer stylesContainer);
-
-    /**
-     * Add the styles of the header/footer to the given styles container
-     * @param stylesContainer the styles container (destination)
-     * @param mode the mode (CREATE, CREATE_OR_UPDATE, UPDATE)
-     */
-    void addEmbeddedStylesToStylesElement(StylesContainer stylesContainer, Container.Mode mode);
-
+public interface HeaderOrFooter extends StylesEmbedder {
     /**
      * Append the XML representation of the header/footer to a stream.
      * @param util an util

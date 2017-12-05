@@ -35,7 +35,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageSection {
+public class PageSection implements StylesEmbedder {
 	private final PageSectionContent content;
 	private final PageSectionStyle style;
 
@@ -129,21 +129,14 @@ public class PageSection {
 				.text(Text.styledContent(text, ts)).buildHeader();
 	}
 
-    /**
-     * Add the styles contained in the footer/header to a styles containes
-     * @param stylesContainer the styles container
-     */
-    public void addEmbeddedStylesToStylesElement(
+    @Override
+	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer) {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer);
 
 	}
 
-    /**
-     * Add the styles contained in the footer/header to a styles containes
-     * @param stylesContainer the styles container
-     * @param mode one of CREATE, UPDATE, CREATE_OR_UPDATE
-     */
+	@Override
 	public void addEmbeddedStylesToStylesElement(
 			final StylesContainer stylesContainer, final Mode mode) {
 		this.content.addEmbeddedStylesToStylesElement(stylesContainer, mode);

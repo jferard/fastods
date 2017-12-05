@@ -21,21 +21,20 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.util.Style;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
-
 /**
- * A data style. 16.27. Data Styles
+ * An object that is localized by a country an a language code
  * @author Julien Férard
  */
-public interface DataStyle extends Style, Localized {
+public interface Localized {
     /**
-     * 19.517 style:volatile
-     * "The style:volatile attribute specifies whether unused style in a document are retained or discarded by consumers."
-     * @return true if this style is volatile
+     * @return The two letter country code, e.g. 'US'
      */
-    boolean isVolatileStyle();
+    String getCountryCode();
 
+    /**
+     * See http://www.ietf.org/rfc/rfc3066.txt
+     *
+     * @return The two letter language code, e.g. 'en'.
+     */
+    String getLanguageCode();
 }

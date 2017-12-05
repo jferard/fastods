@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class FractionStyleBuilder implements StyleBuilder<FractionStyle> {
+public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, FractionStyleBuilder> {
 	private final NumberStyleBuilder numberStyleBuilder;
 	private int minDenominatorDigits;
 	private int minNumeratorDigits;
@@ -93,21 +93,25 @@ public class FractionStyleBuilder implements StyleBuilder<FractionStyle> {
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder country(final String countryCode) {
 		this.numberStyleBuilder.country(countryCode);
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder language(final String languageCode) {
 		this.numberStyleBuilder.language(languageCode);
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder locale(final Locale locale) {
 		this.numberStyleBuilder.locale(locale);
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.numberStyleBuilder.volatileStyle(volatileStyle);
 		return this;

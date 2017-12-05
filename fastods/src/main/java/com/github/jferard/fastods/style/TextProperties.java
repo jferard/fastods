@@ -31,37 +31,80 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  */
 public class TextProperties {
-	// 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave
+	/** 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave */
 	public enum Underline {
-		DASH("dash"), DOTDASH("dot-dash"), DOTDOTDASH("dot-dot-dash"), DOTTED(
-				"dotted"), LONGDASH("long-dash"), NONE(
-						"none"), SOLID("solid"), WAVE("wave");
+		/**
+		 * "text has a dashed line underlining it"
+		 */
+		DASH("dash"),
+		/**
+		 * " text has a line whose repeating pattern is a dot followed by a dash underlining it"
+		 */
+		DOTDASH("dot-dash"),
+		/**
+		 * "text has a line whose repeating pattern is two dots followed by a dash underlining it"
+		 */
+		DOTDOTDASH("dot-dot-dash"),
+		/**
+		 * "text has a dotted line underlining it"
+		 */
+		DOTTED("dotted"),
+		/**
+		 * "text has a dashed line whose dashes are longer than the ones from the dashed line for value dash underlining it"
+		 */
+		LONGDASH("long-dash"),
+		/**
+		 * "text has no underlining"
+		 */
+		NONE("none"),
+		/**
+		 * "text has a solid line underlining it"
+		 */
+		SOLID("solid"),
+		/**
+		 * "text has a wavy line underlining it"
+		 */
+		WAVE("wave");
 
 		private final String attrValue;
 
+		/**
+		 * Create a new Underline attribute
+		 * @param attrValue the attribute value
+		 */
 		Underline(final String attrValue) {
 			this.attrValue = attrValue;
 		}
 	}
 
+	/**
+	 * @return a new builder
+	 */
 	public static TextPropertiesBuilder builder() {
 		return new TextPropertiesBuilder();
 	}
 
-	private final /*@Nullable*/ String fontColor;
-	private final /*@Nullable*/ String fontName;
-	private final /*@Nullable*/ String fontSize;
-	private final /*@Nullable*/ String fontStyle;
+	private final String fontColor;
+	private final String fontName;
+	private final String fontSize;
+	private final String fontStyle;
 
-	private final /*@Nullable*/ String fontUnderlineColor;
+	private final String fontUnderlineColor;
 
-	private final /*@Nullable*/ Underline fontUnderlineStyle;
-	private final /*@Nullable*/ String fontWeight;
+	private final Underline fontUnderlineStyle;
+	private final String fontWeight;
 
-	/**
-	 * Create a new text style with the name name.
-	 */
-	TextProperties(final String fontColor, final String fontName,
+    /**
+     * Create a new text style with the name name.
+     * @param fontColor the font color
+     * @param fontName the font name
+     * @param fontWeight the font weight
+     * @param fontStyle the fon style
+     * @param fontSize the font size
+     * @param fontUnderlineColor the font underline color
+     * @param fontUnderlineStyle the font underline style
+     */
+    TextProperties(final String fontColor, final String fontName,
 			final String fontWeight, final String fontStyle,
 			final String fontSize, final String fontUnderlineColor,
 			final Underline fontUnderlineStyle) {

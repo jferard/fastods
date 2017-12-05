@@ -42,7 +42,7 @@ public class ConfigItemSetTest {
         this.util = XMLUtil.create();
 
         final StringBuilder sb = new StringBuilder();
-        this.item.appendXML(this.util, sb);
+        this.item.appendXMLRepresentation(this.util, sb);
         this.itemXML = sb.toString();
     }
 
@@ -93,7 +93,7 @@ public class ConfigItemSetTest {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         final StringBuilder sb = new StringBuilder();
-        m.appendXML(this.util, sb);
+        m.appendXMLRepresentation(this.util, sb);
         Assert.assertEquals("<config:config-item-set config:name=\"set\">" +
                 this.itemXML+
                 "</config:config-item-set>", sb.toString());
