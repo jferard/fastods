@@ -75,6 +75,7 @@ public class SettingsElement implements OdsElement {
 
 	/**
 	 * Create a settings.xml element
+	 * @param settings the settings
 	 */
 	SettingsElement(final Settings settings) {
 		this.settings = settings;

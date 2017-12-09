@@ -73,11 +73,11 @@ public class UniqueList<T extends NamedObject> extends AbstractList<T>
 	}
 
 	/**
-	 * @param o the name
+	 * @param name the name
 	 * @return the element of the list that has the name.
 	 */
-	public T getByName(final Object o) {
-		return this.elementByName.get(o);
+	public T getByName(final String name) {
+		return this.elementByName.get(name);
 	}
 
 	/**

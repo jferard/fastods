@@ -22,7 +22,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
-import com.github.jferard.fastods.util.StyleBuilder;
 
 import java.util.Currency;
 import java.util.Locale;

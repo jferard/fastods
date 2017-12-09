@@ -21,14 +21,11 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Footer;
-import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.StylesEmbedder;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.Hidable;
-import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

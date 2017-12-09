@@ -23,6 +23,8 @@ package com.github.jferard.fastods.odselement;
 
 /**
  * A "double boolean" used by the styles.xml
+ *
+ * @author Julien Férard
  */
 class HasFooterHeader {
 	private final boolean hasFooter;

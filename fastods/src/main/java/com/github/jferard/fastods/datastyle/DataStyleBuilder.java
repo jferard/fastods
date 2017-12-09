@@ -29,7 +29,9 @@ import java.util.Locale;
  * A data style builder
  *
  * @author Julien Férard
- * 
+ *
+ * @param <S> the destination style
+ * @param <T> the destination style builder
  */
 public interface DataStyleBuilder<S extends DataStyle, T> extends StyleBuilder<S> {
     /**

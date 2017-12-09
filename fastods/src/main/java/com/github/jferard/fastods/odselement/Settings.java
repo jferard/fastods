@@ -31,36 +31,26 @@ import java.util.Map;
 
 /**
  * 3.10 office:settings
- * <p>
+ *
  * A typical {@code settings.xml} file has two {@code config-item-set}s:
  * <ul>
  * <li>{@code ooo:view-settings}
- * <ul>
  * <li>{@code config-item}s for the view settings</li>
  * <li>{@code config-item-map-indexed} with a {@code config-item-map-entry} per view
- * <ul>
  * <li>{@code config-item}s of the wiew</li>
  * <li>a {@code config-item-map-named} with a {@code config-item-map-entry} per table
- * <ul>
  * <li>{@code config-item}s of the table in the wiew</li>
- * </ul>
- * </li>
- * </ul>
- * </li>
- * </ul>
  * <li>{@code ooo:configuration-settings}
- * <ul>
  * <li>{@code config-item}s for the configuration settings</li>
  * </ul>
- * </li>
- * </ul>
- * *
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class Settings {
+    /**
+     * @return a new settings representation
+     */
     public static Settings create() {
         final ConfigItemSet viewSettings = new ConfigItemSet("ooo:view-settings");
 
@@ -124,6 +114,13 @@ public class Settings {
         return Settings.create(viewSettings, firstView, configurationSettings);
     }
 
+    /**
+     * Create a new settings representation
+     * @param viewSettings inner view settings
+     * @param firstView the view to display
+     * @param configurationSettings the configuration
+     * @return the settings representation
+     */
     static Settings create(final ConfigItemSet viewSettings, final ConfigItemMapEntrySet firstView,
                                  final ConfigItemSet configurationSettings) {
         final List<ConfigBlock> rootBlocks = new ArrayList<ConfigBlock>();
@@ -139,6 +136,16 @@ public class Settings {
     private final ConfigItemMapNamed tablesMap;
     private final Map<String, ConfigItemMapEntrySet> viewById;
 
+    /**
+     * Create a new settings representation
+     * @param rootBlocks the root blocks
+     * @param viewSettings inner view settings
+     * @param views the views
+     * @param viewById a map id -> view
+     * @param firstView the view to display
+     * @param tablesMap the tables map
+     * @param configurationSettings the configuration
+     */
     Settings(final List<ConfigBlock> rootBlocks, final ConfigItemSet viewSettings, final ConfigItemMapIndexed views,
              final Map<String, ConfigItemMapEntrySet> viewById, final ConfigItemMapEntrySet firstView,
              final ConfigItemMapNamed tablesMap,
@@ -157,15 +164,27 @@ public class Settings {
         this.rootBlocks.add(configurationSettings);
     }
 
+    /**
+     * Add a table
+     * @param table the table to add
+     */
     public void addTable(final Table table) {
         final ConfigItemMapEntry configEntry = table.getConfigEntry();
         this.addTableConfig(configEntry);
     }
 
+    /**
+     * A a config for a table
+     * @param configEntry the table config
+     */
     public void addTableConfig(final ConfigItemMapEntry configEntry) {
         this.tablesMap.put(configEntry);
     }
 
+    /**
+     * Get the root blocks, ie item, item-set, item-map that are at the top of the settings.
+     * @return the root blocks
+     */
     public List<ConfigBlock> getRootBlocks() {
         return this.rootBlocks;
     }
@@ -181,12 +200,22 @@ public class Settings {
                 table.getName()));
     }
 
+    /**
+     * Set the tables (replace all existing tables)
+     * @param tables the tables
+     */
     public void setTables(final List<Table> tables) {
         this.tablesMap.clear();
         for (final Table table : tables)
             this.addTableConfig(table.getConfigEntry());
     }
 
+    /**
+     * Set a view setting
+     * @param viewId the view to which add the setting
+     * @param item the item name
+     * @param value the item value
+     */
     public void setViewSetting(final String viewId, final String item, final String value) {
         final ConfigItemMapEntrySet view = this.viewById.get(viewId);
         if (view == null)

@@ -22,9 +22,6 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.XMLConvertible;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
 
 /**
  * There is a hierarchy in config block:

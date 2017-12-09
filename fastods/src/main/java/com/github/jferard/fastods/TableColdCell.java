@@ -27,13 +27,15 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
- * table:table/table:table-row
+ * 9.1.4 table:table-cell
+ *
+ * A TableColdCell represents the "cold" part of a cell, that means the part that is absent of most of
+ * the cells.
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableColdCell {
+class TableColdCell {
 	private final XMLUtil xmlUtil;
 	private int columnsSpanned;
 	private String currency;
@@ -43,26 +45,50 @@ public class TableColdCell {
 	private TooltipParameter tooltipParameter;
 	private String formula;
 
-	public TableColdCell(final XMLUtil xmlUtil) {
+	/**
+	 * Create an new "cold cell"
+	 * @param xmlUtil an util
+	 */
+	TableColdCell(final XMLUtil xmlUtil) {
 		this.xmlUtil = xmlUtil;
 	}
 
+	/**
+	 * @param xmlUtil an util
+	 * @return the cold cell
+	 */
 	public static TableColdCell create(final XMLUtil xmlUtil) {
 		return new TableColdCell(xmlUtil);
 	}
 
+	/**
+	 * @return the currency (see 19.369 office:currency)
+	 */
 	public String getCurrency() {
 		return this.currency;
 	}
 
+	/**
+	 * 19.676 table:number-columns-spanned
+	 * Create a span over columns
+	 * @param n the number of columns
+	 */
 	public void setColumnsSpanned(final int n) {
 		this.columnsSpanned = n;
 	}
 
+	/**
+	 * Set a text in the cell
+	 * @param text the text
+	 */
 	public void setText(final Text text) {
 		this.text = text;
 	}
 
+	/**
+	 * Set a tooltip
+	 * @param tooltip the content
+	 */
 	public void setTooltip(final String tooltip) {
 		String escapedXMLContent = this.xmlUtil.escapeXMLContent(tooltip);
 		if (escapedXMLContent.contains("\n")) {
@@ -73,6 +99,13 @@ public class TableColdCell {
 	}
 
 
+	/**
+	 * Set a tooltip of a given size
+	 * @param tooltip the content
+	 * @param width the width of the tooltip
+	 * @param height the height of the tooltip
+	 * @param visible true if the tooltip is visible
+	 */
 	public void setTooltip(final String tooltip, final Length width, final Length height, final boolean visible) {
 		this.setTooltip(tooltip);
 		this.tooltipParameter = TooltipParameter.create(width, height, visible);
@@ -123,22 +156,44 @@ public class TableColdCell {
 		}
 	}
 
+	/**
+	 * 9.1.5 table:covered-table-cell
+	 * @return true if the cell is covered
+	 */
 	public boolean isCovered() {
 		return this.columnsSpanned == -1;
 	}
 
+	/**
+	 * Set the currency (see 19.369 office:currency)
+	 * @param currency the currency
+	 */
 	public void setCurrency(final String currency) {
 		this.currency = currency; // escape here
 	}
 
+	/**
+	 * 9.1.5 table:covered-table-cell
+	 * Set the covered flag on this cell
+	 */
 	public void setCovered() {
 		this.columnsSpanned = -1;
 	}
 
+	/**
+	 * 19.642 table:formula
+	 * Set a formula in this cell
+	 * @param formula the formula, without = sign
+	 */
 	public void setFormula(final String formula) {
 		this.formula = formula;
 	}
 
+	/**
+	 * 19.678 table:number-rows-spanned
+	 * Create a span over rows
+	 * @param n the number of rows
+	 */
 	public void setRowsSpanned(final int n) {
 		this.rowsSpanned = n;
 	}

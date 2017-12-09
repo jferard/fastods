@@ -33,7 +33,7 @@ import java.net.URL;
  * 6.1.8 text:a
  * @author Julien Férard
  */
-public class Link implements ParagraphElement {
+public final class Link implements ParagraphElement {
 	private final String text;
 	private final String content;
 	private final TextStyle ts;

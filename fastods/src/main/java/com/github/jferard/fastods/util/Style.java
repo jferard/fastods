@@ -23,7 +23,6 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.style.AddableToOdsElements;
-import java.io.IOException;
 
 /**
  * A style (data style or object style)
