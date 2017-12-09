@@ -21,37 +21,17 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.util.StyleBuilder;
-
 /**
- * @param <S> the concrete number style
- * @param <T> the concrete number style builder
+ * A builder for decimal styles
+ * @param <T> the concrete builder
  * @author Julien Férard
  */
-public interface NumberStyleBuilder<S, T extends NumberStyleBuilder>
-            extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T> {
+public interface DecimalStyleBuilder<T> {
     /**
-     * @param grouping if true, the thousands separator is shown.
+     * 20.250 style:decimal-places
+     * Set how many digits are to the right of the decimal symbol.
+     * @param decimalPlaces "the maximum number of decimal places that are displayed if numbers are formatted by a data style that has no setting for number of decimal places itself"
      * @return this for fluent style
      */
-    T groupThousands(boolean grouping);
-
-    /**
-     * @param minIntegerDigits
-     *            The number of digits for integer part
-     * @return this for fluent style
-     */
-    T minIntegerDigits(int minIntegerDigits);
-
-    /**
-     * @param negativeValueColor the color for negative values, null if none
-     * @return this for fluent style
-     */
-    T negativeValueColor(String negativeValueColor);
-
-    /**
-     * Sets the red color for negative values
-     * @return this for fluent style
-     */
-    T negativeValueRed();
+    T decimalPlaces(int decimalPlaces);
 }

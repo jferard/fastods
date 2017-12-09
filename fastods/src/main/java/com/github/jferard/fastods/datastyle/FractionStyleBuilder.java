@@ -26,8 +26,9 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, FractionStyleBuilder> {
-	private final NumberStyleBuilder numberStyleBuilder;
+public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, FractionStyleBuilder>,
+		NumberStyleBuilder<FractionStyle, FractionStyleBuilder> {
+	private final NumberStyleHelperBuilder numberStyleHelperBuilder;
 	private int minDenominatorDigits;
 	private int minNumeratorDigits;
 
@@ -39,20 +40,20 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
 	 * @param locale The locale used
 	 */
 	FractionStyleBuilder(final String name, final Locale locale) {
-		this.numberStyleBuilder = new NumberStyleBuilder(name, locale);
+		this.numberStyleHelperBuilder = new NumberStyleHelperBuilder(name, locale);
 		this.minNumeratorDigits = 0;
 		this.minDenominatorDigits = 0;
 	}
 
 	@Override
 	public FractionStyle build() {
-		return new FractionStyle(this.numberStyleBuilder.build(), this.minNumeratorDigits,
+		return new FractionStyle(this.numberStyleHelperBuilder.build(), this.minNumeratorDigits,
 				this.minDenominatorDigits);
 	}
 
 	@Override
 	public FractionStyle buildHidden() {
-		return new FractionStyle(this.numberStyleBuilder.buildHidden(), this.minNumeratorDigits,
+		return new FractionStyle(this.numberStyleHelperBuilder.buildHidden(), this.minNumeratorDigits,
 				this.minDenominatorDigits);
 	}
 
@@ -71,47 +72,51 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder groupThousands(final boolean grouping) {
-		this.numberStyleBuilder.groupThousands(grouping);
+		this.numberStyleHelperBuilder.groupThousands(grouping);
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		this.numberStyleBuilder.minIntegerDigits(minIntegerDigits);
+		this.numberStyleHelperBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder negativeValueColor(final String negativeValueColor) {
-		this.numberStyleBuilder.negativeValueColor(negativeValueColor);
+		this.numberStyleHelperBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}
 
+	@Override
 	public FractionStyleBuilder negativeValueRed() {
-		this.numberStyleBuilder.negativeValueRed();
+		this.numberStyleHelperBuilder.negativeValueRed();
 		return this;
 	}
 
 	@Override
 	public FractionStyleBuilder country(final String countryCode) {
-		this.numberStyleBuilder.country(countryCode);
+		this.numberStyleHelperBuilder.country(countryCode);
 		return this;
 	}
 
 	@Override
 	public FractionStyleBuilder language(final String languageCode) {
-		this.numberStyleBuilder.language(languageCode);
+		this.numberStyleHelperBuilder.language(languageCode);
 		return this;
 	}
 
 	@Override
 	public FractionStyleBuilder locale(final Locale locale) {
-		this.numberStyleBuilder.locale(locale);
+		this.numberStyleHelperBuilder.locale(locale);
 		return this;
 	}
 
 	@Override
 	public FractionStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.numberStyleBuilder.volatileStyle(volatileStyle);
+		this.numberStyleHelperBuilder.volatileStyle(volatileStyle);
 		return this;
 	}
 }

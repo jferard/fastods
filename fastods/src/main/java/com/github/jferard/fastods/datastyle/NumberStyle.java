@@ -23,164 +23,27 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
 
 /**
- * 16.27.2 number:number-style
- *
+ * A number style
  * @author Julien Férard
- * @author Martin Schulz
  */
-public final class NumberStyle implements Hidable, Localized, NamedObject {
-    private final CoreDataStyle dataStyle;
-
+public interface NumberStyle extends NamedObject, Hidable, Localized, IsVolatile {
     /**
      * 19.348 number:grouping
-     */
-    private final boolean grouping;
-    /**
-     * 19.352 number:min-integer-digits
-     */
-    private final int minIntegerDigits;
-    private final String negativeValueColor;
-
-    /**
-     * Create a new number style
-     *
-     * @param minIntegerDigits The minimum integer digits to be shown.
-     */
-    NumberStyle(final CoreDataStyle dataStyle, final boolean grouping, final int minIntegerDigits,
-                final String negativeValueColor) {
-        this.dataStyle = dataStyle;
-        this.grouping = grouping;
-        this.negativeValueColor = negativeValueColor;
-        this.minIntegerDigits = minIntegerDigits;
-    }
-
-    void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName,
-                         final CharSequence number) throws IOException {
-        this.appendOpenTag(util, appendable, numberStyleName, this.dataStyle.getName());
-        appendable.append(number);
-        this.appendCloseTag(appendable, numberStyleName);
-
-        if (this.negativeValueColor != null) {
-            this.appendOpenTag(util, appendable, numberStyleName, this.dataStyle.getName() + "-neg");
-            this.appendStyleColor(util, appendable);
-            appendable.append("<number:text>-</number:text>");
-            appendable.append(number);
-            this.appendStyleMap(util, appendable);
-            this.appendCloseTag(appendable, numberStyleName);
-        }
-    }
-
-    private void appendCloseTag(final Appendable appendable, final CharSequence numberStyleName) throws IOException {
-        appendable.append("</number:").append(numberStyleName).append(">");
-    }
-
-    public void appendOpenTag(final XMLUtil util, final Appendable appendable, final CharSequence numberStyleName,
-                              final String name) throws IOException {
-        appendable.append("<number:").append(numberStyleName);
-        util.appendAttribute(appendable, "style:name", name);
-        this.dataStyle.appendLVAttributes(util, appendable);
-        appendable.append(">");
-    }
-
-    /**
      * @return true if the digits are grouped
      */
-    public boolean getGroupThousands() {
-        return this.grouping;
-    }
+    boolean getGroupThousands();
 
     /**
-     * Get how many leading zeros are present.
-     *
-     * @return The number of leading zeros
+     * 19.352 number:min-integer-digits
+     * @return the minimum number of digits
      */
-    public int getMinIntegerDigits() {
-        return this.minIntegerDigits;
-    }
+    int getMinIntegerDigits();
 
     /**
      * Get the color if negative value. If none, null
-     *
      * @return the color in hex format
      */
-    public String getNegativeValueColor() {
-        return this.negativeValueColor;
-    }
-
-    /**
-     * Append the 19.348 number:grouping attribute. Default = false.
-     *
-     * @param util       a util for XML writing
-     * @param appendable where to write
-     * @throws IOException If an I/O error occurs
-     */
-    protected void appendGroupingAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.grouping) util.appendEAttribute(appendable, "number:grouping", "true");
-    }
-
-    public void appendMinIntegerDigitsAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.minIntegerDigits > 0)
-            util.appendEAttribute(appendable, "number:min-integer-digits", this.minIntegerDigits);
-    }
-
-    public void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
-        this.appendMinIntegerDigitsAttribute(util, appendable);
-        this.appendGroupingAttribute(util, appendable);
-    }
-
-    /**
-     * Appends the style color.
-     *
-     * @param util       XML util
-     * @param appendable where to write
-     * @throws IOException If an I/O error occurs
-     */
-    public void appendStyleColor(final XMLUtil util, final Appendable appendable) throws IOException {
-        appendable.append("<style:text-properties");
-        util.appendAttribute(appendable, "fo:color", this.negativeValueColor);
-        appendable.append("/>");
-    }
-
-    /**
-     * Appends 16.3 style:map tag.
-     *
-     * @param util       XML util for escaping
-     * @param appendable where to write
-     * @throws IOException If an I/O error occurs
-     */
-    protected void appendStyleMap(final XMLUtil util, final Appendable appendable) throws IOException {
-        appendable.append("<style:map");
-        util.appendAttribute(appendable, "style:condition", "value()>=0");
-        util.appendAttribute(appendable, "style:apply-style-name", this.dataStyle.getName());
-        appendable.append("/>");
-    }
-
-    public boolean isVolatileStyle() {
-        return this.dataStyle.isVolatileStyle();
-    }
-
-    @Override
-    public String getName() {
-        return this.dataStyle.getName();
-    }
-
-    @Override
-    public String getCountryCode() {
-        return this.dataStyle.getCountryCode();
-    }
-
-    @Override
-    public String getLanguageCode() {
-        return this.dataStyle.getLanguageCode();
-    }
-
-    @Override
-    public boolean isHidden() {
-        return this.dataStyle.isHidden();
-    }
+    String getNegativeValueColor();
 }

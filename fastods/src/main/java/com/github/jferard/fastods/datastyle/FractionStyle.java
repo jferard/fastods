@@ -38,13 +38,19 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class FractionStyle implements DataStyle {
-	private final NumberStyle numberStyle;
+public class FractionStyle implements NumberStyle, DataStyle {
+	private final NumberStyleHelper numberStyle;
 	private final int minDenominatorDigits;
 	private final int minNumeratorDigits;
 
-	FractionStyle(final NumberStyle numberStyle, final int minNumeratorDigits,
-			final int minDenominatorDigits) {
+	/**
+	 * Create a new fraction style
+	 * @param numberStyle the embedded number style
+	 * @param minNumeratorDigits the minimum digits for numerator
+	 * @param minDenominatorDigits  the minimum digits for denominator
+	 */
+	FractionStyle(final NumberStyleHelper numberStyle, final int minNumeratorDigits,
+                  final int minDenominatorDigits) {
 		this.numberStyle = numberStyle;
 		this.minNumeratorDigits = minNumeratorDigits;
 		this.minDenominatorDigits = minDenominatorDigits;
@@ -74,14 +80,17 @@ public class FractionStyle implements DataStyle {
 		return number;
 	}
 
+	@Override
 	public boolean getGroupThousands() {
 		return this.numberStyle.getGroupThousands();
 	}
 
+	@Override
 	public int getMinIntegerDigits() {
 		return this.numberStyle.getMinIntegerDigits();
 	}
 
+	@Override
 	public String getNegativeValueColor() {
 		return this.numberStyle.getNegativeValueColor();
 	}

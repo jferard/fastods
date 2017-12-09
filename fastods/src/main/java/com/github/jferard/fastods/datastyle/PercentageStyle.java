@@ -38,10 +38,12 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class PercentageStyle implements DataStyle {
+public class PercentageStyle implements NumberStyle, DataStyle, DecimalStyle {
 	private final FloatStyle floatStyle;
 
 	/**
+	 * A percentage style
+     * @param floatStyle the embedded float style
 	 */
 	PercentageStyle(final FloatStyle floatStyle) {
 		this.floatStyle = floatStyle;
@@ -61,6 +63,7 @@ public class PercentageStyle implements DataStyle {
 		return this.floatStyle.isHidden();
 	}
 
+	@Override
 	public int getDecimalPlaces() {
 		return this.floatStyle.getDecimalPlaces();
 	}
@@ -80,14 +83,17 @@ public class PercentageStyle implements DataStyle {
 		return this.floatStyle.getLanguageCode();
 	}
 
+	@Override
 	public boolean getGroupThousands() {
 		return this.floatStyle.getGroupThousands();
 	}
 
+	@Override
 	public int getMinIntegerDigits() {
 		return this.floatStyle.getMinIntegerDigits();
 	}
 
+	@Override
 	public String getNegativeValueColor() {
 		return this.floatStyle.getNegativeValueColor();
 	}

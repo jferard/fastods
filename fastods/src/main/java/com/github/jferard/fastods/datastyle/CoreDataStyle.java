@@ -57,6 +57,14 @@ final class CoreDataStyle implements NamedObject, Hidable, Localized {
 
 	private final boolean volatileStyle;
 
+	/**
+	 * Create a new core data style
+	 * @param name the name of the style
+	 * @param hidden if true, an automatic style
+	 * @param languageCode the language code (e.g. "en")
+	 * @param countryCode the country code (e.g. "US")
+	 * @param volatileStyle true if the style should be kept
+	 */
 	CoreDataStyle(final String name, final boolean hidden, final String languageCode,
 						final String countryCode, final boolean volatileStyle) {
 		this.name = name;
@@ -66,27 +74,34 @@ final class CoreDataStyle implements NamedObject, Hidable, Localized {
 		this.volatileStyle = volatileStyle;
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	private void appendLocaleAttributes(final XMLUtil util,
-										  final Appendable appendable) throws IOException {
-		if (this.languageCode != null)
-			util.appendAttribute(appendable, "number:language",
-					this.languageCode);
-		if (this.countryCode != null)
-			util.appendAttribute(appendable, "number:country",
-					this.countryCode);
-	}
-
-	public void appendLVAttributes(final XMLUtil util,
+    /**
+     * Append locale and volatile attributes
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an error occurs
+     */
+    public void appendLVAttributes(final XMLUtil util,
 									  final Appendable appendable) throws IOException {
 		this.appendLocaleAttributes(util, appendable);
 		this.appendVolatileAttribute(util, appendable);
 	}
 
-	private void appendVolatileAttribute(final XMLUtil util,
+    private void appendLocaleAttributes(final XMLUtil util,
+                                        final Appendable appendable) throws IOException {
+        if (this.languageCode != null)
+            util.appendAttribute(appendable, "number:language",
+                    this.languageCode);
+        if (this.countryCode != null)
+            util.appendAttribute(appendable, "number:country",
+                    this.countryCode);
+    }
+
+    private void appendVolatileAttribute(final XMLUtil util,
 										   final Appendable appendable) throws IOException {
 		if (this.volatileStyle)
 			util.appendEAttribute(appendable, "style:volatile",

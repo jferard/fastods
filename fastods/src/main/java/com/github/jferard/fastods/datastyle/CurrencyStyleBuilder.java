@@ -29,7 +29,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder> {
+public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder>,
+		NumberStyleBuilder<CurrencyStyle, CurrencyStyleBuilder>, DecimalStyleBuilder<CurrencyStyleBuilder> {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private SymbolPosition currencyPosition;
 	private String currencySymbol;
@@ -82,12 +83,14 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 		return this;
 	}
 
-	public CurrencyStyleBuilder decimalPlaces(final int decimalPlaces) {
+    @Override
+    public CurrencyStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
 		return this;
 	}
 
-	public CurrencyStyleBuilder groupThousands(final boolean grouping) {
+	@Override
+    public CurrencyStyleBuilder groupThousands(final boolean grouping) {
 		this.floatStyleBuilder.groupThousands(grouping);
 		return this;
 	}
@@ -99,18 +102,21 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 		return this;
 	}
 
-	public CurrencyStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+	@Override
+    public CurrencyStyleBuilder minIntegerDigits(final int minIntegerDigits) {
 		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 
-	public CurrencyStyleBuilder negativeValueColor(
+	@Override
+    public CurrencyStyleBuilder negativeValueColor(
 			final String negativeValueColor) {
 		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}
 
-	public CurrencyStyleBuilder negativeValueRed() {
+	@Override
+    public CurrencyStyleBuilder negativeValueRed() {
 		this.floatStyleBuilder.negativeValueRed();
 		return this;
 	}

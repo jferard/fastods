@@ -26,7 +26,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class ScientificNumberStyleBuilder implements DataStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder> {
+public class ScientificNumberStyleBuilder implements DataStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>,
+		NumberStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>, DecimalStyleBuilder<ScientificNumberStyleBuilder> {
 	private final FloatStyleBuilder floatStyleBuilder;
 	private int minExponentDigits;
 
@@ -52,18 +53,14 @@ public class ScientificNumberStyleBuilder implements DataStyleBuilder<Scientific
 		return new ScientificNumberStyle(this.floatStyleBuilder.buildHidden(), this.minExponentDigits);
 	}
 
-	/**
-	 * @param decimalPlaces The number of decimal places to be shown.
-	 * @return this for fluent style
-	 */
+	@Override
 	public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
 		return this;
 	}
 
 	/**
-	 * Set the number of exponent digits.<br>
-	 * The number style is set to NUMBER_SCIENTIFIC.
+	 * Set the number of exponent digits.
 	 *
 	 * @param minExponentDigits The minimum of exponent digits to be used
 	 * @return this for fluent style
@@ -74,21 +71,25 @@ public class ScientificNumberStyleBuilder implements DataStyleBuilder<Scientific
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder groupThousands(final boolean grouping) {
 		this.floatStyleBuilder.groupThousands(grouping);
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder minIntegerDigits(final int minIntegerDigits) {
 		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder negativeValueColor(final String negativeValueColor) {
 		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}
 
+	@Override
 	public ScientificNumberStyleBuilder negativeValueRed() {
 		this.floatStyleBuilder.negativeValueRed();
 		return this;

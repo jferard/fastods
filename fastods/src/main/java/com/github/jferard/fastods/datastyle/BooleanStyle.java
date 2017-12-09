@@ -34,7 +34,11 @@ import java.io.IOException;
 public class BooleanStyle implements DataStyle, Localized {
 	private final CoreDataStyle dataStyle;
 
-	protected BooleanStyle(final CoreDataStyle dataStyle) {
+	/**
+	 * Create a new boolean style
+     * @param dataStyle the embedded core data style
+	 */
+	BooleanStyle(final CoreDataStyle dataStyle) {
 		this.dataStyle = dataStyle;
 	}
 

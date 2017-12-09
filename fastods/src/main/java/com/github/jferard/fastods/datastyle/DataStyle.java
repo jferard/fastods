@@ -27,12 +27,5 @@ import com.github.jferard.fastods.util.Style;
  * A data style. 16.27. Data Styles
  * @author Julien Férard
  */
-public interface DataStyle extends Style, Localized {
-    /**
-     * 19.517 style:volatile
-     * "The style:volatile attribute specifies whether unused style in a document are retained or discarded by consumers."
-     * @return true if this style is volatile
-     */
-    boolean isVolatileStyle();
-
+public interface DataStyle extends Style, Localized, IsVolatile {
 }

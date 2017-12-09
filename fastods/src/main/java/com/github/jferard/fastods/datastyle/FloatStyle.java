@@ -34,26 +34,22 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class FloatStyle implements DataStyle {
-	private final NumberStyle numberStyle;
+public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
+	private final NumberStyleHelper numberStyle;
 	private final int decimalPlaces;
 
 	/**
 	 * Create a float style
-	 * @param numberStyle
+	 * @param numberStyle the embedded core data style
 	 * @param decimalPlaces the number of digits after the separator
 	 */
-	public FloatStyle(final NumberStyle numberStyle,
+	public FloatStyle(final NumberStyleHelper numberStyle,
 						 final int decimalPlaces) {
 		this.numberStyle = numberStyle;
 		this.decimalPlaces = decimalPlaces;
 	}
 
-	/**
-	 * Get how many digits are to the right of the decimal symbol.
-	 *
-	 * @return The number of digits
-	 */
+	@Override
 	public int getDecimalPlaces() {
 		return this.decimalPlaces;
 	}
@@ -89,13 +85,24 @@ public class FloatStyle implements DataStyle {
 		return this.numberStyle.isHidden();
 	}
 
-	StringBuilder computeNumberTag(final XMLUtil util)
+    /**
+     * @param util an util
+     * @return the numbre:number tag
+     * @throws IOException if an I/O error occurs
+     */
+    StringBuilder computeNumberTag(final XMLUtil util)
 			throws IOException {
 		final StringBuilder number = new StringBuilder();
 		this.appendNumberTag(util, number);
 		return number;
 	}
 
+	/**
+	 * Append the number:number tag
+	 * @param util an util
+	 * @param appendable the destination
+	 * @throws IOException if an I/O error occurs
+	 */
 	public void appendNumberTag(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<number:number");
 		util.appendEAttribute(appendable, "number:decimal-places",
@@ -104,18 +111,29 @@ public class FloatStyle implements DataStyle {
 		appendable.append("/>");
 	}
 
-	void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
+    /**
+     * A helper to create the XML representation of the float style
+     * @param util a util
+     * @param appendable the destination
+     * @param numberStyleName the style name ("currency-style", ...)
+     * @param number the number itslef
+     * @throws IOException if an I/O error occurs
+     */
+    void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
 		this.numberStyle.appendXMLHelper(util, appendable, numberStyleName, number);
 	}
 
+	@Override
 	public boolean getGroupThousands() {
 		return this.numberStyle.getGroupThousands();
 	}
 
+	@Override
 	public int getMinIntegerDigits() {
 		return this.numberStyle.getMinIntegerDigits();
 	}
 
+	@Override
 	public String getNegativeValueColor() {
 		return this.numberStyle.getNegativeValueColor();
 	}
@@ -125,7 +143,13 @@ public class FloatStyle implements DataStyle {
 		return this.numberStyle.isVolatileStyle();
 	}
 
-	void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
+    /**
+     * Append the attributes of the number
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
+    void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
 		this.numberStyle.appendNumberAttribute(util, appendable);
 	}
 }

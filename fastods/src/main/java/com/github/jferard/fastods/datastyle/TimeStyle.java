@@ -44,6 +44,8 @@ public class TimeStyle implements DataStyle {
 
 	/**
 	 * Create a new date style
+	 * @param dataStyle the embedded core data style
+	 * @param timeFormat the format
 	 */
 	TimeStyle(final CoreDataStyle dataStyle,
 						final Format timeFormat) {
@@ -88,6 +90,9 @@ public class TimeStyle implements DataStyle {
 		odsElements.addDataStyle(this);
 	}
 
+	/**
+	 * A time format
+	 */
 	public enum Format {
 		/**
 		 * Set the time format like '01:02:03'.

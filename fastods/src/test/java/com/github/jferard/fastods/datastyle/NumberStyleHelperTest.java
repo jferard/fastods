@@ -28,7 +28,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Locale;
 
-public class NumberStyleTest {
+public class NumberStyleHelperTest {
 	private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
 	private DataStyleBuilderFactory factory;
 	private Locale locale;
@@ -49,7 +49,7 @@ public class NumberStyleTest {
 		ns.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
-						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
+						+ NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 						+ "</number:number-style>",
 				sb.toString());
 	}
@@ -62,12 +62,12 @@ public class NumberStyleTest {
 		ns.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
 				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
-						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
+						+ NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 						+ "</number:number-style>"
 						+ "<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 						+ "<style:text-properties fo:color=\"#FF0000\"/>"
 						+ "<number:text>-</number:text>"
-						+ NumberStyleTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
+						+ NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
 						+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"
 						+ "</number:number-style>",
 				sb.toString());

@@ -30,30 +30,41 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 
 /**
- * WHERE ? meta.xml/office:document-meta
+ * 3.1.3.4 office:document-meta
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class MetaElement implements OdsElement {
+    /**
+     * the date format: 2017-12-31
+     */
     final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+    /**
+     * the time format: 18:12:59
+     */
     final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
     private final String editingCycles;
     private final String editingDuration;
     private final String generator;
     private String creator;
     private String dateTime;
-    // private int tableCount = 1;
-    // private int cellCount = 1;
 
+    /**
+     * Create a new meta element
+     */
     public MetaElement() {
         this.setDateTimeNow();
-        this.generator = "FastOds 0.0.1 2016";
-        this.creator = "FastOds 0.0.1";
+        this.generator = "FastOds 0.5.0 2017";
+        this.creator = "FastOds 0.5.0";
         this.editingCycles = "1";
         this.editingDuration = "PT1M00S";
     }
 
+    /**
+     * Set the create of the document
+     * @param creator the creator's name (e.g. Julien Férard)
+     */
     public void setCreator(final String creator) {
         this.creator = creator;
     }

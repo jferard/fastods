@@ -34,13 +34,23 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  */
 public class CurrencyStyle implements DataStyle {
+	/**
+	 * A simple space a text
+	 */
 	public static final String SPACE_TEXT = "<number:text> </number:text>";
 
     /**
 	 * A currency symbol may be at the beginning or the end of the expression
 	 */
 	public enum SymbolPosition {
-		BEGIN, END
+		/**
+		 * the symbol is before the value
+		 */
+		BEGIN,
+		/**
+		 * the symbol is after the value
+		 */
+		END
 	}
 
 	private final SymbolPosition currencyPosition;
@@ -49,9 +59,9 @@ public class CurrencyStyle implements DataStyle {
 
 	/**
 	 * Create a new CurrencyStyle.
-	 * @param floatStyle
-	 * @param currencySymbol
-	 * @param currencyPosition
+	 * @param floatStyle the embedded float style
+	 * @param currencySymbol the symbol
+	 * @param currencyPosition the position of the symbol
 	 */
 	CurrencyStyle(final FloatStyle floatStyle,
 			final String currencySymbol,

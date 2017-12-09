@@ -23,9 +23,11 @@ package com.github.jferard.fastods.util;
 
 /**
  * A style builder
+ * @param <S> the style
+ *
  * @author Julien Férard
  */
-public interface StyleBuilder<S extends Style> {
+public interface StyleBuilder<S> {
     /**
      * @return a new S
      */

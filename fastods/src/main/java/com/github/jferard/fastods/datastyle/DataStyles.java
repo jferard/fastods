@@ -27,6 +27,7 @@ import java.util.EnumMap;
 
 /**
  * The {@code DataStyles} class represents a set of {@code DataStyle}s.
+ * @author Julien Férard
  */
 public class DataStyles {
     private final BooleanStyle booleanDataStyle;

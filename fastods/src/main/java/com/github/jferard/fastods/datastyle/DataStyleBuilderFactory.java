@@ -32,47 +32,84 @@ public class DataStyleBuilderFactory {
 	private final Locale locale;
 	private final XMLUtil util;
 
+	/**
+	 * Create a new data style builder factory
+	 * @param util an util
+	 * @param locale the locale
+	 */
 	public DataStyleBuilderFactory(final XMLUtil util, final Locale locale) {
 		this.util = util;
 		this.locale = locale;
 	}
 
-	public BooleanStyleBuilder booleanStyleBuilder(final String name) {
+    /**
+     * @param name the name of the style
+     * @return a boolean style builder
+     */
+    public BooleanStyleBuilder booleanStyleBuilder(final String name) {
 		return new BooleanStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a currency style builder
+     */
 	public CurrencyStyleBuilder currencyStyleBuilder(final String name) {
 		return new CurrencyStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a date style builder
+     */
 	public DateStyleBuilder dateStyleBuilder(final String name) {
 		return new DateStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a float style builder
+     */
 	public FloatStyleBuilder floatStyleBuilder(final String name) {
 		return new FloatStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a fraction style builder
+     */
 	public FractionStyleBuilder fractionStyleBuilder(final String name) {
 		return new FractionStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a percentage style builder
+     */
 	public PercentageStyleBuilder percentageStyleBuilder(final String name) {
 		return new PercentageStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a scientific number style builder
+     */
 	public ScientificNumberStyleBuilder scientificNumberStyleBuilder(
 			final String name) {
 		return new ScientificNumberStyleBuilder(
 				this.util.escapeXMLAttribute(name), this.locale);
 	}
 
+    /**
+     * @param name the name of the style
+     * @return a time style builder
+     */
 	public TimeStyleBuilder timeStyleBuilder(final String name) {
 		return new TimeStyleBuilder(this.util.escapeXMLAttribute(name),
 				this.locale);

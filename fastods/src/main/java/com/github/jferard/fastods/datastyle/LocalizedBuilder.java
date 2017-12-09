@@ -21,37 +21,32 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.util.StyleBuilder;
+import java.util.Locale;
 
 /**
- * @param <S> the concrete number style
- * @param <T> the concrete number style builder
+ * A builder for Localized elements
+ * @param <T> the real type of the builder
  * @author Julien Férard
  */
-public interface NumberStyleBuilder<S, T extends NumberStyleBuilder>
-            extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T> {
+public interface LocalizedBuilder<T> {
     /**
-     * @param grouping if true, the thousands separator is shown.
+     * Set the country code
+     * @param countryCode The two letter country code, e.g. 'US'
      * @return this for fluent style
      */
-    T groupThousands(boolean grouping);
+    T country(String countryCode);
 
     /**
-     * @param minIntegerDigits
-     *            The number of digits for integer part
+     * Set the language code
+     * @param languageCode The two letter language code, e.g. 'en'. See http://www.ietf.org/rfc/rfc3066.txt
      * @return this for fluent style
      */
-    T minIntegerDigits(int minIntegerDigits);
+    T language(String languageCode);
 
     /**
-     * @param negativeValueColor the color for negative values, null if none
+     * Set the locale
+     * @param locale the locale
      * @return this for fluent style
      */
-    T negativeValueColor(String negativeValueColor);
-
-    /**
-     * Sets the red color for negative values
-     * @return this for fluent style
-     */
-    T negativeValueRed();
+    T locale(Locale locale);
 }

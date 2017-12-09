@@ -26,7 +26,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle, PercentageStyleBuilder> {
+public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle, PercentageStyleBuilder>,
+        NumberStyleBuilder<PercentageStyle, PercentageStyleBuilder>, DecimalStyleBuilder<PercentageStyleBuilder> {
 	private final FloatStyleBuilder floatStyleBuilder;
 
 	/**
@@ -50,28 +51,33 @@ public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle,
 		return new PercentageStyle(this.floatStyleBuilder.buildHidden());
 	}
 
-	public PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
+	@Override
+    public PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
 		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
 		return this;
 	}
 
-	public PercentageStyleBuilder groupThousands(final boolean grouping) {
+	@Override
+    public PercentageStyleBuilder groupThousands(final boolean grouping) {
 		this.floatStyleBuilder.groupThousands(grouping);
 		return this;
 	}
 
-	public PercentageStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+    @Override
+    public PercentageStyleBuilder minIntegerDigits(final int minIntegerDigits) {
 		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
 		return this;
 	}
 
-	public PercentageStyleBuilder negativeValueColor(
+	@Override
+    public PercentageStyleBuilder negativeValueColor(
 			final String negativeValueColor) {
 		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}
 
-	public PercentageStyleBuilder negativeValueRed() {
+	@Override
+    public PercentageStyleBuilder negativeValueRed() {
 		this.floatStyleBuilder.negativeValueRed();
 		return this;
 	}

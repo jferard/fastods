@@ -21,37 +21,17 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.util.StyleBuilder;
-
 /**
- * @param <S> the concrete number style
- * @param <T> the concrete number style builder
+ * A style that may be volatile
+ * @param <T> the concrete builder
  * @author Julien Férard
  */
-public interface NumberStyleBuilder<S, T extends NumberStyleBuilder>
-            extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T> {
+public interface IsVolatileBuilder<T> {
     /**
-     * @param grouping if true, the thousands separator is shown.
+     * 19.517 style:volatile
+     * "The style:volatile attribute specifies whether unused style in a document are retained or discarded by consumers."
+     * @param volatileStyle true if "consumers should keep unused styles", false otherwise.
      * @return this for fluent style
      */
-    T groupThousands(boolean grouping);
-
-    /**
-     * @param minIntegerDigits
-     *            The number of digits for integer part
-     * @return this for fluent style
-     */
-    T minIntegerDigits(int minIntegerDigits);
-
-    /**
-     * @param negativeValueColor the color for negative values, null if none
-     * @return this for fluent style
-     */
-    T negativeValueColor(String negativeValueColor);
-
-    /**
-     * Sets the red color for negative values
-     * @return this for fluent style
-     */
-    T negativeValueRed();
+    T volatileStyle(boolean volatileStyle);
 }

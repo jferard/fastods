@@ -21,10 +21,10 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * WHERE ? content.xml/office:document-content/office:automatic-styles/number:
@@ -36,93 +36,95 @@ import com.github.jferard.fastods.util.XMLUtil;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
-public class ScientificNumberStyle implements DataStyle {
-	private final FloatStyle floatStyle;
-	private final int minExponentDigits;
+public class ScientificNumberStyle implements NumberStyle, DataStyle, DecimalStyle {
+    private final FloatStyle floatStyle;
+    private final int minExponentDigits;
 
-	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is decPlaces.
-	 */
-	ScientificNumberStyle(final FloatStyle floatStyle,
-			final int minExponentDigits) {
-		this.floatStyle = floatStyle;
-		this.minExponentDigits = minExponentDigits;
-	}
+    /**
+     * Create a new number style with the name name, minimum integer digits is
+     * minIntDigits and decimal places is decPlaces.
+     *
+     * @param floatStyle        an embedded float style
+     * @param minExponentDigits "the minimum number of digits to use to display an exponent"
+     */
+    ScientificNumberStyle(final FloatStyle floatStyle, final int minExponentDigits) {
+        this.floatStyle = floatStyle;
+        this.minExponentDigits = minExponentDigits;
+    }
 
-	/**
-	 * Get the current number of leading zeros.
-	 *
-	 * @return The current number of leading zeros.
-	 */
-	public int getMinExponentDigits() {
-		return this.minExponentDigits;
-	}
+    /**
+     * 19.351 number:min-exponent-digits
+     *
+     * @return "the minimum number of digits to use to display an exponent"
+     */
+    public int getMinExponentDigits() {
+        return this.minExponentDigits;
+    }
 
-	private void appendNumber(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<number:scientific-number");
-		util.appendEAttribute(appendable, "number:min-exponent-digits",
-				this.minExponentDigits);
-		util.appendEAttribute(appendable, "number:decimal-places",
-				this.floatStyle.getDecimalPlaces());
-		this.floatStyle.appendNumberAttribute(util, appendable);
-		appendable.append("/>");
-	}
+    private void appendNumber(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<number:scientific-number");
+        util.appendEAttribute(appendable, "number:min-exponent-digits", this.minExponentDigits);
+        util.appendEAttribute(appendable, "number:decimal-places", this.floatStyle.getDecimalPlaces());
+        this.floatStyle.appendNumberAttribute(util, appendable);
+        appendable.append("/>");
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 
-	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
-		final StringBuilder number = new StringBuilder();
-		this.appendNumber(util, number);
-		this.floatStyle.appendXMLHelper(util, appendable, "number-style", number);
+    @Override
+    public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
+        final StringBuilder number = new StringBuilder();
+        this.appendNumber(util, number);
+        this.floatStyle.appendXMLHelper(util, appendable, "number-style", number);
 
-	}
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.floatStyle.isHidden();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.floatStyle.isHidden();
+    }
 
-	public int getDecimalPlaces() {
-		return this.floatStyle.getDecimalPlaces();
-	}
+    @Override
+    public int getDecimalPlaces() {
+        return this.floatStyle.getDecimalPlaces();
+    }
 
-	@Override
-	public String getName() {
-		return this.floatStyle.getName();
-	}
+    @Override
+    public String getName() {
+        return this.floatStyle.getName();
+    }
 
-	@Override
-	public String getCountryCode() {
-		return this.floatStyle.getCountryCode();
-	}
+    @Override
+    public String getCountryCode() {
+        return this.floatStyle.getCountryCode();
+    }
 
-	@Override
-	public String getLanguageCode() {
-		return this.floatStyle.getLanguageCode();
-	}
+    @Override
+    public String getLanguageCode() {
+        return this.floatStyle.getLanguageCode();
+    }
 
-	public boolean getGroupThousands() {
-		return this.floatStyle.getGroupThousands();
-	}
+    @Override
+    public boolean getGroupThousands() {
+        return this.floatStyle.getGroupThousands();
+    }
 
-	public int getMinIntegerDigits() {
-		return this.floatStyle.getMinIntegerDigits();
-	}
+    @Override
+    public int getMinIntegerDigits() {
+        return this.floatStyle.getMinIntegerDigits();
+    }
 
-	public String getNegativeValueColor() {
-		return this.floatStyle.getNegativeValueColor();
-	}
+    @Override
+    public String getNegativeValueColor() {
+        return this.floatStyle.getNegativeValueColor();
+    }
 
-	@Override
-	public boolean isVolatileStyle() {
-		return this.floatStyle.isVolatileStyle();
-	}
+    @Override
+    public boolean isVolatileStyle() {
+        return this.floatStyle.isVolatileStyle();
+    }
 }

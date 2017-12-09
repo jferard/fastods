@@ -34,6 +34,9 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class DateStyle implements DataStyle {
+	/**
+	 * The format of the date
+	 */
 	public enum Format {
 		/**
 		 * Set the date format like '10.07.12'.
@@ -102,6 +105,8 @@ public class DateStyle implements DataStyle {
 	/**
 	 * Create a new date style with the name name.
 	 * @param dataStyle the core data style
+	 * @param dateFormat the format for the date
+	 * @param automaticOrder true if the order comes from the current locale
 	 */
 	DateStyle(final CoreDataStyle dataStyle,
 			final Format dateFormat, final boolean automaticOrder) {

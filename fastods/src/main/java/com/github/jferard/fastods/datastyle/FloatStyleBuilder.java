@@ -26,8 +26,9 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyleBuilder> {
-    private final NumberStyleBuilder numberStyleBuilder;
+public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyleBuilder>,
+        NumberStyleBuilder<FloatStyle, FloatStyleBuilder>, DecimalStyleBuilder<FloatStyleBuilder> {
+    private final NumberStyleHelperBuilder numberStyleHelperBuilder;
     /**
      * the number of digits after the separator
      */
@@ -40,72 +41,71 @@ public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyl
      * @param locale The locale used
      */
     FloatStyleBuilder(final String name, final Locale locale) {
-        this.numberStyleBuilder = new NumberStyleBuilder(name, locale);
+        this.numberStyleHelperBuilder = new NumberStyleHelperBuilder(name, locale);
         this.decimalPlaces = 2;
     }
 
     @Override
     public FloatStyle build() {
-        return new FloatStyle(this.numberStyleBuilder.build(), this.decimalPlaces);
+        return new FloatStyle(this.numberStyleHelperBuilder.build(), this.decimalPlaces);
     }
 
     @Override
     public FloatStyle buildHidden() {
-        return new FloatStyle(this.numberStyleBuilder.buildHidden(), this.decimalPlaces);
+        return new FloatStyle(this.numberStyleHelperBuilder.buildHidden(), this.decimalPlaces);
     }
 
-    /**
-     * Set how many digits are to the right of the decimal symbol.
-     *
-     * @param decimalPlaces The number of digits
-     * @return this for fluent style
-     */
+    @Override
     public FloatStyleBuilder decimalPlaces(final int decimalPlaces) {
         this.decimalPlaces = decimalPlaces;
         return this;
     }
 
+    @Override
     public FloatStyleBuilder groupThousands(final boolean grouping) {
-        this.numberStyleBuilder.groupThousands(grouping);
+        this.numberStyleHelperBuilder.groupThousands(grouping);
         return this;
     }
 
+    @Override
     public FloatStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-        this.numberStyleBuilder.minIntegerDigits(minIntegerDigits);
+        this.numberStyleHelperBuilder.minIntegerDigits(minIntegerDigits);
         return this;
     }
 
+    @Override
     public FloatStyleBuilder negativeValueColor(final String negativeValueColor) {
-        this.numberStyleBuilder.negativeValueColor(negativeValueColor);
+        this.numberStyleHelperBuilder.negativeValueColor(negativeValueColor);
         return this;
     }
 
+    @Override
     public FloatStyleBuilder negativeValueRed() {
-        this.numberStyleBuilder.negativeValueRed();
+        this.numberStyleHelperBuilder.negativeValueRed();
         return this;
     }
 
     @Override
     public FloatStyleBuilder country(final String countryCode) {
-        this.numberStyleBuilder.country(countryCode);
+        this.numberStyleHelperBuilder.country(countryCode);
         return this;
     }
 
     @Override
     public FloatStyleBuilder language(final String languageCode) {
-        this.numberStyleBuilder.language(languageCode);
+        this.numberStyleHelperBuilder.language(languageCode);
         return this;
     }
 
     @Override
     public FloatStyleBuilder locale(final Locale locale) {
-        this.numberStyleBuilder.locale(locale);
+        this.numberStyleHelperBuilder.locale(locale);
         return this;
     }
 
     @Override
     public FloatStyleBuilder volatileStyle(final boolean volatileStyle) {
-        this.numberStyleBuilder.volatileStyle(volatileStyle);
+        this.numberStyleHelperBuilder.volatileStyle(volatileStyle);
         return this;
     }
 }

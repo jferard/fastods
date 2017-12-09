@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.util.StyleBuilder;
+
 import java.util.Locale;
 
 
@@ -28,7 +30,7 @@ import java.util.Locale;
  * A CoreDataStyle builder
  * @author Julien Férard
  */
-final class CoreDataStyleBuilder {
+final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>, IsVolatileBuilder<CoreDataStyleBuilder> {
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
 	 */
@@ -65,64 +67,39 @@ final class CoreDataStyleBuilder {
 		this.volatileStyle = true;
 	}
 
-	/**
-	 * @return the data style built
-	 */
+	@Override
 	public CoreDataStyle build() {
 		return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
 
 	}
 
-	/**
-	 * @return the data style built
-	 */
+	@Override
 	public CoreDataStyle buildHidden() {
 		this.hidden = true;
 		return this.build();
 
 	}
 
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param countryCode The two letter country code, e.g. 'US'
-	 * @return this for fluent style
-	 */
+	@Override
 	public CoreDataStyleBuilder country(final String countryCode) {
 		this.countryCode = countryCode.toUpperCase();
 		return this;
 	}
 
-	/**
-	 * Set the country and language if you need to distinguish between different
-	 * countries. E.g. set it to country='US' and language='en'
-	 *
-	 * @param languageCode The two letter language code, e.g. 'en'
-	 * @return this for fluent style
-	 */
+	@Override
 	public CoreDataStyleBuilder language(final String languageCode) {
 		this.languageCode = languageCode.toLowerCase();
 		return this;
 	}
 
-	/**
-	 * Sets the locale (ie languge + country)
-	 *
-	 * @param locale the locale to use for langaauge and country
-	 * @return this for fluent style
-	 */
+	@Override
 	public CoreDataStyleBuilder locale(final Locale locale) {
 		this.countryCode = locale.getCountry();
 		this.languageCode = locale.getLanguage();
 		return this;
 	}
 
-	/**
-	 * @param volatileStyle false: consumers should discard the unused styles,
-	 *                      true: consumers should keep unused styles (19.517)
-	 * @return this for fluent style
-	 */
+	@Override
 	public CoreDataStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.volatileStyle = volatileStyle;
 		return this;
