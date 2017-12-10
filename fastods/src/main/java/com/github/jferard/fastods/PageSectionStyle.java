@@ -38,7 +38,7 @@ class PageSectionStyle {
 
 	/**
 	 * Create a new footer object.
-	 *
+	 * @param margins the margins
 	 * @param minHeight the height of the footer/header
 	 */
 	PageSectionStyle(final Margins margins, final Length minHeight) {
@@ -52,9 +52,9 @@ class PageSectionStyle {
 	 *
 	 * @param pageSectionStyle the footer or header style, could be null
 	 * @param pageSectionType the type if pageSectionStyle is null.
-	 * @param util
-	 * @param appendable
-	 * @throws IOException
+	 * @param util an util
+	 * @param appendable the destination
+	 * @throws IOException if an I/O error occurs
 	 */
 	public static void appendFooterHeaderStyleXMLToAutomaticStyle(final PageSectionStyle pageSectionStyle,
 																  final Type pageSectionType, final XMLUtil util,
@@ -67,6 +67,13 @@ class PageSectionStyle {
 					appendable, pageSectionType);
 	}
 
+	/**
+	 * Append a footer/header to styles.xml/automatic-styles
+	 * @param util an util
+	 * @param appendable the destination
+	 * @param pageSectionType the type if pageSectionStyle is null.
+	 * @throws IOException if an I/O error occurs
+	 */
 	public void appendFooterHeaderStyleXMLToAutomaticStyle(final XMLUtil util,
 														   final Appendable appendable, final Type pageSectionType) throws IOException {
 		appendable.append("<style:").append(pageSectionType.getTypeName())
@@ -76,19 +83,5 @@ class PageSectionStyle {
 		this.margins.appendXMLToTableCellStyle(util, appendable);
 		appendable.append("/></style:").append(pageSectionType.getTypeName())
 				.append("-style>");
-	}
-
-	/**
-	 * @return The current margins of the footer/header.
-	 */
-	public Margins getMargins() {
-		return this.margins;
-	}
-
-	/**
-	 * @return The current minimum height of the footer/header.
-	 */
-	public Length getMinHeight() {
-		return this.minHeight;
 	}
 }

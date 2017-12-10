@@ -44,6 +44,10 @@ import java.util.Queue;
  * @author Martin Schulz
  */
 public class OdsFileWriterAdapter implements OdsFileWriter {
+    /**
+     * @param adaptee the adaptee writer
+     * @return the new adapter
+     */
     public static OdsFileWriterAdapter create(final OdsFileWriter adaptee) {
         return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
     }
@@ -52,6 +56,11 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
     private final Queue<OdsFlusher> flushers;
     private boolean stopped;
 
+    /**
+     * Create an new adapter
+     * @param adaptee the adaptee writer
+     * @param flushers the queue of flushers
+     */
     OdsFileWriterAdapter(final OdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
         this.adaptee = adaptee;
         this.flushers = flushers;
@@ -105,10 +114,16 @@ public class OdsFileWriterAdapter implements OdsFileWriter {
         this.notifyAll(); // wakes up other threads: no flusher left
     }
 
+    /**
+     * @return true if the adapter is stopped
+     */
     public synchronized boolean isNotStopped() {
         return !this.stopped;
     }
 
+    /**
+     * wait for the data
+     */
     public synchronized void waitForData() {
         while (this.flushers.isEmpty() && this.isNotStopped()) {
             try {

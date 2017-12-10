@@ -30,17 +30,29 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class TooltipParameter {
-    final Length width;
-    final Length height;
-    final boolean visible;
+    private final Length width;
+    private final Length height;
+    private final boolean visible;
 
+    /**
+     * Create a new tooltip parameter
+     * @param width the width
+     * @param height the height
+     * @param visible true if the tooltip is visible
+     */
     TooltipParameter(final Length width, final Length height, final boolean visible) {
         this.width = width;
         this.height = height;
         this.visible = visible;
     }
 
-    public void appendXMLToTable(final XMLUtil util, final Appendable appendable) throws IOException {
+    /**
+     * Append XML content to the annotation tag
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
         util.appendAttribute(appendable,"office:display", this.visible ? "true" : "false");
         util.appendAttribute(appendable,"svg:width", this.width.toString());
         util.appendAttribute(appendable,"svg:height", this.height.toString());
@@ -48,6 +60,12 @@ public class TooltipParameter {
         util.appendAttribute(appendable,"svg:x", "");
     }
 
+    /**
+     * @param width the width
+     * @param height the height
+     * @param visible true if the tooltip is visible
+     * @return the new tooltip parameter
+     */
     public static TooltipParameter create(final Length width, final Length height, final boolean visible) {
         return new TooltipParameter(width, height, visible);
     }

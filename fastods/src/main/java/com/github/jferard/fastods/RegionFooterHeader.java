@@ -54,7 +54,10 @@ class RegionFooterHeader implements PageSectionContent {
 	private final Text rightRegion;
 
 	/**
-	 * Create a new footer object.
+	 * Create a new footer object. It is composed of three regions.
+     * @param centerRegion the center region
+     * @param leftRegion the left region
+     * @param rightRegion the right region
 	 */
 	RegionFooterHeader(final Text centerRegion, final Text leftRegion,
 					   final Text rightRegion) {

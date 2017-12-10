@@ -72,9 +72,15 @@ public class Span implements ParagraphElement {
 		}
 	}
 
-	/** DO NOT USE...
+	/**
+     * Shortcut for appendXMLToParagraph
+     * DO NOT USE...
 	 *  WARNING: 19.874.29: style-name refers to a style that has the family
-	 "paragraph" !
+	 * "paragraph" !
+	 * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     * @deprecated use appendXMLToParagraph
 	 */
 	@Deprecated
 	public void appendXMLTextPToParagraph(final XMLUtil util,

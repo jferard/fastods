@@ -96,7 +96,7 @@ public class Table implements NamedObject {
 	}
 
 	/**
-	 * Add XML to an output
+	 * Add XML to content.xml
 	 * @param util an util
 	 * @param appendable the output
 	 * @throws IOException if the XML could not be written

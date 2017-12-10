@@ -84,7 +84,7 @@ class TableBuilder {
      * @param name the name of the table
      * @param rowCapacity the row capacity of the table
      * @param columnCapacity the column capacity of the table
-     * @return
+     * @return the builder
      */
     public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
                                       final StylesContainer stylesContainer, final DataStyles format, final String name,
@@ -211,11 +211,29 @@ class TableBuilder {
         return this.tableRows.usedSize() - 1;
     }
 
+    /**
+     * get a row from a table
+     * @param table the table
+     * @param appender the appender
+     * @param rowIndex the row index
+     * @return the table row
+     * @throws FastOdsException if the index is invalid
+     * @throws IOException if an I/O error occurs
+     */
     public TableRow getRow(final Table table, final TableAppender appender, final int rowIndex) throws FastOdsException, IOException {
         TableBuilder.checkRow(rowIndex);
         return this.getRowSecure(table, appender, rowIndex, true);
     }
 
+    /**
+     * get a row from a table
+     * @param table the table
+     * @param appender the appender
+     * @param pos a pos, e.G. A5
+     * @return the table row
+     * @throws FastOdsException if the index is invalid
+     * @throws IOException if an I/O error occurs
+     */
     public TableRow getRow(final Table table, final TableAppender appender, final String pos) throws FastOdsException, IOException {
         final int row = this.positionUtil.getPosition(pos).getRow();
         return this.getRow(table, appender, row);
@@ -268,17 +286,34 @@ class TableBuilder {
         return this.style.getName();
     }
 
+    /**
+     * Get the next row
+     * @param table the table
+     * @param appender the appender
+     * @return the row
+     * @throws IOException if an I/O error occurs
+     */
     public TableRow nextRow(final Table table, final TableAppender appender) throws IOException {
         return this.getRowSecure(table, appender, this.curRowIndex + 1, true);
     }
 
-    public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
+    /**
+     * Merge cells
+     * @param table the table
+     * @param appender the appender
+     * @param rowIndex the start row
+     * @param colIndex the start column
+     * @param rowCount number of rows
+     * @param columnCount number of cols
+     * @throws IOException if an I/O error occurs
+     */
+    public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowCount, final int columnCount) throws IOException {
         final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
         if (row.isCovered(colIndex)) // already spanned
             return;
 
-        row.setColumnsSpanned(colIndex, columnMerge);
-        this.spanColumnsFromRowsBelow(table, appender, rowIndex, colIndex, rowMerge, columnMerge);
+        row.setColumnsSpanned(colIndex, columnCount);
+        this.spanColumnsFromRowsBelow(table, appender, rowIndex, colIndex, rowCount, columnCount);
     }
 
     private void spanColumnsFromRowsBelow(final Table table, final TableAppender appender, final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
@@ -292,6 +327,8 @@ class TableBuilder {
     /**
      * Set the merging of multiple cells to one cell.
      *
+     * @param table the table
+     * @param appender the appender
      * @param pos         The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
@@ -354,6 +391,8 @@ class TableBuilder {
 
     /**
      * Set a span over rows
+     * @param table the table
+     * @param appender the appender
      * @param rowIndex the row index
      * @param colIndex the col index
      * @param n the number of rows

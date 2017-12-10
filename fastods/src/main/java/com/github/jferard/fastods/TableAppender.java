@@ -39,15 +39,30 @@ class TableAppender {
     private boolean preambleWritten;
     private int nullFieldCounter;
 
+    /**
+     * Create a new appender
+     * @param builder the table builder
+     */
     TableAppender(final TableBuilder builder) {
         this.preambleWritten = false;
         this.builder = builder;
     }
 
+    /**
+     * Append the postamble
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
     public void appendPostamble(final Appendable appendable) throws IOException {
         appendable.append("</table:table>");
     }
 
+    /**
+     * Append the preamble
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
     public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
         if (this.preambleWritten)
             return;
@@ -65,6 +80,12 @@ class TableAppender {
         this.preambleWritten = true;
     }
 
+    /**
+     * Add XML to content.xml
+     * @param util an util
+     * @param appendable the output
+     * @throws IOException if the XML could not be written
+     */
     public void appendXMLToContentEntry(final XMLUtil util,
                                         final Appendable appendable) throws IOException {
         this.appendPreamble(util, appendable);
@@ -185,6 +206,9 @@ class TableAppender {
         this.nullFieldCounter = 0;
     }
 
+    /**
+     * @return true if the preamble was written
+     */
     public boolean isPreambleWritten() {
         return this.preambleWritten;
     }

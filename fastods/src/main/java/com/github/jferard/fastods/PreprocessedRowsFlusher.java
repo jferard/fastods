@@ -36,14 +36,23 @@ import java.util.List;
 class PreprocessedRowsFlusher implements OdsFlusher {
     private static final int STRING_BUILDER_SIZE = 1024 * 32;
 
+    /**
+     * Create an new rows flusher
+     * @param xmlUtil an util
+     * @param tableRows the rows
+     * @return the flusher
+     * @throws IOException if an I/O error occurs
+     */
     public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil, final List<TableRow> tableRows) throws IOException {
         return new PreprocessedRowsFlusher(xmlUtil, tableRows, new StringBuilder(STRING_BUILDER_SIZE));
     }
     private final StringBuilder sb;
 
     /**
+     * @param xmlUtil an util
      * @param rows the rows to flush
-     * @param sb
+     * @param sb the destination
+     * @throws IOException if an I/O error occurs
      */
     PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows, final StringBuilder sb) throws IOException {
         // use an appender

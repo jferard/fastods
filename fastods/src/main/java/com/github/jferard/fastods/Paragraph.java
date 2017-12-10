@@ -32,6 +32,9 @@ import java.util.List;
  * @author Julien Férard
  */
 public class Paragraph {
+	/**
+	 * @return a new builder
+	 */
 	public static ParagraphBuilder builder() {
 		return new ParagraphBuilder();
 	}
@@ -40,11 +43,22 @@ public class Paragraph {
 
 	private final TextStyle style;
 
+	/**
+	 * Create a new paragraph
+	 * @param paragraphElements the elements
+	 * @param style the style
+	 */
 	Paragraph(final List<ParagraphElement> paragraphElements, final TextStyle style) {
 		this.paragraphElements = paragraphElements;
 		this.style = style;
 	}
 
+    /**
+     * Append the content to an xml stream
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
 	public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.paragraphElements.isEmpty()) {
@@ -61,7 +75,12 @@ public class Paragraph {
 		}
 	}
 
-	public List<ParagraphElement> getParagraphElements() {
+    /**
+     * @return the paragraph elements
+     * @deprecated use XML representation for tests
+     */
+    @Deprecated
+    public List<ParagraphElement> getParagraphElements() {
 		return this.paragraphElements;
 	}
 }

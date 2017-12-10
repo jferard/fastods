@@ -209,12 +209,21 @@ public class OdsFactory {
 
     /**
      * the file state
-     * @deprecated
+     * @deprecated use ??
      */
     @Deprecated
     public enum FileState {
+		/**
+		 * the file is a directory
+		 */
 		IS_DIRECTORY,
+		/**
+		 * the file already exists
+		 */
 		FILE_EXISTS,
+		/**
+		 *  the file may be written
+		 */
 		OK
 	}
 }

@@ -146,7 +146,7 @@ class TableColdCell {
 			if (this.tooltip != null) {
 				appendable.append("<office:annotation");
 				if (this.tooltipParameter != null) {
-					this.tooltipParameter.appendXMLToTable(util, appendable);
+					this.tooltipParameter.appendXMLContent(util, appendable);
 				}
 				appendable.append("><text:p>")
 					.append(this.tooltip)

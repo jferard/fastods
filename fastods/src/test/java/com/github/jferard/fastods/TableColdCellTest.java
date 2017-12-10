@@ -207,7 +207,7 @@ public class TableColdCellTest {
 		PowerMock.replayAll();
 		this.coldCell.setCellMerge(5, 10, 8);
 		final StringBuilder sbt = new StringBuilder();
-		this.coldCell.appendXMLToTable(this.xmlUtil, sbt, 5, false);
+		this.coldCell.appendXMLContent(this.xmlUtil, sbt, 5, false);
 		Assert.assertEquals(
 				" table:number-columns-spanned=\"8\" table:number-rows-spanned=\"10\"/>",
 				sbt.toString());

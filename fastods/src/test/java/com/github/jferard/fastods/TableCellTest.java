@@ -683,7 +683,7 @@ public class TableCellTest {
 				.anyTimes();
 		htcr.setCellMerge(5, 10, 8);
 		EasyMock.expect(htcr.isCovered(5)).andReturn(false);
-		htcr.appendXMLToTable(this.xmlUtil, sbt, 5, false);
+		htcr.appendXMLContent(this.xmlUtil, sbt, 5, false);
 		EasyMock.expectLastCall().andAnswer(new IAnswer<Void>() {
 			@Override
 			public Void answer() {
@@ -696,7 +696,7 @@ public class TableCellTest {
 		PowerMock.replayAll();
 		this.cell.setStringValue(5, "value");
 		this.cell.setCellMerge(5, 10, 8);
-		this.row.appendXMLToTable(this.xmlUtil, sbt);
+		this.row.appendXMLContent(this.xmlUtil, sbt);
 		DomTester.assertEquals("<table:table-row table:style-name=\"ro1\">"
 				+ "<table:table-cell table:number-columns-repeated=\"5\" />"
 				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"value\" htcr=\"@\" />"
@@ -710,7 +710,7 @@ public class TableCellTest {
 		this.cell.setStringValue(0, "v1");
 		this.cell.setStringValue(2, "v2");
 		final StringBuilder sb = new StringBuilder();
-		this.row.appendXMLToTable(this.xmlUtil, sb);
+		this.row.appendXMLContent(this.xmlUtil, sb);
 		DomTester.assertEquals("<table:table-row  table:style-name=\"ro1\">"
 				+ "<table:table-cell office:value-type=\"string\" office:string-value=\"v1\"/>"
 				+ "<table:table-cell/>"
@@ -785,7 +785,7 @@ public class TableCellTest {
 		this.cell.setDefaultCellStyle(cs);
 		this.cell.setFormat(ds);
 
-		this.row.appendXMLToTable(this.xmlUtil, sb);
+		this.row.appendXMLContent(this.xmlUtil, sb);
 		DomTester
 				.equals("<table:table-row table:style-name=\"a\" table:default-cell-style-name=\"b\">"
 						+ "</table:table-row>", sb.toString());

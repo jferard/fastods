@@ -27,13 +27,26 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
+ * A paragraph element represents an element inside paragraph (p tag)
  * @author Julien Férard
  */
 public interface ParagraphElement {
-	void appendXMLToParagraph(XMLUtil util,
+    /**
+     * Append this element to a paragraph
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
+    void appendXMLToParagraph(XMLUtil util,
 							  Appendable appendable) throws IOException;
 
-	TextStyle getTextStyle();
+    /**
+     * @return the text style
+     */
+    TextStyle getTextStyle();
 
-	String getText();
+    /**
+     * @return the text content
+     */
+    String getText();
 }
