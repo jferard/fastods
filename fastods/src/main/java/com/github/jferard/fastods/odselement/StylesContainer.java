@@ -164,63 +164,109 @@ public class StylesContainer {
         this.addDataStyle(style.getDataStyle());
     }
 
+    /**
+     * Add a page layout style
+     * @param pageLayoutStyle the style
+     * @return true if the style was created (= did not exist)
+     */
     public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
         return this.addPageLayoutStyle(pageLayoutStyle, Mode.CREATE);
     }
 
+    /**
+     * Add a page layout style
+     * @param pageLayoutStyle the style
+     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @return true if the style was created or updated
+     */
     public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
         return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle, mode);
     }
 
+    /**
+     * Add a page style
+     * @param ps the style
+     */
     public void addPageStyle(final PageStyle ps) {
         this.addMasterPageStyle(ps.getMasterPageStyle());
         this.addPageLayoutStyle(ps.getPageLayoutStyle());
     }
 
+    /**
+     * Add a page style
+     * @param ps the style
+     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     */
     public void addPageStyle(final PageStyle ps, final Mode mode) {
         this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
         this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
     }
 
+    /**
+     * Add an object style to content.xml/automatic-styles
+     * @param objectStyle the style
+     */
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
         assert objectStyle.isHidden() : objectStyle.toString();
         this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, Mode.CREATE);
     }
 
+    /**
+     * Add an object style to content.xml/automatic-styles
+     * @param objectStyle the style
+     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @return true if the style was created or updated
+     */
     public boolean addStyleToContentAutomaticStyles(final ObjectStyle objectStyle,
                                                     final Mode mode) {
         assert objectStyle.isHidden();
         return this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, mode);
     }
 
-	/*
-    @Deprecated
-	public Map<String, ObjectStyle> getObjectStyleByName() {
-		return this.contentAutomaticStyleTagByName;
-	}
-	*/
-
+    /**
+     * Add an object style to styles.xml/automatic-styles
+     * @param objectStyle the style
+     */
     public void addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle) {
         assert objectStyle.isHidden();
         this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, Mode.CREATE);
     }
 
+    /**
+     * Add an object style to styles.xml/automatic-styles
+     * @param objectStyle the style
+     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @return true if the style was created or updated
+     */
     public boolean addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle,
                                                    final Mode mode) {
         assert objectStyle.isHidden() : objectStyle.toString();
         return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, mode);
     }
 
+    /**
+     * Add an object style to styles.xml/common-styles
+     * @param objectStyle the style
+     */
     public void addStyleToStylesCommonStyles(final ObjectStyle objectStyle) {
         this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, Mode.CREATE);
     }
 
+    /**
+     * Add an object style to styles.xml/common-styles
+     * @param objectStyle the style
+     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @return true if the style was created or updated
+     */
     public boolean addStyleToStylesCommonStyles(final ObjectStyle objectStyle,
                                                 final Mode mode) {
         assert !objectStyle.isHidden();
         return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, mode);
     }
 
+    /**
+     * Enable debug mode
+     */
     public void debug() {
         this.objectStylesContainer.debug();
         this.dataStylesContainer.debug();
@@ -228,6 +274,9 @@ public class StylesContainer {
         this.pageLayoutStylesContainer.debug();
     }
 
+    /**
+     * Freeze the container: no more add is allowed
+     */
     public void freeze() {
         this.objectStylesContainer.freeze();
         this.dataStylesContainer.freeze();
@@ -235,23 +284,36 @@ public class StylesContainer {
         this.pageLayoutStylesContainer.freeze();
     }
 
+    /**
+     * @return the data styles for test
+     * @deprecated use XML representation for testing
+     */
     @Deprecated
     public Map<String, DataStyle> getDataStyles() {
         return this.dataStylesContainer.getValueByKey();
     }
 
+    /**
+     * @return a map name -> master page style
+     * @deprecated use XML representation for testing
+     */
+    @Deprecated
     public Map<String, MasterPageStyle> getMasterPageStyles() {
         return this.masterPageStylesContainer.getValueByKey();
     }
 
+    /**
+     * @return a map name -> page layout style
+     * @deprecated use XML representation for testing
+     */
+    @Deprecated
     public Map<String, PageLayoutStyle> getPageLayoutStyles() {
         return this.pageLayoutStylesContainer.getValueByKey();
     }
 
-    public Map<String, ObjectStyle> getObjectStyleByName(final Dest dest) {
-        return this.objectStylesContainer.getValueByKey(dest);
-    }
-
+    /**
+     * @return a "double boolean"
+     */
     public HasFooterHeader hasFooterHeader() {
         boolean hasHeader = false;
         boolean hasFooter = false;
@@ -306,6 +368,12 @@ public class StylesContainer {
         }
     }
 
+    /**
+     * Write master page styles to styles.xml/automatic-styles
+     * @param util an util
+     * @param writer the destination
+     * @throws IOException if an I/O error occurs
+     */
     public void writeMasterPageStylesToAutomaticStyles(final XMLUtil util,
                                                        final ZipUTF8Writer writer) throws IOException {
         for (final PageLayoutStyle ps : this.pageLayoutStylesContainer
@@ -315,6 +383,12 @@ public class StylesContainer {
         }
     }
 
+    /**
+     * Write master page styles to styles.xml/master-styles
+     * @param util an util
+     * @param writer the destination
+     * @throws IOException if an I/O error occurs
+     */
     public void writeMasterPageStylesToMasterStyles(final XMLUtil util,
                                                     final ZipUTF8Writer writer) throws IOException {
         for (final MasterPageStyle ps : this.masterPageStylesContainer
@@ -322,6 +396,12 @@ public class StylesContainer {
             ps.appendXMLToMasterStyle(util, writer);
     }
 
+    /**
+     * Write styles to styles.xml/automatic-styles
+     * @param util an util
+     * @param writer the destination
+     * @throws IOException if an I/O error occurs
+     */
     public void writeStylesAutomaticStyles(final XMLUtil util,
                                            final ZipUTF8Writer writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.STYLES_AUTOMATIC_STYLES);
@@ -331,6 +411,12 @@ public class StylesContainer {
         this.write(styles, util, writer);
     }
 
+    /**
+     * Write styles to styles.xml/common-styles
+     * @param util an util
+     * @param writer the destination
+     * @throws IOException if an I/O error occurs
+     */
     public void writeStylesCommonStyles(final XMLUtil util,
                                         final ZipUTF8Writer writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.STYLES_COMMON_STYLES);
@@ -341,7 +427,21 @@ public class StylesContainer {
                 util, writer);
     }
 
+    /**
+     * A destination. This is the key of the multi container
+     */
     public enum Dest {
-        CONTENT_AUTOMATIC_STYLES, STYLES_AUTOMATIC_STYLES, STYLES_COMMON_STYLES,
+        /**
+         * content.xml/automatic-styles
+         */
+        CONTENT_AUTOMATIC_STYLES,
+        /**
+         * styles.xml/automatic-styles
+         */
+        STYLES_AUTOMATIC_STYLES,
+        /**
+         * styles.xml/common-styles
+         */
+        STYLES_COMMON_STYLES,
     }
 }
