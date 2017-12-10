@@ -70,13 +70,13 @@ public class StylesContainer {
      */
     private final Container<String, PageLayoutStyle> pageLayoutStylesContainer;
 
-    private final MultiContainer<String, ObjectStyle, Dest> objectStylesContainer;
+    private final MultiContainer<String, Dest, ObjectStyle> objectStylesContainer;
 
     /**
      * Create a styles container
      */
     StylesContainer() {
-        this.objectStylesContainer = new MultiContainer<String, ObjectStyle, Dest>(
+        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(
                 Dest.class);
         this.dataStylesContainer = new Container<String, DataStyle>();
         this.masterPageStylesContainer = new Container<String, MasterPageStyle>();
@@ -184,15 +184,13 @@ public class StylesContainer {
 
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
         assert objectStyle.isHidden() : objectStyle.toString();
-        this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
-                Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE);
+        this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, Mode.CREATE);
     }
 
     public boolean addStyleToContentAutomaticStyles(final ObjectStyle objectStyle,
                                                     final Mode mode) {
         assert objectStyle.isHidden();
-        return this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
-                Dest.CONTENT_AUTOMATIC_STYLES, mode);
+        return this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, mode);
     }
 
 	/*
@@ -204,27 +202,23 @@ public class StylesContainer {
 
     public void addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle) {
         assert objectStyle.isHidden();
-        this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
-                Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE);
+        this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, Mode.CREATE);
     }
 
     public boolean addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle,
                                                    final Mode mode) {
         assert objectStyle.isHidden() : objectStyle.toString();
-        return this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
-                Dest.STYLES_AUTOMATIC_STYLES, mode);
+        return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, mode);
     }
 
     public void addStyleToStylesCommonStyles(final ObjectStyle objectStyle) {
-        this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
-                Dest.STYLES_COMMON_STYLES, Mode.CREATE);
+        this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, Mode.CREATE);
     }
 
     public boolean addStyleToStylesCommonStyles(final ObjectStyle objectStyle,
                                                 final Mode mode) {
         assert !objectStyle.isHidden();
-        return this.objectStylesContainer.add(objectStyle.getKey(), objectStyle,
-                Dest.STYLES_COMMON_STYLES, mode);
+        return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, mode);
     }
 
     public void debug() {

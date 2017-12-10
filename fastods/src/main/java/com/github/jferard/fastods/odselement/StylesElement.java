@@ -39,13 +39,13 @@ public class StylesElement implements OdsElement {
 			final Appendable appendable, final String name) throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", name);
-		util.appendEAttribute(appendable, "style:family", "paragraph");
-		util.appendEAttribute(appendable, "style:parent-style-name",
+		util.appendAttribute(appendable, "style:family", "paragraph");
+		util.appendAttribute(appendable, "style:parent-style-name",
 				"Standard");
-		util.appendEAttribute(appendable, "style:class", "extra");
+		util.appendAttribute(appendable, "style:class", "extra");
 		appendable.append("><style:paragraph-properties");
-		util.appendEAttribute(appendable, "text:number-lines", false);
-		util.appendEAttribute(appendable, "text:line-number", 0);
+		util.appendAttribute(appendable, "text:number-lines", false);
+		util.appendAttribute(appendable, "text:line-number", 0);
 		appendable.append("/></style:style>");
 	}
 

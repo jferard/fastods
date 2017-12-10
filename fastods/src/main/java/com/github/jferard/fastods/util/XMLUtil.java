@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * An util for writing XML representation.
  * @author Julien Férard
  */
-@SuppressWarnings("PMD.UnusedLocalVariable")
 public class XMLUtil {
 	/**
 	 * A space char for append
@@ -35,25 +35,32 @@ public class XMLUtil {
 	public static final char SPACE_CHAR = ' ';
 	private final XMLEscaper escaper;
 
-	public XMLUtil(final XMLEscaper escaper) {
+    /**
+     * Create a new util
+     * @param escaper the embedded escaper
+     */
+    XMLUtil(final XMLEscaper escaper) {
 		this.escaper = escaper;
 	}
 
-	public static XMLUtil create() {
+    /**
+     * @return a new default xml util
+     */
+    public static XMLUtil create() {
 		final XMLEscaper escaper = FastOdsXMLEscaper.create();
 		return new XMLUtil(escaper);
 	}
 
 	/**
 	 * Append a space and new element to the appendable element, the name of the element is
-	 * attrName and the value is attrRawValue. The value won't be escaped.
+	 * attrName and the value is attrRawValue. The will be escaped if necessary
 	 *
 	 * @param appendable   The StringBuilder to which the new element should be added.
 	 * @param attrName     The new element name
 	 * @param attrRawValue The value of the element
 	 * @throws IOException If an I/O error occurs
 	 */
-	public void appendAttribute(final Appendable appendable,
+	public void appendEAttribute(final Appendable appendable,
 								final CharSequence attrName, final String attrRawValue)
 			throws IOException {
 		appendable.append(' ').append(attrName).append("=\"")
@@ -61,54 +68,80 @@ public class XMLUtil {
 				.append('"');
 	}
 
-	public void appendEAttribute(final Appendable appendable,
-								 final CharSequence attrName, final boolean attrValue) throws IOException {
-		this.appendEAttribute(appendable, attrName,
+    /**
+     * Append a new element to the appendable element, the name of the element is
+     * attrName and the value is the boolean attrValue.
+     *
+     * @param appendable The StringBuilder to which the new element should be added.
+     * @param attrName   The new element name
+     * @param attrValue  The value of the element
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendAttribute(final Appendable appendable,
+                                final CharSequence attrName, final boolean attrValue) throws IOException {
+		this.appendAttribute(appendable, attrName,
 				Boolean.toString(attrValue));
 	}
 
 	/**
 	 * Append a new element to the appendable element, the name of the element is
-	 * attrName and the value is attrValue. The value will be escaped if necessary.
+	 * attrName and the value is attrValue.
 	 *
 	 * @param appendable The StringBuilder to which the new element should be added.
 	 * @param attrName   The new element name
 	 * @param attrValue  The value of the element
 	 * @throws IOException If an I/O error occurs
 	 */
-	public void appendEAttribute(final Appendable appendable,
-								 final CharSequence attrName, final int attrValue) throws IOException {
-		this.appendEAttribute(appendable, attrName,
+	public void appendAttribute(final Appendable appendable,
+                                final CharSequence attrName, final int attrValue) throws IOException {
+		this.appendAttribute(appendable, attrName,
 				Integer.toString(attrValue));
 	}
 
 	/**
 	 * Append a space, then a new element to the appendable element, the name of the element is
-	 * attrName and the value is attrValue. The value will be escaped if necessary.
+	 * attrName and the value is attrValue. The value won't be escaped.
 	 *
 	 * @param appendable where to write
 	 * @param attrName   the name of the attribute
 	 * @param attrValue  escaped attribute
 	 * @throws IOException If an I/O error occurs
 	 */
-	public void appendEAttribute(final Appendable appendable,
-								 final CharSequence attrName, final CharSequence attrValue) throws IOException {
+	public void appendAttribute(final Appendable appendable,
+                                final CharSequence attrName, final CharSequence attrValue) throws IOException {
 		appendable.append(' ').append(attrName).append("=\"").append(attrValue)
 				.append('"');
 	}
 
-	public void appendTag(final Appendable appendable, final CharSequence tagName,
+    /**
+     * Append a content inside a tag
+     * @param appendable the destination
+     * @param tagName the tag name
+     * @param content the content
+     * @throws IOException if an I/O error occurs
+     */
+    public void appendTag(final Appendable appendable, final CharSequence tagName,
 						  final String content) throws IOException {
 		appendable.append('<').append(tagName).append('>')
 				.append(this.escaper.escapeXMLContent(content)).append("</")
 				.append(tagName).append('>');
 	}
 
-	public String escapeXMLAttribute(final String s) {
+    /**
+     * Escape an XML attribute
+     * @param s the attribute
+     * @return the escaped attribute
+     */
+    public String escapeXMLAttribute(final String s) {
 		return this.escaper.escapeXMLAttribute(s);
 	}
 
-	public String escapeXMLContent(final String s) {
+    /**
+     * Escape an XML content
+     * @param s the content
+     * @return the escaped content
+     */
+    public String escapeXMLContent(final String s) {
 		return this.escaper.escapeXMLContent(s);
 	}
 

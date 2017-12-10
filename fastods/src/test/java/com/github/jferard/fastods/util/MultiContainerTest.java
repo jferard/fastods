@@ -31,21 +31,19 @@ public class MultiContainerTest {
 		CONTENT_AUTOMATIC_STYLES, STYLES_AUTOMATIC_STYLES, STYLES_COMMON_STYLES,
 	}
 
-	private MultiContainer<String, Integer, Dest> c;
+	private MultiContainer<String, Dest, Integer> c;
 
 	@Before
 	public void setUp() throws Exception {
-		this.c = new MultiContainer<String, Integer, Dest>(Dest.class);
+		this.c = new MultiContainer<String, Dest, Integer>(Dest.class);
 	}
 
 	@Test
 	public final void testCreateThenUpdate() {
-		Assert.assertTrue(this.c.add("a", 1, Dest.CONTENT_AUTOMATIC_STYLES,
-				Mode.CREATE_OR_UPDATE));
+		Assert.assertTrue(this.c.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1, Mode.CREATE_OR_UPDATE));
 		Assert.assertEquals(Integer.valueOf(1), this.c
 				.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator().next());
-		Assert.assertTrue(this.c.add("a", 2, Dest.STYLES_AUTOMATIC_STYLES,
-				Mode.CREATE_OR_UPDATE));
+		Assert.assertTrue(this.c.add("a", Dest.STYLES_AUTOMATIC_STYLES, 2, Mode.CREATE_OR_UPDATE));
 		Assert.assertEquals(Integer.valueOf(2), this.c
 				.getValues(Dest.STYLES_AUTOMATIC_STYLES).iterator().next());
 		Assert.assertFalse(this.c.getValues(Dest.CONTENT_AUTOMATIC_STYLES)
@@ -57,11 +55,11 @@ public class MultiContainerTest {
 	@Test
 	public final void testCreateTwice() {
 		Assert.assertTrue(
-				this.c.add("a", 1, Dest.CONTENT_AUTOMATIC_STYLES, Mode.CREATE));
+				this.c.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1, Mode.CREATE));
 		Assert.assertEquals(Integer.valueOf(1), this.c
 				.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator().next());
 		Assert.assertFalse(
-				this.c.add("a", 2, Dest.STYLES_AUTOMATIC_STYLES, Mode.CREATE));
+				this.c.add("a", Dest.STYLES_AUTOMATIC_STYLES, 2, Mode.CREATE));
 		Assert.assertEquals(Integer.valueOf(1), this.c
 				.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator().next());
 		Assert.assertFalse(this.c.getValues(Dest.STYLES_AUTOMATIC_STYLES)
@@ -81,7 +79,7 @@ public class MultiContainerTest {
 	@Test
 	public final void testUpdateWithoutCreation() {
 		Assert.assertFalse(
-				this.c.add("a", 1, Dest.CONTENT_AUTOMATIC_STYLES, Mode.UPDATE));
+				this.c.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1, Mode.UPDATE));
 		for (final Dest s : Dest.values())
 			Assert.assertFalse(this.c.getValues(s).iterator().hasNext());
 	}

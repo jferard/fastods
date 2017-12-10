@@ -64,8 +64,8 @@ public class ScientificNumberStyle implements NumberStyle, DataStyle, DecimalSty
 
     private void appendNumber(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<number:scientific-number");
-        util.appendEAttribute(appendable, "number:min-exponent-digits", this.minExponentDigits);
-        util.appendEAttribute(appendable, "number:decimal-places", this.floatStyle.getDecimalPlaces());
+        util.appendAttribute(appendable, "number:min-exponent-digits", this.minExponentDigits);
+        util.appendAttribute(appendable, "number:decimal-places", this.floatStyle.getDecimalPlaces());
         this.floatStyle.appendNumberAttribute(util, appendable);
         appendable.append("/>");
     }

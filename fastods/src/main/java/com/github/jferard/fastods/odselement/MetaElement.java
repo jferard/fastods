@@ -74,20 +74,20 @@ public class MetaElement implements OdsElement {
             throws IOException {
         writer.putNextEntry(new ZipEntry("meta.xml"));
         writer.append("<?xml");
-        util.appendEAttribute(writer, "version", "1.0");
-        util.appendEAttribute(writer, "encoding", "UTF-8");
+        util.appendAttribute(writer, "version", "1.0");
+        util.appendAttribute(writer, "encoding", "UTF-8");
         writer.append("?><office:document-meta");
-        util.appendEAttribute(writer, "xmlns:office",
+        util.appendAttribute(writer, "xmlns:office",
                 "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
-        util.appendEAttribute(writer, "xmlns:xlink",
+        util.appendAttribute(writer, "xmlns:xlink",
                 "http://www.w3.org/1999/xlink");
-        util.appendEAttribute(writer, "xmlns:dc",
+        util.appendAttribute(writer, "xmlns:dc",
                 "http://purl.org/dc/elements/1.1/");
-        util.appendEAttribute(writer, "xmlns:meta",
+        util.appendAttribute(writer, "xmlns:meta",
                 "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
-        util.appendEAttribute(writer, "xmlns:ooo",
+        util.appendAttribute(writer, "xmlns:ooo",
                 "http://openoffice.org/2004/office");
-        util.appendEAttribute(writer, "office:version", "1.1");
+        util.appendAttribute(writer, "office:version", "1.1");
         writer.append("><office:meta>");
         util.appendTag(writer, "meta:generator", this.generator);
         util.appendTag(writer, "dc:creator", this.creator);
@@ -99,8 +99,8 @@ public class MetaElement implements OdsElement {
                 .append("<meta:user-defined meta:name=\"Info 3\"/>")
                 .append("<meta:user-defined meta:name=\"Info 4\"/>");
         // .append("<meta:document-statistic");
-        // util.appendEAttribute(writer, "meta:table-count", this.tableCount);
-        // util.appendEAttribute(writer, "meta:cell-count", this.cellCount);
+        // util.appendAttribute(writer, "meta:table-count", this.tableCount);
+        // util.appendAttribute(writer, "meta:cell-count", this.cellCount);
         // writer.append("/>")
         writer.append("</office:meta>").append("</office:document-meta>");
         writer.flush();

@@ -85,7 +85,7 @@ class NumberStyleHelper implements NumberStyle {
     private void appendOpenTag(final XMLUtil util, final Appendable appendable, final CharSequence numberStyleName,
                               final String name) throws IOException {
         appendable.append("<number:").append(numberStyleName);
-        util.appendAttribute(appendable, "style:name", name);
+        util.appendEAttribute(appendable, "style:name", name);
         this.dataStyle.appendLVAttributes(util, appendable);
         appendable.append(">");
     }
@@ -113,12 +113,12 @@ class NumberStyleHelper implements NumberStyle {
      * @throws IOException If an I/O error occurs
      */
     private void appendGroupingAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.grouping) util.appendEAttribute(appendable, "number:grouping", "true");
+        if (this.grouping) util.appendAttribute(appendable, "number:grouping", "true");
     }
 
     private void appendMinIntegerDigitsAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
         if (this.minIntegerDigits > 0)
-            util.appendEAttribute(appendable, "number:min-integer-digits", this.minIntegerDigits);
+            util.appendAttribute(appendable, "number:min-integer-digits", this.minIntegerDigits);
     }
 
     /**
@@ -155,7 +155,7 @@ class NumberStyleHelper implements NumberStyle {
     private void appendStyleMap(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<style:map");
         util.appendAttribute(appendable, "style:condition", "value()>=0");
-        util.appendAttribute(appendable, "style:apply-style-name", this.dataStyle.getName());
+        util.appendEAttribute(appendable, "style:apply-style-name", this.dataStyle.getName());
         appendable.append("/>");
     }
 

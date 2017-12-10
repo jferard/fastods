@@ -53,8 +53,8 @@ public class TextStyle implements ObjectStyle {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<style:style ");
-		util.appendAttribute(appendable, "style:name", this.name);
-		util.appendEAttribute(appendable, "style:family", "text");
+		util.appendEAttribute(appendable, "style:name", this.name);
+		util.appendAttribute(appendable, "style:family", "text");
 		appendable.append(">");
 		this.getTextProperties().appendXMLContent(util, appendable);
 		appendable.append("</style:style>");

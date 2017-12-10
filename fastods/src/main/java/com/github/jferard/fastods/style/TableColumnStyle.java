@@ -81,7 +81,7 @@ public class TableColumnStyle implements ObjectStyle {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<style:style");
-		util.appendAttribute(appendable, "style:name", this.name);
+		util.appendEAttribute(appendable, "style:name", this.name);
 		util.appendAttribute(appendable, "style:family", "table-column");
 		appendable.append("><style:table-column-properties");
 		util.appendAttribute(appendable, "fo:break-before", "auto");
@@ -93,12 +93,12 @@ public class TableColumnStyle implements ObjectStyle {
 	public void appendXMLToTable(final XMLUtil util,
 			final Appendable appendable, final int count) throws IOException {
 		appendable.append("<table:table-column");
-		util.appendAttribute(appendable, "table:style-name", this.name);
+		util.appendEAttribute(appendable, "table:style-name", this.name);
 		if (count > 1)
-			util.appendEAttribute(appendable, "table:number-columns-repeated",
+			util.appendAttribute(appendable, "table:number-columns-repeated",
 					count);
 		if (this.defaultCellStyle != null)
-			util.appendAttribute(appendable, "table:default-cell-style-name",
+			util.appendEAttribute(appendable, "table:default-cell-style-name",
 					this.defaultCellStyle.getName());
 		appendable.append("/>");
 	}

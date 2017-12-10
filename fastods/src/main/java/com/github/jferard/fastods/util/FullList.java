@@ -29,28 +29,48 @@ import java.util.*;
  * When we set an element at a given index, the blank element is replaced by the
  * new element.
  *
+ * @param <E> the type of the elements
  * @author Julien Férard
  */
 public final class FullList<E> implements List<E> {
+	/**
+	 * A builder for a full list
+	 * @param <F> the type of the elements
+	 */
 	public static class FullListBuilder<F> {
 
 		private F blankElement;
 		private int capacity;
 
+		/**
+		 * Create a new empty full list, with a null value as blank element
+		 */
 		FullListBuilder() {
 			this.blankElement = null;
 			this.capacity = FullList.DEFAULT_CAPACITY;
 		}
 
+		/**
+		 * Create a new empty full list, with a given blank element
+		 * @param element the blank element
+         * @return this for fluent style
+		 */
 		public FullListBuilder<F> blankElement(final F element) {
 			this.blankElement = element;
 			return this;
 		}
 
+		/**
+		 * @return the built full list
+		 */
 		public FullList<F> build() {
 			return new FullList<F>(this.blankElement, this.capacity);
 		}
 
+		/**
+		 * @param capacity the capacity of the list
+		 * @return this for fluent style
+		 */
 		public FullListBuilder<F> capacity(final int capacity) {
 			this.capacity = capacity;
 			return this;
@@ -59,20 +79,43 @@ public final class FullList<E> implements List<E> {
 
 	private static final int DEFAULT_CAPACITY = 64;
 
-	public static <F> FullListBuilder<F> builder() {
+    /**
+     * @param <F> the type the elements
+     * @return a new builder
+     */
+    public static <F> FullListBuilder<F> builder() {
 		return new FullListBuilder<F>();
 	}
 
-	public static <F> FullList<F> newList(final F... elements) {
+    /**
+     * Builds a new full list,with null as blank element
+     * @param elements the elements
+     * @param <F> the type of the elements
+     * @return the full list
+     */
+    public static <F> FullList<F> newList(final F... elements) {
 		final FullList<F> l = new FullList<F>(null, FullList.DEFAULT_CAPACITY);
 		l.addAll(Arrays.asList(elements));
 		return l;
 	}
 
+    /**
+     * Builds a new full list, with null as blank element
+     * @param capacity the initial capacity of the list
+     * @param <F> the type of the elements
+     * @return the full list
+     */
 	public static <F> FullList<F> newListWithCapacity(final int capacity) {
 		return new FullList<F>(null, capacity);
 	}
 
+    /**
+     * Builds a new full list, with null as blank element
+     * @param capacity the initial capacity of the list
+     * @param elements the elements
+     * @param <F> the type of the elements
+     * @return the full list
+     */
 	public static <F> FullList<F> newListWithCapacity(final int capacity, final F... elements) {
 		final FullList<F> l = new FullList<F>(null, capacity);
 		l.addAll(Arrays.asList(elements));
@@ -303,6 +346,9 @@ public final class FullList<E> implements List<E> {
 		}
 	}
 
+    /**
+     * @return the capacity of the full list
+     */
     public int capacity() {
 		if (this.capacity < this.list.size())
 			this.capacity = this.list.size();

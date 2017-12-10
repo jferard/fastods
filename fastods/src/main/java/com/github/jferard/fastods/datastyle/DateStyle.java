@@ -119,16 +119,16 @@ public class DateStyle implements DataStyle {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:date-style");
-		util.appendAttribute(appendable, "style:name", this.dataStyle.getName());
+		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
 		this.dataStyle.appendLVAttributes(util, appendable);
-		util.appendEAttribute(appendable, "number:automatic-order",
+		util.appendAttribute(appendable, "number:automatic-order",
 				this.automaticOrder);
 		if (this.dateFormat == null) {
-			util.appendEAttribute(appendable, "number:format-source",
+			util.appendAttribute(appendable, "number:format-source",
 					"language");
 			appendable.append("/>");
 		} else {
-			util.appendEAttribute(appendable, "number:format-source", "fixed");
+			util.appendAttribute(appendable, "number:format-source", "fixed");
 			appendable.append(">");
 
 			switch (this.dateFormat) {

@@ -53,13 +53,13 @@ class TableAppender {
             return;
 
         appendable.append("<table:table");
-        util.appendAttribute(appendable, "table:name", this.builder.getName());
-        util.appendAttribute(appendable, "table:style-name",
+        util.appendEAttribute(appendable, "table:name", this.builder.getName());
+        util.appendEAttribute(appendable, "table:style-name",
                 this.builder.getStyleName());
-        util.appendEAttribute(appendable, "table:print", false);
+        util.appendAttribute(appendable, "table:print", false);
         appendable.append("><office:forms");
-        util.appendEAttribute(appendable, "form:automatic-focus", false);
-        util.appendEAttribute(appendable, "form:apply-design-mode", false);
+        util.appendAttribute(appendable, "form:automatic-focus", false);
+        util.appendAttribute(appendable, "form:apply-design-mode", false);
         appendable.append("/>");
         this.appendColumnStyles(this.builder.getColumnStyles(), appendable, util);
         this.preambleWritten = true;
@@ -176,10 +176,10 @@ class TableAppender {
 
         appendable.append("<table:table-row");
         if (this.nullFieldCounter > 1) {
-            util.appendEAttribute(appendable,
+            util.appendAttribute(appendable,
                     "table:number-rows-repeated", this.nullFieldCounter);
         }
-        util.appendEAttribute(appendable, "table:style-name",
+        util.appendAttribute(appendable, "table:style-name",
                 "ro1");
         appendable.append("><table:table-cell/></table:table-row>");
         this.nullFieldCounter = 0;

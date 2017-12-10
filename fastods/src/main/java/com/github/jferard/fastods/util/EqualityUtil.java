@@ -21,11 +21,16 @@
 
 package com.github.jferard.fastods.util;
 
-@SuppressWarnings("PMD.UnusedLocalVariable")
+/**
+ * An util to check equality between objects
+ * @author Julien Férard
+ */
 public class EqualityUtil {
-	public EqualityUtil() {
-	}
-
+	/**
+	 * @param o1 the first object
+	 * @param o2 the second object
+	 * @return true if the objects are different
+	 */
 	public boolean different(final Object o1, final Object o2) {
 		if (o1 == null) {
 			return o2 != null;
@@ -34,6 +39,11 @@ public class EqualityUtil {
 		}
 	}
 
+	/**
+	 * @param o1 the first object
+	 * @param o2 the second object
+	 * @return true if the objects are equal
+	 */
 	public boolean equal(final Object o1, final Object o2) {
 		if (o1 == null) {
 			return o2 == null;
@@ -42,6 +52,11 @@ public class EqualityUtil {
 		}
 	}
 
+	/**
+	 * Hash a bunch of objects
+	 * @param objects the objects
+	 * @return a hash code
+	 */
 	public int hashObjects(final Object... objects) {
 		final int prime = 31;
 		int result = 1;
@@ -51,7 +66,12 @@ public class EqualityUtil {
 		}
 		return result;
 	}
-	
+
+    /**
+     * Hash a bunch of integers
+     * @param integers the integers
+     * @return a hash code
+     */
 	public int hashInts(final int... integers) {
 		final int prime = 31;
 		int result = 1;

@@ -100,7 +100,7 @@ public class ConfigItemMapNamed implements ConfigItemCollection<ConfigItemMapEnt
 	@Override
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-named");
-		util.appendAttribute(appendable, "config:name", this.name);
+		util.appendEAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		for (final ConfigItemMapEntry entry : this.map.values())
 			entry.appendXMLRepresentation(util, appendable);

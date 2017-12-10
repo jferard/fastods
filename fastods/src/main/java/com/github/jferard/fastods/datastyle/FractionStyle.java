@@ -71,9 +71,9 @@ public class FractionStyle implements NumberStyle, DataStyle {
 			throws IOException {
 		final StringBuilder number = new StringBuilder();
 		number.append("<number:fraction");
-		util.appendEAttribute(number, "number:min-numerator-digits",
+		util.appendAttribute(number, "number:min-numerator-digits",
 				this.minNumeratorDigits);
-		util.appendEAttribute(number, "number:min-denominator-digits",
+		util.appendAttribute(number, "number:min-denominator-digits",
 				this.minDenominatorDigits);
 		this.numberStyle.appendNumberAttribute(util, number);
 		number.append("/>");

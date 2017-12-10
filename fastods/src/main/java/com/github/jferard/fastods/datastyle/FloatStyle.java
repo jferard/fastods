@@ -105,7 +105,7 @@ public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
 	 */
 	public void appendNumberTag(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<number:number");
-		util.appendEAttribute(appendable, "number:decimal-places",
+		util.appendAttribute(appendable, "number:decimal-places",
 				this.decimalPlaces);
 		this.numberStyle.appendNumberAttribute(util, appendable);
 		appendable.append("/>");

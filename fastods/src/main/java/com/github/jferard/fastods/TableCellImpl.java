@@ -112,12 +112,12 @@ public class TableCellImpl implements TableCell {
         }
 
         if (this.type != null) {
-            util.appendEAttribute(appendable, "office:value-type",
+            util.appendAttribute(appendable, "office:value-type",
                     this.type.getValueAttribute());
             util.appendEAttribute(appendable, this.type.getValueType(), this.value);
             if (this.type == TableCell.Type.CURRENCY) {
                 final String currency = this.getCurrency();
-                util.appendAttribute(appendable, "office:currency", currency);
+                util.appendEAttribute(appendable, "office:currency", currency);
             }
         }
 

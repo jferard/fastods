@@ -116,13 +116,13 @@ public class TableCellStyle implements ObjectStyle {
 					this.backgroundColor);
 
 		if (this.verticalAlign != null)
-			util.appendEAttribute(appendable, "style:vertical-align",
+			util.appendAttribute(appendable, "style:vertical-align",
 					this.verticalAlign.attrValue);
 
 		this.borders.appendXMLToTableCellStyle(util, appendable);
 
 		if (this.wrap)
-			util.appendEAttribute(appendable, "fo:wrap-option", "wrap");
+			util.appendAttribute(appendable, "fo:wrap-option", "wrap");
 
 		appendable.append("/>");
 	}
@@ -132,12 +132,12 @@ public class TableCellStyle implements ObjectStyle {
 			throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);
-		util.appendEAttribute(appendable, "style:family", "table-cell");
+		util.appendAttribute(appendable, "style:family", "table-cell");
 		if (this.parentCellStyleName != null)
 			util.appendEAttribute(appendable, "style:parent-style-name",
 					this.parentCellStyleName);
 		if (this.dataStyle != null)
-			util.appendAttribute(appendable, "style:data-style-name",
+			util.appendEAttribute(appendable, "style:data-style-name",
 					this.dataStyle.getName());
 
 		if (this.hasCellProperties() || this.hasTextProperties() || this.hasParagraphProperties()) {
@@ -153,7 +153,7 @@ public class TableCellStyle implements ObjectStyle {
 			if (this.hasParagraphProperties()) {
 				appendable.append("<style:paragraph-properties");
 				if (this.textAlign != null)
-					util.appendEAttribute(appendable, "fo:text-align",
+					util.appendAttribute(appendable, "fo:text-align",
 							this.textAlign.attrValue);
 
 				this.margins.appendXMLToTableCellStyle(util, appendable);

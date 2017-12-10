@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -36,16 +35,12 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  */
 public final class FastOds {
-	private static XMLUtil xmlUtil;
+	private static final XMLUtil xmlUtil = XMLUtil.create();
 
 	/**
 	 * @return the default XMLUtil.
 	 */
 	public static XMLUtil getXMLUtil() {
-		if (FastOds.xmlUtil == null) {
-			final FastOdsXMLEscaper xmlEscaper = FastOdsXMLEscaper.create();
-			FastOds.xmlUtil = new XMLUtil(xmlEscaper);
-		}
 		return FastOds.xmlUtil;
 	}
 

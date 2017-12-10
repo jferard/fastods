@@ -120,7 +120,7 @@ public class ConfigItemMapIndexed implements ConfigItemCollection<ConfigItemMapE
 	@Override
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-indexed");
-		util.appendAttribute(appendable, "config:name", this.name);
+		util.appendEAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		for (final ConfigItemMapEntry entry : this.list)
 			entry.appendXMLRepresentation(util, appendable);

@@ -57,14 +57,14 @@ public class TimeStyle implements DataStyle {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:time-style");
-		util.appendAttribute(appendable, "style:name", this.dataStyle.getName());
+		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
 		this.dataStyle.appendLVAttributes(util, appendable);
 		if (this.timeFormat == null) {
-			util.appendEAttribute(appendable, "number:format-source",
+			util.appendAttribute(appendable, "number:format-source",
 					"language");
 			appendable.append("/>");
 		} else {
-			util.appendEAttribute(appendable, "number:format-source", "fixed");
+			util.appendAttribute(appendable, "number:format-source", "fixed");
 			appendable.append(">");
 
 			switch (this.timeFormat) {

@@ -54,8 +54,8 @@ public class ConfigItem implements ConfigBlock {
 	public void appendXMLRepresentation(final XMLUtil util,
 						  final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item");
-		util.appendAttribute(appendable, "config:name", this.name);
-		util.appendAttribute(appendable, "config:type", this.type);
+		util.appendEAttribute(appendable, "config:name", this.name);
+		util.appendEAttribute(appendable, "config:type", this.type);
 		appendable.append(">");
 		appendable.append(util.escapeXMLContent(this.value));
 		appendable.append("</config:config-item>");

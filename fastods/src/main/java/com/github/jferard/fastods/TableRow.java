@@ -135,9 +135,7 @@ public class TableRow {
 
         appendable.append("<table:table-cell");
         if (nullFieldCounter >= 2)
-            util.appendEAttribute(appendable,
-                    "table:number-columns-repeated",
-                    nullFieldCounter);
+            util.appendAttribute(appendable,"table:number-columns-repeated", nullFieldCounter);
         appendable.append("/>");
     }
 

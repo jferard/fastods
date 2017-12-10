@@ -91,18 +91,18 @@ public class MasterPageStyle implements AddableToOdsElements {
 									   final Appendable appendable) throws IOException {
 		appendable.append("<style:master-page");
 		util.appendEAttribute(appendable, "style:name", this.name);
-		util.appendAttribute(appendable, "style:page-layout-name", this.layoutName);
+		util.appendEAttribute(appendable, "style:page-layout-name", this.layoutName);
 		appendable.append("><style:header>");
 		this.header.appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:header>");
 		appendable.append("<style:header-left");
-		util.appendEAttribute(appendable, "style:display", false);
+		util.appendAttribute(appendable, "style:display", false);
 		appendable.append("/>");
 		appendable.append("<style:footer>");
 		this.footer.appendXMLToMasterStyle(util, appendable);
 		appendable.append("</style:footer>");
 		appendable.append("<style:footer-left");
-		util.appendEAttribute(appendable, "style:display", false);
+		util.appendAttribute(appendable, "style:display", false);
 		appendable.append("/>");
 		appendable.append("</style:master-page>");
 	}

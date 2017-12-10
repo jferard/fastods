@@ -52,7 +52,7 @@ public class Paragraph {
 		} else {
 			appendable.append("<text:p");
 			if (this.style != null)
-				util.appendAttribute(appendable, "text:style-name",
+				util.appendEAttribute(appendable, "text:style-name",
 						this.style.getName());
 			appendable.append('>');
 			for (final ParagraphElement paragraphElement : this.paragraphElements)

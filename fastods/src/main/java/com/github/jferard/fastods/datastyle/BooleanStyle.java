@@ -46,7 +46,7 @@ public class BooleanStyle implements DataStyle, Localized {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:boolean-style");
-		util.appendAttribute(appendable, "style:name", this.getName());
+		util.appendEAttribute(appendable, "style:name", this.getName());
 		this.dataStyle.appendLVAttributes(util, appendable);
 		appendable.append("/>");
 	}

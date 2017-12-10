@@ -122,16 +122,16 @@ class TableColdCell {
 								 final boolean covered) throws IOException {
 
 		if (this.formula != null)
-			util.appendAttribute(appendable, "table:formula", "="+this.formula);
+			util.appendEAttribute(appendable, "table:formula", "="+this.formula);
 
 
 		if (!this.isCovered()) {
 			if (this.columnsSpanned != 0) {
-				util.appendEAttribute(appendable,
+				util.appendAttribute(appendable,
 						"table:number-columns-spanned", this.columnsSpanned);
 			}
 			if (this.rowsSpanned != 0) {
-				util.appendEAttribute(appendable,
+				util.appendAttribute(appendable,
 						"table:number-rows-spanned", this.rowsSpanned);
 			}
 		}

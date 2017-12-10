@@ -96,7 +96,7 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-map-entry");
 		if (this.name != null)
-			util.appendAttribute(appendable, "config:name", this.name);
+			util.appendEAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		this.block.appendXMLRepresentation(util, appendable);
 		appendable.append("</config:config-item-map-entry>");

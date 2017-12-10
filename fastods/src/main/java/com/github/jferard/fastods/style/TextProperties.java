@@ -122,18 +122,18 @@ public class TextProperties {
 		appendable.append("<style:text-properties");
 		// Check if the font weight should be added
 		if (this.fontWeight != null) {
-			util.appendAttribute(appendable, "fo:font-weight", this.fontWeight);
-			util.appendAttribute(appendable, "style:font-weight-asian",
+			util.appendEAttribute(appendable, "fo:font-weight", this.fontWeight);
+			util.appendEAttribute(appendable, "style:font-weight-asian",
 					this.fontWeight);
-			util.appendAttribute(appendable, "style:font-weight-complex",
+			util.appendEAttribute(appendable, "style:font-weight-complex",
 					this.fontWeight);
 		}
 
 		if (this.fontStyle != null) {
-			util.appendAttribute(appendable, "fo:font-style", this.fontStyle);
-			util.appendAttribute(appendable, "style:font-style-asian",
+			util.appendEAttribute(appendable, "fo:font-style", this.fontStyle);
+			util.appendEAttribute(appendable, "style:font-style-asian",
 					this.fontStyle);
-			util.appendAttribute(appendable, "style:font-style-complex",
+			util.appendEAttribute(appendable, "style:font-style-complex",
 					this.fontStyle);
 		}
 
@@ -155,9 +155,9 @@ public class TextProperties {
 		}
 
 		if (this.fontUnderlineStyle != null) {
-			util.appendEAttribute(appendable, "style:text-underline-style",
+			util.appendAttribute(appendable, "style:text-underline-style",
 					this.fontUnderlineStyle.attrValue);
-			util.appendEAttribute(appendable, "style:text-underline-width",
+			util.appendAttribute(appendable, "style:text-underline-width",
 					"auto");
 
 			// ---------------------------------------------------------------------------------

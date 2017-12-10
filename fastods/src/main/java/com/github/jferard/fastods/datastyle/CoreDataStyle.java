@@ -94,18 +94,17 @@ final class CoreDataStyle implements NamedObject, Hidable, Localized {
     private void appendLocaleAttributes(final XMLUtil util,
                                         final Appendable appendable) throws IOException {
         if (this.languageCode != null)
-            util.appendAttribute(appendable, "number:language",
+            util.appendEAttribute(appendable, "number:language",
                     this.languageCode);
         if (this.countryCode != null)
-            util.appendAttribute(appendable, "number:country",
+            util.appendEAttribute(appendable, "number:country",
                     this.countryCode);
     }
 
     private void appendVolatileAttribute(final XMLUtil util,
 										   final Appendable appendable) throws IOException {
 		if (this.volatileStyle)
-			util.appendEAttribute(appendable, "style:volatile",
-					this.volatileStyle);
+			util.appendAttribute(appendable, "style:volatile",	this.volatileStyle);
 	}
 
 	@Override

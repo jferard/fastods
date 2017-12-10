@@ -27,18 +27,29 @@ import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * A writer for a zip file/ It's a writer and a zipper
+ * @author Julien Férard
+ */
 public class ZipUTF8WriterImpl
 		implements ZipUTF8Writer {
-	public static final Charset UTF_8 = Charset.forName("UTF-8");
 	private final Writer writer;
 	private final ZipOutputStream zipStream;
 
-	protected ZipUTF8WriterImpl(final ZipOutputStream zipStream, final Writer writer) {
+	/**
+	 * Create a new writer. Do not use directly. Use a builder if you want to avoid mistakes
+	 * @param zipStream the zip stream
+	 * @param writer the utf-8 writer
+	 */
+	ZipUTF8WriterImpl(final ZipOutputStream zipStream, final Writer writer) {
 		this.zipStream = zipStream;
 		this.writer = writer;
 	}
 
-	public static ZipUTF8WriterBuilder builder() {
+    /**
+     * @return a new builder
+     */
+    public static ZipUTF8WriterBuilder builder() {
 		return new ZipUTF8WriterBuilder();
 	}
 
@@ -81,13 +92,13 @@ public class ZipUTF8WriterImpl
 	}
 
 	@Override
-	public void putNextEntry(final ZipEntry arg0) throws IOException {
-		this.zipStream.putNextEntry(arg0);
+	public void putNextEntry(final ZipEntry entry) throws IOException {
+		this.zipStream.putNextEntry(entry);
 	}
 
 	@Override
-	public void setComment(final String arg0) {
-		this.zipStream.setComment(arg0);
+	public void setComment(final String comment) {
+		this.zipStream.setComment(comment);
 	}
 
 	@Override

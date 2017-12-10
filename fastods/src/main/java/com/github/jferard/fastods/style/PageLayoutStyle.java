@@ -103,14 +103,14 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 	public void appendXMLToAutomaticStyle(final XMLUtil util,
 										  final Appendable appendable) throws IOException {
 		appendable.append("<style:page-layout");
-		util.appendAttribute(appendable, "style:name", this.name);
+		util.appendEAttribute(appendable, "style:name", this.name);
 		appendable.append("><style:page-layout-properties");
 		util.appendAttribute(appendable, "fo:page-width", this.pageWidth.toString());
 		util.appendAttribute(appendable, "fo:page-height", this.pageHeight.toString());
-		util.appendAttribute(appendable, "style:num-format", this.numFormat);
-		util.appendEAttribute(appendable, "style:writing-mode",
+		util.appendEAttribute(appendable, "style:num-format", this.numFormat);
+		util.appendAttribute(appendable, "style:writing-mode",
 				this.writingMode.getAttrValue());
-		util.appendEAttribute(appendable, "style:print-orientation",
+		util.appendAttribute(appendable, "style:print-orientation",
 				this.printOrientation.getAttrValue());
 		this.appendBackgroundColor(util, appendable);
 		this.margins.appendXMLToTableCellStyle(util, appendable);

@@ -27,17 +27,46 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
 
+/**
+ * A writer for a zip file/ It's a writer and a zipper
+ * @author Julien Férard
+ */
 public interface ZipUTF8Writer
 		extends Closeable, Flushable, Appendable {
+	/**
+	 * the utf-8 encoding
+	 */
 	Charset UTF_8 = Charset.forName("UTF-8");
 
+	/**
+	 * Close the current entry
+	 * @throws IOException if an I/O error occurs
+	 */
 	void closeEntry() throws IOException;
 
+	/**
+     * finish the zip file
+	 * @throws IOException if an I/O error occurs
+	 */
 	void finish() throws IOException;
 
-	void putNextEntry(final ZipEntry arg0) throws IOException;
+	/**
+     * Put a new entry into the zip. This becomes the current entry
+	 * @param entry the entry
+	 * @throws IOException if an I/O error occurs
+	 */
+	void putNextEntry(final ZipEntry entry) throws IOException;
 
-	void setComment(final String arg0);
+	/**
+	 * Add a comment to the zip
+	 * @param comment the comment
+	 */
+	void setComment(final String comment);
 
+	/**
+	 * Write a string to the writer
+	 * @param str the string
+	 * @throws IOException if an I/O error occurs
+	 */
 	void write(final String str) throws IOException;
 }
