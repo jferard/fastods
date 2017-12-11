@@ -58,6 +58,10 @@ public class MasterPageStyle implements AddableToOdsElements {
 		this.header = header;
 	}
 
+	/**
+	 * Add the style embedded in this master page style to a container
+	 * @param stylesContainer the container
+	 */
 	public void addEmbeddedStylesToStylesContainer(
 			final StylesContainer stylesContainer) {
 		if (this.header != null)
@@ -66,6 +70,11 @@ public class MasterPageStyle implements AddableToOdsElements {
 			this.footer.addEmbeddedStylesToStylesElement(stylesContainer);
 	}
 
+    /**
+     * Add the style embedded in this master page style to a container
+     * @param stylesContainer the container
+     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     */
 	public void addEmbeddedStylesToStylesContainer(
 			final StylesContainer stylesContainer, final Mode mode) {
 		if (this.header != null)
@@ -107,10 +116,20 @@ public class MasterPageStyle implements AddableToOdsElements {
 		appendable.append("</style:master-page>");
 	}
 
+    /**
+     * @return the footer
+     * @deprecated use MasterPageStyle.update(hasFooterHeader)
+     */
+	@Deprecated
 	public Footer getFooter() {
 		return this.footer;
 	}
 
+    /**
+     * @return the header
+     * @deprecated use MasterPageStyle.update(hasFooterHeader)
+     */
+    @Deprecated
 	public Header getHeader() {
 		return this.header;
 	}

@@ -26,15 +26,44 @@ package com.github.jferard.fastods.style;
  * @author Julien Férard
  */
 public enum ObjectStyleFamily {
-    PARAGRAPH("paragraph"), TABLE("table"), TABLE_CELL("table-cell"), TABLE_COLUMN("table-column"),
-    TABLE_ROW("table-row"), TEXT("text");
+    /**
+     * "paragraph: family name of styles for paragraphs"
+     */
+    PARAGRAPH("paragraph"),
+    /**
+     * "table: family name of styles for tables."
+     */
+    TABLE("table"),
+    /**
+     * "table-cell: family name of styles for table cells."
+     */
+    TABLE_CELL("table-cell"),
+    /**
+     * "table-column: family name of styles for table columns."
+     */
+    TABLE_COLUMN("table-column"),
+    /**
+     * "table-row: family name of styles for table rows."
+     */
+    TABLE_ROW("table-row"),
+    /**
+     * "text: family name of styles for text."
+     */
+    TEXT("text");
 
     private final String attributeName;
 
+    /**
+     * Create a new family
+     * @param attributeName the attribute
+     */
     ObjectStyleFamily(final String attributeName) {
         this.attributeName = attributeName;
     }
 
+    /**
+     * @return the name of the family
+     */
     public String getName() {
         return this.attributeName;
     }

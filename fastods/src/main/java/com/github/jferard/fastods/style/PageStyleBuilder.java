@@ -28,11 +28,12 @@ import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
  * @author Julien Férard
  */
-public class PageStyleBuilder {
+public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 	private static final Length DEFAULT_MARGIN_SIZE = SimpleLength.cm(1.5);
 	private String backgroundColor;
 	private Footer footer;
@@ -52,8 +53,8 @@ public class PageStyleBuilder {
 	private boolean hidden;
 
 	/**
-	 * Create a new page style.
-	 *
+	 * Create a new page style builder.
+	 * @param name the name of the page style
 	 */
 	PageStyleBuilder(final String name) {
 		if (name == null)
@@ -102,10 +103,12 @@ public class PageStyleBuilder {
 		return this;
 	}
 
+	@Override
 	public PageStyle buildHidden() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public PageStyle build() {
 		if (this.masterPageStyle == null) {
 			this.masterPageStyle = new MasterPageStyle(this.name, this.name, this.header, this.footer);
@@ -121,21 +124,41 @@ public class PageStyleBuilder {
 	}
 
 
-	public PageStyleBuilder masterPageStyle(final MasterPageStyle masterPageStyle) {
+    /**
+     * Set a master page style
+     * @param masterPageStyle the style
+     * @return this for fluent style
+     */
+    public PageStyleBuilder masterPageStyle(final MasterPageStyle masterPageStyle) {
 		this.masterPageStyle = masterPageStyle;
 		return this;
 	}
 
+    /**
+     * Set a page layout style
+     * @param pageLayoutStyle the style
+     * @return this for fluent style
+     */
 	public PageStyleBuilder pageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
 		this.pageLayoutStyle = pageLayoutStyle;
 		return this;
 	}
 
-	public PageStyleBuilder footer(final Footer footer) {
+    /**
+     * Set the footer
+     * @param footer the footer
+     * @return this for fluent style
+     */
+    public PageStyleBuilder footer(final Footer footer) {
 		this.footer = footer;
 		return this;
 	}
 
+    /**
+     * Set the header
+     * @param header the header
+     * @return this for fluent style
+     */
 	public PageStyleBuilder header(final Header header) {
 		this.header = header;
 		return this;
@@ -212,14 +235,9 @@ public class PageStyleBuilder {
 	}
 
 	/**
-	 * Set the paper format to one of<br>
-	 * PageStyle.STYLE_PAPERFORMAT_A3<br>
-	 * PageStyle.STYLE_PAPERFORMAT_A4<br>
-	 * PageStyle.STYLE_PAPERFORMAT_A5<br>
-	 * PageStyle.STYLE_PAPERFORMAT_LETTER<br>
-	 * PageStyle.STYLE_PAPERFORMAT_LEGAL<br>
-	 * PageStyle.STYLE_PAPERFORMAT_USER , automatically used if you use
-	 * setPageHeight() or setPageWidth().
+	 * Set the paper format to one of: A3, A4, A5, LETTER, LEGAL, USER
+     * USER is automatically used if you use
+	 * {@code setPageHeight()} or {@code setPageWidth()}.
 	 *
 	 * @param paperFormat the format of the page
 	 * @return this for fluent style
@@ -232,26 +250,27 @@ public class PageStyleBuilder {
 		return this;
 	}
 
-	public PageStyleBuilder printOrientationHorizontal() {
+    /**
+     * Set the print orientation to horizontal
+     * @return this for fluent style
+     */
+    public PageStyleBuilder printOrientationHorizontal() {
 		this.printOrientation = PageStyle.PrintOrientation.HORIZONTAL;
 		return this;
 	}
 
+    /**
+     * Set the print orientation to vertical
+     * @return this for fluent style
+     */
 	public PageStyleBuilder printOrientationVertical() {
 		this.printOrientation = PageStyle.PrintOrientation.VERTICAL;
 		return this;
 	}
 
 	/**
-	 * Set the writing mode to one of<br>
-	 * STYLE_WRITINGMODE_LRTB lr-tb (left to right; top to bottom)<br>
-	 * STYLE_WRITINGMODE_RLTB<br>
-	 * STYLE_WRITINGMODE_TBRL<br>
-	 * STYLE_WRITINGMODE_TBLR<br>
-	 * STYLE_WRITINGMODE_LR<br>
-	 * STYLE_WRITINGMODE_RL<br>
-	 * STYLE_WRITINGMODE_TB<br>
-	 * STYLE_WRITINGMODE_PAGE<br>
+	 * Set the writing mode to one of: LRTB (left to right; top to bottom), RLTB,
+     * TBRL, TBLR, LR, RL, TB, PAGE
 	 *
 	 * @param writingMode the writing mode
 	 * @return this for fluent style

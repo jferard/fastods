@@ -87,16 +87,10 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	}
 
 	/**
-	 * Add a border style to this cell.
-	 *
-	 * @param size
-	 *            The size of the line as a length
-	 * @param borderColor
-	 *            - The color to be used in format #rrggbb e.g. '#ff0000' for a
-	 *            red border
-	 * @param style
-	 *            - The style of the border line, either
-	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 * Add a border style for all the borders of this cell.
+	 * @param size the size of the line
+	 * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
+	 * @param style the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder borderAll(final Length size,
@@ -107,6 +101,13 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		return this;
 	}
 
+	/**
+	 * Add a border style for the bottom border of this cell.
+	 * @param size the size of the line
+	 * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
+	 * @param style the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 * @return this for fluent style
+	 */
 	public TableCellStyleBuilder borderBottom(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
@@ -115,6 +116,13 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		return this;
 	}
 
+	/**
+	 * Add a border style for the left border of this cell.
+	 * @param size the size of the line
+	 * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
+	 * @param style the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 * @return this for fluent style
+	 */
 	public TableCellStyleBuilder borderLeft(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
@@ -123,6 +131,13 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		return this;
 	}
 
+	/**
+	 * Add a border style for the right border of this cell.
+	 * @param size the size of the line
+	 * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
+	 * @param style the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 * @return this for fluent style
+	 */
 	public TableCellStyleBuilder borderRight(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
@@ -131,6 +146,13 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		return this;
 	}
 
+	/**
+	 * Add a border style for the top border of this cell.
+	 * @param size the size of the line
+	 * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
+	 * @param style the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+	 * @return this for fluent style
+	 */
 	public TableCellStyleBuilder borderTop(final Length size,
 			final String borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
@@ -183,9 +205,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	}
 
 	/**
-	 * Set the font weight to italic.<br>
-	 * The TableFamilyStyle must be of a format of
-	 * TableFamilyStyle.STYLE_TABLECELL
+	 * Set the font weight to italic.
 	 *
 	 * @return this for fluent style
 	 */
@@ -194,6 +214,11 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		return this;
 	}
 
+    /**
+     * Set the font weight to normal.
+     *
+     * @return this for fluent style
+     */
 	public TableCellStyleBuilder fontStyleNormal() {
 		this.tpBuilder.fontStyleNormal();
 		return this;
@@ -211,20 +236,6 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		this.tpBuilder.fontWeightBold();
 		return this;
 	}
-
-	// /**
-	// * Set the data style for this TableFamilyStyle to cs.<br>
-	// * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-	// * exception is thrown
-	// *
-	// * @param cs
-	// * The currency style to be used
-	// * @return this for fluent style
-	// */
-	// public TableCellStyleBuilder dataStyle(final CurrencyStyle cs) {
-	// this.dataStyle = cs;
-	// return this;
-	// }
 
 	/**
 	 * Set the font weight to normal.<br>

@@ -113,7 +113,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 		util.appendAttribute(appendable, "style:print-orientation",
 				this.printOrientation.getAttrValue());
 		this.appendBackgroundColor(util, appendable);
-		this.margins.appendXMLToTableCellStyle(util, appendable);
+		this.margins.appendXMLContent(util, appendable);
 		appendable.append("/>"); // End of page-layout-properties
 
 		PageSection
@@ -123,22 +123,6 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 		appendable.append("</style:page-layout>");
 	}
 
-	public String getBackgroundColor() {
-		return this.backgroundColor;
-	}
-
-	public Footer getFooter() {
-		return this.footer;
-	}
-
-	public Header getHeader() {
-		return this.header;
-	}
-
-	public Margins getMargins() {
-		return this.margins;
-	}
-
 	/**
 	 * Get the name of this page style.
 	 *
@@ -146,22 +130,6 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 	 */
 	public String getName() {
 		return this.name;
-	}
-
-	public Length getPageHeight() {
-		return this.pageHeight;
-	}
-
-	public Length getPageWidth() {
-		return this.pageWidth;
-	}
-
-	/**
-	 * Get the paper format as one of PageStyle.STYLE_PAPERFORMAT_*.
-	 * @return the format of the page
-	 */
-	public PaperFormat getPaperFormat() {
-		return this.paperFormat;
 	}
 
 	/**
@@ -183,7 +151,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 
 	private void appendBackgroundColor(final XMLUtil util,
 									   final Appendable appendable) throws IOException {
-		if (this.getBackgroundColor().length() > 0) {
+		if (!this.backgroundColor.isEmpty()) {
 			util.appendAttribute(appendable, "fo:background-color",
 					this.backgroundColor);
 		}

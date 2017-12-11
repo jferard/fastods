@@ -74,6 +74,11 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
 		return this;
 	}
 
+	/**
+	 * Set a default cell style
+	 * @param defaultCellStyle the style
+	 * @return this for fluent style
+	 */
 	public TableColumnStyleBuilder defaultCellStyle(
 			final TableCellStyle defaultCellStyle) {
 		this.defaultCellStyle = defaultCellStyle;

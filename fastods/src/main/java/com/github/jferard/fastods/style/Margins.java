@@ -21,13 +21,18 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.TagParameter;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
-public class Margins {
+/**
+ * The margins of a page
+ * @author Julien Férard
+ */
+public class Margins implements TagParameter {
 	private final Length all;
 	private final Length bottom;
 	private final Length left;
@@ -35,7 +40,16 @@ public class Margins {
 	private final Length top;
 	private final EqualityUtil equalityUtil;
 
-	Margins(final EqualityUtil equalityUtil, final Length all, final Length top,
+    /**
+     * Create the margins
+     * @param equalityUtil an util
+     * @param all the length of all margin
+     * @param top the length of top margin
+     * @param right the length of right margin
+     * @param bottom the length of bottom margin
+     * @param left the length of left margin
+     */
+    Margins(final EqualityUtil equalityUtil, final Length all, final Length top,
 			final Length right, final Length bottom, final Length left) {
 		this.equalityUtil = equalityUtil;
 		this.all = all;
@@ -45,11 +59,15 @@ public class Margins {
 		this.left = left;
 	}
 
-	public boolean areVoid() {
+    /**
+     * @return true if all margins are void
+     */
+    public boolean areVoid() {
 		return this.all == null && this.top == null && this.right == null && this.bottom == null && this.left == null;
 	}
 
-	public void appendXMLToTableCellStyle(final XMLUtil util,
+	@Override
+	public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.all == null) {
 			if (this.top != null)
@@ -97,22 +115,37 @@ public class Margins {
 				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
-	public Length getAll() {
+    /**
+     * @return the length of all margins
+     */
+    public Length getAll() {
 		return this.all;
 	}
 
+    /**
+     * @return the length of the bottom margin
+     */
 	public Length getBottom() {
 		return this.bottom;
 	}
 
+    /**
+     * @return the length of the left margin
+     */
 	public Length getLeft() {
 		return this.left;
 	}
 
+    /**
+     * @return the length of the right margin
+     */
 	public Length getRight() {
 		return this.right;
 	}
 
+    /**
+     * @return the length of the top margin
+     */
 	public Length getTop() {
 		return this.top;
 	}

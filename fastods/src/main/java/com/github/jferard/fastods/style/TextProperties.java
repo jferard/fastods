@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.TagParameter;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -30,7 +31,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TextProperties {
+public class TextProperties implements TagParameter {
 	/** 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave */
 	public enum Underline {
 		/**
@@ -117,6 +118,7 @@ public class TextProperties {
 		this.fontUnderlineStyle = fontUnderlineStyle;
 	}
 
+	@Override
 	public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		appendable.append("<style:text-properties");

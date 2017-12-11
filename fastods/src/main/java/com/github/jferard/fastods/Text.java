@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * The Text class represents a text in a footer/header region
  * @author Julien Férard
  */
-public class Text {
+public class Text implements TagParameter {
     /**
      * 7.3.2<text:date> "The <text:date> element displays a date, by default this is the current date."
      */
@@ -132,12 +132,7 @@ public class Text {
 			stylesContainer.addStyleToStylesAutomaticStyles(textStyle, mode);
 	}
 
-    /**
-     * Append the content to an xml stream
-     * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
+	@Override
     public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		for (final Paragraph paragraph : this.paragraphs) {

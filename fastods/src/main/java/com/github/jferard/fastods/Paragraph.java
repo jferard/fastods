@@ -31,7 +31,7 @@ import java.util.List;
  * 5.1.3 text:p
  * @author Julien Férard
  */
-public class Paragraph {
+public class Paragraph implements TagParameter {
 	/**
 	 * @return a new builder
 	 */
@@ -53,12 +53,7 @@ public class Paragraph {
 		this.style = style;
 	}
 
-    /**
-     * Append the content to an xml stream
-     * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
+    @Override
 	public void appendXMLContent(final XMLUtil util,
 			final Appendable appendable) throws IOException {
 		if (this.paragraphElements.isEmpty()) {

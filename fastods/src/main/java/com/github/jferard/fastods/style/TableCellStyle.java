@@ -156,7 +156,7 @@ public class TableCellStyle implements ObjectStyle {
 					util.appendAttribute(appendable, "fo:text-align",
 							this.textAlign.attrValue);
 
-				this.margins.appendXMLToTableCellStyle(util, appendable);
+				this.margins.appendXMLContent(util, appendable);
 				appendable.append("/>");
 			}
 			appendable.append("</style:style>");

@@ -45,6 +45,10 @@ public class TableColumnStyle implements ObjectStyle {
 
 	private static TableColumnStyle defaultColumnStyle;
 
+	/**
+	 * @param name the name of the style
+	 * @return a new column style builder
+	 */
 	public static TableColumnStyleBuilder builder(final String name) {
 		return new TableColumnStyleBuilder(name);
 	}
@@ -57,12 +61,10 @@ public class TableColumnStyle implements ObjectStyle {
 	/**
 	 * Create a new column style
 	 *
-	 * @param name
-	 *            A unique name for this style
-	 * @param columnWidth
-	 *            the width of the column
-	 * @param defaultCellStyle
-	 *            the default style for cells
+	 * @param name A unique name for this style
+	 * @param hidden ture if the style is automatic
+	 * @param columnWidth the width of the column
+	 * @param defaultCellStyle the default style for cells
 	 */
 	TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
 			final TableCellStyle defaultCellStyle) {
@@ -90,6 +92,13 @@ public class TableColumnStyle implements ObjectStyle {
 		appendable.append("/></style:style>");
 	}
 
+	/**
+	 * Append the XML to the table representation
+	 * @param util an util
+	 * @param appendable the destination
+	 * @param count the number of columns concerned
+	 * @throws IOException if an I/O error occurs
+	 */
 	public void appendXMLToTable(final XMLUtil util,
 			final Appendable appendable, final int count) throws IOException {
 		appendable.append("<table:table-column");
@@ -115,10 +124,18 @@ public class TableColumnStyle implements ObjectStyle {
 			return false;
 	}
 
+    /**
+     * @return the column width
+     */
+    @Deprecated
 	public Length getColumnWidth() {
 		return this.columnWidth;
 	}
 
+    /**
+     * @return the default style name
+     */
+    @Deprecated
 	public String getDefaultCellStyleName() {
 		return this.defaultCellStyle.getName();
 	}

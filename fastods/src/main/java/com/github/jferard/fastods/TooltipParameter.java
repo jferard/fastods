@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-public class TooltipParameter {
+public class TooltipParameter implements TagParameter {
     private final Length width;
     private final Length height;
     private final boolean visible;
@@ -46,12 +46,7 @@ public class TooltipParameter {
         this.visible = visible;
     }
 
-    /**
-     * Append XML content to the annotation tag
-     * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
+    @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
         util.appendAttribute(appendable,"office:display", this.visible ? "true" : "false");
         util.appendAttribute(appendable,"svg:width", this.width.toString());

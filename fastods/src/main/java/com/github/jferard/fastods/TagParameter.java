@@ -19,49 +19,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.StyleBuilder;
+import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
- * A builder for table styles
+ * A tag or tag parameters
  * @author Julien Férard
  */
-public class TableStyleBuilder implements StyleBuilder<TableStyle> {
-	private PageStyle pageStyle;
-	private final String name;
-	private boolean hidden;
-
-	/**
-	 * @param name the name of the table style (19.498.2)
-	 */
-	TableStyleBuilder(final String name) {
-		if (name == null)
-			throw new IllegalArgumentException();
-
-		this.name = name;
-		this.pageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
-	}
-
-	@Override
-	public TableStyle build() {
-		return new TableStyle(this.name, this.hidden, this.pageStyle);
-	}
-
-	@Override
-	public TableStyle buildHidden() {
-		this.hidden = true;
-		return this.build();
-	}
-
+public interface TagParameter {
     /**
-     * Set the master page style
-     * @param masterPageStyle the style
-     * @return this for fluent style
+     * Append XML content to a opening tag or write the tag itself
+     * @param util an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
      */
-    public TableStyleBuilder pageStyle(
-			final PageStyle masterPageStyle) {
-		this.pageStyle = masterPageStyle;
-		return this;
-	}
+    void appendXMLContent(XMLUtil util, Appendable appendable) throws IOException;
 }

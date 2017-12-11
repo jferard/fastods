@@ -33,6 +33,9 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableStyle implements ObjectStyle {
+	/**
+	 * the default (empty) table style
+	 */
 	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
 			.builder("ta1").buildHidden();
 
@@ -46,6 +49,7 @@ public class TableStyle implements ObjectStyle {
 	 * Version 0.5.0 Added parameter OdsDocument o
 	 *
 	 * @param styleName A unique name for this style
+	 * @param hidden if the style is automatic
 	 * @param pageStyle The master page style for this table
 	 */
 	TableStyle(final String styleName, final boolean hidden, final PageStyle pageStyle) {
@@ -54,6 +58,10 @@ public class TableStyle implements ObjectStyle {
 		this.pageStyle = pageStyle;
 	}
 
+	/**
+	 * @param name the name of the style
+	 * @return the builder
+	 */
 	public static TableStyleBuilder builder(final String name) {
 		return new TableStyleBuilder(name);
 	}
@@ -100,6 +108,9 @@ public class TableStyle implements ObjectStyle {
 		return this.hidden;
 	}
 
+	/**
+	 * @return the page style
+	 */
 	public PageStyle getPageStyle() {
 		return this.pageStyle;
 	}

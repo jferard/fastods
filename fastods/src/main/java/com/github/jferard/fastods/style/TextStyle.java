@@ -32,6 +32,9 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TextStyle implements ObjectStyle {
+	/**
+	 * The default text style
+	 */
 	public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
 			.buildStyle("Default");
 
@@ -41,7 +44,10 @@ public class TextStyle implements ObjectStyle {
 	private final TextProperties textProperties;
 
 	/**
-	 * Create a new text style with the name name.
+	 * Create a new text style
+	 * @param name the name
+	 * @param hidden true if the style is automatic
+	 * @param textProperties the text properties
 	 */
 	TextStyle(final String name, final boolean hidden, final TextProperties textProperties) {
 		this.name = name;

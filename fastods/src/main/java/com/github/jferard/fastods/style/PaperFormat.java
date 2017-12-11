@@ -25,15 +25,34 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 
 /**
+ * Format of the paper
  * @author Julien Férard
  */
 public enum PaperFormat {
-    A3(Defaults.A3_H, Defaults.A3_W), A4(Defaults.A3_W,
-            Defaults.A4_W), A5(Defaults.A4_W,
-            Defaults.A5_W), LEGAL(Defaults.LEGAL_H,
-            Defaults.LETTER_W), LETTER(
-            Defaults.LETTER_H,
-            Defaults.LETTER_W), USER(SimpleLength.cm(0.0), SimpleLength.cm(0.0));
+    /**
+     * 420 mm × 297 mm
+     */
+    A3(Defaults.A3_H, Defaults.A3_W),
+    /**
+     * 297 mm × 210 mm
+     */
+    A4(Defaults.A3_W, Defaults.A4_W),
+    /**
+     * 210 mm × 148 mm
+     */
+    A5(Defaults.A4_W, Defaults.A5_W),
+    /**
+     * 14 in × 8½ in
+     */
+    LEGAL(Defaults.LEGAL_H, Defaults.LETTER_W),
+    /**
+     * 11 in × 8½ in
+     */
+    LETTER(Defaults.LETTER_H, Defaults.LETTER_W),
+    /**
+     * user defined: 0 by convention.
+     */
+    USER(SimpleLength.cm(0.0), SimpleLength.cm(0.0));
 
     private final Length height;
     private final Length width;

@@ -24,6 +24,10 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.Length;
 
+/**
+ * A builder for margins
+ * @author Julien Férard
+ */
 public class MarginsBuilder {
 	private Length all;
 	private Length bottom;

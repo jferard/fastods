@@ -43,7 +43,7 @@ public class MarginsTest {
 	public final void testAll() throws IOException {
 		final Margins margins = this.builder.all(SimpleLength.pt(10.0)).build();
 		final StringBuilder sb = new StringBuilder();
-		margins.appendXMLToTableCellStyle(this.util, sb);
+		margins.appendXMLContent(this.util, sb);
 		Assert.assertEquals(" fo:margin=\"10pt\"", sb.toString());
 	}
 
@@ -52,7 +52,7 @@ public class MarginsTest {
 		final Margins margins = this.builder.all(SimpleLength.pt(10.0)).top(SimpleLength.pt(10.0))
 				.right(SimpleLength.pt(11.0)).bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
 		final StringBuilder sb = new StringBuilder();
-		margins.appendXMLToTableCellStyle(this.util, sb);
+		margins.appendXMLContent(this.util, sb);
 		Assert.assertEquals(
 				" fo:margin=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"",
 				sb.toString());
@@ -63,7 +63,7 @@ public class MarginsTest {
 		final Margins margins = this.builder.top(SimpleLength.pt(10.0)).right(SimpleLength.pt(11.0))
 				.bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
 		final StringBuilder sb = new StringBuilder();
-		margins.appendXMLToTableCellStyle(this.util, sb);
+		margins.appendXMLContent(this.util, sb);
 		Assert.assertEquals(
 				" fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"",
 				sb.toString());

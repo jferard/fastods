@@ -80,7 +80,7 @@ class PageSectionStyle {
 				.append("-style>");
 		appendable.append("<style:header-footer-properties");
 		util.appendAttribute(appendable, "fo:min-height", this.minHeight.toString());
-		this.margins.appendXMLToTableCellStyle(util, appendable);
+		this.margins.appendXMLContent(util, appendable);
 		appendable.append("/></style:").append(pageSectionType.getTypeName())
 				.append("-style>");
 	}
