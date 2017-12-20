@@ -30,7 +30,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * Created by jferard on 18/08/17.
+ * A helper class for odftoolkit comparisons
+ * @author Julien Férard
  */
 public class OdfToolkitUtil {
     public static String getStringValue(final Cell cell) {

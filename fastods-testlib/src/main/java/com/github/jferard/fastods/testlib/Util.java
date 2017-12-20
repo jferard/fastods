@@ -26,18 +26,21 @@ import java.io.File;
 /**
  * Created by jferard on 16/08/17.
  */
-public class Util {
-    public static void mkdir(final String fname) {
-        mkdir(new File(fname));
+public final class Util {
+    private Util() {}
+
+    public static boolean mkdir(final String fname)
+    {
+        return Util.mkdir(new File(fname));
     }
 
-    private static void mkdir(final File file) {
+    public static boolean mkdir(final File file) {
         if (file.exists()) {
             if (file.isDirectory())
-                return;
+                return false;
             else
                 throw new IllegalStateException();
         }
-        file.mkdir();
+        return file.mkdir();
     }
 }
