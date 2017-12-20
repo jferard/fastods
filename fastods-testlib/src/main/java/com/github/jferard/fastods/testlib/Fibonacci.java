@@ -22,17 +22,22 @@
 package com.github.jferard.fastods.testlib;
 
 /**
- * Created by jferard on 15/08/17.
+ * A fibonacci numbers generator
+ * @author Julien Férard
  */
 public class Fibonacci {
     private final int[] is;
     private int index;
 
+    /**
+     * @return a new Fibonacci sequence, with 0 and 1 as first elements
+     */
     public static Fibonacci create() {
         return new Fibonacci(0,1);
     }
 
     /**
+     * Create a new Fibonacci sequence
      * @param first the first element
      * @param second the second element
      */

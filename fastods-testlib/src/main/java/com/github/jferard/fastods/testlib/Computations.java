@@ -27,10 +27,10 @@ import java.util.List;
 /**
  */
 public class Computations {
-	private String name;
-	private List<Long> times;
+	private final String name;
+	private final List<Long> times;
 
-	public Computations(String name, List<Long> times) {
+	public Computations(final String name, final List<Long> times) {
 		this.name = name;
 		this.times = times;
 	}
@@ -40,7 +40,7 @@ public class Computations {
 			return -1L;
 
 		long l = 0L;
-		for (long time: times)
+		for (final long time: this.times)
 			l += time;
 
 		return l / this.times.size();
@@ -55,6 +55,6 @@ public class Computations {
 	}
 
 	public String toString() {
-		return "Computations[name = "+name+", avg = "+this.getAvgTime()+", best = "+this.getBestTime()+", worst = "+this.getWorstTime()+"]";
+		return "Computations[name = "+ this.name +", avg = "+this.getAvgTime()+", best = "+this.getBestTime()+", worst = "+this.getWorstTime()+"]";
 	}
 }

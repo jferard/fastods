@@ -48,7 +48,7 @@ public abstract class Bench {
 	}
 
 	public Computations getWithoutWarmup() {
-		return new Computations(this.name, this.times.subList(2, this.times.size()));
+		return new Computations(this.name, this.times);
 	}
 
 	public void iteration() throws IOException {

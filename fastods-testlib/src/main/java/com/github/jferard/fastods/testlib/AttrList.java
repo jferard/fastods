@@ -53,7 +53,6 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 
 	private final int length;
 	private final ArrayList<Attr> attrs;
-	private NamedNodeMap attributes;
 
 	/**
 	 * @param attributes the attributes
@@ -83,7 +82,11 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 
 	@Override
 	public int hashCode() {
-		return this.attrs.hashCode();
+        // WARNING : Attr does not implement a specific hashCode method,
+        // thus, attrs.hashCode() will be different even if the elements
+        // are the same. attrs.size() is a very bad hash code, but the
+        // semantic is right...
+		return this.attrs.size();
 	}
 
 	@Override
@@ -99,6 +102,9 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 
 	@Override
 	public int compareTo(final AttrList other) {
+		if (other == null)
+		    throw new NullPointerException();
+
 		if (this.length != other.length)
 			return this.length - other.length;
 

@@ -29,11 +29,21 @@ import org.junit.Test;
  */
 public class FibonacciTest {
     @Test
-    public void test() {
+    public void testWithMax() {
         final Fibonacci f = Fibonacci.create();
         final int[] a = new int[10];
         for (int i=0; i<10; i++)
-            a[i]=f.nextInt(1000);
+            a[i]=f.nextInt(10);
+
+        Assert.assertArrayEquals(new int[] { 0, 1, 1, 2, 3, 5, 8, 3, 1, 4}, a);
+    }
+
+    @Test
+    public void testWithoutMax() {
+        final Fibonacci f = Fibonacci.create();
+        final int[] a = new int[10];
+        for (int i=0; i<10; i++)
+            a[i]=f.nextInt();
 
         Assert.assertArrayEquals(new int[] { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34}, a);
     }

@@ -86,8 +86,6 @@ public class ZipUTF8WriterMock implements Appendable {
     public void closeEntry() throws IOException {
         if (this.curBuilder == null)
             throw new IOException();
-        if (this.builderByEntryName.isEmpty())
-            throw new IOException();
 
         this.curBuilder = null;
     }
@@ -104,7 +102,7 @@ public class ZipUTF8WriterMock implements Appendable {
         this.builderByEntryName.put(arg0.getName(), this.curBuilder);
     }
 
-    public void setComment(final String arg0) {}
+    public void setComment(final String comment) { throw new RuntimeException(); }
 
     public void write(final String str) throws IOException {
         if (this.curBuilder == null)
