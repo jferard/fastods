@@ -25,11 +25,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  */
@@ -65,17 +61,17 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 	private final List<Node> list;
 
 	UnsortedNodeList(final NodeList nodes) {
-		length = nodes.getLength();
-		list = new ArrayList<Node>(length);
-		for (int i = 0; i < length; i++) {
-			list.add(nodes.item(i));
+		this.length = nodes.getLength();
+		this.list = new ArrayList<Node>(this.length);
+		for (int i = 0; i < this.length; i++) {
+			this.list.add(nodes.item(i));
 		}
-		Collections.sort(list, cmp);
+		Collections.sort(this.list, cmp);
 	}
 
 	@Override
 	public Iterator<Node> iterator() {
-		return list.iterator();
+		return this.list.iterator();
 	}
 
 	@Override
@@ -107,12 +103,12 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 
 	@Override
 	public String toString() {
-		return list.toString();
+		return this.list.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return list.hashCode();
+		return this.list.hashCode();
 	}
 
 	public static String toString(final Node n) {

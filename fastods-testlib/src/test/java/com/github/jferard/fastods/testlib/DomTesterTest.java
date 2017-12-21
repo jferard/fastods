@@ -20,14 +20,20 @@
  */
 package com.github.jferard.fastods.testlib;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
  */
 public class DomTesterTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
 	@Before
 	public void setUp() throws ParserConfigurationException {
 	}
@@ -47,7 +53,36 @@ public class DomTesterTest {
 		DomTester.assertEquals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>");
 		DomTester.assertEquals("<a b=\"1\" c=\"2\"/>", "<a c=\"2\" b=\"1\"/>");
 		DomTester.assertNotEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>");
+
+        Assert.assertTrue(DomTester.equals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>"));
+    }
+
+	@Test
+	public void testAttributesFail() {
+        this.thrown.expect(AssertionError.class);
+        this.thrown.expectMessage("Values should be different. Actual: <a b=\"1\" c=\"2\"/>");
+        DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>");
+    }
+
+    @Test
+    public void testAttributesFail2() {
+        this.thrown.expect(AssertionError.class);
+        DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a c=\"2\" b=\"1\"/>");
+    }
+
+    @Test
+    public void testAttributesFail3() {
+        this.thrown.expect(AssertionError.class);
+        this.thrown.expectMessage("expected:<<a [b=\"2\" c]=\"1\"/>> but was:<<a [c=\"2\" b]=\"1\"/>>");
+		DomTester.assertEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>");
 	}
+
+    @Test
+    public void testOrderFail() {
+        this.thrown.expect(AssertionError.class);
+        this.thrown.expectMessage("expected:<<a><[b/><c]/></a>> but was:<<a><[c/><d]/></a>>");
+        DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><d/></a>");
+    }
 
 	@Test
 	public void testSortedChildren() {
@@ -66,4 +101,22 @@ public class DomTesterTest {
 	public void testEuro() {
 		DomTester.assertEquals("<a b=\"€\"/>", "<a b=\"€\"/>");
 	}
+
+    @Test
+    public void testUnsorted() {
+        DomTester.assertNotEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
+        DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
+        DomTester.assertUnsortedNotEquals("<a><b/><c/></a>", "<a><c/><d/></a>");
+
+        DomTester.assertNotEquals("<a><b/><c/></a>", "<a><c/><b/></a>", new SortedChildrenTester());
+        DomTester.assertEquals("<a><b/><c/></a>", "<a><c/><b/></a>", new UnsortedChildrenTester());
+
+        Assert.assertTrue(DomTester.unsortedEquals("<a><b/><c/></a>", "<a><c/><b/></a>"));
+    }
+
+    @Test
+    public void testBadFormat() {
+        Assert.assertFalse(DomTester.equals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\">"));
+    }
+
 }

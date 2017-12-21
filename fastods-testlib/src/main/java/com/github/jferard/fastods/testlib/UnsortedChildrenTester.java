@@ -26,6 +26,9 @@ import org.w3c.dom.NodeList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+/**
+ * @author Julien Férard
+ */
 public class UnsortedChildrenTester extends ChildrenTester {
 	static Logger logger = Logger.getLogger("DomTester");
 

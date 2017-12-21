@@ -35,7 +35,7 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 	/**
 	 * The attributes comparator, on name then on value.
 	 */
-	static Comparator<Attr> cmp = new Comparator<Attr>() {
+	private static final Comparator<Attr> cmp = new Comparator<Attr>() {
 		@Override
 		public int compare(final Attr o1, final Attr o2) {
 			if (o1 == null)

@@ -39,18 +39,12 @@ public class DomTester {
 
 	public static void assertEquals(final String string1,
 									final String string2) {
-		if (!DomTester.equals(string1, string2, new SortedChildrenTester())) {
-			Assert.assertEquals(string1, string2); // shows the difference
-			Assert.fail(); // in case there was a bug in DomTester, but strings are equal
-		}
+        DomTester.assertEquals(string1, string2, new SortedChildrenTester());
 	}
 
 	public static void assertUnsortedEquals(final String string1,
 									final String string2) {
-		if (!DomTester.equals(string1, string2, new UnsortedChildrenTester())) {
-			Assert.assertEquals(string1, string2); // shows the difference
-			Assert.fail(); // in case there was a bug in DomTester, but strings are equal
-		}
+	    DomTester.assertEquals(string1, string2, new UnsortedChildrenTester());
 	}
 
 	public static void assertEquals(final String string1,
@@ -60,6 +54,21 @@ public class DomTester {
 			Assert.fail(); // in case there was a bug in DomTester, but strings are equal
 		}
 	}
+
+    public static void assertNotEquals(final String string1, final String string2) {
+        DomTester.assertNotEquals(string1, string2, new SortedChildrenTester());
+    }
+
+    public static void assertUnsortedNotEquals(final String string1, final String string2) {
+        DomTester.assertNotEquals(string1, string2, new UnsortedChildrenTester());
+    }
+
+    public static void assertNotEquals(final String string1, final String string2, final ChildrenTester childrenTester) {
+        if (DomTester.equals(string1, string2, childrenTester)) {
+            Assert.assertNotEquals(string1, string2); // shows the difference
+            Assert.fail(); // in case there was a bug in DomTester, but strings are equal
+        }
+    }
 
 	public static boolean equals(final String s1, final String s2) {
 		return DomTester.equals(s1, s2, new SortedChildrenTester());
@@ -79,6 +88,7 @@ public class DomTester {
 		}
 	}
 
+
 	private final DocumentBuilder builder;
 
 	DomTester() throws ParserConfigurationException {
@@ -90,24 +100,10 @@ public class DomTester {
 	private boolean stringEquals(final String s1, final String s2, final ChildrenTester childrenTester)
 			throws SAXException, IOException {
 		final Document document1 = this.builder.parse(
-				new ByteArrayInputStream(("<r>" + s1 + "</r>").getBytes(UTF_8)));
+				new ByteArrayInputStream(("<r>" + s1 + "</r>").getBytes(this.UTF_8)));
 		final Document document2 = this.builder.parse(
-				new ByteArrayInputStream(("<r>" + s2 + "</r>").getBytes(UTF_8)));
+				new ByteArrayInputStream(("<r>" + s2 + "</r>").getBytes(this.UTF_8)));
 		return childrenTester.equals(document1.getDocumentElement().getFirstChild(),
 				document2.getDocumentElement().getFirstChild());
-	}
-
-	public static void assertNotEquals(final String string1, final String string2) {
-		if (DomTester.equals(string1, string2, new SortedChildrenTester())) {
-			Assert.assertNotEquals(string1, string2); // shows the difference
-			Assert.fail(); // in case there was a bug in DomTester, but strings are equal
-		}
-	}
-
-	public static void assertUnsortedNotEquals(final String string1, final String string2) {
-		if (DomTester.equals(string1, string2, new UnsortedChildrenTester())) {
-			Assert.assertNotEquals(string1, string2); // shows the difference
-			Assert.fail(); // in case there was a bug in DomTester, but strings are equal
-		}
 	}
 }
