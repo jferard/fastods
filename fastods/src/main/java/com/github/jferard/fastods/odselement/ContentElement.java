@@ -76,9 +76,10 @@ public class ContentElement implements OdsElement {
 	 * Create an automatic style for this TableCellStyle and this type of cell.
 	 * @param style the style of the cell (color, data style, etc.)
 	 * @param type the type of the cell
+	 * @return the created style
 	 */
-	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
-		this.stylesContainer.addChildCellStyle(style, this.format.getDataStyle(type));
+	public TableCellStyle addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
+		return this.stylesContainer.addChildCellStyle(style, this.format.getDataStyle(type));
 	}
 
 	/**
@@ -117,6 +118,9 @@ public class ContentElement implements OdsElement {
 			throws IOException {
 		this.ensureContentBegin(util, writer);
 		final int lastTableIndex = this.tables.size() - 1;
+		if (lastTableIndex == -1)
+		    return;
+
 		int tableIndex = this.flushPosition.getTableIndex();
 		Table table = this.tables.get(tableIndex);
 		if (tableIndex < lastTableIndex) {

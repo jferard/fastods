@@ -32,6 +32,11 @@ import java.util.Locale;
 @SuppressWarnings("PMD.UnusedLocalVariable")
 public class PositionUtil {
 	/**
+	 * @return a new position util
+	 */
+	public static PositionUtil create() { return new PositionUtil(new EqualityUtil()); }
+
+	/**
 	 * a..z -> 26 letters
 	 */
 	public static final int ALPHABET_SIZE = 26;
