@@ -47,4 +47,40 @@ public class DataStylesTest {
     public void testGetString() {
          Assert.assertNotNull(this.dataStyles.getDataStyle(TableCell.Type.STRING));
     }
+
+    @Test
+    public void testGetVoid() {
+        Assert.assertNotNull(this.dataStyles.getDataStyle(TableCell.Type.VOID));
+    }
+
+
+    @Test
+    public void testGetBoolean() {
+        Assert.assertEquals(this.dataStyles.getBooleanDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.BOOLEAN));
+    }
+
+    @Test
+    public void testGetCurrency() {
+        Assert.assertEquals(this.dataStyles.getCurrencyDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.CURRENCY));
+    }
+
+    @Test
+    public void testGetDate() {
+        Assert.assertEquals(this.dataStyles.getDateDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.DATE));
+    }
+
+    @Test
+    public void testGetFloat() {
+        Assert.assertEquals(this.dataStyles.getNumberDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.FLOAT));
+    }
+
+    @Test
+    public void testGetPercentage() {
+        Assert.assertEquals(this.dataStyles.getPercentageDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.PERCENTAGE));
+    }
+
+    @Test
+    public void testGetTime() {
+        Assert.assertEquals(this.dataStyles.getTimeDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.TIME));
+    }
 }
