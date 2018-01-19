@@ -74,9 +74,10 @@ public class ContentElement implements OdsElement {
 
 	/**
 	 * Create an automatic style for this TableCellStyle and this type of cell.
+	 * Do not produce any effect if the type is Type.STRING or Type.VOID.
 	 * @param style the style of the cell (color, data style, etc.)
 	 * @param type the type of the cell
-	 * @return the created style
+	 * @return the created style, or style if the type is Type.STRING or Type.VOID
 	 */
 	public TableCellStyle addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
 		return this.stylesContainer.addChildCellStyle(style, this.format.getDataStyle(type));

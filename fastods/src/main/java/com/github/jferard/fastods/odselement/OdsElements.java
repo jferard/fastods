@@ -111,6 +111,7 @@ public class OdsElements {
 
     /**
      * Create an automatic style for this TableCellStyle and this type of cell.
+     * Do not produce any effect if the type is Type.STRING or Type.VOID
      *
      * @param style the style of the cell (color, data style, etc.)
      * @param type  the type of the cell

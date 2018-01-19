@@ -79,7 +79,8 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Add a cell style for a given data type
+	 * Add a cell style for a given data type.
+	 * Do not produce any effect if the type is Type.STRING or Type.VOID
 	 * @param type the data type
 	 */
 	public void addChildCellStyle(final TableCell.Type type) {
@@ -87,7 +88,8 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Add a cell style for a given data type
+	 * Add a cell style for a given data type.
+     * Do not produce any effect if the type is Type.STRING or Type.VOID
 	 * @param style the style
 	 * @param type the data type
 	 */
