@@ -57,7 +57,7 @@ public class ContentElementTest {
     }
 
     @Test
-    public void testAddChild() {
+    public void testAddChildCellStyle() {
         final TableCellStyle style = PowerMock.createNiceMock(TableCellStyle.class);
         EasyMock.expect(
                 this.container.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, this.format.getBooleanDataStyle()))
@@ -65,6 +65,22 @@ public class ContentElementTest {
         PowerMock.replayAll();
         Assert.assertEquals(style,
                 this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN));
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddChildCellStyleOfTypeString() {
+        PowerMock.replayAll();
+        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
+                this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING));
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddChildCellStyleOfTypeVoid() {
+        PowerMock.replayAll();
+        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
+                this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.VOID));
         PowerMock.verifyAll();
     }
 
