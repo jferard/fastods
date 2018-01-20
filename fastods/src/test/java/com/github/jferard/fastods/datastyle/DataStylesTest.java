@@ -39,29 +39,35 @@ public class DataStylesTest {
     @Test
     public void testGetAll() {
         for (final TableCell.Type type : TableCell.Type.values()) {
-            Assert.assertNotNull(this.dataStyles.getDataStyle(type));
+            if (type == TableCell.Type.STRING || type == TableCell.Type.VOID) {
+                Assert.assertNull(this.dataStyles.getDataStyle(type));
+            } else {
+                Assert.assertNotNull(this.dataStyles.getDataStyle(type));
+            }
         }
     }
 
     @Test
     public void testGetString() {
-         Assert.assertNotNull(this.dataStyles.getDataStyle(TableCell.Type.STRING));
+        Assert.assertNull(this.dataStyles.getDataStyle(TableCell.Type.STRING));
     }
 
     @Test
     public void testGetVoid() {
-        Assert.assertNotNull(this.dataStyles.getDataStyle(TableCell.Type.VOID));
+        Assert.assertNull(this.dataStyles.getDataStyle(TableCell.Type.VOID));
     }
 
 
     @Test
     public void testGetBoolean() {
-        Assert.assertEquals(this.dataStyles.getBooleanDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.BOOLEAN));
+        Assert.assertEquals(this.dataStyles.getBooleanDataStyle(),
+                this.dataStyles.getDataStyle(TableCell.Type.BOOLEAN));
     }
 
     @Test
     public void testGetCurrency() {
-        Assert.assertEquals(this.dataStyles.getCurrencyDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.CURRENCY));
+        Assert.assertEquals(this.dataStyles.getCurrencyDataStyle(),
+                this.dataStyles.getDataStyle(TableCell.Type.CURRENCY));
     }
 
     @Test
@@ -76,7 +82,8 @@ public class DataStylesTest {
 
     @Test
     public void testGetPercentage() {
-        Assert.assertEquals(this.dataStyles.getPercentageDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.PERCENTAGE));
+        Assert.assertEquals(this.dataStyles.getPercentageDataStyle(),
+                this.dataStyles.getDataStyle(TableCell.Type.PERCENTAGE));
     }
 
     @Test
