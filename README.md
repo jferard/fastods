@@ -77,7 +77,7 @@ In your POM, you'll have to include the following dependency:
 ```java
 final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
 final AnonymousOdsFileWriter writer = odsFactory.createWriter();
-final OdsDocument document = writer.document();
+final AnonymousOdsDocument document = writer.document();
 final Table table = document.addTable("test");
 
 final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00FF00").build();
@@ -97,11 +97,7 @@ writer.saveAs(new File("generated_files", "readme_example.ods"));
 ### Other examples
 Other examples are implemented as integration tests: ```OdsFileCreationIT.java```, ```OdsFileWithHeaderAndFooterCreationIT.java```, etc. The sources are quite simple.
 
-To run those examples, one has to set the Maven profile to `other`:
-
-```mvn verify```
-
-And:
+To run those examples, one has to run:
 
 ```mvn verify```
 
