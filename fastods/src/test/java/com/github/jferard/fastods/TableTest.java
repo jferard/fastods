@@ -365,7 +365,7 @@ public class TableTest {
 
     @Test
     public void testObserver() throws IOException {
-        final OdsFileWriter o = PowerMock.createMock(OdsFileWriter.class);
+        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
 
         o.update(EasyMock.isA(BeginTableFlusher.class));
         EasyMock.expectLastCall().times(3);

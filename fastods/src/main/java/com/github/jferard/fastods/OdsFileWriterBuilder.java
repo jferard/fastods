@@ -91,7 +91,7 @@ public class OdsFileWriterBuilder {
 	 * @return the writer for the ods file
 	 * @throws FileNotFoundException if there is no stream to write
 	 */
-	public OdsFileWriter build() throws FileNotFoundException {
+	public NamedOdsFileWriter build() throws FileNotFoundException {
 		if (this.out == null)
 			this.out = new FileOutputStream(this.filename);
 

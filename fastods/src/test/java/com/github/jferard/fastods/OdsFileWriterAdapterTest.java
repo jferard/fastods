@@ -35,7 +35,7 @@ import java.util.Queue;
  * Created by jferard on 09/05/17.
  */
 public class OdsFileWriterAdapterTest {
-    private OdsFileWriter w;
+    private NamedOdsFileWriter w;
     private OdsFlusher f;
     private OdsFileWriterAdapter wa;
     private Queue<OdsFlusher> flushers;
@@ -43,7 +43,7 @@ public class OdsFileWriterAdapterTest {
 
     @Before
     public void setUp() {
-        this.w = PowerMock.createMock(OdsFileWriter.class);
+        this.w = PowerMock.createMock(NamedOdsFileWriter.class);
         this.f = PowerMock.createMock(OdsFlusher.class);
         this.flushers = new LinkedList<OdsFlusher>();
         this.wa = new OdsFileWriterAdapter(this.w, this.flushers);

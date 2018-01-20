@@ -24,14 +24,12 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 
 /**
- * An OdsFileWriter may be a direct writer or an adapter for a writer thread
- *
- * @param <D> the document type
+ * An NamedOdsFileWriter may be a direct writer or an adapter for a writer thread
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
-public interface OdsFileWriter<D> {
+public interface NamedOdsFileWriter {
     /**
      * Close this writer
      * @throws IOException if an I/O error occurs
@@ -41,7 +39,7 @@ public interface OdsFileWriter<D> {
     /**
      * @return the inner document
      */
-    D document();
+    NamedOdsDocument document();
 
 
     /**

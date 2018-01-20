@@ -143,7 +143,7 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.replayAll();
         final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
-        final OdsFileWriter writer =
+        final NamedOdsFileWriter writer =
                 new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb).filename(temp.getAbsolutePath())
                         .build();
         writer.save();

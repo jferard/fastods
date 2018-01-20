@@ -49,7 +49,7 @@ public class BenchFastFlush extends Bench {
 		this.logger.info("testFastFlush: filling a " + this.getRowCount() + " rows, "
 				+ this.getColCount() + " columns spreadsheet");
 		final long t1 = System.currentTimeMillis();
-		final OdsFileWriter<NamedOdsDocument> writer =
+		final NamedOdsFileWriter writer =
 				this.odsFactory.createWriter(new File("generated_files", "fastods_flush_benchmark.ods"));
 		final NamedOdsDocument document = writer.document();
 		final Table table = document.addTable("test", this.getRowCount(), this.getColCount());

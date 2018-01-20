@@ -125,7 +125,7 @@ public class NamedOdsDocument implements OdsDocument {
 	 * Add an observer (see Observer pattern).
 	 * @param writer the writer where data will be flushed
 	 */
-	void addObserver(final OdsFileWriter writer) {
+	void addObserver(final NamedOdsFileWriter writer) {
 		this.odsElements.addObserver(writer);
 	}
 

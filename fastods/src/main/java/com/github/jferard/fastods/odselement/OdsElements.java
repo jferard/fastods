@@ -81,7 +81,7 @@ public class OdsElements {
     private final SettingsElement settingsElement;
     private final StylesContainer stylesContainer;
     private final StylesElement stylesElement;
-    private OdsFileWriter observer;
+    private NamedOdsFileWriter observer;
 
     /**
      * Create a new instance from elements
@@ -143,7 +143,7 @@ public class OdsElements {
      *
      * @param o the file writer
      */
-    public void addObserver(final OdsFileWriter o) {
+    public void addObserver(final NamedOdsFileWriter o) {
         this.observer = o;
     }
 

@@ -303,7 +303,7 @@ public class OdsFileCreationIT {
 
     private File standardDocumentWithFlush(final int n) throws FastOdsException, IOException {
         final File output = new File("generated_files", this.standadDocumentName(true, n));
-        final OdsFileWriter<NamedOdsDocument> writer =
+        final NamedOdsFileWriter writer =
                 this.odsFactory.createWriter(output);
         final NamedOdsDocument document = writer.document();
 

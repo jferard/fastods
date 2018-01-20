@@ -150,10 +150,10 @@ public class OdsFactory {
 	 * @return the ods writer
 	 * @throws FileNotFoundException if the file can't be found
 	 */
-	public OdsFileWriter createWriter(final String filename) throws
+	public NamedOdsFileWriter createWriter(final String filename) throws
 			IOException {
 		final NamedOdsDocument document = this.createDocument();
-		final OdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile
+		final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile
 				(filename))
 				.build();
 		document.addObserver(writer);
@@ -167,9 +167,9 @@ public class OdsFactory {
      * @return the ods writer
      * @throws IOException if an I/O error occurs
      */
-    public OdsFileWriter createWriter(final File file) throws IOException {
+    public NamedOdsFileWriter createWriter(final File file) throws IOException {
 		final NamedOdsDocument document = this.createDocument();
-		final OdsFileWriter writer =
+		final NamedOdsFileWriter writer =
 				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
 		document.addObserver(writer);
 		document.prepareFlush();

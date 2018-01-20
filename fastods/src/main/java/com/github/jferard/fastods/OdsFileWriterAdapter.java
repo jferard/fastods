@@ -43,16 +43,16 @@ import java.util.Queue;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFileWriterAdapter implements OdsFileWriter<NamedOdsDocument> {
+public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     /**
      * @param adaptee the adaptee writer
      * @return the new adapter
      */
-    public static OdsFileWriterAdapter create(final OdsFileWriter<NamedOdsDocument> adaptee) {
+    public static OdsFileWriterAdapter create(final NamedOdsFileWriter adaptee) {
         return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
     }
 
-    private final OdsFileWriter<NamedOdsDocument> adaptee;
+    private final NamedOdsFileWriter adaptee;
     private final Queue<OdsFlusher> flushers;
     private boolean stopped;
 
@@ -61,7 +61,7 @@ public class OdsFileWriterAdapter implements OdsFileWriter<NamedOdsDocument> {
      * @param adaptee the adaptee writer
      * @param flushers the queue of flushers
      */
-    OdsFileWriterAdapter(final OdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
+    OdsFileWriterAdapter(final NamedOdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
         this.adaptee = adaptee;
         this.flushers = flushers;
     }

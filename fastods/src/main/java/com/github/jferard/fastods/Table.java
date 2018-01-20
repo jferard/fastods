@@ -91,7 +91,7 @@ public class Table implements NamedObject {
 	 * Add an observer to this table
 	 * @param observer the observer
 	 */
-	public void addObserver(final OdsFileWriter observer) {
+	public void addObserver(final NamedOdsFileWriter observer) {
 		this.builder.addObserver(observer);
 	}
 

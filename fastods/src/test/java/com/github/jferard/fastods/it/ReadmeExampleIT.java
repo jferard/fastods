@@ -125,7 +125,7 @@ public class ReadmeExampleIT {
     }
 
     private void readmeWithFlush() throws IOException {
-        final OdsFileWriter<NamedOdsDocument> writer =
+        final NamedOdsFileWriter writer =
                 this.odsFactory.createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
         final NamedOdsDocument document = writer.document();
 

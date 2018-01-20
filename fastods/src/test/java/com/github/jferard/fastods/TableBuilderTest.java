@@ -170,7 +170,7 @@ public class TableBuilderTest {
 
     @Test
     public final void testMergeWithObserver1() throws IOException, FastOdsException {
-        final OdsFileWriter o = PowerMock.createMock(OdsFileWriter.class);
+        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
         this.builder.addObserver(o);
 
         o.update(EasyMock.isA(PreprocessedRowsFlusher.class));
@@ -197,7 +197,7 @@ public class TableBuilderTest {
 
     @Test
     public void testObserver() throws IOException {
-        final OdsFileWriter o = PowerMock.createMock(OdsFileWriter.class);
+        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
 
 /*
         o.update(EasyMock.isA(BeginTableFlusher.class));

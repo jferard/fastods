@@ -118,7 +118,7 @@ class TableBuilder {
     private final FullList<TableRow> tableRows;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
-    private OdsFileWriter observer;
+    private NamedOdsFileWriter observer;
     private int curRowIndex;
     private int lastFlushedRowIndex;
     private int lastRowIndex;
@@ -167,7 +167,7 @@ class TableBuilder {
      *
      * @param observer the observer
      */
-    public void addObserver(final OdsFileWriter observer) {
+    public void addObserver(final NamedOdsFileWriter observer) {
         this.observer = observer;
     }
 

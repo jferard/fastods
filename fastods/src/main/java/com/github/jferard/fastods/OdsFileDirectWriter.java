@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsFileDirectWriter implements OdsFileWriter {
+public class OdsFileDirectWriter implements NamedOdsFileWriter {
     /**
      * Return a builder for direct writer
      * @param logger the logger

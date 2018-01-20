@@ -294,7 +294,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
     private void createDocumentWithFooterAndHeaderWithFlush() throws IOException, FastOdsException {
         this.createStyles();
-        final OdsFileWriter<NamedOdsDocument> writer = this.odsFactory
+        final NamedOdsFileWriter writer = this.odsFactory
                 .createWriter(new File(GENERATED_FILES, FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS));
         final NamedOdsDocument document = writer.document();
         document.addPageStyle(this.ps);
