@@ -41,6 +41,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * An ods document.
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
@@ -79,7 +81,8 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Add a cell style for a given data type.
+	 * Add a cell style for a given data type. Use only if you want to flush data before the end of the document
+	 * construction.
 	 * Do not produce any effect if the type is Type.STRING or Type.VOID
 	 * @param type the data type
 	 */
@@ -88,7 +91,8 @@ public class OdsDocument {
 	}
 
 	/**
-	 * Add a cell style for a given data type.
+	 * Add a cell style for a given data type. Use only if you want to flush data before the end of the document
+	 * construction.
      * Do not produce any effect if the type is Type.STRING or Type.VOID
 	 * @param style the style
 	 * @param type the data type
@@ -121,7 +125,7 @@ public class OdsDocument {
 	 * Add an observer (see Observer pattern).
 	 * @param writer the writer where data will be flushed
 	 */
-	public void addObserver(final OdsFileWriter writer) {
+	void addObserver(final OdsFileWriter writer) {
 		this.odsElements.addObserver(writer);
 	}
 

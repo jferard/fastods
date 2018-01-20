@@ -81,7 +81,7 @@ public class DataStyles {
 
     /**
      * @param type a data style type
-     * @return the data style for the given type
+     * @return the data style for the given type, null if the type is STRING or VOID
      */
     public DataStyle getDataStyle(final TableCell.Type type) {
         return this.dataStyleByType.get(type);
