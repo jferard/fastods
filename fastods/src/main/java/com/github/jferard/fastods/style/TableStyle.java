@@ -46,7 +46,7 @@ public class TableStyle implements ObjectStyle {
 
 	/**
 	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter OdsDocument o
+	 * Version 0.5.0 Added parameter NamedOdsDocument o
 	 *
 	 * @param styleName A unique name for this style
 	 * @param hidden if the style is automatic

@@ -104,7 +104,7 @@ public class ReadmeExampleIT {
 
     private void readme() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final OdsDocument document = writer.document();
+        final AnonymousOdsDocument document = writer.document();
 
         this.createTable(document);
 
@@ -125,9 +125,9 @@ public class ReadmeExampleIT {
     }
 
     private void readmeWithFlush() throws IOException {
-        final OdsFileWriter writer =
+        final OdsFileWriter<NamedOdsDocument> writer =
                 this.odsFactory.createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
-        final OdsDocument document = writer.document();
+        final NamedOdsDocument document = writer.document();
 
         document.addObjectStyle(this.style);
         document.addChildCellStyle(TableCell.Type.FLOAT);

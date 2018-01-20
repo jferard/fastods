@@ -23,7 +23,7 @@ package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -36,7 +36,7 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class OdsFileHelper {
-	private final OdsDocument odsDocument;
+	private final NamedOdsDocument odsDocument;
 	private final PositionUtil positionUtil;
 	private final TableHelper tableHelper;
 
@@ -46,7 +46,7 @@ public class OdsFileHelper {
 	 * @param tableHelper a sub helper
 	 * @param positionUtil an util
 	 */
-	public OdsFileHelper(final OdsDocument odsDocument, final TableHelper tableHelper,
+	public OdsFileHelper(final NamedOdsDocument odsDocument, final TableHelper tableHelper,
                          final PositionUtil positionUtil) {
 		this.odsDocument = odsDocument;
 		this.tableHelper = tableHelper;

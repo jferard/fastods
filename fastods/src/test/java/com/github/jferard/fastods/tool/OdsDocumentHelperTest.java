@@ -22,7 +22,7 @@ package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.BooleanValue;
 import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
@@ -40,7 +40,7 @@ import java.util.List;
 public class OdsDocumentHelperTest {
 	private OdsFileHelper helper;
 	private List<Table> l;
-	private OdsDocument odsDocument;
+	private NamedOdsDocument odsDocument;
 	private PositionUtil positionUtil;
 	private Table t1;
 	private Table t2;
@@ -50,7 +50,7 @@ public class OdsDocumentHelperTest {
 	@Before
 	public void setUp() {
 		this.positionUtil = new PositionUtil(new EqualityUtil());
-		this.odsDocument = PowerMock.createMock(OdsDocument.class);
+		this.odsDocument = PowerMock.createMock(NamedOdsDocument.class);
 		this.tableHelper = PowerMock.createMock(TableHelper.class);
 		this.t1 = PowerMock.createMock(Table.class);
 		this.t2 = PowerMock.createMock(Table.class);

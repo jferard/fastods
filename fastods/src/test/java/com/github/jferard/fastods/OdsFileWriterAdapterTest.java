@@ -39,7 +39,7 @@ public class OdsFileWriterAdapterTest {
     private OdsFlusher f;
     private OdsFileWriterAdapter wa;
     private Queue<OdsFlusher> flushers;
-    private OdsDocument d;
+    private NamedOdsDocument d;
 
     @Before
     public void setUp() {
@@ -47,7 +47,7 @@ public class OdsFileWriterAdapterTest {
         this.f = PowerMock.createMock(OdsFlusher.class);
         this.flushers = new LinkedList<OdsFlusher>();
         this.wa = new OdsFileWriterAdapter(this.w, this.flushers);
-        this.d = PowerMock.createMock(OdsDocument.class);
+        this.d = PowerMock.createMock(NamedOdsDocument.class);
     }
 
     @Test

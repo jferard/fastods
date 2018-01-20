@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  */
 public class OdsFileWriterBuilder {
 	private final Logger logger;
-	private final OdsDocument document;
+	private final NamedOdsDocument document;
 	private OutputStream out;
 	private ZipUTF8WriterBuilder builder;
 	private String filename;
@@ -49,7 +49,7 @@ public class OdsFileWriterBuilder {
 	 * @param logger   the logger
 	 * @param document the document to write
 	 */
-	OdsFileWriterBuilder(final Logger logger, final OdsDocument document) {
+	OdsFileWriterBuilder(final Logger logger, final NamedOdsDocument document) {
 		this.logger = logger;
 		this.document = document;
 		this.builder = ZipUTF8WriterImpl.builder();

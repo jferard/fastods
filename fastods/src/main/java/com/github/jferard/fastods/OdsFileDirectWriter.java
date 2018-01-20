@@ -28,7 +28,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * The OdsFileDirectWriter class represents a direct writer. It asks the flusher to flush its data directly into the
+ * The OdsFileDirectWriter class represents a direct writer.
+ * It asks the flusher to flush its data directly into the
  * zip writer.
  *
  * @author Julien Férard
@@ -41,11 +42,11 @@ public class OdsFileDirectWriter implements OdsFileWriter {
      * @param document the document to write
      * @return the builder
      */
-    public static OdsFileWriterBuilder builder(final Logger logger, final OdsDocument document) {
+    public static OdsFileWriterBuilder builder(final Logger logger, final NamedOdsDocument document) {
         return new OdsFileWriterBuilder(logger, document);
     }
 
-    private final OdsDocument document;
+    private final NamedOdsDocument document;
     private final Logger logger;
     private final ZipUTF8Writer writer;
     private final XMLUtil xmlUtil;
@@ -57,7 +58,7 @@ public class OdsFileDirectWriter implements OdsFileWriter {
      * @param document the document to write
      * @param writer   The writer for this file
      */
-    OdsFileDirectWriter(final Logger logger, final XMLUtil xmlUtil, final OdsDocument document, final ZipUTF8Writer writer) {
+    OdsFileDirectWriter(final Logger logger, final XMLUtil xmlUtil, final NamedOdsDocument document, final ZipUTF8Writer writer) {
         this.logger = logger;
         this.document = document;
         this.xmlUtil = xmlUtil;
@@ -71,7 +72,7 @@ public class OdsFileDirectWriter implements OdsFileWriter {
     }
 
     @Override
-    public OdsDocument document() {
+    public NamedOdsDocument document() {
         return this.document;
     }
 

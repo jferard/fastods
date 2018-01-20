@@ -26,10 +26,12 @@ import java.io.IOException;
 /**
  * An OdsFileWriter may be a direct writer or an adapter for a writer thread
  *
+ * @param <D> the document type
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
-public interface OdsFileWriter {
+public interface OdsFileWriter<D> {
     /**
      * Close this writer
      * @throws IOException if an I/O error occurs
@@ -39,7 +41,7 @@ public interface OdsFileWriter {
     /**
      * @return the inner document
      */
-    OdsDocument document();
+    D document();
 
 
     /**

@@ -34,11 +34,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * An ods file writer. It contains a document and is responsible for the recording.
+ * Anonymous means that the destination file is not set.
+ * The content of the document is only flushed once, when the document is saved.
+ * That means that one doesn't have to define the style early.
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class AnonymousOdsFileWriter {
-	private final OdsDocument document;
+	private final AnonymousOdsDocument document;
 	private final Logger logger;
 
 	/**
@@ -47,7 +52,7 @@ public class AnonymousOdsFileWriter {
 	 * @param logger   the logger
 	 * @param document the document to write
 	 */
-	AnonymousOdsFileWriter(final Logger logger, final OdsDocument document) {
+	AnonymousOdsFileWriter(final Logger logger, final AnonymousOdsDocument document) {
 		this.logger = logger;
 		this.document = document;
 	}
@@ -55,7 +60,7 @@ public class AnonymousOdsFileWriter {
 	/**
 	 * @return the underlying document
 	 */
-	public OdsDocument document() {
+	public AnonymousOdsDocument document() {
 		return this.document;
 	}
 

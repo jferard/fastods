@@ -20,14 +20,7 @@
  */
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.DataWrapper;
-import com.github.jferard.fastods.TableRow;
-import com.github.jferard.fastods.OdsDocument;
-import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.mockrunner.jdbc.BasicJDBCTestCaseAdapter;
 import com.mockrunner.jdbc.StatementResultSetHandler;
@@ -254,7 +247,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 						Arrays.<Object>asList(15, "c", "15c")));
 
 		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
+		final AnonymousOdsDocument document = writer.document();
 		final Table table = document.addTable("test", 50, 5);
 		final TableCellStyle tcls = TableCellStyle.builder("rs-head")
 				.backgroundColor("#dddddd").fontWeightBold().build();

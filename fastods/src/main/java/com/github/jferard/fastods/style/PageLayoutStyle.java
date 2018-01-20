@@ -55,7 +55,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 	private final PageStyle.WritingMode writingMode;
 
 	/**
-	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
+	 * Create a new page style. Version 0.5.0 Added parameter NamedOdsDocument o
 	 *  @param name             A unique name for this style
 	 * @param margins          the margins of the page
 	 * @param pageWidth        the width of the page

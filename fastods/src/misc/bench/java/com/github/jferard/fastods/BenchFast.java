@@ -51,7 +51,7 @@ public class BenchFast extends Bench {
 		final long t1 = System.currentTimeMillis();
 		final AnonymousOdsFileWriter writer =
 				this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
+		final AnonymousOdsDocument document = writer.document();
 		final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
 
 		for (int y = 0; y < this.getRowCount(); y++) {

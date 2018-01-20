@@ -39,7 +39,7 @@ import java.io.IOException;
  */
 class SimpleFooterHeader implements PageSectionContent {
 	/**
-	 * The OdsDocument where this object belong to.
+	 * The NamedOdsDocument where this object belong to.
 	 */
 	private final Text centerRegion;
 

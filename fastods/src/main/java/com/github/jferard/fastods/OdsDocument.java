@@ -21,362 +21,119 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.MasterPageStyle;
-import com.github.jferard.fastods.style.ObjectStyle;
-import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.PageLayoutStyle;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * An ods document.
+ * An ods document. It is part of a writer that is responsible for the recording.
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class OdsDocument {
+public interface OdsDocument {
     /**
-     * the default column capacity.
+     * Add a new table to the file, the new table is set to the active table.<br>
+     * Use setActiveTable to override the current active table, this has no
+     * influence to the program, the active table is the first table that is shown in
+     * OpenOffice.
+     *
+     * @param name - The name of the table to add
+     * @return the table
+     * @throws IOException if the table can't be added to document
      */
-    static final int DEFAULT_COLUMN_CAPACITY = 32;
+    Table addTable(String name) throws IOException;
+
     /**
-     * the default row capacity.
+     * Add a new table to the file, the new table is set to the active table.<br>
+     * Use setActiveTable to override the current active table, this has no
+     * influence to the program, the active table is the first table that is shown in
+     * OpenOffice.
+     *
+     * @param name - The name of the table to add
+     * @param rowCapacity the initial row capacity
+     * @param columnCapacity the initial column capacity
+     * @return the table
+     * @throws IOException if the table can't be added to document
      */
-    static final int DEFAULT_ROW_CAPACITY = 1024;
-	private final Logger logger;
-	private final OdsElements odsElements;
-	private final XMLUtil xmlUtil;
+    Table addTable(String name, int rowCapacity, int columnCapacity) throws IOException;
 
-	/**
-	 * Create a new ODS file.
-	 *
-	 * @param logger      the logger
-	 * @param odsElements the ods elements (file entries in zip archive)
-	 * @param xmlUtil     a util for XML writing
-	 */
-	OdsDocument(final Logger logger,
-				final OdsElements odsElements, final XMLUtil xmlUtil) {
-		this.logger = logger;
-		this.odsElements = odsElements;
-		this.xmlUtil = xmlUtil;
+    /**
+     * Get a table by index
+     * @param n the index
+     * @return the table
+     * @throws FastOdsException if the table index is negative or >= number of tables
+     */
+    Table getTable(int n) throws FastOdsException;
 
-		// Add five default stylesEntry to contentEntry
-		TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
-		TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
-		TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToElements(this.odsElements);
-		TableCellStyle.DEFAULT_CELL_STYLE.addToElements(this.odsElements);
-		PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
-	}
+    /**
+     * Get a table by name
+     * @param name the name of the table
+     * @return the table
+     * @throws FastOdsException if the table does not exist.
+     */
+    Table getTable(String name) throws FastOdsException;
 
-	/**
-	 * Add a cell style for a given data type. Use only if you want to flush data before the end of the document
-	 * construction.
-	 * Do not produce any effect if the type is Type.STRING or Type.VOID
-	 * @param type the data type
-	 */
-	public void addChildCellStyle(final TableCell.Type type) {
-		this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, type);
-	}
+    /**
+     * @param name the name of the table
+     * @return the table
+     * @throws IOException if the table does not exist.
+     */
+    Table getOrAddTable(String name) throws IOException;
 
-	/**
-	 * Add a cell style for a given data type. Use only if you want to flush data before the end of the document
-	 * construction.
-     * Do not produce any effect if the type is Type.STRING or Type.VOID
-	 * @param style the style
-	 * @param type the data type
-	 */
-	public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
-		this.odsElements.addChildCellStyle(style, type);
-	}
+    /**
+     * Returns the name of the table.
+     *
+     * @param n The number of the table
+     * @return The name of the table
+     * @throws FastOdsException if n is negative
+     */
+    String getTableName(int n) throws FastOdsException;
 
-	/**
-	 * Add a data style to this document. Use only if you want to flush data before the end of the document
-	 * construction.
-	 *
-	 * @param dataStyle the data style to add to this document
-	 */
-	public void addDataStyle(final DataStyle dataStyle) {
-		this.odsElements.addDataStyle(dataStyle);
-	}
+    /**
+     * Search a table by name and return its number.
+     *
+     * @param name The name of the table
+     * @return The number of the table or -1 if name was not found
+     */
+    int getTableNumber(String name);
 
-	/**
-	 * Add a master page style to this document. Use only if you want to flush data before the end of the document
-	 * construction.
-	 *
-	 * @param masterPageStyle the master page style to add to this document
-	 */
-	public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
-		this.odsElements.addMasterPageStyle(masterPageStyle);
-	}
+    /**
+     * @return the list of tables
+     */
+    List<Table> getTables();
 
-	/**
-	 * Add an observer (see Observer pattern).
-	 * @param writer the writer where data will be flushed
-	 */
-	void addObserver(final OdsFileWriter writer) {
-		this.odsElements.addObserver(writer);
-	}
+    /**
+     * Set the active table, this is the table that is shown if you open the
+     * file.
+     *
+     * @param tableIndex The table number, this table should already exist, otherwise
+     *                   the first table is shown
+     * @return true - The active table was set, false - tab has an illegal value
+     */
+    boolean setActiveTable(int tableIndex);
 
-	/**
-	 * Add a page layout style to this document. Use only if you want to flush data before the end of the document
-	 * construction.
-	 *
-	 * @param pageLayoutStyle the page layout to add to this document
-	 */
-	public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
-		this.odsElements.addPageLayoutStyle(pageLayoutStyle);
-	}
+    /**
+     * Set a view setting
+     * @param viewId the view id
+     * @param item the item name
+     * @param value the value
+     */
+    void setViewSetting(String viewId, String item, String value);
 
-	/**
-	 * Add a page style to this document
-	 * @param ps the page style
-	 */
-	public void addPageStyle(final PageStyle ps) {
-		this.odsElements.addPageStyle(ps);
-	}
+    /**
+     * Gets the number of the last table.
+     *
+     * @return The number of the last table
+     */
+    int tableCount();
 
-	/**
-	 * Add an object style to this document. Use only if you want to flush data before the end of the document
-	 * construction.
-	 *
-	 * @param objectStyle the object style to add to this document
-	 */
-	public void addObjectStyle(final ObjectStyle objectStyle) {
-		this.odsElements.addObjectStyle(objectStyle);
-	}
-
-	/**
-	 * Add a style to content.xml > automatic-styles
-	 * @param objectStyle the style
-	 */
-	public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
-		this.odsElements.addStyleToContentAutomaticStyles(objectStyle);
-	}
-
-	/**
-	 * Add a new table to the file, the new table is set to the active table.<br>
-	 * Use setActiveTable to override the current active table, this has no
-	 * influence to the program, the active table is the first table that is shown in
-	 * OpenOffice.
-	 *
-	 * @param name - The name of the table to add
-	 * @return the table
-	 * @throws IOException if the table can't be added to document
-	 */
-	public Table addTable(final String name) throws IOException {
-		return this.addTable(name, OdsDocument.DEFAULT_ROW_CAPACITY,
-				OdsDocument.DEFAULT_COLUMN_CAPACITY);
-	}
-
-	/**
-	 * Add a new table to the file, the new table is set to the active table.<br>
-	 * Use setActiveTable to override the current active table, this has no
-	 * influence to the program, the active table is the first table that is shown in
-	 * OpenOffice.
-	 *
-	 * @param name - The name of the table to add
-	 * @param rowCapacity the initial row capacity
-	 * @param columnCapacity the initial column capacity
-	 * @return the table
-	 * @throws IOException if the table can't be added to document
-	 */
-	public Table addTable(final String name, final int rowCapacity,
-						  final int columnCapacity) throws IOException {
-		final Table table = this.odsElements.addTableToContent(name, rowCapacity,
-				columnCapacity);
-		this.odsElements.setActiveTable(table);
-		return table;
-	}
-
-	/**
-	 * Enable styles debugging
-	 */
-	public void debugStyles() {
-		this.odsElements.debugStyles();
-	}
-
-	/**
-	 * Enable styles freeze
-	 */
-	public void freezeStyles() {
-		this.odsElements.freezeStyles();
-	}
-
-	/**
-	 * Get a table by index
-	 * @param n the index
-	 * @return the table
-	 * @throws FastOdsException if the table index is negative or >= number of tables
-	 */
-	public Table getTable(final int n) throws FastOdsException {
-		final List<Table> tables = this.odsElements.getTables();
-		if (n < 0 || n >= tables.size()) {
-			throw new FastOdsException("Wrong table number [" + n + "]");
-		}
-
-		return tables.get(n);
-	}
-
-	/**
-	 * Get a table by name
-	 * @param name the name of the table
-	 * @return the table
-	 * @throws FastOdsException if the table does not exist.
-	 */
-	public Table getTable(final String name) throws FastOdsException {
-		final Table table = this.odsElements.getTable(name);
-		if (table == null) {
-			throw new FastOdsException("Wrong table name [" + name + "]");
-		}
-		return table;
-	}
-
-	/**
-	 * @param name the name of the table
-	 * @return the table
-	 * @throws IOException if the table does not exist.
-	 */
-	public Table getOrAddTable(final String name) throws IOException {
-		Table table = this.odsElements.getTable(name);
-		if (table == null) {
-			table = this.addTable(name);
-		}
-		return table;
-	}
-
-
-	/**
-	 * Returns the name of the table.
-	 *
-	 * @param n The number of the table
-	 * @return The name of the table
-	 * @throws FastOdsException if n is negative
-	 */
-	public String getTableName(final int n) throws FastOdsException {
-		final Table t = this.getTable(n);
-		return t.getName();
-	}
-
-	/**
-	 * Search a table by name and return its number.
-	 *
-	 * @param name The name of the table
-	 * @return The number of the table or -1 if name was not found
-	 */
-	public int getTableNumber(final String name) {
-		final ListIterator<Table> iterator = this.odsElements.getTables()
-				.listIterator();
-		while (iterator.hasNext()) {
-			final int n = iterator.nextIndex();
-			final Table tab = iterator.next();
-			if (tab.getName().equals(name)) {
-				return n;
-			}
-		}
-
-		return -1;
-	}
-
-	/**
-	 * @return the list of tables
-	 */
-	public List<Table> getTables() {
-		return this.odsElements.getTables();
-	}
-
-	/**
-	 * Prepare the document for flush (ie write empty elements, manifest, mimetype, ...)
-	 * @throws IOException if an element can't be written
-	 */
-	public void prepareFlush() throws IOException {
-		this.odsElements.prepare();
-	}
-
-	/**
-	 * Save the document
-	 * @throws IOException if the save fails
-	 */
-	public void save() throws IOException {
-		this.odsElements.save();
-	}
-
-	/**
-	 * Saves a file
-	 *
-	 * @param writer where to write
-	 * @throws IOException if the document can't be saved
-	 */
-	public void save(final ZipUTF8Writer writer) throws IOException {
-		try {
-			this.odsElements.createEmptyElements(writer);
-			this.odsElements.writeImmutableElements(this.xmlUtil, writer);
-			this.odsElements.writeMeta(this.xmlUtil, writer);
-			this.odsElements.writeStyles(this.xmlUtil, writer);
-			this.odsElements.writeContent(this.xmlUtil, writer);
-			this.odsElements.writeSettings(this.xmlUtil, writer);
-		} finally {
-			writer.close();
-		}
-		this.logger.log(Level.FINE, "file saved");
-	}
-
-	/**
-	 * Set the active table, this is the table that is shown if you open the
-	 * file.
-	 *
-	 * @param tableIndex The table number, this table should already exist, otherwise
-	 *                   the first table is shown
-	 * @return true - The active table was set, false - tab has an illegal value
-	 */
-	public boolean setActiveTable(final int tableIndex) {
-		if (tableIndex < 0 || tableIndex >= this.odsElements.getTableCount())
-			return false;
-
-		final Table table = this.odsElements.getTable(tableIndex);
-		this.odsElements.setActiveTable(table);
-		return true;
-	}
-
-	/**
-	 * Set a view setting
-	 * @param viewId the view id
-	 * @param item the item name
-	 * @param value the value
-	 */
-	public void setViewSetting(final String viewId, final String item, final String value) {
-		this.odsElements.setViewSetting(viewId, item, value);
-	}
-
-	/**
-	 * Gets the number of the last table.
-	 *
-	 * @return The number of the last table
-	 */
-	public int tableCount() {
-		return this.odsElements.getTableCount();
-	}
-
-	/**
-	 * Add an autofilter to a range address
-	 * @param table the table
-	 * @param r1 the top row
-	 * @param c1 the left column
-	 * @param r2 the bottom row
-	 * @param c2 the right column
-	 */
-	public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
-		this.odsElements.addAutofilter(table, r1, c1, r2, c2);
-	}
+    /**
+     * Add an autofilter to a range address
+     * @param table the table
+     * @param r1 the top row
+     * @param c1 the left column
+     * @param r2 the bottom row
+     * @param c2 the right column
+     */
+    void addAutofilter(Table table, int r1, int c1, int r2, int c2);
 }

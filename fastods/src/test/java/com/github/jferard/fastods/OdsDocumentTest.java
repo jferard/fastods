@@ -77,7 +77,7 @@ public class OdsDocumentTest {
 		this.initOdsElements();
 		this.odsElements.addDataStyle(ds);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		f.addDataStyle(ds);
 		PowerMock.verifyAll();
@@ -90,7 +90,7 @@ public class OdsDocumentTest {
 		this.initOdsElements();
 		this.odsElements.addPageStyle(ps);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		f.addPageStyle(ps);
 		PowerMock.verifyAll();
@@ -106,7 +106,7 @@ public class OdsDocumentTest {
 				.andReturn(t);
 		this.odsElements.setActiveTable(t);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(t, f.addTable("t1", 100, 100));
 		PowerMock.verifyAll();
@@ -122,7 +122,7 @@ public class OdsDocumentTest {
 				EasyMock.anyInt(), EasyMock.anyInt())).andReturn(t);
 		this.odsElements.setActiveTable(t);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(t, f.addTable("t1"));
 		PowerMock.verifyAll();
@@ -136,7 +136,7 @@ public class OdsDocumentTest {
 		this.initOdsElements();
 		this.odsElements.addTextStyle(ts);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, "file", this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, "file", this.odsElements,
 				this.writeUtil, this.xmlUtil);
 		f.addTextStyle(ts);
 		PowerMock.verifyAll();
@@ -152,7 +152,7 @@ public class OdsDocumentTest {
 		EasyMock.expect(t.getName()).andReturn("t2").anyTimes();
 		EasyMock.expect(this.odsElements.getTable("t2")).andReturn(t).anyTimes();
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(t, f.getTable(3));
 		Assert.assertEquals("t2", f.getTableName(3));
@@ -169,13 +169,13 @@ public class OdsDocumentTest {
 
 		// PLAY
 		EasyMock.expect(this.odsElements.getTable("test")).andReturn(null);
-		EasyMock.expect(this.odsElements.addTableToContent("test", OdsDocument.DEFAULT_ROW_CAPACITY, OdsDocument.DEFAULT_COLUMN_CAPACITY)).andReturn(t);
+		EasyMock.expect(this.odsElements.addTableToContent("test", NamedOdsDocument.DEFAULT_ROW_CAPACITY, NamedOdsDocument.DEFAULT_COLUMN_CAPACITY)).andReturn(t);
 		this.odsElements.setActiveTable(t);
 
 		// REPLAY
 		PowerMock.replayAll();
 
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(t, f.getOrAddTable("test"));
 
@@ -190,7 +190,7 @@ public class OdsDocumentTest {
 		EasyMock.expect(this.odsElements.getTables())
 				.andReturn(Arrays.<Table> asList());
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		f.getTable(3);
 		PowerMock.verifyAll();
@@ -204,7 +204,7 @@ public class OdsDocumentTest {
 		EasyMock.expect(this.odsElements.getTables())
 				.andReturn(Arrays.<Table> asList());
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		f.getTable(-3);
 		PowerMock.verifyAll();
@@ -216,7 +216,7 @@ public class OdsDocumentTest {
 
 		EasyMock.expect(this.odsElements.getTable("t1")).andReturn(null);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		f.getTable("t1");
 		PowerMock.verifyAll();
@@ -229,7 +229,7 @@ public class OdsDocumentTest {
 		EasyMock.expect(this.odsElements.getTables())
 				.andReturn(Arrays.<Table> asList());
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(-1, f.getTableNumber("t1"));
 		PowerMock.verifyAll();
@@ -247,7 +247,7 @@ public class OdsDocumentTest {
 		this.writer.close();
 
 		PowerMock.replayAll();
-		final OdsDocument d = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument d = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		d.save(this.writer);
 		PowerMock.verifyAll();
@@ -265,7 +265,7 @@ public class OdsDocumentTest {
 		this.writer.close();
 		EasyMock.expectLastCall().andThrow(new IOException("@"));
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		this.thrown.expect(IOException.class);
 		this.thrown.expectMessage("@");
@@ -281,7 +281,7 @@ public class OdsDocumentTest {
 		EasyMock.expectLastCall().andThrow(new IOException("@"));
 		this.writer.close();
 		PowerMock.replayAll();
-		final OdsDocument d = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument d = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		this.thrown.expect(IOException.class);
 		this.thrown.expectMessage("@");
@@ -294,7 +294,7 @@ public class OdsDocumentTest {
 		this.initOdsElements();
 		EasyMock.expect(this.odsElements.getTableCount()).andReturn(11);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(11, f.tableCount());
 		PowerMock.verifyAll();
@@ -310,7 +310,7 @@ public class OdsDocumentTest {
 				.anyTimes();
 		EasyMock.expect(t.getName()).andReturn("@t").anyTimes();
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertEquals(-1, f.getTableNumber("@s"));
 		Assert.assertEquals(0, f.getTableNumber("@t"));
@@ -329,7 +329,7 @@ public class OdsDocumentTest {
 		EasyMock.expect(this.odsElements.getTable(0)).andReturn(t).anyTimes();
 		this.odsElements.setActiveTable(t);
 		PowerMock.replayAll();
-		final OdsDocument f = new OdsDocument(this.logger, this.odsElements,
+		final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements,
 				this.xmlUtil);
 		Assert.assertFalse(f.setActiveTable(-1));
 		Assert.assertFalse(f.setActiveTable(1));

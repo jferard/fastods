@@ -88,7 +88,7 @@ public class AnonymousOdsFileWriterTest {
         // PLAY
         this.initOdsElements();
         PowerMock.replayAll();
-        final OdsDocument document = new OdsDocument(l, this.odsElements,
+        final NamedOdsDocument document = new NamedOdsDocument(l, this.odsElements,
                 this.xmlUtil);
         of.createWriter().saveAs(".");
         PowerMock.verifyAll();
@@ -97,7 +97,7 @@ public class AnonymousOdsFileWriterTest {
     @Test
     public final void testSaveEmpyDocumentToOutputStream() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final OdsDocument document = writer.document();
+        final AnonymousOdsDocument document = writer.document();
         PowerMock.replayAll();
 
         writer.save(this.os);
@@ -141,7 +141,7 @@ public class AnonymousOdsFileWriterTest {
         this.odsElements.writeSettings(this.xmlUtil, z);
         z.close();
         PowerMock.replayAll();
-        final OdsDocument document = new OdsDocument(this.logger, this.odsElements,
+        final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
         final OdsFileWriter writer =
                 new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb).filename(temp.getAbsolutePath())
@@ -168,7 +168,7 @@ public class AnonymousOdsFileWriterTest {
         EasyMock.expectLastCall().anyTimes();
         outputStream.close();
         PowerMock.replayAll();
-        final OdsDocument document = new OdsDocument(this.logger, this.odsElements,
+        final AnonymousOdsDocument document = new AnonymousOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
         new AnonymousOdsFileWriter(this.logger, document).save(outputStream);
         PowerMock.verifyAll();

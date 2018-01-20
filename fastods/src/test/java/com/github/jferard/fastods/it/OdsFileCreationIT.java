@@ -189,7 +189,7 @@ public class OdsFileCreationIT {
             c = row.getCellByIndex(2);
             Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("cc", c.getStyleName());
-            Calendar timeValue = row.getCellByIndex(3).getTimeValue();
+            final Calendar timeValue = row.getCellByIndex(3).getTimeValue();
             Assert.assertEquals(3 * 60 * 1000, timeValue.getTimeInMillis()+timeValue.getTimeZone().getRawOffset());
             c = row.getCellByIndex(4);
             Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
@@ -206,7 +206,7 @@ public class OdsFileCreationIT {
 
     private File standardDocument(final int n) throws IOException, FastOdsException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final OdsDocument document = writer.document();
+        final AnonymousOdsDocument document = writer.document();
         this.createStyles();
 
         this.fillDocument(document, n);
@@ -303,9 +303,9 @@ public class OdsFileCreationIT {
 
     private File standardDocumentWithFlush(final int n) throws FastOdsException, IOException {
         final File output = new File("generated_files", this.standadDocumentName(true, n));
-        final OdsFileWriter writer =
+        final OdsFileWriter<NamedOdsDocument> writer =
                 this.odsFactory.createWriter(output);
-        final OdsDocument document = writer.document();
+        final NamedOdsDocument document = writer.document();
 
         this.createStyles();
         document.addObjectStyle(this.trs);

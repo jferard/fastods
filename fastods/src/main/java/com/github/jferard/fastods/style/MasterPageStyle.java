@@ -44,7 +44,7 @@ public class MasterPageStyle implements AddableToOdsElements {
 	private final String name;
 
 	/**
-	 * Create a new page style. Version 0.5.0 Added parameter OdsDocument o
+	 * Create a new page style. Version 0.5.0 Added parameter NamedOdsDocument o
 	 *  @param name   A unique name for this style
 	 * @param layoutName the name of the layout linked to this style
 	 * @param header the header for this style

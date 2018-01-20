@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  *
  * <pre>
  * {@code
- * 		OdsDocument file = OdsDocument.create("7columns.ods");
+ * 		NamedOdsDocument file = NamedOdsDocument.create("7columns.ods");
  *		final Table table = file.addTable("test", 50, 5);
  *		XMLUtil xmlUtil = FastOds.getXMLUtil();
  *		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")

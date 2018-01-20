@@ -54,7 +54,7 @@ public class OdsFactory {
 	 * @return a default ods factory
 	 */
 	public static OdsFactory create() {
-		return OdsFactory.create(Logger.getLogger(OdsDocument.class.getName()), Locale.getDefault());
+		return OdsFactory.create(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.getDefault());
 	}
 
 	/**
@@ -112,14 +112,26 @@ public class OdsFactory {
 	}
 
 	/**
-	 * Create a new, empty document. Use addTable to add tables.
+	 * Create a new, empty document for an anonymous writer. Use addTable to add tables.
 	 *
 	 * @return a new document
 	 */
-	private OdsDocument createDocument() {
+	private AnonymousOdsDocument createAnonymousDocument() {
 		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
 				this.writeUtil, this.format);
-		return new OdsDocument(this.logger,
+		return new AnonymousOdsDocument(this.logger,
+				odsElements, this.xmlUtil);
+	}
+
+	/**
+	 * Create a new, empty document for a normal writer. Use addTable to add tables.
+	 *
+	 * @return a new document
+	 */
+	private NamedOdsDocument createDocument() {
+		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
+				this.writeUtil, this.format);
+		return new NamedOdsDocument(this.logger,
 				odsElements, this.xmlUtil);
 	}
 
@@ -127,7 +139,7 @@ public class OdsFactory {
      * @return a new writer, but with no actual name
      */
     public AnonymousOdsFileWriter createWriter() {
-		final OdsDocument document = this.createDocument();
+		final AnonymousOdsDocument document = this.createAnonymousDocument();
 		return new AnonymousOdsFileWriter(this.logger, document);
 	}
 
@@ -140,7 +152,7 @@ public class OdsFactory {
 	 */
 	public OdsFileWriter createWriter(final String filename) throws
 			IOException {
-		final OdsDocument document = this.createDocument();
+		final NamedOdsDocument document = this.createDocument();
 		final OdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile
 				(filename))
 				.build();
@@ -156,7 +168,7 @@ public class OdsFactory {
      * @throws IOException if an I/O error occurs
      */
     public OdsFileWriter createWriter(final File file) throws IOException {
-		final OdsDocument document = this.createDocument();
+		final NamedOdsDocument document = this.createDocument();
 		final OdsFileWriter writer =
 				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
 		document.addObserver(writer);
@@ -171,7 +183,7 @@ public class OdsFactory {
      * @throws IOException if an I/O error occurs
      */
     public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
-		final OdsDocument document = this.createDocument();
+		final NamedOdsDocument document = this.createDocument();
 		final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
 		final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(
 				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).zipBuilder(
