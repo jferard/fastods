@@ -247,7 +247,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 						Arrays.<Object>asList(15, "c", "15c")));
 
 		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final AnonymousOdsDocument document = writer.document();
+		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", 50, 5);
 		final TableCellStyle tcls = TableCellStyle.builder("rs-head")
 				.backgroundColor("#dddddd").fontWeightBold().build();

@@ -43,7 +43,7 @@ import java.util.logging.Logger;
  * @author Martin Schulz
  */
 public class AnonymousOdsFileWriter {
-	private final AnonymousOdsDocument document;
+	private final NamedOdsDocument document;
 	private final Logger logger;
 
 	/**
@@ -52,15 +52,15 @@ public class AnonymousOdsFileWriter {
 	 * @param logger   the logger
 	 * @param document the document to write
 	 */
-	AnonymousOdsFileWriter(final Logger logger, final AnonymousOdsDocument document) {
+	AnonymousOdsFileWriter(final Logger logger, final NamedOdsDocument document) {
 		this.logger = logger;
 		this.document = document;
 	}
 
 	/**
-	 * @return the underlying document
+	 * @return the underlying document, under the interface
 	 */
-	public AnonymousOdsDocument document() {
+	public OdsDocument document() {
 		return this.document;
 	}
 

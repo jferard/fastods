@@ -103,7 +103,7 @@ public class OdsFileWriterAdapterTest {
 
         // PLAY
         this.w.update(ff);
-        this.w.save();
+//        this.w.save();
 
         PowerMock.replayAll();
         this.wa.flushAdaptee();
@@ -138,7 +138,7 @@ public class OdsFileWriterAdapterTest {
         // PLAY
         this.w.update(this.f);
         this.w.update(ff);
-        this.w.save();
+//        this.w.save();
 
         PowerMock.replayAll();
         t.start();

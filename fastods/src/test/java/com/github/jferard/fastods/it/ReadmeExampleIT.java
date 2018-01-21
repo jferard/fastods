@@ -104,7 +104,7 @@ public class ReadmeExampleIT {
 
     private void readme() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final AnonymousOdsDocument document = writer.document();
+        final OdsDocument document = writer.document();
 
         this.createTable(document);
 

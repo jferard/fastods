@@ -257,7 +257,7 @@ public class NamedOdsDocument implements OdsDocument {
 	}
 
 	/**
-	 * Save the document
+	 * Save the document. Note that the odsElements field has a reference to a writer.
 	 * @throws IOException if the save fails
 	 */
 	public void save() throws IOException {

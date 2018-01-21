@@ -206,7 +206,7 @@ public class OdsFileCreationIT {
 
     private File standardDocument(final int n) throws IOException, FastOdsException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final AnonymousOdsDocument document = writer.document();
+        final OdsDocument document = writer.document();
         this.createStyles();
 
         this.fillDocument(document, n);

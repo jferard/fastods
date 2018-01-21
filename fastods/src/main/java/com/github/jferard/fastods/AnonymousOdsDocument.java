@@ -146,20 +146,12 @@ public class AnonymousOdsDocument implements OdsDocument {
 	}
 
 	/**
-	 * Save the document
-	 * @throws IOException if the save fails
-	 */
-	public void save() throws IOException {
-		this.odsElements.save();
-	}
-
-	/**
 	 * Saves a file
 	 *
 	 * @param writer where to write
 	 * @throws IOException if the document can't be saved
 	 */
-	public void save(final ZipUTF8Writer writer) throws IOException {
+	void save(final ZipUTF8Writer writer) throws IOException {
 		try {
 			this.odsElements.createEmptyElements(writer);
 			this.odsElements.writeImmutableElements(this.xmlUtil, writer);

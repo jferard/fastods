@@ -58,7 +58,8 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
 
     /**
      * Create an new adapter
-     * @param adaptee the adaptee writer
+     *
+     * @param adaptee  the adaptee writer
      * @param flushers the queue of flushers
      */
     OdsFileWriterAdapter(final NamedOdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
@@ -93,13 +94,12 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
      */
     public synchronized void flushAdaptee() throws IOException {
         OdsFlusher flusher = this.flushers.poll();
-        if (flusher == null)
-            return;
+        if (flusher == null) return;
 
         while (flusher != null) {
             this.adaptee.update(flusher);
             if (flusher.isEnd()) {
-                this.adaptee.save();
+                this.stopped = true;
                 this.notifyAll(); // wakes up other threads: end of game
                 return;
             }

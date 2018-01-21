@@ -219,7 +219,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         this.createStyles();
 
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final AnonymousOdsDocument document = writer.document();
+        final OdsDocument document = writer.document();
 
         this.fillDocument(document);
 

@@ -116,10 +116,10 @@ public class OdsFactory {
 	 *
 	 * @return a new document
 	 */
-	private AnonymousOdsDocument createAnonymousDocument() {
+	private NamedOdsDocument createNamedDocument() {
 		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
 				this.writeUtil, this.format);
-		return new AnonymousOdsDocument(this.logger,
+		return new NamedOdsDocument(this.logger,
 				odsElements, this.xmlUtil);
 	}
 
@@ -139,7 +139,7 @@ public class OdsFactory {
      * @return a new writer, but with no actual name
      */
     public AnonymousOdsFileWriter createWriter() {
-		final AnonymousOdsDocument document = this.createAnonymousDocument();
+		final NamedOdsDocument document = this.createNamedDocument();
 		return new AnonymousOdsFileWriter(this.logger, document);
 	}
 
