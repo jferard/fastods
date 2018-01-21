@@ -28,79 +28,81 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public final class NumberStyleHelperBuilder implements NumberStyleBuilder {
-	private final CoreDataStyleBuilder dataStyleBuilder;
-	private boolean grouping;
-	private int minIntegerDigits;
-	private String negativeValueColor;
+public final class NumberStyleHelperBuilder implements NumberStyleBuilder<NumberStyleHelper, NumberStyleHelperBuilder> {
+    private final CoreDataStyleBuilder dataStyleBuilder;
+    private boolean grouping;
+    private int minIntegerDigits;
+    private String negativeValueColor;
 
-	/**
-	 * Create a new number style with a name and a locale.
-	 *
-	 * @param name The name of the number style, this name must be unique.
-	 * @param locale the locale to use
-	 */
-	NumberStyleHelperBuilder(final String name, final Locale locale) {
-		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
-		this.minIntegerDigits = 1;
-		this.grouping = false;
-	}
+    /**
+     * Create a new number style with a name and a locale.
+     *
+     * @param name   The name of the number style, this name must be unique.
+     * @param locale the locale to use
+     */
+    NumberStyleHelperBuilder(final String name, final Locale locale) {
+        this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
+        this.minIntegerDigits = 1;
+        this.grouping = false;
+    }
 
-	@Override
-	public NumberStyleBuilder groupThousands(final boolean grouping) {
-		this.grouping = grouping;
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder groupThousands(final boolean grouping) {
+        this.grouping = grouping;
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		this.minIntegerDigits = minIntegerDigits;
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder minIntegerDigits(final int minIntegerDigits) {
+        this.minIntegerDigits = minIntegerDigits;
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder negativeValueColor(final String negativeValueColor) {
-		this.negativeValueColor = negativeValueColor;
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder negativeValueColor(final String negativeValueColor) {
+        this.negativeValueColor = negativeValueColor;
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder negativeValueRed() {
-		this.negativeValueColor = Color.RED;
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder negativeValueRed() {
+        this.negativeValueColor = Color.RED;
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder country(final String countryCode) {
-		this.dataStyleBuilder.country(countryCode);
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder country(final String countryCode) {
+        this.dataStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder language(final String languageCode) {
-		this.dataStyleBuilder.language(languageCode);
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder language(final String languageCode) {
+        this.dataStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder locale(final Locale locale) {
-		this.dataStyleBuilder.locale(locale);
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder locale(final Locale locale) {
+        this.dataStyleBuilder.locale(locale);
+        return this;
+    }
 
-	@Override
-	public NumberStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.dataStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    @Override
+    public NumberStyleHelperBuilder volatileStyle(final boolean volatileStyle) {
+        this.dataStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
 
-	@Override
+    @Override
     public NumberStyleHelper build() {
-		return new NumberStyleHelper(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits, this.negativeValueColor);
-	}
+        return new NumberStyleHelper(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits,
+                this.negativeValueColor);
+    }
 
-	@Override
+    @Override
     public NumberStyleHelper buildHidden() {
-		return new NumberStyleHelper(this.dataStyleBuilder.buildHidden(), this.grouping, this.minIntegerDigits, this.negativeValueColor);
-	}
+        return new NumberStyleHelper(this.dataStyleBuilder.buildHidden(), this.grouping, this.minIntegerDigits,
+                this.negativeValueColor);
+    }
 }

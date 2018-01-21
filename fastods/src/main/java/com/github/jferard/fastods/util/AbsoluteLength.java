@@ -96,6 +96,11 @@ public class AbsoluteLength implements Length {
         return this.mm - other.mm < MIN_DELTA || other.mm - this.mm < MIN_DELTA;
     }
 
+    @Override
+    public int hashCode() {
+        return Double.valueOf(this.mm).hashCode();
+    }
+
     public String toString() {
         return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) + "mm";
     }

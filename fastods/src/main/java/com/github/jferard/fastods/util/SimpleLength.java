@@ -122,6 +122,11 @@ public class SimpleLength implements Length {
 
     }
 
+    @Override
+    public int hashCode() {
+        return Double.valueOf(this.value).hashCode() * 31 + this.unit.hashCode();
+    }
+
     /**
      * @return a representation of this unit
      */

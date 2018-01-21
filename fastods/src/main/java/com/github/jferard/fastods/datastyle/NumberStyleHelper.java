@@ -26,7 +26,8 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.27.2 number:number-style
+ * Embbeded in FloatStyle and FractionStyle.
+ * Built by a NumberStyleHelperBuilder.
  *
  * @author Julien Férard
  * @author Martin Schulz
