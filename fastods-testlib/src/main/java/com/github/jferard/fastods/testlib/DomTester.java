@@ -22,7 +22,9 @@ package com.github.jferard.fastods.testlib;
 
 import org.junit.Assert;
 import org.w3c.dom.Document;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,7 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DomTester {
-	final static Logger logger = Logger.getLogger("DomTester");
+	static Logger logger = Logger.getLogger("DomTester");
 	private final Charset UTF_8 = Charset.forName("UTF-8");;
 
 	public static void assertEquals(final String string1,
@@ -95,6 +97,20 @@ public class DomTester {
 		final DocumentBuilderFactory factory = DocumentBuilderFactory
 				.newInstance();
 		this.builder = factory.newDocumentBuilder();
+		// all throwable will be catched and rethrown with Level.SEVERE
+		this.builder.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void warning(final SAXParseException e) throws SAXException {
+            }
+
+            @Override
+            public void error(final SAXParseException e) throws SAXException {
+            }
+
+            @Override
+            public void fatalError(final SAXParseException e) throws SAXException {
+            }
+        });
 	}
 
 	private boolean stringEquals(final String s1, final String s2, final ChildrenTester childrenTester)
