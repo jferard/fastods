@@ -56,7 +56,31 @@ public class TableCellWalkerImplTest {
 		this.sb = new StringBuilder();
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
+	public final void testAppendXML() throws IOException {
+		// REPLAY
+		PowerMock.replayAll();
+		this.cellWalker.appendXMLToTableRow(this.util, this.sb);
+		PowerMock.verifyAll();
+	}
+
+    @Test(expected = UnsupportedOperationException.class)
+    public final void testMarkRowsSpanned() throws IOException {
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.markRowsSpanned(5);
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public final void testMarkColumnsSpanned() throws IOException {
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.markColumnsSpanned(5);
+        PowerMock.verifyAll();
+    }
+
+    @Test
 	public final void testBoolean() throws IOException {
 		// PLAY
 		expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
@@ -71,7 +95,172 @@ public class TableCellWalkerImplTest {
 		PowerMock.verifyAll();
 	}
 
-	@Test
+    @Test
+    public final void testText() throws IOException {
+        final Text t = Text.content("a");
+
+        // PLAY
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setText(t);
+        expect(this.row.getColumnCount()).andReturn(20);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setText(t);
+        this.cellWalker.next();
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testCellMerge() throws IOException {
+
+        // PLAY
+        this.row.setCellMerge(10, 5, 6);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setCellMerge(5, 6);
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testColumnsSpanned() throws IOException {
+
+        // PLAY
+        this.row.setColumnsSpanned(10, 12);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setColumnsSpanned(12);
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testRowsSpanned() throws IOException {
+
+        // PLAY
+        this.row.setRowsSpanned(10, 12);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setRowsSpanned(12);
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testVoidValue() {
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setVoidValue();
+
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setVoidValue();
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testTimeValue() throws IOException {
+        // PLAY
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setTimeValue(1000);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setTimeValue(1000);
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testTooltip() throws IOException {
+        // PLAY
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setTooltip("1000");
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setTooltip("1000");
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFormula() throws IOException {
+        // PLAY
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setFormula("1000");
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setFormula("1000");
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testIsCovered() throws IOException {
+        // PLAY
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        expect(this.cell.isCovered()).andReturn(true);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        Assert.assertTrue(this.cellWalker.isCovered());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetCovered() throws IOException {
+        // PLAY
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setCovered();
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setCovered();
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public final void testNext() throws IOException {
+        // PLAY
+        expect(this.row.getColumnCount()).andReturn(20);
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(20);
+        this.cellWalker.next();
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testPrevious() throws IOException {
+        // PLAY
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.to(5);
+        this.cellWalker.previous();
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public final void testPreviousIOOBE() throws IOException {
+        // PLAY
+
+        // REPLAY
+        PowerMock.replayAll();
+        this.cellWalker.previous();
+        PowerMock.verifyAll();
+    }
+
+    @Test
 	public final void testCalendar() {
 		final Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(1234567891011L);
@@ -214,15 +403,25 @@ public class TableCellWalkerImplTest {
 		PowerMock.verifyAll();
 	}
 
-	@Test
-	public final void testPercentageNumber() {
-		expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
-		this.cell.setPercentageValue(Double.valueOf(0.98));
-		PowerMock.replayAll();
-		this.cellWalker.to(10);
-		this.cellWalker.setPercentageValue(Double.valueOf(0.98));
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testPercentageNumber() {
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setPercentageValue(Double.valueOf(0.98));
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setPercentageValue(Double.valueOf(0.98));
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testPercentageInt() {
+        expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
+        this.cell.setPercentageValue(98);
+        PowerMock.replayAll();
+        this.cellWalker.to(10);
+        this.cellWalker.setPercentageValue(98);
+        PowerMock.verifyAll();
+    }
 
 	/*
 	@Test
