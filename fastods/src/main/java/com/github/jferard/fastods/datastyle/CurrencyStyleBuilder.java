@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
 
 import java.util.Currency;
@@ -110,7 +111,7 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 
 	@Override
     public CurrencyStyleBuilder negativeValueColor(
-			final String negativeValueColor) {
+			final Color negativeValueColor) {
 		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}

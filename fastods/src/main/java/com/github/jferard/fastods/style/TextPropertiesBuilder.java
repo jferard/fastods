@@ -21,20 +21,27 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.style.TextProperties.Underline;
 
 /**
  * @author Julien Férard
  */
 public class TextPropertiesBuilder {
-	private String fontColor;
+	private Color fontColor;
 	private String fontName;
 	private String fontSize;
 	private String fontStyle;
-	private String fontUnderlineColor;
+	private Color fontUnderlineColor;
 	private Underline fontUnderlineStyle;
 	private String fontWeight;
 	private boolean hidden;
+
+	TextPropertiesBuilder() {
+	    this.fontColor = SimpleColor.NONE;
+	    this.fontUnderlineColor = SimpleColor.NONE;
+    }
 
 	/**
 	 * @return the TextProperties
@@ -72,7 +79,7 @@ public class TextPropertiesBuilder {
 	 *              cell background
 	 * @return this for fluent style
 	 */
-	public TextPropertiesBuilder fontColor(final String color) {
+	public TextPropertiesBuilder fontColor(final Color color) {
 		this.fontColor = color;
 		return this;
 	}
@@ -140,7 +147,7 @@ public class TextPropertiesBuilder {
 	 *              cell background.
 	 * @return this for fluent style
 	 */
-	public TextPropertiesBuilder fontUnderlineColor(final String color) {
+	public TextPropertiesBuilder fontUnderlineColor(final Color color) {
 		this.fontUnderlineColor = color;
 		return this;
 	}

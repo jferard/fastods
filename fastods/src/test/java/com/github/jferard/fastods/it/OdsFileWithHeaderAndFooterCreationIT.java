@@ -25,6 +25,7 @@ import com.github.jferard.fastods.PageSectionContent.Region;
 import com.github.jferard.fastods.style.*;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
+import com.github.jferard.fastods.util.ColorHelper;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.*;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
@@ -128,11 +129,11 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Assert.assertEquals("bold", stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='cc']//@fo:font-weight", stylesDom.getRootElement()));
 
-        Assert.assertEquals(Color.RED, stylesDom.getXPath()
+        Assert.assertEquals(SimpleColor.RED.hexValue(), stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='red-text']//@fo:color", stylesDom.getRootElement()));
-        Assert.assertEquals(Color.BLUE, stylesDom.getXPath()
+        Assert.assertEquals(SimpleColor.BLUE.hexValue(), stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='blue-text']//@fo:color", stylesDom.getRootElement()));
-        Assert.assertEquals(Color.GREEN, stylesDom.getXPath()
+        Assert.assertEquals(SimpleColor.GREEN.hexValue(), stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='green-text']//@fo:color", stylesDom.getRootElement()));
 
         Assert.assertEquals("left header", stylesDom.getXPath().evaluate(LEFT_HEADER_PATH, stylesDom.getRootElement()));
@@ -259,13 +260,13 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
     private void createStyles() {
         this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).buildHidden();
-        this.tcls = TableCellStyle.builder("cc").backgroundColor("#dddddd").fontWeightBold().build();
+        this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
         this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(this.tcls)
                 .buildHidden();
 
-        this.lts = TextProperties.builder().fontColor(Color.RED).buildHiddenStyle("red-text");
-        this.cts = TextProperties.builder().fontColor(Color.BLUE).buildHiddenStyle("blue-text");
-        this.rts = TextProperties.builder().fontColor(Color.GREEN).buildHiddenStyle("green-text");
+        this.lts = TextProperties.builder().fontColor(SimpleColor.RED).buildHiddenStyle("red-text");
+        this.cts = TextProperties.builder().fontColor(SimpleColor.BLUE).buildHiddenStyle("blue-text");
+        this.rts = TextProperties.builder().fontColor(SimpleColor.GREEN).buildHiddenStyle("green-text");
         this.boldStyle = TextProperties.builder().fontWeightBold().buildHiddenStyle("bold-text");
         this.italicStyle = TextProperties.builder().fontStyleItalic().buildHiddenStyle("italic-text");
 

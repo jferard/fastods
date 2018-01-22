@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ class NumberStyleHelper implements NumberStyle {
 
     private final boolean grouping;
     private final int minIntegerDigits;
-    private final String negativeValueColor;
+    private final Color negativeValueColor;
 
     /**
      * Create a new number style
@@ -48,7 +49,7 @@ class NumberStyleHelper implements NumberStyle {
      * @param negativeValueColor the color if the numbrer is negative
      */
     NumberStyleHelper(final CoreDataStyle dataStyle, final boolean grouping, final int minIntegerDigits,
-                      final String negativeValueColor) {
+                      final Color negativeValueColor) {
         this.dataStyle = dataStyle;
         this.grouping = grouping;
         this.negativeValueColor = negativeValueColor;
@@ -102,7 +103,7 @@ class NumberStyleHelper implements NumberStyle {
     }
 
     @Override
-    public String getNegativeValueColor() {
+    public Color getNegativeValueColor() {
         return this.negativeValueColor;
     }
 
@@ -142,7 +143,7 @@ class NumberStyleHelper implements NumberStyle {
      */
     private void appendStyleColor(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<style:text-properties");
-        util.appendAttribute(appendable, "fo:color", this.negativeValueColor);
+        util.appendAttribute(appendable, "fo:color", this.negativeValueColor.hexValue());
         appendable.append("/>");
     }
 

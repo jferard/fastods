@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.style.BorderAttribute.Style;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
@@ -32,7 +34,7 @@ public class BorderAttributeBuilder {
 	/**
 	 * The border color
 	 */
-	private String borderColor;
+	private Color borderColor;
 
 	/**
 	 * The border size.
@@ -51,6 +53,7 @@ public class BorderAttributeBuilder {
 	 */
 	BorderAttributeBuilder() {
 		this.style = BorderAttribute.DEFAULT_STYLE;
+		this.borderColor = SimpleColor.NONE;
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class BorderAttributeBuilder {
 	 *            The color in format #rrggbb
 	 * @return this for fluent style
 	 */
-	public BorderAttributeBuilder borderColor(final String borderColor) {
+	public BorderAttributeBuilder borderColor(final Color borderColor) {
 		this.borderColor = borderColor;
 		return this;
 	}

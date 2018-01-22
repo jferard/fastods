@@ -18,21 +18,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.ColorHelper;
+package com.github.jferard.fastods.util;
+
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ColorTest {
-
+/**
+ * A test for ColorHelper
+ */
+public class ColorHelperTest {
     @Test
-    public final void test() {
-        Assert.assertEquals("#ffffff", ColorHelper.fromRGB(255, 255, 255).hexValue());
-        Assert.assertEquals("#ffffff", ColorHelper.fromRGB(2550, 2550, 2550).hexValue());
-        Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).hexValue());
-        Assert.assertEquals("#000000", ColorHelper.fromRGB(-10, -10, -10).hexValue());
-        Assert.assertEquals("#174b81", ColorHelper.fromRGB(23, 75, 129).hexValue());
+    public void testAll() {
+        for (final Color c : SimpleColor.values()) {
+            Assert.assertEquals(c, ColorHelper.fromString(c.hexValue()));
+        }
     }
 
+    @Test
+    public void testBlack() {
+        Assert.assertEquals("#000000", ColorHelper.fromRGB(0,0,0).hexValue());
+        Assert.assertEquals(SimpleColor.BLACK, ColorHelper.fromRGB(0,0,0));
+
+    }
 }

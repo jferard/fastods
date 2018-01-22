@@ -23,6 +23,7 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -91,7 +92,7 @@ public class FractionStyle implements NumberStyle, DataStyle {
 	}
 
 	@Override
-	public String getNegativeValueColor() {
+	public Color getNegativeValueColor() {
 		return this.numberStyle.getNegativeValueColor();
 	}
 

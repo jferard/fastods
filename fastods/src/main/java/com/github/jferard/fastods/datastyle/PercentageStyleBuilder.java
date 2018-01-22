@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
+
 import java.util.Locale;
 
 /**
@@ -71,7 +73,7 @@ public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle,
 
 	@Override
     public PercentageStyleBuilder negativeValueColor(
-			final String negativeValueColor) {
+			final Color negativeValueColor) {
 		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}

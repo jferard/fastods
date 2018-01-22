@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.SimpleLength;
@@ -43,7 +44,7 @@ public class TableCellStyle implements ObjectStyle {
 	public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
 			.textAlign(TableCellStyle.Align.LEFT)
 			.verticalAlign(TableCellStyle.VerticalAlign.TOP)
-			.fontWrap(false).backgroundColor(Color.WHITE)
+			.fontWrap(false).backgroundColor(SimpleColor.WHITE)
 			.allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
 
 	/**
@@ -55,7 +56,7 @@ public class TableCellStyle implements ObjectStyle {
 		return new TableCellStyleBuilder(name);
 	}
 
-	private final String backgroundColor;
+	private final Color backgroundColor;
 	private final boolean hidden;
 	private final Borders borders;
 	private final Margins margins;
@@ -85,7 +86,7 @@ public class TableCellStyle implements ObjectStyle {
 	 * @param margins the margins of the cell
 	 */
 	TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle,
-				   final String backgroundColor, final TextProperties textProperties,
+				   final Color backgroundColor, final TextProperties textProperties,
 				   final Align textAlign, final VerticalAlign verticalAlign,
 				   final boolean wrap, final String parentCellStyleName,
 				   final Borders borders, final Margins margins) {
@@ -113,7 +114,7 @@ public class TableCellStyle implements ObjectStyle {
 		appendable.append("<style:table-cell-properties");
 		if (this.backgroundColor != null)
 			util.appendAttribute(appendable, "fo:background-color",
-					this.backgroundColor);
+					this.backgroundColor.hexValue());
 
 		if (this.verticalAlign != null)
 			util.appendAttribute(appendable, "style:vertical-align",

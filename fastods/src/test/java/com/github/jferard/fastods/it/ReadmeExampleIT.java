@@ -25,6 +25,7 @@ import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
+import com.github.jferard.fastods.util.ColorHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,7 +49,7 @@ public class ReadmeExampleIT {
     public static final String README_EXAMPLE_ODS = "readme_example.ods";
     public static final String README_EXAMPLE_WITH_FLUSH_ODS = "readme_example_with_flush.ods";
     public static final String GREEN_CELL_STYLE = "green cell style";
-    public static final String GREEN_COLOR = "#00FF00";
+    public static final Color GREEN_COLOR = ColorHelper.fromString("#00FF00");
 
     @BeforeClass
     public static void beforeClass() {
@@ -87,7 +88,7 @@ public class ReadmeExampleIT {
         final OdfStyle gcs = OdfToolkitUtil.getDocumentStyle(document, GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
         Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
         final Node properties = OdfToolkitUtil.getFirstElement(gcs, "style:table-cell-properties");
-        Assert.assertEquals(GREEN_COLOR, OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
+        Assert.assertEquals(GREEN_COLOR.hexValue(), OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
         for (int y = 0; y < 50; y++) {
             for (int x = 0; x < 5; x++) {
                 final org.odftoolkit.simple.table.Cell cell = sheet.getCellByPosition(x, y);

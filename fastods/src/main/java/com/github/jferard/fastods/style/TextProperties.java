@@ -23,6 +23,8 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TagParameter;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -85,30 +87,30 @@ public class TextProperties implements TagParameter {
 		return new TextPropertiesBuilder();
 	}
 
-	private final String fontColor;
+	private final Color fontColor;
 	private final String fontName;
 	private final String fontSize;
 	private final String fontStyle;
 
-	private final String fontUnderlineColor;
+	private final Color fontUnderlineColor;
 
 	private final Underline fontUnderlineStyle;
 	private final String fontWeight;
 
     /**
      * Create a new text style with the name name.
-     * @param fontColor the font color
+	 * @param fontColor the font color
      * @param fontName the font name
-     * @param fontWeight the font weight
-     * @param fontStyle the fon style
-     * @param fontSize the font size
-     * @param fontUnderlineColor the font underline color
-     * @param fontUnderlineStyle the font underline style
-     */
-    TextProperties(final String fontColor, final String fontName,
-			final String fontWeight, final String fontStyle,
-			final String fontSize, final String fontUnderlineColor,
-			final Underline fontUnderlineStyle) {
+	 * @param fontWeight the font weight
+	 * @param fontStyle the fon style
+	 * @param fontSize the font size
+	 * @param fontUnderlineColor the font underline color
+	 * @param fontUnderlineStyle the font underline style
+	 */
+    TextProperties(final Color fontColor, final String fontName,
+				   final String fontWeight, final String fontStyle,
+				   final String fontSize, final Color fontUnderlineColor,
+				   final Underline fontUnderlineStyle) {
 		this.fontColor = fontColor;
 		this.fontName = fontName;
 		this.fontWeight = fontWeight;
@@ -140,8 +142,8 @@ public class TextProperties implements TagParameter {
 		}
 
 		// Check if a font color should be added
-		if (this.fontColor != null) {
-			util.appendAttribute(appendable, "fo:color", this.fontColor);
+		if (this.fontColor != SimpleColor.NONE) {
+			util.appendAttribute(appendable, "fo:color", this.fontColor.hexValue());
 		}
 		// Check if a font name should be added
 		if (this.fontName != null) {
@@ -167,9 +169,9 @@ public class TextProperties implements TagParameter {
 			// the
 			// font color
 			// ---------------------------------------------------------------------------------
-			if (this.fontUnderlineColor != null) {
+			if (this.fontUnderlineColor != SimpleColor.NONE) {
 				util.appendAttribute(appendable, "style:text-underline-color",
-						this.fontUnderlineColor);
+						this.fontUnderlineColor.hexValue());
 			} else {
 				util.appendAttribute(appendable, "style:text-underline-color",
 						"font-color");
@@ -181,9 +183,9 @@ public class TextProperties implements TagParameter {
 	/**
 	 * Get the current font color.
 	 *
-	 * @return The currently set font color as a String in format #rrggbb
+	 * @return The currently set font color.
 	 */
-	public String getFontColor() {
+	public Color getFontColor() {
 		return this.fontColor;
 	}
 
@@ -199,9 +201,9 @@ public class TextProperties implements TagParameter {
 	/**
 	 * Get the currently set underline color.
 	 *
-	 * @return The color in format #rrggbb
+	 * @return The color
 	 */
-	public String getFontUnderlineColor() {
+	public Color getFontUnderlineColor() {
 		return this.fontUnderlineColor;
 	}
 
@@ -225,8 +227,8 @@ public class TextProperties implements TagParameter {
 	 * @return true if at least one property was set
 	 */
 	public boolean isNotEmpty() {
-		return this.fontUnderlineStyle != null || this.fontColor != null
+		return this.fontUnderlineStyle != null || this.fontColor != SimpleColor.NONE
 				|| this.fontSize != null || this.fontStyle != null
-				|| this.fontUnderlineColor != null || this.fontWeight != null;
+				|| this.fontUnderlineColor != SimpleColor.NONE || this.fontWeight != null;
 	}
 }

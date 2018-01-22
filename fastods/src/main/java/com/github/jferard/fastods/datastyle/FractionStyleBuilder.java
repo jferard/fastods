@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
+
 import java.util.Locale;
 
 /**
@@ -85,7 +87,7 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
 	}
 
 	@Override
-	public FractionStyleBuilder negativeValueColor(final String negativeValueColor) {
+	public FractionStyleBuilder negativeValueColor(final Color negativeValueColor) {
 		this.numberStyleHelperBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}

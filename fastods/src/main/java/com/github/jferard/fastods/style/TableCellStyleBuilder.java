@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.StyleBuilder;
@@ -30,7 +31,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Martin Schulz
  */
 public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
-	private String backgroundColor;
+	private Color backgroundColor;
 	private final BordersBuilder bordersBuilder;
 	private DataStyle dataStyle;
 	private final MarginsBuilder marginsBuilder;
@@ -81,7 +82,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 *            red cell background
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder backgroundColor(final String color) {
+	public TableCellStyleBuilder backgroundColor(final Color color) {
 		this.backgroundColor = color;
 		return this;
 	}
@@ -94,7 +95,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder borderAll(final Length size,
-			final String borderColor, final BorderAttribute.Style style) {
+			final Color borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
 		this.bordersBuilder.all(bs);
@@ -109,7 +110,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder borderBottom(final Length size,
-			final String borderColor, final BorderAttribute.Style style) {
+			final Color borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
 		this.bordersBuilder.bottom(bs);
@@ -124,7 +125,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder borderLeft(final Length size,
-			final String borderColor, final BorderAttribute.Style style) {
+			final Color borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
 		this.bordersBuilder.left(bs);
@@ -139,7 +140,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder borderRight(final Length size,
-			final String borderColor, final BorderAttribute.Style style) {
+			final Color borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
 		this.bordersBuilder.right(bs);
@@ -154,7 +155,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 * @return this for fluent style
 	 */
 	public TableCellStyleBuilder borderTop(final Length size,
-			final String borderColor, final BorderAttribute.Style style) {
+			final Color borderColor, final BorderAttribute.Style style) {
 		final BorderAttribute bs = new BorderAttribute(size, borderColor,
 				style);
 		this.bordersBuilder.top(bs);
@@ -199,7 +200,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 	 *            cell background
 	 * @return this for fluent style
 	 */
-	public TableCellStyleBuilder fontColor(final String color) {
+	public TableCellStyleBuilder fontColor(final Color color) {
 		this.tpBuilder.fontColor(color);
 		return this;
 	}

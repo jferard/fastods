@@ -21,6 +21,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -86,7 +87,7 @@ public class PercentageStyleTest {
 	@Test
 	public final void testNegativeValueColor() throws IOException {
 		final PercentageStyle ps = this.factory.percentageStyleBuilder("test")
-				.negativeValueColor(Color.GREEN).build();
+				.negativeValueColor(SimpleColor.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(

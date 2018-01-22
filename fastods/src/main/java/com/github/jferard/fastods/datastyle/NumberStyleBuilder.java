@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
@@ -47,7 +48,7 @@ public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>>
      * @param negativeValueColor the color for negative values, null if none
      * @return this for fluent style
      */
-    T negativeValueColor(String negativeValueColor);
+    T negativeValueColor(Color negativeValueColor);
 
     /**
      * Sets the red color for negative values

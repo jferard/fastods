@@ -21,6 +21,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -104,7 +105,7 @@ public class CurrencyStyleTest {
 	@Test
 	public final void testNegativeValueColor() throws IOException {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
-				.negativeValueColor(Color.GREEN).build();
+				.negativeValueColor(SimpleColor.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
 		ps.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"

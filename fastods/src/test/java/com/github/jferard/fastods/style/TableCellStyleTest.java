@@ -21,6 +21,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -40,7 +41,7 @@ public class TableCellStyleTest {
 	@Test
 	public final void testAllBorders() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderAll(SimpleLength.pt(1.0), Color.AQUA, BorderAttribute.Style.DOUBLE)
+				.borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLRepresentation(this.util, sb);
@@ -67,11 +68,11 @@ public class TableCellStyleTest {
 	@Test
 	public final void testBorders() throws IOException {
 		final TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderTop(SimpleLength.pt(1.0), Color.AQUA, BorderAttribute.Style.DOUBLE)
-				.borderRight(SimpleLength.pt(2.0), Color.BEIGE, BorderAttribute.Style.SOLID)
-				.borderBottom(SimpleLength.pt(3.0), Color.CADETBLUE,
+				.borderTop(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
+				.borderRight(SimpleLength.pt(2.0), SimpleColor.BEIGE, BorderAttribute.Style.SOLID)
+				.borderBottom(SimpleLength.pt(3.0), SimpleColor.CADETBLUE,
 						BorderAttribute.Style.DOUBLE)
-				.borderLeft(SimpleLength.pt(4.0), Color.DARKBLUE, BorderAttribute.Style.DOUBLE)
+				.borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE, BorderAttribute.Style.DOUBLE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLRepresentation(this.util, sb);

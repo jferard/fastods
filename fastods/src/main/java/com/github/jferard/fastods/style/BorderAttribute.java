@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -95,7 +97,7 @@ public class BorderAttribute {
 	/**
 	 * The border color default is #000000 (black).
 	 */
-	public static final String DEFAULT_BORDER_COLOR = "#000000";
+	public static final Color DEFAULT_BORDER_COLOR = SimpleColor.BLACK;
 
 	/**
 	 * The border size default is 0.1cm
@@ -122,7 +124,7 @@ public class BorderAttribute {
 	/**
 	 * The border color
 	 */
-	private final String borderColor;
+	private final Color borderColor;
 
 	/**
 	 * The border size.
@@ -147,7 +149,7 @@ public class BorderAttribute {
 	 *            The style of the border, BorderAttribute.BORDER_SOLID or
 	 *            BorderAttribute.BORDER_DOUBLE
 	 */
-	BorderAttribute(final Length size, final String color, final Style style) {
+	BorderAttribute(final Length size, final Color color, final Style style) {
 		this.borderSize = size;
 		this.borderColor = color;
 		this.style = style;
@@ -158,7 +160,7 @@ public class BorderAttribute {
 	 *
 	 * @return The color in format #rrggbb
 	 */
-	public String getBorderColor() {
+	public Color getBorderColor() {
 		return this.borderColor;
 	}
 
@@ -185,15 +187,15 @@ public class BorderAttribute {
 	 */
 	public String toXMLAttributeValue() {
 		final StringBuilder sb = new StringBuilder();
-		if (this.borderSize == null && this.borderColor == null)
+		if (this.borderSize == null && this.borderColor == SimpleColor.NONE)
 			return "";
 
 		if (this.borderSize != null)
 			sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR);
 
-		if (this.borderColor != null)
+		if (this.borderColor != SimpleColor.NONE)
 			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
-					.append(this.borderColor);
+					.append(this.borderColor.hexValue());
 
 		return sb.toString().trim();
 	}

@@ -21,9 +21,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Footer;
-import com.github.jferard.fastods.Header;
-import com.github.jferard.fastods.PageSection;
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.Length;
@@ -38,7 +36,7 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class PageLayoutStyle implements AddableToOdsElements, Hidable {
-	private final String backgroundColor;
+	private final Color backgroundColor;
 	private final Footer footer;
 	private final Header header;
 	private final Margins margins;
@@ -70,7 +68,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 	 */
 	PageLayoutStyle(final String name, final Margins margins,
 					final Length pageWidth, final Length pageHeight,
-					final String numFormat, final String backgroundColor,
+					final String numFormat, final Color backgroundColor,
 					final Header header, final Footer footer,
 					final PageStyle.PrintOrientation printOrientation,
 					final PaperFormat paperFormat, final PageStyle.WritingMode writingMode) {
@@ -151,9 +149,9 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 
 	private void appendBackgroundColor(final XMLUtil util,
 									   final Appendable appendable) throws IOException {
-		if (!this.backgroundColor.isEmpty()) {
+		if (this.backgroundColor != SimpleColor.NONE) {
 			util.appendAttribute(appendable, "fo:background-color",
-					this.backgroundColor);
+					this.backgroundColor.hexValue());
 		}
 	}
 

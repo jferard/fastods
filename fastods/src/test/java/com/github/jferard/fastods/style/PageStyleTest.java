@@ -23,6 +23,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
@@ -31,6 +32,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.io.IOException;
 
@@ -80,7 +82,7 @@ public class PageStyleTest {
 	@Test
 	public final void testBackground() throws IOException {
 		final PageStyle pageStyle = PageStyle.builder("test")
-				.backgroundColor(Color.BLANCHEDALMOND).build();
+				.backgroundColor(SimpleColor.BLANCHEDALMOND).build();
 		final StringBuilder sba = new StringBuilder();
 		final StringBuilder sbm = new StringBuilder();
 

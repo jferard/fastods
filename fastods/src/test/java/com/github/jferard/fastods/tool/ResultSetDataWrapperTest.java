@@ -22,6 +22,7 @@ package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.ColorHelper;
 import com.mockrunner.jdbc.BasicJDBCTestCaseAdapter;
 import com.mockrunner.jdbc.StatementResultSetHandler;
 import com.mockrunner.mock.jdbc.MockConnection;
@@ -250,7 +251,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 		final OdsDocument document = writer.document();
 		final Table table = document.addTable("test", 50, 5);
 		final TableCellStyle tcls = TableCellStyle.builder("rs-head")
-				.backgroundColor("#dddddd").fontWeightBold().build();
+				.backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
 		final DataWrapper data = new ResultSetDataWrapper(logger, rs, tcls,
 				100);
 		final DataWrapper data2 = new ResultSetDataWrapper(logger, rs2, tcls,

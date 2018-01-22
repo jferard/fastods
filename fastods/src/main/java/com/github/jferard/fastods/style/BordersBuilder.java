@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.Length;
 
@@ -52,7 +53,7 @@ public class BordersBuilder {
 	 * @param style the style of the borders
 	 * @return this for fluent style
 	 */
-	public BordersBuilder all(final Length size, final String color,
+	public BordersBuilder all(final Length size, final Color color,
 							  final BorderAttribute.Style style) {
 		return this.all(new BorderAttribute(size, color, style));
 	}
@@ -74,7 +75,7 @@ public class BordersBuilder {
 	 * @param style the style of the border
 	 * @return this for fluent style
 	 */
-	public BordersBuilder bottom(final Length size, final String color,
+	public BordersBuilder bottom(final Length size, final Color color,
 			final BorderAttribute.Style style) {
 		return this.bottom(new BorderAttribute(size, color, style));
 	}
@@ -105,7 +106,7 @@ public class BordersBuilder {
 	 * @param style the style of the border
 	 * @return this for fluent style
 	 */
-	public BordersBuilder left(final Length size, final String color,
+	public BordersBuilder left(final Length size, final Color color,
 			final BorderAttribute.Style style) {
 		return this.left(new BorderAttribute(size, color, style));
 	}
@@ -127,7 +128,7 @@ public class BordersBuilder {
 	 * @param style the style of the border
 	 * @return this for fluent style
 	 */
-	public BordersBuilder right(final Length size, final String color,
+	public BordersBuilder right(final Length size, final Color color,
 			final BorderAttribute.Style style) {
 		return this.right(new BorderAttribute(size, color, style));
 	}
@@ -149,7 +150,7 @@ public class BordersBuilder {
 	 * @param style the style of the border
 	 * @return this for fluent style
 	 */
-	public BordersBuilder top(final Length size, final String color,
+	public BordersBuilder top(final Length size, final Color color,
 			final BorderAttribute.Style style) {
 		return this.top(new BorderAttribute(size, color, style));
 	}

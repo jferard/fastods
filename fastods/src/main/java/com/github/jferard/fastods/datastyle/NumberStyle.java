@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.NamedObject;
 
@@ -45,5 +46,5 @@ public interface NumberStyle extends NamedObject, Hidable, Localized, IsVolatile
      * Get the color if negative value. If none, null
      * @return the color in hex format
      */
-    String getNegativeValueColor();
+    Color getNegativeValueColor();
 }

@@ -22,6 +22,7 @@ package com.github.jferard.fastods.style;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.SimpleColor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class TextPropertiesTest {
 	public final void testColorNameSize() throws IOException {
 		final Appendable sb = new StringBuilder();
 		final TextProperties prop = TextProperties.builder()
-				.fontColor(Color.ALICEBLUE).fontName("Verdana").fontSize(10)
+				.fontColor(SimpleColor.ALICEBLUE).fontName("Verdana").fontSize(10)
 				.build();
 		prop.appendXMLContent(this.util, sb);
 		DomTester.assertEquals(
@@ -67,9 +68,9 @@ public class TextPropertiesTest {
 	public final void testDefault() {
 		final TextStyle style = TextProperties.builder().buildStyle("style");
 		final TextProperties prop = style.getTextProperties();
-		Assert.assertEquals(null, prop.getFontColor());
+		Assert.assertEquals(SimpleColor.NONE, prop.getFontColor());
 		Assert.assertEquals(null, prop.getFontSize());
-		Assert.assertEquals(null, prop.getFontUnderlineColor());
+		Assert.assertEquals(SimpleColor.NONE, prop.getFontUnderlineColor());
 		Assert.assertEquals(null, prop.getFontUnderlineStyle());
 		Assert.assertEquals("style", style.getName());
 		Assert.assertFalse(style.isNotEmpty());
@@ -91,7 +92,7 @@ public class TextPropertiesTest {
 		final Appendable sb = new StringBuilder();
 		final TextProperties propr = TextProperties.builder()
 				.fontUnderlineStyle(TextProperties.Underline.DASH)
-				.fontUnderlineColor(Color.RED).build();
+				.fontUnderlineColor(SimpleColor.RED).build();
 		propr.appendXMLContent(this.util, sb);
 		DomTester.assertEquals(
 				"<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",

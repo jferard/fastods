@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 
 import java.util.Locale;
 
@@ -32,7 +33,7 @@ public final class NumberStyleHelperBuilder implements NumberStyleBuilder<Number
     private final CoreDataStyleBuilder dataStyleBuilder;
     private boolean grouping;
     private int minIntegerDigits;
-    private String negativeValueColor;
+    private Color negativeValueColor;
 
     /**
      * Create a new number style with a name and a locale.
@@ -59,14 +60,14 @@ public final class NumberStyleHelperBuilder implements NumberStyleBuilder<Number
     }
 
     @Override
-    public NumberStyleHelperBuilder negativeValueColor(final String negativeValueColor) {
+    public NumberStyleHelperBuilder negativeValueColor(final Color negativeValueColor) {
         this.negativeValueColor = negativeValueColor;
         return this;
     }
 
     @Override
     public NumberStyleHelperBuilder negativeValueRed() {
-        this.negativeValueColor = Color.RED;
+        this.negativeValueColor = SimpleColor.RED;
         return this;
     }
 

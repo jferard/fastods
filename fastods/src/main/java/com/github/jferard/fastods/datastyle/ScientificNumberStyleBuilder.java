@@ -21,6 +21,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
+
 import java.util.Locale;
 
 /**
@@ -84,7 +86,7 @@ public class ScientificNumberStyleBuilder implements DataStyleBuilder<Scientific
 	}
 
 	@Override
-	public ScientificNumberStyleBuilder negativeValueColor(final String negativeValueColor) {
+	public ScientificNumberStyleBuilder negativeValueColor(final Color negativeValueColor) {
 		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
 		return this;
 	}

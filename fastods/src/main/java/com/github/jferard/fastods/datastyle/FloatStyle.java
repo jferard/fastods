@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -134,7 +135,7 @@ public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
 	}
 
 	@Override
-	public String getNegativeValueColor() {
+	public Color getNegativeValueColor() {
 		return this.numberStyle.getNegativeValueColor();
 	}
 

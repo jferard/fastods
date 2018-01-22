@@ -27,6 +27,7 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Fibonacci;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
+import com.github.jferard.fastods.util.ColorHelper;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.*;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
@@ -226,11 +227,11 @@ public class OdsFileCreationIT {
         this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
                 .buildHidden();
         this.tcls = TableCellStyle.builder("cc")
-                .backgroundColor("#dddddd").fontWeightBold().build();
+                .backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
         this.tcs0 = TableCellStyle.builder("tcs0")
-                .backgroundColor("#0000ff").build();
+                .backgroundColor(ColorHelper.fromString("#0000ff")).build();
         this.tcs1 = TableCellStyle.builder("tcs1")
-                .backgroundColor("#00FF00").build();
+                .backgroundColor(ColorHelper.fromString("#00FF00")).build();
         this.tcs2 = TableCellStyle.builder("tcs2")
                 .fontWeightBold().build();
         this.tcs3 = TableCellStyle.builder("tcs3")

@@ -21,9 +21,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Footer;
-import com.github.jferard.fastods.Header;
-import com.github.jferard.fastods.PageSection;
+import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.util.Length;
@@ -35,7 +33,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  */
 public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 	private static final Length DEFAULT_MARGIN_SIZE = SimpleLength.cm(1.5);
-	private String backgroundColor;
+	private Color backgroundColor;
 	private Footer footer;
 	private Header header;
 	private final MarginsBuilder marginsBuilder;
@@ -68,7 +66,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 		this.pageWidth = PageStyle.DEFAULT_FORMAT.getWidth();
 		this.pageHeight = PageStyle.DEFAULT_FORMAT.getHeight();
 		this.numFormat = "1";
-		this.backgroundColor = "";
+		this.backgroundColor = SimpleColor.NONE;
 
 		this.printOrientation = PageStyle.DEFAULT_PRINT_ORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
@@ -98,7 +96,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 	 * @param color the color as an hexadecimal value
 	 * @return this for fluent style
 	 */
-	public PageStyleBuilder backgroundColor(final String color) {
+	public PageStyleBuilder backgroundColor(final Color color) {
 		this.backgroundColor = color;
 		return this;
 	}
