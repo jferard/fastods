@@ -134,6 +134,11 @@ public class SimpleLength implements Length {
         return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value) + this.unit.toString().toLowerCase(Locale.US);
     }
 
+    @Override
+    public boolean isNull() {
+        return -MAX_DELTA < this.value && this.value < MAX_DELTA;
+    }
+
     /**
      * A unit
      */

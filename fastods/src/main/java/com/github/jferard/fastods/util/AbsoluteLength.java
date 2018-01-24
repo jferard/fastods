@@ -104,4 +104,9 @@ public class AbsoluteLength implements Length {
     public String toString() {
         return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) + "mm";
     }
+
+    @Override
+    public boolean isNull() {
+        return -MIN_DELTA < this.mm  && this.mm < MIN_DELTA;
+    }
 }

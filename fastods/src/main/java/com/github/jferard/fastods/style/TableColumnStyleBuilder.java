@@ -34,8 +34,9 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
 	private TableCellStyle defaultCellStyle;
 	private final String name;
 	private boolean hidden;
+    private boolean optimalWidth;
 
-	/**
+    /**
 	 * @param name
 	 *            A unique name for this style
 	 */
@@ -46,12 +47,13 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
 		this.name = name;
 		this.columnWidth = DEFAULT_COLUMN_WIDTH;
 		this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
+		this.optimalWidth = false;
 	}
 
 	@Override
 	public TableColumnStyle build() {
 		return new TableColumnStyle(this.name, this.hidden, this.columnWidth,
-				this.defaultCellStyle);
+				this.defaultCellStyle, this.optimalWidth);
 	}
 
 	@Override
@@ -85,4 +87,14 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
 		return this;
 	}
 
+    /**
+     * Set the width to the optimal value *permanently*: the consumer should adapt the width
+     * when the text changes. BUT LIBREOFFICE HAS NO SUCH FEATURE.
+     * @return this for fluent style
+     */
+    @Deprecated
+    public TableColumnStyleBuilder setOptimalWidth() {
+        this.optimalWidth = true;
+        return this;
+    }
 }

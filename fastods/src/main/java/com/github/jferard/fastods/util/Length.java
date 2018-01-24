@@ -26,4 +26,5 @@ package com.github.jferard.fastods.util;
  * @author Julien Férard
  */
 public interface Length {
+    boolean isNull();
 }

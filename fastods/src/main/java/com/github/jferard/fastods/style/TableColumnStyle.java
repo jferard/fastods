@@ -34,141 +34,136 @@ import java.io.IOException;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class TableColumnStyle implements ObjectStyle {
-	/**
-	 * The default style, see LO.
-	 */
-	public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
-			.builder("co1").buildHidden();
+    /**
+     * The default style, see LO.
+     */
+    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle.builder("co1").setOptimalWidth().buildHidden();
 
-	private static TableColumnStyle defaultColumnStyle;
+    private static TableColumnStyle defaultColumnStyle;
 
-	/**
-	 * @param name the name of the style
-	 * @return a new column style builder
-	 */
-	public static TableColumnStyleBuilder builder(final String name) {
-		return new TableColumnStyleBuilder(name);
-	}
+    /**
+     * @param name the name of the style
+     * @return a new column style builder
+     */
+    public static TableColumnStyleBuilder builder(final String name) {
+        return new TableColumnStyleBuilder(name);
+    }
 
-	private final boolean hidden;
-	private final Length columnWidth;
-	private final TableCellStyle defaultCellStyle;
-	private final String name;
+    private final boolean hidden;
+    private final Length columnWidth;
+    private final TableCellStyle defaultCellStyle;
+    private final String name;
+    private final boolean optimalWidth;
+    private String key;
 
-	/**
-	 * Create a new column style
-	 *
-	 * @param name A unique name for this style
-	 * @param hidden ture if the style is automatic
-	 * @param columnWidth the width of the column
-	 * @param defaultCellStyle the default style for cells
-	 */
-	TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
-			final TableCellStyle defaultCellStyle) {
-		this.name = name;
-		this.hidden = hidden;
-		this.columnWidth = columnWidth;
-		this.defaultCellStyle = defaultCellStyle;
-	}
+    /**
+     * Create a new column style
+     *
+     * @param name             A unique name for this style
+     * @param hidden           ture if the style is automatic
+     * @param columnWidth      the width of the column
+     * @param defaultCellStyle the default style for cells
+     * @param optimalWidth
+     */
+    TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
+                     final TableCellStyle defaultCellStyle, final boolean optimalWidth) {
+        this.name = name;
+        this.hidden = hidden;
+        this.columnWidth = columnWidth;
+        this.defaultCellStyle = defaultCellStyle;
+        this.optimalWidth = optimalWidth;
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addObjectStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addObjectStyle(this);
+    }
 
-	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<style:style");
-		util.appendEAttribute(appendable, "style:name", this.name);
-		util.appendAttribute(appendable, "style:family", "table-column");
-		appendable.append("><style:table-column-properties");
-		util.appendAttribute(appendable, "fo:break-before", "auto");
-		util.appendAttribute(appendable, "style:column-width",
-				this.columnWidth.toString());
-		appendable.append("/></style:style>");
-	}
+    @Override
+    public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<style:style");
+        util.appendEAttribute(appendable, "style:name", this.name);
+        util.appendAttribute(appendable, "style:family", "table-column");
+        appendable.append("><style:table-column-properties");
+        util.appendAttribute(appendable, "fo:break-before", "auto");
+        if (this.optimalWidth) util.appendAttribute(appendable, "style:use-optimal-column-width", this.optimalWidth);
+        if (!this.columnWidth.isNull()) {
+            util.appendAttribute(appendable, "style:column-width", this.columnWidth.toString());
+        }
+        appendable.append("/></style:style>");
+    }
 
-	/**
-	 * Append the XML to the table representation
-	 * @param util an util
-	 * @param appendable the destination
-	 * @param count the number of columns concerned
-	 * @throws IOException if an I/O error occurs
-	 */
-	public void appendXMLToTable(final XMLUtil util,
-			final Appendable appendable, final int count) throws IOException {
-		appendable.append("<table:table-column");
-		util.appendEAttribute(appendable, "table:style-name", this.name);
-		if (count > 1)
-			util.appendAttribute(appendable, "table:number-columns-repeated",
-					count);
-		if (this.defaultCellStyle != null)
-			util.appendEAttribute(appendable, "table:default-cell-style-name",
-					this.defaultCellStyle.getName());
-		appendable.append("/>");
-	}
+    /**
+     * Append the XML to the table representation
+     *
+     * @param util       an util
+     * @param appendable the destination
+     * @param count      the number of columns concerned
+     * @throws IOException if an I/O error occurs
+     */
+    public void appendXMLToTable(final XMLUtil util, final Appendable appendable, final int count) throws IOException {
+        appendable.append("<table:table-column");
+        util.appendEAttribute(appendable, "table:style-name", this.name);
+        if (count > 1) util.appendAttribute(appendable, "table:number-columns-repeated", count);
+        if (this.defaultCellStyle != null)
+            util.appendEAttribute(appendable, "table:default-cell-style-name", this.defaultCellStyle.getName());
+        appendable.append("/>");
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
 
-		if (obj instanceof TableColumnStyle) {
-			final TableColumnStyle other = (TableColumnStyle) obj;
-			return this.name.equals(other.name);
-		} else
-			return false;
-	}
+        if (obj instanceof TableColumnStyle) {
+            final TableColumnStyle other = (TableColumnStyle) obj;
+            return this.name.equals(other.name);
+        } else return false;
+    }
 
     /**
      * @return the column width
      */
     @Deprecated
-	public Length getColumnWidth() {
-		return this.columnWidth;
-	}
+    public Length getColumnWidth() {
+        return this.columnWidth;
+    }
 
     /**
      * @return the default style name
      */
     @Deprecated
-	public String getDefaultCellStyleName() {
-		return this.defaultCellStyle.getName();
-	}
+    public String getDefaultCellStyleName() {
+        return this.defaultCellStyle.getName();
+    }
 
-	@Override
-	public ObjectStyleFamily getFamily() {
-		return ObjectStyleFamily.TABLE_COLUMN;
-	}
+    @Override
+    public ObjectStyleFamily getFamily() {
+        return ObjectStyleFamily.TABLE_COLUMN;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ (this.name == null ? 0 : this.name.hashCode());
-		return result;
-	}
-	
-	private String key;
-	@Override
-	public String getKey() {
-		if (this.key == null)
-			this.key = this.getFamily()+"@"+this.getName();
-		return this.key;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (this.name == null ? 0 : this.name.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.hidden;
-	}
+    @Override
+    public String getKey() {
+        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        return this.key;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return this.hidden;
+    }
 }
