@@ -100,4 +100,14 @@ public class BordersTest {
 
 		Assert.assertEquals(b1.hashCode(), b2.hashCode());
 	}
+
+	@Test
+	public final void testNoDefaultColor() throws IOException {
+		final Borders b = new BordersBuilder().all(new BorderAttributeBuilder().borderSize(SimpleLength.pt(1)).build()).build();
+
+		final StringBuilder sb = new StringBuilder();
+		b.appendXMLToTableCellStyle(this.util, sb);
+		Assert.assertEquals(" fo:border=\"1pt\"",
+				sb.toString());
+	}
 }

@@ -21,6 +21,7 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -111,38 +112,46 @@ public class OdsFileCreationIT {
         final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(output);
 
         final OdfSettingsDom settingsDom = document.getSettingsDom();
-        final String completePath = "/office:document-settings" +
-                "/office:settings" +
-                "/config:config-item-set[@config:name='ooo:view-settings']" +
-                "/config:config-item-map-indexed[@config:name='Views']" +
-                "/config:config-item-map-entry" +
-                "/config:config-item[@config:name='ZoomValue']";
+        final String completePath = "/office:document-settings" + "/office:settings" + "/config:config-item-set[@config:name='ooo:view-settings']" + "/config:config-item-map-indexed[@config:name='Views']" + "/config:config-item-map-entry" + "/config:config-item[@config:name='ZoomValue']";
         Assert.assertEquals("207", settingsDom.getXPath().evaluate(completePath, settingsDom.getRootElement()));
-        for (int i=0; i<n; i++) {
-            Assert.assertEquals("206", settingsDom.getXPath().evaluate("//config:config-item-map-entry[@config:name='table"+i+"']//config:config-item[@config:name='ZoomValue']", settingsDom.getRootElement()));
+        for (int i = 0; i < n; i++) {
+            Assert.assertEquals("206", settingsDom.getXPath().evaluate(
+                    "//config:config-item-map-entry[@config:name='table" + i + "']//config:config-item[@config:name='ZoomValue']",
+                    settingsDom.getRootElement()));
         }
         final OdfContentDom contentDom = document.getContentDom();
-        Assert.assertEquals("5cm", contentDom.getXPath().evaluate("//style:style[@style:name='rr']//style:table-row-properties/@style:row-height", contentDom.getRootElement()));
-        Assert.assertEquals("10cm", contentDom.getXPath().evaluate("//style:style[@style:name='ccs']//style:table-column-properties/@style:column-width", contentDom.getRootElement()));
+        Assert.assertEquals("5cm", contentDom.getXPath()
+                .evaluate("//style:style[@style:name='rr']//style:table-row-properties/@style:row-height",
+                        contentDom.getRootElement()));
+        Assert.assertEquals("10cm", contentDom.getXPath()
+                .evaluate("//style:style[@style:name='ccs']//style:table-column-properties/@style:column-width",
+                        contentDom.getRootElement()));
 
         final OdfStylesDom stylesDom = document.getStylesDom();
-        Assert.assertEquals("#dddddd", stylesDom.getXPath().evaluate("//style:style[@style:name='cc']//@fo:background-color", stylesDom.getRootElement()));
-        Assert.assertEquals("bold", stylesDom.getXPath().evaluate("//style:style[@style:name='cc']//@fo:font-weight", stylesDom.getRootElement()));
+        Assert.assertEquals("#dddddd", stylesDom.getXPath()
+                .evaluate("//style:style[@style:name='cc']//@fo:background-color", stylesDom.getRootElement()));
+        Assert.assertEquals("bold", stylesDom.getXPath()
+                .evaluate("//style:style[@style:name='cc']//@fo:font-weight", stylesDom.getRootElement()));
 
-        Assert.assertEquals("#0000ff", stylesDom.getXPath().evaluate("//style:style[@style:name='tcs0']//@fo:background-color", stylesDom.getRootElement()));
-        Assert.assertEquals("#00FF00", stylesDom.getXPath().evaluate("//style:style[@style:name='tcs1']//@fo:background-color", stylesDom.getRootElement()));
-        Assert.assertEquals("bold", stylesDom.getXPath().evaluate("//style:style[@style:name='tcs2']//@fo:font-weight", stylesDom.getRootElement()));
-        Assert.assertEquals("italic", stylesDom.getXPath().evaluate("//style:style[@style:name='tcs3']//@fo:font-style", stylesDom.getRootElement()));
+        Assert.assertEquals("#0000ff", stylesDom.getXPath()
+                .evaluate("//style:style[@style:name='tcs0']//@fo:background-color", stylesDom.getRootElement()));
+        Assert.assertEquals("#00FF00", stylesDom.getXPath()
+                .evaluate("//style:style[@style:name='tcs1']//@fo:background-color", stylesDom.getRootElement()));
+        Assert.assertEquals("bold", stylesDom.getXPath()
+                .evaluate("//style:style[@style:name='tcs2']//@fo:font-weight", stylesDom.getRootElement()));
+        Assert.assertEquals("italic", stylesDom.getXPath()
+                .evaluate("//style:style[@style:name='tcs3']//@fo:font-style", stylesDom.getRootElement()));
 
         Assert.assertEquals(n, document.getSheetCount());
-        for (int i=0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("table" + i);
             Assert.assertNotNull(sheet);
             Assert.assertEquals(5, sheet.getRowCount());
 
             // FIRST ROW
             Row row = sheet.getRowByIndex(0);
-            Assert.assertEquals("Accented characters: àäéèëêïîöôüûÿÿ", OdfToolkitUtil.getStringValue(row.getCellByIndex(0)));
+            Assert.assertEquals("Accented characters: àäéèëêïîöôüûÿÿ",
+                    OdfToolkitUtil.getStringValue(row.getCellByIndex(0)));
             Assert.assertEquals("Symbols: €", OdfToolkitUtil.getStringValue(row.getCellByIndex(1)));
             Assert.assertEquals("Symbols: £", OdfToolkitUtil.getStringValue(row.getCellByIndex(2)));
 
@@ -177,7 +186,8 @@ public class OdsFileCreationIT {
             Assert.assertEquals(1234483200000L, cal.getTimeInMillis());
 
             final Calendar actualCal = row.getCellByIndex(3).getDateValue();
-            Assert.assertEquals(cal.getTimeInMillis(), actualCal.getTimeInMillis()+actualCal.getTimeZone().getRawOffset());
+            Assert.assertEquals(cal.getTimeInMillis(),
+                    actualCal.getTimeInMillis() + actualCal.getTimeZone().getRawOffset());
             Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue().doubleValue(), 0.01);
             Assert.assertEquals("foobar", OdfToolkitUtil.getStringValue(row.getCellByIndex(5)));
 
@@ -191,7 +201,7 @@ public class OdsFileCreationIT {
             Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("cc", c.getStyleName());
             final Calendar timeValue = row.getCellByIndex(3).getTimeValue();
-            Assert.assertEquals(3 * 60 * 1000, timeValue.getTimeInMillis()+timeValue.getTimeZone().getRawOffset());
+            Assert.assertEquals(3 * 60 * 1000, timeValue.getTimeInMillis() + timeValue.getTimeZone().getRawOffset());
             c = row.getCellByIndex(4);
             Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("=1+1", c.getFormula());
@@ -201,7 +211,9 @@ public class OdsFileCreationIT {
             Assert.assertEquals("That's a <tooltip>with a newline !", row.getCellByIndex(0).getNoteText());
 
             // filter
-            Assert.assertEquals("table"+i+".A1:table"+i+".F4", contentDom.getXPath().evaluate("//table:database-range["+(i+1)+"]//@table:target-range-address", contentDom.getRootElement()));
+            Assert.assertEquals("table" + i + ".A1:table" + i + ".F4", contentDom.getXPath()
+                    .evaluate("//table:database-range[" + (i + 1) + "]//@table:target-range-address",
+                            contentDom.getRootElement()));
         }
     }
 
@@ -218,31 +230,27 @@ public class OdsFileCreationIT {
     }
 
     private String standadDocumentName(final boolean flush, final int n) {
-        return "standard_document"+(flush?"with_flush":"")+"_"+n+".ods";
+        return "standard_document" + (flush ? "with_flush" : "") + "_" + n + ".ods";
     }
 
     private void createStyles() {
-        this.tcns = TableColumnStyle.builder("ccs")
-                .columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(this.tcls).buildHidden();
-        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0))
+        this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(this.tcls)
                 .buildHidden();
-        this.tcls = TableCellStyle.builder("cc")
-                .backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
-        this.tcs0 = TableCellStyle.builder("tcs0")
-                .backgroundColor(ColorHelper.fromString("#0000ff")).build();
-        this.tcs1 = TableCellStyle.builder("tcs1")
-                .backgroundColor(ColorHelper.fromString("#00FF00")).build();
-        this.tcs2 = TableCellStyle.builder("tcs2")
-                .fontWeightBold().build();
-        this.tcs3 = TableCellStyle.builder("tcs3")
-                .fontStyleItalic().build();
+        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).buildHidden();
+        this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold()
+                .build();
+        this.tcs0 = TableCellStyle.builder("tcs0").backgroundColor(ColorHelper.fromString("#0000ff")).build();
+        this.tcs1 = TableCellStyle.builder("tcs1").backgroundColor(ColorHelper.fromString("#00FF00")).build();
+        this.tcs2 = TableCellStyle.builder("tcs2").fontWeightBold().build();
+        this.tcs3 = TableCellStyle.builder("tcs3").fontStyleItalic()
+                .borderAll(SimpleLength.mm(0.4), SimpleColor.BLACK, BorderAttribute.DEFAULT_STYLE).build();
     }
 
     private void fillDocument(final OdsDocument document, final int n) throws IOException, FastOdsException {
         document.setViewSetting("View1", "ZoomValue", "207");
 
-        for (int i=0; i<n; i++) {
-            final Table table = document.addTable("table"+i, 50, 5);
+        for (int i = 0; i < n; i++) {
+            final Table table = document.addTable("table" + i, 50, 5);
             table.setColumnStyle(0, this.tcns);
             table.setSettings("View1", "ZoomValue", "206");
             TableRow row = table.getRow(0);
@@ -296,7 +304,9 @@ public class OdsFileCreationIT {
 
             // FIFTH ROW
             row = table.getRow(4);
-            row.getOrCreateCell(0).setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0), true);
+            row.getOrCreateCell(0)
+                    .setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0), SimpleLength.cm(10.0),
+                            true);
 
             document.addAutofilter(table, 0, 0, 3, 5);
         }
@@ -304,8 +314,7 @@ public class OdsFileCreationIT {
 
     private File standardDocumentWithFlush(final int n) throws FastOdsException, IOException {
         final File output = new File("generated_files", this.standadDocumentName(true, n));
-        final NamedOdsFileWriter writer =
-                this.odsFactory.createWriter(output);
+        final NamedOdsFileWriter writer = this.odsFactory.createWriter(output);
         final NamedOdsDocument document = writer.document();
 
         this.createStyles();

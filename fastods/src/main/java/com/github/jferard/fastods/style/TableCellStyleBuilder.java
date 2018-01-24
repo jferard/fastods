@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.StyleBuilder;
@@ -58,6 +59,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
 		this.tpBuilder = TextProperties.builder();
 		this.bordersBuilder = new BordersBuilder();
 		this.marginsBuilder = new MarginsBuilder();
+		this.backgroundColor = SimpleColor.NONE;
 	}
 
 	/**

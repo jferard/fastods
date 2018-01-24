@@ -93,15 +93,27 @@ public class TableCellStyleTest {
 		final StringBuilder sb = new StringBuilder();
 		tcs.appendXMLRepresentation(this.util, sb);
 		DomTester.assertEquals(
-				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" " +
-						"fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
-						+ "</style:style>",
+                "<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
+                        + "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" " +
+                        "fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
+                        + "</style:style>",
 				sb.toString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public final void testNullName() {
 		TableCellStyle.builder(null);
+	}
+
+	@Test
+	public void testDefaultCellStyle() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+		TableCellStyle.DEFAULT_CELL_STYLE.appendXMLRepresentation(this.util, sb);
+		DomTester.assertEquals(
+                "<style:style style:name=\"Default\" style:family=\"table-cell\">" +
+                        "<style:table-cell-properties style:vertical-align=\"top\"/>" +
+                        "<style:paragraph-properties fo:text-align=\"start\" fo:margin=\"0mm\"/>" +
+                        "</style:style>",
+				sb.toString());
 	}
 }
