@@ -88,6 +88,17 @@ public class SimpleLength implements Length {
     public static SimpleLength pc(final double value) {
         return new SimpleLength(value, Unit.PC);
     }
+
+    /**
+     * Create an simple lenght in em
+     *
+     * @param value the length in ems
+     * @return the length
+     */
+    public static SimpleLength em(final double value) {
+        return new SimpleLength(value, Unit.EM);
+    }
+
     private final double value;
     private final Unit unit;
 
@@ -140,7 +151,8 @@ public class SimpleLength implements Length {
     }
 
     /**
-     * A unit
+     * A unit.
+     * XSL 5.9 Expressions
      */
     public enum Unit {
         /**
@@ -162,6 +174,10 @@ public class SimpleLength implements Length {
         /**
          * pica
          */
-        PC
+        PC,
+        /**
+         * em (the only relative unit
+         */
+        EM
     }
 }
