@@ -24,162 +24,181 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.style.TextProperties.Underline;
+import com.github.jferard.fastods.util.Length;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
 public class TextPropertiesBuilder {
-	private Color fontColor;
-	private String fontName;
-	private String fontSize;
-	private String fontStyle;
-	private Color fontUnderlineColor;
-	private Underline fontUnderlineStyle;
-	private String fontWeight;
-	private boolean hidden;
+    private Color fontColor;
+    private String fontName;
+    private Length fontSizeLength;
+    private String fontStyle;
+    private Color fontUnderlineColor;
+    private Underline fontUnderlineStyle;
+    private String fontWeight;
+    private double fontSizePercentage;
 
-	TextPropertiesBuilder() {
-	    this.fontColor = SimpleColor.NONE;
-	    this.fontUnderlineColor = SimpleColor.NONE;
+    TextPropertiesBuilder() {
+        this.fontSizePercentage = -1;
+        this.fontColor = SimpleColor.NONE;
+        this.fontUnderlineColor = SimpleColor.NONE;
     }
 
-	/**
-	 * @return the TextProperties
-	 */
-	public TextProperties build() {
-		return new TextProperties(this.fontColor, this.fontName,
-				this.fontWeight, this.fontStyle, this.fontSize,
-				this.fontUnderlineColor, this.fontUnderlineStyle);
-	}
+    /**
+     * @return the TextProperties
+     */
+    public TextProperties build() {
+        final String fontSize;
+        if (this.fontSizePercentage > 0) {
+            fontSize = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US))
+                    .format(this.fontSizePercentage) + "%";
+        } else if (this.fontSizeLength != null) {
+            fontSize = this.fontSizeLength.toString();
+        } else {
+            fontSize = null;
+        }
+        return new TextProperties(this.fontColor, this.fontName, this.fontWeight, this.fontStyle, fontSize,
+                this.fontUnderlineColor, this.fontUnderlineStyle);
+    }
 
-	/**
-	 * @param name the name of the style
-	 * @return the TextStyle of that name
-	 */
-	public TextStyle buildStyle(final String name) {
-		final TextProperties tp = new TextProperties(this.fontColor,
-				this.fontName, this.fontWeight, this.fontStyle, this.fontSize,
-				this.fontUnderlineColor, this.fontUnderlineStyle);
-		return new TextStyle(name, this.hidden, tp);
-	}
+    /**
+     * @param name the name of the style
+     * @return the TextStyle of that name
+     */
+    public TextStyle buildStyle(final String name) {
+        return new TextStyle(name, false, this.build());
+    }
 
-	/**
-	 * @param name the name of the style
-	 * @return the TextStyle of that name
-	 */
-	public TextStyle buildHiddenStyle(final String name) {
-		this.hidden = true;
-		return this.buildStyle(name);
-	}
+    /**
+     * @param name the name of the style
+     * @return the TextStyle of that name
+     */
+    public TextStyle buildHiddenStyle(final String name) {
+        if (this.fontSizePercentage > 0) {
+            throw new IllegalArgumentException(
+                    "20.183 fo:font-size: fontSizePercentage values can be used within common styles only");
+        }
+        return new TextStyle(name, true, this.build());
+    }
 
-	/**
-	 * Set the font color to color.
-	 *
-	 * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *              cell background
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontColor(final Color color) {
-		this.fontColor = color;
-		return this;
-	}
+    /**
+     * Set the font color to color.
+     *
+     * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
+     *              cell background
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontColor(final Color color) {
+        this.fontColor = color;
+        return this;
+    }
 
-	/**
-	 * Set the font name to be used for this style.
-	 *
-	 * @param fontName The font name for this TextStyle
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontName(final String fontName) {
-		this.fontName = fontName;
-		return this;
-	}
+    /**
+     * Set the font name to be used for this style.
+     *
+     * @param fontName The font name for this TextStyle
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontName(final String fontName) {
+        this.fontName = fontName;
+        return this;
+    }
 
-	/**
-	 * Set the font size in points to the given value.
-	 *
-	 * @param fontSize - The font size as int , e.g. 10 or 8
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontSize(final int fontSize) {
-		this.fontSize = String.valueOf(fontSize) + "pt";
-		return this;
-	}
+    /**
+     * Set the font size to the given value.
+     *
+     * @param fontSize - The font size
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontSize(final Length fontSize) {
+        this.fontSizePercentage = -1;
+        this.fontSizeLength = fontSize;
+        return this;
+    }
 
-	/**
-	 * Set the font size to the given value<br>
-	 * fontSize is a length value expressed as a number followed by pt, e.g.
-	 * 12pt
-	 *
-	 * @param fontSize - The font size as string, e.g. '10.5pt' or '8pt'
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontSize(final String fontSize) {
-		this.fontSize = fontSize;
-		return this;
-	}
+    /**
+     * Set the font size to the given fontSizePercentage.
+     * See 20.183 fo:font-size
+     * "fontSizePercentage values can be used within common styles only and are based on
+     * the font height of the parent style rather than to the font height
+     * of the attributes neighborhood"
+     *
+     * @param percentage the font size as a fontSizePercentage.
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontSizePercentage(final double percentage) {
+        this.fontSizeLength = null;
+        this.fontSizePercentage = percentage;
+        return this;
+    }
 
-	/**
-	 * Set the font weight to italic.
-	 *
-	 * @return true
-	 */
-	public TextPropertiesBuilder fontStyleItalic() {
-		this.fontStyle = "italic";
-		return this;
-	}
 
-	/**
-	 * Set the font weight to italic.
-	 *
-	 * @return true
-	 */
-	public TextPropertiesBuilder fontStyleNormal() {
-		this.fontStyle = "normal";
-		return this;
-	}
+    /**
+     * Set the font weight to italic.
+     *
+     * @return true
+     */
+    public TextPropertiesBuilder fontStyleItalic() {
+        this.fontStyle = "italic";
+        return this;
+    }
 
-	/**
-	 * Set the font underline color to color. Use an empty string to reset it to
-	 * 'auto'.
-	 *
-	 * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
-	 *              cell background.
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontUnderlineColor(final Color color) {
-		this.fontUnderlineColor = color;
-		return this;
-	}
+    /**
+     * Set the font weight to italic.
+     *
+     * @return true
+     */
+    public TextPropertiesBuilder fontStyleNormal() {
+        this.fontStyle = "normal";
+        return this;
+    }
 
-	/**
-	 * Set the style that should be used for the underline.
-	 *
-	 * @param style One of the TextStyle.STYLE_UNDERLINE
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontUnderlineStyle(final Underline style) {
-		this.fontUnderlineStyle = style;
-		return this;
-	}
+    /**
+     * Set the font underline color to color. Use an empty string to reset it to
+     * 'auto'.
+     *
+     * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
+     *              cell background.
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontUnderlineColor(final Color color) {
+        this.fontUnderlineColor = color;
+        return this;
+    }
 
-	/**
-	 * Set the font weight to bold.
-	 *
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontWeightBold() {
-		this.fontWeight = "bold";
-		return this;
-	}
+    /**
+     * Set the style that should be used for the underline.
+     *
+     * @param style One of the TextStyle.STYLE_UNDERLINE
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontUnderlineStyle(final Underline style) {
+        this.fontUnderlineStyle = style;
+        return this;
+    }
 
-	/**
-	 * Set the font weight to normal.
-	 *
-	 * @return this for fluent style
-	 */
-	public TextPropertiesBuilder fontWeightNormal() {
-		this.fontWeight = "normal";
-		return this;
-	}
+    /**
+     * Set the font weight to bold.
+     *
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontWeightBold() {
+        this.fontWeight = "bold";
+        return this;
+    }
+
+    /**
+     * Set the font weight to normal.
+     *
+     * @return this for fluent style
+     */
+    public TextPropertiesBuilder fontWeightNormal() {
+        this.fontWeight = "normal";
+        return this;
+    }
 }

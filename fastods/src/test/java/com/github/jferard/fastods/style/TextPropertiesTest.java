@@ -20,82 +20,73 @@
  */
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLEscaper;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
 
 public class TextPropertiesTest {
-	private XMLUtil util;
+    private XMLUtil util;
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-	}
+    @Before
+    public void setUp() {
+        this.util = XMLUtil.create();
+    }
 
-	@Test
-	public final void testBadSize() throws IOException {
-		final Appendable sb = new StringBuilder();
-		final TextProperties prop = TextProperties.builder().fontSize("@")
-				.build();
-		prop.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:text-properties fo:font-size=\"@\" style:font-size-asian=\"@\" style:font-size-complex=\"@\"/>",
-				sb.toString());
-	}
+    @Test
+    public final void testBadSize() throws IOException {
+        final Appendable sb = new StringBuilder();
+        final TextProperties prop = TextProperties.builder().fontSize(SimpleLength.cm(10)).build();
+        prop.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<style:text-properties fo:font-size=\"10cm\" style:font-size-asian=\"10cm\" style:font-size-complex=\"10cm\"/>",
+                sb.toString());
+    }
 
-	@Test
-	public final void testColorNameSize() throws IOException {
-		final Appendable sb = new StringBuilder();
-		final TextProperties prop = TextProperties.builder()
-				.fontColor(SimpleColor.ALICEBLUE).fontName("Verdana").fontSize(10)
-				.build();
-		prop.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:text-properties fo:color=\"#F0F8FF\" style:font-name=\"Verdana\" fo:font-size=\"10pt\" style:font-size-asian=\"10pt\" style:font-size-complex=\"10pt\"/>",
-				sb.toString());
-	}
+    @Test
+    public final void testColorNameSize() throws IOException {
+        final Appendable sb = new StringBuilder();
+        final TextProperties prop = TextProperties.builder().fontColor(SimpleColor.ALICEBLUE).fontName("Verdana")
+                .fontSizePercentage(10.8).build();
+        prop.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<style:text-properties fo:color=\"#F0F8FF\" style:font-name=\"Verdana\" fo:font-size=\"10.8%\" style:font-size-asian=\"10.8%\" style:font-size-complex=\"10.8%\"/>",
+                sb.toString());
+    }
 
-	@Test
-	public final void testDefault() {
-		final TextStyle style = TextProperties.builder().buildStyle("style");
-		final TextProperties prop = style.getTextProperties();
-		Assert.assertEquals(SimpleColor.NONE, prop.getFontColor());
-		Assert.assertEquals(null, prop.getFontSize());
-		Assert.assertEquals(SimpleColor.NONE, prop.getFontUnderlineColor());
-		Assert.assertEquals(null, prop.getFontUnderlineStyle());
-		Assert.assertEquals("style", style.getName());
-		Assert.assertFalse(style.isNotEmpty());
-	}
+    @Test
+    public final void testDefault() throws IOException {
+        final Appendable sb = new StringBuilder();
+        final TextProperties prop = TextProperties.builder().build();
+        prop.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<style:text-properties/>",
+                sb.toString());
+    }
 
-	@Test
-	public final void testItalicBold() throws IOException {
-		final Appendable sb = new StringBuilder();
-		final TextProperties prop = TextProperties.builder().fontStyleItalic()
-				.fontWeightBold().build();
-		prop.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" fo:font-style=\"italic\" style:font-style-asian=\"italic\" style:font-style-complex=\"italic\"/>",
-				sb.toString());
-	}
+    @Test
+    public final void testItalicBold() throws IOException {
+        final Appendable sb = new StringBuilder();
+        final TextProperties prop = TextProperties.builder().fontStyleItalic().fontWeightBold().build();
+        prop.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" fo:font-style=\"italic\" style:font-style-asian=\"italic\" style:font-style-complex=\"italic\"/>",
+                sb.toString());
+    }
 
-	@Test
-	public final void testUnderline() throws IOException {
-		final Appendable sb = new StringBuilder();
-		final TextProperties propr = TextProperties.builder()
-				.fontUnderlineStyle(TextProperties.Underline.DASH)
-				.fontUnderlineColor(SimpleColor.RED).build();
-		propr.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",
-				sb.toString());
-	}
+    @Test
+    public final void testUnderline() throws IOException {
+        final Appendable sb = new StringBuilder();
+        final TextProperties propr = TextProperties.builder().fontUnderlineStyle(TextProperties.Underline.DASH)
+                .fontUnderlineColor(SimpleColor.RED).build();
+        propr.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" style:text-underline-color=\"#FF0000\"/>",
+                sb.toString());
+    }
 }
