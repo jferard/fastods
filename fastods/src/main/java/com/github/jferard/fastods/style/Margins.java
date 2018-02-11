@@ -115,41 +115,6 @@ public class Margins implements TagParameter {
 				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
-    /**
-     * @return the length of all margins
-     */
-    public Length getAll() {
-		return this.all;
-	}
-
-    /**
-     * @return the length of the bottom margin
-     */
-	public Length getBottom() {
-		return this.bottom;
-	}
-
-    /**
-     * @return the length of the left margin
-     */
-	public Length getLeft() {
-		return this.left;
-	}
-
-    /**
-     * @return the length of the right margin
-     */
-	public Length getRight() {
-		return this.right;
-	}
-
-    /**
-     * @return the length of the top margin
-     */
-	public Length getTop() {
-		return this.top;
-	}
-
 	@Override
 	public String toString() {
 		return "Margins[top=" + this.top + ", right=" + this.right + ", bottom="
