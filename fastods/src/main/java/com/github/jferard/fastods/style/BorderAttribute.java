@@ -156,33 +156,6 @@ public class BorderAttribute {
 	}
 
 	/**
-	 * Get the currently set border color.
-	 *
-	 * @return The color in format #rrggbb
-	 */
-	public Color getBorderColor() {
-		return this.borderColor;
-	}
-
-	/**
-	 * Gets the current value of border size.
-	 *
-	 * @return The size as length
-	 */
-	public Length getBorderSize() {
-		return this.borderSize;
-	}
-
-	/**
-	 * Gets the current border NamedObject.
-	 *
-	 * @return BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
-	 */
-	public Style getStyle() {
-		return this.style;
-	}
-
-	/**
 	 * @return the attribute value in XML, see 20.176 fo Border Properties
 	 */
 	public String toXMLAttributeValue() {
