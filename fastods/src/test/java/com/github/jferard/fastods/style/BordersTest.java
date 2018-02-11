@@ -69,15 +69,14 @@ public class BordersTest {
 	}
 
 	@Test
-	public final void testGet() {
+	public final void test() throws IOException {
 		final Borders b = new BordersBuilder().all(this.a1).top(this.a2)
-				.right(this.a2).bottom(this.a2).left(this.a2).build();
+				.right(this.a1).bottom(this.a2).left(this.a1).build();
 
-		Assert.assertEquals(b.getAll(), this.a1);
-		Assert.assertEquals(b.getTop(), this.a2);
-		Assert.assertEquals(b.getRight(), this.a2);
-		Assert.assertEquals(b.getBottom(), this.a2);
-		Assert.assertEquals(b.getLeft(), this.a2);
+		final StringBuilder sb = new StringBuilder();
+		b.appendXMLToTableCellStyle(this.util, sb);
+		Assert.assertEquals(" fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #FFFFFF\" fo:border-bottom=\"11pt solid #FFFFFF\"",
+				sb.toString());
 	}
 
 	@Test

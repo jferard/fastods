@@ -123,41 +123,6 @@ public class Borders {
 				&& this.equalityUtil.equal(this.all, other.all);
 	}
 
-	/**
-	 * @return the border attribute for all borders, null if none
-	 */
-	public BorderAttribute getAll() {
-		return this.all;
-	}
-
-	/**
-	 * @return the border attribute for the bottom border, null if none
-	 */
-	public BorderAttribute getBottom() {
-		return this.bottom;
-	}
-
-	/**
-	 * @return the border attribute for the left border, null if none
-	 */
-	public BorderAttribute getLeft() {
-		return this.left;
-	}
-
-	/**
-	 * @return the border attribute for the right border, null if none
-	 */
-	public BorderAttribute getRight() {
-		return this.right;
-	}
-
-	/**
-	 * @return the border attribute for the top border, null if none
-	 */
-	public BorderAttribute getTop() {
-		return this.top;
-	}
-
 	@Override
 	public String toString() {
 		return "Borders[top=" + this.top + ", right=" + this.right + ", bottom="
