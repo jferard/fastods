@@ -34,6 +34,8 @@ import java.io.IOException;
  * OpenDocument 16.5 style:page-layout
  * OpenDocument 16.9 style:master-page
  *
+ * The PageStyle class represents a combination of a master page style and a page layout style.
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */

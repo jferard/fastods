@@ -184,7 +184,7 @@ public class TableBuilderTest {
         // PLAY
         final TableStyle ts = TableStyle.builder("b").build();
         this.stc.addStyleToContentAutomaticStyles(ts);
-        this.stc.addPageStyle(ts.getPageStyle());
+        EasyMock.expect(this.stc.addPageStyle(ts.getPageStyle())).andReturn(true);
 
         PowerMock.replayAll();
 

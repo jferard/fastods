@@ -46,7 +46,7 @@ public class RegionPageSectionTest {
 	public final void testNullOrEmptyRegions() throws IOException {
 		final PageSection headerSection = PageSection
 				.regionBuilder().region(Region.LEFT)
-				.content("l").region(Region.CENTER).text(Text.builder().build())
+				.content("l").region(Region.CENTER).text(Text.builder().par().build())
 				.build();
 
 		final StringBuilder sb = new StringBuilder();

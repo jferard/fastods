@@ -175,4 +175,10 @@ public class DomTesterTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public void testTwoRoots() {
+        PowerMock.replayAll();
+        DomTester.assertNotEquals("<a b=\"1\"/><a b=\"2\"/>", "<a b=\"1\"/>");
+        PowerMock.verifyAll();
+    }
 }

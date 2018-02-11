@@ -27,7 +27,6 @@ import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.MultiContainer;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -186,20 +185,22 @@ public class StylesContainer {
     /**
      * Add a page style
      * @param ps the style
+     * @return true if the master page style and the style layout where added
      */
-    public void addPageStyle(final PageStyle ps) {
-        this.addMasterPageStyle(ps.getMasterPageStyle());
-        this.addPageLayoutStyle(ps.getPageLayoutStyle());
+    public boolean addPageStyle(final PageStyle ps) {
+        return this.addPageStyle(ps, Mode.CREATE);
     }
 
     /**
      * Add a page style
      * @param ps the style
      * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @return true if the master page style and the style layout where added
      */
-    public void addPageStyle(final PageStyle ps, final Mode mode) {
-        this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
-        this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode);
+    public boolean addPageStyle(final PageStyle ps, final Mode mode) {
+        boolean ret = this.addMasterPageStyle(ps.getMasterPageStyle(), mode);
+        ret = this.addPageLayoutStyle(ps.getPageLayoutStyle(), mode) && ret;
+        return ret;
     }
 
     /**
@@ -285,33 +286,6 @@ public class StylesContainer {
     }
 
     /**
-     * @return the data styles for test
-     * @deprecated use XML representation for testing
-     */
-    @Deprecated
-    public Map<String, DataStyle> getDataStyles() {
-        return this.dataStylesContainer.getValueByKey();
-    }
-
-    /**
-     * @return a map name -> master page style
-     * @deprecated use XML representation for testing
-     */
-    @Deprecated
-    public Map<String, MasterPageStyle> getMasterPageStyles() {
-        return this.masterPageStylesContainer.getValueByKey();
-    }
-
-    /**
-     * @return a map name -> page layout style
-     * @deprecated use XML representation for testing
-     */
-    @Deprecated
-    public Map<String, PageLayoutStyle> getPageLayoutStyles() {
-        return this.pageLayoutStylesContainer.getValueByKey();
-    }
-
-    /**
      * @return a "double boolean"
      */
     public HasFooterHeader hasFooterHeader() {
@@ -331,7 +305,7 @@ public class StylesContainer {
     }
 
     private void write(final Iterable<ObjectStyle> iterable, final XMLUtil util,
-                       final ZipUTF8Writer writer) throws IOException {
+                       final Appendable writer) throws IOException {
         for (final ObjectStyle os : iterable)
             os.appendXMLRepresentation(util, writer);
     }
@@ -344,7 +318,7 @@ public class StylesContainer {
      * @throws IOException if the styles can't be written
      */
     public void writeContentAutomaticStyles(final XMLUtil util,
-                                            final ZipUTF8Writer writer) throws IOException {
+                                            final Appendable writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer
                 .getValues(Dest.CONTENT_AUTOMATIC_STYLES);
         for (final ObjectStyle style : styles)
@@ -360,7 +334,7 @@ public class StylesContainer {
      * @param writer the destination
      * @throws IOException if the styles can't be written
      */
-    public void writeDataStyles(final XMLUtil util, final ZipUTF8Writer writer)
+    public void writeDataStyles(final XMLUtil util, final Appendable writer)
             throws IOException {
         for (final DataStyle dataStyle : this.dataStylesContainer.getValues()) {
             assert dataStyle.isHidden() : dataStyle.toString();
@@ -374,8 +348,8 @@ public class StylesContainer {
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writeMasterPageStylesToAutomaticStyles(final XMLUtil util,
-                                                       final ZipUTF8Writer writer) throws IOException {
+    public void writePageLayoutStylesToAutomaticStyles(final XMLUtil util,
+                                                       final Appendable writer) throws IOException {
         for (final PageLayoutStyle ps : this.pageLayoutStylesContainer
                 .getValues()) {
             assert ps.isHidden();
@@ -390,10 +364,11 @@ public class StylesContainer {
      * @throws IOException if an I/O error occurs
      */
     public void writeMasterPageStylesToMasterStyles(final XMLUtil util,
-                                                    final ZipUTF8Writer writer) throws IOException {
+                                                    final Appendable writer) throws IOException {
         for (final MasterPageStyle ps : this.masterPageStylesContainer
-                .getValues())
+                .getValues()) {
             ps.appendXMLToMasterStyle(util, writer);
+        }
     }
 
     /**
@@ -403,7 +378,7 @@ public class StylesContainer {
      * @throws IOException if an I/O error occurs
      */
     public void writeStylesAutomaticStyles(final XMLUtil util,
-                                           final ZipUTF8Writer writer) throws IOException {
+                                           final Appendable writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.STYLES_AUTOMATIC_STYLES);
         for (final ObjectStyle style : styles)
             assert style.isHidden() : style.toString();
@@ -418,7 +393,7 @@ public class StylesContainer {
      * @throws IOException if an I/O error occurs
      */
     public void writeStylesCommonStyles(final XMLUtil util,
-                                        final ZipUTF8Writer writer) throws IOException {
+                                        final Appendable writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.STYLES_COMMON_STYLES);
         for (final ObjectStyle style : styles)
             assert !style.isHidden() : style.toString() + " - " + style.getName() + TableCellStyle.DEFAULT_CELL_STYLE.toString();

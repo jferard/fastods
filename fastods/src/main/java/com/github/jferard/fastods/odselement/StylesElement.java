@@ -98,7 +98,7 @@ public class StylesElement implements OdsElement {
 		writer.write("<office:automatic-styles>");
 
 		this.stylesContainer.writeStylesAutomaticStyles(util, writer);
-		this.stylesContainer.writeMasterPageStylesToAutomaticStyles(util,
+		this.stylesContainer.writePageLayoutStylesToAutomaticStyles(util,
 				writer);
 
 		writer.write("</office:automatic-styles>");

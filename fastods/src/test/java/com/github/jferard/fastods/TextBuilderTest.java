@@ -58,6 +58,13 @@ public class TextBuilderTest {
         DomTester.assertEquals("<text:p>a</text:p>", c);
     }
 
+    @Test
+    public void empty() throws Exception {
+        final Text t = TextBuilder.create().build();
+        final String c = this.getXMLContent(t);
+        DomTester.assertEquals("", c);
+    }
+
     private String getXMLContent(final Text t) throws IOException {
         final StringBuilder sb = new StringBuilder();
         t.appendXMLContent(this.util, sb);

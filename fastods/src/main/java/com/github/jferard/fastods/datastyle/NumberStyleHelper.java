@@ -156,7 +156,7 @@ class NumberStyleHelper implements NumberStyle {
      */
     private void appendStyleMap(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<style:map");
-        util.appendAttribute(appendable, "style:condition", "value()>=0");
+        util.appendEAttribute(appendable, "style:condition", "value()>=0");
         util.appendEAttribute(appendable, "style:apply-style-name", this.dataStyle.getName());
         appendable.append("/>");
     }

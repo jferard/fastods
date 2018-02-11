@@ -26,7 +26,6 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesFactory;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.testlib.ZipUTF8WriterMock;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
