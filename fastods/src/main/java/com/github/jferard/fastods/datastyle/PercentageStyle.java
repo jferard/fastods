@@ -24,6 +24,7 @@ package com.github.jferard.fastods.datastyle;
 import java.io.IOException;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -39,7 +40,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class PercentageStyle implements NumberStyle, DataStyle, DecimalStyle {
+public class PercentageStyle implements DataStyle {
 	private final FloatStyle floatStyle;
 
 	/**
@@ -60,48 +61,13 @@ public class PercentageStyle implements NumberStyle, DataStyle, DecimalStyle {
 	}
 
 	@Override
-	public boolean isHidden() {
-		return this.floatStyle.isHidden();
-	}
-
-	@Override
-	public int getDecimalPlaces() {
-		return this.floatStyle.getDecimalPlaces();
-	}
-
-	@Override
 	public String getName() {
 		return this.floatStyle.getName();
 	}
 
 	@Override
-	public String getCountryCode() {
-		return this.floatStyle.getCountryCode();
-	}
-
-	@Override
-	public String getLanguageCode() {
-		return this.floatStyle.getLanguageCode();
-	}
-
-	@Override
-	public boolean getGroupThousands() {
-		return this.floatStyle.getGroupThousands();
-	}
-
-	@Override
-	public int getMinIntegerDigits() {
-		return this.floatStyle.getMinIntegerDigits();
-	}
-
-	@Override
-	public Color getNegativeValueColor() {
-		return this.floatStyle.getNegativeValueColor();
-	}
-
-	@Override
-	public boolean isVolatileStyle() {
-		return this.floatStyle.isVolatileStyle();
+	public boolean isHidden() {
+		return this.floatStyle.isHidden();
 	}
 
 	@Override

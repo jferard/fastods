@@ -23,7 +23,9 @@ package com.github.jferard.fastods.datastyle;
 
 import java.io.IOException;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -78,28 +80,6 @@ public class CurrencyStyle implements DataStyle {
 		this.floatStyle.appendXMLHelper(util, appendable, "currency-style", number);
 	}
 
-	@Override
-	public boolean isHidden() {
-		return this.floatStyle.isHidden();
-	}
-
-	/**
-	 * @return The currency symbol that is used. e.g. '$'.
-	 */
-	public String getCurrencySymbol() {
-		return this.currencySymbol;
-	}
-
-	/**
-	 * Get the position of the currency symbol.
-	 *
-	 * @return either CurrencyStyle.SymbolPosition.BEGIN or
-	 *         CurrencyStyle.SymbolPosition.END
-	 */
-	public SymbolPosition getCurrencySymbolPosition() {
-		return this.currencyPosition;
-	}
-
 	private StringBuilder computeCurrency(final XMLUtil util)
 			throws IOException {
 		final StringBuilder number = new StringBuilder();
@@ -131,22 +111,12 @@ public class CurrencyStyle implements DataStyle {
 	}
 
 	@Override
+	public boolean isHidden() {
+		return this.floatStyle.isHidden();
+	}
+
+	@Override
 	public void addToElements(final OdsElements odsElements) {
 		odsElements.addDataStyle(this);
 	}
-
-	@Override
-	public String getCountryCode() {
-		return null;
-	}
-
-	@Override
-	public String getLanguageCode() {
-		return null;
-	}
-
-    @Override
-    public boolean isVolatileStyle() {
-        return this.floatStyle.isVolatileStyle();
-    }
 }

@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -35,7 +36,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
+public class FloatStyle implements DataStyle {
 	private final NumberStyleHelper numberStyle;
 	private final int decimalPlaces;
 
@@ -50,29 +51,8 @@ public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
 		this.decimalPlaces = decimalPlaces;
 	}
 
-	@Override
-	public int getDecimalPlaces() {
+	int getDecimalPlaces() {
 		return this.decimalPlaces;
-	}
-
-	@Override
-	public String getName() {
-		return this.numberStyle.getName();
-	}
-
-	@Override
-	public String getCountryCode() {
-		return this.numberStyle.getCountryCode();
-	}
-
-	@Override
-	public String getLanguageCode() {
-		return this.numberStyle.getLanguageCode();
-	}
-
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
 	}
 
 	@Override
@@ -81,12 +61,7 @@ public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
 		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
 	}
 
-	@Override
-	public boolean isHidden() {
-		return this.numberStyle.isHidden();
-	}
-
-    /**
+	/**
      * @param util an util
      * @return the numbre:number tag
      * @throws IOException if an I/O error occurs
@@ -124,27 +99,7 @@ public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
 		this.numberStyle.appendXMLHelper(util, appendable, numberStyleName, number);
 	}
 
-	@Override
-	public boolean getGroupThousands() {
-		return this.numberStyle.getGroupThousands();
-	}
-
-	@Override
-	public int getMinIntegerDigits() {
-		return this.numberStyle.getMinIntegerDigits();
-	}
-
-	@Override
-	public Color getNegativeValueColor() {
-		return this.numberStyle.getNegativeValueColor();
-	}
-
-	@Override
-	public boolean isVolatileStyle() {
-		return this.numberStyle.isVolatileStyle();
-	}
-
-    /**
+	/**
      * Append the attributes of the number
      * @param util an util
      * @param appendable the destination
@@ -153,4 +108,19 @@ public class FloatStyle implements NumberStyle, DataStyle, DecimalStyle {
     void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
 		this.numberStyle.appendNumberAttribute(util, appendable);
 	}
+
+	@Override
+	public String getName() {
+		return this.numberStyle.getName();
+	}
+
+	@Override
+	public boolean isHidden() {
+		return this.numberStyle.isHidden();
+	}
+
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

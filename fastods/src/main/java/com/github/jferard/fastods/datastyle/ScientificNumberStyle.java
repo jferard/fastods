@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -38,7 +39,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class ScientificNumberStyle implements NumberStyle, DataStyle, DecimalStyle {
+public class ScientificNumberStyle implements DataStyle {
     private final FloatStyle floatStyle;
     private final int minExponentDigits;
 
@@ -72,11 +73,6 @@ public class ScientificNumberStyle implements NumberStyle, DataStyle, DecimalSty
     }
 
     @Override
-    public void addToElements(final OdsElements odsElements) {
-        odsElements.addDataStyle(this);
-    }
-
-    @Override
     public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
         final StringBuilder number = new StringBuilder();
         this.appendNumber(util, number);
@@ -85,47 +81,17 @@ public class ScientificNumberStyle implements NumberStyle, DataStyle, DecimalSty
     }
 
     @Override
-    public boolean isHidden() {
-        return this.floatStyle.isHidden();
-    }
-
-    @Override
-    public int getDecimalPlaces() {
-        return this.floatStyle.getDecimalPlaces();
-    }
-
-    @Override
     public String getName() {
         return this.floatStyle.getName();
     }
 
     @Override
-    public String getCountryCode() {
-        return this.floatStyle.getCountryCode();
+    public boolean isHidden() {
+        return this.floatStyle.isHidden();
     }
 
     @Override
-    public String getLanguageCode() {
-        return this.floatStyle.getLanguageCode();
-    }
-
-    @Override
-    public boolean getGroupThousands() {
-        return this.floatStyle.getGroupThousands();
-    }
-
-    @Override
-    public int getMinIntegerDigits() {
-        return this.floatStyle.getMinIntegerDigits();
-    }
-
-    @Override
-    public Color getNegativeValueColor() {
-        return this.floatStyle.getNegativeValueColor();
-    }
-
-    @Override
-    public boolean isVolatileStyle() {
-        return this.floatStyle.isVolatileStyle();
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
     }
 }

@@ -22,7 +22,6 @@ package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
-import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -36,7 +35,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Map;
 
 public class StylesContainerTest {
     private DataStyle ds1;

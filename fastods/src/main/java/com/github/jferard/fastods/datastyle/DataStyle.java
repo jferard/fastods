@@ -27,5 +27,5 @@ import com.github.jferard.fastods.util.Style;
  * A data style. 16.27. Data Styles
  * @author Julien Férard
  */
-public interface DataStyle extends Style, Localized, IsVolatile {
+public interface DataStyle extends Style {
 }

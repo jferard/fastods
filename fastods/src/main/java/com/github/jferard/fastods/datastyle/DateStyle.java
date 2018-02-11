@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -171,39 +172,17 @@ public class DateStyle implements DataStyle {
 	}
 
 	@Override
-	public boolean isHidden() {
-		return this.dataStyle.isHidden();
-	}
-
-	/**
-	 * @return The current value of the automatic order flag
-	 */
-	public boolean isAutomaticOrder() {
-		return this.automaticOrder;
-	}
-
-	@Override
-	public boolean isVolatileStyle() {
-		return this.dataStyle.isVolatileStyle();
-	}
-
-	@Override
 	public String getName() {
 		return this.dataStyle.getName();
 	}
 
 	@Override
-	public String getCountryCode() {
-		return this.dataStyle.getCountryCode();
+	public boolean isHidden() {
+		return this.dataStyle.isHidden();
 	}
 
-	@Override
-	public String getLanguageCode() {
-		return this.dataStyle.getLanguageCode();
-	}
-
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

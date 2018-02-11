@@ -49,12 +49,11 @@ public class TableCellImpl implements TableCell {
     final static SimpleDateFormat DATE_VALUE_FORMAT;
 
     static {
-		/*
+        /*
 		 * XML Schema Part 2, 3.2.7 dateTime
 		 * Z and UTC time zone for universal time.
 		 */
-        DATE_VALUE_FORMAT = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        DATE_VALUE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
@@ -77,16 +76,16 @@ public class TableCellImpl implements TableCell {
 
     /**
      * Create the table cell implementation
-     * @param writeUtil an util
-     * @param xmlUtil an util
+     *
+     * @param writeUtil       an util
+     * @param xmlUtil         an util
      * @param stylesContainer the styles containers that will dispatch styles to document.xml and styles.xml
-     * @param dataStyles the styles
-     * @param parent the parent row
-     * @param columnIndex index in parent row
+     * @param dataStyles      the styles
+     * @param parent          the parent row
+     * @param columnIndex     index in parent row
      */
-    TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
-                  final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final TableRow parent, final int columnIndex) {
+    TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+                  final DataStyles dataStyles, final TableRow parent, final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -96,9 +95,7 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void appendXMLToTableRow(final XMLUtil util,
-                                 final Appendable appendable)
-            throws IOException {
+    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable) throws IOException {
         final boolean covered = this.isCovered();
         if (covered) {
             appendable.append("<table:covered-table-cell");
@@ -107,13 +104,11 @@ public class TableCellImpl implements TableCell {
         }
 
         if (this.style != null) {
-            util.appendEAttribute(appendable, "table:style-name",
-                    this.style.getName());
+            util.appendEAttribute(appendable, "table:style-name", this.style.getName());
         }
 
         if (this.type != null) {
-            util.appendAttribute(appendable, "office:value-type",
-                    this.type.getValueAttribute());
+            util.appendAttribute(appendable, "office:value-type", this.type.getValueAttribute());
             util.appendEAttribute(appendable, this.type.getValueType(), this.value);
             if (this.type == TableCell.Type.CURRENCY) {
                 final String currency = this.getCurrency();
@@ -130,8 +125,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public boolean isCovered() {
-        return this.hasColdCell()
-                && this.coldCell.isCovered();
+        return this.hasColdCell() && this.coldCell.isCovered();
     }
 
     private boolean hasColdCell() {
@@ -146,16 +140,14 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setColumnsSpanned(final int n) {
-        if (n <= 1)
-            return;
+        if (n <= 1) return;
 
         this.parent.setColumnsSpanned(this.columnIndex, n);
     }
 
     @Override
     public void markColumnsSpanned(final int n) {
-        if (n <= 1)
-            return;
+        if (n <= 1) return;
 
         this.ensureColdCell();
         this.coldCell.setColumnsSpanned(n);
@@ -163,16 +155,14 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setRowsSpanned(final int n) throws IOException {
-        if (n <= 1)
-            return;
+        if (n <= 1) return;
 
         this.parent.setRowsSpanned(this.columnIndex, n);
     }
 
     @Override
     public void markRowsSpanned(final int n) {
-        if (n <= 1)
-            return;
+        if (n <= 1) return;
 
         this.ensureColdCell();
         this.coldCell.setRowsSpanned(n);
@@ -180,10 +170,8 @@ public class TableCellImpl implements TableCell {
 
 
     private String getCurrency() {
-        if (this.coldCell == null)
-            return null;
-        else
-            return this.coldCell.getCurrency();
+        if (this.coldCell == null) return null;
+        else return this.coldCell.getCurrency();
     }
 
     @Override
@@ -226,17 +214,14 @@ public class TableCellImpl implements TableCell {
     }
 
     private void ensureColdCell() {
-        if (this.coldCell == null)
-            this.coldCell = TableColdCell.create(this.xmlUtil);
+        if (this.coldCell == null) this.coldCell = TableColdCell.create(this.xmlUtil);
     }
 
     /* (non-Javadoc)
      * @see com.github.jferard.fastods.TableCell#styles.set(c, com.github.jferard.fastods.style.TableCellStyle)
      */
-    private void setDataStyle(
-            final DataStyle dataStyle) {
-        if (dataStyle == null)
-            return;
+    private void setDataStyle(final DataStyle dataStyle) {
+        if (dataStyle == null) return;
 
         TableCellStyle curStyle = this.style;
         if (curStyle == null) // adds the data style
@@ -317,8 +302,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setStyle(final TableCellStyle style) {
-        if (style == null)
-            return;
+        if (style == null) return;
 
         this.stylesContainer.addStyleToStylesCommonStyles(style);
         final TableCellStyle curStyle = this.style;
@@ -345,10 +329,8 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
-        if (rowMerge <= 0 || columnMerge <= 0)
-            return;
-        if (rowMerge <= 1 && columnMerge <= 1)
-            return;
+        if (rowMerge <= 0 || columnMerge <= 0) return;
+        if (rowMerge <= 1 && columnMerge <= 1) return;
 
         this.parent.setCellMerge(this.columnIndex, rowMerge, columnMerge);
     }

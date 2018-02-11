@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -80,16 +81,6 @@ public class TimeStyle implements DataStyle {
 		}
 	}
 
-	@Override
-	public boolean isHidden() {
-		return this.dataStyle.isHidden();
-	}
-
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
-
 	/**
 	 * A time format
 	 */
@@ -101,22 +92,17 @@ public class TimeStyle implements DataStyle {
 	}
 
 	@Override
-	public boolean isVolatileStyle() {
-		return this.dataStyle.isVolatileStyle();
-	}
-
-	@Override
 	public String getName() {
 		return this.dataStyle.getName();
 	}
 
 	@Override
-	public String getCountryCode() {
-		return this.dataStyle.getCountryCode();
+	public boolean isHidden() {
+		return this.dataStyle.isHidden();
 	}
 
 	@Override
-	public String getLanguageCode() {
-		return this.dataStyle.getLanguageCode();
+	public void addToElements(final OdsElements odsElements) {
+		odsElements.addDataStyle(this);
 	}
 }

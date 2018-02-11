@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -31,7 +32,7 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public class BooleanStyle implements DataStyle, Localized {
+public class BooleanStyle implements DataStyle {
 	private final CoreDataStyle dataStyle;
 
 	/**
@@ -46,38 +47,23 @@ public class BooleanStyle implements DataStyle, Localized {
 	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:boolean-style");
-		util.appendEAttribute(appendable, "style:name", this.getName());
+		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
 		this.dataStyle.appendLVAttributes(util, appendable);
 		appendable.append("/>");
 	}
 
 	@Override
-	public boolean isVolatileStyle() {
-		return this.dataStyle.isVolatileStyle();
-	}
+    public String getName() {
+	    return this.dataStyle.getName();
+    }
 
-	@Override
-	public String getName() {
-		return this.dataStyle.getName();
-	}
-
-	@Override
-	public String getCountryCode() {
-		return this.dataStyle.getCountryCode();
-	}
-
-	@Override
-	public String getLanguageCode() {
-		return this.dataStyle.getLanguageCode();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.dataStyle.isHidden();
+    }
 
 	@Override
 	public void addToElements(final OdsElements odsElements) {
 		odsElements.addDataStyle(this);
-	}
-
-	@Override
-	public boolean isHidden() {
-		return this.dataStyle.isHidden();
 	}
 }

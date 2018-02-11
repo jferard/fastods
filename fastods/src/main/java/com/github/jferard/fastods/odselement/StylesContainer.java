@@ -75,8 +75,7 @@ public class StylesContainer {
      * Create a styles container
      */
     StylesContainer() {
-        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(
-                Dest.class);
+        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(Dest.class);
         this.dataStylesContainer = new Container<String, DataStyle>();
         this.masterPageStylesContainer = new Container<String, MasterPageStyle>();
         this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
@@ -85,7 +84,8 @@ public class StylesContainer {
 
     /**
      * Add a child style that mixes the cell style with a data style to the container
-     * @param style the cell style
+     *
+     * @param style     the cell style
      * @param dataStyle the data style
      * @return the mixed cell style
      */
@@ -94,11 +94,9 @@ public class StylesContainer {
         TableCellStyle anonymousStyle = this.anonymousStyleByChildCellStyle.get(childKey);
         if (anonymousStyle == null) {
             this.addDataStyle(dataStyle);
-            if (!style.hasParent())
-                this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
+            if (!style.hasParent()) this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
             final String name = style.getRealName() + "@@" + dataStyle.getName();
-            anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style)
-                    .dataStyle(dataStyle).buildHidden();
+            anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle).buildHidden();
             this.addStyleToContentAutomaticStyles(anonymousStyle);
             this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);
         }
@@ -112,20 +110,19 @@ public class StylesContainer {
      */
     public void addDataStyle(final DataStyle dataStyle) {
         assert dataStyle.isHidden() : dataStyle.toString();
-        this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
-                Mode.CREATE);
+        this.dataStylesContainer.add(dataStyle.getName(), dataStyle, Mode.CREATE);
     }
 
     /**
      * Try to add a data style to the container
+     *
      * @param dataStyle the data style
-     * @param mode the mode (one of CREATE, CREATE_OR_UPDATE, UPDATE)
+     * @param mode      the mode (one of CREATE, CREATE_OR_UPDATE, UPDATE)
      * @return true if the style was added
      */
     public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
         assert dataStyle.isHidden() : dataStyle.toString();
-        return this.dataStylesContainer.add(dataStyle.getName(), dataStyle,
-                mode);
+        return this.dataStylesContainer.add(dataStyle.getName(), dataStyle, mode);
     }
 
     /**
@@ -145,17 +142,16 @@ public class StylesContainer {
      * @param mode            create, update or "free"
      * @return true if the style was created
      */
-    public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle,
-                                      final Mode mode) {
+    public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle, final Mode mode) {
         if (this.masterPageStylesContainer.add(masterPageStyle.getName(), masterPageStyle, mode)) {
             masterPageStyle.addEmbeddedStylesToStylesContainer(this, mode);
             return true;
-        } else
-            return false;
+        } else return false;
     }
 
     /**
      * Add the data style taken from a cell style
+     *
      * @param style the cell style
      */
     public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
@@ -165,6 +161,7 @@ public class StylesContainer {
 
     /**
      * Add a page layout style
+     *
      * @param pageLayoutStyle the style
      * @return true if the style was created (= did not exist)
      */
@@ -174,8 +171,9 @@ public class StylesContainer {
 
     /**
      * Add a page layout style
+     *
      * @param pageLayoutStyle the style
-     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @param mode            CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the style was created or updated
      */
     public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle, final Mode mode) {
@@ -184,6 +182,7 @@ public class StylesContainer {
 
     /**
      * Add a page style
+     *
      * @param ps the style
      * @return true if the master page style and the style layout where added
      */
@@ -193,7 +192,8 @@ public class StylesContainer {
 
     /**
      * Add a page style
-     * @param ps the style
+     *
+     * @param ps   the style
      * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the master page style and the style layout where added
      */
@@ -205,6 +205,7 @@ public class StylesContainer {
 
     /**
      * Add an object style to content.xml/automatic-styles
+     *
      * @param objectStyle the style
      */
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
@@ -214,18 +215,19 @@ public class StylesContainer {
 
     /**
      * Add an object style to content.xml/automatic-styles
+     *
      * @param objectStyle the style
-     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @param mode        CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the style was created or updated
      */
-    public boolean addStyleToContentAutomaticStyles(final ObjectStyle objectStyle,
-                                                    final Mode mode) {
+    public boolean addStyleToContentAutomaticStyles(final ObjectStyle objectStyle, final Mode mode) {
         assert objectStyle.isHidden();
         return this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, mode);
     }
 
     /**
      * Add an object style to styles.xml/automatic-styles
+     *
      * @param objectStyle the style
      */
     public void addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle) {
@@ -235,18 +237,19 @@ public class StylesContainer {
 
     /**
      * Add an object style to styles.xml/automatic-styles
+     *
      * @param objectStyle the style
-     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @param mode        CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the style was created or updated
      */
-    public boolean addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle,
-                                                   final Mode mode) {
+    public boolean addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle, final Mode mode) {
         assert objectStyle.isHidden() : objectStyle.toString();
         return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, mode);
     }
 
     /**
      * Add an object style to styles.xml/common-styles
+     *
      * @param objectStyle the style
      */
     public void addStyleToStylesCommonStyles(final ObjectStyle objectStyle) {
@@ -255,12 +258,12 @@ public class StylesContainer {
 
     /**
      * Add an object style to styles.xml/common-styles
+     *
      * @param objectStyle the style
-     * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
+     * @param mode        CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the style was created or updated
      */
-    public boolean addStyleToStylesCommonStyles(final ObjectStyle objectStyle,
-                                                final Mode mode) {
+    public boolean addStyleToStylesCommonStyles(final ObjectStyle objectStyle, final Mode mode) {
         assert !objectStyle.isHidden();
         return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, mode);
     }
@@ -292,14 +295,10 @@ public class StylesContainer {
         boolean hasHeader = false;
         boolean hasFooter = false;
 
-        for (final MasterPageStyle ps : this.masterPageStylesContainer
-                .getValues()) {
-            if (hasHeader && hasFooter)
-                break;
-            if (!hasHeader && ps.getHeader() != null)
-                hasHeader = true;
-            if (!hasFooter && ps.getFooter() != null)
-                hasFooter = true;
+        for (final MasterPageStyle ps : this.masterPageStylesContainer.getValues()) {
+            if (hasHeader && hasFooter) break;
+            if (!hasHeader && ps.getHeader() != null) hasHeader = true;
+            if (!hasFooter && ps.getFooter() != null) hasFooter = true;
         }
         return new HasFooterHeader(hasHeader, hasFooter);
     }
@@ -317,10 +316,8 @@ public class StylesContainer {
      * @param writer the destination
      * @throws IOException if the styles can't be written
      */
-    public void writeContentAutomaticStyles(final XMLUtil util,
-                                            final Appendable writer) throws IOException {
-        final Iterable<ObjectStyle> styles = this.objectStylesContainer
-                .getValues(Dest.CONTENT_AUTOMATIC_STYLES);
+    public void writeContentAutomaticStyles(final XMLUtil util, final Appendable writer) throws IOException {
+        final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.CONTENT_AUTOMATIC_STYLES);
         for (final ObjectStyle style : styles)
             assert style.isHidden() : style.toString();
 
@@ -334,8 +331,7 @@ public class StylesContainer {
      * @param writer the destination
      * @throws IOException if the styles can't be written
      */
-    public void writeDataStyles(final XMLUtil util, final Appendable writer)
-            throws IOException {
+    public void writeDataStyles(final XMLUtil util, final Appendable writer) throws IOException {
         for (final DataStyle dataStyle : this.dataStylesContainer.getValues()) {
             assert dataStyle.isHidden() : dataStyle.toString();
             dataStyle.appendXMLRepresentation(util, writer);
@@ -344,14 +340,13 @@ public class StylesContainer {
 
     /**
      * Write master page styles to styles.xml/automatic-styles
-     * @param util an util
+     *
+     * @param util   an util
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writePageLayoutStylesToAutomaticStyles(final XMLUtil util,
-                                                       final Appendable writer) throws IOException {
-        for (final PageLayoutStyle ps : this.pageLayoutStylesContainer
-                .getValues()) {
+    public void writePageLayoutStylesToAutomaticStyles(final XMLUtil util, final Appendable writer) throws IOException {
+        for (final PageLayoutStyle ps : this.pageLayoutStylesContainer.getValues()) {
             assert ps.isHidden();
             ps.appendXMLToAutomaticStyle(util, writer);
         }
@@ -359,26 +354,25 @@ public class StylesContainer {
 
     /**
      * Write master page styles to styles.xml/master-styles
-     * @param util an util
+     *
+     * @param util   an util
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writeMasterPageStylesToMasterStyles(final XMLUtil util,
-                                                    final Appendable writer) throws IOException {
-        for (final MasterPageStyle ps : this.masterPageStylesContainer
-                .getValues()) {
+    public void writeMasterPageStylesToMasterStyles(final XMLUtil util, final Appendable writer) throws IOException {
+        for (final MasterPageStyle ps : this.masterPageStylesContainer.getValues()) {
             ps.appendXMLToMasterStyle(util, writer);
         }
     }
 
     /**
      * Write styles to styles.xml/automatic-styles
-     * @param util an util
+     *
+     * @param util   an util
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writeStylesAutomaticStyles(final XMLUtil util,
-                                           final Appendable writer) throws IOException {
+    public void writeStylesAutomaticStyles(final XMLUtil util, final Appendable writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.STYLES_AUTOMATIC_STYLES);
         for (final ObjectStyle style : styles)
             assert style.isHidden() : style.toString();
@@ -388,18 +382,18 @@ public class StylesContainer {
 
     /**
      * Write styles to styles.xml/common-styles
-     * @param util an util
+     *
+     * @param util   an util
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writeStylesCommonStyles(final XMLUtil util,
-                                        final Appendable writer) throws IOException {
+    public void writeStylesCommonStyles(final XMLUtil util, final Appendable writer) throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer.getValues(Dest.STYLES_COMMON_STYLES);
         for (final ObjectStyle style : styles)
-            assert !style.isHidden() : style.toString() + " - " + style.getName() + TableCellStyle.DEFAULT_CELL_STYLE.toString();
+            assert !style.isHidden() : style.toString() + " - " + style.getName() + TableCellStyle.DEFAULT_CELL_STYLE
+                    .toString();
 
-        this.write(styles,
-                util, writer);
+        this.write(styles, util, writer);
     }
 
     /**
@@ -409,12 +403,10 @@ public class StylesContainer {
         /**
          * content.xml/automatic-styles
          */
-        CONTENT_AUTOMATIC_STYLES,
-        /**
+        CONTENT_AUTOMATIC_STYLES, /**
          * styles.xml/automatic-styles
          */
-        STYLES_AUTOMATIC_STYLES,
-        /**
+        STYLES_AUTOMATIC_STYLES, /**
          * styles.xml/common-styles
          */
         STYLES_COMMON_STYLES,

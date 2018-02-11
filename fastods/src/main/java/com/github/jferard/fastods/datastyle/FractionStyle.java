@@ -24,6 +24,7 @@ package com.github.jferard.fastods.datastyle;
 import java.io.IOException;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -39,7 +40,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  *
  */
-public class FractionStyle implements NumberStyle, DataStyle {
+public class FractionStyle implements DataStyle {
 	private final NumberStyleHelper numberStyle;
 	private final int minDenominatorDigits;
 	private final int minNumeratorDigits;
@@ -63,11 +64,6 @@ public class FractionStyle implements NumberStyle, DataStyle {
 		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
 	}
 
-	@Override
-	public boolean isHidden() {
-		return this.numberStyle.isHidden();
-	}
-
 	private CharSequence computeNumberTag(final XMLUtil util)
 			throws IOException {
 		final StringBuilder number = new StringBuilder();
@@ -82,38 +78,13 @@ public class FractionStyle implements NumberStyle, DataStyle {
 	}
 
 	@Override
-	public boolean getGroupThousands() {
-		return this.numberStyle.getGroupThousands();
-	}
-
-	@Override
-	public int getMinIntegerDigits() {
-		return this.numberStyle.getMinIntegerDigits();
-	}
-
-	@Override
-	public Color getNegativeValueColor() {
-		return this.numberStyle.getNegativeValueColor();
-	}
-
-	@Override
-	public boolean isVolatileStyle() {
-		return this.numberStyle.isVolatileStyle();
-	}
-
-	@Override
 	public String getName() {
 		return this.numberStyle.getName();
 	}
 
 	@Override
-	public String getCountryCode() {
-		return this.numberStyle.getCountryCode();
-	}
-
-	@Override
-	public String getLanguageCode() {
-		return this.numberStyle.getLanguageCode();
+	public boolean isHidden() {
+		return this.numberStyle.isHidden();
 	}
 
 	@Override

@@ -102,7 +102,9 @@ public class TableCellStyle implements ObjectStyle {
 
     @Override
     public void addToElements(final OdsElements odsElements) {
-        if (this.dataStyle != null) this.dataStyle.addToElements(odsElements);
+        if (this.dataStyle != null) {
+            this.dataStyle.addToElements(odsElements);
+        }
         odsElements.addObjectStyle(this);
     }
 

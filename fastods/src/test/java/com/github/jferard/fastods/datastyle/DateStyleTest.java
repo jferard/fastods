@@ -193,6 +193,5 @@ public class DateStyleTest {
 		DomTester.assertEquals(
 				"<number:date-style number:language=\"en\" style:name=\"test\" number:country=\"US\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
 				sb.toString());
-		Assert.assertFalse(ds.isAutomaticOrder());
 	}
 }
