@@ -65,7 +65,7 @@ public class Paragraph implements TagParameter {
 						this.style.getName());
 			appendable.append('>');
 			for (final ParagraphElement paragraphElement : this.paragraphElements)
-				paragraphElement.appendXMLToParagraph(util, appendable);
+				paragraphElement.appendXMLContent(util, appendable);
 			appendable.append("</text:p>");
 		}
 	}

@@ -30,23 +30,5 @@ import java.io.IOException;
  * A paragraph element represents an element inside paragraph (p tag)
  * @author Julien Férard
  */
-public interface ParagraphElement {
-    /**
-     * Append this element to a paragraph
-     * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
-    void appendXMLToParagraph(XMLUtil util,
-							  Appendable appendable) throws IOException;
-
-    /**
-     * @return the text style
-     */
-    TextStyle getTextStyle();
-
-    /**
-     * @return the text content
-     */
-    String getText();
+public interface ParagraphElement extends TagParameter {
 }

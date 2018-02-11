@@ -56,9 +56,6 @@ public class ParagraphTest {
 		this.parBuilder.span("content");
 		this.parBuilder.span("text");
 		final Paragraph par = this.parBuilder.build();
-		Assert.assertEquals("content", par.getParagraphElements().get(0).getText());
-		Assert.assertNull(par.getParagraphElements().get(0).getTextStyle());
-		Assert.assertEquals("text", par.getParagraphElements().get(1).getText());
 		DomTester.assertEquals("<text:p>contenttext</text:p>", this.getXML());
 	}
 

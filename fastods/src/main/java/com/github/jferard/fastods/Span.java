@@ -60,8 +60,8 @@ public class Span implements ParagraphElement {
 	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
-	public void appendXMLToParagraph(final XMLUtil util,
-									 final Appendable appendable) throws IOException {
+	public void appendXMLContent(final XMLUtil util,
+								 final Appendable appendable) throws IOException {
 		if (this.ts == null) {
 			appendable.append(this.text);
 		} else {
@@ -70,35 +70,5 @@ public class Span implements ParagraphElement {
 					this.ts.getName());
 			appendable.append(">").append(this.text).append("</text:span>");
 		}
-	}
-
-	/**
-     * Shortcut for appendXMLToParagraph
-     * DO NOT USE...
-	 *  WARNING: 19.874.29: style-name refers to a style that has the family
-	 * "paragraph" !
-	 * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     * @deprecated use appendXMLToParagraph
-	 */
-	@Deprecated
-	public void appendXMLTextPToParagraph(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		appendable.append("<text:p");
-		if (this.ts != null)
-			util.appendEAttribute(appendable, "text:style-name",
-					this.ts.getName());
-		appendable.append(">").append(this.text).append("</text:p>");
-	}
-
-	@Override
-	public String getText() {
-		return this.text;
-	}
-
-	@Override
-	public TextStyle getTextStyle() {
-		return this.ts;
 	}
 }

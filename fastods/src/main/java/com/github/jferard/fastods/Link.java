@@ -130,7 +130,7 @@ public final class Link implements ParagraphElement {
     }
 
     @Override
-	public void appendXMLToParagraph(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<text:a");
 		if (this.ts != null) {
 			util.appendEAttribute(appendable, "text:style-name",
@@ -139,15 +139,5 @@ public final class Link implements ParagraphElement {
 		util.appendEAttribute(appendable, "xlink:href", this.content);
 		util.appendAttribute(appendable, "xlink:type", "simple");
 		appendable.append(">").append(this.text).append("</text:a>");
-	}
-
-	@Override
-	public TextStyle getTextStyle() {
-		return this.ts;
-	}
-
-	@Override
-	public String getText() {
-		return this.text;
 	}
 }

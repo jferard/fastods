@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * The Text class represents a text in a footer/header region
  * @author Julien Férard
  */
-public class Text implements TagParameter {
+public class Text implements ParagraphElement {
     /**
      * 7.3.2<text:date> "The <text:date> element displays a date, by default this is the current date."
      */

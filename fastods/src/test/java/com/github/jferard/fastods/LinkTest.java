@@ -57,7 +57,7 @@ public class LinkTest {
 		//
 		final StringBuilder sb = new StringBuilder();
 		final Link link = Link.create("table", this.ts, table);
-		link.appendXMLToParagraph(this.util, sb);
+		link.appendXMLContent(this.util, sb);
 
 		DomTester.assertEquals("<text:a text:style-name=\"test\" xlink:href=\"#t\" xlink:type=\"simple\">table</text:a>", sb.toString());
 
@@ -68,7 +68,7 @@ public class LinkTest {
 	public final void testURL() throws IOException {
 		final StringBuilder sb = new StringBuilder();
 		final Link link = Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
-		link.appendXMLToParagraph(this.util, sb);
+		link.appendXMLContent(this.util, sb);
 
 		DomTester.assertEquals("<text:a text:style-name=\"test\" xlink:href=\"https://www.github.com/jferard/fastods\" xlink:type=\"simple\">url</text:a>", sb.toString());
 	}
@@ -78,7 +78,7 @@ public class LinkTest {
 		final StringBuilder sb = new StringBuilder();
 		final File f = new File("generated_files", "fastods_50_5.ods");
 		final Link link = Link.create("file", this.ts, f);
-		link.appendXMLToParagraph(this.util, sb);
+		link.appendXMLContent(this.util, sb);
 
 		DomTester.assertEquals("<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI().toString() + "\" xlink:type=\"simple\">file</text:a>", sb.toString());
 	}
