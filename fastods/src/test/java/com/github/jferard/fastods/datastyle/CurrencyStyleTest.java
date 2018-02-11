@@ -43,8 +43,8 @@ public class CurrencyStyleTest {
 		this.util = XMLUtil.create();
 		this.locale = Locale.US;
 		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
-		this.usSymbol = Currency.getInstance(this.locale).getSymbol();
-		this.frSymbol = Currency.getInstance(Locale.FRANCE).getSymbol();
+		this.usSymbol = Currency.getInstance(this.locale).getSymbol(this.locale);
+		this.frSymbol = Currency.getInstance(Locale.FRANCE).getSymbol(Locale.FRANCE);
 	}
 
 	@Test
@@ -118,7 +118,7 @@ public class CurrencyStyleTest {
 				+ "<number:text>-</number:text>"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"
 				+ "</number:currency-style>", sb.toString());
 	}
@@ -139,7 +139,7 @@ public class CurrencyStyleTest {
 				+ "<number:text>-</number:text>"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
-				+ "<number:currency-symbol>USD</number:currency-symbol>"
+				+ "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>"
 				+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"
 				+ "</number:currency-style>", sb.toString());
 	}

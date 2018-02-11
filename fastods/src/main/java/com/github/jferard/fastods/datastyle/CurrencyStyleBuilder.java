@@ -44,7 +44,7 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 	 */
 	CurrencyStyleBuilder(final String name, final Locale locale) {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
-		this.currencySymbol = Currency.getInstance(locale).getSymbol();
+		this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
 	}
 
@@ -99,7 +99,7 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 	@Override
 	public final CurrencyStyleBuilder locale(final Locale locale) {
 		this.floatStyleBuilder.locale(locale);
-		this.currencySymbol = Currency.getInstance(locale).getSymbol();
+		this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
 		return this;
 	}
 
