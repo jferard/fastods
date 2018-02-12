@@ -60,7 +60,30 @@ public class FastOdsTest {
 		PowerMock.verifyAll();
 	}
 
-	@Test
+    @Test
+    public final void testOpenInexistentFile() throws IOException {
+        final File f = PowerMock.createMock(File.class);
+        EasyMock.expect(f.exists()).andReturn(false);
+
+        // PLAY
+        PowerMock.replayAll();
+        Assert.assertFalse(FastOds.openFile(f));
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testOpenDirMock() throws IOException {
+        final File f = PowerMock.createMock(File.class);
+        EasyMock.expect(f.exists()).andReturn(true);
+        EasyMock.expect(f.isFile()).andReturn(false);
+
+        // PLAY
+        PowerMock.replayAll();
+        Assert.assertFalse(FastOds.openFile(f));
+        PowerMock.verifyAll();
+    }
+
+    @Test
 	public final void testOpenFileError() throws IOException {
 		// let's hide logging infos
 		final Logger rootLogger = Logger.getLogger("");

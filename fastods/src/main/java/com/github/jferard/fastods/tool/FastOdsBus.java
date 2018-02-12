@@ -103,6 +103,9 @@ public class FastOdsBus<E> {
 	 * @param element the element
 	 */
 	synchronized public void put(final E element) {
+		if (this.closed)
+			throw new IllegalStateException("Bus is closed");
+
 		this.elements.add(element);
 		this.notifyAll();
 	}
