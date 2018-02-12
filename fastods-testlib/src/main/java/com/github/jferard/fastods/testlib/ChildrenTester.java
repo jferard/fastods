@@ -30,6 +30,9 @@ public abstract class ChildrenTester {
 	static Logger logger = Logger.getLogger("ChildrenTester");
 
 	protected boolean attributesEquals(final Node element1, final Node element2) {
+		if (element1 == element2)
+			return true;
+
 		final NamedNodeMap attributes1 = element1.getAttributes();
 		final NamedNodeMap attributes2 = element2.getAttributes();
 		if (attributes1 == null) {
