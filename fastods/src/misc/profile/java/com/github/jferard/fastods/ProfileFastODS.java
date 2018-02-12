@@ -43,8 +43,8 @@ import java.util.logging.Logger;
  *         -Dtest=ProfileFastOds#testFast test
  */
 public class ProfileFastODS {
-	private static final int COL_COUNT = 40;
-	private static final int ROW_COUNT = 80000;
+	private static final int COL_COUNT = 60;
+	private static final int ROW_COUNT = 320000;
 
 	@BeforeClass
 	public static final void beforeClass() {

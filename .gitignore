@@ -16,6 +16,7 @@ generated_files
 
 # extensions
 *.old
+*.class
 *.ods
 *.*#
 

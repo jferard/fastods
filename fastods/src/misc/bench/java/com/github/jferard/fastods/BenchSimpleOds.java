@@ -28,10 +28,10 @@ import org.simpleods.ObjectQueue;
 import org.simpleods.SimpleOdsException;
 import com.github.jferard.fastods.testlib.Bench;
 
-public class BenchSimple extends Bench {
+public class BenchSimpleOds extends Bench {
 	private final Logger logger;
 
-	public BenchSimple(final Logger logger, final int rowCount, final int colCount) {
+	public BenchSimpleOds(final Logger logger, final int rowCount, final int colCount) {
 		super(logger, "SimpleODS", rowCount, colCount);
 		this.logger = logger;
 	}
@@ -40,7 +40,7 @@ public class BenchSimple extends Bench {
 	public long test() throws IOException {
 		try {
 			// Open the file.
-			this.logger.info("testSimple: filling a " + this.getRowCount() + " rows, "
+			this.logger.info("testSimpleOds: filling a " + this.getRowCount() + " rows, "
 					+ this.getColCount() + " columns spreadsheet");
 			final long t1 = System.currentTimeMillis();
 			final org.simpleods.OdsFile file = new org.simpleods.OdsFile(
