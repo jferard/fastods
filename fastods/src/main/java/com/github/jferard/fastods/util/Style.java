@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.Tag;
 import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.style.AddableToOdsElements;
 
@@ -28,5 +29,5 @@ import com.github.jferard.fastods.style.AddableToOdsElements;
  * A style (data style or object style)
  * @author Julien Férard
  */
-public interface Style extends NamedObject, AddableToOdsElements, XMLConvertible, Hidable {
+public interface Style extends NamedObject, AddableToOdsElements, Tag, Hidable {
 }

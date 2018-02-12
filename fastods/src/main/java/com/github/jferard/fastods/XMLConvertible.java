@@ -37,6 +37,6 @@ public interface XMLConvertible {
      * @param appendable the appendable to append data to
      * @throws IOException if the style can't be added
      */
-    void appendXMLRepresentation(XMLUtil util, Appendable appendable)
+    void appendXMLContent(XMLUtil util, Appendable appendable)
             throws IOException;
 }

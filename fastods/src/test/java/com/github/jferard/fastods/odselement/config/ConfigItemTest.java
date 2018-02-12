@@ -20,7 +20,6 @@
  */
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -52,7 +51,7 @@ public class ConfigItemTest {
 		final ConfigItem loadReadonly = new ConfigItem("LoadReadonly",
 				"boolean", "false");
 		final StringBuilder sb = new StringBuilder();
-		loadReadonly.appendXMLRepresentation(this.util, sb);
+		loadReadonly.appendXMLContent(this.util, sb);
 		DomTester.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>",
 				sb.toString());
@@ -62,7 +61,7 @@ public class ConfigItemTest {
 	public final void testXMLEscape() throws IOException {
 		final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
 		final StringBuilder sb = new StringBuilder();
-		escape.appendXMLRepresentation(this.util, sb);
+		escape.appendXMLContent(this.util, sb);
 		DomTester.assertEquals(
 				"<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;</config:config-item>",
 				sb.toString());

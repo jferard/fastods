@@ -47,7 +47,7 @@ public class TextBuilderTest {
         this.util = XMLUtil.create();
         this.ts = TextProperties.builder().fontName("fn").fontColor(ColorHelper.fromString("fc")).buildStyle("ts");
         final StringBuilder sb = new StringBuilder();
-        this.ts.appendXMLRepresentation(this.util, sb);
+        this.ts.appendXMLContent(this.util, sb);
         this.tsXML = sb.toString();
     }
 

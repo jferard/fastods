@@ -21,20 +21,9 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
-
 /**
  * A tag or tag parameters
  * @author Julien Férard
  */
-public interface TagParameter {
-    /**
-     * Append XML content to a opening tag or write the tag itself
-     * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
-    void appendXMLContent(XMLUtil util, Appendable appendable) throws IOException;
+public interface Tag extends XMLConvertible {
 }

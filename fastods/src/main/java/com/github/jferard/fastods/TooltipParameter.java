@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-public class TooltipParameter implements TagParameter {
+public class TooltipParameter implements TagParameters {
     private final Length width;
     private final Length height;
     private final boolean visible;

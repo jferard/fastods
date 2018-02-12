@@ -74,7 +74,7 @@ public class CurrencyStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		final CharSequence number = this.computeCurrency(util);
 		this.floatStyle.appendXMLHelper(util, appendable, "currency-style", number);

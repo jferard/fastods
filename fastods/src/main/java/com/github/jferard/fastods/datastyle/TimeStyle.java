@@ -55,7 +55,7 @@ public class TimeStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<number:time-style");
 		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());

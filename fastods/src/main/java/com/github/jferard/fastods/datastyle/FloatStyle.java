@@ -56,7 +56,7 @@ public class FloatStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
 		final CharSequence number = this.computeNumberTag(util);
 		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
 	}

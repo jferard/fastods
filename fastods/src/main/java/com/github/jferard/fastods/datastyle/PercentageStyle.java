@@ -52,7 +52,7 @@ public class PercentageStyle implements DataStyle {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		final StringBuilder percentage = new StringBuilder();
 		this.floatStyle.appendNumberTag(util, percentage);

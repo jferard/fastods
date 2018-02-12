@@ -44,7 +44,7 @@ public class ConfigItemMapEntrySingletonTest {
         this.util = XMLUtil.create();
 
         final StringBuilder sb = new StringBuilder();
-        this.item.appendXMLRepresentation(this.util, sb);
+        this.item.appendXMLContent(this.util, sb);
         this.itemXML = sb.toString();
     }
 
@@ -68,7 +68,7 @@ public class ConfigItemMapEntrySingletonTest {
         final StringBuilder sb = new StringBuilder();
 
 
-        this.singleton.appendXMLRepresentation(this.util, sb);
+        this.singleton.appendXMLContent(this.util, sb);
         Assert.assertEquals("<config:config-item-map-entry config:name=\"singleton\">" +
                 this.itemXML +
                 "</config:config-item-map-entry>", sb.toString());

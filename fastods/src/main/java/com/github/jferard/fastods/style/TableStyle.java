@@ -72,7 +72,7 @@ public class TableStyle implements ObjectStyle {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<style:style");
 		util.appendEAttribute(appendable, "style:name", this.name);

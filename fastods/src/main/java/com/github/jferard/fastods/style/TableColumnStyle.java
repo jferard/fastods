@@ -82,7 +82,7 @@ public class TableColumnStyle implements ObjectStyle {
     }
 
     @Override
-    public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table-column");

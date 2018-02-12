@@ -31,7 +31,22 @@ public class SimpleLengthTest {
     @Test
     public void testEquals() {
         Assert.assertEquals(SimpleLength.pt(10.0), SimpleLength.pt(10.0));
-        Assert.assertNotEquals(SimpleLength.pt(10.0), SimpleLength.pt(11.0));
+        Assert.assertNotEquals(SimpleLength.pt(10.0), SimpleLength.cm(10.0));
+        Assert.assertNotEquals(SimpleLength.in(10.0), SimpleLength.in(11.0));
+        Assert.assertNotEquals(SimpleLength.in(11.0), SimpleLength.in(10.0));
+        Assert.assertFalse(SimpleLength.mm(10.0).equals("10"));
+    }
+
+    @Test
+    public void testHashCode() {
+        Assert.assertEquals(SimpleLength.pc(10.0).hashCode(), SimpleLength.pc(10.0).hashCode());
+    }
+
+    @Test
+    public void testIsNull() {
+        Assert.assertTrue(SimpleLength.em(0.0).isNull());
+        Assert.assertFalse(SimpleLength.em(1.0).isNull());
+        Assert.assertFalse(SimpleLength.em(-1.0).isNull());
     }
 
     @Test

@@ -306,7 +306,7 @@ public class StylesContainer {
     private void write(final Iterable<ObjectStyle> iterable, final XMLUtil util,
                        final Appendable writer) throws IOException {
         for (final ObjectStyle os : iterable)
-            os.appendXMLRepresentation(util, writer);
+            os.appendXMLContent(util, writer);
     }
 
     /**
@@ -334,7 +334,7 @@ public class StylesContainer {
     public void writeDataStyles(final XMLUtil util, final Appendable writer) throws IOException {
         for (final DataStyle dataStyle : this.dataStylesContainer.getValues()) {
             assert dataStyle.isHidden() : dataStyle.toString();
-            dataStyle.appendXMLRepresentation(util, writer);
+            dataStyle.appendXMLContent(util, writer);
         }
     }
 

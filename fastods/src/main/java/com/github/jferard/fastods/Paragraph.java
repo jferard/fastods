@@ -31,7 +31,7 @@ import java.util.List;
  * 5.1.3 text:p
  * @author Julien Férard
  */
-public class Paragraph implements TagParameter {
+public class Paragraph implements TagParameters {
 	/**
 	 * @return a new builder
 	 */

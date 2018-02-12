@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.Tag;
 
 /**
  * There is a hierarchy in config block:
@@ -32,11 +32,12 @@ import com.github.jferard.fastods.XMLConvertible;
  * <li>{@code config:config-item-map-named} is a config block that contains {@code config:config-item-map-entry}</li>
  * <li>{@code config:config-item-map-entry} may contain any config block</li>
  * </ul>
+ *
  * @author Julien Férard
  */
-public interface ConfigBlock extends XMLConvertible {
-	/**
-	 * @return the name of this config block (19.29 config:name)
-	 */
-	String getName();
+public interface ConfigBlock extends Tag {
+    /**
+     * @return the name of this config block (19.29 config:name)
+     */
+    String getName();
 }

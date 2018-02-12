@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.TagParameter;
+import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
@@ -33,7 +33,7 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TextProperties implements TagParameter {
+public class TextProperties implements TagParameters {
 	/** 20.380 : none,solid,dotted,dash,long-dash,dot-dash,dot-dot-dash,wave */
 	public enum Underline {
 		/**

@@ -20,11 +20,6 @@
  */
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.odselement.config.ConfigItem;
-import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySingleton;
-import com.github.jferard.fastods.odselement.config.ConfigItemMapIndexed;
-import com.github.jferard.fastods.odselement.config.ConfigItemMapNamed;
-import com.github.jferard.fastods.odselement.config.ConfigItemSet;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -57,7 +52,7 @@ public class ConfigBlockTest {
 		map2.put(ConfigItemMapEntrySingleton.createSingleton("entry2", new ConfigItem("item4", "long", "123456789")));
 		cb.add(map2);
 
-		cb.appendXMLRepresentation(util, sb);
+		cb.appendXMLContent(util, sb);
 
 		DomTester.assertUnsortedEquals("<config:config-item-set config:name=\"root\">" +
 				"<config:config-item config:name=\"item1\" config:type=\"int\">1</config:config-item>" +

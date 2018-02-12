@@ -46,7 +46,7 @@ public class ConfigItemMapIndexedTest {
         this.util = XMLUtil.create();
 
         final StringBuilder sb = new StringBuilder();
-        this.set.appendXMLRepresentation(this.util, sb);
+        this.set.appendXMLContent(this.util, sb);
         this.setXML = sb.toString();
     }
 
@@ -125,7 +125,7 @@ public class ConfigItemMapIndexedTest {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         final StringBuilder sb = new StringBuilder();
-        m.appendXMLRepresentation(this.util, sb);
+        m.appendXMLContent(this.util, sb);
         Assert.assertEquals("<config:config-item-map-indexed config:name=\"mapindexed\">" +
                 this.setXML+
                 "</config:config-item-map-indexed>", sb.toString());

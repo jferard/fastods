@@ -70,7 +70,7 @@ public class TableRowStyle implements ObjectStyle {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable)
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
 		appendable.append("<style:style");
 		util.appendAttribute(appendable, "style:name", this.name);

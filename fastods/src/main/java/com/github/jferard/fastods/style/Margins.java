@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.TagParameter;
+import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -32,7 +32,7 @@ import java.io.IOException;
  * The margins of a page
  * @author Julien Férard
  */
-public class Margins implements TagParameter {
+public class Margins implements TagParameters {
 	private final Length all;
 	private final Length bottom;
 	private final Length left;

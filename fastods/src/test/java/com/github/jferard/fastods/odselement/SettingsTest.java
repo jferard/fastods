@@ -65,7 +65,7 @@ public class SettingsTest {
     public void testViewSettingsContent() throws IOException {
         final ConfigBlock block = this.blocks.get(0);
         final Appendable sb = new StringBuilder();
-        block.appendXMLRepresentation(this.util, sb);
+        block.appendXMLContent(this.util, sb);
         DomTester.assertUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" + "<config:config-item config:name=\"VisibleAreaTop\" config:type=\"int\">0</config:config-item>" + "<config:config-item config:name=\"VisibleAreaLeft\" config:type=\"int\">0</config:config-item>" + "<config:config-item config:name=\"VisibleAreaWidth\" config:type=\"int\">680</config:config-item>" + "<config:config-item config:name=\"VisibleAreaHeight\" config:type=\"int\">400</config:config-item>" + "<config:config-item-map-indexed config:name=\"Views\">" + "<config:config-item-map-entry>" + "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" + "<config:config-item-map-named config:name=\"Tables\" />" + "<config:config-item config:name=\"ActiveTable\" config:type=\"string\">Tab1</config:config-item>" + "<config:config-item config:name=\"HorizontalScrollbarWidth\" config:type=\"int\">270</config:config-item>" + "<config:config-item config:name=\"PageViewZoomValue\" config:type=\"int\">60</config:config-item>" + "<config:config-item config:name=\"ZoomType\" config:type=\"short\">0</config:config-item>" + "<config:config-item config:name=\"ZoomValue\" config:type=\"int\">100</config:config-item>" + "<config:config-item config:name=\"ShowPageBreakPreview\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"ShowZeroValues\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"ShowNotes\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"ShowGrid\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"GridColor\" config:type=\"long\">12632256</config:config-item>" + "<config:config-item config:name=\"ShowPageBreaks\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"HasColumnRowHeaders\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"IsOutlineSymbolsSet\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"HasSheetTabs\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"IsSnapToRaster\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"RasterIsVisible\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"RasterResolutionX\" config:type=\"int\">1000</config:config-item>" + "<config:config-item config:name=\"RasterResolutionY\" config:type=\"int\">1000</config:config-item>" + "<config:config-item config:name=\"RasterSubdivisionX\" config:type=\"int\">1</config:config-item>" + "<config:config-item config:name=\"RasterSubdivisionY\" config:type=\"int\">1</config:config-item>" + "<config:config-item config:name=\"IsRasterAxisSynchronized\" config:type=\"boolean\">true</config:config-item>" + "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" + "</config:config-item-set>",
                 sb.toString());
@@ -75,7 +75,7 @@ public class SettingsTest {
     public void testConfigurationSettingsContent() throws IOException {
         final ConfigBlock block = this.blocks.get(1);
         final Appendable sb = new StringBuilder();
-        block.appendXMLRepresentation(this.util, sb);
+        block.appendXMLContent(this.util, sb);
         DomTester.assertUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:configuration-settings\">" + "<config:config-item config:name=\"ShowZeroValues\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"ShowNotes\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"ShowGrid\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"GridColor\" config:type=\"long\">12632256</config:config-item>" + "<config:config-item config:name=\"ShowPageBreaks\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"LinkUpdateMode\" config:type=\"short\">3</config:config-item>" + "<config:config-item config:name=\"HasColumnRowHeaders\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"HasSheetTabs\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"IsOutlineSymbolsSet\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"IsSnapToRaster\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"RasterIsVisible\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"RasterResolutionX\" config:type=\"int\">1000</config:config-item>" + "<config:config-item config:name=\"RasterResolutionY\" config:type=\"int\">1000</config:config-item>" + "<config:config-item config:name=\"RasterSubdivisionX\" config:type=\"int\">1</config:config-item>" + "<config:config-item config:name=\"RasterSubdivisionY\" config:type=\"int\">1</config:config-item>" + "<config:config-item config:name=\"IsRasterAxisSynchronized\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"AutoCalculate\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"PrinterName\" config:type=\"string\"/>" + "<config:config-item config:name=\"PrinterSetup\" config:type=\"base64Binary\"/>" + "<config:config-item config:name=\"ApplyUserData\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"CharacterCompressionType\" config:type=\"short\">0</config:config-item>" + "<config:config-item config:name=\"IsKernAsianPunctuation\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"SaveVersionOnClose\" config:type=\"boolean\">false</config:config-item>" + "<config:config-item config:name=\"UpdateFromTemplate\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"AllowPrintJobCancel\" config:type=\"boolean\">true</config:config-item>" + "<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>" + "</config:config-item-set>",
                 sb.toString());
@@ -95,7 +95,7 @@ public class SettingsTest {
 
         final Settings s = this.createVoidSettings();
         s.addTable(table);
-        s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
+        s.getRootBlocks().get(0).appendXMLContent(this.util, sb);
 
         DomTester.assertUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" + "<config:config-item-map-indexed config:name=\"Views\">" + "<config:config-item-map-entry>" + "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" + "<config:config-item-map-named config:name=\"Tables\">" + "<config:config-item-map-entry config:name=\"singleton\">" + "<config:config-item config:name=\"n\" config:type=\"t\">v</config:config-item>" + "</config:config-item-map-entry>" + "</config:config-item-map-named>" + "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" + "</config:config-item-set>",
@@ -112,7 +112,7 @@ public class SettingsTest {
 
         final Settings s = this.createVoidSettings();
         s.setViewSetting("vId", "i", "v");
-        s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
+        s.getRootBlocks().get(0).appendXMLContent(this.util, sb);
 
         DomTester.assertUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" + "<config:config-item-map-indexed config:name=\"Views\">" + "<config:config-item-map-entry>" + "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" + "<config:config-item-map-named config:name=\"Tables\" />" + "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" + "</config:config-item-set>",
@@ -127,7 +127,7 @@ public class SettingsTest {
 
         final Settings s = this.createVoidSettings();
         s.setViewSetting("View1", "i", "v");
-        s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
+        s.getRootBlocks().get(0).appendXMLContent(this.util, sb);
 
         DomTester.assertUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" + "<config:config-item-map-indexed config:name=\"Views\">" + "<config:config-item-map-entry>" + "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" + "<config:config-item-map-named config:name=\"Tables\" />" + "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" + "</config:config-item-set>",
@@ -142,7 +142,7 @@ public class SettingsTest {
 
         final Settings s = this.createVoidSettings();
         s.setViewSetting("View1", "ViewId", "View2");
-        s.getRootBlocks().get(0).appendXMLRepresentation(this.util, sb);
+        s.getRootBlocks().get(0).appendXMLContent(this.util, sb);
 
         DomTester.assertUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" + "<config:config-item-map-indexed config:name=\"Views\">" + "<config:config-item-map-entry>" + "<config:config-item config:name=\"ViewId\" config:type=\"string\">View2</config:config-item>" + "<config:config-item-map-named config:name=\"Tables\" />" + "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" + "</config:config-item-set>",

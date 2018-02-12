@@ -51,12 +51,12 @@ public class ConfigItemSet implements ConfigItemCollection<ConfigBlock> {
 	}
 
 	@Override
-	public void appendXMLRepresentation(final XMLUtil util, final Appendable appendable) throws IOException {
+	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<config:config-item-set");
 		util.appendEAttribute(appendable, "config:name", this.name);
 		appendable.append(">");
 		for (final ConfigBlock block : this.blockByName.values())
-			block.appendXMLRepresentation(util, appendable);
+			block.appendXMLContent(util, appendable);
 		appendable.append("</config:config-item-set>");
 	}
 

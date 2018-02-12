@@ -20,7 +20,6 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -52,7 +51,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.decimalPlaces(5).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLRepresentation(this.util, sb);
+		ps.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"5\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
@@ -66,7 +65,7 @@ public class CurrencyStyleTest {
 				.currencyStyleBuilder("currency-data").locale(Locale.FRANCE)
 				.build();
 		final StringBuilder sb = new StringBuilder();
-		cs.appendXMLRepresentation(this.util, sb);
+		cs.appendXMLContent(this.util, sb);
 		DomTester.assertEquals(
 				"<number:currency-style style:name=\"currency-data\" number:language=\"fr\" number:country=\"FR\" style:volatile=\"true\">"
 						+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
@@ -81,7 +80,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.groupThousands(true).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLRepresentation(this.util, sb);
+		ps.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>"
 				+ "<number:text> </number:text>"
@@ -94,7 +93,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.minIntegerDigits(8).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLRepresentation(this.util, sb);
+		ps.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"8\"/>"
 				+ "<number:text> </number:text>"
@@ -107,7 +106,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.negativeValueColor(SimpleColor.GREEN).build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLRepresentation(this.util, sb);
+		ps.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
@@ -128,7 +127,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle ps = this.factory.currencyStyleBuilder("test")
 				.negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		ps.appendXMLRepresentation(this.util, sb);
+		ps.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>"
@@ -149,7 +148,7 @@ public class CurrencyStyleTest {
 		final CurrencyStyle cs = this.factory.currencyStyleBuilder("test")
 				.locale(this.locale).negativeValueRed().build();
 		final StringBuilder sb = new StringBuilder();
-		cs.appendXMLRepresentation(this.util, sb);
+		cs.appendXMLContent(this.util, sb);
 		DomTester.assertEquals("<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
 				+ "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>"
 				+ "<number:text> </number:text>" + "<number:currency-symbol>"

@@ -21,9 +21,13 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
+
 /**
- * A paragraph element represents an element inside paragraph (p tag)
+ * A tag parameters
  * @author Julien Férard
  */
-public interface ParagraphElement extends Tag {
+public interface TagParameters extends XMLConvertible {
 }
