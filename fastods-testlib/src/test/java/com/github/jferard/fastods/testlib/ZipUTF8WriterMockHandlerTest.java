@@ -21,9 +21,11 @@
 
 package com.github.jferard.fastods.testlib;
 
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -74,6 +76,42 @@ public class ZipUTF8WriterMockHandlerTest {
         instance.finish();
         Assert.assertEquals("<document />", this.handler.getEntryAsString("test"));
         Assert.assertEquals("document", this.handler.getEntryAsDocument("test").getDocumentElement().getTagName());
+    }
+
+
+    @Test
+    public void testInvokeOther() throws Throwable {
+        final ZipUTF8WriterMock mock1 = PowerMock.createMock(ZipUTF8WriterMock.class);
+        final ZipUTF8WriterMockHandler handler1 = new ZipUTF8WriterMockHandler(mock1);
+        final ZipEntry e = new ZipEntry("e");
+
+        EasyMock.expect(mock1.append('c')).andReturn(mock1);
+        EasyMock.expect(mock1.append("c")).andReturn(mock1);
+        EasyMock.expect(mock1.append("c", 0, 1)).andReturn(mock1);
+        mock1.close();
+        mock1.closeEntry();
+        mock1.finish();
+        mock1.flush();
+        mock1.putNextEntry(e);
+        mock1.setComment("c");
+
+        final ZUW instance = handler1.getInstance(ZUW.class);
+        PowerMock.replayAll();
+        instance.append('c');
+        instance.append("c");
+        instance.append("c", 0, 1);
+        instance.close();
+        instance.closeEntry();
+        instance.finish();
+        instance.flush();
+        instance.putNextEntry(e);
+        instance.setComment("c");
+    }
+
+    @Test
+    public void testGetBuilder() throws ParserConfigurationException, SAXException, IOException {
+        final ZUW instance = this.handler.getInstance(ZUW.class);
+        Assert.assertNull(this.handler.getEntryAsDocument("ok"));
     }
 
     private interface ZUW

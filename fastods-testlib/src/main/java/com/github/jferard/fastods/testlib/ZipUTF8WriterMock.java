@@ -32,7 +32,7 @@ import java.util.zip.ZipEntry;
  * Usage:
  * <pre><code>
  *     final ZipUTF8WriterMockHandler mockHandler = ZipUTF8WriterMockHandler.create();
- *     ZiPUTF8Writer instance = mockHandler.getInstance()
+ *     ZipUTF8Writer instance = mockHandler.getInstance(ZipUTF8Writer.class)
  *     // do something with instance
  *     // mockHandler.getEntryAsDocument(name) returns the chosen entry.
  * </code></pre>
