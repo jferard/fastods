@@ -48,6 +48,21 @@ public class StylesContainer {
             this.style = style;
             this.dataStyle = dataStyle;
         }
+
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            else if (!(o instanceof ChildCellStyle)) return false;
+            else {
+                final ChildCellStyle other = (ChildCellStyle) o;
+                return this.style.getKey().equals(other.style.getKey()) && this.dataStyle.getName()
+                        .equals(other.dataStyle.getName());
+            }
+        }
+
+        public int hashCode() {
+            return this.style.getKey().hashCode() * 31 + this.dataStyle.getName().hashCode();
+
+        }
     }
 
     /**

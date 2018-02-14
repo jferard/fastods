@@ -34,7 +34,7 @@ public interface ObjectStyle extends Style {
 	ObjectStyleFamily getFamily();
 
 	/**
-	 * The identifier of this style ius built on the name (19.498 style:name) and the family
+	 * The identifier of this style is built on the name (19.498 style:name) and the family
 	 * @return a unique identifier for this style
 	 */
 	String getKey();
