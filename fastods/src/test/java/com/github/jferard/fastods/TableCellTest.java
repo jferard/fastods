@@ -367,6 +367,14 @@ public class TableCellTest {
     }
 
     @Test
+    public final void testString() throws IOException {
+        PowerMock.replayAll();
+        this.cell.setStringValue("<NULL>");
+        DomTester.assertEquals("<table:table-cell office:value-type=\"string\" office:string-value=\"&lt;NULL&gt;\"/>", this.getCellXML());
+        PowerMock.verifyAll();
+    }
+
+    @Test
     public final void testNullStyle() throws IOException {
         PowerMock.replayAll();
         this.cell.setStyle(null);

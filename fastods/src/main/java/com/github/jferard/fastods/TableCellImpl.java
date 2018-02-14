@@ -296,7 +296,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setStringValue(final String value) {
-        this.value = this.xmlUtil.escapeXMLAttribute(value);
+        this.value = value;
         this.type = TableCell.Type.STRING;
     }
 
