@@ -104,7 +104,7 @@ To run those examples, one has to run:
 The resulting ods files are written in current directory, and can be opened with LibreOffice or OpenOffice.
 
 ## Speed
-Let's be concrete : FastODS is faster than SimpleODS and three to four times faster than JOpenDocument for writing large spreadsheets. (SimpleODF is clearly not the right tool to write large ODS files.)
+Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing large ODS files. (SimpleODF is clearly not the right tool to write large ODS files.)
 
 For more details, see https://github.com/jferard/fastods/wiki/Benchmarking-and-profiling.
 
