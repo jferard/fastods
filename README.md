@@ -6,7 +6,7 @@
 
 (C) M. Schulz 2008-2013 for SimpleODS
 
-A fast Open Document Spreadsheet (ods) writing library in Java, under GPL v3.
+A very fast and lightweight (no dependency) library for creating ODS (Open Document Spreadsheet, mainly for Calc) files in Java. It's a Martin Schulz's SimpleODS fork.
 
 **Please note that FastODS is almost ready for production use. The version 1.0 is coming.**
 
@@ -30,6 +30,9 @@ FastODS is a fork of SimpleODS that aims to be a very fast ODS writing library i
 FastODS won't deal with odt, odg, odf, or other od_ files.
 It won't even *read* ods files.
 Because it doesn't use XML internally, but only for writing files. That's why it is fast and lightweight.
+
+It's an *OpenDocument producer* (*Open Document Format for Office Applications (OpenDocument) Version 1.2*, 2.3.1) and only an *OpenDocument producer*:
+> An *OpenDocument producer* is a program that creates at least one conforming OpenDocument document  
 
 ## Installation
 ### Standard
