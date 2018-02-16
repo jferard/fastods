@@ -42,7 +42,7 @@ public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyl
      * @param name   The name of this style
      * @param locale The locale used
      */
-    FloatStyleBuilder(final String name, final Locale locale) {
+    public FloatStyleBuilder(final String name, final Locale locale) {
         this.numberStyleHelperBuilder = new NumberStyleHelperBuilder(name, locale);
         this.decimalPlaces = 2;
     }

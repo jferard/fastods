@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -240,5 +241,10 @@ public class TableCellWalkerImpl implements TableCellWalker {
 		if (c < 0)
 			throw new IndexOutOfBoundsException();
 		this.c = c;
+	}
+
+	@Override
+	public void setDataStyle(final DataStyle dataStyle) {
+		this.row.getOrCreateCell(this.c).setDataStyle(dataStyle);
 	}
 }

@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -34,7 +35,7 @@ import java.util.Date;
  * @author Julien Férard
  */
 public interface TableCell {
-	/**
+    /**
 	 * 19.385 office:value-type.
 	 * Javadoc text below is taken from Open Document Format for Office Applications (OpenDocument) Version 1.2
 	 */
@@ -321,4 +322,10 @@ public interface TableCell {
      */
     void setCellMerge(int rowMerge,
 							 int columnMerge) throws IOException;
+
+	/**
+	 * Set a custom data style
+	 * @param dataStyle the data style
+	 */
+	void setDataStyle(DataStyle dataStyle);
 }

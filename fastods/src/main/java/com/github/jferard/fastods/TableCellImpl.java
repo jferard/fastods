@@ -217,10 +217,8 @@ public class TableCellImpl implements TableCell {
         if (this.coldCell == null) this.coldCell = TableColdCell.create(this.xmlUtil);
     }
 
-    /* (non-Javadoc)
-     * @see com.github.jferard.fastods.TableCell#styles.set(c, com.github.jferard.fastods.style.TableCellStyle)
-     */
-    private void setDataStyle(final DataStyle dataStyle) {
+    @Override
+    public void setDataStyle(final DataStyle dataStyle) {
         if (dataStyle == null) return;
 
         TableCellStyle curStyle = this.style;

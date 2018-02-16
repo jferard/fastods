@@ -33,7 +33,7 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
     /**
      * The default date format DATEFORMAT_DDMMYY.
      */
-    private DateStyle.Format dateFormat;
+    private DateStyleFormat dateFormat;
 
     /**
      * Create a new date style with the name name.<br>
@@ -42,7 +42,7 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
      * @param name   The name of the number style.
      * @param locale The locale used
      */
-    DateStyleBuilder(final String name, final Locale locale) {
+    public DateStyleBuilder(final String name, final Locale locale) {
         this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
         this.automaticOrder = false;
     }
@@ -83,7 +83,7 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
      * @param format The date format to be used.
      * @return this for fluent style
      */
-    public DateStyleBuilder dateFormat(final DateStyle.Format format) {
+    public DateStyleBuilder dateFormat(final DateStyleFormat format) {
         this.dateFormat = format;
         return this;
     }

@@ -21,11 +21,10 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.XMLConvertible;
-import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.odselement.*;
+import com.github.jferard.fastods.util.*;
 
-import java.io.IOException;
+import java.io.*;
 
 /**
  * content.xml/office:document-content/office:automatic-styles/number:
@@ -35,151 +34,103 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class DateStyle implements DataStyle {
-	/**
-	 * The format of the date
-	 */
-	public enum Format {
-		/**
-		 * Set the date format like '10.07.12'.
-		 */
-		DDMMYY,
+    /**
+     * The format of the date
+     */
+    public static class Format {
+        /**
+         * Set the date format like '10.07.2012'.
+         */
+        public static final DateStyleFormat DDMMYYYY = new DateStyleFormat(
+                com.github.jferard.fastods.datastyle.DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
+                DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT, DateStyleFormat.LONG_YEAR);
 
-		/**
-		 * Set the date format like '10.07.2012'.
-		 */
-		DDMMYYYY,
+        /**
+         * Set the date format like '10.07.12'.
+         */
+        public static final DateStyleFormat DDMMYY = new DateStyleFormat(
+                com.github.jferard.fastods.datastyle.DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
+                DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR);
 
-		/**
-		 * Set the date format like 'July'.
-		 */
-		MMMM,
+        /**
+         * Set the date format like 'July'.
+         */
+        public static final DateStyleFormat MMMM = new DateStyleFormat(DateStyleFormat.LONG_TEXTUAL_MONTH);
 
-		/**
-		 * Set the date format like '07.12'.<br>
-		 * Month.Year
-		 */
-		MMYY,
+        /**
+         * Set the date format like '07.12'.<br>
+         * Month.Year
+         */
+        public static final DateStyleFormat MMYY = new DateStyleFormat(DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT,
+                DateStyleFormat.YEAR);
 
-		/**
-		 * Set the date format like '10.July 2012'.
-		 */
-		TMMMMYYYY,
+        /**
+         * Set the date format like '10.July 2012'.
+         */
+        public static final DateStyleFormat TMMMMYYYY = new DateStyleFormat(DateStyleFormat.DAY,
+                DateStyleFormat.DOT_SPACE, DateStyleFormat.LONG_TEXTUAL_MONTH, DateStyleFormat.SPACE,
+                DateStyleFormat.LONG_YEAR);
 
-		/**
-		 * Set the date format to the weeknumber like '28'.<br>
-		 * Week number
-		 */
-		WW,
+        /**
+         * Set the date format to the weeknumber like '28'.<br>
+         * Week number
+         */
+        public static final DateStyleFormat WW = new DateStyleFormat(DateStyleFormat.WEEK);
 
-		/**
-		 * Set the date format like '2012-07-10'.<br>
-		 */
-		YYYYMMDD
-	}
+        /**
+         * Set the date format like '2012-07-10'.<br>
+         */
+        public static final DateStyleFormat YYYYMMDD = new DateStyleFormat(DateStyleFormat.LONG_YEAR,
+                DateStyleFormat.DASH, DateStyleFormat.LONG_MONTH, DateStyleFormat.DASH, DateStyleFormat.LONG_DAY);
+    }
 
-	/**
-	 * The default date format Format.DDMMYY.
-	 */
-	private static final String DASH = "<number:text>-</number:text>";
-	private static final String DAY = "<number:day/>";
-	private static final String DOT = "<number:text>.</number:text>";
-	private static final String DOT_SPACE = "<number:text>. </number:text>";
-	private static final String LONG_DAY = "<number:day number:style=\"long\"/>";
-	private static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
-	private static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
-	private static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
-	private static final String SPACE = "<number:text> </number:text>";
+    /**
+     * 19.340 number:automatic-order: "specifies whether data is ordered to match the default
+     * order for the language and country of a data style"
+     */
+    private final boolean automaticOrder;
+    private final CoreDataStyle dataStyle;
+    private final DateStyleFormat dateFormat;
 
-	private static final String WEEK = "<number:week-of-year/>";
+    /**
+     * Create a new date style with the name name.
+     *
+     * @param dataStyle      the core data style
+     * @param dateFormat     the format for the date
+     * @param automaticOrder true if the order comes from the current locale
+     */
+    DateStyle(final CoreDataStyle dataStyle, final DateStyleFormat dateFormat, final boolean automaticOrder) {
+        this.dataStyle = dataStyle;
+        this.dateFormat = dateFormat;
+        this.automaticOrder = automaticOrder;
+    }
 
-	private static final String YEAR = "<number:year/>";
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<number:date-style");
+        util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
+        this.dataStyle.appendLVAttributes(util, appendable);
+        util.appendAttribute(appendable, "number:automatic-order", this.automaticOrder);
+        if (this.dateFormat == null) {
+            util.appendAttribute(appendable, "number:format-source", "language");
+            appendable.append("/>");
+        } else {
+            util.appendAttribute(appendable, "number:format-source", "fixed");
+            appendable.append(">");
+            this.dateFormat.appendXMLContent(util, appendable);
+            appendable.append("</number:date-style>");
+        }
+    }
 
-	/**
-	 * 19.340 number:automatic-order: "specifies whether data is ordered to match the default
-	 order for the language and country of a data style"
-	 */
-	private final boolean automaticOrder;
+    @Override
+    public String getName() {
+        return this.dataStyle.getName();
+    }
 
-	private final CoreDataStyle dataStyle;
-	private final Format dateFormat;
-
-	/**
-	 * Create a new date style with the name name.
-	 * @param dataStyle the core data style
-	 * @param dateFormat the format for the date
-	 * @param automaticOrder true if the order comes from the current locale
-	 */
-	DateStyle(final CoreDataStyle dataStyle,
-			final Format dateFormat, final boolean automaticOrder) {
-		this.dataStyle = dataStyle;
-		this.dateFormat = dateFormat;
-		this.automaticOrder = automaticOrder;
-	}
-
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<number:date-style");
-		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
-		this.dataStyle.appendLVAttributes(util, appendable);
-		util.appendAttribute(appendable, "number:automatic-order",
-				this.automaticOrder);
-		if (this.dateFormat == null) {
-			util.appendAttribute(appendable, "number:format-source",
-					"language");
-			appendable.append("/>");
-		} else {
-			util.appendAttribute(appendable, "number:format-source", "fixed");
-			appendable.append(">");
-
-			switch (this.dateFormat) {
-			case TMMMMYYYY:
-				appendable.append(DateStyle.DAY).append(DateStyle.DOT_SPACE)
-						.append(DateStyle.LONG_TEXTUAL_MONTH)
-						.append(DateStyle.SPACE).append(DateStyle.LONG_YEAR);
-				break;
-			case MMMM:
-				appendable.append(DateStyle.LONG_TEXTUAL_MONTH);
-				break;
-			case MMYY:
-				appendable.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
-						.append(DateStyle.YEAR);
-				break;
-			case WW:
-				appendable.append(DateStyle.WEEK);
-				break;
-			case YYYYMMDD:
-				appendable.append(DateStyle.LONG_YEAR).append(DateStyle.DASH)
-						.append(DateStyle.LONG_MONTH).append(DateStyle.DASH)
-						.append(DateStyle.LONG_DAY);
-				break;
-			case DDMMYYYY:
-				appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
-						.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
-						.append(DateStyle.LONG_YEAR);
-				break;
-			case DDMMYY:
-				appendable.append(DateStyle.LONG_DAY).append(DateStyle.DOT)
-						.append(DateStyle.LONG_MONTH).append(DateStyle.DOT)
-						.append(DateStyle.YEAR);
-				break;
-			default:
-				throw new IllegalStateException();
-			}
-
-			appendable.append("</number:date-style>");
-		}
-	}
-
-	@Override
-	public String getName() {
-		return this.dataStyle.getName();
-	}
-
-	@Override
-	public boolean isHidden() {
-		return this.dataStyle.isHidden();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.dataStyle.isHidden();
+    }
 
     @Override
     public void addToElements(final OdsElements odsElements) {

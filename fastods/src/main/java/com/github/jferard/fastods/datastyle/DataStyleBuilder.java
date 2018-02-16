@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.util.StyleBuilder;
+import com.github.jferard.fastods.util.*;
 
 /**
  * A data style builder
@@ -30,5 +30,6 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @param <T> the destination style builder
  * @author Julien Férard
  */
-public interface DataStyleBuilder<S extends DataStyle, T> extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T> {
+public interface DataStyleBuilder<S extends DataStyle, T> extends StyleBuilder<S>, LocalizedBuilder<T>,
+        IsVolatileBuilder<T> {
 }

@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods;
 
-/**
+import com.github.jferard.fastods.datastyle.DataStyle; /**
  * A walker over cells
  * @author Julien Férard
  */
