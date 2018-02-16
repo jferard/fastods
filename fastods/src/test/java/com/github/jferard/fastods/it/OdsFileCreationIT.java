@@ -20,7 +20,16 @@
  */
 package com.github.jferard.fastods.it;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.NamedOdsDocument;
+import com.github.jferard.fastods.NamedOdsFileWriter;
+import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -30,7 +39,11 @@ import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
 import com.github.jferard.fastods.util.SimpleLength;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
 import org.odftoolkit.odfdom.dom.OdfSettingsDom;
 import org.odftoolkit.odfdom.dom.OdfStylesDom;
@@ -67,11 +80,13 @@ public class OdsFileCreationIT {
     private TableCellStyle tcs2;
     private TableCellStyle tcs3;
     private long t1;
+    private Locale locale;
 
     @Before
     public void setUp() {
         this.logger = Logger.getLogger("standard document");
-        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+        this.locale = Locale.US;
+        this.odsFactory = OdsFactory.create(this.logger, this.locale);
         this.fibonacci = Fibonacci.create();
         this.logger.info("Filling a 5 rows, 5 columns spreadsheet");
         this.t1 = System.currentTimeMillis();
@@ -112,11 +127,15 @@ public class OdsFileCreationIT {
         final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(output);
 
         final OdfSettingsDom settingsDom = document.getSettingsDom();
-        final String completePath = "/office:document-settings" + "/office:settings" + "/config:config-item-set[@config:name='ooo:view-settings']" + "/config:config-item-map-indexed[@config:name='Views']" + "/config:config-item-map-entry" + "/config:config-item[@config:name='ZoomValue']";
+        final String completePath = "/office:document-settings" + "/office:settings" +
+                "/config:config-item-set[@config:name='ooo:view-settings']" +
+                "/config:config-item-map-indexed[@config:name='Views']" + "/config:config-item-map-entry" +
+                "/config:config-item[@config:name='ZoomValue']";
         Assert.assertEquals("207", settingsDom.getXPath().evaluate(completePath, settingsDom.getRootElement()));
         for (int i = 0; i < n; i++) {
             Assert.assertEquals("206", settingsDom.getXPath().evaluate(
-                    "//config:config-item-map-entry[@config:name='table" + i + "']//config:config-item[@config:name='ZoomValue']",
+                    "//config:config-item-map-entry[@config:name='table" + i +
+                            "']//config:config-item[@config:name='ZoomValue']",
                     settingsDom.getRootElement()));
         }
         final OdfContentDom contentDom = document.getContentDom();
@@ -177,7 +196,7 @@ public class OdsFileCreationIT {
             c = row.getCellByIndex(2);
             Assert.assertEquals(150.5, c.getCurrencyValue().doubleValue(), 0.01);
             Assert.assertEquals("EUR", c.getCurrencyCode());
-            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
+            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), this.locale);
             cal.setTimeInMillis(1234567891011L);
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
@@ -284,7 +303,7 @@ public class OdsFileCreationIT {
             row.getOrCreateCell(1).setBooleanValue(true);
             c = row.getOrCreateCell(2);
             c.setCurrencyValue(150.5, "EUR");
-            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
+            final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), this.locale);
             cal.setTimeInMillis(1234567891011L);
             row.getOrCreateCell(3).setDateValue(cal);
             row.getOrCreateCell(4).setPercentageValue(70.3);

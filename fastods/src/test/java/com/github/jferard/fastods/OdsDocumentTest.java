@@ -20,8 +20,8 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.style.*;
 import com.github.jferard.fastods.util.*;
@@ -44,7 +44,6 @@ public class OdsDocumentTest {
     public ExpectedException thrown = ExpectedException.none();
     private ZipUTF8WriterBuilder builder;
 
-    private DataStyleBuilderFactory dataStyleBuilderFactory;
     private OdsElements odsElements;
 
     private Logger logger;
@@ -56,7 +55,6 @@ public class OdsDocumentTest {
     @Before
     public final void setUp() {
         this.logger = PowerMock.createNiceMock(Logger.class);
-        this.dataStyleBuilderFactory = new DataStyleBuilderFactory(XMLUtil.create(), Locale.US);
         this.os = new ByteArrayOutputStream();
         this.writer = PowerMock.createMock(ZipUTF8Writer.class);
         this.xmlUtil = XMLUtil.create();
@@ -66,7 +64,7 @@ public class OdsDocumentTest {
 
     @Test
     public final void testAddBooleanStyle() {
-        final DataStyle ds = this.dataStyleBuilderFactory.booleanStyleBuilder("b").build();
+        final DataStyle ds = new BooleanStyleBuilder("b", Locale.US).build();
 
         this.initOdsElements();
         this.odsElements.addDataStyle(ds);

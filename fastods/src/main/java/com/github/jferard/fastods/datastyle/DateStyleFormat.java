@@ -42,13 +42,14 @@ public class DateStyleFormat implements XMLConvertible {
     public static final String HASH = "<number:text>/</number:text>";
     public static final String LONG_DAY = "<number:day number:style=\"long\"/>";
     public static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
+    public static final String MONTH = "<number:month/>";
     public static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
     public static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
     public static final String SPACE = "<number:text> </number:text>";
 
-	static final String WEEK = "<number:week-of-year/>";
+	public static final String WEEK = "<number:week-of-year/>";
 
-	static final String YEAR = "<number:year/>";
+	public static final String YEAR = "<number:year/>";
     private final String[] strings;
 
     public DateStyleFormat(final String... strings) {

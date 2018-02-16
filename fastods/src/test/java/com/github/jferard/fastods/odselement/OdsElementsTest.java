@@ -21,7 +21,6 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -34,7 +33,6 @@ import java.util.logging.Logger;
 
 public class OdsElementsTest {
 	private ContentElement contentElement;
-	private DataStyleBuilderFactory factory;
 	private Locale locale;
 	private ManifestElement manifestElement;
 	private MetaElement metaElement;
@@ -61,7 +59,6 @@ public class OdsElementsTest {
 				this.stylesElement);
 		this.util = XMLUtil.create();
 		this.locale = Locale.US;
-		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
 	}
 
 	/*

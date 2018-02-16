@@ -21,10 +21,19 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.FinalizeFlusher;
+import com.github.jferard.fastods.ImmutableElementsFlusher;
+import com.github.jferard.fastods.MetaAndStylesElementsFlusher;
+import com.github.jferard.fastods.NamedOdsFileWriter;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.ObjectStyle;
+import com.github.jferard.fastods.style.PageLayoutStyle;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -43,7 +52,10 @@ import java.util.zip.ZipEntry;
  * @author Julien Férard
  */
 public class OdsElements {
-    private static final String[] EMPTY_ELEMENT_NAMES = {"Thumbnails/", "Configurations2/accelerator/current.xml", "Configurations2/floater/", "Configurations2/images/Bitmaps/", "Configurations2/menubar/", "Configurations2/popupmenu/", "Configurations2/progressbar/", "Configurations2/statusbar/", "Configurations2/toolbar/"};
+    private static final String[] EMPTY_ELEMENT_NAMES = {"Thumbnails/", "Configurations2/accelerator/current.xml",
+            "Configurations2/floater/", "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+            "Configurations2/popupmenu/", "Configurations2/progressbar/", "Configurations2/statusbar/",
+            "Configurations2/toolbar/"};
 
     /**
      * @param positionUtil an util for cell addresses (e.g. "A1")

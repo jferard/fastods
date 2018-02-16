@@ -21,7 +21,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.DataStylesFactory;
+import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -54,7 +54,7 @@ public class TableBuilderTest {
         this.stc = PowerMock.createMock(StylesContainer.class);
         final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
-        this.ds = DataStylesFactory.create(xmlUtil, Locale.US);
+        this.ds = DataStylesBuilder.create(Locale.US).build();
         this.builder = new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil,
                 this.stc, this.ds, "mytable", 10, 100, ConfigItemMapEntrySet.createSet("mytable"), 2);
         this.xmlUtil = xmlUtil;

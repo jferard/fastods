@@ -22,6 +22,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -39,7 +40,8 @@ public class TableColumnStyle implements ObjectStyle {
     /**
      * The default style, see LO.
      */
-    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle.builder("co1").setOptimalWidth().buildHidden();
+    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle.builder("co1").setOptimalWidth()
+            .buildHidden();
 
     private static TableColumnStyle defaultColumnStyle;
 
@@ -79,6 +81,7 @@ public class TableColumnStyle implements ObjectStyle {
     @Override
     public void addToElements(final OdsElements odsElements) {
         odsElements.addObjectStyle(this);
+        odsElements.addObjectStyle(this.defaultCellStyle);
     }
 
     @Override
@@ -165,5 +168,12 @@ public class TableColumnStyle implements ObjectStyle {
     @Override
     public boolean isHidden() {
         return this.hidden;
+    }
+
+    public void addToAutomaticStylesContainer(final StylesContainer stylesContainer) {
+        stylesContainer.addStyleToContentAutomaticStyles(this);
+        if (this.defaultCellStyle != null  && this.defaultCellStyle.isHidden()) {
+            stylesContainer.addStyleToContentAutomaticStyles(this.defaultCellStyle);
+        }
     }
 }

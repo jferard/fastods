@@ -24,7 +24,7 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.util.*;
 
 /**
- * A data style builder
+ * A data style builder. Common interface for BooleanStyleBuilder, ...
  *
  * @param <S> the destination style
  * @param <T> the destination style builder

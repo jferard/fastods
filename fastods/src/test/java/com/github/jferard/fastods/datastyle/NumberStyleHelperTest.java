@@ -29,47 +29,43 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class NumberStyleHelperTest {
-	private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
-	private DataStyleBuilderFactory factory;
-	private Locale locale;
-	private XMLUtil util;
+    private static final String NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS = "<number:number " +
+            "number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>";
+    private XMLUtil util;
+    private Locale locale;
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-		this.locale = Locale.US;
-		this.factory = new DataStyleBuilderFactory(this.util, this.locale);
-	}
+    @Before
+    public void setUp() {
+        this.util = XMLUtil.create();
+        this.locale = Locale.US;
+    }
 
-	@Test
-	public final void testEmpty() throws IOException {
-		final FloatStyle ns = this.factory.floatStyleBuilder("test")
-				.locale(this.locale).build();
-		final StringBuilder sb = new StringBuilder();
-		ns.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
-						+ NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
-						+ "</number:number-style>",
-				sb.toString());
-	}
+    @Test
+    public final void testEmpty() throws IOException {
+        final FloatStyle ns = new FloatStyleBuilder("test", this.locale).locale(this.locale).build();
+        final StringBuilder sb = new StringBuilder();
+        ns.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\">" + NumberStyleHelperTest
+                        .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "</number:number-style>",
+                sb.toString());
+    }
 
-	@Test
-	public final void testNegative() throws IOException {
-		final FloatStyle ns = this.factory.floatStyleBuilder("test")
-				.negativeValueRed().locale(this.locale).build();
-		final StringBuilder sb = new StringBuilder();
-		ns.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
-						+ NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
-						+ "</number:number-style>"
-						+ "<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\">"
-						+ "<style:text-properties fo:color=\"#FF0000\"/>"
-						+ "<number:text>-</number:text>"
-						+ NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS
-						+ "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>"
-						+ "</number:number-style>",
-				sb.toString());
-	}
+    @Test
+    public final void testNegative() throws IOException {
+        final FloatStyle ns = new FloatStyleBuilder("test", this.locale).negativeValueRed().locale(this.locale).build();
+        final StringBuilder sb = new StringBuilder();
+        ns.appendXMLContent(this.util, sb);
+        DomTester.assertEquals(
+                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\">" + NumberStyleHelperTest
+                        .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "</number:number-style>" +
+                        "<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" "
+                        + "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#FF0000\"/>" +
+                        "<number:text>-</number:text>" + NumberStyleHelperTest
+                        .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "<style:map style:condition=\"value()"
+                        + "&gt;=0\" style:apply-style-name=\"test\"/>" + "</number:number-style>",
+                sb.toString());
+    }
 }

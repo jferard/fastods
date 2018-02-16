@@ -20,8 +20,8 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -39,7 +39,6 @@ import java.util.Locale;
 public class StylesContainerTest {
     private DataStyle ds1;
     private DataStyle ds2;
-    private DataStyleBuilderFactory factory;
     private Locale locale;
     private PageStyle ps1;
     private PageStyle ps2;
@@ -57,19 +56,17 @@ public class StylesContainerTest {
         this.st1 = TableCellStyle.builder("a").fontStyleItalic().build();
         this.st2 = TableCellStyle.builder("a").fontWeightBold().build();
 
-        final DataStyleBuilderFactory f = new DataStyleBuilderFactory(this.util, this.locale);
-        this.ds1 = f.booleanStyleBuilder("a").country("a").buildHidden();
-        this.ds2 = f.booleanStyleBuilder("a").country("b").buildHidden();
+        this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").buildHidden();
+        this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").buildHidden();
 
         this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
         this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
-        this.factory = new DataStyleBuilderFactory(this.util, this.locale);
     }
 
     // CONTENT
     @Test
     public final void testAddDataStyle() {
-        final DataStyle dataStyle = this.factory.booleanStyleBuilder("test").buildHidden();
+        final DataStyle dataStyle = new BooleanStyleBuilder("test", this.locale).buildHidden();
 
         this.stylesContainer.addDataStyle(dataStyle);
         PowerMock.replayAll();
@@ -259,7 +256,7 @@ public class StylesContainerTest {
     @Test
     public void testAddChildCellStyle() throws Exception {
         final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
-        final DataStyle ds = this.factory.booleanStyleBuilder("bs").buildHidden();
+        final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).buildHidden();
 
         TableCellStyle childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
         Assert.assertNotNull(childCellStyle);

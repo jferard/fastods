@@ -21,7 +21,6 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.style.*;
 import com.github.jferard.fastods.util.*;
@@ -49,7 +48,6 @@ public class AnonymousOdsFileWriterTest {
     public ExpectedException thrown = ExpectedException.none();
     private ZipUTF8WriterBuilder builder;
 
-    private DataStyleBuilderFactory dataStyleBuilderFactory;
     private Logger logger;
     private OdsElements odsElements;
     private OdsFactory odsFactory;
@@ -70,8 +68,6 @@ public class AnonymousOdsFileWriterTest {
     @Before
     public final void setUp() {
         this.logger = PowerMock.createNiceMock(Logger.class);
-        this.dataStyleBuilderFactory = new DataStyleBuilderFactory(
-                XMLUtil.create(), Locale.US);
         this.os = new ByteArrayOutputStream();
         this.writer = PowerMock.createMock(ZipUTF8Writer.class);
         this.xmlUtil = XMLUtil.create();

@@ -45,6 +45,22 @@ public class TableColumnStyleTest {
 		final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
 		odsElements.addObjectStyle(tcs);
+		odsElements.addObjectStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+		PowerMock.replayAll();
+
+		tcs.addToElements(odsElements);
+
+		PowerMock.verifyAll();
+	}
+
+	@Test
+	public final void testAddNewDefaultCellStyleToFile() {
+		final TableCellStyle cellStyle = TableCellStyle.builder("ok").buildHidden();
+		final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cellStyle).build();
+		final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
+
+		odsElements.addObjectStyle(tcs);
+		odsElements.addObjectStyle(cellStyle);
 		PowerMock.replayAll();
 
 		tcs.addToElements(odsElements);

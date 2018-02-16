@@ -24,7 +24,7 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.DataStylesFactory;
+import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -50,7 +50,7 @@ public class ContentElementTest {
     @Before
     public void setUp() throws Exception {
         this.container = PowerMock.createMock(StylesContainer.class);
-        this.format = DataStylesFactory.create(Locale.US);
+        this.format = DataStylesBuilder.create(Locale.US).build();
         this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(), this.format,
                 this.container);
     }

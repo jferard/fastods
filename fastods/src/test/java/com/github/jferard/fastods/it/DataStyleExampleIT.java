@@ -21,13 +21,24 @@
 
 package com.github.jferard.fastods.it;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.datastyle.DateStyleBuilder;
 import com.github.jferard.fastods.datastyle.DateStyleFormat;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Util;
+import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -55,11 +66,13 @@ public class DataStyleExampleIT {
     private Logger logger;
     private OdsFactory odsFactory;
     private TableCellStyle style;
+    private Locale locale;
 
     @Before
     public void setUp() {
         this.logger = Logger.getLogger("readme example");
-        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+        this.locale = Locale.US;
+        this.odsFactory = OdsFactory.create(this.logger, this.locale);
     }
 
 
@@ -74,12 +87,21 @@ public class DataStyleExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(2, sheet.getRowCount());
+        Assert.assertEquals(4, sheet.getRowCount());
         // TODO: Add more validation tests"
     }
 
-    private void dataStyle() throws IOException {
-        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+    private void dataStyle() throws IOException, FastOdsException {
+        // Create a new default "data styles"
+        final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
+        dsb.floatStyleBuilder().decimalPlaces(0).buildHidden();
+        dsb.dateStyleBuilder().dateFormat(
+                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.HASH, DateStyleFormat.LONG_MONTH,
+                        DateStyleFormat.HASH, DateStyleFormat.LONG_YEAR));
+        final DataStyles ds = dsb.build();
+
+        // Pass the created "data styles" to the factory
+        final AnonymousOdsFileWriter writer = this.odsFactory.dataStyles(ds).createWriter();
         final OdsDocument document = writer.document();
 
         this.createTable(document);
@@ -87,27 +109,61 @@ public class DataStyleExampleIT {
         writer.saveAs(new File(GENERATED_FILES, DATASTYLE_EXAMPLE_ODS));
     }
 
-    private void createTable(final OdsDocument document) throws IOException {
-        final GregorianCalendar cal = new GregorianCalendar(Locale.US);
+    private void createTable(final OdsDocument document) throws IOException, FastOdsException {
+        final GregorianCalendar cal = new GregorianCalendar(this.locale);
+
+        // Define some styles
+        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true).buildHidden();
+        final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5)).buildHidden();
 
         final Table table = document.addTable("test");
+        final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle).buildHidden();
+        table.setColumnStyle(0, columnStyle0);
+        final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5)).buildHidden();
+        table.setColumnStyle(1, columnStyle1);
+
+        // FIRST ROW
         TableRow row = table.nextRow();
+        row.setStyle(rowStyle);
         TableCellWalker cell = row.getWalker();
-        cell.setStringValue("An int: ");
+        cell.setStringValue("An int with the new default format: ");
         cell.next();
         cell.setFloatValue(123456.789);
-        final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", Locale.US).decimalPlaces(0)
-                .groupThousands(true).buildHidden();
-        cell.setDataStyle(intStyle);
+
+        // SECOND ROW
         row = table.nextRow();
+        row.setStyle(rowStyle);
         cell = row.getWalker();
-        cell.setStringValue("An date: ");
+        cell.setStringValue("An int with a custom format: ");
+        cell.next();
+        cell.setFloatValue(789654.321);
+        // Now add a custom format.
+        final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", this.locale).decimalPlaces(8)
+                .groupThousands(true).buildHidden();
+        // This operation may be slow because the default data style was already added
+        cell.setDataStyle(intStyle);
+
+        // THIRD ROW
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        cell = row.getWalker();
+        cell.setStringValue("An date with the new default format: ");
         cell.next();
         cal.set(2018, 1, 1, 0, 0, 0);
         cell.setDateValue(cal);
-        final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", Locale.US).dateFormat(
-                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.HASH, DateStyleFormat.LONG_MONTH,
-                        DateStyleFormat.HASH, DateStyleFormat.LONG_YEAR)).buildHidden();
+
+        // FOURTH ROW
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        cell = row.getWalker();
+        cell.setStringValue("An date with a custom format: ");
+        cell.next();
+        cal.set(2017, 12, 1, 0, 0, 0);
+        cell.setDateValue(cal);
+        // Add a custom format
+        final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale).dateFormat(
+                new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT, DateStyleFormat.MONTH,
+                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).buildHidden();
         cell.setDataStyle(dateStyle);
     }
 }

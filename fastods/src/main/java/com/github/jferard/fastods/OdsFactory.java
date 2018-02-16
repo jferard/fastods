@@ -22,7 +22,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.DataStylesFactory;
+import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FileExists;
@@ -47,195 +47,196 @@ import static com.github.jferard.fastods.OdsFactory.FileState.OK;
 
 /**
  * An OdsFactory is the entry point for creating ods documents.
+ *
  * @author Julien Férard
  */
 public class OdsFactory {
-	/**
-	 * @return a default ods factory
-	 */
-	public static OdsFactory create() {
-		return OdsFactory.create(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.getDefault());
-	}
+    /**
+     * @return a default ods factory
+     */
+    public static OdsFactory create() {
+        return OdsFactory.create(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.getDefault());
+    }
 
-	/**
-	 * create an ods factory
-	 * @param logger the logger
-	 * @param locale the locale
-	 * @return the factory
-	 */
-	public static OdsFactory create(final Logger logger, final Locale locale) {
-		final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
-		final WriteUtil writeUtil = WriteUtil.create();
-		final XMLUtil xmlUtil = XMLUtil.create();
-		final DataStyles format = DataStylesFactory.create(xmlUtil, locale);
-		return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format);
-	}
-
-	private final DataStyles format;
-	private final Logger logger;
-	private final PositionUtil positionUtil;
-	private final WriteUtil writeUtil;
-	private final XMLUtil xmlUtil;
+    /**
+     * create an ods factory
+     *
+     * @param logger the logger
+     * @param locale the locale
+     * @return the factory
+     */
+    public static OdsFactory create(final Logger logger, final Locale locale) {
+        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
+        final WriteUtil writeUtil = WriteUtil.create();
+        final XMLUtil xmlUtil = XMLUtil.create();
+        final DataStyles format = DataStylesBuilder.create(locale).build();
+        return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format);
+    }
+    private final Logger logger;
+    private final PositionUtil positionUtil;
+    private final WriteUtil writeUtil;
+    private final XMLUtil xmlUtil;
+    private DataStyles format;
 
 
     /**
      * Create a new OdsFactory
-     * @param logger the logger
+     *
+     * @param logger       the logger
      * @param positionUtil an util
-     * @param writeUtil an util
-     * @param xmlUtil an util
-     * @param format the data styles
+     * @param writeUtil    an util
+     * @param xmlUtil      an util
+     * @param format       the data styles
      */
-    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil, final DataStyles format) {
-		this.logger = logger;
-		this.positionUtil = positionUtil;
-		this.writeUtil = writeUtil;
-		this.xmlUtil = xmlUtil;
-		this.format = format;
-	}
+    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
+               final DataStyles format) {
+        this.logger = logger;
+        this.positionUtil = positionUtil;
+        this.writeUtil = writeUtil;
+        this.xmlUtil = xmlUtil;
+        this.format = format;
+    }
 
-	/**
-	 * @param filename the name of the file.
-	 * @return the state of the file with name filename: IS_DIRECTORY|FILE_EXISTS|OK
-	 * @deprecated
-	 */
-	@Deprecated
-	public FileState checkFile(final String filename) {
-		final File f = new File(filename);
-		if (f.isDirectory())
-			return IS_DIRECTORY;
+    public OdsFactory dataStyles(final DataStyles ds) {
+        this.format = ds;
+        return this;
+    }
 
-		if (f.exists())
-			return FILE_EXISTS;
 
-		return OK;
-	}
+    /**
+     * @param filename the name of the file.
+     * @return the state of the file with name filename: IS_DIRECTORY|FILE_EXISTS|OK
+     * @deprecated
+     */
+    @Deprecated
+    public FileState checkFile(final String filename) {
+        final File f = new File(filename);
+        if (f.isDirectory()) return IS_DIRECTORY;
 
-	/**
-	 * Create a new, empty document for an anonymous writer. Use addTable to add tables.
-	 *
-	 * @return a new document
-	 */
-	private NamedOdsDocument createNamedDocument() {
-		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
-				this.writeUtil, this.format);
-		return new NamedOdsDocument(this.logger,
-				odsElements, this.xmlUtil);
-	}
+        if (f.exists()) return FILE_EXISTS;
 
-	/**
-	 * Create a new, empty document for a normal writer. Use addTable to add tables.
-	 *
-	 * @return a new document
-	 */
-	private NamedOdsDocument createDocument() {
-		final OdsElements odsElements = OdsElements.create(this.positionUtil, this.xmlUtil,
-				this.writeUtil, this.format);
-		return new NamedOdsDocument(this.logger,
-				odsElements, this.xmlUtil);
-	}
+        return OK;
+    }
+
+    /**
+     * Create a new, empty document for an anonymous writer. Use addTable to add tables.
+     *
+     * @return a new document
+     */
+    private NamedOdsDocument createNamedDocument() {
+        final OdsElements odsElements = OdsElements
+                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format);
+        return new NamedOdsDocument(this.logger, odsElements, this.xmlUtil);
+    }
+
+    /**
+     * Create a new, empty document for a normal writer. Use addTable to add tables.
+     *
+     * @return a new document
+     */
+    private NamedOdsDocument createDocument() {
+        final OdsElements odsElements = OdsElements
+                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format);
+        return new NamedOdsDocument(this.logger, odsElements, this.xmlUtil);
+    }
 
     /**
      * @return a new writer, but with no actual name
      */
     public AnonymousOdsFileWriter createWriter() {
-		final NamedOdsDocument document = this.createNamedDocument();
-		return new AnonymousOdsFileWriter(this.logger, document);
-	}
-
-	/**
-	 * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
-	 *
-	 * @param filename the name of the destination file
-	 * @return the ods writer
-	 * @throws FileNotFoundException if the file can't be found
-	 */
-	public NamedOdsFileWriter createWriter(final String filename) throws
-			IOException {
-		final NamedOdsDocument document = this.createDocument();
-		final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile
-				(filename))
-				.build();
-		document.addObserver(writer);
-		document.prepareFlush();
-		return writer;
-	}
+        final NamedOdsDocument document = this.createNamedDocument();
+        return new AnonymousOdsFileWriter(this.logger, document);
+    }
 
     /**
      * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
+     *
+     * @param filename the name of the destination file
+     * @return the ods writer
+     * @throws FileNotFoundException if the file can't be found
+     */
+    public NamedOdsFileWriter createWriter(final String filename) throws IOException {
+        final NamedOdsDocument document = this.createDocument();
+        final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document)
+                .openResult(this.openFile(filename)).build();
+        document.addObserver(writer);
+        document.prepareFlush();
+        return writer;
+    }
+
+    /**
+     * Create a new ODS file writer from a document. Be careful: this method opens immediatly a stream.
+     *
      * @param file the destination file
      * @return the ods writer
      * @throws IOException if an I/O error occurs
      */
     public NamedOdsFileWriter createWriter(final File file) throws IOException {
-		final NamedOdsDocument document = this.createDocument();
-		final NamedOdsFileWriter writer =
-				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).build();
-		document.addObserver(writer);
-		document.prepareFlush();
-		return writer;
-	}
+        final NamedOdsDocument document = this.createDocument();
+        final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document)
+                .openResult(this.openFile(file)).build();
+        document.addObserver(writer);
+        document.prepareFlush();
+        return writer;
+    }
 
     /**
      * Create an adapter for a writer.
+     *
      * @param file the file
      * @return the adapter
      * @throws IOException if an I/O error occurs
      */
     public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
-		final NamedOdsDocument document = this.createDocument();
-		final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
-		final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(
-				OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file)).zipBuilder(
-						zipUTF8Writer)
-						.build());
-		document.addObserver(writerAdapter);
-		document.prepareFlush();
-		return writerAdapter;
-	}
+        final NamedOdsDocument document = this.createDocument();
+        final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
+        final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter
+                .create(OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file))
+                        .zipBuilder(zipUTF8Writer).build());
+        document.addObserver(writerAdapter);
+        document.prepareFlush();
+        return writerAdapter;
+    }
 
-	/**
-	 * @param file the file.
-	 * @return the result of the operation
-	 * @throws FileNotFoundException if the file does not exist
-	 */
-	public FileOpenResult openFile(final File file) throws FileNotFoundException {
-		if (file.isDirectory())
-			return FileOpenResult.FILE_IS_DIR;
+    /**
+     * @param file the file.
+     * @return the result of the operation
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public FileOpenResult openFile(final File file) throws FileNotFoundException {
+        if (file.isDirectory()) return FileOpenResult.FILE_IS_DIR;
 
-		if (file.exists())
-			return new FileExists(file);
+        if (file.exists()) return new FileExists(file);
 
-		return new FileOpen(new FileOutputStream(file));
-	}
+        return new FileOpen(new FileOutputStream(file));
+    }
 
-	/**
-	 * @param filename the name of the file.
-	 * @return the result of the operation
-	 * @throws FileNotFoundException if the file does not exist
-	 */
-	public FileOpenResult openFile(final String filename) throws FileNotFoundException {
-		final File f = new File(filename);
-		return this.openFile(f);
-	}
+    /**
+     * @param filename the name of the file.
+     * @return the result of the operation
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public FileOpenResult openFile(final String filename) throws FileNotFoundException {
+        final File f = new File(filename);
+        return this.openFile(f);
+    }
 
     /**
      * the file state
+     *
      * @deprecated use ??
      */
     @Deprecated
     public enum FileState {
-		/**
-		 * the file is a directory
-		 */
-		IS_DIRECTORY,
-		/**
-		 * the file already exists
-		 */
-		FILE_EXISTS,
-		/**
-		 *  the file may be written
-		 */
-		OK
-	}
+        /**
+         * the file is a directory
+         */
+        IS_DIRECTORY, /**
+         * the file already exists
+         */
+        FILE_EXISTS, /**
+         * the file may be written
+         */
+        OK
+    }
 }

@@ -35,7 +35,7 @@ public class BooleanStyleBuilder implements DataStyleBuilder<BooleanStyle, Boole
 	 * @param name   The name of this style
 	 * @param locale The default locale.
 	 */
-	protected BooleanStyleBuilder(final String name, final Locale locale) {
+    public BooleanStyleBuilder(final String name, final Locale locale) {
 		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 	}
 

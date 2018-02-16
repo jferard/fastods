@@ -22,11 +22,11 @@ package com.github.jferard.fastods.odselement;
 
 import java.util.Locale;
 
+import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Before;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyleBuilderFactory;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -53,10 +53,8 @@ public class StylesEntryTest {
 		this.st1 = TableCellStyle.builder("a").fontStyleItalic().build();
 		this.st2 = TableCellStyle.builder("a").fontWeightBold().build();
 
-		final DataStyleBuilderFactory f = new DataStyleBuilderFactory(this.util,
-				this.locale);
-		this.ds1 = f.booleanStyleBuilder("a").country("a").build();
-		this.ds2 = f.booleanStyleBuilder("a").country("b").build();
+		this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").build();
+		this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").build();
 
 		this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
 		this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();

@@ -33,7 +33,7 @@ public class DataStylesTest {
 
     @Before
     public void setUp() {
-        this.dataStyles = DataStylesFactory.create(Locale.US);
+        this.dataStyles = DataStylesBuilder.create(Locale.US).build();
     }
 
     @Test
