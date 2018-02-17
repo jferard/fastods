@@ -48,16 +48,16 @@ public class TableRowStyle implements ObjectStyle {
 	}
 
 	private final String name;
+	private TableCellStyle defaultCellStyle;
 	private final boolean hidden;
 	private final Length rowHeight;
 
 	/**
 	 * Create a new table row style.
-	 *
-	 * @param styleName A unique name for this style
-	 * @param hidden true if the row is hidden
-	 * @param rowHeight The height of the row
-	 */
+	 *  @param styleName A unique name for this style
+     * @param hidden true if the row is hidden
+     * @param rowHeight The height of the row
+     */
 	TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight) {
 		this.name = styleName;
 		this.hidden = hidden;

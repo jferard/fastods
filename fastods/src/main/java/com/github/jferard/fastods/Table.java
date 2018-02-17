@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.NamedObject;
@@ -310,4 +311,8 @@ public class Table implements NamedObject {
 	public void setRowsSpanned(final int rowIndex, final int colIndex, final int n) throws IOException {
 		this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
 	}
+
+    public TableCellStyle findDefaultCellStyle(final int columnIndex) {
+        return this.builder.findDefaultCellStyle(columnIndex);
+    }
 }

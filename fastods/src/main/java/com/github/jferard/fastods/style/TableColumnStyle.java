@@ -134,11 +134,10 @@ public class TableColumnStyle implements ObjectStyle {
     }
 
     /**
-     * @return the default style name
+     * @return the default style
      */
-    @Deprecated
-    public String getDefaultCellStyleName() {
-        return this.defaultCellStyle.getName();
+    public TableCellStyle getDefaultCellStyle() {
+        return this.defaultCellStyle;
     }
 
     @Override
@@ -172,8 +171,12 @@ public class TableColumnStyle implements ObjectStyle {
 
     public void addToAutomaticStylesContainer(final StylesContainer stylesContainer) {
         stylesContainer.addStyleToContentAutomaticStyles(this);
-        if (this.defaultCellStyle != null  && this.defaultCellStyle.isHidden()) {
-            stylesContainer.addStyleToContentAutomaticStyles(this.defaultCellStyle);
+        if (this.defaultCellStyle != null) {
+            if (this.defaultCellStyle.isHidden()) {
+                stylesContainer.addStyleToContentAutomaticStyles(this.defaultCellStyle);
+            } else {
+                stylesContainer.addStyleToStylesCommonStyles(this.defaultCellStyle);
+            }
         }
     }
 }

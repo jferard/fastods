@@ -50,7 +50,7 @@ public class TableCellImpl implements TableCell {
 
     static {
         /*
-		 * XML Schema Part 2, 3.2.7 dateTime
+         * XML Schema Part 2, 3.2.7 dateTime
 		 * Z and UTC time zone for universal time.
 		 */
         DATE_VALUE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -222,8 +222,8 @@ public class TableCellImpl implements TableCell {
         if (dataStyle == null) return;
 
         TableCellStyle curStyle = this.style;
-        if (curStyle == null) // adds the data style
-            curStyle = TableCellStyle.DEFAULT_CELL_STYLE;
+        if (curStyle == null) //
+            curStyle = this.parent.findDefaultCellStyle(this.columnIndex);
 
         this.stylesContainer.addDataStyle(dataStyle);
         this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
@@ -302,7 +302,11 @@ public class TableCellImpl implements TableCell {
     public void setStyle(final TableCellStyle style) {
         if (style == null) return;
 
-        this.stylesContainer.addStyleToStylesCommonStyles(style);
+        if (style.isHidden()) {
+            this.stylesContainer.addStyleToContentAutomaticStyles(style);
+        } else {
+            this.stylesContainer.addStyleToStylesCommonStyles(style);
+        }
         final TableCellStyle curStyle = this.style;
         if (curStyle == null) {
             this.style = style;

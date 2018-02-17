@@ -23,6 +23,7 @@ package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.*;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
@@ -63,7 +64,7 @@ public class ReadmeExampleIT {
     public void setUp() {
         this.logger = Logger.getLogger("readme example");
         this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-        this.style = TableCellStyle.builder(GREEN_CELL_STYLE).backgroundColor(GREEN_COLOR).build();
+        this.style = TableCellStyle.builder(GREEN_CELL_STYLE).backgroundColor(GREEN_COLOR).buildHidden();
     }
 
 
@@ -116,10 +117,11 @@ public class ReadmeExampleIT {
         final Table table = document.addTable("test");
         for (int y = 0; y < 50; y++) {
             final TableRow row = table.nextRow();
+            row.setDefaultCellStyle(this.style);
             final TableCellWalker cell = row.getWalker();
             for (int x = 0; x < 5; x++) {
                 cell.setFloatValue(x * y);
-                cell.setStyle(this.style);
+//                cell.setStyle(this.style);
                 cell.next();
             }
         }

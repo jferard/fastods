@@ -94,7 +94,7 @@ public class DataStyleExampleIT {
     private void dataStyle() throws IOException, FastOdsException {
         // Create a new default "data styles"
         final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
-        dsb.floatStyleBuilder().decimalPlaces(0).buildHidden();
+        dsb.floatStyleBuilder().decimalPlaces(0);
         dsb.dateStyleBuilder().dateFormat(
                 new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.HASH, DateStyleFormat.LONG_MONTH,
                         DateStyleFormat.HASH, DateStyleFormat.LONG_YEAR));

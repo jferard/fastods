@@ -35,7 +35,7 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle> {
 	private Length rowHeight;
 	private boolean hidden;
 
-	/**
+    /**
 	 * @param name
 	 *            A unique name for this style
 	 */
@@ -50,7 +50,6 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle> {
 	@Override
 	public TableRowStyle build() {
 		return new TableRowStyle(this.name, this.hidden, this.rowHeight);
-
 	}
 
 	@Override

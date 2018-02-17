@@ -180,8 +180,11 @@ public class OdsElements {
     public void addObjectStyle(final ObjectStyle objectStyle) {
         switch (objectStyle.getFamily()) {
             case TABLE_CELL:
-                assert !objectStyle.isHidden() : objectStyle.toString();
-                this.stylesContainer.addStyleToStylesCommonStyles(objectStyle);
+                if (objectStyle.isHidden()) {
+                    this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
+                } else {
+                    this.stylesContainer.addStyleToStylesCommonStyles(objectStyle);
+                }
                 break;
             case TEXT:
                 assert objectStyle.isHidden() : objectStyle.toString();

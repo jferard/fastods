@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -74,6 +75,7 @@ public class TableTest {
         for (int c = 0; c < 3; c++) {
             final TableColumnStyle tcs = tcss.get(c);
             this.stc.addStyleToContentAutomaticStyles(tcs);
+            this.stc.addStyleToStylesCommonStyles(TableCellStyle.DEFAULT_CELL_STYLE);
         }
 
         PowerMock.replayAll();

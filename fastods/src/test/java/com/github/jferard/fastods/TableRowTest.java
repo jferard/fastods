@@ -65,9 +65,13 @@ public class TableRowTest {
 
     @Test
     public final void testRows() throws IOException {
+        final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
+
+        // PLAY
+        EasyMock.expect(this.table.findDefaultCellStyle(5)).andReturn(cs);
         final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
         this.stc.addDataStyle(booleanDataStyle);
-        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, booleanDataStyle))
+        EasyMock.expect(this.stc.addChildCellStyle(cs, booleanDataStyle))
                 .andReturn(this.tcs);
 
         PowerMock.replayAll();

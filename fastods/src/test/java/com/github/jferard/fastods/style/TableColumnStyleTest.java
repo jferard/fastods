@@ -80,7 +80,7 @@ public class TableColumnStyleTest {
 		DomTester.assertEquals(
 				"<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"t\"/>",
 				sbt.toString());
-		Assert.assertEquals(cs.getName(), tcs.getDefaultCellStyleName());
+		Assert.assertEquals(cs, tcs.getDefaultCellStyle());
 	}
 
 	@Test

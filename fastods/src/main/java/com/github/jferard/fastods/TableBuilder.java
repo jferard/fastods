@@ -26,6 +26,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FullList;
@@ -451,4 +452,10 @@ class TableBuilder {
         return this.tableRows.get(r);
     }
 
+    public TableCellStyle findDefaultCellStyle(final int columnIndex) {
+        TableCellStyle s = this.columnStyles.get(columnIndex).getDefaultCellStyle();
+        if (s == null)
+            s = TableCellStyle.DEFAULT_CELL_STYLE;
+        return s;
+    }
 }
