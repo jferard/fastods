@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -99,11 +100,9 @@ public class OdsFileWriterAdapterTest {
         final FinalizeFlusher ff = PowerMock.createMock(FinalizeFlusher.class);
         this.flushers.add(ff);
 
-        EasyMock.expect(ff.isEnd()).andReturn(true);
-
         // PLAY
+        EasyMock.expect(ff.isEnd()).andReturn(true);
         this.w.update(ff);
-//        this.w.save();
 
         PowerMock.replayAll();
         this.wa.flushAdaptee();
@@ -144,6 +143,88 @@ public class OdsFileWriterAdapterTest {
         t.start();
         this.wa.flushAdaptee();
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public void flushAdapteeWithoutEnd() throws Exception {
+        final OdsFileWriterAdapter wal = this.wa;
+        final OdsFlusher fl = this.f;
+        final NamedOdsFileWriter wl = this.w;
+        this.flushers.add(this.f);
+
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    wl.update(fl);
+                    EasyMock.expect(fl.isEnd()).andReturn(true);
+
+                    PowerMock.replayAll();
+                    wal.flushAdaptee();
+                    PowerMock.verifyAll();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        t.start();
+        t.join();
+    }
+
+    @Test
+    public void interruptAdapterInFlush() throws Exception {
+        final OdsFileWriterAdapter wal = this.wa;
+        final OdsFlusher fl = this.f;
+        final NamedOdsFileWriter wl = this.w;
+        this.flushers.add(fl);
+
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    wl.update(fl);
+                    EasyMock.expect(fl.isEnd()).andReturn(false);
+
+                    PowerMock.replayAll();
+                    wal.flushAdaptee();
+                    PowerMock.verifyAll();
+                } catch (final IOException e) {
+                } catch (final RuntimeException e) {
+                    return;
+                }
+                Assert.fail();
+            }
+        };
+
+        t.start();
+        Thread.sleep(100);
+        t.interrupt();
+    }
+
+    @Test
+    public void interruptAdapterInWait() throws Exception {
+        final OdsFileWriterAdapter wal = this.wa;
+        final OdsFlusher fl = this.f;
+        final NamedOdsFileWriter wl = this.w;
+
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    PowerMock.replayAll();
+                    wal.waitForData();
+                    PowerMock.verifyAll();
+                } catch (final RuntimeException e) {
+                    return;
+                }
+                Assert.fail();
+            }
+        };
+
+        t.start();
+        Thread.sleep(100);
+        t.interrupt();
     }
 
     @Test
