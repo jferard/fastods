@@ -95,7 +95,7 @@ public class AbsoluteLength implements Length {
             return false;
 
         final AbsoluteLength other = (AbsoluteLength) o;
-        return this.mm - other.mm < MIN_DELTA || other.mm - this.mm < MIN_DELTA;
+        return this.mm - other.mm < MIN_DELTA && other.mm - this.mm < MIN_DELTA;
     }
 
     @Override
