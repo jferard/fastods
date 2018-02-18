@@ -64,7 +64,7 @@ public class ReadmeExampleIT {
     public void setUp() {
         this.logger = Logger.getLogger("readme example");
         this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-        this.style = TableCellStyle.builder(GREEN_CELL_STYLE).backgroundColor(GREEN_COLOR).buildHidden();
+        this.style = TableCellStyle.builder(GREEN_CELL_STYLE).backgroundColor(GREEN_COLOR).build();
     }
 
 
@@ -121,7 +121,6 @@ public class ReadmeExampleIT {
             final TableCellWalker cell = row.getWalker();
             for (int x = 0; x < 5; x++) {
                 cell.setFloatValue(x * y);
-//                cell.setStyle(this.style);
                 cell.next();
             }
         }
