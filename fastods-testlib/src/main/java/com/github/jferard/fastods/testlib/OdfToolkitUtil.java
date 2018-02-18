@@ -33,6 +33,7 @@ import org.w3c.dom.Node;
 
 /**
  * A helper class for odftoolkit comparisons
+ *
  * @author Julien Férard
  */
 public class OdfToolkitUtil {
@@ -44,7 +45,8 @@ public class OdfToolkitUtil {
         return cell.getOdfElement().getAutomaticStyle().getStyleParentStyleNameAttribute();
     }
 
-    public static OdfStyle getDocumentStyle(final SpreadsheetDocument document, final String styleName, final OdfStyleFamily styleFamily) throws Exception {
+    public static OdfStyle getDocumentStyle(final SpreadsheetDocument document, final String styleName,
+                                            final OdfStyleFamily styleFamily) throws Exception {
         return document.getStylesDom().getOfficeStyles().getStyle(styleName, styleFamily);
     }
 
