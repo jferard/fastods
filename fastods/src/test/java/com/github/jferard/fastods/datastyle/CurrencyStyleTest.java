@@ -21,10 +21,14 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Currency;
@@ -46,67 +50,57 @@ public class CurrencyStyleTest {
 
     @Test
     public final void testDecimalPlaces() throws IOException {
-        final CurrencyStyle ps = new CurrencyStyleBuilder("test", this.locale).decimalPlaces(5).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).decimalPlaces(5).build();
+        this.assertXML(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " + "style"
                         + ":volatile=\"true\">" + "<number:number number:decimal-places=\"5\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>",
-                sb.toString());
+                cs);
     }
 
     @Test
     public final void testEuro() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("currency-data", Locale.FRANCE).build();
-        final StringBuilder sb = new StringBuilder();
-        cs.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        this.assertXML(
                 "<number:currency-style style:name=\"currency-data\" number:language=\"fr\" number:country=\"FR\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.frSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>",
-                sb.toString());
+                cs);
     }
 
     @Test
     public final void testGroupThousands() throws IOException {
-        final CurrencyStyle ps = new CurrencyStyleBuilder("test", this.locale).groupThousands(true).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).groupThousands(true).build();
+        this.assertXML(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\" number:grouping=\"true\"/>" + "<number:text> </number:text>"
                         + "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>",
-                sb.toString());
+                cs);
     }
 
     @Test
     public final void testMinIntegerDigits() throws IOException {
-        final CurrencyStyle ps = new CurrencyStyleBuilder("test", this.locale).minIntegerDigits(8).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).minIntegerDigits(8).build();
+        this.assertXML(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"8\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>",
-                sb.toString());
+                cs);
     }
 
     @Test
     public final void testNegativeValueColor() throws IOException {
-        final CurrencyStyle ps = new CurrencyStyleBuilder("test", this.locale).negativeValueColor(SimpleColor.GREEN)
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).negativeValueColor(SimpleColor.GREEN)
                 .build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        this.assertXML(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -118,15 +112,13 @@ public class CurrencyStyleTest {
                         "<number:text> </number:text>" + "<number:currency-symbol>" + this.usSymbol +
                         "</number:currency-symbol>" + "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:currency-style>",
-                sb.toString());
+                cs);
     }
 
     @Test
     public final void testNegativeValueRed() throws IOException {
-        final CurrencyStyle ps = new CurrencyStyleBuilder("test", this.locale).negativeValueRed().build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).negativeValueRed().build();
+        this.assertXML(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -138,15 +130,13 @@ public class CurrencyStyleTest {
                         "<number:text> </number:text>" + "<number:currency-symbol>" + this.usSymbol +
                         "</number:currency-symbol>" + "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:currency-style>",
-                sb.toString());
+                cs);
     }
 
     @Test
     public final void testStylesElements() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).negativeValueRed().build();
-        final StringBuilder sb = new StringBuilder();
-        cs.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        this.assertXML(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -158,6 +148,63 @@ public class CurrencyStyleTest {
                         "<number:text> </number:text>" + "<number:currency-symbol>" + this.usSymbol +
                         "</number:currency-symbol>" + "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:currency-style>",
-                sb.toString());
+                cs);
+    }
+
+    @Test
+    public final void testSymbol() throws IOException {
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).currencySymbol("ABC")
+                .currencySymbolPosition(CurrencyStyle.SymbolPosition.BEGIN).buildHidden();
+        this.assertXML(
+                "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\"><number:currency-symbol>ABC</number:currency-symbol><number:number "
+                        + "number:decimal-places=\"2\" number:min-integer-digits=\"1\"/></number:currency-style>",
+                cs);
+    }
+
+    @Test
+    public final void testLocaleVolatile() throws IOException {
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
+                .language("cd").volatileStyle(true).buildHidden();
+        this.assertXML(
+                "<number:currency-style style:name=\"test\" number:language=\"cd\" number:country=\"AB\" " +
+                        "style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/><number:text> " +
+                        "</number:text><number:currency-symbol>"+this.frSymbol+"</number:currency-symbol></number:currency-style>",
+                cs);
+    }
+
+    @Test
+    public final void testAdd() throws IOException {
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
+                .language("cd").volatileStyle(true).buildHidden();
+
+        // PLAY
+        elements.addDataStyle(cs);
+
+        PowerMock.replayAll();
+        cs.addToElements(elements);
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testGetters() throws IOException {
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
+                .language("cd").volatileStyle(true).buildHidden();
+
+        Assert.assertEquals("test", cs.getName());
+        Assert.assertTrue(cs.isHidden());
+    }
+
+
+    private void assertXML(final String xml, final CurrencyStyle cs) throws IOException {
+        DomTester.assertEquals(xml, this.toXML(cs));
+    }
+
+    private String toXML(XMLConvertible o) throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        o.appendXMLContent(this.util, sb);
+        return sb.toString();
     }
 }
