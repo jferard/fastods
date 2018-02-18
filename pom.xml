@@ -1,5 +1,7 @@
 <!--
-  ~ FastODS - a Martin Schulz's SimpleODS fork
+  ~ FastODS - A very fast and lightweight (no dependency) library for creating ODS
+  ~    (Open Document Spreadsheet, mainly for Calc) files in Java.
+  ~    It's a Martin Schulz's SimpleODS fork
   ~    Copyright (C) 2016-2018 J. Férard <https://github.com/jferard>
   ~ SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
   ~    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
@@ -16,7 +18,7 @@
   ~ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
   ~
   ~ You should have received a copy of the GNU General Public License along with
-  ~ this program. If not, see <http://www.gnu.org/licenses />.
+  ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -25,7 +27,7 @@
     <version>0.5.2-SNAPSHOT</version>
     <name>FastODS parent</name>
     <packaging>pom</packaging>
-    <description>FastODS writer, a Martin Schulz's SimpleODS fork - parent</description>
+    <description>A very fast and lightweight (no dependency) library for creating ODS (Open Document Spreadsheet, mainly for Calc) files in Java. It's a Martin Schulz's SimpleODS fork - parent</description>
     <url>https://github.com/jferard/fastods</url>
 
     <inceptionYear>2016</inceptionYear>
@@ -71,7 +73,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jre>1.6</jre>
-        <powermock.version>1.7.1</powermock.version>
+        <powermock.version>1.7.3</powermock.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
@@ -116,7 +118,7 @@
             <dependency>
                 <groupId>org.easymock</groupId>
                 <artifactId>easymock</artifactId>
-                <version>3.4</version>
+                <version>3.5.1</version>
             </dependency>
 
             <dependency>

@@ -1,5 +1,7 @@
 /*
- * FastODS - a Martin Schulz's SimpleODS fork
+ * FastODS - A very fast and lightweight (no dependency) library for creating ODS
+ *    (Open Document Spreadsheet, mainly for Calc) files in Java.
+ *    It's a Martin Schulz's SimpleODS fork
  *    Copyright (C) 2016-2018 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
