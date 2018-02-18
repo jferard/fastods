@@ -24,12 +24,28 @@ package com.github.jferard.fastods.testlib;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 import java.io.File;
 
 import static org.junit.Assert.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Util.class)
 public class UtilTest {
+    @Test
+    public void testNewDirString() throws NoSuchMethodException {
+        PowerMock.mockStatic(Util.class, Util.class.getMethod("mkdir", File.class));
+
+        EasyMock.expect(Util.mkdir(EasyMock.isA(File.class))).andReturn(true);
+        PowerMock.replayAll();
+        Assert.assertTrue(Util.mkdir("f"));
+        PowerMock.verifyAll();
+    }
+
     @Test
     public void testNewDir() {
         final File f = PowerMock.createMock(File.class);
