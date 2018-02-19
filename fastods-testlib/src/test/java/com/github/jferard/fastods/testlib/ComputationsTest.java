@@ -23,42 +23,28 @@
 
 package com.github.jferard.fastods.testlib;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
-/**
- */
-public class Computations {
-    private final String name;
-    private final List<Long> times;
-
-    public Computations(final String name, final List<Long> times) {
-        this.name = name;
-        this.times = times;
+public class ComputationsTest {
+    @Test
+    public void test() {
+        final Computations c = new Computations("comp", Arrays.asList(1L, 2L, 3L));
+        Assert.assertEquals(2L, c.getAvgTime());
+        Assert.assertEquals(1L, c.getBestTime());
+        Assert.assertEquals(3L, c.getWorstTime());
+        Assert.assertEquals("Computations[name = comp, avg = 2, best = 1, worst = 3]", c.toString());
     }
 
-    public long getAvgTime() {
-        if (this.times.size() == 0) return -1L;
-
-        long l = 0L;
-        for (final long time : this.times)
-            l += time;
-
-        return l / this.times.size();
-    }
-
-    public long getBestTime() {
-        if (this.times.size() == 0) return -1L;
-        return Collections.min(this.times);
-    }
-
-    public long getWorstTime() {
-        if (this.times.size() == 0) return -1L;
-        return Collections.max(this.times);
-    }
-
-    public String toString() {
-        return "Computations[name = " + this.name + ", avg = " + this.getAvgTime() + ", best = " + this
-                .getBestTime() + ", worst = " + this.getWorstTime() + "]";
+    @Test
+    public void testEmpty() {
+        final Computations c = new Computations("comp", Collections.<Long>emptyList());
+        Assert.assertEquals(-1L, c.getAvgTime());
+        Assert.assertEquals(-1L, c.getBestTime());
+        Assert.assertEquals(-1L, c.getWorstTime());
+        Assert.assertEquals("Computations[name = comp, avg = -1, best = -1, worst = -1]", c.toString());
     }
 }

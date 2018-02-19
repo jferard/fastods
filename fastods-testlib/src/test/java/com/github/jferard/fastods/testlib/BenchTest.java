@@ -54,7 +54,7 @@ public class BenchTest {
 
     @Test
     public void testEmptyWithoutWarmup() {
-        Assert.assertEquals(Long.valueOf(-1), this.bench.getWithoutWarmup().getAvgTime());
+        Assert.assertEquals(-1, this.bench.getWithoutWarmup().getAvgTime());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -70,7 +70,7 @@ public class BenchTest {
         final Computations withoutWarmup = this.bench.getWithoutWarmup();
         Assert.assertEquals(9l, withoutWarmup.getWorstTime());
         Assert.assertEquals(0l, withoutWarmup.getBestTime());
-        Assert.assertEquals(Long.valueOf(45/10), withoutWarmup.getAvgTime());
+        Assert.assertEquals(45/10, withoutWarmup.getAvgTime());
     }
 
 }

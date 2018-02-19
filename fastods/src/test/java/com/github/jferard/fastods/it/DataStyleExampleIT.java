@@ -117,9 +117,11 @@ public class DataStyleExampleIT {
         final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5)).buildHidden();
 
         final Table table = document.addTable("test");
-        final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle).buildHidden();
+        final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle)
+                .buildHidden();
         table.setColumnStyle(0, columnStyle0);
-        final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5)).buildHidden();
+        final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5))
+                .buildHidden();
         table.setColumnStyle(1, columnStyle1);
 
         // FIRST ROW

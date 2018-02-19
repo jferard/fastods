@@ -33,21 +33,21 @@ import java.io.File;
 
 import static org.junit.Assert.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Util.class)
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(Util.class)
 public class UtilTest {
-    @Test
-    public void testNewDirString() throws NoSuchMethodException {
-        PowerMock.mockStatic(Util.class, Util.class.getMethod("mkdir", File.class));
+//    @Test
+//    public void testNewDirString() throws NoSuchMethodException {
+//        PowerMock.mockStatic(Util.class, Util.class.getMethod("mkdir", File.class));
+//
+//        EasyMock.expect(Util.mkdir(EasyMock.isA(File.class))).andReturn(true);
+//        PowerMock.replayAll();
+//        Assert.assertTrue(Util.mkdir("f"));
+//        PowerMock.verifyAll();
+//    }
 
-        EasyMock.expect(Util.mkdir(EasyMock.isA(File.class))).andReturn(true);
-        PowerMock.replayAll();
-        Assert.assertTrue(Util.mkdir("f"));
-        PowerMock.verifyAll();
-    }
-
     @Test
-    public void testNewDir() {
+    public void testNewDirFile() {
         final File f = PowerMock.createMock(File.class);
         EasyMock.expect(f.exists()).andReturn(false);
         EasyMock.expect(f.mkdir()).andReturn(true);
