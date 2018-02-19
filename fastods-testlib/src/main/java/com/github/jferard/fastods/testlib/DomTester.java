@@ -99,20 +99,6 @@ public class DomTester {
     DomTester() throws ParserConfigurationException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
-        // all throwable will be catched and rethrown with Level.SEVERE
-        this.builder.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void warning(final SAXParseException e) throws SAXException {
-            }
-
-            @Override
-            public void error(final SAXParseException e) throws SAXException {
-            }
-
-            @Override
-            public void fatalError(final SAXParseException e) throws SAXException {
-            }
-        });
     }
 
     private boolean stringEquals(final String s1, final String s2,

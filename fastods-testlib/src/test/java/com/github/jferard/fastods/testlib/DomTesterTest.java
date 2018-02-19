@@ -26,7 +26,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.logging.Level;
@@ -34,6 +37,8 @@ import java.util.logging.Logger;
 
 /**
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DomTester.class)
 public class DomTesterTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -180,5 +185,21 @@ public class DomTesterTest {
         PowerMock.replayAll();
         DomTester.assertNotEquals("<a b=\"1\"/><a b=\"2\"/>", "<a b=\"1\"/>");
         PowerMock.verifyAll();
+    }
+
+    @Test(expected = AssertionError.class)
+    public void bug() {
+        PowerMock.mockStaticPartial(DomTester.class, "equals");
+        EasyMock.expect(DomTester.equals(EasyMock.eq("a"), EasyMock.eq("a"), EasyMock.isA(ChildrenTester.class))).andReturn(false);
+
+        PowerMock.replayAll();
+        DomTester.assertEquals("a", "a");
+        PowerMock.verifyAll();
+
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testHandlers() {
+        DomTester.assertEquals("<a", "a");
     }
 }

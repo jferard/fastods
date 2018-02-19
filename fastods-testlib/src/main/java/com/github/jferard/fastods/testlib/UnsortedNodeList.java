@@ -45,8 +45,10 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 
 			final NamedNodeMap attributes1 = o1.getAttributes();
 			final NamedNodeMap attributes2 = o2.getAttributes();
+            System.out.println(attributes1.getLength());
+            System.out.println(attributes2.getLength());
 
-			if (attributes1 == null)
+            if (attributes1 == null)
 				return attributes2 == null ? 0 : 1;
 			if (attributes2 == null)
 				return -1;
