@@ -31,53 +31,43 @@ import java.util.List;
 
 /**
  * 5.1.3 text:p
+ *
  * @author Julien Férard
  */
 public class Paragraph implements TagParameters {
-	/**
-	 * @return a new builder
-	 */
-	public static ParagraphBuilder builder() {
-		return new ParagraphBuilder();
-	}
+    /**
+     * @return a new builder
+     */
+    public static ParagraphBuilder builder() {
+        return new ParagraphBuilder();
+    }
 
-	private final List<ParagraphElement> paragraphElements;
+    private final List<ParagraphElement> paragraphElements;
 
-	private final TextStyle style;
-
-	/**
-	 * Create a new paragraph
-	 * @param paragraphElements the elements
-	 * @param style the style
-	 */
-	Paragraph(final List<ParagraphElement> paragraphElements, final TextStyle style) {
-		this.paragraphElements = paragraphElements;
-		this.style = style;
-	}
-
-    @Override
-	public void appendXMLContent(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		if (this.paragraphElements.isEmpty()) {
-			appendable.append("<text:p/>");
-		} else {
-			appendable.append("<text:p");
-			if (this.style != null)
-				util.appendEAttribute(appendable, "text:style-name",
-						this.style.getName());
-			appendable.append('>');
-			for (final ParagraphElement paragraphElement : this.paragraphElements)
-				paragraphElement.appendXMLContent(util, appendable);
-			appendable.append("</text:p>");
-		}
-	}
+    private final TextStyle style;
 
     /**
-     * @return the paragraph elements
-     * @deprecated use XML representation for tests
+     * Create a new paragraph
+     *
+     * @param paragraphElements the elements
+     * @param style             the style
      */
-    @Deprecated
-    public List<ParagraphElement> getParagraphElements() {
-		return this.paragraphElements;
-	}
+    Paragraph(final List<ParagraphElement> paragraphElements, final TextStyle style) {
+        this.paragraphElements = paragraphElements;
+        this.style = style;
+    }
+
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        if (this.paragraphElements.isEmpty()) {
+            appendable.append("<text:p/>");
+        } else {
+            appendable.append("<text:p");
+            if (this.style != null) util.appendEAttribute(appendable, "text:style-name", this.style.getName());
+            appendable.append('>');
+            for (final ParagraphElement paragraphElement : this.paragraphElements)
+                paragraphElement.appendXMLContent(util, appendable);
+            appendable.append("</text:p>");
+        }
+    }
 }

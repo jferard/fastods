@@ -24,7 +24,6 @@ import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -45,8 +44,6 @@ public class ParagraphTest {
 
     @Test
     public final void testNoSpan() throws IOException {
-        final Paragraph par = this.parBuilder.build();
-        Assert.assertEquals(0, par.getParagraphElements().size());
         this.assertParXMLEquals("<text:p/>");
     }
 
@@ -54,29 +51,24 @@ public class ParagraphTest {
     public final void testSpans() throws IOException {
         this.parBuilder.span("content");
         this.parBuilder.span("text");
-        final Paragraph par = this.parBuilder.build();
         this.assertParXMLEquals("<text:p>contenttext</text:p>");
     }
 
     @Test
     public final void testWithStyle() throws IOException {
         final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
-
-        final Paragraph par = this.parBuilder.style(ts).span("text").build();
-        Assert.assertEquals(1, par.getParagraphElements().size());
+        this.parBuilder.style(ts).span("text");
         this.assertParXMLEquals("<text:p text:style-name=\"style\">text</text:p>");
     }
 
     @Test
     public final void testLinks() throws IOException {
         final Table table = PowerMock.createMock(Table.class);
-
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
-        final Paragraph par = this.parBuilder.link("text1", "ref").link("text1", new File("f"))
-                .link("text1", new URL("http:a/b")).link("text1", table).build();
-        Assert.assertEquals(4, par.getParagraphElements().size());
+        this.parBuilder.link("text1", "ref").link("text1", new File("f")).link("text1", new URL("http:a/b"))
+                .link("text1", table);
         this.assertParXMLEquals(
                 "<text:p>" + "<text:a xlink:href=\"#ref\" xlink:type=\"simple\">text1</text:a>" + "<text:a " +
                         "xlink:href=\"" + this
@@ -95,9 +87,8 @@ public class ParagraphTest {
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
-        final Paragraph par = this.parBuilder.styledLink("text1", ts, "ref").styledLink("text1", ts, new File("f"))
-                .styledLink("text1", ts, new URL("http:a/b")).styledLink("text1", ts, table).build();
-        Assert.assertEquals(4, par.getParagraphElements().size());
+        this.parBuilder.styledLink("text1", ts, "ref").styledLink("text1", ts, new File("f"))
+                .styledLink("text1", ts, new URL("http:a/b")).styledLink("text1", ts, table);
         this.assertParXMLEquals(
                 "<text:p>" + "<text:a text:style-name=\"style\" xlink:href=\"#ref\" " +
                         "xlink:type=\"simple\">text1</text:a>" + "<text:a text:style-name=\"style\" xlink:href=\"" +
