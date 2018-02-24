@@ -20,50 +20,34 @@
  */
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class ConfigItemTest {
+    @Test
+    public final void test() {
+        final ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean", "false");
+        Assert.assertEquals("LoadReadonly", loadReadonly.getName());
+        Assert.assertEquals("boolean", loadReadonly.getType());
+        Assert.assertEquals("false", loadReadonly.getValue());
+    }
 
-	private XMLUtil util;
+    @Test
+    public final void testXML() throws IOException {
+        final ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean", "false");
+        TestHelper.assertXMLEquals(
+                "<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>",
+                loadReadonly);
+    }
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-	}
-
-	@Test
-	public final void test() {
-		final ConfigItem loadReadonly = new ConfigItem("LoadReadonly",
-				"boolean", "false");
-		Assert.assertEquals("LoadReadonly", loadReadonly.getName());
-		Assert.assertEquals("boolean", loadReadonly.getType());
-		Assert.assertEquals("false", loadReadonly.getValue());
-	}
-
-	@Test
-	public final void testXML() throws IOException {
-		final ConfigItem loadReadonly = new ConfigItem("LoadReadonly",
-				"boolean", "false");
-		final StringBuilder sb = new StringBuilder();
-		loadReadonly.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<config:config-item config:name=\"LoadReadonly\" config:type=\"boolean\">false</config:config-item>",
-				sb.toString());
-	}
-
-	@Test
-	public final void testXMLEscape() throws IOException {
-		final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
-		final StringBuilder sb = new StringBuilder();
-		escape.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;</config:config-item>",
-				sb.toString());
-	}
+    @Test
+    public final void testXMLEscape() throws IOException {
+        final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
+        TestHelper.assertXMLEquals(
+                "<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;</config:config-item>",
+                escape);
+    }
 }

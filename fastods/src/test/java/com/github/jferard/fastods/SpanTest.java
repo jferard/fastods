@@ -22,39 +22,21 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class SpanTest {
-	private XMLUtil util;
+    @Test
+    public final void testFHTextWithStyle() throws IOException {
+        final TextStyle ts = TextProperties.builder().buildStyle("test");
+        final Span fhtext = new Span("text", ts);
+        TestHelper.assertXMLEquals("<text:span text:style-name=\"test\">text</text:span>", fhtext);
+    }
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-	}
-
-	@Test
-	public final void testFHTextWithStyle() throws IOException {
-		final TextStyle ts = TextProperties.builder().buildStyle("test");
-		final Span fhtext = new Span("text", ts);
-		final StringBuilder sbo = new StringBuilder();
-		fhtext.appendXMLContent(this.util, sbo);
-		DomTester.assertEquals(
-				"<text:span text:style-name=\"test\">text</text:span>",
-				sbo.toString());
-		final StringBuilder sbt = new StringBuilder();
-	}
-
-	@Test
-	public final void testSimpleFHText() throws IOException {
-		final Span fhtext = new Span("text");
-		final StringBuilder sbo = new StringBuilder();
-		fhtext.appendXMLContent(this.util, sbo);
-		Assert.assertEquals("text", sbo.toString());
-	}
+    @Test
+    public final void testSimpleFHText() throws IOException {
+        final Span fhtext = new Span("text");
+        TestHelper.assertXMLEquals("text", fhtext);
+    }
 }

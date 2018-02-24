@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -46,13 +47,8 @@ public class ConfigItemMapEntrySequenceTest {
         this.sequence = ConfigItemMapEntrySequence.createSequence("seq");
         this.util = XMLUtil.create();
 
-        final StringBuilder sb = new StringBuilder();
-        this.item.appendXMLContent(this.util, sb);
-        this.itemXML = sb.toString();
-
-        final StringBuilder sb2 = new StringBuilder();
-        this.block.appendXMLContent(this.util, sb2);
-        this.blockXML = sb2.toString();
+        this.itemXML = TestHelper.toXML(this.item);
+        this.blockXML = TestHelper.toXML(this.block);
     }
 
     @Test
@@ -95,27 +91,22 @@ public class ConfigItemMapEntrySequenceTest {
 
     @Test
     public void appendXML() throws Exception {
-        final StringBuilder sb = new StringBuilder();
         this.sequence.add(this.item);
         this.sequence.add(this.block);
-        this.sequence.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-map-entry config:name=\"seq\">" +
-                this.itemXML +
-                this.blockXML +
-                "</config:config-item-map-entry>", sb.toString());
+        TestHelper.assertXMLEquals(
+                "<config:config-item-map-entry config:name=\"seq\">" + this.itemXML + this.blockXML +
+                        "</config:config-item-map-entry>",
+                this.sequence);
     }
 
     @Test
     public void appendXML2() throws Exception {
-        final StringBuilder sb = new StringBuilder();
         final ConfigItemMapEntrySequence seq = ConfigItemMapEntrySequence.createSequence();
         seq.add(this.item);
         seq.add(this.block);
-        seq.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-map-entry>" +
-                this.itemXML +
-                this.blockXML +
-                "</config:config-item-map-entry>", sb.toString());
+        TestHelper.assertXMLEquals(
+                "<config:config-item-map-entry>" + this.itemXML + this.blockXML + "</config:config-item-map-entry>",
+                seq);
     }
 
     @Test

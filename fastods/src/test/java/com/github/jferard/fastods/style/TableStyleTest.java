@@ -20,7 +20,7 @@
  */
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -31,52 +31,38 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 
 public class TableStyleTest {
-	private XMLUtil util;
+    @Test
+    public final void testAddEmptyToFile() {
+        final TableStyle ts = TableStyle.builder("test").build();
+        final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-	}
+        odsElements.addObjectStyle(ts);
+        PowerMock.replayAll();
 
-	@Test
-	public final void testAddEmptyToFile() {
-		final TableStyle ts = TableStyle.builder("test").build();
-		final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
+        ts.addToElements(odsElements);
 
-		odsElements.addObjectStyle(ts);
-		PowerMock.replayAll();
+        PowerMock.verifyAll();
+    }
 
-		ts.addToElements(odsElements);
+    @Test
+    public final void testEmpty() throws IOException {
+        final TableStyle ts = TableStyle.builder("test").build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"test\" style:family=\"table\" " +
+                        "style:master-page-name=\"DefaultMasterPage\">" + "<style:table-properties " +
+                        "table:display=\"true\" style:writing-mode=\"lr-tb\"/>" + "</style:style>",
+                ts);
+    }
 
-		PowerMock.verifyAll();
-	}
-
-	@Test
-	public final void testEmpty() throws IOException {
-		final TableStyle ts = TableStyle.builder("test").build();
-		final StringBuilder sb = new StringBuilder();
-		ts.appendXMLContent(this.util, sb);
-
-		DomTester.assertEquals(
-				"<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"DefaultMasterPage\">"
-						+ "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>"
-						+ "</style:style>",
-				sb.toString());
-	}
-
-	@Test
-	public final void testPageStyle() throws IOException {
-		final PageStyle ps = PageStyle.builder("p").build();
-		final TableStyle ts = TableStyle.builder("test").pageStyle(ps)
-				.build();
-		final StringBuilder sb = new StringBuilder();
-		ts.appendXMLContent(this.util, sb);
-
-		DomTester.assertEquals(
-				"<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">"
-						+ "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>"
-						+ "</style:style>",
-				sb.toString());
-		Assert.assertEquals("test", ts.getName());
-	}
+    @Test
+    public final void testPageStyle() throws IOException {
+        final PageStyle ps = PageStyle.builder("p").build();
+        final TableStyle ts = TableStyle.builder("test").pageStyle(ps).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">" +
+                        "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>" +
+                        "</style:style>",
+                ts);
+        Assert.assertEquals("test", ts.getName());
+    }
 }

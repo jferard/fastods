@@ -20,8 +20,7 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.TestHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,35 +28,30 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class TimeStyleTest {
-    private XMLUtil util;
     private Locale locale;
 
     @Before
     public void setUp() {
-        this.util = XMLUtil.create();
         this.locale = Locale.US;
     }
 
     @Test
     public final void testFormat() throws IOException {
-        final TimeStyle ps = new TimeStyleBuilder("test", this.locale).timeFormat(TimeStyle.Format.HHMMSS).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(TimeStyle.Format.HHMMSS).build();
+        TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " + "style" +
                         ":volatile=\"true\" number:format-source=\"fixed\">" + "<number:hours/>" +
-						"<number:text>:</number:text>" + "<number:minutes/>" + "<number:text>:</number:text>" +
-						"<number:seconds/>" + "</number:time-style>",
-                sb.toString());
+                        "<number:text>:</number:text>" + "<number:minutes/>" + "<number:text>:</number:text>" +
+                        "<number:seconds/>" + "</number:time-style>",
+                ts);
     }
 
     @Test
     public final void testNullFormat() throws IOException {
-        final TimeStyle ps = new TimeStyleBuilder("test", this.locale).timeFormat(null).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
-                "<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" style:volatile=\"true\" number:format-source=\"language\"/>",
-                sb.toString());
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(null).build();
+        TestHelper.assertXMLEquals(
+                "<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\" number:format-source=\"language\"/>",
+                ts);
     }
 }

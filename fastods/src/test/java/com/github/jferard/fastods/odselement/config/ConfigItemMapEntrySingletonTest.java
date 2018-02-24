@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,18 +34,13 @@ import java.util.Iterator;
 public class ConfigItemMapEntrySingletonTest {
     private ConfigItemMapEntrySingleton singleton;
     private ConfigItem item;
-    private XMLUtil util;
     private String itemXML;
 
     @Before
     public void setUp() throws Exception {
         this.item = new ConfigItem("n", "t", "v");
         this.singleton = ConfigItemMapEntrySingleton.createSingleton("singleton", this.item);
-        this.util = XMLUtil.create();
-
-        final StringBuilder sb = new StringBuilder();
-        this.item.appendXMLContent(this.util, sb);
-        this.itemXML = sb.toString();
+        this.itemXML = TestHelper.toXML(this.item);
     }
 
     @Test
@@ -65,14 +60,10 @@ public class ConfigItemMapEntrySingletonTest {
 
     @Test
     public void appendXML() throws Exception {
-        final StringBuilder sb = new StringBuilder();
-
-
-        this.singleton.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-map-entry config:name=\"singleton\">" +
-                this.itemXML +
-                "</config:config-item-map-entry>", sb.toString());
-
+        TestHelper.assertXMLEquals(
+                "<config:config-item-map-entry config:name=\"singleton\">" + this.itemXML +
+                        "</config:config-item-map-entry>",
+                this.singleton);
     }
 
     @Test(expected = UnsupportedOperationException.class)

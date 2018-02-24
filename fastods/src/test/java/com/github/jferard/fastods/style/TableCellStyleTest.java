@@ -21,7 +21,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -30,89 +30,70 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class TableCellStyleTest {
-	private XMLUtil util;
+    private XMLUtil util;
 
-	@Before
-	public final void setUp() {
-		this.util = XMLUtil.create();
-	}
+    @Before
+    public final void setUp() {
+        this.util = XMLUtil.create();
+    }
 
-	@Test
-	public final void testAllBorders() throws IOException {
-		final TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
-				.build();
-		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>"
-						+ "</style:style>",
-				sb.toString());
-	}
+    @Test
+    public final void testAllBorders() throws IOException {
+        final TableCellStyle tcs = TableCellStyle.builder("test")
+                .borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
+                        "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>" + "</style:style>",
+                tcs);
+    }
 
-	@Test
-	public final void testAllMargins() throws IOException {
-		final TableCellStyle tcs = TableCellStyle.builder("tcs")
-				.allMargins(SimpleLength.pt(10.0)).build();
-		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+ "<style:paragraph-properties fo:margin=\"10pt\"/>"
-						+ "</style:style>",
-				sb.toString());
-	}
+    @Test
+    public final void testAllMargins() throws IOException {
+        final TableCellStyle tcs = TableCellStyle.builder("tcs").allMargins(SimpleLength.pt(10.0)).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
+                        "<style:paragraph-properties fo:margin=\"10pt\"/>" + "</style:style>",
+                tcs);
+    }
 
-	@Test
-	public final void testBorders() throws IOException {
-		final TableCellStyle tcs = TableCellStyle.builder("test")
-				.borderTop(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
-				.borderRight(SimpleLength.pt(2.0), SimpleColor.BEIGE, BorderAttribute.Style.SOLID)
-				.borderBottom(SimpleLength.pt(3.0), SimpleColor.CADETBLUE,
-						BorderAttribute.Style.DOUBLE)
-				.borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE, BorderAttribute.Style.DOUBLE)
-				.build();
-		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-				"<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-						+
-						"<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt " +
-						"double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double #00FFFF\"/>"
-						+ "</style:style>",
-				sb.toString());
-	}
+    @Test
+    public final void testBorders() throws IOException {
+        final TableCellStyle tcs = TableCellStyle.builder("test")
+                .borderTop(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
+                .borderRight(SimpleLength.pt(2.0), SimpleColor.BEIGE, BorderAttribute.Style.SOLID)
+                .borderBottom(SimpleLength.pt(3.0), SimpleColor.CADETBLUE, BorderAttribute.Style.DOUBLE)
+                .borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE, BorderAttribute.Style.DOUBLE).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
+                        "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt "
+                        + "double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double " +
+                        "#00FFFF\"/>" + "</style:style>",
+                tcs);
+    }
 
-	@Test
-	public final void testMargins() throws IOException {
-		final TableCellStyle tcs = TableCellStyle.builder("tcs")
-				.marginTop(SimpleLength.pt(10.0)).marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0))
-				.marginLeft(SimpleLength.pt(13.0)).build();
-		final StringBuilder sb = new StringBuilder();
-		tcs.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-                "<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">"
-                        + "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" " +
-                        "fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>"
-                        + "</style:style>",
-				sb.toString());
-	}
+    @Test
+    public final void testMargins() throws IOException {
+        final TableCellStyle tcs = TableCellStyle.builder("tcs").marginTop(SimpleLength.pt(10.0))
+                .marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0))
+                .marginLeft(SimpleLength.pt(13.0)).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
+                        "<style:paragraph-properties fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\" " +
+                        "fo:margin-right=\"11pt\" fo:margin-top=\"10pt\"/>" + "</style:style>",
+                tcs);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public final void testNullName() {
-		TableCellStyle.builder(null);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public final void testNullName() {
+        TableCellStyle.builder(null);
+    }
 
-	@Test
-	public void testDefaultCellStyle() throws IOException {
-        final StringBuilder sb = new StringBuilder();
-		TableCellStyle.DEFAULT_CELL_STYLE.appendXMLContent(this.util, sb);
-		DomTester.assertEquals(
-                "<style:style style:name=\"Default\" style:family=\"table-cell\">" +
-                        "<style:table-cell-properties style:vertical-align=\"top\"/>" +
-                        "<style:paragraph-properties fo:text-align=\"start\" fo:margin=\"0mm\"/>" +
-                        "</style:style>",
-				sb.toString());
-	}
+    @Test
+    public void testDefaultCellStyle() throws IOException {
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"Default\" style:family=\"table-cell\">" + "<style:table-cell-properties "
+                        + "style:vertical-align=\"top\"/>" + "<style:paragraph-properties fo:text-align=\"start\" " +
+                        "fo:margin=\"0mm\"/>" + "</style:style>",
+                TableCellStyle.DEFAULT_CELL_STYLE);
+    }
 }

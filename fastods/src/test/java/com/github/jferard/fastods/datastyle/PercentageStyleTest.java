@@ -21,7 +21,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,75 +42,66 @@ public class PercentageStyleTest {
     @Test
     public final void testDecimalPlaces() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).decimalPlaces(5).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
-                "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " + "style" +
-                        ":volatile=\"true\">" + "<number:number number:decimal-places=\"5\" " +
-						"number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
-						"</number:percentage-style>",
-                sb.toString());
+        TestHelper.assertXMLEquals(
+                "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style" + ":volatile=\"true\">" + "<number:number number:decimal-places=\"5\" " +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
+                        "</number:percentage-style>",
+                ps);
     }
 
     @Test
     public final void testGroupThousands() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).groupThousands(true).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-						"style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
-						"number:min-integer-digits=\"1\" number:grouping=\"true\"/>" + "<number:text>%</number:text>"
-						+ "</number:percentage-style>",
-                sb.toString());
+                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\" number:grouping=\"true\"/>" + "<number:text>%</number:text>"
+                        + "</number:percentage-style>",
+                ps);
     }
 
     @Test
     public final void testMinIntegeDigits() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).minIntegerDigits(8).build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-						"style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
-						"number:min-integer-digits=\"8\"/>" + "<number:text>%</number:text>" +
-						"</number:percentage-style>",
-                sb.toString());
+                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"8\"/>" + "<number:text>%</number:text>" +
+                        "</number:percentage-style>",
+                ps);
     }
 
     @Test
     public final void testNegativeValueColor() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).negativeValueColor(SimpleColor.GREEN)
                 .build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-						"style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
-						"number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
-						"</number:percentage-style>" + "<number:percentage-style style:name=\"test-neg\" " +
-						"number:language=\"en\" number:country=\"US\" style:volatile=\"true\">" +
-						"<style:text-properties fo:color=\"#008000\"/>" + "<number:text>-</number:text>" +
-						"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>" +
-						"<number:text>%</number:text>" + "<style:map style:condition=\"value()&gt;=0\" " +
-						"style:apply-style-name=\"test\"/>" + "</number:percentage-style>",
-                sb.toString());
+                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
+                        "</number:percentage-style>" + "<number:percentage-style style:name=\"test-neg\" " +
+                        "number:language=\"en\" number:country=\"US\" style:volatile=\"true\">" +
+                        "<style:text-properties fo:color=\"#008000\"/>" + "<number:text>-</number:text>" +
+                        "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>" +
+                        "<number:text>%</number:text>" + "<style:map style:condition=\"value()&gt;=0\" " +
+                        "style:apply-style-name=\"test\"/>" + "</number:percentage-style>",
+                ps);
     }
 
     @Test
     public final void testNegativeValueRed() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).negativeValueRed().build();
-        final StringBuilder sb = new StringBuilder();
-        ps.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-						"style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
-						"number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
-						"</number:percentage-style>" + "<number:percentage-style style:name=\"test-neg\" " +
-						"number:language=\"en\" number:country=\"US\" style:volatile=\"true\">" +
-						"<style:text-properties fo:color=\"#FF0000\"/>" + "<number:text>-</number:text>" +
-						"<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>" +
-						"<number:text>%</number:text>" + "<style:map style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" + "</number:percentage-style>",
-                sb.toString());
+                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
+                        "</number:percentage-style>" + "<number:percentage-style style:name=\"test-neg\" " +
+                        "number:language=\"en\" number:country=\"US\" style:volatile=\"true\">" +
+                        "<style:text-properties fo:color=\"#FF0000\"/>" + "<number:text>-</number:text>" +
+                        "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>" +
+                        "<number:text>%</number:text>" + "<style:map style:condition=\"value()&gt;=0\" " +
+                        "style:apply-style-name=\"test\"/>" + "</number:percentage-style>",
+                ps);
     }
 }

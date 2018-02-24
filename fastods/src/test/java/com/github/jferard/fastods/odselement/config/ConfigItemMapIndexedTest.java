@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,10 +45,7 @@ public class ConfigItemMapIndexedTest {
         this.set = ConfigItemMapEntrySet.createSet("seq");
         this.set.add(this.item);
         this.util = XMLUtil.create();
-
-        final StringBuilder sb = new StringBuilder();
-        this.set.appendXMLContent(this.util, sb);
-        this.setXML = sb.toString();
+        this.setXML = TestHelper.toXML(this.set);
     }
 
     @Test
@@ -66,13 +64,13 @@ public class ConfigItemMapIndexedTest {
         Assert.assertFalse(m.isEmpty());
     }
 
-    @Test(expected=IndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void set() throws Exception {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.set(1, this.set);
     }
 
-    @Test(expected=IndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void remove() throws Exception {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.remove(1);
@@ -124,11 +122,10 @@ public class ConfigItemMapIndexedTest {
     public void appendXMLRepresentation() throws Exception {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
-        final StringBuilder sb = new StringBuilder();
-        m.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-map-indexed config:name=\"mapindexed\">" +
-                this.setXML+
-                "</config:config-item-map-indexed>", sb.toString());
+        TestHelper.assertXMLEquals(
+                "<config:config-item-map-indexed config:name=\"mapindexed\">" + this.setXML +
+                        "</config:config-item-map-indexed>",
+                m);
     }
 
 }

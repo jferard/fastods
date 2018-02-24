@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,6 @@ public class ConfigItemMapNamedTest {
     private ConfigItem item;
     private ConfigItemMapEntrySingleton block;
     private ConfigItemMapEntrySet set;
-    private XMLUtil util;
     private String setXML;
 
     @Before
@@ -43,11 +42,7 @@ public class ConfigItemMapNamedTest {
         this.item = new ConfigItem("n", "t", "v");
         this.set = ConfigItemMapEntrySet.createSet("set");
         this.set.add(this.item);
-        this.util = XMLUtil.create();
-
-        final StringBuilder sb = new StringBuilder();
-        this.set.appendXMLContent(this.util, sb);
-        this.setXML = sb.toString();
+        this.setXML = TestHelper.toXML(this.set);
     }
 
     @Test
@@ -108,11 +103,10 @@ public class ConfigItemMapNamedTest {
     public void appendXML() throws Exception {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
-        final StringBuilder sb = new StringBuilder();
-        m.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-map-named config:name=\"mapnamed\">" +
-                this.setXML+
-                "</config:config-item-map-named>", sb.toString());
+        TestHelper.assertXMLEquals(
+                "<config:config-item-map-named config:name=\"mapnamed\">" + this.setXML +
+                        "</config:config-item-map-named>",
+                m);
     }
 
 }

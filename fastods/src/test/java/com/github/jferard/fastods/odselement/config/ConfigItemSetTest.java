@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,17 +33,12 @@ import java.util.Iterator;
  */
 public class ConfigItemSetTest {
     private ConfigItem item;
-    private XMLUtil util;
     private String itemXML;
 
     @Before
     public void setUp() throws Exception {
         this.item = new ConfigItem("n", "t", "v");
-        this.util = XMLUtil.create();
-
-        final StringBuilder sb = new StringBuilder();
-        this.item.appendXMLContent(this.util, sb);
-        this.itemXML = sb.toString();
+        this.itemXML = TestHelper.toXML(this.item);
     }
 
     @Test
@@ -92,11 +87,8 @@ public class ConfigItemSetTest {
     public void appendXML() throws Exception {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
-        final StringBuilder sb = new StringBuilder();
-        m.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-set config:name=\"set\">" +
-                this.itemXML+
-                "</config:config-item-set>", sb.toString());
+        TestHelper.assertXMLEquals(
+                "<config:config-item-set config:name=\"set\">" + this.itemXML + "</config:config-item-set>", m);
     }
 
     @Test

@@ -23,8 +23,6 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,49 +35,43 @@ import java.net.URL;
 /**
  */
 public class LinkTest {
-	private XMLUtil util;
-	private TextStyle ts;
+    private TextStyle ts;
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-		this.ts = TextProperties.builder().buildStyle("test");
-	}
+    @Before
+    public void setUp() {
+        this.ts = TextProperties.builder().buildStyle("test");
+    }
 
-	@Test
-	public final void testTable() throws IOException {
-		final Table table = PowerMock.createMock(Table.class);
+    @Test
+    public final void testTable() throws IOException {
+        final Table table = PowerMock.createMock(Table.class);
 
-		// PLAY
-		EasyMock.expect(table.getName()).andReturn("t");
-		PowerMock.replayAll();
+        // PLAY
+        EasyMock.expect(table.getName()).andReturn("t");
+        PowerMock.replayAll();
 
-		//
-		final StringBuilder sb = new StringBuilder();
-		final Link link = Link.create("table", this.ts, table);
-		link.appendXMLContent(this.util, sb);
+        //
+        final Link link = Link.create("table", this.ts, table);
+        TestHelper.assertXMLEquals(
+                "<text:a text:style-name=\"test\" xlink:href=\"#t\" xlink:type=\"simple\">table</text:a>", link);
 
-		DomTester.assertEquals("<text:a text:style-name=\"test\" xlink:href=\"#t\" xlink:type=\"simple\">table</text:a>", sb.toString());
+        PowerMock.verifyAll();
+    }
 
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testURL() throws IOException {
+        final Link link = Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
+        TestHelper.assertXMLEquals(
+                "<text:a text:style-name=\"test\" xlink:href=\"https://www.github.com/jferard/fastods\" " + "xlink" +
+                        ":type=\"simple\">url</text:a>",
+                link);
+    }
 
-	@Test
-	public final void testURL() throws IOException {
-		final StringBuilder sb = new StringBuilder();
-		final Link link = Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
-		link.appendXMLContent(this.util, sb);
-
-		DomTester.assertEquals("<text:a text:style-name=\"test\" xlink:href=\"https://www.github.com/jferard/fastods\" xlink:type=\"simple\">url</text:a>", sb.toString());
-	}
-
-	@Test
-	public final void testFile() throws IOException {
-		final StringBuilder sb = new StringBuilder();
-		final File f = new File("generated_files", "fastods_50_5.ods");
-		final Link link = Link.create("file", this.ts, f);
-		link.appendXMLContent(this.util, sb);
-
-		DomTester.assertEquals("<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI().toString() + "\" xlink:type=\"simple\">file</text:a>", sb.toString());
-	}
+    @Test
+    public final void testFile() throws IOException {
+        final File f = new File("generated_files", "fastods_50_5.ods");
+        final Link link = Link.create("file", this.ts, f);
+        TestHelper.assertXMLEquals("<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI()
+                .toString() + "\" xlink:type=\"simple\">file</text:a>", link);
+    }
 }

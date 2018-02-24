@@ -41,7 +41,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +49,7 @@ public class TableTest {
     private StylesContainer stc;
     private Table table;
     private XMLUtil xmlUtil;
+    private StringBuilder sb;
 
     @Before
     public void setUp() {
@@ -59,6 +59,7 @@ public class TableTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table = Table.create(positionUtil, WriteUtil.create(), xmlUtil, this.stc, this.ds, "mytable", 10, 100);
         this.xmlUtil = xmlUtil;
+        this.sb = new StringBuilder();
     }
 
     @Test
@@ -68,7 +69,6 @@ public class TableTest {
             final TableColumnStyle tcs = TableColumnStyle.builder("test" + Integer.toString(c)).build();
             tcss.add(tcs);
         }
-        final StringBuilder sb = new StringBuilder();
 
 
         // PLAY
@@ -84,10 +84,7 @@ public class TableTest {
             this.table.setColumnStyle(c, tcs);
         }
         this.table.getRow(100);
-
-        this.table.appendXMLToContentEntry(this.xmlUtil, sb);
-
-        DomTester.assertEquals(
+        this.assertTableXMLEquals(
                 "<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
                         "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
                         "<table:table-column table:style-name=\"test0\" table:default-cell-style-name=\"Default\"/>"
@@ -98,9 +95,8 @@ public class TableTest {
                         "table:number-columns-repeated=\"1021\"/>" + "<table:table-row " +
                         "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" + "<table:table-cell/>" +
                         "</table:table-row>" + "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
-                        "</table:table>",
-                sb.toString());
-        PowerMock.verifyAll();
+                        "</table:table>");
+
     }
 
     @Test
@@ -173,8 +169,7 @@ public class TableTest {
 
         PowerMock.replayAll();
         this.table.setRowsSpanned(10, 11, 12);
-
-        DomTester.assertEquals(
+        this.assertTableXMLEquals(
                 "<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
                         "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
                         "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" " +
@@ -204,16 +199,8 @@ public class TableTest {
                         "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
                         "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>",
-                this.getTableXML());
+                        "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>");
         PowerMock.verifyAll();
-    }
-
-    private String getTableXML() throws IOException {
-        final StringBuilder sb = new StringBuilder();
-        ;
-        this.table.appendXMLToContentEntry(this.xmlUtil, sb);
-        return sb.toString();
     }
 
     @Test
@@ -261,7 +248,6 @@ public class TableTest {
 
     @Test(expected = IllegalStateException.class)
     public final void testColumnStyle() throws IOException, FastOdsException {
-        final StringBuilder sb = new StringBuilder();
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", tb);
 
@@ -271,7 +257,7 @@ public class TableTest {
         EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
 
         PowerMock.replayAll();
-        t.flushAllAvailableRows(this.xmlUtil, sb);
+        t.flushAllAvailableRows(this.xmlUtil, this.sb);
         t.setColumnStyle(0, null);
 
         PowerMock.verifyAll();
@@ -279,7 +265,6 @@ public class TableTest {
 
     @Test(expected = IllegalStateException.class)
     public final void testName() throws IOException, FastOdsException {
-        final StringBuilder sb = new StringBuilder();
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", tb);
 
@@ -289,7 +274,7 @@ public class TableTest {
         EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
 
         PowerMock.replayAll();
-        t.flushAllAvailableRows(this.xmlUtil, sb);
+        t.flushAllAvailableRows(this.xmlUtil, this.sb);
         t.setName("ko");
 
         PowerMock.verifyAll();
@@ -307,4 +292,9 @@ public class TableTest {
         PowerMock.verifyAll();
     }
 
+    private void assertTableXMLEquals(final String xml) throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        this.table.appendXMLToContentEntry(this.xmlUtil, sb);
+        DomTester.assertEquals(xml, sb.toString());
+    }
 }

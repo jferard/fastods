@@ -71,16 +71,22 @@ public class TableRowTest {
         EasyMock.expect(this.table.findDefaultCellStyle(5)).andReturn(cs);
         final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
         this.stc.addDataStyle(booleanDataStyle);
-        EasyMock.expect(this.stc.addChildCellStyle(cs, booleanDataStyle))
-                .andReturn(this.tcs);
+        EasyMock.expect(this.stc.addChildCellStyle(cs, booleanDataStyle)).andReturn(this.tcs);
 
         PowerMock.replayAll();
         this.row.getOrCreateCell(5).setBooleanValue(true);
         this.row.getOrCreateCell(10).setStringValue("a");
-        DomTester.assertEquals(
-                "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"5\"/>" + "<table:table-cell table:style-name=\"---\" office:value-type=\"boolean\" office:boolean-value=\"true\"/>" + "<table:table-cell table:number-columns-repeated=\"4\"/>" + "<table:table-cell office:value-type=\"string\" office:string-value=\"a\"/>" + "</table:table-row>",
-                this.getXML());
+        this.assertTableXMLEquals(
+                "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
+                        "table:number-columns-repeated=\"5\"/>" + "<table:table-cell table:style-name=\"---\" " +
+                        "office:value-type=\"boolean\" office:boolean-value=\"true\"/>" + "<table:table-cell " +
+                        "table:number-columns-repeated=\"4\"/>" + "<table:table-cell office:value-type=\"string\" " +
+                        "office:string-value=\"a\"/>" + "</table:table-row>");
         PowerMock.verifyAll();
+    }
+
+    private void assertTableXMLEquals(final String xml) throws IOException {
+        DomTester.assertEquals(xml, this.getXML());
     }
 
     public String getXML() throws IOException {

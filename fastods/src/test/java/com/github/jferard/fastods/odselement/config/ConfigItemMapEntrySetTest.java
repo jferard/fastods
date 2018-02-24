@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.TestHelper;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,7 +36,6 @@ public class ConfigItemMapEntrySetTest {
     private ConfigBlock block;
     private ConfigItemMapEntrySet set;
     private ConfigItem item;
-    private XMLUtil util;
     private String itemXML;
 
     @Before
@@ -44,11 +43,7 @@ public class ConfigItemMapEntrySetTest {
         this.item = new ConfigItem("n", "t", "v");
         this.block = ConfigItemMapEntrySingleton.createSingleton("b", this.item);
         this.set = ConfigItemMapEntrySet.createSet("seq");
-        this.util = XMLUtil.create();
-
-        final StringBuilder sb = new StringBuilder();
-        this.item.appendXMLContent(this.util, sb);
-        this.itemXML = sb.toString();
+        this.itemXML = TestHelper.toXML(this.item);
     }
 
     @Test
@@ -105,12 +100,10 @@ public class ConfigItemMapEntrySetTest {
 
     @Test
     public void appendXML() throws Exception {
-        final StringBuilder sb = new StringBuilder();
         this.set.add(this.item);
-        this.set.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<config:config-item-map-entry config:name=\"seq\">" +
-                this.itemXML +
-                "</config:config-item-map-entry>", sb.toString());
+        TestHelper.assertXMLEquals(
+                "<config:config-item-map-entry config:name=\"seq\">" + this.itemXML + "</config:config-item-map-entry>",
+                this.set);
     }
 
     @Test

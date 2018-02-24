@@ -21,9 +21,8 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,7 +50,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testDecimalPlaces() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).decimalPlaces(5).build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " + "style"
                         + ":volatile=\"true\">" + "<number:number number:decimal-places=\"5\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -63,7 +62,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testEuro() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("currency-data", Locale.FRANCE).build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"currency-data\" number:language=\"fr\" number:country=\"FR\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -75,7 +74,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testGroupThousands() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).groupThousands(true).build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\" number:grouping=\"true\"/>" + "<number:text> </number:text>"
@@ -87,7 +86,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testMinIntegerDigits() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).minIntegerDigits(8).build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"8\"/>" + "<number:text> </number:text>" +
@@ -100,7 +99,7 @@ public class CurrencyStyleTest {
     public final void testNegativeValueColor() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).negativeValueColor(SimpleColor.GREEN)
                 .build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -118,7 +117,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testNegativeValueRed() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).negativeValueRed().build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -136,7 +135,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testStylesElements() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).negativeValueRed().build();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
@@ -155,7 +154,7 @@ public class CurrencyStyleTest {
     public final void testSymbol() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).currencySymbol("ABC")
                 .currencySymbolPosition(CurrencyStyle.SymbolPosition.BEGIN).buildHidden();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\"><number:currency-symbol>ABC</number:currency-symbol><number:number "
                         + "number:decimal-places=\"2\" number:min-integer-digits=\"1\"/></number:currency-style>",
@@ -166,11 +165,11 @@ public class CurrencyStyleTest {
     public final void testLocaleVolatile() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
                 .language("cd").volatileStyle(true).buildHidden();
-        this.assertXML(
+        TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"cd\" number:country=\"AB\" " +
                         "style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/><number:text> " +
-                        "</number:text><number:currency-symbol>"+this.frSymbol+"</number:currency-symbol></number:currency-style>",
+                        "number:min-integer-digits=\"1\"/><number:text> " + "</number:text><number:currency-symbol>"
+                        + this.frSymbol + "</number:currency-symbol></number:currency-style>",
                 cs);
     }
 
@@ -195,16 +194,5 @@ public class CurrencyStyleTest {
 
         Assert.assertEquals("test", cs.getName());
         Assert.assertTrue(cs.isHidden());
-    }
-
-
-    private void assertXML(final String xml, final CurrencyStyle cs) throws IOException {
-        DomTester.assertEquals(xml, this.toXML(cs));
-    }
-
-    private String toXML(XMLConvertible o) throws IOException {
-        final StringBuilder sb = new StringBuilder();
-        o.appendXMLContent(this.util, sb);
-        return sb.toString();
     }
 }

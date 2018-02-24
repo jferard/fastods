@@ -20,6 +20,7 @@
  */
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -41,48 +42,38 @@ public class MarginsTest {
     @Test
     public final void testAll() throws IOException {
         final Margins margins = new MarginsBuilder().all(MarginsTest.TEN_PT).build();
-        final StringBuilder sb = new StringBuilder();
-        margins.appendXMLContent(this.util, sb);
-        Assert.assertEquals(" fo:margin=\"10pt\"", sb.toString());
+        TestHelper.assertXMLEquals(" fo:margin=\"10pt\"", margins);
     }
 
     @Test
     public final void testRedondant() throws IOException {
         final Margins margins = new MarginsBuilder().all(MarginsTest.TEN_PT).top(MarginsTest.TEN_PT)
                 .left(MarginsTest.TEN_PT).bottom(MarginsTest.TEN_PT).right(MarginsTest.TEN_PT).build();
-        final StringBuilder sb = new StringBuilder();
-        margins.appendXMLContent(this.util, sb);
-        Assert.assertEquals(" fo:margin=\"10pt\"", sb.toString());
+        TestHelper.assertXMLEquals(" fo:margin=\"10pt\"", margins);
     }
 
     @Test
     public final void testVoidContent() throws IOException {
         final Margins margins = new MarginsBuilder().build();
-        final StringBuilder sb = new StringBuilder();
-        margins.appendXMLContent(this.util, sb);
-        Assert.assertEquals("", sb.toString());
+        TestHelper.assertXMLEquals("", margins);
     }
 
     @Test
     public final void testTRBL() throws IOException {
         final Margins margins = new MarginsBuilder().all(MarginsTest.TEN_PT).top(MarginsTest.TEN_PT)
                 .right(SimpleLength.pt(11.0)).bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
-        final StringBuilder sb = new StringBuilder();
-        margins.appendXMLContent(this.util, sb);
-        Assert.assertEquals(
+        TestHelper.assertXMLEquals(
                 " fo:margin=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"",
-                sb.toString());
+                margins);
     }
 
     @Test
     public final void testTRBL2() throws IOException {
         final Margins margins = new MarginsBuilder().top(MarginsTest.TEN_PT).right(SimpleLength.pt(11.0))
                 .bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
-        final StringBuilder sb = new StringBuilder();
-        margins.appendXMLContent(this.util, sb);
-        Assert.assertEquals(
+        TestHelper.assertXMLEquals(
                 " fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" fo:margin-left=\"13pt\"",
-                sb.toString());
+                margins);
     }
 
     @Test

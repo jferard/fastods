@@ -20,7 +20,7 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,18 +44,18 @@ public class ScientificNumberStyleTest {
         final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).country("FR")
                 .language("en").volatileStyle(true).minExponentDigits(1).groupThousands(true).minIntegerDigits(8)
                 .negativeValueRed().build();
-        final StringBuilder sb = new StringBuilder();
-        s.appendXMLContent(this.util, sb);
-        final String str = "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"FR\" " +
-                "style:volatile=\"true\">" + "<number:scientific-number number:min-exponent-digits=\"1\" " +
-                "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
-                "</number:number-style>" + "<number:number-style style:name=\"test-neg\" number:language=\"en\" " +
-                "number:country=\"FR\" style:volatile=\"true\">" + "<style:text-properties fo:color=\"#FF0000\"/>" +
-                "<number:text>-</number:text>" + "<number:scientific-number number:min-exponent-digits=\"1\" " +
-                "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
-                "<style:map" + " style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
-                "</number:number-style>";
-        DomTester.assertEquals(str, sb.toString());
+        TestHelper.assertXMLEquals(
+                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"FR\" " +
+                        "style:volatile=\"true\">" + "<number:scientific-number number:min-exponent-digits=\"1\" " +
+                        "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
+                        "</number:number-style>" + "<number:number-style style:name=\"test-neg\" " +
+                        "number:language=\"en\" " + "number:country=\"FR\" style:volatile=\"true\">" +
+                        "<style:text-properties fo:color=\"#FF0000\"/>" + "<number:text>-</number:text>" +
+                        "<number:scientific-number number:min-exponent-digits=\"1\" " + "number:decimal-places=\"2\" " +
+                        "" + "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" + "<style:map" + " " +
+                        "style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
+                        "</number:number-style>",
+                s);
     }
 
     @Test
@@ -63,18 +63,18 @@ public class ScientificNumberStyleTest {
         final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).country("FR")
                 .language("en").locale(Locale.GERMANY).volatileStyle(true).minExponentDigits(2).groupThousands(true)
                 .minIntegerDigits(8).negativeValueRed().build();
-        final StringBuilder sb = new StringBuilder();
-        s.appendXMLContent(this.util, sb);
-        final String str = "<number:number-style style:name=\"test\" number:language=\"de\" number:country=\"DE\" " +
-                "style:volatile=\"true\">" + "<number:scientific-number number:min-exponent-digits=\"2\" " +
-                "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
-                "</number:number-style>" + "<number:number-style style:name=\"test-neg\" number:language=\"de\" " +
-                "number:country=\"DE\" style:volatile=\"true\">" + "<style:text-properties fo:color=\"#FF0000\"/>" +
-                "<number:text>-</number:text>" + "<number:scientific-number number:min-exponent-digits=\"2\" " +
-                "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
-                "<style:map" + " style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
-                "</number:number-style>";
-        DomTester.assertEquals(str, sb.toString());
+        TestHelper.assertXMLEquals(
+                "<number:number-style style:name=\"test\" number:language=\"de\" number:country=\"DE\" " +
+                        "style:volatile=\"true\">" + "<number:scientific-number number:min-exponent-digits=\"2\" " +
+                        "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
+                        "</number:number-style>" + "<number:number-style style:name=\"test-neg\" " +
+                        "number:language=\"de\" " + "number:country=\"DE\" style:volatile=\"true\">" +
+                        "<style:text-properties fo:color=\"#FF0000\"/>" + "<number:text>-</number:text>" +
+                        "<number:scientific-number number:min-exponent-digits=\"2\" " + "number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" + "<style:map" + " " +
+                        "style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
+                        "</number:number-style>",
+                s);
     }
 
     @Test(expected = IllegalArgumentException.class)

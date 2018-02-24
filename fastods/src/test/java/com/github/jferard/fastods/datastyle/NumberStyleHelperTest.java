@@ -20,7 +20,7 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,21 +43,17 @@ public class NumberStyleHelperTest {
     @Test
     public final void testEmpty() throws IOException {
         final FloatStyle ns = new FloatStyleBuilder("test", this.locale).locale(this.locale).build();
-        final StringBuilder sb = new StringBuilder();
-        ns.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + NumberStyleHelperTest
                         .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "</number:number-style>",
-                sb.toString());
+                ns);
     }
 
     @Test
     public final void testNegative() throws IOException {
         final FloatStyle ns = new FloatStyleBuilder("test", this.locale).negativeValueRed().locale(this.locale).build();
-        final StringBuilder sb = new StringBuilder();
-        ns.appendXMLContent(this.util, sb);
-        DomTester.assertEquals(
+        TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\">" + NumberStyleHelperTest
                         .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "</number:number-style>" +
@@ -66,6 +62,6 @@ public class NumberStyleHelperTest {
                         "<number:text>-</number:text>" + NumberStyleHelperTest
                         .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "<style:map style:condition=\"value()"
                         + "&gt;=0\" style:apply-style-name=\"test\"/>" + "</number:number-style>",
-                sb.toString());
+                ns);
     }
 }

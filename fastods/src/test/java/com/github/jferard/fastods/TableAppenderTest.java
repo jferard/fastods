@@ -62,13 +62,12 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.<TableColumnStyle>newListWithCapacity(1));
 
         PowerMock.replayAll();
-        final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/>");
 
-        Assert.assertEquals("<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
-                "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" table:default-cell-style-name=\"Default\"/>", sb.toString());
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -78,13 +77,12 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(this.newTCS("x")));
 
         PowerMock.replayAll();
-        final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
-
-        Assert.assertEquals("<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
-                "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                "<table:table-column table:style-name=\"x\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1023\" table:default-cell-style-name=\"Default\"/>", sb.toString());
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"x\" table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1023\" " +
+                        "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }
 
@@ -99,13 +97,13 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(this.newTCS("x"), this.newTCS("x")));
 
         PowerMock.replayAll();
-        final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
-
-        Assert.assertEquals("<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
-                "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"2\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1022\" table:default-cell-style-name=\"Default\"/>", sb.toString());
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
+                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1022\" " +
+                        "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }
 
@@ -117,15 +115,15 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(x, x, this.newTCS("y"), x));
 
         PowerMock.replayAll();
-        final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
-
-        Assert.assertEquals("<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
-                "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"2\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"y\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"x\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1020\" table:default-cell-style-name=\"Default\"/>", sb.toString());
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-column table:style-name=\"y\" "
+                        + "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
+                        "table:style-name=\"x\"" + " " + "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column " + "table:style-name=\"co1\"" + " " +
+                        "table:number-columns-repeated=\"1020\" " + "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }
 
@@ -138,15 +136,23 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
-        final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
-
-        Assert.assertEquals("<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
-                "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"5\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"y\" table:number-columns-repeated=\"3\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"2\" table:default-cell-style-name=\"Default\"/>" +
-                "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1014\" table:default-cell-style-name=\"Default\"/>", sb.toString());
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"5\" " +
+                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-column table:style-name=\"y\" "
+                        + "table:number-columns-repeated=\"3\" table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"x\" table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
+                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1014\" " +
+                        "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }
+
+    private void assertPreambleXMLEquals(final String xml) throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        this.tableAppender.appendPreamble(this.xmlUtil, sb);
+        Assert.assertEquals(xml, sb.toString());
+    }
+
 }

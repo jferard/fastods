@@ -28,6 +28,7 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,8 +43,6 @@ public class StylesContainerTest {
     private Locale locale;
     private PageStyle ps1;
     private PageStyle ps2;
-    private TableCellStyle st1;
-    private TableCellStyle st2;
     private StylesContainer stylesContainer;
     private XMLUtil util;
 
@@ -53,204 +52,152 @@ public class StylesContainerTest {
         this.util = XMLUtil.create();
         this.locale = Locale.US;
 
-        this.st1 = TableCellStyle.builder("a").fontStyleItalic().build();
-        this.st2 = TableCellStyle.builder("a").fontWeightBold().build();
-
         this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").buildHidden();
         this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").buildHidden();
 
         this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
         this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     // CONTENT
     @Test
     public final void testAddDataStyle() {
         final DataStyle dataStyle = new BooleanStyleBuilder("test", this.locale).buildHidden();
-
         this.stylesContainer.addDataStyle(dataStyle);
-        PowerMock.replayAll();
-        // this.oe.addDataStyle(dataStyle);
-        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleCreate() throws IOException {
-        final Appendable sb = new StringBuilder();
-
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
-        this.stylesContainer.writeDataStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"A\" style:volatile=\"true\"/>",
-                sb.toString());
+        this.assertWriteDataStylesXMLEquals(
+                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"A\" " +
+                        "style:volatile=\"true\"/>");
     }
 
     @Test
     public final void testDataStyleCreateThenUpdate() throws IOException {
-        final Appendable sb = new StringBuilder();
-
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.UPDATE)); // country: a -> b
-        this.stylesContainer.writeDataStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" style:volatile=\"true\"/>",
-                sb.toString());
+        this.assertWriteDataStylesXMLEquals(
+                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" " +
+                        "style:volatile=\"true\"/>");
     }
 
     @Test
     public final void testDataStyleCreateThenUpdateIfExists() throws IOException {
-        final Appendable sb = new StringBuilder();
-
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE_OR_UPDATE));
-        this.stylesContainer.writeDataStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" style:volatile=\"true\"/>",
-                sb.toString());
+        this.assertWriteDataStylesXMLEquals(
+                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" " +
+                        "style:volatile=\"true\"/>");
     }
 
     @Test
     public final void testDataStyleCreateTwice() throws IOException {
-        final Appendable sb = new StringBuilder();
-
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
         Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE));
-        this.stylesContainer.writeDataStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"A\" style:volatile=\"true\"/>",
-                sb.toString());
+        this.assertWriteDataStylesXMLEquals(
+                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"A\" " +
+                        "style:volatile=\"true\"/>");
     }
 
     @Test
-    public final void testDataStyleUpdate() {
-        final Appendable sb = new StringBuilder();
+    public final void testDataStyleUpdate() throws IOException {
         Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2, Mode.UPDATE));
-        DomTester.assertEquals("", sb.toString());
+        this.assertWriteDataStylesXMLEquals("");
     }
 
     @Test
     public final void testDataStyleUpdateIfExists() throws IOException {
-        final Appendable sb = new StringBuilder();
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE_OR_UPDATE));
-        this.stylesContainer.writeDataStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" style:volatile=\"true\"/>",
-                sb.toString());
+        this.assertWriteDataStylesXMLEquals(
+                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" " +
+                        "style:volatile=\"true\"/>");
     }
 
     @Test
     public final void testPageStyleCreate() throws IOException {
-        final Appendable sb = new StringBuilder();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
-        this.stylesContainer.writeMasterPageStylesToMasterStyles(this.util, sb);
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">" +
-                        "<style:header>" +
-                        "<text:p><text:span text:style-name=\"none\"></text:span></text:p>" +
-                        "</style:header>" +
-                        "<style:header-left style:display=\"false\"/>" +
-                        "<style:footer><text:p><text:span text:style-name=\"none\"></text:span></text:p>" +
-                        "</style:footer><style:footer-left style:display=\"false\"/>" +
-                        "</style:master-page>" +
-                        "<style:page-layout style:name=\"a\">" +
-                        "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1pt\"/>" +
-                        "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" +
-                        "<style:footer-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" +
-                        "</style:page-layout>",
-                sb.toString());
+        this.assertWriteMasterXMLEquals(
+                "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">" + "<style:header>" +
+                        "<text:p><text:span text:style-name=\"none\"></text:span></text:p>" + "</style:header>" +
+                        "<style:header-left style:display=\"false\"/>" + "<style:footer><text:p><text:span " +
+                        "text:style-name=\"none\"></text:span></text:p>" + "</style:footer><style:footer-left " +
+                        "style:display=\"false\"/>" + "</style:master-page>");
+        this.assertWriteLayoutXMLEquals(
+                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" " + "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " + "fo:margin=\"1pt\"/>" + "<style:header-style>" +
+                        "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:footer-style>" +
+                        "</style:page-layout>");
     }
 
 
     @Test
     public final void testPageStyleCreateThenUpdate() throws IOException {
-        final Appendable sb = new StringBuilder();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.UPDATE));
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<style:page-layout style:name=\"a\">" +
-                        "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" +
-                        "<style:header-style>" +
+        this.assertWriteLayoutXMLEquals(
+                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" + "<style:header-style>" +
                         "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" +
-                        "<style:footer-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" +
-                        "</style:page-layout>",
-                sb.toString());
+                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
+
     }
 
     @Test
     public final void testPageStyleCreateThenUpdateIfExists() throws IOException {
-        final Appendable sb = new StringBuilder();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
-        Assert.assertTrue(
-                this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<style:page-layout style:name=\"a\">" +
-                        "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" +
-                        "<style:header-style>" +
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
+        this.assertWriteLayoutXMLEquals(
+                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" + "<style:header-style>" +
                         "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" +
-                        "<style:footer-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" +
-                        "</style:page-layout>",
-                sb.toString());
+                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
     }
 
     @Test
     public final void testPageStyleCreateTwice() throws IOException {
-        final Appendable sb = new StringBuilder();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
         Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE));
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<style:page-layout style:name=\"a\">" +
-                        "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1pt\"/>" +
-                        "<style:header-style>" +
+        this.assertWriteLayoutXMLEquals(
+                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" fo:margin=\"1pt\"/>" + "<style:header-style>" +
                         "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" +
-                        "<style:footer-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" +
-                        "</style:page-layout>",
-                sb.toString());
+                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
     }
 
     @Test
     public final void testPageStyleUpdate() throws IOException {
-        final Appendable sb = new StringBuilder();
         Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2, Mode.UPDATE));
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
-        DomTester.assertEquals(
-                "",
-                sb.toString());
+        this.assertWriteLayoutXMLEquals("");
     }
 
     @Test
     public final void testPageStyleUpdateIfExists() throws IOException {
-        final Appendable sb = new StringBuilder();
-        Assert.assertTrue(
-                this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
-        DomTester.assertEquals(
-                "<style:page-layout style:name=\"a\">" +
-                        "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" +
-                        "<style:header-style>" +
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
+        this.assertWriteLayoutXMLEquals(
+                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" + "<style:header-style>" +
                         "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" +
-                        "<style:footer-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" +
-                        "</style:page-layout>",
-                sb.toString());
+                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
     }
 
     @Test
@@ -267,5 +214,23 @@ public class StylesContainerTest {
         Assert.assertNotNull(childCellStyle);
         Assert.assertEquals("tcs@@bs", childCellStyle.getName());
         Assert.assertEquals(ds, childCellStyle.getDataStyle());
+    }
+
+    private final void assertWriteDataStylesXMLEquals(final String xml) throws IOException {
+        final Appendable sb = new StringBuilder();
+        this.stylesContainer.writeDataStyles(this.util, sb);
+        DomTester.assertEquals(xml, sb.toString());
+    }
+
+    private void assertWriteLayoutXMLEquals(final String xml) throws IOException {
+        final Appendable sb = new StringBuilder();
+        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
+        DomTester.assertEquals(xml, sb.toString());
+    }
+
+    private void assertWriteMasterXMLEquals(final String xml) throws IOException {
+        final Appendable sb = new StringBuilder();
+        this.stylesContainer.writeMasterPageStylesToMasterStyles(this.util, sb);
+        DomTester.assertEquals(xml, sb.toString());
     }
 }
