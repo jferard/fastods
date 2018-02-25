@@ -22,20 +22,22 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.odselement.OdsElement;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
 
 public class PercentageStyleTest {
-    private XMLUtil util;
     private Locale locale;
 
     @Before
     public void setUp() {
-        this.util = XMLUtil.create();
         this.locale = Locale.US;
     }
 
@@ -70,6 +72,14 @@ public class PercentageStyleTest {
                         "number:min-integer-digits=\"8\"/>" + "<number:text>%</number:text>" +
                         "</number:percentage-style>",
                 ps);
+
+        PowerMock.resetAll();
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+
+        elements.addDataStyle(ps);
+        PowerMock.replayAll();
+        ps.addToElements(elements);
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -103,5 +113,30 @@ public class PercentageStyleTest {
                         "<number:text>%</number:text>" + "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:percentage-style>",
                 ps);
+        Assert.assertEquals("test", ps.getName());
+    }
+
+    @Test
+    public final void testCountryLanguage() throws IOException {
+        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).country("a").language("b").build();
+        TestHelper.assertXMLEquals(
+                "<number:percentage-style style:name=\"test\" number:language=\"b\" number:country=\"A\" " +
+                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
+                        "</number:percentage-style>",
+                ps);
+        Assert.assertFalse(ps.isHidden());
+    }
+
+    @Test
+    public final void testLocaleVolatile() throws IOException {
+        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(true).buildHidden();
+        TestHelper.assertXMLEquals(
+                "<number:percentage-style style:name=\"test\" number:language=\"fr\" number:country=\"FR\" " +
+                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text>%</number:text>" +
+                        "</number:percentage-style>",
+                ps);
+        Assert.assertTrue(ps.isHidden());
     }
 }
