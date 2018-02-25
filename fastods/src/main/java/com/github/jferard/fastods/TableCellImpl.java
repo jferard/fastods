@@ -328,7 +328,7 @@ public class TableCellImpl implements TableCell {
         this.coldCell.setText(text);
         this.value = "";
         this.type = TableCell.Type.STRING;
-        text.addEmbeddedStylesToContentAutomaticStyles(this.stylesContainer);
+        text.addEmbeddedStylesFromCell(this.stylesContainer);
     }
 
     @Override

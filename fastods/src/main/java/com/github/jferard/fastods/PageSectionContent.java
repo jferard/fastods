@@ -28,17 +28,17 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * This file PageSection.java is part of FastODS.
+ * 16.10<style:header>
+ * 16.11<style:footer>
  * <p>
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
+ * "The <style:header> element represents the content of a header in a <style:master-page> element."
+ * "The <style:footer> element represents the content of a footer in a <style:master-page> element."
+ * <p>
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
-public interface PageSectionContent extends StylesEmbedder {
+public interface PageSectionContent extends StyleWithEmbeddedStyles {
 
     /**
      * Append the XML representation of a page section to a stream

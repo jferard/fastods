@@ -27,21 +27,22 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container;
 
 /**
- * An element that embeds styles
+ * An element that embeds styles and does *not* belong to the content of the document.
+ * That means that all embedded styles will go to styles.xml/automatic-styles
  *
  * @author Julien Férard
  */
-public interface StylesEmbedder {
+public interface StyleWithEmbeddedStyles {
     /**
-     * Add the styles of this element to the styles container
+     * Add the styles of this element to the styles container, in styles.xml/automatic-styles.
      * @param stylesContainer the styles container
      */
-    void addEmbeddedStylesToStylesElement(StylesContainer stylesContainer);
+    void addEmbeddedStyles(StylesContainer stylesContainer);
 
     /**
-     * Add the styles of this element to the styles container
+     * Add the styles of this element to the styles container, in styles.xml/automatic-styles.
      * @param stylesContainer the styles container
      * @param mode (CREATE, CREATE_OR_UPDATE, UPDATE)
      */
-    void addEmbeddedStylesToStylesElement(StylesContainer stylesContainer, Container.Mode mode);
+    void addEmbeddedStyles(StylesContainer stylesContainer, Container.Mode mode);
 }

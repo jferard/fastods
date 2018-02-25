@@ -46,13 +46,13 @@ public class Footer implements HeaderOrFooter {
 
 
     @Override
-    public void addEmbeddedStylesToStylesElement(final StylesContainer stylesContainer) {
-        this.pageSection.addEmbeddedStylesToStylesElement(stylesContainer);
+    public void addEmbeddedStyles(final StylesContainer stylesContainer) {
+        this.pageSection.addEmbeddedStyles(stylesContainer);
     }
 
     @Override
-    public void addEmbeddedStylesToStylesElement(final StylesContainer stylesContainer, final Container.Mode mode) {
-        this.pageSection.addEmbeddedStylesToStylesElement(stylesContainer, mode);
+    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Container.Mode mode) {
+        this.pageSection.addEmbeddedStyles(stylesContainer, mode);
     }
 
     @Override

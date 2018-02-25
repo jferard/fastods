@@ -31,6 +31,12 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
+ * 16.6<style:header-style>
+ * 16.7<style:footer-style>
+ *
+ * "The <style:header-style> element specifies the formatting properties for a header element."
+ * "The <style:footer-style> element specifies the formatting properties for a footer element."
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */

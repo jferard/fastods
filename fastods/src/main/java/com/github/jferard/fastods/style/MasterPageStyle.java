@@ -25,6 +25,7 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.StyleWithEmbeddedStyles;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -38,7 +39,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class MasterPageStyle implements AddableToOdsElements {
+public class MasterPageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles {
 	private final String layoutName;
 	private final Footer footer;
 	private final Header header;
@@ -64,12 +65,13 @@ public class MasterPageStyle implements AddableToOdsElements {
 	 * Add the style embedded in this master page style to a container
 	 * @param stylesContainer the container
 	 */
-	public void addEmbeddedStylesToStylesContainer(
+	@Override
+	public void addEmbeddedStyles(
 			final StylesContainer stylesContainer) {
 		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesElement(stylesContainer);
+			this.header.addEmbeddedStyles(stylesContainer);
 		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesElement(stylesContainer);
+			this.footer.addEmbeddedStyles(stylesContainer);
 	}
 
     /**
@@ -77,12 +79,13 @@ public class MasterPageStyle implements AddableToOdsElements {
      * @param stylesContainer the container
      * @param mode CREATE, UPDATE, CREATE_OR_UPDATE
      */
-	public void addEmbeddedStylesToStylesContainer(
+    @Override
+	public void addEmbeddedStyles(
 			final StylesContainer stylesContainer, final Mode mode) {
 		if (this.header != null)
-			this.header.addEmbeddedStylesToStylesElement(stylesContainer, mode);
+			this.header.addEmbeddedStyles(stylesContainer, mode);
 		if (this.footer != null)
-			this.footer.addEmbeddedStylesToStylesElement(stylesContainer, mode);
+			this.footer.addEmbeddedStyles(stylesContainer, mode);
 	}
 
 

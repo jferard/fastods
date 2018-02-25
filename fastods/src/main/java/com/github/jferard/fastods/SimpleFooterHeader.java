@@ -30,11 +30,16 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
+ * 16.10<style:header>
+ * 16.11<style:footer>
+ * <p>
+ * "The <style:header> element represents the content of a header in a <style:master-page> element."
+ * "The <style:footer> element represents the content of a footer in a <style:master-page> element."
+ * <p>
  *
+ * The SimpleFooterHeader class represents a footer/header which is composed one sections.
+ * It's an alternative to the RegionFooterHeader that has three sections (left, center, right).
+
  * @author Julien Férard
  * @author Martin Schulz
  *
@@ -55,15 +60,15 @@ class SimpleFooterHeader implements PageSectionContent {
 	}
 
 	@Override
-	public void addEmbeddedStylesToStylesElement(
+	public void addEmbeddedStyles(
 			final StylesContainer stylesContainer) {
-		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
+		this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
 	}
 
 	@Override
-	public void addEmbeddedStylesToStylesElement(
+	public void addEmbeddedStyles(
 			final StylesContainer stylesContainer, final Mode mode) {
-		this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer,
+		this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer,
 				mode);
 	}
 

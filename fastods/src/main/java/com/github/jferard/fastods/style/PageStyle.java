@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.StylesEmbedder;
+import com.github.jferard.fastods.StyleWithEmbeddedStyles;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -41,7 +41,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageStyle implements AddableToOdsElements, StylesEmbedder, Hidable {
+public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles, Hidable {
 	/**
 	 * The classic default master page name
 	 */
@@ -217,15 +217,15 @@ public class PageStyle implements AddableToOdsElements, StylesEmbedder, Hidable 
 	}
 
 	@Override
-    public void addEmbeddedStylesToStylesElement(
+    public void addEmbeddedStyles(
 			final StylesContainer stylesContainer) {
-		this.masterPageStyle.addEmbeddedStylesToStylesContainer(stylesContainer);
+		this.addEmbeddedStyles(stylesContainer, Mode.CREATE);
 	}
 
     @Override
-    public void addEmbeddedStylesToStylesElement(
+    public void addEmbeddedStyles(
 			final StylesContainer stylesContainer, final Mode mode) {
-		this.masterPageStyle.addEmbeddedStylesToStylesContainer(stylesContainer, mode);
+		this.masterPageStyle.addEmbeddedStyles(stylesContainer, mode);
 	}
 
 	@Override

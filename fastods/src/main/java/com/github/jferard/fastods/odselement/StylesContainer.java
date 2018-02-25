@@ -24,7 +24,11 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.ObjectStyle;
+import com.github.jferard.fastods.style.PageLayoutStyle;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.MultiContainer;
@@ -161,7 +165,7 @@ public class StylesContainer {
      */
     public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle, final Mode mode) {
         if (this.masterPageStylesContainer.add(masterPageStyle.getName(), masterPageStyle, mode)) {
-            masterPageStyle.addEmbeddedStylesToStylesContainer(this, mode);
+            masterPageStyle.addEmbeddedStyles(this, mode);
             return true;
         } else return false;
     }
@@ -342,7 +346,7 @@ public class StylesContainer {
     }
 
     /**
-     * Write the data styles in the automatic styles.
+     * Write the data styles in the automatic styles. They belong to content.xml/automatic-styles
      *
      * @param util   an XML util
      * @param writer the destination
@@ -356,13 +360,14 @@ public class StylesContainer {
     }
 
     /**
-     * Write master page styles to styles.xml/automatic-styles
+     * Write the page layout styles. The page layout will always belong to to styles.xml/automatic-styles, since
+     * it's an automatic style (see 16.5) and it is not "used in a document" (3.1.3.2)
      *
      * @param util   an util
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writePageLayoutStylesToAutomaticStyles(final XMLUtil util, final Appendable writer) throws IOException {
+    public void writePageLayoutStyles(final XMLUtil util, final Appendable writer) throws IOException {
         for (final PageLayoutStyle ps : this.pageLayoutStylesContainer.getValues()) {
             assert ps.isHidden();
             ps.appendXMLToAutomaticStyle(util, writer);
@@ -370,13 +375,13 @@ public class StylesContainer {
     }
 
     /**
-     * Write master page styles to styles.xml/master-styles
+     * Write master page styles. The master page style always belong to to styles.xml/master-styles (3.15.4)
      *
      * @param util   an util
      * @param writer the destination
      * @throws IOException if an I/O error occurs
      */
-    public void writeMasterPageStylesToMasterStyles(final XMLUtil util, final Appendable writer) throws IOException {
+    public void writeMasterPageStyles(final XMLUtil util, final Appendable writer) throws IOException {
         for (final MasterPageStyle ps : this.masterPageStylesContainer.getValues()) {
             ps.appendXMLToMasterStyle(util, writer);
         }

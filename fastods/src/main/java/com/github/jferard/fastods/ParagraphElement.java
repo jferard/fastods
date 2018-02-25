@@ -23,9 +23,18 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.util.Container;
+
 /**
  * A paragraph element represents an element inside paragraph (p tag)
+ *
  * @author Julien Férard
  */
 public interface ParagraphElement extends Tag {
+    void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer);
+
+    void addEmbeddedStylesFromCell(StylesContainer stylesContainer);
+
+    void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer, Container.Mode mode);
 }

@@ -28,6 +28,7 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -40,10 +41,17 @@ public class RegionPageSectionTest {
     @Before
     public void setUp() {
         this.util = XMLUtil.create();
+        PowerMock.resetAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testNullOrEmptyRegions() throws IOException {
+        PowerMock.replayAll();
         final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT).content("l")
                 .region(Region.CENTER).text(Text.builder().par().build()).build();
         this.assertMasterXMLEquals(
@@ -54,6 +62,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionsToMasterStyle() throws IOException {
+        PowerMock.replayAll();
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
         final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
@@ -71,6 +80,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionToAutomaticStyle() throws IOException {
+        PowerMock.replayAll();
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("style");
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
@@ -84,6 +94,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionToMasterStyle() throws IOException {
+        PowerMock.replayAll();
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("style");
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
@@ -105,12 +116,11 @@ public class RegionPageSectionTest {
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         // play
-        sc.addStyleToStylesAutomaticStyles(ts1);
-        sc.addStyleToStylesAutomaticStyles(ts2);
-        sc.addStyleToStylesAutomaticStyles(ts3);
+        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts1, Mode.CREATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts2, Mode.CREATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts3, Mode.CREATE)).andReturn(true);
         PowerMock.replayAll();
-        headerSection.addEmbeddedStylesToStylesElement(sc);
-        PowerMock.verifyAll();
+        headerSection.addEmbeddedStyles(sc);
     }
 
     @Test
@@ -120,7 +130,7 @@ public class RegionPageSectionTest {
 
         // play
         PowerMock.replayAll();
-        headerSecton.addEmbeddedStylesToStylesElement(sc);
+        headerSecton.addEmbeddedStyles(sc);
         PowerMock.verifyAll();
     }
 
@@ -139,7 +149,7 @@ public class RegionPageSectionTest {
         EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts2, Mode.CREATE_OR_UPDATE)).andReturn(true);
         EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts3, Mode.CREATE_OR_UPDATE)).andReturn(true);
         PowerMock.replayAll();
-        headerSection.addEmbeddedStylesToStylesElement(sc, Mode.CREATE_OR_UPDATE);
+        headerSection.addEmbeddedStyles(sc, Mode.CREATE_OR_UPDATE);
         PowerMock.verifyAll();
     }
 
@@ -150,7 +160,7 @@ public class RegionPageSectionTest {
 
         // play
         PowerMock.replayAll();
-        headerSection.addEmbeddedStylesToStylesElement(sc, Mode.CREATE_OR_UPDATE);
+        headerSection.addEmbeddedStyles(sc, Mode.CREATE_OR_UPDATE);
         PowerMock.verifyAll();
     }
 
@@ -159,5 +169,4 @@ public class RegionPageSectionTest {
         section.appendXMLToMasterStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
-
 }

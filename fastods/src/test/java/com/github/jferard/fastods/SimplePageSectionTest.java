@@ -145,8 +145,8 @@ public class SimplePageSectionTest {
 
         final PageSection footer = PageSection.simpleBuilder().content("text").build();
 
-        footer.addEmbeddedStylesToStylesElement(sc);
-        footer.addEmbeddedStylesToStylesElement(sc, Mode.CREATE);
+        footer.addEmbeddedStyles(sc);
+        footer.addEmbeddedStyles(sc, Mode.CREATE);
         PowerMock.verifyAll();
     }
 

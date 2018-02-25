@@ -23,7 +23,9 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -68,6 +70,31 @@ public class Paragraph implements TagParameters {
             for (final ParagraphElement paragraphElement : this.paragraphElements)
                 paragraphElement.appendXMLContent(util, appendable);
             appendable.append("</text:p>");
+        }
+    }
+
+    /**
+     * A the embedded style to content.xml/automatic-styles
+     *
+     * @param stylesContainer
+     */
+    public void addEmbeddedStyleFromCell(final StylesContainer stylesContainer) {
+        if (this.style != null) stylesContainer.addStyleToContentAutomaticStyles(this.style);
+        for (final ParagraphElement element : this.paragraphElements) {
+            element.addEmbeddedStylesFromCell(stylesContainer);
+        }
+    }
+
+    /**
+     * A the embedded style to styles.xml/automatic-styles
+     *
+     * @param stylesContainer
+     */
+    public void addEmbeddedStyleToStylesAutomaticsStyle(final StylesContainer stylesContainer,
+                                                        final Container.Mode mode) {
+        if (this.style != null) stylesContainer.addStyleToStylesAutomaticStyles(this.style);
+        for (final ParagraphElement element : this.paragraphElements) {
+            element.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
         }
     }
 }

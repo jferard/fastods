@@ -29,12 +29,15 @@ import java.io.IOException;
 
 /**
  * Represents the header/footer of a print page.
+ * This is a wrapper for a page section, and it "types" this page section.
+ *
  * @author Julien Férard
  */
-public interface HeaderOrFooter extends StylesEmbedder {
+public interface HeaderOrFooter extends StyleWithEmbeddedStyles {
     /**
      * Append the XML representation of the header/footer to a stream.
-     * @param util an util
+     *
+     * @param util       an util
      * @param appendable the stream
      * @throws IOException if one can't append the content
      */
@@ -42,7 +45,8 @@ public interface HeaderOrFooter extends StylesEmbedder {
 
     /**
      * Append the page section style XML representation of the header/footer to a stream.
-     * @param util an util
+     *
+     * @param util       an util
      * @param appendable the stream
      * @throws IOException if one can't append the content
      */

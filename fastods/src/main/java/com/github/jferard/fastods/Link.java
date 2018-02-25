@@ -23,7 +23,9 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -142,4 +144,19 @@ public final class Link implements ParagraphElement {
 		util.appendAttribute(appendable, "xlink:type", "simple");
 		appendable.append(">").append(this.text).append("</text:a>");
 	}
+
+	@Override
+	public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
+        if (this.ts != null) stylesContainer.addStyleToStylesAutomaticStyles(this.ts);
+	}
+
+	@Override
+	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
+        if (this.ts != null) stylesContainer.addStyleToContentAutomaticStyles(this.ts);
+	}
+
+    @Override
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Container.Mode mode) {
+        if (this.ts != null) stylesContainer.addStyleToStylesAutomaticStyles(this.ts, mode);
+    }
 }

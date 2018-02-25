@@ -224,13 +224,13 @@ public class StylesContainerTest {
 
     private void assertWriteLayoutXMLEquals(final String xml) throws IOException {
         final Appendable sb = new StringBuilder();
-        this.stylesContainer.writePageLayoutStylesToAutomaticStyles(this.util, sb);
+        this.stylesContainer.writePageLayoutStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 
     private void assertWriteMasterXMLEquals(final String xml) throws IOException {
         final Appendable sb = new StringBuilder();
-        this.stylesContainer.writeMasterPageStylesToMasterStyles(this.util, sb);
+        this.stylesContainer.writeMasterPageStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 }

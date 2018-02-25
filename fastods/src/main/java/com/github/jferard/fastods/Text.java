@@ -25,7 +25,6 @@ package com.github.jferard.fastods;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
@@ -33,7 +32,14 @@ import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 /**
- * The Text class represents a text in a footer/header region
+ * The Text class represents a text in a footer/header region or the text in a cell.
+ * A text is a set of paragraphs (5.1.3 text:p).
+ *
+ * The destination of embedded styles depends on the location of the text:
+ * * if the text is in a cell, the embedded styles will belong to content.xml/automatic-styles
+ * * if the text is in a footer/header, this footer/header style will belong to styles.xml/master-styles, and
+ *  the embedded styles will go to syles.xml/automatic-styles.
+ *
  * @author Julien Férard
  */
 public class Text implements ParagraphElement {
@@ -90,48 +96,50 @@ public class Text implements ParagraphElement {
 
 	private final List<Paragraph> paragraphs;
 
-	private final Set<TextStyle> textStyles;
-
     /**
      * Create a new Text
-     * @param paragraphs the paragraphs
-     * @param textStyles the styles
-     */
-    Text(final List<Paragraph> paragraphs,
-			final Set<TextStyle> textStyles) {
+	 * @param paragraphs the paragraphs
+     *
+	 */
+    Text(final List<Paragraph> paragraphs) {
 		this.paragraphs = paragraphs;
-		this.textStyles = textStyles;
 	}
 
     /**
-     * Add the styles to a container, in content.xml > automatic-syles
+     * Add the styles to a container, in content.xml/automatic-syles
+     * Use if the text is in a cell
+     *
      * @param stylesContainer the container
      */
-    public void addEmbeddedStylesToContentAutomaticStyles(
+    @Override
+    public void addEmbeddedStylesFromCell(
 			final StylesContainer stylesContainer) {
-		for (final TextStyle textStyle : this.textStyles)
-			stylesContainer.addStyleToContentAutomaticStyles(textStyle);
+    	for (final Paragraph par : this.paragraphs)
+			par.addEmbeddedStyleFromCell(stylesContainer);
 	}
 
     /**
-     * Add the styles to a container, in styles.xml > automatic-syles
+     * Add the styles to a container, in styles.xml/automatic-syles
+     * Use if the text is in a footer/header
+     *
      * @param stylesContainer the container
      */
-	public void addEmbeddedStylesToStylesAutomaticStyles(
+    @Override
+	public void addEmbeddedStylesFromFooterHeader(
 			final StylesContainer stylesContainer) {
-		for (final TextStyle textStyle : this.textStyles)
-			stylesContainer.addStyleToStylesAutomaticStyles(textStyle);
+	    this.addEmbeddedStylesFromFooterHeader(stylesContainer, Mode.CREATE);
 	}
 
     /**
-     * Add the styles to a container, in styles.xml > automatic-syles
+     * Add the styles to a container, in styles.xml/automatic-syles
      * @param stylesContainer the container
      * @param mode CREATE, UPDATE or CREATE_OR_UPDATE
      */
-	public void addEmbeddedStylesToStylesAutomaticStyles(
+    @Override
+	public void addEmbeddedStylesFromFooterHeader(
 			final StylesContainer stylesContainer, final Mode mode) {
-		for (final TextStyle textStyle : this.textStyles)
-			stylesContainer.addStyleToStylesAutomaticStyles(textStyle, mode);
+        for (final Paragraph par : this.paragraphs)
+            par.addEmbeddedStyleToStylesAutomaticsStyle(stylesContainer, mode);
 	}
 
 	@Override

@@ -100,13 +100,13 @@ public class StylesElement implements OdsElement {
 		writer.write("<office:automatic-styles>");
 
 		this.stylesContainer.writeStylesAutomaticStyles(util, writer);
-		this.stylesContainer.writePageLayoutStylesToAutomaticStyles(util,
+		this.stylesContainer.writePageLayoutStyles(util,
 				writer);
 
 		writer.write("</office:automatic-styles>");
 		writer.write("<office:master-styles>");
 
-		this.stylesContainer.writeMasterPageStylesToMasterStyles(util, writer);
+		this.stylesContainer.writeMasterPageStyles(util, writer);
 
 		writer.write("</office:master-styles>");
 		writer.write("</office:document-styles>");

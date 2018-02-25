@@ -42,20 +42,18 @@ public class TextBuilder {
      * @return an empty text builder
      */
     public static TextBuilder create() {
-        return new TextBuilder(new ArrayList<Paragraph>(), new HashSet<TextStyle>());
+        return new TextBuilder(new ArrayList<Paragraph>());
     }
 
     private final List<Paragraph> paragraphs;
-    private final Set<TextStyle> textStyles;
     private ParagraphBuilder curParagraphBuilder;
 
     /**
      * Build a text builder with given styles and paragrapps
      * @param paragraphs the paragraphs
-     * @param textStyles the styles
+     *
      */
-    TextBuilder(final List<Paragraph> paragraphs, final Set<TextStyle> textStyles) {
-        this.textStyles = textStyles;
+    TextBuilder(final List<Paragraph> paragraphs) {
         this.paragraphs = paragraphs;
         this.curParagraphBuilder = null;
     }
@@ -64,11 +62,8 @@ public class TextBuilder {
      * @return the text
      */
     public Text build() {
-        // flush the current paragraph
-        if (this.curParagraphBuilder != null) {
-            this.paragraphs.add(this.curParagraphBuilder.build());
-        }
-        return new Text(this.paragraphs, this.textStyles);
+        this.flushCurPar();
+        return new Text(this.paragraphs);
     }
 
     /**
@@ -76,11 +71,15 @@ public class TextBuilder {
      * @return this for fluent style
      */
     public TextBuilder par() {
+        this.flushCurPar();
+        this.curParagraphBuilder = new ParagraphBuilder();
+        return this;
+    }
+
+    private void flushCurPar() {
         if (this.curParagraphBuilder != null) {
             this.paragraphs.add(this.curParagraphBuilder.build());
         }
-        this.curParagraphBuilder = new ParagraphBuilder();
-        return this;
     }
 
     /**
@@ -215,7 +214,6 @@ public class TextBuilder {
      * @return this for fluent style
      */
     public TextBuilder styledSpan(final String text, final TextStyle ts) {
-        this.textStyles.add(ts);
         this.curParagraphBuilder.styledSpan(text, ts);
         return this;
     }

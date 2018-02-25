@@ -30,86 +30,70 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:footer
- * styles.xml/office:document-styles/office:master-styles/style:master-
- * page/style:header
+ * 16.10<style:header>
+ * 16.11<style:footer>
+ * <p>
+ * "The <style:header> element represents the content of a header in a <style:master-page> element."
+ * "The <style:footer> element represents the content of a footer in a <style:master-page> element."
+ * <p>
+ *
+ * The RegionFooterHeader class represents a footer/header which is composed of three sections (left, center, right).
+ * It's an alternative to the SimpleFooterHeader that has only a center section.
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 class RegionFooterHeader implements PageSectionContent {
-	private static void appendRegionXMLToMasterStyle(final XMLUtil util,
-			final Appendable appendable, final Text region,
-			final CharSequence regionName) throws IOException {
-		if (region == null || region.isEmpty())
-			return;
+    private static void appendRegionXMLToMasterStyle(final XMLUtil util, final Appendable appendable, final Text region,
+                                                     final CharSequence regionName) throws IOException {
+        if (region == null || region.isEmpty()) return;
 
-		appendable.append("<style:").append(regionName).append(">");
-		region.appendXMLContent(util, appendable);
-		appendable.append("</style:").append(regionName).append(">");
-	}
+        appendable.append("<style:").append(regionName).append(">");
+        region.appendXMLContent(util, appendable);
+        appendable.append("</style:").append(regionName).append(">");
+    }
 
-	private final Text centerRegion;
-	private final Text leftRegion;
-	private final Text rightRegion;
+    private final Text centerRegion;
+    private final Text leftRegion;
+    private final Text rightRegion;
 
-	/**
-	 * Create a new footer object. It is composed of three regions.
+    /**
+     * Create a new footer object. It is composed of three regions.
+     *
      * @param centerRegion the center region
-     * @param leftRegion the left region
-     * @param rightRegion the right region
-	 */
-	RegionFooterHeader(final Text centerRegion, final Text leftRegion,
-					   final Text rightRegion) {
-		super();
-		this.centerRegion = centerRegion;
-		this.leftRegion = leftRegion;
-		this.rightRegion = rightRegion;
-	}
+     * @param leftRegion   the left region
+     * @param rightRegion  the right region
+     */
+    RegionFooterHeader(final Text centerRegion, final Text leftRegion, final Text rightRegion) {
+        super();
+        this.centerRegion = centerRegion;
+        this.leftRegion = leftRegion;
+        this.rightRegion = rightRegion;
+    }
 
-	@Override
-	public void addEmbeddedStylesToStylesElement(
-			final StylesContainer stylesContainer) {
-		if (this.leftRegion != null)
-			this.leftRegion
-					.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-		if (this.centerRegion != null)
-			this.centerRegion
-					.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-		if (this.rightRegion != null)
-			this.rightRegion
-					.addEmbeddedStylesToStylesAutomaticStyles(stylesContainer);
-	}
+    @Override
+    public void addEmbeddedStyles(final StylesContainer stylesContainer) {
+        if (this.leftRegion != null) this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        if (this.centerRegion != null) this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        if (this.rightRegion != null) this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+    }
 
-	@Override
-	public void addEmbeddedStylesToStylesElement(
-			final StylesContainer stylesContainer, final Container.Mode mode) {
-		if (this.leftRegion != null)
-			this.leftRegion.addEmbeddedStylesToStylesAutomaticStyles(
-					stylesContainer, mode);
-		if (this.centerRegion != null)
-			this.centerRegion.addEmbeddedStylesToStylesAutomaticStyles(
-					stylesContainer, mode);
-		if (this.rightRegion != null)
-			this.rightRegion.addEmbeddedStylesToStylesAutomaticStyles(
-					stylesContainer, mode);
-	}
+    @Override
+    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Container.Mode mode) {
+        if (this.leftRegion != null) this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+        if (this.centerRegion != null) this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+        if (this.rightRegion != null) this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+    }
 
-	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
-	 *
-	 * @throws IOException If an I/O error occurs
-	 */
-	@Override
-	public void appendXMLToMasterStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable,
-				this.leftRegion, "region-left");
-		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable,
-				this.centerRegion, "region-center");
-		RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable,
-				this.rightRegion, "region-right");
-	}
+    /**
+     * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    @Override
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
+        RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.leftRegion, "region-left");
+        RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.centerRegion, "region-center");
+        RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.rightRegion, "region-right");
+    }
 }
