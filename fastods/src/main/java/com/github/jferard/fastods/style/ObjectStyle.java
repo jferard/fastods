@@ -26,6 +26,18 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.util.Style;
 
 /**
+ * 16.2 <style:style>
+ *
+ * The ObjectStyle class represents a style:style element.
+ * There are four possibilities:
+ * * Style category: style of a content or style of a style
+ * * Style visibility: hidden or visible
+ *
+ * Three destinations:
+ * * visible: styles.xml/styles
+ * * hidden + content: content.xml/automatic-styles
+ * * hidden + style: styles.xml/automatic-styles
+ *
  * @author Julien Férard
  */
 public interface ObjectStyle extends Style {

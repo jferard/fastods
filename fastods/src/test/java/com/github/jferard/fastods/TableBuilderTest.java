@@ -77,8 +77,8 @@ public class TableBuilderTest {
         // PLAY
         for (int c = 0; c < 10; c++) {
             final TableColumnStyle tcs = tcss.get(c);
-            this.stc.addStyleToContentAutomaticStyles(tcs);
-            this.stc.addStyleToStylesCommonStyles(TableCellStyle.DEFAULT_CELL_STYLE);
+            EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
+            EasyMock.expect(this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
         }
         PowerMock.replayAll();
 
@@ -185,7 +185,7 @@ public class TableBuilderTest {
     public final void testNameAndStyle() {
         // PLAY
         final TableStyle ts = TableStyle.builder("b").build();
-        this.stc.addStyleToContentAutomaticStyles(ts);
+        EasyMock.expect(this.stc.addContentStyle(ts)).andReturn(true);
         EasyMock.expect(this.stc.addPageStyle(ts.getPageStyle())).andReturn(true);
 
         PowerMock.replayAll();

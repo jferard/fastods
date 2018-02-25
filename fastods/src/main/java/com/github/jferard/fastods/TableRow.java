@@ -190,11 +190,7 @@ public class TableRow {
      * @param ts The table rowStyle to be used
      */
     public void setDefaultCellStyle(final TableCellStyle ts) {
-        if (ts.isHidden()) {
-            this.stylesContainer.addStyleToContentAutomaticStyles(ts);
-        } else {
-            this.stylesContainer.addStyleToStylesCommonStyles(ts);
-        }
+        this.stylesContainer.addContentStyle(ts);
         this.defaultCellStyle = ts;
     }
 
@@ -245,7 +241,7 @@ public class TableRow {
      * @param rowStyle the style
      */
     public void setStyle(final TableRowStyle rowStyle) {
-        this.stylesContainer.addStyleToContentAutomaticStyles(rowStyle);
+        this.stylesContainer.addContentStyle(rowStyle);
         this.rowStyle = rowStyle;
     }
 

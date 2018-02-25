@@ -70,7 +70,7 @@ public class TableRowTest {
         // PLAY
         EasyMock.expect(this.table.findDefaultCellStyle(5)).andReturn(cs);
         final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
-        this.stc.addDataStyle(booleanDataStyle);
+        EasyMock.expect(this.stc.addDataStyle(booleanDataStyle)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(cs, booleanDataStyle)).andReturn(this.tcs);
 
         PowerMock.replayAll();

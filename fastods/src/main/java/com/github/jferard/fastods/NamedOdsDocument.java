@@ -152,7 +152,7 @@ public class NamedOdsDocument implements OdsDocument {
      * @param objectStyle the object style to add to this document
      */
     public void addObjectStyle(final ObjectStyle objectStyle) {
-        this.odsElements.addObjectStyle(objectStyle);
+        this.odsElements.addContentStyle(objectStyle);
     }
 
     /**

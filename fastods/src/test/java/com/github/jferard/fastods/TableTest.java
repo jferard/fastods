@@ -23,7 +23,6 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -34,6 +33,7 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,22 +60,28 @@ public class TableTest {
         this.table = Table.create(positionUtil, WriteUtil.create(), xmlUtil, this.stc, this.ds, "mytable", 10, 100);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
+        PowerMock.resetAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testContentEntry() throws IOException, FastOdsException {
+        // CREATE
         final List<TableColumnStyle> tcss = new ArrayList<TableColumnStyle>(4);
         for (int c = 0; c < 3; c++) {
             final TableColumnStyle tcs = TableColumnStyle.builder("test" + Integer.toString(c)).build();
             tcss.add(tcs);
         }
 
-
         // PLAY
         for (int c = 0; c < 3; c++) {
             final TableColumnStyle tcs = tcss.get(c);
-            this.stc.addStyleToContentAutomaticStyles(tcs);
-            this.stc.addStyleToStylesCommonStyles(TableCellStyle.DEFAULT_CELL_STYLE);
+            EasyMock.expect(this.stc.addContentStyle(tcs.getDefaultCellStyle())).andReturn(true);
+            EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
         }
 
         PowerMock.replayAll();
@@ -233,7 +239,7 @@ public class TableTest {
     public final void testNameAndStyle() {
         // PLAY
         final TableStyle ts = TableStyle.builder("b").build();
-        this.stc.addStyleToContentAutomaticStyles(ts);
+        EasyMock.expect(this.stc.addContentStyle(ts)).andReturn(true);
         EasyMock.expect(this.stc.addPageStyle(ts.getPageStyle())).andReturn(true);
 
         PowerMock.replayAll();

@@ -78,8 +78,8 @@ public class Paragraph implements TagParameters {
      *
      * @param stylesContainer
      */
-    public void addEmbeddedStyleFromCell(final StylesContainer stylesContainer) {
-        if (this.style != null) stylesContainer.addStyleToContentAutomaticStyles(this.style);
+    public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
+        if (this.style != null) stylesContainer.addContentStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromCell(stylesContainer);
         }
@@ -90,9 +90,9 @@ public class Paragraph implements TagParameters {
      *
      * @param stylesContainer
      */
-    public void addEmbeddedStyleToStylesAutomaticsStyle(final StylesContainer stylesContainer,
-                                                        final Container.Mode mode) {
-        if (this.style != null) stylesContainer.addStyleToStylesAutomaticStyles(this.style);
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer,
+                                                  final Container.Mode mode) {
+        if (this.style != null) stylesContainer.addStyleStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
         }

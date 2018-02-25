@@ -115,10 +115,10 @@ public class StylesContainer {
         TableCellStyle anonymousStyle = this.anonymousStyleByChildCellStyle.get(childKey);
         if (anonymousStyle == null) {
             this.addDataStyle(dataStyle);
-            if (!style.hasParent()) this.addStyleToStylesCommonStyles(style); // here, the style may be a child style
+            if (!style.hasParent()) this.addContentStyle(style); // here, the style may be a child style
             final String name = style.getRealName() + "@@" + dataStyle.getName();
             anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle).buildHidden();
-            this.addStyleToContentAutomaticStyles(anonymousStyle);
+            this.addContentStyle(anonymousStyle);
             this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);
         }
         return anonymousStyle;
@@ -126,16 +126,19 @@ public class StylesContainer {
 
     /**
      * Create a new data style into styles container. No duplicate style name is allowed.
+     * Must be used if the table-cell style already exists.
      *
      * @param dataStyle the data style to add
+     * @return true if the style was added
      */
-    public void addDataStyle(final DataStyle dataStyle) {
+    public boolean addDataStyle(final DataStyle dataStyle) {
         assert dataStyle.isHidden() : dataStyle.toString();
-        this.dataStylesContainer.add(dataStyle.getName(), dataStyle, Mode.CREATE);
+        return this.dataStylesContainer.add(dataStyle.getName(), dataStyle, Mode.CREATE);
     }
 
     /**
      * Try to add a data style to the container
+     * Must be used if the table-cell style already exists.
      *
      * @param dataStyle the data style
      * @param mode      the mode (one of CREATE, CREATE_OR_UPDATE, UPDATE)
@@ -174,10 +177,11 @@ public class StylesContainer {
      * Add the data style taken from a cell style
      *
      * @param style the cell style
+     * @return true if the style was created
      */
-    public void addNewDataStyleFromCellStyle(final TableCellStyle style) {
-        this.addStyleToContentAutomaticStyles(style);
-        this.addDataStyle(style.getDataStyle());
+    public boolean addNewDataStyleFromCellStyle(final TableCellStyle style) {
+        final boolean ret = this.addContentStyle(style);
+        return this.addDataStyle(style.getDataStyle()) && ret;
     }
 
     /**
@@ -225,35 +229,39 @@ public class StylesContainer {
     }
 
     /**
-     * Add an object style to content.xml/automatic-styles
+     * Add an object style (style:style) to content.xml/automatic-styles
      *
      * @param objectStyle the style
+     * @return true if the style was created or updated
      */
-    public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
-        assert objectStyle.isHidden() : objectStyle.toString();
-        this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, Mode.CREATE);
+    public boolean addContentStyle(final ObjectStyle objectStyle) {
+        return this.addContentStyle(objectStyle, Mode.CREATE);
     }
 
     /**
-     * Add an object style to content.xml/automatic-styles
+     * Add an object style (style:style) to content.xml/automatic-styles
      *
      * @param objectStyle the style
      * @param mode        CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the style was created or updated
      */
-    public boolean addStyleToContentAutomaticStyles(final ObjectStyle objectStyle, final Mode mode) {
-        assert objectStyle.isHidden();
-        return this.objectStylesContainer.add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, mode);
+    public boolean addContentStyle(final ObjectStyle objectStyle, final Mode mode) {
+        if (objectStyle.isHidden()) {
+            return this.objectStylesContainer
+                    .add(objectStyle.getKey(), Dest.CONTENT_AUTOMATIC_STYLES, objectStyle, mode);
+        } else {
+            return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, mode);
+        }
     }
 
     /**
      * Add an object style to styles.xml/automatic-styles
      *
      * @param objectStyle the style
+     * @return true if the style was created or updated
      */
-    public void addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle) {
-        assert objectStyle.isHidden();
-        this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, Mode.CREATE);
+    public boolean addStyleStyle(final ObjectStyle objectStyle) {
+        return this.addStyleStyle(objectStyle, Mode.CREATE);
     }
 
     /**
@@ -263,30 +271,13 @@ public class StylesContainer {
      * @param mode        CREATE, UPDATE, CREATE_OR_UPDATE
      * @return true if the style was created or updated
      */
-    public boolean addStyleToStylesAutomaticStyles(final ObjectStyle objectStyle, final Mode mode) {
-        assert objectStyle.isHidden() : objectStyle.toString();
-        return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, mode);
-    }
-
-    /**
-     * Add an object style to styles.xml/common-styles
-     *
-     * @param objectStyle the style
-     */
-    public void addStyleToStylesCommonStyles(final ObjectStyle objectStyle) {
-        this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, Mode.CREATE);
-    }
-
-    /**
-     * Add an object style to styles.xml/common-styles
-     *
-     * @param objectStyle the style
-     * @param mode        CREATE, UPDATE, CREATE_OR_UPDATE
-     * @return true if the style was created or updated
-     */
-    public boolean addStyleToStylesCommonStyles(final ObjectStyle objectStyle, final Mode mode) {
-        assert !objectStyle.isHidden();
-        return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, mode);
+    public boolean addStyleStyle(final ObjectStyle objectStyle, final Mode mode) {
+        if (objectStyle.isHidden()) {
+            return this.objectStylesContainer
+                    .add(objectStyle.getKey(), Dest.STYLES_AUTOMATIC_STYLES, objectStyle, mode);
+        } else {
+            return this.objectStylesContainer.add(objectStyle.getKey(), Dest.STYLES_COMMON_STYLES, objectStyle, mode);
+        }
     }
 
     /**

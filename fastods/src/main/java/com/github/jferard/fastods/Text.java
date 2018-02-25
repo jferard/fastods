@@ -115,7 +115,7 @@ public class Text implements ParagraphElement {
     public void addEmbeddedStylesFromCell(
 			final StylesContainer stylesContainer) {
     	for (final Paragraph par : this.paragraphs)
-			par.addEmbeddedStyleFromCell(stylesContainer);
+			par.addEmbeddedStylesFromCell(stylesContainer);
 	}
 
     /**
@@ -139,7 +139,7 @@ public class Text implements ParagraphElement {
 	public void addEmbeddedStylesFromFooterHeader(
 			final StylesContainer stylesContainer, final Mode mode) {
         for (final Paragraph par : this.paragraphs)
-            par.addEmbeddedStyleToStylesAutomaticsStyle(stylesContainer, mode);
+            par.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
 	}
 
 	@Override

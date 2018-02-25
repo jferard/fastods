@@ -82,8 +82,8 @@ public class TableColumnStyle implements ObjectStyle {
 
     @Override
     public void addToElements(final OdsElements odsElements) {
-        odsElements.addObjectStyle(this);
-        odsElements.addObjectStyle(this.defaultCellStyle);
+        odsElements.addContentStyle(this);
+        odsElements.addContentStyle(this.defaultCellStyle);
     }
 
     @Override
@@ -171,14 +171,10 @@ public class TableColumnStyle implements ObjectStyle {
         return this.hidden;
     }
 
-    public void addToAutomaticStylesContainer(final StylesContainer stylesContainer) {
-        stylesContainer.addStyleToContentAutomaticStyles(this);
+    public void addToContentStyles(final StylesContainer stylesContainer) {
+        stylesContainer.addContentStyle(this);
         if (this.defaultCellStyle != null) {
-            if (this.defaultCellStyle.isHidden()) {
-                stylesContainer.addStyleToContentAutomaticStyles(this.defaultCellStyle);
-            } else {
-                stylesContainer.addStyleToStylesCommonStyles(this.defaultCellStyle);
-            }
+            stylesContainer.addContentStyle(this.defaultCellStyle);
         }
     }
 }

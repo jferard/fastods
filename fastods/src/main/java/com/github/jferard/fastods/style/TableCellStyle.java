@@ -107,7 +107,7 @@ public class TableCellStyle implements ObjectStyle {
         if (this.dataStyle != null) {
             this.dataStyle.addToElements(odsElements);
         }
-        odsElements.addObjectStyle(this);
+        odsElements.addContentStyle(this);
     }
 
     private void appendCellProperties(final XMLUtil util, final Appendable appendable) throws IOException {

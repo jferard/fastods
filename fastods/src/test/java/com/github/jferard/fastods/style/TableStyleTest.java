@@ -22,9 +22,7 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
@@ -36,7 +34,7 @@ public class TableStyleTest {
         final TableStyle ts = TableStyle.builder("test").build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
-        odsElements.addObjectStyle(ts);
+        odsElements.addContentStyle(ts);
         PowerMock.replayAll();
 
         ts.addToElements(odsElements);

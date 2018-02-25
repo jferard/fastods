@@ -147,16 +147,16 @@ public final class Link implements ParagraphElement {
 
 	@Override
 	public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        if (this.ts != null) stylesContainer.addStyleToStylesAutomaticStyles(this.ts);
+        if (this.ts != null) stylesContainer.addStyleStyle(this.ts);
 	}
 
 	@Override
 	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-        if (this.ts != null) stylesContainer.addStyleToContentAutomaticStyles(this.ts);
+        if (this.ts != null) stylesContainer.addContentStyle(this.ts);
 	}
 
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Container.Mode mode) {
-        if (this.ts != null) stylesContainer.addStyleToStylesAutomaticStyles(this.ts, mode);
+        if (this.ts != null) stylesContainer.addStyleStyle(this.ts, mode);
     }
 }

@@ -70,7 +70,7 @@ public class TableStyle implements ObjectStyle {
 
 	@Override
 	public void addToElements(final OdsElements odsElements) {
-		odsElements.addObjectStyle(this);
+		odsElements.addContentStyle(this);
 	}
 
 	@Override

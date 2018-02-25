@@ -356,7 +356,7 @@ class TableBuilder {
     public void setColumnStyle(final int col, final TableColumnStyle ts)
             throws FastOdsException {
         TableBuilder.checkCol(col);
-        ts.addToAutomaticStylesContainer(this.stylesContainer);
+        ts.addToContentStyles(this.stylesContainer);
         this.columnStyles.set(col, ts);
     }
 
@@ -388,7 +388,7 @@ class TableBuilder {
      */
     public void setStyle(final TableStyle style) {
         this.stylesContainer.addPageStyle(style.getPageStyle());
-        this.stylesContainer.addStyleToContentAutomaticStyles(style);
+        this.stylesContainer.addContentStyle(style);
         this.style = style;
     }
 

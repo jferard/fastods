@@ -173,29 +173,20 @@ public class OdsElements {
 
     /**
      * Add a style to OdsElements.
-     * If it is a table cell style, then add it to styles.xml > common-styles.
-     * If the style is a text style, then add it to styles.xml > automatic-styles
-     * Else add it to content.xml > automatic-styles
      *
      * @param objectStyle the style to add
      */
-    public void addObjectStyle(final ObjectStyle objectStyle) {
-        switch (objectStyle.getFamily()) {
-            case TABLE_CELL:
-                if (objectStyle.isHidden()) {
-                    this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
-                } else {
-                    this.stylesContainer.addStyleToStylesCommonStyles(objectStyle);
-                }
-                break;
-            case TEXT:
-                assert objectStyle.isHidden() : objectStyle.toString();
-                this.stylesContainer.addStyleToStylesAutomaticStyles(objectStyle);
-                break;
-            default:
-                assert objectStyle.isHidden() : objectStyle.toString();
-                this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
-        }
+    public void addContentStyle(final ObjectStyle objectStyle) {
+        this.stylesContainer.addContentStyle(objectStyle);
+    }
+
+    /**
+     * Add a style to OdsElements.
+     *
+     * @param objectStyle the style to add
+     */
+    public void addStyleStyle(final ObjectStyle objectStyle) {
+        this.stylesContainer.addStyleStyle(objectStyle);
     }
 
     /**
@@ -204,7 +195,7 @@ public class OdsElements {
      * @param objectStyle the style
      */
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
-        this.stylesContainer.addStyleToContentAutomaticStyles(objectStyle);
+        this.stylesContainer.addContentStyle(objectStyle);
     }
 
     /**

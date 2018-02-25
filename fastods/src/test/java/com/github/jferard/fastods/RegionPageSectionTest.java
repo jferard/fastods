@@ -116,9 +116,9 @@ public class RegionPageSectionTest {
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         // play
-        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts1, Mode.CREATE)).andReturn(true);
-        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts2, Mode.CREATE)).andReturn(true);
-        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts3, Mode.CREATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleStyle(ts1, Mode.CREATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleStyle(ts2, Mode.CREATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleStyle(ts3, Mode.CREATE)).andReturn(true);
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc);
     }
@@ -145,9 +145,9 @@ public class RegionPageSectionTest {
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         // play
-        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts1, Mode.CREATE_OR_UPDATE)).andReturn(true);
-        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts2, Mode.CREATE_OR_UPDATE)).andReturn(true);
-        EasyMock.expect(sc.addStyleToStylesAutomaticStyles(ts3, Mode.CREATE_OR_UPDATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleStyle(ts1, Mode.CREATE_OR_UPDATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleStyle(ts2, Mode.CREATE_OR_UPDATE)).andReturn(true);
+        EasyMock.expect(sc.addStyleStyle(ts3, Mode.CREATE_OR_UPDATE)).andReturn(true);
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc, Mode.CREATE_OR_UPDATE);
         PowerMock.verifyAll();

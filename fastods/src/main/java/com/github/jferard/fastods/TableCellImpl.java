@@ -304,11 +304,7 @@ public class TableCellImpl implements TableCell {
     public void setStyle(final TableCellStyle style) {
         if (style == null) return;
 
-        if (style.isHidden()) {
-            this.stylesContainer.addStyleToContentAutomaticStyles(style);
-        } else {
-            this.stylesContainer.addStyleToStylesCommonStyles(style);
-        }
+        this.stylesContainer.addContentStyle(style);
         final TableCellStyle curStyle = this.style;
         if (curStyle == null) {
             this.style = style;
