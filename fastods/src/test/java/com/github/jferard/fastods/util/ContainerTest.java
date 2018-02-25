@@ -20,6 +20,7 @@
  */
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.Container.Mode;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class ContainerTest {
     private Container<String, Integer> c;
@@ -87,13 +89,8 @@ public class ContainerTest {
 
     @Test
     public final void testCreateAfterDebug() {
-        final Handler handler = PowerMock.createMock(Handler.class);
         final Logger logger = Logger.getLogger("debug");
-        for (final Handler h : logger.getHandlers())
-            logger.removeHandler(h);
-        logger.setUseParentHandlers(false);
-        logger.addHandler(handler);
-        Assert.assertArrayEquals(new Handler[] {handler}, logger.getHandlers());
+        final Handler handler = TestHelper.getMockHandler(logger);
 
         PowerMock.resetAll();
 

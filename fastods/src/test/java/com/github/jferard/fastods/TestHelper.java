@@ -25,8 +25,12 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestHelper {
     private static final XMLUtil util = XMLUtil.create();
@@ -43,5 +47,19 @@ public class TestHelper {
 
     public static void assertXMLUnsortedEquals(final String xml, final XMLConvertible o) throws IOException {
         DomTester.assertUnsortedEquals(xml, TestHelper.toXML(o));
+    }
+
+    public static final Handler getMockHandler(final Logger logger) {
+        final Handler handler = PowerMock.createMock(Handler.class);
+        for (final Handler h : logger.getHandlers())
+            logger.removeHandler(h);
+        logger.setUseParentHandlers(false);
+        logger.addHandler(handler);
+        logger.setLevel(Level.ALL);
+        handler.setLevel(Level.ALL);
+
+        final Handler[] handlers = logger.getHandlers();
+        assert handlers.length == 1 && handlers[0] == handler : handlers;
+        return handler;
     }
 }
