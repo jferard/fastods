@@ -23,7 +23,11 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.Length;

@@ -20,11 +20,8 @@
  */
 package com.github.jferard.fastods.style;
 
-import org.junit.Before;
-
-import com.github.jferard.fastods.util.FastOdsXMLEscaper;
-import com.github.jferard.fastods.util.XMLEscaper;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Before;
 
 public class TextStyleTest {
 	private XMLUtil util;

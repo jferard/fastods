@@ -23,13 +23,13 @@
 
 package com.github.jferard.fastods.tool;
 
-import java.awt.Desktop;
+import com.github.jferard.fastods.util.XMLUtil;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.github.jferard.fastods.util.XMLUtil;
 
 /**
  * A simple utility class for : default dependencies creation, open file.

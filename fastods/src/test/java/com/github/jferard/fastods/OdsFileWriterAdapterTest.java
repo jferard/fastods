@@ -29,6 +29,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -82,7 +83,7 @@ public class OdsFileWriterAdapterTest {
     public void update() throws Exception {
         PowerMock.replayAll();
         this.wa.update(this.f);
-        Assert.assertEquals(Arrays.asList(this.f), this.flushers);
+        Assert.assertEquals(Collections.singletonList(this.f), this.flushers);
         PowerMock.verifyAll();
     }
 

@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.XMLConvertible;
-import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -38,22 +37,60 @@ public class DateStyleFormat implements XMLConvertible {
 	 * The default date format Format.DDMMYY.
 	 */
 	public static final String DASH = "<number:text>-</number:text>";
+    /**
+     * the day
+     */
     public static final String DAY = "<number:day/>";
+    /**
+     * A dot
+     */
     public static final String DOT = "<number:text>.</number:text>";
+    /**
+     * A dot and a space
+     */
     public static final String DOT_SPACE = "<number:text>. </number:text>";
-    public static final String HASH = "<number:text>/</number:text>";
+    /**
+     * A slash
+     */
+    public static final String SLASH = "<number:text>/</number:text>";
+    /**
+     * A day (long)
+     */
     public static final String LONG_DAY = "<number:day number:style=\"long\"/>";
+    /**
+     * A month (long)
+     */
     public static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
+    /**
+     * A month
+     */
     public static final String MONTH = "<number:month/>";
+    /**
+     * A month name
+     */
     public static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
+    /**
+     * A year YYYY
+     */
     public static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
+    /**
+     * A space
+     */
     public static final String SPACE = "<number:text> </number:text>";
-
-	public static final String WEEK = "<number:week-of-year/>";
-
-	public static final String YEAR = "<number:year/>";
+    /**
+     * A week number in the year
+     */
+    public static final String WEEK = "<number:week-of-year/>";
+    /**
+     * A year YY
+     */
+    public static final String YEAR = "<number:year/>";
     private final String[] strings;
 
+    /**
+     * The constructor
+     * @param strings the string that compose the format
+     */
     public DateStyleFormat(final String... strings) {
         this.strings = strings;
     }

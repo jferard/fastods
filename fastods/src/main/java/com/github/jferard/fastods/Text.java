@@ -23,13 +23,13 @@
 
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * The Text class represents a text in a footer/header region or the text in a cell.

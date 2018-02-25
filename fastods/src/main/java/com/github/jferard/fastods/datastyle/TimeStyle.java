@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 

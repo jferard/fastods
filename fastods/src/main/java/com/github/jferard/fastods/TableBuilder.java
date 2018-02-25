@@ -454,6 +454,11 @@ class TableBuilder {
         return this.tableRows.get(r);
     }
 
+    /**
+     * Find the default cell style for a column
+     * @param columnIndex the column index
+     * @return the style, null if none
+     */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         TableCellStyle s = this.columnStyles.get(columnIndex).getDefaultCellStyle();
         if (s == null)

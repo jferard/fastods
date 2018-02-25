@@ -45,6 +45,9 @@ public class TextPropertiesBuilder {
     private String fontWeight;
     private double fontSizePercentage;
 
+    /**
+     * A new builder
+     */
     TextPropertiesBuilder() {
         this.fontSizePercentage = -1;
         this.fontColor = SimpleColor.NONE;

@@ -27,9 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.logging.Logger;
-import java.io.File;
 
 /**
  * Created by jferard on 09/05/17.

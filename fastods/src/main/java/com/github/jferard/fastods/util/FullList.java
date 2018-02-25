@@ -23,7 +23,12 @@
 
 package com.github.jferard.fastods.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * The class FullList represents a List that is unlimited, in a specific sense :

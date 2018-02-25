@@ -20,13 +20,6 @@
  */
 package com.github.jferard.fastods.tool;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,6 +27,13 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Desktop.class, FastOds.class })

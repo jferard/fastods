@@ -21,9 +21,17 @@
 
 package com.github.jferard.fastods.it;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.NamedOdsDocument;
+import com.github.jferard.fastods.NamedOdsFileWriter;
+import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
@@ -35,6 +43,7 @@ import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
 import org.odftoolkit.simple.SpreadsheetDocument;
+import org.odftoolkit.simple.table.Cell;
 import org.w3c.dom.Node;
 
 import java.io.File;
@@ -92,7 +101,7 @@ public class ReadmeExampleIT {
         Assert.assertEquals(GREEN_COLOR.hexValue(), OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
         for (int y = 0; y < 50; y++) {
             for (int x = 0; x < 5; x++) {
-                final org.odftoolkit.simple.table.Cell cell = sheet.getCellByPosition(x, y);
+                final Cell cell = sheet.getCellByPosition(x, y);
                 Assert.assertEquals(Double.valueOf(x * y), cell.getDoubleValue());
                 Assert.assertEquals("float", cell.getValueType());
 

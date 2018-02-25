@@ -22,9 +22,7 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.odselement.OdsElement;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

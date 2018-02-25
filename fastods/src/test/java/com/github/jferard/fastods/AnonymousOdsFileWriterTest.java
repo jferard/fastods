@@ -22,8 +22,15 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.*;
-import com.github.jferard.fastods.util.*;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import com.google.common.collect.Sets;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -33,7 +40,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;

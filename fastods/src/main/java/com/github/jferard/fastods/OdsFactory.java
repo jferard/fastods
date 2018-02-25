@@ -99,6 +99,11 @@ public class OdsFactory {
         this.format = format;
     }
 
+    /**
+     * Set the data styles
+     * @param ds the data styles
+     * @return this for fluent style
+     */
     public OdsFactory dataStyles(final DataStyles ds) {
         this.format = ds;
         return this;

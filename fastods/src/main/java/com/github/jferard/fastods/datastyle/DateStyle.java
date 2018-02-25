@@ -23,10 +23,10 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.odselement.*;
-import com.github.jferard.fastods.util.*;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.XMLUtil;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * content.xml/office:document-content/office:automatic-styles/number:
@@ -44,14 +44,14 @@ public class DateStyle implements DataStyle {
          * Set the date format like '10.07.2012'.
          */
         public static final DateStyleFormat DDMMYYYY = new DateStyleFormat(
-                com.github.jferard.fastods.datastyle.DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
+                DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
                 DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT, DateStyleFormat.LONG_YEAR);
 
         /**
          * Set the date format like '10.07.12'.
          */
         public static final DateStyleFormat DDMMYY = new DateStyleFormat(
-                com.github.jferard.fastods.datastyle.DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
+                DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
                 DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR);
 
         /**

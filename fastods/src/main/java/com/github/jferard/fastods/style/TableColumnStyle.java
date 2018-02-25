@@ -69,7 +69,7 @@ public class TableColumnStyle implements ObjectStyle {
      * @param hidden           ture if the style is automatic
      * @param columnWidth      the width of the column
      * @param defaultCellStyle the default style for cells
-     * @param optimalWidth
+     * @param optimalWidth true if the optimal width is set
      */
     TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
                      final TableCellStyle defaultCellStyle, final boolean optimalWidth) {
@@ -171,6 +171,10 @@ public class TableColumnStyle implements ObjectStyle {
         return this.hidden;
     }
 
+    /**
+     * Add this style to a styles container
+     * @param stylesContainer the styles container
+     */
     public void addToContentStyles(final StylesContainer stylesContainer) {
         stylesContainer.addContentStyle(this);
         if (this.defaultCellStyle != null) {

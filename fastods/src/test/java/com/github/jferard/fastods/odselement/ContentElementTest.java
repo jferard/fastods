@@ -93,7 +93,7 @@ public class ContentElementTest {
         Assert.assertEquals(t, this.content.getTable("t1"));
         Assert.assertEquals(t, this.content.getTable(0));
         Assert.assertEquals(1, this.content.getTableCount());
-        Assert.assertEquals(Arrays.asList(t), this.content.getTables());
+        Assert.assertEquals(Collections.singletonList(t), this.content.getTables());
         Assert.assertEquals(t, this.content.getLastTable());
         PowerMock.verifyAll();
     }

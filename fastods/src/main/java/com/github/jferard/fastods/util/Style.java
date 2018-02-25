@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.Tag;
-import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.style.AddableToOdsElements;
 
 /**

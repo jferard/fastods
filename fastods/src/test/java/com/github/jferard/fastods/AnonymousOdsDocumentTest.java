@@ -22,7 +22,11 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
@@ -103,7 +107,7 @@ public class AnonymousOdsDocumentTest {
     @Test
     public void testGetTableName() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.asList(t));
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
 
         EasyMock.expect(t.getName()).andReturn("ok");
 
@@ -115,6 +119,7 @@ public class AnonymousOdsDocumentTest {
 
     @Test
     public void testGetTables() throws IOException, FastOdsException {
+        @SuppressWarnings("rawtypes")
         final List<Table> l = PowerMock.createMock(List.class);
         EasyMock.expect(this.odsElements.getTables()).andReturn(l);
 
@@ -157,7 +162,7 @@ public class AnonymousOdsDocumentTest {
     @Test
     public void testGetTableByIndex0() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.asList(t));
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
@@ -242,7 +247,7 @@ public class AnonymousOdsDocumentTest {
     @Test
     public void testGetTableNumberFail() {
         final Table t = PowerMock.createMock(Table.class);
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.asList(t));
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
         EasyMock.expect(t.getName()).andReturn("not ok");
 
         PowerMock.replayAll();
@@ -254,7 +259,7 @@ public class AnonymousOdsDocumentTest {
     @Test
     public void testGetTableNumberSuccess() {
         final Table t = PowerMock.createMock(Table.class);
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.asList(t));
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
         EasyMock.expect(t.getName()).andReturn("ok");
 
         PowerMock.replayAll();

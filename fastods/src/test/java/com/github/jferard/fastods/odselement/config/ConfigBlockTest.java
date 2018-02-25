@@ -21,8 +21,6 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;

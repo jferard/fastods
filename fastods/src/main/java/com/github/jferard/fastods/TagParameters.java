@@ -23,10 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.XMLUtil;
-
-import java.io.IOException;
-
 /**
  * A tag parameters
  * @author Julien Férard

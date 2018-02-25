@@ -20,16 +20,16 @@
  */
 package com.github.jferard.fastods.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
 
 public class ZipUTF8WriterBuilderTest {
 	@Rule

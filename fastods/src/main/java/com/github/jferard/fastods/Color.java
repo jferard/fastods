@@ -29,5 +29,8 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public interface Color {
+	/**
+	 * @return the hex value for this color. Eg. "#123456"
+	 */
 	String hexValue();
 }

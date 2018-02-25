@@ -21,14 +21,15 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.testlib.Bench;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.Test;
-import com.github.jferard.fastods.testlib.Bench;
-import java.util.Random;
 
 public class BenchFastFlushWithThreads extends Bench {
 	private final Logger logger;

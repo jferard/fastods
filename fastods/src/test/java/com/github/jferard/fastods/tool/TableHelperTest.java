@@ -20,15 +20,20 @@
  */
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.CellValue;
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.StringValue;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.EqualityUtil;
+import com.github.jferard.fastods.util.PositionUtil;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.PositionUtil;
 
 import java.io.IOException;
 

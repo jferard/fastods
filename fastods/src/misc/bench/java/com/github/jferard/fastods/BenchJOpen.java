@@ -21,13 +21,14 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.testlib.Bench;
+import org.jopendocument.dom.spreadsheet.Sheet;
+import org.jopendocument.dom.spreadsheet.SpreadSheet;
+
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
-import org.jopendocument.dom.spreadsheet.Sheet;
-import org.jopendocument.dom.spreadsheet.SpreadSheet;
-import com.github.jferard.fastods.testlib.Bench;
 
 public class BenchJOpen extends Bench {
 	private final Logger logger;

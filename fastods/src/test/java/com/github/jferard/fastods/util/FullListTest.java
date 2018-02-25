@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -169,7 +170,7 @@ public class FullListTest {
 		fl.set(50, "non blank");
 		fl.set(100, "non blank2");
 
-		Assert.assertTrue(fl.removeAll(Arrays.asList("non blank2")));
+		Assert.assertTrue(fl.removeAll(Collections.singletonList("non blank2")));
 		Assert.assertEquals(51, fl.usedSize());
 	}
 

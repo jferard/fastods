@@ -159,7 +159,7 @@ public class TableCellTest {
     @Test
     public final void testCurrencyNumber() throws IOException {
         this.playAndReplayCurrency();
-        this.cell.setCurrencyValue(Double.valueOf(10.0), "€");
+        this.cell.setCurrencyValue(10.0, "€");
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"10.0\" "
                         + "office:currency=\"€\" />");
@@ -185,7 +185,7 @@ public class TableCellTest {
     @Test
     public final void testDouble() throws IOException {
         this.playAndReplayFloat();
-        this.cell.setFloatValue(Double.valueOf(10.999));
+        this.cell.setFloatValue(10.999);
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"10.999\"/>");
     }
@@ -477,7 +477,6 @@ public class TableCellTest {
 
     private String getCellXML() throws IOException {
         final StringBuilder sb = new StringBuilder();
-        ;
         this.cell.appendXMLToTableRow(this.xmlUtil, sb);
         return sb.toString();
     }

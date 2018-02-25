@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -69,8 +67,7 @@ public class ScientificNumberStyle implements DataStyle {
     private void appendNumber(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<number:scientific-number");
         util.appendAttribute(appendable, "number:min-exponent-digits", this.minExponentDigits);
-        util.appendAttribute(appendable, "number:decimal-places", this.floatStyle.getDecimalPlaces());
-        this.floatStyle.appendNumberAttribute(util, appendable);
+        this.floatStyle.appendXMLAttributes(util, appendable);
         appendable.append("/>");
     }
 

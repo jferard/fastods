@@ -21,12 +21,11 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.util.Container.Mode;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.github.jferard.fastods.util.Container.Mode;
 import org.powermock.api.easymock.PowerMock;
 
 import java.util.HashMap;

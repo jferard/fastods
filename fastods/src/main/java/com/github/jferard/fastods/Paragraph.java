@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Julien Férard
  */
-public class Paragraph implements TagParameters {
+public class Paragraph implements TagParameters, ParagraphElement {
     /**
      * @return a new builder
      */
@@ -73,11 +73,12 @@ public class Paragraph implements TagParameters {
         }
     }
 
-    /**
-     * A the embedded style to content.xml/automatic-styles
-     *
-     * @param stylesContainer
-     */
+    @Override
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
+        this.addEmbeddedStylesFromFooterHeader(stylesContainer, Container.Mode.CREATE);
+    }
+
+    @Override
     public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
         if (this.style != null) stylesContainer.addContentStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
@@ -85,13 +86,8 @@ public class Paragraph implements TagParameters {
         }
     }
 
-    /**
-     * A the embedded style to styles.xml/automatic-styles
-     *
-     * @param stylesContainer
-     */
-    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer,
-                                                  final Container.Mode mode) {
+    @Override
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Container.Mode mode) {
         if (this.style != null) stylesContainer.addStyleStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);

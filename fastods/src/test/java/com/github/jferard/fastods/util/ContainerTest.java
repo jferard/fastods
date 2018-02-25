@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public class ContainerTest {
     private Container<String, Integer> c;

@@ -20,13 +20,13 @@
  */
 package com.github.jferard.fastods;
 
-import java.util.Date;
-
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
+
+import java.util.Date;
 
 /**
  * @author Julien

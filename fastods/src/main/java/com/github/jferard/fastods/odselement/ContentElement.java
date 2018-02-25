@@ -28,7 +28,11 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.*;
+import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.UniqueList;
+import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -53,10 +51,6 @@ public class FloatStyle implements DataStyle {
 		this.decimalPlaces = decimalPlaces;
 	}
 
-	int getDecimalPlaces() {
-		return this.decimalPlaces;
-	}
-
 	@Override
 	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
 		final CharSequence number = this.computeNumberTag(util);
@@ -83,13 +77,23 @@ public class FloatStyle implements DataStyle {
 	 */
 	public void appendNumberTag(final XMLUtil util, final Appendable appendable) throws IOException {
 		appendable.append("<number:number");
-		util.appendAttribute(appendable, "number:decimal-places",
-				this.decimalPlaces);
-		this.numberStyle.appendNumberAttribute(util, appendable);
+		this.appendXMLAttributes(util, appendable);
 		appendable.append("/>");
 	}
 
-    /**
+	/**
+	 * Append number:decimal-places, number:min-integer-digits and number:grouping
+	 * @param util an XML util
+	 * @param appendable the appendable
+	 * @throws IOException if an I/O error occurs
+	 */
+	void appendXMLAttributes(final XMLUtil util, final Appendable appendable) throws IOException {
+		util.appendAttribute(appendable, "number:decimal-places",
+				this.decimalPlaces);
+		this.numberStyle.appendNumberAttribute(util, appendable);
+	}
+
+	/**
      * A helper to create the XML representation of the float style
      * @param util a util
      * @param appendable the destination
@@ -99,16 +103,6 @@ public class FloatStyle implements DataStyle {
      */
     void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
 		this.numberStyle.appendXMLHelper(util, appendable, numberStyleName, number);
-	}
-
-	/**
-     * Append the attributes of the number
-     * @param util an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
-    void appendNumberAttribute(final XMLUtil util, final Appendable appendable) throws IOException {
-		this.numberStyle.appendNumberAttribute(util, appendable);
 	}
 
 	@Override

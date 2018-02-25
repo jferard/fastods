@@ -24,7 +24,13 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.odselement.config.*;
+import com.github.jferard.fastods.odselement.config.ConfigBlock;
+import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapIndexed;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapNamed;
+import com.github.jferard.fastods.odselement.config.ConfigItemSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;

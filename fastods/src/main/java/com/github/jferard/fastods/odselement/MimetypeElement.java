@@ -23,11 +23,11 @@
 
 package com.github.jferard.fastods.odselement;
 
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+
+import java.io.IOException;
+import java.util.zip.ZipEntry;
 
 /**
  * WHERE ? mimetype

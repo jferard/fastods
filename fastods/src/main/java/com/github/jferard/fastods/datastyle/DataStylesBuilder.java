@@ -74,30 +74,51 @@ public class DataStylesBuilder {
         this.timeStyleBuilder = timeStyleBuilder;
     }
 
+    /**
+     * @return a builder for boolean style
+     */
     public BooleanStyleBuilder booleanStyleBuilder() {
         return this.booleanStyleBuilder;
     }
 
+    /**
+     * @return a builder for currency style
+     */
     public CurrencyStyleBuilder currencyStyleBuilder() {
         return this.currencyStyleBuilder;
     }
 
+    /**
+     * @return a builder for date style
+     */
     public DateStyleBuilder dateStyleBuilder() {
         return this.dateDataStyleBuilder;
     }
 
+    /**
+     * @return a builder for float style
+     */
     public FloatStyleBuilder floatStyleBuilder() {
         return this.floatStyleBuilder;
     }
 
+    /**
+     * @return a builder for percentage style
+     */
     public PercentageStyleBuilder percentageStyleBuilder() {
         return this.percentageStyleBuilder;
     }
 
+    /**
+     * @return a builder for time style
+     */
     public TimeStyleBuilder timeStyleBuilder() {
         return this.timeStyleBuilder;
     }
 
+    /**
+     * @return the data styles
+     */
     public DataStyles build() {
         return new DataStyles(this.booleanStyleBuilder.buildHidden(), this.currencyStyleBuilder.buildHidden(),
                 this.dateDataStyleBuilder.buildHidden(), this.floatStyleBuilder.buildHidden(),

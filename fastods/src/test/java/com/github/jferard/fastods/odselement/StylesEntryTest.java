@@ -20,16 +20,15 @@
  */
 package com.github.jferard.fastods.odselement;
 
-import java.util.Locale;
-
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
-import com.github.jferard.fastods.util.SimpleLength;
-import org.junit.Before;
-
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Before;
+
+import java.util.Locale;
 
 public class StylesEntryTest {
 	private DataStyle ds1;

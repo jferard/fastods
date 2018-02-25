@@ -28,8 +28,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
-
 public class BenchTest {
     private Bench bench;
 

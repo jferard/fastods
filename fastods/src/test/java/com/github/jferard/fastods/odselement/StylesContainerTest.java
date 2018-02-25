@@ -216,7 +216,7 @@ public class StylesContainerTest {
         Assert.assertEquals(ds, childCellStyle.getDataStyle());
     }
 
-    private final void assertWriteDataStylesXMLEquals(final String xml) throws IOException {
+    private void assertWriteDataStylesXMLEquals(final String xml) throws IOException {
         final Appendable sb = new StringBuilder();
         this.stylesContainer.writeDataStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());

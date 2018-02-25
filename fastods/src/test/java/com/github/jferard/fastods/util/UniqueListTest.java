@@ -20,14 +20,13 @@
  */
 package com.github.jferard.fastods.util;
 
-import java.util.List;
-
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.google.common.collect.Sets;
+import java.util.List;
 
 public class UniqueListTest {
 	private static class FirstLetter implements NamedObject {

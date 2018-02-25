@@ -21,12 +21,14 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.testlib.Bench;
+import org.simpleods.ObjectQueue;
+import org.simpleods.OdsFile;
+import org.simpleods.SimpleOdsException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
-import org.simpleods.ObjectQueue;
-import org.simpleods.SimpleOdsException;
-import com.github.jferard.fastods.testlib.Bench;
 
 public class BenchSimpleOds extends Bench {
 	private final Logger logger;
@@ -43,7 +45,7 @@ public class BenchSimpleOds extends Bench {
 			this.logger.info("testSimpleOds: filling a " + this.getRowCount() + " rows, "
 					+ this.getColCount() + " columns spreadsheet");
 			final long t1 = System.currentTimeMillis();
-			final org.simpleods.OdsFile file = new org.simpleods.OdsFile(
+			final OdsFile file = new OdsFile(
 					new File("generated_files", "simpleods_benchmark.ods").getPath());
 			file.addTable("test");
 			final org.simpleods.Table table = (org.simpleods.Table) file
@@ -62,7 +64,7 @@ public class BenchSimpleOds extends Bench {
 			final long t2 = System.currentTimeMillis();
 			this.logger.info("Filled in " + (t2 - t1) + " ms");
 			return t2-t1;
-		} catch (SimpleOdsException e) {
+		} catch (final SimpleOdsException e) {
 			throw new IOException(e);
 		}
 	}

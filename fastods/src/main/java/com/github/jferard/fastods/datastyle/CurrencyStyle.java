@@ -23,12 +23,10 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import java.io.IOException;
-
-import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * 16.27.7 number:currency-style

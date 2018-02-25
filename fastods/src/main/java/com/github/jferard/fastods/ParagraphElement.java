@@ -32,9 +32,25 @@ import com.github.jferard.fastods.util.Container;
  * @author Julien Férard
  */
 public interface ParagraphElement extends Tag {
+    /**
+     * Add the styles contained in this paragraph element to the styles container.
+     * Use if this paragraph elements is inside the page layout.
+     * @param stylesContainer the styles container
+     */
     void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer);
 
+    /**
+     * Add the styles contained in this paragraph element to the styles container.
+     * Use if this paragraph elements is inside a cell.
+     * @param stylesContainer the styles container
+     */
     void addEmbeddedStylesFromCell(StylesContainer stylesContainer);
 
+    /**
+     * Add the styles contained in this paragraph element to the styles container.
+     * Use if this paragraph elements is inside the page layout.
+     * @param stylesContainer the styles container
+     * @param mode the mode CREATE | CREATE_OR_UPDATE | UPDATE
+     */
     void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer, Container.Mode mode);
 }

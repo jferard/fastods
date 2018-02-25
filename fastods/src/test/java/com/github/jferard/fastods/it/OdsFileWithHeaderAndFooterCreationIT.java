@@ -20,14 +20,36 @@
  */
 package com.github.jferard.fastods.it;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.NamedOdsDocument;
+import com.github.jferard.fastods.NamedOdsFileWriter;
+import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.PageSectionContent.Region;
-import com.github.jferard.fastods.style.*;
+import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.Text;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
 import com.github.jferard.fastods.util.SimpleLength;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
 import org.odftoolkit.odfdom.dom.OdfStylesDom;
 import org.odftoolkit.simple.SpreadsheetDocument;
@@ -54,12 +76,9 @@ public class OdsFileWithHeaderAndFooterCreationIT {
     public static final String LEFT_HEADER_PATH = "//style:master-page[@style:name='test-master-page']//style:header//style:region-left";
     public static final String CENTER_HEADER_PATH = "//style:master-page[@style:name='test-master-page']//style:header//style:region-center";
     public static final String LEFT_FOOTER_PATH = "//style:master-page[@style:name='test-master-page']//style:footer//style:region-left";
-    ;
     public static final String CENTER_FOOTER_PATH = "//style:master-page[@style:name='test-master-page']//style:footer//style:region-center";
     private static final String RIGHT_HEADER_PATH = "//style:master-page[@style:name='test-master-page']//style:header//style:region-right";
     private static final String RIGHT_FOOTER_PATH = "//style:master-page[@style:name='test-master-page']//style:footer//style:region-right";
-    ;
-
 
     @BeforeClass
     public static void beforeClass() {

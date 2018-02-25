@@ -24,8 +24,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;

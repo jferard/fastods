@@ -314,6 +314,11 @@ public class Table implements NamedObject {
 		this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
 	}
 
+	/**
+	 * Find the default cell style for a column
+	 * @param columnIndex the column index
+	 * @return the style, null if none
+	 */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         return this.builder.findDefaultCellStyle(columnIndex);
     }

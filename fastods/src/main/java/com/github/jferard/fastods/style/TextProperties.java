@@ -23,12 +23,12 @@
 
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * OpenDocument 16.27.28

@@ -49,7 +49,7 @@ public class TestHelper {
         DomTester.assertUnsortedEquals(xml, TestHelper.toXML(o));
     }
 
-    public static final Handler getMockHandler(final Logger logger) {
+    public static Handler getMockHandler(final Logger logger) {
         final Handler handler = PowerMock.createMock(Handler.class);
         for (final Handler h : logger.getHandlers())
             logger.removeHandler(h);

@@ -96,8 +96,8 @@ public class DataStyleExampleIT {
         final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
         dsb.floatStyleBuilder().decimalPlaces(0);
         dsb.dateStyleBuilder().dateFormat(
-                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.HASH, DateStyleFormat.LONG_MONTH,
-                        DateStyleFormat.HASH, DateStyleFormat.LONG_YEAR));
+                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.SLASH, DateStyleFormat.LONG_MONTH,
+                        DateStyleFormat.SLASH, DateStyleFormat.LONG_YEAR));
         final DataStyles ds = dsb.build();
 
         // Pass the created "data styles" to the factory

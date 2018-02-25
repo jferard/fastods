@@ -20,12 +20,12 @@
  */
 package com.github.jferard.fastods;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class CellValueTest {
 	private TableCell cell;
@@ -116,7 +116,7 @@ public class CellValueTest {
 	
 	@Test
 	public final void testOtherFromObject() {
-		final Character j = Character.valueOf('j');
+		final Character j = 'j';
 		final CellValue v = CellValue.fromObject(j);
 		
 		// PLAY

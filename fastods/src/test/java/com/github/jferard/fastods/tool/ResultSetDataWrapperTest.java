@@ -48,6 +48,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -96,11 +97,11 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     public final void testMax() throws IOException {
         final List<List<Object>> r = new ArrayList<List<Object>>();
         for (int v = 13; v < 18; v++) {
-            final List<Object> l = Arrays.<Object>asList(v);
+            final List<Object> l = Collections.<Object>singletonList(v);
             r.add(l);
         }
 
-        this.setUpRS(Arrays.asList("number"), r, 3);
+        this.setUpRS(Collections.singletonList("number"), r, 3);
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -143,7 +144,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     @Test
     @SuppressWarnings("unchecked")
     public final void testNoRow() throws IOException {
-        this.setUpRS(Arrays.asList("number", "word"), Arrays.<List<Object>>asList(), 100);
+        this.setUpRS(Arrays.asList("number", "word"), Collections.<List<Object>>emptyList(), 100);
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -174,7 +175,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     public final void testNullValue() throws IOException {
         final List<Object> l = new ArrayList<Object>(1);
         l.add(null);
-        this.setUpRS(Arrays.asList("value"), Arrays.asList(l), 100);
+        this.setUpRS(Collections.singletonList("value"), Collections.singletonList(l), 100);
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
@@ -198,7 +199,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     @Test
     @SuppressWarnings("unchecked")
     public final void testOneRow() throws IOException {
-        this.setUpRS(Arrays.asList("number", "word"), Arrays.asList(Arrays.<Object>asList(13, "a")), 100);
+        this.setUpRS(Arrays.asList("number", "word"), Collections.singletonList(Arrays.<Object>asList(13, "a")), 100);
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 

@@ -296,10 +296,10 @@ public class TableCellWalkerImplTest {
     @Test
     public final void testCurrencyNumber() {
         expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
-        this.cell.setCurrencyValue(Double.valueOf(10.0), "€");
+        this.cell.setCurrencyValue(10.0, "€");
         PowerMock.replayAll();
         this.cellWalker.to(10);
-        this.cellWalker.setCurrencyValue(Double.valueOf(10.0), "€");
+        this.cellWalker.setCurrencyValue(10.0, "€");
         PowerMock.verifyAll();
     }
 
@@ -320,10 +320,10 @@ public class TableCellWalkerImplTest {
     @Test
     public final void testDouble() {
         expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
-        this.cell.setFloatValue(Double.valueOf(10.999));
+        this.cell.setFloatValue(10.999);
         PowerMock.replayAll();
         this.cellWalker.to(10);
-        this.cellWalker.setFloatValue(Double.valueOf(10.999));
+        this.cellWalker.setFloatValue(10.999);
         PowerMock.verifyAll();
     }
 
@@ -405,10 +405,10 @@ public class TableCellWalkerImplTest {
     @Test
     public final void testPercentageNumber() {
         expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
-        this.cell.setPercentageValue(Double.valueOf(0.98));
+        this.cell.setPercentageValue(0.98);
         PowerMock.replayAll();
         this.cellWalker.to(10);
-        this.cellWalker.setPercentageValue(Double.valueOf(0.98));
+        this.cellWalker.setPercentageValue(0.98);
         PowerMock.verifyAll();
     }
 

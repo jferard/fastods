@@ -23,7 +23,11 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.*;
+import com.github.jferard.fastods.CellValue;
+import com.github.jferard.fastods.DataWrapper;
+import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 import java.io.IOException;

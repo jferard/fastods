@@ -25,7 +25,6 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,12 +37,24 @@ import java.util.Map;
 public final class ColorHelper {
     private static ColorHelper helper;
 
+    /**
+     * Create a color from RGB values
+     * @param red the red value, between 0-255
+     * @param green the green value, between 0-255
+     * @param blue the blue value, between 0-255
+     * @return the color
+     */
     public static Color fromRGB(final int red, final int green, final int blue) {
         if (ColorHelper.helper == null)
             ColorHelper.helper = new ColorHelper();
         return ColorHelper.helper.getFromRGB(red, green, blue);
     }
 
+    /**
+     * Create a color from the hex representation
+     * @param hexValue e.g. "#123456"
+     * @return the color
+     */
     public static Color fromString(final String hexValue) {
         if (ColorHelper.helper == null)
             ColorHelper.helper = new ColorHelper();
@@ -54,6 +65,9 @@ public final class ColorHelper {
     private static final int X_F = 15;
     private final Map<String, Color> colorByHexValue;
 
+    /**
+     * A new color helper
+     */
     ColorHelper() {
         this.colorByHexValue = new HashMap<String, Color>();
         for (final Color c : SimpleColor.values()) {
@@ -84,6 +98,11 @@ public final class ColorHelper {
         return sbReturn.toString();
     }
 
+    /**
+     * Create a color from the hex representation
+     * @param hexValue e.g. "#123456"
+     * @return the color
+     */
     public Color getFromString(final String hexValue) {
         Color color = this.colorByHexValue.get(hexValue);
         if (color == null) {

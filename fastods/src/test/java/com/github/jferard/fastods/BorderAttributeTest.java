@@ -20,11 +20,10 @@
  * ****************************************************************************/
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.github.jferard.fastods.style.BorderAttribute;
 
 /**
  * @author Julien Férard

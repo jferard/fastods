@@ -25,7 +25,6 @@ import com.github.jferard.fastods.testlib.Bench;
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
-import org.simpleods.ObjectQueue;
 
 import java.io.File;
 import java.io.IOException;

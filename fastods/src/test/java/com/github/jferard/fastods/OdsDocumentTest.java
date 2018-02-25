@@ -23,8 +23,16 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.*;
-import com.github.jferard.fastods.util.*;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,6 +44,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -171,7 +180,7 @@ public class OdsDocumentTest {
     public final void testGetTableByIndexExceptionIOOB() throws FastOdsException {
         this.initOdsElements();
 
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.<Table>asList());
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
         PowerMock.replayAll();
         final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         f.getTable(3);
@@ -182,7 +191,7 @@ public class OdsDocumentTest {
     public final void testGetTableByIndexExceptionNegative() throws FastOdsException {
         this.initOdsElements();
 
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.<Table>asList());
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
         PowerMock.replayAll();
         final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         f.getTable(-3);
@@ -204,7 +213,7 @@ public class OdsDocumentTest {
     public final void testGetTableNumberByNameException() {
         this.initOdsElements();
 
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.<Table>asList());
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
         PowerMock.replayAll();
         final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(-1, f.getTableNumber("t1"));
@@ -278,14 +287,14 @@ public class OdsDocumentTest {
 
         // PLAY
         this.initOdsElements();
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.asList(t)).anyTimes();
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t)).anyTimes();
         EasyMock.expect(t.getName()).andReturn("@t").anyTimes();
         PowerMock.replayAll();
         final NamedOdsDocument f = new NamedOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(-1, f.getTableNumber("@s"));
         Assert.assertEquals(0, f.getTableNumber("@t"));
         Assert.assertEquals(-1, f.getTableNumber("@T"));
-        Assert.assertEquals(Arrays.asList(t), f.getTables());
+        Assert.assertEquals(Collections.singletonList(t), f.getTables());
         PowerMock.verifyAll();
     }
 

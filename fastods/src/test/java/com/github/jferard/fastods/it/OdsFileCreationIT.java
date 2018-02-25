@@ -194,7 +194,7 @@ public class OdsFileCreationIT {
             Assert.assertEquals(true, row.getCellByIndex(0).getBooleanValue());
             Assert.assertEquals(true, row.getCellByIndex(1).getBooleanValue());
             c = row.getCellByIndex(2);
-            Assert.assertEquals(150.5, c.getCurrencyValue().doubleValue(), 0.01);
+            Assert.assertEquals(150.5, c.getCurrencyValue(), 0.01);
             Assert.assertEquals("EUR", c.getCurrencyCode());
             final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"), this.locale);
             cal.setTimeInMillis(1234567891011L);
@@ -207,14 +207,14 @@ public class OdsFileCreationIT {
             final Calendar actualCal = row.getCellByIndex(3).getDateValue();
             Assert.assertEquals(cal.getTimeInMillis(),
                     actualCal.getTimeInMillis() + actualCal.getTimeZone().getRawOffset());
-            Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue().doubleValue(), 0.01);
+            Assert.assertEquals(70.3, row.getCellByIndex(4).getPercentageValue(), 0.01);
             Assert.assertEquals("foobar", OdfToolkitUtil.getStringValue(row.getCellByIndex(5)));
 
             // FOURTH ROW
             row = sheet.getRowByIndex(3);
             Assert.assertEquals(2, row.getCellByIndex(0).getColumnSpannedNumber());
             c = row.getCellByIndex(1);
-            Assert.assertEquals(-150.5, c.getCurrencyValue().doubleValue(), 0.01);
+            Assert.assertEquals(-150.5, c.getCurrencyValue(), 0.01);
             Assert.assertEquals("€", c.getCurrencyCode());
             c = row.getCellByIndex(2);
             Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
