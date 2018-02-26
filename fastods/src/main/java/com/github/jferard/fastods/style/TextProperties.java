@@ -183,49 +183,6 @@ public class TextProperties implements TagParameters {
 	}
 
 	/**
-	 * Get the current font color.
-	 *
-	 * @return The currently set font color.
-	 */
-	public Color getFontColor() {
-		return this.fontColor;
-	}
-
-	/**
-	 * Get the font size as string, e.g. '10.5pt' or '8pt'
-	 *
-	 * @return The font size as string, e.g. '10.5pt' or '8pt'
-	 */
-	public String getFontSize() {
-		return this.fontSize;
-	}
-
-	/**
-	 * Get the currently set underline color.
-	 *
-	 * @return The color
-	 */
-	public Color getFontUnderlineColor() {
-		return this.fontUnderlineColor;
-	}
-
-	/**
-	 * @return The currently set style for the underline.
-	 */
-	public Underline getFontUnderlineStyle() {
-		return this.fontUnderlineStyle;
-	}
-
-	/**
-	 * Get the current font weight.
-	 *
-	 * @return The current font weight, normal, bold or italic.
-	 */
-	public String getFontWeight() {
-		return this.fontWeight;
-	}
-
-	/**
 	 * @return true if at least one property was set
 	 */
 	public boolean isNotEmpty() {
