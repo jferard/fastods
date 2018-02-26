@@ -24,7 +24,7 @@
 package com.github.jferard.fastods.util;
 
 /**
- * An util to check equality between objects
+ * An util to checkStyleName equality between objects
  * @author Julien Férard
  */
 public class EqualityUtil {
