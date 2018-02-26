@@ -61,7 +61,7 @@ public class TableCellTest {
     private TableColdCell tcc;
 
     @Before
-    public void setUp() {
+    public void setUp() throws FastOdsException {
         this.locale = Locale.US;
         this.stc = PowerMock.createMock(StylesContainer.class);
         this.table = PowerMock.createMock(Table.class);
@@ -72,7 +72,7 @@ public class TableCellTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, this.table, ROW_INDEX, 100);
         this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, this.row, COLUMN_INDEX);
-        this.tcs = TableCellStyle.builder("$name").build();
+        this.tcs = TableCellStyle.builder("name").build();
         PowerMock.mockStatic(TableColdCell.class);
         PowerMock.resetAll();
     }
@@ -93,7 +93,7 @@ public class TableCellTest {
         PowerMock.replayAll();
         this.cell.setBooleanValue(true);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"boolean\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"boolean\" " +
                         "office:boolean-value=\"true\"/>");
     }
 
@@ -110,7 +110,7 @@ public class TableCellTest {
         d.setTimeInMillis(TIME_IN_MILLIS);
         this.cell.setDateValue(d);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"date\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"date\" " +
                         "office:date-value=\"2009-02-13T23:31:31.011Z\"/>");
     }
 
@@ -132,7 +132,7 @@ public class TableCellTest {
         this.playAndReplayCurrency();
         this.cell.setCurrencyValue(10.0f, "€");
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"10.0\" "
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"10.0\" "
                         + "office:currency=\"€\" />");
     }
 
@@ -152,7 +152,7 @@ public class TableCellTest {
         this.playAndReplayCurrency();
         this.cell.setCurrencyValue(10, "€");
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"10\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"10\" " +
                         "office:currency=\"€\" />");
     }
 
@@ -161,7 +161,7 @@ public class TableCellTest {
         this.playAndReplayCurrency();
         this.cell.setCurrencyValue(10.0, "€");
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"10.0\" "
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"10.0\" "
                         + "office:currency=\"€\" />");
     }
 
@@ -178,7 +178,7 @@ public class TableCellTest {
         d.setTimeInMillis(TIME_IN_MILLIS);
         this.cell.setDateValue(d.getTime());
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"date\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"date\" " +
                         "office:date-value=\"2009-02-13T23:31:31.011Z\"/>");
     }
 
@@ -187,7 +187,7 @@ public class TableCellTest {
         this.playAndReplayFloat();
         this.cell.setFloatValue(10.999);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"10.999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"10.999\"/>");
     }
 
     @Test
@@ -195,7 +195,7 @@ public class TableCellTest {
         this.playAndReplayFloat();
         this.cell.setFloatValue(9.999d);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
     }
 
     private void playAndReplayFloat() {
@@ -213,7 +213,7 @@ public class TableCellTest {
         this.playAndReplayFloat();
         this.cell.setFloatValue(9.999f);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
     }
 
     @Test
@@ -221,7 +221,7 @@ public class TableCellTest {
         this.playAndReplayFloat();
         this.cell.setFloatValue(999);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"999\"/>");
     }
 
     @Test
@@ -235,7 +235,7 @@ public class TableCellTest {
         PowerMock.replayAll();
         this.cell.setTimeValue(999);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"time\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"time\" " +
                         "office:time-value=\"PT00H00M00.999S\"/>");
     }
 
@@ -244,7 +244,7 @@ public class TableCellTest {
         this.playAndReplayFloat();
         this.cell.setObjectValue(1);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"1\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"1\"/>");
     }
 
     @Test
@@ -252,7 +252,7 @@ public class TableCellTest {
         this.playAndReplayPercentage();
         this.cell.setPercentageValue(75.7);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"percentage\" " +
                         "office:value=\"75.7\"/>");
     }
 
@@ -271,7 +271,7 @@ public class TableCellTest {
         this.playAndReplayPercentage();
         this.cell.setPercentageValue(75);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" office:value=\"75\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"percentage\" office:value=\"75\"/>");
     }
 
     @Test
@@ -279,7 +279,7 @@ public class TableCellTest {
         this.playAndReplayCurrency();
         this.cell.setCurrencyValue(75.7, "€");
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"currency\" office:value=\"75.7\" "
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"75.7\" "
                         + "office:currency=\"€\"/>");
     }
 
@@ -350,11 +350,11 @@ public class TableCellTest {
         PowerMock.replayAll();
         this.cell.setPercentageValue(9.999f);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"percentage\" " +
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"percentage\" " +
                         "office:value=\"9.999\"/>");
         this.cell.setFloatValue(9.999f);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
     }
 
     @Test
@@ -376,10 +376,10 @@ public class TableCellTest {
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999f);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
         this.cell.setStyle(style);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"$name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
     }
 
     @Test

@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -35,85 +36,80 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class TableStyle implements ObjectStyle {
-	/**
-	 * the default (empty) table style
-	 */
-	public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle
-			.builder("ta1").buildHidden();
+    /**
+     * the default (empty) table style
+     */
+    public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").buildHidden();
 
-	private final boolean hidden;
-	private final PageStyle pageStyle;
-	private final String name;
-	private String key;
+    /**
+     * @param name the name of the style
+     * @return the builder
+     */
+    public static TableStyleBuilder builder(final String name) {
+        return new TableStyleBuilder(name);
+    }
+    private final boolean hidden;
+    private final PageStyle pageStyle;
+    private final String name;
+    private String key;
 
-	/**
-	 * Create a new table style and add it to contentEntry.<br>
-	 * Version 0.5.0 Added parameter NamedOdsDocument o
-	 *
-	 * @param styleName A unique name for this style
-	 * @param hidden if the style is automatic
-	 * @param pageStyle The master page style for this table
-	 */
-	TableStyle(final String styleName, final boolean hidden, final PageStyle pageStyle) {
-		this.name = styleName;
-		this.hidden = hidden;
-		this.pageStyle = pageStyle;
-	}
+    /**
+     * Create a new table style and add it to contentEntry.<br>
+     * Version 0.5.0 Added parameter NamedOdsDocument o
+     *
+     * @param styleName A unique name for this style
+     * @param hidden    if the style is automatic
+     * @param pageStyle The master page style for this table
+     */
+    TableStyle(final String styleName, final boolean hidden, final PageStyle pageStyle) {
+        this.name = styleName;
+        this.hidden = hidden;
+        this.pageStyle = pageStyle;
+    }
 
-	/**
-	 * @param name the name of the style
-	 * @return the builder
-	 */
-	public static TableStyleBuilder builder(final String name) {
-		return new TableStyleBuilder(name);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addContentStyle(this);
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addContentStyle(this);
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<style:style");
+        util.appendEAttribute(appendable, "style:name", this.name);
+        util.appendAttribute(appendable, "style:family", "table");
+        if (this.pageStyle != null)
+            util.appendEAttribute(appendable, "style:master-page-name", this.pageStyle.getMasterName());
+        appendable.append("><style:table-properties");
+        util.appendAttribute(appendable, "table:display", "true");
+        util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
+        appendable.append("/></style:style>");
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<style:style");
-		util.appendEAttribute(appendable, "style:name", this.name);
-		util.appendAttribute(appendable, "style:family", "table");
-		if (this.pageStyle != null)
-			util.appendEAttribute(appendable, "style:master-page-name",
-					this.pageStyle.getMasterName());
-		appendable.append("><style:table-properties");
-		util.appendAttribute(appendable, "table:display", "true");
-		util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
-		appendable.append("/></style:style>");
-	}
+    @Override
+    public ObjectStyleFamily getFamily() {
+        return ObjectStyleFamily.TABLE;
+    }
 
-	@Override
-	public ObjectStyleFamily getFamily() {
-		return ObjectStyleFamily.TABLE;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getKey() {
+        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        return this.key;
+    }
 
-	@Override
-	public String getKey() {
-		if (this.key == null)
-			this.key = this.getFamily() + "@" + this.getName();
-		return this.key;
-	}
+    @Override
+    public boolean isHidden() {
+        return this.hidden;
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.hidden;
-	}
-
-	/**
-	 * @return the page style
-	 */
-	public PageStyle getPageStyle() {
-		return this.pageStyle;
-	}
+    /**
+     * @return the page style
+     */
+    public PageStyle getPageStyle() {
+        return this.pageStyle;
+    }
 }

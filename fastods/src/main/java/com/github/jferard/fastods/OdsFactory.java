@@ -74,6 +74,7 @@ public class OdsFactory {
         final DataStyles format = DataStylesBuilder.create(locale).build();
         return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format);
     }
+
     private final Logger logger;
     private final PositionUtil positionUtil;
     private final WriteUtil writeUtil;
@@ -101,6 +102,7 @@ public class OdsFactory {
 
     /**
      * Set the data styles
+     *
      * @param ds the data styles
      * @return this for fluent style
      */

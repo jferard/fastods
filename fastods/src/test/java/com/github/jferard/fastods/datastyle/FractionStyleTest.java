@@ -20,6 +20,7 @@
  */
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.TestHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +37,8 @@ public class FractionStyleTest {
     }
 
     @Test
-    public final void test1() throws IOException {
-        final FractionStyle s = new FractionStyleBuilder("test", this.locale).country("FR").language("en")
+    public final void test1() throws IOException, FastOdsException {
+        final FractionStyle s = FractionStyleBuilder.create("test", this.locale).country("FR").language("en")
                 .volatileStyle(true).fractionValues(1, 3).groupThousands(true).minIntegerDigits(8).negativeValueRed()
                 .build();
         TestHelper.assertXMLEquals(

@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
 
 import java.util.Currency;
@@ -44,7 +45,7 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 	 * @param name   The name of this style
 	 * @param locale The locale used
 	 */
-	CurrencyStyleBuilder(final String name, final Locale locale) {
+	public CurrencyStyleBuilder(final String name, final Locale locale) {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 		this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
 		this.currencyPosition = CurrencyStyle.SymbolPosition.END;

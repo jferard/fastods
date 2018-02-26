@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Length;

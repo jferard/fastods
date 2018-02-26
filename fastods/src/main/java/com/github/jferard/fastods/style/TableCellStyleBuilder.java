@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.util.Length;
@@ -52,9 +53,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
      * @param name A unique name for this style
      */
     TableCellStyleBuilder(final String name) {
-        if (name == null) throw new IllegalArgumentException();
-
-        this.name = name;
+        this.name = TableStyleBuilder.checker.checkStyleName(name);
         this.parentCellStyleName = "Default";
         this.tpBuilder = TextProperties.builder();
         this.bordersBuilder = new BordersBuilder();

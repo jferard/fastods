@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.FastOdsException;
 
 import java.util.Locale;
 
@@ -42,7 +43,7 @@ public class ScientificNumberStyleBuilder implements DataStyleBuilder<Scientific
 	 * @param name   The name of the number style, this name must be unique.
 	 * @param locale the locale used
 	 */
-	ScientificNumberStyleBuilder(final String name,
+	public ScientificNumberStyleBuilder(final String name,
 								 final Locale locale) {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}

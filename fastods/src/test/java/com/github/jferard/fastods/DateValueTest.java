@@ -35,7 +35,7 @@ import java.util.Date;
 public class DateValueTest {
 	@Test
 	public final void test() {
-		PowerMock.verifyAll();
+		PowerMock.resetAll();
 		final TableCell cell = PowerMock.createMock(TableCell.class);
 		final Capture<Date> captured = Capture.newInstance();
 		

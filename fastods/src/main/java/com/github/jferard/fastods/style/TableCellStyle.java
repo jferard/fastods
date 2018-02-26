@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
@@ -202,7 +203,7 @@ public class TableCellStyle implements ObjectStyle {
      * @return the name without a suffix for data style
      */
     public String getRealName() {
-        final int index = this.name.indexOf("@@");
+        final int index = this.name.indexOf("-_-");
         if (index > 0) return this.name.substring(0, index);
         else return this.name;
     }

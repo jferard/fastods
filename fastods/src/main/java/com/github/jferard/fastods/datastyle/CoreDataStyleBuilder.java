@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.util.NameChecker;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 import java.util.Locale;
@@ -33,7 +35,9 @@ import java.util.Locale;
  * @author Julien Férard
  */
 final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>, IsVolatileBuilder<CoreDataStyleBuilder> {
-	/**
+    private static final NameChecker checker = new NameChecker();
+
+ 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
 	 */
 	private String countryCode;
@@ -59,11 +63,8 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
 	 * @param name   The name of this style
 	 * @param locale The locale used
 	 */
-	public CoreDataStyleBuilder(final String name, final Locale locale) {
-		if (name == null)
-			throw new IllegalArgumentException();
-
-		this.name = name;
+	CoreDataStyleBuilder(final String name, final Locale locale) {
+        this.name = checker.checkStyleName(name);
 		this.countryCode = locale.getCountry();
 		this.languageCode = locale.getLanguage();
 		this.volatileStyle = true;

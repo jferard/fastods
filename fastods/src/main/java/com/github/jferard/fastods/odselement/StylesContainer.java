@@ -116,7 +116,7 @@ public class StylesContainer {
         if (anonymousStyle == null) {
             this.addDataStyle(dataStyle);
             if (!style.hasParent()) this.addContentStyle(style); // here, the style may be a child style
-            final String name = style.getRealName() + "@@" + dataStyle.getName();
+            final String name = style.getRealName() + "-_-" + dataStyle.getName();
             anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle).buildHidden();
             this.addContentStyle(anonymousStyle);
             this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);

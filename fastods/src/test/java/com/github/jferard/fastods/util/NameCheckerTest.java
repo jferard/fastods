@@ -95,13 +95,13 @@ public class NameCheckerTest {
                 }));
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void wrongChildCellTest() throws FastOdsException {
         final NameChecker checker = new NameChecker();
         checker.checkStyleName("style@@datastyle");
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void wrongChildCellTest2() throws FastOdsException {
         final NameChecker checker = new NameChecker();
         checker.checkStyleName("style-:-datastyle");
@@ -113,7 +113,7 @@ public class NameCheckerTest {
         checker.checkStyleName("style-_-datastyle");
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void digitTest() throws FastOdsException {
         final NameChecker checker = new NameChecker();
         checker.checkStyleName("0style-:-datastyle");

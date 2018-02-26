@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.FastOdsException;
 
 import java.util.Locale;
 
@@ -41,7 +42,7 @@ public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle,
 	 * @param name   The name of the number style, this name must be unique.
 	 * @param locale the locale used
 	 */
-	PercentageStyleBuilder(final String name, final Locale locale) {
+	public PercentageStyleBuilder(final String name, final Locale locale) {
 		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
 	}
 

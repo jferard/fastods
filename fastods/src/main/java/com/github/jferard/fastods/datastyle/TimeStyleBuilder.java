@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.FastOdsException;
+
 import java.util.Locale;
 
 /**
@@ -41,7 +43,7 @@ class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> 
 	 * @param name The name of the number style.
 	 * @param locale the locale used
 	 */
-	TimeStyleBuilder(final String name, final Locale locale) {
+	public TimeStyleBuilder(final String name, final Locale locale) {
 		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
 	}
 

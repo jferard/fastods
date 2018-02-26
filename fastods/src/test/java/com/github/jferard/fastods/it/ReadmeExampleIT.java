@@ -58,7 +58,7 @@ public class ReadmeExampleIT {
     public static final String GENERATED_FILES = "generated_files";
     public static final String README_EXAMPLE_ODS = "readme_example.ods";
     public static final String README_EXAMPLE_WITH_FLUSH_ODS = "readme_example_with_flush.ods";
-    public static final String GREEN_CELL_STYLE = "green cell style";
+    public static final String GREEN_CELL_STYLE = "green-cell-style";
     public static final Color GREEN_COLOR = ColorHelper.fromString("#00FF00");
 
     @BeforeClass
@@ -106,7 +106,7 @@ public class ReadmeExampleIT {
                 Assert.assertEquals("float", cell.getValueType());
 
                 final TableTableCellElementBase element = cell.getOdfElement();
-                Assert.assertEquals(GREEN_CELL_STYLE + "@@float-data", OdfToolkitUtil.getStyleName(cell));
+                Assert.assertEquals(GREEN_CELL_STYLE + "-_-float-data", OdfToolkitUtil.getStyleName(cell));
                 Assert.assertEquals("table-cell", OdfToolkitUtil.getStyleFamilyName(cell));
                 Assert.assertEquals(GREEN_CELL_STYLE, OdfToolkitUtil.getParentStyleName(cell));
             }

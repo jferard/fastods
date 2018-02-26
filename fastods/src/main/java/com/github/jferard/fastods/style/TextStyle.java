@@ -30,88 +30,85 @@ import java.io.IOException;
 
 /**
  * OpenDocument 16.27.28
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class TextStyle implements ObjectStyle {
-	/**
-	 * The default text style
-	 */
-	public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
-			.buildStyle("Default");
+    /**
+     * The default text style
+     */
+    public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder().buildStyle("Default");
+    private final String name;
+    private final boolean hidden;
+    private final TextProperties textProperties;
+    private String key;
 
-	private String key;
-	private final String name;
-	private final boolean hidden;
-	private final TextProperties textProperties;
+    /**
+     * Create a new text style
+     *
+     * @param name           the name
+     * @param hidden         true if the style is automatic
+     * @param textProperties the text properties
+     */
+    TextStyle(final String name, final boolean hidden, final TextProperties textProperties) {
+        this.name = TableStyleBuilder.checker.checkStyleName(name);
+        this.hidden = hidden;
+        this.textProperties = textProperties;
+    }
 
-	/**
-	 * Create a new text style
-	 * @param name the name
-	 * @param hidden true if the style is automatic
-	 * @param textProperties the text properties
-	 */
-	TextStyle(final String name, final boolean hidden, final TextProperties textProperties) {
-		this.name = name;
-		this.hidden = hidden;
-		this.textProperties = textProperties;
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<style:style ");
+        util.appendEAttribute(appendable, "style:name", this.name);
+        util.appendAttribute(appendable, "style:family", "text");
+        appendable.append(">");
+        this.getTextProperties().appendXMLContent(util, appendable);
+        appendable.append("</style:style>");
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<style:style ");
-		util.appendEAttribute(appendable, "style:name", this.name);
-		util.appendAttribute(appendable, "style:family", "text");
-		appendable.append(">");
-		this.getTextProperties().appendXMLContent(util, appendable);
-		appendable.append("</style:style>");
-	}
+    @Override
+    public ObjectStyleFamily getFamily() {
+        return ObjectStyleFamily.TEXT;
+    }
 
-	@Override
-	public ObjectStyleFamily getFamily() {
-		return ObjectStyleFamily.TEXT;
-	}
+    /**
+     * Get the name of this text style.
+     *
+     * @return The text style name
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 * Get the name of this text style.
-	 *
-	 * @return The text style name
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    /**
+     * @return the text properties of this style
+     */
+    public TextProperties getTextProperties() {
+        return this.textProperties;
+    }
 
-	/**
-	 * @return the text properties of this style
-	 */
-	public TextProperties getTextProperties() {
-		return this.textProperties;
-	}
+    /**
+     * @return true if this style has a name and a least one text property is set
+     */
+    public boolean isNotEmpty() {
+        return this.name != null && this.name.length() > 0 && this.getTextProperties().isNotEmpty();
+    }
 
-	/**
-	 * @return true if this style has a name and a least one text property is set
-	 */
-	public boolean isNotEmpty() {
-		return this.name != null && this.name.length() > 0
-				&& this.getTextProperties().isNotEmpty();
-	}
-	
-	@Override
-	public String getKey() {
-		if (this.key == null)
-			this.key = this.getFamily()+"@"+this.getName();
-		return this.key;
-	}
+    @Override
+    public String getKey() {
+        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        return this.key;
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.hidden;
-	}
+    @Override
+    public boolean isHidden() {
+        return this.hidden;
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        throw new UnsupportedOperationException();
+    }
 }

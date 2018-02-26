@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.util.NameChecker;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
@@ -30,7 +32,9 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  */
 public class TableStyleBuilder implements StyleBuilder<TableStyle> {
-	private PageStyle pageStyle;
+    static final NameChecker checker = new NameChecker();
+
+    private PageStyle pageStyle;
 	private final String name;
 	private boolean hidden;
 
@@ -38,10 +42,7 @@ public class TableStyleBuilder implements StyleBuilder<TableStyle> {
 	 * @param name the name of the table style (19.498.2)
 	 */
 	TableStyleBuilder(final String name) {
-		if (name == null)
-			throw new IllegalArgumentException();
-
-		this.name = name;
+		this.name = checker.checkStyleName(name);
 		this.pageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
 	}
 

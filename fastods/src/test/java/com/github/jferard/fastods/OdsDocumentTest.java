@@ -72,7 +72,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public final void testAddBooleanStyle() {
+    public final void testAddBooleanStyle() throws FastOdsException {
         final DataStyle ds = new BooleanStyleBuilder("b", Locale.US).build();
 
         this.initOdsElements();
