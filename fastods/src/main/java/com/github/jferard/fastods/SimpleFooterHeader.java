@@ -36,51 +36,48 @@ import java.io.IOException;
  * "The <style:header> element represents the content of a header in a <style:master-page> element."
  * "The <style:footer> element represents the content of a footer in a <style:master-page> element."
  * <p>
- *
+ * <p>
  * The SimpleFooterHeader class represents a footer/header which is composed one sections.
  * It's an alternative to the RegionFooterHeader that has three sections (left, center, right).
-
+ *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 class SimpleFooterHeader implements PageSectionContent {
-	/**
-	 * The NamedOdsDocument where this object belong to.
-	 */
-	private final Text centerRegion;
+    /**
+     * The NamedOdsDocument where this object belong to.
+     */
+    private final Text centerRegion;
 
-	/**
-	 * Create a new footer object.
-	 * @param centerRegion the content of the center centerRegion
-	 */
-	SimpleFooterHeader(final Text centerRegion) {
-		super();
-		this.centerRegion = centerRegion;
-	}
+    /**
+     * Create a new footer object.
+     *
+     * @param centerRegion the content of the center centerRegion
+     */
+    SimpleFooterHeader(final Text centerRegion) {
+        super();
+        this.centerRegion = centerRegion;
+    }
 
-	@Override
-	public void addEmbeddedStyles(
-			final StylesContainer stylesContainer) {
-		this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
-	}
+    @Override
+    public void addEmbeddedStyles(final StylesContainer stylesContainer) {
+        this.addEmbeddedStyles(stylesContainer, Mode.CREATE);
+    }
 
-	@Override
-	public void addEmbeddedStyles(
-			final StylesContainer stylesContainer, final Mode mode) {
-		this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer,
-				mode);
-	}
+    @Override
+    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Mode mode) {
+        if (this.centerRegion != null && !this.centerRegion.isEmpty())
+            this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+    }
 
-	/**
-	 * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
-	 *
-	 * @throws IOException If an I/O error occurs
-	 */
-	@Override
-	public void appendXMLToMasterStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		if (this.centerRegion != null)
-			this.centerRegion.appendXMLContent(util, appendable);
-	}
+    /**
+     * Used in file styles.xml, in <office:master-styles>,<style:master-page />.
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    @Override
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
+        if (this.centerRegion != null && !this.centerRegion.isEmpty())
+            this.centerRegion.appendXMLContent(util, appendable);
+    }
 }

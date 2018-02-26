@@ -73,16 +73,14 @@ class RegionFooterHeader implements PageSectionContent {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        if (this.leftRegion != null) this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
-        if (this.centerRegion != null) this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
-        if (this.rightRegion != null) this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        this.addEmbeddedStyles(stylesContainer, Container.Mode.CREATE);
     }
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer, final Container.Mode mode) {
-        if (this.leftRegion != null) this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
-        if (this.centerRegion != null) this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
-        if (this.rightRegion != null) this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+        if (this.leftRegion != null && !this.leftRegion.isEmpty()) this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+        if (this.centerRegion != null && !this.centerRegion.isEmpty()) this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+        if (this.rightRegion != null && !this.rightRegion.isEmpty()) this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
     }
 
     /**
