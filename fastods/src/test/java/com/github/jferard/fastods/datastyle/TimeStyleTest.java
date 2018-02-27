@@ -21,8 +21,11 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.odselement.OdsElements;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -54,4 +57,54 @@ public class TimeStyleTest {
                         "style:volatile=\"true\" number:format-source=\"language\"/>",
                 ts);
     }
+
+    @Test
+    public final void testHiddenNullFormat() throws IOException {
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(null).buildHidden();
+        TestHelper.assertXMLEquals(
+                "<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\" number:format-source=\"language\"/>",
+                ts);
+    }
+
+    @Test
+    public final void testLocaleVolatile() throws IOException {
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(false).build();
+        TestHelper.assertXMLEquals(
+                "<number:time-style style:name=\"test\" number:language=\"fr\" number:country=\"FR\" " +
+                        "number:format-source=\"language\"/>",
+                ts);
+    }
+
+    @Test
+    public final void testLanguageCountry() throws IOException {
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).language("a").country("b").build();
+        TestHelper.assertXMLEquals(
+                "<number:time-style style:name=\"test\" number:language=\"a\" number:country=\"B\" " +
+                        "style:volatile=\"true\" number:format-source=\"language\"/>",
+                ts);
+    }
+
+    @Test
+    public final void testGetters() throws IOException {
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).language("a").country("b").build();
+        Assert.assertEquals("test", ts.getName());
+        Assert.assertFalse(ts.isHidden());
+    }
+
+    @Test
+    public final void testOdsElements() throws IOException {
+        PowerMock.resetAll();
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(false).build();
+
+        // PLAY
+        elements.addDataStyle(ts);
+
+        PowerMock.replayAll();
+        ts.addToElements(elements);
+
+        PowerMock.verifyAll();
+    }
+
 }
