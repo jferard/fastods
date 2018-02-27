@@ -59,7 +59,7 @@ public class ReadmeExampleIT {
     public static final String README_EXAMPLE_ODS = "readme_example.ods";
     public static final String README_EXAMPLE_WITH_FLUSH_ODS = "readme_example_with_flush.ods";
     public static final String GREEN_CELL_STYLE = "green-cell-style";
-    public static final Color GREEN_COLOR = ColorHelper.fromString("#00FF00");
+    public static final Color GREEN_COLOR = ColorHelper.fromString("#00ff00");
 
     @BeforeClass
     public static void beforeClass() {

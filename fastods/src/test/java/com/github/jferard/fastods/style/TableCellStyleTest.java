@@ -43,7 +43,7 @@ public class TableCellStyleTest {
                 .borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE).build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
-                        "<style:table-cell-properties fo:border=\"1pt double #00FFFF\"/>" + "</style:style>",
+                        "<style:table-cell-properties fo:border=\"1pt double #00ffff\"/>" + "</style:style>",
                 tcs);
     }
 
@@ -65,9 +65,9 @@ public class TableCellStyleTest {
                 .borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE, BorderAttribute.Style.DOUBLE).build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
-                        "<style:table-cell-properties fo:border-bottom=\"3pt double #5F9EA0\" fo:border-left=\"4pt "
-                        + "double #00008B\" fo:border-right=\"2pt solid #F5F5DC\" fo:border-top=\"1pt double " +
-                        "#00FFFF\"/>" + "</style:style>",
+                        "<style:table-cell-properties fo:border-bottom=\"3pt double #5f9ea0\" fo:border-left=\"4pt "
+                        + "double #00008b\" fo:border-right=\"2pt solid #f5f5dc\" fo:border-top=\"1pt double " +
+                        "#00ffff\"/>" + "</style:style>",
                 tcs);
     }
 

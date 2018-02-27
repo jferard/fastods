@@ -58,7 +58,7 @@ public class NumberStyleHelperTest {
                         "style:volatile=\"true\">" + NumberStyleHelperTest
                         .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "</number:number-style>" +
                         "<number:number-style style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" "
-                        + "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#FF0000\"/>" +
+                        + "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#ff0000\"/>" +
                         "<number:text>-</number:text>" + NumberStyleHelperTest
                         .NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS + "<style:map style:condition=\"value()"
                         + "&gt;=0\" style:apply-style-name=\"test\"/>" + "</number:number-style>",

@@ -55,9 +55,9 @@ public class BordersTest {
         final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a2).bottom(this.a2).left(this.a2)
                 .build();
         this.assertAttrXMLEquals(
-                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #FFFFFF\" fo:border-right=\"11pt " +
-                        "solid" + " #FFFFFF\" fo:border-bottom=\"11pt solid #FFFFFF\" fo:border-left=\"11pt solid " +
-                        "#FFFFFF\"",
+                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" fo:border-right=\"11pt " +
+                        "solid #ffffff\" fo:border-bottom=\"11pt solid #ffffff\" fo:border-left=\"11pt solid " +
+                        "#ffffff\"",
                 b);
     }
 
@@ -66,8 +66,8 @@ public class BordersTest {
         final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a1).bottom(this.a2).left(this.a1)
                 .build();
         this.assertAttrXMLEquals(
-                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #FFFFFF\" fo:border-bottom=\"11pt " +
-                        "solid #FFFFFF\"",
+                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" fo:border-bottom=\"11pt " +
+                        "solid #ffffff\"",
                 b);
     }
 

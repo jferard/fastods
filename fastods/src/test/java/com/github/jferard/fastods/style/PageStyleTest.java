@@ -73,7 +73,7 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals(
                 "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
                         "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:background-color=\"#FFEBCD\" fo:margin=\"1.5cm\"/>"
+                        "style:print-orientation=\"portrait\" fo:background-color=\"#ffebcd\" fo:margin=\"1.5cm\"/>"
                         + "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" " +
                         "fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer-properties " +
                         "" + "" + "" + "" + "" + "" + "" + "" + "" + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +

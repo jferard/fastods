@@ -154,7 +154,7 @@ public class OdsFileCreationIT {
 
         Assert.assertEquals("#0000ff", stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='tcs0']//@fo:background-color", stylesDom.getRootElement()));
-        Assert.assertEquals("#00FF00", stylesDom.getXPath()
+        Assert.assertEquals("#00ff00", stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='tcs1']//@fo:background-color", stylesDom.getRootElement()));
         Assert.assertEquals("bold", stylesDom.getXPath()
                 .evaluate("//style:style[@style:name='tcs2']//@fo:font-weight", stylesDom.getRootElement()));
@@ -259,7 +259,7 @@ public class OdsFileCreationIT {
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold()
                 .build();
         this.tcs0 = TableCellStyle.builder("tcs0").backgroundColor(ColorHelper.fromString("#0000ff")).build();
-        this.tcs1 = TableCellStyle.builder("tcs1").backgroundColor(ColorHelper.fromString("#00FF00")).build();
+        this.tcs1 = TableCellStyle.builder("tcs1").backgroundColor(ColorHelper.fromString("#00ff00")).build();
         this.tcs2 = TableCellStyle.builder("tcs2").fontWeightBold().build();
         this.tcs3 = TableCellStyle.builder("tcs3").fontStyleItalic()
                 .borderAll(SimpleLength.mm(0.4), SimpleColor.BLACK, BorderAttribute.DEFAULT_STYLE).build();

@@ -83,7 +83,7 @@ final AnonymousOdsFileWriter writer = odsFactory.createWriter();
 final OdsDocument document = writer.document();
 final Table table = document.addTable("test");
 
-final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00FF00").build();
+final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00ff00").build();
 for (int y = 0; y < 50; y++) {
 	final TableRow row = table.nextRow();
 	final TableCellWalker cell = row.getWalker();

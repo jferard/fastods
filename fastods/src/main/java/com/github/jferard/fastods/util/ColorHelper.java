@@ -27,6 +27,7 @@ import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -104,15 +105,16 @@ public final class ColorHelper {
      * @return the color
      */
     public Color getFromString(final String hexValue) {
-        Color color = this.colorByHexValue.get(hexValue);
+        final String hv = hexValue.toLowerCase(Locale.US);
+        Color color = this.colorByHexValue.get(hv);
         if (color == null) {
             color = new Color() {
                 @Override
                 public String hexValue() {
-                    return hexValue;
+                    return hv;
                 }
             };
-            this.colorByHexValue.put(hexValue, color);
+            this.colorByHexValue.put(hv, color);
         }
         return color;
     }

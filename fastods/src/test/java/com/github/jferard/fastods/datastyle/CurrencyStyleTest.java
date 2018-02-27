@@ -124,7 +124,7 @@ public class CurrencyStyleTest {
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>" + "<number:currency-style style:name=\"test-neg\" " +
                         "number:language=\"en\" number:country=\"US\" style:volatile=\"true\">" +
-                        "<style:text-properties fo:color=\"#FF0000\"/>" + "<number:text>-</number:text>" +
+                        "<style:text-properties fo:color=\"#ff0000\"/>" + "<number:text>-</number:text>" +
                         "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>" +
                         "<number:text> </number:text>" + "<number:currency-symbol>" + this.usSymbol +
                         "</number:currency-symbol>" + "<style:map style:condition=\"value()&gt;=0\" " +
@@ -142,7 +142,7 @@ public class CurrencyStyleTest {
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>" + "<number:currency-style style:name=\"test-neg\" " +
                         "number:language=\"en\" number:country=\"US\" style:volatile=\"true\">" +
-                        "<style:text-properties fo:color=\"#FF0000\"/>" + "<number:text>-</number:text>" +
+                        "<style:text-properties fo:color=\"#ff0000\"/>" + "<number:text>-</number:text>" +
                         "<number:number number:decimal-places=\"2\" number:min-integer-digits=\"1\"/>" +
                         "<number:text> </number:text>" + "<number:currency-symbol>" + this.usSymbol +
                         "</number:currency-symbol>" + "<style:map style:condition=\"value()&gt;=0\" " +

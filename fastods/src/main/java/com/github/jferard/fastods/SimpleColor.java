@@ -30,40 +30,40 @@ package com.github.jferard.fastods;
  * @author Martin Schulz
  */
 public enum SimpleColor implements Color {
-    /**
-     * No color
-     **/
-    NONE(""),
+	/**
+	 * No color
+	 **/
+	NONE(""),
 
 	/**
 	 * The color aliceblue
 	 **/
-	ALICEBLUE("#F0F8FF"),
+	ALICEBLUE("#f0f8ff"),
 
 	/**
 	 * The color antiquewhite
 	 **/
-	ANTIQUEWHITE("#FAEBD7"),
+	ANTIQUEWHITE("#faebd7"),
 
 	/**
 	 * The color aquamarine
 	 **/
-	AQUAMARINE("#7FFFD4"),
+	AQUAMARINE("#7fffd4"),
 
 	/**
 	 * The color azure
 	 **/
-	AZURE("#F0FFFF"),
+	AZURE("#f0ffff"),
 
 	/**
 	 * The color beige
 	 **/
-	BEIGE("#F5F5DC"),
+	BEIGE("#f5f5dc"),
 
 	/**
 	 * The color bisque
 	 **/
-	BISQUE("#FFE4C4"),
+	BISQUE("#ffe4c4"),
 
 	/**
 	 * The color black
@@ -73,87 +73,87 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color blanchedalmond
 	 **/
-	BLANCHEDALMOND("#FFEBCD"),
+	BLANCHEDALMOND("#ffebcd"),
 
 	/**
 	 * The color blue
 	 **/
-	BLUE("#0000FF"),
+	BLUE("#0000ff"),
 
 	/**
 	 * The color blueviolet
 	 **/
-	BLUEVIOLET("#8A2BE2"),
+	BLUEVIOLET("#8a2be2"),
 
 	/**
 	 * The color brown
 	 **/
-	BROWN("#A52A2A"),
+	BROWN("#a52a2a"),
 
 	/**
 	 * The color burlywood
 	 **/
-	BURLYWOOD("#DEB887"),
+	BURLYWOOD("#deb887"),
 
 	/**
 	 * The color cadetblue
 	 **/
-	CADETBLUE("#5F9EA0"),
+	CADETBLUE("#5f9ea0"),
 
 	/**
 	 * The color chartreuse
 	 **/
-	CHARTREUSE("#7FFF00"),
+	CHARTREUSE("#7fff00"),
 
 	/**
 	 * The color chocolate
 	 **/
-	CHOCOLATE("#D2691E"),
+	CHOCOLATE("#d2691e"),
 
 	/**
 	 * The color coral
 	 **/
-	CORAL("#FF7F50"),
+	CORAL("#ff7f50"),
 
 	/**
 	 * The color cornflowerblue
 	 **/
-	CORNFLOWERBLUE("#6495ED"),
+	CORNFLOWERBLUE("#6495ed"),
 
 	/**
 	 * The color cornsilk
 	 **/
-	CORNSILK("#FFF8DC"),
+	CORNSILK("#fff8dc"),
 
 	/**
 	 * The color crimson
 	 **/
-	CRIMSON("#DC143C"),
+	CRIMSON("#dc143c"),
 
 	/**
 	 * The color cyan
 	 **/
-	CYAN("#00FFFF"),
+	CYAN("#00ffff"),
 
 	/**
 	 * The color darkblue
 	 **/
-	DARKBLUE("#00008B"),
+	DARKBLUE("#00008b"),
 
 	/**
 	 * The color darkcyan
 	 **/
-	DARKCYAN("#008B8B"),
+	DARKCYAN("#008b8b"),
 
 	/**
 	 * The color darkgoldenrod
 	 **/
-	DARKGOLDENROD("#B8860B"),
+	DARKGOLDENROD("#b8860b"),
 
 	/**
 	 * The color darkgray
 	 **/
-	DARKGRAY("#A9A9A9"),
+	DARKGRAY("#a9a9a9"),
 
 	/**
 	 * The color darkgreen
@@ -163,72 +163,72 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color darkkhaki
 	 **/
-	DARKKHAKI("#BDB76B"),
+	DARKKHAKI("#bdb76b"),
 
 	/**
 	 * The color darkmagenta
 	 **/
-	DARKMAGENTA("#8B008B"),
+	DARKMAGENTA("#8b008b"),
 
 	/**
 	 * The color darkolivegreen
 	 **/
-	DARKOLIVEGREEN("#556B2F"),
+	DARKOLIVEGREEN("#556b2f"),
 
 	/**
 	 * The color darkorange
 	 **/
-	DARKORANGE("#FF8C00"),
+	DARKORANGE("#ff8c00"),
 
 	/**
 	 * The color darkorchid
 	 **/
-	DARKORCHID("#9932CC"),
+	DARKORCHID("#9932cc"),
 
 	/**
 	 * The color darkred
 	 **/
-	DARKRED("#8B0000"),
+	DARKRED("#8b0000"),
 
 	/**
 	 * The color darksalmon
 	 **/
-	DARKSALMON("#E9967A"),
+	DARKSALMON("#e9967a"),
 
 	/**
 	 * The color darkseagreen
 	 **/
-	DARKSEAGREEN("#8FBC8F"),
+	DARKSEAGREEN("#8fbc8f"),
 
 	/**
 	 * The color darkslateblue
 	 **/
-	DARKSLATEBLUE("#483D8B"),
+	DARKSLATEBLUE("#483d8b"),
 
 	/**
 	 * The color darkslategray
 	 **/
-	DARKSLATEGRAY("#2F4F4F"),
+	DARKSLATEGRAY("#2f4f4f"),
 
 	/**
 	 * The color darkturquoise
 	 **/
-	DARKTURQUOISE("#00CED1"),
+	DARKTURQUOISE("#00ced1"),
 
 	/**
 	 * The color darkviolet
 	 **/
-	DARKVIOLET("#9400D3"),
+	DARKVIOLET("#9400d3"),
 
 	/**
 	 * The color deeppink
 	 **/
-	DEEPPINK("#FF1493"),
+	DEEPPINK("#ff1493"),
 
 	/**
 	 * The color deepskyblue
 	 **/
-	DEEPSKYBLUE("#00BFFF"),
+	DEEPSKYBLUE("#00bfff"),
 
 	/**
 	 * The color dimgray
@@ -238,42 +238,42 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color dodgerblue
 	 **/
-	DODGERBLUE("#1E90FF"),
+	DODGERBLUE("#1e90ff"),
 
 	/**
 	 * The color firebrick
 	 **/
-	FIREBRICK("#B22222"),
+	FIREBRICK("#b22222"),
 
 	/**
 	 * The color floralwhite
 	 **/
-	FLORALWHITE("#FFFAF0"),
+	FLORALWHITE("#fffaf0"),
 
 	/**
 	 * The color forestgreen
 	 **/
-	FORESTGREEN("#228B22"),
+	FORESTGREEN("#228b22"),
 
 	/**
 	 * The color gainsboro
 	 **/
-	GAINSBORO("#DCDCDC"),
+	GAINSBORO("#dcdcdc"),
 
 	/**
 	 * The color ghostwhite
 	 **/
-	GHOSTWHITE("#F8F8FF"),
+	GHOSTWHITE("#f8f8ff"),
 
 	/**
 	 * The color gold
 	 **/
-	GOLD("#FFD700"),
+	GOLD("#ffd700"),
 
 	/**
 	 * The color goldenrod
 	 **/
-	GOLDENROD("#DAA520"),
+	GOLDENROD("#daa520"),
 
 	/**
 	 * The color gray
@@ -293,17 +293,17 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color gray48
 	 **/
-	GRAY48("#7A7A7A"),
+	GRAY48("#7a7a7a"),
 
 	/**
 	 * The color gray64
 	 **/
-	GRAY64("#A3A3A3"),
+	GRAY64("#a3a3a3"),
 
 	/**
 	 * The color gray80
 	 **/
-	GRAY80("#CCCCCC"),
+	GRAY80("#cccccc"),
 
 	/**
 	 * The color green
@@ -313,107 +313,107 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color greenyellow
 	 **/
-	GREENYELLOW("#ADFF2F"),
+	GREENYELLOW("#adff2f"),
 
 	/**
 	 * The color honeydew
 	 **/
-	HONEYDEW("#F0FFF0"),
+	HONEYDEW("#f0fff0"),
 
 	/**
 	 * The color hotpink
 	 **/
-	HOTPINK("#FF69B4"),
+	HOTPINK("#ff69b4"),
 
 	/**
 	 * The color indianred
 	 **/
-	INDIANRED("#CD5C5C"),
+	INDIANRED("#cd5c5c"),
 
 	/**
 	 * The color indigo
 	 **/
-	INDIGO("#4B0082"),
+	INDIGO("#4b0082"),
 
 	/**
 	 * The color ivory
 	 **/
-	IVORY("#FFFFF0"),
+	IVORY("#fffff0"),
 
 	/**
 	 * The color khaki
 	 **/
-	KHAKI("#F0E68C"),
+	KHAKI("#f0e68c"),
 
 	/**
 	 * The color lavender
 	 **/
-	LAVENDER("#E6E6FA"),
+	LAVENDER("#e6e6fa"),
 
 	/**
 	 * The color lavenderblush
 	 **/
-	LAVENDERBLUSH("#FFF0F5"),
+	LAVENDERBLUSH("#fff0f5"),
 
 	/**
 	 * The color lawngreen
 	 **/
-	LAWNGREEN("#7CFC00"),
+	LAWNGREEN("#7cfc00"),
 
 	/**
 	 * The color lemonchiffon
 	 **/
-	LEMONCHIFFON("#FFFACD"),
+	LEMONCHIFFON("#fffacd"),
 
 	/**
 	 * The color lightblue
 	 **/
-	LIGHTBLUE("#ADD8E6"),
+	LIGHTBLUE("#add8e6"),
 
 	/**
 	 * The color lightcoral
 	 **/
-	LIGHTCORAL("#F08080"),
+	LIGHTCORAL("#f08080"),
 
 	/**
 	 * The color lightcyan
 	 **/
-	LIGHTCYAN("#E0FFFF"),
+	LIGHTCYAN("#e0ffff"),
 
 	/**
 	 * The color lightgoldenrodyellow
 	 **/
-	LIGHTGOLDENRODYELLOW("#FAFAD2"),
+	LIGHTGOLDENRODYELLOW("#fafad2"),
 
 	/**
 	 * The color lightgreen
 	 **/
-	LIGHTGREEN("#90EE90"),
+	LIGHTGREEN("#90ee90"),
 
 	/**
 	 * The color lightgrey
 	 **/
-	LIGHTGREY("#D3D3D3"),
+	LIGHTGREY("#d3d3d3"),
 
 	/**
 	 * The color lightpink
 	 **/
-	LIGHTPINK("#FFB6C1"),
+	LIGHTPINK("#ffb6c1"),
 
 	/**
 	 * The color lightsalmon
 	 **/
-	LIGHTSALMON("#FFA07A"),
+	LIGHTSALMON("#ffa07a"),
 
 	/**
 	 * The color lightseagreen
 	 **/
-	LIGHTSEAGREEN("#20B2AA"),
+	LIGHTSEAGREEN("#20b2aa"),
 
 	/**
 	 * The color lightskyblue
 	 **/
-	LIGHTSKYBLUE("#87CEFA"),
+	LIGHTSKYBLUE("#87cefa"),
 
 	/**
 	 * The color lightslategray
@@ -423,32 +423,32 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color lightsteelblue
 	 **/
-	LIGHTSTEELBLUE("#B0C4DE"),
+	LIGHTSTEELBLUE("#b0c4de"),
 
 	/**
 	 * The color lightyellow
 	 **/
-	LIGHTYELLOW("#FFFFE0"),
+	LIGHTYELLOW("#ffffe0"),
 
 	/**
 	 * The color lime
 	 **/
-	LIME("#00FF00"),
+	LIME("#00ff00"),
 
 	/**
 	 * The color limegreen
 	 **/
-	LIMEGREEN("#32CD32"),
+	LIMEGREEN("#32cd32"),
 
 	/**
 	 * The color linen
 	 **/
-	LINEN("#FAF0E6"),
+	LINEN("#faf0e6"),
 
 	/**
 	 * The color magenta
 	 **/
-	MAGENTA("#FF00FF"),
+	MAGENTA("#ff00ff"),
 
 	/**
 	 * The color maroon
@@ -458,47 +458,47 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color mediumaquamarine
 	 **/
-	MEDIUMAQUAMARINE("#66CDAA"),
+	MEDIUMAQUAMARINE("#66cdaa"),
 
 	/**
 	 * The color mediumblue
 	 **/
-	MEDIUMBLUE("#0000CD"),
+	MEDIUMBLUE("#0000cd"),
 
 	/**
 	 * The color mediumorchid
 	 **/
-	MEDIUMORCHID("#BA55D3"),
+	MEDIUMORCHID("#ba55d3"),
 
 	/**
 	 * The color mediumpurple
 	 **/
-	MEDIUMPURPLE("#9370DB"),
+	MEDIUMPURPLE("#9370db"),
 
 	/**
 	 * The color mediumseagreen
 	 **/
-	MEDIUMSEAGREEN("#3CB371"),
+	MEDIUMSEAGREEN("#3cb371"),
 
 	/**
 	 * The color mediumslateblue
 	 **/
-	MEDIUMSLATEBLUE("#7B68EE"),
+	MEDIUMSLATEBLUE("#7b68ee"),
 
 	/**
 	 * The color mediumspringgreen
 	 **/
-	MEDIUMSPRINGGREEN("#00FA9A"),
+	MEDIUMSPRINGGREEN("#00fa9a"),
 
 	/**
 	 * The color mediumturquoise
 	 **/
-	MEDIUMTURQUOISE("#48D1CC"),
+	MEDIUMTURQUOISE("#48d1cc"),
 
 	/**
 	 * The color mediumvioletred
 	 **/
-	MEDIUMVIOLETRED("#C71585"),
+	MEDIUMVIOLETRED("#c71585"),
 
 	/**
 	 * The color midnightblue
@@ -508,22 +508,22 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color mintcream
 	 **/
-	MINTCREAM("#F5FFFA"),
+	MINTCREAM("#f5fffa"),
 
 	/**
 	 * The color mistyrose
 	 **/
-	MISTYROSE("#FFE4E1"),
+	MISTYROSE("#ffe4e1"),
 
 	/**
 	 * The color moccasin
 	 **/
-	MOCCASIN("#FFE4B5"),
+	MOCCASIN("#ffe4b5"),
 
 	/**
 	 * The color navajowhite
 	 **/
-	NAVAJOWHITE("#FFDEAD"),
+	NAVAJOWHITE("#ffdead"),
 
 	/**
 	 * The color navy
@@ -533,7 +533,7 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color oldlace
 	 **/
-	OLDLACE("#FDF5E6"),
+	OLDLACE("#fdf5e6"),
 
 	/**
 	 * The color olive
@@ -543,72 +543,72 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color olivedrab
 	 **/
-	OLIVEDRAB("#6B8E23"),
+	OLIVEDRAB("#6b8e23"),
 
 	/**
 	 * The color orange
 	 **/
-	ORANGE("#FFA500"),
+	ORANGE("#ffa500"),
 
 	/**
 	 * The color orangered
 	 **/
-	ORANGERED("#FF4500"),
+	ORANGERED("#ff4500"),
 
 	/**
 	 * The color orchid
 	 **/
-	ORCHID("#DA70D6"),
+	ORCHID("#da70d6"),
 
 	/**
 	 * The color palegoldenrod
 	 **/
-	PALEGOLDENROD("#EEE8AA"),
+	PALEGOLDENROD("#eee8aa"),
 
 	/**
 	 * The color palegreen
 	 **/
-	PALEGREEN("#98FB98"),
+	PALEGREEN("#98fb98"),
 
 	/**
 	 * The color paleturquoise
 	 **/
-	PALETURQUOISE("#AFEEEE"),
+	PALETURQUOISE("#afeeee"),
 
 	/**
 	 * The color palevioletred
 	 **/
-	PALEVIOLETRED("#DB7093"),
+	PALEVIOLETRED("#db7093"),
 
 	/**
 	 * The color papayawhip
 	 **/
-	PAPAYAWHIP("#FFEFD5"),
+	PAPAYAWHIP("#ffefd5"),
 
 	/**
 	 * The color peachpuff
 	 **/
-	PEACHPUFF("#FFDAB9"),
+	PEACHPUFF("#ffdab9"),
 
 	/**
 	 * The color peru
 	 **/
-	PERU("#CD853F"),
+	PERU("#cd853f"),
 
 	/**
 	 * The color pink
 	 **/
-	PINK("#FFC0CB"),
+	PINK("#ffc0cb"),
 
 	/**
 	 * The color plum
 	 **/
-	PLUM("#DDA0DD"),
+	PLUM("#dda0dd"),
 
 	/**
 	 * The color powderblue
 	 **/
-	POWDERBLUE("#B0E0E6"),
+	POWDERBLUE("#b0e0e6"),
 
 	/**
 	 * The color purple
@@ -618,62 +618,62 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color red
 	 **/
-	RED("#FF0000"),
+	RED("#ff0000"),
 
 	/**
 	 * The color rosybrown
 	 **/
-	ROSYBROWN("#BC8F8F"),
+	ROSYBROWN("#bc8f8f"),
 
 	/**
 	 * The color royalblue
 	 **/
-	ROYALBLUE("#4169E1"),
+	ROYALBLUE("#4169e1"),
 
 	/**
 	 * The color saddlebrown
 	 **/
-	SADDLEBROWN("#8B4513"),
+	SADDLEBROWN("#8b4513"),
 
 	/**
 	 * The color salmon
 	 **/
-	SALMON("#FA8072"),
+	SALMON("#fa8072"),
 
 	/**
 	 * The color sandybrown
 	 **/
-	SANDYBROWN("#F4A460"),
+	SANDYBROWN("#f4a460"),
 
 	/**
 	 * The color seagreen
 	 **/
-	SEAGREEN("#2E8B57"),
+	SEAGREEN("#2e8b57"),
 
 	/**
 	 * The color seashell
 	 **/
-	SEASHELL("#FFF5EE"),
+	SEASHELL("#fff5ee"),
 
 	/**
 	 * The color sienna
 	 **/
-	SIENNA("#A0522D"),
+	SIENNA("#a0522d"),
 
 	/**
 	 * The color silver
 	 **/
-	SILVER("#C0C0C0"),
+	SILVER("#c0c0c0"),
 
 	/**
 	 * The color skyblue
 	 **/
-	SKYBLUE("#87CEEB"),
+	SKYBLUE("#87ceeb"),
 
 	/**
 	 * The color slateblue
 	 **/
-	SLATEBLUE("#6A5ACD"),
+	SLATEBLUE("#6a5acd"),
 
 	/**
 	 * The color slategray
@@ -683,22 +683,22 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color snow
 	 **/
-	SNOW("#FFFAFA"),
+	SNOW("#fffafa"),
 
 	/**
 	 * The color springgreen
 	 **/
-	SPRINGGREEN("#00FF7F"),
+	SPRINGGREEN("#00ff7f"),
 
 	/**
 	 * The color steelblue
 	 **/
-	STEELBLUE("#4682B4"),
+	STEELBLUE("#4682b4"),
 
 	/**
 	 * The color tan
 	 **/
-	TAN("#D2B48C"),
+	TAN("#d2b48c"),
 
 	/**
 	 * The color teal
@@ -708,47 +708,47 @@ public enum SimpleColor implements Color {
 	/**
 	 * The color thistle
 	 **/
-	THISTLE("#D8BFD8"),
+	THISTLE("#d8bfd8"),
 
 	/**
 	 * The color tomato
 	 **/
-	TOMATO("#FF6347"),
+	TOMATO("#ff6347"),
 
 	/**
 	 * The color turquoise
 	 **/
-	TURQUOISE("#40E0D0"),
+	TURQUOISE("#40e0d0"),
 
 	/**
 	 * The color violet
 	 **/
-	VIOLET("#EE82EE"),
+	VIOLET("#ee82ee"),
 
 	/**
 	 * The color wheat
 	 **/
-	WHEAT("#F5DEB3"),
+	WHEAT("#f5deb3"),
 
 	/**
 	 * The color white
 	 **/
-	WHITE("#FFFFFF"),
+	WHITE("#ffffff"),
 
 	/**
 	 * The color whitesmoke
 	 **/
-	WHITESMOKE("#F5F5F5"),
+	WHITESMOKE("#f5f5f5"),
 
 	/**
 	 * The color yellow
 	 **/
-	YELLOW("#FFFF00"),
+	YELLOW("#ffff00"),
 
 	/**
 	 * The color yellowgreen
 	 **/
-	YELLOWGREEN("#9ACD32");
+	YELLOWGREEN("#9acd32");
 
 	/**
 	 * The color aqua

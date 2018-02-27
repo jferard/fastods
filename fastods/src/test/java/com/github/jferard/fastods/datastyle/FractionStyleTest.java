@@ -47,7 +47,7 @@ public class FractionStyleTest {
                         "number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" " +
                         "number:grouping=\"true\"/>" + "</number:number-style>" + "<number:number-style " +
                         "style:name=\"test-neg\" number:language=\"en\" " + "number:country=\"FR\" " +
-                        "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#FF0000\"/>" +
+                        "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#ff0000\"/>" +
                         "<number:text>-</number:text>" + "<number:fraction number:min-numerator-digits=\"1\" " +
                         "number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" " +
                         "number:grouping=\"true\"/>" + "<style:map style:condition=\"value()&gt;=0\" " +
@@ -66,7 +66,7 @@ public class FractionStyleTest {
                         "number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" " +
                         "number:grouping=\"true\"/>" + "</number:number-style>" + "<number:number-style " +
                         "style:name=\"test-neg\" number:language=\"de\" " + "number:country=\"DE\" " +
-                        "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#FF0000\"/>" +
+                        "style:volatile=\"true\">" + "<style:text-properties fo:color=\"#ff0000\"/>" +
                         "<number:text>-</number:text>" + "<number:fraction number:min-numerator-digits=\"1\" " +
                         "number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" " +
                         "number:grouping=\"true\"/>" + "<style:map style:condition=\"value()&gt;=0\" " +

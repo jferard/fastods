@@ -35,7 +35,7 @@ public class BorderAttributeTest {
 		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
 				.borderColor(SimpleColor.ALICEBLUE)
 				.borderStyle(BorderAttribute.Style.SOLID).build();
-		Assert.assertEquals("1cm solid #F0F8FF", ba.toXMLAttributeValue());
+		Assert.assertEquals("1cm solid #f0f8ff", ba.toXMLAttributeValue());
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class BorderAttributeTest {
 	public final void nullSizeTest() {
 		final BorderAttribute ba = BorderAttribute.builder()
 				.borderColor(SimpleColor.AQUAMARINE).build();
-		Assert.assertEquals("solid #7FFFD4", ba.toXMLAttributeValue());
+		Assert.assertEquals("solid #7fffd4", ba.toXMLAttributeValue());
 	}
 
 	@Test
