@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
@@ -64,7 +63,7 @@ public class TableCellStyle implements ObjectStyle {
     private final Margins margins;
     private final String name;
     // true
-    private final String parentCellStyleName;
+    private final TableCellStyle parentCellStyle;
     private final Align textAlign; // 'center','end','start','justify'
     private final TextProperties textProperties;
     private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
@@ -75,21 +74,22 @@ public class TableCellStyle implements ObjectStyle {
     /**
      * Create a new cell style
      *
-     * @param name                A unique name for this style
-     * @param hidden              true if the style is automatic
-     * @param dataStyle           the style of the data
-     * @param backgroundColor     the background color
-     * @param textProperties      the text properties
-     * @param textAlign           horizontal align
-     * @param verticalAlign       vertical align
-     * @param wrap                true if the text is wrapped
-     * @param parentCellStyleName the name of the parent style
-     * @param borders             the borders of the cell
-     * @param margins             the margins of the cell
+     * @param name            A unique name for this style
+     * @param hidden          true if the style is automatic
+     * @param dataStyle       the style of the data
+     * @param backgroundColor the background color
+     * @param textProperties  the text properties
+     * @param textAlign       horizontal align
+     * @param verticalAlign   vertical align
+     * @param wrap            true if the text is wrapped
+     * @param parentCellStyle the parent style
+     * @param borders         the borders of the cell
+     * @param margins         the margins of the cell
      */
     TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle, final Color backgroundColor,
                    final TextProperties textProperties, final Align textAlign, final VerticalAlign verticalAlign,
-                   final boolean wrap, final String parentCellStyleName, final Borders borders, final Margins margins) {
+                   final boolean wrap, final TableCellStyle parentCellStyle, final Borders borders,
+                   final Margins margins) {
         this.hidden = hidden;
         this.borders = borders;
         this.margins = margins;
@@ -100,7 +100,7 @@ public class TableCellStyle implements ObjectStyle {
         this.textAlign = textAlign;
         this.verticalAlign = verticalAlign;
         this.wrap = wrap;
-        this.parentCellStyleName = parentCellStyleName;
+        this.parentCellStyle = parentCellStyle;
     }
 
     @Override
@@ -131,8 +131,8 @@ public class TableCellStyle implements ObjectStyle {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table-cell");
-        if (this.parentCellStyleName != null)
-            util.appendEAttribute(appendable, "style:parent-style-name", this.parentCellStyleName);
+        if (this.parentCellStyle != null)
+            util.appendEAttribute(appendable, "style:parent-style-name", this.parentCellStyle.getRealName());
         if (this.dataStyle != null)
             util.appendEAttribute(appendable, "style:data-style-name", this.dataStyle.getName());
 
@@ -217,12 +217,19 @@ public class TableCellStyle implements ObjectStyle {
      * @return true if this is a derived cell style
      */
     public boolean hasParent() {
-        return this.parentCellStyleName != null;
+        return this.parentCellStyle != null;
     }
 
     @Override
     public boolean isHidden() {
         return this.hidden;
+    }
+
+    /**
+     * @return the parent cell style, never null
+     */
+    public TableCellStyle getParentCellStyle() {
+        return this.parentCellStyle;
     }
 
     /**

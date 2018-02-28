@@ -42,19 +42,19 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
     private Color backgroundColor;
     private DataStyle dataStyle;
     // true
-    private String parentCellStyleName;
     private TableCellStyle.Align textAlign; // 'center','end','start','justify'
     private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
     // 'top'
     private boolean wrap; // No line wrap when false, line wrap when
     private boolean hidden;
+    private TableCellStyle parentCellStyle;
 
     /**
      * @param name A unique name for this style
      */
     TableCellStyleBuilder(final String name) {
         this.name = TableStyleBuilder.checker.checkStyleName(name);
-        this.parentCellStyleName = "Default";
+        this.parentCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
         this.tpBuilder = TextProperties.builder();
         this.bordersBuilder = new BordersBuilder();
         this.marginsBuilder = new MarginsBuilder();
@@ -164,7 +164,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
     @Override
     public TableCellStyle build() {
         return new TableCellStyle(this.name, this.hidden, this.dataStyle, this.backgroundColor, this.tpBuilder.build(),
-                this.textAlign, this.verticalAlign, this.wrap, this.parentCellStyleName, this.bordersBuilder.build(),
+                this.textAlign, this.verticalAlign, this.wrap, this.parentCellStyle, this.bordersBuilder.build(),
                 this.marginsBuilder.build());
     }
 
@@ -320,12 +320,11 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
     /**
      * Sets the parent cell style
      *
-     * @param tableCellStyle the parent cell style
+     * @param tableCellStyle the parent cell style (not null)
      * @return this for fluent style.
      */
     public TableCellStyleBuilder parentCellStyle(final TableCellStyle tableCellStyle) {
-        if (tableCellStyle == null) this.parentCellStyleName = null;
-        else this.parentCellStyleName = tableCellStyle.getRealName();
+        this.parentCellStyle = tableCellStyle;
         return this;
     }
 

@@ -366,6 +366,7 @@ public class TableCellTest {
 
         // PLAY
         EasyMock.expect(this.table.findDefaultCellStyle(COLUMN_INDEX)).andReturn(cs);
+        EasyMock.expect(cs.getDataStyle()).andReturn(null);
         EasyMock.expect(this.stc.addDataStyle(numberDataStyle)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(EasyMock.isA(TableCellStyle.class), EasyMock.eq(numberDataStyle)))
                 .andReturn(this.tcs);
@@ -485,5 +486,6 @@ public class TableCellTest {
         EasyMock.expect(this.table.findDefaultCellStyle(COLUMN_INDEX)).andReturn(cs);
         EasyMock.expect(this.stc.addDataStyle(dataStyle)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(cs, dataStyle)).andReturn(this.tcs);
+        EasyMock.expect(cs.getDataStyle()).andReturn(null);
     }
 }

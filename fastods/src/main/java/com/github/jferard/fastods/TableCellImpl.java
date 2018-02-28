@@ -223,12 +223,17 @@ public class TableCellImpl implements TableCell {
     public void setDataStyle(final DataStyle dataStyle) {
         if (dataStyle == null) return;
 
+        this.stylesContainer.addDataStyle(dataStyle);
         TableCellStyle curStyle = this.style;
-        if (curStyle == null) //
+        if (curStyle == null)
             curStyle = this.parent.findDefaultCellStyle(this.columnIndex);
 
-        this.stylesContainer.addDataStyle(dataStyle);
-        this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
+        final DataStyle curDataStyle = curStyle.getDataStyle();
+        if (curDataStyle == null) { // no data style yet: create a custom child style
+            this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
+        } else { // a style and a datastyle => create a custom sibling cell style
+            this.style = this.stylesContainer.addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
+        }
     }
 
     public void setDateValue(final Calendar cal) {
@@ -306,14 +311,14 @@ public class TableCellImpl implements TableCell {
 
         this.stylesContainer.addContentStyle(style);
         final TableCellStyle curStyle = this.style;
-        if (curStyle == null) {
-            this.style = style;
+        if (curStyle == null) { // we know that dataStyle is null
+            this.style = style; // just set the new style as current style
         } else {
             final DataStyle dataStyle = curStyle.getDataStyle();
-            if (dataStyle != null) {
+            if (dataStyle == null) {
+                this.style = style; // just replace the current style by the new style
+            } else { // a style and a datastyle => create a custom child cell style
                 this.style = this.stylesContainer.addChildCellStyle(style, dataStyle);
-            } else {
-                this.style = style;
             }
         }
     }
