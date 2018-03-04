@@ -60,6 +60,7 @@ public class TableRowTest {
         this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, this.table, 10, 100);
         this.tcs = TableCellStyle.builder("---").build();
         PowerMock.mockStatic(TableColdCell.class);
+        PowerMock.resetAll();
     }
 
 
@@ -67,7 +68,7 @@ public class TableRowTest {
     public final void testRows() throws IOException {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
 
-        // PLAY
+        PowerMock.resetAll();
         EasyMock.expect(this.table.findDefaultCellStyle(5)).andReturn(cs);
         final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
         EasyMock.expect(this.stc.addDataStyle(booleanDataStyle)).andReturn(true);
@@ -77,22 +78,20 @@ public class TableRowTest {
         PowerMock.replayAll();
         this.row.getOrCreateCell(5).setBooleanValue(true);
         this.row.getOrCreateCell(10).setStringValue("a");
+
+        PowerMock.verifyAll();
         this.assertTableXMLEquals(
                 "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
                         "table:number-columns-repeated=\"5\"/>" + "<table:table-cell table:style-name=\"---\" " +
                         "office:value-type=\"boolean\" office:boolean-value=\"true\"/>" + "<table:table-cell " +
                         "table:number-columns-repeated=\"4\"/>" + "<table:table-cell office:value-type=\"string\" " +
                         "office:string-value=\"a\"/>" + "</table:table-row>");
-        PowerMock.verifyAll();
     }
 
     private void assertTableXMLEquals(final String xml) throws IOException {
-        DomTester.assertEquals(xml, this.getXML());
-    }
-
-    public String getXML() throws IOException {
         final StringBuilder sb = new StringBuilder();
         this.row.appendXMLToTable(this.xmlUtil, sb);
-        return sb.toString();
+        DomTester.assertEquals(xml, sb.toString());
     }
+
 }

@@ -20,14 +20,46 @@
  */
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
 
 public class TextStyleTest {
-	private XMLUtil util;
+    private XMLUtil util;
+    private TextStyle ts;
 
-	@Before
-	public void setUp() {
-		this.util = XMLUtil.create();
-	}
+    @Before
+    public void setUp() {
+        this.util = XMLUtil.create();
+        this.ts = new TextStyle("ts", false, TextProperties.builder().build());
+    }
+
+    @Test
+    public void testXML() throws IOException {
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"ts\" style:family=\"text\"><style:text-properties/></style:style>", this.ts);
+    }
+
+    @Test
+    public void testGetter() throws IOException {
+        Assert.assertEquals("ts", this.ts.getName());
+        Assert.assertEquals(ObjectStyleFamily.TEXT, this.ts.getFamily());
+        Assert.assertEquals("TEXT@ts", this.ts.getKey());
+        Assert.assertFalse(this.ts.isHidden());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testAddToElements() {
+        this.ts.addToElements(null);
+    }
+
+    @Test
+    public void testEmpty() {
+        Assert.assertFalse(new TextStyle("ts", false, TextProperties.builder().build()).isNotEmpty());
+        Assert.assertTrue(new TextStyle("ts", false, TextProperties.builder().fontWeightBold().build()).isNotEmpty());
+    }
 }

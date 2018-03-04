@@ -33,6 +33,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import com.google.common.collect.Sets;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -69,7 +70,7 @@ public class AnonymousOdsFileWriterTest {
     private ZipUTF8Writer writer;
     private XMLUtil xmlUtil;
 
-    protected void initOdsElements() {
+    private void initOdsElements() {
         TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
         TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
         TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
@@ -87,6 +88,12 @@ public class AnonymousOdsFileWriterTest {
         this.odsElements = PowerMock.createMock(OdsElements.class);
         this.builder = PowerMock.createMock(ZipUTF8WriterBuilder.class);
         this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+        PowerMock.resetAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test(expected = IOException.class)
@@ -101,19 +108,19 @@ public class AnonymousOdsFileWriterTest {
         final NamedOdsDocument document = new NamedOdsDocument(l, this.odsElements,
                 this.xmlUtil);
         of.createWriter().saveAs(".");
-        PowerMock.verifyAll();
     }
 
     @Test
     public final void testSaveEmpyDocumentToOutputStream() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final OdsDocument document = writer.document();
-        PowerMock.replayAll();
 
+        PowerMock.replayAll();
         writer.save(this.os);
+
+        // check
         final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
         final ZipInputStream zis = new ZipInputStream(is);
-
         ZipEntry entry = zis.getNextEntry();
         final Set<String> names = new HashSet<String>();
         while (entry != null) {
@@ -129,7 +136,6 @@ public class AnonymousOdsFileWriterTest {
                 "Configurations2/popupmenu/", "styles.xml", "content.xml",
                 "Configurations2/progressbar/", "Configurations2/statusbar/"),
                 names);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -150,6 +156,7 @@ public class AnonymousOdsFileWriterTest {
         this.odsElements.writeContent(this.xmlUtil, z);
         this.odsElements.writeSettings(this.xmlUtil, z);
         z.close();
+
         PowerMock.replayAll();
         final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
@@ -157,7 +164,6 @@ public class AnonymousOdsFileWriterTest {
                 new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb).filename(temp.getAbsolutePath())
                         .build();
         writer.save();
-        PowerMock.verifyAll();
     }
 
     @Test // (expected = IOException.class)
@@ -182,7 +188,6 @@ public class AnonymousOdsFileWriterTest {
         final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
         new AnonymousOdsFileWriter(this.logger, document).save(outputStream);
-        PowerMock.verifyAll();
     }
 
     @Test(expected = IOException.class)
@@ -196,7 +201,6 @@ public class AnonymousOdsFileWriterTest {
         final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
         new AnonymousOdsFileWriter(this.logger, document).saveAs((File) null);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -223,13 +227,13 @@ public class AnonymousOdsFileWriterTest {
         final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
         new AnonymousOdsFileWriter(this.logger, document).saveAs("test",  this.builder);
-        PowerMock.verifyAll();
     }
 
     @Test(expected = IOException.class)
     public final void testSaveWithWriterDir() throws IOException {
         final OutputStream outputStream = PowerMock.createMock(OutputStream.class);
         final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
+        
         // PLAY
         this.initOdsElements();
 
@@ -237,6 +241,5 @@ public class AnonymousOdsFileWriterTest {
         final NamedOdsDocument document = new NamedOdsDocument(this.logger, this.odsElements,
                 this.xmlUtil);
         new AnonymousOdsFileWriter(this.logger, document).saveAs(".",  this.builder);
-        PowerMock.verifyAll();
     }
 }

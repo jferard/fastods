@@ -28,16 +28,46 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
 
 public class StylesContainerTest {
+    private static final String PS1_MASTER_XML = "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">"
+            + "<style:header>" + "<text:p><text:span text:style-name=\"none\"></text:span></text:p>" +
+            "</style:header>" + "<style:header-left style:display=\"false\"/>" + "<style:footer><text:p><text:span "
+            + "text:style-name=\"none\"></text:span></text:p>" + "</style:footer><style:footer-left " +
+            "style:display=\"false\"/>" + "</style:master-page>";
+
+    private static final String PS_LAYOUT_XML_FORMAT;
+    private static final String PS1_LAYOUT_XML;
+    private static final String PS2_LAYOUT_XML;
+
+    private static final String DS_XML_FORMAT;
+    private static final String DS2_XML;
+    private static final String DS1_XML;
+
+    static {
+        DS_XML_FORMAT = "<number:boolean-style style:name=\"a\" number:language=\"en\" " + "number:country=\"%s\" " +
+                "style:volatile=\"true\"/>";
+
+        DS1_XML = String.format(DS_XML_FORMAT, "A");
+        DS2_XML = String.format(DS_XML_FORMAT, "B");
+
+        PS_LAYOUT_XML_FORMAT = "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties " +
+                "fo:page-width=\"21cm\" " + "fo:page-height=\"29.7cm\" " + "style:num-format=\"1\" " +
+                "style:writing-mode=\"lr-tb\" " + "style:print-orientation=\"portrait\" " + "fo:margin=\"%s\"/>" +
+                "<style:header-style>" + "<style:header-footer-properties " + "fo:min-height=\"0cm\" " +
+                "fo:margin=\"0cm\"/>" + "</style:header-style>" + "<style:footer-style>" +
+                "<style:header-footer-properties " + "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" + "</style:page-layout>";
+        PS1_LAYOUT_XML = String.format(PS_LAYOUT_XML_FORMAT, "1pt");
+        PS2_LAYOUT_XML = String.format(PS_LAYOUT_XML_FORMAT, "2pt");
+    }
+
     private DataStyle ds1;
     private DataStyle ds2;
     private Locale locale;
@@ -57,13 +87,6 @@ public class StylesContainerTest {
 
         this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
         this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
-        PowerMock.resetAll();
-        PowerMock.replayAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     // CONTENT
@@ -76,36 +99,28 @@ public class StylesContainerTest {
     @Test
     public final void testDataStyleCreate() throws IOException {
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
-        this.assertWriteDataStylesXMLEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"A\" " +
-                        "style:volatile=\"true\"/>");
+        this.assertWriteDataStylesXMLEquals(DS1_XML);
     }
 
     @Test
     public final void testDataStyleCreateThenUpdate() throws IOException {
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.UPDATE)); // country: a -> b
-        this.assertWriteDataStylesXMLEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" " +
-                        "style:volatile=\"true\"/>");
+        this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
     public final void testDataStyleCreateThenUpdateIfExists() throws IOException {
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE_OR_UPDATE));
-        this.assertWriteDataStylesXMLEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" " +
-                        "style:volatile=\"true\"/>");
+        this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
     public final void testDataStyleCreateTwice() throws IOException {
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
         Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE));
-        this.assertWriteDataStylesXMLEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"A\" " +
-                        "style:volatile=\"true\"/>");
+        this.assertWriteDataStylesXMLEquals(DS1_XML);
     }
 
     @Test
@@ -117,28 +132,14 @@ public class StylesContainerTest {
     @Test
     public final void testDataStyleUpdateIfExists() throws IOException {
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE_OR_UPDATE));
-        this.assertWriteDataStylesXMLEquals(
-                "<number:boolean-style style:name=\"a\" number:language=\"en\" number:country=\"B\" " +
-                        "style:volatile=\"true\"/>");
+        this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
     public final void testPageStyleCreate() throws IOException {
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
-        this.assertWriteMasterXMLEquals(
-                "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">" + "<style:header>" +
-                        "<text:p><text:span text:style-name=\"none\"></text:span></text:p>" + "</style:header>" +
-                        "<style:header-left style:display=\"false\"/>" + "<style:footer><text:p><text:span " +
-                        "text:style-name=\"none\"></text:span></text:p>" + "</style:footer><style:footer-left " +
-                        "style:display=\"false\"/>" + "</style:master-page>");
-        this.assertWriteLayoutXMLEquals(
-                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" " + "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" " + "fo:margin=\"1pt\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:footer-style>" +
-                        "</style:page-layout>");
+        this.assertWriteMasterXMLEquals(PS1_MASTER_XML);
+        this.assertWriteLayoutXMLEquals(PS1_LAYOUT_XML);
     }
 
 
@@ -146,13 +147,7 @@ public class StylesContainerTest {
     public final void testPageStyleCreateThenUpdate() throws IOException {
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.UPDATE));
-        this.assertWriteLayoutXMLEquals(
-                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
+        this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
 
     }
 
@@ -160,26 +155,14 @@ public class StylesContainerTest {
     public final void testPageStyleCreateThenUpdateIfExists() throws IOException {
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
-        this.assertWriteLayoutXMLEquals(
-                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
+        this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
     }
 
     @Test
     public final void testPageStyleCreateTwice() throws IOException {
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
         Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE));
-        this.assertWriteLayoutXMLEquals(
-                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1pt\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
+        this.assertWriteLayoutXMLEquals(PS1_LAYOUT_XML);
     }
 
     @Test
@@ -191,13 +174,7 @@ public class StylesContainerTest {
     @Test
     public final void testPageStyleUpdateIfExists() throws IOException {
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
-        this.assertWriteLayoutXMLEquals(
-                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"2pt\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>");
+        this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
     }
 
     @Test

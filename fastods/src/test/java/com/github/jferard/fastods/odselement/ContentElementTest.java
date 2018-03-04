@@ -32,6 +32,7 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,18 +54,26 @@ public class ContentElementTest {
         this.format = DataStylesBuilder.create(Locale.US).build();
         this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(), this.format,
                 this.container);
+        PowerMock.resetAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testAddChildCellStyle() {
         final TableCellStyle style = PowerMock.createNiceMock(TableCellStyle.class);
+
+        // play
         EasyMock.expect(
                 this.container.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, this.format.getBooleanDataStyle()))
                 .andReturn(style);
+
         PowerMock.replayAll();
         Assert.assertEquals(style,
                 this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN));
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -72,7 +81,6 @@ public class ContentElementTest {
         PowerMock.replayAll();
         Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
                 this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING));
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -80,7 +88,6 @@ public class ContentElementTest {
         PowerMock.replayAll();
         Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
                 this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.VOID));
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -95,114 +102,115 @@ public class ContentElementTest {
         Assert.assertEquals(1, this.content.getTableCount());
         Assert.assertEquals(Collections.singletonList(t), this.content.getTables());
         Assert.assertEquals(t, this.content.getLastTable());
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushRowsNoTable() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushRowsWithOneTable() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        final Table t = this.content.addTable("t1", 1, 1);
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushRowsWithTwoTables() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        final Table t1 = this.content.addTable("t1", 1, 1);
-        final Table t2 = this.content.addTable("t2", 1, 1);
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushRowsWithThreeTables() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        final Table t1 = this.content.addTable("t1", 1, 1);
-        final Table t2 = this.content.addTable("t2", 1, 1);
-        final Table t3 = this.content.addTable("t3", 1, 1);
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
-        PowerMock.verifyAll();
     }
 
-    @Test(expected=IndexOutOfBoundsException.class)
+    @Test
     public void flushTablesNoTable() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushTables(util, z);
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushTablesWithOneTable() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        final Table t = this.content.addTable("t1", 1, 1);
+        this.content.addTable("t1",1,1);
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushTables(util, z);
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushTablesWithTwoTables() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        final Table t1 = this.content.addTable("t1", 1, 1);
-        final Table t2 = this.content.addTable("t2", 1, 1);
+        this.content.addTable("t1",1,1);
+        this.content.addTable("t2",2,2);
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
-        PowerMock.verifyAll();
     }
 
     @Test()
     public void flushTablesWithThreeTables() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        final Table t1 = this.content.addTable("t1", 1, 1);
-        final Table t2 = this.content.addTable("t2", 1, 1);
-        final Table t3 = this.content.addTable("t3", 1, 1);
+        this.content.addTable("t1",1,1);
+        this.content.addTable("t2",2,2);
+        this.content.addTable("t2",3,3);
+
+        // play
         this.container.writeDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
 
         PowerMock.replayAll();
         this.content.flushTables(util, z);
-        PowerMock.verifyAll();
     }
 }

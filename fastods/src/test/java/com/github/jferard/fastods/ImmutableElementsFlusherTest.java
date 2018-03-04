@@ -39,6 +39,8 @@ public class ImmutableElementsFlusherTest {
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
         final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
 
+        // play
+        PowerMock.resetAll();
         odsElements.createEmptyElements(w);
         odsElements.writeImmutableElements(util, w);
 

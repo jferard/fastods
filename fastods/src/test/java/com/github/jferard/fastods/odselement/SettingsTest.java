@@ -58,7 +58,6 @@ public class SettingsTest {
     @After
     public void tearDown() {
         PowerMock.verifyAll();
-
     }
 
     @Test
@@ -180,9 +179,10 @@ public class SettingsTest {
         final ConfigItem item = new ConfigItem("n", "t", "v");
         final ConfigItemMapEntrySingleton singleton = ConfigItemMapEntrySingleton.createSingleton("singleton", item);
 
+        // play
         EasyMock.expect(table.getConfigEntry()).andReturn(singleton);
-        PowerMock.replayAll();
 
+        PowerMock.replayAll();
         final Settings s = this.createVoidSettings();
         s.addTable(table);
         final ConfigBlock block = s.getRootBlocks().get(0);

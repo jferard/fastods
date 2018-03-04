@@ -64,6 +64,8 @@ public class ParagraphTest {
     @Test
     public final void testLinks() throws IOException {
         final Table table = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
@@ -84,6 +86,7 @@ public class ParagraphTest {
         final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
         final Table table = PowerMock.createMock(Table.class);
 
+        PowerMock.resetAll();
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();

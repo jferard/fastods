@@ -62,7 +62,7 @@ public class TableBuilderTest {
 
         this.table = PowerMock.createMock(Table.class);
         this.appender = PowerMock.createMock(TableAppender.class);
-
+        PowerMock.resetAll();
     }
 
     @Test

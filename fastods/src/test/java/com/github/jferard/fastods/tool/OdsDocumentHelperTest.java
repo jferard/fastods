@@ -28,6 +28,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -38,55 +39,64 @@ import java.util.Calendar;
 import java.util.List;
 
 public class OdsDocumentHelperTest {
-	private OdsFileHelper helper;
-	private List<Table> l;
-	private NamedOdsDocument odsDocument;
-	private PositionUtil positionUtil;
-	private Table t1;
-	private Table t2;
-	private Table t3;
-	private TableHelper tableHelper;
+    private OdsFileHelper helper;
+    private List<Table> l;
+    private NamedOdsDocument odsDocument;
+    private PositionUtil positionUtil;
+    private Table t1;
+    private Table t2;
+    private Table t3;
+    private TableHelper tableHelper;
 
-	@Before
-	public void setUp() {
-		this.positionUtil = new PositionUtil(new EqualityUtil());
-		this.odsDocument = PowerMock.createMock(NamedOdsDocument.class);
-		this.tableHelper = PowerMock.createMock(TableHelper.class);
-		this.t1 = PowerMock.createMock(Table.class);
-		this.t2 = PowerMock.createMock(Table.class);
-		this.t3 = PowerMock.createMock(Table.class);
-		this.l = Arrays.asList(this.t1, this.t2, this.t3);
-		this.helper = new OdsFileHelper(this.odsDocument, this.tableHelper,
-				this.positionUtil);
-	}
+    @Before
+    public void setUp() {
+        this.positionUtil = new PositionUtil(new EqualityUtil());
+        this.odsDocument = PowerMock.createMock(NamedOdsDocument.class);
+        this.tableHelper = PowerMock.createMock(TableHelper.class);
+        this.t1 = PowerMock.createMock(Table.class);
+        this.t2 = PowerMock.createMock(Table.class);
+        this.t3 = PowerMock.createMock(Table.class);
+        this.l = Arrays.asList(this.t1, this.t2, this.t3);
+        this.helper = new OdsFileHelper(this.odsDocument, this.tableHelper, this.positionUtil);
+        PowerMock.resetAll();
+    }
 
-	@Test
-	public final void testCellMergeInAllTables() throws FastOdsException, IOException {
-		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(1234567891011L);
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
+    }
 
-		EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
-		this.tableHelper.setCellMerge(this.t1, 10, 5, 3, 2);
-		this.tableHelper.setCellMerge(this.t2, 10, 5, 3, 2);
-		this.tableHelper.setCellMerge(this.t3, 10, 5, 3, 2);
-		PowerMock.replayAll();
-		this.helper.setCellMergeInAllTables("F11", 3, 2);
-		PowerMock.verifyAll();
-	}
 
-	@Test
-	public final void testCellValueInAllTables() throws FastOdsException, IOException {
-		final TableCellStyle ts = TableCellStyle.builder("a").build();
-		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(1234567891011L);
-		final BooleanValue v = new BooleanValue(true);
+    @Test
+    public final void testCellMergeInAllTables() throws FastOdsException, IOException {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(1234567891011L);
 
-		EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
-		this.tableHelper.setCellValue(this.t1, 6, 2, v, ts);
-		this.tableHelper.setCellValue(this.t2, 6, 2, v, ts);
-		this.tableHelper.setCellValue(this.t3, 6, 2, v, ts);
-		PowerMock.replayAll();
-		this.helper.setCellValueInAllTables("C7", v, ts);
-		PowerMock.verifyAll();
-	}
+        // play
+        EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
+        this.tableHelper.setCellMerge(this.t1, 10, 5, 3, 2);
+        this.tableHelper.setCellMerge(this.t2, 10, 5, 3, 2);
+        this.tableHelper.setCellMerge(this.t3, 10, 5, 3, 2);
+
+        PowerMock.replayAll();
+        this.helper.setCellMergeInAllTables("F11", 3, 2);
+
+    }
+
+    @Test
+    public final void testCellValueInAllTables() throws FastOdsException, IOException {
+        final TableCellStyle ts = TableCellStyle.builder("a").build();
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(1234567891011L);
+        final BooleanValue v = new BooleanValue(true);
+
+        // play
+        EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
+        this.tableHelper.setCellValue(this.t1, 6, 2, v, ts);
+        this.tableHelper.setCellValue(this.t2, 6, 2, v, ts);
+        this.tableHelper.setCellValue(this.t3, 6, 2, v, ts);
+
+        PowerMock.replayAll();
+        this.helper.setCellValueInAllTables("C7", v, ts);
+    }
 }

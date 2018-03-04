@@ -29,6 +29,8 @@ import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
+import java.io.IOException;
+
 /**
  * The BorderAttribute class represents an xml attribute in style:style tag.
  *
@@ -36,142 +38,135 @@ import com.github.jferard.fastods.util.XMLUtil;
  * @author Martin Schulz
  */
 public class BorderAttribute {
-	/**
-	 * The position of the border.
-	 */
-	public enum Position {
-		/**
-		 * All borders
-		 */
-		ALL("fo:border"),
-		/**
-		* The bottom boder
-		*/
-		BOTTOM("fo:border-bottom"),
-		/**
-		 * The left border
-		 */
-		LEFT("fo:border-left"),
-		/**
-		 * the right border
-		 */
-		RIGHT("fo:border-right"),
-		/**
-		 * The top border
-		 */
-		TOP("fo:border-top");
+    /**
+     * The border color default is #000000 (black).
+     */
+    public static final Color DEFAULT_BORDER_COLOR = SimpleColor.BLACK;
+    /**
+     * The border size default is 0.1cm
+     */
+    public static final Length DEFAULT_BORDER_SIZE = SimpleLength.mm(1);
+    /**
+     * The default position for border
+     */
+    public static final Position DEFAULT_POSITION = Position.ALL;
+    /**
+     * The default style
+     */
+    public static final Style DEFAULT_STYLE = Style.SOLID;
 
-		private final String attrName;
+    /**
+     * @return a builder for BorderAttribute
+     */
+    public static BorderAttributeBuilder builder() {
+        return new BorderAttributeBuilder();
+    }
 
-		Position(final String attrName) {
-			this.attrName = attrName;
-		}
+    /**
+     * The border color
+     */
+    private final Color borderColor;
+    /**
+     * The border size.
+     */
+    private final Length borderSize;
+    /**
+     * The border style. Either BorderAttribute.BORDER_SOLID or
+     * BorderAttribute.BORDER_DOUBLE.<br>
+     * Default is BorderAttribute.BORDER_SOLID.
+     */
+    private final Style style;
 
-		String getAttrName() {
-			return this.attrName;
-		}
-	}
+    /**
+     * size is a length value
+     *
+     * @param size  The size of the border
+     * @param color The color of the border in format '#rrggbb'
+     * @param style The style of the border, BorderAttribute.BORDER_SOLID or
+     *              BorderAttribute.BORDER_DOUBLE
+     */
+    BorderAttribute(final Length size, final Color color, final Style style) {
+        this.borderSize = size;
+        this.borderColor = color;
+        this.style = style;
+    }
 
-	/**
-	 * The style of the border
-	 */
-	public enum Style {
-		/**
-		 * Double lined border
-		 */
-		DOUBLE("double"),
-		/**
-		 * Solid border
-		 */
-		SOLID("solid");
+    private CharSequence toXMLAttributeValue() {
+        final StringBuilder sb = new StringBuilder();
 
-		private final String attrValue;
+        if (this.borderSize == null) {
+            if (this.borderColor != SimpleColor.NONE) {
+                sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR).append(this.borderColor.hexValue());
+            }
+        } else if (this.borderColor == SimpleColor.NONE) {
+            sb.append(this.borderSize);
+        } else {
+            sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR).append(this.style.attrValue)
+                    .append(XMLUtil.SPACE_CHAR).append(this.borderColor.hexValue());
+        }
+        return sb;
+    }
 
-		Style(final String attrValue) {
-			this.attrValue = attrValue;
-		}
+    /**
+     * @return the attribute value in XML, see 20.176 fo Border Properties
+     */
+    public void appendXMLAttribute(final XMLUtil util, final Appendable appendable,
+                                   final String attrName) throws IOException {
+        util.appendAttribute(appendable, attrName, this.toXMLAttributeValue());
+    }
 
-		String getAttrValue() {
-			return this.attrValue;
-		}
-	}
+    /**
+     * The position of the border.
+     */
+    public enum Position {
+        /**
+         * All borders
+         */
+        ALL("fo:border"), /**
+         * The bottom boder
+         */
+        BOTTOM("fo:border-bottom"), /**
+         * The left border
+         */
+        LEFT("fo:border-left"), /**
+         * the right border
+         */
+        RIGHT("fo:border-right"), /**
+         * The top border
+         */
+        TOP("fo:border-top");
 
-	/**
-	 * The border color default is #000000 (black).
-	 */
-	public static final Color DEFAULT_BORDER_COLOR = SimpleColor.BLACK;
+        private final String attrName;
 
-	/**
-	 * The border size default is 0.1cm
-	 */
-	public static final Length DEFAULT_BORDER_SIZE = SimpleLength.mm(1);
+        Position(final String attrName) {
+            this.attrName = attrName;
+        }
 
-	/**
-	 * The default position for border
-	 */
-	public static final Position DEFAULT_POSITION = Position.ALL;
+        String getAttrName() {
+            return this.attrName;
+        }
+    }
 
-	/**
-	 * The default style
-	 */
-	public static final Style DEFAULT_STYLE = Style.SOLID;
+    /**
+     * The style of the border
+     */
+    public enum Style {
+        /**
+         * Double lined border
+         */
+        DOUBLE("double"), /**
+         * Solid border
+         */
+        SOLID("solid");
 
-	/**
-	 * @return a builder for BorderAttribute
-	 */
-	public static BorderAttributeBuilder builder() {
-		return new BorderAttributeBuilder();
-	}
+        private final String attrValue;
 
-	/**
-	 * The border color
-	 */
-	private final Color borderColor;
+        Style(final String attrValue) {
+            this.attrValue = attrValue;
+        }
 
-	/**
-	 * The border size.
-	 */
-	private final Length borderSize;
-
-	/**
-	 * The border style. Either BorderAttribute.BORDER_SOLID or
-	 * BorderAttribute.BORDER_DOUBLE.<br>
-	 * Default is BorderAttribute.BORDER_SOLID.
-	 */
-	private final Style style;
-
-	/**
-	 * size is a length value
-	 *
-	 * @param size
-	 *            The size of the border
-	 * @param color
-	 *            The color of the border in format '#rrggbb'
-	 * @param style
-	 *            The style of the border, BorderAttribute.BORDER_SOLID or
-	 *            BorderAttribute.BORDER_DOUBLE
-	 */
-	BorderAttribute(final Length size, final Color color, final Style style) {
-		this.borderSize = size;
-		this.borderColor = color;
-		this.style = style;
-	}
-
-	/**
-	 * @return the attribute value in XML, see 20.176 fo Border Properties
-	 */
-	public String toXMLAttributeValue() {
-		final StringBuilder sb = new StringBuilder();
-		if (this.borderSize == null && this.borderColor == SimpleColor.NONE)
-			return "";
-
-		if (this.borderSize != null)
-			sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR);
-
-		if (this.borderColor != SimpleColor.NONE)
-			sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
-					.append(this.borderColor.hexValue());
-
-		return sb.toString().trim();
-	}
+        String getAttrValue() {
+            return this.attrValue;
+        }
+    }
 }

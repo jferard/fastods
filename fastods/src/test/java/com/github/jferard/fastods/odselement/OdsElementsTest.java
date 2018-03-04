@@ -23,6 +23,7 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,57 +33,54 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class OdsElementsTest {
-	private ContentElement contentElement;
-	private Locale locale;
-	private ManifestElement manifestElement;
-	private MetaElement metaElement;
-	private MimetypeElement mimetypeElement;
-	private OdsElements oe;
-	private SettingsElement settingsElement;
-	private StylesContainer stylesContainer;
-	private StylesElement stylesElement;
-	private XMLUtil util;
+    public static final int TABLE_INDEX = 9;
+    private ContentElement contentElement;
+    private Locale locale;
+    private ManifestElement manifestElement;
+    private MetaElement metaElement;
+    private MimetypeElement mimetypeElement;
+    private OdsElements oe;
+    private SettingsElement settingsElement;
+    private StylesContainer stylesContainer;
+    private StylesElement stylesElement;
+    private XMLUtil util;
 
-	@Before
-	public void setUp() {
-		final Logger logger = PowerMock.createNiceMock(Logger.class);
-		this.mimetypeElement = PowerMock.createMock(MimetypeElement.class);
-		this.manifestElement = PowerMock.createMock(ManifestElement.class);
-		this.settingsElement = PowerMock.createMock(SettingsElement.class);
-		this.metaElement = PowerMock.createMock(MetaElement.class);
-		this.contentElement = PowerMock.createMock(ContentElement.class);
-		this.stylesElement = PowerMock.createMock(StylesElement.class);
-		this.stylesContainer = new StylesContainer();
+    @Before
+    public void setUp() {
+        final Logger logger = PowerMock.createNiceMock(Logger.class);
+        this.mimetypeElement = PowerMock.createMock(MimetypeElement.class);
+        this.manifestElement = PowerMock.createMock(ManifestElement.class);
+        this.settingsElement = PowerMock.createMock(SettingsElement.class);
+        this.metaElement = PowerMock.createMock(MetaElement.class);
+        this.contentElement = PowerMock.createMock(ContentElement.class);
+        this.stylesElement = PowerMock.createMock(StylesElement.class);
+        this.stylesContainer = new StylesContainer();
 
-		this.oe = new OdsElements(logger, this.stylesContainer, this.mimetypeElement, this.manifestElement,
-				this.settingsElement, this.metaElement, this.contentElement,
-				this.stylesElement);
-		this.util = XMLUtil.create();
-		this.locale = Locale.US;
-	}
+        this.oe = new OdsElements(logger, this.stylesContainer, this.mimetypeElement, this.manifestElement,
+                this.settingsElement, this.metaElement, this.contentElement, this.stylesElement);
+        this.util = XMLUtil.create();
+        this.locale = Locale.US;
+        PowerMock.resetAll();
+    }
 
-	/*
-	@Test
-	public final void testAddTextStyle() {
-		final TextStyle ts = TextStyle.builder("test").build();
-	
-		this.stylesElement.addTextStyle(ts);
-		PowerMock.replayAll();
-		this.oe.addTextStyle(ts);
-		PowerMock.verifyAll();
-	}*/
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testGetTable() {
-		final Table t = PowerMock.createMock(Table.class);
-		EasyMock.expect(this.contentElement.getTable(9)).andReturn(t);
-		EasyMock.expect(this.contentElement.getTable("nine")).andReturn(t);
-		EasyMock.expect(this.contentElement.getTableCount()).andReturn(8);
-		PowerMock.replayAll();
-		Assert.assertEquals(t, this.oe.getTable(9));
-		Assert.assertEquals(t, this.oe.getTable("nine"));
-		Assert.assertEquals(8, this.oe.getTableCount());
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testGetTable() {
+        final Table t = PowerMock.createMock(Table.class);
+
+        // play
+        EasyMock.expect(this.contentElement.getTable(TABLE_INDEX)).andReturn(t);
+        EasyMock.expect(this.contentElement.getTable("nine")).andReturn(t);
+        EasyMock.expect(this.contentElement.getTableCount()).andReturn(TABLE_INDEX + 1);
+
+        PowerMock.replayAll();
+        Assert.assertEquals(t, this.oe.getTable(TABLE_INDEX));
+        Assert.assertEquals(t, this.oe.getTable("nine"));
+        Assert.assertEquals(TABLE_INDEX + 1, this.oe.getTableCount());
+    }
 
 }

@@ -99,7 +99,6 @@ public class ContainerTest {
         EasyMock.expectLastCall().anyTimes();
 
         PowerMock.replayAll();
-
         this.c.debug();
         Assert.assertTrue(this.c.add("a", 1, Mode.CREATE));
         PowerMock.verifyAll();

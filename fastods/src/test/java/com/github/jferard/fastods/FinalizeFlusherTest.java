@@ -41,6 +41,8 @@ public class FinalizeFlusherTest {
         final SettingsElement settingsElements = PowerMock.createMock(SettingsElement.class);
         final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
 
+        // play
+        PowerMock.resetAll();
         contentElement.writePostamble(util, w);
         settingsElements.write(util, w);
         w.close();

@@ -59,11 +59,11 @@ public class TextStyle implements ObjectStyle {
 
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
-        appendable.append("<style:style ");
+        appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "text");
         appendable.append(">");
-        this.getTextProperties().appendXMLContent(util, appendable);
+        this.textProperties.appendXMLContent(util, appendable);
         appendable.append("</style:style>");
     }
 
@@ -83,17 +83,10 @@ public class TextStyle implements ObjectStyle {
     }
 
     /**
-     * @return the text properties of this style
-     */
-    public TextProperties getTextProperties() {
-        return this.textProperties;
-    }
-
-    /**
      * @return true if this style has a name and a least one text property is set
      */
     public boolean isNotEmpty() {
-        return this.name != null && this.name.length() > 0 && this.getTextProperties().isNotEmpty();
+        return this.textProperties.isNotEmpty();
     }
 
     @Override

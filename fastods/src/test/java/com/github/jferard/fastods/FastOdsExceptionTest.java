@@ -24,11 +24,15 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class FastOdsExceptionTest {
-
 	@Test
-	public final void testUnkownTableName() {
-		final Exception e = FastOdsException.unkownTableName("tab");
-		Assert.assertEquals("Unknown table name [tab]", e.getMessage());
+	public final void testWrongTableName() {
+		final Exception e = FastOdsException.wrongTableName("tab");
+		Assert.assertEquals("Wrong table name [tab]", e.getMessage());
 	}
 
+	@Test
+	public final void testWrongTableNumber() throws FastOdsException {
+		final Exception e = FastOdsException.wrongTableNumber(10);
+		Assert.assertEquals("Wrong table number [10]", e.getMessage());
+	}
 }

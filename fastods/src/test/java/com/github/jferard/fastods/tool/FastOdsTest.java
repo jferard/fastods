@@ -21,7 +21,9 @@
 package com.github.jferard.fastods.tool;
 
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
@@ -36,87 +38,92 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ Desktop.class, FastOds.class })
+@PrepareForTest({Desktop.class, FastOds.class})
 public class FastOdsTest {
+    @Before
+    public void setUp() {
+        PowerMock.resetAll();
+    }
 
-	@Test
-	public final void testOpenDir() {
-		PowerMock.replayAll();
-		Assert.assertFalse(FastOds.openFile(new File(".")));
-		PowerMock.verifyAll();
-	}
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testOpenFile() throws IOException {
-		PowerMock.mockStatic(Desktop.class);
-		final Desktop d = PowerMock.createMock(Desktop.class);
-		final File f = new File(".", "pom.xml");
+    @Test
+    public final void testOpenDir() {
+        PowerMock.replayAll();
+        Assert.assertFalse(FastOds.openFile(new File(".")));
+    }
 
-		// PLAY
-		EasyMock.expect(Desktop.getDesktop()).andReturn(d);
-		d.open(f);
-		PowerMock.replayAll();
-		Assert.assertTrue(FastOds.openFile(f));
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testOpenFile() throws IOException {
+        PowerMock.mockStatic(Desktop.class);
+        final Desktop d = PowerMock.createMock(Desktop.class);
+        final File f = new File(".", "pom.xml");
+
+        // PLAY
+        EasyMock.expect(Desktop.getDesktop()).andReturn(d);
+        d.open(f);
+
+        PowerMock.replayAll();
+        Assert.assertTrue(FastOds.openFile(f));
+    }
 
     @Test
     public final void testOpenInexistentFile() throws IOException {
         final File f = PowerMock.createMock(File.class);
-        EasyMock.expect(f.exists()).andReturn(false);
 
         // PLAY
+        EasyMock.expect(f.exists()).andReturn(false);
+
         PowerMock.replayAll();
         Assert.assertFalse(FastOds.openFile(f));
-        PowerMock.verifyAll();
     }
 
     @Test
     public final void testOpenDirMock() throws IOException {
         final File f = PowerMock.createMock(File.class);
+
+        // PLAY
         EasyMock.expect(f.exists()).andReturn(true);
         EasyMock.expect(f.isFile()).andReturn(false);
 
-        // PLAY
         PowerMock.replayAll();
         Assert.assertFalse(FastOds.openFile(f));
-        PowerMock.verifyAll();
     }
 
     @Test
-	public final void testOpenFileError() throws IOException {
-		// let's hide logging infos
-		final Logger rootLogger = Logger.getLogger("");
-		rootLogger.setLevel(Level.OFF);
-		for (final Handler h : rootLogger.getHandlers())
-			h.setLevel(Level.OFF);
+    public final void testOpenFileError() throws IOException {
+        // let's hide logging infos
+        final Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.OFF);
+        for (final Handler h : rootLogger.getHandlers())
+            h.setLevel(Level.OFF);
 
-		PowerMock.mockStatic(Desktop.class);
-		final Desktop d = PowerMock.createMock(Desktop.class);
-		final File f = new File(".", "pom.xml");
+        PowerMock.mockStatic(Desktop.class);
+        final Desktop d = PowerMock.createMock(Desktop.class);
+        final File f = new File(".", "pom.xml");
 
-		// PLAY
-		EasyMock.expect(Desktop.getDesktop()).andReturn(d);
-		d.open(f);
-		EasyMock.expectLastCall().andThrow(new IOException());
-		PowerMock.replayAll();
+        // PLAY
+        EasyMock.expect(Desktop.getDesktop()).andReturn(d);
+        d.open(f);
+        EasyMock.expectLastCall().andThrow(new IOException());
 
-		Assert.assertFalse(FastOds.openFile(f));
-		PowerMock.verifyAll();
-	}
+        PowerMock.replayAll();
+        Assert.assertFalse(FastOds.openFile(f));
+    }
 
-	@Test
-	public final void testOpenNonExisting() {
-		PowerMock.replayAll();
-		Assert.assertFalse(FastOds.openFile(new File(".", "@")));
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testOpenNonExisting() {
+        PowerMock.replayAll();
+        Assert.assertFalse(FastOds.openFile(new File(".", "@")));
+    }
 
-	@Test
-	public final void testXMLUtil() {
-		PowerMock.replayAll();
-		FastOds.getXMLUtil();
-		FastOds.getXMLUtil();
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testXMLUtil() {
+        PowerMock.replayAll();
+        FastOds.getXMLUtil();
+        FastOds.getXMLUtil();
+    }
 }

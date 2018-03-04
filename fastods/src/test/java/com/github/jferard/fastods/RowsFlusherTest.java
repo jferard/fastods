@@ -36,7 +36,6 @@ import java.util.List;
  * Created by jferard on 09/05/17.
  */
 public class RowsFlusherTest {
-
     private XMLUtil util;
     private ZipUTF8Writer w;
 

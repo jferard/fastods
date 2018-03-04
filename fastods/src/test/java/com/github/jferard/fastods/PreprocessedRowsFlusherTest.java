@@ -49,6 +49,7 @@ public class PreprocessedRowsFlusherTest {
         this.util = XMLUtil.create();
         this.w = PowerMock.createMock(ZipUTF8Writer.class);
         this.sb = new StringBuilder(1024 * 32);
+        PowerMock.resetAll();
     }
 
     @Test

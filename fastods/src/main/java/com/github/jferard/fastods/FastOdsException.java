@@ -31,13 +31,14 @@ package com.github.jferard.fastods;
 public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-	/**
-	 * @param tableName the name of the table that is unknown
-	 * @return an exception
-	 */
-	public static FastOdsException unkownTableName(final String tableName) {
-		return new FastOdsException("Unknown table name ["+tableName+"]");
+    public static FastOdsException wrongTableNumber(final int n) {
+		return new FastOdsException("Wrong table number [" + n + "]");
 	}
+
+	public static FastOdsException wrongTableName(final String name) {
+		return new FastOdsException("Wrong table name [" + name + "]");
+	}
+
 
 	/**
 	 * @param message the message

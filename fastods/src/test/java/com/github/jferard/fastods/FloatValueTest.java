@@ -52,6 +52,7 @@ public class FloatValueTest {
         final TableCell cell = PowerMock.createMock(TableCell.class);
 
         // PLAY
+        PowerMock.resetAll();
         cell.setFloatValue(10.0);
 
         PowerMock.replayAll();

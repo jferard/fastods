@@ -23,6 +23,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -44,18 +45,24 @@ public class EndTableFlusherTest {
         this.util = XMLUtil.create();
         this.w = PowerMock.createMock(ZipUTF8Writer.class);
         this.appender = PowerMock.createMock(TableAppender.class);
+        PowerMock.resetAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test
     public void flushIntoEmptytList() throws Exception {
         final List<TableRow> rows = Collections.emptyList();
 
+        // play
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();
         final EndTableFlusher f = new EndTableFlusher(this.appender, rows);
         f.flushInto(this.util, this.w);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -64,6 +71,7 @@ public class EndTableFlusherTest {
         final TableRow r2 = PowerMock.createMock(TableRow.class);
         final List<TableRow> rows = Arrays.asList(r1, r2);
 
+        // play
         r1.appendXMLToTable(this.util, this.w);
         r2.appendXMLToTable(this.util, this.w);
         this.appender.appendPostamble(this.w);
@@ -71,7 +79,5 @@ public class EndTableFlusherTest {
         PowerMock.replayAll();
         final EndTableFlusher f = new EndTableFlusher(this.appender, rows);
         f.flushInto(this.util, this.w);
-        PowerMock.verifyAll();
     }
-
 }

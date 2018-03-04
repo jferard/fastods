@@ -160,6 +160,9 @@ public class ContentElement implements OdsElement {
     public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         this.ensureContentBegin(util, writer);
         final int lastTableIndex = this.tables.size() - 1;
+        if (lastTableIndex < 0)
+            return;
+
         int tableIndex = this.flushPosition.getTableIndex();
 
         Table table = this.tables.get(tableIndex);

@@ -135,8 +135,11 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     public final void testMetaDataException() throws SQLException, IOException {
         this.setUpMocks();
         final SQLException e = new SQLException();
+
+        // play
         EasyMock.expect(this.rs.getMetaData()).andThrow(e);
         this.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.eq(e));
+
         PowerMock.replayAll();
         this.wrapper.addToTable(this.table);
     }
@@ -148,7 +151,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
-        // first row
+        // play
         EasyMock.expect(this.table.nextRow()).andReturn(row);
         EasyMock.expect(row.getWalker()).andReturn(w);
         w.next();
@@ -179,7 +182,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
-        // first row
+        // play
         EasyMock.expect(this.table.nextRow()).andReturn(row);
         EasyMock.expect(row.getWalker()).andReturn(w);
         w.next();
@@ -270,6 +273,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
 
         EasyMock.expect(this.rs.next()).andThrow(e);
         this.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.eq(e));
+
         PowerMock.replayAll();
         this.wrapper.addToTable(this.table);
     }

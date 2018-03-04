@@ -53,6 +53,7 @@ public class TableAppenderTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.tableAppender = new TableAppender(this.builder);
         this.xmlUtil = xmlUtil;
+        PowerMock.resetAll();
     }
 
     @Test

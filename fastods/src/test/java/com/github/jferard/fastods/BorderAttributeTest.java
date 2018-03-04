@@ -22,39 +22,56 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * @author Julien Férard
  * @autohr Martin Schulz
  */
 public class BorderAttributeTest {
+    XMLUtil util;
+
+    @Before
+    public void setUp() {
+        this.util = XMLUtil.create();
+    }
+
 	@Test
-	public final void basicTest() {
+	public final void basicTest() throws IOException {
 		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
 				.borderColor(SimpleColor.ALICEBLUE)
 				.borderStyle(BorderAttribute.Style.SOLID).build();
-		Assert.assertEquals("1cm solid #f0f8ff", ba.toXMLAttributeValue());
+		this.assertXMLEquals("1cm solid #f0f8ff", ba);
 	}
 
 	@Test
-	public final void nullColorTest() {
+	public final void nullColorTest() throws IOException {
 		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
 				.build();
-		Assert.assertEquals("1cm", ba.toXMLAttributeValue());
+		this.assertXMLEquals("1cm", ba);
 	}
 
 	@Test
-	public final void nullSizeTest() {
+	public final void nullSizeTest() throws IOException {
 		final BorderAttribute ba = BorderAttribute.builder()
 				.borderColor(SimpleColor.AQUAMARINE).build();
-		Assert.assertEquals("solid #7fffd4", ba.toXMLAttributeValue());
+		this.assertXMLEquals("solid #7fffd4", ba);
 	}
 
 	@Test
-	public final void nullTest() {
+	public final void nullTest() throws IOException {
 		final BorderAttribute ba = BorderAttribute.builder().build();
-		Assert.assertEquals("", ba.toXMLAttributeValue());
+		this.assertXMLEquals("", ba);
 	}
+
+    private void assertXMLEquals(final String expected, final BorderAttribute ba) throws IOException {
+	    final StringBuilder sb = new StringBuilder();
+        ba.appendXMLAttribute(this.util, sb, "@");
+	    Assert.assertEquals(" @=\""+expected+"\"", sb.toString());
+    }
 }

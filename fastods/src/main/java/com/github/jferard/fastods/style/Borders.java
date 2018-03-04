@@ -75,39 +75,29 @@ public class Borders {
 			final Appendable appendable) throws IOException {
 		if (this.all == null) {
 			if (this.top != null)
-				util.appendAttribute(appendable, "fo:border-top",
-						this.top.toXMLAttributeValue());
+				this.top.appendXMLAttribute(util, appendable, "fo:border-top");
 
 			if (this.right != null)
-				util.appendAttribute(appendable, "fo:border-right",
-						this.right.toXMLAttributeValue());
+                this.right.appendXMLAttribute(util, appendable, "fo:border-right");
 
 			if (this.bottom != null)
-				util.appendAttribute(appendable, "fo:border-bottom",
-						this.bottom.toXMLAttributeValue());
+				this.bottom.appendXMLAttribute(util, appendable, "fo:border-bottom");
 
 			if (this.left != null)
-				util.appendAttribute(appendable, "fo:border-left",
-						this.left.toXMLAttributeValue());
+				this.left.appendXMLAttribute(util, appendable, "fo:border-left");
 		} else { // this.all != null
-			util.appendAttribute(appendable, "fo:border",
-					this.all.toXMLAttributeValue());
-			if (this.top != null && !this.top.equals(this.all))
-				util.appendAttribute(appendable, "fo:border-top",
-						this.top.toXMLAttributeValue());
+            this.all.appendXMLAttribute(util, appendable, "fo:border");
+            if (this.top != null && !this.top.equals(this.all)) this.top.appendXMLAttribute(util, appendable, "fo:border-top");
 
-			if (this.right != null && !this.right.equals(this.all))
-				util.appendAttribute(appendable, "fo:border-right",
-						this.right.toXMLAttributeValue());
+            if (this.right != null && !this.right.equals(this.all))
+                this.right.appendXMLAttribute(util, appendable, "fo:border-right");
 
-			if (this.bottom != null && !this.bottom.equals(this.all))
-				util.appendAttribute(appendable, "fo:border-bottom",
-						this.bottom.toXMLAttributeValue());
+            if (this.bottom != null && !this.bottom.equals(this.all))
+                this.bottom.appendXMLAttribute(util, appendable, "fo:border-bottom");
 
-			if (this.left != null && !this.left.equals(this.all))
-				util.appendAttribute(appendable, "fo:border-left",
-						this.left.toXMLAttributeValue());
-		}
+            if (this.left != null && !this.left.equals(this.all))
+                this.left.appendXMLAttribute(util, appendable, "fo:border-left");
+        }
 	}
 
 	@Override

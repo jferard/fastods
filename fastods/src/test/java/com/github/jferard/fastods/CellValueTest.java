@@ -20,6 +20,7 @@
  */
 package com.github.jferard.fastods;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -28,101 +29,107 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class CellValueTest {
-	private TableCell cell;
+    private TableCell cell;
 
-	@Before
-	public void setUp() {
-		this.cell = PowerMock.createMock(TableCell.class);
-	}
+    @Before
+    public void setUp() {
+        this.cell = PowerMock.createMock(TableCell.class);
+        PowerMock.resetAll();
+    }
 
-	@Test
-	public final void testBooleanFromTypeAndObject() {
-		final CellValue v = CellValue.fromTypeAndObject(TableCell.Type.BOOLEAN, true);
-		
-		// PLAY
-		this.cell.setBooleanValue(true);
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
+    }
 
-	@Test
-	public final void testVoidFromObject() {
-		final CellValue v = CellValue.fromObject(null);
-		
-		// PLAY
-		this.cell.setVoidValue();
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testBooleanFromTypeAndObject() {
+        final CellValue v = CellValue.fromTypeAndObject(TableCell.Type.BOOLEAN, true);
 
-	@Test
-	public final void testStringFromObject() {
-		final CellValue v = CellValue.fromObject("str");
-		
-		// PLAY
-		this.cell.setStringValue("str");
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
-	
-	@Test
-	public final void testNumberFromObject() {
-		final CellValue v = CellValue.fromObject(10);
-		
-		// PLAY
-		this.cell.setFloatValue((Number) 10);
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
+        // PLAY
+        this.cell.setBooleanValue(true);
 
-	@Test
-	public final void testBooleanFromObject() {
-		final CellValue v = CellValue.fromObject(true);
-		
-		// PLAY
-		this.cell.setBooleanValue(true);
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
-	
-	@Test
-	public final void testDateFromObject() {
-		final Date d = new Date(0);
-		final CellValue v = CellValue.fromObject(d);
-		
-		// PLAY
-		this.cell.setDateValue(d);
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
-	
-	@Test
-	public final void testCalendarFromObject() {
-		final Calendar c = Calendar.getInstance();
-		final CellValue v = CellValue.fromObject(c);
-		
-		// PLAY
-		this.cell.setDateValue(c.getTime());
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
-	
-	@Test
-	public final void testOtherFromObject() {
-		final Character j = 'j';
-		final CellValue v = CellValue.fromObject(j);
-		
-		// PLAY
-		this.cell.setStringValue("j");
-		PowerMock.replayAll();
-		v.setToCell(this.cell);
-		PowerMock.verifyAll();
-	}
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testVoidFromObject() {
+        final CellValue v = CellValue.fromObject(null);
+
+        // PLAY
+        this.cell.setVoidValue();
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testStringFromObject() {
+        final CellValue v = CellValue.fromObject("str");
+
+        // PLAY
+        this.cell.setStringValue("str");
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testNumberFromObject() {
+        final CellValue v = CellValue.fromObject(10);
+
+        // PLAY
+        this.cell.setFloatValue((Number) 10);
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testBooleanFromObject() {
+        final CellValue v = CellValue.fromObject(true);
+
+        // PLAY
+        this.cell.setBooleanValue(true);
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testDateFromObject() {
+        final Date d = new Date(0);
+        final CellValue v = CellValue.fromObject(d);
+
+        // PLAY
+        this.cell.setDateValue(d);
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testCalendarFromObject() {
+        final Calendar c = Calendar.getInstance();
+        final CellValue v = CellValue.fromObject(c);
+
+        // PLAY
+        this.cell.setDateValue(c.getTime());
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
+
+    @Test
+    public final void testOtherFromObject() {
+        final Character j = 'j';
+        final CellValue v = CellValue.fromObject(j);
+
+        // PLAY
+        this.cell.setStringValue("j");
+
+        PowerMock.replayAll();
+        v.setToCell(this.cell);
+    }
 }

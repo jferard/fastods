@@ -53,6 +53,7 @@ public class TableCellWalkerImplTest {
         this.cellWalker = new TableCellWalkerImpl(this.row);
         this.util = XMLUtil.create();
         this.sb = new StringBuilder();
+        PowerMock.resetAll();
     }
 
     @Test(expected = UnsupportedOperationException.class)

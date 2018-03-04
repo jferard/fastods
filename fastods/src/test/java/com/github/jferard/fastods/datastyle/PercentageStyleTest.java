@@ -62,7 +62,7 @@ public class PercentageStyleTest {
     }
 
     @Test
-    public final void testMinIntegeDigits() throws IOException {
+    public final void testMinIntegerDigits() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).minIntegerDigits(8).build();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +

@@ -111,7 +111,6 @@ public class TableTest {
         EasyMock.expect(data.addToTable(this.table)).andReturn(true);
         PowerMock.replayAll();
         this.table.addData(data);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -125,7 +124,6 @@ public class TableTest {
         for (int r = 0; r < 7; r++) { // 8 times
             Assert.assertEquals(rows.get(r), this.table.getRow(r));
         }
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -148,14 +146,12 @@ public class TableTest {
         }
         this.table.getRow(100);
         Assert.assertEquals(100, this.table.getLastRowNumber());
-        PowerMock.verifyAll();
     }
 
     @Test(expected = FastOdsException.class)
     public final void testGetRowNegative() throws FastOdsException, IOException {
         PowerMock.replayAll();
         this.table.getRow(-1);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -166,7 +162,6 @@ public class TableTest {
             this.table.nextRow();
         }
         Assert.assertEquals(6, this.table.getLastRowNumber());
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -206,7 +201,6 @@ public class TableTest {
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
                         "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>");
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -219,7 +213,6 @@ public class TableTest {
 
         PowerMock.replayAll();
         t.setCellMerge(1, 1, 2, 3);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -232,7 +225,6 @@ public class TableTest {
 
         PowerMock.replayAll();
         t.setCellMerge("A1", 2, 3);
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -248,8 +240,6 @@ public class TableTest {
         this.table.setStyle(ts);
         Assert.assertEquals("tname", this.table.getName());
         Assert.assertEquals("b", this.table.getStyleName());
-        PowerMock.verifyAll();
-
     }
 
     @Test(expected = IllegalStateException.class)
@@ -265,8 +255,6 @@ public class TableTest {
         PowerMock.replayAll();
         t.flushAllAvailableRows(this.xmlUtil, this.sb);
         t.setColumnStyle(0, null);
-
-        PowerMock.verifyAll();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -282,8 +270,6 @@ public class TableTest {
         PowerMock.replayAll();
         t.flushAllAvailableRows(this.xmlUtil, this.sb);
         t.setName("ko");
-
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -295,7 +281,6 @@ public class TableTest {
 
         PowerMock.replayAll();
         t.setConfigItem("item", "type", "value");
-        PowerMock.verifyAll();
     }
 
     private void assertTableXMLEquals(final String xml) throws IOException {

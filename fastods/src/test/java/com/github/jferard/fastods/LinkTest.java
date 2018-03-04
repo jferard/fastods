@@ -47,10 +47,10 @@ public class LinkTest {
         final Table table = PowerMock.createMock(Table.class);
 
         // PLAY
+        PowerMock.resetAll();
         EasyMock.expect(table.getName()).andReturn("t");
-        PowerMock.replayAll();
 
-        //
+        PowerMock.replayAll();
         final Link link = Link.create("table", this.ts, table);
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"#t\" xlink:type=\"simple\">table</text:a>", link);

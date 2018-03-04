@@ -31,6 +31,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -54,21 +55,28 @@ public class TableHelperTest {
 		this.walker = PowerMock.createMock(TableCellWalker.class);
 		this.cell = PowerMock.createMock(TableCell.class);
 		this.tableHelper = new TableHelper(this.positionUtil);
+		PowerMock.resetAll();
 	}
 
-	@Test
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
+    }
+
+    @Test
 	public final void testSetCellMerge() throws FastOdsException, IOException {
 		final CellValue value = new StringValue("@");
 		final TableCellStyle ts = TableCellStyle.builder("b").build();
 
+		// play
 		EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
 		EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
 		this.walker.to(2);
 		this.walker.setColumnsSpanned(3);
 		this.walker.setRowsSpanned(9);
+
 		PowerMock.replayAll();
 		this.tableHelper.setCellMerge(this.table, "C7", 9, 3);
-		PowerMock.verifyAll();
 	}
 
 	@Test
@@ -76,13 +84,14 @@ public class TableHelperTest {
 		final CellValue value = new StringValue("@");
 		final TableCellStyle ts = TableCellStyle.builder("b").build();
 
+        // play
 		EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
 		EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
 		this.walker.to(2);
 		this.walker.setCellValue(value);
 		this.walker.setStyle(ts);
+
 		PowerMock.replayAll();
 		this.tableHelper.setCellValue(this.table, "C7", value, ts);
-		PowerMock.verifyAll();
 	}
 }

@@ -201,7 +201,7 @@ public class NamedOdsDocument implements OdsDocument {
     public Table getTable(final int n) throws FastOdsException {
         final List<Table> tables = this.odsElements.getTables();
         if (n < 0 || n >= tables.size()) {
-            throw new FastOdsException("Wrong table number [" + n + "]");
+            throw FastOdsException.wrongTableNumber(n);
         }
 
         return tables.get(n);
@@ -211,7 +211,7 @@ public class NamedOdsDocument implements OdsDocument {
     public Table getTable(final String name) throws FastOdsException {
         final Table table = this.odsElements.getTable(name);
         if (table == null) {
-            throw new FastOdsException("Wrong table name [" + name + "]");
+            throw FastOdsException.wrongTableName(name);
         }
         return table;
     }

@@ -39,13 +39,6 @@ public class TableColdCellTest {
     public void setUp() {
         this.xmlUtil = XMLUtil.create();
         this.coldCell = new TableColdCell(this.xmlUtil);
-        PowerMock.resetAll();
-        PowerMock.replayAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test

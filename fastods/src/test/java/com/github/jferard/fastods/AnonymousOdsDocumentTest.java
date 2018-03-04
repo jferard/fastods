@@ -30,13 +30,13 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,14 +53,21 @@ public class AnonymousOdsDocumentTest {
         this.logger = PowerMock.createMock(Logger.class);
         this.xmlUtil = XMLUtil.create();
         this.odsElements = PowerMock.createMock(OdsElements.class);
+
+        PowerMock.resetAll();
+
         this.initStyles(this.odsElements);
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testCreate() {
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
-        PowerMock.verifyAll();
     }
 
     private void initStyles(final OdsElements odsElements) {
@@ -74,105 +81,110 @@ public class AnonymousOdsDocumentTest {
     @Test
     public void testAddTable() throws IOException {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.addTableToContent("ok", 1024, 32)).andReturn(t);
         this.odsElements.setActiveTable(t);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         this.document.addTable("ok");
-        PowerMock.verifyAll();
     }
 
     @Test(expected = FastOdsException.class)
     public void testGetTableByNameFail() throws IOException, FastOdsException {
+        // play
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(null);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         this.document.getTable("ok");
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetTableByNameSuccess() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(t);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(t, this.document.getTable("ok"));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetTableName() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
-        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
 
+        // play
+        EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
         EasyMock.expect(t.getName()).andReturn("ok");
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals("ok", this.document.getTableName(0));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetTables() throws IOException, FastOdsException {
-        @SuppressWarnings("rawtypes")
-        final List<Table> l = PowerMock.createMock(List.class);
+        @SuppressWarnings("rawtypes") final List<Table> l = PowerMock.createMock(List.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTables()).andReturn(l);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(l, this.document.getTables());
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testTableCount() throws IOException, FastOdsException {
+        // play
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(20);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(20, this.document.tableCount());
-        PowerMock.verifyAll();
     }
 
     @Test(expected = FastOdsException.class)
     public void testGetTableByIndexNeg() throws IOException, FastOdsException {
+        // play
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         this.document.getTable(-1);
-        PowerMock.verifyAll();
     }
 
     @Test(expected = FastOdsException.class)
     public void testGetTableByIndex10() throws IOException, FastOdsException {
+        // play
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         this.document.getTable(10);
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetTableByIndex0() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(t, this.document.getTable(0));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetOrAddTable() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(null);
         EasyMock.expect(this.odsElements.addTableToContent("ok", 1024, 32)).andReturn(t);
         this.odsElements.setActiveTable(t);
@@ -180,18 +192,18 @@ public class AnonymousOdsDocumentTest {
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(t, this.document.getOrAddTable("ok"));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetOrAddTable2() throws IOException, FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(t);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(t, this.document.getOrAddTable("ok"));
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -199,22 +211,23 @@ public class AnonymousOdsDocumentTest {
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertFalse(this.document.setActiveTable(-1));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSetActiveTableFail2() {
+        // play
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(1);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertFalse(this.document.setActiveTable(2));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSetActiveTableFailSuccess() {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(2);
         EasyMock.expect(this.odsElements.getTable(1)).andReturn(t);
         this.odsElements.setActiveTable(t);
@@ -222,13 +235,13 @@ public class AnonymousOdsDocumentTest {
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertTrue(this.document.setActiveTable(1));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSave() throws IOException {
         final ZipUTF8Writer writer = PowerMock.createMock(ZipUTF8Writer.class);
 
+        // play
         this.odsElements.createEmptyElements(writer);
         this.odsElements.writeImmutableElements(this.xmlUtil, writer);
         this.odsElements.writeMeta(this.xmlUtil, writer);
@@ -241,51 +254,53 @@ public class AnonymousOdsDocumentTest {
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         this.document.save(writer);
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetTableNumberFail() {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
         EasyMock.expect(t.getName()).andReturn("not ok");
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(-1, this.document.getTableNumber("ok"));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testGetTableNumberSuccess() {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
         EasyMock.expect(t.getName()).andReturn("ok");
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         Assert.assertEquals(0, this.document.getTableNumber("ok"));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSetViewSetting() {
-        this.odsElements.setViewSetting("1", "2","3");
+        // play
+        this.odsElements.setViewSetting("1", "2", "3");
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
-        this.document.setViewSetting("1", "2","3");
-        PowerMock.verifyAll();
+        this.document.setViewSetting("1", "2", "3");
     }
 
     @Test
     public void addAutoFilter() {
         final Table t = PowerMock.createMock(Table.class);
+
+        // play
         this.odsElements.addAutofilter(t, 0, 0, 1, 1);
 
         PowerMock.replayAll();
         this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
         this.document.addAutofilter(t, 0, 0, 1, 1);
-        PowerMock.verifyAll();
     }
 }

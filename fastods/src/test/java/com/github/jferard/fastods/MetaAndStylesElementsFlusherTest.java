@@ -41,6 +41,8 @@ public class MetaAndStylesElementsFlusherTest {
         final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
         final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
 
+        // play
+        PowerMock.resetAll();
         odsElements.writeMeta(util, w);
         odsElements.writeStyles(util, w);
         contentElement.writePreamble(util, w);
@@ -48,6 +50,7 @@ public class MetaAndStylesElementsFlusherTest {
         PowerMock.replayAll();
         final MetaAndStylesElementsFlusher flusher = new MetaAndStylesElementsFlusher(odsElements, contentElement);
         flusher.flushInto(util, w);
+
         PowerMock.verifyAll();
     }
 
