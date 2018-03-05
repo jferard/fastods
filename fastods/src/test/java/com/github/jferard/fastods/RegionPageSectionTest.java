@@ -41,12 +41,6 @@ public class RegionPageSectionTest {
     @Before
     public void setUp() {
         this.util = XMLUtil.create();
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -62,7 +56,6 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionsToMasterStyle() throws IOException {
-        PowerMock.replayAll();
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
         final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
@@ -80,7 +73,6 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionToAutomaticStyle() throws IOException {
-        PowerMock.replayAll();
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("style");
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
@@ -94,7 +86,6 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionToMasterStyle() throws IOException {
-        PowerMock.replayAll();
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("style");
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
@@ -115,12 +106,15 @@ public class RegionPageSectionTest {
                 .styledContent("left-text", ts1).region(Region.CENTER).styledContent("center-text", ts2)
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
-        // play
+        PowerMock.resetAll();
         EasyMock.expect(sc.addStyleStyle(ts1, Mode.CREATE)).andReturn(true);
         EasyMock.expect(sc.addStyleStyle(ts2, Mode.CREATE)).andReturn(true);
         EasyMock.expect(sc.addStyleStyle(ts3, Mode.CREATE)).andReturn(true);
+
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc);
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -128,9 +122,10 @@ public class RegionPageSectionTest {
         final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
         final PageSection headerSecton = PageSection.regionBuilder().build();
 
-        // play
+        PowerMock.resetAll();
         PowerMock.replayAll();
         headerSecton.addEmbeddedStyles(sc);
+
         PowerMock.verifyAll();
     }
 
@@ -144,12 +139,14 @@ public class RegionPageSectionTest {
                 .styledContent("left-text", ts1).region(Region.CENTER).styledContent("center-text", ts2)
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
-        // play
+        PowerMock.resetAll();
         EasyMock.expect(sc.addStyleStyle(ts1, Mode.CREATE_OR_UPDATE)).andReturn(true);
         EasyMock.expect(sc.addStyleStyle(ts2, Mode.CREATE_OR_UPDATE)).andReturn(true);
         EasyMock.expect(sc.addStyleStyle(ts3, Mode.CREATE_OR_UPDATE)).andReturn(true);
+
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc, Mode.CREATE_OR_UPDATE);
+
         PowerMock.verifyAll();
     }
 
@@ -158,9 +155,10 @@ public class RegionPageSectionTest {
         final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
         final PageSection headerSection = PageSection.regionBuilder().build();
 
-        // play
+        PowerMock.resetAll();
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc, Mode.CREATE_OR_UPDATE);
+
         PowerMock.verifyAll();
     }
 

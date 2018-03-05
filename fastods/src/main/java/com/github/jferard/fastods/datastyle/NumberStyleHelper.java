@@ -94,21 +94,6 @@ class NumberStyleHelper implements NumberStyle {
         appendable.append(">");
     }
 
-    @Override
-    public boolean getGroupThousands() {
-        return this.grouping;
-    }
-
-    @Override
-    public int getMinIntegerDigits() {
-        return this.minIntegerDigits;
-    }
-
-    @Override
-    public Color getNegativeValueColor() {
-        return this.negativeValueColor;
-    }
-
     /**
      * Append the 19.348 number:grouping attribute. Default = false.
      *
@@ -164,23 +149,8 @@ class NumberStyleHelper implements NumberStyle {
     }
 
     @Override
-    public boolean isVolatileStyle() {
-        return this.dataStyle.isVolatileStyle();
-    }
-
-    @Override
     public String getName() {
         return this.dataStyle.getName();
-    }
-
-    @Override
-    public String getCountryCode() {
-        return this.dataStyle.getCountryCode();
-    }
-
-    @Override
-    public String getLanguageCode() {
-        return this.dataStyle.getLanguageCode();
     }
 
     @Override

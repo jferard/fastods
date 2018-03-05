@@ -44,37 +44,39 @@ public class SimpleFooterHeaderTest {
     public void setUp() {
         this.util = XMLUtil.create();
         this.stylesContainer = PowerMock.createMock(StylesContainer.class);
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
     public void nullText() throws IOException {
         final PageSectionContent content = new SimpleFooterHeader(null);
-        PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
         content.appendXMLToMasterStyle(this.util, sb);
-        Assert.assertEquals("", sb.toString());
         content.addEmbeddedStyles(this.stylesContainer);
         content.addEmbeddedStyles(this.stylesContainer, Container.Mode.UPDATE);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("", sb.toString());
     }
 
     @Test
     public void emptyText() throws IOException {
         final Text text = PowerMock.createMock(Text.class);
         final PageSectionContent content = new SimpleFooterHeader(text);
-
-        EasyMock.expect(text.isEmpty()).andReturn(true).times(3);
-        PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
+
+        PowerMock.resetAll();
+        EasyMock.expect(text.isEmpty()).andReturn(true).times(3);
+
+        PowerMock.replayAll();
         content.appendXMLToMasterStyle(this.util, sb);
-        Assert.assertEquals("", sb.toString());
         content.addEmbeddedStyles(this.stylesContainer);
         content.addEmbeddedStyles(this.stylesContainer, Container.Mode.UPDATE);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("", sb.toString());
     }
 
     @Test
@@ -83,15 +85,19 @@ public class SimpleFooterHeaderTest {
         final Text text = PowerMock.createMock(Text.class);
         final PageSectionContent content = new SimpleFooterHeader(text);
 
+        PowerMock.resetAll();
         EasyMock.expect(text.isEmpty()).andReturn(false).times(3);
         text.appendXMLContent(this.util, sb);
         text.addEmbeddedStylesFromFooterHeader(this.stylesContainer, Container.Mode.CREATE);
         text.addEmbeddedStylesFromFooterHeader(this.stylesContainer, Container.Mode.UPDATE);
+
         PowerMock.replayAll();
         content.appendXMLToMasterStyle(this.util, sb);
-        Assert.assertEquals("", sb.toString());
         content.addEmbeddedStyles(this.stylesContainer);
         content.addEmbeddedStyles(this.stylesContainer, Container.Mode.UPDATE);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("", sb.toString());
     }
 
 }

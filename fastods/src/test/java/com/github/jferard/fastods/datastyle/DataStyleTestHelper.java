@@ -23,20 +23,20 @@
 
 package com.github.jferard.fastods.datastyle;
 
-/**
- * An object that is localized by a country an a language code
- * @author Julien Férard
- */
-public interface Localized {
-    /**
-     * @return The two letter country code, e.g. 'US'
-     */
-    String getCountryCode();
+import com.github.jferard.fastods.odselement.OdsElements;
+import org.powermock.api.easymock.PowerMock;
 
-    /**
-     * See http://www.ietf.org/rfc/rfc3066.txt
-     *
-     * @return The two letter language code, e.g. 'en'.
-     */
-    String getLanguageCode();
+public class DataStyleTestHelper {
+    /** very basic test */
+    public static void testAddToElements(final DataStyle dataStyle) {
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+
+        PowerMock.resetAll();
+        elements.addDataStyle(dataStyle);
+
+        PowerMock.replayAll();
+        dataStyle.addToElements(elements);
+
+        PowerMock.verifyAll();
+    }
 }

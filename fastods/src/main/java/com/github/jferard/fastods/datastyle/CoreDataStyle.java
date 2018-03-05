@@ -32,7 +32,7 @@ import java.io.IOException;
 /**
  * @author Julien Férard
  */
-final class CoreDataStyle implements NamedObject, Hidable, Localized {
+final class CoreDataStyle implements NamedObject, Hidable {
 	private final boolean hidden;
 	/**
 	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
@@ -46,16 +46,6 @@ final class CoreDataStyle implements NamedObject, Hidable, Localized {
 	 * the name of a data style (19.498.2)
 	 */
 	private final String name;
-
-	/**
-	 * 19.517 : "The style:volatile attribute specifies whether unused style in
-	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
-	 * true: consumers should keep unused styles."
-	 * @return true if this style is volatile, i.e. will be saved even if not used.
-	 */
-	public boolean isVolatileStyle() {
-		return this.volatileStyle;
-	}
 
 	private final boolean volatileStyle;
 
@@ -107,16 +97,6 @@ final class CoreDataStyle implements NamedObject, Hidable, Localized {
 										   final Appendable appendable) throws IOException {
 		if (this.volatileStyle)
 			util.appendAttribute(appendable, "style:volatile",	this.volatileStyle);
-	}
-
-	@Override
-	public String getCountryCode() {
-		return this.countryCode;
-	}
-
-	@Override
-	public String getLanguageCode() {
-		return this.languageCode;
 	}
 
 	@Override

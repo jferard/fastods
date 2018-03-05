@@ -64,4 +64,10 @@ public class NumberStyleHelperTest {
                         + "&gt;=0\" style:apply-style-name=\"test\"/>" + "</number:number-style>",
                 ns);
     }
+
+    @Test
+    public final void testAddToElements() throws IOException {
+        final FloatStyle ns = new FloatStyleBuilder("test", this.locale).build();
+        DataStyleTestHelper.testAddToElements(ns);
+    }
 }

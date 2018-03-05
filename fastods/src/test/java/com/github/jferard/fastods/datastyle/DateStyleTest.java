@@ -21,6 +21,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -153,5 +154,18 @@ public class DateStyleTest {
                 "<number:date-style number:language=\"en\" style:name=\"test\" number:country=\"US\" " +
                         "number:automatic-order=\"false\" number:format-source=\"language\"/>",
                 ds);
+    }
+
+    @Test
+    public final void testGetters() throws IOException {
+        final DateStyle ds = new DateStyleBuilder("test", this.locale).buildHidden();
+        Assert.assertEquals("test", ds.getName());
+        Assert.assertTrue(ds.isHidden());
+    }
+
+    @Test
+    public final void testAddToElements() throws IOException {
+        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYY).build();
+        DataStyleTestHelper.testAddToElements(ds);
     }
 }

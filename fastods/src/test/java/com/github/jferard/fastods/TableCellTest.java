@@ -31,7 +31,6 @@ import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,12 +73,6 @@ public class TableCellTest {
         this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, this.row, COLUMN_INDEX);
         this.tcs = TableCellStyle.builder("name").build();
         PowerMock.mockStatic(TableColdCell.class);
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -87,11 +80,13 @@ public class TableCellTest {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
         final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
 
-        // PLAY
+        PowerMock.resetAll();
         this.playAddStyle(cs, booleanDataStyle);
 
         PowerMock.replayAll();
         this.cell.setBooleanValue(true);
+
+        PowerMock.verifyAll();
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"boolean\" " +
                         "office:boolean-value=\"true\"/>");
@@ -101,14 +96,16 @@ public class TableCellTest {
     public final void testCalendar() throws IOException {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
         final DataStyle dateDataStyle = this.ds.getDateDataStyle();
+        final Calendar d = Calendar.getInstance(this.locale);
+        d.setTimeInMillis(TIME_IN_MILLIS);
 
-        // PLAY
+        PowerMock.resetAll();
         this.playAddStyle(cs, dateDataStyle);
 
         PowerMock.replayAll();
-        final Calendar d = Calendar.getInstance(this.locale);
-        d.setTimeInMillis(TIME_IN_MILLIS);
         this.cell.setDateValue(d);
+
+        PowerMock.verifyAll();
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"date\" " +
                         "office:date-value=\"2009-02-13T23:31:31.011Z\"/>");
@@ -116,7 +113,7 @@ public class TableCellTest {
 
     @Test
     public final void testCovered() throws IOException {
-        // PLAY
+        PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc).anyTimes();
 
         PowerMock.replayAll();
@@ -124,23 +121,27 @@ public class TableCellTest {
         this.cell.setCovered();
         Assert.assertTrue(this.cell.isCovered());
         this.cell.setCovered();
+
+        PowerMock.verifyAll();
         this.assertCellXMLEquals("<table:covered-table-cell/>");
     }
 
     @Test
     public final void testCurrencyFloat() throws IOException {
-        this.playAndReplayCurrency();
+        this.recordAndReplayCurrency();
         this.cell.setCurrencyValue(10.0f, "€");
+
+        PowerMock.verifyAll();
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"10.0\" "
                         + "office:currency=\"€\" />");
     }
 
-    private void playAndReplayCurrency() {
+    private void recordAndReplayCurrency() {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
         final DataStyle currencyDataStyle = this.ds.getCurrencyDataStyle();
 
-        // PLAY
+        PowerMock.resetAll();
         this.playAddStyle(cs, currencyDataStyle);
 
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
@@ -149,7 +150,7 @@ public class TableCellTest {
 
     @Test
     public final void testCurrencyInt() throws IOException {
-        this.playAndReplayCurrency();
+        this.recordAndReplayCurrency();
         this.cell.setCurrencyValue(10, "€");
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"10\" " +
@@ -158,7 +159,7 @@ public class TableCellTest {
 
     @Test
     public final void testCurrencyNumber() throws IOException {
-        this.playAndReplayCurrency();
+        this.recordAndReplayCurrency();
         this.cell.setCurrencyValue(10.0, "€");
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"10.0\" "
@@ -276,7 +277,7 @@ public class TableCellTest {
 
     @Test
     public final void testCurrency() throws IOException {
-        this.playAndReplayCurrency();
+        this.recordAndReplayCurrency();
         this.cell.setCurrencyValue(75.7, "€");
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"currency\" office:value=\"75.7\" "

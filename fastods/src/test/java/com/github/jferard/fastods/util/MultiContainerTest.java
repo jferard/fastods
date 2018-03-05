@@ -104,16 +104,15 @@ public class MultiContainerTest {
         final Handler handler = TestHelper.getMockHandler(logger);
 
         PowerMock.resetAll();
-
-        // PLAY
         handler.publish(EasyMock.isA(LogRecord.class));
         handler.close();
         EasyMock.expectLastCall().anyTimes();
 
         PowerMock.replayAll();
-
         this.c.debug();
         this.c.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1, Mode.CREATE);
+
+		PowerMock.verifyAll();
     }
 
     @Test

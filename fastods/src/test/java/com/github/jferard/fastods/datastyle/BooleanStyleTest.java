@@ -24,11 +24,9 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.odselement.OdsElements;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -66,17 +64,9 @@ public class BooleanStyleTest {
     }
 
     @Test
-    public final void testOdsElements() throws IOException {
-        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+    public final void testAddToElements() throws IOException {
         final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).build();
-
-        // PLAY
-        elements.addDataStyle(bs);
-
-        PowerMock.replayAll();
-        bs.addToElements(elements);
-
-        PowerMock.verifyAll();
+        DataStyleTestHelper.testAddToElements(bs);
     }
 
 }

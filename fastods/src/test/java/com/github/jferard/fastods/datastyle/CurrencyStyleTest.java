@@ -22,12 +22,10 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Currency;
@@ -174,20 +172,6 @@ public class CurrencyStyleTest {
     }
 
     @Test
-    public final void testAdd() throws IOException {
-        final OdsElements elements = PowerMock.createMock(OdsElements.class);
-        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).buildHidden();
-
-        // PLAY
-        elements.addDataStyle(cs);
-
-        PowerMock.replayAll();
-        cs.addToElements(elements);
-        PowerMock.verifyAll();
-    }
-
-    @Test
     public final void testGetters() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
                 .language("cd").volatileStyle(true).buildHidden();
@@ -195,4 +179,12 @@ public class CurrencyStyleTest {
         Assert.assertEquals("test", cs.getName());
         Assert.assertTrue(cs.isHidden());
     }
+
+    @Test
+    public final void testAddToElements() throws IOException {
+        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
+                .language("cd").volatileStyle(true).buildHidden();
+        DataStyleTestHelper.testAddToElements(cs);
+    }
+
 }

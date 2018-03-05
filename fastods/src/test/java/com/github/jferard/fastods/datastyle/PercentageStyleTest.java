@@ -128,7 +128,8 @@ public class PercentageStyleTest {
 
     @Test
     public final void testLocaleVolatile() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(true).buildHidden();
+        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).locale(Locale.FRANCE)
+                .volatileStyle(true).buildHidden();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"fr\" number:country=\"FR\" " +
                         "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
@@ -136,5 +137,11 @@ public class PercentageStyleTest {
                         "</number:percentage-style>",
                 ps);
         Assert.assertTrue(ps.isHidden());
+    }
+
+    @Test
+    public final void testAddToElements() throws IOException {
+        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).build();
+        DataStyleTestHelper.testAddToElements(ps);
     }
 }

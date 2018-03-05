@@ -55,15 +55,6 @@ public class ScientificNumberStyle implements DataStyle {
         this.minExponentDigits = minExponentDigits;
     }
 
-    /**
-     * 19.351 number:min-exponent-digits
-     *
-     * @return "the minimum number of digits to use to display an exponent"
-     */
-    public int getMinExponentDigits() {
-        return this.minExponentDigits;
-    }
-
     private void appendNumber(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<number:scientific-number");
         util.appendAttribute(appendable, "number:min-exponent-digits", this.minExponentDigits);

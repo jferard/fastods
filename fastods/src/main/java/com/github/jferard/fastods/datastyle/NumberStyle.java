@@ -31,22 +31,5 @@ import com.github.jferard.fastods.util.NamedObject;
  * A number style
  * @author Julien Férard
  */
-public interface NumberStyle extends NamedObject, Hidable, Localized, IsVolatile {
-    /**
-     * 19.348 number:grouping
-     * @return true if the digits are grouped
-     */
-    boolean getGroupThousands();
-
-    /**
-     * 19.352 number:min-integer-digits
-     * @return the minimum number of digits
-     */
-    int getMinIntegerDigits();
-
-    /**
-     * Get the color if negative value. If none, null
-     * @return the color in hex format
-     */
-    Color getNegativeValueColor();
+public interface NumberStyle extends NamedObject, Hidable {
 }

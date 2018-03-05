@@ -21,7 +21,9 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +40,7 @@ public class FractionStyleTest {
 
     @Test
     public final void test1() throws IOException, FastOdsException {
-        final FractionStyle s = FractionStyleBuilder.create("test", this.locale).country("FR").language("en")
+        final FractionStyle fs = FractionStyleBuilder.create("test", this.locale).country("FR").language("en")
                 .volatileStyle(true).fractionValues(1, 3).groupThousands(true).minIntegerDigits(8).negativeValueRed()
                 .build();
         TestHelper.assertXMLEquals(
@@ -52,12 +54,12 @@ public class FractionStyleTest {
                         "number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" " +
                         "number:grouping=\"true\"/>" + "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:number-style>",
-                s);
+                fs);
     }
 
     @Test
     public final void test2() throws IOException {
-        final FractionStyle s = new FractionStyleBuilder("test", this.locale).country("FR").language("en")
+        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).country("FR").language("en")
                 .locale(Locale.GERMANY).volatileStyle(true).fractionValues(1, 3).groupThousands(true)
                 .minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
@@ -71,7 +73,25 @@ public class FractionStyleTest {
                         "number:min-denominator-digits=\"3\" number:min-integer-digits=\"8\" " +
                         "number:grouping=\"true\"/>" + "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:number-style>",
-                s);
+                fs);
+    }
+
+    @Test
+    public final void testNegativeValueColor() throws IOException {
+        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).negativeValueColor(SimpleColor.BLACK)
+                .build();
+        TestHelper.assertXMLEquals(
+                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\"><number:fraction number:min-numerator-digits=\"0\" " +
+                        "number:min-denominator-digits=\"0\" " +
+                        "number:min-integer-digits=\"1\"/></number:number-style><number:number-style " +
+                        "style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" " +
+                        "style:volatile=\"true\"><style:text-properties " +
+                        "fo:color=\"#000000\"/><number:text>-</number:text><number:fraction " +
+                        "number:min-numerator-digits=\"0\" number:min-denominator-digits=\"0\" " +
+                        "number:min-integer-digits=\"1\"/><style:map style:condition=\"value()&gt;=0\" " +
+                        "style:apply-style-name=\"test\"/></number:number-style>",
+                fs);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -79,4 +99,16 @@ public class FractionStyleTest {
         new FractionStyleBuilder(null, this.locale);
     }
 
+    @Test
+    public final void testGetters() throws IOException {
+        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).buildHidden();
+        Assert.assertEquals("test", fs.getName());
+        Assert.assertTrue(fs.isHidden());
+    }
+
+    @Test
+    public final void testAddToElements() throws IOException {
+        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).build();
+        DataStyleTestHelper.testAddToElements(fs);
+    }
 }
