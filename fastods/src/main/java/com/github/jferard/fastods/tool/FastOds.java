@@ -38,6 +38,7 @@ import java.util.logging.Logger;
  */
 public final class FastOds {
 	private static final XMLUtil xmlUtil = XMLUtil.create();
+	static Desktop desktop = Desktop.getDesktop();
 
 	/**
 	 * @return the default XMLUtil.
@@ -56,7 +57,7 @@ public final class FastOds {
 	public static boolean openFile(final File f) {
 		if (f.exists() && f.isFile()) {
 			try {
-				Desktop.getDesktop().open(f);
+				desktop.open(f);
 				return true;
 			} catch (final IOException e) {
 				Logger.getLogger(FastOds.class.getName()).log(Level.SEVERE,

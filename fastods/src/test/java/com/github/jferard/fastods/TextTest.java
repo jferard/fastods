@@ -21,12 +21,16 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.ColorHelper;
+import com.github.jferard.fastods.util.Container;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +39,7 @@ import java.net.URL;
 /**
  * Created by jferard on 20/05/17.
  */
-public class TextBuilderTest {
+public class TextTest {
     private TextStyle ts;
 
     @Before
@@ -45,7 +49,7 @@ public class TextBuilderTest {
 
     @Test
     public void parContent() throws Exception {
-        final Text t = TextBuilder.create().parContent("a").build();
+        final Text t = Text.content("a");
         TestHelper.assertXMLEquals("<text:p>a</text:p>", t);
     }
 
@@ -53,6 +57,7 @@ public class TextBuilderTest {
     public void empty() throws Exception {
         final Text t = TextBuilder.create().build();
         TestHelper.assertXMLEquals("", t);
+        Assert.assertTrue(t.isEmpty());
     }
 
     @Test
@@ -124,6 +129,38 @@ public class TextBuilderTest {
         TestHelper.assertXMLEquals(
                 "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>",
                 t);
+    }
+
+    @Test
+    public void testEmbeddedStyles() {
+        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
+        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
+        final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(container.addContentStyle(ts)).andReturn(true);
+        EasyMock.expect(container.addContentStyle(ts)).andReturn(false);
+
+        PowerMock.replayAll();
+        text.addEmbeddedStylesFromCell(container);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testEmbeddedStyles2() {
+        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
+        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
+        final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(container.addStyleStyle(ts, Container.Mode.CREATE)).andReturn(true);
+        EasyMock.expect(container.addStyleStyle(ts, Container.Mode.CREATE)).andReturn(false);
+
+        PowerMock.replayAll();
+        text.addEmbeddedStylesFromFooterHeader(container);
+
+        PowerMock.verifyAll();
     }
 
 

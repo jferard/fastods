@@ -24,6 +24,9 @@ package com.github.jferard.fastods.tool;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.NoSuchElementException;
+
 public class FastOdsBusTest {
     @Test
     public void testBus() {
@@ -38,9 +41,60 @@ public class FastOdsBusTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testClosed() {
+    public void testPutAfterClose() {
         final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
         b.close();
         b.put(10);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGetAfterClose() {
+        final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
+        b.put(10);
+        b.close();
+        b.get();
+        b.get();
+    }
+
+    @Test
+    public void testWait() throws InterruptedException {
+        final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
+        final Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                b.get();
+            }
+        };
+        t1.start();
+        Thread.sleep(100);
+        b.put(100);
+        t1.join();
+    }
+
+    @Test
+    public void testWaitInterrupt() throws InterruptedException {
+        final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
+        final Appendable sb = new StringBuilder();
+        final Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    b.get();
+                    Assert.fail();
+                } catch (final RuntimeException e) {
+                    try {
+                        sb.append(e.getMessage());
+                    } catch (final IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        };
+        t1.start();
+        Thread.sleep(100);
+        t1.interrupt();
+        t1.join();
+
+        Assert.assertEquals("java.lang.InterruptedException", sb.toString());
     }
 }

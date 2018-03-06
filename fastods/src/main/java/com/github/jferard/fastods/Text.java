@@ -34,11 +34,11 @@ import java.util.List;
 /**
  * The Text class represents a text in a footer/header region or the text in a cell.
  * A text is a set of paragraphs (5.1.3 text:p).
- *
+ * <p>
  * The destination of embedded styles depends on the location of the text:
  * * if the text is in a cell, the embedded styles will belong to content.xml/automatic-styles
  * * if the text is in a footer/header, this footer/header style will belong to styles.xml/master-styles, and
- *  the embedded styles will go to syles.xml/automatic-styles.
+ * the embedded styles will go to syles.xml/automatic-styles.
  *
  * @author Julien Férard
  */
@@ -48,7 +48,8 @@ public class Text implements ParagraphElement {
      */
     public static final String TEXT_DATE = "<text:date/>";
     /**
-     * 7.3.9<text:file-name> "The <text:file-name> element represents a field that displays the name of a file that is being edited."
+     * 7.3.9<text:file-name> "The <text:file-name> element represents a field that displays the name of a file that
+     * is being edited."
      */
     public static final String TEXT_FILE_NAME = "<text:file-name/>";
     /**
@@ -60,7 +61,8 @@ public class Text implements ParagraphElement {
      */
     public static final String TEXT_PAGE_NUMBER = "<text:page-number>1</text:page-number>";
     /**
-     * 7.3.11<text:sheet-name> "The <text:sheet-name> element displays represents the name of a sheet that is currently being edited in a Spreadsheet document."
+     * 7.3.11<text:sheet-name> "The <text:sheet-name> element displays represents the name of a sheet that is
+	 * currently being edited in a Spreadsheet document."
      */
     public static final String TEXT_SHEET_NAME = "<text:sheet-name/>";
     /**
@@ -72,38 +74,40 @@ public class Text implements ParagraphElement {
      * @return a new builder
      */
     public static TextBuilder builder() {
-		return TextBuilder.create();
-	}
+        return TextBuilder.create();
+    }
 
     /**
      * Create a simple Text object
+     *
      * @param text the text content
      * @return the Text
      */
     public static Text content(final String text) {
-		return Text.builder().parContent(text).build();
-	}
+        return Text.builder().parContent(text).build();
+    }
 
     /**
      * Create a simple Text object with a style
+     *
      * @param text the text content
-     * @param ts the style
+     * @param ts   the style
      * @return the Text
      */
     public static Text styledContent(final String text, final TextStyle ts) {
-		return Text.builder().parStyledContent(text, ts).build();
-	}
+        return Text.builder().parStyledContent(text, ts).build();
+    }
 
-	private final List<Paragraph> paragraphs;
+    private final List<Paragraph> paragraphs;
 
     /**
      * Create a new Text
-	 * @param paragraphs the paragraphs
      *
-	 */
+     * @param paragraphs the paragraphs
+     */
     Text(final List<Paragraph> paragraphs) {
-		this.paragraphs = paragraphs;
-	}
+        this.paragraphs = paragraphs;
+    }
 
     /**
      * Add the styles to a container, in content.xml/automatic-syles
@@ -112,11 +116,10 @@ public class Text implements ParagraphElement {
      * @param stylesContainer the container
      */
     @Override
-    public void addEmbeddedStylesFromCell(
-			final StylesContainer stylesContainer) {
-    	for (final Paragraph par : this.paragraphs)
-			par.addEmbeddedStylesFromCell(stylesContainer);
-	}
+    public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
+        for (final Paragraph par : this.paragraphs)
+            par.addEmbeddedStylesFromCell(stylesContainer);
+    }
 
     /**
      * Add the styles to a container, in styles.xml/automatic-syles
@@ -125,39 +128,33 @@ public class Text implements ParagraphElement {
      * @param stylesContainer the container
      */
     @Override
-	public void addEmbeddedStylesFromFooterHeader(
-			final StylesContainer stylesContainer) {
-	    this.addEmbeddedStylesFromFooterHeader(stylesContainer, Mode.CREATE);
-	}
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
+        this.addEmbeddedStylesFromFooterHeader(stylesContainer, Mode.CREATE);
+    }
 
     /**
      * Add the styles to a container, in styles.xml/automatic-syles
+     *
      * @param stylesContainer the container
-     * @param mode CREATE, UPDATE or CREATE_OR_UPDATE
+     * @param mode            CREATE, UPDATE or CREATE_OR_UPDATE
      */
     @Override
-	public void addEmbeddedStylesFromFooterHeader(
-			final StylesContainer stylesContainer, final Mode mode) {
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Mode mode) {
         for (final Paragraph par : this.paragraphs)
             par.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
-	}
+    }
 
-	@Override
-    public void appendXMLContent(final XMLUtil util,
-			final Appendable appendable) throws IOException {
-		for (final Paragraph paragraph : this.paragraphs) {
-			if (paragraph == null)
-				appendable.append("<text:p/>");
-			else {
-				paragraph.appendXMLContent(util, appendable);
-			}
-		}
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        for (final Paragraph paragraph : this.paragraphs) {
+            paragraph.appendXMLContent(util, appendable);
+        }
+    }
 
     /**
      * @return true if there is no paragraph.
      */
     public boolean isEmpty() {
-		return this.paragraphs.isEmpty();
-	}
+        return this.paragraphs.isEmpty();
+    }
 }

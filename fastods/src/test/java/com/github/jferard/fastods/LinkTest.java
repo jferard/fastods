@@ -21,8 +21,10 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,5 +75,35 @@ public class LinkTest {
         final Link link = Link.create("file", this.ts, f);
         TestHelper.assertXMLEquals("<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI()
                 .toString() + "\" xlink:type=\"simple\">file</text:a>", link);
+    }
+
+    @Test
+    public void testEmbeddedStyles() {
+        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
+        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
+        final Link link = Link.create("ok", ts, "ref");
+
+        PowerMock.resetAll();
+        EasyMock.expect(container.addContentStyle(ts)).andReturn(true);
+
+        PowerMock.replayAll();
+        link.addEmbeddedStylesFromCell(container);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testEmbeddedStyles2() {
+        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
+        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
+        final Link link = Link.create("ok", ts, "ref");
+
+        PowerMock.resetAll();
+        EasyMock.expect(container.addStyleStyle(ts)).andReturn(true);
+
+        PowerMock.replayAll();
+        link.addEmbeddedStylesFromFooterHeader(container);
+
+        PowerMock.verifyAll();
     }
 }

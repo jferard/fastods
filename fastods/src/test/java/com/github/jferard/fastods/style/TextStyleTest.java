@@ -21,10 +21,12 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
