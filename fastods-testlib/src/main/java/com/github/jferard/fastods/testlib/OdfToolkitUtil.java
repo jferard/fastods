@@ -36,7 +36,9 @@ import org.w3c.dom.Node;
  *
  * @author Julien Férard
  */
-public class OdfToolkitUtil {
+public final class OdfToolkitUtil {
+    private OdfToolkitUtil() {}
+
     public static String getStringValue(final Cell cell) {
         return cell.getOdfElement().getOfficeStringValueAttribute();
     }

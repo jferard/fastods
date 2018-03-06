@@ -92,6 +92,24 @@ public class UnsortedChildrenTesterTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public void testAttributesEquals2() throws IOException, SAXException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final Node r = this.getNode("<r a=\"1\"/>");
+        final Node s = this.getNode("<s a=\"1\"/>");
+        final Node ra0 = r.getAttributes().item(0);
+        final Node sa0 = s.getAttributes().item(0);
+        Assert.assertNotNull(sa0);
+        Assert.assertFalse(this.tester.attributesEquals(r, sa0));
+        Assert.assertFalse(this.tester.attributesEquals(ra0, s));
+        Assert.assertTrue(this.tester.attributesEquals(ra0, ra0));
+        Assert.assertTrue(this.tester.attributesEquals(ra0, sa0));
+
+        PowerMock.replayAll();
+    }
+
     private Node getNode(final String s) throws SAXException, IOException {
         final Document document = this.builder.parse(new ByteArrayInputStream(s.getBytes(UTF_8)));
         return document.getFirstChild();
