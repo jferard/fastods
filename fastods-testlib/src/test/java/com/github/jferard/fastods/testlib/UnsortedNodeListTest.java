@@ -135,4 +135,16 @@ public class UnsortedNodeListTest {
         Assert.assertEquals(-1, UnsortedNodeList.cmp.compare(doc.getFirstChild(), doc.getLastChild().getAttributes().item(0)));
         Assert.assertEquals(1, UnsortedNodeList.cmp.compare(doc.getLastChild().getAttributes().item(0), doc.getFirstChild()));
     }
+
+    @Test
+    public void testComparator2() throws IOException, SAXException {
+        final Document document = this.builder
+                .parse(new ByteArrayInputStream(("<doc><r c='4' /><s c='1'/></doc>").getBytes(UTF_8)));
+
+        final Node doc = document.getFirstChild();
+        final Node item = doc.getFirstChild().getAttributes().item(0);
+        final Node item2 = doc.getLastChild().getAttributes().item(0);
+
+        Assert.assertEquals(0, UnsortedNodeList.cmp.compare(item, item2));
+    }
 }

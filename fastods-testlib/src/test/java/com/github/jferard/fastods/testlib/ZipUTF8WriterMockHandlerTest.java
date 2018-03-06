@@ -46,6 +46,14 @@ public class ZipUTF8WriterMockHandlerTest {
     }
 
     @Test
+    public void testCreate() throws IOException, ParserConfigurationException, SAXException {
+        final ZipUTF8WriterMockHandler h = ZipUTF8WriterMockHandler.create();
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        PowerMock.verifyAll();
+    }
+
+    @Test
     public void testGet() throws IOException, ParserConfigurationException, SAXException {
         this.mock.putNextEntry(new ZipEntry("test"));
         this.mock.append("<document />");

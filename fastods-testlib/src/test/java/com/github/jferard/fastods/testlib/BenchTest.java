@@ -71,4 +71,14 @@ public class BenchTest {
         Assert.assertEquals(45/10, withoutWarmup.getAvgTime());
     }
 
+    @Test
+    public void testTenWithWarmup() throws IOException {
+        for (int i=0; i<10; i++) {
+            this.bench.iteration();
+        }
+        final Computations withoutWarmup = this.bench.getWithWarmup();
+        Assert.assertEquals(9l, withoutWarmup.getWorstTime());
+        Assert.assertEquals(2l, withoutWarmup.getBestTime());
+        Assert.assertEquals(44/8, withoutWarmup.getAvgTime());
+    }
 }

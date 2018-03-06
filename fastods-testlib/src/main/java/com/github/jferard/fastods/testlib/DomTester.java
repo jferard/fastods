@@ -44,8 +44,6 @@ public class DomTester {
         DomTester.assertEquals(string1, string2, new SortedChildrenTester());
     }
 
-    ;
-
     public static void assertUnsortedEquals(final String string1, final String string2) {
         DomTester.assertEquals(string1, string2, new UnsortedChildrenTester());
     }
