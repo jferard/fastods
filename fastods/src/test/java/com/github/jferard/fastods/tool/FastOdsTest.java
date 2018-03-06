@@ -63,7 +63,8 @@ public class FastOdsTest {
         final File f = PowerMock.createMock(File.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(f.exists()).andReturn(false);
+        if (FastOds.desktop != null)
+            EasyMock.expect(f.exists()).andReturn(false);
 
         PowerMock.replayAll();
         Assert.assertFalse(FastOds.openFile(f));
