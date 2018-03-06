@@ -24,6 +24,7 @@ package com.github.jferard.fastods.testlib;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -33,6 +34,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class UnsortedChildrenTesterTest {
     private static final String UTF_8 = "utf-8";
@@ -44,6 +46,7 @@ public class UnsortedChildrenTesterTest {
 
     @Before
     public void setUp() throws ParserConfigurationException, IOException, SAXException {
+        UnsortedChildrenTester.logger = PowerMock.createMock(Logger.class);
         this.tester = new UnsortedChildrenTester();
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
@@ -53,17 +56,44 @@ public class UnsortedChildrenTesterTest {
 
     @Test
     public void testEquals() throws IOException, SAXException {
-        final Document document;
-        document = this.builder.parse(new ByteArrayInputStream(("<r a='1' b='2'><s/><t/></r>").getBytes(UTF_8)));
-        final Node r2 = document.getFirstChild();
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final Node r2 = this.getNode("<r a='1' b='2'><s/><t/></r>");
         Assert.assertTrue(this.tester.childrenEquals(this.r, r2));
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testNotEquals() throws IOException, SAXException {
-        final Document document;
-        document = this.builder.parse(new ByteArrayInputStream(("<r a='1' b='2'><u/><v/></r>").getBytes(UTF_8)));
-        final Node r2 = document.getFirstChild();
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final Node r2 = this.getNode("<r a='1' b='2'><u/><v/></r>");
         Assert.assertFalse(this.tester.childrenEquals(this.r, r2));
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testChildrenEquals() throws IOException, SAXException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final Node x = this.getNode("<x><r/></x>");
+        final Node y = this.getNode("<y><s/><t/></y>");
+        final Node z = this.getNode("<z><s/><u/></z>");
+        final Node a = this.getNode("<a><u/><s/></a>");
+        Assert.assertFalse(this.tester.childrenEquals(x, y));
+        Assert.assertFalse(this.tester.childrenEquals(y, z));
+        Assert.assertTrue(this.tester.childrenEquals(z, a));
+
+        PowerMock.verifyAll();
+    }
+
+    private Node getNode(final String s) throws SAXException, IOException {
+        final Document document = this.builder.parse(new ByteArrayInputStream(s.getBytes(UTF_8)));
+        return document.getFirstChild();
     }
 }
