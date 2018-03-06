@@ -55,7 +55,7 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 			if (attributes2 == null)
 				return -1;
 
-			final int cmpAttrs = new AttrList(attributes1).compareTo(new AttrList(attributes2));
+			final int cmpAttrs = AttrList.create(attributes1).compareTo(AttrList.create(attributes2));
 			if (cmpAttrs != 0)
 				return cmpAttrs;
 
@@ -122,7 +122,7 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 			return "[null]";
 
 		final NamedNodeMap attributes = n.getAttributes();
-		final String s = attributes == null ? "" : new AttrList(attributes).toString();
+		final String s = attributes == null ? "" : AttrList.create(attributes).toString();
 		return "Node["+n.getNodeName()+", "+n.getNodeValue()+", "+ s +"]";
 	}
 

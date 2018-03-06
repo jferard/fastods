@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  */
@@ -54,17 +55,26 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 	};
 
 	private final int length;
-	private final ArrayList<Attr> attrs;
+	private final List<Attr> attrs;
 
 	/**
 	 * @param attributes the attributes
 	 */
-	AttrList(final NamedNodeMap attributes) {
-		this.length = attributes.getLength();
-		this.attrs = new ArrayList<Attr>(this.length);
-		for (int i = 0; i < this.length; i++) {
-			this.attrs.add((Attr) attributes.item(i));
+	static AttrList create(final NamedNodeMap attributes) {
+        final int l = attributes.getLength();
+        final List<Attr> as = new ArrayList<Attr>(l);
+		for (int i = 0; i < l; i++) {
+			as.add((Attr) attributes.item(i));
 		}
+		return new AttrList(as);
+	}
+
+    /**
+     * @param attrs the attributes
+     */
+    AttrList(final List<Attr> attrs) {
+        this.length = attrs.size();
+        this.attrs = attrs;
 		Collections.sort(this.attrs, cmp);
 	}
 
@@ -107,6 +117,8 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 		if (other == null)
 		    throw new NullPointerException();
 
+        if (this == other)
+            return 0;
 		if (this.length != other.length)
 			return this.length - other.length;
 

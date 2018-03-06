@@ -34,6 +34,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class AttrListTest {
@@ -48,7 +50,7 @@ public class AttrListTest {
         this.builder = factory.newDocumentBuilder();
         final Document document = this.builder.parse(new ByteArrayInputStream(("<r a='1' b='2'/>").getBytes(UTF_8)));
         this.attributes = document.getElementsByTagName("r").item(0).getAttributes();
-        this.attrList = new AttrList(this.attributes);
+        this.attrList = AttrList.create(this.attributes);
     }
 
     @Test
@@ -79,7 +81,7 @@ public class AttrListTest {
 
         final Document document = this.builder.parse(new ByteArrayInputStream(("<s b='2' a='1'/>").getBytes(UTF_8)));
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
-        final AttrList attrList2 = new AttrList(attributes2);
+        final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(attrList2, this.attrList);
         Assert.assertEquals(attrList2.hashCode(), this.attrList.hashCode());
     }
@@ -88,7 +90,7 @@ public class AttrListTest {
     public void testCompare() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(("<s b='3' a='1'/>").getBytes(UTF_8)));
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
-        final AttrList attrList2 = new AttrList(attributes2);
+        final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(0, this.attrList.compareTo(this.attrList));
         Assert.assertEquals(1, attrList2.compareTo(this.attrList));
         Assert.assertEquals(-1, this.attrList.compareTo(attrList2));
@@ -103,9 +105,27 @@ public class AttrListTest {
     public void testCompareWithDifferentSizes() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(("<s c='3' b='2' a='1'/>").getBytes(UTF_8)));
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
-        final AttrList attrList2 = new AttrList(attributes2);
+        final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(1, attrList2.compareTo(this.attrList));
         Assert.assertNotEquals(attrList2.hashCode(), this.attrList.hashCode());
+    }
+
+    @Test
+    public void testNull() throws IOException, SAXException {
+        final Document document = this.builder.parse(new ByteArrayInputStream(("<s c='3' b='2' a='1'/>").getBytes(UTF_8)));
+        final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
+        final AttrList attrList2 = AttrList.create(attributes2);
+        final AttrList attrList3 = new AttrList(Arrays.<Attr>asList(null, null, null));
+        final AttrList attrList4 = new AttrList(Arrays.<Attr>asList(null, null, null));
+        Assert.assertEquals(-1, attrList2.compareTo(attrList3));
+        Assert.assertEquals(1, attrList3.compareTo(attrList2));
+        Assert.assertEquals(0, attrList3.compareTo(attrList3));
+        Assert.assertEquals(0, attrList3.compareTo(attrList4));
+    }
+
+    @Test
+    public void testHashCode() {
+        Assert.assertEquals(2, this.attrList.hashCode());
     }
 }
 

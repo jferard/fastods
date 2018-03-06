@@ -90,7 +90,7 @@ public class SortedChildrenTesterTest {
         PowerMock.resetAll();
         UnsortedChildrenTester.logger.info("Different children number [x: null]->[x: null] vs [y: null]->[y: null]");
         UnsortedChildrenTester.logger.info("Different children [t: null] vs [u: null]");
-        
+
         PowerMock.replayAll();
         final Node x = this.getNode("<x><r/></x>");
         final Node y = this.getNode("<y><s/><t/></y>");

@@ -45,8 +45,8 @@ public abstract class ChildrenTester {
 			if (attributes1.getLength() != attributes2.getLength())
 				return false;
 
-			final AttrList list1 = new AttrList(attributes1);
-			final AttrList list2 = new AttrList(attributes2);
+			final AttrList list1 = AttrList.create(attributes1);
+			final AttrList list2 = AttrList.create(attributes2);
 			return list1.equals(list2);
 		}
 	}
