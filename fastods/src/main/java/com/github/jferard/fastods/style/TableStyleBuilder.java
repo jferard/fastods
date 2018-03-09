@@ -63,12 +63,6 @@ public class TableStyleBuilder implements StyleBuilder<TableStyle>, HidableBuild
     }
 
     @Override
-    public TableStyleBuilder visible() {
-        this.hidden = false;
-        return this;
-    }
-
-    @Override
     public TableStyleBuilder hidden() {
         this.hidden = true;
         return this;

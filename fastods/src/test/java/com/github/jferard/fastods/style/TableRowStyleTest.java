@@ -1,8 +1,6 @@
 /*
- * FastODS - A very fast and lightweight (no dependency) library for creating ODS
- *    (Open Document Spreadsheet, mainly for Calc) files in Java.
- *    It's a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016-2018 J. Férard <https://github.com/jferard>
+ * FastODS - a Martin Schulz's SimpleODS fork
+ *    Copyright (C) 2016-2017 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
@@ -20,17 +18,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.github.jferard.fastods.style;
 
-/**
- * A builder for a style that may go in automatic or common styles
- * @param <T> the type of the concrete builder
- */
-public interface HidableBuilder<T> {
-    /**
-     * Make this style hidden, ie part of automatic styles
-     * @return this for fluent style
-     */
-    T hidden();
+import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TableRowStyleTest {
+    private XMLUtil util;
+
+    @Before
+    public void setUp() {
+        this.util = XMLUtil.create();
+    }
+
+    @Test
+    public final void testGetters() {
+        StyleTestHelper.testGetters(TableRowStyle.builder("test"));
+    }
 }

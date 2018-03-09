@@ -22,41 +22,29 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
 public class TableStyleTest {
-    @Before
-    public void setUp() {
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
-    }
-
     @Test
     public final void testAddEmptyToFile() {
         final TableStyle ts = TableStyle.builder("test").build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
-        // play
+        PowerMock.resetAll();
         odsElements.addContentStyle(ts);
 
         PowerMock.replayAll();
         ts.addToElements(odsElements);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testEmpty() throws IOException {
-        PowerMock.replayAll();
         final TableStyle ts = TableStyle.builder("test").build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table\" " +
@@ -67,7 +55,6 @@ public class TableStyleTest {
 
     @Test
     public final void testPageStyle() throws IOException {
-        PowerMock.replayAll();
         final PageStyle ps = PageStyle.builder("p").build();
         final TableStyle ts = TableStyle.builder("test").pageStyle(ps).build();
         TestHelper.assertXMLEquals(
@@ -76,5 +63,10 @@ public class TableStyleTest {
                         "</style:style>",
                 ts);
         Assert.assertEquals("test", ts.getName());
+    }
+
+    @Test
+    public final void testGetters() {
+        StyleTestHelper.testGetters(TableStyle.builder("test"));
     }
 }

@@ -94,12 +94,6 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>,
     }
 
     @Override
-    public TableColumnStyleBuilder visible() {
-        this.hidden = false;
-        return this;
-    }
-
-    @Override
     public TableColumnStyleBuilder hidden() {
         this.hidden = true;
         return this;

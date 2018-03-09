@@ -23,14 +23,16 @@
 
 package com.github.jferard.fastods.style;
 
-/**
- * A builder for a style that may go in automatic or common styles
- * @param <T> the type of the concrete builder
- */
-public interface HidableBuilder<T> {
-    /**
-     * Make this style hidden, ie part of automatic styles
-     * @return this for fluent style
-     */
-    T hidden();
+import com.github.jferard.fastods.util.StyleBuilder;
+import org.junit.Assert;
+
+public class StyleTestHelper {
+    public static <S extends ObjectStyle, T extends StyleBuilder<S> & HidableBuilder<T>> void testGetters(
+            final T builder) {
+        final S style = builder.build();
+        Assert.assertEquals("test", style.getName());
+        Assert.assertFalse(style.isHidden());
+        Assert.assertTrue(builder.hidden().build().isHidden());
+
+    }
 }

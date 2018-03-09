@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.StyleBuilder;
@@ -40,6 +39,7 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Hidabl
 
     /**
      * The style will be visible by default
+     *
      * @param name A unique name for this style
      */
     TableRowStyleBuilder(final String name) {
@@ -51,11 +51,6 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Hidabl
     @Override
     public TableRowStyle build() {
         return new TableRowStyle(this.name, this.hidden, this.rowHeight);
-    }
-
-    public TableRowStyleBuilder visible() {
-        this.hidden = false;
-        return this;
     }
 
     @Override

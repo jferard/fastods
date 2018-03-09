@@ -349,12 +349,6 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     }
 
     @Override
-    public TableCellStyleBuilder visible() {
-        this.hidden = false;
-        return this;
-    }
-
-    @Override
     public TableCellStyleBuilder hidden() {
         this.hidden = true;
         return this;

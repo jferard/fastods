@@ -96,4 +96,9 @@ public class TableCellStyleTest {
                         "fo:margin=\"0mm\"/>" + "</style:style>",
                 TableCellStyle.DEFAULT_CELL_STYLE);
     }
+
+    @Test
+    public final void testGetters() {
+        StyleTestHelper.testGetters(TableCellStyle.builder("test"));
+    }
 }

@@ -25,7 +25,6 @@ import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,12 +38,6 @@ public class TableColumnStyleTest {
     @Before
     public void setUp() {
         this.util = XMLUtil.create();
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
@@ -52,12 +45,14 @@ public class TableColumnStyleTest {
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
-        // play
+        PowerMock.resetAll();
         odsElements.addContentStyle(tcs);
         odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.replayAll();
         tcs.addToElements(odsElements);
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -66,17 +61,18 @@ public class TableColumnStyleTest {
         final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cellStyle).build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
-        // play
+        PowerMock.resetAll();
         odsElements.addContentStyle(tcs);
         odsElements.addContentStyle(cellStyle);
 
         PowerMock.replayAll();
         tcs.addToElements(odsElements);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDefaultCellStyle() throws IOException {
-        PowerMock.replayAll();
         final TableCellStyle cs = TableCellStyle.builder("t").build();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cs).build();
         this.assertXMLTableEquals("<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"t\"/>",
@@ -85,11 +81,10 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testEmpty() throws IOException {
-        PowerMock.replayAll();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table-column\">" + "<style:table-column-properties "
-                        + "fo:break-before=\"auto\" style:column-width=\"2.5cm\"/>" + "</style:style>",
+                        + "fo:break-before=\"auto\" " + "style:column-width=\"2.5cm\"/>" + "</style:style>",
                 tcs);
         this.assertXMLTableEquals(
                 "<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"Default\"/>", tcs, -1);
@@ -97,7 +92,6 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testEmpty2() throws IOException {
-        PowerMock.replayAll();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
         this.assertXMLTableEquals(
                 "<table:table-column table:style-name=\"test\" table:number-columns-repeated=\"2\" " +
@@ -107,11 +101,10 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testWidth() throws IOException {
-        PowerMock.replayAll();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").columnWidth(SimpleLength.pt(1.0)).build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table-column\">" + "<style:table-column-properties "
-                        + "fo:break-before=\"auto\" style:column-width=\"1pt\"/>" + "</style:style>",
+                        + "fo:break-before=\"auto\" " + "style:column-width=\"1pt\"/>" + "</style:style>",
                 tcs);
         Assert.assertEquals(SimpleLength.pt(1.0), tcs.getColumnWidth());
         Assert.assertEquals(tcs, tcs);
@@ -120,10 +113,13 @@ public class TableColumnStyleTest {
 
     private void assertXMLTableEquals(final String xml, final TableColumnStyle tcs,
                                       final int count) throws IOException {
-        PowerMock.replayAll();
         final StringBuilder sbt = new StringBuilder();
         tcs.appendXMLToTable(this.util, sbt, count);
         DomTester.assertEquals(xml, sbt.toString());
     }
 
+    @Test
+    public final void testGetters() {
+        StyleTestHelper.testGetters(TableColumnStyle.builder("test"));
+    }
 }
