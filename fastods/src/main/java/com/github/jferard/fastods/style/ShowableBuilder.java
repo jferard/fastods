@@ -21,33 +21,16 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.datastyle;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.odselement.OdsElements;
-import org.junit.Assert;
-import org.powermock.api.easymock.PowerMock;
-
-import java.util.Locale;
-
-public class DataStyleTestHelper {
-    /** very basic test */
-    public static void testAddToElements(final DataStyle dataStyle) {
-        final OdsElements elements = PowerMock.createMock(OdsElements.class);
-
-        PowerMock.resetAll();
-        elements.addDataStyle(dataStyle);
-
-        PowerMock.replayAll();
-        dataStyle.addToElements(elements);
-
-        PowerMock.verifyAll();
-    }
-
-    public static <S extends DataStyle, T extends DataStyleBuilder<S,T>> void testGetters(final DataStyleBuilder<S, T> builder) {
-        final S style = builder.build();
-        Assert.assertEquals("test", style.getName());
-        Assert.assertTrue(style.isHidden());
-        Assert.assertFalse(builder.visible().build().isHidden());
-
-    }
+/**
+ * A builder for a style that may go in automatic or common styles
+ * @param <T> the type of the concrete builder
+ */
+public interface ShowableBuilder<T> {
+    /**
+     * Make this style visible, ie part of common styles
+     * @return this for fluent style
+     */
+    T visible();
 }

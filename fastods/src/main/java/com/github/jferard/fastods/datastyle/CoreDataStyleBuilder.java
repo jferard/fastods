@@ -23,8 +23,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.style.HidableBuilder;
+import com.github.jferard.fastods.style.ShowableBuilder;
 import com.github.jferard.fastods.util.NameChecker;
 import com.github.jferard.fastods.util.StyleBuilder;
 
@@ -33,84 +32,80 @@ import java.util.Locale;
 
 /**
  * A CoreDataStyle builder
+ *
  * @author Julien Férard
  */
-final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>, IsVolatileBuilder<CoreDataStyleBuilder>, HidableBuilder<CoreDataStyleBuilder> {
+final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>,
+        IsVolatileBuilder<CoreDataStyleBuilder>, ShowableBuilder<CoreDataStyleBuilder> {
     private static final NameChecker checker = new NameChecker();
+    /**
+     * the name of a data style (19.498.2)
+     */
+    private final String name;
+    /**
+     * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
+     */
+    private String countryCode;
+    /**
+     * 19.349 number:language : "The number:language attribute specifies a language code"
+     */
+    private String languageCode;
+    /**
+     * 19.517 : "The style:volatile attribute specifies whether unused style in
+     * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
+     * true: consumers should keep unused styles."
+     */
+    private boolean volatileStyle;
+    private boolean hidden;
 
- 	/**
-	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
-	 */
-	private String countryCode;
-	/**
-	 * 19.349 number:language : "The number:language attribute specifies a language code"
-	 */
-	private String languageCode;
-	/**
-	 * the name of a data style (19.498.2)
-	 */
-	private final String name;
-	/**
-	 * 19.517 : "The style:volatile attribute specifies whether unused style in
-	 * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
-	 * true: consumers should keep unused styles."
-	 */
-	private boolean volatileStyle;
-	private boolean hidden;
-
-	/**
-	 * The builder. The style is hidden by default.
-	 *
-	 * @param name   The name of this style
-	 * @param locale The locale used
-	 */
-	CoreDataStyleBuilder(final String name, final Locale locale) {
+    /**
+     * The builder. The style is hidden by default.
+     *
+     * @param name   The name of this style
+     * @param locale The locale used
+     */
+    CoreDataStyleBuilder(final String name, final Locale locale) {
         this.name = checker.checkStyleName(name);
-		this.countryCode = locale.getCountry();
-		this.languageCode = locale.getLanguage();
-		this.volatileStyle = true;
-		this.hidden = true;
-	}
-
-	@Override
-	public CoreDataStyle build() {
-		return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
-
-	}
-
-	@Override
-	public CoreDataStyleBuilder country(final String countryCode) {
-		this.countryCode = countryCode.toUpperCase();
-		return this;
-	}
-
-	@Override
-	public CoreDataStyleBuilder language(final String languageCode) {
-		this.languageCode = languageCode.toLowerCase();
-		return this;
-	}
-
-	@Override
-	public CoreDataStyleBuilder locale(final Locale locale) {
-		this.countryCode = locale.getCountry();
-		this.languageCode = locale.getLanguage();
-		return this;
-	}
-
-	@Override
-	public CoreDataStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.volatileStyle = volatileStyle;
-		return this;
-	}
-
-    public CoreDataStyleBuilder visible() {
-	    this.hidden = false;
-	    return this;
+        this.countryCode = locale.getCountry();
+        this.languageCode = locale.getLanguage();
+        this.volatileStyle = true;
+        this.hidden = true;
     }
 
     @Override
-    public CoreDataStyleBuilder hidden() {
-        this.hidden = true;
+    public CoreDataStyle build() {
+        return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
+
+    }
+
+    @Override
+    public CoreDataStyleBuilder country(final String countryCode) {
+        this.countryCode = countryCode.toUpperCase();
+        return this;
+    }
+
+    @Override
+    public CoreDataStyleBuilder language(final String languageCode) {
+        this.languageCode = languageCode.toLowerCase();
+        return this;
+    }
+
+    @Override
+    public CoreDataStyleBuilder locale(final Locale locale) {
+        this.countryCode = locale.getCountry();
+        this.languageCode = locale.getLanguage();
+        return this;
+    }
+
+    @Override
+    public CoreDataStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.volatileStyle = volatileStyle;
+        return this;
+    }
+
+    @Override
+    public CoreDataStyleBuilder visible() {
+        this.hidden = false;
         return this;
     }
 }

@@ -104,12 +104,6 @@ public final class NumberStyleHelperBuilder implements NumberStyleBuilder<Number
     }
 
     @Override
-    public NumberStyleHelperBuilder hidden() {
-        this.dataStyleBuilder.hidden();
-        return this;
-    }
-
-    @Override
     public NumberStyleHelper build() {
         return new NumberStyleHelper(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits,
                 this.negativeValueColor);

@@ -82,8 +82,8 @@ public class StylesContainerTest {
         this.util = XMLUtil.create();
         this.locale = Locale.US;
 
-        this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").hidden().build();
-        this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").hidden().build();
+        this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").build();
+        this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").build();
 
         this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
         this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
@@ -92,7 +92,7 @@ public class StylesContainerTest {
     // CONTENT
     @Test
     public final void testAddDataStyle() {
-        final DataStyle dataStyle = new BooleanStyleBuilder("test", this.locale).hidden().build();
+        final DataStyle dataStyle = new BooleanStyleBuilder("test", this.locale).build();
         this.stylesContainer.addDataStyle(dataStyle);
     }
 
@@ -180,7 +180,7 @@ public class StylesContainerTest {
     @Test
     public void testAddChildCellStyle() throws Exception {
         final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
-        final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).hidden().build();
+        final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).build();
 
         TableCellStyle childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
         Assert.assertNotNull(childCellStyle);

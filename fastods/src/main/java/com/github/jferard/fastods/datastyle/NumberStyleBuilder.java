@@ -24,7 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.style.HidableBuilder;
+import com.github.jferard.fastods.style.ShowableBuilder;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
@@ -32,8 +32,8 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @param <T> the concrete number style builder
  * @author Julien Férard
  */
-public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>>
-            extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T>, HidableBuilder<T> {
+public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>> extends StyleBuilder<S>,
+        LocalizedBuilder<T>, IsVolatileBuilder<T>, ShowableBuilder<T> {
     /**
      * @param grouping if true, the thousands separator is shown.
      * @return this for fluent style
@@ -41,8 +41,7 @@ public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>>
     T groupThousands(boolean grouping);
 
     /**
-     * @param minIntegerDigits
-     *            The number of digits for integer part
+     * @param minIntegerDigits The number of digits for integer part
      * @return this for fluent style
      */
     T minIntegerDigits(int minIntegerDigits);
@@ -55,6 +54,7 @@ public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>>
 
     /**
      * Sets the red color for negative values
+     *
      * @return this for fluent style
      */
     T negativeValueRed();

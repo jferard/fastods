@@ -23,7 +23,6 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -151,7 +150,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testSymbol() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).currencySymbol("ABC")
-                .currencySymbolPosition(CurrencyStyle.SymbolPosition.BEGIN).hidden().build();
+                .currencySymbolPosition(CurrencyStyle.SymbolPosition.BEGIN).build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\"><number:currency-symbol>ABC</number:currency-symbol><number:number "
@@ -162,7 +161,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testLocaleVolatile() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).hidden().build();
+                .language("cd").volatileStyle(true).build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"cd\" number:country=\"AB\" " +
                         "style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
@@ -173,17 +172,13 @@ public class CurrencyStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).hidden().build();
-
-        Assert.assertEquals("test", cs.getName());
-        Assert.assertTrue(cs.isHidden());
+        DataStyleTestHelper.testGetters(new CurrencyStyleBuilder("test", this.locale));
     }
 
     @Test
     public final void testAddToElements() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).hidden().build();
+                .language("cd").volatileStyle(true).build();
         DataStyleTestHelper.testAddToElements(cs);
     }
 

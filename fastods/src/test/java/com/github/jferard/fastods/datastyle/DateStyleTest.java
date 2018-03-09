@@ -21,7 +21,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -158,9 +157,7 @@ public class DateStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).hidden().build();
-        Assert.assertEquals("test", ds.getName());
-        Assert.assertTrue(ds.isHidden());
+        DataStyleTestHelper.testGetters(new DateStyleBuilder("test", this.locale));
     }
 
     @Test

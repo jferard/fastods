@@ -70,4 +70,9 @@ public class NumberStyleHelperTest {
         final FloatStyle ns = new FloatStyleBuilder("test", this.locale).build();
         DataStyleTestHelper.testAddToElements(ns);
     }
+
+    @Test
+    public final void testGetters() {
+        DataStyleTestHelper.testGetters(new FloatStyleBuilder("test", this.locale));
+    }
 }

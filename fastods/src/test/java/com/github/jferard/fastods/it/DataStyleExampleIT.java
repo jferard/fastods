@@ -141,7 +141,7 @@ public class DataStyleExampleIT {
         cell.setFloatValue(789654.321);
         // Now add a custom format.
         final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", this.locale).decimalPlaces(8)
-                .groupThousands(true).hidden().build();
+                .groupThousands(true).build();
         // This operation may be slow because the default data style was already added
         cell.setDataStyle(intStyle);
 
@@ -165,7 +165,7 @@ public class DataStyleExampleIT {
         // Add a custom format
         final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale).dateFormat(
                 new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT, DateStyleFormat.MONTH,
-                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).hidden().build();
+                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).build();
         cell.setDataStyle(dateStyle);
     }
 }

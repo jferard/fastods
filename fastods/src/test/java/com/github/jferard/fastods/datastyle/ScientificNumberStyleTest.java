@@ -23,7 +23,6 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -54,9 +53,9 @@ public class ScientificNumberStyleTest {
                         "number:language=\"en\" " + "number:country=\"FR\" style:volatile=\"true\">" +
                         "<style:text-properties fo:color=\"#ff0000\"/>" + "<number:text>-</number:text>" +
                         "<number:scientific-number number:min-exponent-digits=\"1\" " + "number:decimal-places=\"2\" " +
-                        "" + "" + "" + "" + "" + "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
-                        "<style:map" + " " + "style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
-                        "</number:number-style>",
+                        "" + "" + "" + "" + "" + "" + "" + "number:min-integer-digits=\"8\" " +
+                        "number:grouping=\"true\"/>" + "<style:map" + " " + "style:condition=\"value()&gt;=0\" " +
+                        "style:apply-style-name=\"test\"/>" + "</number:number-style>",
                 s);
     }
 
@@ -73,7 +72,7 @@ public class ScientificNumberStyleTest {
                         "number:language=\"de\" " + "number:country=\"DE\" style:volatile=\"true\">" +
                         "<style:text-properties fo:color=\"#ff0000\"/>" + "<number:text>-</number:text>" +
                         "<number:scientific-number number:min-exponent-digits=\"2\" " + "number:decimal-places=\"2\" " +
-                        "" + "" + "" + "" + "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
+                        "" + "" + "" + "" + "" + "" + "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
                         "<style:map" + " " + "style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
                         "</number:number-style>",
                 s);
@@ -99,15 +98,12 @@ public class ScientificNumberStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).hidden().build();
-        Assert.assertEquals("test", s.getName());
-        Assert.assertTrue(s.isHidden());
+        DataStyleTestHelper.testGetters(new ScientificNumberStyleBuilder("test", this.locale));
     }
 
     @Test
     public final void testDecimalPlaces() throws IOException, SAXException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).decimalPlaces(10)
-                .hidden().build();
+        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).decimalPlaces(10).build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\"><number:scientific-number number:min-exponent-digits=\"0\" " +

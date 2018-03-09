@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FastOdsException;
 
 import java.util.Locale;
 
@@ -58,12 +57,6 @@ public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyl
     @Override
     public FloatStyleBuilder visible() {
         this.numberStyleHelperBuilder.visible();
-        return this;
-    }
-
-    @Override
-    public FloatStyleBuilder hidden() {
-        this.numberStyleHelperBuilder.hidden();
         return this;
     }
 

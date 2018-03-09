@@ -58,9 +58,7 @@ public class BooleanStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).hidden().build();
-        Assert.assertEquals("test", bs.getName());
-        Assert.assertTrue(bs.isHidden());
+        DataStyleTestHelper.testGetters(new BooleanStyleBuilder("test", this.locale));
     }
 
     @Test

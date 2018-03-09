@@ -78,11 +78,5 @@ public class BooleanStyleBuilder implements DataStyleBuilder<BooleanStyle, Boole
     	this.dataStyleBuilder.visible();
 		return this;
 	}
-
-	@Override
-	public BooleanStyleBuilder hidden() {
-        this.dataStyleBuilder.hidden();
-		return this;
-	}
 }
 

@@ -114,10 +114,4 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
         this.dataStyleBuilder.visible();
         return this;
     }
-
-    @Override
-    public DateStyleBuilder hidden() {
-        this.dataStyleBuilder.hidden();
-        return this;
-    }
 }

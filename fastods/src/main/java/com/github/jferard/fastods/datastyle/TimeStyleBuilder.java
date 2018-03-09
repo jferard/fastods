@@ -96,10 +96,4 @@ class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> 
         this.dataStyleBuilder.visible();
         return this;
     }
-
-    @Override
-    public TimeStyleBuilder hidden() {
-        this.dataStyleBuilder.hidden();
-        return this;
-    }
 }

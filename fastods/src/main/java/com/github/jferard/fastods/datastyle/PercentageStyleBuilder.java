@@ -109,10 +109,4 @@ public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle,
         this.floatStyleBuilder.visible();
         return this;
     }
-
-    @Override
-    public PercentageStyleBuilder hidden() {
-        this.floatStyleBuilder.hidden();
-        return this;
-    }
 }

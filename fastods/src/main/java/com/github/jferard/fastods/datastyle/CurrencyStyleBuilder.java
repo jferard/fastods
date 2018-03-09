@@ -142,10 +142,4 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 		this.floatStyleBuilder.visible();
 		return this;
 	}
-
-	@Override
-	public CurrencyStyleBuilder hidden() {
-        this.floatStyleBuilder.hidden();
-		return this;
-	}
 }

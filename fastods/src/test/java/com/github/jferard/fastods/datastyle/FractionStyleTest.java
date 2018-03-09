@@ -23,7 +23,6 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -101,9 +100,7 @@ public class FractionStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).hidden().build();
-        Assert.assertEquals("test", fs.getName());
-        Assert.assertTrue(fs.isHidden());
+        DataStyleTestHelper.testGetters(new FractionStyleBuilder("test", this.locale));
     }
 
     @Test

@@ -122,10 +122,4 @@ public class ScientificNumberStyleBuilder implements DataStyleBuilder<Scientific
         this.floatStyleBuilder.visible();
         return this;
     }
-
-    @Override
-    public ScientificNumberStyleBuilder hidden() {
-        this.floatStyleBuilder.hidden();
-        return this;
-    }
 }

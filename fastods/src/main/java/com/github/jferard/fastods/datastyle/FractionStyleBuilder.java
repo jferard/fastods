@@ -135,10 +135,4 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
         this.numberStyleHelperBuilder.visible();
         return this;
     }
-
-    @Override
-    public FractionStyleBuilder hidden() {
-        this.numberStyleHelperBuilder.hidden();
-        return this;
-    }
 }
