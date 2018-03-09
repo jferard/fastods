@@ -122,9 +122,9 @@ public class DataStylesBuilder {
      * @return the data styles
      */
     public DataStyles build() {
-        return new DataStyles(this.booleanStyleBuilder.buildHidden(), this.currencyStyleBuilder.buildHidden(),
-                this.dateDataStyleBuilder.buildHidden(), this.floatStyleBuilder.buildHidden(),
-                this.percentageStyleBuilder.buildHidden(), this.timeStyleBuilder.buildHidden());
+        return new DataStyles(this.booleanStyleBuilder.build(), this.currencyStyleBuilder.build(),
+                this.dateDataStyleBuilder.build(), this.floatStyleBuilder.build(),
+                this.percentageStyleBuilder.build(), this.timeStyleBuilder.build());
 
     }
 }

@@ -43,10 +43,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import static com.github.jferard.fastods.OdsFactory.FileState.FILE_EXISTS;
-import static com.github.jferard.fastods.OdsFactory.FileState.IS_DIRECTORY;
-import static com.github.jferard.fastods.OdsFactory.FileState.OK;
-
 /**
  * An OdsFactory is the entry point for creating ods documents.
  *
@@ -111,21 +107,6 @@ public class OdsFactory {
         return this;
     }
 
-
-    /**
-     * @param filename the name of the file.
-     * @return the state of the file with name filename: IS_DIRECTORY|FILE_EXISTS|OK
-     * @deprecated
-     */
-    @Deprecated
-    public FileState checkFile(final String filename) {
-        final File f = new File(filename);
-        if (f.isDirectory()) return IS_DIRECTORY;
-
-        if (f.exists()) return FILE_EXISTS;
-
-        return OK;
-    }
 
     /**
      * Create a new, empty document for an anonymous writer. Use addTable to add tables.

@@ -113,15 +113,15 @@ public class DataStyleExampleIT {
         final GregorianCalendar cal = new GregorianCalendar(this.locale);
 
         // Define some styles
-        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true).buildHidden();
-        final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5)).buildHidden();
+        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true).hidden().build();
+        final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5)).hidden().build();
 
         final Table table = document.addTable("test");
         final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle)
-                .buildHidden();
+                .hidden().build();
         table.setColumnStyle(0, columnStyle0);
         final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5))
-                .buildHidden();
+                .hidden().build();
         table.setColumnStyle(1, columnStyle1);
 
         // FIRST ROW
@@ -141,7 +141,7 @@ public class DataStyleExampleIT {
         cell.setFloatValue(789654.321);
         // Now add a custom format.
         final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", this.locale).decimalPlaces(8)
-                .groupThousands(true).buildHidden();
+                .groupThousands(true).hidden().build();
         // This operation may be slow because the default data style was already added
         cell.setDataStyle(intStyle);
 
@@ -165,7 +165,7 @@ public class DataStyleExampleIT {
         // Add a custom format
         final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale).dateFormat(
                 new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT, DateStyleFormat.MONTH,
-                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).buildHidden();
+                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).hidden().build();
         cell.setDataStyle(dateStyle);
     }
 }

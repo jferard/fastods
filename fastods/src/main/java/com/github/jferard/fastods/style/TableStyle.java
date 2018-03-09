@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -39,7 +38,7 @@ public class TableStyle implements ObjectStyle {
     /**
      * the default (empty) table style
      */
-    public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").buildHidden();
+    public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").hidden().build();
 
     /**
      * @param name the name of the style
@@ -48,6 +47,7 @@ public class TableStyle implements ObjectStyle {
     public static TableStyleBuilder builder(final String name) {
         return new TableStyleBuilder(name);
     }
+
     private final boolean hidden;
     private final PageStyle pageStyle;
     private final String name;

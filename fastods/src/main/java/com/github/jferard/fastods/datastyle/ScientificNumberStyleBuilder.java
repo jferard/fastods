@@ -24,103 +24,108 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FastOdsException;
 
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
-public class ScientificNumberStyleBuilder implements DataStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>,
-		NumberStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>, DecimalStyleBuilder<ScientificNumberStyleBuilder> {
-	private final FloatStyleBuilder floatStyleBuilder;
-	private int minExponentDigits;
+public class ScientificNumberStyleBuilder implements DataStyleBuilder<ScientificNumberStyle,
+        ScientificNumberStyleBuilder>, NumberStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>,
+        DecimalStyleBuilder<ScientificNumberStyleBuilder> {
+    private final FloatStyleBuilder floatStyleBuilder;
+    private int minExponentDigits;
 
-	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is decPlaces.
-	 *
-	 * @param name   The name of the number style, this name must be unique.
-	 * @param locale the locale used
-	 */
-	public ScientificNumberStyleBuilder(final String name,
-								 final Locale locale) {
-		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
-	}
+    /**
+     * Create a new number style with the name name, minimum integer digits is
+     * minIntDigits and decimal places is decPlaces.
+     *
+     * @param name   The name of the number style, this name must be unique.
+     * @param locale the locale used
+     */
+    public ScientificNumberStyleBuilder(final String name, final Locale locale) {
+        this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
+    }
 
-	@Override
-	public ScientificNumberStyle build() {
-		return new ScientificNumberStyle(this.floatStyleBuilder.build(), this.minExponentDigits);
-	}
+    @Override
+    public ScientificNumberStyle build() {
+        return new ScientificNumberStyle(this.floatStyleBuilder.build(), this.minExponentDigits);
+    }
 
-	@Override
-	public ScientificNumberStyle buildHidden() {
-		return new ScientificNumberStyle(this.floatStyleBuilder.buildHidden(), this.minExponentDigits);
-	}
+    @Override
+    public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
+        this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
-		return this;
-	}
+    /**
+     * Set the number of exponent digits.
+     *
+     * @param minExponentDigits The minimum of exponent digits to be used
+     * @return this for fluent style
+     */
+    public ScientificNumberStyleBuilder minExponentDigits(final int minExponentDigits) {
+        this.minExponentDigits = minExponentDigits;
+        return this;
+    }
 
-	/**
-	 * Set the number of exponent digits.
-	 *
-	 * @param minExponentDigits The minimum of exponent digits to be used
-	 * @return this for fluent style
-	 */
-	public ScientificNumberStyleBuilder minExponentDigits(
-			final int minExponentDigits) {
-		this.minExponentDigits = minExponentDigits;
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder groupThousands(final boolean grouping) {
+        this.floatStyleBuilder.groupThousands(grouping);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder groupThousands(final boolean grouping) {
-		this.floatStyleBuilder.groupThousands(grouping);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder minIntegerDigits(final int minIntegerDigits) {
+        this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder negativeValueColor(final Color negativeValueColor) {
+        this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder negativeValueColor(final Color negativeValueColor) {
-		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder negativeValueRed() {
+        this.floatStyleBuilder.negativeValueRed();
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder negativeValueRed() {
-		this.floatStyleBuilder.negativeValueRed();
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder country(final String countryCode) {
+        this.floatStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder country(final String countryCode) {
-		this.floatStyleBuilder.country(countryCode);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder language(final String languageCode) {
+        this.floatStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder language(final String languageCode) {
-		this.floatStyleBuilder.language(languageCode);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder locale(final Locale locale) {
+        this.floatStyleBuilder.locale(locale);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder locale(final Locale locale) {
-		this.floatStyleBuilder.locale(locale);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.floatStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
 
-	@Override
-	public ScientificNumberStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.floatStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    @Override
+    public ScientificNumberStyleBuilder visible() {
+        this.floatStyleBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public ScientificNumberStyleBuilder hidden() {
+        this.floatStyleBuilder.hidden();
+        return this;
+    }
 }

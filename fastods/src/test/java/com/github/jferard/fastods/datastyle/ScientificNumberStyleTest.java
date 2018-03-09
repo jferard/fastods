@@ -99,7 +99,7 @@ public class ScientificNumberStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).buildHidden();
+        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).hidden().build();
         Assert.assertEquals("test", s.getName());
         Assert.assertTrue(s.isHidden());
     }
@@ -107,7 +107,7 @@ public class ScientificNumberStyleTest {
     @Test
     public final void testDecimalPlaces() throws IOException, SAXException {
         final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).decimalPlaces(10)
-                .buildHidden();
+                .hidden().build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\"><number:scientific-number number:min-exponent-digits=\"0\" " +

@@ -122,21 +122,17 @@ public class MasterPageStyle implements AddableToOdsElements, StyleWithEmbeddedS
 	}
 
     /**
-     * @return the footer
-     * @deprecated use MasterPageStyle.update(hasFooterHeader)
+	 * @return true if the page style has a footer
      */
-	@Deprecated
-	public Footer getFooter() {
-		return this.footer;
+	public boolean hasFooter() {
+		return this.footer != null;
 	}
 
     /**
-     * @return the header
-     * @deprecated use MasterPageStyle.update(hasFooterHeader)
+     * @return true if the page style has a header
      */
-    @Deprecated
-	public Header getHeader() {
-		return this.header;
+	public boolean hasHeader() {
+		return this.header != null;
 	}
 
 	/**

@@ -101,7 +101,7 @@ public class FractionStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).buildHidden();
+        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).hidden().build();
         Assert.assertEquals("test", fs.getName());
         Assert.assertTrue(fs.isHidden());
     }

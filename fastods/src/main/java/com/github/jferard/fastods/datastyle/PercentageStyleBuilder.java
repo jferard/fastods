@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FastOdsException;
 
 import java.util.Locale;
 
@@ -33,81 +32,87 @@ import java.util.Locale;
  */
 public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle, PercentageStyleBuilder>,
         NumberStyleBuilder<PercentageStyle, PercentageStyleBuilder>, DecimalStyleBuilder<PercentageStyleBuilder> {
-	private final FloatStyleBuilder floatStyleBuilder;
+    private final FloatStyleBuilder floatStyleBuilder;
 
-	/**
-	 * Create a new number style with the name name, minimum integer digits is
-	 * minIntDigits and decimal places is decPlaces.
-	 *
-	 * @param name   The name of the number style, this name must be unique.
-	 * @param locale the locale used
-	 */
-	public PercentageStyleBuilder(final String name, final Locale locale) {
-		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
-	}
+    /**
+     * Create a new number style with the name name, minimum integer digits is
+     * minIntDigits and decimal places is decPlaces.
+     *
+     * @param name   The name of the number style, this name must be unique.
+     * @param locale the locale used
+     */
+    public PercentageStyleBuilder(final String name, final Locale locale) {
+        this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
+    }
 
-	@Override
-	public PercentageStyle build() {
-		return new PercentageStyle(this.floatStyleBuilder.build());
-	}
+    @Override
+    public PercentageStyle build() {
+        return new PercentageStyle(this.floatStyleBuilder.build());
+    }
 
-	@Override
-	public PercentageStyle buildHidden() {
-		return new PercentageStyle(this.floatStyleBuilder.buildHidden());
-	}
-
-	@Override
+    @Override
     public PercentageStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
-		return this;
-	}
+        this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+        return this;
+    }
 
-	@Override
+    @Override
     public PercentageStyleBuilder groupThousands(final boolean grouping) {
-		this.floatStyleBuilder.groupThousands(grouping);
-		return this;
-	}
+        this.floatStyleBuilder.groupThousands(grouping);
+        return this;
+    }
 
     @Override
     public PercentageStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
-		return this;
-	}
+        this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+        return this;
+    }
 
-	@Override
-    public PercentageStyleBuilder negativeValueColor(
-			final Color negativeValueColor) {
-		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
-		return this;
-	}
+    @Override
+    public PercentageStyleBuilder negativeValueColor(final Color negativeValueColor) {
+        this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+        return this;
+    }
 
-	@Override
+    @Override
     public PercentageStyleBuilder negativeValueRed() {
-		this.floatStyleBuilder.negativeValueRed();
-		return this;
-	}
+        this.floatStyleBuilder.negativeValueRed();
+        return this;
+    }
 
-	@Override
-	public PercentageStyleBuilder country(final String countryCode) {
-		this.floatStyleBuilder.country(countryCode);
-		return this;
-	}
+    @Override
+    public PercentageStyleBuilder country(final String countryCode) {
+        this.floatStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	@Override
-	public PercentageStyleBuilder language(final String languageCode) {
-		this.floatStyleBuilder.language(languageCode);
-		return this;
-	}
+    @Override
+    public PercentageStyleBuilder language(final String languageCode) {
+        this.floatStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	@Override
-	public PercentageStyleBuilder locale(final Locale locale) {
-		this.floatStyleBuilder.locale(locale);
-		return this;
-	}
+    @Override
+    public PercentageStyleBuilder locale(final Locale locale) {
+        this.floatStyleBuilder.locale(locale);
+        return this;
+    }
 
-	@Override
-	public PercentageStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.floatStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    @Override
+    public PercentageStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.floatStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
+
+    @Override
+    public PercentageStyleBuilder visible() {
+        this.floatStyleBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public PercentageStyleBuilder hidden() {
+        this.floatStyleBuilder.hidden();
+        return this;
+    }
 }

@@ -117,7 +117,7 @@ public class StylesContainer {
             this.addDataStyle(dataStyle);
             if (!style.hasParent()) this.addContentStyle(style); // here, the style may be a child style
             final String name = style.getRealName() + "-_-" + dataStyle.getName();
-            anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle).buildHidden();
+            anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle).hidden().build();
             this.addContentStyle(anonymousStyle);
             this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);
         }
@@ -309,8 +309,8 @@ public class StylesContainer {
 
         for (final MasterPageStyle ps : this.masterPageStylesContainer.getValues()) {
             if (hasHeader && hasFooter) break;
-            if (!hasHeader && ps.getHeader() != null) hasHeader = true;
-            if (!hasFooter && ps.getFooter() != null) hasFooter = true;
+            hasHeader = hasHeader || ps.hasHeader();
+            hasFooter = hasFooter || ps.hasFooter();
         }
         return new HasFooterHeader(hasHeader, hasFooter);
     }

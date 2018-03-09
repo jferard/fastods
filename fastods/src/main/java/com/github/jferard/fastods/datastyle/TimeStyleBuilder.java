@@ -23,78 +23,83 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.FastOdsException;
-
 import java.util.Locale;
 
 /**
  * @author Julien Férard
  */
 class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
-	private final CoreDataStyleBuilder dataStyleBuilder;
-	/**
-	 * The date format.
-	 */
-	private TimeStyle.Format timeFormat;
+    private final CoreDataStyleBuilder dataStyleBuilder;
+    /**
+     * The date format.
+     */
+    private TimeStyle.Format timeFormat;
 
-	/**
-	 * Create a new date style with the name name.
-	 *
-	 * @param name The name of the number style.
-	 * @param locale the locale used
-	 */
-	public TimeStyleBuilder(final String name, final Locale locale) {
-		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
-	}
+    /**
+     * Create a new date style with the name name.
+     *
+     * @param name   The name of the number style.
+     * @param locale the locale used
+     */
+    public TimeStyleBuilder(final String name, final Locale locale) {
+        this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
+    }
 
-	@Override
-	public TimeStyle build() {
-		return new TimeStyle(this.dataStyleBuilder.build(), this.timeFormat);
-	}
+    @Override
+    public TimeStyle build() {
+        return new TimeStyle(this.dataStyleBuilder.build(), this.timeFormat);
+    }
 
-	@Override
-	public TimeStyle buildHidden() {
-		return new TimeStyle(this.dataStyleBuilder.buildHidden(), this.timeFormat);
-	}
+    /**
+     * Set the date format.<br>
+     * Valid is one of the following:<br>
+     * DateStyle.DATEFORMAT_DDMMYYYY<br>
+     * DateStyle.DATEFORMAT_DDMMYY<br>
+     * DateStyle.DATEFORMAT_TMMMMYYYY<br>
+     * DateStyle.DATEFORMAT_MMMM<br>
+     * *
+     *
+     * @param format The date format to be used.
+     * @return this for fluent style
+     */
+    public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
+        this.timeFormat = format;
+        return this;
+    }
 
-	/**
-	 * Set the date format.<br>
-	 * Valid is one of the following:<br>
-	 * DateStyle.DATEFORMAT_DDMMYYYY<br>
-	 * DateStyle.DATEFORMAT_DDMMYY<br>
-	 * DateStyle.DATEFORMAT_TMMMMYYYY<br>
-	 * DateStyle.DATEFORMAT_MMMM<br>
-	 * *
-	 *
-	 * @param format The date format to be used.
-	 * @return this for fluent style
-	 */
-	public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
-		this.timeFormat = format;
-		return this;
-	}
+    @Override
+    public TimeStyleBuilder country(final String countryCode) {
+        this.dataStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	@Override
-	public TimeStyleBuilder country(final String countryCode) {
-		this.dataStyleBuilder.country(countryCode);
-		return this;
-	}
+    @Override
+    public TimeStyleBuilder language(final String languageCode) {
+        this.dataStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	@Override
-	public TimeStyleBuilder language(final String languageCode) {
-		this.dataStyleBuilder.language(languageCode);
-		return this;
-	}
+    @Override
+    public TimeStyleBuilder locale(final Locale locale) {
+        this.dataStyleBuilder.locale(locale);
+        return this;
+    }
 
-	@Override
-	public TimeStyleBuilder locale(final Locale locale) {
-		this.dataStyleBuilder.locale(locale);
-		return this;
-	}
+    @Override
+    public TimeStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.dataStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
 
-	@Override
-	public TimeStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.dataStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    @Override
+    public TimeStyleBuilder visible() {
+        this.dataStyleBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public TimeStyleBuilder hidden() {
+        this.dataStyleBuilder.hidden();
+        return this;
+    }
 }

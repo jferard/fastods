@@ -62,7 +62,7 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testAddNewDefaultCellStyleToFile() {
-        final TableCellStyle cellStyle = TableCellStyle.builder("ok").buildHidden();
+        final TableCellStyle cellStyle = TableCellStyle.builder("ok").hidden().build();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cellStyle).build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 

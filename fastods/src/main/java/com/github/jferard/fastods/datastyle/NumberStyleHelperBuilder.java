@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.SimpleColor;
 
 import java.util.Locale;
@@ -99,14 +98,21 @@ public final class NumberStyleHelperBuilder implements NumberStyleBuilder<Number
     }
 
     @Override
+    public NumberStyleHelperBuilder visible() {
+        this.dataStyleBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public NumberStyleHelperBuilder hidden() {
+        this.dataStyleBuilder.hidden();
+        return this;
+    }
+
+    @Override
     public NumberStyleHelper build() {
         return new NumberStyleHelper(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits,
                 this.negativeValueColor);
     }
 
-    @Override
-    public NumberStyleHelper buildHidden() {
-        return new NumberStyleHelper(this.dataStyleBuilder.buildHidden(), this.grouping, this.minIntegerDigits,
-                this.negativeValueColor);
-    }
 }

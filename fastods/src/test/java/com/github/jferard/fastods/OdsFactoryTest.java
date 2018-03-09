@@ -46,13 +46,6 @@ public class OdsFactoryTest {
     }
 
     @Test
-    public void checkFile() throws Exception {
-        Assert.assertEquals(FileState.IS_DIRECTORY, this.odsFactory.checkFile("."));
-        Assert.assertEquals(FileState.FILE_EXISTS, this.odsFactory.checkFile("pom.xml"));
-        Assert.assertEquals(FileState.OK, this.odsFactory.checkFile(this.file.getAbsolutePath()));
-    }
-
-    @Test
     public void createWriter() throws Exception {
         this.odsFactory.createWriter(this.file.getAbsolutePath());
     }

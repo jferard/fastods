@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.style.HidableBuilder;
 import com.github.jferard.fastods.util.NameChecker;
 import com.github.jferard.fastods.util.StyleBuilder;
 
@@ -34,7 +35,7 @@ import java.util.Locale;
  * A CoreDataStyle builder
  * @author Julien Férard
  */
-final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>, IsVolatileBuilder<CoreDataStyleBuilder> {
+final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>, IsVolatileBuilder<CoreDataStyleBuilder>, HidableBuilder<CoreDataStyleBuilder> {
     private static final NameChecker checker = new NameChecker();
 
  	/**
@@ -58,7 +59,7 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
 	private boolean hidden;
 
 	/**
-	 * The builder
+	 * The builder. The style is hidden by default.
 	 *
 	 * @param name   The name of this style
 	 * @param locale The locale used
@@ -68,18 +69,12 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
 		this.countryCode = locale.getCountry();
 		this.languageCode = locale.getLanguage();
 		this.volatileStyle = true;
+		this.hidden = true;
 	}
 
 	@Override
 	public CoreDataStyle build() {
 		return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
-
-	}
-
-	@Override
-	public CoreDataStyle buildHidden() {
-		this.hidden = true;
-		return this.build();
 
 	}
 
@@ -107,4 +102,15 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
 		this.volatileStyle = volatileStyle;
 		return this;
 	}
+
+    public CoreDataStyleBuilder visible() {
+	    this.hidden = false;
+	    return this;
+    }
+
+    @Override
+    public CoreDataStyleBuilder hidden() {
+        this.hidden = true;
+        return this;
+    }
 }

@@ -151,7 +151,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testSymbol() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).currencySymbol("ABC")
-                .currencySymbolPosition(CurrencyStyle.SymbolPosition.BEGIN).buildHidden();
+                .currencySymbolPosition(CurrencyStyle.SymbolPosition.BEGIN).hidden().build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\"><number:currency-symbol>ABC</number:currency-symbol><number:number "
@@ -162,7 +162,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testLocaleVolatile() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).buildHidden();
+                .language("cd").volatileStyle(true).hidden().build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"cd\" number:country=\"AB\" " +
                         "style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
@@ -174,7 +174,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testGetters() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).buildHidden();
+                .language("cd").volatileStyle(true).hidden().build();
 
         Assert.assertEquals("test", cs.getName());
         Assert.assertTrue(cs.isHidden());
@@ -183,7 +183,7 @@ public class CurrencyStyleTest {
     @Test
     public final void testAddToElements() throws IOException {
         final CurrencyStyle cs = new CurrencyStyleBuilder("test", this.locale).locale(Locale.FRANCE).country("AB")
-                .language("cd").volatileStyle(true).buildHidden();
+                .language("cd").volatileStyle(true).hidden().build();
         DataStyleTestHelper.testAddToElements(cs);
     }
 

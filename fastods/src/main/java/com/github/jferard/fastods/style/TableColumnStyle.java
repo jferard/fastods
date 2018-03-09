@@ -32,10 +32,6 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * WHERE ? content.xml/office:document-content/office:automatic-styles/style:
- * style content.xml/office:document-content/office:body/office:spreadsheet/
- * table:table/table:table-column
- *
  * @author Julien Férard
  * @author Martin Schulz
  */
@@ -44,7 +40,7 @@ public class TableColumnStyle implements ObjectStyle {
      * The default style, see LO.
      */
     public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle.builder("co1").setOptimalWidth()
-            .buildHidden();
+            .hidden().build();
 
     private static TableColumnStyle defaultColumnStyle;
 

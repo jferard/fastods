@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -32,7 +33,7 @@ import java.io.IOException;
  * The class Borders represents the borders of an element.
  * @author Julien Férard
  */
-public class Borders {
+public class Borders implements TagParameters {
 	private final BorderAttribute all;
 	private final BorderAttribute bottom;
 	private final BorderAttribute left;
@@ -66,13 +67,9 @@ public class Borders {
 		return this.all == null && this.top == null && this.right == null && this.bottom == null && this.left == null;
 	}
 
-	/**
-	 * @param util the util for writing XML
-	 * @param appendable where to write
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendXMLToTableCellStyle(final XMLUtil util,
-			final Appendable appendable) throws IOException {
+	@Override
+	public void appendXMLContent(final XMLUtil util,
+								 final Appendable appendable) throws IOException {
 		if (this.all == null) {
 			if (this.top != null)
 				this.top.appendXMLAttribute(util, appendable, "fo:border-top");

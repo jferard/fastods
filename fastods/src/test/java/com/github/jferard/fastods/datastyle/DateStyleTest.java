@@ -158,7 +158,7 @@ public class DateStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).buildHidden();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale).hidden().build();
         Assert.assertEquals("test", ds.getName());
         Assert.assertTrue(ds.isHidden());
     }

@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
+public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, HidableBuilder<TableCellStyleBuilder> {
     private final BordersBuilder bordersBuilder;
     private final MarginsBuilder marginsBuilder;
     private final String name;
@@ -50,6 +50,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
     private TableCellStyle parentCellStyle;
 
     /**
+     * The style will be visible by default.
      * @param name A unique name for this style
      */
     TableCellStyleBuilder(final String name) {
@@ -59,6 +60,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
         this.bordersBuilder = new BordersBuilder();
         this.marginsBuilder = new MarginsBuilder();
         this.backgroundColor = SimpleColor.NONE;
+        this.hidden = false;
     }
 
     /**
@@ -166,12 +168,6 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
         return new TableCellStyle(this.name, this.hidden, this.dataStyle, this.backgroundColor, this.tpBuilder.build(),
                 this.textAlign, this.verticalAlign, this.wrap, this.parentCellStyle, this.bordersBuilder.build(),
                 this.marginsBuilder.build());
-    }
-
-    @Override
-    public TableCellStyle buildHidden() {
-        this.hidden = true;
-        return this.build();
     }
 
     /**
@@ -349,6 +345,18 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle> {
      */
     public TableCellStyleBuilder verticalAlign(final TableCellStyle.VerticalAlign align) {
         this.verticalAlign = align;
+        return this;
+    }
+
+    @Override
+    public TableCellStyleBuilder visible() {
+        this.hidden = false;
+        return this;
+    }
+
+    @Override
+    public TableCellStyleBuilder hidden() {
+        this.hidden = true;
         return this;
     }
 }

@@ -68,12 +68,6 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
                 this.minDenominatorDigits);
     }
 
-    @Override
-    public FractionStyle buildHidden() {
-        return new FractionStyle(this.numberStyleHelperBuilder.buildHidden(), this.minNumeratorDigits,
-                this.minDenominatorDigits);
-    }
-
     /**
      * Add the numerator and denominator values to be shown.<br>
      * The number style is set to NUMBER_FRACTION
@@ -133,6 +127,18 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
     @Override
     public FractionStyleBuilder volatileStyle(final boolean volatileStyle) {
         this.numberStyleHelperBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
+
+    @Override
+    public FractionStyleBuilder visible() {
+        this.numberStyleHelperBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public FractionStyleBuilder hidden() {
+        this.numberStyleHelperBuilder.hidden();
         return this;
     }
 }

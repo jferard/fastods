@@ -50,11 +50,6 @@ public class BooleanStyleBuilder implements DataStyleBuilder<BooleanStyle, Boole
 	}
 
 	@Override
-	public BooleanStyle buildHidden() {
-		return new BooleanStyle(this.dataStyleBuilder.buildHidden());
-	}
-
-	@Override
 	public BooleanStyleBuilder country(final String countryCode) {
 		this.dataStyleBuilder.country(countryCode);
 		return this;
@@ -78,5 +73,16 @@ public class BooleanStyleBuilder implements DataStyleBuilder<BooleanStyle, Boole
 		return this;
 	}
 
+	@Override
+	public BooleanStyleBuilder visible() {
+    	this.dataStyleBuilder.visible();
+		return this;
+	}
+
+	@Override
+	public BooleanStyleBuilder hidden() {
+        this.dataStyleBuilder.hidden();
+		return this;
+	}
 }
 

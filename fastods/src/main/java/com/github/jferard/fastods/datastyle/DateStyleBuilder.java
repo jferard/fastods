@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.FastOdsException;
-
 import java.util.Locale;
 
 /**
@@ -70,11 +68,6 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
         return new DateStyle(this.dataStyleBuilder.build(), this.dateFormat, this.automaticOrder);
     }
 
-    @Override
-    public DateStyle buildHidden() {
-        return new DateStyle(this.dataStyleBuilder.buildHidden(), this.dateFormat, this.automaticOrder);
-    }
-
     /**
      * Set the date format.<br>
      * Valid is one of the following:<br>
@@ -113,6 +106,18 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
     @Override
     public DateStyleBuilder volatileStyle(final boolean volatileStyle) {
         this.dataStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
+
+    @Override
+    public DateStyleBuilder visible() {
+        this.dataStyleBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public DateStyleBuilder hidden() {
+        this.dataStyleBuilder.hidden();
         return this;
     }
 }

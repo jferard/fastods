@@ -278,10 +278,10 @@ public class OdsFileWithHeaderAndFooterCreationIT {
     }
 
     private void createStyles() {
-        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).buildHidden();
+        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).hidden().build();
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
         this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(this.tcls)
-                .buildHidden();
+                .hidden().build();
 
         this.lts = TextProperties.builder().fontColor(SimpleColor.RED).buildHiddenStyle("red-text");
         this.cts = TextProperties.builder().fontColor(SimpleColor.BLUE).buildHiddenStyle("blue-text");
@@ -305,11 +305,11 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
         this.ps = PageStyle.builder("test-master-page").footer(this.footer)
                 .header(this.header).build();
-        this.ttts = TableStyle.builder("test-table-style").pageStyle(this.ps).buildHidden();
+        this.ttts = TableStyle.builder("test-table-style").pageStyle(this.ps).hidden().build();
 
         this.ps2 = PageStyle.builder("test2-master-page").masterPageStyle(this.ps.getMasterPageStyle())
                 .pageLayoutStyle(this.ps.getPageLayoutStyle()).build();
-        this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).buildHidden();
+        this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).hidden().build();
     }
 
     private void createDocumentWithFooterAndHeaderWithFlush() throws IOException, FastOdsException {

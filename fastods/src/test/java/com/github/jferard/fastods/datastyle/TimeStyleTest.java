@@ -58,7 +58,7 @@ public class TimeStyleTest {
 
     @Test
     public final void testHiddenNullFormat() throws IOException {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(null).buildHidden();
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(null).hidden().build();
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\" number:format-source=\"language\"/>",
@@ -86,9 +86,13 @@ public class TimeStyleTest {
 
     @Test
     public final void testGetters() throws IOException {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).language("a").country("b").build();
+        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).language("a").country("b").visible().build();
         Assert.assertEquals("test", ts.getName());
         Assert.assertFalse(ts.isHidden());
+        final TimeStyle ts2 = new TimeStyleBuilder("test", this.locale).language("a").country("b").build();
+        Assert.assertTrue(ts2.isHidden());
+        final TimeStyle ts3 = new TimeStyleBuilder("test", this.locale).language("a").country("b").hidden().build();
+        Assert.assertTrue(ts3.isHidden());
     }
 
     @Test

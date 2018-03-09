@@ -57,12 +57,6 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 				this.currencyPosition);
 	}
 
-	@Override
-	public CurrencyStyle buildHidden() {
-		return new CurrencyStyle(this.floatStyleBuilder.buildHidden(), this.currencySymbol,
-				this.currencyPosition);
-	}
-
 	/**
 	 * Change the currency symbol, e.g. '$'.
 	 *
@@ -140,6 +134,18 @@ public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, Cur
 	@Override
 	public CurrencyStyleBuilder volatileStyle(final boolean volatileStyle) {
 		this.floatStyleBuilder.volatileStyle(volatileStyle);
+		return this;
+	}
+
+	@Override
+	public CurrencyStyleBuilder visible() {
+		this.floatStyleBuilder.visible();
+		return this;
+	}
+
+	@Override
+	public CurrencyStyleBuilder hidden() {
+        this.floatStyleBuilder.hidden();
 		return this;
 	}
 }

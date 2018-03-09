@@ -101,7 +101,7 @@ public class BordersTest {
 
     private void assertAttrXMLEquals(final String xml, final Borders b) throws IOException {
         final StringBuilder sb = new StringBuilder();
-        b.appendXMLToTableCellStyle(this.util, sb);
+        b.appendXMLContent(this.util, sb);
         Assert.assertEquals(xml, sb.toString());
     }
 

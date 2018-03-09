@@ -119,7 +119,7 @@ public class TableCellStyle implements ObjectStyle {
         if (this.verticalAlign != null)
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign.attrValue);
 
-        this.borders.appendXMLToTableCellStyle(util, appendable);
+        this.borders.appendXMLContent(util, appendable);
 
         if (this.wrap) util.appendAttribute(appendable, "fo:wrap-option", "wrap");
 

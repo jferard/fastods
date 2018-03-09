@@ -38,7 +38,7 @@ public class TableRowStyle implements ObjectStyle {
     /**
      * The default style, see LO.
      */
-    public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").buildHidden();
+    public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").hidden().build();
 
     /**
      * @param name the name of the TableRowStyle to create

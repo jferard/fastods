@@ -56,8 +56,15 @@ public class FloatStyleBuilder implements DataStyleBuilder<FloatStyle, FloatStyl
     }
 
     @Override
-    public FloatStyle buildHidden() {
-        return new FloatStyle(this.numberStyleHelperBuilder.buildHidden(), this.decimalPlaces);
+    public FloatStyleBuilder visible() {
+        this.numberStyleHelperBuilder.visible();
+        return this;
+    }
+
+    @Override
+    public FloatStyleBuilder hidden() {
+        this.numberStyleHelperBuilder.hidden();
+        return this;
     }
 
     @Override

@@ -34,9 +34,4 @@ public interface StyleBuilder<S> {
      * @return a new S
      */
     S build();
-
-    /**
-     * @return a new S as an automatic style
-     */
-    S buildHidden();
 }

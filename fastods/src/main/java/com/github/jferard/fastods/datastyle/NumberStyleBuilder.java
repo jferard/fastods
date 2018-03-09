@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.style.HidableBuilder;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
@@ -32,7 +33,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  */
 public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>>
-            extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T> {
+            extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T>, HidableBuilder<T> {
     /**
      * @param grouping if true, the thousands separator is shown.
      * @return this for fluent style

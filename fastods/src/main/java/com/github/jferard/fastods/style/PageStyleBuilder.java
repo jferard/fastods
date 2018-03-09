@@ -58,6 +58,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 
 	/**
 	 * Create a new page style builder.
+	 * The style is always visible.
 	 * @param name the name of the page style
 	 */
 	PageStyleBuilder(final String name) {
@@ -105,11 +106,6 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 	public PageStyleBuilder backgroundColor(final Color color) {
 		this.backgroundColor = color;
 		return this;
-	}
-
-	@Override
-	public PageStyle buildHidden() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

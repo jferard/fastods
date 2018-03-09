@@ -21,18 +21,22 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.datastyle;
-
-import com.github.jferard.fastods.style.HidableBuilder;
-import com.github.jferard.fastods.util.StyleBuilder;
+package com.github.jferard.fastods.style;
 
 /**
- * A data style builder. Common interface for BooleanStyleBuilder, ...
- *
- * @param <S> the destination style
- * @param <T> the destination style builder
- * @author Julien Férard
+ * A builder for a style that may go in automatic or common styles
+ * @param <T> the type of the concrete builder
  */
-public interface DataStyleBuilder<S extends DataStyle, T> extends StyleBuilder<S>, LocalizedBuilder<T>,
-        IsVolatileBuilder<T>, HidableBuilder<T> {
+public interface HidableBuilder<T> {
+    /**
+     * Make this style visible, ie part of common styles
+     * @return this for fluent style
+     */
+    T visible();
+
+    /**
+     * Make this style hidden, ie part of automatic styles
+     * @return this for fluent style
+     */
+    T hidden();
 }
