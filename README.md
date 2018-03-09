@@ -10,6 +10,8 @@ A very fast and lightweight (no dependency) library for creating ODS (Open Docum
 
 **Please note that FastODS is almost ready for production use. The version 1.0 is coming.**
 
+**Ask a question:** [feel free to ask a question](https://github.com/jferard/fastods/issues/new).
+
 ## Table of contents
 * [Why FastODS?](#why-fastods)
 * [Limitations](#limitations)
