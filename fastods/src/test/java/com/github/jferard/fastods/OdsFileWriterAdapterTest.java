@@ -50,6 +50,7 @@ public class OdsFileWriterAdapterTest {
         this.flushers = new LinkedList<OdsFlusher>();
         this.wa = new OdsFileWriterAdapter(this.w, this.flushers);
         this.d = PowerMock.createMock(NamedOdsDocument.class);
+        PowerMock.resetAll();
     }
 
     @Test

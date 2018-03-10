@@ -20,15 +20,22 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.FinalizeFlusher;
+import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.style.ObjectStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -60,19 +67,13 @@ public class OdsElementsTest {
                 this.settingsElement, this.metaElement, this.contentElement, this.stylesElement);
         this.util = XMLUtil.create();
         this.locale = Locale.US;
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
     public final void testGetTable() {
         final Table t = PowerMock.createMock(Table.class);
 
-        // play
+        PowerMock.resetAll();
         EasyMock.expect(this.contentElement.getTable(TABLE_INDEX)).andReturn(t);
         EasyMock.expect(this.contentElement.getTable("nine")).andReturn(t);
         EasyMock.expect(this.contentElement.getTableCount()).andReturn(TABLE_INDEX + 1);
@@ -81,6 +82,38 @@ public class OdsElementsTest {
         Assert.assertEquals(t, this.oe.getTable(TABLE_INDEX));
         Assert.assertEquals(t, this.oe.getTable("nine"));
         Assert.assertEquals(TABLE_INDEX + 1, this.oe.getTableCount());
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFlush() throws IOException {
+        final DataStyle ds = new BooleanStyleBuilder("ds", this.locale).build();
+        final ObjectStyle os = TableCellStyle.builder("os").build();
+        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
+        final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
+        final Table t = PowerMock.createMock(Table.class);
+
+
+        PowerMock.resetAll();
+        this.contentElement.flushRows(this.util, w, this.settingsElement);
+        this.contentElement.flushTables(this.util, w);
+        EasyMock.expectLastCall().times(2);
+        this.contentElement.writePostamble(this.util, w);
+        EasyMock.expect(this.contentElement.getLastTable()).andReturn(t);
+        t.flush();
+        o.update(EasyMock.isA(FinalizeFlusher.class));
+
+        PowerMock.replayAll();
+        this.oe.addObserver(o);
+        this.oe.addDataStyle(ds);
+        this.oe.addStyleStyle(os);
+        this.oe.flushRows(this.util, w);
+        this.oe.flushTables(this.util, w);
+        this.oe.finalizeContent(this.util, w);
+        this.oe.save();
+
+        PowerMock.verifyAll();
     }
 
 }
