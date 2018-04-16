@@ -356,6 +356,8 @@ public class TableCellTest {
         this.cell.setFloatValue(9.999f);
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -363,7 +365,6 @@ public class TableCellTest {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
         final DataStyle numberDataStyle = this.ds.getNumberDataStyle();
         final TableCellStyle style = TableCellStyle.builder("x").fontStyleItalic().build();
-        this.tcs.setDataStyle(numberDataStyle);
 
         // PLAY
         EasyMock.expect(this.table.findDefaultCellStyle(COLUMN_INDEX)).andReturn(cs);
@@ -371,9 +372,9 @@ public class TableCellTest {
         EasyMock.expect(this.stc.addDataStyle(numberDataStyle)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(EasyMock.isA(TableCellStyle.class), EasyMock.eq(numberDataStyle)))
                 .andReturn(this.tcs);
+
+        // second style
         EasyMock.expect(this.stc.addContentStyle(style)).andReturn(true);
-        EasyMock.expect(this.stc.addChildCellStyle(EasyMock.isA(TableCellStyle.class), EasyMock.eq(numberDataStyle)))
-                .andReturn(this.tcs);
 
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999f);
@@ -381,7 +382,9 @@ public class TableCellTest {
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
         this.cell.setStyle(style);
         this.assertCellXMLEquals(
-                "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"9.999\"/>");
+                "<table:table-cell table:style-name=\"x\" office:value-type=\"float\" office:value=\"9.999\"/>");
+
+        PowerMock.verifyAll();
     }
 
     @Test

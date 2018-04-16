@@ -165,7 +165,7 @@ public class DataStyleExampleIT {
         // Add a custom format
         final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale).dateFormat(
                 new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT, DateStyleFormat.MONTH,
-                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).build();
+                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).visible().build();
         cell.setDataStyle(dateStyle);
     }
 }

@@ -88,6 +88,7 @@ public class StylesElement implements OdsElement {
 		writer.write("<office:styles>");
 
 		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
+		this.stylesContainer.writeVisibleDataStyles(util, writer); // table-cell
 
 		if (hasFooterHeader.hasHeader()) {
 			StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Header");

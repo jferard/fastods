@@ -224,15 +224,23 @@ public class TableCellImpl implements TableCell {
         if (dataStyle == null) return;
 
         this.stylesContainer.addDataStyle(dataStyle);
-        TableCellStyle curStyle = this.style;
-        if (curStyle == null)
-            curStyle = this.parent.findDefaultCellStyle(this.columnIndex);
-
+        final TableCellStyle curStyle = this.getCurCellStyle();
         final DataStyle curDataStyle = curStyle.getDataStyle();
         if (curDataStyle == null) { // no data style yet: create a custom child style
             this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
         } else { // a style and a datastyle => create a custom sibling cell style
             this.style = this.stylesContainer.addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
+        }
+    }
+
+    /**
+     * @return the current cell style, eventually found in parent (row, column, table). Never null
+     */
+    private TableCellStyle getCurCellStyle() {
+        if (this.style == null) {
+            return this.parent.findDefaultCellStyle(this.columnIndex);
+        } else {
+            return this.style;
         }
     }
 

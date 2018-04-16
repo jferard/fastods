@@ -174,15 +174,6 @@ public class TableCellStyle implements ObjectStyle {
         return this.dataStyle;
     }
 
-    /**
-     * Set the data style of this cell style
-     *
-     * @param dataStyle the data style to set
-     */
-    public void setDataStyle(final DataStyle dataStyle) {
-        this.dataStyle = dataStyle;
-    }
-
     @Override
     public ObjectStyleFamily getFamily() {
         return ObjectStyleFamily.TABLE_CELL;

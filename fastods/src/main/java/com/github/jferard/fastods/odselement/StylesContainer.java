@@ -29,6 +29,7 @@ import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableCellStyleBuilder;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.MultiContainer;
@@ -76,20 +77,17 @@ public class StylesContainer {
      */
     private final Map<ChildCellStyle, TableCellStyle> anonymousStyleByChildCellStyle;
 
-
     /**
      * Data style that will be written in content.xml > automatic-styles
      * Those styles should be hidden
      */
-    private final Container<String, DataStyle> dataStylesContainer;
-
+    private final MultiContainer<String, Dest, DataStyle> dataStylesContainer;
     private final Container<String, MasterPageStyle> masterPageStylesContainer;
 
     /**
      * Should be hidden.
      */
     private final Container<String, PageLayoutStyle> pageLayoutStylesContainer;
-
     private final MultiContainer<String, Dest, ObjectStyle> objectStylesContainer;
 
     /**
@@ -97,7 +95,7 @@ public class StylesContainer {
      */
     StylesContainer() {
         this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(Dest.class);
-        this.dataStylesContainer = new Container<String, DataStyle>();
+        this.dataStylesContainer = new MultiContainer<String, Dest, DataStyle>(Dest.class);
         this.masterPageStylesContainer = new Container<String, MasterPageStyle>();
         this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
         this.anonymousStyleByChildCellStyle = new HashMap<ChildCellStyle, TableCellStyle>();
@@ -115,9 +113,16 @@ public class StylesContainer {
         TableCellStyle anonymousStyle = this.anonymousStyleByChildCellStyle.get(childKey);
         if (anonymousStyle == null) {
             this.addDataStyle(dataStyle);
-            if (!style.hasParent()) this.addContentStyle(style); // here, the style may be a child style
+            if (!style.hasParent()) {
+                this.addContentStyle(style); // here, the style may be a child style
+            }
             final String name = style.getRealName() + "-_-" + dataStyle.getName();
-            anonymousStyle = TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle).hidden().build();
+            final TableCellStyleBuilder anonymousStyleBuilder = TableCellStyle.builder(name).parentCellStyle(style)
+                    .dataStyle(dataStyle);
+            if (dataStyle.isHidden()) {
+                anonymousStyleBuilder.hidden();
+            }
+            anonymousStyle = anonymousStyleBuilder.build();
             this.addContentStyle(anonymousStyle);
             this.anonymousStyleByChildCellStyle.put(childKey, anonymousStyle);
         }
@@ -132,8 +137,7 @@ public class StylesContainer {
      * @return true if the style was added
      */
     public boolean addDataStyle(final DataStyle dataStyle) {
-        assert dataStyle.isHidden() : dataStyle.toString();
-        return this.dataStylesContainer.add(dataStyle.getName(), dataStyle, Mode.CREATE);
+        return this.addDataStyle(dataStyle, Mode.CREATE);
     }
 
     /**
@@ -145,8 +149,11 @@ public class StylesContainer {
      * @return true if the style was added
      */
     public boolean addDataStyle(final DataStyle dataStyle, final Mode mode) {
-        assert dataStyle.isHidden() : dataStyle.toString();
-        return this.dataStylesContainer.add(dataStyle.getName(), dataStyle, mode);
+        if (dataStyle.isHidden()) {
+            return this.dataStylesContainer.add(dataStyle.getName(), Dest.CONTENT_AUTOMATIC_STYLES, dataStyle, mode);
+        } else {
+            return this.dataStylesContainer.add(dataStyle.getName(), Dest.STYLES_COMMON_STYLES, dataStyle, mode);
+        }
     }
 
     /**
@@ -337,15 +344,14 @@ public class StylesContainer {
     }
 
     /**
-     * Write the data styles in the automatic styles. They belong to content.xml/automatic-styles
+     * Write the data styles in the automatic-styles. They belong to content.xml/automatic-styles
      *
      * @param util   an XML util
      * @param writer the destination
      * @throws IOException if the styles can't be written
      */
-    public void writeDataStyles(final XMLUtil util, final Appendable writer) throws IOException {
-        for (final DataStyle dataStyle : this.dataStylesContainer.getValues()) {
-            assert dataStyle.isHidden() : dataStyle.toString();
+    public void writeHiddenDataStyles(final XMLUtil util, final Appendable writer) throws IOException {
+        for (final DataStyle dataStyle : this.dataStylesContainer.getValues(Dest.CONTENT_AUTOMATIC_STYLES)) {
             dataStyle.appendXMLContent(util, writer);
         }
     }
@@ -407,6 +413,23 @@ public class StylesContainer {
                     .toString();
 
         this.write(styles, util, writer);
+    }
+
+    /**
+     * Write data styles to styles.xml/common-styles
+     *
+     * @param util   an util
+     * @param writer the destination
+     * @throws IOException if an I/O error occurs
+     */
+    public void writeVisibleDataStyles(final XMLUtil util, final Appendable writer) throws IOException {
+        final Iterable<DataStyle> dataStyles = this.dataStylesContainer.getValues(Dest.STYLES_COMMON_STYLES);
+        for (final DataStyle dataStyle : dataStyles) {
+            assert !dataStyle.isHidden() : dataStyle.toString() + " - " + dataStyle
+                    .getName() + TableCellStyle.DEFAULT_CELL_STYLE.toString();
+
+            dataStyle.appendXMLContent(util, writer);
+        }
     }
 
     /**

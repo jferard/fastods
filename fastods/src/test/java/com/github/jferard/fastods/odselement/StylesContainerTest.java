@@ -195,7 +195,7 @@ public class StylesContainerTest {
 
     private void assertWriteDataStylesXMLEquals(final String xml) throws IOException {
         final Appendable sb = new StringBuilder();
-        this.stylesContainer.writeDataStyles(this.util, sb);
+        this.stylesContainer.writeHiddenDataStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 

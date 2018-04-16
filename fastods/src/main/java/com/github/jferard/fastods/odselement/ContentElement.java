@@ -267,7 +267,7 @@ public class ContentElement implements OdsElement {
         writer.write("</office:font-face-decls>");
         writer.write("<office:automatic-styles>");
 
-        this.stylesContainer.writeDataStyles(util, writer);
+        this.stylesContainer.writeHiddenDataStyles(util, writer);
         this.stylesContainer.writeContentAutomaticStyles(util, writer);
 
         writer.write("</office:automatic-styles>");

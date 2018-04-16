@@ -326,7 +326,9 @@ public interface TableCell {
 							 int columnMerge) throws IOException;
 
 	/**
-	 * Set a custom data style
+	 * Set a custom data style. In an Open Document, a data style is always carried by a style.
+	 * Thus, FastOds will create a new style, child of the current style, with the given data style.
+     * The new style will have the same visibility as the data style.
 	 * @param dataStyle the data style
 	 */
 	void setDataStyle(DataStyle dataStyle);
