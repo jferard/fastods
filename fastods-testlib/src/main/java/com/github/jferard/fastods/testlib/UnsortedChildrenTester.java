@@ -32,6 +32,9 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class UnsortedChildrenTester extends ChildrenTester {
+	/**
+	 * the logger
+	 */
 	static Logger logger = Logger.getLogger("DomTester");
 
 	@Override

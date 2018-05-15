@@ -122,6 +122,7 @@ public class SimpleLength implements Length {
      * @param o the object
      * @return true if the object is a SimpleLength with the same unit and same value as this one.
      */
+    @Override
     public boolean equals(final Object o) {
         if (!(o instanceof SimpleLength))
             return false;
@@ -143,6 +144,7 @@ public class SimpleLength implements Length {
     /**
      * @return a representation of this unit
      */
+    @Override
     public String toString() {
         return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value) + this.unit.toString().toLowerCase(Locale.US);
     }

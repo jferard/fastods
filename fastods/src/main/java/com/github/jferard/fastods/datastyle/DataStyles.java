@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.XMLConvertible;
 
 import java.util.EnumMap;
 
@@ -118,6 +117,9 @@ public class DataStyles {
         return this.timeDataStyle;
     }
 
+    /**
+     * @return the style for floats
+     */
     public FloatStyle getFloatDataStyle() {
         return this.numberDataStyle;
     }

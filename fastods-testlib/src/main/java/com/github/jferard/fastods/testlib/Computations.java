@@ -27,18 +27,27 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * A helper class for stats.
+ * @author Julien Férard
  */
 public class Computations {
     private final String name;
     private final List<Long> times;
 
+    /**
+     * @param name the name
+     * @param times the list of times
+     */
     public Computations(final String name, final List<Long> times) {
         this.name = name;
         this.times = times;
     }
 
+    /**
+     * @return the mean of the times
+     */
     public long getAvgTime() {
-        if (this.times.size() == 0) return -1L;
+        if (this.times.isEmpty()) return -1L;
 
         long l = 0L;
         for (final long time : this.times)
@@ -47,16 +56,23 @@ public class Computations {
         return l / this.times.size();
     }
 
+    /**
+     * @return the best time
+     */
     public long getBestTime() {
-        if (this.times.size() == 0) return -1L;
+        if (this.times.isEmpty()) return -1L;
         return Collections.min(this.times);
     }
 
+    /**
+     * @return the worst time
+     */
     public long getWorstTime() {
-        if (this.times.size() == 0) return -1L;
+        if (this.times.isEmpty()) return -1L;
         return Collections.max(this.times);
     }
 
+    @Override
     public String toString() {
         return "Computations[name = " + this.name + ", avg = " + this.getAvgTime() + ", best = " + this
                 .getBestTime() + ", worst = " + this.getWorstTime() + "]";

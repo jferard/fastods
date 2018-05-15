@@ -187,6 +187,7 @@ public class TableCellImpl implements TableCell {
      * FastOds uses the mapping Apache DB project mapping
      * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
      */
+    @Override
     public void setCellValue(final CellValue value) {
         value.setToCell(this);
     }
@@ -244,6 +245,7 @@ public class TableCellImpl implements TableCell {
         }
     }
 
+    @Override
     public void setDateValue(final Calendar cal) {
         this.setDateValue(cal.getTime());
     }
@@ -281,6 +283,7 @@ public class TableCellImpl implements TableCell {
      * @deprecated Shortcut for
      * {@code setCellValue(c, CellValue.fromObject(object))}
      */
+    @Override
     @Deprecated
     public void setObjectValue(final Object object) {
         this.setCellValue(CellValue.fromObject(object));
@@ -373,6 +376,7 @@ public class TableCellImpl implements TableCell {
         this.type = TableCell.Type.VOID;
     }
 
+    @Override
     public void setFormula(final String formula) {
         this.ensureColdCell();
         this.coldCell.setFormula(formula);

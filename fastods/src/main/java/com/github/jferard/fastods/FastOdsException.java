@@ -31,10 +31,18 @@ package com.github.jferard.fastods;
 public class FastOdsException extends Exception {
 	private static final long serialVersionUID = 6239730778542315077L;
 
-    public static FastOdsException wrongTableNumber(final int n) {
+	/**
+	 * @param n the number of a non existing table
+	 * @return the exception
+	 */
+	public static FastOdsException wrongTableNumber(final int n) {
 		return new FastOdsException("Wrong table number [" + n + "]");
 	}
 
+	/**
+	 * @param name the name of a non existing table
+	 * @return the exception
+	 */
 	public static FastOdsException wrongTableName(final String name) {
 		return new FastOdsException("Wrong table name [" + name + "]");
 	}

@@ -90,6 +90,7 @@ public class AbsoluteLength implements Length {
         this.mm = mm;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (!(o instanceof AbsoluteLength))
             return false;
@@ -103,6 +104,7 @@ public class AbsoluteLength implements Length {
         return Double.valueOf(this.mm).hashCode();
     }
 
+    @Override
     public String toString() {
         return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) + "mm";
     }

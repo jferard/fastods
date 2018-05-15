@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 /**
  * A multi container contains values indexed by sub container. The sub container is a value inside an enum.
  * Basically, we have a map (K,S) -> V.
- * @see com.github.jferard.fastods.odselement.StylesContainer for an example.
+ * @see StylesContainer for an example.
  * @param <K> the key type
  * @param <V> the value type
  * @param <S> an enum of sub containers

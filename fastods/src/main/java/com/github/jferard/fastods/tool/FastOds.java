@@ -38,12 +38,17 @@ import java.util.logging.Logger;
  */
 public final class FastOds {
 	private static final XMLUtil xmlUtil = XMLUtil.create();
+	/**
+	 * The desktop
+	 */
 	static Desktop desktop;
 
 	static {
 		try {
 			desktop = Desktop.getDesktop();
-		} catch (final Exception e) {}
+		} catch (final Exception e) {
+			Logger.getAnonymousLogger().warning("Cant' find desktop");
+		}
 	}
 
 	/**

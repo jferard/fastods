@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.util.NameChecker;
 
 import java.util.Locale;
@@ -37,13 +36,14 @@ public class FractionStyleBuilder implements DataStyleBuilder<FractionStyle, Fra
     private static final NameChecker checker = new NameChecker();
 
     /**
-     * Create a new number style with the name name, minimum integer digits is
+     * Create a new number style builder with the name name, minimum integer digits is
      * minIntDigits and decimal places is decPlaces.
      *
      * @param name   The name of the number style, this name must be unique.
      * @param locale The locale used
+     * @return the builder
      */
-    public static FractionStyleBuilder create(final String name, final Locale locale) throws FastOdsException {
+    public static FractionStyleBuilder create(final String name, final Locale locale) {
         checker.checkStyleName(name);
         return new FractionStyleBuilder(name, locale);
     }

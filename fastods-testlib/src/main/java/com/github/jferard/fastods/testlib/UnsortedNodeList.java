@@ -34,9 +34,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * A node list without order
+ * @author Julien Férard
  */
 public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNodeList> {
-	static Comparator<Node> cmp = new Comparator<Node>() {
+    /**
+     * a comparator between two nodes
+     */
+    static final Comparator<Node> cmp = new Comparator<Node>() {
 		@Override
 		public int compare(final Node o1, final Node o2) {
 			final int cmpType = o1.getNodeType() - o2.getNodeType();
@@ -66,7 +71,10 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 	private final int length;
 	private final List<Node> list;
 
-	UnsortedNodeList(final NodeList nodes) {
+    /**
+     * @param nodes the wrapped node list
+     */
+    UnsortedNodeList(final NodeList nodes) {
 		this.length = nodes.getLength();
 		this.list = new ArrayList<Node>(this.length);
 		for (int i = 0; i < this.length; i++) {
@@ -117,7 +125,11 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 		return this.list.hashCode();
 	}
 
-	public static String toString(final Node n) {
+    /**
+     * @param n the node
+     * @return the string representation of the node
+     */
+    public static String toString(final Node n) {
 		if (n == null)
 			return "[null]";
 
@@ -126,7 +138,10 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
 		return "Node["+n.getNodeName()+", "+n.getNodeValue()+", "+ s +"]";
 	}
 
-	public int size() {
+    /**
+     * @return the node list count
+     */
+    public int size() {
 		return this.length;
 	}
 }

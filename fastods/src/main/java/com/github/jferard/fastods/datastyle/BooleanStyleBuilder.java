@@ -23,9 +23,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.util.NameChecker;
-
 import java.util.Locale;
 
 /**

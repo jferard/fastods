@@ -25,38 +25,41 @@ package com.github.jferard.fastods.util;
 
 /**
  * A WriteUtil helps to write data to file.
+ *
  * @author Julien Férard
  */
 public class WriteUtil {
-	private static final int MAX_INT = 1000;
-	private final String[] ints;
+    private static final int DEFAULT_MAX_INT = 1000;
 
-	/**
-	 * @return a WriteUtil with the default max int in cache.
-	 */
-	public static WriteUtil create() {
-		return new WriteUtil(MAX_INT);
-	}
+    /**
+     * @return a WriteUtil with the default max int in cache.
+     */
+    public static WriteUtil create() {
+        return new WriteUtil(DEFAULT_MAX_INT);
+    }
 
-	/**
-	 * @param maxInt the max int in cache
-	 */
-	WriteUtil(final int maxInt) {
-		this.ints = new String[2*maxInt];
-	}
+    private final int maxInt;
+    private final String[] ints;
 
-	/**
-	 * @param value the value to convert to String
-	 * @return the same value as a String
-	 */
-	public String toString(final int value) {
-		if (-MAX_INT <= value && value < MAX_INT) {
-			final int i = value + MAX_INT;
-			if (this.ints[i] == null) {
-				this.ints[i] = Integer.toString(value);
-			}
-			return this.ints[i];
-		} else
-			return Integer.toString(value);
-	}
+    /**
+     * @param maxInt the max int in cache
+     */
+    WriteUtil(final int maxInt) {
+        this.maxInt = maxInt;
+        this.ints = new String[2 * maxInt];
+    }
+
+    /**
+     * @param value the value to convert to String
+     * @return the same value as a String
+     */
+    public String toString(final int value) {
+        if (-this.maxInt <= value && value < this.maxInt) {
+            final int i = value + this.maxInt;
+            if (this.ints[i] == null) {
+                this.ints[i] = Integer.toString(value);
+            }
+            return this.ints[i];
+        } else return Integer.toString(value);
+    }
 }

@@ -32,7 +32,12 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  */
 public class TableStyleBuilder implements StyleBuilder<TableStyle>, HidableBuilder<TableStyleBuilder> {
+
+    /**
+     * A name checker
+     */
     static final NameChecker checker = new NameChecker();
+
     private final String name;
     private PageStyle pageStyle;
     private boolean hidden;

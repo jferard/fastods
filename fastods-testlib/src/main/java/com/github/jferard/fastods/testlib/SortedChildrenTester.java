@@ -26,6 +26,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * A tester that checks the order of the children
+ * @author Julien Férard
  */
 public class SortedChildrenTester extends ChildrenTester {
 	@Override

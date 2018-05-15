@@ -372,7 +372,7 @@ class TableBuilder {
      * @param value the item value
      */
     public void setConfigItem(final String name, final String type, final String value) {
-        this.configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
+        this.configEntry.add(new ConfigItem(name, type, value));
     }
 
     /**

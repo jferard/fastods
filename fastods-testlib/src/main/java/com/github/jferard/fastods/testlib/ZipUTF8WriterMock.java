@@ -32,13 +32,14 @@ import java.util.zip.ZipEntry;
  * See https://github.com/jferard/fastods/issues/29
  *
  * Usage:
- * <pre><code>
+ * <pre>{@code
  *     final ZipUTF8WriterMockHandler mockHandler = ZipUTF8WriterMockHandler.create();
  *     ZipUTF8Writer instance = mockHandler.getInstance(ZipUTF8Writer.class)
  *     // do something with instance
  *     // mockHandler.getEntryAsDocument(name) returns the chosen entry.
- * </code></pre>
+ * }</pre>
  *
+ * This class is just a container for data in a mock zip file.
  *
  * @author Julien Férard
  */
@@ -46,15 +47,22 @@ public class ZipUTF8WriterMock implements Appendable {
     private final Map<String, StringBuilder> builderByEntryName;
     private StringBuilder curBuilder;
 
+    /**
+     * @return the mock
+     */
+    public static ZipUTF8WriterMock createMock() {
+        return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>());
+    }
+
+    /**
+     * @param builderByEntryName the container
+     */
     ZipUTF8WriterMock(final Map<String, StringBuilder> builderByEntryName) {
         this.builderByEntryName = builderByEntryName;
         this.curBuilder = null;
     }
 
-    public static ZipUTF8WriterMock createMock() {
-            return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>());
-    }
-
+    @Override
     public Appendable append(final char c) throws IOException {
         if (this.curBuilder == null)
             throw new IOException();
@@ -63,6 +71,7 @@ public class ZipUTF8WriterMock implements Appendable {
         return this;
     }
 
+    @Override
     public Appendable append(final CharSequence arg0) throws IOException {
         if (this.curBuilder == null)
             throw new IOException();
@@ -70,6 +79,7 @@ public class ZipUTF8WriterMock implements Appendable {
         return this.curBuilder.append(arg0);
     }
 
+    @Override
     public Appendable append(final CharSequence csq, final int start, final int end)
             throws IOException {
         if (this.curBuilder == null)
@@ -78,6 +88,10 @@ public class ZipUTF8WriterMock implements Appendable {
         return this.curBuilder.append(csq, start, end);
     }
 
+    /**
+     * close the zip mock
+     * @throws IOException if an I/O error occurs
+     */
     public void close() throws IOException {
         if (this.curBuilder != null)
             throw new IOException();
@@ -85,6 +99,10 @@ public class ZipUTF8WriterMock implements Appendable {
         this.curBuilder = null;
     }
 
+    /**
+     * close the current entry of the zip mock
+     * @throws IOException if an I/O error occurs
+     */
     public void closeEntry() throws IOException {
         if (this.curBuilder == null)
             throw new IOException();
@@ -92,20 +110,41 @@ public class ZipUTF8WriterMock implements Appendable {
         this.curBuilder = null;
     }
 
+    /**
+     * finish the zip mock
+     * @throws IOException if an I/O error occurs
+     */
     public void finish() throws IOException {
         this.curBuilder = null;
     }
 
+    /**
+     * flush data
+     * @throws IOException if an I/O error occurs
+     */
     public void flush() throws IOException {
     }
 
+    /**
+     * @param arg0 the entry to put
+     * @throws IOException if an I/O exception occurs
+     */
     public void putNextEntry(final ZipEntry arg0) throws IOException {
         this.curBuilder = new StringBuilder();
         this.builderByEntryName.put(arg0.getName(), this.curBuilder);
     }
 
+    /**
+     * Do not use this!
+     * @param comment set a comment
+     */
     public void setComment(final String comment) { throw new RuntimeException(); }
 
+    /**
+     * Write a string in the current entry
+     * @param str the string
+     * @throws IOException if an I/O error occurs
+     */
     public void write(final String str) throws IOException {
         if (this.curBuilder == null)
             throw new IOException();
@@ -113,6 +152,10 @@ public class ZipUTF8WriterMock implements Appendable {
         this.curBuilder.append(str);
     }
 
+    /**
+     * @param name the name of the entry
+     * @return the builder
+     */
     public StringBuilder getBuilder(final String name) {
         return this.builderByEntryName.get(name);
     }

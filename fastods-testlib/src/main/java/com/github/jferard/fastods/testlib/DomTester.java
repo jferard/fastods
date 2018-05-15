@@ -37,54 +37,121 @@ import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A tester for nodes
+ *
+ * @author Julien Férard
+ */
 public class DomTester {
+    /**
+     * the logger
+     */
     static Logger logger = Logger.getLogger("DomTester");
 
-    public static void assertEquals(final String string1, final String string2) {
-        DomTester.assertEquals(string1, string2, new SortedChildrenTester());
+    /**
+     * Assert that two XML strings are equal
+     *
+     * @param expected the expected string
+     * @param actual   the actual string
+     */
+    public static void assertEquals(final String expected, final String actual) {
+        DomTester.assertEquals(expected, actual, new SortedChildrenTester());
     }
 
-    public static void assertUnsortedEquals(final String string1, final String string2) {
-        DomTester.assertEquals(string1, string2, new UnsortedChildrenTester());
+    /**
+     * Assert that two XML strings are equal
+     *
+     * @param expected the expected string
+     * @param actual   the actual string
+     */
+    public static void assertUnsortedEquals(final String expected, final String actual) {
+        DomTester.assertEquals(expected, actual, new UnsortedChildrenTester());
     }
 
-    public static void assertEquals(final String string1, final String string2, final ChildrenTester childrenTester) {
-        if (!DomTester.equals(string1, string2, childrenTester)) {
-            Assert.assertEquals(string1, string2); // shows the difference
+    /**
+     * Assert that two XML strings are equal
+     *
+     * @param expected       the expected string
+     * @param actual         the actual string
+     * @param childrenTester a custom tester
+     */
+    public static void assertEquals(final String expected, final String actual,
+                                    final ChildrenTester childrenTester) {
+        if (!DomTester.equals(expected, actual, childrenTester)) {
+            Assert.assertEquals(expected, actual); // shows the difference
             Assert.fail(); // in case there was a bug in DomTester, but strings are equal
         }
     }
 
-    public static void assertNotEquals(final String string1, final String string2) {
-        DomTester.assertNotEquals(string1, string2, new SortedChildrenTester());
+    /**
+     * Assert that two XML strings are different
+     *
+     * @param expected the expected string
+     * @param actual   the actual string
+     */
+    public static void assertNotEquals(final String expected, final String actual) {
+        DomTester.assertNotEquals(expected, actual, new SortedChildrenTester());
     }
 
-    public static void assertUnsortedNotEquals(final String string1, final String string2) {
-        DomTester.assertNotEquals(string1, string2, new UnsortedChildrenTester());
+    /**
+     * Assert that two XML strings are different
+     *
+     * @param expected the expected string
+     * @param actual   the actual string
+     */
+    public static void assertUnsortedNotEquals(final String expected, final String actual) {
+        DomTester.assertNotEquals(expected, actual, new UnsortedChildrenTester());
     }
 
-    public static void assertNotEquals(final String string1, final String string2,
+    /**
+     * Assert that two XML strings are different
+     *
+     * @param expected       the expected string
+     * @param actual         the actual string
+     * @param childrenTester a custom tester
+     */
+    public static void assertNotEquals(final String expected, final String actual,
                                        final ChildrenTester childrenTester) {
-        if (DomTester.equals(string1, string2, childrenTester)) {
-            Assert.assertNotEquals(string1, string2); // shows the difference
+        if (DomTester.equals(expected, actual, childrenTester)) {
+            Assert.assertNotEquals(expected, actual); // shows the difference
             Assert.fail(); // in case there was a bug in DomTester, but strings are equal
         }
     }
 
+    /**
+     * @param s1 the first XML string
+     * @param s2 the second XML string
+     * @return true if the XML tree is equal
+     */
     public static boolean equals(final String s1, final String s2) {
         return DomTester.equals(s1, s2, new SortedChildrenTester());
     }
 
+    /**
+     * The XML elements don't need to be sorted
+     *
+     * @param s1 the first XML string
+     * @param s2 the second XML string
+     * @return true if the XML tree is equal
+     */
     public static boolean unsortedEquals(final String s1, final String s2) {
         return DomTester.equals(s1, s2, new UnsortedChildrenTester());
     }
 
-    public static boolean equals(final String s1, final String s2, final ChildrenTester childrenTester) {
+    /**
+     * @param s1             the first XML string
+     * @param s2             the second XML string
+     * @param childrenTester a custom tester
+     * @return true if the XML tree is equal
+     */
+    public static boolean equals(final String s1, final String s2,
+                                 final ChildrenTester childrenTester) {
         try {
             final DomTester tester = new DomTester();
             return tester.stringEquals(s1, s2, childrenTester);
         } catch (final Throwable e) {
-            DomTester.logger.log(Level.SEVERE, "can't test equality between " + s1 + " and " + s2, e);
+            DomTester.logger
+                    .log(Level.SEVERE, "can't test equality between " + s1 + " and " + s2, e);
             return false;
         }
     }
@@ -92,13 +159,20 @@ public class DomTester {
     private final Charset UTF_8 = Charset.forName("UTF-8");
     private final DocumentBuilder builder;
 
+    /**
+     * Create a tester
+     *
+     * @throws ParserConfigurationException in case of service configuration error or if the
+     * implementation is not available or cannot be instantiated.
+     */
     DomTester() throws ParserConfigurationException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
     }
 
     private boolean stringEquals(final String s1, final String s2,
-                                 final ChildrenTester childrenTester) throws SAXException, IOException {
+                                 final ChildrenTester childrenTester)
+            throws SAXException, IOException {
         final Document document1 = this.builder
                 .parse(new ByteArrayInputStream(("<r>" + s1 + "</r>").getBytes(this.UTF_8)));
         final Document document2 = this.builder

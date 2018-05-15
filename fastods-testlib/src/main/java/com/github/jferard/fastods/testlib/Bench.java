@@ -28,46 +28,86 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
+/**
+ * A base class for benchmarks
+ *
+ * @author Julien Férard
+ */
 public abstract class Bench {
-	private final int colCount;
-	private final Logger logger;
-	private final Random random;
-	private final int rowCount;
-	private final List<Long> times;
-	private final String name;
+    private final int colCount;
+    private final Logger logger;
+    private final Random random;
+    private final int rowCount;
+    private final List<Long> times;
+    private final String name;
 
-	public Bench(final Logger logger, final String name, final int rowCount, final int colCount) {
-		this.logger = logger;
-		this.name = name;
-		this.rowCount = rowCount;
-		this.colCount = colCount;
-		this.times = new ArrayList<Long>();
-		this.random = new Random(); // don't use a fixed seed, since the bench needs a new sequence each time
-	}
+    /**
+     * Create a new bench
+     *
+     * @param logger   the logger
+     * @param name     the name of the bench
+     * @param rowCount the row count of the dest table
+     * @param colCount the column count of the dest table
+     */
+    public Bench(final Logger logger, final String name, final int rowCount, final int colCount) {
+        this.logger = logger;
+        this.name = name;
+        this.rowCount = rowCount;
+        this.colCount = colCount;
+        this.times = new ArrayList<Long>();
+        this.random = new Random(); // don't use a fixed seed, since the bench needs a new
+        // sequence each time
+    }
 
-	public Computations getWithWarmup() {
-		return new Computations(this.name, this.times.subList(2, this.times.size()));
-	}
+    /**
+     * @return the computations without the warmup included
+     */
+    public Computations getWithWarmup() {
+        return new Computations(this.name, this.times.subList(2, this.times.size()));
+    }
 
-	public Computations getWithoutWarmup() {
-		return new Computations(this.name, this.times);
-	}
+    /**
+     * @return the computations with the warmup
+     */
+    public Computations getWithoutWarmup() {
+        return new Computations(this.name, this.times);
+    }
 
-	public void iteration() throws IOException {
-		this.times.add(this.test());
-	}
+    /**
+     * Execute the test once more
+     *
+     * @throws IOException if an I/O exception occurs in the test
+     */
+    public void iteration() throws IOException {
+        this.times.add(this.test());
+    }
 
-	public abstract long test() throws IOException;
+    /**
+     * The test. Override this method and use col count and row count and random
+     *
+     * @return the time
+     * @throws IOException if an I/O error occurs
+     */
+    public abstract long test() throws IOException;
 
-	public int getColCount() {
-		return this.colCount;
-	}
+    /**
+     * @return the col count
+     */
+    int getColCount() {
+        return this.colCount;
+    }
 
-	public Random getRandom() {
-		return this.random;
-	}
+    /**
+     * @return a Random instance
+     */
+    Random getRandom() {
+        return this.random;
+    }
 
-	public int getRowCount() {
-		return this.rowCount;
-	}
+    /**
+     * @return the row count
+     */
+    int getRowCount() {
+        return this.rowCount;
+    }
 }

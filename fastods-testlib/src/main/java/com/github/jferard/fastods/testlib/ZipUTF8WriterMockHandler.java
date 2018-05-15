@@ -43,27 +43,36 @@ import java.util.zip.ZipEntry;
  * @author Julien Férard
  */
 public class ZipUTF8WriterMockHandler implements InvocationHandler {
-    private final ZipUTF8WriterMock mock;
-
+    /**
+     * @return a new mock handler
+     */
     public static ZipUTF8WriterMockHandler create() {
         return new ZipUTF8WriterMockHandler(ZipUTF8WriterMock.createMock());
     }
 
+    private final ZipUTF8WriterMock mock;
+
+    /**
+     * Create a mock handler
+     *
+     * @param mock the writer mock
+     */
     ZipUTF8WriterMockHandler(final ZipUTF8WriterMock mock) {
         this.mock = mock;
     }
 
     @Override
-    public Object invoke(final Object o, final Method method, final Object[] objects) throws Throwable {
+    public Object invoke(final Object o, final Method method, final Object[] objects)
+            throws Throwable {
         final String name = method.getName();
         if (name.equals("append")) {
             if (objects[0] instanceof Character) {
                 this.mock.append((Character) objects[0]);
             } else {
-                if (objects.length > 1)
-                    this.mock.append((CharSequence) objects[0], (Integer) objects[1], (Integer) objects[2]);
-                else
-                    this.mock.append((CharSequence) objects[0]);
+                if (objects.length > 1) this.mock
+                        .append((CharSequence) objects[0], (Integer) objects[1],
+                                (Integer) objects[2]);
+                else this.mock.append((CharSequence) objects[0]);
             }
             return this.mock;
         } else if (name.equals("close")) {
@@ -82,6 +91,13 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
         return null;
     }
 
+    /**
+     * Return a proxy instance of a class
+     *
+     * @param cls the class
+     * @param <T> the type of the class
+     * @return the proxy
+     */
     @SuppressWarnings("unchecked")
     public <T> T getInstance(final Class<T> cls) {
         final ClassLoader classLoader = cls.getClassLoader();
@@ -89,19 +105,32 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
         return (T) Proxy.newProxyInstance(classLoader, classes, this);
     }
 
+    /**
+     * @param name name of the entry in the zip file
+     * @return the content
+     */
     public String getEntryAsString(final String name) {
         final StringBuilder stringBuilder = this.mock.getBuilder(name);
         return stringBuilder == null ? null : stringBuilder.toString();
     }
 
-    public Document getEntryAsDocument(final String name) throws IOException, SAXException, ParserConfigurationException {
+    /**
+     * @param name name of the entry in the zip file
+     * @return the document
+     * @throws IOException                  if an I/O error occurs
+     * @throws SAXException                 if any parse errors occur.
+     * @throws ParserConfigurationException in case of service configuration error or if the
+     *                                      implementation is not available or cannot be
+     *                                      instantiated.
+     */
+
+    public Document getEntryAsDocument(final String name)
+            throws IOException, SAXException, ParserConfigurationException {
         final StringBuilder stringBuilder = this.mock.getBuilder(name);
-        if (stringBuilder == null)
-            return null;
+        if (stringBuilder == null) return null;
 
         final String xml = stringBuilder.toString();
-        final DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(new InputSource(new StringReader(xml)));
     }

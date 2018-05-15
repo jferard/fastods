@@ -68,7 +68,7 @@ public class TableCellStyle implements ObjectStyle {
     private final TextProperties textProperties;
     private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
     private final boolean wrap; // No line wrap when false, line wrap when
-    private DataStyle dataStyle;
+    private final DataStyle dataStyle;
     private String key;
 
     /**

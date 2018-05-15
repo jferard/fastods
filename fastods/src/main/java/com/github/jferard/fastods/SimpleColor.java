@@ -771,7 +771,8 @@ public enum SimpleColor implements Color {
 		this.hexValue = hexValue;
 	}
 
-	public String hexValue() {
+	@Override
+    public String hexValue() {
 		return this.hexValue;
 	}
 }

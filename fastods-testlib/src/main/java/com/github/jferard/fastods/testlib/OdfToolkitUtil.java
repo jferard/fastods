@@ -39,32 +39,67 @@ import org.w3c.dom.Node;
 public final class OdfToolkitUtil {
     private OdfToolkitUtil() {}
 
+    /**
+     * @param cell the cell
+     * @return the value of the cell as a string
+     */
     public static String getStringValue(final Cell cell) {
         return cell.getOdfElement().getOfficeStringValueAttribute();
     }
 
+    /**
+     * @param cell the cell
+     * @return the parent style name
+     */
     public static String getParentStyleName(final Cell cell) {
         return cell.getOdfElement().getAutomaticStyle().getStyleParentStyleNameAttribute();
     }
 
+    /**
+     * Return styles.xml representation
+     * @param document the document
+     * @param styleName the style name
+     * @param styleFamily the style family
+     * @return the styles
+     * @throws Exception if an exception occurs
+     */
     public static OdfStyle getDocumentStyle(final SpreadsheetDocument document, final String styleName,
                                             final OdfStyleFamily styleFamily) throws Exception {
         return document.getStylesDom().getOfficeStyles().getStyle(styleName, styleFamily);
     }
 
+    /**
+     * Get the first tag with a name
+     * @param element the root
+     * @param tagname the name of the tag
+     * @return the first node with that tag name inside element
+     */
     public static Node getFirstElement(final Element element, final String tagname) {
         return element.getElementsByTagName(tagname).item(0);
     }
 
-    public static String getAttribute(final Node node, final String sattributeName) {
+    /**
+     * @param node the node
+     * @param attributeName the name of the attribute
+     * @return the value of the attribute as a string
+     */
+    public static String getAttribute(final Node node, final String attributeName) {
         final NamedNodeMap attributes = node.getAttributes();
-        return attributes.getNamedItem(sattributeName).getTextContent();
+        return attributes.getNamedItem(attributeName).getTextContent();
     }
 
+    /**
+     * @param cell the cell
+     * @return the cell style name
+     */
     public static String getStyleName(final Cell cell) {
         return cell.getOdfElement().getStyleName();
     }
 
+    /**
+     * @param cell the cell
+     * @return the name of the style family of the cell
+     */
     public static String getStyleFamilyName(final Cell cell) {
         return cell.getOdfElement().getStyleFamily().getName();
     }

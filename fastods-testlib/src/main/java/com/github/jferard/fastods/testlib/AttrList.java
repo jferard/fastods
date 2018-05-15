@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * A list of attributes
+ * @author Julien Férard
  */
 public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 	/**
@@ -59,6 +61,7 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 
 	/**
 	 * @param attributes the attributes
+     * @return the attr list
 	 */
 	static AttrList create(final NamedNodeMap attributes) {
         final int l = attributes.getLength();
@@ -78,7 +81,10 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
 		Collections.sort(this.attrs, cmp);
 	}
 
-	public int size() {
+    /**
+     * @return the number of attributes
+     */
+    public int size() {
 		return this.length;
 	}
 

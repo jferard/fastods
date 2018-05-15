@@ -108,7 +108,10 @@ public class BorderAttribute {
     }
 
     /**
-     * @return the attribute value in XML, see 20.176 fo Border Properties
+     * @param util an xml util
+     * @param appendable where to write
+     * @param attrName the attribute name
+     * @throws IOException if an I/O error occurs
      */
     public void appendXMLAttribute(final XMLUtil util, final Appendable appendable,
                                    final String attrName) throws IOException {

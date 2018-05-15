@@ -56,6 +56,7 @@ public class StylesContainer {
             this.dataStyle = dataStyle;
         }
 
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             else if (!(o instanceof ChildCellStyle)) return false;
@@ -66,6 +67,7 @@ public class StylesContainer {
             }
         }
 
+        @Override
         public int hashCode() {
             return this.style.getKey().hashCode() * 31 + this.dataStyle.getName().hashCode();
 

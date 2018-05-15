@@ -26,16 +26,25 @@ package com.github.jferard.fastods.testlib;
 import java.io.File;
 
 /**
- * Created by jferard on 16/08/17.
+ * An utility class for creating directories
+ * @author Julien Férard
  */
 public final class Util {
     private Util() {}
 
+    /**
+     * @param fname the name of the directory to create
+     * @return true if the directory was created
+     */
     public static boolean mkdir(final String fname)
     {
         return Util.mkdir(new File(fname));
     }
 
+    /**
+     * @param file the directory to create
+     * @return true if the directory was created
+     */
     public static boolean mkdir(final File file) {
         if (file.exists()) {
             if (file.isDirectory())

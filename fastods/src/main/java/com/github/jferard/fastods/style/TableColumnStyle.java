@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Length;
@@ -39,8 +38,8 @@ public class TableColumnStyle implements ObjectStyle {
     /**
      * The default style, see LO.
      */
-    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle.builder("co1").setOptimalWidth()
-            .hidden().build();
+    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
+            .builder("co1").hidden().build();
 
     private static TableColumnStyle defaultColumnStyle;
 
@@ -66,7 +65,7 @@ public class TableColumnStyle implements ObjectStyle {
      * @param hidden           ture if the style is automatic
      * @param columnWidth      the width of the column
      * @param defaultCellStyle the default style for cells
-     * @param optimalWidth true if the optimal width is set
+     * @param optimalWidth     true if the optimal width is set
      */
     TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
                      final TableCellStyle defaultCellStyle, final boolean optimalWidth) {
@@ -84,13 +83,15 @@ public class TableColumnStyle implements ObjectStyle {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table-column");
         appendable.append("><style:table-column-properties");
         util.appendAttribute(appendable, "fo:break-before", "auto");
-        if (this.optimalWidth) util.appendAttribute(appendable, "style:use-optimal-column-width", this.optimalWidth);
+        if (this.optimalWidth)
+            util.appendAttribute(appendable, "style:use-optimal-column-width", this.optimalWidth);
         if (!this.columnWidth.isNull()) {
             util.appendAttribute(appendable, "style:column-width", this.columnWidth.toString());
         }
@@ -105,12 +106,14 @@ public class TableColumnStyle implements ObjectStyle {
      * @param count      the number of columns concerned
      * @throws IOException if an I/O error occurs
      */
-    public void appendXMLToTable(final XMLUtil util, final Appendable appendable, final int count) throws IOException {
+    public void appendXMLToTable(final XMLUtil util, final Appendable appendable, final int count)
+            throws IOException {
         appendable.append("<table:table-column");
         util.appendEAttribute(appendable, "table:style-name", this.name);
         if (count > 1) util.appendAttribute(appendable, "table:number-columns-repeated", count);
         if (this.defaultCellStyle != null)
-            util.appendEAttribute(appendable, "table:default-cell-style-name", this.defaultCellStyle.getName());
+            util.appendEAttribute(appendable, "table:default-cell-style-name",
+                    this.defaultCellStyle.getName());
         appendable.append("/>");
     }
 
@@ -170,6 +173,7 @@ public class TableColumnStyle implements ObjectStyle {
 
     /**
      * Add this style to a styles container
+     *
      * @param stylesContainer the styles container
      */
     public void addToContentStyles(final StylesContainer stylesContainer) {

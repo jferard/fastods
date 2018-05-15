@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.FastOdsException;
-
 import java.util.Locale;
 
 /**
