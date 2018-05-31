@@ -56,7 +56,10 @@ Then:
 
 `mvn clean install`
 
-Remark: if the default JRE on your computer is beyond version 9, maven won't find `tools.jar`. Here's a workaround for Linux:
+#### It doesn't compile!
+
+For reasons beyond my control, I'm stuck for this project with Java 6, and thus I need the `tools.jar` archive. 
+If the default JRE on your computer is beyond version 9, maven won't find `tools.jar`. Here's a workaround for Linux:
 
 `JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" mvn clean install`
 
