@@ -25,7 +25,6 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.util.Container;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,7 +43,8 @@ public class TextTest {
 
     @Before
     public void setUp() throws IOException {
-        this.ts = TextProperties.builder().fontName("fn").fontColor(ColorHelper.fromString("fc")).buildStyle("ts");
+        this.ts = TextProperties.builder().fontName("fn").fontColor(ColorHelper.fromString("fc"))
+                .buildStyle("ts");
     }
 
     @Test
@@ -63,55 +63,60 @@ public class TextTest {
     @Test
     public void parStyledContent() throws Exception {
         final Text t = TextBuilder.create().parStyledContent("a", this.ts).build();
-        TestHelper.assertXMLEquals("<text:p><text:span text:style-name=\"ts\">a</text:span></text:p>", t);
+        TestHelper
+                .assertXMLEquals("<text:p><text:span text:style-name=\"ts\">a</text:span></text:p>",
+                        t);
     }
 
     @Test
     public void linkRef() throws Exception {
         final Text t = TextBuilder.create().par().link("a", "ref").build();
-        TestHelper.assertXMLEquals("<text:p><text:a xlink:href=\"#ref\" xlink:type=\"simple\">a</text:a></text:p>", t);
+        TestHelper.assertXMLEquals(
+                "<text:p><text:a xlink:href=\"#ref\" xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
     public void styledLinkRef() throws Exception {
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, "ref").build();
         TestHelper.assertXMLEquals(
-                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#ref\" xlink:type=\"simple\">a</text:a></text:p>",
+                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#ref\" " +
+                        "xlink:type=\"simple\">a</text:a></text:p>",
                 t);
     }
 
     @Test
     public void linkURL() throws Exception {
         final Text t = TextBuilder.create().par().link("a", new URL("http://url")).build();
-        TestHelper
-                .assertXMLEquals("<text:p><text:a xlink:href=\"http://url\" xlink:type=\"simple\">a</text:a></text:p>",
-                        t);
+        TestHelper.assertXMLEquals(
+                "<text:p><text:a xlink:href=\"http://url\" " +
+                        "xlink:type=\"simple\">a</text:a></text:p>",
+                t);
     }
 
     @Test
     public void styledLinkURL() throws Exception {
-        final Text t = TextBuilder.create().par().styledLink("a", this.ts, new URL("http://url")).build();
+        final Text t = TextBuilder.create().par().styledLink("a", this.ts, new URL("http://url"))
+                .build();
         TestHelper.assertXMLEquals(
                 "<text:p><text:a text:style-name=\"ts\" xlink:href=\"http://url\" " +
-                        "xlink:type=\"simple\">a</text:a></text:p>",
-                t);
+                        "xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
     public void linkFile() throws Exception {
         final File f = new File("f");
         final Text t = TextBuilder.create().par().link("a", f).build();
-        TestHelper.assertXMLEquals(
-                "<text:p><text:a xlink:href=\"" + f.toURI().toString() + "\" xlink:type=\"simple\">a</text:a></text:p>",
-                t);
+        TestHelper.assertXMLEquals("<text:p><text:a xlink:href=\"" + f.toURI().toString() +
+                "\" xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
     public void styledLinkFile() throws Exception {
         final File f = new File("f");
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, f).build();
-        TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"" + f.toURI()
-                .toString() + "\" xlink:type=\"simple\">a</text:a></text:p>", t);
+        TestHelper.assertXMLEquals(
+                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"" + f.toURI().toString() +
+                        "\" xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
@@ -119,7 +124,8 @@ public class TextTest {
         final Table table = Table.create(null, null, null, null, null, "n", 0, 0);
         final Text t = TextBuilder.create().par().link("a", table).build();
         Assert.assertEquals("n", table.getName());
-        TestHelper.assertXMLEquals("<text:p><text:a xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>", t);
+        TestHelper.assertXMLEquals(
+                "<text:p><text:a xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
@@ -127,7 +133,8 @@ public class TextTest {
         final Table table = Table.create(null, null, null, null, null, "n", 0, 0);
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
         TestHelper.assertXMLEquals(
-                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" xlink:type=\"simple\">a</text:a></text:p>",
+                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +
+                        "xlink:type=\"simple\">a</text:a></text:p>",
                 t);
     }
 
@@ -135,7 +142,8 @@ public class TextTest {
     public void testEmbeddedStyles() {
         final StylesContainer container = PowerMock.createMock(StylesContainer.class);
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
-        final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts).build();
+        final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts)
+                .build();
 
         PowerMock.resetAll();
         EasyMock.expect(container.addContentStyle(ts)).andReturn(true);
@@ -146,22 +154,4 @@ public class TextTest {
 
         PowerMock.verifyAll();
     }
-
-    @Test
-    public void testEmbeddedStyles2() {
-        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
-        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
-        final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts).build();
-
-        PowerMock.resetAll();
-        EasyMock.expect(container.addStyleStyle(ts, Container.Mode.CREATE)).andReturn(true);
-        EasyMock.expect(container.addStyleStyle(ts, Container.Mode.CREATE)).andReturn(false);
-
-        PowerMock.replayAll();
-        text.addEmbeddedStylesFromFooterHeader(container);
-
-        PowerMock.verifyAll();
-    }
-
-
 }

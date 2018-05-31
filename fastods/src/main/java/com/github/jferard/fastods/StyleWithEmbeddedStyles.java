@@ -38,11 +38,4 @@ public interface StyleWithEmbeddedStyles {
      * @param stylesContainer the styles container
      */
     void addEmbeddedStyles(StylesContainer stylesContainer);
-
-    /**
-     * Add the styles of this element to the styles container, in styles.xml/automatic-styles.
-     * @param stylesContainer the styles container
-     * @param mode (CREATE, CREATE_OR_UPDATE, UPDATE)
-     */
-    void addEmbeddedStyles(StylesContainer stylesContainer, Container.Mode mode);
 }

@@ -40,15 +40,25 @@ public class Container<K, V> {
 	private final Map<K, V> valueByKey;
 	private boolean closed;
 	private boolean debug;
+    private Mode mode;
 
-	/**
+    /**
 	 * Builds a default container
 	 */
 	public Container() {
 		this.valueByKey = new HashMap<K, V>();
 		this.closed = false;
 		this.debug = false;
+        this.mode = Mode.CREATE;
 	}
+
+    /**
+     * Set the new mode to use
+     * @param mode the mode (CREATE, UPDATE, CREATE_OR_UPDATE)
+     */
+	public void setMode(final Mode mode) {
+	    this.mode = mode;
+    }
 
 	/**
 	 * If mode is update, then the key must exist. If the mode is create, then the key must not exist.
@@ -56,17 +66,16 @@ public class Container<K, V> {
 	 *
 	 * @param key the key
 	 * @param value the value
-	 * @param mode the mode
 	 * @return true if the value was updated
 	 */
-	public boolean add(final K key, final V value, final Mode mode) {
+	public boolean add(final K key, final V value) {
 		final V curValue = this.valueByKey.get(key);
 		if (curValue == null) { // key does not exist
-			if (mode == Mode.UPDATE)
+			if (this.mode == Mode.UPDATE)
 				return false;
 
 		} else { // key exists
-			if (mode == Mode.CREATE)
+			if (this.mode == Mode.CREATE)
 				return false;
 		}
 

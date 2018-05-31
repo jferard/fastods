@@ -140,13 +140,13 @@ public class SimplePageSectionTest {
     @Test
     public final void testAddEmbbeded() throws IOException {
         final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        PowerMock.resetAll();
 
         PowerMock.replayAll();
 
         final PageSection footer = PageSection.simpleBuilder().content("text").build();
-
         footer.addEmbeddedStyles(sc);
-        footer.addEmbeddedStyles(sc, Mode.CREATE);
+        footer.addEmbeddedStyles(sc);
         PowerMock.verifyAll();
     }
 

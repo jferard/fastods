@@ -25,7 +25,6 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -60,12 +59,14 @@ public class Paragraph implements TagParameters, ParagraphElement {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         if (this.paragraphElements.isEmpty()) {
             appendable.append("<text:p/>");
         } else {
             appendable.append("<text:p");
-            if (this.style != null) util.appendEAttribute(appendable, "text:style-name", this.style.getName());
+            if (this.style != null)
+                util.appendEAttribute(appendable, "text:style-name", this.style.getName());
             appendable.append('>');
             for (final ParagraphElement paragraphElement : this.paragraphElements)
                 paragraphElement.appendXMLContent(util, appendable);
@@ -75,7 +76,10 @@ public class Paragraph implements TagParameters, ParagraphElement {
 
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        this.addEmbeddedStylesFromFooterHeader(stylesContainer, Container.Mode.CREATE);
+        if (this.style != null) stylesContainer.addStyleStyle(this.style);
+        for (final ParagraphElement element : this.paragraphElements) {
+            element.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        }
     }
 
     @Override
@@ -83,14 +87,6 @@ public class Paragraph implements TagParameters, ParagraphElement {
         if (this.style != null) stylesContainer.addContentStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromCell(stylesContainer);
-        }
-    }
-
-    @Override
-    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Container.Mode mode) {
-        if (this.style != null) stylesContainer.addStyleStyle(this.style);
-        for (final ParagraphElement element : this.paragraphElements) {
-            element.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
         }
     }
 }

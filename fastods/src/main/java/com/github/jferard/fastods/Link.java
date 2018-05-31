@@ -154,9 +154,4 @@ public final class Link implements ParagraphElement {
 	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
         if (this.ts != null) stylesContainer.addContentStyle(this.ts);
 	}
-
-    @Override
-    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Container.Mode mode) {
-        if (this.ts != null) stylesContainer.addStyleStyle(this.ts, mode);
-    }
 }

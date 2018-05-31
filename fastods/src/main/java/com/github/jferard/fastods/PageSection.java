@@ -133,13 +133,7 @@ public class PageSection implements StyleWithEmbeddedStyles {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        this.addEmbeddedStyles(stylesContainer, Mode.CREATE);
-
-    }
-
-    @Override
-    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Mode mode) {
-        this.content.addEmbeddedStyles(stylesContainer, mode);
+        this.content.addEmbeddedStyles(stylesContainer);
     }
 
     /**

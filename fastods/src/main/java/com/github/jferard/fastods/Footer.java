@@ -31,6 +31,7 @@ import java.io.IOException;
 
 /**
  * Represents the footer of a print page.
+ *
  * @author Julien Férard
  */
 public class Footer implements HeaderOrFooter {
@@ -38,6 +39,7 @@ public class Footer implements HeaderOrFooter {
 
     /**
      * Create a new footer from a page section
+     *
      * @param pageSection the page section
      */
     public Footer(final PageSection pageSection) {
@@ -51,17 +53,16 @@ public class Footer implements HeaderOrFooter {
     }
 
     @Override
-    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Container.Mode mode) {
-        this.pageSection.addEmbeddedStyles(stylesContainer, mode);
-    }
-
-    @Override
-    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         this.pageSection.appendXMLToMasterStyle(util, appendable);
     }
 
     @Override
-    public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util, final Appendable appendable) throws IOException {
-        this.pageSection.appendPageSectionStyleXMLToAutomaticStyle(util, appendable, PageSection.Type.FOOTER);
+    public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util,
+                                                          final Appendable appendable)
+            throws IOException {
+        this.pageSection.appendPageSectionStyleXMLToAutomaticStyle(util, appendable,
+                PageSection.Type.FOOTER);
     }
 }

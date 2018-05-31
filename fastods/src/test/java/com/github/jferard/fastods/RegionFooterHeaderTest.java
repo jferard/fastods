@@ -27,7 +27,6 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,23 +43,21 @@ public class RegionFooterHeaderTest {
     public void setUp() {
         this.util = XMLUtil.create();
         this.stylesContainer = PowerMock.createMock(StylesContainer.class);
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
     public void allNull() throws IOException {
         final PageSectionContent content = new RegionFooterHeader(null, null, null);
-        PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
         content.appendXMLToMasterStyle(this.util, sb);
         Assert.assertEquals("", sb.toString());
         content.addEmbeddedStyles(this.stylesContainer);
-        content.addEmbeddedStyles(this.stylesContainer, Container.Mode.UPDATE);
+        content.addEmbeddedStyles(this.stylesContainer);
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -68,13 +65,17 @@ public class RegionFooterHeaderTest {
         final Text text = PowerMock.createMock(Text.class);
         final PageSectionContent content = new RegionFooterHeader(text, null, null);
 
+        PowerMock.resetAll();
         EasyMock.expect(text.isEmpty()).andReturn(true).times(3);
+
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
         content.appendXMLToMasterStyle(this.util, sb);
         Assert.assertEquals("", sb.toString());
         content.addEmbeddedStyles(this.stylesContainer);
-        content.addEmbeddedStyles(this.stylesContainer, Container.Mode.UPDATE);
+        content.addEmbeddedStyles(this.stylesContainer);
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -82,15 +83,18 @@ public class RegionFooterHeaderTest {
         final StringBuilder sb = new StringBuilder();
         final Text text = PowerMock.createMock(Text.class);
         final PageSectionContent content = new RegionFooterHeader(null, text, null);
+        PowerMock.resetAll();
 
         EasyMock.expect(text.isEmpty()).andReturn(false).times(3);
         text.appendXMLContent(this.util, sb);
-        text.addEmbeddedStylesFromFooterHeader(this.stylesContainer, Container.Mode.CREATE);
-        text.addEmbeddedStylesFromFooterHeader(this.stylesContainer, Container.Mode.UPDATE);
+        text.addEmbeddedStylesFromFooterHeader(this.stylesContainer);
+        text.addEmbeddedStylesFromFooterHeader(this.stylesContainer);
         PowerMock.replayAll();
+
         content.appendXMLToMasterStyle(this.util, sb);
         Assert.assertEquals("<style:region-left></style:region-left>", sb.toString());
         content.addEmbeddedStyles(this.stylesContainer);
-        content.addEmbeddedStyles(this.stylesContainer, Container.Mode.UPDATE);
+        content.addEmbeddedStyles(this.stylesContainer);
+        PowerMock.verifyAll();
     }
 }

@@ -43,6 +43,7 @@ public class MultiContainer<K, S extends Enum<S>, V> {
 	private final Map<S, Map<K, V>> valueByKeyBySubcontainer;
 	private boolean closed;
 	private boolean debug;
+    private Mode mode;
 
     /**
      * Create a new multi container
@@ -57,24 +58,32 @@ public class MultiContainer<K, S extends Enum<S>, V> {
 		}
 		this.closed = false;
 		this.debug = false;
+		this.mode = Mode.CREATE;
 	}
+
+	/**
+     * Set the new mode to use
+     * @param mode the mode (CREATE, UPDATE, CREATE_OR_UPDATE)
+     */
+	public void setMode(final Mode mode) {
+        this.mode = mode;
+    }
 
     /**
      * Add a value to this multi container
      * @param key the key
      * @param subcontainer the sub container
      * @param value the value
-     * @param mode the mode (CREATE, UPDATE, CREATE_OR_UPDATE)
      * @return true
      */
-    public boolean add(final K key, final S subcontainer, final V value, final Mode mode) {
+    public boolean add(final K key, final S subcontainer, final V value) {
 		final S curSubcontainer = this.subcontainerByKey.get(key);
 		if (curSubcontainer == null) { // key does not exist
-			if (mode == Mode.UPDATE)
+			if (this.mode == Mode.UPDATE)
 				return false;
 
 		} else { // key exists
-			if (mode == Mode.CREATE)
+			if (this.mode == Mode.CREATE)
 				return false;
 
 			if (subcontainer != curSubcontainer) {

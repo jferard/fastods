@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -129,19 +130,8 @@ public class Text implements ParagraphElement {
      */
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        this.addEmbeddedStylesFromFooterHeader(stylesContainer, Mode.CREATE);
-    }
-
-    /**
-     * Add the styles to a container, in styles.xml/automatic-syles
-     *
-     * @param stylesContainer the container
-     * @param mode            CREATE, UPDATE or CREATE_OR_UPDATE
-     */
-    @Override
-    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer, final Mode mode) {
         for (final Paragraph par : this.paragraphs)
-            par.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+            par.addEmbeddedStylesFromFooterHeader(stylesContainer);
     }
 
     @Override

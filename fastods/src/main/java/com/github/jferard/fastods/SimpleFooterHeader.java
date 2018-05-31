@@ -48,6 +48,7 @@ class SimpleFooterHeader implements PageSectionContent {
      * The NamedOdsDocument where this object belong to.
      */
     private final Text centerRegion;
+    private Mode mode;
 
     /**
      * Create a new footer object.
@@ -57,17 +58,13 @@ class SimpleFooterHeader implements PageSectionContent {
     SimpleFooterHeader(final Text centerRegion) {
         super();
         this.centerRegion = centerRegion;
+        this.mode = Mode.CREATE;
     }
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        this.addEmbeddedStyles(stylesContainer, Mode.CREATE);
-    }
-
-    @Override
-    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Mode mode) {
         if (this.centerRegion != null && !this.centerRegion.isEmpty())
-            this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+            this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
     }
 
     /**

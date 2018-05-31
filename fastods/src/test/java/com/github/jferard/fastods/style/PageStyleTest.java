@@ -34,11 +34,14 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 
 public class PageStyleTest {
-    private static final String MASTER = "<style:master-page style:name=\"test\" style:page-layout-name=\"test\">" +
-            "<style:header>" + "<text:p>" + "<text:span text:style-name=\"none\">" + "</text:span>" + "</text:p>" +
-            "</style:header>" + "<style:header-left style:display=\"false\"/>" + "<style:footer>" + "<text:p>" +
-            "<text:span text:style-name=\"none\">" + "</text:span>" + "</text:p>" + "</style:footer>" +
-            "<style:footer-left style:display=\"false\"/>" + "</style:master-page>";
+    private static final String MASTER =
+            "<style:master-page style:name=\"test\" style:page-layout-name=\"test\">" +
+                    "<style:header>" + "<text:p>" + "<text:span text:style-name=\"none\">" +
+                    "</text:span>" + "</text:p>" + "</style:header>" +
+                    "<style:header-left style:display=\"false\"/>" + "<style:footer>" + "<text:p>" +
+                    "<text:span text:style-name=\"none\">" + "</text:span>" + "</text:p>" +
+                    "</style:footer>" + "<style:footer-left style:display=\"false\"/>" +
+                    "</style:master-page>";
     private XMLUtil util;
 
     @Before
@@ -49,13 +52,18 @@ public class PageStyleTest {
     @Test
     public final void testAlmostEmptyToAutomaticStyle() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").build();
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>",
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
+                        "style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" " +
+                        "fo:margin=\"0cm\"/>" +
+                        "</style:header-style>" + "<style:footer-style>" +
+                        "<style:header-footer-properties " + "fo:min-height=\"0cm\" " +
+                        "fo:margin=\"0cm\"/>" +
+                        "</style:footer-style>" + "</style:page-layout>",
 
                 pageStyle);
     }
@@ -68,17 +76,20 @@ public class PageStyleTest {
 
     @Test
     public final void testBackground() throws IOException {
-        final PageStyle pageStyle = PageStyle.builder("test").backgroundColor(SimpleColor.BLANCHEDALMOND).build();
+        final PageStyle pageStyle = PageStyle.builder("test")
+                .backgroundColor(SimpleColor.BLANCHEDALMOND).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:background-color=\"#ffebcd\" fo:margin=\"1.5cm\"/>"
-                        + "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" " +
-                        "fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer-properties " +
-                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" + "</style:page-layout>",
-                pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" fo:background-color=\"#ffebcd\" " +
+                "fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" " +
+                "fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer" +
+                "-properties " +
+                "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" +
+                "</style:page-layout>", pageStyle);
     }
 
     @Test(expected = IllegalStateException.class)
@@ -97,11 +108,11 @@ public class PageStyleTest {
         footer.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb);
         PowerMock.replayAll();
         pageStyle.appendXMLToAutomaticStyle(this.util, sb);
-        DomTester.assertEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "</style:page-layout>",
-                sb.toString());
+        DomTester.assertEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "</style:page-layout>", sb.toString());
         PowerMock.verifyAll();
     }
 
@@ -109,24 +120,26 @@ public class PageStyleTest {
     public final void testHeightAndWidth() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").pageHeight(SimpleLength.cm(20.0))
                 .pageWidth(SimpleLength.cm(10.0)).build();
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"10cm\" " +
-                        "fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>",
-                pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"10cm\" " +
+                "fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>" + "<style:footer-style>" +
+                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
     @Test
     public final void testNullFooterHeader() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").header(null).footer(null).build();
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "<style:header-style/>" +
-                        "<style:footer-style/>" + "</style:page-layout>",
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
+                        "style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style/>" + "<style:footer-style/>" + "</style:page-layout>",
                 pageStyle);
     }
 
@@ -134,44 +147,47 @@ public class PageStyleTest {
     public final void testPaperFormat() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").paperFormat(PaperFormat.A3).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"29.7cm\" "
-                        + "fo:page-height=\"42cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>",
-                pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"29.7cm\" " +
+                "fo:page-height=\"42cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>" + "<style:footer-style>" +
+                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
     @Test
     public final void testPrintOrientationH() throws IOException {
-        final PageStyle pageStyle = PageStyle.builder("test").printOrientationHorizontal().writingMode(WritingMode.PAGE)
-                .build();
+        final PageStyle pageStyle = PageStyle.builder("test").printOrientationHorizontal()
+                .writingMode(WritingMode.PAGE).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
-                        "style:print-orientation=\"landscape\" fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>",
-                pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
+                "style:print-orientation=\"landscape\" fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>" + "<style:footer-style>" +
+                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
     @Test
     public final void testPrintOrientationV() throws IOException {
-        final PageStyle pageStyle = PageStyle.builder("test").printOrientationVertical().writingMode(WritingMode.PAGE)
-                .build();
+        final PageStyle pageStyle = PageStyle.builder("test").printOrientationVertical()
+                .writingMode(WritingMode.PAGE).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>",
-                pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>" + "<style:footer-style>" +
+                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -182,23 +198,26 @@ public class PageStyleTest {
     @Test
     public final void testWritingMode() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").writingMode(WritingMode.PAGE).build();
-        this.assertLayoutXMLEquals(
-                "<style:page-layout style:name=\"test\">" + "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" + "</style:page-layout>",
-                pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
+                "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>" + "<style:footer-style>" +
+                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
-    private void assertLayoutXMLEquals(final String xml, final PageStyle pageStyle) throws IOException {
+    private void assertLayoutXMLEquals(final String xml, final PageStyle pageStyle)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         pageStyle.appendXMLToAutomaticStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 
-    private void assertMasterXMLEquals(final String xml, final PageStyle pageStyle) throws IOException {
+    private void assertMasterXMLEquals(final String xml, final PageStyle pageStyle)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         pageStyle.appendXMLToMasterStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());

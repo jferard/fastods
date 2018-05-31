@@ -98,46 +98,50 @@ public class StylesContainerTest {
 
     @Test
     public final void testDataStyleCreate() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
         this.assertWriteDataStylesXMLEquals(DS1_XML);
     }
 
     @Test
     public final void testDataStyleCreateThenUpdate() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.UPDATE)); // country: a -> b
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
+        this.stylesContainer.setDataStylesMode(Mode.UPDATE);
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2)); // country: a -> b
         this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
     public final void testDataStyleCreateThenUpdateIfExists() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE_OR_UPDATE));
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
+        this.stylesContainer.setDataStylesMode(Mode.CREATE_OR_UPDATE);
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
     public final void testDataStyleCreateTwice() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1, Mode.CREATE));
-        Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE));
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
+        Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals(DS1_XML);
     }
 
     @Test
     public final void testDataStyleUpdate() throws IOException {
-        Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2, Mode.UPDATE));
+        this.stylesContainer.setDataStylesMode(Mode.UPDATE);
+        Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals("");
     }
 
     @Test
     public final void testDataStyleUpdateIfExists() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2, Mode.CREATE_OR_UPDATE));
+        this.stylesContainer.setDataStylesMode(Mode.CREATE_OR_UPDATE);
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
     public final void testPageStyleCreate() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
         this.assertWriteMasterXMLEquals(PS1_MASTER_XML);
         this.assertWriteLayoutXMLEquals(PS1_LAYOUT_XML);
     }
@@ -145,35 +149,39 @@ public class StylesContainerTest {
 
     @Test
     public final void testPageStyleCreateThenUpdate() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.UPDATE));
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
+        this.stylesContainer.setPageStyleMode(Mode.UPDATE);
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
 
     }
 
     @Test
     public final void testPageStyleCreateThenUpdateIfExists() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
+        this.stylesContainer.setPageStyleMode(Mode.CREATE_OR_UPDATE);
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
     }
 
     @Test
     public final void testPageStyleCreateTwice() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1, Mode.CREATE));
-        Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE));
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
+        Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS1_LAYOUT_XML);
     }
 
     @Test
     public final void testPageStyleUpdate() throws IOException {
-        Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2, Mode.UPDATE));
+        this.stylesContainer.setPageStyleMode(Mode.UPDATE);
+        Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals("");
     }
 
     @Test
     public final void testPageStyleUpdateIfExists() throws IOException {
-        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2, Mode.CREATE_OR_UPDATE));
+        this.stylesContainer.setPageStyleMode(Mode.CREATE_OR_UPDATE);
+        Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
     }
 

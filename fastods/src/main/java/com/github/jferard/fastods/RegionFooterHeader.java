@@ -36,16 +36,19 @@ import java.io.IOException;
  * "The <style:header> element represents the content of a header in a <style:master-page> element."
  * "The <style:footer> element represents the content of a footer in a <style:master-page> element."
  * <p>
- *
- * The RegionFooterHeader class represents a footer/header which is composed of three sections (left, center, right).
+ * <p>
+ * The RegionFooterHeader class represents a footer/header which is composed of three sections
+ * (left, center, right).
  * It's an alternative to the SimpleFooterHeader that has only a center section.
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 class RegionFooterHeader implements PageSectionContent {
-    private static void appendRegionXMLToMasterStyle(final XMLUtil util, final Appendable appendable, final Text region,
-                                                     final CharSequence regionName) throws IOException {
+    private static void appendRegionXMLToMasterStyle(final XMLUtil util,
+                                                     final Appendable appendable, final Text region,
+                                                     final CharSequence regionName)
+            throws IOException {
         if (region == null || region.isEmpty()) return;
 
         appendable.append("<style:").append(regionName).append(">");
@@ -73,14 +76,12 @@ class RegionFooterHeader implements PageSectionContent {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        this.addEmbeddedStyles(stylesContainer, Container.Mode.CREATE);
-    }
-
-    @Override
-    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Container.Mode mode) {
-        if (this.leftRegion != null && !this.leftRegion.isEmpty()) this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
-        if (this.centerRegion != null && !this.centerRegion.isEmpty()) this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
-        if (this.rightRegion != null && !this.rightRegion.isEmpty()) this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer, mode);
+        if (this.leftRegion != null && !this.leftRegion.isEmpty())
+            this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        if (this.centerRegion != null && !this.centerRegion.isEmpty())
+            this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        if (this.rightRegion != null && !this.rightRegion.isEmpty())
+            this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
     }
 
     /**
@@ -89,9 +90,13 @@ class RegionFooterHeader implements PageSectionContent {
      * @throws IOException If an I/O error occurs
      */
     @Override
-    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
-        RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.leftRegion, "region-left");
-        RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.centerRegion, "region-center");
-        RegionFooterHeader.appendRegionXMLToMasterStyle(util, appendable, this.rightRegion, "region-right");
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        RegionFooterHeader
+                .appendRegionXMLToMasterStyle(util, appendable, this.leftRegion, "region-left");
+        RegionFooterHeader
+                .appendRegionXMLToMasterStyle(util, appendable, this.centerRegion, "region-center");
+        RegionFooterHeader
+                .appendRegionXMLToMasterStyle(util, appendable, this.rightRegion, "region-right");
     }
 }

@@ -51,11 +51,6 @@ public class Header  implements HeaderOrFooter {
     }
 
     @Override
-    public void addEmbeddedStyles(final StylesContainer stylesContainer, final Container.Mode mode) {
-        this.pageSection.addEmbeddedStyles(stylesContainer, mode);
-    }
-
-    @Override
     public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
         this.pageSection.appendXMLToMasterStyle(util, appendable);
     }

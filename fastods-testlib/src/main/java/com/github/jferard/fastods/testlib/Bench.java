@@ -93,21 +93,21 @@ public abstract class Bench {
     /**
      * @return the col count
      */
-    int getColCount() {
+    protected int getColCount() {
         return this.colCount;
     }
 
     /**
      * @return a Random instance
      */
-    Random getRandom() {
+    protected Random getRandom() {
         return this.random;
     }
 
     /**
      * @return the row count
      */
-    int getRowCount() {
+    protected int getRowCount() {
         return this.rowCount;
     }
 }

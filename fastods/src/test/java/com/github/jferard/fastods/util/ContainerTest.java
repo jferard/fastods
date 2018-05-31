@@ -21,7 +21,6 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.util.Container.Mode;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,55 +34,58 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class ContainerTest {
-    private Container<String, Integer> c;
+    private Container<String, Integer> container;
 
     @Before
     public void setUp() throws Exception {
-        this.c = new Container<String, Integer>();
+        this.container = new Container<String, Integer>();
     }
 
     @Test
     public final void testCreateThenUpdate() {
-        Assert.assertTrue(this.c.add("a", 1, Mode.CREATE_OR_UPDATE));
-        Assert.assertEquals(Integer.valueOf(1), this.c.getValues().iterator().next());
-        Assert.assertTrue(this.c.add("a", 2, Mode.CREATE_OR_UPDATE));
-        Assert.assertEquals(Integer.valueOf(2), this.c.getValues().iterator().next());
+        Assert.assertTrue(this.container.add("a", 1));
+        Assert.assertEquals(Integer.valueOf(1), this.container.getValues().iterator().next());
+
+        this.container.setMode(Container.Mode.UPDATE);
+        Assert.assertTrue(this.container.add("a", 2));
+        Assert.assertEquals(Integer.valueOf(2), this.container.getValues().iterator().next());
     }
 
     @Test
     public final void testCreateTwice() {
-        Assert.assertTrue(this.c.add("a", 1, Mode.CREATE));
-        Assert.assertEquals(Integer.valueOf(1), this.c.getValues().iterator().next());
-        Assert.assertFalse(this.c.add("a", 2, Mode.CREATE));
-        Assert.assertEquals(Integer.valueOf(1), this.c.getValues().iterator().next());
+        Assert.assertTrue(this.container.add("a", 1));
+        Assert.assertEquals(Integer.valueOf(1), this.container.getValues().iterator().next());
+        Assert.assertFalse(this.container.add("a", 2));
+        Assert.assertEquals(Integer.valueOf(1), this.container.getValues().iterator().next());
     }
 
     @Test
     public final void testEmpty() {
-        Assert.assertFalse(this.c.getValues().iterator().hasNext());
+        Assert.assertFalse(this.container.getValues().iterator().hasNext());
     }
 
     @Test
     public final void testUpdateWithoutCreation() {
-        Assert.assertFalse(this.c.add("a", 1, Mode.UPDATE));
-        Assert.assertFalse(this.c.getValues().iterator().hasNext());
+        this.container.setMode(Container.Mode.UPDATE);
+        Assert.assertFalse(this.container.add("a", 1));
+        Assert.assertFalse(this.container.getValues().iterator().hasNext());
     }
 
     @Test(expected = IllegalStateException.class)
     public final void testCreateAfterFreeze() {
-        this.c.freeze();
-        this.c.add("a", 1, Mode.CREATE);
+        this.container.freeze();
+        this.container.add("a", 1);
     }
 
     @Test
     public final void testGet() {
-        this.c.add("a", 1, Mode.CREATE);
-        Assert.assertEquals(Integer.valueOf(1), this.c.get("a"));
-        Assert.assertEquals(null, this.c.get("b"));
+        this.container.add("a", 1);
+        Assert.assertEquals(Integer.valueOf(1), this.container.get("a"));
+        Assert.assertEquals(null, this.container.get("b"));
 
         final Map<String, Integer> m = new HashMap<String, Integer>();
         m.put("a", 1);
-        Assert.assertEquals(m, this.c.getValueByKey());
+        Assert.assertEquals(m, this.container.getValueByKey());
     }
 
     @Test
@@ -99,8 +101,8 @@ public class ContainerTest {
         EasyMock.expectLastCall().anyTimes();
 
         PowerMock.replayAll();
-        this.c.debug();
-        Assert.assertTrue(this.c.add("a", 1, Mode.CREATE));
+        this.container.debug();
+        Assert.assertTrue(this.container.add("a", 1));
         PowerMock.verifyAll();
     }
 }
