@@ -120,6 +120,6 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testGetters() {
-        StyleTestHelper.testGetters(TableColumnStyle.builder("test"));
+        StyleTestHelper.testGettersHidden(TableColumnStyle.builder("test"));
     }
 }

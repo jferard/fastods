@@ -39,7 +39,7 @@ public class TableColumnStyle implements ObjectStyle {
      * The default style, see LO.
      */
     public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
-            .builder("co1").hidden().build();
+            .builder("co1").build();
 
     private static TableColumnStyle defaultColumnStyle;
 

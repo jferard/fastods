@@ -30,8 +30,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
 /**
  * @author Julien Férard
  */
-public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>,
-        HidableBuilder<TableColumnStyleBuilder> {
+public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
     private static final Length DEFAULT_COLUMN_WIDTH = SimpleLength.cm(2.5);
     private final String name;
     private Length columnWidth;
@@ -49,12 +48,13 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>,
         this.columnWidth = DEFAULT_COLUMN_WIDTH;
         this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
         this.optimalWidth = false;
-        this.hidden = false;
+        this.hidden = true;
     }
 
     @Override
     public TableColumnStyle build() {
-        return new TableColumnStyle(this.name, this.hidden, this.columnWidth, this.defaultCellStyle, this.optimalWidth);
+        return new TableColumnStyle(this.name, this.hidden, this.columnWidth, this.defaultCellStyle,
+                this.optimalWidth);
     }
 
     /**
@@ -90,12 +90,6 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>,
     @Deprecated
     public TableColumnStyleBuilder setOptimalWidth() {
         this.optimalWidth = true;
-        return this;
-    }
-
-    @Override
-    public TableColumnStyleBuilder hidden() {
-        this.hidden = true;
         return this;
     }
 }

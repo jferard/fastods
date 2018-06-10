@@ -72,13 +72,22 @@ import java.util.logging.Logger;
 public class OdsFileWithHeaderAndFooterCreationIT {
     public static final String GENERATED_FILES = "generated_files";
     public static final String FASTODS_FOOTER_HEADER_ODS = "fastods_footer_header.ods";
-    public static final String FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS = "fastods_footer_header_with_flush.ods";
-    public static final String LEFT_HEADER_PATH = "//style:master-page[@style:name='test-master-page']//style:header//style:region-left";
-    public static final String CENTER_HEADER_PATH = "//style:master-page[@style:name='test-master-page']//style:header//style:region-center";
-    public static final String LEFT_FOOTER_PATH = "//style:master-page[@style:name='test-master-page']//style:footer//style:region-left";
-    public static final String CENTER_FOOTER_PATH = "//style:master-page[@style:name='test-master-page']//style:footer//style:region-center";
-    private static final String RIGHT_HEADER_PATH = "//style:master-page[@style:name='test-master-page']//style:header//style:region-right";
-    private static final String RIGHT_FOOTER_PATH = "//style:master-page[@style:name='test-master-page']//style:footer//style:region-right";
+    public static final String FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS =
+            "fastods_footer_header_with_flush.ods";
+    public static final String LEFT_HEADER_PATH =
+            "//style:master-page[@style:name='test-master-page']//style:header//style:region-left";
+    public static final String CENTER_HEADER_PATH =
+            "//style:master-page[@style:name='test-master-page']//style:header//style:region" +
+                    "-center";
+    public static final String LEFT_FOOTER_PATH =
+            "//style:master-page[@style:name='test-master-page']//style:footer//style:region-left";
+    public static final String CENTER_FOOTER_PATH =
+            "//style:master-page[@style:name='test-master-page']//style:footer//style:region" +
+                    "-center";
+    private static final String RIGHT_HEADER_PATH =
+            "//style:master-page[@style:name='test-master-page']//style:header//style:region-right";
+    private static final String RIGHT_FOOTER_PATH =
+            "//style:master-page[@style:name='test-master-page']//style:footer//style:region-right";
 
     @BeforeClass
     public static void beforeClass() {
@@ -138,66 +147,78 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
 
     private void validateDocument(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document = SpreadsheetDocument
+                .loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(3, document.getSheetCount());
 
         // STYLES
         final OdfStylesDom stylesDom = document.getStylesDom();
         Assert.assertEquals("#dddddd", stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='cc']//@fo:background-color", stylesDom.getRootElement()));
+                .evaluate("//style:style[@style:name='cc']//@fo:background-color",
+                        stylesDom.getRootElement()));
         Assert.assertEquals("bold", stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='cc']//@fo:font-weight", stylesDom.getRootElement()));
+                .evaluate("//style:style[@style:name='cc']//@fo:font-weight",
+                        stylesDom.getRootElement()));
 
         Assert.assertEquals(SimpleColor.RED.hexValue(), stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='red-text']//@fo:color", stylesDom.getRootElement()));
+                .evaluate("//style:style[@style:name='red-text']//@fo:color",
+                        stylesDom.getRootElement()));
         Assert.assertEquals(SimpleColor.BLUE.hexValue(), stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='blue-text']//@fo:color", stylesDom.getRootElement()));
+                .evaluate("//style:style[@style:name='blue-text']//@fo:color",
+                        stylesDom.getRootElement()));
         Assert.assertEquals(SimpleColor.GREEN.hexValue(), stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='green-text']//@fo:color", stylesDom.getRootElement()));
+                .evaluate("//style:style[@style:name='green-text']//@fo:color",
+                        stylesDom.getRootElement()));
 
-        Assert.assertEquals("left header", stylesDom.getXPath().evaluate(LEFT_HEADER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("red-text",
-                stylesDom.getXPath().evaluate(LEFT_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+        Assert.assertEquals("left header",
+                stylesDom.getXPath().evaluate(LEFT_HEADER_PATH, stylesDom.getRootElement()));
+        Assert.assertEquals("red-text", stylesDom.getXPath()
+                .evaluate(LEFT_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
 
         Assert.assertEquals("center header1",
                 stylesDom.getXPath().evaluate(CENTER_HEADER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("blue-text",
-                stylesDom.getXPath().evaluate(CENTER_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+        Assert.assertEquals("blue-text", stylesDom.getXPath()
+                .evaluate(CENTER_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
 
         Assert.assertEquals("right header",
                 stylesDom.getXPath().evaluate(RIGHT_HEADER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("green-text",
-                stylesDom.getXPath().evaluate(RIGHT_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+        Assert.assertEquals("green-text", stylesDom.getXPath()
+                .evaluate(RIGHT_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
 
-        Assert.assertEquals("left footer", stylesDom.getXPath().evaluate(LEFT_FOOTER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("blue-text",
-                stylesDom.getXPath().evaluate(LEFT_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+        Assert.assertEquals("left footer",
+                stylesDom.getXPath().evaluate(LEFT_FOOTER_PATH, stylesDom.getRootElement()));
+        Assert.assertEquals("blue-text", stylesDom.getXPath()
+                .evaluate(LEFT_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
 
         Assert.assertEquals("center footer99",
                 stylesDom.getXPath().evaluate(CENTER_FOOTER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("green-text",
-                stylesDom.getXPath().evaluate(CENTER_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+        Assert.assertEquals("green-text", stylesDom.getXPath()
+                .evaluate(CENTER_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
 
         Assert.assertEquals("right footer",
                 stylesDom.getXPath().evaluate(RIGHT_FOOTER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("red-text",
-                stylesDom.getXPath().evaluate(RIGHT_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+        Assert.assertEquals("red-text", stylesDom.getXPath()
+                .evaluate(RIGHT_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
 
         final OdfContentDom contentDom = document.getContentDom();
-        Assert.assertEquals("5cm", contentDom.getXPath()
-                .evaluate("//style:style[@style:name='rr']//style:table-row-properties/@style:row-height",
-                        contentDom.getRootElement()));
-        Assert.assertEquals("10cm", contentDom.getXPath()
-                .evaluate("//style:style[@style:name='ccs']//style:table-column-properties/@style:column-width",
-                        contentDom.getRootElement()));
+        Assert.assertEquals("5cm", contentDom.getXPath().evaluate(
+                "//style:style[@style:name='rr']//style:table-row-properties/@style:row-height",
+                contentDom.getRootElement()));
+        Assert.assertEquals("10cm", contentDom.getXPath().evaluate(
+                "//style:style[@style:name='ccs']//style:table-column-properties/@style:column" +
+                        "-width",
+                contentDom.getRootElement()));
 
         Assert.assertEquals("bold", contentDom.getXPath()
-                .evaluate("//style:style[@style:name='bold-text']//@fo:font-weight", contentDom.getRootElement()));
+                .evaluate("//style:style[@style:name='bold-text']//@fo:font-weight",
+                        contentDom.getRootElement()));
         Assert.assertEquals("italic", contentDom.getXPath()
-                .evaluate("//style:style[@style:name='italic-text']//@fo:font-style", contentDom.getRootElement()));
+                .evaluate("//style:style[@style:name='italic-text']//@fo:font-style",
+                        contentDom.getRootElement()));
 
         Assert.assertEquals("table", contentDom.getXPath()
-                .evaluate("//style:style[@style:name='test-table-style']//@style:family", contentDom.getRootElement()));
+                .evaluate("//style:style[@style:name='test-table-style']//@style:family",
+                        contentDom.getRootElement()));
         Assert.assertEquals("test-master-page", contentDom.getXPath()
                 .evaluate("//style:style[@style:name='test-table-style']//@style:master-page-name",
                         contentDom.getRootElement()));
@@ -216,8 +237,10 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Assert.assertEquals("", OdfToolkitUtil.getStringValue(cell));
         final Iterator<org.odftoolkit.simple.text.Paragraph> it = cell.getParagraphIterator();
         Assert.assertEquals("This is a", it.next().getTextContent());
-        Assert.assertEquals("multiline", it.next().getOdfElement().getFirstElementChild().getTextContent());
-        Assert.assertEquals("cell", it.next().getOdfElement().getFirstElementChild().getTextContent());
+        Assert.assertEquals("multiline",
+                it.next().getOdfElement().getFirstElementChild().getTextContent());
+        Assert.assertEquals("cell",
+                it.next().getOdfElement().getFirstElementChild().getTextContent());
 
         Assert.assertEquals("text2", OdfToolkitUtil.getStringValue(row.getCellByIndex(1)));
         Assert.assertEquals("text3", OdfToolkitUtil.getStringValue(row.getCellByIndex(2)));
@@ -229,8 +252,10 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         final NodeList nodes = cell.getParagraphIterator().next().getOdfElement().getChildNodes();
         Assert.assertEquals("before link to table: ", nodes.item(0).getTextContent());
         Assert.assertEquals("text:a", nodes.item(1).getNodeName());
-        Assert.assertEquals("#target", nodes.item(1).getAttributes().getNamedItem("xlink:href").getNodeValue());
-        Assert.assertEquals("simple", nodes.item(1).getAttributes().getNamedItem("xlink:type").getNodeValue());
+        Assert.assertEquals("#target",
+                nodes.item(1).getAttributes().getNamedItem("xlink:href").getNodeValue());
+        Assert.assertEquals("simple",
+                nodes.item(1).getAttributes().getNamedItem("xlink:type").getNodeValue());
         Assert.assertEquals("table", nodes.item(1).getTextContent());
         Assert.assertEquals(" after link to table", nodes.item(2).getTextContent());
     }
@@ -255,19 +280,21 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         row.setDefaultCellStyle(this.tcls);
 
         row = table.getRow(0);
-        row.getOrCreateCell(0).setText(
-                Text.builder().parContent("This is a").parStyledContent("multiline", this.italicStyle)
-                        .parStyledContent("cell", this.boldStyle).build());
+        row.getOrCreateCell(0).setText(Text.builder().parContent("This is a")
+                .parStyledContent("multiline", this.italicStyle)
+                .parStyledContent("cell", this.boldStyle).build());
         row.getOrCreateCell(1).setStringValue("text2");
         row.getOrCreateCell(2).setStringValue("text3");
         row = table.getRow(1);
         row.getOrCreateCell(0).setText(
-                Text.builder().par().span("before link to table: ").link("table", "target").span(" after link to table")
-                        .build());
+                Text.builder().par().span("before link to table: ").link("table", "target")
+                        .span(" after link to table").build());
         row.getOrCreateCell(1).setText(Text.builder().par().span("before link to url: ")
-                .link("url", new URL("https://www.github.com/jferard/fastods")).span(" after link to url").build());
+                .link("url", new URL("https://www.github.com/jferard/fastods"))
+                .span(" after link to url").build());
         row.getOrCreateCell(2).setText(Text.builder().par().span("before link to file: ")
-                .link("file", new File("generated_files", "readme_example.ods")).span(" after link to file").build());
+                .link("file", new File("generated_files", "readme_example.ods"))
+                .span(" after link to file").build());
 
 
         final Table table2 = document.addTable("target", 1, 1);
@@ -279,35 +306,42 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
     private void createStyles() {
         this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).hidden().build();
-        this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
-        this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).defaultCellStyle(this.tcls)
-                .hidden().build();
+        this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
+                .fontWeightBold().build();
+        this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
+                .defaultCellStyle(this.tcls).build();
 
         this.lts = TextProperties.builder().fontColor(SimpleColor.RED).buildHiddenStyle("red-text");
-        this.cts = TextProperties.builder().fontColor(SimpleColor.BLUE).buildHiddenStyle("blue-text");
-        this.rts = TextProperties.builder().fontColor(SimpleColor.GREEN).buildHiddenStyle("green-text");
+        this.cts = TextProperties.builder().fontColor(SimpleColor.BLUE)
+                .buildHiddenStyle("blue-text");
+        this.rts = TextProperties.builder().fontColor(SimpleColor.GREEN)
+                .buildHiddenStyle("green-text");
         this.boldStyle = TextProperties.builder().fontWeightBold().buildHiddenStyle("bold-text");
-        this.italicStyle = TextProperties.builder().fontStyleItalic().buildHiddenStyle("italic-text");
+        this.italicStyle = TextProperties.builder().fontStyleItalic()
+                .buildHiddenStyle("italic-text");
 
         this.leftHeader = Text.styledContent("left header", this.lts);
-        this.centerHeader = Text.builder().par().styledSpan("center header", this.cts).span(Text.TEXT_PAGE_NUMBER)
-                .build();
+        this.centerHeader = Text.builder().par().styledSpan("center header", this.cts)
+                .span(Text.TEXT_PAGE_NUMBER).build();
         this.rightHeader = Text.styledContent("right header", this.rts);
-        this.header = PageSection.regionBuilder().region(Region.LEFT).text(this.leftHeader).region(Region.CENTER)
-                .text(this.centerHeader).region(Region.RIGHT).text(this.rightHeader).buildHeader();
+        this.header = PageSection.regionBuilder().region(Region.LEFT).text(this.leftHeader)
+                .region(Region.CENTER).text(this.centerHeader).region(Region.RIGHT)
+                .text(this.rightHeader).buildHeader();
 
         this.leftFooter = Text.styledContent("left footer", this.cts);
-        this.centerFooter = Text.builder().par().styledSpan("center footer", this.rts).span(Text.TEXT_PAGE_COUNT)
-                .build();
+        this.centerFooter = Text.builder().par().styledSpan("center footer", this.rts)
+                .span(Text.TEXT_PAGE_COUNT).build();
         this.rightFooter = Text.styledContent("right footer", this.lts);
-        this.footer = PageSection.regionBuilder().region(Region.LEFT).text(this.leftFooter).region(Region.CENTER)
-                .text(this.centerFooter).region(Region.RIGHT).text(this.rightFooter).buildFooter();
+        this.footer = PageSection.regionBuilder().region(Region.LEFT).text(this.leftFooter)
+                .region(Region.CENTER).text(this.centerFooter).region(Region.RIGHT)
+                .text(this.rightFooter).buildFooter();
 
-        this.ps = PageStyle.builder("test-master-page").footer(this.footer)
-                .header(this.header).build();
+        this.ps = PageStyle.builder("test-master-page").footer(this.footer).header(this.header)
+                .build();
         this.ttts = TableStyle.builder("test-table-style").pageStyle(this.ps).hidden().build();
 
-        this.ps2 = PageStyle.builder("test2-master-page").masterPageStyle(this.ps.getMasterPageStyle())
+        this.ps2 = PageStyle.builder("test2-master-page")
+                .masterPageStyle(this.ps.getMasterPageStyle())
                 .pageLayoutStyle(this.ps.getPageLayoutStyle()).build();
         this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).hidden().build();
     }
