@@ -35,111 +35,114 @@ import java.util.logging.Logger;
 
 /**
  * @author Julien Férard
- *         <p>
- *         Usage : launch jvisualvm. mvn
- *         -Dmaven.surefire.debug="-agentpath:\"C:/Program
- *         Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface.dll\"=\"C:\Program
- *         Files\Java\visualvm_138\profiler\lib\",5140"
- *         -Dtest=ProfileFastOds#testFast test
+ * <p>
+ * Usage : launch jvisualvm. mvn
+ * -Dmaven.surefire.debug="-agentpath:\"C:/Program
+ * Files/Java/visualvm_138/profiler/lib/deployed/jdk16/windows-amd64/profilerinterface
+ * .dll\"=\"C:\Program
+ * Files\Java\visualvm_138\profiler\lib\",5140"
+ * -Dtest=ProfileFastOds#testFast test
  */
 public class ProfileFastODS {
-	private static final int COL_COUNT = 60;
-	private static final int ROW_COUNT = 320000;
+    private static final int COL_COUNT = 600;
+    private static final int ROW_COUNT = 3200000;
 
-	@BeforeClass
-	public static final void beforeClass() {
-		final File generated_files = new File("generated_files");
-		if (generated_files.exists())
-			return;
+    @BeforeClass
+    public static final void beforeClass() {
+        final File generated_files = new File("generated_files");
+        if (generated_files.exists()) return;
 
-		generated_files.mkdir();
-	}
+        generated_files.mkdir();
+    }
 
-	@Rule
-	public TestName name = new TestName();
-	private Logger logger;
-	private OdsFactory odsFactory;
-	private Random random;
-	private long t1;
+    static public final void main(String[] args) throws IOException {
+        ProfileFastODS profileFastODS = new ProfileFastODS();
+        profileFastODS.setUp();
+        profileFastODS.testFast();
+        profileFastODS.tearDown();
+    }
+    @Rule
+    public TestName name = new TestName();
+    private Logger logger;
+    private OdsFactory odsFactory;
+    private Random random;
+    private long t1;
 
-	@Test
-	public final void mediumTestFast() throws IOException {
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT / 2,
-				ProfileFastODS.COL_COUNT / 2);
+    @Test
+    public final void mediumTestFast() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document
+                .addTable("test", ProfileFastODS.ROW_COUNT / 2, ProfileFastODS.COL_COUNT / 2);
 
-		for (int y = 0; y < ProfileFastODS.ROW_COUNT / 2; y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < ProfileFastODS.COL_COUNT / 2; x++) {
-				walker.setFloatValue(this.random.nextInt(1000));
-				walker.next();
-			}
-			if (y % (ProfileFastODS.ROW_COUNT / 100) == 0)
-				this.logger.info("Row " + y);
-		}
+        for (int y = 0; y < ProfileFastODS.ROW_COUNT / 2; y++) {
+            final TableRow row = table.nextRow();
+            final TableCellWalker walker = row.getWalker();
+            for (int x = 0; x < ProfileFastODS.COL_COUNT / 2; x++) {
+                walker.setFloatValue(this.random.nextInt(1000));
+                walker.next();
+            }
+            if (y % (ProfileFastODS.ROW_COUNT / 100) == 0) this.logger.info("Row " + y);
+        }
 
-		writer.saveAs(new File("generated_files", "fastods_profile.ods"));
-	}
+        writer.saveAs(new File("generated_files", "fastods_profile.ods"));
+    }
 
-	@Before
-	public final void setUp() {
-		this.logger = Logger.getLogger("OdsFileCreation");
-		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-		this.random = new Random(); // don't use a fixed seed here, since the profile needs a new sequence each time
-		// to be reliable
-		this.logger.info(this.name.getMethodName() + " : filling a "
-				+ ProfileFastODS.ROW_COUNT + " rows, "
-				+ ProfileFastODS.COL_COUNT + " columns spreadsheet");
-		this.t1 = System.currentTimeMillis();
-	}
+    @Before
+    public final void setUp() {
+        this.logger = Logger.getLogger("OdsFileCreation");
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+        this.random = new Random(); // don't use a fixed seed here, since the profile needs a new
+        // sequence each time
+        // to be reliable
+        this.logger.info("this.name.getMethodName()" + " : filling a " + ProfileFastODS.ROW_COUNT +
+                " rows, " + ProfileFastODS.COL_COUNT + " columns spreadsheet");
+        this.t1 = System.currentTimeMillis();
+    }
 
-	@Test
-	public final void smallTestFast() throws IOException {
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT / 4,
-				ProfileFastODS.COL_COUNT / 4);
+    @Test
+    public final void smallTestFast() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document
+                .addTable("test", ProfileFastODS.ROW_COUNT / 4, ProfileFastODS.COL_COUNT / 4);
 
-		for (int y = 0; y < ProfileFastODS.ROW_COUNT / 4; y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < ProfileFastODS.COL_COUNT / 4; x++) {
-				walker.setFloatValue(this.random.nextInt(1000));
-				walker.next();
-			}
-			if (y % (ProfileFastODS.ROW_COUNT / 200) == 0)
-				this.logger.info("Row " + y);
-		}
+        for (int y = 0; y < ProfileFastODS.ROW_COUNT / 4; y++) {
+            final TableRow row = table.nextRow();
+            final TableCellWalker walker = row.getWalker();
+            for (int x = 0; x < ProfileFastODS.COL_COUNT / 4; x++) {
+                walker.setFloatValue(this.random.nextInt(1000));
+                walker.next();
+            }
+            if (y % (ProfileFastODS.ROW_COUNT / 200) == 0) this.logger.info("Row " + y);
+        }
 
-		writer.saveAs(new File("generated_files", "fastods_profile.ods"));
-	}
+        writer.saveAs(new File("generated_files", "fastods_profile.ods"));
+    }
 
-	@After
-	public final void tearDown() {
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - this.t1) + " ms");
-	}
+    @After
+    public final void tearDown() {
+        final long t2 = System.currentTimeMillis();
+        this.logger.info("Filled in " + (t2 - this.t1) + " ms");
+    }
 
-	@Test
-	public final void testFast() throws IOException {
-		final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT,
-				ProfileFastODS.COL_COUNT);
+    @Test
+    public final void testFast() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document
+                .addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
 
-		for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < ProfileFastODS.COL_COUNT; x++) {
-				walker.setFloatValue(this.random.nextInt(1000));
-				walker.next();
-			}
-			if (y % (ProfileFastODS.ROW_COUNT / 50) == 0)
-				this.logger.info("Row " + y);
-		}
+        for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
+            final TableRow row = table.nextRow();
+            final TableCellWalker walker = row.getWalker();
+            for (int x = 0; x < ProfileFastODS.COL_COUNT; x++) {
+                walker.setFloatValue(this.random.nextInt(1000));
+                walker.next();
+            }
+            if (y % (ProfileFastODS.ROW_COUNT / 50) == 0) this.logger.info("Row " + y);
+        }
 
-		writer.saveAs(new File("generated_files", "fastods_profile.ods"));
-	}
+        writer.saveAs(new File("generated_files", "fastods_profile.ods"));
+    }
 }

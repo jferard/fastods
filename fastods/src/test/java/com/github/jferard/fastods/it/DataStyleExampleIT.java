@@ -83,7 +83,8 @@ public class DataStyleExampleIT {
     }
 
     private void validateDatastyle(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document = SpreadsheetDocument
+                .loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
@@ -96,8 +97,9 @@ public class DataStyleExampleIT {
         final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
         dsb.floatStyleBuilder().decimalPlaces(0);
         dsb.dateStyleBuilder().dateFormat(
-                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.SLASH, DateStyleFormat.LONG_MONTH,
-                        DateStyleFormat.SLASH, DateStyleFormat.LONG_YEAR));
+                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.SLASH,
+                        DateStyleFormat.LONG_MONTH, DateStyleFormat.SLASH,
+                        DateStyleFormat.LONG_YEAR));
         final DataStyles ds = dsb.build();
 
         // Pass the created "data styles" to the factory
@@ -113,15 +115,17 @@ public class DataStyleExampleIT {
         final GregorianCalendar cal = new GregorianCalendar(this.locale);
 
         // Define some styles
-        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true).hidden().build();
-        final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5)).hidden().build();
+        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true)
+                .hidden().build();
+        final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5))
+                .hidden().build();
 
         final Table table = document.addTable("test");
-        final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle)
-                .hidden().build();
+        final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col")
+                .defaultCellStyle(cellStyle).hidden().build();
         table.setColumnStyle(0, columnStyle0);
-        final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5))
-                .hidden().build();
+        final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col")
+                .columnWidth(SimpleLength.cm(5)).hidden().build();
         table.setColumnStyle(1, columnStyle1);
 
         // FIRST ROW
@@ -140,8 +144,8 @@ public class DataStyleExampleIT {
         cell.next();
         cell.setFloatValue(789654.321);
         // Now add a custom format.
-        final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", this.locale).decimalPlaces(8)
-                .groupThousands(true).build();
+        final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", this.locale)
+                .decimalPlaces(8).groupThousands(true).build();
         // This operation may be slow because the default data style was already added
         cell.setDataStyle(intStyle);
 
@@ -163,9 +167,10 @@ public class DataStyleExampleIT {
         cal.set(2017, 12, 1, 0, 0, 0);
         cell.setDateValue(cal);
         // Add a custom format
-        final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale).dateFormat(
-                new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT, DateStyleFormat.MONTH,
-                        DateStyleFormat.DOT, DateStyleFormat.YEAR)).visible().build();
+        final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale)
+                .dateFormat(new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT,
+                        DateStyleFormat.MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR)).visible()
+                .build();
         cell.setDataStyle(dateStyle);
     }
 }
