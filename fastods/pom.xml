@@ -1,10 +1,10 @@
 <!--
   ~ FastODS - A very fast and lightweight (no dependency) library for creating ODS
-  ~    (Open Document Spreadsheet, mainly for Calc) files in Java.
-  ~    It's a Martin Schulz's SimpleODS fork
-  ~    Copyright (C) 2016-2018 J. Férard <https://github.com/jferard>
+  ~	(Open Document Spreadsheet, mainly for Calc) files in Java.
+  ~	It's a Martin Schulz's SimpleODS fork
+  ~	Copyright (C) 2016-2018 J. Férard <https://github.com/jferard>
   ~ SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
-  ~    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+  ~	Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
   ~
   ~ This file is part of FastODS.
   ~
@@ -203,47 +203,13 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.4</version>
-                        <configuration>
-                            <aggregate>false</aggregate>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>
