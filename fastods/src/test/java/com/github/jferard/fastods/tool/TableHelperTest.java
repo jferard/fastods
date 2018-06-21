@@ -30,6 +30,7 @@ import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.TableNameUtil;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class TableHelperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.positionUtil = new PositionUtil(new EqualityUtil());
+		this.positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
 		this.table = PowerMock.createMock(Table.class);
 		this.row = PowerMock.createMock(TableRow.class);
 		this.walker = PowerMock.createMock(TableCellWalker.class);

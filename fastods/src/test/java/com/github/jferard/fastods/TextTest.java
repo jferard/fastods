@@ -25,6 +25,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.ColorHelper;
+import com.github.jferard.fastods.util.PositionUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -78,19 +79,15 @@ public class TextTest {
     @Test
     public void styledLinkRef() throws Exception {
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, "ref").build();
-        TestHelper.assertXMLEquals(
-                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#ref\" " +
-                        "xlink:type=\"simple\">a</text:a></text:p>",
-                t);
+        TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#ref\" " +
+                "xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
     public void linkURL() throws Exception {
         final Text t = TextBuilder.create().par().link("a", new URL("http://url")).build();
-        TestHelper.assertXMLEquals(
-                "<text:p><text:a xlink:href=\"http://url\" " +
-                        "xlink:type=\"simple\">a</text:a></text:p>",
-                t);
+        TestHelper.assertXMLEquals("<text:p><text:a xlink:href=\"http://url\" " +
+                "xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
@@ -121,7 +118,7 @@ public class TextTest {
 
     @Test
     public void linkTable() throws Exception {
-        final Table table = Table.create(null, null, null, null, null, "n", 0, 0);
+        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null);
         final Text t = TextBuilder.create().par().link("a", table).build();
         Assert.assertEquals("n", table.getName());
         TestHelper.assertXMLEquals(
@@ -130,12 +127,10 @@ public class TextTest {
 
     @Test
     public void styledLinkTable() throws Exception {
-        final Table table = Table.create(null, null, null, null, null, "n", 0, 0);
+        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null);
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
-        TestHelper.assertXMLEquals(
-                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +
-                        "xlink:type=\"simple\">a</text:a></text:p>",
-                t);
+        TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +
+                "xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test

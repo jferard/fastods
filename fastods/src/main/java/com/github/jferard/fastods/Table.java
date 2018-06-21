@@ -43,282 +43,295 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class Table implements NamedObject {
-	private final TableBuilder builder;
-	private final TableAppender appender;
-
-	private String name;
-
-	/**
-	 * Create a new Table with a name and a row/column capacity
-	 * @param positionUtil an util
-	 * @param writeUtil an util
-	 * @param xmlUtil an util
-	 * @param stylesContainer the container for styles
-	 * @param format the data styles
-	 * @param name the name of the tables
-	 * @param rowCapacity the row capacity
-	 * @param columnCapacity the column capacity
-	 * @return the table
-	 */
-	public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
-							   final StylesContainer stylesContainer, final DataStyles format,
-							   final String name, final int rowCapacity, final int columnCapacity) {
-		final TableBuilder builder = TableBuilder.create(positionUtil, writeUtil,
-				xmlUtil, stylesContainer, format, name, rowCapacity, columnCapacity);
-		return new Table(name, builder);
-	}
-
-
-	/**
-	 * Create an new table with a given builder
-	 * @param name the name of the table
-	 * @param builder the builder
-	 */
-	Table(final String name, final TableBuilder builder) {
-		this.name = name;
-		this.builder = builder;
-		this.appender = new TableAppender(builder);
-	}
+    /**
+     * Create a new Table with a name and a row/column capacity
+     *
+     * @param positionUtil    an util
+     * @param writeUtil       an util
+     * @param xmlUtil         an util
+     * @param name            the name of the tables
+     * @param rowCapacity     the row capacity
+     * @param columnCapacity  the column capacity
+     * @param stylesContainer the container for styles
+     * @param format          the data styles
+     * @return the table
+     */
+    public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil,
+                               final XMLUtil xmlUtil, final String name, final int rowCapacity,
+                               final int columnCapacity, final StylesContainer stylesContainer,
+                               final DataStyles format) {
+        positionUtil.checkTableName(name);
+        final TableBuilder builder = TableBuilder
+                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name,
+                        rowCapacity, columnCapacity);
+        return new Table(name, builder);
+    }
+    private final TableBuilder builder;
+    private final TableAppender appender;
+    private String name;
 
 
-	/**
-	 * Add a wrapped data
-	 * @param data the wrapped data
-	 * @throws IOException if an error occurs
-	 */
-	public void addData(final DataWrapper data) throws IOException {
-		data.addToTable(this);
-	}
+    /**
+     * Create an new table with a given builder
+     *
+     * @param name    the name of the table
+     * @param builder the builder
+     */
+    Table(final String name, final TableBuilder builder) {
+        this.name = name;
+        this.builder = builder;
+        this.appender = new TableAppender(builder);
+    }
 
-	/**
-	 * Add an observer to this table
-	 * @param observer the observer
-	 */
-	public void addObserver(final NamedOdsFileWriter observer) {
-		this.builder.addObserver(observer);
-	}
 
-	/**
-	 * Add XML to content.xml
-	 * @param util an util
-	 * @param appendable the output
-	 * @throws IOException if the XML could not be written
-	 */
-	public void appendXMLToContentEntry(final XMLUtil util,
-										final Appendable appendable) throws IOException {
-		this.appender.appendXMLToContentEntry(util, appendable);
-	}
+    /**
+     * Add a wrapped data
+     *
+     * @param data the wrapped data
+     * @throws IOException if an error occurs
+     */
+    public void addData(final DataWrapper data) throws IOException {
+        data.addToTable(this);
+    }
 
-	/**
-	 * Flush the XML
-	 * @throws IOException if an error occurs
-	 */
-	public void flush() throws IOException {
-		this.builder.flushBeginTable(this.appender);
-		this.builder.flushEndTable(this.appender);
-	}
+    /**
+     * Add an observer to this table
+     *
+     * @param observer the observer
+     */
+    public void addObserver(final NamedOdsFileWriter observer) {
+        this.builder.addObserver(observer);
+    }
 
-	/**
-	 * Open the table, flush all rows from start, but do not freeze the table
-	 *
-	 * @param util       a XMLUtil instance for writing XML
-	 * @param appendable where to write
-	 * @throws IOException if an I/O error occurs during the flush
-	 */
-	public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable) throws IOException {
-		this.appender.flushAllAvailableRows(util, appendable);
-	}
+    /**
+     * Add XML to content.xml
+     *
+     * @param util       an util
+     * @param appendable the output
+     * @throws IOException if the XML could not be written
+     */
+    public void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.appender.appendXMLToContentEntry(util, appendable);
+    }
 
-	/**
-	 * Flush all rows from a given position, and do freeze the table
-	 *
-	 * @param util       a XMLUtil instance for writing XML
-	 * @param appendable where to write
-	 * @param rowIndex   the first index to use.
-	 * @throws IOException if an I/O error occurs during the flush
-	 */
-	public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
-			throws IOException {
-		this.appender.flushRemainingRowsFrom(util, appendable, rowIndex);
-	}
+    /**
+     * Flush the XML
+     *
+     * @throws IOException if an error occurs
+     */
+    public void flush() throws IOException {
+        this.builder.flushBeginTable(this.appender);
+        this.builder.flushEndTable(this.appender);
+    }
 
-	/**
-	 * Flush all rows from a given position, but do not freeze the table
-	 *
-	 * @param util       a XMLUtil instance for writing XML
-	 * @param appendable where to write
-	 * @param rowIndex the index of the row
-	 * @throws IOException if an I/O error occurs during the flush
-	 */
-	public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
-			throws IOException {
-		this.appender.flushSomeAvailableRowsFrom(util, appendable, rowIndex);
-	}
+    /**
+     * Open the table, flush all rows from start, but do not freeze the table
+     *
+     * @param util       a XMLUtil instance for writing XML
+     * @param appendable where to write
+     * @throws IOException if an I/O error occurs during the flush
+     */
+    public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.appender.flushAllAvailableRows(util, appendable);
+    }
 
-	/**
-	 * @return the config item map of this table
-	 */
-	public ConfigItemMapEntry getConfigEntry() {
-		return this.builder.getConfigEntry();
-	}
+    /**
+     * Flush all rows from a given position, and do freeze the table
+     *
+     * @param util       a XMLUtil instance for writing XML
+     * @param appendable where to write
+     * @param rowIndex   the first index to use.
+     * @throws IOException if an I/O error occurs during the flush
+     */
+    public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
+                                       final int rowIndex) throws IOException {
+        this.appender.flushRemainingRowsFrom(util, appendable, rowIndex);
+    }
 
-	/**
-	 * @return the number of the last row (0..)
-	 */
-	public int getLastRowNumber() {
-		return this.builder.getLastRowNumber();
-	}
+    /**
+     * Flush all rows from a given position, but do not freeze the table
+     *
+     * @param util       a XMLUtil instance for writing XML
+     * @param appendable where to write
+     * @param rowIndex   the index of the row
+     * @throws IOException if an I/O error occurs during the flush
+     */
+    public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
+                                           final int rowIndex) throws IOException {
+        this.appender.flushSomeAvailableRowsFrom(util, appendable, rowIndex);
+    }
 
-	/**
-	 * Get the name of this table.
-	 *
-	 * @return The name of this table.
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    /**
+     * @return the config item map of this table
+     */
+    public ConfigItemMapEntry getConfigEntry() {
+        return this.builder.getConfigEntry();
+    }
 
-	/**
-	 * Return a row from an index
-	 * @param rowIndex the index
-	 * @return the row
-	 * @throws FastOdsException if the index is invalid
-	 * @throws IOException if the row was flushed
-	 */
-	public TableRow getRow(final int rowIndex) throws FastOdsException, IOException {
-		return this.builder.getRow(this, this.appender, rowIndex);
-	}
+    /**
+     * @return the number of the last row (0..)
+     */
+    public int getLastRowNumber() {
+        return this.builder.getLastRowNumber();
+    }
 
-	/**
-	 * Return a row from a position
-	 * @param pos the position, e.g. A5
-	 * @return the row
-	 * @throws FastOdsException if the index is invalid
-	 * @throws IOException if the row was flushed
-	 */
-	public TableRow getRow(final String pos) throws FastOdsException, IOException {
-		return this.builder.getRow(this, this.appender, pos);
-	}
+    /**
+     * Get the name of this table.
+     *
+     * @return The name of this table.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 * Get the current TableFamilyStyle
-	 *
-	 * @return The current TableStlye
-	 */
-	public String getStyleName() {
-		return this.builder.getStyleName();
-	}
+    /**
+     * Set the name of this table.
+     *
+     * @param name The name of this table.
+     */
+    public void setName(final String name) {
+        if (this.appender.isPreambleWritten()) throw new IllegalStateException();
 
-	/**
-	 * @return the next row
-	 * @throws IOException if an error occurs
-	 */
-	public TableRow nextRow() throws IOException {
-		return this.builder.nextRow(this, this.appender);
-	}
+        this.name = name;
+    }
 
-	/**
-	 * Set a span over cells
-	 * @param rowIndex the top row
-	 * @param colIndex the leftmost col
-	 * @param rowMerge the number of rows
-	 * @param columnMerge the number of cols
-	 * @throws IOException if an error occurs
-	 */
-	public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
-		this.builder.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
-	}
+    /**
+     * Return a row from an index
+     *
+     * @param rowIndex the index
+     * @return the row
+     * @throws FastOdsException if the index is invalid
+     * @throws IOException      if the row was flushed
+     */
+    public TableRow getRow(final int rowIndex) throws FastOdsException, IOException {
+        return this.builder.getRow(this, this.appender, rowIndex);
+    }
 
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param pos         The cell position e.g. 'A1'
-	 * @param rowMerge    the number of rows to merge
-	 * @param columnMerge the number of cells to merge
-	 * @throws FastOdsException if the row index or the col index is negative
-	 * @throws IOException if the cells can't be merged
-	 */
-	@Deprecated
-	public void setCellMerge(final String pos, final int rowMerge,
-							 final int columnMerge) throws FastOdsException, IOException {
-		this.builder.setCellMerge(this, this.appender, pos, rowMerge, columnMerge);
-	}
+    /**
+     * Return a row from a position
+     *
+     * @param pos the position, e.g. A5
+     * @return the row
+     * @throws FastOdsException if the index is invalid
+     * @throws IOException      if the row was flushed
+     */
+    public TableRow getRow(final String pos) throws FastOdsException, IOException {
+        return this.builder.getRow(this, this.appender, pos);
+    }
 
-	/**
-	 * Set the style of a column.
-	 *
-	 * @param col The column number
-	 * @param ts  The style to be used, make sure the style is of type
-	 *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
-	 * @throws FastOdsException Thrown if col has an invalid value.
-	 */
-	public void setColumnStyle(final int col, final TableColumnStyle ts)
-			throws FastOdsException {
-		if (this.appender.isPreambleWritten())
-			throw new IllegalStateException();
+    /**
+     * Get the current TableFamilyStyle
+     *
+     * @return The current TableStlye
+     */
+    public String getStyleName() {
+        return this.builder.getStyleName();
+    }
 
-		this.builder.setColumnStyle(col, ts);
-	}
+    /**
+     * @return the next row
+     * @throws IOException if an error occurs
+     */
+    public TableRow nextRow() throws IOException {
+        return this.builder.nextRow(this, this.appender);
+    }
 
-	/**
-	 * Set a config item
-	 * @param name the item name
-	 * @param type the item type
-	 * @param value the item value
-	 */
-	public void setConfigItem(final String name, final String type,
-							  final String value) {
-		this.builder.setConfigItem(name, type, value);
-	}
+    /**
+     * Set a span over cells
+     *
+     * @param rowIndex    the top row
+     * @param colIndex    the leftmost col
+     * @param rowMerge    the number of rows
+     * @param columnMerge the number of cols
+     * @throws IOException if an error occurs
+     */
+    public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge,
+                             final int columnMerge) throws IOException {
+        this.builder.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
+    }
 
-	/**
-	 * Set the name of this table.
-	 *
-	 * @param name The name of this table.
-	 */
-	public void setName(final String name) {
-		if (this.appender.isPreambleWritten())
-			throw new IllegalStateException();
+    /**
+     * Set the merging of multiple cells to one cell.
+     *
+     * @param pos         The cell position e.g. 'A1'
+     * @param rowMerge    the number of rows to merge
+     * @param columnMerge the number of cells to merge
+     * @throws FastOdsException if the row index or the col index is negative
+     * @throws IOException      if the cells can't be merged
+     */
+    @Deprecated
+    public void setCellMerge(final String pos, final int rowMerge, final int columnMerge)
+            throws FastOdsException, IOException {
+        this.builder.setCellMerge(this, this.appender, pos, rowMerge, columnMerge);
+    }
 
-		this.name = name;
-	}
+    /**
+     * Set the style of a column.
+     *
+     * @param col The column number
+     * @param ts  The style to be used, make sure the style is of type
+     *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
+     * @throws FastOdsException Thrown if col has an invalid value.
+     */
+    public void setColumnStyle(final int col, final TableColumnStyle ts) throws FastOdsException {
+        if (this.appender.isPreambleWritten()) throw new IllegalStateException();
 
-	/**
-	 * Set one of the settings
-	 * @param viewId the id of the view
-	 * @param item the item name
-	 * @param value the item value
-	 */
-	public void setSettings(final String viewId, final String item, final String value) {
-		this.builder.setSettings(viewId, item, value);
-	}
+        this.builder.setColumnStyle(col, ts);
+    }
 
-	/**
-	 * Set a new TableFamilyStyle
-	 *
-	 * @param style The new TableStyle to be used
-	 */
-	public void setStyle(final TableStyle style) {
-		this.builder.setStyle(style);
-	}
+    /**
+     * Set a config item
+     *
+     * @param name  the item name
+     * @param type  the item type
+     * @param value the item value
+     */
+    public void setConfigItem(final String name, final String type, final String value) {
+        this.builder.setConfigItem(name, type, value);
+    }
 
-	/**
-	 * Set a span over rows
-	 * @param rowIndex the row index
-	 * @param colIndex the col index
-	 * @param n the number of rows
-	 * @throws IOException if an error occurs
-	 */
-	public void setRowsSpanned(final int rowIndex, final int colIndex, final int n) throws IOException {
-		this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
-	}
+    /**
+     * Set one of the settings
+     *
+     * @param viewId the id of the view
+     * @param item   the item name
+     * @param value  the item value
+     */
+    public void setSettings(final String viewId, final String item, final String value) {
+        this.builder.setSettings(viewId, item, value);
+    }
 
-	/**
-	 * Find the default cell style for a column
-	 * @param columnIndex the column index
-	 * @return the style, null if none
-	 */
+    /**
+     * Set a new TableFamilyStyle
+     *
+     * @param style The new TableStyle to be used
+     */
+    public void setStyle(final TableStyle style) {
+        this.builder.setStyle(style);
+    }
+
+    /**
+     * Set a span over rows
+     *
+     * @param rowIndex the row index
+     * @param colIndex the col index
+     * @param n        the number of rows
+     * @throws IOException if an error occurs
+     */
+    public void setRowsSpanned(final int rowIndex, final int colIndex, final int n)
+            throws IOException {
+        this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
+    }
+
+    /**
+     * Find the default cell style for a column
+     *
+     * @param columnIndex the column index
+     * @return the style, null if none
+     */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         return this.builder.findDefaultCellStyle(columnIndex);
     }

@@ -29,6 +29,7 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
@@ -54,10 +55,11 @@ public class TableTest {
     @Before
     public void setUp() {
         this.stc = PowerMock.createMock(StylesContainer.class);
-        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
+        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.table = Table.create(positionUtil, WriteUtil.create(), xmlUtil, this.stc, this.ds, "mytable", 10, 100);
+        this.table = Table.create(positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100,
+                this.stc, this.ds);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
         PowerMock.resetAll();

@@ -33,7 +33,7 @@ public class PositionUtilTest {
 
     @Before
     public void setUp() {
-        this.util = new PositionUtil(new EqualityUtil());
+        this.util = new PositionUtil(new EqualityUtil(), new TableNameUtil());
     }
 
     @Test
@@ -145,5 +145,25 @@ public class PositionUtilTest {
         PowerMock.verifyAll();
         Assert.assertEquals("n.AMJ1", cellAddress);
         Assert.assertEquals("n.A1:n.K11", rangeAddress);
+    }
+
+    @Test
+    public void testCheckTableName() {
+        this.util.checkTableName("no problem");
+    }
+
+    @Test
+    public void testGetPosition() {
+        final Table t = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(t.getName()).andReturn("no problem");
+
+        PowerMock.replayAll();
+        final String cellAddress =
+                this.util.getPosition(0, 0).toCellAddress(t);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("'no problem'.A1", cellAddress);
     }
 }

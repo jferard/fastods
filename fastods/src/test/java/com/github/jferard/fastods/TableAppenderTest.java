@@ -27,6 +27,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FullList;
 import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.util.TableNameUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -48,7 +49,7 @@ public class TableAppenderTest {
     public void setUp() {
         this.stc = PowerMock.createMock(StylesContainer.class);
         this.builder = PowerMock.createMock(TableBuilder.class);
-        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil());
+        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.tableAppender = new TableAppender(this.builder);

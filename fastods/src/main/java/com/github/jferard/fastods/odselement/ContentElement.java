@@ -102,8 +102,8 @@ public class ContentElement implements OdsElement {
         Table table = this.tables.getByName(name);
         if (table == null) {
             table = Table
-                    .create(this.positionUtil, this.writeUtil, this.xmlUtil, this.stylesContainer, this.format, name,
-                            rowCapacity, columnCapacity);
+                    .create(this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
+                            columnCapacity, this.stylesContainer, this.format);
             this.tables.add(table);
         }
         return table;
