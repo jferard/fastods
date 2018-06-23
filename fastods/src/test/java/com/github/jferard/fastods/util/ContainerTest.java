@@ -30,6 +30,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Handler;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -96,11 +97,12 @@ public class ContainerTest {
         PowerMock.resetAll();
         handler.publish(EasyMock.isA(LogRecord.class));
         handler.close();
-        EasyMock.expectLastCall().anyTimes();
+        EasyMock.expectLastCall();
 
         PowerMock.replayAll();
         this.container.debug();
         final boolean ret = this.container.add("a", 1);
+        LogManager.getLogManager().reset();
 
         PowerMock.verifyAll();
         Assert.assertTrue(ret);
