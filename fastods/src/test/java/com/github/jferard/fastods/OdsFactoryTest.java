@@ -21,7 +21,7 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.OdsFactory.FileState;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +29,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -37,40 +38,71 @@ import java.util.logging.Logger;
 public class OdsFactoryTest {
     private OdsFactory odsFactory;
     private File file;
+    private Logger logger;
 
     @Before
     public void setUp() throws Exception {
-        final Logger logger = PowerMock.createMock(Logger.class);
-        this.odsFactory = OdsFactory.create(logger, Locale.US);
+        this.logger = PowerMock.createMock(Logger.class);
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
         this.file = File.createTempFile("factory_test", "tmp");
+    }
+
+    @After
+    public void tearDown() {
+        this.file.delete();
     }
 
     @Test
     public void createWriter() throws Exception {
-        this.odsFactory.createWriter(this.file.getAbsolutePath());
+        PowerMock.resetAll();
+        this.logger.log(Level.FINE, "file saved");
+
+        PowerMock.replayAll();
+        final NamedOdsFileWriter writer = this.odsFactory.createWriter(this.file.getAbsolutePath());
+        writer.save();
+        writer.close();
+
+        PowerMock.verifyAll();
+        Assert.assertTrue(this.file.length() > 0);
     }
 
     @Test
     public void createWriter1() throws Exception {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+
         this.odsFactory.createWriter(this.file);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void createWriterAdapter() throws Exception {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+
         this.odsFactory.createWriterAdapter(this.file);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void openFile() throws Exception {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+
+        this.odsFactory.openFile(this.file.getAbsolutePath());
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void openFile1() throws Exception {
-    }
+        PowerMock.resetAll();
+        PowerMock.replayAll();
 
-    @Before
-    public void tearDown() throws Exception {
-        this.file.delete();
-    }
+        this.odsFactory.openFile(this.file);
 
+        PowerMock.verifyAll();
+    }
 }

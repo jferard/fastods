@@ -45,89 +45,90 @@ import java.util.logging.Logger;
  * @author Martin Schulz
  */
 public class AnonymousOdsFileWriter {
-	private final NamedOdsDocument document;
-	private final Logger logger;
+    private final AnonymousOdsDocument document;
+    private final Logger logger;
 
-	/**
-	 * Create a new ODS file.
-	 *
-	 * @param logger   the logger
-	 * @param document the document to write
-	 */
-	AnonymousOdsFileWriter(final Logger logger, final NamedOdsDocument document) {
-		this.logger = logger;
-		this.document = document;
-	}
+    /**
+     * Create a new ODS file.
+     *
+     * @param logger   the logger
+     * @param document the document to write
+     */
+    AnonymousOdsFileWriter(final Logger logger, final AnonymousOdsDocument document) {
+        this.logger = logger;
+        this.document = document;
+    }
 
-	/**
-	 * @return the underlying document, under the interface
-	 */
-	public OdsDocument document() {
-		return this.document;
-	}
+    /**
+     * @return the underlying document, under the interface
+     */
+    public OdsDocument document() {
+        return this.document;
+    }
 
-	/**
-	 * Save the new file.
-	 *
-	 * @param out The OutputStream that should be used.
-	 * @throws IOException The file can't be saved.
-	 */
-	public void save(final OutputStream out) throws IOException {
-		final ZipUTF8WriterBuilder builder = ZipUTF8WriterImpl.builder();
-		this.save(builder.build(out));
-	}
+    /**
+     * Save the new file.
+     *
+     * @param out The OutputStream that should be used.
+     * @throws IOException The file can't be saved.
+     */
+    public void save(final OutputStream out) throws IOException {
+        final ZipUTF8WriterBuilder builder = ZipUTF8WriterImpl.builder();
+        this.save(builder.build(out));
+    }
 
-	/**
-	 * @param writer the ZipUTF8WriterImpl that should be used
-	 * @throws IOException If an I/O error occurs during the save
-	 */
-	public void save(final ZipUTF8Writer writer) throws IOException {
-		this.document.save(writer);
-	}
+    /**
+     * @param writer the ZipUTF8WriterImpl that should be used
+     * @throws IOException If an I/O error occurs during the save
+     */
+    public void save(final ZipUTF8Writer writer) throws IOException {
+        this.document.save(writer);
+    }
 
-	/**
-	 * Save the new file.
-	 *
-	 * @param filename the name of the destination file
-	 * @throws IOException If an I/O error occurs during the save
-	 */
-	public void saveAs(final String filename) throws IOException {
-		this.saveAs(new File(filename));
-	}
+    /**
+     * Save the new file.
+     *
+     * @param filename the name of the destination file
+     * @throws IOException If an I/O error occurs during the save
+     */
+    public void saveAs(final String filename) throws IOException {
+        this.saveAs(new File(filename));
+    }
 
-	/**
-	 * Save the new file.
-	 *
-	 * @param file the destination file
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void saveAs(final File file) throws IOException {
-		try {
-			final FileOutputStream out = new FileOutputStream(file);
-			this.save(out);
-		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + file, e);
-			throw new IOException(e);
-		} catch (final NullPointerException e) {
-			this.logger.log(Level.SEVERE, "No file", e);
-			throw new IOException(e);
-		}
-	}
+    /**
+     * Save the new file.
+     *
+     * @param file the destination file
+     * @throws IOException If an I/O error occurs
+     */
+    public void saveAs(final File file) throws IOException {
+        try {
+            final FileOutputStream out = new FileOutputStream(file);
+            this.save(out);
+        } catch (final FileNotFoundException e) {
+            this.logger.log(Level.SEVERE, "Can't open " + file, e);
+            throw new IOException(e);
+        } catch (final NullPointerException e) {
+            this.logger.log(Level.SEVERE, "No file", e);
+            throw new IOException(e);
+        }
+    }
 
-	/**
-	 * @param filename the name of the destination file
-	 * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
-	 *                 level, ...)
-	 * @throws IOException if the file was not saved
-	 */
-	public void saveAs(final String filename, final ZipUTF8WriterBuilder builder) throws IOException {
-		try {
-			final FileOutputStream out = new FileOutputStream(filename);
-			this.save(builder.build(out));
-		} catch (final FileNotFoundException e) {
-			this.logger.log(Level.SEVERE, "Can't open " + filename, e);
-			throw new IOException(e);
-		}
-	}
+    /**
+     * @param filename the name of the destination file
+     * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
+     *                 level, ...)
+     * @throws IOException if the file was not saved
+     */
+    public void saveAs(final String filename, final ZipUTF8WriterBuilder builder)
+            throws IOException {
+        try {
+            final FileOutputStream out = new FileOutputStream(filename);
+            this.save(builder.build(out));
+        } catch (final FileNotFoundException e) {
+            this.logger.log(Level.SEVERE, "Can't open " + filename, e);
+            throw new IOException(e);
+        }
+    }
 
 }

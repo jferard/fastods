@@ -94,15 +94,15 @@ public class ContainerTest {
         final Handler handler = TestHelper.getMockHandler(logger);
 
         PowerMock.resetAll();
-
-        // PLAY
         handler.publish(EasyMock.isA(LogRecord.class));
         handler.close();
         EasyMock.expectLastCall().anyTimes();
 
         PowerMock.replayAll();
         this.container.debug();
-        Assert.assertTrue(this.container.add("a", 1));
+        final boolean ret = this.container.add("a", 1);
+
         PowerMock.verifyAll();
+        Assert.assertTrue(ret);
     }
 }

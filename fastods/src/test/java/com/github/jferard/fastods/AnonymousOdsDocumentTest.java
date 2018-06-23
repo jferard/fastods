@@ -60,7 +60,7 @@ public class AnonymousOdsDocumentTest {
         this.initStyles(this.odsElements);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
 
         PowerMock.verifyAll();
     }
@@ -75,7 +75,7 @@ public class AnonymousOdsDocumentTest {
         this.odsElements.setActiveTable(t);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.addTable("ok");
 
         PowerMock.verifyAll();
@@ -88,7 +88,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(null);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.getTable("ok");
 
         PowerMock.verifyAll();
@@ -103,7 +103,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(t);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final Table t2 = this.document.getTable("ok");
 
         PowerMock.verifyAll();
@@ -120,7 +120,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(t.getName()).andReturn("ok");
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final String tableName = this.document.getTableName(0);
 
         PowerMock.verifyAll();
@@ -136,7 +136,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTables()).andReturn(l);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final List<Table> tables = this.document.getTables();
 
         PowerMock.verifyAll();
@@ -150,7 +150,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(20);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final int actual = this.document.tableCount();
 
         PowerMock.verifyAll();
@@ -164,7 +164,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.getTable(-1);
 
         PowerMock.verifyAll();
@@ -177,7 +177,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.getTable(10);
 
         PowerMock.verifyAll();
@@ -192,7 +192,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t));
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final Table t0 = this.document.getTable(0);
 
         PowerMock.verifyAll();
@@ -210,7 +210,7 @@ public class AnonymousOdsDocumentTest {
         this.odsElements.setActiveTable(t);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final Table tok = this.document.getOrAddTable("ok");
 
         PowerMock.verifyAll();
@@ -226,7 +226,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(t);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final Table tok = this.document.getOrAddTable("ok");
 
         PowerMock.verifyAll();
@@ -239,7 +239,7 @@ public class AnonymousOdsDocumentTest {
         this.initStyles(this.odsElements);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final boolean activeMin1 = this.document.setActiveTable(-1);
 
         PowerMock.verifyAll();
@@ -253,11 +253,15 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(1);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final boolean active2 = this.document.setActiveTable(2);
 
         PowerMock.verifyAll();
         Assert.assertFalse(active2);
+    }
+
+    private AnonymousOdsDocument getDocument() {
+        return AnonymousOdsDocument.create(this.logger, this.xmlUtil, this.odsElements);
     }
 
     @Test
@@ -271,7 +275,7 @@ public class AnonymousOdsDocumentTest {
         this.odsElements.setActiveTable(t);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final boolean active1 = this.document.setActiveTable(1);
 
         PowerMock.verifyAll();
@@ -294,7 +298,7 @@ public class AnonymousOdsDocumentTest {
         this.logger.log(Level.FINE, "file saved");
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.save(writer);
 
         PowerMock.verifyAll();
@@ -310,7 +314,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(t.getName()).andReturn("not ok");
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final int tokNum = this.document.getTableNumber("ok");
 
         PowerMock.verifyAll();
@@ -327,7 +331,7 @@ public class AnonymousOdsDocumentTest {
         EasyMock.expect(t.getName()).andReturn("ok");
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         final int tokNum = this.document.getTableNumber("ok");
 
         PowerMock.verifyAll();
@@ -341,7 +345,7 @@ public class AnonymousOdsDocumentTest {
         this.odsElements.setViewSetting("1", "2", "3");
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.setViewSetting("1", "2", "3");
     }
 
@@ -354,7 +358,7 @@ public class AnonymousOdsDocumentTest {
         this.odsElements.addAutofilter(t, 0, 0, 1, 1);
 
         PowerMock.replayAll();
-        this.document = new AnonymousOdsDocument(this.logger, this.odsElements, this.xmlUtil);
+        this.document = this.getDocument();
         this.document.addAutofilter(t, 0, 0, 1, 1);
 
         PowerMock.verifyAll();
