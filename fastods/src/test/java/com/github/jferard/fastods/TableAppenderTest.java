@@ -25,7 +25,7 @@ import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.TableNameUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -61,7 +61,7 @@ public class TableAppenderTest {
     public void appendEmptyPreambleTest() throws IOException {
         EasyMock.expect(this.builder.getName()).andReturn("table1");
         EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.<TableColumnStyle>newListWithCapacity(1));
+        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FastFullList.<TableColumnStyle>newListWithCapacity(1));
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -76,7 +76,7 @@ public class TableAppenderTest {
     public void appendOneElementPreambleTest() throws IOException {
         EasyMock.expect(this.builder.getName()).andReturn("table1");
         EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(this.newTCS("x")));
+        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FastFullList.newList(this.newTCS("x")));
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -96,7 +96,8 @@ public class TableAppenderTest {
     public void appendTwoElementsPreambleTest() throws IOException {
         EasyMock.expect(this.builder.getName()).andReturn("table1");
         EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(this.newTCS("x"), this.newTCS("x")));
+        EasyMock.expect(this.builder.getColumnStyles()).andReturn(
+                FastFullList.newList(this.newTCS("x"), this.newTCS("x")));
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -114,7 +115,8 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getName()).andReturn("table1");
         EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
         final TableColumnStyle x = this.newTCS("x");
-        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(x, x, this.newTCS("y"), x));
+        EasyMock.expect(this.builder.getColumnStyles()).andReturn(
+                FastFullList.newList(x, x, this.newTCS("y"), x));
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -135,7 +137,8 @@ public class TableAppenderTest {
         EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
         final TableColumnStyle x = this.newTCS("x");
         final TableColumnStyle y = this.newTCS("y");
-        EasyMock.expect(this.builder.getColumnStyles()).andReturn(FullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.builder.getColumnStyles()).andReturn(
+                FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(

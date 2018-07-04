@@ -27,7 +27,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -58,8 +58,9 @@ public class TableTest {
         final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.table = Table.create(positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100,
-                this.stc, this.ds);
+        this.table = Table
+                .create(positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100, this.stc,
+                        this.ds);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
         PowerMock.resetAll();
@@ -75,7 +76,8 @@ public class TableTest {
         // CREATE
         final List<TableColumnStyle> tcss = new ArrayList<TableColumnStyle>(4);
         for (int c = 0; c < 3; c++) {
-            final TableColumnStyle tcs = TableColumnStyle.builder("test" + Integer.toString(c)).build();
+            final TableColumnStyle tcs = TableColumnStyle.builder("test" + Integer.toString(c))
+                    .build();
             tcss.add(tcs);
         }
 
@@ -93,16 +95,21 @@ public class TableTest {
         }
         this.table.getRow(100);
         this.assertTableXMLEquals(
-                "<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
-                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                        "<table:table-column table:style-name=\"test0\" table:default-cell-style-name=\"Default\"/>"
-                        + "<table:table-column table:style-name=\"test1\" " +
+                "<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+                        "table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" " +
+                        "form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"test0\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"test1\" " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
                         "table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>" +
-                        "<table:table-column table:style-name=\"co1\" table:default-cell-style-name=\"Default\" " +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:default-cell-style-name=\"Default\" " +
                         "table:number-columns-repeated=\"1021\"/>" + "<table:table-row " +
-                        "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" + "<table:table-cell/>" +
-                        "</table:table-row>" + "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
+                        "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" +
+                        "<table:table-cell/>" + "</table:table-row>" +
+                        "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
                         "</table:table>");
 
     }
@@ -173,35 +180,50 @@ public class TableTest {
         PowerMock.replayAll();
         this.table.setRowsSpanned(10, 11, 12);
         this.assertTableXMLEquals(
-                "<table:table table:name=\"mytable\" table:style-name=\"ta1\" table:print=\"false\">" +
-                        "<office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/>" +
-                        "<table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" " +
+                "<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+                        "table:print=\"false\">" +
+                        "<office:forms form:automatic-focus=\"false\" " +
+                        "form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-row " +
-                        "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" + "<table:table-cell/>" +
-                        "</table:table-row>" + "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
+                        "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
+                        "<table:table-cell/>" + "</table:table-row>" +
+                        "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
                         "table:number-columns-repeated=\"11\"/>" + "<table:table-cell " +
-                        "table:number-rows-spanned=\"12\"/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:number-rows-spanned=\"12\"/>" + "</table:table-row>" +
+                        "<table:table-row " + "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" + "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                        "table:style-name=\"ro1\">" +
+                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
                         "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>");
     }
 
@@ -210,8 +232,8 @@ public class TableTest {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", tb);
 
-        tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq(1), EasyMock.eq(1),
-                EasyMock.eq(2), EasyMock.eq(3));
+        tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq(1),
+                EasyMock.eq(1), EasyMock.eq(2), EasyMock.eq(3));
 
         PowerMock.replayAll();
         t.setCellMerge(1, 1, 2, 3);
@@ -222,8 +244,8 @@ public class TableTest {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", tb);
 
-        tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq("A1"), EasyMock.eq(2),
-                EasyMock.eq(3));
+        tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq("A1"),
+                EasyMock.eq(2), EasyMock.eq(3));
 
         PowerMock.replayAll();
         t.setCellMerge("A1", 2, 3);
@@ -251,7 +273,8 @@ public class TableTest {
 
         EasyMock.expect(tb.getName()).andReturn("tb");
         EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(tb.getColumnStyles()).andReturn(FullList.<TableColumnStyle>builder().build());
+        EasyMock.expect(tb.getColumnStyles())
+                .andReturn(FastFullList.<TableColumnStyle>builder().build());
         EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
 
         PowerMock.replayAll();
@@ -266,7 +289,8 @@ public class TableTest {
 
         EasyMock.expect(tb.getName()).andReturn("tb");
         EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(tb.getColumnStyles()).andReturn(FullList.<TableColumnStyle>builder().build());
+        EasyMock.expect(tb.getColumnStyles())
+                .andReturn(FastFullList.<TableColumnStyle>builder().build());
         EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
 
         PowerMock.replayAll();

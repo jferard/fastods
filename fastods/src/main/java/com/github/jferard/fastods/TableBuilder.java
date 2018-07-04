@@ -31,7 +31,7 @@ import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.PositionUtil.Position;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -60,7 +60,8 @@ class TableBuilder {
      */
     private static void checkCol(final int col) throws FastOdsException {
         if (col < 0) {
-            throw new FastOdsException("Negative column number exception, column value:[" + col + "]");
+            throw new FastOdsException(
+                    "Negative column number exception, column value:[" + col + "]");
         }
     }
 
@@ -89,8 +90,9 @@ class TableBuilder {
      * @param columnCapacity  the column capacity of the table
      * @return the builder
      */
-    public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
-                                      final StylesContainer stylesContainer, final DataStyles format, final String name,
+    public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil,
+                                      final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+                                      final DataStyles format, final String name,
                                       final int rowCapacity, final int columnCapacity) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
         configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
@@ -108,18 +110,18 @@ class TableBuilder {
         configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
         configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
 
-        return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name, rowCapacity,
-                columnCapacity, configEntry, BUFFER_SIZE);
+        return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name,
+                rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
     }
 
     private final int bufferSize;
     private final int columnCapacity;
-    private final FullList<TableColumnStyle> columnStyles;
+    private final FastFullList<TableColumnStyle> columnStyles;
     private final ConfigItemMapEntrySet configEntry;
     private final DataStyles format;
     private final PositionUtil positionUtil;
     private final StylesContainer stylesContainer;
-    private final FullList<TableRow> tableRows;
+    private final FastFullList<TableRow> tableRows;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private NamedOdsFileWriter observer;
@@ -145,8 +147,8 @@ class TableBuilder {
      */
     TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
                  final StylesContainer stylesContainer, final DataStyles format, final String name,
-                 final int rowCapacity, final int columnCapacity, final ConfigItemMapEntrySet configEntry,
-                 final int bufferSize) {
+                 final int rowCapacity, final int columnCapacity,
+                 final ConfigItemMapEntrySet configEntry, final int bufferSize) {
         this.xmlUtil = xmlUtil;
         this.writeUtil = writeUtil;
         this.positionUtil = positionUtil;
@@ -157,9 +159,10 @@ class TableBuilder {
         this.configEntry = configEntry;
         this.style = TableStyle.DEFAULT_TABLE_STYLE;
 
-        this.columnStyles = FullList.<TableColumnStyle>builder()
-                .blankElement(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE).capacity(this.columnCapacity).build();
-        this.tableRows = FullList.newListWithCapacity(rowCapacity);
+        this.columnStyles = FastFullList.<TableColumnStyle>builder()
+                .blankElement(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE)
+                .capacity(this.columnCapacity).build();
+        this.tableRows = FastFullList.newListWithCapacity(rowCapacity);
         this.curRowIndex = -1;
         this.lastFlushedRowIndex = 0;
         this.lastRowIndex = -1;
@@ -199,7 +202,7 @@ class TableBuilder {
     /**
      * @return the list of the column styles
      */
-    public FullList<TableColumnStyle> getColumnStyles() {
+    public FastFullList<TableColumnStyle> getColumnStyles() {
         return this.columnStyles;
     }
 
@@ -227,8 +230,8 @@ class TableBuilder {
      * @throws FastOdsException if the index is invalid
      * @throws IOException      if an I/O error occurs
      */
-    public TableRow getRow(final Table table, final TableAppender appender,
-                           final int rowIndex) throws FastOdsException, IOException {
+    public TableRow getRow(final Table table, final TableAppender appender, final int rowIndex)
+            throws FastOdsException, IOException {
         TableBuilder.checkRow(rowIndex);
         return this.getRowSecure(table, appender, rowIndex, true);
     }
@@ -243,18 +246,19 @@ class TableBuilder {
      * @throws FastOdsException if the index is invalid
      * @throws IOException      if an I/O error occurs
      */
-    public TableRow getRow(final Table table, final TableAppender appender,
-                           final String pos) throws FastOdsException, IOException {
+    public TableRow getRow(final Table table, final TableAppender appender, final String pos)
+            throws FastOdsException, IOException {
         final int row = this.positionUtil.getPosition(pos).getRow();
         return this.getRow(table, appender, row);
     }
 
-    private TableRow getRowSecure(final Table table, final TableAppender appender, final int rowIndex,
-                                  final boolean updateRowIndex) throws IOException {
+    private TableRow getRowSecure(final Table table, final TableAppender appender,
+                                  final int rowIndex, final boolean updateRowIndex)
+            throws IOException {
         TableRow tr = this.tableRows.get(rowIndex);
         if (tr == null) {
-            tr = new TableRow(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format, table, rowIndex,
-                    this.columnCapacity);
+            tr = new TableRow(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,
+                    table, rowIndex, this.columnCapacity);
             this.tableRows.set(rowIndex, tr);
             if (rowIndex > this.lastRowIndex) this.lastRowIndex = rowIndex;
 
@@ -264,20 +268,22 @@ class TableBuilder {
         return tr;
     }
 
-    private void notifyIfHasObserver(final TableAppender appender, final int rowIndex) throws IOException {
+    private void notifyIfHasObserver(final TableAppender appender, final int rowIndex)
+            throws IOException {
         if (this.observer != null) {
             if (rowIndex == 0) {
                 this.observer.update(new BeginTableFlusher(appender));
             } else if (rowIndex % this.bufferSize == 0) {
-                this.observer.update(this.createPreprocessedRowsFlusher(rowIndex)); // (0..1023), (1024..2047)
+                this.observer.update(this
+                        .createPreprocessedRowsFlusher(rowIndex)); // (0..1023), (1024..2047)
                 this.lastFlushedRowIndex = rowIndex;
             }
         }
     }
 
     private OdsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
-        return PreprocessedRowsFlusher.create(this.xmlUtil,
-                new ArrayList<TableRow>(this.tableRows.subList(this.lastFlushedRowIndex, toRowIndex)));
+        return PreprocessedRowsFlusher.create(this.xmlUtil, new ArrayList<TableRow>(
+                this.tableRows.subList(this.lastFlushedRowIndex, toRowIndex)));
     }
 
     /**
@@ -312,8 +318,9 @@ class TableBuilder {
      * @param columnCount number of cols
      * @throws IOException if an I/O error occurs
      */
-    public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex, final int colIndex,
-                             final int rowCount, final int columnCount) throws IOException {
+    public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex,
+                             final int colIndex, final int rowCount, final int columnCount)
+            throws IOException {
         final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
         if (row.isCovered(colIndex)) // already spanned
             return;
@@ -322,9 +329,10 @@ class TableBuilder {
         this.spanColumnsFromRowsBelow(table, appender, rowIndex, colIndex, rowCount, columnCount);
     }
 
-    private void spanColumnsFromRowsBelow(final Table table, final TableAppender appender, final int rowIndex,
-                                          final int colIndex, final int rowMerge,
-                                          final int columnMerge) throws IOException {
+    private void spanColumnsFromRowsBelow(final Table table, final TableAppender appender,
+                                          final int rowIndex, final int colIndex,
+                                          final int rowMerge, final int columnMerge)
+            throws IOException {
         for (int r = rowIndex + 1; r < rowIndex + rowMerge; r++) {
             final TableRow row = this.getRowSecure(table, appender, r, false);
             row.setColumnsSpanned(colIndex, columnMerge);
@@ -344,10 +352,12 @@ class TableBuilder {
      * @throws IOException      if the cells can't be merged
      */
     @Deprecated
-    public void setCellMerge(final Table table, final TableAppender appender, final String pos, final int rowMerge,
-                             final int columnMerge) throws FastOdsException, IOException {
+    public void setCellMerge(final Table table, final TableAppender appender, final String pos,
+                             final int rowMerge, final int columnMerge)
+            throws FastOdsException, IOException {
         final Position position = this.positionUtil.getPosition(pos);
-        this.setCellMerge(table, appender, position.getRow(), position.getColumn(), rowMerge, columnMerge);
+        this.setCellMerge(table, appender, position.getRow(), position.getColumn(), rowMerge,
+                columnMerge);
     }
 
     /**
@@ -407,19 +417,21 @@ class TableBuilder {
      * @param n        the number of rows
      * @throws IOException if an error occurs
      */
-    public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex, final int colIndex,
-                               final int n) throws IOException {
+    public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex,
+                               final int colIndex, final int n) throws IOException {
         if (n <= 1) return;
 
-        final TableCell firstCell = this.getRowSecure(table, appender, rowIndex, false).getOrCreateCell(colIndex);
+        final TableCell firstCell = this.getRowSecure(table, appender, rowIndex, false)
+                .getOrCreateCell(colIndex);
         if (firstCell.isCovered()) return;
 
         firstCell.markRowsSpanned(n);
         this.coverCellsBelow(table, appender, rowIndex, colIndex, n);
     }
 
-    private void coverCellsBelow(final Table table, final TableAppender appender, final int rowIndex,
-                                 final int colIndex, final int n) throws IOException {
+    private void coverCellsBelow(final Table table, final TableAppender appender,
+                                 final int rowIndex, final int colIndex, final int n)
+            throws IOException {
         for (int r = rowIndex + 1; r < rowIndex + n; r++) {
             final TableRow row = this.getRowSecure(table, appender, r, false);
             final TableCell cell = row.getOrCreateCell(colIndex);

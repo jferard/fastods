@@ -27,7 +27,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.util.FullList;
+import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -62,7 +62,7 @@ public class TableRow {
     private final StylesContainer stylesContainer;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
-    private final FullList<TableCell> cells;
+    private final FastFullList<TableCell> cells;
     private DataStyles dataStyles;
     private TableCellStyle defaultCellStyle;
     private TableRowStyle rowStyle;
@@ -88,7 +88,7 @@ public class TableRow {
         this.rowIndex = rowIndex;
         this.columnCapacity = columnCapacity;
         this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
-        this.cells = FullList.newListWithCapacity(columnCapacity);
+        this.cells = FastFullList.newListWithCapacity(columnCapacity);
     }
 
     private void appendRowOpenTag(final XMLUtil util, final Appendable appendable) throws IOException {
