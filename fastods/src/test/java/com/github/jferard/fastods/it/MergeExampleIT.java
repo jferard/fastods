@@ -36,6 +36,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.odftoolkit.odfdom.dom.element.table.TableCoveredTableCellElement;
 import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
 import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
 import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
@@ -79,7 +80,7 @@ public class MergeExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(3, sheet.getRowCount());
+        Assert.assertEquals(13, sheet.getRowCount());
         final Cell cell1 = sheet.getCellByPosition(0, 0);
         Assert.assertEquals(5, cell1.getColumnSpannedNumber());
         Assert.assertEquals(1, cell1.getRowSpannedNumber());
@@ -93,8 +94,19 @@ public class MergeExampleIT {
         Assert.assertEquals(2, cell3.getRowSpannedNumber());
 
         final Cell cell4 = sheet.getCellByPosition(0, 3);
-        Assert.assertEquals(1, cell3.getColumnSpannedNumber());
-        Assert.assertEquals(10, cell3.getRowSpannedNumber());
+        Assert.assertEquals(1, cell4.getColumnSpannedNumber());
+        Assert.assertEquals(10, cell4.getRowSpannedNumber());
+
+        for (int c=0; c<5; c++) {
+            for (int r = 0; r < 3; r++) {
+                if (c == 0 && r == 0 || c <= 1 && r == 1) {
+                    continue;
+                }
+
+                final Cell cell = sheet.getCellByPosition(c, r);
+                Assert.assertTrue(cell.getOdfElement() instanceof TableCoveredTableCellElement);
+            }
+        }
     }
 
     private void merge() throws IOException {

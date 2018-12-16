@@ -161,7 +161,7 @@ public class TableRow {
         this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
     }
 
-    private void coverRightCells(final int colIndex, final int n) {
+    public void coverRightCells(final int colIndex, final int n) {
         for (int c = colIndex + 1; c < colIndex + n; c++) {
             this.getOrCreateCell(c).setCovered();
         }

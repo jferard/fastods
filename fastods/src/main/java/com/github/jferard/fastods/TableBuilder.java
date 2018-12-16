@@ -315,30 +315,25 @@ class TableBuilder {
      * @param rowIndex    the start row
      * @param colIndex    the start column
      * @param rowCount    number of rows
-     * @param columnCount number of cols
+     * @param colCount number of cols
      * @throws IOException if an I/O error occurs
      */
     public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex,
-                             final int colIndex, final int rowCount, final int columnCount)
+                             final int colIndex, final int rowCount, final int colCount)
             throws IOException {
         final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
-        if (row.isCovered(colIndex)) // already spanned
+        final TableCell firstCell = row.getOrCreateCell(colIndex);
+        if (firstCell.isCovered()) // already spanned
             return;
 
-        row.setColumnsSpanned(colIndex, columnCount);
-        this.spanColumnsFromRowsBelow(table, appender, rowIndex, colIndex, rowCount, columnCount);
-    }
-
-    private void spanColumnsFromRowsBelow(final Table table, final TableAppender appender,
-                                          final int rowIndex, final int colIndex,
-                                          final int rowMerge, final int columnMerge)
-            throws IOException {
-        for (int r = rowIndex + 1; r < rowIndex + rowMerge; r++) {
-            final TableRow row = this.getRowSecure(table, appender, r, false);
-            row.setColumnsSpanned(colIndex, columnMerge);
+        firstCell.markColumnsSpanned(colCount);
+        firstCell.markRowsSpanned(rowCount);
+        row.coverRightCells(colIndex, colCount);
+        for (int r = rowIndex + 1; r < rowIndex + rowCount; r++) {
+            final TableRow otherRow = this.getRowSecure(table, appender, r, false);
+            otherRow.coverRightCells(colIndex-1, colCount+1);
         }
     }
-
 
     /**
      * Set the merging of multiple cells to one cell.
