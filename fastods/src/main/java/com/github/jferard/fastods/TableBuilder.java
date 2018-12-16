@@ -264,7 +264,7 @@ class TableBuilder {
 
             this.notifyIfHasObserver(appender, rowIndex);
         }
-        if (updateRowIndex) this.curRowIndex = rowIndex;
+        if (updateRowIndex && this.curRowIndex < rowIndex) this.curRowIndex = rowIndex;
         return tr;
     }
 
