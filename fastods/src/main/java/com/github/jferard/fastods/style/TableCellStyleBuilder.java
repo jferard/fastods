@@ -26,6 +26,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.style.TableCellStyle.TextRotating;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.StyleBuilder;
 
@@ -43,6 +44,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     // true
     private TableCellStyle.Align textAlign; // 'center','end','start','justify'
     private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
+    private TableCellStyle.TextRotating textRotating;
     // 'top'
     private boolean wrap; // No line wrap when false, line wrap when
     private boolean hidden;
@@ -166,9 +168,18 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     public TableCellStyle build() {
         return new TableCellStyle(this.name, this.hidden, this.dataStyle, this.backgroundColor, this.tpBuilder.build(),
                 this.textAlign, this.verticalAlign, this.wrap, this.parentCellStyle, this.bordersBuilder.build(),
-                this.marginsBuilder.build());
+                this.marginsBuilder.build(),this.textRotating);
     }
 
+    /**
+     * Set text rotation angle
+     * @param tr TextRotation to be used
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder textRotating(final TextRotating tr) {
+        this.textRotating = tr;
+        return this;
+    }
     /**
      * Set the data style for this TableFamilyStyle to ds.<br>
      * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
