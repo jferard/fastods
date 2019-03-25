@@ -78,6 +78,7 @@ public class AnonymousOdsFileWriter {
         final ZipUTF8Writer writer = builder.build(out);
         this.save(writer);
         writer.finish(); // ensures the zip file is well formed
+        writer.flush();
     }
 
     /**
@@ -110,7 +111,12 @@ public class AnonymousOdsFileWriter {
     public void saveAs(final File file) throws IOException {
         try {
             final FileOutputStream out = new FileOutputStream(file);
-            this.save(out);
+            try {
+                this.save(out);
+            } finally {
+                out.flush();
+                out.close();
+            }
         } catch (final FileNotFoundException e) {
             this.logger.log(Level.SEVERE, "Can't open " + file, e);
             throw new IOException(e);

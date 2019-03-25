@@ -197,6 +197,43 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     }
 
     /**
+     * Set the font name to be used for this style.
+     *
+     * @param name The font name for this TextStyle
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder fontName(final String name) {
+        this.tpBuilder.fontName(name);
+        return this;
+    }
+
+    /**
+     * Set the font size to the given value.
+     *
+     * @param fontSize - The font size
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder fontSize(final Length fontSize) {
+        this.tpBuilder.fontSize(fontSize);
+        return this;
+    }
+
+    /**
+     * Set the font size to the given fontSizePercentage.
+     * See 20.183 fo:font-size
+     * "fontSizePercentage values can be used within common styles only and are based on
+     * the font height of the parent style rather than to the font height
+     * of the attributes neighborhood"
+     *
+     * @param percentage the font size as a fontSizePercentage.
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder fontSizePercentage(final double percentage) {
+        this.tpBuilder.fontSizePercentage(percentage);
+        return this;
+    }
+
+    /**
      * Set the font weight to italic.
      *
      * @return this for fluent style
@@ -213,6 +250,30 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
      */
     public TableCellStyleBuilder fontStyleNormal() {
         this.tpBuilder.fontStyleNormal();
+        return this;
+    }
+
+    /**
+     * Set the font underline color to color. Use an empty string to reset it to
+     * 'auto'.
+     *
+     * @param color The color to be used in format #rrggbb e.g. #ff0000 for a red
+     *              cell background.
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder fontUnderlineColor(final Color color) {
+        this.tpBuilder.fontUnderlineColor(color);
+        return this;
+    }
+
+    /**
+     * Set the style that should be used for the underline.
+     *
+     * @param style One of the TextStyle.STYLE_UNDERLINE
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder fontUnderlineStyle(final TextProperties.Underline style) {
+        this.tpBuilder.fontUnderlineStyle(style);
         return this;
     }
 

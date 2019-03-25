@@ -123,7 +123,8 @@ public class AnonymousOdsFileWriterTest {
         }
 
         PowerMock.verifyAll();
-        final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
+        final byte[] buf = this.os.toByteArray();
+        final InputStream is = new ByteArrayInputStream(buf);
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
         final Set<String> names = new HashSet<String>();
@@ -132,6 +133,7 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
+        Assert.assertEquals(5446, buf.length);
         Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
                 "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                 "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
@@ -234,7 +236,8 @@ public class AnonymousOdsFileWriterTest {
         }
 
         PowerMock.verifyAll();
-        final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
+        final byte[] buf = this.os.toByteArray();
+        final InputStream is = new ByteArrayInputStream(buf);
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
         final List<String> names = new ArrayList<String>();
@@ -244,19 +247,15 @@ public class AnonymousOdsFileWriterTest {
         }
         Collections.sort(names);
 
+        Assert.assertEquals(5446 * 2, buf.length);
         // Every element appears twice
-        Assert.assertEquals(Arrays.asList("Configurations2/accelerator/current.xml",
-                "Configurations2/accelerator/current.xml", "Configurations2/floater/",
-                "Configurations2/floater/", "Configurations2/images/Bitmaps/",
-                "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
-                "Configurations2/menubar/", "Configurations2/popupmenu/",
-                "Configurations2/popupmenu/", "Configurations2/progressbar/",
-                "Configurations2/progressbar/", "Configurations2/statusbar/",
-                "Configurations2/statusbar/", "Configurations2/toolbar/",
-                "Configurations2/toolbar/", "META-INF/manifest.xml", "META-INF/manifest.xml",
-                "Thumbnails/", "Thumbnails/", "content.xml", "content.xml", "meta.xml", "meta.xml",
-                "mimetype", "mimetype", "settings.xml", "settings.xml", "styles.xml", "styles.xml"),
-                names);
+        Assert.assertEquals(
+                Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                        "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+                        "Configurations2/popupmenu/", "Configurations2/progressbar/",
+                        "Configurations2/statusbar/", "Configurations2/toolbar/",
+                        "META-INF/manifest.xml", "Thumbnails/", "content.xml", "meta.xml",
+                        "mimetype", "settings.xml", "styles.xml"), names);
     }
 
     @Test

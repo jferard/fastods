@@ -38,7 +38,11 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Util;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -46,9 +50,12 @@ import org.junit.Test;
 import org.odftoolkit.simple.SpreadsheetDocument;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -88,7 +95,7 @@ public class DataStyleExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(4, sheet.getRowCount());
+        Assert.assertEquals(5, sheet.getRowCount());
         // TODO: Add more validation tests"
     }
 
@@ -108,7 +115,8 @@ public class DataStyleExampleIT {
 
         this.createTable(document);
 
-        writer.saveAs(new File(GENERATED_FILES, DATASTYLE_EXAMPLE_ODS));
+        final File dest = new File(GENERATED_FILES, DATASTYLE_EXAMPLE_ODS);
+        writer.saveAs(dest);
     }
 
     private void createTable(final OdsDocument document) throws IOException, FastOdsException {
@@ -127,11 +135,21 @@ public class DataStyleExampleIT {
         final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col")
                 .columnWidth(SimpleLength.cm(5)).build();
         table.setColumnStyle(1, columnStyle1);
+        final TableCellStyle titleStyle = TableCellStyle.builder("my-title").fontName("Liberation Mono")
+                .fontSize(SimpleLength.cm(2)).build();
 
         // FIRST ROW
         TableRow row = table.nextRow();
         row.setStyle(rowStyle);
         TableCellWalker cell = row.getWalker();
+        cell.setStringValue("Some data styles");
+        cell.setStyle(titleStyle);
+        row.setStyle(TableRowStyle.builder("firstrowstyle").rowHeight(SimpleLength.mm(100)).hidden().build());
+
+
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        cell = row.getWalker();
         cell.setStringValue("An int with the new default format: ");
         cell.next();
         cell.setFloatValue(123456.789);
