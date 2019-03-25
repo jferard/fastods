@@ -67,17 +67,23 @@ public class AnonymousOdsFileWriter {
     }
 
     /**
-     * Save the new file.
+     * Writes the document to a stream.
+     * WARNING: The user shall close the stream (since 0.6.1).
      *
      * @param out The OutputStream that should be used.
      * @throws IOException The file can't be saved.
      */
     public void save(final OutputStream out) throws IOException {
         final ZipUTF8WriterBuilder builder = ZipUTF8WriterImpl.builder();
-        this.save(builder.build(out));
+        final ZipUTF8Writer writer = builder.build(out);
+        this.save(writer);
+        writer.finish(); // ensures the zip file is well formed
     }
 
     /**
+     * Writes the document to a writer. The use shall close the writer.
+     * WARNING: The user shall close the writer (since 0.6.1).
+     *
      * @param writer the ZipUTF8WriterImpl that should be used
      * @throws IOException If an I/O error occurs during the save
      */
@@ -115,6 +121,7 @@ public class AnonymousOdsFileWriter {
     }
 
     /**
+     * Save the document to filename.
      * @param filename the name of the destination file
      * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
      *                 level, ...)
@@ -124,11 +131,15 @@ public class AnonymousOdsFileWriter {
             throws IOException {
         try {
             final FileOutputStream out = new FileOutputStream(filename);
-            this.save(builder.build(out));
+            final ZipUTF8Writer writer = builder.build(out);
+            try {
+                this.save(writer);
+            } finally {
+                writer.close();
+            }
         } catch (final FileNotFoundException e) {
             this.logger.log(Level.SEVERE, "Can't open " + filename, e);
             throw new IOException(e);
         }
     }
-
 }

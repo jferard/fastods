@@ -145,22 +145,19 @@ public class AnonymousOdsDocument implements OdsDocument {
     }
 
     /**
-     * Saves a file
+     * Saves a file.
+     * Do not close the writer (see https://github.com/jferard/fastods/issues/138)
      *
      * @param writer where to write
      * @throws IOException if the document can't be saved
      */
     void save(final ZipUTF8Writer writer) throws IOException {
-        try {
-            this.odsElements.createEmptyElements(writer);
-            this.odsElements.writeImmutableElements(this.xmlUtil, writer);
-            this.odsElements.writeMeta(this.xmlUtil, writer);
-            this.odsElements.writeStyles(this.xmlUtil, writer);
-            this.odsElements.writeContent(this.xmlUtil, writer);
-            this.odsElements.writeSettings(this.xmlUtil, writer);
-        } finally {
-            writer.close();
-        }
+        this.odsElements.createEmptyElements(writer);
+        this.odsElements.writeImmutableElements(this.xmlUtil, writer);
+        this.odsElements.writeMeta(this.xmlUtil, writer);
+        this.odsElements.writeStyles(this.xmlUtil, writer);
+        this.odsElements.writeContent(this.xmlUtil, writer);
+        this.odsElements.writeSettings(this.xmlUtil, writer);
         this.logger.log(Level.FINE, "file saved");
     }
 }

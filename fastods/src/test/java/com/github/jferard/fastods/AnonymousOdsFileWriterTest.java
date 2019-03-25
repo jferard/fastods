@@ -31,9 +31,9 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 import com.google.common.collect.Sets;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,7 +48,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -56,6 +61,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
+ *
  */
 public class AnonymousOdsFileWriterTest {
     @Rule
@@ -105,13 +111,16 @@ public class AnonymousOdsFileWriterTest {
     }
 
     @Test
-    public final void testSaveEmpyDocumentToOutputStream() throws IOException {
+    public final void testSaveEmpyDocumentToStream() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final OdsDocument document = writer.document();
 
         PowerMock.resetAll();
         PowerMock.replayAll();
-        writer.save(this.os);
+        try {
+            writer.save(this.os);
+        } finally {
+            this.os.close();
+        }
 
         PowerMock.verifyAll();
         final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
@@ -129,6 +138,125 @@ public class AnonymousOdsFileWriterTest {
                 "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
                 "styles.xml", "content.xml", "Configurations2/progressbar/",
                 "Configurations2/statusbar/"), names);
+    }
+
+    @Test
+    public final void testSaveEmpyDocumentToStreamAndAddPrePostamble() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        try {
+            this.os.write("preamble".getBytes());
+            writer.save(this.os);
+            this.os.write("postamble".getBytes());
+        } finally {
+            this.os.close();
+        }
+
+        PowerMock.verifyAll();
+        final byte[] buf = this.os.toByteArray();
+        final byte[] pre = Arrays.copyOfRange(buf, 0, 8);
+        final byte[] body = Arrays.copyOfRange(buf, 8, buf.length - 9);
+        final byte[] post = Arrays.copyOfRange(buf, buf.length - 9, buf.length);
+
+        // preamble
+        Assert.assertArrayEquals(pre, "preamble".getBytes(Charset.forName("ascii")));
+
+        // postamble
+        Assert.assertArrayEquals(post, "postamble".getBytes(Charset.forName("ascii")));
+
+        // body
+        final InputStream is = new ByteArrayInputStream(body);
+        final ZipInputStream zis = new ZipInputStream(is);
+        ZipEntry entry = zis.getNextEntry();
+        final Set<String> names = new HashSet<String>();
+        while (entry != null) {
+            names.add(entry.getName());
+            entry = zis.getNextEntry();
+        }
+
+        Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
+                "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
+                "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
+                "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
+                "styles.xml", "content.xml", "Configurations2/progressbar/",
+                "Configurations2/statusbar/"), names);
+    }
+
+    @Test
+    public final void testSaveEmpyDocumentToWriterAndAddEntry() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+        final ZipUTF8Writer zw = ZipUTF8WriterImpl.builder().build(this.os);
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        try {
+            writer.save(zw);
+            zw.putNextEntry(new ZipEntry("last"));
+            zw.write("last content");
+            zw.closeEntry();
+        } finally {
+            zw.close();
+        }
+
+        PowerMock.verifyAll();
+        final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
+        final ZipInputStream zis = new ZipInputStream(is);
+        ZipEntry entry = zis.getNextEntry();
+        final Set<String> names = new HashSet<String>();
+        while (entry != null) {
+            names.add(entry.getName());
+            entry = zis.getNextEntry();
+        }
+
+        Assert.assertEquals(
+                Sets.newHashSet("settings.xml", "last", "Configurations2/images/Bitmaps/",
+                        "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
+                        "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
+                        "meta.xml", "Configurations2/accelerator/current.xml",
+                        "Configurations2/popupmenu/", "styles.xml", "content.xml",
+                        "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
+    }
+
+    @Test
+    public final void testSaveTwiceEmpyDocumentToStream() throws IOException {
+        /// see https://github.com/jferard/fastods/issues/138
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        try {
+            writer.save(this.os);
+            writer.save(this.os);
+        } finally {
+            this.os.close();
+        }
+
+        PowerMock.verifyAll();
+        final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
+        final ZipInputStream zis = new ZipInputStream(is);
+        ZipEntry entry = zis.getNextEntry();
+        final List<String> names = new ArrayList<String>();
+        while (entry != null) {
+            names.add(entry.getName());
+            entry = zis.getNextEntry();
+        }
+        Collections.sort(names);
+
+        // Every element appears twice
+        Assert.assertEquals(Arrays.asList("Configurations2/accelerator/current.xml",
+                "Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                "Configurations2/floater/", "Configurations2/images/Bitmaps/",
+                "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+                "Configurations2/menubar/", "Configurations2/popupmenu/",
+                "Configurations2/popupmenu/", "Configurations2/progressbar/",
+                "Configurations2/progressbar/", "Configurations2/statusbar/",
+                "Configurations2/statusbar/", "Configurations2/toolbar/",
+                "Configurations2/toolbar/", "META-INF/manifest.xml", "META-INF/manifest.xml",
+                "Thumbnails/", "Thumbnails/", "content.xml", "content.xml", "meta.xml", "meta.xml",
+                "mimetype", "mimetype", "settings.xml", "settings.xml", "styles.xml", "styles.xml"),
+                names);
     }
 
     @Test
@@ -185,7 +313,11 @@ public class AnonymousOdsFileWriterTest {
 
         PowerMock.replayAll();
         final AnonymousOdsDocument document = this.getAnonymousDocument();
-        new AnonymousOdsFileWriter(this.logger, document).save(outputStream);
+        try {
+            new AnonymousOdsFileWriter(this.logger, document).save(outputStream);
+        } finally {
+            outputStream.close();
+        }
 
         PowerMock.verifyAll();
     }

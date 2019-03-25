@@ -294,12 +294,16 @@ public class AnonymousOdsDocumentTest {
         this.odsElements.writeStyles(this.xmlUtil, writer);
         this.odsElements.writeContent(this.xmlUtil, writer);
         this.odsElements.writeSettings(this.xmlUtil, writer);
-        writer.close();
         this.logger.log(Level.FINE, "file saved");
+        writer.close();
 
         PowerMock.replayAll();
-        this.document = this.getDocument();
-        this.document.save(writer);
+        try {
+            this.document = this.getDocument();
+            this.document.save(writer);
+        } finally {
+            writer.close();
+        }
 
         PowerMock.verifyAll();
     }

@@ -25,6 +25,7 @@ package com.github.jferard.fastods.util;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -38,6 +39,7 @@ import java.util.zip.ZipOutputStream;
 public class ZipUTF8WriterBuilder {
 	private static final int DEFAULT_BUFFER = -1;
 	private static final int NO_BUFFER = -2;
+
 	private int level;
 	private int writerBufferSize;
 	private int zipBufferSize;
