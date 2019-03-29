@@ -141,8 +141,8 @@ public class TextTest {
                 .build();
 
         PowerMock.resetAll();
-        EasyMock.expect(container.addContentStyle(ts)).andReturn(true);
-        EasyMock.expect(container.addContentStyle(ts)).andReturn(false);
+        EasyMock.expect(container.addContentFontFaceContainerStyle(ts)).andReturn(true);
+        EasyMock.expect(container.addContentFontFaceContainerStyle(ts)).andReturn(false);
 
         PowerMock.replayAll();
         text.addEmbeddedStylesFromCell(container);

@@ -25,10 +25,8 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -107,9 +105,9 @@ public class RegionPageSectionTest {
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         PowerMock.resetAll();
-        EasyMock.expect(sc.addStyleStyle(ts1)).andReturn(true);
-        EasyMock.expect(sc.addStyleStyle(ts2)).andReturn(true);
-        EasyMock.expect(sc.addStyleStyle(ts3)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts2)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts3)).andReturn(true);
 
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc);
@@ -140,9 +138,9 @@ public class RegionPageSectionTest {
                 .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         PowerMock.resetAll();
-        EasyMock.expect(sc.addStyleStyle(ts1)).andReturn(true);
-        EasyMock.expect(sc.addStyleStyle(ts2)).andReturn(true);
-        EasyMock.expect(sc.addStyleStyle(ts3)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts2)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts3)).andReturn(true);
 
         PowerMock.replayAll();
         headerSection.addEmbeddedStyles(sc);

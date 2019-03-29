@@ -186,7 +186,7 @@ public class OdsElements {
      * @param objectStyle the style to add
      */
     public void addStyleStyle(final ObjectStyle objectStyle) {
-        this.stylesContainer.addStyleStyle(objectStyle);
+        this.stylesContainer.addStylesStyle(objectStyle);
     }
 
     /**

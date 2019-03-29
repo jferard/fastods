@@ -190,4 +190,14 @@ public class TextProperties implements TagParameters {
 				|| this.fontSize != null || this.fontStyle != null
 				|| this.fontUnderlineColor != SimpleColor.NONE || this.fontWeight != null;
 	}
+
+	/**
+	 * @return a font face or null
+	 */
+	public FontFace getFontFace() {
+		if (this.fontName != null)
+			return new FontFace(this.fontName);
+		else
+			return null;
+	}
 }

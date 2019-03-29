@@ -312,7 +312,7 @@ public class TableCellTest {
     @Test
     public final void testTextWithStyle() throws IOException {
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
-        EasyMock.expect(this.stc.addContentStyle(TextStyle.DEFAULT_TEXT_STYLE)).andReturn(true);
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(TextStyle.DEFAULT_TEXT_STYLE)).andReturn(true);
 
         PowerMock.replayAll();
         this.cell.setText(Text.styledContent("text", TextStyle.DEFAULT_TEXT_STYLE));
@@ -374,7 +374,7 @@ public class TableCellTest {
                 .andReturn(this.tcs);
 
         // second style
-        EasyMock.expect(this.stc.addContentStyle(style)).andReturn(true);
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(style)).andReturn(true);
 
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999f);

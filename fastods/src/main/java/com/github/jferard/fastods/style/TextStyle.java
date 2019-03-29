@@ -34,7 +34,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TextStyle implements ObjectStyle {
+public class TextStyle implements FontFaceContainerStyle {
     /**
      * The default text style
      */
@@ -65,6 +65,11 @@ public class TextStyle implements ObjectStyle {
         appendable.append(">");
         this.textProperties.appendXMLContent(util, appendable);
         appendable.append("</style:style>");
+    }
+
+    @Override
+    public FontFace getFontFace() {
+        return this.textProperties.getFontFace();
     }
 
     @Override
