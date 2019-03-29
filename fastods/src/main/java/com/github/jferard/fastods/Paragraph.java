@@ -76,7 +76,7 @@ public class Paragraph implements TagParameters, ParagraphElement {
 
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        if (this.style != null) stylesContainer.addStyleStyle(this.style);
+        if (this.style != null) stylesContainer.addStylesFontFaceContainerStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromFooterHeader(stylesContainer);
         }
@@ -84,7 +84,7 @@ public class Paragraph implements TagParameters, ParagraphElement {
 
     @Override
     public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-        if (this.style != null) stylesContainer.addContentStyle(this.style);
+        if (this.style != null) stylesContainer.addContentFontFaceContainerStyle(this.style);
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromCell(stylesContainer);
         }

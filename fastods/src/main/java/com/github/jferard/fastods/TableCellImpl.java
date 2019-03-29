@@ -320,7 +320,7 @@ public class TableCellImpl implements TableCell {
     public void setStyle(final TableCellStyle style) {
         if (style == null) return;
 
-        this.stylesContainer.addContentStyle(style);
+        this.stylesContainer.addContentFontFaceContainerStyle(style);
         final TableCellStyle curStyle = this.style;
         if (curStyle == null) { // we know that dataStyle is null
             this.style = style; // just set the new style as current style

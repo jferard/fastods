@@ -219,7 +219,7 @@ public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles,
 	@Override
     public void addEmbeddedStyles(
 			final StylesContainer stylesContainer) {
-		this.addEmbeddedStyles(stylesContainer);
+		this.masterPageStyle.addEmbeddedStyles(stylesContainer);
 	}
 
     @Override

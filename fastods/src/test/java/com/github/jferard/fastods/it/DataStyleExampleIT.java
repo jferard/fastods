@@ -144,7 +144,7 @@ public class DataStyleExampleIT {
         TableCellWalker cell = row.getWalker();
         cell.setStringValue("Some data styles");
         cell.setStyle(titleStyle);
-        row.setStyle(TableRowStyle.builder("firstrowstyle").rowHeight(SimpleLength.mm(100)).hidden().build());
+        row.setStyle(TableRowStyle.builder("firstrowstyle").rowHeight(SimpleLength.mm(25)).hidden().build());
 
 
         row = table.nextRow();

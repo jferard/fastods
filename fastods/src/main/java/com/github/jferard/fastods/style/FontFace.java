@@ -21,30 +21,40 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.util.XMLUtil;
 
-/**
- * A paragraph element represents an element inside paragraph (p tag)
- *
- * @author Julien Férard
- */
-public interface ParagraphElement extends Tag {
-    /**
-     * Add the styles contained in this paragraph element to the styles container.
-     * Use if this paragraph elements is inside the page layout.
-     * TODO: store font faces
-     * @param stylesContainer the styles container
-     */
-    void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer);
+import java.io.IOException;
 
-    /**
-     * Add the styles contained in this paragraph element to the styles container.
-     * Use if this paragraph elements is inside a cell.
-     * TODO: store font faces
-     * @param stylesContainer the styles container
-     */
-    void addEmbeddedStylesFromCell(StylesContainer stylesContainer);
+public class FontFace implements XMLConvertible {
+    private final String fontName;
+
+    public FontFace(final String fontName) {
+        this.fontName = fontName;
+    }
+
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<style:font-face");
+        util.appendAttribute(appendable, "style:name", this.fontName);
+        util.appendAttribute(appendable, "svg:font-family", this.fontName);
+        appendable.append("/>");
+    }
+
+    @Override
+    public int hashCode() {
+        return this.fontName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof FontFace))
+            return false;
+
+        final FontFace other = (FontFace) o;
+        return this.fontName.equals(other.fontName);
+    }
 }

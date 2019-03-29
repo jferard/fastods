@@ -109,11 +109,17 @@ public class ContentElementTest {
         final XMLUtil util = XMLUtil.create();
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
+    }
+
+    private void playWriteHeader(XMLUtil util) throws IOException {
+        this.container.writeFontFaceDecls(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.container
+                .writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
     }
 
     @Test()
@@ -122,8 +128,7 @@ public class ContentElementTest {
         final XMLUtil util = XMLUtil.create();
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
@@ -135,8 +140,7 @@ public class ContentElementTest {
         final XMLUtil util = XMLUtil.create();
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
@@ -148,8 +152,7 @@ public class ContentElementTest {
         final XMLUtil util = XMLUtil.create();
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
@@ -161,8 +164,7 @@ public class ContentElementTest {
         final XMLUtil util = XMLUtil.create();
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushTables(util, z);
@@ -175,8 +177,7 @@ public class ContentElementTest {
         this.content.addTable("t1",1,1);
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushTables(util, z);
@@ -190,8 +191,7 @@ public class ContentElementTest {
         this.content.addTable("t2",2,2);
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushRows(util, z, SettingsElement.create());
@@ -206,8 +206,7 @@ public class ContentElementTest {
         this.content.addTable("t2",3,3);
 
         // play
-        this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
-        this.container.writeContentAutomaticStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
+        this.playWriteHeader(util);
 
         PowerMock.replayAll();
         this.content.flushTables(util, z);

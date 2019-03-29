@@ -21,30 +21,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container;
+import java.io.IOException;
 
-/**
- * A paragraph element represents an element inside paragraph (p tag)
- *
- * @author Julien Férard
- */
-public interface ParagraphElement extends Tag {
-    /**
-     * Add the styles contained in this paragraph element to the styles container.
-     * Use if this paragraph elements is inside the page layout.
-     * TODO: store font faces
-     * @param stylesContainer the styles container
-     */
-    void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer);
-
-    /**
-     * Add the styles contained in this paragraph element to the styles container.
-     * Use if this paragraph elements is inside a cell.
-     * TODO: store font faces
-     * @param stylesContainer the styles container
-     */
-    void addEmbeddedStylesFromCell(StylesContainer stylesContainer);
+public interface FontFaceContainerStyle extends ObjectStyle {
+    FontFace getFontFace();
 }

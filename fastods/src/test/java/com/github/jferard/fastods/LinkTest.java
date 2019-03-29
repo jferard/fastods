@@ -24,7 +24,6 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.Container;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +83,7 @@ public class LinkTest {
         final Link link = Link.create("ok", ts, "ref");
 
         PowerMock.resetAll();
-        EasyMock.expect(container.addContentStyle(ts)).andReturn(true);
+        EasyMock.expect(container.addContentFontFaceContainerStyle(ts)).andReturn(true);
 
         PowerMock.replayAll();
         link.addEmbeddedStylesFromCell(container);
@@ -99,7 +98,7 @@ public class LinkTest {
         final Link link = Link.create("ok", ts, "ref");
 
         PowerMock.resetAll();
-        EasyMock.expect(container.addStyleStyle(ts)).andReturn(true);
+        EasyMock.expect(container.addStylesFontFaceContainerStyle(ts)).andReturn(true);
 
         PowerMock.replayAll();
         link.addEmbeddedStylesFromFooterHeader(container);

@@ -25,7 +25,6 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -78,11 +77,11 @@ public class Span implements ParagraphElement {
 
 	@Override
 	public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-		if (this.ts != null) stylesContainer.addStyleStyle(this.ts);
+		if (this.ts != null) stylesContainer.addStylesFontFaceContainerStyle(this.ts);
 	}
 
 	@Override
 	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-		if (this.ts != null) stylesContainer.addContentStyle(this.ts);
+		if (this.ts != null) stylesContainer.addContentFontFaceContainerStyle(this.ts);
 	}
 }

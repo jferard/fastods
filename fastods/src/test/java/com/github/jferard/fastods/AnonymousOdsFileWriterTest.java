@@ -64,6 +64,8 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
+    public static final int EMPTY_DOCUMENT_SIZE = 5218;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
     private ZipUTF8WriterBuilder builder;
@@ -133,7 +135,7 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        Assert.assertEquals(5446, buf.length);
+        Assert.assertEquals(EMPTY_DOCUMENT_SIZE, buf.length);
         Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
                 "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                 "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
@@ -247,7 +249,7 @@ public class AnonymousOdsFileWriterTest {
         }
         Collections.sort(names);
 
-        Assert.assertEquals(5446 * 2, buf.length);
+        Assert.assertEquals(EMPTY_DOCUMENT_SIZE * 2, buf.length);
         // Every element appears twice
         Assert.assertEquals(
                 Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",

@@ -39,7 +39,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableCellStyle implements ObjectStyle {
+public class TableCellStyle implements FontFaceContainerStyle {
     /**
      * This is the default cell style: left and top align, no wrap.
      */
@@ -290,5 +290,10 @@ public class TableCellStyle implements ObjectStyle {
         VerticalAlign(final String attrValue) {
             this.attrValue = attrValue;
         }
+    }
+
+    @Override
+    public FontFace getFontFace() {
+        return this.textProperties.getFontFace();
     }
 }

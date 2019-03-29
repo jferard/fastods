@@ -190,7 +190,7 @@ public class TableRow {
      * @param ts The table rowStyle to be used
      */
     public void setDefaultCellStyle(final TableCellStyle ts) {
-        this.stylesContainer.addContentStyle(ts);
+        this.stylesContainer.addContentFontFaceContainerStyle(ts);
         this.defaultCellStyle = ts;
     }
 
