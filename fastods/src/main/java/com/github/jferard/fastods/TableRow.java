@@ -66,24 +66,27 @@ public class TableRow {
     private DataStyles dataStyles;
     private TableCellStyle defaultCellStyle;
     private TableRowStyle rowStyle;
+    private final boolean libreOfficeMode;
 
     /**
      * Create a new TableRow
-     *
-     * @param writeUtil       an util
+     *  @param writeUtil       an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles containes
      * @param dataStyles      the data styles
+     * @param libreOfficeMode
      * @param parent          the parent table
      * @param rowIndex        the index of this row
      * @param columnCapacity  the max column
      */
     TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-             final DataStyles dataStyles, final Table parent, final int rowIndex, final int columnCapacity) {
+             final DataStyles dataStyles, final boolean libreOfficeMode, final Table parent, final int rowIndex,
+             final int columnCapacity) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
+        this.libreOfficeMode = libreOfficeMode;
         this.parent = parent;
         this.rowIndex = rowIndex;
         this.columnCapacity = columnCapacity;
@@ -228,7 +231,8 @@ public class TableRow {
     public TableCell getOrCreateCell(final int colIndex) {
         TableCell cell = this.cells.get(colIndex);
         if (cell == null) {
-            cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer, this.dataStyles, this,
+            cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer, this.dataStyles,
+                    this.libreOfficeMode, this,
                     colIndex);
             this.cells.set(colIndex, cell);
         }
@@ -241,6 +245,7 @@ public class TableRow {
      * @param rowStyle the style
      */
     public void setStyle(final TableRowStyle rowStyle) {
+        this.stylesContainer.addContentFontFaceContainerStyle(rowStyle);
         this.stylesContainer.addContentStyle(rowStyle);
         this.rowStyle = rowStyle;
     }

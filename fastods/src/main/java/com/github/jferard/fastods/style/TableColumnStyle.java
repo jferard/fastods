@@ -34,7 +34,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableColumnStyle implements ObjectStyle {
+public class TableColumnStyle implements FontFaceContainerStyle {
     /**
      * The default style, see LO.
      */
@@ -181,5 +181,13 @@ public class TableColumnStyle implements ObjectStyle {
         if (this.defaultCellStyle != null) {
             stylesContainer.addContentStyle(this.defaultCellStyle);
         }
+    }
+
+    @Override
+    public FontFace getFontFace() {
+        if (this.defaultCellStyle != null)
+            return this.defaultCellStyle.getFontFace();
+        else
+            return null;
     }
 }

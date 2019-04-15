@@ -52,7 +52,7 @@ public class ContentElementTest {
         this.container = PowerMock.createMock(StylesContainer.class);
         this.format = DataStylesBuilder.create(Locale.US).build();
         this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(), this.format,
-                this.container);
+                true, this.container);
         PowerMock.resetAll();
     }
 

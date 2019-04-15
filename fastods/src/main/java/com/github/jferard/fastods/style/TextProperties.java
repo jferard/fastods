@@ -188,7 +188,7 @@ public class TextProperties implements TagParameters {
 	public boolean isNotEmpty() {
 		return this.fontUnderlineStyle != null || this.fontColor != SimpleColor.NONE
 				|| this.fontSize != null || this.fontStyle != null
-				|| this.fontUnderlineColor != SimpleColor.NONE || this.fontWeight != null;
+				|| this.fontUnderlineColor != SimpleColor.NONE || this.fontWeight != null || this.fontName != null;
 	}
 
 	/**

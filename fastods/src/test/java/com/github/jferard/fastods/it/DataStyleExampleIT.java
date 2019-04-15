@@ -33,16 +33,13 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.datastyle.DateStyleBuilder;
 import com.github.jferard.fastods.datastyle.DateStyleFormat;
+import com.github.jferard.fastods.datastyle.FloatStyle;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Util;
-import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
-import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,12 +47,9 @@ import org.junit.Test;
 import org.odftoolkit.simple.SpreadsheetDocument;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -95,7 +89,7 @@ public class DataStyleExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(5, sheet.getRowCount());
+        Assert.assertEquals(6, sheet.getRowCount());
         // TODO: Add more validation tests"
     }
 
@@ -135,21 +129,28 @@ public class DataStyleExampleIT {
         final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col")
                 .columnWidth(SimpleLength.cm(5)).build();
         table.setColumnStyle(1, columnStyle1);
-        final TableCellStyle titleStyle = TableCellStyle.builder("my-title").fontName("Liberation Mono")
-                .fontSize(SimpleLength.cm(2)).build();
+
+        // a column datastyle
+        final FloatStyle floatStyle = new FloatStyleBuilder("second-custom-int-datastyle", this.locale)
+                .decimalPlaces(8).build();
+        final TableCellStyle cellStyle1 = TableCellStyle.builder("datastyle0").dataStyle(floatStyle)
+                .build();
+        final TableColumnStyle columnDataStyle = TableColumnStyle.builder("col-datastyle")
+                .columnWidth(SimpleLength.cm(5))
+                .defaultCellStyle(
+                        cellStyle1)
+                .build();
+        table.setColumnStyle(2, columnDataStyle);
+
+        final FloatStyle floatStyle2 = new FloatStyleBuilder("third-custom-int-datastyle", this.locale)
+                .decimalPlaces(6).build();
+        final TableCellStyle cellStyle2 = TableCellStyle.builder("datastyle1").dataStyle(floatStyle2)
+                .build();
 
         // FIRST ROW
         TableRow row = table.nextRow();
         row.setStyle(rowStyle);
         TableCellWalker cell = row.getWalker();
-        cell.setStringValue("Some data styles");
-        cell.setStyle(titleStyle);
-        row.setStyle(TableRowStyle.builder("firstrowstyle").rowHeight(SimpleLength.mm(25)).hidden().build());
-
-
-        row = table.nextRow();
-        row.setStyle(rowStyle);
-        cell = row.getWalker();
         cell.setStringValue("An int with the new default format: ");
         cell.next();
         cell.setFloatValue(123456.789);
@@ -190,5 +191,29 @@ public class DataStyleExampleIT {
                         DateStyleFormat.MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR)).visible()
                 .build();
         cell.setDataStyle(dateStyle);
+
+        // FIFTH ROW: same as FOURTH, but the datastyle is put before the value
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        cell = row.getWalker();
+        cell.setStringValue("An date with a custom format (datastyle set before the value): ");
+        cell.next();
+        cell.setDataStyle(dateStyle);
+        cell.setFloatValue(10);
+        cell.next();
+        cell.setFloatValue(10);
+
+        // SIXTH ROW
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        row.setDefaultCellStyle(cellStyle2);
+        cell = row.getWalker();
+        cell.setFloatValue(100000);
+        cell.next();
+        cell.setFloatValue(100000);
+        cell.next();
+        cell.setFloatValue(100000);
+        cell.next();
+        cell.setFloatValue(100000);
     }
 }

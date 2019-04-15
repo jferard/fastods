@@ -70,7 +70,7 @@ public class OdsFactory {
         final WriteUtil writeUtil = WriteUtil.create();
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles format = DataStylesBuilder.create(locale).build();
-        return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format);
+        return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format, true);
     }
 
     private final Logger logger;
@@ -78,24 +78,25 @@ public class OdsFactory {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private DataStyles format;
-
+    private boolean libreOfficeMode;
 
     /**
      * Create a new OdsFactory
-     *
-     * @param logger       the logger
+     *  @param logger       the logger
      * @param positionUtil an util
      * @param writeUtil    an util
      * @param xmlUtil      an util
      * @param format       the data styles
+     * @param libreOfficeMode
      */
     OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
-               final XMLUtil xmlUtil, final DataStyles format) {
+               final XMLUtil xmlUtil, final DataStyles format, boolean libreOfficeMode) {
         this.logger = logger;
         this.positionUtil = positionUtil;
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
         this.format = format;
+        this.libreOfficeMode = libreOfficeMode;
     }
 
     /**
@@ -109,6 +110,17 @@ public class OdsFactory {
         return this;
     }
 
+    /**
+     * Disable the LibreOffice mode. The LibreOffice mode adds a style to every cell, to force
+     * LibreOffice to render the cell styles correctly.
+     * This mode is set by default, and might slow down the generation of the file.
+     *
+     * @return this for fluent style
+     */
+    public OdsFactory noLibreOfficeMode() {
+        this.libreOfficeMode = false;
+        return this;
+    }
 
     /**
      * Create a new, empty document for an anonymous writer. Use addTable to add tables.
@@ -117,7 +129,8 @@ public class OdsFactory {
      */
     private AnonymousOdsDocument createAnonymousDocument() {
         final OdsElements odsElements = OdsElements
-                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format);
+                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
+                        this.libreOfficeMode);
         return AnonymousOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
 
@@ -128,7 +141,8 @@ public class OdsFactory {
      */
     private NamedOdsDocument createNamedDocument() {
         final OdsElements odsElements = OdsElements
-                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format);
+                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
+                        this.libreOfficeMode);
         return NamedOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
 

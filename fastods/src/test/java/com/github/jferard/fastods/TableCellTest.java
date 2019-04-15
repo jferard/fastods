@@ -69,8 +69,9 @@ public class TableCellTest {
 
         this.tcc = TableColdCell.create(this.xmlUtil);
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, this.table, ROW_INDEX, 100);
-        this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, this.row, COLUMN_INDEX);
+        this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, ROW_INDEX, 100);
+        this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false,
+                this.row, COLUMN_INDEX);
         this.tcs = TableCellStyle.builder("name").build();
         PowerMock.mockStatic(TableColdCell.class);
     }

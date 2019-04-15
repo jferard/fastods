@@ -45,7 +45,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
      */
     public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
             .textAlign(TableCellStyle.Align.LEFT).verticalAlign(TableCellStyle.VerticalAlign.TOP).fontWrap(false)
-            .backgroundColor(SimpleColor.NONE).allMargins(SimpleLength.mm(0.0)).parentCellStyle(null).build();
+            .backgroundColor(SimpleColor.NONE).allMargins(SimpleLength.mm(0.0)).fontName("Liberation Sans").parentCellStyle(null).build();
 
     /**
      * Create a builder

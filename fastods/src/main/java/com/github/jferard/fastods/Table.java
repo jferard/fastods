@@ -54,15 +54,16 @@ public class Table implements NamedObject {
      * @param columnCapacity  the column capacity
      * @param stylesContainer the container for styles
      * @param format          the data styles
+     * @param libreOfficeMode
      * @return the table
      */
     public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil,
                                final XMLUtil xmlUtil, final String name, final int rowCapacity,
                                final int columnCapacity, final StylesContainer stylesContainer,
-                               final DataStyles format) {
+                               final DataStyles format, final boolean libreOfficeMode) {
         positionUtil.checkTableName(name);
         final TableBuilder builder = TableBuilder
-                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name,
+                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode, name,
                         rowCapacity, columnCapacity);
         return new Table(name, builder);
     }

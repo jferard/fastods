@@ -430,6 +430,6 @@ public class TableCellWalkerImplTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
         final WriteUtil writeUtil = WriteUtil.create();
-        return new TableRow(writeUtil, xmlUtil, stc, ds, null, 10, 100);
+        return new TableRow(writeUtil, xmlUtil, stc, ds, false, null, 10, 100);
     }
 }

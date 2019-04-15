@@ -54,20 +54,23 @@ public class ContentElement implements OdsElement {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private List<String> autofilters;
+    private final boolean libreOfficeMode;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
      * @param xmlUtil         an util object to write xml
      * @param writeUtil       an util to compute some data
      * @param format          the format for data styles
+     * @param libreOfficeMode
      * @param stylesContainer a styles container.
      */
     ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil, final WriteUtil writeUtil,
-                   final DataStyles format, final StylesContainer stylesContainer) {
+                   final DataStyles format, final boolean libreOfficeMode, final StylesContainer stylesContainer) {
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
         this.positionUtil = positionUtil;
         this.format = format;
+        this.libreOfficeMode = libreOfficeMode;
         this.stylesContainer = stylesContainer;
         this.tables = new UniqueList<Table>();
         this.flushPosition = new FlushPosition();
@@ -103,7 +106,7 @@ public class ContentElement implements OdsElement {
         if (table == null) {
             table = Table
                     .create(this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
-                            columnCapacity, this.stylesContainer, this.format);
+                            columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);
             this.tables.add(table);
         }
         return table;

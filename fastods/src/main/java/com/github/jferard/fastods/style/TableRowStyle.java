@@ -33,7 +33,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableRowStyle implements ObjectStyle {
+public class TableRowStyle implements FontFaceContainerStyle {
     /**
      * The default style, see LO.
      */
@@ -112,5 +112,13 @@ public class TableRowStyle implements ObjectStyle {
     @Override
     public boolean isHidden() {
         return this.hidden;
+    }
+
+    @Override
+    public FontFace getFontFace() {
+        if (this.defaultCellStyle != null)
+            return this.defaultCellStyle.getFontFace();
+        else
+            return null;
     }
 }

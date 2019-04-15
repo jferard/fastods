@@ -58,7 +58,7 @@ public class TableBuilderTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.builder = new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil,
-                this.stc, this.ds, "mytable", 10, 100, ConfigItemMapEntrySet.createSet("mytable"), 2);
+                this.stc, this.ds, false, "mytable", 10, 100, ConfigItemMapEntrySet.createSet("mytable"), 2);
         this.xmlUtil = xmlUtil;
 
         this.table = PowerMock.createMock(Table.class);
@@ -78,6 +78,7 @@ public class TableBuilderTest {
         // PLAY
         for (int c = 0; c < 10; c++) {
             final TableColumnStyle tcs = tcss.get(c);
+            EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
             EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
             EasyMock.expect(this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
         }

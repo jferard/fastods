@@ -91,14 +91,24 @@ public class TableCellStyleTest {
     @Test
     public void testDefaultCellStyle() throws IOException {
         TestHelper.assertXMLEquals(
-                "<style:style style:name=\"Default\" style:family=\"table-cell\">" + "<style:table-cell-properties "
-                        + "style:vertical-align=\"top\"/>" + "<style:paragraph-properties fo:text-align=\"start\" " +
-                        "fo:margin=\"0mm\"/>" + "</style:style>",
+                "<style:style style:name=\"Default\" style:family=\"table-cell\">" +
+                        "<style:table-cell-properties style:vertical-align=\"top\"/>" +
+                        "<style:text-properties style:font-name=\"Liberation Sans\"/>" +
+                        "<style:paragraph-properties fo:text-align=\"start\" fo:margin=\"0mm\"/>" +
+                        "</style:style>",
                 TableCellStyle.DEFAULT_CELL_STYLE);
     }
 
     @Test
     public final void testGetters() {
         StyleTestHelper.testGetters(TableCellStyle.builder("test"));
+    }
+
+    @Test
+    public final void testFontName() throws IOException {
+        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell").fontName("OpenSymbol").build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"symbol-cell\" " +
+                "style:family=\"table-cell\" style:parent-style-name=\"Default\"><style:text" +
+                "-properties style:font-name=\"OpenSymbol\"/></style:style>", symbolStyle);
     }
 }

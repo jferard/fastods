@@ -118,7 +118,8 @@ public class TextTest {
 
     @Test
     public void linkTable() throws Exception {
-        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null);
+        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null,
+                false);
         final Text t = TextBuilder.create().par().link("a", table).build();
         Assert.assertEquals("n", table.getName());
         TestHelper.assertXMLEquals(
@@ -127,7 +128,8 @@ public class TextTest {
 
     @Test
     public void styledLinkTable() throws Exception {
-        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null);
+        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null,
+                false);
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
         TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +
                 "xlink:type=\"simple\">a</text:a></text:p>", t);

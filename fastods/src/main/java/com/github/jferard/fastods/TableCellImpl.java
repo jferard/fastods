@@ -64,6 +64,7 @@ public class TableCellImpl implements TableCell {
     private final XMLUtil xmlUtil;
     private final StylesContainer stylesContainer;
     private final DataStyles dataStyles;
+    private final boolean libreOfficeMode;
     private final int columnIndex;
     /*
     private TableColdCell coldRow;
@@ -78,20 +79,21 @@ public class TableCellImpl implements TableCell {
 
     /**
      * Create the table cell implementation
-     *
-     * @param writeUtil       an util
+     *  @param writeUtil       an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles containers that will dispatch styles to document.xml and styles.xml
      * @param dataStyles      the styles
+     * @param libreOfficeMode
      * @param parent          the parent row
      * @param columnIndex     index in parent row
      */
     TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-                  final DataStyles dataStyles, final TableRow parent, final int columnIndex) {
+                  final DataStyles dataStyles, final boolean libreOfficeMode, final TableRow parent, final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
+        this.libreOfficeMode = libreOfficeMode;
         this.parent = parent;
         this.columnIndex = columnIndex;
     }
@@ -107,6 +109,8 @@ public class TableCellImpl implements TableCell {
 
         if (this.style != null) {
             util.appendEAttribute(appendable, "table:style-name", this.style.getName());
+        } else if (this.libreOfficeMode) {
+            util.appendEAttribute(appendable, "table:style-name", this.getCurCellStyle().getName());
         }
 
         if (this.type != null) {
@@ -180,7 +184,7 @@ public class TableCellImpl implements TableCell {
     public void setBooleanValue(final boolean value) {
         this.value = value ? "true" : "false";
         this.type = TableCell.Type.BOOLEAN;
-        this.setDataStyle(this.dataStyles.getBooleanDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getBooleanDataStyle());
     }
 
     /*
@@ -200,7 +204,7 @@ public class TableCellImpl implements TableCell {
     private void setCurrencyValue(final String valueAsString, final String currency) {
         this.value = valueAsString;
         this.type = TableCell.Type.CURRENCY;
-        this.setDataStyle(this.dataStyles.getCurrencyDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getCurrencyDataStyle());
 
         this.ensureColdCell();
         this.coldCell.setCurrency(currency); // escape here
@@ -234,6 +238,22 @@ public class TableCellImpl implements TableCell {
         }
     }
 
+    /** For implicit datastyle, e.g. will set an implicit datastyle if the data style is not set */
+    private void setImplicitDataStyle(final DataStyle dataStyle) {
+        if (dataStyle == null) return;
+        final TableCellStyle curStyle = this.getCurCellStyle();
+        final DataStyle curDataStyle = curStyle.getDataStyle();
+        if (curDataStyle == null) { // no data style yet: create a custom child style
+            this.stylesContainer.addDataStyle(dataStyle);
+            this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
+        } else {
+            // TODO: Can't we add this on first style use, once for all?
+            this.stylesContainer.addDataStyle(curDataStyle);
+            this.style = this.stylesContainer.addChildCellStyle(curStyle.getParentCellStyle(), curDataStyle);
+        }
+    }
+
+
     /**
      * @return the current cell style, eventually found in parent (row, column, table). Never null
      */
@@ -254,13 +274,13 @@ public class TableCellImpl implements TableCell {
     public void setDateValue(final Date value) {
         this.value = TableCellImpl.DATE_VALUE_FORMAT.format(value);
         this.type = TableCell.Type.DATE;
-        this.setDataStyle(this.dataStyles.getDateDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getDateDataStyle());
     }
 
     private void setFloatValue(final String valueAsString) {
         this.value = valueAsString;
         this.type = TableCell.Type.FLOAT;
-        this.setDataStyle(this.dataStyles.getNumberDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getNumberDataStyle());
     }
 
     @Override
@@ -297,7 +317,7 @@ public class TableCellImpl implements TableCell {
     private void setPercentageValue(final String valueAsString) {
         this.value = valueAsString;
         this.type = TableCell.Type.PERCENTAGE;
-        this.setDataStyle(this.dataStyles.getPercentageDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getPercentageDataStyle());
     }
 
     @Override
@@ -355,7 +375,7 @@ public class TableCellImpl implements TableCell {
     public void setTimeValue(final long timeInMillis) {
         this.value = this.xmlUtil.formatTimeInterval(timeInMillis);
         this.type = TableCell.Type.TIME;
-        this.setDataStyle(this.dataStyles.getTimeDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }
 
     @Override

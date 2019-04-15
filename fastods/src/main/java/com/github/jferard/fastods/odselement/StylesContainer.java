@@ -50,6 +50,9 @@ import java.util.Set;
  * @author Martin Schulz
  */
 public class StylesContainer {
+
+    public static final FontFace DEFAULT_FONT_FACE = new FontFace("Liberation Sans");
+
     /** A cell style, child of a table cell style and a data style/
      * This class is a key for a Map */
     private static class ChildCellStyle {
@@ -108,6 +111,7 @@ public class StylesContainer {
         this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
         this.anonymousStyleByChildCellStyle = new HashMap<ChildCellStyle, TableCellStyle>();
         this.fontFaces = new HashSet<FontFace>();
+        this.fontFaces.add(DEFAULT_FONT_FACE);
     }
 
     /**

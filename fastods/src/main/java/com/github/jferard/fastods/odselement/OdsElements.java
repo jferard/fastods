@@ -64,10 +64,12 @@ public class OdsElements {
      * @param xmlUtil      an XML util
      * @param writeUtil    an util for write
      * @param format       the data styles
+     * @param libreOfficeMode
      * @return a new OdsElements, with newly build elements.
      */
-    public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil, final WriteUtil writeUtil,
-                                     final DataStyles format) {
+    public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+                                     final WriteUtil writeUtil,
+                                     final DataStyles format, final boolean libreOfficeMode) {
         final MimetypeElement mimetypeElement = new MimetypeElement();
         final ManifestElement manifestElement = new ManifestElement();
         final SettingsElement settingsElement = SettingsElement.create();
@@ -75,7 +77,7 @@ public class OdsElements {
         final StylesContainer stylesContainer = new StylesContainer();
         final StylesElement stylesElement = new StylesElement(stylesContainer);
         final ContentElement contentElement = new ContentElement(positionUtil, xmlUtil, writeUtil, format,
-                stylesContainer);
+                libreOfficeMode, stylesContainer);
         return new OdsElements(Logger.getLogger(OdsElements.class.getName()), stylesContainer, mimetypeElement,
                 manifestElement, settingsElement, metaElement, contentElement, stylesElement);
     }

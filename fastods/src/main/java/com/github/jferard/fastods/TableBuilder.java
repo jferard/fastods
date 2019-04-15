@@ -92,7 +92,7 @@ class TableBuilder {
      */
     public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil,
                                       final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-                                      final DataStyles format, final String name,
+                                      final DataStyles format, final boolean libreOfficeMode, final String name,
                                       final int rowCapacity, final int columnCapacity) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
         configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
@@ -110,7 +110,8 @@ class TableBuilder {
         configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
         configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
 
-        return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format, name,
+        return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format,
+                libreOfficeMode, name,
                 rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
     }
 
@@ -124,6 +125,7 @@ class TableBuilder {
     private final FastFullList<TableRow> tableRows;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
+    private final boolean libreOfficeMode;
     private NamedOdsFileWriter observer;
     private int curRowIndex;
     private int lastFlushedRowIndex;
@@ -133,12 +135,12 @@ class TableBuilder {
 
     /**
      * Create a new table builder
-     *
-     * @param positionUtil    an util
+     *  @param positionUtil    an util
      * @param writeUtil       an util
      * @param xmlUtil         an util
      * @param stylesContainer the container
      * @param format          the available data styles
+     * @param libreOfficeMode
      * @param name            the name of the table
      * @param rowCapacity     the row capacity of the table
      * @param columnCapacity  the column capacity of the table
@@ -146,14 +148,15 @@ class TableBuilder {
      * @param bufferSize      the buffer size
      */
     TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
-                 final StylesContainer stylesContainer, final DataStyles format, final String name,
-                 final int rowCapacity, final int columnCapacity,
+                 final StylesContainer stylesContainer, final DataStyles format,
+                 final boolean libreOfficeMode, final String name, final int rowCapacity, final int columnCapacity,
                  final ConfigItemMapEntrySet configEntry, final int bufferSize) {
         this.xmlUtil = xmlUtil;
         this.writeUtil = writeUtil;
         this.positionUtil = positionUtil;
         this.stylesContainer = stylesContainer;
         this.format = format;
+        this.libreOfficeMode = libreOfficeMode;
         this.name = name;
         this.columnCapacity = columnCapacity;
         this.configEntry = configEntry;
@@ -258,7 +261,7 @@ class TableBuilder {
         TableRow tr = this.tableRows.get(rowIndex);
         if (tr == null) {
             tr = new TableRow(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,
-                    table, rowIndex, this.columnCapacity);
+                    this.libreOfficeMode, table, rowIndex, this.columnCapacity);
             this.tableRows.set(rowIndex, tr);
             if (rowIndex > this.lastRowIndex) this.lastRowIndex = rowIndex;
 
@@ -365,6 +368,7 @@ class TableBuilder {
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) throws FastOdsException {
         TableBuilder.checkCol(col);
+        this.stylesContainer.addContentFontFaceContainerStyle(ts);
         ts.addToContentStyles(this.stylesContainer);
         this.columnStyles.set(col, ts);
     }
