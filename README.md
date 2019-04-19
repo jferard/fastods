@@ -2,7 +2,7 @@
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
 
 # FastODS
-(C) J. Férard 2016-2018
+(C) J. Férard 2016-2019
 
 (C) M. Schulz 2008-2013 for SimpleODS
 
@@ -117,7 +117,8 @@ To run those examples, one has to run:
 
 ```mvn verify```
 
-The resulting ods files are written in current directory, and can be opened with LibreOffice or OpenOffice.
+The resulting ods files are written in `generated_files` directory, and can be opened with LibreOffice or OpenOffice.
+See [the integration tests directory](https://github.com/jferard/fastods/tree/master/fastods/src/test/java/com/github/jferard/fastods/it)
 
 ## Speed
 Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing large ODS files. (SimpleODF is clearly not the right tool to write large ODS files.)
