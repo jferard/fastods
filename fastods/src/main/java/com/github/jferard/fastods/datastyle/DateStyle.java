@@ -37,7 +37,15 @@ import java.io.IOException;
  *
  * <pre>{@code
  *     DateStyleFormat f = new DateStyleFormat(DateStyleFormat.text("Month of "),
- *                                                          LONG_TEXTUAL_MONTH);
+ *                                                          DateStyleFormat.LONG_TEXTUAL_MONTH);
+ *     DateStyle s = DateStyleBuilder("my style", Locale.US).dateFormat(f).build();
+ *     ... // use the style
+ * }
+ *
+ * Note that the bricks from `TimeStyleFormat` are allowed too:
+ *
+ * <pre>{@code
+ *     DateStyleFormat f = new DateStyleFormat(TimeStyleFormat.MINUTES);
  *     DateStyle s = DateStyleBuilder("my style", Locale.US).dateFormat(f).build();
  *     ... // use the style
  * }

@@ -28,12 +28,12 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
+public class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> {
     private final CoreDataStyleBuilder dataStyleBuilder;
     /**
      * The date format.
      */
-    private TimeStyle.Format timeFormat;
+    private DateStyleFormat timeFormat;
 
     /**
      * Create a new date style with the name name.
@@ -62,7 +62,7 @@ class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBuilder> 
      * @param format The date format to be used.
      * @return this for fluent style
      */
-    public TimeStyleBuilder timeFormat(final TimeStyle.Format format) {
+    public TimeStyleBuilder timeFormat(final DateStyleFormat format) {
         this.timeFormat = format;
         return this;
     }

@@ -40,9 +40,10 @@ public class TimeStyleTest {
         final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(TimeStyle.Format.HHMMSS).build();
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " + "style" +
-                        ":volatile=\"true\" number:format-source=\"fixed\">" + "<number:hours/>" +
-                        "<number:text>:</number:text>" + "<number:minutes/>" + "<number:text>:</number:text>" +
-                        "<number:seconds/>" + "</number:time-style>",
+                        ":volatile=\"true\" number:format-source=\"fixed\">" +
+                        "<number:hours number:style=\"long\"/>" +
+                        "<number:text>:</number:text>" + "<number:minutes number:style=\"long\"/>" + "<number:text>:</number:text>" +
+                        "<number:seconds number:style=\"long\"/>" + "</number:time-style>",
                 ts);
     }
 

@@ -30,7 +30,7 @@ import java.io.IOException;
 
 /**
  * 16.27.10<number:date-style>
- * The class `DateStyleFormat` represents a style for date values.
+ * The class `DateStyleFormat` represents a style for date and time values.
  * A `DateStyleFormat` may be constructed using bricks (the static `String`s),
  * free text or any string. This is flexible enough to create any style.
  *
@@ -99,6 +99,10 @@ public class DateStyleFormat implements XMLConvertible {
      */
     public static final String DASH = "<number:text>-</number:text>";
     /**
+     * A colon
+     */
+    public static final String COLON = "<number:text>:</number:text>";
+    /**
      * A dot
      */
     public static final String DOT = "<number:text>.</number:text>";
@@ -131,6 +135,46 @@ public class DateStyleFormat implements XMLConvertible {
      * A week number in the year
      */
     public static final String WEEK = "<number:week-of-year/>";
+
+    /**
+     * 16.27.19<number:hours>
+     * Hours
+     */
+    public static final String HOURS = "<number:hours/>";
+    /**
+     * 16.27.19<number:hours>
+     * Hours (long)
+     */
+    public static final String LONG_HOURS = "<number:hours number:style=\"long\"/>";
+    /**
+     * 16.27.20<number:minutes>
+     * Minutes
+     */
+    public static final String MINUTES = "<number:minutes/>";
+    /**
+     * 16.27.20<number:minutes>
+     * Minutes (long)
+     */
+    public static final String LONG_MINUTES = "<number:minutes number:style=\"long\"/>";
+    /**
+     * 16.27.21<number:seconds>
+     * Seconds
+     */
+    public static final String SECONDS = "<number:seconds/>";
+    /**
+     * 16.27.21<number:seconds>
+     * Seconds (long)
+     */
+    public static final String LONG_SECONDS = "<number:seconds number:style=\"long\"/>";
+
+    /**
+     * 16.27.21<number:seconds>
+     * Seconds (long)
+     */
+    public static String longSeconds(final int n) {
+        return "<number:seconds number:style=\"long\" number:decimal-places=\"" + n + "\"/>";
+    }
+
 
     private final String[] strings;
 

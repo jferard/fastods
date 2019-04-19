@@ -35,14 +35,8 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class TimeStyle implements DataStyle {
-	private static final String COLON = "<number:text>:</number:text>";
-	private static final String DASH = "<number:text>-</number:text>";
-	private static final String DOT = "<number:text>.</number:text>";
-	private static final String HOURS = "<number:hours/>";
-	private static final String MINUTES = "<number:minutes/>";
-	private static final String SECONDS = "<number:seconds/>";
 	private final CoreDataStyle dataStyle;
-	private final TimeStyle.Format timeFormat;
+	private final DateStyleFormat timeFormat;
 
 	/**
 	 * Create a new date style
@@ -50,7 +44,7 @@ public class TimeStyle implements DataStyle {
 	 * @param timeFormat the format
 	 */
 	TimeStyle(final CoreDataStyle dataStyle,
-						final Format timeFormat) {
+						final DateStyleFormat timeFormat) {
 		this.dataStyle = dataStyle;
 		this.timeFormat = timeFormat;
 	}
@@ -68,16 +62,7 @@ public class TimeStyle implements DataStyle {
 		} else {
 			util.appendAttribute(appendable, "number:format-source", "fixed");
 			appendable.append(">");
-
-			switch (this.timeFormat) {
-				case HHMMSS:
-				default:
-					appendable.append(TimeStyle.HOURS).append(TimeStyle.COLON)
-							.append(TimeStyle.MINUTES).append(TimeStyle.COLON)
-							.append(TimeStyle.SECONDS);
-					break;
-			}
-
+			this.timeFormat.appendXMLContent(util, appendable);
 			appendable.append("</number:time-style>");
 		}
 	}
@@ -85,11 +70,19 @@ public class TimeStyle implements DataStyle {
 	/**
 	 * A time format
 	 */
-	public enum Format {
+	public static class Format {
 		/**
 		 * Set the time format like '01:02:03'.
 		 */
-		HHMMSS
+		public static final DateStyleFormat HHMMSS = new DateStyleFormat(DateStyleFormat.LONG_HOURS,
+				DateStyleFormat.COLON, DateStyleFormat.LONG_MINUTES, DateStyleFormat.COLON,
+				DateStyleFormat.LONG_SECONDS);
+		/**
+		 * Set the time format like '01:02:03.45'.
+		 */
+		public static final DateStyleFormat HHMMSS00 = new DateStyleFormat(DateStyleFormat.LONG_HOURS,
+				DateStyleFormat.COLON, DateStyleFormat.LONG_MINUTES, DateStyleFormat.COLON,
+				DateStyleFormat.longSeconds(2));
 	}
 
 	@Override

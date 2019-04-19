@@ -35,6 +35,7 @@ import com.github.jferard.fastods.datastyle.DateStyleBuilder;
 import com.github.jferard.fastods.datastyle.DateStyleFormat;
 import com.github.jferard.fastods.datastyle.FloatStyle;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
+import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -89,7 +90,7 @@ public class DataStyleExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(6, sheet.getRowCount());
+        Assert.assertEquals(8, sheet.getRowCount());
         // TODO: Add more validation tests"
     }
 
@@ -192,7 +193,28 @@ public class DataStyleExampleIT {
                 .build();
         cell.setDataStyle(dateStyle);
 
-        // FIFTH ROW: same as FOURTH, but the datastyle is put before the value
+        // 5TH ROW
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        cell = row.getWalker();
+        cell.setStringValue("A time with the default format: ");
+        cell.next();
+        cell.setTimeValue(10000000);
+
+        // 6TH ROW
+        row = table.nextRow();
+        row.setStyle(rowStyle);
+        cell = row.getWalker();
+        cell.setStringValue("A time with a custom format: ");
+        cell.next();
+        cell.setTimeValue(10000000);
+        // Add a custom format
+        final DataStyle timeStyle = new TimeStyleBuilder("custom-time-datastyle", this.locale)
+                .timeFormat(new DateStyleFormat(DateStyleFormat.text("Hour: "), DateStyleFormat.LONG_HOURS)).visible()
+                .build();
+        cell.setDataStyle(timeStyle);
+
+        // 7TH ROW: same as FOURTH, but the datastyle is put before the value
         row = table.nextRow();
         row.setStyle(rowStyle);
         cell = row.getWalker();
@@ -203,7 +225,7 @@ public class DataStyleExampleIT {
         cell.next();
         cell.setFloatValue(10);
 
-        // SIXTH ROW
+        // 8TH ROW
         row = table.nextRow();
         row.setStyle(rowStyle);
         row.setDefaultCellStyle(cellStyle2);
