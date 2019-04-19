@@ -32,6 +32,16 @@ import java.io.IOException;
  * content.xml/office:document-content/office:automatic-styles/number:
  * date-style styles.xml/office:document-styles/office:styles/number:date-style
  *
+ * To create a custom `DateStyle`, first create a new `DateStyleFormat` and pass it to
+ * a `DateStyleBuilder`:
+ *
+ * <pre>{@code
+ *     DateStyleFormat f = new DateStyleFormat(DateStyleFormat.text("Month of "),
+ *                                                          LONG_TEXTUAL_MONTH);
+ *     DateStyle s = DateStyleBuilder("my style", Locale.US).dateFormat(f).build();
+ *     ... // use the style
+ * }
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */

@@ -29,18 +29,75 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
+ * 16.27.10<number:date-style>
+ * The class `DateStyleFormat` represents a style for date values.
+ * A `DateStyleFormat` may be constructed using bricks (the static `String`s),
+ * free text or any string. This is flexible enough to create any style.
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class DateStyleFormat implements XMLConvertible {
-	/**
-	 * The default date format Format.DDMMYY.
-	 */
-	public static final String DASH = "<number:text>-</number:text>";
     /**
+     * 16.27.11<number:day>
      * the day
      */
     public static final String DAY = "<number:day/>";
+    /**
+     * 16.27.11<number:day>
+     * A day (long)
+     */
+    public static final String LONG_DAY = "<number:day number:style=\"long\"/>";
+    /**
+     * 16.27.11<number:day>
+     * the day, textual version
+     */
+    public static final String TEXTUAL_DAY = "<number:day number:textual=\"true\"/>";
+    /**
+     * 16.27.11<number:day>
+     * A day (long)
+     */
+    public static final String LONG_TEXTUAL_DAY =
+            "<number:day number:style=\"long\" number:textual=\"true\"/>";
+
+
+    /**
+     * 16.27.12<number:month>
+     * A month
+     */
+    public static final String MONTH = "<number:month/>";
+    /**
+     * 16.27.12<number:month>
+     * A month (long)
+     */
+    public static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
+    /**
+     * 16.27.12<number:month>
+     * A month name
+     */
+    public static final String TEXTUAL_MONTH = "<number:month number:textual=\"true\"/>";
+    /**
+     * 16.27.12<number:month>
+     * A month name (long)
+     */
+    public static final String LONG_TEXTUAL_MONTH =
+            "<number:month number:style=\"long\" number:textual=\"true\"/>";
+
+    /**
+     * 16.27.13<number:year>
+     * A year YY
+     */
+    public static final String YEAR = "<number:year/>";
+    /**
+     * 16.27.13<number:year>
+     * A year YYYY
+     */
+    public static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
+
+    /**
+     * A dash
+     */
+    public static final String DASH = "<number:text>-</number:text>";
     /**
      * A dot
      */
@@ -54,41 +111,32 @@ public class DateStyleFormat implements XMLConvertible {
      */
     public static final String SLASH = "<number:text>/</number:text>";
     /**
-     * A day (long)
-     */
-    public static final String LONG_DAY = "<number:day number:style=\"long\"/>";
-    /**
-     * A month (long)
-     */
-    public static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
-    /**
-     * A month
-     */
-    public static final String MONTH = "<number:month/>";
-    /**
-     * A month name
-     */
-    public static final String LONG_TEXTUAL_MONTH = "<number:month number:style=\"long\" number:textual=\"true\"/>";
-    /**
-     * A year YYYY
-     */
-    public static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
-    /**
      * A space
      */
     public static final String SPACE = "<number:text> </number:text>";
     /**
+     * A free text
+     */
+    public static String text(final String s) {
+        return "<number:text>"+s+"</number:text>";
+    }
+
+    /**
+     * 16.27.15<number:day-of-week>
+     * Day of week
+     */
+    public static final String DAY_OF_WEEK = "<number:day-of-week/>";
+    /**
+     * 16.27.16<number:week-of-year>
      * A week number in the year
      */
     public static final String WEEK = "<number:week-of-year/>";
-    /**
-     * A year YY
-     */
-    public static final String YEAR = "<number:year/>";
+
     private final String[] strings;
 
     /**
      * The constructor
+     *
      * @param strings the string that compose the format
      */
     public DateStyleFormat(final String... strings) {
@@ -96,7 +144,8 @@ public class DateStyleFormat implements XMLConvertible {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         for (final String string : this.strings)
             appendable.append(string);
     }

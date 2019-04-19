@@ -31,10 +31,6 @@ import java.util.Locale;
 public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBuilder> {
     private final CoreDataStyleBuilder dataStyleBuilder;
     private boolean automaticOrder;
-
-    /**
-     * The default date format DATEFORMAT_DDMMYY.
-     */
     private DateStyleFormat dateFormat;
 
     /**
