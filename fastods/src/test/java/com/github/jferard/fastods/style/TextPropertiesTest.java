@@ -48,10 +48,10 @@ public class TextPropertiesTest {
 
     @Test
     public final void testColorNameSize() throws IOException {
-        final TextProperties prop = TextProperties.builder().fontColor(SimpleColor.ALICEBLUE).fontName("Verdana")
+        final TextProperties prop = TextProperties.builder().fontColor(SimpleColor.ALICEBLUE).fontName(LOFonts.LIBERATION_SERIF)
                 .fontSizePercentage(10.8).build();
         TestHelper.assertXMLEquals(
-                "<style:text-properties fo:color=\"#f0f8ff\" style:font-name=\"Verdana\" fo:font-size=\"10.8%\" " +
+                "<style:text-properties fo:color=\"#f0f8ff\" style:font-name=\"Liberation Serif\" fo:font-size=\"10.8%\" " +
                         "style:font-size-asian=\"10.8%\" style:font-size-complex=\"10.8%\"/>",
                 prop);
     }

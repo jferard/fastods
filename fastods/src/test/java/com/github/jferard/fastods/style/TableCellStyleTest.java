@@ -106,7 +106,7 @@ public class TableCellStyleTest {
 
     @Test
     public final void testFontName() throws IOException {
-        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell").fontName("OpenSymbol").build();
+        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell").fontName(LOFonts.OPENSYMBOL).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"symbol-cell\" " +
                 "style:family=\"table-cell\" style:parent-style-name=\"Default\"><style:text" +
                 "-properties style:font-name=\"OpenSymbol\"/></style:style>", symbolStyle);
