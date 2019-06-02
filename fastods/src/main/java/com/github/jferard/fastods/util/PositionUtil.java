@@ -25,7 +25,7 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.Table;
 
-import java.util.Locale;
+import java.text.ParseException;
 
 /**
  * @author Julien Férard
@@ -41,8 +41,8 @@ public class PositionUtil {
      */
     public static final int ORD_A = 'A';
     public static final char SINGLE_QUOTE = '\'';
-    private static final int BEGIN_DIGIT = 3;
-    private static final int BEGIN_LETTER = 0;
+    private static final int BEGIN_ROW = 3;
+    private static final int BEGIN_COL = 0;
     private static final int FIRST_DIGIT = 4;
     private static final int FIRST_LETTER = 1;
     private static final int OPT_DIGIT = 5;
@@ -55,99 +55,9 @@ public class PositionUtil {
         return new PositionUtil(new EqualityUtil(), new TableNameUtil());
     }
 
-    /**
-     * A position (row + col)
-     */
-    public static class Position {
-        private final EqualityUtil equalityUtil;
-        private final int column;
-        private final TableNameUtil tableNameUtil;
-        private final int row;
-
-        /**
-         * Create a position
-         *
-         * @param equalityUtil an util
-         * @param row          the row
-         * @param column       the column
-         */
-        Position(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil, final int row, final int column) {
-            this.equalityUtil = equalityUtil;
-            this.tableNameUtil = tableNameUtil;
-            this.row = row;
-            this.column = column;
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-
-            if (!(o instanceof Position)) return false;
-
-            final Position other = (Position) o;
-            return this.row == other.row && this.column == other.column;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.equalityUtil.hashInts(this.row, this.column);
-        }
-
-        /**
-         * @return the column
-         */
-        public int getColumn() {
-            return this.column;
-        }
-
-        /**
-         * @return the row
-         */
-        public int getRow() {
-            return this.row;
-        }
-
-        /**
-         * Returns the address of a cell, in Excel/OO/LO format. Some examples:
-         * <ul>
-         * <li>0 gives "A"</li>
-         * <li>...</li>
-         * <li>25 gives "Z"</li>
-         * <li>26 gives "AA"</li>
-         * <li>27 gives "AB"</li>
-         * <li>...</li>
-         * <li>52 gives "BA"</li>
-         * <li>1023 gives "AMJ"</li>
-         * </ul>
-         *
-         * @return the Excel/OO/LO address
-         */
-        public String toCellAddress() {
-            final StringBuilder sb = new StringBuilder();
-            int col = this.column;
-            while (col >= ALPHABET_SIZE) {
-                sb.insert(0, (char) (ORD_A + (col % ALPHABET_SIZE)));
-                col = col / ALPHABET_SIZE - 1;
-            }
-            sb.insert(0, (char) (ORD_A + col));
-            sb.append(this.row + 1);
-            return sb.toString();
-        }
-
-        /**
-         * Return the Excel/OO/LO address of a cell, preceeded by the table name
-         *
-         * @param table the table
-         * @return the Excel/OO/LO address
-         */
-        public String toCellAddress(final Table table) {
-            return this.tableNameUtil.escapeTableName(table.getName()) + "." + this.toCellAddress();
-        }
-
-    }
-
     private final EqualityUtil equalityUtil;
     private final TableNameUtil tableNameUtil;
+    private PositionParser parser;
 
     /**
      * Create a new position util
@@ -166,54 +76,8 @@ public class PositionUtil {
      * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
      * 4
      */
-    public Position getPosition(final String pos) {
-        final String s = pos.toUpperCase(Locale.US);
-        final int len = s.length();
-        int status = 0;
-
-        int row = 0;
-        int col = 0;
-        int n = 0;
-        while (n < len) {
-            final char c = s.charAt(n);
-            switch (status) {
-                case BEGIN_LETTER: // opt $
-                case BEGIN_DIGIT: // opt $
-                    status++;
-                    if (c == '$') n++;
-                    break;
-                case FIRST_LETTER: // mand letter
-                    if ('A' <= c && c <= 'Z') {
-                        col = c - 'A' + 1;
-                        status = PositionUtil.OPT_SECOND_LETTER;
-                        n++;
-                    } else return null;
-                    break;
-                case OPT_SECOND_LETTER: // opt letter
-                    if ('A' <= c && c <= 'Z') {
-                        col = col * ALPHABET_SIZE + c - ORD_A + 1;
-                        n++;
-                    }
-                    status = PositionUtil.BEGIN_DIGIT;
-                    break;
-                case FIRST_DIGIT: // mand digit
-                    if ('0' <= c && c <= '9') {
-                        row = c - '0';
-                        status = PositionUtil.OPT_DIGIT;
-                        n++;
-                    } else return null;
-                    break;
-                case OPT_DIGIT: // opt digit
-                    if ('0' <= c && c <= '9') {
-                        row = row * 10 + c - '0';
-                        n++;
-                    } else return null;
-                    break;
-                default:
-                    return null;
-            }
-        }
-        return new Position(this.equalityUtil, this.tableNameUtil, row - 1, col - 1);
+    public Position newPosition(final String pos) throws ParseException {
+        return new PositionParser(this.equalityUtil, this.tableNameUtil, pos).parse();
     }
 
     /**
@@ -221,8 +85,17 @@ public class PositionUtil {
      * @param col the col
      * @return the position
      */
-    public Position getPosition(final int row, final int col) {
-        return new Position(this.equalityUtil, this.tableNameUtil, row, col);
+    public Position newPosition(final int row, final int col) {
+        return new Position(this.equalityUtil, this.tableNameUtil, null, null, row, col, 0);
+    }
+
+    /**
+     * @param row the row
+     * @param col the col
+     * @return the position
+     */
+    public Position newPosition(final Table table, final int row, final int col) {
+        return new Position(this.equalityUtil, this.tableNameUtil, null, table.getName(), row, col, 0);
     }
 
     /**
@@ -233,7 +106,7 @@ public class PositionUtil {
      * @return the Excel/OO/LO address
      */
     public String toCellAddress(final int row, final int col) {
-        return this.getPosition(row, col).toCellAddress();
+        return this.newPosition(row, col).toString();
     }
 
     /**
@@ -245,7 +118,7 @@ public class PositionUtil {
      * @return the Excel/OO/LO address
      */
     public String toCellAddress(final Table table, final int row, final int col) {
-        return this.getPosition(row, col).toCellAddress(table);
+        return this.newPosition(table, row, col).toString();
     }
 
     /**
@@ -278,5 +151,9 @@ public class PositionUtil {
 
     public void checkTableName(final String name) {
         this.tableNameUtil.checkTableName(name);
+    }
+
+    public PositionBuilder builder(final int row, final int col) {
+        return new PositionBuilder(this.equalityUtil, this.tableNameUtil, row, col);
     }
 }

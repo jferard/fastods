@@ -33,11 +33,12 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.PositionUtil.Position;
+import com.github.jferard.fastods.util.Position;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -250,8 +251,8 @@ class TableBuilder {
      * @throws IOException      if an I/O error occurs
      */
     public TableRow getRow(final Table table, final TableAppender appender, final String pos)
-            throws FastOdsException, IOException {
-        final int row = this.positionUtil.getPosition(pos).getRow();
+            throws FastOdsException, IOException, ParseException {
+        final int row = this.positionUtil.newPosition(pos).getRow();
         return this.getRow(table, appender, row);
     }
 
@@ -352,8 +353,8 @@ class TableBuilder {
     @Deprecated
     public void setCellMerge(final Table table, final TableAppender appender, final String pos,
                              final int rowMerge, final int columnMerge)
-            throws FastOdsException, IOException {
-        final Position position = this.positionUtil.getPosition(pos);
+            throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(pos);
         this.setCellMerge(table, appender, position.getRow(), position.getColumn(), rowMerge,
                 columnMerge);
     }

@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 public class TableHelperTest {
 
@@ -67,7 +68,7 @@ public class TableHelperTest {
     }
 
     @Test
-	public final void testSetCellMerge() throws FastOdsException, IOException {
+	public final void testSetCellMerge() throws FastOdsException, IOException, ParseException {
 		final CellValue value = new StringValue("@");
 		final TableCellStyle ts = TableCellStyle.builder("b").build();
 
@@ -83,7 +84,7 @@ public class TableHelperTest {
 	}
 
 	@Test
-	public final void testSetCellValue() throws FastOdsException, IOException {
+	public final void testSetCellValue() throws FastOdsException, IOException, ParseException {
 		final CellValue value = new StringValue("@");
 		final TableCellStyle ts = TableCellStyle.builder("b").build();
 

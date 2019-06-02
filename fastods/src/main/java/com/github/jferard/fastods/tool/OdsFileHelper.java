@@ -29,9 +29,10 @@ import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.PositionUtil.Position;
+import com.github.jferard.fastods.util.Position;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * An helper for multi table work.
@@ -86,8 +87,8 @@ public class OdsFileHelper {
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMergeInAllTables(final String pos, final int rowMerge,
-			final int columnMerge) throws FastOdsException, IOException {
-		final Position position = this.positionUtil.getPosition(pos);
+			final int columnMerge) throws FastOdsException, IOException, ParseException {
+		final Position position = this.positionUtil.newPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
@@ -132,8 +133,8 @@ public class OdsFileHelper {
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellValueInAllTables(final String pos, final CellValue value,
-			final TableCellStyle ts) throws FastOdsException, IOException {
-		final Position position = this.positionUtil.getPosition(pos);
+			final TableCellStyle ts) throws FastOdsException, IOException, ParseException {
+		final Position position = this.positionUtil.newPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValueInAllTables(row, col, value, ts);

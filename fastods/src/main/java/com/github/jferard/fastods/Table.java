@@ -35,6 +35,7 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -219,7 +220,7 @@ public class Table implements NamedObject {
      * @throws FastOdsException if the index is invalid
      * @throws IOException      if the row was flushed
      */
-    public TableRow getRow(final String pos) throws FastOdsException, IOException {
+    public TableRow getRow(final String pos) throws FastOdsException, IOException, ParseException {
         return this.builder.getRow(this, this.appender, pos);
     }
 
@@ -265,7 +266,7 @@ public class Table implements NamedObject {
      */
     @Deprecated
     public void setCellMerge(final String pos, final int rowMerge, final int columnMerge)
-            throws FastOdsException, IOException {
+            throws FastOdsException, IOException, ParseException {
         this.builder.setCellMerge(this, this.appender, pos, rowMerge, columnMerge);
     }
 

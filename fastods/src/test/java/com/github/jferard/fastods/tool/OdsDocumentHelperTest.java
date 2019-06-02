@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -71,7 +72,8 @@ public class OdsDocumentHelperTest {
 
 
     @Test
-    public final void testCellMergeInAllTables() throws FastOdsException, IOException {
+    public final void testCellMergeInAllTables()
+            throws FastOdsException, IOException, ParseException {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(1234567891011L);
 
@@ -87,7 +89,8 @@ public class OdsDocumentHelperTest {
     }
 
     @Test
-    public final void testCellValueInAllTables() throws FastOdsException, IOException {
+    public final void testCellValueInAllTables()
+            throws FastOdsException, IOException, ParseException {
         final TableCellStyle ts = TableCellStyle.builder("a").build();
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(1234567891011L);

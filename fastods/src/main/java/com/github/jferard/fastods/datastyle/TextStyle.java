@@ -29,39 +29,41 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * OpenDocument 16.27.23 - number:boolean-style
+ * 16.27.25 <number:text-style>
  *
  * @author Julien Férard
  */
-public class BooleanStyle implements DataStyle {
-	private final CoreDataStyle dataStyle;
+public class TextStyle implements DataStyle {
+    private final CoreDataStyle dataStyle;
+    private final String text;
 
-	/**
-	 * Create a new boolean style
-     * @param dataStyle the embedded core data style
-	 */
-	BooleanStyle(final CoreDataStyle dataStyle) {
+    /**
+	 * A text-style
+     * @param dataStyle the embedded data style
+     * @param text the text ("<number:text-content>" for instance)
+     */
+	TextStyle(final CoreDataStyle dataStyle, final String text) {
 		this.dataStyle = dataStyle;
-	}
+        this.text = text;
+    }
 
 	@Override
 	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		appendable.append("<number:boolean-style");
-		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
-		this.dataStyle.appendLVAttributes(util, appendable);
-		appendable.append("/>");
+		final StringBuilder text = new StringBuilder("<number:text-style ");
+		this.dataStyle.appendLVAttributes(util, text);
+		text.append(">").append(this.text).append("</number:text-style>");
 	}
 
 	@Override
-    public String getName() {
-	    return this.dataStyle.getName();
-    }
+	public String getName() {
+		return this.dataStyle.getName();
+	}
 
-    @Override
-    public boolean isHidden() {
-        return this.dataStyle.isHidden();
-    }
+	@Override
+	public boolean isHidden() {
+		return this.dataStyle.isHidden();
+	}
 
 	@Override
 	public void addToElements(final OdsElements odsElements) {

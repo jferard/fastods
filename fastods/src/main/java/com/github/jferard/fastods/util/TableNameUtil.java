@@ -23,10 +23,6 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.Table;
-
-import java.util.Arrays;
-
 /**
  * A TableNameUtil checks the table name and escapes it.
  *
@@ -53,8 +49,8 @@ public class TableNameUtil {
             for (final char fc : FORBIDDEN_CHARS) {
                 if (c == fc) {
                     throw new IllegalArgumentException(
-                            "Table name should not contain " + new String(FORBIDDEN_CHARS) +
-                                    ": " + name);
+                            "Table name should not contain " + new String(FORBIDDEN_CHARS) + ": " +
+                                    name);
                 }
             }
         }
@@ -62,6 +58,10 @@ public class TableNameUtil {
 
     /**
      * 9.2.1 Referencing Table Cells
+     * > If the name of the table contains blanks, dots “.” (U+002E, FULL STOP) or apostrophes
+     * “'” (U+0027, APOSTROPHE), the name shall be quoted with apostrophes “'” (U+0027,
+     * APOSTROPHE). Any apostrophes in the name shall be escaped by doubling the”'”( U+0027,
+     * APOSTROPHE) character.
      *
      * @param tableName the name of the table
      * @return the name of the table escaped

@@ -31,9 +31,10 @@ import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.PositionUtil.Position;
+import com.github.jferard.fastods.util.Position;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * A table helper
@@ -80,8 +81,9 @@ public class TableHelper {
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMerge(final Table table, final String pos,
-							 final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
-		final Position position = this.positionUtil.getPosition(pos);
+							 final int rowMerge, final int columnMerge)
+			throws FastOdsException, IOException, ParseException {
+		final Position position = this.positionUtil.newPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellMerge(table, row, col, rowMerge, columnMerge);
@@ -117,8 +119,8 @@ public class TableHelper {
 	 */
 	public void setCellValue(final Table table, final String pos,
 							 final CellValue value, final TableCellStyle ts)
-			throws FastOdsException, IOException {
-		final Position position = this.positionUtil.getPosition(pos);
+			throws FastOdsException, IOException, ParseException {
+		final Position position = this.positionUtil.newPosition(pos);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValue(table, row, col, value, ts);

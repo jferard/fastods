@@ -42,6 +42,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -109,13 +110,15 @@ public class TableBuilderTest {
     }
 
     @Test
-    public final void testGetRowFromStringPos() throws FastOdsException, IOException {
+    public final void testGetRowFromStringPos() throws FastOdsException, IOException,
+            ParseException {
         PowerMock.replayAll();
         final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }
 
+        System.out.println(rows);
         Assert.assertEquals(rows.get(4), this.builder.getRow(this.table, this.appender, "A5"));
         PowerMock.verifyAll();
     }
@@ -160,7 +163,8 @@ public class TableBuilderTest {
     }
 
     @Test
-    public final void testMergeWithPosString() throws IOException, FastOdsException {
+    public final void testMergeWithPosString() throws IOException, FastOdsException,
+            ParseException {
         PowerMock.replayAll();
         this.builder.setCellMerge(this.table, this.appender,  "B1",2,2);
         PowerMock.verifyAll();

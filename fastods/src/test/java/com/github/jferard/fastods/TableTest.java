@@ -43,6 +43,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -139,7 +140,8 @@ public class TableTest {
     }
 
     @Test
-    public final void testGetRowFromStringPos() throws FastOdsException, IOException {
+    public final void testGetRowFromStringPos() throws FastOdsException, IOException,
+            ParseException {
         PowerMock.replayAll();
         final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
@@ -243,7 +245,7 @@ public class TableTest {
     }
 
     @Test
-    public final void testMergePos() throws IOException, FastOdsException {
+    public final void testMergePos() throws IOException, FastOdsException, ParseException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", tb);
 
