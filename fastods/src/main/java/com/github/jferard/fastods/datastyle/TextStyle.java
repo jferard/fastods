@@ -50,9 +50,10 @@ public class TextStyle implements DataStyle {
 	@Override
 	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		final StringBuilder text = new StringBuilder("<number:text-style ");
-		this.dataStyle.appendLVAttributes(util, text);
-		text.append(">").append(this.text).append("</number:text-style>");
+		appendable.append("<number:text-style ");
+		util.appendEAttribute(appendable, "style:name", this.getName());
+		this.dataStyle.appendLVAttributes(util, appendable);
+		appendable.append(">").append(this.text).append("</number:text-style>");
 	}
 
 	@Override
