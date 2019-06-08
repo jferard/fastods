@@ -26,7 +26,7 @@
     <parent>
         <groupId>com.github.jferard</groupId>
         <artifactId>fastods-parent</artifactId>
-        <version>0.6.1</version>
+        <version>0.6.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>fastods-testlib</artifactId>
@@ -60,7 +60,7 @@
         <connection>scm:git:git@github.com:jferard/fastods.git</connection>
         <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
         <url>git@github.com:jferard/fastods.git</url>
-        <tag>fastods-parent-0.6.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
