@@ -67,6 +67,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
     private final Align textAlign; // 'center','end','start','justify'
     private final TextProperties textProperties;
     private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
+    private final TextRotating  rotating;
     private final boolean wrap; // No line wrap when false, line wrap when
     private final DataStyle dataStyle;
     private String key;
@@ -89,7 +90,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
     TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle, final Color backgroundColor,
                    final TextProperties textProperties, final Align textAlign, final VerticalAlign verticalAlign,
                    final boolean wrap, final TableCellStyle parentCellStyle, final Borders borders,
-                   final Margins margins) {
+                   final Margins margins, final TextRotating textRotating) {
         this.hidden = hidden;
         this.borders = borders;
         this.margins = margins;
@@ -101,6 +102,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
         this.verticalAlign = verticalAlign;
         this.wrap = wrap;
         this.parentCellStyle = parentCellStyle;
+        this.rotating = textRotating;
     }
 
     @Override
@@ -118,7 +120,8 @@ public class TableCellStyle implements FontFaceContainerStyle {
 
         if (this.verticalAlign != null)
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign.attrValue);
-
+        if (this.rotating!=null)
+        	util.appendAttribute(appendable, "style:rotation-angle", this.rotating.attrValue);
         this.borders.appendXMLContent(util, appendable);
 
         if (this.wrap) util.appendAttribute(appendable, "fo:wrap-option", "wrap");
@@ -201,7 +204,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
 
     private boolean hasCellProperties() {
         return this.backgroundColor != SimpleColor.NONE || this.verticalAlign != null || !this.borders
-                .areVoid() || this.wrap;
+                .areVoid() || this.wrap || this.rotating!=null;
     }
 
     /**
@@ -223,6 +226,24 @@ public class TableCellStyle implements FontFaceContainerStyle {
         return this.parentCellStyle;
     }
 
+    /**
+     * Text rotation 
+     * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#__RefHeading__1420142_253892949
+     */
+    public enum TextRotating
+    {
+
+    	NO_ROTATING("0"),
+    	ROTATE_90("90"),
+    	ROTATE_180("180"),
+    	ROTATE_270("270");
+    	
+    	private final String attrValue;
+    	
+    	TextRotating(final String attrValue) {
+    		this.attrValue = attrValue;
+    	}
+    }
     /**
      * An horizontal alignment.
      * 20.216 fo:text-align. See https://www.w3.org/TR/2001/REC-xsl-20011015/slice7.html#text-align
