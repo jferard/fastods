@@ -144,6 +144,11 @@ public class NamedOdsDocument implements OdsDocument {
         this.commonOdsDocument.addAutofilter(table, r1, c1, r2, c2);
     }
 
+    @Override
+    public void freezeCells(final Table table, final int rowCount, final int colCount) {
+        this.commonOdsDocument.freezeCells(table, rowCount, colCount);
+    }
+
     /**
      * Add a cell style for a given data type. Use only if you want to flush data before the end
      * of the document

@@ -84,6 +84,11 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
 		return this.blocks.add(block);
 	}
 
+	@Override
+	public ConfigBlock put(final ConfigBlock block) {
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * Remove the block at a given index.
 	 * @param i the index.

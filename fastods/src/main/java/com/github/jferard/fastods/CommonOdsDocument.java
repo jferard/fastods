@@ -159,4 +159,9 @@ class CommonOdsDocument implements OdsDocument {
                               final int c2) {
         this.odsElements.addAutofilter(table, r1, c1, r2, c2);
     }
+
+    @Override
+    public void freezeCells(final Table table, final int rowCount, final int colCount) {
+        this.odsElements.freezeCells(table, rowCount, colCount);
+    }
 }

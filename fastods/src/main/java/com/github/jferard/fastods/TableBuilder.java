@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
@@ -98,8 +99,8 @@ class TableBuilder {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
         configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
         configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
-        configEntry.add(new ConfigItem("HorizontalSplitMode", "short", "0"));
-        configEntry.add(new ConfigItem("VerticalSplitMode", "short", "0"));
+        configEntry.add(new ConfigItem("HorizontalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
+        configEntry.add(new ConfigItem("VerticalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
         configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
         configEntry.add(new ConfigItem("VerticalSplitPosition", "int", "0"));
         configEntry.add(new ConfigItem("ActiveSplitRange", "short", "2"));

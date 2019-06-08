@@ -31,6 +31,8 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
@@ -58,6 +60,10 @@ public class OdsElements {
             "Configurations2/floater/", "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
             "Configurations2/popupmenu/", "Configurations2/progressbar/", "Configurations2/statusbar/",
             "Configurations2/toolbar/"};
+
+    // LO only
+    public static final String SC_SPLIT_NORMAL = "0";
+    public static final String SC_SPLIT_FIX = "2";
 
     /**
      * @param positionUtil an util for cell addresses (e.g. "A1")
@@ -223,6 +229,21 @@ public class OdsElements {
             table.addObserver(this.observer);
         }
         return table;
+    }
+
+    /**
+     * Freeze cells. See https://help.libreoffice.org/Calc/Freezing_Rows_or_Columns_as_Headers
+     *
+     * @param table the table to freeze
+     * @param rowCount the number of rows to freeze (e.g. 1 -> freeze the first row)
+     * @param colCount the number of cols to freeze.
+     */
+    public void freezeCells(final Table table, final int rowCount, final int colCount) {
+        final ConfigItemMapEntry tableConfig = table.getConfigEntry();
+        tableConfig.put(new ConfigItem("HorizontalSplitMode", "short", SC_SPLIT_FIX));
+        tableConfig.put(new ConfigItem("VerticalSplitMode", "short", SC_SPLIT_FIX));
+        tableConfig.put(new ConfigItem("HorizontalSplitPosition", "int", String.valueOf(rowCount)));
+        tableConfig.put(new ConfigItem("VerticalSplitPosition", "int", String.valueOf(colCount)));
     }
 
     /**

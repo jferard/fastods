@@ -108,6 +108,12 @@ public class ConfigItemMapEntrySet implements ConfigItemMapEntry {
 		return true;
 	}
 
+	@Override
+	public ConfigBlock put(final ConfigBlock block) {
+		final String name = block.getName();
+		return this.blockByName.put(name, block);
+	}
+
 	/**
 	 * @param o the block to remove
 	 */

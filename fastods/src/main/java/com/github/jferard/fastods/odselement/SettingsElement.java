@@ -84,7 +84,7 @@ public class SettingsElement implements OdsElement {
 	}
 
 	/**
-	 * Add a table config
+	 * Add a table config.
 	 * @param configEntry the config
 	 */
 	public void addTableConfig(final ConfigItemMapEntry configEntry) {

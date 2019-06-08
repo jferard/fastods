@@ -144,6 +144,11 @@ public class AnonymousOdsDocument implements OdsDocument {
         this.commonOdsDocument.addAutofilter(table, r1, c1, r2, c2);
     }
 
+    @Override
+    public void freezeCells(final Table table, final int rowCount, final int colCount) {
+        this.commonOdsDocument.freezeCells(table, rowCount, colCount);
+    }
+
     /**
      * Saves a file.
      * Do not close the writer (see https://github.com/jferard/fastods/issues/138)

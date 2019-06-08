@@ -138,4 +138,6 @@ public interface OdsDocument {
      * @param c2 the right column
      */
     void addAutofilter(Table table, int r1, int c1, int r2, int c2);
+
+    void freezeCells(Table table, int rowCount, int colCount);
 }

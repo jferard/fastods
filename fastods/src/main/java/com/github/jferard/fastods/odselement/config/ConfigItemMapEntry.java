@@ -39,6 +39,14 @@ public interface ConfigItemMapEntry extends ConfigItemCollection<ConfigBlock> {
 	boolean add(ConfigBlock block);
 
 	/**
+	 * Put a block in this entry. Replace existing block with the same name.
+	 * @param block the block to add to this entry. May throw
+	 * @return the previous block or null.
+	 * @throws UnsupportedOperationException if the entry is a singleton or a list
+	 */
+	ConfigBlock put(ConfigBlock block);
+
+	/**
 	 * Add an ConfigItem to this entry. Shortcut for {@code add(new ConfigItem(name, type, value))}.
 	 * @param name the name of the item
 	 * @param type the type of the item

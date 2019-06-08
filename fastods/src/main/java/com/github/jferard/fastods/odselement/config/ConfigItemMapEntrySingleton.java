@@ -86,6 +86,11 @@ public class ConfigItemMapEntrySingleton implements ConfigItemMapEntry {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public ConfigBlock put(final ConfigBlock block) {
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * @param name the name
 	 * @return true if the unique ConfigBlock has that name
