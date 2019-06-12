@@ -56,17 +56,6 @@ Then:
 
 `mvn clean install`
 
-#### It doesn't compile!
-
-For reasons beyond my control, I'm stuck for this project with Java 6, and thus I need the `tools.jar` archive. 
-If the default JRE on your computer is beyond version 9, maven won't find `tools.jar`. Here's a workaround for Linux:
-
-`JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" mvn clean install`
-
-On Windows, try (not tested):
-
-`cmd /C "set JAVA_HOME="C:\Program Files\Java\jdk..." mvn clean install"`
-
 ### From jar
 First download the **jar file** from the latest [release](https://github.com/jferard/fastods/releases/).
 

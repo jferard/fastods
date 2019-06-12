@@ -78,6 +78,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jre>1.6</jre>
         <fastods.testSourceDirectory>src/test/java</fastods.testSourceDirectory>
+        <java.vendor>prevent odftoolkit from messing the build</java.vendor>
     </properties>
 
     <dependencies>
