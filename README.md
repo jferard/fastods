@@ -105,7 +105,7 @@ library, you have to rewrite the doc.
 
 My idea is to provide a set of examples of the features of FastODS. This is ensures that the doc is up to date.
 
-Those examples are located in [the examples module](https://github.com/jferard/fastods/tree/master/fastods/src/test/java/com/github/jferard/fastods/it) and are fully commented.
+Those examples are located in [the examples module](https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github/jferard/fastods/examples) and are fully commented.
 
 To run those examples, one has to run:
 

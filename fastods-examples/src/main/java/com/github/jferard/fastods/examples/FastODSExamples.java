@@ -23,8 +23,28 @@
 
 package com.github.jferard.fastods.examples;
 
+/**
+ * Writing a full documentation would be a considerable work, because every time you change the
+ * library, you have to rewrite the doc.
+ * My idea is to provide a set of examples of the features of FastODS. See the classes in this
+ * directory
+ * <p>
+ * Before you start, add the following dependency to your POM (Maven users):
+ * <p>
+ * <pre>{@code
+ *      <dependency>
+ *          <groupId>com.github.jferard</groupId>
+ *          <artifactId>fastods</artifactId>
+ *          <version>0.6.1</version>
+ *      </dependency>
+ * }</pre>
+ * <p>
+ * For other build tools, look at:
+ * https://search.maven.org/artifact/com.github.jferard/fastods/0.6.1/jar
+ */
 public final class FastODSExamples {
-    private FastODSExamples() {}
-
     public static final String GENERATED_FILES = "generated_files";
+
+    private FastODSExamples() {
+    }
 }
