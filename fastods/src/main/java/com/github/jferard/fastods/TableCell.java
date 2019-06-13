@@ -224,6 +224,10 @@ public interface TableCell {
 	/**
 	 * Set the float value for a cell with TableCell.Type.STRING.
 	 *
+	 * Note that this will not set the data style of the cell to "text" but let it to "standard",
+	 * hence the quote before numbers in LO. This is the same behavior
+	 * as LO (see https://github.com/jferard/fastods/issues/148)
+	 *
 	 * @param value a double object with the value to be used
 	 */
 	void setStringValue(String value);

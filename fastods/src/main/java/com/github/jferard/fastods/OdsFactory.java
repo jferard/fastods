@@ -45,7 +45,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
- * An OdsFactory is the entry point for creating ods documents.
+ * An OdsFactory is the entry point for creating ODS documents.
  *
  * @author Julien Férard
  */

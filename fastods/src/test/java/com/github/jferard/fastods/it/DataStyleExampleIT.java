@@ -134,21 +134,18 @@ public class DataStyleExampleIT {
         table.setColumnStyle(1, columnStyle1);
 
         // a column datastyle
-        final FloatStyle floatStyle = new FloatStyleBuilder("second-custom-int-datastyle", this.locale)
-                .decimalPlaces(8).build();
+        final FloatStyle floatStyle = new FloatStyleBuilder("second-custom-int-datastyle",
+                this.locale).decimalPlaces(8).build();
         final TableCellStyle cellStyle1 = TableCellStyle.builder("datastyle0").dataStyle(floatStyle)
                 .build();
         final TableColumnStyle columnDataStyle = TableColumnStyle.builder("col-datastyle")
-                .columnWidth(SimpleLength.cm(5))
-                .defaultCellStyle(
-                        cellStyle1)
-                .build();
+                .columnWidth(SimpleLength.cm(5)).defaultCellStyle(cellStyle1).build();
         table.setColumnStyle(2, columnDataStyle);
 
-        final FloatStyle floatStyle2 = new FloatStyleBuilder("third-custom-int-datastyle", this.locale)
-                .decimalPlaces(6).build();
-        final TableCellStyle cellStyle2 = TableCellStyle.builder("datastyle1").dataStyle(floatStyle2)
-                .build();
+        final FloatStyle floatStyle2 = new FloatStyleBuilder("third-custom-int-datastyle",
+                this.locale).decimalPlaces(6).build();
+        final TableCellStyle cellStyle2 = TableCellStyle.builder("datastyle1")
+                .dataStyle(floatStyle2).build();
 
         // FIRST ROW
         TableRow row = table.nextRow();
@@ -212,8 +209,8 @@ public class DataStyleExampleIT {
         cell.setTimeValue(10000000);
         // Add a custom format
         final DataStyle timeStyle = new TimeStyleBuilder("custom-time-datastyle", this.locale)
-                .timeFormat(new DateStyleFormat(DateStyleFormat.text("Hour: "), DateStyleFormat.LONG_HOURS)).visible()
-                .build();
+                .timeFormat(new DateStyleFormat(DateStyleFormat.text("Hour: "),
+                        DateStyleFormat.LONG_HOURS)).visible().build();
         cell.setDataStyle(timeStyle);
 
         // 7TH ROW: same as FOURTH, but the datastyle is put before the value

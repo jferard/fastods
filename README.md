@@ -99,8 +99,22 @@ for (int y = 0; y < 50; y++) {
 writer.saveAs(new File("generated_files", "readme_example.ods"));
 ```
 
+## Documentation
+Writing a full documentation would be a considerable work, because every time you change the
+library, you have to rewrite the doc.
+
+My idea is to provide a set of examples of the features of FastODS. This is ensures that the doc is up to date.
+
+Those examples are located in [the examples module](https://github.com/jferard/fastods/tree/master/fastods/src/test/java/com/github/jferard/fastods/it) and are fully commented.
+
+To run those examples, one has to run:
+
+```mvn verify```
+
+The resulting ods files are written in `generated_files` directory, and can be opened with LibreOffice or OpenOffice.
+
 ### Other examples
-Other examples are implemented as integration tests: ```OdsFileCreationIT.java```, ```OdsFileWithHeaderAndFooterCreationIT.java```, etc. The sources are quite simple.
+Other examples are implemented as integration tests: ```OdsFileCreationIT.java```, ```OdsFileWithHeaderAndFooterCreationIT.java```, etc.
 
 To run those examples, one has to run:
 
@@ -108,6 +122,7 @@ To run those examples, one has to run:
 
 The resulting ods files are written in `generated_files` directory, and can be opened with LibreOffice or OpenOffice.
 See [the integration tests directory](https://github.com/jferard/fastods/tree/master/fastods/src/test/java/com/github/jferard/fastods/it)
+
 
 ## Speed
 Let's be concrete : FastODS is approximately twice as fast as SimpleODS and ten times faster than JOpenDocument for writing large ODS files. (SimpleODF is clearly not the right tool to write large ODS files.)

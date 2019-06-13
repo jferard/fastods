@@ -297,5 +297,6 @@
     <modules>
         <module>fastods-testlib</module>
         <module>fastods</module>
+        <module>fastods-examples</module>
     </modules>
 </project>
