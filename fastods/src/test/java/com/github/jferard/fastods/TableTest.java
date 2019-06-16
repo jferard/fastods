@@ -140,19 +140,6 @@ public class TableTest {
     }
 
     @Test
-    public final void testGetRowFromStringPos() throws FastOdsException, IOException,
-            ParseException {
-        PowerMock.replayAll();
-        final List<TableRow> rows = Lists.newArrayList();
-        for (int r = 0; r < 7; r++) { // 8 times
-            rows.add(this.table.nextRow());
-        }
-
-        Assert.assertEquals(rows.get(4), this.table.getRow("A5"));
-        PowerMock.verifyAll();
-    }
-
-    @Test
     public final void testGetRowHundred() throws FastOdsException, IOException {
         PowerMock.replayAll();
         for (int r = 0; r < 7; r++) { // 8 times

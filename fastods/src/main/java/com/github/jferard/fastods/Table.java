@@ -213,18 +213,6 @@ public class Table implements NamedObject {
     }
 
     /**
-     * Return a row from a position
-     *
-     * @param pos the position, e.g. A5
-     * @return the row
-     * @throws FastOdsException if the index is invalid
-     * @throws IOException      if the row was flushed
-     */
-    public TableRow getRow(final String pos) throws FastOdsException, IOException, ParseException {
-        return this.builder.getRow(this, this.appender, pos);
-    }
-
-    /**
      * Get the current TableFamilyStyle
      *
      * @return The current TableStlye
@@ -258,16 +246,16 @@ public class Table implements NamedObject {
     /**
      * Set the merging of multiple cells to one cell.
      *
-     * @param pos         The cell position e.g. 'A1'
+     * @param address         The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
      * @throws FastOdsException if the row index or the col index is negative
      * @throws IOException      if the cells can't be merged
      */
     @Deprecated
-    public void setCellMerge(final String pos, final int rowMerge, final int columnMerge)
+    public void setCellMerge(final String address, final int rowMerge, final int columnMerge)
             throws FastOdsException, IOException, ParseException {
-        this.builder.setCellMerge(this, this.appender, pos, rowMerge, columnMerge);
+        this.builder.setCellMerge(this, this.appender, address, rowMerge, columnMerge);
     }
 
     /**

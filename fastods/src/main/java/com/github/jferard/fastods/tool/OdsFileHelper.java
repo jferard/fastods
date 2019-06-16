@@ -79,16 +79,16 @@ public class OdsFileHelper {
 	/**
 	 * Set the merging of multiple cells to one cell in all existing tables.
 	 *
-	 * @param pos
+	 * @param address
 	 *            The cell position e.g. 'A1'
 	 * @param rowMerge the number of rows to merge
 	 * @param columnMerge the number of columns to merge
 	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
 	 */
-	public void setCellMergeInAllTables(final String pos, final int rowMerge,
+	public void setCellMergeInAllTables(final String address, final int rowMerge,
 			final int columnMerge) throws FastOdsException, IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(pos);
+		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
@@ -122,7 +122,7 @@ public class OdsFileHelper {
 	/**
 	 * Sets the cell value in all tables to the date from the Calendar object.
 	 *
-	 * @param pos
+	 * @param address
 	 *            The cell position e.g. 'A1'
 	 * @param value
 	 *            The cell value
@@ -132,9 +132,9 @@ public class OdsFileHelper {
 	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
 	 */
-	public void setCellValueInAllTables(final String pos, final CellValue value,
+	public void setCellValueInAllTables(final String address, final CellValue value,
 			final TableCellStyle ts) throws FastOdsException, IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(pos);
+		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValueInAllTables(row, col, value, ts);

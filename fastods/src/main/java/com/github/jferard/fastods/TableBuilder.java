@@ -246,14 +246,14 @@ class TableBuilder {
      *
      * @param table    the table
      * @param appender the appender
-     * @param pos      a pos, e.G. A5
+     * @param address      a cell position, e.g. A5
      * @return the table row
      * @throws FastOdsException if the index is invalid
      * @throws IOException      if an I/O error occurs
      */
-    public TableRow getRow(final Table table, final TableAppender appender, final String pos)
+    public TableRow getRow(final Table table, final TableAppender appender, final String address)
             throws FastOdsException, IOException, ParseException {
-        final int row = this.positionUtil.newPosition(pos).getRow();
+        final int row = this.positionUtil.newPosition(address).getRow();
         return this.getRow(table, appender, row);
     }
 
@@ -345,17 +345,17 @@ class TableBuilder {
      *
      * @param table       the table
      * @param appender    the appender
-     * @param pos         The cell position e.g. 'A1'
+     * @param address         The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
      * @throws FastOdsException if the row index or the col index is negative
      * @throws IOException      if the cells can't be merged
      */
     @Deprecated
-    public void setCellMerge(final Table table, final TableAppender appender, final String pos,
+    public void setCellMerge(final Table table, final TableAppender appender, final String address,
                              final int rowMerge, final int columnMerge)
             throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(pos);
+        final Position position = this.positionUtil.newPosition(address);
         this.setCellMerge(table, appender, position.getRow(), position.getColumn(), rowMerge,
                 columnMerge);
     }

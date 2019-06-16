@@ -44,6 +44,13 @@ public class TableHelper {
 	private final PositionUtil positionUtil;
 
 	/**
+	 * @return a new TableHelper
+	 */
+	public static TableHelper create() {
+		return new TableHelper(PositionUtil.create());
+	}
+
+	/**
 	 * Create the table helper.
 	 * @param positionUtil an util
 	 */
@@ -74,16 +81,16 @@ public class TableHelper {
 	 * Set the merging of multiple cells to one cell in all existing tables.
 	 *
 	 * @param table       the table where the cells to merge are
-	 * @param pos         The cell position e.g. 'A1'
+	 * @param address         The cell position e.g. 'A1'
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
 	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
 	 */
-	public void setCellMerge(final Table table, final String pos,
+	public void setCellMerge(final Table table, final String address,
 							 final int rowMerge, final int columnMerge)
 			throws FastOdsException, IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(pos);
+		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellMerge(table, row, col, rowMerge, columnMerge);
@@ -107,30 +114,76 @@ public class TableHelper {
 	}
 
 	/**
+	 * @param table       the table where the cells to merge are
+	 * @param rowIndex    The row, 0 is the first row
+	 * @param colIndex    The column, 0 is the first column
+	 * @param value       the value to set
+	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cell value can't be set
+	 */
+	public void setCellValue(final Table table, final int rowIndex,
+							 final int colIndex, final CellValue value)
+			throws FastOdsException, IOException {
+		final TableCell cell = this.getCell(table, rowIndex, colIndex);
+		cell.setCellValue(value);
+	}
+
+	/**
 	 * Sets the cell value in all tables to the given values.
 	 *
-	 * @param pos   The cell position e.g. 'A1'
+	 * @param address   The cell position e.g. 'A1'
 	 * @param table The tlbe where the value is set
 	 * @param value The value to set the cell to
-	 * @param ts    The table style for this cell, must be of type
-	 *              TableCellStyle.STYLEFAMILY_TABLECELL
+	 * @param ts    The table style for this cell
 	 * @throws FastOdsException if the row index or the col index is negative
-	 * @throws IOException if the cells can't be merged
+	 * @throws IOException if the cell value can't be set
 	 */
-	public void setCellValue(final Table table, final String pos,
+	public void setCellValue(final Table table, final String address,
 							 final CellValue value, final TableCellStyle ts)
 			throws FastOdsException, IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(pos);
+		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
 		this.setCellValue(table, row, col, value, ts);
 	}
 
-	private TableCellWalker getCell(final Table table, final int rowIndex,
+	/**
+	 * Sets the cell value in all tables to the given values.
+	 *
+	 * @param address   The cell position e.g. 'A1'
+	 * @param table The tlbe where the value is set
+	 * @param value The value to set the cell to
+	 * @throws FastOdsException if the row index or the col index is negative
+	 * @throws IOException if the cell value can't be set
+	 */
+	public void setCellValue(final Table table, final String address,
+							 final CellValue value)
+			throws FastOdsException, IOException, ParseException {
+		final Position position = this.positionUtil.newPosition(address);
+		final int row = position.getRow();
+		final int col = position.getColumn();
+		this.setCellValue(table, row, col, value);
+	}
+
+	/**
+	 * @param table       the table where the cells to merge are
+	 * @param rowIndex    The row, 0 is the first row
+	 * @param colIndex    The column, 0 is the first column
+	 * @return the cell
+	 * @throws FastOdsException
+	 * @throws IOException
+	 */
+	public TableCellWalker getCell(final Table table, final int rowIndex,
 									final int colIndex) throws FastOdsException, IOException {
 		final TableRow row = table.getRow(rowIndex);
 		final TableCellWalker walker = row.getWalker();
 		walker.to(colIndex);
 		return walker;
+	}
+
+	public TableCellWalker getCell(final Table table, final String address)
+			throws FastOdsException, IOException, ParseException {
+		final Position position = this.positionUtil.newPosition(address);
+		return this.getCell(table, position.getRow(), position.getColumn());
 	}
 }

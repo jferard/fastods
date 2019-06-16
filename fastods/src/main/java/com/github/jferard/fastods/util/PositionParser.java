@@ -51,7 +51,7 @@ class PositionParser {
 
     private final EqualityUtil equalityUtil;
     private final TableNameUtil tableNameUtil;
-    private final String pos;
+    private final String address;
     private final int length;
     private int cur;
     private int status;
@@ -63,19 +63,19 @@ class PositionParser {
     /**
      * Create a new position util
      *
-     * @param pos ['<filename>'#][<tablename>.]<col><row>
+     * @param address ['<filename>'#][<tablename>.]<col><row>
      * @return
      */
     public PositionParser(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil,
-                          final String pos) {
+                          final String address) {
         this.equalityUtil = equalityUtil;
         this.tableNameUtil = tableNameUtil;
-        this.pos = pos;
+        this.address = address;
 
         this.row = 0;
         this.col = 0;
         this.cur = 0;
-        this.length = pos.length();
+        this.length = address.length();
     }
 
     /**
@@ -91,11 +91,11 @@ class PositionParser {
     }
 
     private void parseFilename() throws ParseException {
-        final int i = this.pos.indexOf(PositionParser.HASH);
+        final int i = this.address.indexOf(PositionParser.HASH);
         if (i == -1) {
             return;
         }
-        final String escapedFilename = this.pos.substring(this.cur, i);
+        final String escapedFilename = this.address.substring(this.cur, i);
         this.filename = this.unescape(escapedFilename);
         this.cur = i + 1;
     }
@@ -140,12 +140,12 @@ class PositionParser {
     }
 
     private void parseTableName() throws ParseException {
-        final int i = this.pos.indexOf(PositionParser.DOT, this.cur);
+        final int i = this.address.indexOf(PositionParser.DOT, this.cur);
         if (i == -1) {
             return;
         }
 
-        final String escapedTableName = this.pos.substring(this.cur, i);
+        final String escapedTableName = this.address.substring(this.cur, i);
         final String tableName = this.unescape(escapedTableName);
         this.cur = i + 1;
         if (tableName.charAt(0) == '$') {
@@ -163,7 +163,7 @@ class PositionParser {
      * 4
      */
     private void parseColRow() throws ParseException {
-        final String s = this.pos.substring(this.cur).toUpperCase(Locale.US);
+        final String s = this.address.substring(this.cur).toUpperCase(Locale.US);
         final int len = s.length();
         int state = BEGIN_COL;
         int n = 0;

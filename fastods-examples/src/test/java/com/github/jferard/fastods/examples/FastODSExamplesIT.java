@@ -40,6 +40,11 @@ public class FastODSExamplesIT {
 
     @Test
     public void helloWorldTest() throws IOException, FastOdsException {
-        HelloWorld.example();
+        A_HelloWorld.example();
+    }
+
+    @Test
+    public void accessingTablesRowsAndCellsTest() throws IOException, FastOdsException {
+        B_AccessingTablesRowsAndCells.example();
     }
 }

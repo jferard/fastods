@@ -72,12 +72,12 @@ public class PositionUtil {
     /**
      * Convert a cell position string like B3 to the column number.
      *
-     * @param pos The cell position in the range 'A1' to 'IV65536'
+     * @param address The cell position in the range 'A1' to 'IV65536'
      * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
      * 4
      */
-    public Position newPosition(final String pos) throws ParseException {
-        return new PositionParser(this.equalityUtil, this.tableNameUtil, pos).parse();
+    public Position newPosition(final String address) throws ParseException {
+        return new PositionParser(this.equalityUtil, this.tableNameUtil, address).parse();
     }
 
     /**

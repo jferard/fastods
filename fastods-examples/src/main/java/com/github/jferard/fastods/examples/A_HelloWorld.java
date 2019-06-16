@@ -38,11 +38,11 @@ import java.util.logging.Logger;
 
 import static com.github.jferard.fastods.examples.FastODSExamples.GENERATED_FILES;
 
-/**
- * Let's start with the famous "Hello, World!" example.
- */
-class HelloWorld {
-    public static void example() throws IOException, FastOdsException {
+class A_HelloWorld {
+    //
+    // Let's start with the famous "Hello, World!" example.
+    //
+    static void example() throws IOException, FastOdsException {
         // As stated in the javadoc, "An OdsFactory is the entry point for creating ODS documents."
         // Every time you want to create an ODS document, you'll start with something like that:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("hello-world"), Locale.US);
@@ -71,6 +71,6 @@ class HelloWorld {
         cell.setStringValue("Hello, world!");
 
         // And save the file.
-        writer.saveAs(new File(GENERATED_FILES, "hello_world_example.ods"));
+        writer.saveAs(new File(GENERATED_FILES, "a_hello_world_example.ods"));
     }
 }
