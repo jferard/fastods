@@ -28,7 +28,6 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
@@ -41,34 +40,28 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import static com.github.jferard.fastods.examples.FastODSExamples.GENERATED_FILES;
-
 class B_AccessingTablesRowsAndCells {
-    //
-    // Now, we want to write values in cells.
-    //
     public static void example() throws IOException, FastOdsException {
-        // Start with the (now) usual boilerplate code to get a document:
+        //
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // # Accessing tables, rows and cells
+        //
+        // Now, we want to write values in other cells that the A1 cell.
+        //
+        // We start with the (now) usual boilerplate code to get a document:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("accessing"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
 
-        direct_access(document);
-        relative_access(document);
-
-        // And save the file.
-        writer.saveAs(new File(GENERATED_FILES, "b_accessing_example.ods"));
-    }
-
-    // First, we can access cells in a direct access mode, that is by row and column.
-    static void direct_access(final OdsDocument document) throws IOException, FastOdsException {
+        // ## Direct access to cells
+        //
         // You know how to create a table:
-        final Table table = document.addTable("direct-access");
+        final Table table1 = document.addTable("direct-access");
 
         // Get the first row (rows and columns start at 0):
-        TableRow row = table.getRow(0);
+        TableRow row = table1.getRow(0);
 
-        // And the first cell of the first row:
+        // The first cell of the first row:
         TableCell cell = row.getOrCreateCell(0);
 
         // And set a value.
@@ -77,47 +70,49 @@ class B_AccessingTablesRowsAndCells {
         // *Note that the access is a write only access. You can't read the content of a cell.*
 
         // You can have direct access to any cell, but it has a cost. If the row doesn't exist
-        // yet in the list of rows, it  will create all rows between the last row and the actual row.
-        row = table.getRow(6);
+        // yet in the list of rows, it  will create all rows between the last row and the actual
+        // row.
+        row = table1.getRow(6);
 
         // You can have direct access to cells
         cell = row.getOrCreateCell(1);
         cell.setStringValue("B7");
 
-        // With a TableHelper, direct access might be easier...
+        // With a TableHelper, direct access might be easier to write...
         final TableHelper tableHelper = TableHelper.create();
         // ...but note that the cell is referred by row *then* column (as matrices in maths).
         // To access the cell "F2", you'll use:
-        cell = tableHelper.getCell(table, 1, 5);
+        cell = tableHelper.getCell(table1, 1, 5);
         cell.setStringValue("F2");
 
         // You can use an address, but there is the cost of parsing that address and a risk of
         // malformed address:
         try {
-            cell = tableHelper.getCell(table, "E3");
+            cell = tableHelper.getCell(table1, "E3");
             cell.setStringValue("E3");
         } catch (final ParseException e) {
-            // this won't happen here!
+            /* this won't happen here! */
         }
 
         // To be (almost) complete, there is another way to write a value to a cell:
         try {
-            tableHelper.setCellValue(table, "D4", CellValue.fromObject("D4"));
+            tableHelper.setCellValue(table1, "D4", CellValue.fromObject("D4"));
         } catch (final ParseException e) {
-            // this won't happen here!
+            /* this won't happen here! */
         }
-    }
 
-    // Direct access may be useful, but FastODS was designed for a relative access
-    private static void relative_access(final OdsDocument document) throws IOException {
+        // ## Relative access
+        //
+        // Direct access may be useful, but FastODS was designed for a relative access
         // Create a new table:
-        final Table table = document.addTable("relative-access");
+        final Table table2 = document.addTable("relative-access");
 
         // We want ten rows of data
         for (int r = 0; r < 10; r++) {
             // The Table object has an internal row index (that is updated by the `getRow` method).
-            // Just call `nextRow` to make the index advance by one:
-            final TableRow tableRow = table.nextRow();
+            // Just call `nextRow` to make the index advance by one (you have to call `nextRow`
+            // before you write data, to get the first row):
+            final TableRow tableRow = table2.nextRow();
 
             // And then create a "walker" for this row:
             final TableCellWalker cellWalker = tableRow.getWalker();
@@ -132,8 +127,12 @@ class B_AccessingTablesRowsAndCells {
                 cellWalker.next();
             }
         }
-
-        // There is a slight inconsistency between `table.newtRow` (before using the row) and
-        // `cellWalker.next` (after using the cell). Maybe I'll fix it before version 1.0...
+        // And save the file.
+        writer.saveAs(new File("generated_files", "b_accessing_example.ods"));
+        //
+        // Note: There is a slight inconsistency between `table.newtRow` (before using
+        // the row) and `cellWalker.next` (after using the cell). Maybe I'll fix it before
+        // version 1.0...
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 }

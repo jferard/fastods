@@ -39,6 +39,8 @@ public abstract class CellValue {
 	public static CellValue fromObject(final Object o) {
 		if (o == null)
 			return new VoidValue();
+		else if (o instanceof CellValue)
+			return (CellValue) o;
 		else if (o instanceof String)
 			return new StringValue((String) o);
 		else if (o instanceof Number) // BigDecimal, Byte, Short, Integer,

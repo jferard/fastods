@@ -21,33 +21,24 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.examples;
+package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.FastOdsException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+/**
+ * A CellValue that contains a percentage
+ * @author Julien Férard
+ */
+public class PercentageValue extends CellValue {
+    private final float value;
 
-public class FastODSExamplesIT {
-    @BeforeClass
-    public static void beforeClass() throws IOException {
-        Files.createDirectories(Paths.get("generated_files"));
+    /**
+     * @param value the value
+     */
+    public PercentageValue(final float value) {
+        this.value = value;
     }
 
-    @Test
-    public void helloWorldTest() throws IOException, FastOdsException {
-        A_HelloWorld.example();
-    }
-
-    @Test
-    public void accessingTablesRowsAndCellsTest() throws IOException, FastOdsException {
-        B_AccessingTablesRowsAndCells.example();
-    }
-
-    @Test
-    public void valueTypeStyleAndDataStyleTest() throws IOException, FastOdsException {
-        C_ValueTypeStyleAndDataStyle.example();
+    @Override
+    public void setToCell(final TableCell tableCell) {
+        tableCell.setPercentageValue(this.value);
     }
 }

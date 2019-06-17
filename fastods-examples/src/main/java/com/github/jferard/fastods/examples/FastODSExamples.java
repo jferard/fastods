@@ -23,28 +23,29 @@
 
 package com.github.jferard.fastods.examples;
 
-/**
- * Writing a full documentation would be a considerable work, because every time you change the
- * library, you have to rewrite the doc.
- * My idea is to provide a set of examples of the features of FastODS. See the classes in this
- * directory
- * <p>
- * Before you start, add the following dependency to your POM (Maven users):
- * <p>
- * <pre>{@code
- *      <dependency>
- *          <groupId>com.github.jferard</groupId>
- *          <artifactId>fastods</artifactId>
- *          <version>0.6.1</version>
- *      </dependency>
- * }</pre>
- * <p>
- * For other build tools, look at:
- * https://search.maven.org/artifact/com.github.jferard/fastods/0.6.1/jar
- */
+// >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+// This tutorial is extracted from
+// https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github/jferard/fastods/examples.
+// See the classes in this directory for the full code.
+//
+// Writing a full documentation would be a considerable work, because every time you change the
+// library, you have to rewrite the doc.
+//
+// My idea is to provide a set of examples of the features of FastODS.
+//
+// Before you start, add the following dependency to your POM (Maven users):
+//
+//      <dependency>
+//          <groupId>com.github.jferard</groupId>
+//          <artifactId>fastods</artifactId>
+//          <version>0.6.1</version>
+//      </dependency>
+//
+// For other build tools, look at:
+// https://search.maven.org/artifact/com.github.jferard/fastods/0.6.1/jar
+//
+// << END TUTORIAL (directive to extract part of a tutorial from this file)
 public final class FastODSExamples {
-    public static final String GENERATED_FILES = "generated_files";
-
     private FastODSExamples() {
     }
 }

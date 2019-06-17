@@ -21,33 +21,27 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.examples;
+package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.FastOdsException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+/**
+ * A CellValue that contains a currency value
+ * @author Julien Férard
+ */
+public class CurrencyValue extends CellValue {
+    private final float value;
+    private final String currency;
 
-public class FastODSExamplesIT {
-    @BeforeClass
-    public static void beforeClass() throws IOException {
-        Files.createDirectories(Paths.get("generated_files"));
+    /**
+     * @param value the value
+     * @param currency the currency value
+     */
+    public CurrencyValue(final float value, final String currency) {
+        this.value = value;
+        this.currency = currency;
     }
 
-    @Test
-    public void helloWorldTest() throws IOException, FastOdsException {
-        A_HelloWorld.example();
-    }
-
-    @Test
-    public void accessingTablesRowsAndCellsTest() throws IOException, FastOdsException {
-        B_AccessingTablesRowsAndCells.example();
-    }
-
-    @Test
-    public void valueTypeStyleAndDataStyleTest() throws IOException, FastOdsException {
-        C_ValueTypeStyleAndDataStyle.example();
+    @Override
+    public void setToCell(final TableCell tableCell) {
+        tableCell.setCurrencyValue(this.value, this.currency);
     }
 }

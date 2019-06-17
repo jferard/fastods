@@ -36,13 +36,13 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import static com.github.jferard.fastods.examples.FastODSExamples.GENERATED_FILES;
-
 class A_HelloWorld {
-    //
-    // Let's start with the famous "Hello, World!" example.
-    //
     static void example() throws IOException, FastOdsException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // # Hello, world!
+        //
+        // Let's start with the famous "Hello, World!" example.
+        //
         // As stated in the javadoc, "An OdsFactory is the entry point for creating ODS documents."
         // Every time you want to create an ODS document, you'll start with something like that:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("hello-world"), Locale.US);
@@ -65,12 +65,16 @@ class A_HelloWorld {
         final TableCell cell = row.getOrCreateCell(0);
 
         // Note that we could have chained the calls:
-        // TableCell cell = document.addTable("hello-world").getRow(0).getOrCreateCell(0);
+        // `TableCell cell = document.addTable("hello-world").getRow(0).getOrCreateCell(0)`
 
         // Finally, we put the famous sentence in this cell A1
         cell.setStringValue("Hello, world!");
 
         // And save the file.
-        writer.saveAs(new File(GENERATED_FILES, "a_hello_world_example.ods"));
+        writer.saveAs(new File("generated_files", "a_hello_world_example.ods"));
+
+        // With a `mvn clean verify` at the root of the project, you can check the result in the
+        // `fastods-examples/generated-files` directory.
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 }
