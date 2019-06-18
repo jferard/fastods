@@ -30,15 +30,19 @@ import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PercentageValue;
+import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
-import com.github.jferard.fastods.datastyle.PercentageStyleBuilder;
+import com.github.jferard.fastods.style.BorderAttribute;
+import com.github.jferard.fastods.style.LOFonts;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.SimpleLength;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Currency;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +67,7 @@ class C_ValueTypeStyleAndDataStyle {
 
         // ## Types
         // Now, we will create cells of different types. First, a table:
-        final Table table = document.addTable("types");
+        Table table = document.addTable("types");
 
         // We add a header:
         TableRow tableRow = table.nextRow();
@@ -137,10 +141,9 @@ class C_ValueTypeStyleAndDataStyle {
         final List<String> A = Arrays
                 .asList("Type", "Boolean", "Currency", "Date", "Float", "Percentage", "String",
                         "Void");
-        final List<Object> B = Arrays
-                .<Object>asList("Type guess example", true, new CurrencyValue(10.5f, "USD")
-                        , new GregorianCalendar(2014, 9, 17, 9, 0, 0),
-                        3.14159, new PercentageValue(0.545f), "A String", null);
+        final List<Object> B = Arrays.<Object>asList("Type guess example", true,
+                new CurrencyValue(10.5f, "USD"), new GregorianCalendar(2014, 9, 17, 9, 0, 0),
+                3.14159, new PercentageValue(0.545f), "A String", null);
 
         // As you can see, some types are not guessable: is `0.545` a float or a percentage? For
         // FastODS, it is a float. What Java type will map a currency value? We have to use specific
@@ -150,7 +153,7 @@ class C_ValueTypeStyleAndDataStyle {
         table.nextRow();
 
         // Now, we can use `setValue` to take advantage of the type guess:
-        for (int r=0; r<A.size(); r++) {
+        for (int r = 0; r < A.size(); r++) {
             tableRow = table.nextRow();
             cellWalker = tableRow.getWalker();
             cellWalker.setStringValue(A.get(r));
@@ -159,6 +162,67 @@ class C_ValueTypeStyleAndDataStyle {
         }
 
         // ## Styles
+        // Let's try to add some shapes and colors. First, we have to create a style for the header:
+        final TableCellStyle grayStyle = TableCellStyle.builder("gray")
+                .backgroundColor(SimpleColor.GRAY64).fontWeightBold().build();
+
+        // The functions calls are chained in a fluent style.
+        //
+        // We create a table and get the first cell:
+        table = document.addTable("styles");
+        tableRow = table.nextRow();
+        cellWalker = tableRow.getWalker();
+
+        // Now, we add a value and set the style
+        cellWalker.setStringValue("A1");
+        cellWalker.setStyle(grayStyle);
+
+        // ### Common styles and automatic styles
+        // In LO, you'll see a new style named "gray" in the "Styles" window. That's because
+        // `TableCellStyle`s are visible by default. We can make a style hidden by adding a
+        // `hidden()` call:
+        final TableCellStyle hiddenGrayStyle = TableCellStyle.builder("hiddenGray")
+                .backgroundColor(SimpleColor.GRAY64).fontWeightBold().hidden().build();
+
+        cellWalker.next();
+        cellWalker.setStringValue("A2");
+        cellWalker.setStyle(grayStyle);
+
+        // The "gray2" style is not present in the Style window of LO. This distinction between
+        // "visible" and "hidden" styles matches the distinction between common and automatic
+        // styles in the OpenDocument specification (3.15.3):
+        //
+        // > Note: Common and automatic styles behave differently in OpenDocument editing consumers.
+        // > Common styles are presented to the user as a named set of formatting properties.
+        // > The formatting properties of an automatic style are presented to a user as
+        // > properties of the object to which the style is applied.
+        //
+        // This distinction is sometimes hard to handle. FastODS tries to make things easy:
+        // each style is, by default, either visible or hidden (depending on the kind of the style),
+        // but you can always override the default choice. For instance, `TableCellStyle`s,
+        // are visible by default, but `TableRowStyle`s and data styles are hidden by default.
+        // In most of the cases, you can simply ignore the distinction.
+        //
+        // Let's continue with a new style:
+        final TableCellStyle borderStyle = TableCellStyle.builder("border").fontName(LOFonts.DEJAVU_SANS)
+                .fontSize(SimpleLength.pt(24)).borderAll(SimpleLength.mm(2), SimpleColor.BLUE,
+                        BorderAttribute.Style.OUTSET).build();
+
+        cellWalker.next();
+        cellWalker.setStringValue("A3");
+        cellWalker.setStyle(borderStyle);
+
+        // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
+        // the height of the row was not adapted. You have to adapt it yourself. Let's try with
+        // another row:
+        final TableRowStyle tallRowStyle = TableRowStyle.builder("tall-row").rowHeight(SimpleLength.cm(3)).
+                build();
+
+        tableRow = table.nextRow();
+        tableRow.setStyle(tallRowStyle);
+        cellWalker = tableRow.getWalker();
+        cellWalker.setStringValue("B1");
+        cellWalker.setStyle(borderStyle);
 
         // ## Data Styles
 

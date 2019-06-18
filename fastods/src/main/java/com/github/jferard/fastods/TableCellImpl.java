@@ -110,6 +110,7 @@ public class TableCellImpl implements TableCell {
         if (this.style != null) {
             util.appendEAttribute(appendable, "table:style-name", this.style.getName());
         } else if (this.libreOfficeMode) {
+            // looks for a parent style to set
             util.appendEAttribute(appendable, "table:style-name", this.getCurCellStyle().getName());
         }
 

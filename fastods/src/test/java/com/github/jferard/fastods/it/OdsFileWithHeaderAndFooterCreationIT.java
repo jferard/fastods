@@ -307,7 +307,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
     }
 
     private void createStyles() {
-        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).hidden().build();
+        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
                 .fontWeightBold().build();
         this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))

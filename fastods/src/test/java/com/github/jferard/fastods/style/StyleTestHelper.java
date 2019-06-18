@@ -36,7 +36,7 @@ public class StyleTestHelper {
 
     }
 
-    public static <S extends ObjectStyle, T extends StyleBuilder<S>> void testGettersHidden(
+    public static <S extends ObjectStyle, T extends StyleBuilder<S> & ShowableBuilder<T>> void testGettersHidden(
             final T builder) {
         final S style = builder.build();
         Assert.assertEquals("test", style.getName());

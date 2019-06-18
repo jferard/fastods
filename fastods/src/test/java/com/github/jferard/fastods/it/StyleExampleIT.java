@@ -122,7 +122,7 @@ public class StyleExampleIT {
                 LOFonts.LIBERATION_MONO)
                 .hidden().build();
         final TableRowStyle rowStyle2 = TableRowStyle.builder("libe-row").rowHeight(SimpleLength.cm(1.5))
-                .hidden().build();
+                .build();
 
         // lonely style
         final TableCellStyle boldStyle = TableCellStyle.builder("bold").fontWeightBold().build();

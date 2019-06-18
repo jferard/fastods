@@ -151,16 +151,61 @@ public class BorderAttribute {
     }
 
     /**
+     * Extensible Stylesheet Language (XSL)
+     * Version 1.0, 7.7.20 "border-top-style"
+     *
      * The style of the border
      */
     public enum Style {
         /**
-         * Double lined border
+         * No border
          */
-        DOUBLE("double"), /**
+        NONE("none"),
+
+        /**
+         * Same as 'none', with a little exception
+         */
+        HIDDEN("hidden"),
+
+        /**
+         * Series of dots
+         */
+        DOTTED("dotted"),
+
+        /**
+         * Series of dashes
+         */
+        DASHED("dashed"),
+
+        /**
          * Solid border
          */
-        SOLID("solid");
+        SOLID("solid"),
+
+        /**
+         * Double lined border
+         */
+        DOUBLE("double"),
+
+        /**
+         * Carved in the canvas
+         */
+        GROOVE("groove"),
+
+        /**
+         * Coming out of the canvas
+         */
+        RIDGE("ridge"),
+
+        /**
+         * Box carved in the canvas
+         */
+        INSET("inset"),
+
+        /**
+         * Box coming out of the canvas
+         */
+        OUTSET("outset");
 
         private final String attrValue;
 

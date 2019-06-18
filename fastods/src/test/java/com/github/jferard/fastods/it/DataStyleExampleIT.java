@@ -123,7 +123,7 @@ public class DataStyleExampleIT {
         final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true)
                 .hidden().build();
         final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5))
-                .hidden().build();
+                .build();
 
         final Table table = document.addTable("test");
         final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col")

@@ -36,6 +36,6 @@ public class TableRowStyleTest {
 
     @Test
     public final void testGetters() {
-        StyleTestHelper.testGetters(TableRowStyle.builder("test"));
+        StyleTestHelper.testGettersHidden(TableRowStyle.builder("test"));
     }
 }

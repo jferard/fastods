@@ -31,7 +31,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, HidableBuilder<TableRowStyleBuilder> {
+public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, ShowableBuilder<TableRowStyleBuilder> {
     private static final Length DEFAULT_ROW_HEIGHT = SimpleLength.cm(0.45);
     private final String name;
     private Length rowHeight;
@@ -45,7 +45,7 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Hidabl
     TableRowStyleBuilder(final String name) {
         this.name = TableStyleBuilder.checker.checkStyleName(name);
         this.rowHeight = DEFAULT_ROW_HEIGHT;
-        this.hidden = false;
+        this.hidden = true;
     }
 
     @Override
@@ -54,8 +54,8 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Hidabl
     }
 
     @Override
-    public TableRowStyleBuilder hidden() {
-        this.hidden = true;
+    public TableRowStyleBuilder visible() {
+        this.hidden = false;
         return this;
     }
 

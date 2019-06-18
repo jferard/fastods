@@ -37,7 +37,7 @@ public class TableRowStyle implements FontFaceContainerStyle {
     /**
      * The default style, see LO.
      */
-    public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").hidden().build();
+    public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").build();
 
     /**
      * @param name the name of the TableRowStyle to create

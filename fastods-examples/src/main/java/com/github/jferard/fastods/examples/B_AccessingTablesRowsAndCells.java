@@ -58,10 +58,8 @@ class B_AccessingTablesRowsAndCells {
         // You know how to create a table:
         final Table table1 = document.addTable("direct-access");
 
-        // Get the first row (rows and columns start at 0):
+        // Get the first row and the first cell of the first row:
         TableRow row = table1.getRow(0);
-
-        // The first cell of the first row:
         TableCell cell = row.getOrCreateCell(0);
 
         // And set a value.

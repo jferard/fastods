@@ -30,7 +30,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
 /**
  * @author Julien Férard
  */
-public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
+public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>, ShowableBuilder<TableColumnStyleBuilder> {
     private static final Length DEFAULT_COLUMN_WIDTH = SimpleLength.cm(2.5);
     private final String name;
     private Length columnWidth;
@@ -90,6 +90,12 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle> {
     @Deprecated
     public TableColumnStyleBuilder setOptimalWidth() {
         this.optimalWidth = true;
+        return this;
+    }
+
+    @Override
+    public TableColumnStyleBuilder visible() {
+        this.hidden = false;
         return this;
     }
 }

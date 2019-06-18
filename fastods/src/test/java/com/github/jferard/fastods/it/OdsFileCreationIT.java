@@ -268,7 +268,7 @@ public class OdsFileCreationIT {
     private void createStyles() {
         this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
                 .defaultCellStyle(this.tcls).build();
-        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).hidden().build();
+        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
                 .fontWeightBold().build();
         this.tcs0 = TableCellStyle.builder("tcs0")
