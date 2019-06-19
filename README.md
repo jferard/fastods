@@ -12,11 +12,14 @@ A very fast and lightweight (no dependency) library for creating ODS (Open Docum
 
 **Ask a question:** [feel free to ask a question](https://github.com/jferard/fastods/issues/new).
 
+**Have a look at the [tutorial (WIP)](https://github.com/jferard/fastods/wiki/Tutorial)**
+
 ## Table of contents
 * [Why FastODS?](#why-fastods)
 * [Limitations](#limitations)
 * [Installation](#installation)
 * [Examples](#examples)
+* [Documentation](#documentation)
 * [Speed](#speed)
 * [History](#history)
 
@@ -106,6 +109,7 @@ library, you have to rewrite the doc.
 My idea is to provide a set of examples of the features of FastODS. This is ensures that the doc is up to date.
 
 Those examples are located in [the examples module](https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github/jferard/fastods/examples) and are fully commented.
+A [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) was extracted from this examples.
 
 To run those examples, one has to run:
 
