@@ -34,9 +34,17 @@ import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.datastyle.DateStyleBuilder;
+import com.github.jferard.fastods.datastyle.DateStyleFormat;
+import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
+import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
 import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.Angle;
 import com.github.jferard.fastods.util.SimpleLength;
@@ -44,13 +52,14 @@ import com.github.jferard.fastods.util.SimpleLength;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
 class C_ValueTypeStyleAndDataStyle {
-    static void example() throws IOException, FastOdsException {
+    static void example1() throws IOException, FastOdsException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -205,14 +214,23 @@ class C_ValueTypeStyleAndDataStyle {
         // In most of the cases, you can simply ignore the distinction.
         //
         // Let's continue with a new style:
-        final TableCellStyle borderStyle = TableCellStyle.builder("border").fontName(LOFonts.DEJAVU_SANS)
-                .fontSize(SimpleLength.pt(24)).borderAll(SimpleLength.mm(2), SimpleColor.BLUE,
-                        BorderAttribute.Style.OUTSET).build();
+        final TableCellStyle rotateStyle = TableCellStyle.builder("rotate")
+                .fontColor(SimpleColor.RED).textRotating(Angle.deg(37)).build();
 
         cellWalker.next();
         cellWalker.setStringValue("A3");
-        cellWalker.setStyle(borderStyle);
+        cellWalker.setStyle(rotateStyle);
 
+        // You can explore the `TableCellStyle` to create the style you need. A last example:
+        final TableCellStyle borderStyle = TableCellStyle.builder("border").fontName(LOFonts.DEJAVU_SANS).fontSize(SimpleLength.pt(24))
+                .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderAttribute.Style.OUTSET).build();
+
+        cellWalker.next();
+        cellWalker.setStringValue("A4");
+        cellWalker.setStyle(borderStyle);
+        // I think you get it now.
+
+        // ### Rows and columns styles
         // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
         // the height of the row was not adapted. You have to adapt it yourself. Let's try with
         // another row:
@@ -229,14 +247,10 @@ class C_ValueTypeStyleAndDataStyle {
         // height/width in the OpenDocument specification, and FastODS won't provide those
         // features. (Maybe one day I'll write a tool to compute the width/height of a text.)
 
-        // You can explore the `TableCellStyle` to create the style you need. A last example:
-        final TableCellStyle rotateStyle = TableCellStyle.builder("rotate")
-                .fontColor(SimpleColor.RED).textRotating(Angle.deg(37)).build();
-
-        cellWalker.next();
-        cellWalker.setStringValue("B2");
-        cellWalker.setStyle(rotateStyle);
-        // I think you get it now.
+        // You can also add a column style:
+        final TableColumnStyle wideColumn = TableColumnStyle.builder("wide-col")
+                .columnWidth(SimpleLength.cm(9)).build();
+        table.setColumnStyle(0, wideColumn);
 
         // ## Data Styles
         // Data styles are what we call "formats": is your date in plain text or in US format? how
@@ -249,13 +263,107 @@ class C_ValueTypeStyleAndDataStyle {
 
         // As usual, we create a table and get the first cell:
         table = document.addTable("data styles");
+
+        // We'll place a float with the standard format, and a float with a custom format side by side
         tableRow = table.nextRow();
         cellWalker = tableRow.getWalker();
 
-        
+        // Standard format:
+        cellWalker.setFloatValue(123456.789);
+
+        // And now create a custom data style:
+        final DataStyle floatDataStyle = new FloatStyleBuilder("float-datastyle", Locale.US)
+                .decimalPlaces(8).groupThousands(true).build();
+        cellWalker.next();
+        cellWalker.setFloatValue(123456.789);
+        cellWalker.setDataStyle(floatDataStyle);
+
+        // We can do the same with dates:
+        tableRow = table.nextRow();
+        cellWalker = tableRow.getWalker();
+
+        // A date with the standard format:
+        final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
+        cellWalker.setDateValue(cal);
+
+        // And a custom format:
+        final DataStyle dateDataStyle = new DateStyleBuilder("date-datastyle", Locale.US)
+                .dateFormat(new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT,
+                        DateStyleFormat.MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR)).visible()
+                .build();
+        cellWalker.next();
+        cellWalker.setDateValue(cal);
+        cellWalker.setDataStyle(dateDataStyle);
+
+        // A last try with a time (duration):
+        tableRow = table.nextRow();
+        cellWalker = tableRow.getWalker();
+        cellWalker.setTimeValue(10000000);
+
+        // And:
+        final DataStyle timeDataStyle = new TimeStyleBuilder("time-datastyle", Locale.US)
+                .timeFormat(new DateStyleFormat(DateStyleFormat.text("Hour: "),
+                        DateStyleFormat.LONG_HOURS)).visible().build();
+
+        cellWalker.next();
+        cellWalker.setTimeValue(10000000);
+        cellWalker.setDataStyle(timeDataStyle);
+
+        // Obvioulsy, you can combine a style and a data style:
+        tableRow = table.nextRow();
+        cellWalker = tableRow.getWalker();
+        cellWalker.setTimeValue(10000000);
+        cellWalker.setStyle(rotateStyle);
+        cellWalker.setDataStyle(timeDataStyle);
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "c_value_type.ods"));
+        writer.saveAs(new File("generated_files", "c_value_type1.ods"));
+    }
+
+    public static void example2() throws IOException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+
+        // ### Change the default data styles
+        // Setting the data style for every cell may become cumbersome. Happily, you can decide of
+        // the default data styles at the creation of the document.
+        //
+        // First, create a `DataStyles` object (note the "s") with a builder:
+
+        final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
+        dsb.floatStyleBuilder().decimalPlaces(0);
+        dsb.dateStyleBuilder().dateFormat(
+                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.SLASH,
+                        DateStyleFormat.LONG_MONTH, DateStyleFormat.SLASH,
+                        DateStyleFormat.LONG_YEAR));
+
+        // You can use the other data style builders if you want, and then build all the data style
+        // in one shot:
+
+        final DataStyles ds = dsb.build();
+
+        // Now, create the factory
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells2"), Locale.US);
+
+        // and pass the created "data styles" to the factory:
+        odsFactory.dataStyles(ds);
+
+        // We can continue as usual:
+        final AnonymousOdsFileWriter writer = odsFactory.dataStyles(ds).createWriter();
+        final OdsDocument document = writer.document();
+
+        // And create the same cells as above:
+        final Table table = document.addTable("data styles");
+        final TableRow tableRow = table.nextRow();
+        final TableCellWalker cellWalker = tableRow.getWalker();
+
+        cellWalker.setFloatValue(123456.789);
+        final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
+        cellWalker.next();
+        cellWalker.setDateValue(cal);
+
+        // And save the file.
+        writer.saveAs(new File("generated_files", "c_value_type2.ods"));
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 }

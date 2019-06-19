@@ -47,7 +47,12 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void valueTypeStyleAndDataStyleTest() throws IOException, FastOdsException {
-        C_ValueTypeStyleAndDataStyle.example();
+    public void valueTypeStyleAndDataStyle1Test() throws IOException, FastOdsException {
+        C_ValueTypeStyleAndDataStyle.example1();
+    }
+
+    @Test
+    public void valueTypeStyleAndDataStyle2Test() throws IOException, FastOdsException {
+        C_ValueTypeStyleAndDataStyle.example2();
     }
 }
