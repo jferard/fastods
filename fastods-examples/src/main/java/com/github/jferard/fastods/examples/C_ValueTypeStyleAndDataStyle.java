@@ -38,6 +38,7 @@ import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.Angle;
 import com.github.jferard.fastods.util.SimpleLength;
 
 import java.io.File;
@@ -224,7 +225,34 @@ class C_ValueTypeStyleAndDataStyle {
         cellWalker.setStringValue("B1");
         cellWalker.setStyle(borderStyle);
 
+        // You have to set the height of the row manually. There's nothing like an Optimal
+        // height/width in the OpenDocument specification, and FastODS won't provide those
+        // features. (Maybe one day I'll write a tool to compute the width/height of a text.)
+
+        // You can explore the `TableCellStyle` to create the style you need. A last example:
+        final TableCellStyle rotateStyle = TableCellStyle.builder("rotate")
+                .fontColor(SimpleColor.RED).textRotating(Angle.deg(37)).build();
+
+        cellWalker.next();
+        cellWalker.setStringValue("B2");
+        cellWalker.setStyle(rotateStyle);
+        // I think you get it now.
+
         // ## Data Styles
+        // Data styles are what we call "formats": is your date in plain text or in US format? how
+        // many digits have your number? are the negative numbers in red?
+        //
+        // A cell may have a style, and this style may have a data style. The OpenDocument
+        // specification states that data style can't be attached directly to a cell, but must be
+        // embedded in a cell. That's not easy to handle for FastODS, but should not be too
+        // complicated for you.
+
+        // As usual, we create a table and get the first cell:
+        table = document.addTable("data styles");
+        tableRow = table.nextRow();
+        cellWalker = tableRow.getWalker();
+
+        
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.

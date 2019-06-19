@@ -27,6 +27,7 @@ import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.Angle;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -44,8 +45,9 @@ public class TableCellStyle implements FontFaceContainerStyle {
      * This is the default cell style: left and top align, no wrap.
      */
     public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
-            .textAlign(TableCellStyle.Align.LEFT).verticalAlign(TableCellStyle.VerticalAlign.TOP).fontWrap(false)
-            .backgroundColor(SimpleColor.NONE).allMargins(SimpleLength.mm(0.0)).fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
+            .textAlign(TableCellStyle.Align.LEFT).verticalAlign(TableCellStyle.VerticalAlign.TOP)
+            .fontWrap(false).backgroundColor(SimpleColor.NONE).allMargins(SimpleLength.mm(0.0))
+            .fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
 
     /**
      * Create a builder
@@ -67,7 +69,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
     private final Align textAlign; // 'center','end','start','justify'
     private final TextProperties textProperties;
     private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
-    private final TextRotating  rotating;
+    private final Angle rotating;
     private final boolean wrap; // No line wrap when false, line wrap when
     private final DataStyle dataStyle;
     private String key;
@@ -87,10 +89,11 @@ public class TableCellStyle implements FontFaceContainerStyle {
      * @param borders         the borders of the cell
      * @param margins         the margins of the cell
      */
-    TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle, final Color backgroundColor,
-                   final TextProperties textProperties, final Align textAlign, final VerticalAlign verticalAlign,
-                   final boolean wrap, final TableCellStyle parentCellStyle, final Borders borders,
-                   final Margins margins, final TextRotating textRotating) {
+    TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle,
+                   final Color backgroundColor, final TextProperties textProperties,
+                   final Align textAlign, final VerticalAlign verticalAlign, final boolean wrap,
+                   final TableCellStyle parentCellStyle, final Borders borders,
+                   final Margins margins, final Angle textRotating) {
         this.hidden = hidden;
         this.borders = borders;
         this.margins = margins;
@@ -113,15 +116,17 @@ public class TableCellStyle implements FontFaceContainerStyle {
         odsElements.addContentStyle(this);
     }
 
-    private void appendCellProperties(final XMLUtil util, final Appendable appendable) throws IOException {
+    private void appendCellProperties(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:table-cell-properties");
         if (this.backgroundColor != SimpleColor.NONE)
-            util.appendAttribute(appendable, "fo:background-color", this.backgroundColor.hexValue());
+            util.appendAttribute(appendable, "fo:background-color",
+                    this.backgroundColor.hexValue());
 
         if (this.verticalAlign != null)
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign.attrValue);
-        if (this.rotating!=null)
-        	util.appendAttribute(appendable, "style:rotation-angle", this.rotating.attrValue);
+        if (this.rotating != null)
+            util.appendAttribute(appendable, "style:rotation-angle", this.rotating.toString());
         this.borders.appendXMLContent(util, appendable);
 
         if (this.wrap) util.appendAttribute(appendable, "fo:wrap-option", "wrap");
@@ -130,12 +135,14 @@ public class TableCellStyle implements FontFaceContainerStyle {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table-cell");
         if (this.parentCellStyle != null)
-            util.appendEAttribute(appendable, "style:parent-style-name", this.parentCellStyle.getRealName());
+            util.appendEAttribute(appendable, "style:parent-style-name",
+                    this.parentCellStyle.getRealName());
         if (this.dataStyle != null)
             util.appendEAttribute(appendable, "style:data-style-name", this.dataStyle.getName());
 
@@ -151,7 +158,8 @@ public class TableCellStyle implements FontFaceContainerStyle {
 
             if (this.hasParagraphProperties()) {
                 appendable.append("<style:paragraph-properties");
-                if (this.textAlign != null) util.appendAttribute(appendable, "fo:text-align", this.textAlign.attrValue);
+                if (this.textAlign != null)
+                    util.appendAttribute(appendable, "fo:text-align", this.textAlign.attrValue);
 
                 this.margins.appendXMLContent(util, appendable);
                 appendable.append("/>");
@@ -203,8 +211,8 @@ public class TableCellStyle implements FontFaceContainerStyle {
     }
 
     private boolean hasCellProperties() {
-        return this.backgroundColor != SimpleColor.NONE || this.verticalAlign != null || !this.borders
-                .areVoid() || this.wrap || this.rotating!=null;
+        return this.backgroundColor != SimpleColor.NONE || this.verticalAlign != null ||
+                !this.borders.areVoid() || this.wrap || this.rotating != null;
     }
 
     /**
@@ -226,24 +234,11 @@ public class TableCellStyle implements FontFaceContainerStyle {
         return this.parentCellStyle;
     }
 
-    /**
-     * Text rotation 
-     * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#__RefHeading__1420142_253892949
-     */
-    public enum TextRotating
-    {
-
-    	NO_ROTATING("0"),
-    	ROTATE_90("90"),
-    	ROTATE_180("180"),
-    	ROTATE_270("270");
-    	
-    	private final String attrValue;
-    	
-    	TextRotating(final String attrValue) {
-    		this.attrValue = attrValue;
-    	}
+    @Override
+    public FontFace getFontFace() {
+        return this.textProperties.getFontFace();
     }
+
     /**
      * An horizontal alignment.
      * 20.216 fo:text-align. See https://www.w3.org/TR/2001/REC-xsl-20011015/slice7.html#text-align
@@ -311,10 +306,5 @@ public class TableCellStyle implements FontFaceContainerStyle {
         VerticalAlign(final String attrValue) {
             this.attrValue = attrValue;
         }
-    }
-
-    @Override
-    public FontFace getFontFace() {
-        return this.textProperties.getFontFace();
     }
 }

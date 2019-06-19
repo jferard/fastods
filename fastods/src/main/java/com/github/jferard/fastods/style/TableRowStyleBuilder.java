@@ -30,6 +30,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
 /**
  * @author Julien Férard
  * @author Martin Schulz
+ * TODO: no reason to have a ShowableBuilder, but LO can't figure common row styles.
  */
 public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, ShowableBuilder<TableRowStyleBuilder> {
     private static final Length DEFAULT_ROW_HEIGHT = SimpleLength.cm(0.45);
