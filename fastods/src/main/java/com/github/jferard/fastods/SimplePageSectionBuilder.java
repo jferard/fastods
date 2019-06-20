@@ -34,10 +34,10 @@ import com.github.jferard.fastods.util.Box;
  * @author Julien Férard
  *
  */
-class SimplePageSectionBuilder
+public class SimplePageSectionBuilder
 		extends PageSectionBuilder<SimplePageSectionBuilder> {
 	/**
-	 * Create a new simple footer object.
+	 * Create a new simple header/footer object.
 	 *
 	 */
 	SimplePageSectionBuilder() {

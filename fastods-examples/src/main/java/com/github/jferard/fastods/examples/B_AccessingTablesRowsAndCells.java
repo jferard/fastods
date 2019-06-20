@@ -44,7 +44,7 @@ class B_AccessingTablesRowsAndCells {
     public static void example() throws IOException, FastOdsException {
         //
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // # Accessing tables, rows and cells
+        // # Accessing Tables, Rows and Cells
         //
         // Now, we want to write values in other cells that the A1 cell.
         //
@@ -53,7 +53,7 @@ class B_AccessingTablesRowsAndCells {
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
 
-        // ## Direct access to cells
+        // ## Direct Access to Cells
         //
         // You know how to create a table:
         final Table table1 = document.addTable("direct-access");
@@ -99,7 +99,7 @@ class B_AccessingTablesRowsAndCells {
             /* this won't happen here! */
         }
 
-        // ## Relative access
+        // ## Relative Access
         //
         // Direct access may be useful, but FastODS was designed for a relative access
         // Create a new table:
@@ -128,9 +128,11 @@ class B_AccessingTablesRowsAndCells {
         // And save the file.
         writer.saveAs(new File("generated_files", "b_accessing_example.ods"));
         //
-        // Note: There is a slight inconsistency between `table.newtRow` (before using
+        // *Note 1:* There is a slight inconsistency between `table.newtRow` (before using
         // the row) and `cellWalker.next` (after using the cell). Maybe I'll fix it before
         // version 1.0...
+        //
+        // *Note 2:* We will see how to merge cells in the Advanced part of this tutorial.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 }

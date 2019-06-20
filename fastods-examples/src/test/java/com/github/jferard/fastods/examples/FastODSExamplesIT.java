@@ -55,4 +55,9 @@ public class FastODSExamplesIT {
     public void valueTypeStyleAndDataStyle2Test() throws IOException, FastOdsException {
         C_ValueTypeStyleAndDataStyle.example2();
     }
+
+    @Test
+    public void pageFormatTest1() throws IOException, FastOdsException {
+        D_PageFormat.example();
+    }
 }

@@ -65,7 +65,7 @@ class C_ValueTypeStyleAndDataStyle {
         final OdsDocument document = writer.document();
 
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // # Value, type, style and data style
+        // # Value, Type, Style and Data Style
         // Four elements define the content of a cell:
         // * the value
         // * the type (string, float, boolean, ...)
@@ -142,7 +142,7 @@ class C_ValueTypeStyleAndDataStyle {
         cellWalker.next();
         cellWalker.setVoidValue();
 
-        // ### Type guess
+        // ### Type Guess
         // FastODS can guess types, based on Java object types. It's useful when we try to auto
         // import typed data, e.g. from a `ResultSet`. We can use this ability to reduce the
         // boilerplate code.
@@ -187,7 +187,7 @@ class C_ValueTypeStyleAndDataStyle {
         cellWalker.setStringValue("A1");
         cellWalker.setStyle(grayStyle);
 
-        // ### Common styles and automatic styles
+        // ### Common Styles and Automatic Styles
         // In LO, you'll see a new style named "gray" in the "Styles" window. That's because
         // `TableCellStyle`s are visible by default. We can make a style hidden by adding a
         // `hidden()` call:
@@ -230,7 +230,7 @@ class C_ValueTypeStyleAndDataStyle {
         cellWalker.setStyle(borderStyle);
         // I think you get it now.
 
-        // ### Rows and columns styles
+        // ### Rows and Columns Styles
         // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
         // the height of the row was not adapted. You have to adapt it yourself. Let's try with
         // another row:
@@ -324,7 +324,7 @@ class C_ValueTypeStyleAndDataStyle {
     public static void example2() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 
-        // ### Change the default data styles
+        // ### Changing the Default Data Styles
         // Setting the data style for every cell may become cumbersome. Happily, you can decide of
         // the default data styles at the creation of the document.
         //

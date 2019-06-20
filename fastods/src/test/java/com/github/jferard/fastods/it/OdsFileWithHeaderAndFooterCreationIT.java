@@ -340,12 +340,12 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
         this.ps = PageStyle.builder("test-master-page").footer(this.footer).header(this.header)
                 .build();
-        this.ttts = TableStyle.builder("test-table-style").pageStyle(this.ps).hidden().build();
+        this.ttts = TableStyle.builder("test-table-style").pageStyle(this.ps).build();
 
         this.ps2 = PageStyle.builder("test2-master-page")
                 .masterPageStyle(this.ps.getMasterPageStyle())
                 .pageLayoutStyle(this.ps.getPageLayoutStyle()).build();
-        this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).hidden().build();
+        this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).build();
     }
 
     private void createDocumentWithFooterAndHeaderWithFlush() throws IOException, FastOdsException {

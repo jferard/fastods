@@ -38,7 +38,7 @@ public class TableStyle implements ObjectStyle {
     /**
      * the default (empty) table style
      */
-    public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").hidden().build();
+    public static final TableStyle DEFAULT_TABLE_STYLE = TableStyle.builder("ta1").build();
 
     /**
      * @param name the name of the style

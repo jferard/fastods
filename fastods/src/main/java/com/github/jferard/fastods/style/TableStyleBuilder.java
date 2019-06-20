@@ -31,7 +31,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
  *
  * @author Julien Férard
  */
-public class TableStyleBuilder implements StyleBuilder<TableStyle>, HidableBuilder<TableStyleBuilder> {
+public class TableStyleBuilder implements StyleBuilder<TableStyle>, ShowableBuilder<TableStyleBuilder> {
 
     /**
      * A name checker
@@ -48,7 +48,7 @@ public class TableStyleBuilder implements StyleBuilder<TableStyle>, HidableBuild
     TableStyleBuilder(final String name) {
         this.name = checker.checkStyleName(name);
         this.pageStyle = PageStyle.DEFAULT_MASTER_PAGE_STYLE;
-        this.hidden = false;
+        this.hidden = true;
     }
 
     @Override
@@ -68,8 +68,8 @@ public class TableStyleBuilder implements StyleBuilder<TableStyle>, HidableBuild
     }
 
     @Override
-    public TableStyleBuilder hidden() {
-        this.hidden = true;
+    public TableStyleBuilder visible() {
+        this.hidden = false;
         return this;
     }
 }

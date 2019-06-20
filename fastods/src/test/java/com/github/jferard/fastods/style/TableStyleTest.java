@@ -69,6 +69,6 @@ public class TableStyleTest {
 
     @Test
     public final void testGetters() {
-        StyleTestHelper.testGetters(TableStyle.builder("test"));
+        StyleTestHelper.testGettersHidden(TableStyle.builder("test"));
     }
 }

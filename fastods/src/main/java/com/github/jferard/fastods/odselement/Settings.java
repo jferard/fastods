@@ -45,9 +45,9 @@ import java.util.Map;
  * <li>{@code ooo:view-settings}
  * <li>{@code config-item}s for the view settings</li>
  * <li>{@code config-item-map-indexed} with a {@code config-item-map-entry} per view
- * <li>{@code config-item}s of the wiew</li>
+ * <li>{@code config-item}s of the view</li>
  * <li>a {@code config-item-map-named} with a {@code config-item-map-entry} per table
- * <li>{@code config-item}s of the table in the wiew</li>
+ * <li>{@code config-item}s of the table in the view</li>
  * <li>{@code ooo:configuration-settings}
  * <li>{@code config-item}s for the configuration settings</li>
  * </ul>
@@ -67,6 +67,8 @@ public class Settings {
         viewSettings.add(new ConfigItem("VisibleAreaWidth", "int", "680"));
         viewSettings.add(new ConfigItem("VisibleAreaHeight", "int", "400"));
 
+        // https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
+        // https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html
         final ConfigItemMapEntrySet firstView = ConfigItemMapEntrySet.createSet();
         firstView.add(new ConfigItem("ViewId", "string", "View1"));
         firstView.add(new ConfigItem("ActiveTable", "string", "Tab1"));
@@ -91,6 +93,7 @@ public class Settings {
         firstView.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
         firstView.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
 
+        // https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
         final ConfigItemSet configurationSettings = new ConfigItemSet("ooo:configuration-settings");
         configurationSettings.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
         configurationSettings.add(new ConfigItem("ShowNotes", "boolean", "true"));
