@@ -89,4 +89,21 @@ public class Paragraph implements TagParameters, ParagraphElement {
             element.addEmbeddedStylesFromCell(stylesContainer);
         }
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Paragraph))
+            return false;
+
+        final Paragraph other = (Paragraph) o;
+        return this.paragraphElements.equals(other.paragraphElements);
+    }
+
+    @Override
+    public final int hashCode() {
+        return this.paragraphElements.hashCode();
+    }
+
 }

@@ -84,4 +84,20 @@ public class Span implements ParagraphElement {
 	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
 		if (this.ts != null) stylesContainer.addContentFontFaceContainerStyle(this.ts);
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof Span))
+			return false;
+
+		final Span other = (Span) o;
+		return this.text.equals(other.text);
+	}
+
+	@Override
+	public final int hashCode() {
+		return this.text.hashCode();
+	}
 }

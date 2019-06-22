@@ -47,17 +47,37 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void valueTypeStyleAndDataStyle1Test() throws IOException, FastOdsException {
-        C_ValueTypeStyleAndDataStyle.example1();
+    public void cellValueTest() throws IOException, FastOdsException {
+        C_SettingTheCellValue.example();
     }
 
     @Test
-    public void valueTypeStyleAndDataStyle2Test() throws IOException, FastOdsException {
-        C_ValueTypeStyleAndDataStyle.example2();
+    public void cellDataStyleTest1() throws IOException, FastOdsException {
+        D_SettingTheCellDataStyle.example1();
     }
 
     @Test
-    public void pageFormatTest1() throws IOException, FastOdsException {
-        D_PageFormat.example();
+    public void cellDataStyleTest2() throws IOException, FastOdsException {
+        D_SettingTheCellDataStyle.example2();
+    }
+
+    @Test
+    public void cellStyleTest() throws IOException, FastOdsException {
+        E_SettingTheCellStyle.example();
+    }
+
+    @Test
+    public void moreOnCellsTest() throws IOException, FastOdsException {
+        F_MoreOnCells.example();
+    }
+
+    @Test
+    public void pageFormatTest() throws IOException, FastOdsException {
+        G_PageFormat.example();
+    }
+
+    @Test
+    public void advancedTest() throws IOException, FastOdsException {
+        H_Advanced.example();
     }
 }

@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-class E_Advanced {
+class H_Advanced {
     static void example() throws IOException, FastOdsException {
         // As usual:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
@@ -48,19 +48,33 @@ class E_Advanced {
 
         // Let's start with a new page:
         final Table table = document.addTable("advanced");
-        final TableRow row = table.getRow(0);
-        final TableCellWalker walker = row.getWalker();
-
-        // ## Merging Cells
+        TableRow row = table.getRow(0);
+        TableCellWalker walker = row.getWalker();
 
         // ## Links
+        // Links can be absolute or relative. For instance, an absolute Link may be an URL:
+        document.addTable("links");
+        row = table.getRow(0);
+        walker = row.getWalker();
+        walker.setStringValue("");
 
         // ## Some Tools
 
         // ## A Named Writer
 
+        // ## Tooltips
+
+        // ## LO features
+        // If you know what you are doing, you can play with LO settings, for instance:
+        table.setSettings("View1", "ZoomValue", "150");
+
+        // For more doc, see:
+        // * [Settings Service Reference](https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1document_1_1Settings.html)
+        // * [ViewSettings Service Reference](https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1view_1_1ViewSettings.html)
+        // * [SpreadsheetViewSettings Service Reference](https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html)
+
         // And save the file.
-        writer.saveAs(new File("generated_files", "a_hello_world_example.ods"));
+        writer.saveAs(new File("generated_files", "h_advanced.ods"));
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }

@@ -30,15 +30,22 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 /**
  * 6.1.8 text:a
+ * 19.910 xlink:href
+ *
+ * See: https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#anyURI and https://www.ietf.org/rfc/rfc2396.txt
+ *
+ * Represents a link to a table, an URI, an URL or a custom ref.
+ *
  * @author Julien Férard
  */
 public final class Link implements ParagraphElement {
 	private final String text;
-	private final String content;
+	private final String href;
 	private final TextStyle ts;
 
     /**
@@ -67,21 +74,21 @@ public final class Link implements ParagraphElement {
      * Create a new styled link to a given ref
      * @param text the text content
      * @param ts the style
-     * @param ref the ref
+     * @param relativeRef the ref
      * @return the link
      */
-	public static Link create(final String text, final TextStyle ts, final String ref) {
-        return new Link(text, ts, '#'+ref);
+	public static Link create(final String text, final TextStyle ts, final String relativeRef) {
+        return new Link(text, ts, '#'+relativeRef);
 	}
 
     /**
      * Create a new link to a given ref
      * @param text the text content
-     * @param ref the ref
+     * @param relativeRef the ref
      * @return the link
      */
-	public static Link create(final String text, final String ref) {
-		return new Link(text, null, '#'+ref);
+	public static Link create(final String text, final String relativeRef) {
+		return new Link(text, null, '#'+relativeRef);
 	}
 
     /**
@@ -109,7 +116,7 @@ public final class Link implements ParagraphElement {
      * Create a new styled link to a given url
      * @param text the text content
      * @param ts the style
-     * @param url the file
+     * @param url the url
      * @return the link
      */
 	public static Link create(final String text, final TextStyle ts, final URL url) {
@@ -119,16 +126,37 @@ public final class Link implements ParagraphElement {
     /**
      * Create a new link to a given url
      * @param text the text content
-     * @param url the file
+     * @param url the url
      * @return the link
      */
 	public static Link create(final String text, final URL url) {
         return new Link(text, null, url.toString());
 	}
 
-    private Link(final String text, final TextStyle ts, final String content) {
+	/**
+	 * Create a new styled link to a given uri
+	 * @param text the text content
+	 * @param ts the style
+	 * @param uri the uri
+	 * @return the link
+	 */
+	public static Link create(final String text, final TextStyle ts, final URI uri) {
+		return new Link(text, ts, uri.toString());
+	}
+
+	/**
+	 * Create a new link to a given url
+	 * @param text the text content
+	 * @param uri the file
+	 * @return the link
+	 */
+	public static Link create(final String text, final URI uri) {
+		return new Link(text, null, uri.toString());
+	}
+
+    private Link(final String text, final TextStyle ts, final String href) {
         this.text = text;
-        this.content = content;
+        this.href = href;
         this.ts = ts;
     }
 
@@ -139,7 +167,7 @@ public final class Link implements ParagraphElement {
 			util.appendEAttribute(appendable, "text:style-name",
 					this.ts.getName());
 		}
-		util.appendEAttribute(appendable, "xlink:href", this.content);
+		util.appendEAttribute(appendable, "xlink:href", this.href);
 		util.appendAttribute(appendable, "xlink:type", "simple");
 		appendable.append(">").append(this.text).append("</text:a>");
 	}
@@ -152,5 +180,21 @@ public final class Link implements ParagraphElement {
 	@Override
 	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
         if (this.ts != null) stylesContainer.addContentFontFaceContainerStyle(this.ts);
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof Link))
+			return false;
+
+		final Link other = (Link) o;
+		return this.href.equals(other.href) && this.text.equals(other.text);
+	}
+
+	@Override
+	public final int hashCode() {
+		return 31*this.href.hashCode() + this.text.hashCode();
 	}
 }

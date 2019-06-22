@@ -46,7 +46,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-class D_PageFormat {
+class G_PageFormat {
     static void example() throws IOException, FastOdsException {
         // As usual:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
@@ -133,17 +133,8 @@ class D_PageFormat {
                 .build();
         table.setStyle(tableStyle);
 
-        // ## LO features
-        // If you know what you are doing, you can play with LO settings, for instance:
-        table.setSettings("View1", "ZoomValue", "150");
-
-        // For more doc, see:
-        // * [Settings Service Reference](https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1document_1_1Settings.html)
-        // * [ViewSettings Service Reference](https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1view_1_1ViewSettings.html)
-        // * [SpreadsheetViewSettings Service Reference](https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html)
-
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "d_page_format1.ods"));
+        writer.saveAs(new File("generated_files", "g_page_format.ods"));
     }
 }

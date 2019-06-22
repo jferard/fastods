@@ -23,35 +23,32 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.odselement.ContentElement;
-import com.github.jferard.fastods.odselement.SettingsElement;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
+public class TimeValue extends CellValue {
+    private final long timeInMillis;
 
-import java.io.IOException;
+    /**
+     * @param timeInMillis
+     */
+    public TimeValue(final long timeInMillis) {
+        this.timeInMillis = timeInMillis;
+    }
 
-/**
- * Created by jferard on 07/05/17.
- */
-public class FinalizeFlusherTest {
-    @Test
-    public final void test() throws IOException {
-        final XMLUtil util = XMLUtil.create();
-        final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
-        final SettingsElement settingsElements = PowerMock.createMock(SettingsElement.class);
-        final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) return true;
+        if (!(o instanceof TimeValue)) return false;
 
-        PowerMock.resetAll();
-        contentElement.writePostamble(util, w);
-        settingsElements.write(util, w);
-        w.close();
+        final TimeValue other = (TimeValue) o;
+        return this.timeInMillis == other.timeInMillis;
+    }
 
-        PowerMock.replayAll();
-        final FinalizeFlusher flusher = new FinalizeFlusher(contentElement, settingsElements);
-        flusher.flushInto(util, w);
+    @Override
+    public final int hashCode() {
+        return (int) this.timeInMillis % Integer.MAX_VALUE;
+    }
 
-        PowerMock.verifyAll();
+    @Override
+    public void setToCell(final TableCell tableCell) {
+        tableCell.setTimeValue(this.timeInMillis);
     }
 }

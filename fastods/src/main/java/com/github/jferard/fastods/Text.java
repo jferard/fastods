@@ -147,4 +147,20 @@ public class Text implements ParagraphElement {
     public boolean isEmpty() {
         return this.paragraphs.isEmpty();
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Text))
+            return false;
+
+        final Text other = (Text) o;
+        return this.paragraphs.equals(other.paragraphs);
+    }
+
+    @Override
+    public final int hashCode() {
+        return this.paragraphs == null ? 0 : this.paragraphs.hashCode();
+    }
 }

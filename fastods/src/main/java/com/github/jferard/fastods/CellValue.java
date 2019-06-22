@@ -43,6 +43,8 @@ public abstract class CellValue {
 			return (CellValue) o;
 		else if (o instanceof String)
 			return new StringValue((String) o);
+		else if (o instanceof Text)
+			return new TextValue((Text) o);
 		else if (o instanceof Number) // BigDecimal, Byte, Short, Integer,
 										// Long, Float, Double
 			return new FloatValue((Number) o);

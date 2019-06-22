@@ -28,12 +28,12 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class PercentageValue extends CellValue {
-    private final float value;
+    private final double value;
 
     /**
      * @param value the value
      */
-    public PercentageValue(final float value) {
+    public PercentageValue(final double value) {
         this.value = value;
     }
 

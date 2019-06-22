@@ -33,6 +33,8 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -67,6 +69,15 @@ public class LinkTest {
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"https://www.github.com/jferard/fastods\" " + "xlink" +
                         ":type=\"simple\">url</text:a>",
+                link);
+    }
+
+    @Test
+    public final void testURI() throws IOException, URISyntaxException {
+        final Link link = Link.create("A mail", this.ts, new URI("mailto:mduerst@ifi.unizh.ch"));
+        TestHelper.assertXMLEquals(
+                "<text:a text:style-name=\"test\" xlink:href=\"mailto:mduerst@ifi.unizh.ch\" " + "xlink" +
+                        ":type=\"simple\">A mail</text:a>",
                 link);
     }
 

@@ -28,14 +28,14 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class CurrencyValue extends CellValue {
-    private final float value;
+    private final double value;
     private final String currency;
 
     /**
      * @param value the value
      * @param currency the currency value
      */
-    public CurrencyValue(final float value, final String currency) {
+    public CurrencyValue(final double value, final String currency) {
         this.value = value;
         this.currency = currency;
     }
