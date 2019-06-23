@@ -137,7 +137,7 @@ public class TableColdCellTest {
 
     private String getXML() throws IOException {
         final StringBuilder sb = new StringBuilder("<table:table-cell");
-        this.coldCell.appendXMLToTable(this.xmlUtil, sb, false);
+        this.coldCell.appendXMLToTable(this.xmlUtil, sb);
         return sb.toString();
     }
 }

@@ -402,6 +402,18 @@ public class TableCellTest {
     }
 
     @Test
+    public final void testTextCovered() throws IOException {
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setCovered();
+        this.cell.setText(Text.content("text"));
+        this.assertCellXMLEquals(
+                "<table:covered-table-cell office:value-type=\"string\" office:string-value=\"\">" + "<text:p>text</text:p>"
+                        + "</table:covered-table-cell>");
+    }
+
+    @Test
     public final void testVoid() throws IOException {
         PowerMock.replayAll();
         this.cell.setVoidValue();

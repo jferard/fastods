@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.style.TextStyle;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,153 +37,191 @@ import java.util.List;
  * @author Julien Férard
  */
 public class ParagraphBuilder {
-	private final List<ParagraphElement> paragraphElements;
-	private TextStyle style;
+    private final List<ParagraphElement> paragraphElements;
+    private TextStyle style;
 
-	/**
-	 * Create an empty builder
-	 */
-	ParagraphBuilder() {
-		this.paragraphElements = new ArrayList<ParagraphElement>();
-	}
+    /**
+     * Create an empty builder
+     */
+    ParagraphBuilder() {
+        this.paragraphElements = new ArrayList<ParagraphElement>();
+    }
 
-	/**
-	 * @return the paragraph
-	 */
-	public Paragraph build() {
-		return new Paragraph(this.paragraphElements, this.style);
-	}
+    /**
+     * @return the paragraph
+     */
+    public Paragraph build() {
+        return new Paragraph(this.paragraphElements, this.style);
+    }
 
-	/**
-	 * Create a span in the current paragraph.
-	 * @param text the text
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder span(final String text) {
-		final ParagraphElement paragraphElement = new Span(text);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a span in the current paragraph.
+     *
+     * @param text the text
+     * @return this for fluent style
+     */
+    public ParagraphBuilder span(final String text) {
+        final ParagraphElement paragraphElement = new Span(text);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a link in the current paragraph.
-	 * @param text the text
-	 * @param ref the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder link(final String text, final String ref) {
-		final ParagraphElement paragraphElement = Link.create(text, ref);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     *
+     * @param text the text
+     * @param ref  the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder link(final String text, final String ref) {
+        final ParagraphElement paragraphElement = Link.create(text, ref);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a styled link in the current paragraph.
-	 * @param text the text
-	 * @param ts the style
-	 * @param ref the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder styledLink(final String text, final TextStyle ts, final String ref) {
-		final ParagraphElement paragraphElement = Link.create(text, ts, ref);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     *
+     * @param text the text
+     * @param ts   the style
+     * @param ref  the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder styledLink(final String text, final TextStyle ts, final String ref) {
+        final ParagraphElement paragraphElement = Link.create(text, ts, ref);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a link in the current paragraph.
-	 * @param text the text
-	 * @param table the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder link(final String text, final Table table) {
-		final ParagraphElement paragraphElement = Link.create(text, table);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     *
+     * @param text  the text
+     * @param table the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder link(final String text, final Table table) {
+        final ParagraphElement paragraphElement = Link.create(text, table);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a styled link in the current paragraph.
-	 * @param text the text
-	 * @param ts the style
-	 * @param table the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder styledLink(final String text, final TextStyle ts, final Table table) {
-		final ParagraphElement paragraphElement = Link.create(text, ts, table);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     *
+     * @param text  the text
+     * @param ts    the style
+     * @param table the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder styledLink(final String text, final TextStyle ts, final Table table) {
+        final ParagraphElement paragraphElement = Link.create(text, ts, table);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a link in the current paragraph.
-	 * @param text the text
-	 * @param file the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder link(final String text, final File file) {
-		final ParagraphElement paragraphElement = Link.create(text, file);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     *
+     * @param text the text
+     * @param file the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder link(final String text, final File file) {
+        final ParagraphElement paragraphElement = Link.create(text, file);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a styled link in the current paragraph.
-	 * @param text the text
-	 * @param ts the style
-	 * @param file the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder styledLink(final String text, final TextStyle ts, final File file) {
-		final ParagraphElement paragraphElement = Link.create(text, ts, file);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     *
+     * @param text the text
+     * @param ts   the style
+     * @param file the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder styledLink(final String text, final TextStyle ts, final File file) {
+        final ParagraphElement paragraphElement = Link.create(text, ts, file);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a link in the current paragraph.
-	 * @param text the text
-	 * @param url the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder link(final String text, final URL url) {
-		final ParagraphElement paragraphElement = Link.create(text, url);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     *
+     * @param text the text
+     * @param url  the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder link(final String text, final URL url) {
+        final ParagraphElement paragraphElement = Link.create(text, url);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a styled link in the current paragraph.
-	 * @param text the text
-	 * @param ts the style
-	 * @param url the destination
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder styledLink(final String text, final TextStyle ts, final URL url) {
-		final ParagraphElement paragraphElement = Link.create(text, ts, url);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     *
+     * @param text the text
+     * @param ts   the style
+     * @param url  the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder styledLink(final String text, final TextStyle ts, final URL url) {
+        final ParagraphElement paragraphElement = Link.create(text, ts, url);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Set the paragraph style
-	 * @param ts the style
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder style(final TextStyle ts) {
-		this.style = ts;
-		return this;
-	}
+    /**
+     * Create a link in the current paragraph.
+     *
+     * @param text the text
+     * @param uri  the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder link(final String text, final URI uri) {
+        final ParagraphElement paragraphElement = Link.create(text, uri);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 
-	/**
-	 * Create a styled span with a text content
-	 * @param text the text
-	 * @param ts the style
-	 * @return this for fluent style
-	 */
-	public ParagraphBuilder styledSpan(final String text, final TextStyle ts) {
-		final ParagraphElement paragraphElement = new Span(text, ts);
-		this.paragraphElements.add(paragraphElement);
-		return this;
-	}
+    /**
+     * Create a styled link in the current paragraph.
+     *
+     * @param text the text
+     * @param ts   the style
+     * @param uri  the destination
+     * @return this for fluent style
+     */
+    public ParagraphBuilder styledLink(final String text, final TextStyle ts, final URI uri) {
+        final ParagraphElement paragraphElement = Link.create(text, ts, uri);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
+
+    /**
+     * Set the paragraph style
+     *
+     * @param ts the style
+     * @return this for fluent style
+     */
+    public ParagraphBuilder style(final TextStyle ts) {
+        this.style = ts;
+        return this;
+    }
+
+    /**
+     * Create a styled span with a text content
+     *
+     * @param text the text
+     * @param ts   the style
+     * @return this for fluent style
+     */
+    public ParagraphBuilder styledSpan(final String text, final TextStyle ts) {
+        final ParagraphElement paragraphElement = new Span(text, ts);
+        this.paragraphElements.add(paragraphElement);
+        return this;
+    }
 }

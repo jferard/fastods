@@ -27,6 +27,7 @@ import com.github.jferard.fastods.FastOdsException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -67,7 +68,7 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void moreOnCellsTest() throws IOException, FastOdsException {
+    public void moreOnCellsTest() throws IOException, FastOdsException, URISyntaxException {
         F_MoreOnCells.example();
     }
 

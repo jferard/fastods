@@ -120,8 +120,7 @@ class TableColdCell {
 	 * @throws IOException if data can't be appended
 	 */
 	public void appendXMLToTable(final XMLUtil util,
-								 final Appendable appendable,
-								 final boolean covered) throws IOException {
+								 final Appendable appendable) throws IOException {
 
 		if (this.formula != null)
 			util.appendEAttribute(appendable, "table:formula", "="+this.formula);
@@ -154,7 +153,11 @@ class TableColdCell {
 					.append(this.tooltip)
 					.append("</text:p></office:annotation>");
 			}
-			appendable.append("</table:table-cell>");
+			if (this.isCovered()) {
+				appendable.append("</table:covered-table-cell>");
+			} else {
+				appendable.append("</table:table-cell>");
+			}
 		}
 	}
 

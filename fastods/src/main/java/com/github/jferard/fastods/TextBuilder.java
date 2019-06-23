@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.style.TextStyle;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -175,6 +176,29 @@ public class TextBuilder {
      */
     public TextBuilder styledLink(final String text, final TextStyle ts, final URL url) {
         this.curParagraphBuilder.styledLink(text, ts, url);
+        return this;
+    }
+
+    /**
+     * Create a link in the current paragraph.
+     * @param text the text
+     * @param uri the destination
+     * @return this for fluent style
+     */
+    public TextBuilder link(final String text, final URI uri) {
+        this.curParagraphBuilder.link(text, uri);
+        return this;
+    }
+
+    /**
+     * Create a styled link in the current paragraph.
+     * @param text the text
+     * @param ts the style
+     * @param uri the destination
+     * @return this for fluent style
+     */
+    public TextBuilder styledLink(final String text, final TextStyle ts, final URI uri) {
+        this.curParagraphBuilder.styledLink(text, ts, uri);
         return this;
     }
 

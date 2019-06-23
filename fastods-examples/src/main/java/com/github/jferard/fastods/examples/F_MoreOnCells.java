@@ -24,28 +24,26 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.CurrencyValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.PercentageValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.Text;
+import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
 class F_MoreOnCells {
-    static void example() throws IOException, FastOdsException {
+    static void example() throws IOException, FastOdsException, URISyntaxException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -113,16 +111,81 @@ class F_MoreOnCells {
         //    | C1 (not covered)  | C2 (not covered) | C3 (not covered) | B4 (not covered) |
         //    ------------------------------------------------------------------------------
         //
-        // It's possible to merge only one cells one one row or one column with `walker.setRowsSpanned(m)`
-        // or `walker.setColumnsSpanned(n)`.
+        // It's possible to merge only one cells one one row or one column with `walker
+        // .setRowsSpanned(m)`
+        // or `walker.setColumnsSpanned(n)` (see below).
         //
-        // You can also merge cells from the row with: `row.setCellMerge(cell_index, m, n)`, `row.setRowsSpanned(cell_index, m)` or
+        // You can also merge cells from the row with: `row.setCellMerge(cell_index, m, n)`, `row
+        // .setRowsSpanned(cell_index, m)` or
         // `row.setColumnsSpanned(cell_index, n)`.
         //
         // ## Formatted text in a cell
         // I listed the cell types in a previous section. But the String cell type is not limited
         // to a plain String. It can contain formatted text. Let's learn how it works.
+        //
+        // ### Multiline text
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // We skip a few rows:
+        for (int i = 0; i < 3; i++) {
+            row = table.nextRow();
+        }
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 
+        // We need some room:
+        walker = row.getWalker();
+        walker.setRowsSpanned(3);
+
+        // Let's start with something simple. First, we build a text:
+        Text text = Text.builder().parContent("This is a").parContent("multiline")
+                .parContent("cell").build();
+
+        // Second, we set the text:
+        walker.setText(text);
+
+        // We can use some styles:
+        final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
+                .buildHiddenStyle("bold");
+        text = Text.builder().par().span("This is a ").styledSpan("bold", boldStyle)
+                .span(" example").build();
+        walker.to(2);
+        walker.setColumnsSpanned(2);
+        walker.setText(text);
+
+        // ### Links
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // We skip a few rows:
+        for (int i = 0; i < 5; i++) {
+            row = table.nextRow();
+        }
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // Links can be absolute or relative. For instance, an absolute Link may be an absolute URL:
+        walker = row.getWalker();
+        walker.setText(Text.builder().par().span("Hello, ")
+                .link("FastODS", new URL("https://www.github.com/jferard/fastods")).span("!")
+                .build());
+
+        // A relative link:
+        walker.to(2);
+        walker.setText(Text.builder().par().span("Check ")
+                .link("Hello World example", new URI("../a_hello_world_example.ods")).build());
+
+        // Or a link to a table:
+        final Table table2 = document.addTable("target");
+        walker.to(4);
+        walker.setText(Text.builder().par().span("A link to ")
+                .link("target table", table2).build());
+
+        // ### Tooltips
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // We skip a few rows:
+        for (int i = 0; i < 5; i++) {
+            row = table.nextRow();
+        }
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // Tooltips are LO dependent:
+        walker = row.getWalker();
+        walker.setStringValue("A Cell with a tooltip");
+        walker.setTooltip("The Tooltip");
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "f_more.ods"));

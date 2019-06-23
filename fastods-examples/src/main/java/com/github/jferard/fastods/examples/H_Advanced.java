@@ -51,13 +51,6 @@ class H_Advanced {
         TableRow row = table.getRow(0);
         TableCellWalker walker = row.getWalker();
 
-        // ## Links
-        // Links can be absolute or relative. For instance, an absolute Link may be an URL:
-        document.addTable("links");
-        row = table.getRow(0);
-        walker = row.getWalker();
-        walker.setStringValue("");
-
         // ## Some Tools
 
         // ## A Named Writer

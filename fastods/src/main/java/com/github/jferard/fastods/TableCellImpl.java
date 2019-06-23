@@ -124,7 +124,7 @@ public class TableCellImpl implements TableCell {
         }
 
         if (this.hasColdCell()) {
-            this.coldCell.appendXMLToTable(util, appendable, covered);
+            this.coldCell.appendXMLToTable(util, appendable);
         } else {
             appendable.append("/>");
         }
