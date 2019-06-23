@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 
 public class FastODSExamplesIT {
     @BeforeClass
@@ -78,7 +79,12 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void advancedTest() throws IOException, FastOdsException {
-        H_Advanced.example();
+    public void advancedTest1() throws IOException, FastOdsException {
+        H_Advanced.example1();
+    }
+
+    @Test
+    public void advancedTest2() throws IOException, SQLException {
+        H_Advanced.example2();
     }
 }

@@ -89,8 +89,8 @@ public final class ResultSetDataWrapper implements DataWrapper {
 	/**
 	 * @param logger a logger
 	 * @param rs the result cell
-	 * @param headCellStyle a style for header
-	 * @param max the maximum number of rows
+	 * @param headCellStyle a style for header, null if none
+	 * @param max the maximum number of rows, -1 for unlimited
 	 */
 	public ResultSetDataWrapper(final Logger logger, final ResultSet rs,
 			final TableCellStyle headCellStyle, final int max) {
@@ -113,7 +113,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 				this.writeFirstLineDataTo(metadata, row);
 				if (this.resultSet.next()) {
 					do {
-						if (++rowCount <= this.max) {
+						if (this.max == -1 || ++rowCount <= this.max) {
 							row = table.nextRow();
 							this.writeDataLineTo(row, columnCount);
 						}
@@ -179,7 +179,9 @@ public final class ResultSetDataWrapper implements DataWrapper {
 		for (int j = 0; j <= columnCount - 1; j++) {
 			final String name = columnNames.get(j);
 			walker.setStringValue(name);
-			walker.setStyle(this.headCellStyle);
+			if (this.headCellStyle != null) {
+				walker.setStyle(this.headCellStyle);
+			}
 			walker.next();
 		}
 	}

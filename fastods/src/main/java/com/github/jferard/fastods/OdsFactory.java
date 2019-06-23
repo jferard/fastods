@@ -155,7 +155,7 @@ public class OdsFactory {
     }
 
     /**
-     * Create a new ODS file writer from a document. Be careful: this method opens immediatly a
+     * Create a new ODS file writer from a document. Be careful: this method opens immediately a
      * stream.
      *
      * @param filename the name of the destination file
