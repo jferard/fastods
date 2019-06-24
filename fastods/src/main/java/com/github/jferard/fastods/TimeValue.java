@@ -24,6 +24,16 @@
 package com.github.jferard.fastods;
 
 public class TimeValue extends CellValue {
+    public static TimeValue from(final Object o) throws FastOdsException {
+        if (o instanceof Number) {
+            return new TimeValue(((Number) o).longValue());
+        } else if (o instanceof TimeValue) {
+            return (TimeValue) o;
+        } else{
+            throw new FastOdsException("Can't cast " + o + " to Time");
+        }
+    }
+
     private final long timeInMillis;
 
     /**

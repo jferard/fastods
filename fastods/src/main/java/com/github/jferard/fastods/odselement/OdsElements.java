@@ -448,7 +448,7 @@ public class OdsElements {
     }
 
     /**
-     * Add an autofilter to a table
+     * Add an AutoFilter to a table
      *
      * @param table the table
      * @param r1    from row
@@ -456,7 +456,7 @@ public class OdsElements {
      * @param r2    to row
      * @param c2    to col
      */
-    public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
-        this.contentElement.addAutofilter(table, r1, c1, r2, c2);
+    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
+        table.addAutoFilter(r1, c1, r2, c2);
     }
 }

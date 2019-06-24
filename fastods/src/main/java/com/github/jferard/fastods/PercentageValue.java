@@ -23,11 +23,24 @@
 
 package com.github.jferard.fastods;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * A CellValue that contains a percentage
  * @author Julien Férard
  */
 public class PercentageValue extends CellValue {
+    public static PercentageValue from(final Object o) throws FastOdsException {
+        if (o instanceof Number) {
+            return new PercentageValue(((Number) o).floatValue());
+        } else if (o instanceof PercentageValue) {
+            return (PercentageValue) o;
+        } else{
+            throw new FastOdsException("Can't cast " + o + " to Percentage");
+        }
+    }
+
     private final double value;
 
     /**

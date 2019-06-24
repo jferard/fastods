@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -47,6 +48,8 @@ public class Table implements NamedObject {
     /**
      * Create a new Table with a name and a row/column capacity
      *
+     *
+     * @param contentElement
      * @param positionUtil    an util
      * @param writeUtil       an util
      * @param xmlUtil         an util
@@ -58,7 +61,7 @@ public class Table implements NamedObject {
      * @param libreOfficeMode
      * @return the table
      */
-    public static Table create(final PositionUtil positionUtil, final WriteUtil writeUtil,
+    public static Table create(final ContentElement contentElement, final PositionUtil positionUtil, final WriteUtil writeUtil,
                                final XMLUtil xmlUtil, final String name, final int rowCapacity,
                                final int columnCapacity, final StylesContainer stylesContainer,
                                final DataStyles format, final boolean libreOfficeMode) {
@@ -66,8 +69,10 @@ public class Table implements NamedObject {
         final TableBuilder builder = TableBuilder
                 .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode, name,
                         rowCapacity, columnCapacity);
-        return new Table(name, builder);
+        return new Table(name, contentElement, builder);
     }
+
+    private final ContentElement contentElement;
     private final TableBuilder builder;
     private final TableAppender appender;
     private String name;
@@ -75,12 +80,13 @@ public class Table implements NamedObject {
 
     /**
      * Create an new table with a given builder
-     *
-     * @param name    the name of the table
+     *  @param name    the name of the table
+     * @param contentElement
      * @param builder the builder
      */
-    Table(final String name, final TableBuilder builder) {
+    Table(final String name, final ContentElement contentElement, final TableBuilder builder) {
         this.name = name;
+        this.contentElement = contentElement;
         this.builder = builder;
         this.appender = new TableAppender(builder);
     }
@@ -324,5 +330,9 @@ public class Table implements NamedObject {
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         return this.builder.findDefaultCellStyle(columnIndex);
+    }
+
+    public void addAutoFilter(final int r1, final int c1, final int r2, final int c2) {
+        this.contentElement.addAutoFilter(this, r1, c1, r2, c2);
     }
 }

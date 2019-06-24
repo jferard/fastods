@@ -28,7 +28,17 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class VoidValue extends CellValue {
-	@Override
+    public static VoidValue from(final Object o) throws FastOdsException {
+        if (o == null) {
+            return new VoidValue();
+        } else if (o instanceof VoidValue) {
+            return (VoidValue) o;
+        } else {
+            throw new FastOdsException("Can't cast " + o + " to Void");
+        }
+    }
+
+    @Override
 	public void setToCell(final TableCell tableCell) {
 		tableCell.setVoidValue();
 	}

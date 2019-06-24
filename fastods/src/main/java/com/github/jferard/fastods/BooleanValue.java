@@ -27,6 +27,16 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class BooleanValue extends CellValue {
+	public static BooleanValue from(final Object o) throws FastOdsException {
+		if (o instanceof Boolean) {
+			return new BooleanValue((Boolean) o);
+		} else if (o instanceof BooleanValue) {
+			return (BooleanValue) o;
+		} else{
+			throw new FastOdsException("Can't cast " + o + " to Boolean");
+		}
+	}
+
 	private final Boolean value;
 
 	/**

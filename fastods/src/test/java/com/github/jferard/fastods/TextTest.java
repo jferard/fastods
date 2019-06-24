@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
@@ -43,9 +44,11 @@ import java.net.URL;
  */
 public class TextTest {
     private TextStyle ts;
+    private ContentElement ce;
 
     @Before
     public void setUp() throws IOException {
+        this.ce = PowerMock.createMock(ContentElement.class);
         this.ts = TextProperties.builder().fontName("fn").fontColor(ColorHelper.fromString("fc"))
                 .buildStyle("ts");
     }
@@ -120,7 +123,7 @@ public class TextTest {
 
     @Test
     public void linkTable() throws Exception {
-        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null,
+        final Table table = Table.create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null,
                 false);
         final Text t = TextBuilder.create().par().link("a", table).build();
         Assert.assertEquals("n", table.getName());
@@ -130,7 +133,7 @@ public class TextTest {
 
     @Test
     public void styledLinkTable() throws Exception {
-        final Table table = Table.create(PositionUtil.create(), null, null, "n", 0, 0, null, null,
+        final Table table = Table.create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null,
                 false);
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
         TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +

@@ -27,6 +27,7 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
@@ -83,12 +84,14 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     private TableCellStyle tcls;
     private DataWrapper wrapper;
 
+    @Override
     @Before
     public final void setUp() {
         this.odsFactory = OdsFactory.create(Logger.getLogger(""), Locale.US);
         PowerMock.resetAll();
     }
 
+    @Override
     @After
     public final void tearDown() {
         PowerMock.verifyAll();
@@ -133,7 +136,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         this.wrapper.addToTable(this.table);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public final void testMetaDataException() throws SQLException, IOException {
         this.setUpMocks();
         final SQLException e = new SQLException();
@@ -195,7 +198,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         EasyMock.expect(this.table.nextRow()).andReturn(row);
         EasyMock.expect(row.getWalker()).andReturn(w);
         w.next();
-        w.setStringValue("<NULL>");
+        w.setCellValue(new StringValue("<NULL>"));
 
         PowerMock.replayAll();
         this.wrapper.addToTable(this.table);
@@ -251,8 +254,8 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         final Table table = document.addTable("test", 50, 5);
         final TableCellStyle tcls = TableCellStyle.builder("rs-head").backgroundColor(ColorHelper.fromString("#dddddd"))
                 .fontWeightBold().build();
-        final DataWrapper data = new ResultSetDataWrapper(logger, rs, tcls, 100);
-        final DataWrapper data2 = new ResultSetDataWrapper(logger, rs2, tcls, 100);
+        final DataWrapper data = ResultSetDataWrapper.builder(rs).logger(logger).headStyle(tcls).max(100).build();
+        final DataWrapper data2 = ResultSetDataWrapper.builder(rs2).logger(logger).headStyle(tcls).max(100).build();
 
         table.addData(data);
         table.nextRow();
@@ -261,7 +264,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         PowerMock.replayAll();
     }
 
-    @Test
+    @Test(expected =  RuntimeException.class)
     public final void testRSException() throws SQLException, IOException {
         this.setUpMocks();
         final SQLException e = new SQLException();
@@ -284,7 +287,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         this.logger = PowerMock.createMock(Logger.class);
         this.rs = PowerMock.createMock(ResultSet.class);
         this.tcls = PowerMock.createNiceMock(TableCellStyle.class);
-        this.wrapper = new ResultSetDataWrapper(this.logger, this.rs, this.tcls, 100);
+        this.wrapper = ResultSetDataWrapper.builder(this.rs).logger(this.logger).headStyle(this.tcls).max(100).noAutoFilter().build();
         this.table = PowerMock.createMock(Table.class);
     }
 
@@ -294,7 +297,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         final StatementResultSetHandler resultSetHandler = connection.getStatementResultSetHandler();
         this.rs = ResultSetDataWrapperTest.createResultSet(resultSetHandler, head, rows);
         this.tcls = PowerMock.createNiceMock(TableCellStyle.class);
-        this.wrapper = new ResultSetDataWrapper(this.logger, this.rs, this.tcls, max);
+        this.wrapper = ResultSetDataWrapper.builder(this.rs).logger(this.logger).headStyle(this.tcls).max(max).noAutoFilter().build();
         this.table = PowerMock.createMock(Table.class);
     }
 }

@@ -278,4 +278,8 @@ public class TableRow {
         }
         return s;
     }
+
+    public int index() {
+        return this.rowIndex;
+    }
 }

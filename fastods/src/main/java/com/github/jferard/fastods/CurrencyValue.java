@@ -28,14 +28,24 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class CurrencyValue extends CellValue {
-    private final double value;
+    public static CurrencyValue from(final Object o, final String currency) throws FastOdsException {
+        if (o instanceof Number) {
+            return new CurrencyValue((Number) o, currency);
+        } else if (o instanceof CurrencyValue) {
+            return (CurrencyValue) o;
+        } else{
+            throw new FastOdsException("Can't cast " + o + " to Currency");
+        }
+    }
+
+    private final Number value;
     private final String currency;
 
     /**
      * @param value the value
      * @param currency the currency value
      */
-    public CurrencyValue(final double value, final String currency) {
+    public CurrencyValue(final Number value, final String currency) {
         this.value = value;
         this.currency = currency;
     }

@@ -53,7 +53,7 @@ public class ContentElement implements OdsElement {
     private final UniqueList<Table> tables;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
-    private List<String> autofilters;
+    private List<String> autoFilters;
     private final boolean libreOfficeMode;
 
     /**
@@ -105,7 +105,7 @@ public class ContentElement implements OdsElement {
         Table table = this.tables.getByName(name);
         if (table == null) {
             table = Table
-                    .create(this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
+                    .create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
                             columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);
             this.tables.add(table);
         }
@@ -239,7 +239,7 @@ public class ContentElement implements OdsElement {
      * @throws IOException if the postamble could not be written
      */
     public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        if (this.autofilters != null) this.appendAutofilters(writer, util);
+        if (this.autoFilters != null) this.appendAutoFilters(writer, util);
         writer.write("</office:spreadsheet>");
         writer.write("</office:body>");
         writer.write("</office:document-content>");
@@ -269,19 +269,19 @@ public class ContentElement implements OdsElement {
         writer.write("<office:spreadsheet>");
     }
 
-    private void appendAutofilters(final Appendable appendable, final XMLUtil util) throws IOException {
+    private void appendAutoFilters(final Appendable appendable, final XMLUtil util) throws IOException {
         appendable.append("<table:database-ranges>");
-        for (final String autofilter : this.autofilters) {
+        for (final String autoFilter : this.autoFilters) {
             appendable.append("<table:database-range");
             util.appendAttribute(appendable, "table:display-filter-buttons", "true");
-            util.appendAttribute(appendable, "table:target-range-address", autofilter);
+            util.appendAttribute(appendable, "table:target-range-address", autoFilter);
             appendable.append("/>");
         }
         appendable.append("</table:database-ranges>");
     }
 
     /**
-     * Add an autofilter to a table
+     * Add an autoFilter to a table
      *
      * @param table the table where the filter goes
      * @param r1    first row index (0..n-1)
@@ -289,10 +289,10 @@ public class ContentElement implements OdsElement {
      * @param r2    last row index
      * @param c2    last col index
      */
-    public void addAutofilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
-        if (this.autofilters == null) this.autofilters = new ArrayList<String>();
+    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
+        if (this.autoFilters == null) this.autoFilters = new ArrayList<String>();
 
-        this.autofilters.add(this.positionUtil.toRangeAddress(table, r1, c1, r2, c2));
+        this.autoFilters.add(this.positionUtil.toRangeAddress(table, r1, c1, r2, c2));
     }
 
 }

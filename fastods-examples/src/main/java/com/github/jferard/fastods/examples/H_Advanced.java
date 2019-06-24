@@ -120,7 +120,12 @@ class H_Advanced {
             final ResultSet rs = s.executeQuery("SELECT * FROM document");
 
             // Now, we can write the result on a document. It will use the current row of the table:
-            table.addData(new ResultSetDataWrapper(Logger.getLogger("advanced"), rs, null, -1));
+            table.addData(ResultSetDataWrapper.builder(rs).build());
+
+            // It's possible to add multiple ResultSets:
+            table.nextRow();
+            final ResultSet rs2 = s.executeQuery("SELECT * FROM document WHERE LENGTH(file_type) > 7");
+            table.addData(ResultSetDataWrapper.builder(rs2).build());
 
             // FastODS uses the type guess to determine the type of objects.
         } finally {

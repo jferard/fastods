@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
@@ -42,6 +43,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import javax.swing.text.AbstractDocument;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,15 +56,17 @@ public class TableTest {
     private Table table;
     private XMLUtil xmlUtil;
     private StringBuilder sb;
+    private ContentElement ce;
 
     @Before
     public void setUp() {
+        this.ce = PowerMock.createMock(ContentElement.class);
         this.stc = PowerMock.createMock(StylesContainer.class);
         final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table = Table
-                .create(positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100, this.stc,
+                .create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100, this.stc,
                         this.ds, false);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
@@ -222,7 +226,7 @@ public class TableTest {
     @Test
     public final void testMerge() throws IOException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", tb);
+        final Table t = new Table("test", this.ce, tb);
 
         tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq(1),
                 EasyMock.eq(1), EasyMock.eq(2), EasyMock.eq(3));
@@ -234,7 +238,7 @@ public class TableTest {
     @Test
     public final void testMergePos() throws IOException, FastOdsException, ParseException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", tb);
+        final Table t = new Table("test", this.ce, tb);
 
         tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq("A1"),
                 EasyMock.eq(2), EasyMock.eq(3));
@@ -261,7 +265,7 @@ public class TableTest {
     @Test(expected = IllegalStateException.class)
     public final void testColumnStyle() throws IOException, FastOdsException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", tb);
+        final Table t = new Table("test", this.ce, tb);
 
         EasyMock.expect(tb.getName()).andReturn("tb");
         EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
@@ -277,7 +281,7 @@ public class TableTest {
     @Test(expected = IllegalStateException.class)
     public final void testName() throws IOException, FastOdsException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", tb);
+        final Table t = new Table("test", this.ce, tb);
 
         EasyMock.expect(tb.getName()).andReturn("tb");
         EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
@@ -293,7 +297,7 @@ public class TableTest {
     @Test
     public final void testConfigItem() throws IOException, FastOdsException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", tb);
+        final Table t = new Table("test", this.ce, tb);
 
         tb.setConfigItem("item", "type", "value");
 

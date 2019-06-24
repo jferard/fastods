@@ -45,8 +45,8 @@ public class CellValueTest {
     }
 
     @Test
-    public final void testBooleanFromTypeAndObject() {
-        final CellValue v = CellValue.fromTypeAndObject(TableCell.Type.BOOLEAN, true);
+    public final void testBooleanFromTypeAndObject() throws FastOdsException {
+        final CellValue v = CellValue.fromTypeAndObject(TableCell.Type.BOOLEAN, true, "USD");
 
         // PLAY
         this.cell.setBooleanValue(true);

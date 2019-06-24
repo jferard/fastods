@@ -130,13 +130,15 @@ public interface OdsDocument {
     int tableCount();
 
     /**
-     * Add an autofilter to a range address
+     * Add an autoFilter to a range address
      * @param table the table
      * @param r1 the top row
      * @param c1 the left column
      * @param r2 the bottom row
      * @param c2 the right column
+     * @deprecated use {@code table.addAutoFilter(r1, c1, r2, c2)}
      */
+    @Deprecated
     void addAutofilter(Table table, int r1, int c1, int r2, int c2);
 
     void freezeCells(Table table, int rowCount, int colCount);

@@ -29,7 +29,19 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class StringValue extends CellValue {
-	private final String value;
+    public static CellValue from(final Object o) throws FastOdsException {
+		if (o instanceof StringValue) {
+			return (StringValue) o;
+		} else if (o instanceof TextValue) {
+			return (TextValue) o;
+		} else if (o instanceof String) {
+			return new StringValue((String) o);
+		} else{
+			throw new FastOdsException("Can't cast " + o + " to String");
+		}
+    }
+
+    private final String value;
 
 	/**
 	 * @param value the string

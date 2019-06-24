@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -30,7 +31,21 @@ import java.util.Date;
  * @author Julien Férard
  */
 public class DateValue extends CellValue {
-	private final Date value;
+	public static DateValue from(final Object o) throws FastOdsException {
+		if (o instanceof Date) {
+			return new DateValue((Date) o);
+		} else if (o instanceof Calendar) {
+			return new DateValue(((Calendar) o).getTime());
+		} else if (o instanceof Number) {
+			return new DateValue(new Date(((Number) o).longValue()));
+		} else if (o instanceof DateValue) {
+			return (DateValue) o;
+		} else{
+			throw new FastOdsException("Can't cast " + o + " to Date");
+		}
+	}
+
+    private final Date value;
 
 	/**
 	 * @param value the date
