@@ -26,12 +26,14 @@ package com.github.jferard.fastods.examples;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.tool.TableHelper;
 
 import java.io.File;
@@ -93,8 +95,9 @@ class B_AccessingTablesRowsAndCells {
         }
 
         // To be (almost) complete, there is another way to write a value to a cell:
+        final ToCellValueConverter converter = new ObjectToCellValueConverter("USD");
         try {
-            tableHelper.setCellValue(table1, "D4", CellValue.fromObject("D4"));
+            tableHelper.setCellValue(table1, "D4", converter.from("D4"));
         } catch (final ParseException e) {
             /* this won't happen here! */
         }
@@ -119,7 +122,7 @@ class B_AccessingTablesRowsAndCells {
             for (int c = 0; c < 9; c++) {
 
                 // Add the value to each cell
-                cellWalker.setStringValue(String.valueOf((char) (c + 'A')) + String.valueOf(r + 1));
+                cellWalker.setStringValue((char) (c + 'A') + String.valueOf(r + 1));
 
                 // And then push one cell right.
                 cellWalker.next();

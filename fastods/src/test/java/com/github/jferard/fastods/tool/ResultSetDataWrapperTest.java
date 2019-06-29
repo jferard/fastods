@@ -25,12 +25,14 @@ package com.github.jferard.fastods.tool;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
+import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.ColorHelper;
 import com.mockrunner.jdbc.BasicJDBCTestCaseAdapter;
@@ -83,10 +85,12 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
     private Table table;
     private TableCellStyle tcls;
     private DataWrapper wrapper;
+    private ToCellValueConverter converter;
 
     @Override
     @Before
     public final void setUp() {
+        this.converter = new ObjectToCellValueConverter("USD");
         this.odsFactory = OdsFactory.create(Logger.getLogger(""), Locale.US);
         PowerMock.resetAll();
     }
@@ -123,7 +127,7 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
             EasyMock.expect(this.table.nextRow()).andReturn(row);
             EasyMock.expect(row.getWalker()).andReturn(w);
             w.next();
-            w.setCellValue(CellValue.fromObject(v));
+            w.setCellValue(this.converter.from(v));
         }
 
         // data row 4 is replaced by the number of rows remaining
@@ -226,9 +230,9 @@ public class ResultSetDataWrapperTest extends BasicJDBCTestCaseAdapter {
         EasyMock.expect(this.table.nextRow()).andReturn(row);
         EasyMock.expect(row.getWalker()).andReturn(w);
         w.next();
-        w.setCellValue(CellValue.fromObject(13));
+        w.setCellValue(this.converter.from(13));
         w.next();
-        w.setCellValue(CellValue.fromObject("a"));
+        w.setCellValue(this.converter.from("a"));
 
         PowerMock.replayAll();
         this.wrapper.addToTable(this.table);

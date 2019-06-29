@@ -23,24 +23,40 @@
 
 package com.github.jferard.fastods;
 
-public class TimeValue extends CellValue {
+import java.util.concurrent.TimeUnit;
+
+public class TimeValue implements CellValue {
     public static TimeValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
-            return new TimeValue(((Number) o).longValue());
+            final Number number = (Number) o;
+            final long l = number.longValue();
+            final TimeUnit ms = TimeUnit.MILLISECONDS;
+            return new TimeValue(l < 0, 0, 0, ms.toDays(l), ms.toHours(l), ms.toMinutes(l),
+                    ms.toSeconds(l) + (l % 1000) / 1000);
         } else if (o instanceof TimeValue) {
             return (TimeValue) o;
-        } else{
+        } else {
             throw new FastOdsException("Can't cast " + o + " to Time");
         }
     }
 
-    private final long timeInMillis;
+    private final boolean neg;
+    private final long years;
+    private final long months;
+    private final long days;
+    private final long hours;
+    private final long minutes;
+    private final double seconds;
 
-    /**
-     * @param timeInMillis
-     */
-    public TimeValue(final long timeInMillis) {
-        this.timeInMillis = timeInMillis;
+    public TimeValue(final boolean neg, final long years, final long months, final long days,
+                     final long hours, final long minutes, final double seconds) {
+        this.neg = neg;
+        this.years = years;
+        this.months = months;
+        this.days = days;
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
     }
 
     @Override
@@ -49,16 +65,34 @@ public class TimeValue extends CellValue {
         if (!(o instanceof TimeValue)) return false;
 
         final TimeValue other = (TimeValue) o;
-        return this.timeInMillis == other.timeInMillis;
+
+        // See XMLSchema part 2, 3.2.6.2 Order relation on duration
+        // TODO: check if the implementation is correct
+        return this.neg != other.neg || this.totalMonths() != other.totalMonths() ||
+                Math.abs(this.totalSeconds() - other.totalSeconds()) < 0.000000001;
+    }
+
+    private long totalMonths() {
+        return this.years * 12 + this.months;
+    }
+
+    private double totalSeconds() {
+        return ((this.days * 24 + this.hours) * 60 + this.minutes) * 60 + this.seconds;
     }
 
     @Override
     public final int hashCode() {
-        return (int) this.timeInMillis % Integer.MAX_VALUE;
+        return (int) (((this.neg ? 31 : 0) + this.totalMonths()) * 31 + this.totalSeconds());
     }
 
     @Override
     public void setToCell(final TableCell tableCell) {
-        tableCell.setTimeValue(this.timeInMillis);
+        if (this.neg) {
+            tableCell.setNegTimeValue(this.years, this.months, this.days, this.hours, this.minutes,
+                    this.seconds);
+        } else {
+            tableCell.setTimeValue(this.years, this.months, this.days, this.hours, this.minutes,
+                    this.seconds);
+        }
     }
 }

@@ -24,36 +24,21 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.CurrencyValue;
 import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PercentageValue;
-import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.TimeValue;
-import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.DataStylesBuilder;
-import com.github.jferard.fastods.datastyle.DateStyleBuilder;
-import com.github.jferard.fastods.datastyle.DateStyleFormat;
-import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
-import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
-import com.github.jferard.fastods.style.BorderAttribute;
-import com.github.jferard.fastods.style.LOFonts;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.util.Angle;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.ToCellValueConverter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -150,7 +135,11 @@ class C_SettingTheCellValue {
                         "Void");
         final List<Object> B = Arrays.<Object>asList("Type guess example", true,
                 new CurrencyValue(10.5, "USD"), new GregorianCalendar(2014, 9, 17, 9, 0, 0),
-                3.14159, new PercentageValue(0.545), new TimeValue(3600), "A String", null);
+                3.14159, new PercentageValue(0.545), new TimeValue(false, 0, 0, 0, 0, 0, 3.6),
+                "A String", null);
+
+        // And a converter:
+        final ToCellValueConverter converter = new ObjectToCellValueConverter("USD");
 
         // As you can see, some types are not guessable: is `0.545` a float or a percentage? For
         // FastODS, it is a float. What Java type will map a currency value? We have to use specific
@@ -165,7 +154,7 @@ class C_SettingTheCellValue {
             cellWalker = tableRow.getWalker();
             cellWalker.setStringValue(A.get(r));
             cellWalker.next();
-            cellWalker.setCellValue(CellValue.fromObject(B.get(r)));
+            cellWalker.setCellValue(converter.from(B.get(r)));
         }
 
         // *Note:* We saw all the cell type available in the OpenDocument specification.

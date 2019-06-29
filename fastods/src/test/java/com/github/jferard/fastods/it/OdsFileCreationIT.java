@@ -229,9 +229,13 @@ public class OdsFileCreationIT {
             c = row.getCellByIndex(2);
             Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("cc", c.getStyleName());
+            /*
+            ODFToolkit does not know about duration https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#duration
             final Calendar timeValue = row.getCellByIndex(3).getTimeValue();
             Assert.assertEquals(3 * 60 * 1000,
                     timeValue.getTimeInMillis() + timeValue.getTimeZone().getRawOffset());
+
+             */
             c = row.getCellByIndex(4);
             Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("=1+1", c.getFormula());

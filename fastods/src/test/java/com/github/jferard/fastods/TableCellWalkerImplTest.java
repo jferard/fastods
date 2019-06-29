@@ -48,9 +48,11 @@ public class TableCellWalkerImplTest {
     private XMLUtil util;
     private StringBuilder sb;
     private TableCell cell;
+    private ToCellValueConverter converter;
 
     @Before
     public void setUp() {
+        this.converter = new ObjectToCellValueConverter("USD");
         this.row = PowerMock.createMock(TableRow.class);
         this.cell = PowerMock.createMock(TableCell.class);
         this.cellWalker = new TableCellWalkerImpl(this.row);
@@ -388,11 +390,13 @@ public class TableCellWalkerImplTest {
     @Test
     @SuppressWarnings("deprecation")
     public final void testObject() {
+        final CellValue value = this.converter.from(null);
+
         expect(this.row.getOrCreateCell(10)).andReturn(this.cell);
-        this.cell.setObjectValue(null);
+        this.cell.setCellValue(value);
         PowerMock.replayAll();
         this.cellWalker.to(10);
-        this.cellWalker.setObjectValue(null);
+        this.cellWalker.setCellValue(value);
         PowerMock.verifyAll();
     }
 

@@ -36,217 +36,225 @@ import java.util.Date;
  * @author Julien Férard
  */
 public class TableCellWalkerImpl implements TableCellWalker {
-	private final TableRow row;
-	private int c;
+    private final TableRow row;
+    private int c;
 
-	/**
-	 * Create a walker on the given row
-	 * @param row the row
-	 */
-	TableCellWalkerImpl(final TableRow row) {
-		this.row = row;
-		this.c = 0;
-	}
+    /**
+     * Create a walker on the given row
+     *
+     * @param row the row
+     */
+    TableCellWalkerImpl(final TableRow row) {
+        this.row = row;
+        this.c = 0;
+    }
 
-	@Override
-	public void appendXMLToTableRow(final XMLUtil util,
-									final Appendable appendable) throws IOException {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void markRowsSpanned(final int n) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void markRowsSpanned(final int n) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void setBooleanValue(final boolean value) {
-		this.row.getOrCreateCell(this.c).setBooleanValue(value);
-	}
+    @Override
+    public void setBooleanValue(final boolean value) {
+        this.row.getOrCreateCell(this.c).setBooleanValue(value);
+    }
 
-	@Override
-	public void setText(final Text text) {
-		this.row.getOrCreateCell(this.c).setText(text);
-	}
+    @Override
+    public void setText(final Text text) {
+        this.row.getOrCreateCell(this.c).setText(text);
+    }
 
-	@Override
-	public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
-		this.row.setCellMerge(this.c, rowMerge, columnMerge);
-	}
+    @Override
+    public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
+        this.row.setCellMerge(this.c, rowMerge, columnMerge);
+    }
 
-	@Override
-	public void setColumnsSpanned(final int n) {
-		this.row.setColumnsSpanned(this.c, n);
-	}
+    @Override
+    public void setColumnsSpanned(final int n) {
+        this.row.setColumnsSpanned(this.c, n);
+    }
 
-	@Override
-	public void markColumnsSpanned(final int n) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void markColumnsSpanned(final int n) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void setDateValue(final Date value) {
-		this.row.getOrCreateCell(this.c).setDateValue(value);
-	}
+    @Override
+    public void setDateValue(final Date value) {
+        this.row.getOrCreateCell(this.c).setDateValue(value);
+    }
 
-	@Override
-	public void setFloatValue(final Number value) {
-		this.row.getOrCreateCell(this.c).setFloatValue(value);
-	}
+    @Override
+    public void setFloatValue(final Number value) {
+        this.row.getOrCreateCell(this.c).setFloatValue(value);
+    }
 
-	@Override
-	public void setPercentageValue(final Number value) {
-		this.row.getOrCreateCell(this.c).setPercentageValue(value);
-	}
+    @Override
+    public void setPercentageValue(final Number value) {
+        this.row.getOrCreateCell(this.c).setPercentageValue(value);
+    }
 
-	@Override
-	public void setRowsSpanned(final int n) throws IOException {
-		this.row.setRowsSpanned(this.c, n);
-	}
+    @Override
+    public void setRowsSpanned(final int n) throws IOException {
+        this.row.setRowsSpanned(this.c, n);
+    }
 
-	@Override
-	public void setVoidValue() {
-		this.row.getOrCreateCell(this.c).setVoidValue();
-	}
+    @Override
+    public void setVoidValue() {
+        this.row.getOrCreateCell(this.c).setVoidValue();
+    }
 
-	@Override
-	public void setStringValue(final String value) {
-		this.row.getOrCreateCell(this.c).setStringValue(value);
-	}
+    @Override
+    public void setStringValue(final String value) {
+        this.row.getOrCreateCell(this.c).setStringValue(value);
+    }
 
-	@Override
-	public void setTimeValue(final long timeInMillis) {
-		this.row.getOrCreateCell(this.c).setTimeValue(timeInMillis);
-	}
+    @Override
+    public void setTimeValue(final long timeInMillis) {
+        this.row.getOrCreateCell(this.c).setTimeValue(timeInMillis);
+    }
 
-	@Override
-	public void setTooltip(final String tooltip) {
-		this.row.getOrCreateCell(this.c).setTooltip(tooltip);
-	}
+    @Override
+    public void setTimeValue(final String duration) {
+        this.row.getOrCreateCell(this.c).setTimeValue(duration);
+    }
 
-	@Override
-	public void setTooltip(final String tooltip, final Length width, final Length height, final boolean visible) {
-		this.row.getOrCreateCell(this.c).setTooltip(tooltip, width, height, visible);
-	}
+    @Override
+    public void setTimeValue(final long years, final long months, final long days, final long hours,
+                             final long minutes, final double seconds) {
+        this.row.getOrCreateCell(this.c).setTimeValue(years, months, days, hours, minutes, seconds);
+    }
 
-	@Override
-	public void setFormula(final String formula) {
-		this.row.getOrCreateCell(this.c).setFormula(formula);
+    @Override
+    public void setNegTimeValue(final long years, final long months, final long days,
+                                final long hours, final long minutes, final double seconds) {
+        this.row.getOrCreateCell(this.c)
+                .setNegTimeValue(years, months, days, hours, minutes, seconds);
+    }
 
-	}
+    @Override
+    public void setTooltip(final String tooltip) {
+        this.row.getOrCreateCell(this.c).setTooltip(tooltip);
+    }
 
-	@Override
-	public boolean hasValue() {
-		return this.row.getOrCreateCell(this.c).hasValue();
-	}
+    @Override
+    public void setTooltip(final String tooltip, final Length width, final Length height,
+                           final boolean visible) {
+        this.row.getOrCreateCell(this.c).setTooltip(tooltip, width, height, visible);
+    }
 
-	@Override
-	public boolean isCovered() {
-		return this.row.getOrCreateCell(this.c).isCovered();
-	}
+    @Override
+    public void setFormula(final String formula) {
+        this.row.getOrCreateCell(this.c).setFormula(formula);
 
-	@Override
-	public void setCovered() {
-		this.row.getOrCreateCell(this.c).setCovered();
-	}
+    }
 
-	@Override
-	public boolean hasNext() {
-		return this.c < this.row.getColumnCount();
-	}
+    @Override
+    public boolean hasValue() {
+        return this.row.getOrCreateCell(this.c).hasValue();
+    }
 
-	@Override
-	public boolean hasPrevious() {
-		return this.c > 0 && this.c <= this.row.getColumnCount();
-	}
+    @Override
+    public boolean isCovered() {
+        return this.row.getOrCreateCell(this.c).isCovered();
+    }
 
-	@Override
-	public void lastCell() {
-		this.c = this.row.getColumnCount() - 1;
-	}
+    @Override
+    public void setCovered() {
+        this.row.getOrCreateCell(this.c).setCovered();
+    }
 
-	@Override
-	public void next() {
-		if (this.c >= this.row.getColumnCount())
-			throw new IndexOutOfBoundsException();
-		this.c++;
-	}
+    @Override
+    public boolean hasNext() {
+        return this.c < this.row.getColumnCount();
+    }
 
-	@Override
-	public void previous() {
-		if (this.c <= 0)
-			throw new IndexOutOfBoundsException();
-		this.c--;
-	}
+    @Override
+    public boolean hasPrevious() {
+        return this.c > 0 && this.c <= this.row.getColumnCount();
+    }
 
-	@Override
-	public void setCellValue(final CellValue value) {
-		this.row.getOrCreateCell(this.c).setCellValue(value);
-	}
+    @Override
+    public void lastCell() {
+        this.c = this.row.getColumnCount() - 1;
+    }
 
-	@Override
-	public void setCurrencyValue(final float value, final String currency) {
-		this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
-	}
+    @Override
+    public void next() {
+        if (this.c >= this.row.getColumnCount()) throw new IndexOutOfBoundsException();
+        this.c++;
+    }
 
-	@Override
-	public void setCurrencyValue(final int value, final String currency) {
-		this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
-	}
+    @Override
+    public void previous() {
+        if (this.c <= 0) throw new IndexOutOfBoundsException();
+        this.c--;
+    }
 
-	@Override
-	public void setCurrencyValue(final Number value, final String currency) {
-		this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
-	}
+    @Override
+    public void setCellValue(final CellValue value) {
+        this.row.getOrCreateCell(this.c).setCellValue(value);
+    }
 
-	@Override
-	public void setDateValue(final Calendar cal) {
-		this.row.getOrCreateCell(this.c).setDateValue(cal);
-	}
+    @Override
+    public void setCurrencyValue(final float value, final String currency) {
+        this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
+    }
 
-	@Override
-	public void setFloatValue(final float value) {
-		this.row.getOrCreateCell(this.c).setFloatValue(value);
-	}
+    @Override
+    public void setCurrencyValue(final int value, final String currency) {
+        this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
+    }
 
-	@Override
-	public void setFloatValue(final int value) {
-		this.row.getOrCreateCell(this.c).setFloatValue(value);
-	}
+    @Override
+    public void setCurrencyValue(final Number value, final String currency) {
+        this.row.getOrCreateCell(this.c).setCurrencyValue(value, currency);
+    }
 
-	/**
-	 * @deprecated Shortcut for {@code setCellValue(c, CellValue.fromObject(object))}
-	 */
-	@Override
-	@Deprecated
-	public void setObjectValue(final Object value) {
-		this.row.getOrCreateCell(this.c).setObjectValue(value);
-	}
+    @Override
+    public void setDateValue(final Calendar cal) {
+        this.row.getOrCreateCell(this.c).setDateValue(cal);
+    }
 
-	@Override
-	public void setPercentageValue(final float value) {
-		this.row.getOrCreateCell(this.c).setPercentageValue(value);
-	}
+    @Override
+    public void setFloatValue(final float value) {
+        this.row.getOrCreateCell(this.c).setFloatValue(value);
+    }
 
-	@Override
-	public void setPercentageValue(final int value) {
-		this.row.getOrCreateCell(this.c).setPercentageValue(value);
-	}
+    @Override
+    public void setFloatValue(final int value) {
+        this.row.getOrCreateCell(this.c).setFloatValue(value);
+    }
 
-	@Override
-	public void setStyle(final TableCellStyle style) {
-		this.row.getOrCreateCell(this.c).setStyle(style);
-	}
+    @Override
+    public void setPercentageValue(final float value) {
+        this.row.getOrCreateCell(this.c).setPercentageValue(value);
+    }
 
-	@Override
-	public void to(final int c) {
-		if (c < 0)
-			throw new IndexOutOfBoundsException();
-		this.c = c;
-	}
+    @Override
+    public void setPercentageValue(final int value) {
+        this.row.getOrCreateCell(this.c).setPercentageValue(value);
+    }
 
-	@Override
-	public void setDataStyle(final DataStyle dataStyle) {
-		this.row.getOrCreateCell(this.c).setDataStyle(dataStyle);
-	}
+    @Override
+    public void setStyle(final TableCellStyle style) {
+        this.row.getOrCreateCell(this.c).setStyle(style);
+    }
+
+    @Override
+    public void to(final int c) {
+        if (c < 0) throw new IndexOutOfBoundsException();
+        this.c = c;
+    }
+
+    @Override
+    public void setDataStyle(final DataStyle dataStyle) {
+        this.row.getOrCreateCell(this.c).setDataStyle(dataStyle);
+    }
 }

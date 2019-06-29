@@ -54,4 +54,11 @@ public class FastOdsException extends Exception {
 	public FastOdsException(final String message) {
 		super(message);
 	}
+
+	/**
+	 * @param e an exception
+	 */
+	public FastOdsException(final Exception e) {
+		super(e);
+	}
 }

@@ -30,6 +30,7 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 import java.io.IOException;
@@ -90,6 +91,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * maximum number of lines to be written
      */
     private final int max;
+    private final ToCellValueConverter converter;
     /**
      * the ResultSet.
      */
@@ -100,16 +102,19 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
     /**
      * @param logger          a logger
+     * @param converter
      * @param rs              the result cell
      * @param headCellStyle   a style for header, null if none
      * @param cellTypeByIndex
      * @param max             the maximum number of rows, -1 for unlimited
      */
-    public ResultSetDataWrapper(final Logger logger, final ResultSet rs,
+    public ResultSetDataWrapper(final Logger logger, final ToCellValueConverter converter,
+                                final ResultSet rs,
                                 final TableCellStyle headCellStyle, final boolean autoFilter,
                                 final Map<Integer, TableCell.Type> cellTypeByIndex,
                                 final CellValue nullValue, final int max) {
         this.logger = logger;
+        this.converter = converter;
         this.resultSet = rs;
         this.headCellStyle = headCellStyle;
         this.autoFilter = autoFilter;
@@ -209,10 +214,10 @@ public final class ResultSetDataWrapper implements DataWrapper {
             } else if (this.cellTypeByIndex != null) {
                 final TableCell.Type cellType = this.cellTypeByIndex.get(j);
                 if (cellType != null) {
-                    walker.setCellValue(CellValue.fromTypeAndObject(cellType, object, "USD"));
+                    walker.setCellValue(this.converter.from(cellType, object));
                 }
             } else {
-                walker.setCellValue(CellValue.fromObject(object));
+                walker.setCellValue(this.converter.from(object));
             }
             walker.next();
         }

@@ -30,7 +30,7 @@ import java.util.Date;
  * A CellValue that contains a date
  * @author Julien Férard
  */
-public class DateValue extends CellValue {
+public class DateValue implements CellValue {
 	public static DateValue from(final Object o) throws FastOdsException {
 		if (o instanceof Date) {
 			return new DateValue((Date) o);

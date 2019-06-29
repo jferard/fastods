@@ -21,37 +21,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.tool;
 
-/**
- * A CellValue that contains a currency value
- * @author Julien Férard
- */
-public class CurrencyValue implements CellValue {
-    public static CurrencyValue from(final Object o, final String currency) throws FastOdsException {
-        if (o instanceof Number) {
-            return new CurrencyValue((Number) o, currency);
-        } else if (o instanceof CurrencyValue) {
-            return (CurrencyValue) o;
-        } else{
-            throw new FastOdsException("Can't cast " + o + " to Currency");
-        }
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.sql.Array;
+
+import static org.junit.Assert.*;
+
+public class SQLToCellValueTest {
+    @Test
+    public void testArray() {
+
+
     }
 
-    private final Number value;
-    private final String currency;
-
-    /**
-     * @param value the value
-     * @param currency the currency value
-     */
-    public CurrencyValue(final Number value, final String currency) {
-        this.value = value;
-        this.currency = currency;
-    }
-
-    @Override
-    public void setToCell(final TableCell tableCell) {
-        tableCell.setCurrencyValue(this.value, this.currency);
-    }
 }

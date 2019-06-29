@@ -53,8 +53,8 @@ public class TableCellImpl implements TableCell {
     static {
         /*
          * XML Schema Part 2, 3.2.7 dateTime
-		 * Z and UTC time zone for universal time.
-		 */
+         * Z and UTC time zone for universal time.
+         */
         DATE_VALUE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
@@ -79,16 +79,19 @@ public class TableCellImpl implements TableCell {
 
     /**
      * Create the table cell implementation
-     *  @param writeUtil       an util
+     *
+     * @param writeUtil       an util
      * @param xmlUtil         an util
-     * @param stylesContainer the styles containers that will dispatch styles to document.xml and styles.xml
+     * @param stylesContainer the styles containers that will dispatch styles to document.xml and
+     *                        styles.xml
      * @param dataStyles      the styles
      * @param libreOfficeMode
      * @param parent          the parent row
      * @param columnIndex     index in parent row
      */
-    TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-                  final DataStyles dataStyles, final boolean libreOfficeMode, final TableRow parent, final int columnIndex) {
+    TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
+                  final StylesContainer stylesContainer, final DataStyles dataStyles,
+                  final boolean libreOfficeMode, final TableRow parent, final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -99,7 +102,8 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         final boolean covered = this.isCovered();
         if (covered) {
             appendable.append("<table:covered-table-cell");
@@ -190,7 +194,8 @@ public class TableCellImpl implements TableCell {
 
     /*
      * FastOds uses the mapping Apache DB project mapping
-     * @see https://db.apache.org/ojb/docu/guides/jdbc-types.html#Mapping+of+JDBC+Types+to+Java+Types
+     * @see https://db.apache.org/ojb/docu/guides/jdbc-types
+     * .html#Mapping+of+JDBC+Types+to+Java+Types
      */
     @Override
     public void setCellValue(final CellValue value) {
@@ -235,11 +240,14 @@ public class TableCellImpl implements TableCell {
         if (curDataStyle == null) { // no data style yet: create a custom child style
             this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
         } else { // a style and a datastyle => create a custom sibling cell style
-            this.style = this.stylesContainer.addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
+            this.style = this.stylesContainer
+                    .addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
         }
     }
 
-    /** For implicit datastyle, e.g. will set an implicit datastyle if the data style is not set */
+    /**
+     * For implicit datastyle, e.g. will set an implicit datastyle if the data style is not set
+     */
     private void setImplicitDataStyle(final DataStyle dataStyle) {
         if (dataStyle == null) return;
         final TableCellStyle curStyle = this.getCurCellStyle();
@@ -250,7 +258,8 @@ public class TableCellImpl implements TableCell {
         } else {
             // TODO: Can't we add this on first style use, once for all?
             this.stylesContainer.addDataStyle(curDataStyle);
-            this.style = this.stylesContainer.addChildCellStyle(curStyle.getParentCellStyle(), curDataStyle);
+            this.style = this.stylesContainer
+                    .addChildCellStyle(curStyle.getParentCellStyle(), curDataStyle);
         }
     }
 
@@ -297,17 +306,6 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setFloatValue(final Number value) {
         this.setFloatValue(value.toString());
-    }
-
-    /**
-     * @param object the object to set at this place
-     * @deprecated Shortcut for
-     * {@code setCellValue(c, CellValue.fromObject(object))}
-     */
-    @Override
-    @Deprecated
-    public void setObjectValue(final Object object) {
-        this.setCellValue(CellValue.fromObject(object));
     }
 
     @Override
@@ -374,7 +372,37 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setTimeValue(final long timeInMillis) {
-        this.value = this.xmlUtil.formatTimeInterval(timeInMillis);
+        if (timeInMillis == 0) {
+            this.value = "";
+        } else if (timeInMillis < 0) {
+            this.value = this.xmlUtil.formatNegTimeInterval(0, 0, 0, 0, 0, (double) -timeInMillis / 1000);
+        } else {
+            this.value = this.xmlUtil.formatTimeInterval(0, 0, 0, 0, 0, (double) timeInMillis / 1000);
+        }
+        this.type = TableCell.Type.TIME;
+        this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
+    }
+
+    @Override
+    public void setTimeValue(final String duration) {
+        this.value = duration;
+        this.type = TableCell.Type.TIME;
+        this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
+    }
+
+    @Override
+    public void setTimeValue(final long years, final long months, final long days, final long hours,
+                             final long minutes, final double seconds) {
+        this.value = this.xmlUtil.formatTimeInterval(years, months, days, hours, minutes, seconds);
+        this.type = TableCell.Type.TIME;
+        this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
+    }
+
+    @Override
+    public void setNegTimeValue(final long years, final long months, final long days,
+                                final long hours, final long minutes, final double seconds) {
+        this.value = this.xmlUtil
+                .formatNegTimeInterval(years, months, days, hours, minutes, seconds);
         this.type = TableCell.Type.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }
@@ -386,7 +414,8 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void setTooltip(final String tooltip, final Length width, final Length height, final boolean visible) {
+    public void setTooltip(final String tooltip, final Length width, final Length height,
+                           final boolean visible) {
         this.ensureColdCell();
         this.coldCell.setTooltip(tooltip, width, height, visible);
     }

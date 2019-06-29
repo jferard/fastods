@@ -51,13 +51,7 @@ public class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBu
     }
 
     /**
-     * Set the date format.<br>
-     * Valid is one of the following:<br>
-     * DateStyle.DATEFORMAT_DDMMYYYY<br>
-     * DateStyle.DATEFORMAT_DDMMYY<br>
-     * DateStyle.DATEFORMAT_TMMMMYYYY<br>
-     * DateStyle.DATEFORMAT_MMMM<br>
-     * *
+     * Set the time format
      *
      * @param format The date format to be used.
      * @return this for fluent style

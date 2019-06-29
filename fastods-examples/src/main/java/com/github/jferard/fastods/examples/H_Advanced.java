@@ -32,10 +32,13 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
+import com.github.jferard.fastods.tool.SQLToCellValueConverter;
 import com.github.jferard.fastods.util.SimpleLength;
-import org.sqlite.SQLiteDataSource;
+import org.h2.api.Interval;
+import org.h2.jdbcx.JdbcDataSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +50,12 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 class H_Advanced {
+
+    /**
+     * Number of nanoseconds in a second
+     */
+    public static final int NANOSECONDS_PER_SECONDS = 1000000000;
+
     static void example1() throws IOException, FastOdsException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Advanced Features
@@ -107,8 +116,8 @@ class H_Advanced {
         // ## Writing a ResultSet to the Spreadsheet
         // We need a ResultSet. Let's use SQLite:
 
-        final SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl("jdbc:sqlite::memory:");
+        final JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setUrl("jdbc:h2:mem:test");
         final Connection conn = dataSource.getConnection();
         try {
             final Statement s = conn.createStatement();
@@ -124,10 +133,71 @@ class H_Advanced {
 
             // It's possible to add multiple ResultSets:
             table.nextRow();
-            final ResultSet rs2 = s.executeQuery("SELECT * FROM document WHERE LENGTH(file_type) > 7");
+            final ResultSet rs2 = s
+                    .executeQuery("SELECT * FROM document WHERE LENGTH(file_type) > 7");
             table.addData(ResultSetDataWrapper.builder(rs2).build());
 
-            // FastODS uses the type guess to determine the type of objects.
+            // Let's create another table to test data types:
+            s.execute("CREATE TABLE item (id CHAR(12), name TEXT, price DECIMAL, tax DECIMAL, " +
+                    "high_quality BOOLEAN, lifespan INTERVAL DAY TO HOUR, image BLOB, " +
+                    "creation_date TIMESTAMP)");
+            s.execute("INSERT INTO item VALUES ('01234789', 'toothbrush', 3, 0.6, True, '30 8', " +
+                    "RAWTOHEX('FastODS'), '2019-01-01')");
+            final ResultSet rs3 = s.executeQuery("SELECT * FROM item");
+
+            // FastODS uses the type guess to determine the type of objects. But the jdbc API
+            // does not provide a class for SQL's INTERVAL object. Hence, FastODS provides a class
+            // to define a cast try to an INTERVAL.
+            final SQLToCellValueConverter.IntervalConverter converter =
+                    new SQLToCellValueConverter.IntervalConverter() {
+                @Override
+                public TimeValue castToInterval(final Object o) {
+                    if (o instanceof Interval) {
+                        final Interval interval = (Interval) o;
+                        final boolean neg = interval.isNegative();
+                        switch (interval.getQualifier()) {
+                            case YEAR:
+                                return new TimeValue(neg, interval.getLeading(), 0, 0, 0, 0, 0);
+                            case MONTH:
+                                return new TimeValue(neg, 0, interval.getLeading(), 0, 0, 0, 0);
+                            case YEAR_TO_MONTH:
+                                return new TimeValue(neg, interval.getLeading(),
+                                        interval.getRemaining(), 0, 0, 0, 0);
+                            case DAY:
+                                return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0, 0);
+                            case HOUR:
+                                return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0, 0);
+                            case MINUTE:
+                                return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(), 0);
+                            case SECOND:
+                                return new TimeValue(neg, 0, 0, 0, 0, 0, interval.getLeading());
+                            case DAY_TO_HOUR:
+                                return new TimeValue(neg, 0, 0, interval.getLeading(),
+                                        interval.getRemaining(), 0, 0);
+                            case DAY_TO_MINUTE:
+                                return new TimeValue(neg, 0, 0, interval.getLeading(), 0,
+                                        interval.getRemaining(), 0);
+                            case DAY_TO_SECOND:
+                                return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
+                                        interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                            case HOUR_TO_MINUTE:
+                                return new TimeValue(neg, 0, 0, 0, interval.getLeading(),
+                                        interval.getRemaining(), 0);
+                            case HOUR_TO_SECOND:
+                                return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
+                                        interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                            case MINUTE_TO_SECOND:
+                                return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
+                                        interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                        }
+                    }
+                    return null;
+                }
+            };
+
+            // And skip another row, then write the result:
+            table.nextRow();
+            table.addData(ResultSetDataWrapper.builder(rs3).converter(converter).build());
         } finally {
             conn.close();
         }

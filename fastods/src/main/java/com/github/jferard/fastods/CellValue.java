@@ -33,56 +33,11 @@ import java.util.Date;
  *
  * @author Julien Férard
  */
-public abstract class CellValue {
-    /**
-     * Converts a value to a CellValue
-     *
-     * @param o the value
-     * @return the CellValue
-     */
-    public static CellValue fromObject(final Object o) {
-        if (o == null) return new VoidValue();
-        else if (o instanceof CellValue) return (CellValue) o;
-        else if (o instanceof String) return new StringValue((String) o);
-        else if (o instanceof Text) return new TextValue((Text) o);
-        else if (o instanceof Number) // BigDecimal, Byte, Short, Integer,
-            // Long, Float, Double
-            return new FloatValue((Number) o);
-        else if (o instanceof Boolean) return new BooleanValue((Boolean) o);
-        else if (o instanceof Date) // java.util.Date & java.sql.Date,
-            // java.sql.Time, java.sql.Timestamp
-            return new DateValue((Date) o);
-        else if (o instanceof Calendar) return new DateValue(((Calendar) o).getTime());
-        else // Byte[], ...
-            return new StringValue(o.toString());
-    }
-
-    /**
-     * Converts a value to a CellValue
-     *
-     * @param type a hint
-     * @param o    the value
-     * @return the CellValue
-     */
-    public static CellValue fromTypeAndObject(final TableCell.Type type, final Object o, final String currency)
-            throws FastOdsException {
-        switch (type) {
-            case BOOLEAN: return BooleanValue.from(o);
-			case CURRENCY: return CurrencyValue.from(o, currency);
-			case DATE: return DateValue.from(o);
-			case FLOAT: return FloatValue.from(o);
-			case PERCENTAGE: return PercentageValue.from(o);
-			case STRING: return StringValue.from(o);
-			case TIME: return TimeValue.from(o);
-            case VOID: return VoidValue.from(o);
-        }
-        throw new FastOdsException("Should not happen!");
-    }
-
+public interface CellValue {
     /**
      * Set this value in the cell
      *
      * @param tableCell the cell where to add this value
      */
-    public abstract void setToCell(TableCell tableCell);
+    void setToCell(TableCell tableCell);
 }

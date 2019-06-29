@@ -28,7 +28,7 @@ package com.github.jferard.fastods;
  *
  * @author Julien Férard
  */
-public class StringValue extends CellValue {
+public class StringValue implements CellValue {
     public static CellValue from(final Object o) throws FastOdsException {
 		if (o instanceof StringValue) {
 			return (StringValue) o;

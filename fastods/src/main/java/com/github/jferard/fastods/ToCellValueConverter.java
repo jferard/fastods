@@ -23,35 +23,28 @@
 
 package com.github.jferard.fastods;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
- * A CellValue that contains a currency value
+ * The value of a cell
+ *
  * @author Julien Férard
  */
-public class CurrencyValue implements CellValue {
-    public static CurrencyValue from(final Object o, final String currency) throws FastOdsException {
-        if (o instanceof Number) {
-            return new CurrencyValue((Number) o, currency);
-        } else if (o instanceof CurrencyValue) {
-            return (CurrencyValue) o;
-        } else{
-            throw new FastOdsException("Can't cast " + o + " to Currency");
-        }
-    }
-
-    private final Number value;
-    private final String currency;
-
+public interface ToCellValueConverter {
     /**
-     * @param value the value
-     * @param currency the currency value
+     * Converts a value to a CellValue
+     *
+     * @param o the value
+     * @return the CellValue
      */
-    public CurrencyValue(final Number value, final String currency) {
-        this.value = value;
-        this.currency = currency;
-    }
-
-    @Override
-    public void setToCell(final TableCell tableCell) {
-        tableCell.setCurrencyValue(this.value, this.currency);
-    }
+    CellValue from(final Object o);
+    /**
+     * Converts a value to a CellValue
+     *
+     * @param type a hint
+     * @param o    the value
+     * @return the CellValue
+     */
+    CellValue from(final TableCell.Type type, final Object o) throws FastOdsException;
 }

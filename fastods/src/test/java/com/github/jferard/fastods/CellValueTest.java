@@ -32,9 +32,11 @@ import java.util.Date;
 
 public class CellValueTest {
     private TableCell cell;
+    private ToCellValueConverter converter;
 
     @Before
     public void setUp() {
+        this.converter = new ObjectToCellValueConverter("USD");
         this.cell = PowerMock.createMock(TableCell.class);
         PowerMock.resetAll();
     }
@@ -46,7 +48,7 @@ public class CellValueTest {
 
     @Test
     public final void testBooleanFromTypeAndObject() throws FastOdsException {
-        final CellValue v = CellValue.fromTypeAndObject(TableCell.Type.BOOLEAN, true, "USD");
+        final CellValue v = this.converter.from(TableCell.Type.BOOLEAN, true);
 
         // PLAY
         this.cell.setBooleanValue(true);
@@ -57,7 +59,7 @@ public class CellValueTest {
 
     @Test
     public final void testVoidFromObject() {
-        final CellValue v = CellValue.fromObject(null);
+        final CellValue v = this.converter.from(null);
 
         // PLAY
         this.cell.setVoidValue();
@@ -68,7 +70,7 @@ public class CellValueTest {
 
     @Test
     public final void testStringFromObject() {
-        final CellValue v = CellValue.fromObject("str");
+        final CellValue v = this.converter.from("str");
 
         // PLAY
         this.cell.setStringValue("str");
@@ -79,7 +81,7 @@ public class CellValueTest {
 
     @Test
     public final void testNumberFromObject() {
-        final CellValue v = CellValue.fromObject(10);
+        final CellValue v = this.converter.from(10);
 
         // PLAY
         this.cell.setFloatValue((Number) 10);
@@ -90,7 +92,7 @@ public class CellValueTest {
 
     @Test
     public final void testBooleanFromObject() {
-        final CellValue v = CellValue.fromObject(true);
+        final CellValue v = this.converter.from(true);
 
         // PLAY
         this.cell.setBooleanValue(true);
@@ -102,7 +104,7 @@ public class CellValueTest {
     @Test
     public final void testDateFromObject() {
         final Date d = new Date(0);
-        final CellValue v = CellValue.fromObject(d);
+        final CellValue v = this.converter.from(d);
 
         // PLAY
         this.cell.setDateValue(d);
@@ -114,7 +116,7 @@ public class CellValueTest {
     @Test
     public final void testCalendarFromObject() {
         final Calendar c = Calendar.getInstance();
-        final CellValue v = CellValue.fromObject(c);
+        final CellValue v = this.converter.from(c);
 
         // PLAY
         this.cell.setDateValue(c.getTime());
@@ -126,7 +128,7 @@ public class CellValueTest {
     @Test
     public final void testOtherFromObject() {
         final Character j = 'j';
-        final CellValue v = CellValue.fromObject(j);
+        final CellValue v = this.converter.from(j);
 
         // PLAY
         this.cell.setStringValue("j");

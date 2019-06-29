@@ -24,9 +24,11 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
+import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 import java.sql.ResultSet;
@@ -39,6 +41,8 @@ public class ResultSetDataWrapperBuilder {
 
     private final ResultSet rs;
     private final Map<Integer, TableCell.Type> cellTypeByIndex;
+    private SQLToCellValueConverter.IntervalConverter converter;
+    private String currency;
     private Logger logger;
     private TableCellStyle headStyle;
     private boolean autoFilter;
@@ -53,7 +57,14 @@ public class ResultSetDataWrapperBuilder {
         this.autoFilter = true;
         this.max = -1;
         this.cellTypeByIndex = null;
+        this.currency = "USD";
         this.nullValue = new StringValue("<NULL>");
+        this.converter = new SQLToCellValueConverter.IntervalConverter() {
+            @Override
+            public TimeValue castToInterval(final Object o) {
+                return null;
+            }
+        };
     }
 
     public ResultSetDataWrapperBuilder logger(final Logger logger) {
@@ -81,19 +92,32 @@ public class ResultSetDataWrapperBuilder {
         return this;
     }
 
-    public ResultSetDataWrapperBuilder typeValue(final int j,
-                                                 final TableCell.Type cellType) {
+    public ResultSetDataWrapperBuilder typeValue(final int j, final TableCell.Type cellType) {
         this.cellTypeByIndex.put(j, cellType);
         return this;
     }
 
-    public ResultSetDataWrapperBuilder nullValue(final Object nullValue) {
-        this.nullValue = CellValue.fromObject(nullValue);
+    public ResultSetDataWrapperBuilder nullValue(final CellValue nullValue) {
+        this.nullValue = nullValue;
+        return this;
+    }
+
+    public ResultSetDataWrapperBuilder currency(final String currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    public ResultSetDataWrapperBuilder converter(
+            final SQLToCellValueConverter.IntervalConverter converter) {
+        this.converter = converter;
         return this;
     }
 
     public ResultSetDataWrapper build() {
-        return new ResultSetDataWrapper(this.logger, this.rs, this.headStyle, this.autoFilter,
-                this.cellTypeByIndex, this.nullValue, this.max);
+        final SQLToCellValueConverter sqlToCellValueConverter = new SQLToCellValueConverter(
+                new ObjectToCellValueConverter(this.currency), this.converter);
+        return new ResultSetDataWrapper(this.logger,
+                sqlToCellValueConverter, this.rs, this.headStyle,
+                this.autoFilter, this.cellTypeByIndex, this.nullValue, this.max);
     }
 }

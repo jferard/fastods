@@ -24,51 +24,51 @@
 package com.github.jferard.fastods.util;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * An util for writing XML representation.
+ *
  * @author Julien Férard
  */
 public class XMLUtil {
-	/**
-	 * A space char for append
-	 */
-	public static final char SPACE_CHAR = ' ';
-	private final XMLEscaper escaper;
-
     /**
-     * Create a new util
-     * @param escaper the embedded escaper
+     * A space char for append
      */
-    XMLUtil(final XMLEscaper escaper) {
-		this.escaper = escaper;
-	}
+    public static final char SPACE_CHAR = ' ';
 
     /**
      * @return a new default xml util
      */
     public static XMLUtil create() {
-		final XMLEscaper escaper = FastOdsXMLEscaper.create();
-		return new XMLUtil(escaper);
-	}
+        final XMLEscaper escaper = FastOdsXMLEscaper.create();
+        return new XMLUtil(escaper);
+    }
 
-	/**
-	 * Append a space and new element to the appendable element, the name of the element is
-	 * attrName and the value is attrRawValue. The will be escaped if necessary
-	 *
-	 * @param appendable   The StringBuilder to which the new element should be added.
-	 * @param attrName     The new element name
-	 * @param attrRawValue The value of the element
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendEAttribute(final Appendable appendable,
-								final CharSequence attrName, final String attrRawValue)
-			throws IOException {
-		appendable.append(' ').append(attrName).append("=\"")
-				.append(this.escaper.escapeXMLAttribute(attrRawValue))
-				.append('"');
-	}
+    private final XMLEscaper escaper;
+
+    /**
+     * Create a new util
+     *
+     * @param escaper the embedded escaper
+     */
+    XMLUtil(final XMLEscaper escaper) {
+        this.escaper = escaper;
+    }
+
+    /**
+     * Append a space and new element to the appendable element, the name of the element is
+     * attrName and the value is attrRawValue. The will be escaped if necessary
+     *
+     * @param appendable   The StringBuilder to which the new element should be added.
+     * @param attrName     The new element name
+     * @param attrRawValue The value of the element
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendEAttribute(final Appendable appendable, final CharSequence attrName,
+                                 final String attrRawValue) throws IOException {
+        appendable.append(' ').append(attrName).append("=\"")
+                .append(this.escaper.escapeXMLAttribute(attrRawValue)).append('"');
+    }
 
     /**
      * Append a new element to the appendable element, the name of the element is
@@ -79,107 +79,150 @@ public class XMLUtil {
      * @param attrValue  The value of the element
      * @throws IOException If an I/O error occurs
      */
-    public void appendAttribute(final Appendable appendable,
-                                final CharSequence attrName, final boolean attrValue) throws IOException {
-		this.appendAttribute(appendable, attrName,
-				Boolean.toString(attrValue));
-	}
+    public void appendAttribute(final Appendable appendable, final CharSequence attrName,
+                                final boolean attrValue) throws IOException {
+        this.appendAttribute(appendable, attrName, Boolean.toString(attrValue));
+    }
 
-	/**
-	 * Append a new element to the appendable element, the name of the element is
-	 * attrName and the value is attrValue.
-	 *
-	 * @param appendable The StringBuilder to which the new element should be added.
-	 * @param attrName   The new element name
-	 * @param attrValue  The value of the element
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendAttribute(final Appendable appendable,
-                                final CharSequence attrName, final int attrValue) throws IOException {
-		this.appendAttribute(appendable, attrName,
-				Integer.toString(attrValue));
-	}
+    /**
+     * Append a new element to the appendable element, the name of the element is
+     * attrName and the value is attrValue.
+     *
+     * @param appendable The StringBuilder to which the new element should be added.
+     * @param attrName   The new element name
+     * @param attrValue  The value of the element
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendAttribute(final Appendable appendable, final CharSequence attrName,
+                                final int attrValue) throws IOException {
+        this.appendAttribute(appendable, attrName, Integer.toString(attrValue));
+    }
 
-	/**
-	 * Append a space, then a new element to the appendable element, the name of the element is
-	 * attrName and the value is attrValue. The value won't be escaped.
-	 *
-	 * @param appendable where to write
-	 * @param attrName   the name of the attribute
-	 * @param attrValue  escaped attribute
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendAttribute(final Appendable appendable,
-                                final CharSequence attrName, final CharSequence attrValue) throws IOException {
-		appendable.append(' ').append(attrName).append("=\"").append(attrValue)
-				.append('"');
-	}
+    /**
+     * Append a space, then a new element to the appendable element, the name of the element is
+     * attrName and the value is attrValue. The value won't be escaped.
+     *
+     * @param appendable where to write
+     * @param attrName   the name of the attribute
+     * @param attrValue  escaped attribute
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendAttribute(final Appendable appendable, final CharSequence attrName,
+                                final CharSequence attrValue) throws IOException {
+        appendable.append(' ').append(attrName).append("=\"").append(attrValue).append('"');
+    }
 
     /**
      * Append a content inside a tag
+     *
      * @param appendable the destination
-     * @param tagName the tag name
-     * @param content the content
+     * @param tagName    the tag name
+     * @param content    the content
      * @throws IOException if an I/O error occurs
      */
     public void appendTag(final Appendable appendable, final CharSequence tagName,
-						  final String content) throws IOException {
-		appendable.append('<').append(tagName).append('>')
-				.append(this.escaper.escapeXMLContent(content)).append("</")
-				.append(tagName).append('>');
-	}
+                          final String content) throws IOException {
+        appendable.append('<').append(tagName).append('>')
+                .append(this.escaper.escapeXMLContent(content)).append("</").append(tagName)
+                .append('>');
+    }
 
     /**
      * Escape an XML attribute
+     *
      * @param s the attribute
      * @return the escaped attribute
      */
     public String escapeXMLAttribute(final String s) {
-		return this.escaper.escapeXMLAttribute(s);
-	}
+        return this.escaper.escapeXMLAttribute(s);
+    }
 
     /**
      * Escape an XML content
+     *
      * @param s the content
      * @return the escaped content
      */
     public String escapeXMLContent(final String s) {
-		return this.escaper.escapeXMLContent(s);
-	}
+        return this.escaper.escapeXMLContent(s);
+    }
 
-	/**
-	 * XML Schema Part 2, 3.2.6 duration
-	 * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
-	 * Remark: removed days since OdfToolkit can't handle it
-	 *
-	 * @param milliseconds the interval to format in milliseconds
-	 * @return the string that represents this interval
-	 */
-	public String formatTimeInterval(final long milliseconds) {
-		long curMilliseconds = milliseconds;
-		final StringBuilder sb = new StringBuilder().append("PT");
-		final long hours = TimeUnit.MILLISECONDS.toHours(curMilliseconds);
-		if (hours < 10)
-			sb.append('0');
-		sb.append(hours).append('H');
-		curMilliseconds -= TimeUnit.HOURS.toMillis(hours);
+    /**
+     * XML Schema Part 2, 3.2.6 duration
+     * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
+     *
+     * @param milliseconds the interval to format in milliseconds
+     * @return the string that represents this interval
+     */
+    public String formatTimeInterval(final long milliseconds) {
+        final String sb = "PT" + (double) milliseconds / 1000 + "S";
+        return sb;
+    }
 
-		final long minutes = TimeUnit.MILLISECONDS.toMinutes(curMilliseconds);
-		if (minutes < 10)
-			sb.append('0');
-		sb.append(minutes).append('M');
-		curMilliseconds -= TimeUnit.MINUTES.toMillis(minutes);
+    /**
+     * XML Schema Part 2, 3.2.6 duration
+     * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
+     * <p>
+     * All parameters must be positive
+     *
+     * @param years   number of years
+     * @param months  number of months
+     * @param days    number of days
+     * @param hours   number of hours
+     * @param minutes number of minutes
+     * @param seconds number of seconds
+     * @return the string that represents this interval
+     */
+    public String formatTimeInterval(final long years, final long months, final long days,
+                                     final long hours, final long minutes, final double seconds) {
+        if (years < 0 || months < 0 || days < 0 || hours < 0 || minutes < 0 || seconds < 0) {
+            throw new IllegalArgumentException(
+                    String.format("Wrong arguments: %d, %d, %d, %d, %d, %f can't be negative",
+                            years, months, days, hours, minutes, seconds));
+        }
+        final StringBuilder sb = new StringBuilder().append('P');
+        if (years > 0) {
+            sb.append(years).append('Y');
+        }
+        if (months > 0) {
+            sb.append(months).append('M');
+        }
+        if (days > 0) {
+            sb.append(days).append('D');
+        }
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+            return sb.toString();
+        }
+        sb.append('T');
+        if (hours > 0) {
+            sb.append(hours).append('H');
+        }
+        if (minutes > 0) {
+            sb.append(minutes).append('M');
+        }
+        if (seconds > 0) {
+            sb.append(seconds).append('S');
+        }
+        return sb.toString();
+    }
 
-		final long seconds = TimeUnit.MILLISECONDS.toSeconds(curMilliseconds);
-		if (seconds < 10)
-			sb.append('0');
-		sb.append(seconds);
-		curMilliseconds -= TimeUnit.SECONDS.toMillis(seconds);
-
-		if (curMilliseconds > 0)
-			sb.append('.').append(curMilliseconds);
-
-		sb.append('S');
-		return sb.toString();
-	}
+    /**
+     * XML Schema Part 2, 3.2.6 duration
+     * "'P'yyyy'Y'MM'M'dd'DT'HH'H'mm'M'ss.SSS'S'"
+     * <p>
+     * All parameters must be positive
+     *
+     * @param years   number of years
+     * @param months  number of months
+     * @param days    number of days
+     * @param hours   number of hours
+     * @param minutes number of minutes
+     * @param seconds number of seconds
+     * @return the string that represents this interval with a negative value
+     */
+    public String formatNegTimeInterval(final long years, final long months, final long days,
+                                        final long hours, final long minutes,
+                                        final double seconds) {
+        return '-' + this.formatTimeInterval(years, months, days, hours, minutes, seconds);
+    }
 }

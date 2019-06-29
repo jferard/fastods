@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods;
 
-public class TextValue extends CellValue {
+public class TextValue implements CellValue {
     private final Text text;
 
     /**

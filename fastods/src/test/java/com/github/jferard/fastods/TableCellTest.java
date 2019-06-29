@@ -60,9 +60,11 @@ public class TableCellTest {
     private XMLUtil xmlUtil;
     private TableCell cell;
     private TableColdCell tcc;
+    private ToCellValueConverter converter;
 
     @Before
     public void setUp() throws FastOdsException {
+        this.converter = new ObjectToCellValueConverter("USD");
         this.locale = Locale.US;
         this.stc = PowerMock.createMock(StylesContainer.class);
         this.table = PowerMock.createMock(Table.class);
@@ -240,13 +242,13 @@ public class TableCellTest {
         this.cell.setTimeValue(999);
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"time\" " +
-                        "office:time-value=\"PT00H00M00.999S\"/>");
+                        "office:time-value=\"PT0.999S\"/>");
     }
 
     @Test
     public final void testObject() throws IOException {
         this.playAndReplayFloat();
-        this.cell.setObjectValue(1);
+        this.cell.setCellValue(this.converter.from(1));
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" office:value=\"1\"/>");
     }

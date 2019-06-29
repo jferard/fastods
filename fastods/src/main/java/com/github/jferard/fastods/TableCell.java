@@ -194,13 +194,6 @@ public interface TableCell {
 	void setFloatValue(Number value);
 
 	/**
-	 * Set the float value for a cell with TableCell.Type.STRING.
-	 *
-	 * @param value a double object with the value to be used
-	 */
-	void setObjectValue(Object value);
-
-	/**
 	 * Set the float value for a cell with TableCell.Type.PERCENTAGE.
 	 *
 	 * @param value a float object with the value to be used
@@ -245,6 +238,36 @@ public interface TableCell {
 	void setTimeValue(long timeInMillis);
 
 	/**
+	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
+	 * @param duration the duration string
+	 */
+    void setTimeValue(String duration);
+
+	/**
+	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
+	 * All parameters must be positive
+	 * @param years number of years
+	 * @param months number of months
+	 * @param days number of days
+	 * @param hours number of hours
+	 * @param minutes number of minutes
+	 * @param seconds number of seconds
+	 */
+    void setTimeValue(long years, long months, long days, long hours, long minutes, double seconds);
+
+	/**
+	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
+	 * All parameters must be positive
+	 * @param years number of years
+	 * @param months number of months
+	 * @param days number of days
+	 * @param hours number of hours
+	 * @param minutes number of minutes
+	 * @param seconds number of seconds
+	 */
+    void setNegTimeValue(long years, long months, long days, long hours, long minutes, double seconds);
+
+    /**
 	 * Add a tooltip to the cell
 	 *
 	 * @param tooltip the text of the tooltip

@@ -1,0 +1,126 @@
+/*
+ * FastODS - A very fast and lightweight (no dependency) library for creating ODS
+ *    (Open Document Spreadsheet, mainly for Calc) files in Java.
+ *    It's a Martin Schulz's SimpleODS fork
+ *    Copyright (C) 2016-2019 J. Férard <https://github.com/jferard>
+ * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
+ *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
+ *
+ * This file is part of FastODS.
+ *
+ * FastODS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.github.jferard.fastods.tool;
+
+import com.github.jferard.fastods.CellValue;
+import com.github.jferard.fastods.DateValue;
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.StringValue;
+import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.TimeValue;
+import com.github.jferard.fastods.ToCellValueConverter;
+
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.SQLException;
+import java.sql.SQLXML;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+public class SQLToCellValueConverter implements ToCellValueConverter {
+    private final ToCellValueConverter converter;
+    private final IntervalConverter intervalConverter;
+
+    SQLToCellValueConverter(final ToCellValueConverter converter, final SQLToCellValueConverter.IntervalConverter intervalConverter) {
+        this.converter = converter;
+        this.intervalConverter = intervalConverter;
+    }
+
+    @Override
+    public CellValue from(final TableCell.Type type, final Object o) throws FastOdsException {
+        try {
+            if (o instanceof Clob) {
+                final Clob clob = (Clob) o;
+                return new StringValue(clob.getSubString(0, (int) clob.length()));
+            } else if (o instanceof NClob) {
+                final NClob clob = (NClob) o;
+                return new StringValue(clob.getSubString(0, (int) clob.length()));
+            } else if (o instanceof SQLXML) {
+                final SQLXML sqlxml = (SQLXML) o;
+                return new StringValue(sqlxml.getString());
+            } else if (o instanceof Date) {
+                final long time = ((Date) o).getTime();
+                return new DateValue(new Date(time));
+            } else if (o instanceof Time) {
+                final long time = ((Time) o).getTime();
+                return new DateValue(new Date(time));
+            } else if (o instanceof Timestamp) {
+                final long time = ((Timestamp) o).getTime();
+                return new DateValue(new Date(time));
+            } else {
+                final TimeValue timeValue = this.intervalConverter.castToInterval(o);
+                if (timeValue == null) {
+                    return this.converter.from(type, o);
+                } else {
+                    return timeValue;
+                }
+            }
+        } catch (final SQLException e) {
+            throw new FastOdsException(e);
+        }
+    }
+
+    @Override
+    public CellValue from(final Object o) {
+        try {
+            if (o instanceof Clob) {
+                final Clob clob = (Clob) o;
+                return new StringValue(clob.getSubString(1, (int) clob.length()));
+            } else if (o instanceof NClob) {
+                final NClob clob = (NClob) o;
+                return new StringValue(clob.getSubString(1, (int) clob.length()));
+            } else if (o instanceof SQLXML) {
+                final SQLXML sqlxml = (SQLXML) o;
+                return new StringValue(sqlxml.getString());
+            } else if (o instanceof Date) {
+                final long time = ((Date) o).getTime();
+                return new DateValue(new Date(time));
+            } else if (o instanceof Time) {
+                final long time = ((Time) o).getTime();
+                return new DateValue(new Date(time));
+            } else if (o instanceof Timestamp) {
+                final long time = ((Timestamp) o).getTime();
+                return new DateValue(new Date(time));
+            } else {
+                final TimeValue timeValue = this.intervalConverter.castToInterval(o);
+                if (timeValue == null) {
+                    return this.converter.from(o);
+                } else {
+                    return timeValue;
+                }
+            }
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public interface IntervalConverter {
+        /**
+         * @param o the object to cast
+         * @return the time of the interval in milliseconds or -1 if the object was not casted
+         */
+        TimeValue castToInterval(Object o);
+    }
+}

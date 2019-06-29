@@ -28,7 +28,7 @@ package com.github.jferard.fastods;
  *
  * @author Julien Férard
  */
-public class FloatValue extends CellValue {
+public class FloatValue implements CellValue {
 	public static FloatValue from(final Object o) throws FastOdsException {
 		if (o instanceof Number) {
 			return new FloatValue(((Number) o).floatValue());

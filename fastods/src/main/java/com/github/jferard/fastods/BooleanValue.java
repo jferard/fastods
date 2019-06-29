@@ -26,7 +26,7 @@ package com.github.jferard.fastods;
 /**
  * @author Julien Férard
  */
-public class BooleanValue extends CellValue {
+public class BooleanValue implements CellValue {
 	public static BooleanValue from(final Object o) throws FastOdsException {
 		if (o instanceof Boolean) {
 			return new BooleanValue((Boolean) o);

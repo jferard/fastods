@@ -30,7 +30,7 @@ import java.util.Date;
  * A CellValue that contains a percentage
  * @author Julien Férard
  */
-public class PercentageValue extends CellValue {
+public class PercentageValue implements CellValue {
     public static PercentageValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
             return new PercentageValue(((Number) o).floatValue());

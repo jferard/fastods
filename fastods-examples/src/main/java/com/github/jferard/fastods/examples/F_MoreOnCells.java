@@ -93,6 +93,7 @@ class F_MoreOnCells {
 
         // If you open the document in LO, you'll see something like this:
         //
+        // ```
         //    ------------------------------------------------------------------------------
         //    | A1 (merged cells)                                       | A4 (not covered) |
         //    |                                                         |-------------------
@@ -100,9 +101,11 @@ class F_MoreOnCells {
         //    ------------------------------------------------------------------------------
         //    | C1 (not covered)  | C2 (not covered) | C3 (not covered) | B4 (not covered) |
         //    ------------------------------------------------------------------------------
+        // ```
         //
         // If you split the A1 cell:
         //
+        // ```
         //    ------------------------------------------------------------------------------
         //    | A1 (merged cells) | A2 (covered)     | A3 (covered)     | A4 (not covered) |
         //    ------------------------------------------------------------------------------
@@ -110,6 +113,7 @@ class F_MoreOnCells {
         //    ------------------------------------------------------------------------------
         //    | C1 (not covered)  | C2 (not covered) | C3 (not covered) | B4 (not covered) |
         //    ------------------------------------------------------------------------------
+        // ```
         //
         // It's possible to merge only one cells one one row or one column with `walker
         // .setRowsSpanned(m)`
