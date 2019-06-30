@@ -47,30 +47,45 @@ public class BordersTest {
 
     @Test
     public final void testEqual() throws IOException {
-        final Borders b = new BordersBuilder().all(this.a1).top(this.a1).right(this.a1).bottom(this.a1).left(this.a1)
-                .build();
+        final Borders b = new BordersBuilder().all(this.a1).top(this.a1).right(this.a1)
+                .bottom(this.a1).left(this.a1).build();
         this.assertAttrXMLEquals(" fo:border=\"10pt double #000000\"", b);
     }
 
     @Test
-    public final void testDifferent() throws IOException {
-        final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a2).bottom(this.a2).left(this.a2)
+    public final void testThreeParam() throws IOException {
+        final Borders b = new BordersBuilder()
+                .all(SimpleLength.pt(1), SimpleColor.ALICEBLUE, Style.DOUBLE)
+                .top(SimpleLength.pt(1), SimpleColor.BLACK, Style.SOLID)
+                .left(SimpleLength.pt(2), SimpleColor.ALICEBLUE, Style.DASHED)
+                .right(SimpleLength.pt(3), SimpleColor.CADETBLUE, Style.DOUBLE)
+                .bottom(SimpleLength.pt(4), SimpleColor.DARKBLUE, Style.GROOVE)
                 .build();
+        this.assertAttrXMLEquals(" fo:border=\"1pt double #f0f8ff\" fo:border-top=\"1pt solid " +
+                "#000000\" fo:border-right=\"3pt double #5f9ea0\" fo:border-bottom=\"4pt groove " +
+                "#00008b\" fo:border-left=\"2pt dashed #f0f8ff\"", b);
+    }
+
+    @Test
+    public final void testDifferent() throws IOException {
+        final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a2)
+                .bottom(this.a2).left(this.a2).build();
         this.assertAttrXMLEquals(
-                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" fo:border-right=\"11pt " +
-                        "solid #ffffff\" fo:border-bottom=\"11pt solid #ffffff\" fo:border-left=\"11pt solid " +
-                        "#ffffff\"",
-                b);
+                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" " +
+                        "fo:border-right=\"11pt " +
+                        "solid #ffffff\" fo:border-bottom=\"11pt solid #ffffff\" " +
+                        "fo:border-left=\"11pt solid " +
+                        "#ffffff\"", b);
     }
 
     @Test
     public final void test() throws IOException {
-        final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a1).bottom(this.a2).left(this.a1)
-                .build();
+        final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a1)
+                .bottom(this.a2).left(this.a1).build();
         this.assertAttrXMLEquals(
-                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" fo:border-bottom=\"11pt " +
-                        "solid #ffffff\"",
-                b);
+                " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" " +
+                        "fo:border-bottom=\"11pt " +
+                        "solid #ffffff\"", b);
     }
 
     @Test
@@ -96,8 +111,8 @@ public class BordersTest {
 
     @Test
     public final void testNoDefaultColor() throws IOException {
-        final Borders b = new BordersBuilder().all(new BorderAttributeBuilder().borderSize(SimpleLength.pt(1)).build())
-                .build();
+        final Borders b = new BordersBuilder()
+                .all(new BorderAttributeBuilder().borderSize(SimpleLength.pt(1)).build()).build();
         this.assertAttrXMLEquals(" fo:border=\"1pt\"", b);
     }
 

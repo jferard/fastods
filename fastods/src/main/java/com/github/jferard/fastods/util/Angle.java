@@ -23,10 +23,9 @@
 
 package com.github.jferard.fastods.util;
 
-import java.lang.annotation.AnnotationFormatError;
-
 /**
- * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#__RefHeading__1420142_253892949
+ * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1
+ * .2-os-part1.html#__RefHeading__1420142_253892949
  */
 public class Angle {
     public static final Angle NO_ROTATING = Angle.deg(0);
@@ -38,7 +37,7 @@ public class Angle {
      * @param degs the number of degrees
      * @return an Angle
      */
-    public static Angle deg(final int degs) {
+    public static Angle deg(final double degs) {
         return new Angle(degs, Angle.Unit.DEG);
     }
 
@@ -46,7 +45,7 @@ public class Angle {
      * @param grads the number of gradians
      * @return an Angle
      */
-    public static Angle grad(final int grads) {
+    public static Angle grad(final double grads) {
         return new Angle(grads, Angle.Unit.GRAD);
     }
 
@@ -54,31 +53,36 @@ public class Angle {
      * @param rads the number of radians
      * @return an Angle
      */
-    public static Angle rad(final int rads) {
+    public static Angle rad(final double rads) {
         return new Angle(rads, Angle.Unit.RAD);
     }
 
-    private final int value;
+    private final double value;
     private final Unit unit;
 
     /**
-     * @param value the value of the angle (should be a double, but LO...)
-     * @param unit the unit
-     * TODO: should be a double, but LO doesn't handle double for text rotating
+     * @param value the value of the angle
+     * @param unit  the unit
+     *              TODO: should be a double, but LO doesn't handle double for text rotating
      */
-    public Angle(final int value, final Unit unit) {
+    public Angle(final double value, final Unit unit) {
         this.value = value;
         this.unit = unit;
     }
 
     @Override
     public String toString() {
-        String ret = String.valueOf(this.value);
+        String ret = "";
         switch (this.unit) {
-            case DEG: return ret;
-            case GRAD: ret += "grad"; break;
-            case RAD: ret += "rad"; break;
-            default: break;
+            case DEG:
+                ret = String.valueOf((int) this.value); // TODO: LO bug
+                break;
+            case GRAD:
+                ret = this.value + "grad";
+                break;
+            case RAD:
+                ret = this.value + "rad";
+                break;
         }
         return ret;
     }

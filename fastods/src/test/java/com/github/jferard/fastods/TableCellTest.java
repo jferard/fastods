@@ -25,6 +25,8 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.datastyle.FloatStyle;
+import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TextStyle;
@@ -492,6 +494,32 @@ public class TableCellTest {
         this.cell.setCellMerge(7, 12);
     }
 
+    @Test
+    public final void testDataStyle() throws IOException {
+        final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.stc.addDataStyle(fs)).andReturn(true);
+        EasyMock.expect(this.table.findDefaultCellStyle(11)).andReturn(this.tcs);
+        EasyMock.expect(this.stc.addChildCellStyle(this.tcs, fs)).andReturn(this.tcs);
+
+        PowerMock.replayAll();
+        this.cell.setDataStyle(fs);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testDataStyleNull() throws IOException {
+        final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
+
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.cell.setDataStyle(null);
+
+        PowerMock.verifyAll();
+    }
 
     private void assertCellXMLEquals(final String xml) throws IOException {
         DomTester.assertEquals(xml, this.getCellXML());
@@ -509,4 +537,5 @@ public class TableCellTest {
         EasyMock.expect(this.stc.addChildCellStyle(cs, dataStyle)).andReturn(this.tcs);
         EasyMock.expect(cs.getDataStyle()).andReturn(null);
     }
+
 }

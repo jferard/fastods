@@ -32,6 +32,8 @@ public class StringValue implements CellValue {
     public static CellValue from(final Object o) {
 		if (o instanceof String) {
 			return new StringValue((String) o);
+		} else if (o instanceof Text) {
+			return new TextValue((Text) o);
 		} else if (o instanceof StringValue) {
 			return (StringValue) o;
 		} else if (o instanceof TextValue) {

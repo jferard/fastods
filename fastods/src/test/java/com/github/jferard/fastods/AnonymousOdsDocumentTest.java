@@ -365,7 +365,7 @@ public class AnonymousOdsDocumentTest {
 
         PowerMock.replayAll();
         this.document = this.getDocument();
-        this.document.addAutofilter(t, 0, 0, 1, 1);
+        this.document.addAutoFilter(t, 0, 0, 1, 1);
 
         PowerMock.verifyAll();
     }

@@ -66,4 +66,30 @@ public class FastFullListTest {
 		Assert.assertNull(fl.get(10));
 		Assert.assertEquals(0, fl.usedSize());
 	}
+
+	@Test
+	public final void testRemoveTrail() {
+		final FastFullList<String> fl = FastFullList.<String>builder().build();
+		fl.set(10, "10");
+		fl.set(10, "20");
+		fl.set(5, "5");
+		fl.set(10, null);
+		Assert.assertEquals(6, fl.usedSize());
+	}
+
+	@Test
+	public final void testRemoveTrail0() {
+		final FastFullList<String> fl = FastFullList.<String>builder().build();
+		fl.set(0, "10");
+		fl.set(0, null);
+		Assert.assertEquals(0, fl.usedSize());
+	}
+
+	@Test
+	public final void testRemoveTrail1() {
+		final FastFullList<String> fl = FastFullList.<String>builder().build();
+		fl.set(1, "10");
+		fl.set(1, null);
+		Assert.assertEquals(0, fl.usedSize());
+	}
 }

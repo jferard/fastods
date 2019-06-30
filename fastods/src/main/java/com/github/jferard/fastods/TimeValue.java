@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  *
  */
@@ -37,8 +35,7 @@ public class TimeValue implements CellValue {
             if (neg) {
                 l = -l;
             }
-            return new TimeValue(neg, 0, 0, 0, 0, 0,
-                    (double) l  / 1000);
+            return new TimeValue(neg, 0, 0, 0, 0, 0, (double) l / 1000);
         } else if (o instanceof TimeValue) {
             return (TimeValue) o;
         } else {
@@ -67,8 +64,12 @@ public class TimeValue implements CellValue {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof TimeValue)) return false;
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TimeValue)) {
+            return false;
+        }
 
         final TimeValue other = (TimeValue) o;
 
@@ -100,5 +101,13 @@ public class TimeValue implements CellValue {
             tableCell.setTimeValue(this.years, this.months, this.days, this.hours, this.minutes,
                     this.seconds);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "TimeValue[" + (this.neg ? "-P" :
+                "P") + this.years + "Y" + this.months + "M" + this.days + "DT" + this.hours + "H" +
+                        this.minutes + "M" + this.seconds + "S" + "]";
+
     }
 }

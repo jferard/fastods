@@ -56,6 +56,8 @@ public class XMLUtil {
     }
 
     /**
+     * Escape then append.
+     *
      * Append a space and new element to the appendable element, the name of the element is
      * attrName and the value is attrRawValue. The will be escaped if necessary
      *
@@ -180,8 +182,11 @@ public class XMLUtil {
                     String.format("Wrong arguments: %d, %d, %d, %d, %d, %f can't be negative",
                             years, months, days, hours, minutes, seconds));
         }
+        final boolean noDate = years == 0 && months == 0 && days == 0;
+        final boolean noTime = hours == 0 && minutes == 0 && seconds == 0;
+
         final StringBuilder sb = new StringBuilder().append('P');
-        if (years > 0) {
+        if (years > 0 || (noDate && noTime)) {
             sb.append(years).append('Y');
         }
         if (months > 0) {
@@ -190,7 +195,7 @@ public class XMLUtil {
         if (days > 0) {
             sb.append(days).append('D');
         }
-        if (hours == 0 && minutes == 0 && seconds == 0) {
+        if (noTime) {
             return sb.toString();
         }
         sb.append('T');

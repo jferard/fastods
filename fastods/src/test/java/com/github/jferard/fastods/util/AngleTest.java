@@ -20,41 +20,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.util.SimpleLength;
-import com.github.jferard.fastods.util.XMLUtil;
+package com.github.jferard.fastods.util;
+
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
-public class TableRowStyleTest {
-    private XMLUtil util;
-
-    @Before
-    public void setUp() {
-        this.util = XMLUtil.create();
+public class AngleTest {
+    @Test
+    public void testDeg() {
+        final Angle r = Angle.deg(10);
+        Assert.assertEquals("10", r.toString());
     }
 
     @Test
-    public final void test() throws IOException {
-        final TableRowStyle style = TableRowStyle.builder("test").visible()
-                .rowHeight(SimpleLength.cm(5)).build();
-
-        final Appendable sb = new StringBuilder();
-        style.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<style:style style:name=\"test\" " +
-                        "style:family=\"table-row\"><style:table-row-properties " +
-                        "style:row-height=\"5cm\" " +
-                        "fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/></style" +
-                        ":style>",
-                sb.toString());
+    public void testRad() {
+        final Angle r = Angle.rad(3.14);
+        Assert.assertEquals("3.14rad", r.toString());
     }
 
     @Test
-    public final void testGetters() {
-        StyleTestHelper.testGettersHidden(TableRowStyle.builder("test"));
+    public void testGrad() {
+        final Angle r = Angle.grad(16);
+        Assert.assertEquals("16.0grad", r.toString());
     }
+
 }

@@ -75,6 +75,7 @@ public class FastFullList<E> implements Iterable<E> {
      * @param capacity     the capacity, >= 10
      * @param blankElement
      */
+    @SuppressWarnings("unchecked")
     public FastFullList(final int capacity, final E blankElement) {
         this.capacity = capacity;
         this.blankElement = blankElement;
@@ -88,28 +89,29 @@ public class FastFullList<E> implements Iterable<E> {
 
     public void set(final int index, final E element) {
         final int lastIndex = this.size - 1;
-        if (index > lastIndex) { // index >= this.size
+        if (index < lastIndex) {
+            this.arr[index] = element;
+        } else if (index > lastIndex) { // index >= this.size
             if (element != this.blankElement) {
                 this.addMissingBlanks(index);
                 this.arr[index] = element;
             }
-        } else if (index == lastIndex) {
+        } else {
             if (element == this.blankElement) {
                 this.removeTrail();
             } else {
                 this.arr[index] = element;
             }
-        } else if (index < lastIndex) {
-            this.arr[index] = element;
         }
     }
 
     /**
      * Postcondition: this.size == index + 1
      */
+    @SuppressWarnings("unchecked")
     private void addMissingBlanks(final int index) {
         if (this.capacity <= index) {
-            this.capacity = index * 2;
+            this.capacity = index * 2 + 1;
             final E[] newArr = (E[]) new Object[this.capacity];
             System.arraycopy(this.arr, 0, newArr, 0, this.size);
             this.arr = newArr;
@@ -124,7 +126,7 @@ public class FastFullList<E> implements Iterable<E> {
      * Postcondition: this.list.get(this.list.size()-1) != blankElement
      */
     private void removeTrail() {
-        int last = this.size - 1;
+        int last = this.size - 2;
         while (last >= 0 && this.arr[last] == this.blankElement) {
             last--;
         }

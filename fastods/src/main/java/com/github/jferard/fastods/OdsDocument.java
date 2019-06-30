@@ -139,7 +139,7 @@ public interface OdsDocument {
      * @deprecated use {@code table.addAutoFilter(r1, c1, r2, c2)}
      */
     @Deprecated
-    void addAutofilter(Table table, int r1, int c1, int r2, int c2);
+    void addAutoFilter(Table table, int r1, int c1, int r2, int c2);
 
     void freezeCells(Table table, int rowCount, int colCount);
 }

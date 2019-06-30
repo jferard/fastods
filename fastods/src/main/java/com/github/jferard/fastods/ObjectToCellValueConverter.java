@@ -42,8 +42,6 @@ public class ObjectToCellValueConverter implements ToCellValueConverter {
     public CellValue from(final Object o) {
         if (o == null) {
             return VoidValue.INSTANCE;
-        } else if (o instanceof CellValue) {
-            return (CellValue) o;
         } else if (o instanceof String) {
             return new StringValue((String) o);
         } else if (o instanceof Text) {
@@ -59,6 +57,8 @@ public class ObjectToCellValueConverter implements ToCellValueConverter {
             return new DateValue((Date) o);
         } else if (o instanceof Calendar) {
             return new DateValue(((Calendar) o).getTime());
+        } else if (o instanceof CellValue) {
+            return (CellValue) o;
         } else { // Byte[], ...
             return new StringValue(o.toString());
         }

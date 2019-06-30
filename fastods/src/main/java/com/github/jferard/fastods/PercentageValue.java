@@ -52,4 +52,21 @@ public class PercentageValue implements CellValue {
     public void setToCell(final TableCell tableCell) {
         tableCell.setPercentageValue(this.value);
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof PercentageValue))
+            return false;
+
+        final PercentageValue other = (PercentageValue) o;
+        return Math.abs(this.value - other.value) < 0.0001;
+    }
+
+    @Override
+    public final int hashCode() {
+        return (int) this.value;
+    }
+
 }

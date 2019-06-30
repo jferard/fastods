@@ -348,7 +348,7 @@ public class OdsFileCreationIT {
                     .setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0),
                             SimpleLength.cm(10.0), true);
 
-            document.addAutofilter(table, 0, 0, 3, 5);
+            document.addAutoFilter(table, 0, 0, 3, 5);
         }
     }
 

@@ -22,6 +22,7 @@
  */
 package com.github.jferard.fastods;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
@@ -94,5 +95,19 @@ public class DateValueTest {
     @Test(expected = FastOdsException.class)
     public final void testFromString() throws FastOdsException {
         final CellValue dv = DateValue.from("10");
+    }
+
+    @Test
+    public void testHashcode() throws FastOdsException {
+        final DateValue dv1 = new DateValue(new Date(123466));
+        final DateValue dv2 = DateValue.from(dv1);
+        Assert.assertEquals(123466, dv1.hashCode());
+        Assert.assertEquals(123466, dv1.hashCode());
+    }
+
+    @Test
+    public void testToString() throws FastOdsException {
+        final DateValue dv1 = new DateValue(new Date(123466));
+        Assert.assertEquals("DateValue[Thu Jan 01 01:02:03 CET 1970]", dv1.toString());
     }
 }

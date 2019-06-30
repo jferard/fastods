@@ -155,7 +155,7 @@ class CommonOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addAutofilter(final Table table, final int r1, final int c1, final int r2,
+    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
                               final int c2) {
         this.odsElements.addAutoFilter(table, r1, c1, r2, c2);
     }
