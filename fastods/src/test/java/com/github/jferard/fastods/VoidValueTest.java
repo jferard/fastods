@@ -23,33 +23,24 @@
 
 package com.github.jferard.fastods;
 
-/**
- * A CellValue that contains a percentage
- *
- * @author Julien Férard
- */
-public class PercentageValue implements CellValue {
-    public static PercentageValue from(final Object o) throws FastOdsException {
-        if (o instanceof Number) {
-            return new PercentageValue(((Number) o).floatValue());
-        } else if (o instanceof PercentageValue) {
-            return (PercentageValue) o;
-        } else {
-            throw new FastOdsException("Can't cast " + o + " to Percentage");
-        }
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class VoidValueTest {
+    @Test
+    public void testFromNull() throws FastOdsException {
+        Assert.assertEquals(VoidValue.INSTANCE, VoidValue.from(null));
     }
 
-    private final double value;
-
-    /**
-     * @param value the value
-     */
-    public PercentageValue(final double value) {
-        this.value = value;
+    @Test
+    public void testFromVV() throws FastOdsException {
+        Assert.assertEquals(VoidValue.INSTANCE, VoidValue.from(VoidValue.INSTANCE));
     }
 
-    @Override
-    public void setToCell(final TableCell tableCell) {
-        tableCell.setPercentageValue(this.value);
+    @Test(expected = FastOdsException.class)
+    public void testFromString() throws FastOdsException {
+        VoidValue.from("VoidValue.INSTANCE");
     }
 }

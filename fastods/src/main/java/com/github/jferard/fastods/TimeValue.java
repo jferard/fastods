@@ -25,14 +25,20 @@ package com.github.jferard.fastods;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ */
 public class TimeValue implements CellValue {
     public static TimeValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
             final Number number = (Number) o;
-            final long l = number.longValue();
-            final TimeUnit ms = TimeUnit.MILLISECONDS;
-            return new TimeValue(l < 0, 0, 0, ms.toDays(l), ms.toHours(l), ms.toMinutes(l),
-                    ms.toSeconds(l) + (l % 1000) / 1000);
+            long l = number.longValue();
+            final boolean neg = l < 0;
+            if (neg) {
+                l = -l;
+            }
+            return new TimeValue(neg, 0, 0, 0, 0, 0,
+                    (double) l  / 1000);
         } else if (o instanceof TimeValue) {
             return (TimeValue) o;
         } else {
@@ -68,7 +74,7 @@ public class TimeValue implements CellValue {
 
         // See XMLSchema part 2, 3.2.6.2 Order relation on duration
         // TODO: check if the implementation is correct
-        return this.neg != other.neg || this.totalMonths() != other.totalMonths() ||
+        return this.neg == other.neg && this.totalMonths() == other.totalMonths() &&
                 Math.abs(this.totalSeconds() - other.totalSeconds()) < 0.000000001;
     }
 

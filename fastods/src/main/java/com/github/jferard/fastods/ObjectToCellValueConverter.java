@@ -40,8 +40,9 @@ public class ObjectToCellValueConverter implements ToCellValueConverter {
 
     @Override
     public CellValue from(final Object o) {
-        if (o == null) return new VoidValue();
-        else if (o instanceof CellValue) {
+        if (o == null) {
+            return VoidValue.INSTANCE;
+        } else if (o instanceof CellValue) {
             return (CellValue) o;
         } else if (o instanceof String) {
             return new StringValue((String) o);

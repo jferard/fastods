@@ -22,36 +22,77 @@
  */
 package com.github.jferard.fastods;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
- * @author Julien
- *
+ * @author Julien Férard
  */
 public class DateValueTest {
-	@Test
-	public final void test() {
-		PowerMock.resetAll();
-		final TableCell cell = PowerMock.createMock(TableCell.class);
-		final Capture<Date> captured = Capture.newInstance();
-		
-		// PLAY
-		cell.setDateValue(EasyMock.capture(captured));
-		PowerMock.replayAll();
-		
-		final Date date = new Date(10);
-		final CellValue dv= new DateValue(date);
-		date.setTime(0);
-		dv.setToCell(cell);
-		Assert.assertEquals(10, captured.getValue().getTime());
+    @Test
+    public final void testSetConstructor() {
+        PowerMock.resetAll();
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setDateValue(new Date(10));
 
-		PowerMock.verifyAll();
-	}
+        PowerMock.replayAll();
+        final Date date = new Date(10);
+        final CellValue dv = new DateValue(date);
+        date.setTime(0);
+        dv.setToCell(cell);
 
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFromDate() throws FastOdsException {
+        PowerMock.resetAll();
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setDateValue(new Date(10));
+
+        PowerMock.replayAll();
+        final Date date = new Date(10);
+        final CellValue dv = DateValue.from(date);
+        date.setTime(0);
+        dv.setToCell(cell);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFromCalendar() throws FastOdsException {
+        PowerMock.resetAll();
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setDateValue(new GregorianCalendar(0, 0, 0, 0, 0, 127).getTime());
+
+        PowerMock.replayAll();
+        final Calendar cal = new GregorianCalendar(0, 0, 0, 0, 0, 127);
+        final CellValue dv = DateValue.from(cal);
+        cal.setTimeInMillis(0);
+        dv.setToCell(cell);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFromNumber() throws FastOdsException {
+        PowerMock.resetAll();
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setDateValue(new Date(10));
+
+        PowerMock.replayAll();
+        final CellValue dv = DateValue.from(10);
+        dv.setToCell(cell);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = FastOdsException.class)
+    public final void testFromString() throws FastOdsException {
+        final CellValue dv = DateValue.from("10");
+    }
 }

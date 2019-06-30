@@ -58,4 +58,26 @@ public class DateValue implements CellValue {
 	public void setToCell(final TableCell cell) {
 		cell.setDateValue(this.value);
 	}
+
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof DateValue))
+			return false;
+
+		final DateValue other = (DateValue) o;
+		return this.value.equals(other.value);
+	}
+
+	@Override
+	public final int hashCode() {
+		return this.value.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "DateValue["+this.value+"]";
+	}
 }

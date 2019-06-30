@@ -23,53 +23,37 @@
 
 package com.github.jferard.fastods;
 
+import org.easymock.Capture;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-/**
- * Created by jferard on 09/05/17.
- */
-public class FloatValueTest {
-    @Test
-    public void testEquals() {
-        final CellValue fv1 = new FloatValue(10.0);
-        final CellValue fv2 = new FloatValue(10.0);
-        final CellValue fv3 = new FloatValue(11.0);
-        final CellValue bv1 = new BooleanValue(true);
-        Assert.assertEquals(fv1, fv1);
-        Assert.assertEquals(fv1, fv2);
-        Assert.assertEquals(fv1.hashCode(), fv2.hashCode());
-        Assert.assertNotEquals(fv1, fv3);
-        Assert.assertNotEquals(fv1.hashCode(), fv3.hashCode());
-        Assert.assertNotEquals(fv1, bv1);
-        Assert.assertNotEquals(fv1.hashCode(), bv1.hashCode());
-        Assert.assertNotEquals(fv1, "fv1");
-        Assert.assertNotEquals(fv1.hashCode(), "fv1".hashCode());
-    }
+import static org.junit.Assert.*;
 
+public class PercentageValueTest {
     @Test
-    public void testSet() {
-        final CellValue fv1 = new FloatValue(10.0);
-        final TableCell cell = PowerMock.createMock(TableCell.class);
-
+    public void testSetFromDouble() throws FastOdsException {
         PowerMock.resetAll();
-        cell.setFloatValue(10.0);
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setPercentageValue(0.25);
 
         PowerMock.replayAll();
-        fv1.setToCell(cell);
+        final PercentageValue cv = PercentageValue.from(0.25);
+        cv.setToCell(cell);
+
         PowerMock.verifyAll();
     }
 
     @Test
-    public void testFromFloatValue() throws FastOdsException {
-        final CellValue fv1 = FloatValue.from(10.0);
-        final CellValue fv2 = FloatValue.from(fv1);
-        Assert.assertEquals(fv1, fv2);
+    public void testFromPercentageValue() throws FastOdsException {
+        final PercentageValue cv1 = PercentageValue.from(0.25);
+        final PercentageValue cv2 = PercentageValue.from(cv1);
+        Assert.assertEquals(cv1, cv2);
     }
 
     @Test(expected = FastOdsException.class)
     public void testFromObject() throws FastOdsException {
-        final CellValue fv1 = FloatValue.from(new Object());
+        final PercentageValue cv1 = PercentageValue.from(new Object());
     }
 }

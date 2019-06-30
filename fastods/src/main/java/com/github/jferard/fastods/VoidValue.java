@@ -28,15 +28,17 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class VoidValue implements CellValue {
+    public static final VoidValue INSTANCE = new VoidValue();
+
     public static VoidValue from(final Object o) throws FastOdsException {
-        if (o == null) {
-            return new VoidValue();
-        } else if (o instanceof VoidValue) {
-            return (VoidValue) o;
+        if (o == null || o instanceof VoidValue) {
+            return INSTANCE;
         } else {
             throw new FastOdsException("Can't cast " + o + " to Void");
         }
     }
+
+    private VoidValue() {}
 
     @Override
 	public void setToCell(final TableCell tableCell) {

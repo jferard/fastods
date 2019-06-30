@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Container.Mode;
 
 import java.util.HashMap;
@@ -41,15 +42,18 @@ import java.util.logging.Logger;
 public class MultiContainer<K, S extends Enum<S>, V> {
 	private final Map<K, S> subcontainerByKey;
 	private final Map<S, Map<K, V>> valueByKeyBySubcontainer;
+	private final Logger logger;
 	private boolean closed;
 	private boolean debug;
     private Mode mode;
 
     /**
      * Create a new multi container
-     * @param clazz the enum
-     */
-    public MultiContainer(final Class<S> clazz) {
+	 * @param logger
+	 * @param clazz the enum
+	 */
+    public MultiContainer(final Logger logger, final Class<S> clazz) {
+		this.logger = logger;
 		this.subcontainerByKey = new HashMap<K, S>();
 		this.valueByKeyBySubcontainer = new HashMap<S, Map<K, V>>();
 		for (final S subcontainer : clazz.getEnumConstants()) {
@@ -99,13 +103,12 @@ public class MultiContainer<K, S extends Enum<S>, V> {
 			this.subcontainerByKey.put(key, subcontainer);
 
 		final Map<K, V> valueByKey = this.valueByKeyBySubcontainer.get(subcontainer);
-		if (this.closed && !valueByKey.containsKey(key))
+		if (this.closed && !valueByKey.containsKey(key)) {
 			throw new IllegalStateException(
 					"MultiContainer put(" + key + ", " + value + ") in " + subcontainer);
-		else if (this.debug && !valueByKey.containsKey(key))
-			Logger.getLogger("debug").severe(
-					"MultiContainer put(" + key + ", " + value + ") in " + subcontainer);
-
+		} else if (this.debug && !valueByKey.containsKey(key)) {
+			this.logger.severe("MultiContainer put(" + key + ", " + value + ") in " + subcontainer);
+		}
 		valueByKey.put(key, value);
 		return true;
 	}

@@ -28,9 +28,12 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.After;
 import org.junit.Before;
+import org.powermock.api.easymock.PowerMock;
 
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class StylesEntryTest {
 	private DataStyle ds1;
@@ -43,10 +46,12 @@ public class StylesEntryTest {
 	private StylesContainer stylesContainer;
 	private StylesElement stylesElement;
 	private XMLUtil util;
+	private Logger logger;
 
 	@Before
 	public void setUp() {
-		this.stylesContainer = new StylesContainer();
+		this.logger = PowerMock.createMock(Logger.class);
+		this.stylesContainer = new StylesContainer(this.logger);
 		this.stylesElement = new StylesElement(this.stylesContainer);
 		this.util = XMLUtil.create();
 		this.locale = Locale.US;
@@ -59,5 +64,12 @@ public class StylesEntryTest {
 
 		this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
 		this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
+		PowerMock.resetAll();
+		PowerMock.replayAll();
+	}
+
+	@After
+	public void tearDown() {
+		PowerMock.resetAll();
 	}
 }

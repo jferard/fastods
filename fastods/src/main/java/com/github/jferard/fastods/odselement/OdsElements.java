@@ -76,15 +76,16 @@ public class OdsElements {
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
                                      final WriteUtil writeUtil,
                                      final DataStyles format, final boolean libreOfficeMode) {
+        final Logger logger = Logger.getLogger(OdsElements.class.getName());
         final MimetypeElement mimetypeElement = new MimetypeElement();
         final ManifestElement manifestElement = new ManifestElement();
         final SettingsElement settingsElement = SettingsElement.create();
         final MetaElement metaElement = new MetaElement();
-        final StylesContainer stylesContainer = new StylesContainer();
+        final StylesContainer stylesContainer = new StylesContainer(logger);
         final StylesElement stylesElement = new StylesElement(stylesContainer);
         final ContentElement contentElement = new ContentElement(positionUtil, xmlUtil, writeUtil, format,
                 libreOfficeMode, stylesContainer);
-        return new OdsElements(Logger.getLogger(OdsElements.class.getName()), stylesContainer, mimetypeElement,
+        return new OdsElements(logger, stylesContainer, mimetypeElement,
                 manifestElement, settingsElement, metaElement, contentElement, stylesElement);
     }
 
@@ -223,9 +224,11 @@ public class OdsElements {
         final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
         this.settingsElement.addTableConfig(table.getConfigEntry());
         if (this.observer != null) {
-            if (previousTable == null)
+            if (previousTable == null) {
                 this.observer.update(new MetaAndStylesElementsFlusher(this, this.contentElement));
-            else previousTable.flush();
+            } else {
+                previousTable.flush();
+            }
             table.addObserver(this.observer);
         }
         return table;

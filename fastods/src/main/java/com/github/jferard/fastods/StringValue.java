@@ -29,15 +29,15 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class StringValue implements CellValue {
-    public static CellValue from(final Object o) throws FastOdsException {
-		if (o instanceof StringValue) {
+    public static CellValue from(final Object o) {
+		if (o instanceof String) {
+			return new StringValue((String) o);
+		} else if (o instanceof StringValue) {
 			return (StringValue) o;
 		} else if (o instanceof TextValue) {
 			return (TextValue) o;
-		} else if (o instanceof String) {
-			return new StringValue((String) o);
-		} else{
-			throw new FastOdsException("Can't cast " + o + " to String");
+		} else {
+			return new StringValue(o.toString());
 		}
     }
 
@@ -70,4 +70,7 @@ public class StringValue implements CellValue {
 	public void setToCell(final TableCell cell) {
 		cell.setStringValue(this.value);
 	}
+
+	@Override
+	public final String toString() { return "StringValue["+this.value+"]"; }
 }

@@ -26,11 +26,14 @@ package com.github.jferard.fastods.tool;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DateValue;
 import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
 
+import java.nio.charset.Charset;
+import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
 import java.sql.NClob;
@@ -40,60 +43,33 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class SQLToCellValueConverter implements ToCellValueConverter {
-    private final ToCellValueConverter converter;
-    private final IntervalConverter intervalConverter;
-
-    SQLToCellValueConverter(final ToCellValueConverter converter, final SQLToCellValueConverter.IntervalConverter intervalConverter) {
-        this.converter = converter;
-        this.intervalConverter = intervalConverter;
+    public static SQLToCellValueConverter create(final IntervalConverter intervalConverter,
+                                                 final String currency, final Charset charset) {
+        return new SQLToCellValueConverter(new ObjectToCellValueConverter(currency),
+                intervalConverter, charset);
     }
 
-    @Override
-    public CellValue from(final TableCell.Type type, final Object o) throws FastOdsException {
-        try {
-            if (o instanceof Clob) {
-                final Clob clob = (Clob) o;
-                return new StringValue(clob.getSubString(0, (int) clob.length()));
-            } else if (o instanceof NClob) {
-                final NClob clob = (NClob) o;
-                return new StringValue(clob.getSubString(0, (int) clob.length()));
-            } else if (o instanceof SQLXML) {
-                final SQLXML sqlxml = (SQLXML) o;
-                return new StringValue(sqlxml.getString());
-            } else if (o instanceof Date) {
-                final long time = ((Date) o).getTime();
-                return new DateValue(new Date(time));
-            } else if (o instanceof Time) {
-                final long time = ((Time) o).getTime();
-                return new DateValue(new Date(time));
-            } else if (o instanceof Timestamp) {
-                final long time = ((Timestamp) o).getTime();
-                return new DateValue(new Date(time));
-            } else {
-                final TimeValue timeValue = this.intervalConverter.castToInterval(o);
-                if (timeValue == null) {
-                    return this.converter.from(type, o);
-                } else {
-                    return timeValue;
-                }
-            }
-        } catch (final SQLException e) {
-            throw new FastOdsException(e);
-        }
+    private final ToCellValueConverter converter;
+    private final SQLToCellValueConverter.IntervalConverter intervalConverter;
+    private final Charset charset;
+
+    SQLToCellValueConverter(final ToCellValueConverter converter,
+                            final IntervalConverter intervalConverter, final Charset charset) {
+        this.converter = converter;
+        this.intervalConverter = intervalConverter;
+        this.charset = charset;
     }
 
     @Override
     public CellValue from(final Object o) {
         try {
-            if (o instanceof Clob) {
+            if (o instanceof Clob) { // NClob extends Clob
                 final Clob clob = (Clob) o;
-                return new StringValue(clob.getSubString(1, (int) clob.length()));
-            } else if (o instanceof NClob) {
-                final NClob clob = (NClob) o;
                 return new StringValue(clob.getSubString(1, (int) clob.length()));
             } else if (o instanceof SQLXML) {
                 final SQLXML sqlxml = (SQLXML) o;
-                return new StringValue(sqlxml.getString());
+                final String string = sqlxml.getString().trim();
+                return new StringValue(string);
             } else if (o instanceof Date) {
                 final long time = ((Date) o).getTime();
                 return new DateValue(new Date(time));
@@ -116,6 +92,51 @@ public class SQLToCellValueConverter implements ToCellValueConverter {
         }
     }
 
+    @Override
+    public CellValue from(final TableCell.Type type, final Object o) throws FastOdsException {
+        try {
+            switch (type) {
+                case STRING:
+                    if (o instanceof Blob) {
+                        final Blob blob = (Blob) o;
+                        return new StringValue(
+                                new String(blob.getBytes(1, (int) blob.length()), this.charset));
+                    } else if (o instanceof Clob) {
+                        final Clob clob = (Clob) o;
+                        return new StringValue(clob.getSubString(1, (int) clob.length()));
+                    } else if (o instanceof SQLXML) {
+                        final SQLXML sqlxml = (SQLXML) o;
+                        final String string = sqlxml.getString().trim();
+                        return new StringValue(string);
+                    }
+                    break;
+                case DATE:
+                    if (o instanceof Date) {
+                        final long time = ((Date) o).getTime();
+                        return new DateValue(new Date(time));
+                    } else if (o instanceof Time) {
+                        final long time = ((Time) o).getTime();
+                        return new DateValue(new Date(time));
+                    } else if (o instanceof Timestamp) {
+                        final long time = ((Timestamp) o).getTime();
+                        return new DateValue(new Date(time));
+                    }
+                    break;
+                case TIME:
+                    final TimeValue timeValue = this.intervalConverter.castToInterval(o);
+                    if (timeValue != null) {
+                        return timeValue;
+                    }
+                    break;
+                default:
+                    return this.converter.from(type, o);
+            }
+        } catch (final SQLException e) {
+            throw new FastOdsException(e);
+        }
+        throw new FastOdsException("Can't cast "+o+" to "+type);
+    }
+
     public interface IntervalConverter {
         /**
          * @param o the object to cast
@@ -123,4 +144,6 @@ public class SQLToCellValueConverter implements ToCellValueConverter {
          */
         TimeValue castToInterval(Object o);
     }
+
+
 }

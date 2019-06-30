@@ -23,57 +23,56 @@
 
 package com.github.jferard.fastods;
 
+import org.easymock.Capture;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-public class StringValueTest {
+public class TimeValueTest {
     @Test
-    public void testHashCode() {
-        final StringValue v = new StringValue("ok");
-        Assert.assertEquals("ok".hashCode(), v.hashCode());
-    }
-
-    @Test
-    public void testFromStringValue() throws FastOdsException {
-        final CellValue sv1 = StringValue.from("ok");
-        final CellValue sv2 = StringValue.from(sv1);
-        Assert.assertEquals(sv1, sv2);
-    }
-
-    @Test
-    public void testFromTextValue() throws FastOdsException {
-        final CellValue tv1 = new TextValue(Text.content("ok"));
-        final CellValue sv2 = StringValue.from(tv1);
-        Assert.assertEquals(tv1, sv2);
-    }
-
-    @Test
-    public void testFromObject() throws FastOdsException {
-        final Object o = new Object();
-        final CellValue sv1 = StringValue.from(o);
-        Assert.assertEquals(new StringValue(o.toString()), sv1);
-    }
-
-    @Test
-    public void testEquals() {
-        final StringValue v = new StringValue("ok");
-        Assert.assertTrue(v.equals(v));
-        Assert.assertFalse(v.equals(1));
-        Assert.assertTrue(v.equals(new StringValue("ok")));
-        Assert.assertFalse(v.equals(new StringValue("ko")));
-    }
-
-    @Test
-    public void testCell() {
-        PowerMock.replayAll();
+    public void testSetFromLong() throws FastOdsException {
+        PowerMock.resetAll();
         final TableCell cell = PowerMock.createMock(TableCell.class);
-        cell.setStringValue("ok");
+        cell.setTimeValue(0, 0, 0, 0, 0, 123.456);
 
         PowerMock.replayAll();
-        final StringValue v = new StringValue("ok");
-        v.setToCell(cell);
+        final TimeValue tv = TimeValue.from(123456L);
+        tv.setToCell(cell);
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testFromTimeValue() throws FastOdsException {
+        final TimeValue tv1 = TimeValue.from(123456L);
+        final TimeValue tv2 = TimeValue.from(tv1);
+        Assert.assertEquals(tv1, tv2);
+    }
+
+    @Test(expected = FastOdsException.class)
+    public void testFromString() throws FastOdsException {
+        final TimeValue tv1 = TimeValue.from("");
+    }
+
+    @Test
+    public void testFromNegLong() throws FastOdsException {
+        PowerMock.resetAll();
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setNegTimeValue(0, 0, 0, 0, 0, 123.456);
+
+        PowerMock.replayAll();
+        final TimeValue tv = TimeValue.from(-123456L);
+        tv.setToCell(cell);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testEquals() throws FastOdsException {
+        final TimeValue tv1 = new TimeValue(false, 0,0,1,2,3,4);
+        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
+        Assert.assertEquals(tv1, TimeValue.from(l));
+        Assert.assertNotEquals(tv1, TimeValue.from(-l));
     }
 }

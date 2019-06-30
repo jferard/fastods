@@ -27,49 +27,39 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-/**
- * Created by jferard on 09/05/17.
- */
-public class FloatValueTest {
-    @Test
-    public void testEquals() {
-        final CellValue fv1 = new FloatValue(10.0);
-        final CellValue fv2 = new FloatValue(10.0);
-        final CellValue fv3 = new FloatValue(11.0);
-        final CellValue bv1 = new BooleanValue(true);
-        Assert.assertEquals(fv1, fv1);
-        Assert.assertEquals(fv1, fv2);
-        Assert.assertEquals(fv1.hashCode(), fv2.hashCode());
-        Assert.assertNotEquals(fv1, fv3);
-        Assert.assertNotEquals(fv1.hashCode(), fv3.hashCode());
-        Assert.assertNotEquals(fv1, bv1);
-        Assert.assertNotEquals(fv1.hashCode(), bv1.hashCode());
-        Assert.assertNotEquals(fv1, "fv1");
-        Assert.assertNotEquals(fv1.hashCode(), "fv1".hashCode());
-    }
+import java.util.Date;
 
+public class BooleanValueTest {
     @Test
-    public void testSet() {
-        final CellValue fv1 = new FloatValue(10.0);
-        final TableCell cell = PowerMock.createMock(TableCell.class);
-
+    public final void testSetConstructor() {
         PowerMock.resetAll();
-        cell.setFloatValue(10.0);
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+        cell.setBooleanValue(true);
 
         PowerMock.replayAll();
-        fv1.setToCell(cell);
+        final CellValue cv = new BooleanValue(true);
+        cv.setToCell(cell);
+
         PowerMock.verifyAll();
     }
 
     @Test
-    public void testFromFloatValue() throws FastOdsException {
-        final CellValue fv1 = FloatValue.from(10.0);
-        final CellValue fv2 = FloatValue.from(fv1);
-        Assert.assertEquals(fv1, fv2);
+    public final void testFromBoolean() throws FastOdsException {
+        Assert.assertEquals(new BooleanValue(true), BooleanValue.from(true));
+        Assert.assertNotEquals(new BooleanValue(true), BooleanValue.from(false));
+        Assert.assertEquals(new BooleanValue(false), BooleanValue.from(false));
+        Assert.assertNotEquals(new BooleanValue(false), BooleanValue.from(true));
+    }
+
+    @Test
+    public final void testFromBooleanValue() throws FastOdsException {
+        final BooleanValue bv1 = new BooleanValue(true);
+        final BooleanValue bv2 = BooleanValue.from(bv1);
+        Assert.assertEquals(bv1, bv2);
     }
 
     @Test(expected = FastOdsException.class)
-    public void testFromObject() throws FastOdsException {
-        final CellValue fv1 = FloatValue.from(new Object());
+    public final void testFromBooleanObject() throws FastOdsException {
+        BooleanValue.from(new Object());
     }
 }

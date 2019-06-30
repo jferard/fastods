@@ -24,6 +24,7 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.TestHelper;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,14 +39,24 @@ import java.util.logging.Logger;
 
 public class ContainerTest {
     private Container<String, Integer> container;
+    private Logger logger;
 
     @Before
-    public void setUp() throws Exception {
-        this.container = new Container<String, Integer>();
+    public void setUp() {
+        this.logger = PowerMock.createMock(Logger.class);
+        this.container = new Container<String, Integer>(this.logger);
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testCreateThenUpdate() {
+
         Assert.assertTrue(this.container.add("a", 1));
         Assert.assertEquals(Integer.valueOf(1), this.container.getValues().iterator().next());
 
@@ -93,13 +104,8 @@ public class ContainerTest {
 
     @Test
     public final void testCreateAfterDebug() {
-        final Logger logger = Logger.getLogger("debug");
-        final Handler handler = TestHelper.getMockHandler(logger);
-
         PowerMock.resetAll();
-        handler.publish(EasyMock.isA(LogRecord.class));
-        handler.close();
-        EasyMock.expectLastCall();
+        this.logger.severe("Container put(a, 1)");
 
         PowerMock.replayAll();
         this.container.debug();

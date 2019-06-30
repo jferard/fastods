@@ -31,10 +31,10 @@ package com.github.jferard.fastods;
 public class FloatValue implements CellValue {
 	public static FloatValue from(final Object o) throws FastOdsException {
 		if (o instanceof Number) {
-			return new FloatValue(((Number) o).floatValue());
+			return new FloatValue(((Number) o).doubleValue());
 		} else if (o instanceof FloatValue) {
 			return (FloatValue) o;
-		} else{
+		} else {
 			throw new FastOdsException("Can't cast " + o + " to Float");
 		}
 	}

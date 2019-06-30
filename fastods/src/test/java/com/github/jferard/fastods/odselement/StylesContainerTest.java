@@ -30,12 +30,15 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class StylesContainerTest {
     private static final String PS1_MASTER_XML = "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">"
@@ -77,10 +80,12 @@ public class StylesContainerTest {
     private PageStyle ps2;
     private StylesContainer stylesContainer;
     private XMLUtil util;
+    private Logger logger;
 
     @Before
     public void setUp() {
-        this.stylesContainer = new StylesContainer();
+        this.logger = PowerMock.createMock(Logger.class);
+        this.stylesContainer = new StylesContainer(this.logger);
         this.util = XMLUtil.create();
         this.locale = Locale.US;
 
@@ -89,6 +94,14 @@ public class StylesContainerTest {
 
         this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
         this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.resetAll();
     }
 
     // CONTENT

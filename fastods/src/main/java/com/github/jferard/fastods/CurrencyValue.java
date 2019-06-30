@@ -25,15 +25,18 @@ package com.github.jferard.fastods;
 
 /**
  * A CellValue that contains a currency value
+ *
  * @author Julien Férard
  */
 public class CurrencyValue implements CellValue {
-    public static CurrencyValue from(final Object o, final String currency) throws FastOdsException {
+    public static CurrencyValue from(final Object o, final String currency)
+            throws FastOdsException {
         if (o instanceof Number) {
             return new CurrencyValue((Number) o, currency);
         } else if (o instanceof CurrencyValue) {
-            return (CurrencyValue) o;
-        } else{
+            final CurrencyValue currencyValue = (CurrencyValue) o;
+            return new CurrencyValue(currencyValue.value, currency);
+        } else {
             throw new FastOdsException("Can't cast " + o + " to Currency");
         }
     }
@@ -42,7 +45,7 @@ public class CurrencyValue implements CellValue {
     private final String currency;
 
     /**
-     * @param value the value
+     * @param value    the value
      * @param currency the currency value
      */
     public CurrencyValue(final Number value, final String currency) {
@@ -53,5 +56,19 @@ public class CurrencyValue implements CellValue {
     @Override
     public void setToCell(final TableCell tableCell) {
         tableCell.setCurrencyValue(this.value, this.currency);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) return true;
+        if (!(o instanceof CurrencyValue)) return false;
+
+        final CurrencyValue other = (CurrencyValue) o;
+        return this.value.equals(other.value) && this.currency.equals(other.currency);
+    }
+
+    @Override
+    public final int hashCode() {
+        return this.value.hashCode() * 31 + this.currency.hashCode();
     }
 }

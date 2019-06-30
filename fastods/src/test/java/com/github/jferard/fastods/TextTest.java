@@ -156,4 +156,25 @@ public class TextTest {
 
         PowerMock.verifyAll();
     }
+
+    @Test
+    public void testEquals() throws FastOdsException {
+        final Text text1 = Text.builder().parContent("text").link("url", "url")
+                .parStyledContent("text2", null).span("span").build();
+        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
+                .span("text2").span("span").build();
+        Assert.assertEquals(text1, text1);
+        Assert.assertFalse(text1.equals("text1"));
+        Assert.assertEquals(text1, text2);
+    }
+
+    @Test
+    public void testHashCode() throws FastOdsException {
+        final Text text1 = Text.builder().parContent("text").link("url", "url")
+                .parStyledContent("text2", null).span("span").build();
+        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
+                .span("text2").span("span").build();
+        Assert.assertEquals(-633306896, text1.hashCode());
+        Assert.assertEquals(-633306896, text2.hashCode());
+    }
 }

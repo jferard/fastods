@@ -24,6 +24,7 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.TestHelper;
 import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +38,19 @@ import java.util.logging.Logger;
 
 public class MultiContainerTest {
     private MultiContainer<String, Dest, Integer> container;
+    private Logger logger;
 
     @Before
     public void setUp() throws Exception {
-        this.container = new MultiContainer<String, Dest, Integer>(Dest.class);
+        this.logger = PowerMock.createMock(Logger.class);
+        this.container = new MultiContainer<String, Dest, Integer>(this.logger, Dest.class);
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+    }
+
+    @After
+    public void tearDown() {
+        PowerMock.resetAll();
     }
 
     @Test
@@ -96,19 +106,15 @@ public class MultiContainerTest {
 
     @Test
     public final void testCreateAfterDebug() {
-        final Logger logger = Logger.getLogger("debug");
-        final Handler handler = TestHelper.getMockHandler(logger);
-
         PowerMock.resetAll();
-        handler.publish(EasyMock.isA(LogRecord.class));
-        handler.close();
-        EasyMock.expectLastCall().anyTimes();
+        this.logger.severe("MultiContainer put(a, 1) in CONTENT_AUTOMATIC_STYLES");
 
         PowerMock.replayAll();
         this.container.debug();
-        this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
+        final boolean ret = this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
 
         PowerMock.verifyAll();
+        Assert.assertTrue(ret);
     }
 
     @Test

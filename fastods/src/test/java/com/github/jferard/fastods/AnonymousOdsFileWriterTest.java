@@ -167,10 +167,11 @@ public class AnonymousOdsFileWriterTest {
         final byte[] post = Arrays.copyOfRange(buf, buf.length - 9, buf.length);
 
         // preamble
-        Assert.assertArrayEquals(pre, "preamble".getBytes(Charset.forName("ascii")));
+        Charset charset = Charset.forName("US-ASCII");
+        Assert.assertArrayEquals(pre, "preamble".getBytes(charset));
 
         // postamble
-        Assert.assertArrayEquals(post, "postamble".getBytes(Charset.forName("ascii")));
+        Assert.assertArrayEquals(post, "postamble".getBytes(charset));
 
         // body
         final InputStream is = new ByteArrayInputStream(body);

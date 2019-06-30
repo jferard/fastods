@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * content.xml/office:document-content
@@ -103,12 +104,13 @@ public class StylesContainer {
 
     /**
      * Create a styles container
+     * @param logger
      */
-    StylesContainer() {
-        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(Dest.class);
-        this.dataStylesContainer = new MultiContainer<String, Dest, DataStyle>(Dest.class);
-        this.masterPageStylesContainer = new Container<String, MasterPageStyle>();
-        this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>();
+    StylesContainer(final Logger logger) {
+        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(logger, Dest.class);
+        this.dataStylesContainer = new MultiContainer<String, Dest, DataStyle>(logger, Dest.class);
+        this.masterPageStylesContainer = new Container<String, MasterPageStyle>(logger);
+        this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>(logger);
         this.anonymousStyleByChildCellStyle = new HashMap<ChildCellStyle, TableCellStyle>();
         this.fontFaces = new HashSet<FontFace>();
         this.fontFaces.add(DEFAULT_FONT_FACE);

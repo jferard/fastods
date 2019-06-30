@@ -24,14 +24,17 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -41,6 +44,7 @@ public class ResultSetDataWrapperBuilder {
 
     private final ResultSet rs;
     private final Map<Integer, TableCell.Type> cellTypeByIndex;
+    private Charset charset;
     private SQLToCellValueConverter.IntervalConverter converter;
     private String currency;
     private Logger logger;
@@ -56,8 +60,9 @@ public class ResultSetDataWrapperBuilder {
         this.headStyle = HEAD_STYLE;
         this.autoFilter = true;
         this.max = -1;
-        this.cellTypeByIndex = null;
-        this.currency = "USD";
+        this.cellTypeByIndex = new HashMap<Integer, TableCell.Type>();
+        this.currency = NumberFormat.getCurrencyInstance(Locale.US).getCurrency().getSymbol();
+        this.charset = Charset.forName("US-ASCII");
         this.nullValue = new StringValue("<NULL>");
         this.converter = new SQLToCellValueConverter.IntervalConverter() {
             @Override
@@ -107,6 +112,11 @@ public class ResultSetDataWrapperBuilder {
         return this;
     }
 
+    public ResultSetDataWrapperBuilder charset(final Charset charset) {
+        this.charset = charset;
+        return this;
+    }
+
     public ResultSetDataWrapperBuilder converter(
             final SQLToCellValueConverter.IntervalConverter converter) {
         this.converter = converter;
@@ -114,10 +124,11 @@ public class ResultSetDataWrapperBuilder {
     }
 
     public ResultSetDataWrapper build() {
-        final SQLToCellValueConverter sqlToCellValueConverter = new SQLToCellValueConverter(
-                new ObjectToCellValueConverter(this.currency), this.converter);
-        return new ResultSetDataWrapper(this.logger,
-                sqlToCellValueConverter, this.rs, this.headStyle,
-                this.autoFilter, this.cellTypeByIndex, this.nullValue, this.max);
+        final SQLToCellValueConverter sqlToCellValueConverter = SQLToCellValueConverter
+                .create(this.converter, this.currency, this.charset);
+        final Map<Integer, TableCell.Type> cellTypeByIndexOrNull = this.cellTypeByIndex
+                .isEmpty() ? null : this.cellTypeByIndex;
+        return new ResultSetDataWrapper(this.logger, sqlToCellValueConverter, this.rs,
+                this.headStyle, this.autoFilter, cellTypeByIndexOrNull, this.nullValue, this.max);
     }
 }

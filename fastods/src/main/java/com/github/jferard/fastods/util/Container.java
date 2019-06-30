@@ -41,11 +41,14 @@ public class Container<K, V> {
 	private boolean closed;
 	private boolean debug;
     private Mode mode;
+	private final Logger logger;
 
-    /**
+	/**
 	 * Builds a default container
-	 */
-	public Container() {
+     * @param logger
+     */
+	public Container(final Logger logger) {
+		this.logger = logger;
 		this.valueByKey = new HashMap<K, V>();
 		this.closed = false;
 		this.debug = false;
@@ -83,7 +86,7 @@ public class Container<K, V> {
 			throw new IllegalStateException(
 					"Container put(" + key + ", " + value + ")");
 		} else if (this.debug && !this.valueByKey.containsKey(key)) {
-			Logger.getLogger("debug").severe(
+			this.logger.severe(
 					"Container put(" + key + ", " + value + ")");
 		}
 

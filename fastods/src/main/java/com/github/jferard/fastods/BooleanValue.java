@@ -27,28 +27,45 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class BooleanValue implements CellValue {
-	public static BooleanValue from(final Object o) throws FastOdsException {
-		if (o instanceof Boolean) {
-			return new BooleanValue((Boolean) o);
-		} else if (o instanceof BooleanValue) {
+    public static BooleanValue from(final Object o) throws FastOdsException {
+        if (o instanceof Boolean) {
+            return new BooleanValue((Boolean) o);
+        } else if (o instanceof BooleanValue) {
 			return (BooleanValue) o;
-		} else{
-			throw new FastOdsException("Can't cast " + o + " to Boolean");
-		}
-	}
+		} else {
+            throw new FastOdsException("Can't cast " + o + " to Boolean");
+        }
+    }
 
-	private final Boolean value;
+    private final Boolean value;
 
-	/**
-	 * Builds a BooleanValue from a boolean
-	 * @param value the boolean
-	 */
-	public BooleanValue(final Boolean value) {
-		this.value = value;
-	}
+    /**
+     * Builds a BooleanValue from a boolean
+     *
+     * @param value the boolean
+     */
+    public BooleanValue(final Boolean value) {
+        this.value = value;
+    }
 
-	@Override
-	public void setToCell(final TableCell tableCell) {
-		tableCell.setBooleanValue(this.value);
-	}
+    @Override
+    public void setToCell(final TableCell tableCell) {
+        tableCell.setBooleanValue(this.value);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof BooleanValue))
+            return false;
+
+        final BooleanValue other = (BooleanValue) o;
+        return this.value.equals(other.value);
+    }
+
+    @Override
+    public final int hashCode() {
+        return this.value.hashCode();
+    }
 }
