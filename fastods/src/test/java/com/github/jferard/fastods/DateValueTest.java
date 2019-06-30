@@ -29,11 +29,14 @@ import org.powermock.api.easymock.PowerMock;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * @author Julien Férard
  */
 public class DateValueTest {
+    public static final Date DATE = new Date(123466);
+
     @Test
     public final void testSetConstructor() {
         PowerMock.resetAll();
@@ -99,7 +102,7 @@ public class DateValueTest {
 
     @Test
     public void testHashcode() throws FastOdsException {
-        final DateValue dv1 = new DateValue(new Date(123466));
+        final DateValue dv1 = new DateValue(DATE);
         final DateValue dv2 = DateValue.from(dv1);
         Assert.assertEquals(123466, dv1.hashCode());
         Assert.assertEquals(123466, dv1.hashCode());
@@ -107,7 +110,8 @@ public class DateValueTest {
 
     @Test
     public void testToString() throws FastOdsException {
-        final DateValue dv1 = new DateValue(new Date(123466));
-        Assert.assertEquals("DateValue[Thu Jan 01 01:02:03 CET 1970]", dv1.toString());
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+        final DateValue dv1 = new DateValue(DATE);
+        Assert.assertEquals("DateValue[Thu Jan 01 00:02:03 GMT 1970]", dv1.toString());
     }
 }
