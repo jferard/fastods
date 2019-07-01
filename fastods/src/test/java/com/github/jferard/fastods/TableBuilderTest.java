@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -53,37 +54,40 @@ public class TableBuilderTest {
     private XMLUtil xmlUtil;
     private Table table;
     private TableAppender appender;
+    private ConfigItemMapEntrySet ce;
 
     @Before
     public void setUp() {
-        this.stc = PowerMock.createMock(StylesContainer.class);
         final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
+
+        this.stc = PowerMock.createMock(StylesContainer.class);
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.builder = new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil,
-                this.stc, this.ds, false, "mytable", 10, 100, ConfigItemMapEntrySet.createSet("mytable"), 2);
+        this.ce = ConfigItemMapEntrySet.createSet("mytable");
+        this.builder = new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil, this.stc,
+                this.ds, false, "mytable", 10, 100, this.ce, 2);
         this.xmlUtil = xmlUtil;
 
         this.table = PowerMock.createMock(Table.class);
         this.appender = PowerMock.createMock(TableAppender.class);
-        PowerMock.resetAll();
     }
 
     @Test
     public final void testColumnStyles() throws FastOdsException {
         final List<TableColumnStyle> tcss = Lists.newArrayList();
         for (int c = 0; c < 10; c++) {
-            final TableColumnStyle tcs = TableColumnStyle
-                    .builder("test" + Integer.toString(c)).build();
+            final TableColumnStyle tcs = TableColumnStyle.builder("test" + Integer.toString(c))
+                    .build();
             tcss.add(tcs);
         }
 
-        // PLAY
+        PowerMock.resetAll();
         for (int c = 0; c < 10; c++) {
             final TableColumnStyle tcs = tcss.get(c);
             EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
             EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
-            EasyMock.expect(this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
+            EasyMock.expect(this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                    .andReturn(true);
         }
         PowerMock.replayAll();
 
@@ -97,12 +101,13 @@ public class TableBuilderTest {
 
     @Test
     public final void testGetRow() throws FastOdsException, IOException {
-        PowerMock.replayAll();
         final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }
 
+        PowerMock.resetAll();
+        PowerMock.replayAll();
         for (int r = 0; r < 7; r++) { // 8 times
             Assert.assertEquals(rows.get(r), this.builder.getRow(this.table, this.appender, r));
         }
@@ -110,32 +115,38 @@ public class TableBuilderTest {
     }
 
     @Test
-    public final void testGetRowFromStringPos() throws FastOdsException, IOException,
-            ParseException {
-        PowerMock.replayAll();
+    public final void testGetRowFromStringPos()
+            throws FastOdsException, IOException, ParseException {
         final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }
+        PowerMock.resetAll();
 
-        System.out.println(rows);
-        Assert.assertEquals(rows.get(4), this.builder.getRow(this.table, this.appender, "A5"));
+        PowerMock.replayAll();
+        final TableRow row = this.builder.getRow(this.table, this.appender, "A5");
+
         PowerMock.verifyAll();
+        Assert.assertEquals(rows.get(4), row);
     }
 
     @Test
     public final void testGetRowHundred() throws FastOdsException, IOException {
+        PowerMock.resetAll();
+
         PowerMock.replayAll();
         for (int r = 0; r < 7; r++) { // 8 times
             this.builder.nextRow(this.table, this.appender);
         }
         this.builder.getRow(this.table, this.appender, 100);
         Assert.assertEquals(100, this.builder.getLastRowNumber());
+
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
-    public final void testGetRowNegative() throws FastOdsException, IOException {
+    @Test(expected = IllegalArgumentException.class)
+    public final void testGetRowNegative() throws IOException {
+        PowerMock.resetAll();
         PowerMock.replayAll();
         this.builder.getRow(this.table, this.appender, -1);
         PowerMock.verifyAll();
@@ -143,18 +154,22 @@ public class TableBuilderTest {
 
     @Test
     public final void testLastRow() throws IOException {
+        PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertEquals(-1, this.builder.getLastRowNumber());
+        final int num1 = this.builder.getLastRowNumber();
         for (int r = 0; r < 7; r++) { // 8 times
             this.builder.nextRow(this.table, this.appender);
         }
-        Assert.assertEquals(6, this.builder.getLastRowNumber());
+        final int num2 = this.builder.getLastRowNumber();
+
         PowerMock.verifyAll();
+        Assert.assertEquals(-1, num1);
+        Assert.assertEquals(6, num2);
     }
 
     @Test
     public final void testRowsSpanned() throws IOException {
-        // PLAY
+        PowerMock.resetAll();
 
         PowerMock.replayAll();
         this.builder.setRowsSpanned(this.table, this.appender, 10, 11, 12);
@@ -163,51 +178,70 @@ public class TableBuilderTest {
     }
 
     @Test
-    public final void testMergeWithPosString() throws IOException, FastOdsException,
-            ParseException {
+    public final void testMergeWithPosString()
+            throws IOException, FastOdsException, ParseException {
+        PowerMock.resetAll();
         PowerMock.replayAll();
-        this.builder.setCellMerge(this.table, this.appender,  "B1",2,2);
+        this.builder.setCellMerge(this.table, this.appender, "B1", 2, 2);
         PowerMock.verifyAll();
     }
 
-
     @Test
     public final void testMerge() throws IOException, FastOdsException {
+        PowerMock.resetAll();
         PowerMock.replayAll();
-        this.builder.setCellMerge(this.table, this.appender, 2,1,2,2);
+        this.builder.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testMergeCovered() throws IOException, FastOdsException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.builder.setCellMerge(this.table, this.appender, 0, 0, 22, 22);
+        assert this.builder.getRow(this.table, this.appender, 2).getOrCreateCell(1).isCovered();
+        this.builder.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
         PowerMock.verifyAll();
     }
 
     @Test
     public final void testMergeWithObserver1() throws IOException, FastOdsException {
         final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
-        this.builder.addObserver(o);
 
+        PowerMock.resetAll();
+        this.builder.addObserver(o);
         o.update(EasyMock.isA(PreprocessedRowsFlusher.class));
+
         PowerMock.replayAll();
-        this.builder.setCellMerge(this.table, this.appender, 2,1,2,2);
+        this.builder.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
+
         PowerMock.verifyAll();
     }
 
     @Test
     public final void testNameAndStyle() {
-        // PLAY
         final TableStyle ts = TableStyle.builder("b").build();
+
+        PowerMock.resetAll();
         EasyMock.expect(this.stc.addContentStyle(ts)).andReturn(true);
         EasyMock.expect(this.stc.addPageStyle(ts.getPageStyle())).andReturn(true);
 
         PowerMock.replayAll();
-
         this.builder.setName("tname");
         this.builder.setStyle(ts);
-        Assert.assertEquals("tname", this.builder.getName());
-        Assert.assertEquals("b", this.builder.getStyleName());
+        final String name = this.builder.getName();
+        final String styleName = this.builder.getStyleName();
+
         PowerMock.verifyAll();
+        Assert.assertEquals("tname", name);
+        Assert.assertEquals("b", styleName);
     }
 
     @Test
     public void testObserver() throws IOException {
         final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
+
+        PowerMock.resetAll();
 
 /*
         o.update(EasyMock.isA(BeginTableFlusher.class));
@@ -222,6 +256,116 @@ public class TableBuilderTest {
 //        final TableCell cell = row.getOrCreateCell(11);
 //        cell.setStringValue("a");
 
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testFlushes() throws IOException {
+        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
+
+        PowerMock.resetAll();
+        o.update(EasyMock.isA(BeginTableFlusher.class));
+        o.update(EasyMock.isA(EndTableFlusher.class));
+
+        PowerMock.replayAll();
+        this.builder.addObserver(o);
+        this.builder.flushBeginTable(this.appender);
+        this.builder.flushEndTable(this.appender);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSetting() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setConfigItem("item", "string", "value");
+        this.builder.updateConfigItem("item", "value");
+
+        PowerMock.verifyAll();
+        final ConfigItem item = (ConfigItem) this.ce.getByName("item");
+        Assert.assertEquals("item", item.getName());
+        Assert.assertEquals("string", item.getType());
+        Assert.assertEquals("value", item.getValue());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetRowsSpannedNeg() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setRowsSpanned(this.table, this.appender, 2, 2, -1);
+
+        PowerMock.verifyAll();
+
+    }
+
+    @Test
+    public void testSetRowsSpanned1() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setRowsSpanned(this.table, this.appender, 2, 2, 1);
+
+        PowerMock.verifyAll();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetRowsSpannedCovered() throws IOException, FastOdsException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setCellMerge(this.table, this.appender, 1, 1, 5, 5);
+        assert this.builder.getRow(this.table, this.appender, 2).getOrCreateCell(2).isCovered();
+        this.builder.setRowsSpanned(this.table, this.appender, 2, 2, 2);
+
+        PowerMock.verifyAll();
+
+    }
+
+    @Test
+    public void testSetRowsSpanned() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setRowsSpanned(this.table, this.appender, 2, 2, 2);
+
+        PowerMock.verifyAll();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testColumnStyle() throws IOException, FastOdsException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setColumnStyle(-1, null);
+
+        PowerMock.verifyAll();
+
+    }
+
+    @Test
+    public void testNotify() throws IOException {
+        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
+
+        PowerMock.resetAll();
+        o.update(EasyMock.isA(BeginTableFlusher.class));
+
+        PowerMock.replayAll();
+        this.builder.addObserver(o);
+        this.builder.getRow(this.table, this.appender, 0);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFindDefaultCellStyle() throws IOException, FastOdsException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE, this.builder.findDefaultCellStyle(10));
         PowerMock.verifyAll();
     }
 }

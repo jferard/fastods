@@ -211,10 +211,10 @@ public class Table implements NamedObject {
      *
      * @param rowIndex the index
      * @return the row
-     * @throws FastOdsException if the index is invalid
+     * @throws IllegalArgumentException if the index is invalid
      * @throws IOException      if the row was flushed
      */
-    public TableRow getRow(final int rowIndex) throws FastOdsException, IOException {
+    public TableRow getRow(final int rowIndex) throws IOException {
         return this.builder.getRow(this, this.appender, rowIndex);
     }
 
@@ -297,7 +297,7 @@ public class Table implements NamedObject {
      * @param value  the item value
      */
     public void setSettings(final String viewId, final String item, final String value) {
-        this.builder.setSettings(viewId, item, value);
+        this.builder.updateConfigItem(item, value);
     }
 
     /**
@@ -326,7 +326,7 @@ public class Table implements NamedObject {
      * Find the default cell style for a column
      *
      * @param columnIndex the column index
-     * @return the style, null if none
+     * @return the style, never null
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         return this.builder.findDefaultCellStyle(columnIndex);

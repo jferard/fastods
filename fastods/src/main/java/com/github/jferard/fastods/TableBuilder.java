@@ -58,11 +58,11 @@ class TableBuilder {
      * Check if a col index is valid, otherwise throws an exception
      *
      * @param col the index
-     * @throws FastOdsException if the index is invalid
+     * @throws IllegalArgumentException if the index is invalid
      */
-    private static void checkCol(final int col) throws FastOdsException {
+    private static void checkCol(final int col) {
         if (col < 0) {
-            throw new FastOdsException(
+            throw new IllegalArgumentException(
                     "Negative column number exception, column value:[" + col + "]");
         }
     }
@@ -71,11 +71,12 @@ class TableBuilder {
      * Check if a row index is valid, otherwise throws an exception
      *
      * @param row the index
-     * @throws FastOdsException if the index is invalid
+     * @throws IllegalArgumentException if the index is invalid
      */
-    private static void checkRow(final int row) throws FastOdsException {
+    private static void checkRow(final int row) {
         if (row < 0) {
-            throw new FastOdsException("Negative row number exception, row value:[" + row + "]");
+            throw new IllegalArgumentException(
+                    "Negative row number exception, row value:[" + row + "]");
         }
     }
 
@@ -235,11 +236,11 @@ class TableBuilder {
      * @param appender the appender
      * @param rowIndex the row index
      * @return the table row
-     * @throws FastOdsException if the index is invalid
-     * @throws IOException      if an I/O error occurs
+     * @throws IllegalArgumentException if the index is invalid
+     * @throws IOException              if an I/O error occurs
      */
     public TableRow getRow(final Table table, final TableAppender appender, final int rowIndex)
-            throws FastOdsException, IOException {
+            throws IOException {
         TableBuilder.checkRow(rowIndex);
         return this.getRowSecure(table, appender, rowIndex, true);
     }
@@ -251,8 +252,8 @@ class TableBuilder {
      * @param appender the appender
      * @param address  a cell position, e.g. A5
      * @return the table row
-     * @throws FastOdsException if the index is invalid
-     * @throws IOException      if an I/O error occurs
+     * @throws IllegalArgumentException if the index is invalid
+     * @throws IOException              if an I/O error occurs
      */
     public TableRow getRow(final Table table, final TableAppender appender, final String address)
             throws FastOdsException, IOException, ParseException {
@@ -397,11 +398,10 @@ class TableBuilder {
     /**
      * Set one of the settings
      *
-     * @param viewId the id of the view
-     * @param item   the item name
-     * @param value  the item value
+     * @param item  the item name
+     * @param value the item value
      */
-    public void setSettings(final String viewId, final String item, final String value) {
+    public void updateConfigItem(final String item, final String value) {
         this.configEntry.set(item, value);
     }
 
@@ -424,7 +424,7 @@ class TableBuilder {
      * @param rowIndex the row index
      * @param colIndex the col index
      * @param n        the number of rows
-     * @throws IOException if an error occurs
+     * @throws IOException              if an error occurs
      * @throws IllegalArgumentException if n < 0
      */
     public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex,
@@ -438,7 +438,7 @@ class TableBuilder {
         final TableCell firstCell = this.getRowSecure(table, appender, rowIndex, false)
                 .getOrCreateCell(colIndex);
         if (firstCell.isCovered()) {
-            return;
+            throw new IllegalArgumentException("Can't span from a covered cell");
         }
 
         firstCell.markRowsSpanned(n);
@@ -495,10 +495,10 @@ class TableBuilder {
      * @return the style, *never null*
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
-        TableCellStyle s = this.columnStyles.get(columnIndex).getDefaultCellStyle();
-        if (s == null) {
-            s = TableCellStyle.DEFAULT_CELL_STYLE;
+        TableCellStyle style = this.columnStyles.get(columnIndex).getDefaultCellStyle();
+        if (style == null) {
+            style = TableCellStyle.DEFAULT_CELL_STYLE;
         }
-        return s;
+        return style;
     }
 }

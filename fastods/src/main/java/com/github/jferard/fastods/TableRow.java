@@ -232,24 +232,24 @@ public class TableRow {
     /**
      * Add a span across rows
      *
-     * @param rowIndex the index of the first row
+     * @param colIndex the index of the column
      * @param n        the number of rows in the span
-     * @throws IOException if the cells can't be merged
+     * @throws IOException              if the cells can't be merged
      * @throws IllegalArgumentException if n < 0 of this cells is covered
      */
-    public void setRowsSpanned(final int rowIndex, final int n) throws IOException {
+    public void setRowsSpanned(final int colIndex, final int n) throws IOException {
         if (n < 0) {
             throw new IllegalArgumentException("Can't span negative number of rows");
         } else if (n <= 1) {
             return;
         }
 
-        final TableCell firstCell = this.getOrCreateCell(rowIndex);
+        final TableCell firstCell = this.getOrCreateCell(colIndex);
         if (firstCell.isCovered()) {
             throw new IllegalArgumentException("Can't span from covered cell");
         }
 
-        this.parent.setRowsSpanned(this.rowIndex, rowIndex, n);
+        this.parent.setRowsSpanned(this.rowIndex, colIndex, n);
     }
 
     /**
@@ -312,5 +312,12 @@ public class TableRow {
 
     public int index() {
         return this.rowIndex;
+    }
+
+    /**
+     * Remove the default row style
+     */
+    public void removeStyle() {
+        this.rowStyle = null;
     }
 }

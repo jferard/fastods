@@ -273,7 +273,8 @@ public class TableCellImpl implements TableCell {
 
 
     /**
-     * @return the current cell style, eventually found in parent (row, column, table). Never null
+     * @return the current cell style, eventually found in parent (row, column, table).
+     * Never null
      */
     private TableCellStyle getCurCellStyle() {
         if (this.style == null) {

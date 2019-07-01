@@ -43,7 +43,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import javax.swing.text.AbstractDocument;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -66,8 +65,8 @@ public class TableTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table = Table
-                .create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100, this.stc,
-                        this.ds, false);
+                .create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100,
+                        this.stc, this.ds, false);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
         PowerMock.resetAll();
@@ -102,23 +101,21 @@ public class TableTest {
             this.table.setColumnStyle(c, tcs);
         }
         this.table.getRow(100);
-        this.assertTableXMLEquals(
-                "<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
-                        "table:print=\"false\">" +
-                        "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
-                        "<table:table-column table:style-name=\"test0\" " +
-                        "table:default-cell-style-name=\"Default\"/>" +
-                        "<table:table-column table:style-name=\"test1\" " +
-                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
-                        "table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>" +
-                        "<table:table-column table:style-name=\"co1\" " +
-                        "table:default-cell-style-name=\"Default\" " +
-                        "table:number-columns-repeated=\"1021\"/>" + "<table:table-row " +
-                        "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" +
-                        "<table:table-cell/>" + "</table:table-row>" +
-                        "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
-                        "</table:table>");
+        this.assertTableXMLEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+                "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
+                "form:apply-design-mode=\"false\"/>" +
+                "<table:table-column table:style-name=\"test0\" " +
+                "table:default-cell-style-name=\"Default\"/>" +
+                "<table:table-column table:style-name=\"test1\" " +
+                "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
+                "table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>" +
+                "<table:table-column table:style-name=\"co1\" " +
+                "table:default-cell-style-name=\"Default\" " +
+                "table:number-columns-repeated=\"1021\"/>" + "<table:table-row " +
+                "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" +
+                "<table:table-cell/>" + "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
+                "</table:table>");
 
     }
 
@@ -153,8 +150,8 @@ public class TableTest {
         Assert.assertEquals(100, this.table.getLastRowNumber());
     }
 
-    @Test(expected = FastOdsException.class)
-    public final void testGetRowNegative() throws FastOdsException, IOException {
+    @Test(expected = IllegalArgumentException.class)
+    public final void testGetRowNegative() throws IOException {
         PowerMock.replayAll();
         this.table.getRow(-1);
     }
@@ -175,52 +172,50 @@ public class TableTest {
 
         PowerMock.replayAll();
         this.table.setRowsSpanned(10, 11, 12);
-        this.assertTableXMLEquals(
-                "<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
-                        "table:print=\"false\">" +
-                        "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
-                        "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
-                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-row " +
-                        "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
-                        "<table:table-cell/>" + "</table:table-row>" +
-                        "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
-                        "table:number-columns-repeated=\"11\"/>" + "<table:table-cell " +
-                        "table:number-rows-spanned=\"12\"/>" + "</table:table-row>" +
-                        "<table:table-row " + "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                        "table:style-name=\"ro1\">" +
-                        "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                        "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>");
+        this.assertTableXMLEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+                "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
+                "form:apply-design-mode=\"false\"/>" +
+                "<table:table-column table:style-name=\"co1\" " +
+                "table:number-columns-repeated=\"1024\" " +
+                "table:default-cell-style-name=\"Default\"/>" + "<table:table-row " +
+                "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
+                "<table:table-cell/>" + "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
+                "table:number-columns-repeated=\"11\"/>" + "<table:table-cell " +
+                "table:number-rows-spanned=\"12\"/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
+                "table:style-name=\"ro1\">" +
+                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
+                "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>");
     }
 
     @Test

@@ -27,10 +27,12 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,6 +67,124 @@ public class TableRowTest {
         PowerMock.resetAll();
     }
 
+    @Test
+    public void testSetStyle() {
+        final TableRowStyle trs = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(trs)).andReturn(true);
+        EasyMock.expect(this.stc.addContentStyle(trs)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.row.setStyle(trs);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSetDefaultCellStyle() {
+        final TableCellStyle tcs = TableCellStyle.DEFAULT_CELL_STYLE;
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.row.setDefaultCellStyle(tcs);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testIsCovered() {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final boolean covered = this.row.isCovered(0);
+
+        PowerMock.verifyAll();
+        Assert.assertFalse(covered);
+    }
+
+    @Test
+    public void testIsCoveredTrue() {
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+
+        PowerMock.replayAll();
+        this.row.setColumnsSpanned(0, 2);
+        final boolean covered0 = this.row.isCovered(0);
+        final boolean covered1 = this.row.isCovered(1);
+        final boolean covered2 = this.row.isCovered(2);
+
+        PowerMock.verifyAll();
+        Assert.assertFalse(covered0);
+        Assert.assertTrue(covered1);
+        Assert.assertFalse(covered2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testColumnsSpannedSpanError() {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.row.setColumnsSpanned(0, -1);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testColumnsSpannedCellError() {
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+
+        PowerMock.replayAll();
+        this.row.setColumnsSpanned(0, 2);
+        assert this.row.isCovered(1);
+        this.row.setColumnsSpanned(1, 10);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRowsSpannedSpanError() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.row.setRowsSpanned(0, -1);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRowsSpannedCellError() throws IOException {
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+
+        PowerMock.replayAll();
+        this.row.setColumnsSpanned(0, 2);
+        assert this.row.isCovered(1);
+        this.row.setRowsSpanned(1, 5);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCellMergeError() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.row.setCellMerge(0, -1, 2);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSetFormat() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.row.setFormat(null);
+
+        PowerMock.verifyAll();
+    }
 
     @Test
     public final void testRows() throws IOException {
@@ -89,6 +209,23 @@ public class TableRowTest {
                         "table:number-columns-repeated=\"4\"/>" + "<table:table-cell office:value-type=\"string\" " +
                         "office:string-value=\"a\"/>" + "</table:table-row>");
     }
+
+    @Test
+    public final void testAppendRowOpenTag() throws IOException {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.row.removeStyle();
+        this.row.setDefaultCellStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+        this.assertTableXMLEquals("<table:table-row table:default-cell-style-name=\"Default" +
+                "\"></table:table-row>");
+    }
+
+
+
 
     private void assertTableXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
