@@ -237,13 +237,7 @@ public interface TableCell {
 	 */
 	void setTimeValue(long timeInMillis);
 
-	/**
-	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
-	 * @param duration the duration string
-	 */
-    void setTimeValue(String duration);
-
-	/**
+    /**
 	 * Set the time value as in 19.382 office:time-value. The xml datatype is "duration" (https://www.w3.org/TR/xmlschema-2/#duration)
 	 * All parameters must be positive
 	 * @param years number of years
@@ -311,12 +305,14 @@ public interface TableCell {
     /**
      * Create a span over cells at the right
      * @param n the number of cells to be spanned
+	 * @throws IllegalArgumentException if n < 0
      */
     void setColumnsSpanned(int n);
 
     /**
      * Mark the columns a spanned
      * @param n the number of columns
+	 * @throws IllegalArgumentException if n < 0
      */
     void markColumnsSpanned(int n);
 
@@ -324,6 +320,7 @@ public interface TableCell {
      * Create a span over cells below
      * @param n the number of cells to be spanned
      * @throws IOException if the cell can't be merged (only when flushing data)
+	 * @throws IllegalArgumentException if n < 0
      */
 	void setRowsSpanned(int n) throws IOException;
 

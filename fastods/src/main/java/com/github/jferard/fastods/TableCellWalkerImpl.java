@@ -121,11 +121,6 @@ public class TableCellWalkerImpl implements TableCellWalker {
     }
 
     @Override
-    public void setTimeValue(final String duration) {
-        this.row.getOrCreateCell(this.c).setTimeValue(duration);
-    }
-
-    @Override
     public void setTimeValue(final long years, final long months, final long days, final long hours,
                              final long minutes, final double seconds) {
         this.row.getOrCreateCell(this.c).setTimeValue(years, months, days, hours, minutes, seconds);

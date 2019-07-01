@@ -81,7 +81,7 @@ public class DataStylesTest {
 
     @Test
     public void testGetFloat() {
-        Assert.assertEquals(this.dataStyles.getNumberDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.FLOAT));
+        Assert.assertEquals(this.dataStyles.getFloatDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.FLOAT));
     }
 
     @Test

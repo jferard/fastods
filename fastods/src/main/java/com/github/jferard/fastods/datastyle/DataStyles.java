@@ -29,6 +29,7 @@ import java.util.EnumMap;
 
 /**
  * The {@code DataStyles} class represents a set of {@code DataStyle}s.
+ *
  * @author Julien Férard
  */
 public class DataStyles {
@@ -36,7 +37,7 @@ public class DataStyles {
     private final CurrencyStyle currencyDataStyle;
     private final EnumMap<TableCell.Type, DataStyle> dataStyleByType;
     private final DateStyle dateDataStyle;
-    private final FloatStyle numberDataStyle;
+    private final FloatStyle floatDataStyle;
     private final PercentageStyle percentageDataStyle;
     private final TimeStyle timeDataStyle;
 
@@ -44,17 +45,22 @@ public class DataStyles {
      * @param booleanDataStyle    the style for booleans
      * @param currencyDataStyle   the style for currencies
      * @param dateDataStyle       the style for dates
-     * @param numberDataStyle     the style for numbers
+     * @param floatDataStyle      the style for numbers
      * @param percentageDataStyle the style for percentages
      * @param timeDataStyle       the style for times
      */
     public DataStyles(final BooleanStyle booleanDataStyle, final CurrencyStyle currencyDataStyle,
-                      final DateStyle dateDataStyle,
-                      final FloatStyle numberDataStyle, final PercentageStyle percentageDataStyle, final TimeStyle timeDataStyle) {
+                      final DateStyle dateDataStyle, final FloatStyle floatDataStyle,
+                      final PercentageStyle percentageDataStyle, final TimeStyle timeDataStyle) {
+        if (booleanDataStyle == null || currencyDataStyle == null || dateDataStyle == null ||
+                floatDataStyle == null || percentageDataStyle == null || timeDataStyle == null) {
+            throw new IllegalArgumentException();
+        }
+
         this.booleanDataStyle = booleanDataStyle;
         this.currencyDataStyle = currencyDataStyle;
         this.dateDataStyle = dateDataStyle;
-        this.numberDataStyle = numberDataStyle;
+        this.floatDataStyle = floatDataStyle;
         this.percentageDataStyle = percentageDataStyle;
         this.timeDataStyle = timeDataStyle;
 
@@ -62,7 +68,7 @@ public class DataStyles {
         this.dataStyleByType.put(TableCell.Type.BOOLEAN, this.booleanDataStyle);
         this.dataStyleByType.put(TableCell.Type.CURRENCY, this.currencyDataStyle);
         this.dataStyleByType.put(TableCell.Type.DATE, this.dateDataStyle);
-        this.dataStyleByType.put(TableCell.Type.FLOAT, this.numberDataStyle);
+        this.dataStyleByType.put(TableCell.Type.FLOAT, this.floatDataStyle);
         this.dataStyleByType.put(TableCell.Type.PERCENTAGE, this.percentageDataStyle);
         this.dataStyleByType.put(TableCell.Type.TIME, this.timeDataStyle);
     }
@@ -97,13 +103,6 @@ public class DataStyles {
     }
 
     /**
-     * @return the style for numbers
-     */
-    public FloatStyle getNumberDataStyle() {
-        return this.numberDataStyle;
-    }
-
-    /**
      * @return the style for percentages
      */
     public PercentageStyle getPercentageDataStyle() {
@@ -121,6 +120,6 @@ public class DataStyles {
      * @return the style for floats
      */
     public FloatStyle getFloatDataStyle() {
-        return this.numberDataStyle;
+        return this.floatDataStyle;
     }
 }

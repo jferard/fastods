@@ -33,8 +33,8 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.Position;
+import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -94,12 +94,14 @@ class TableBuilder {
      */
     public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil,
                                       final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-                                      final DataStyles format, final boolean libreOfficeMode, final String name,
-                                      final int rowCapacity, final int columnCapacity) {
+                                      final DataStyles format, final boolean libreOfficeMode,
+                                      final String name, final int rowCapacity,
+                                      final int columnCapacity) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
         configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
         configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
-        configEntry.add(new ConfigItem("HorizontalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
+        configEntry
+                .add(new ConfigItem("HorizontalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
         configEntry.add(new ConfigItem("VerticalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
         configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
         configEntry.add(new ConfigItem("VerticalSplitPosition", "int", "0"));
@@ -113,8 +115,7 @@ class TableBuilder {
         configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
 
         return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format,
-                libreOfficeMode, name,
-                rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
+                libreOfficeMode, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
     }
 
     private final int bufferSize;
@@ -137,7 +138,8 @@ class TableBuilder {
 
     /**
      * Create a new table builder
-     *  @param positionUtil    an util
+     *
+     * @param positionUtil    an util
      * @param writeUtil       an util
      * @param xmlUtil         an util
      * @param stylesContainer the container
@@ -151,8 +153,9 @@ class TableBuilder {
      */
     TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
                  final StylesContainer stylesContainer, final DataStyles format,
-                 final boolean libreOfficeMode, final String name, final int rowCapacity, final int columnCapacity,
-                 final ConfigItemMapEntrySet configEntry, final int bufferSize) {
+                 final boolean libreOfficeMode, final String name, final int rowCapacity,
+                 final int columnCapacity, final ConfigItemMapEntrySet configEntry,
+                 final int bufferSize) {
         this.xmlUtil = xmlUtil;
         this.writeUtil = writeUtil;
         this.positionUtil = positionUtil;
@@ -246,7 +249,7 @@ class TableBuilder {
      *
      * @param table    the table
      * @param appender the appender
-     * @param address      a cell position, e.g. A5
+     * @param address  a cell position, e.g. A5
      * @return the table row
      * @throws FastOdsException if the index is invalid
      * @throws IOException      if an I/O error occurs
@@ -265,11 +268,15 @@ class TableBuilder {
             tr = new TableRow(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,
                     this.libreOfficeMode, table, rowIndex, this.columnCapacity);
             this.tableRows.set(rowIndex, tr);
-            if (rowIndex > this.lastRowIndex) this.lastRowIndex = rowIndex;
+            if (rowIndex > this.lastRowIndex) {
+                this.lastRowIndex = rowIndex;
+            }
 
             this.notifyIfHasObserver(appender, rowIndex);
         }
-        if (updateRowIndex && this.curRowIndex < rowIndex) this.curRowIndex = rowIndex;
+        if (updateRowIndex && this.curRowIndex < rowIndex) {
+            this.curRowIndex = rowIndex;
+        }
         return tr;
     }
 
@@ -315,11 +322,11 @@ class TableBuilder {
     /**
      * Merge cells
      *
-     * @param table       the table
-     * @param appender    the appender
-     * @param rowIndex    the start row
-     * @param colIndex    the start column
-     * @param rowCount    number of rows
+     * @param table    the table
+     * @param appender the appender
+     * @param rowIndex the start row
+     * @param colIndex the start column
+     * @param rowCount number of rows
      * @param colCount number of cols
      * @throws IOException if an I/O error occurs
      */
@@ -328,15 +335,16 @@ class TableBuilder {
             throws IOException {
         final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
         final TableCell firstCell = row.getOrCreateCell(colIndex);
-        if (firstCell.isCovered()) // already spanned
-            return;
+        if (firstCell.isCovered()) {// already spanned
+            throw new IllegalArgumentException("Can't merge cells from a covered cell");
+        }
 
         firstCell.markColumnsSpanned(colCount);
         firstCell.markRowsSpanned(rowCount);
         row.coverRightCells(colIndex, colCount);
         for (int r = rowIndex + 1; r < rowIndex + rowCount; r++) {
             final TableRow otherRow = this.getRowSecure(table, appender, r, false);
-            otherRow.coverRightCells(colIndex-1, colCount+1);
+            otherRow.coverRightCells(colIndex - 1, colCount + 1);
         }
     }
 
@@ -345,7 +353,7 @@ class TableBuilder {
      *
      * @param table       the table
      * @param appender    the appender
-     * @param address         The cell position e.g. 'A1'
+     * @param address     The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
      * @throws FastOdsException if the row index or the col index is negative
@@ -417,14 +425,21 @@ class TableBuilder {
      * @param colIndex the col index
      * @param n        the number of rows
      * @throws IOException if an error occurs
+     * @throws IllegalArgumentException if n < 0
      */
     public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex,
                                final int colIndex, final int n) throws IOException {
-        if (n <= 1) return;
+        if (n < 0) {
+            throw new IllegalArgumentException("Can't span over a negative number of rows");
+        } else if (n <= 1) {
+            return;
+        }
 
         final TableCell firstCell = this.getRowSecure(table, appender, rowIndex, false)
                 .getOrCreateCell(colIndex);
-        if (firstCell.isCovered()) return;
+        if (firstCell.isCovered()) {
+            return;
+        }
 
         firstCell.markRowsSpanned(n);
         this.coverCellsBelow(table, appender, rowIndex, colIndex, n);
@@ -477,11 +492,13 @@ class TableBuilder {
      * Find the default cell style for a column
      *
      * @param columnIndex the column index
-     * @return the style, null if none
+     * @return the style, *never null*
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         TableCellStyle s = this.columnStyles.get(columnIndex).getDefaultCellStyle();
-        if (s == null) s = TableCellStyle.DEFAULT_CELL_STYLE;
+        if (s == null) {
+            s = TableCellStyle.DEFAULT_CELL_STYLE;
+        }
         return s;
     }
 }

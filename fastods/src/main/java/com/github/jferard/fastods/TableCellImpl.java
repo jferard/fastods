@@ -151,14 +151,16 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setColumnsSpanned(final int n) {
-        if (n <= 1) return;
-
         this.parent.setColumnsSpanned(this.columnIndex, n);
     }
 
     @Override
     public void markColumnsSpanned(final int n) {
-        if (n <= 1) return;
+        if (n < 0) {
+            throw new IllegalArgumentException("Can't mark a negative number of columns");
+        } else if (n <= 1) {
+            return;
+        }
 
         this.ensureColdCell();
         this.coldCell.setColumnsSpanned(n);
@@ -166,23 +168,24 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setRowsSpanned(final int n) throws IOException {
-        if (n <= 1) return;
-
         this.parent.setRowsSpanned(this.columnIndex, n);
     }
 
     @Override
     public void markRowsSpanned(final int n) {
-        if (n <= 1) return;
+        if (n < 0) {
+            throw new IllegalArgumentException("Can't mark a negative number of rows");
+        } else if (n <= 1) {
+            return;
+        }
 
         this.ensureColdCell();
         this.coldCell.setRowsSpanned(n);
     }
 
-
     private String getCurrency() {
-        if (this.coldCell == null) return null;
-        else return this.coldCell.getCurrency();
+        assert this.coldCell != null;
+        return this.coldCell.getCurrency();
     }
 
     @Override
@@ -227,12 +230,16 @@ public class TableCellImpl implements TableCell {
     }
 
     private void ensureColdCell() {
-        if (this.coldCell == null) this.coldCell = TableColdCell.create(this.xmlUtil);
+        if (this.coldCell == null) {
+            this.coldCell = TableColdCell.create(this.xmlUtil);
+        }
     }
 
     @Override
     public void setDataStyle(final DataStyle dataStyle) {
-        if (dataStyle == null) return;
+        if (dataStyle == null) {
+            return;
+        }
 
         this.stylesContainer.addDataStyle(dataStyle);
         final TableCellStyle curStyle = this.getCurCellStyle();
@@ -249,7 +256,8 @@ public class TableCellImpl implements TableCell {
      * For implicit datastyle, e.g. will set an implicit datastyle if the data style is not set
      */
     private void setImplicitDataStyle(final DataStyle dataStyle) {
-        if (dataStyle == null) return;
+        assert dataStyle != null;
+
         final TableCellStyle curStyle = this.getCurCellStyle();
         final DataStyle curDataStyle = curStyle.getDataStyle();
         if (curDataStyle == null) { // no data style yet: create a custom child style
@@ -290,7 +298,7 @@ public class TableCellImpl implements TableCell {
     private void setFloatValue(final String valueAsString) {
         this.value = valueAsString;
         this.type = TableCell.Type.FLOAT;
-        this.setImplicitDataStyle(this.dataStyles.getNumberDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
     }
 
     @Override
@@ -337,7 +345,9 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setStyle(final TableCellStyle style) {
-        if (style == null) return;
+        if (style == null) {
+            return;
+        }
 
         this.stylesContainer.addContentFontFaceContainerStyle(style);
         final TableCellStyle curStyle = this.style;
@@ -364,28 +374,18 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
-        if (rowMerge <= 0 || columnMerge <= 0) return;
-        if (rowMerge <= 1 && columnMerge <= 1) return;
-
         this.parent.setCellMerge(this.columnIndex, rowMerge, columnMerge);
     }
 
     @Override
     public void setTimeValue(final long timeInMillis) {
-        if (timeInMillis == 0) {
-            this.value = "";
-        } else if (timeInMillis < 0) {
-            this.value = this.xmlUtil.formatNegTimeInterval(0, 0, 0, 0, 0, (double) -timeInMillis / 1000);
+        if (timeInMillis < 0) {
+            this.value = this.xmlUtil
+                    .formatNegTimeInterval(0, 0, 0, 0, 0, (double) -timeInMillis / 1000);
         } else {
-            this.value = this.xmlUtil.formatTimeInterval(0, 0, 0, 0, 0, (double) timeInMillis / 1000);
+            this.value = this.xmlUtil
+                    .formatTimeInterval(0, 0, 0, 0, 0, (double) timeInMillis / 1000);
         }
-        this.type = TableCell.Type.TIME;
-        this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
-    }
-
-    @Override
-    public void setTimeValue(final String duration) {
-        this.value = duration;
         this.type = TableCell.Type.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }

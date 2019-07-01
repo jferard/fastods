@@ -51,8 +51,11 @@ public class TableRow {
      */
     public static void appendXMLToTable(final TableRow row, final XMLUtil xmlUtil,
                                         final Appendable appendable) throws IOException {
-        if (row == null) appendable.append("<row />");
-        else row.appendXMLToTable(xmlUtil, appendable);
+        if (row == null) {
+            appendable.append("<row />");
+        } else {
+            row.appendXMLToTable(xmlUtil, appendable);
+        }
     }
 
 
@@ -63,14 +66,15 @@ public class TableRow {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final FastFullList<TableCell> cells;
+    private final boolean libreOfficeMode;
     private DataStyles dataStyles;
     private TableCellStyle defaultCellStyle;
     private TableRowStyle rowStyle;
-    private final boolean libreOfficeMode;
 
     /**
      * Create a new TableRow
-     *  @param writeUtil       an util
+     *
+     * @param writeUtil       an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles containes
      * @param dataStyles      the data styles
@@ -79,8 +83,9 @@ public class TableRow {
      * @param rowIndex        the index of this row
      * @param columnCapacity  the max column
      */
-    TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil, final StylesContainer stylesContainer,
-             final DataStyles dataStyles, final boolean libreOfficeMode, final Table parent, final int rowIndex,
+    TableRow(final WriteUtil writeUtil, final XMLUtil xmlUtil,
+             final StylesContainer stylesContainer, final DataStyles dataStyles,
+             final boolean libreOfficeMode, final Table parent, final int rowIndex,
              final int columnCapacity) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
@@ -94,11 +99,16 @@ public class TableRow {
         this.cells = FastFullList.newListWithCapacity(columnCapacity);
     }
 
-    private void appendRowOpenTag(final XMLUtil util, final Appendable appendable) throws IOException {
+    private void appendRowOpenTag(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<table:table-row");
-        if (this.rowStyle != null) util.appendEAttribute(appendable, "table:style-name", this.rowStyle.getName());
-        if (this.defaultCellStyle != null)
-            util.appendEAttribute(appendable, "table:default-cell-style-name", this.defaultCellStyle.getName());
+        if (this.rowStyle != null) {
+            util.appendEAttribute(appendable, "table:style-name", this.rowStyle.getName());
+        }
+        if (this.defaultCellStyle != null) {
+            util.appendEAttribute(appendable, "table:default-cell-style-name",
+                    this.defaultCellStyle.getName());
+        }
         appendable.append(">");
     }
 
@@ -110,7 +120,8 @@ public class TableRow {
      * @param appendable where to write the XML
      * @throws IOException If an I/O error occurs
      */
-    public void appendXMLToTable(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLToTable(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         this.appendRowOpenTag(util, appendable);
         int nullFieldCounter = 0;
 
@@ -131,10 +142,14 @@ public class TableRow {
 
     private void appendRepeatedCell(final XMLUtil util, final Appendable appendable,
                                     final int nullFieldCounter) throws IOException {
-        if (nullFieldCounter <= 0) return;
+        if (nullFieldCounter <= 0) {
+            return;
+        }
 
         appendable.append("<table:table-cell");
-        if (nullFieldCounter >= 2) util.appendAttribute(appendable, "table:number-columns-repeated", nullFieldCounter);
+        if (nullFieldCounter >= 2) {
+            util.appendAttribute(appendable, "table:number-columns-repeated", nullFieldCounter);
+        }
         appendable.append("/>");
     }
 
@@ -157,10 +172,13 @@ public class TableRow {
      * @param columnMerge the number of cells to merge
      * @throws IOException if the cells can't be merged
      */
-    public void setCellMerge(final int colIndex, final int rowMerge, final int columnMerge) throws IOException {
-        if (rowMerge <= 0 || columnMerge <= 0) return;
-        if (rowMerge <= 1 && columnMerge <= 1) return;
-
+    public void setCellMerge(final int colIndex, final int rowMerge, final int columnMerge)
+            throws IOException {
+        if (rowMerge < 0 || columnMerge < 0) {
+            throw new IllegalArgumentException("row merge and col merge must be >= 0");
+        } else if (rowMerge <= 1 && columnMerge <= 1) {
+            return;
+        }
         this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
     }
 
@@ -175,14 +193,19 @@ public class TableRow {
      *
      * @param colIndex the index of the first column
      * @param n        the number of columns in the span
+     * @throws IllegalArgumentException if n < 0
      */
     public void setColumnsSpanned(final int colIndex, final int n) {
-        if (n <= 1) return;
+        if (n < 0) {
+            throw new IllegalArgumentException("Can't span negative number of columns");
+        } else if (n <= 1) {
+            return;
+        }
 
         final TableCell firstCell = this.getOrCreateCell(colIndex);
-        if (firstCell.isCovered()) // already spanned
-            return;
-
+        if (firstCell.isCovered()) {
+            throw new IllegalArgumentException("Can't span from covered cell");
+        }
         firstCell.markColumnsSpanned(n);
         this.coverRightCells(colIndex, n);
     }
@@ -212,18 +235,26 @@ public class TableRow {
      * @param rowIndex the index of the first row
      * @param n        the number of rows in the span
      * @throws IOException if the cells can't be merged
+     * @throws IllegalArgumentException if n < 0 of this cells is covered
      */
     public void setRowsSpanned(final int rowIndex, final int n) throws IOException {
-        if (n <= 1) return;
+        if (n < 0) {
+            throw new IllegalArgumentException("Can't span negative number of rows");
+        } else if (n <= 1) {
+            return;
+        }
 
         final TableCell firstCell = this.getOrCreateCell(rowIndex);
-        if (firstCell.isCovered()) return;
+        if (firstCell.isCovered()) {
+            throw new IllegalArgumentException("Can't span from covered cell");
+        }
 
         this.parent.setRowsSpanned(this.rowIndex, rowIndex, n);
     }
 
     /**
-     * Get the cell at given index. If the cell was not created before, then it is created by this method.
+     * Get the cell at given index. If the cell was not created before, then it is created by
+     * this method.
      *
      * @param colIndex the index of the cell in the row
      * @return a cell
@@ -231,9 +262,8 @@ public class TableRow {
     public TableCell getOrCreateCell(final int colIndex) {
         TableCell cell = this.cells.get(colIndex);
         if (cell == null) {
-            cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer, this.dataStyles,
-                    this.libreOfficeMode, this,
-                    colIndex);
+            cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer,
+                    this.dataStyles, this.libreOfficeMode, this, colIndex);
             this.cells.set(colIndex, cell);
         }
         return cell;
@@ -268,8 +298,9 @@ public class TableRow {
 
     /**
      * Find the default cell style for a column
+     *
      * @param columnIndex the column index
-     * @return the style, null if none
+     * @return the style, never null
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
         TableCellStyle s = this.defaultCellStyle;

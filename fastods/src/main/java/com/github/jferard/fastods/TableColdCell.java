@@ -73,7 +73,7 @@ class TableColdCell {
 	/**
 	 * 19.676 table:number-columns-spanned
 	 * Create a span over columns
-	 * @param n the number of columns
+	 * @param n the number of columns > 1
 	 */
 	public void setColumnsSpanned(final int n) {
 		this.columnsSpanned = n;
