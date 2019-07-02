@@ -50,7 +50,7 @@ public class ContentElementTest {
     private DataStyles format;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.container = PowerMock.createMock(StylesContainer.class);
         this.format = DataStylesBuilder.create(Locale.US).build();
         this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(), this.format,
@@ -117,7 +117,7 @@ public class ContentElementTest {
         this.content.flushRows(util, z, SettingsElement.create());
     }
 
-    private void playWriteHeader(XMLUtil util) throws IOException {
+    private void playWriteHeader(final XMLUtil util) throws IOException {
         this.container.writeFontFaceDecls(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container.writeHiddenDataStyles(EasyMock.eq(util), EasyMock.isA(ZipUTF8Writer.class));
         this.container

@@ -201,7 +201,7 @@ public class StylesContainerTest {
     }
 
     @Test
-    public void testAddChildCellStyle() throws Exception {
+    public void testAddChildCellStyle() {
         final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
         final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).build();
 

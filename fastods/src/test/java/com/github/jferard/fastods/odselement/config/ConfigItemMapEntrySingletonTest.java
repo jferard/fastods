@@ -46,7 +46,7 @@ public class ConfigItemMapEntrySingletonTest {
     }
 
     @Test
-    public void createSingleton() throws Exception {
+    public void testCreateSingleton() {
         final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton.createSingleton(this.item);
         Assert.assertEquals(1, sing.size());
         Assert.assertFalse(sing.isEmpty());
@@ -54,14 +54,14 @@ public class ConfigItemMapEntrySingletonTest {
     }
 
     @Test
-    public void createNamedSingleton() throws Exception {
+    public void testCreateNamedSingleton() {
         Assert.assertEquals(1, this.singleton.size());
         Assert.assertFalse(this.singleton.isEmpty());
         Assert.assertEquals("singleton", this.singleton.getName());
     }
 
     @Test
-    public void appendXML() throws Exception {
+    public void testAppendXML() throws Exception {
         TestHelper.assertXMLEquals(
                 "<config:config-item-map-entry config:name=\"singleton\">" + this.itemXML +
                         "</config:config-item-map-entry>",
@@ -69,23 +69,23 @@ public class ConfigItemMapEntrySingletonTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void addItem() throws Exception {
+    public void addItem() {
         this.singleton.add("name", "type", "value");
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void add() throws Exception {
+    public void add() {
         this.singleton.add(this.item);
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() {
         Assert.assertFalse(this.singleton.contains("name"));
         Assert.assertTrue(this.singleton.contains("n"));
     }
 
     @Test
-    public void iterator() {
+    public void testIterator() {
         final Iterator<ConfigBlock> it = this.singleton.iterator();
         Assert.assertTrue(it.hasNext());
         Assert.assertEquals(this.item, it.next());
@@ -93,25 +93,25 @@ public class ConfigItemMapEntrySingletonTest {
     }
 
     @Test
-    public void getByName() {
+    public void testGetByName() {
         Assert.assertNull(this.singleton.getByName("x"));
         Assert.assertEquals(this.item, this.singleton.getByName("n"));
     }
 
     @Test
-    public void set() throws Exception {
+    public void testSet() {
         Assert.assertEquals("v", this.singleton.set("value"));
-        Assert.assertEquals(null, this.singleton.set("name", "value"));
+        Assert.assertNull(this.singleton.set("name", "value"));
     }
 
     @Test
-    public void set2() throws Exception {
+    public void testSet2() {
         Assert.assertEquals("v", this.singleton.set("value"));
         Assert.assertEquals("value", this.singleton.set("n", "value2"));
     }
 
     @Test
-    public void set3() throws Exception {
+    public void testSet3() {
         final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton.createSingleton(this.singleton);
         Assert.assertNull(sing.set("value"));
     }

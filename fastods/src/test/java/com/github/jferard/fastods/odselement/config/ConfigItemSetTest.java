@@ -44,7 +44,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void createSet() throws Exception {
+    public void testCreateSet() {
         final ConfigItemSet m = new ConfigItemSet("set");
         Assert.assertEquals(0, m.size());
         Assert.assertTrue(m.isEmpty());
@@ -52,7 +52,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void createSet2() throws Exception {
+    public void testCreateSet2() {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         Assert.assertEquals(1, m.size());
@@ -60,7 +60,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void getByName() throws Exception {
+    public void testGetByName() {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         Assert.assertEquals(this.item, m.getByName("n"));
@@ -68,7 +68,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         Assert.assertFalse(m.contains("s"));
@@ -76,7 +76,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void iterator() throws Exception {
+    public void testIterator() {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         final Iterator<ConfigBlock> i = m.iterator();
@@ -86,7 +86,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void appendXML() throws Exception {
+    public void testAppendXML() throws Exception {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         TestHelper.assertXMLEquals(
@@ -94,7 +94,7 @@ public class ConfigItemSetTest {
     }
 
     @Test
-    public void removeByName() throws Exception {
+    public void testRemoveByName() {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
         Assert.assertEquals(1, m.size());

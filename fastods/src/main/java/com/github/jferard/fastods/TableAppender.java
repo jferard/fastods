@@ -43,6 +43,7 @@ class TableAppender {
 
     /**
      * Create a new appender
+     *
      * @param builder the table builder
      */
     TableAppender(final TableBuilder builder) {
@@ -52,6 +53,7 @@ class TableAppender {
 
     /**
      * Append the postamble
+     *
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
@@ -61,18 +63,19 @@ class TableAppender {
 
     /**
      * Append the preamble
-     * @param util an util
+     *
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
     public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.preambleWritten)
+        if (this.preambleWritten) {
             return;
+        }
 
         appendable.append("<table:table");
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
-        util.appendEAttribute(appendable, "table:style-name",
-                this.builder.getStyleName());
+        util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
         util.appendAttribute(appendable, "table:print", false);
         appendable.append("><office:forms");
         util.appendAttribute(appendable, "form:automatic-focus", false);
@@ -84,12 +87,13 @@ class TableAppender {
 
     /**
      * Add XML to content.xml
-     * @param util an util
+     *
+     * @param util       an util
      * @param appendable the output
      * @throws IOException if the XML could not be written
      */
-    public void appendXMLToContentEntry(final XMLUtil util,
-                                        final Appendable appendable) throws IOException {
+    public void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         this.appendPreamble(util, appendable);
         this.appendRows(util, appendable);
         this.appendPostamble(appendable);
@@ -102,7 +106,8 @@ class TableAppender {
      * @param appendable where to write
      * @throws IOException if an I/O error occurs during the flush
      */
-    public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         this.appendPreamble(util, appendable);
         this.appendRows(util, appendable, 0);
     }
@@ -115,10 +120,11 @@ class TableAppender {
      * @param rowIndex   the first index to use.
      * @throws IOException if an I/O error occurs during the flush
      */
-    public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
-            throws IOException {
-        if (rowIndex == 0)
+    public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
+                                       final int rowIndex) throws IOException {
+        if (rowIndex == 0) {
             this.appendPreamble(util, appendable);
+        }
         this.appendRows(util, appendable, rowIndex);
         this.appendPostamble(appendable);
     }
@@ -131,15 +137,17 @@ class TableAppender {
      * @param rowIndex   the index of the row
      * @throws IOException if an I/O error occurs during the flush
      */
-    public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable, final int rowIndex)
-            throws IOException {
-        if (rowIndex == 0)
+    public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
+                                           final int rowIndex) throws IOException {
+        if (rowIndex == 0) {
             this.appendPreamble(util, appendable);
+        }
         this.appendRows(util, appendable, rowIndex);
     }
 
-    private void appendColumnStyles(final Iterable<TableColumnStyle> columnStyles, final Appendable appendable,
-                                    final XMLUtil xmlUtil) throws IOException {
+    private void appendColumnStyles(final Iterable<TableColumnStyle> columnStyles,
+                                    final Appendable appendable, final XMLUtil xmlUtil)
+            throws IOException {
         final Iterator<TableColumnStyle> iterator = columnStyles.iterator();
         if (!iterator.hasNext()) {
             TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
@@ -166,19 +174,18 @@ class TableAppender {
         }
         curTCS.appendXMLToTable(xmlUtil, appendable, count);
         endCount -= count;
-        TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
-                .appendXMLToTable(xmlUtil, appendable, endCount);
+        TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.appendXMLToTable(xmlUtil, appendable, endCount);
     }
 
-    private void appendRows(final XMLUtil util, final Appendable appendable)
-            throws IOException {
+    private void appendRows(final XMLUtil util, final Appendable appendable) throws IOException {
         this.appendRows(util, appendable, 0);
     }
 
-    private void appendRows(final XMLUtil util, final Appendable appendable, final int firstRowIndex)
-            throws IOException {
-        if (firstRowIndex == 0)
+    private void appendRows(final XMLUtil util, final Appendable appendable,
+                            final int firstRowIndex) throws IOException {
+        if (firstRowIndex == 0) {
             this.nullFieldCounter = 0;
+        }
 
         final int size = this.builder.getTableRowsUsedSize();
         for (int r = firstRowIndex; r < size; r++) {
@@ -193,17 +200,17 @@ class TableAppender {
         }
     }
 
-    private void appendRepeatedRows(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.nullFieldCounter <= 0)
+    private void appendRepeatedRows(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        if (this.nullFieldCounter <= 0) {
             return;
+        }
 
         appendable.append("<table:table-row");
         if (this.nullFieldCounter > 1) {
-            util.appendAttribute(appendable,
-                    "table:number-rows-repeated", this.nullFieldCounter);
+            util.appendAttribute(appendable, "table:number-rows-repeated", this.nullFieldCounter);
         }
-        util.appendAttribute(appendable, "table:style-name",
-                "ro1");
+        util.appendAttribute(appendable, "table:style-name", "ro1");
         appendable.append("><table:table-cell/></table:table-row>");
         this.nullFieldCounter = 0;
     }

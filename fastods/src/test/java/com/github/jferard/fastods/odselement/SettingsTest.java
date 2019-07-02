@@ -30,7 +30,6 @@ import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySingleton;
 import com.github.jferard.fastods.odselement.config.ConfigItemSet;
-import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
@@ -47,13 +46,11 @@ import java.util.List;
 public class SettingsTest {
     private Settings defaultSettings;
     private List<ConfigBlock> blocks;
-    private XMLUtil util;
 
     @Before
     public void setUp() {
         this.defaultSettings = Settings.create();
         this.blocks = this.defaultSettings.getRootBlocks();
-        this.util = XMLUtil.create();
         PowerMock.resetAll();
     }
 
@@ -69,7 +66,7 @@ public class SettingsTest {
     }
 
     @Test
-    public void testViewSettings() throws IOException {
+    public void testViewSettings() {
         PowerMock.replayAll();
         final ConfigBlock block = this.blocks.get(0);
         Assert.assertEquals("ooo:view-settings", block.getName());

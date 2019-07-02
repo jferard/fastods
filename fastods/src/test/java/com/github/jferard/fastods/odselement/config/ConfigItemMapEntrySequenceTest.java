@@ -54,7 +54,7 @@ public class ConfigItemMapEntrySequenceTest {
     }
 
     @Test
-    public void createSequence() throws Exception {
+    public void testCreateSequence() {
         final ConfigItemMapEntry seq = ConfigItemMapEntrySequence.createSequence();
         Assert.assertEquals(0, seq.size());
         Assert.assertTrue(seq.isEmpty());
@@ -62,14 +62,14 @@ public class ConfigItemMapEntrySequenceTest {
     }
 
     @Test
-    public void createNamedSequence() throws Exception {
+    public void testCreateNamedSequence() {
         Assert.assertEquals(0, this.sequence.size());
         Assert.assertTrue(this.sequence.isEmpty());
         Assert.assertEquals("seq", this.sequence.getName());
     }
 
     @Test
-    public void add() throws Exception {
+    public void testAdd() {
         this.sequence.add(this.block);
         Assert.assertEquals(1, this.sequence.size());
         Assert.assertFalse(this.sequence.isEmpty());
@@ -81,18 +81,18 @@ public class ConfigItemMapEntrySequenceTest {
     }
 
     @Test
-    public void remove() throws Exception {
+    public void testRemove() {
         this.sequence.add(this.block);
         this.sequence.remove(0);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void remove2() throws Exception {
+    public void remove2() {
         this.sequence.remove(10);
     }
 
     @Test
-    public void appendXML() throws Exception {
+    public void testAppendXML() throws Exception {
         this.sequence.add(this.item);
         this.sequence.add(this.block);
         TestHelper.assertXMLEquals(
@@ -102,7 +102,7 @@ public class ConfigItemMapEntrySequenceTest {
     }
 
     @Test
-    public void appendXML2() throws Exception {
+    public void testAppendXML2() throws Exception {
         final ConfigItemMapEntrySequence seq = ConfigItemMapEntrySequence.createSequence();
         seq.add(this.item);
         seq.add(this.block);
@@ -112,16 +112,16 @@ public class ConfigItemMapEntrySequenceTest {
     }
 
     @Test
-    public void set() throws Exception {
+    public void testSet() {
         this.sequence.add(this.block);
         this.sequence.add(this.item);
-        Assert.assertEquals(null, this.sequence.set(0, "value"));
+        Assert.assertNull(this.sequence.set(0, "value"));
         Assert.assertEquals("v", this.sequence.set(1, "value"));
         Assert.assertEquals("value", this.item.getValue());
     }
 
     @Test
-    public void addItem() throws Exception {
+    public void testAddItem() {
         this.sequence.add("name", "type", "value");
         Assert.assertTrue(this.sequence.iterator().next() instanceof ConfigItem);
     }

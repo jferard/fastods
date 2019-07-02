@@ -22,10 +22,12 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -37,7 +39,6 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,25 +70,17 @@ public class TableTest {
                         this.stc, this.ds, false);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
-        PowerMock.resetAll();
-    }
-
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
     }
 
     @Test
     public final void testContentEntry() throws IOException, FastOdsException {
-        // CREATE
         final List<TableColumnStyle> tcss = new ArrayList<TableColumnStyle>(4);
         for (int c = 0; c < 3; c++) {
-            final TableColumnStyle tcs = TableColumnStyle.builder("test" + Integer.toString(c))
-                    .build();
+            final TableColumnStyle tcs = TableColumnStyle.builder("test" + c).build();
             tcss.add(tcs);
         }
 
-        // PLAY
+        PowerMock.resetAll();
         for (int c = 0; c < 3; c++) {
             final TableColumnStyle tcs = tcss.get(c);
             EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
@@ -117,18 +110,26 @@ public class TableTest {
                 "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
                 "</table:table>");
 
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataWrapper() throws IOException {
         final DataWrapper data = PowerMock.createMock(DataWrapper.class);
+
+        PowerMock.resetAll();
         EasyMock.expect(data.addToTable(this.table)).andReturn(true);
+
         PowerMock.replayAll();
         this.table.addData(data);
+
+        PowerMock.verifyAll();
     }
 
     @Test
-    public final void testGetRow() throws FastOdsException, IOException {
+    public final void testGetRow() throws IOException {
+        PowerMock.resetAll();
+
         PowerMock.replayAll();
         final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
@@ -138,40 +139,58 @@ public class TableTest {
         for (int r = 0; r < 7; r++) { // 8 times
             Assert.assertEquals(rows.get(r), this.table.getRow(r));
         }
+
+        PowerMock.verifyAll();
     }
 
     @Test
-    public final void testGetRowHundred() throws FastOdsException, IOException {
+    public final void testGetRowHundred() throws IOException {
+        PowerMock.resetAll();
+
         PowerMock.replayAll();
         for (int r = 0; r < 7; r++) { // 8 times
             this.table.nextRow();
         }
         this.table.getRow(100);
-        Assert.assertEquals(100, this.table.getLastRowNumber());
+        final int lastRowNumber = this.table.getLastRowNumber();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(100, lastRowNumber);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testGetRowNegative() throws IOException {
+        PowerMock.resetAll();
         PowerMock.replayAll();
         this.table.getRow(-1);
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testLastRow() throws IOException {
+        PowerMock.resetAll();
+
         PowerMock.replayAll();
-        Assert.assertEquals(-1, this.table.getLastRowNumber());
+        final int initialLastRowNumber = this.table.getLastRowNumber();
         for (int r = 0; r < 7; r++) { // 8 times
             this.table.nextRow();
         }
-        Assert.assertEquals(6, this.table.getLastRowNumber());
+        final int lastRowNumber = this.table.getLastRowNumber();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(-1, initialLastRowNumber);
+        Assert.assertEquals(6, lastRowNumber);
     }
 
     @Test
     public final void testRowsSpanned() throws IOException {
-        // PLAY
+        PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.table.setRowsSpanned(10, 11, 12);
+        this.table.setRowsSpanned(10, 9, 8);
+        final String ROW = "<table:table-row table:style-name=\"ro1\"><table:table-cell " +
+                "table:number-columns-repeated=\"9\"/><table:covered-table-cell/></table:table" +
+                "-row>";
         this.assertTableXMLEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
                 "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
                 "form:apply-design-mode=\"false\"/>" +
@@ -181,41 +200,11 @@ public class TableTest {
                 "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" + "</table:table-row>" +
                 "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
-                "table:number-columns-repeated=\"11\"/>" + "<table:table-cell " +
-                "table:number-rows-spanned=\"12\"/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "<table:table-row " +
-                "table:style-name=\"ro1\">" +
-                "<table:table-cell table:number-columns-repeated=\"11\"/>" +
-                "<table:covered-table-cell/>" + "</table:table-row>" + "</table:table>");
+                "table:number-columns-repeated=\"9\"/>" + "<table:table-cell " +
+                "table:number-rows-spanned=\"8\"/>" + "</table:table-row>" + ROW + ROW + ROW + ROW +
+                ROW + ROW + ROW + "</table:table>");
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -223,38 +212,47 @@ public class TableTest {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
+        PowerMock.resetAll();
         tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq(1),
                 EasyMock.eq(1), EasyMock.eq(2), EasyMock.eq(3));
 
         PowerMock.replayAll();
         t.setCellMerge(1, 1, 2, 3);
+
+        PowerMock.verifyAll();
     }
 
     @Test
+    @SuppressWarnings("deprecated")
     public final void testMergePos() throws IOException, FastOdsException, ParseException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
+        PowerMock.resetAll();
         tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq("A1"),
                 EasyMock.eq(2), EasyMock.eq(3));
 
         PowerMock.replayAll();
         t.setCellMerge("A1", 2, 3);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testNameAndStyle() {
-        // PLAY
         final TableStyle ts = TableStyle.builder("b").build();
+
+        PowerMock.resetAll();
         EasyMock.expect(this.stc.addContentStyle(ts)).andReturn(true);
         EasyMock.expect(this.stc.addPageStyle(ts.getPageStyle())).andReturn(true);
 
         PowerMock.replayAll();
-
         this.table.setName("tname");
         this.table.setStyle(ts);
         Assert.assertEquals("tname", this.table.getName());
         Assert.assertEquals("b", this.table.getStyleName());
+
+        PowerMock.verifyAll();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -262,6 +260,7 @@ public class TableTest {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
+        PowerMock.resetAll();
         EasyMock.expect(tb.getName()).andReturn("tb");
         EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
         EasyMock.expect(tb.getColumnStyles())
@@ -271,13 +270,16 @@ public class TableTest {
         PowerMock.replayAll();
         t.flushAllAvailableRows(this.xmlUtil, this.sb);
         t.setColumnStyle(0, null);
+
+        PowerMock.verifyAll();
     }
 
     @Test(expected = IllegalStateException.class)
-    public final void testName() throws IOException, FastOdsException {
+    public final void testName() throws IOException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
+        PowerMock.resetAll();
         EasyMock.expect(tb.getName()).andReturn("tb");
         EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
         EasyMock.expect(tb.getColumnStyles())
@@ -287,17 +289,90 @@ public class TableTest {
         PowerMock.replayAll();
         t.flushAllAvailableRows(this.xmlUtil, this.sb);
         t.setName("ko");
+
+        PowerMock.verifyAll();
     }
 
     @Test
-    public final void testConfigItem() throws IOException, FastOdsException {
+    public final void testConfigItem() {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
+        PowerMock.resetAll();
         tb.setConfigItem("item", "type", "value");
 
         PowerMock.replayAll();
         t.setConfigItem("item", "type", "value");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testUpdateConfigItem() {
+        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
+        final Table t = new Table("test", this.ce, tb);
+
+        PowerMock.resetAll();
+        tb.updateConfigItem("item", "value");
+
+        PowerMock.replayAll();
+        t.updateConfigItem("item", "value");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = IOException.class)
+    public final void testFlushNoObserver() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.table.flush();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFlush() throws IOException {
+        final NamedOdsFileWriter now = PowerMock.createMock(NamedOdsFileWriter.class);
+
+        PowerMock.resetAll();
+        now.update(EasyMock.isA(BeginTableFlusher.class));
+        now.update(EasyMock.isA(EndTableFlusher.class));
+
+        PowerMock.replayAll();
+        this.table.addObserver(now);
+        this.table.flush();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFlushSomeAvailableRows() throws IOException {
+        final NamedOdsFileWriter now = PowerMock.createMock(NamedOdsFileWriter.class);
+        final StringBuilder app = new StringBuilder();
+        final BooleanStyle bs = this.ds.getBooleanDataStyle();
+
+        PowerMock.resetAll();
+        now.update(EasyMock.isA(BeginTableFlusher.class));
+        EasyMock.expect(this.stc.addDataStyle(bs)).andReturn(true);
+        EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, bs))
+                .andReturn(null);
+
+        PowerMock.replayAll();
+        this.table.addObserver(now);
+        final TableRow row = this.table.nextRow();
+        row.getOrCreateCell(0).setBooleanValue(true);
+        this.table.flushSomeAvailableRowsFrom(this.xmlUtil, app, 0);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+                        "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
+                        "form:apply-design-mode=\"false\"/><table:table-column " +
+                        "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/><table:table-row " +
+                        "table:style-name=\"ro1\"><table:table-cell office:value-type=\"boolean\"" +
+                        " office:boolean-value=\"true\"/></table:table-row></table:table>",
+                app.toString() + "</table:table>");
     }
 
     private void assertTableXMLEquals(final String xml) throws IOException {

@@ -204,7 +204,7 @@ class H_Advanced {
 
         // ## LO features
         // If you know what you are doing, you can play with LO settings, for instance:
-        table.setSettings("View1", "ZoomValue", "150");
+        table.updateConfigItem("ZoomValue", "150");
 
         // For more doc, see:
         // * [Settings Service Reference](https://api.libreoffice

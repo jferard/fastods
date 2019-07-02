@@ -48,7 +48,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void createMapNamed() throws Exception {
+    public void testCreateMapNamed() {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         Assert.assertEquals(0, m.size());
         Assert.assertTrue(m.isEmpty());
@@ -56,7 +56,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void createMapNamed2() throws Exception {
+    public void testCreateMapNamed2() {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         Assert.assertEquals(1, m.size());
@@ -64,7 +64,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void removeByName() throws Exception {
+    public void testRemoveByName() {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         Assert.assertEquals(1, m.size());
@@ -76,7 +76,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void getByName() throws Exception {
+    public void testGetByName() {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         Assert.assertEquals(this.set, m.getByName("set"));
@@ -84,7 +84,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         Assert.assertFalse(m.contains("s"));
@@ -92,7 +92,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void iterator() throws Exception {
+    public void testIterator() {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         final Iterator<ConfigItemMapEntry> i = m.iterator();
@@ -102,7 +102,7 @@ public class ConfigItemMapNamedTest {
     }
 
     @Test
-    public void appendXML() throws Exception {
+    public void testAppendXML() throws Exception {
         final ConfigItemMapNamed m = new ConfigItemMapNamed("mapnamed");
         m.put(this.set);
         TestHelper.assertXMLEquals(

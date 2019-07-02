@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class OdsElementsTest {
-    public static final int TABLE_INDEX = 9;
+    private static final int TABLE_INDEX = 9;
     private ContentElement contentElement;
     private Locale locale;
     private ManifestElement manifestElement;
@@ -201,7 +201,7 @@ public class OdsElementsTest {
     }
 
     @Test
-    public void testAddChildCellStyle() throws IOException {
+    public void testAddChildCellStyle() {
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement
                 .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING))
@@ -248,7 +248,7 @@ public class OdsElementsTest {
 
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement.getLastTable()).andReturn(null);
-        EasyMock.expect(this.contentElement.addTable("table1", 10, 15)).andReturn(t);
+        EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
         t.addObserver(w);
@@ -256,7 +256,7 @@ public class OdsElementsTest {
 
         PowerMock.replayAll();
         this.oe.addObserver(w);
-        this.oe.addTableToContent("table1", 10, 15);
+        this.oe.addTableToContent("table1", 10, 5);
 
         PowerMock.verifyAll();
     }
@@ -270,7 +270,7 @@ public class OdsElementsTest {
 
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement.getLastTable()).andReturn(lt);
-        EasyMock.expect(this.contentElement.addTable("table1", 10, 15)).andReturn(t);
+        EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
         lt.flush();
@@ -278,7 +278,7 @@ public class OdsElementsTest {
 
         PowerMock.replayAll();
         this.oe.addObserver(w);
-        this.oe.addTableToContent("table1", 10, 15);
+        this.oe.addTableToContent("table1", 10, 5);
 
         PowerMock.verifyAll();
     }

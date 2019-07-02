@@ -51,7 +51,7 @@ public class ConfigItemMapIndexedTest {
     }
 
     @Test
-    public void createMapIndexed() throws Exception {
+    public void testCreateMapIndexed() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         Assert.assertEquals(0, m.size());
         Assert.assertTrue(m.isEmpty());
@@ -59,7 +59,7 @@ public class ConfigItemMapIndexedTest {
     }
 
     @Test
-    public void createMapIndexed2() throws Exception {
+    public void testCreateMapIndexed2() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         Assert.assertEquals(1, m.size());
@@ -67,19 +67,19 @@ public class ConfigItemMapIndexedTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void set() throws Exception {
+    public void testSet() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.set(1, this.set);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void remove() throws Exception {
+    public void testRemove() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.remove(1);
     }
 
     @Test
-    public void setOk() throws Exception {
+    public void testSetOk() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         m.set(0, this.set);
@@ -88,7 +88,7 @@ public class ConfigItemMapIndexedTest {
     }
 
     @Test
-    public void removeOk() throws Exception {
+    public void testRemoveOk() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         m.remove(0);
@@ -97,21 +97,21 @@ public class ConfigItemMapIndexedTest {
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         Assert.assertTrue(m.contains(this.set));
     }
 
     @Test
-    public void get() throws Exception {
+    public void testGet() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(0, this.set);
         Assert.assertEquals(this.set, m.get(0));
     }
 
     @Test
-    public void iterator() throws Exception {
+    public void testIterator() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         final Iterator<ConfigItemMapEntry> i = m.iterator();
@@ -121,7 +121,7 @@ public class ConfigItemMapIndexedTest {
     }
 
     @Test
-    public void appendXMLRepresentation() throws Exception {
+    public void testAppendXMLRepresentation() throws Exception {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
         m.add(this.set);
         TestHelper.assertXMLEquals(

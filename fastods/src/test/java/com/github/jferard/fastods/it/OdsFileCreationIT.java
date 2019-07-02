@@ -292,7 +292,7 @@ public class OdsFileCreationIT {
         for (int i = 0; i < n; i++) {
             final Table table = document.addTable("table" + i, 50, 5);
             table.setColumnStyle(0, this.tcns);
-            table.setSettings("View1", "ZoomValue", "206");
+            table.updateConfigItem("ZoomValue", "206");
             TableRow row = table.getRow(0);
             row.setStyle(this.trs);
             row.setDefaultCellStyle(this.tcls);

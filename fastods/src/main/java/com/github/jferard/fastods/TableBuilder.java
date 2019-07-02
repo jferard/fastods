@@ -194,6 +194,9 @@ class TableBuilder {
      * @throws IOException if an error occurs
      */
     public void flushBeginTable(final TableAppender appender) throws IOException {
+        if (this.observer == null) {
+            throw new IOException("Can't flush a table from an anonymous writer (there is no file)");
+        }
         this.observer.update(new BeginTableFlusher(appender));
     }
 

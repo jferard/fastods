@@ -49,7 +49,7 @@ public class ConfigItemMapEntrySetTest {
     }
 
     @Test
-    public void createSet() throws Exception {
+    public void testCreateEmptySet() {
         final ConfigItemMapEntrySet s = ConfigItemMapEntrySet.createSet();
         Assert.assertEquals(0, s.size());
         Assert.assertTrue(s.isEmpty());
@@ -57,21 +57,21 @@ public class ConfigItemMapEntrySetTest {
     }
 
     @Test
-    public void createSet2() throws Exception {
+    public void testCreateSingletonSet() {
         final ConfigItemMapEntrySet s = new ConfigItemMapEntrySet("n", Sets.<ConfigBlock>newHashSet(this.item));
         Assert.assertEquals(1, s.size());
         Assert.assertFalse(s.isEmpty());
     }
 
     @Test
-    public void createNamedSequence() throws Exception {
+    public void testCreateNamedSequence() {
         Assert.assertEquals(0, this.set.size());
         Assert.assertTrue(this.set.isEmpty());
         Assert.assertEquals("seq", this.set.getName());
     }
 
     @Test
-    public void add() throws Exception {
+    public void testAdd() {
         this.set.add(this.block);
         Assert.assertEquals(1, this.set.size());
         Assert.assertFalse(this.set.isEmpty());
@@ -83,25 +83,25 @@ public class ConfigItemMapEntrySetTest {
     }
 
     @Test
-    public void remove() throws Exception {
+    public void testRemove() {
         this.set.add(this.block);
         this.set.remove(0);
     }
 
     @Test
-    public void contains() throws Exception {
+    public void testContains() {
         this.set.add(this.block);
         Assert.assertTrue(this.set.contains("b"));
         Assert.assertFalse(this.set.contains("n"));
     }
 
     @Test
-    public void remove2() throws Exception {
+    public void testRemove2() {
         this.set.remove(new Object());
     }
 
     @Test
-    public void appendXML() throws Exception {
+    public void testAppendXML() throws Exception {
         this.set.add(this.item);
         TestHelper.assertXMLEquals(
                 "<config:config-item-map-entry config:name=\"seq\">" + this.itemXML + "</config:config-item-map-entry>",
@@ -109,21 +109,21 @@ public class ConfigItemMapEntrySetTest {
     }
 
     @Test
-    public void addItem() throws Exception {
+    public void testAddItem() {
         this.set.add("name", "type", "value");
         Assert.assertTrue(this.set.iterator().next() instanceof ConfigItem);
     }
 
     @Test
-    public void addItemTwice() throws Exception {
+    public void testAddItemTwice() {
         Assert.assertTrue(this.set.add("name", "type", "value"));
         Assert.assertFalse(this.set.add("name", "type", "value"));
     }
 
     @Test
-    public void set() throws Exception {
+    public void testSet() {
         this.set.add(this.item);
         Assert.assertEquals("v", this.set.set("n", "value"));
-        Assert.assertEquals(null, this.set.set("name", "value"));
+        Assert.assertNull(this.set.set("name", "value"));
     }
 }

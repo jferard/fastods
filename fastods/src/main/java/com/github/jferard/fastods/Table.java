@@ -292,11 +292,10 @@ public class Table implements NamedObject {
     /**
      * Set one of the settings
      *
-     * @param viewId the id of the view
      * @param item   the item name
      * @param value  the item value
      */
-    public void setSettings(final String viewId, final String item, final String value) {
+    public void updateConfigItem(final String item, final String value) {
         this.builder.updateConfigItem(item, value);
     }
 
