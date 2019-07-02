@@ -34,7 +34,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.datastyle.DateStyleBuilder;
-import com.github.jferard.fastods.datastyle.DateStyleFormat;
+import com.github.jferard.fastods.datastyle.DateTimeStyleFormat;
 import com.github.jferard.fastods.datastyle.FloatStyle;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
@@ -101,9 +101,9 @@ public class DataStyleExampleIT {
         final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
         dsb.floatStyleBuilder().decimalPlaces(0);
         dsb.dateStyleBuilder().dateFormat(
-                new DateStyleFormat(DateStyleFormat.LONG_DAY, DateStyleFormat.SLASH,
-                        DateStyleFormat.LONG_MONTH, DateStyleFormat.SLASH,
-                        DateStyleFormat.LONG_YEAR));
+                new DateTimeStyleFormat(DateTimeStyleFormat.LONG_DAY, DateTimeStyleFormat.SLASH,
+                        DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.SLASH,
+                        DateTimeStyleFormat.LONG_YEAR));
         final DataStyles ds = dsb.build();
 
         // Pass the created "data styles" to the factory
@@ -187,8 +187,8 @@ public class DataStyleExampleIT {
         cell.setDateValue(cal);
         // Add a custom format
         final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale)
-                .dateFormat(new DateStyleFormat(DateStyleFormat.DAY, DateStyleFormat.DOT,
-                        DateStyleFormat.MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR)).visible()
+                .dateFormat(new DateTimeStyleFormat(DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT,
+                        DateTimeStyleFormat.MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.YEAR)).visible()
                 .build();
         cell.setDataStyle(dateStyle);
 
@@ -209,8 +209,8 @@ public class DataStyleExampleIT {
         cell.setTimeValue(10000000);
         // Add a custom format
         final DataStyle timeStyle = new TimeStyleBuilder("custom-time-datastyle", this.locale)
-                .timeFormat(new DateStyleFormat(DateStyleFormat.text("Hour: "),
-                        DateStyleFormat.LONG_HOURS)).visible().build();
+                .timeFormat(new DateTimeStyleFormat(DateTimeStyleFormat.text("Hour: "),
+                        DateTimeStyleFormat.LONG_HOURS)).visible().build();
         cell.setDataStyle(timeStyle);
 
         // 7TH ROW: same as FOURTH, but the datastyle is put before the value

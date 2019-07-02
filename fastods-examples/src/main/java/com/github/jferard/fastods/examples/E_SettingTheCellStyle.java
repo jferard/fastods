@@ -24,22 +24,15 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.CurrencyValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.PercentageValue;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.DataStylesBuilder;
-import com.github.jferard.fastods.datastyle.DateStyleBuilder;
-import com.github.jferard.fastods.datastyle.DateStyleFormat;
-import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
+import com.github.jferard.fastods.datastyle.DateTimeStyleFormat;
 import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
 import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.LOFonts;
@@ -51,10 +44,6 @@ import com.github.jferard.fastods.util.SimpleLength;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -148,8 +137,8 @@ class E_SettingTheCellStyle {
 
         // Obvioulsy, you can combine a style and a data style:
         final DataStyle timeDataStyle = new TimeStyleBuilder("time-datastyle", Locale.US)
-                .timeFormat(new DateStyleFormat(DateStyleFormat.text("Hour: "),
-                        DateStyleFormat.LONG_HOURS)).visible().build();
+                .timeFormat(new DateTimeStyleFormat(DateTimeStyleFormat.text("Hour: "),
+                        DateTimeStyleFormat.LONG_HOURS)).visible().build();
 
         tableRow = table.nextRow();
         cellWalker = tableRow.getWalker();

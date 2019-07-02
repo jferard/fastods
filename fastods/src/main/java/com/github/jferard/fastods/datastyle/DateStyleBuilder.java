@@ -31,7 +31,7 @@ import java.util.Locale;
 public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBuilder> {
     private final CoreDataStyleBuilder dataStyleBuilder;
     private boolean automaticOrder;
-    private DateStyleFormat dateFormat;
+    private DateTimeStyleFormat dateFormat;
 
     /**
      * Create a new date style with the name name.<br>
@@ -76,7 +76,7 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
      * @param format The date format to be used.
      * @return this for fluent style
      */
-    public DateStyleBuilder dateFormat(final DateStyleFormat format) {
+    public DateStyleBuilder dateFormat(final DateTimeStyleFormat format) {
         this.dateFormat = format;
         return this;
     }

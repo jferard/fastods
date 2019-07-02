@@ -44,16 +44,16 @@ public class TextPropertiesTest {
         final TextProperties prop = TextProperties.builder().fontSize(SimpleLength.cm(10)).build();
         TestHelper.assertXMLEquals(
                 "<style:text-properties fo:font-size=\"10cm\" style:font-size-asian=\"10cm\" " +
-                        "style:font-size-complex=\"10cm\"/>",
-                prop);
+                        "style:font-size-complex=\"10cm\"/>", prop);
     }
 
     @Test
     public final void testColorNameSize() throws IOException {
-        final TextProperties prop = TextProperties.builder().fontColor(SimpleColor.ALICEBLUE).fontName(LOFonts.LIBERATION_SERIF)
-                .fontSizePercentage(10.8).build();
+        final TextProperties prop = TextProperties.builder().fontColor(SimpleColor.ALICEBLUE)
+                .fontName(LOFonts.LIBERATION_SERIF).fontSizePercentage(10.8).build();
         TestHelper.assertXMLEquals(
-                "<style:text-properties fo:color=\"#f0f8ff\" style:font-name=\"Liberation Serif\" fo:font-size=\"10.8%\" " +
+                "<style:text-properties fo:color=\"#f0f8ff\" style:font-name=\"Liberation Serif\"" +
+                        " fo:font-size=\"10.8%\" " +
                         "style:font-size-asian=\"10.8%\" style:font-size-complex=\"10.8%\"/>",
                 prop);
     }
@@ -66,7 +66,8 @@ public class TextPropertiesTest {
 
     @Test
     public final void testItalicBold() throws IOException {
-        final TextProperties prop = TextProperties.builder().fontStyleItalic().fontWeightBold().build();
+        final TextProperties prop = TextProperties.builder().fontStyleItalic().fontWeightBold()
+                .build();
         TestHelper.assertXMLEquals(
                 "<style:text-properties fo:font-weight=\"bold\" style:font-weight-asian=\"bold\" " +
                         "style:font-weight-complex=\"bold\" fo:font-style=\"italic\" " +
@@ -76,11 +77,12 @@ public class TextPropertiesTest {
 
     @Test
     public final void testUnderline() throws IOException {
-        final TextProperties prop = TextProperties.builder().fontUnderlineStyle(TextProperties.Underline.DASH)
+        final TextProperties prop = TextProperties.builder()
+                .fontUnderlineStyle(TextProperties.Underline.DASH)
                 .fontUnderlineColor(SimpleColor.RED).build();
         TestHelper.assertXMLEquals(
-                "<style:text-properties style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" " +
-                        "style:text-underline-color=\"#ff0000\"/>",
-                prop);
+                "<style:text-properties style:text-underline-style=\"dash\" " +
+                        "style:text-underline-width=\"auto\" " +
+                        "style:text-underline-color=\"#ff0000\"/>", prop);
     }
 }

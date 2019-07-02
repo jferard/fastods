@@ -23,15 +23,13 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.Color;
-
 import java.util.Locale;
 
 /**
  * 16.27.25 <number:text-style>
  * @author Julien Férard
  */
-public class TextStyleBuilder implements DataStyleBuilder<TextStyle, TextStyleBuilder> {
+public class TextDataStyleBuilder implements DataStyleBuilder<TextDataStyle, TextDataStyleBuilder> {
     private final CoreDataStyleBuilder dataStyleBuilder;
     private String text;
 
@@ -41,47 +39,47 @@ public class TextStyleBuilder implements DataStyleBuilder<TextStyle, TextStyleBu
      * @param name   The name of the number style, this name must be unique.
      * @param locale the locale used
      */
-    public TextStyleBuilder(final String name, final Locale locale) {
+    public TextDataStyleBuilder(final String name, final Locale locale) {
         this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
         this.text = "<number:text-content/>";
     }
 
     @Override
-    public TextStyle build() {
-        return new TextStyle(this.dataStyleBuilder.build(), this.text);
+    public TextDataStyle build() {
+        return new TextDataStyle(this.dataStyleBuilder.build(), this.text);
     }
 
-    public TextStyleBuilder text(final String text) {
+    public TextDataStyleBuilder text(final String text) {
         this.text = text;
         return this;
     }
 
     @Override
-    public TextStyleBuilder country(final String countryCode) {
+    public TextDataStyleBuilder country(final String countryCode) {
         this.dataStyleBuilder.country(countryCode);
         return this;
     }
 
     @Override
-    public TextStyleBuilder language(final String languageCode) {
+    public TextDataStyleBuilder language(final String languageCode) {
         this.dataStyleBuilder.language(languageCode);
         return this;
     }
 
     @Override
-    public TextStyleBuilder locale(final Locale locale) {
+    public TextDataStyleBuilder locale(final Locale locale) {
         this.dataStyleBuilder.locale(locale);
         return this;
     }
 
     @Override
-    public TextStyleBuilder volatileStyle(final boolean volatileStyle) {
+    public TextDataStyleBuilder volatileStyle(final boolean volatileStyle) {
         this.dataStyleBuilder.volatileStyle(volatileStyle);
         return this;
     }
 
     @Override
-    public TextStyleBuilder visible() {
+    public TextDataStyleBuilder visible() {
         this.dataStyleBuilder.visible();
         return this;
     }

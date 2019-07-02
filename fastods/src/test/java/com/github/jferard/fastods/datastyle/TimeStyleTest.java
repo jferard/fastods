@@ -97,4 +97,13 @@ public class TimeStyleTest {
                 .volatileStyle(false).build();
         DataStyleTestHelper.testAddToElements(ts);
     }
+
+    @Test
+    public final void testConstantFormat() throws IOException {
+        final DateTimeStyleFormat ts = TimeStyle.Format.HHMMSS;
+        TestHelper.assertXMLEquals(
+                "<number:hours number:style=\"long\"/><number:text>:</number:text><number:minutes" +
+                        " number:style=\"long\"/><number:text>:</number:text><number:seconds " +
+                        "number:style=\"long\"/>", ts);
+    }
 }

@@ -60,7 +60,8 @@ public class TableColumnStyleTest {
     @Test
     public final void testAddNewDefaultCellStyleToFile() {
         final TableCellStyle cellStyle = TableCellStyle.builder("ok").hidden().build();
-        final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cellStyle).build();
+        final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cellStyle)
+                .build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();
@@ -77,7 +78,9 @@ public class TableColumnStyleTest {
     public final void testDefaultCellStyle() throws IOException {
         final TableCellStyle cs = TableCellStyle.builder("t").build();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cs).build();
-        this.assertXMLTableEquals("<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"t\"/>",
+        this.assertXMLTableEquals(
+                "<table:table-column table:style-name=\"test\" " +
+                        "table:default-cell-style-name=\"t\"/>",
                 tcs, -1);
     }
 
@@ -85,36 +88,39 @@ public class TableColumnStyleTest {
     public final void testEmpty() throws IOException {
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
         TestHelper.assertXMLEquals(
-                "<style:style style:name=\"test\" style:family=\"table-column\">" + "<style:table-column-properties "
-                        + "fo:break-before=\"auto\" " + "style:column-width=\"2.5cm\"/>" + "</style:style>",
-                tcs);
+                "<style:style style:name=\"test\" style:family=\"table-column\">" +
+                        "<style:table-column-properties " + "fo:break-before=\"auto\" " +
+                        "style:column-width=\"2.5cm\"/>" + "</style:style>", tcs);
         this.assertXMLTableEquals(
-                "<table:table-column table:style-name=\"test\" table:default-cell-style-name=\"Default\"/>", tcs, -1);
+                "<table:table-column table:style-name=\"test\" " +
+                        "table:default-cell-style-name=\"Default\"/>",
+                tcs, -1);
     }
 
     @Test
     public final void testEmpty2() throws IOException {
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
         this.assertXMLTableEquals(
-                "<table:table-column table:style-name=\"test\" table:number-columns-repeated=\"2\" " +
-                        "table:default-cell-style-name=\"Default\"/>",
-                tcs, 2);
+                "<table:table-column table:style-name=\"test\" " +
+                        "table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>", tcs, 2);
     }
 
     @Test
     public final void testWidth() throws IOException {
-        final TableColumnStyle tcs = TableColumnStyle.builder("test").columnWidth(SimpleLength.pt(1.0)).build();
+        final TableColumnStyle tcs = TableColumnStyle.builder("test")
+                .columnWidth(SimpleLength.pt(1.0)).build();
         TestHelper.assertXMLEquals(
-                "<style:style style:name=\"test\" style:family=\"table-column\">" + "<style:table-column-properties "
-                        + "fo:break-before=\"auto\" " + "style:column-width=\"1pt\"/>" + "</style:style>",
-                tcs);
+                "<style:style style:name=\"test\" style:family=\"table-column\">" +
+                        "<style:table-column-properties " + "fo:break-before=\"auto\" " +
+                        "style:column-width=\"1pt\"/>" + "</style:style>", tcs);
         Assert.assertEquals(SimpleLength.pt(1.0), tcs.getColumnWidth());
         Assert.assertEquals(tcs, tcs);
         Assert.assertEquals(tcs.hashCode(), tcs.hashCode());
     }
 
-    private void assertXMLTableEquals(final String xml, final TableColumnStyle tcs,
-                                      final int count) throws IOException {
+    private void assertXMLTableEquals(final String xml, final TableColumnStyle tcs, final int count)
+            throws IOException {
         final StringBuilder sbt = new StringBuilder();
         tcs.appendXMLToTable(this.util, sbt, count);
         DomTester.assertEquals(xml, sbt.toString());

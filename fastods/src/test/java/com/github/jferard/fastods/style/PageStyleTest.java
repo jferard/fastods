@@ -59,13 +59,11 @@ public class PageStyleTest {
                         "fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
                         "style:writing-mode=\"lr-tb\" " +
                         "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
-                        "<style:header-style>" +
-                        "<style:header-footer-properties fo:min-height=\"0cm\" " +
-                        "fo:margin=\"0cm\"/>" +
-                        "</style:header-style>" + "<style:footer-style>" +
-                        "<style:header-footer-properties " + "fo:min-height=\"0cm\" " +
-                        "fo:margin=\"0cm\"/>" +
-                        "</style:footer-style>" + "</style:page-layout>",
+                        "<style:header-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:header-style>" +
+                        "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:footer-style>" +
+                        "</style:page-layout>",
 
                 pageStyle);
     }
@@ -85,11 +83,10 @@ public class PageStyleTest {
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
                 "style:print-orientation=\"portrait\" fo:background-color=\"#ffebcd\" " +
-                "fo:margin=\"1.5cm\"/>" +
-                "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" " +
+                "fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" " +
                 "fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer" +
-                "-properties " +
-                "" + "" + "" + "" + "" + "" + "" + "" + "" +
+                "-properties " + "" + "" + "" + "" + "" + "" + "" + "" + "" +
                 "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" +
                 "</style:page-layout>", pageStyle);
     }
@@ -190,6 +187,40 @@ public class PageStyleTest {
                 "</style:header-style>" + "<style:footer-style>" +
                 "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:footer-style>" + "</style:page-layout>", pageStyle);
+    }
+
+    @Test
+    public final void testPrintMargins() throws IOException {
+        final PageStyle pageStyle = PageStyle.builder("test").marginBottom(SimpleLength.pt(1))
+                .marginLeft(SimpleLength.pt(2)).marginRight(SimpleLength.pt(3))
+                .marginTop(SimpleLength.pt(4)).build();
+        this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\"><style:page-layout" +
+                "-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
+                "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\" fo:margin-top=\"4pt\" " +
+                "fo:margin-right=\"3pt\" fo:margin-bottom=\"1pt\" " +
+                "fo:margin-left=\"2pt\"/><style:header-style><style:header-footer-properties " +
+                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer" +
+                "-style><style:header-footer-properties fo:min-height=\"0cm\" " +
+                "fo:margin=\"0cm\"/></style:footer-style></style:page-layout>", pageStyle);
+    }
+
+    @Test
+    public final void testDirect() throws IOException {
+        final PageStyle test = PageStyle.builder("test").build();
+        final PageStyle pageStyle = PageStyle.builder("test")
+                .pageLayoutStyle(test.getPageLayoutStyle())
+                .masterPageStyle(test.getMasterPageStyle()).build();
+        this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
+        this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\"><style:page-layout" +
+                "-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
+                "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" fo:margin=\"1" +
+                ".5cm\"/><style:header-style><style:header-footer-properties " +
+                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer" +
+                "-style><style:header-footer-properties fo:min-height=\"0cm\" " +
+                "fo:margin=\"0cm\"/></style:footer-style></style:page-layout>", pageStyle);
     }
 
     @Test(expected = IllegalArgumentException.class)

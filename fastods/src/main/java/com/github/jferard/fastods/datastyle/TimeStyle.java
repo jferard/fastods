@@ -36,7 +36,7 @@ import java.io.IOException;
  */
 public class TimeStyle implements DataStyle {
 	private final CoreDataStyle dataStyle;
-	private final DateStyleFormat timeFormat;
+	private final DateTimeStyleFormat timeFormat;
 
 	/**
 	 * Create a new date style
@@ -44,7 +44,7 @@ public class TimeStyle implements DataStyle {
 	 * @param timeFormat the format
 	 */
 	TimeStyle(final CoreDataStyle dataStyle,
-						final DateStyleFormat timeFormat) {
+						final DateTimeStyleFormat timeFormat) {
 		this.dataStyle = dataStyle;
 		this.timeFormat = timeFormat;
 	}
@@ -74,15 +74,17 @@ public class TimeStyle implements DataStyle {
 		/**
 		 * Set the time format like '01:02:03'.
 		 */
-		public static final DateStyleFormat HHMMSS = new DateStyleFormat(DateStyleFormat.LONG_HOURS,
-				DateStyleFormat.COLON, DateStyleFormat.LONG_MINUTES, DateStyleFormat.COLON,
-				DateStyleFormat.LONG_SECONDS);
+		public static final DateTimeStyleFormat HHMMSS = new DateTimeStyleFormat(
+				DateTimeStyleFormat.LONG_HOURS,
+				DateTimeStyleFormat.COLON, DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
+				DateTimeStyleFormat.LONG_SECONDS);
 		/**
 		 * Set the time format like '01:02:03.45'.
 		 */
-		public static final DateStyleFormat HHMMSS00 = new DateStyleFormat(DateStyleFormat.LONG_HOURS,
-				DateStyleFormat.COLON, DateStyleFormat.LONG_MINUTES, DateStyleFormat.COLON,
-				DateStyleFormat.longSeconds(2));
+		public static final DateTimeStyleFormat HHMMSS00 = new DateTimeStyleFormat(
+				DateTimeStyleFormat.LONG_HOURS,
+				DateTimeStyleFormat.COLON, DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
+				DateTimeStyleFormat.longSeconds(2));
 	}
 
 	@Override

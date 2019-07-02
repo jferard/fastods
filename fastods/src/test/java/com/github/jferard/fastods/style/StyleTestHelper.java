@@ -26,7 +26,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.util.StyleBuilder;
 import org.junit.Assert;
 
-public class StyleTestHelper {
+class StyleTestHelper {
     public static <S extends ObjectStyle, T extends StyleBuilder<S> & HidableBuilder<T>> void testGetters(
             final T builder) {
         final S style = builder.build();

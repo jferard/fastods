@@ -37,7 +37,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class DateStyleFormat implements XMLConvertible {
+public class DateTimeStyleFormat implements XMLConvertible {
     /**
      * 16.27.11<number:day>
      * the day
@@ -170,6 +170,7 @@ public class DateStyleFormat implements XMLConvertible {
     /**
      * 16.27.21<number:seconds>
      * Seconds (long)
+     * @param n number of digits
      */
     public static String longSeconds(final int n) {
         return "<number:seconds number:style=\"long\" number:decimal-places=\"" + n + "\"/>";
@@ -183,7 +184,7 @@ public class DateStyleFormat implements XMLConvertible {
      *
      * @param strings the string that compose the format
      */
-    public DateStyleFormat(final String... strings) {
+    public DateTimeStyleFormat(final String... strings) {
         this.strings = strings;
     }
 

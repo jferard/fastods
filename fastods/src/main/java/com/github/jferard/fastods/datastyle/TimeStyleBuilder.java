@@ -33,7 +33,7 @@ public class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBu
     /**
      * The date format.
      */
-    private DateStyleFormat timeFormat;
+    private DateTimeStyleFormat timeFormat;
 
     /**
      * Create a new date style with the name name.
@@ -56,7 +56,7 @@ public class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBu
      * @param format The date format to be used.
      * @return this for fluent style
      */
-    public TimeStyleBuilder timeFormat(final DateStyleFormat format) {
+    public TimeStyleBuilder timeFormat(final DateTimeStyleFormat format) {
         this.timeFormat = format;
         return this;
     }

@@ -48,11 +48,9 @@ public class TableStyleTest {
     @Test
     public final void testEmpty() throws IOException {
         final TableStyle ts = TableStyle.builder("test").build();
-        TestHelper.assertXMLEquals(
-                "<style:style style:name=\"test\" style:family=\"table\" " +
-                        "style:master-page-name=\"DefaultMasterPage\">" + "<style:table-properties " +
-                        "table:display=\"true\" style:writing-mode=\"lr-tb\"/>" + "</style:style>",
-                ts);
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table\" " +
+                "style:master-page-name=\"DefaultMasterPage\">" + "<style:table-properties " +
+                "table:display=\"true\" style:writing-mode=\"lr-tb\"/>" + "</style:style>", ts);
     }
 
     @Test
@@ -60,10 +58,11 @@ public class TableStyleTest {
         final PageStyle ps = PageStyle.builder("p").build();
         final TableStyle ts = TableStyle.builder("test").pageStyle(ps).build();
         TestHelper.assertXMLEquals(
-                "<style:style style:name=\"test\" style:family=\"table\" style:master-page-name=\"p\">" +
-                        "<style:table-properties table:display=\"true\" style:writing-mode=\"lr-tb\"/>" +
-                        "</style:style>",
-                ts);
+                "<style:style style:name=\"test\" style:family=\"table\" " +
+                        "style:master-page-name=\"p\">" +
+                        "<style:table-properties table:display=\"true\" " +
+                        "style:writing-mode=\"lr-tb\"/>" +
+                        "</style:style>", ts);
         Assert.assertEquals("test", ts.getName());
     }
 

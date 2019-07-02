@@ -23,14 +23,14 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.datastyle.TextDataStyleBuilder;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class TextStyleTest {
     private XMLUtil util;
@@ -45,7 +45,9 @@ public class TextStyleTest {
     @Test
     public void testXML() throws IOException {
         TestHelper.assertXMLEquals(
-                "<style:style style:name=\"ts\" style:family=\"text\"><style:text-properties/></style:style>", this.ts);
+                "<style:style style:name=\"ts\" " +
+                        "style:family=\"text\"><style:text-properties/></style:style>",
+                this.ts);
     }
 
     @Test
@@ -63,7 +65,10 @@ public class TextStyleTest {
 
     @Test
     public void testEmpty() {
-        Assert.assertFalse(new TextStyle("ts", false, TextProperties.builder().build()).isNotEmpty());
-        Assert.assertTrue(new TextStyle("ts", false, TextProperties.builder().fontWeightBold().build()).isNotEmpty());
+        Assert.assertFalse(
+                new TextStyle("ts", false, TextProperties.builder().build()).isNotEmpty());
+        Assert.assertTrue(
+                new TextStyle("ts", false, TextProperties.builder().fontWeightBold().build())
+                        .isNotEmpty());
     }
 }

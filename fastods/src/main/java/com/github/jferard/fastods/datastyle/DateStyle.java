@@ -61,47 +61,49 @@ public class DateStyle implements DataStyle {
         /**
          * Set the date format like '10.07.2012'.
          */
-        public static final DateStyleFormat DDMMYYYY = new DateStyleFormat(
-                DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
-                DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT, DateStyleFormat.LONG_YEAR);
+        public static final DateTimeStyleFormat DDMMYYYY = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_DAY, DateTimeStyleFormat.DOT,
+                DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.LONG_YEAR);
 
         /**
          * Set the date format like '10.07.12'.
          */
-        public static final DateStyleFormat DDMMYY = new DateStyleFormat(
-                DateStyleFormat.LONG_DAY, DateStyleFormat.DOT,
-                DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT, DateStyleFormat.YEAR);
+        public static final DateTimeStyleFormat DDMMYY = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_DAY, DateTimeStyleFormat.DOT,
+                DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.YEAR);
 
         /**
          * Set the date format like 'July'.
          */
-        public static final DateStyleFormat MMMM = new DateStyleFormat(DateStyleFormat.LONG_TEXTUAL_MONTH);
+        public static final DateTimeStyleFormat MMMM = new DateTimeStyleFormat(DateTimeStyleFormat.LONG_TEXTUAL_MONTH);
 
         /**
          * Set the date format like '07.12'.<br>
          * Month.Year
          */
-        public static final DateStyleFormat MMYY = new DateStyleFormat(DateStyleFormat.LONG_MONTH, DateStyleFormat.DOT,
-                DateStyleFormat.YEAR);
+        public static final DateTimeStyleFormat MMYY = new DateTimeStyleFormat(DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT,
+                DateTimeStyleFormat.YEAR);
 
         /**
          * Set the date format like '10.July 2012'.
          */
-        public static final DateStyleFormat TMMMMYYYY = new DateStyleFormat(DateStyleFormat.DAY,
-                DateStyleFormat.DOT_SPACE, DateStyleFormat.LONG_TEXTUAL_MONTH, DateStyleFormat.SPACE,
-                DateStyleFormat.LONG_YEAR);
+        public static final DateTimeStyleFormat TMMMMYYYY = new DateTimeStyleFormat(
+                DateTimeStyleFormat.DAY,
+                DateTimeStyleFormat.DOT_SPACE, DateTimeStyleFormat.LONG_TEXTUAL_MONTH, DateTimeStyleFormat.SPACE,
+                DateTimeStyleFormat.LONG_YEAR);
 
         /**
          * Set the date format to the weeknumber like '28'.<br>
          * Week number
          */
-        public static final DateStyleFormat WW = new DateStyleFormat(DateStyleFormat.WEEK);
+        public static final DateTimeStyleFormat WW = new DateTimeStyleFormat(DateTimeStyleFormat.WEEK);
 
         /**
          * Set the date format like '2012-07-10'.<br>
          */
-        public static final DateStyleFormat YYYYMMDD = new DateStyleFormat(DateStyleFormat.LONG_YEAR,
-                DateStyleFormat.DASH, DateStyleFormat.LONG_MONTH, DateStyleFormat.DASH, DateStyleFormat.LONG_DAY);
+        public static final DateTimeStyleFormat YYYYMMDD = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_YEAR,
+                DateTimeStyleFormat.DASH, DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DASH, DateTimeStyleFormat.LONG_DAY);
     }
 
     /**
@@ -110,7 +112,7 @@ public class DateStyle implements DataStyle {
      */
     private final boolean automaticOrder;
     private final CoreDataStyle dataStyle;
-    private final DateStyleFormat dateFormat;
+    private final DateTimeStyleFormat dateFormat;
 
     /**
      * Create a new date style with the name name.
@@ -119,7 +121,7 @@ public class DateStyle implements DataStyle {
      * @param dateFormat     the format for the date
      * @param automaticOrder true if the order comes from the current locale
      */
-    DateStyle(final CoreDataStyle dataStyle, final DateStyleFormat dateFormat, final boolean automaticOrder) {
+    DateStyle(final CoreDataStyle dataStyle, final DateTimeStyleFormat dateFormat, final boolean automaticOrder) {
         this.dataStyle = dataStyle;
         this.dateFormat = dateFormat;
         this.automaticOrder = automaticOrder;

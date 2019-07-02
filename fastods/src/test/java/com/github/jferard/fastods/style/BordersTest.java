@@ -39,7 +39,7 @@ public class BordersTest {
     private BorderAttribute a2;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.util = XMLUtil.create();
         this.a1 = new BorderAttribute(SimpleLength.pt(10.0), SimpleColor.BLACK, Style.DOUBLE);
         this.a2 = new BorderAttribute(SimpleLength.pt(11.0), SimpleColor.WHITE, Style.SOLID);
@@ -59,8 +59,7 @@ public class BordersTest {
                 .top(SimpleLength.pt(1), SimpleColor.BLACK, Style.SOLID)
                 .left(SimpleLength.pt(2), SimpleColor.ALICEBLUE, Style.DASHED)
                 .right(SimpleLength.pt(3), SimpleColor.CADETBLUE, Style.DOUBLE)
-                .bottom(SimpleLength.pt(4), SimpleColor.DARKBLUE, Style.GROOVE)
-                .build();
+                .bottom(SimpleLength.pt(4), SimpleColor.DARKBLUE, Style.GROOVE).build();
         this.assertAttrXMLEquals(" fo:border=\"1pt double #f0f8ff\" fo:border-top=\"1pt solid " +
                 "#000000\" fo:border-right=\"3pt double #5f9ea0\" fo:border-bottom=\"4pt groove " +
                 "#00008b\" fo:border-left=\"2pt dashed #f0f8ff\"", b);
@@ -74,8 +73,7 @@ public class BordersTest {
                 " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" " +
                         "fo:border-right=\"11pt " +
                         "solid #ffffff\" fo:border-bottom=\"11pt solid #ffffff\" " +
-                        "fo:border-left=\"11pt solid " +
-                        "#ffffff\"", b);
+                        "fo:border-left=\"11pt solid " + "#ffffff\"", b);
     }
 
     @Test
@@ -84,8 +82,7 @@ public class BordersTest {
                 .bottom(this.a2).left(this.a1).build();
         this.assertAttrXMLEquals(
                 " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" " +
-                        "fo:border-bottom=\"11pt " +
-                        "solid #ffffff\"", b);
+                        "fo:border-bottom=\"11pt " + "solid #ffffff\"", b);
     }
 
     @Test
@@ -94,11 +91,11 @@ public class BordersTest {
         final Borders b2 = new BordersBuilder().all(this.a2).build();
         final Borders b3 = new BordersBuilder().all(this.a1).build();
 
-        Assert.assertFalse(b1.equals(null));
-        Assert.assertFalse(b1.equals("a"));
-        Assert.assertFalse(b1.equals(b2));
-        Assert.assertTrue(b1.equals(b1));
-        Assert.assertTrue(b1.equals(b3));
+        Assert.assertNotEquals(null, b1);
+        Assert.assertNotEquals("a", b1);
+        Assert.assertNotEquals(b1, b2);
+        Assert.assertEquals(b1, b1);
+        Assert.assertEquals(b1, b3);
     }
 
     @Test

@@ -33,69 +33,67 @@ import java.io.IOException;
 import java.util.Locale;
 
 public class DataStylesTest {
-    private DataStyles dataStyles;
+    private DataStyles ds;
 
     @Before
     public void setUp() {
-        this.dataStyles = DataStylesBuilder.create(Locale.US).build();
+        this.ds = DataStylesBuilder.create(Locale.US).build();
     }
 
     @Test
     public void testGetAll() {
         for (final TableCell.Type type : TableCell.Type.values()) {
             if (type == TableCell.Type.STRING || type == TableCell.Type.VOID) {
-                Assert.assertNull(this.dataStyles.getDataStyle(type));
+                Assert.assertNull(this.ds.getDataStyle(type));
             } else {
-                Assert.assertNotNull(this.dataStyles.getDataStyle(type));
+                Assert.assertNotNull(this.ds.getDataStyle(type));
             }
         }
     }
 
     @Test
     public void testGetString() {
-        Assert.assertNull(this.dataStyles.getDataStyle(TableCell.Type.STRING));
+        Assert.assertNull(this.ds.getDataStyle(TableCell.Type.STRING));
     }
 
     @Test
     public void testGetVoid() {
-        Assert.assertNull(this.dataStyles.getDataStyle(TableCell.Type.VOID));
+        Assert.assertNull(this.ds.getDataStyle(TableCell.Type.VOID));
     }
 
 
     @Test
     public void testGetBoolean() {
-        Assert.assertEquals(this.dataStyles.getBooleanDataStyle(),
-                this.dataStyles.getDataStyle(TableCell.Type.BOOLEAN));
+        Assert.assertEquals(this.ds.getBooleanDataStyle(),
+                this.ds.getDataStyle(TableCell.Type.BOOLEAN));
     }
 
     @Test
     public void testGetCurrency() {
-        Assert.assertEquals(this.dataStyles.getCurrencyDataStyle(),
-                this.dataStyles.getDataStyle(TableCell.Type.CURRENCY));
+        Assert.assertEquals(this.ds.getCurrencyDataStyle(),
+                this.ds.getDataStyle(TableCell.Type.CURRENCY));
     }
 
     @Test
     public void testGetDate() {
-        Assert.assertEquals(this.dataStyles.getDateDataStyle(),
-                this.dataStyles.getDataStyle(TableCell.Type.DATE));
+        Assert.assertEquals(this.ds.getDateDataStyle(), this.ds.getDataStyle(TableCell.Type.DATE));
     }
 
     @Test
     public void testGetFloat() {
-        Assert.assertEquals(this.dataStyles.getFloatDataStyle(),
-                this.dataStyles.getDataStyle(TableCell.Type.FLOAT));
+        Assert.assertEquals(this.ds.getFloatDataStyle(),
+                this.ds.getDataStyle(TableCell.Type.FLOAT));
     }
 
     @Test
     public void testGetPercentage() {
-        Assert.assertEquals(this.dataStyles.getPercentageDataStyle(),
-                this.dataStyles.getDataStyle(TableCell.Type.PERCENTAGE));
+        Assert.assertEquals(this.ds.getPercentageDataStyle(),
+                this.ds.getDataStyle(TableCell.Type.PERCENTAGE));
     }
 
     @Test
     public void testGetTime() {
-        Assert.assertEquals(this.dataStyles.getTimeDataStyle(),
-                this.dataStyles.getDataStyle(TableCell.Type.TIME));
+        Assert.assertEquals(this.ds.getTimeDataStyle(), this.ds.getDataStyle(TableCell.Type.TIME));
     }
 
     @Test
@@ -119,8 +117,7 @@ public class DataStylesTest {
                         " style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/><number:text> " +
                         "</number:text><number:currency-symbol>$</number:currency-symbol></number" +
-                        ":currency-style>",
-                ds.getCurrencyDataStyle());
+                        ":currency-style>", ds.getCurrencyDataStyle());
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"date-data\" number:language=\"en\" " +
                         "number:country=\"C\" " +
@@ -137,12 +134,26 @@ public class DataStylesTest {
                         "number:country=\"E\" style:volatile=\"true\"><number:number " +
                         "number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/><number:text>%</number:text></number" +
-                        ":percentage-style>",
-                ds.getPercentageDataStyle());
+                        ":percentage-style>", ds.getPercentageDataStyle());
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"time-data\" number:language=\"en\" " +
                         "number:country=\"F\" " +
                         "style:volatile=\"true\" number:format-source=\"language\"/>",
                 ds.getTimeDataStyle());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNull() {
+        new DataStyles(null, this.ds.getCurrencyDataStyle(), this.ds.getDateDataStyle(),
+                this.ds.getFloatDataStyle(), this.ds.getPercentageDataStyle(),
+                this.ds.getTimeDataStyle());
+    }
+
+    @Test
+    public final void testConstantFormat() throws IOException {
+        final DateTimeStyleFormat ds = DateStyle.Format.DDMMYY;
+        TestHelper.assertXMLEquals(
+                "<number:day number:style=\"long\"/><number:text>.</number:text><number:month " +
+                        "number:style=\"long\"/><number:text>.</number:text><number:year/>", ds);
     }
 }

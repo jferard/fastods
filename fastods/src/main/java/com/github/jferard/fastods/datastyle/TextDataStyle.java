@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public class TextStyle implements DataStyle {
+public class TextDataStyle implements DataStyle {
     private final CoreDataStyle dataStyle;
     private final String text;
 
@@ -42,7 +42,7 @@ public class TextStyle implements DataStyle {
      * @param dataStyle the embedded data style
      * @param text the text ("<number:text-content>" for instance)
      */
-	TextStyle(final CoreDataStyle dataStyle, final String text) {
+	TextDataStyle(final CoreDataStyle dataStyle, final String text) {
 		this.dataStyle = dataStyle;
         this.text = text;
     }
@@ -50,7 +50,7 @@ public class TextStyle implements DataStyle {
 	@Override
 	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
 			throws IOException {
-		appendable.append("<number:text-style ");
+		appendable.append("<number:text-style");
 		util.appendEAttribute(appendable, "style:name", this.getName());
 		this.dataStyle.appendLVAttributes(util, appendable);
 		appendable.append(">").append(this.text).append("</number:text-style>");
