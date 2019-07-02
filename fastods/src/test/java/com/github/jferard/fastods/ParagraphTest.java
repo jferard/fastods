@@ -32,6 +32,8 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class ParagraphTest {
@@ -58,50 +60,61 @@ public class ParagraphTest {
 
     @Test
     public final void testWithStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
+        final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal()
+                .buildStyle("style");
         this.parBuilder.style(ts).span("text");
         this.assertParXMLEquals("<text:p text:style-name=\"style\">text</text:p>");
     }
 
     @Test
-    public final void testLinks() throws IOException {
+    public final void testLinks() throws IOException, URISyntaxException {
         final Table table = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
-        this.parBuilder.link("text1", "ref").link("text1", new File("f")).link("text1", new URL("http:a/b"))
-                .link("text1", table);
+        this.parBuilder.link("to_ref", "ref").link("to_file", new File("f"))
+                .link("to_url", new URL("http://a")).link("to_uri", new URI("protocol:a"))
+                .link("to_table", table);
         this.assertParXMLEquals(
-                "<text:p>" + "<text:a xlink:href=\"#ref\" xlink:type=\"simple\">text1</text:a>" + "<text:a " +
-                        "xlink:href=\"" + this
-                        .getURLStart() + "f\" xlink:type=\"simple\">text1</text:a>" + "<text:a " +
-                        "xlink:href=\"http:a/b\" xlink:type=\"simple\">text1</text:a>" + "<text:a " +
-                        "xlink:href=\"#tableName\" xlink:type=\"simple\">text1</text:a>" + "</text:p>");
+                "<text:p>" + "<text:a xlink:href=\"#ref\" xlink:type=\"simple\">to_ref</text:a>" +
+                        "<text:a " + "xlink:href=\"" + this.getURLStart() +
+                        "f\" xlink:type=\"simple\">to_file</text:a>" + "<text:a " +
+                        "xlink:href=\"http://a\" xlink:type=\"simple\">to_url</text:a>" +
+                        "<text:a " +
+                        "xlink:href=\"protocol:a\" xlink:type=\"simple\">to_uri</text:a>" +
+                        "<text:a " +
+                        "xlink:href=\"#tableName\" xlink:type=\"simple\">to_table</text:a>" +
+                        "</text:p>");
 
         PowerMock.verifyAll();
     }
 
     @Test
-    public final void testStyledLinks() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
+    public final void testStyledLinks() throws IOException, URISyntaxException {
+        final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal()
+                .buildStyle("style");
         final Table table = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
-        this.parBuilder.styledLink("text1", ts, "ref").styledLink("text1", ts, new File("f"))
-                .styledLink("text1", ts, new URL("http:a/b")).styledLink("text1", ts, table);
+        this.parBuilder.styledLink("to_ref", ts, "ref").styledLink("to_file", ts, new File("f"))
+                .styledLink("to_url", ts, new URL("http://a"))
+                .styledLink("to_uri", ts, new URI("protocol:a")).styledLink("to_table", ts, table);
         this.assertParXMLEquals(
                 "<text:p>" + "<text:a text:style-name=\"style\" xlink:href=\"#ref\" " +
-                        "xlink:type=\"simple\">text1</text:a>" + "<text:a text:style-name=\"style\" xlink:href=\"" +
-                        this
-                        .getURLStart() + "f\" xlink:type=\"simple\">text1</text:a>" + "<text:a " +
-                        "text:style-name=\"style\" xlink:href=\"http:a/b\" xlink:type=\"simple\">text1</text:a>" +
+                        "xlink:type=\"simple\">to_ref</text:a>" +
+                        "<text:a text:style-name=\"style\" xlink:href=\"" + this.getURLStart() +
+                        "f\" xlink:type=\"simple\">to_file</text:a>" + "<text:a " +
+                        "text:style-name=\"style\" xlink:href=\"http://a\" " +
+                        "xlink:type=\"simple\">to_url</text:a>" + "<text:a " +
+                        "text:style-name=\"style\" xlink:href=\"protocol:a\" " +
+                        "xlink:type=\"simple\">to_uri</text:a>" +
                         "<text:a text:style-name=\"style\" xlink:href=\"#tableName\" " +
-                        "xlink:type=\"simple\">text1</text:a>" + "</text:p>");
+                        "xlink:type=\"simple\">to_table</text:a>" + "</text:p>");
 
         PowerMock.verifyAll();
     }
