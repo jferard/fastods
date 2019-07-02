@@ -27,10 +27,10 @@ import com.github.jferard.fastods.odselement.OdsElements;
 import org.junit.Assert;
 import org.powermock.api.easymock.PowerMock;
 
-import java.util.Locale;
-
 public class DataStyleTestHelper {
-    /** very basic test */
+    /**
+     * very basic test
+     */
     public static void testAddToElements(final DataStyle dataStyle) {
         final OdsElements elements = PowerMock.createMock(OdsElements.class);
 
@@ -43,7 +43,8 @@ public class DataStyleTestHelper {
         PowerMock.verifyAll();
     }
 
-    public static <S extends DataStyle, T extends DataStyleBuilder<S,T>> void testGetters(final DataStyleBuilder<S, T> builder) {
+    public static <S extends DataStyle, T extends DataStyleBuilder<S, T>> void testGetters(
+            final DataStyleBuilder<S, T> builder) {
         final S style = builder.build();
         Assert.assertEquals("test", style.getName());
         Assert.assertTrue(style.isHidden());

@@ -182,13 +182,17 @@ public class TableCellWalkerImpl implements TableCellWalker {
 
     @Override
     public void next() {
-        if (this.c >= this.row.getColumnCount()) throw new IndexOutOfBoundsException();
+        if (this.c >= this.row.getColumnCount()) {
+            throw new IndexOutOfBoundsException();
+        }
         this.c++;
     }
 
     @Override
     public void previous() {
-        if (this.c <= 0) throw new IndexOutOfBoundsException();
+        if (this.c <= 0) {
+            throw new IndexOutOfBoundsException();
+        }
         this.c--;
     }
 
@@ -244,7 +248,9 @@ public class TableCellWalkerImpl implements TableCellWalker {
 
     @Override
     public void to(final int c) {
-        if (c < 0) throw new IndexOutOfBoundsException();
+        if (c < 0) {
+            throw new IndexOutOfBoundsException();
+        }
         this.c = c;
     }
 

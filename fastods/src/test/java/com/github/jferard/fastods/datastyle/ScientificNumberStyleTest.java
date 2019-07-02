@@ -24,103 +24,120 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Locale;
 
 public class ScientificNumberStyleTest {
-    private XMLUtil util;
     private Locale locale;
 
     @Before
     public void setUp() {
-        this.util = XMLUtil.create();
         this.locale = Locale.US;
     }
 
     @Test
-    public final void test1() throws IOException, SAXException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).country("FR")
-                .language("en").volatileStyle(true).minExponentDigits(1).groupThousands(true).minIntegerDigits(8)
-                .negativeValueRed().build();
+    public final void test1() throws IOException {
+        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
+                .country("FR").language("en").volatileStyle(true).minExponentDigits(1)
+                .groupThousands(true).minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
-                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"FR\" " +
-                        "style:volatile=\"true\">" + "<number:scientific-number number:min-exponent-digits=\"1\" " +
-                        "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
+                "<number:number-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"FR\" " +
+                        "style:volatile=\"true\">" +
+                        "<number:scientific-number number:min-exponent-digits=\"1\" " +
+                        "number:decimal-places=\"2\" number:min-integer-digits=\"8\" " +
+                        "number:grouping=\"true\"/>" +
                         "</number:number-style>" + "<number:number-style style:name=\"test-neg\" " +
-                        "number:language=\"en\" " + "number:country=\"FR\" style:volatile=\"true\">" +
-                        "<style:text-properties fo:color=\"#ff0000\"/>" + "<number:text>-</number:text>" +
-                        "<number:scientific-number number:min-exponent-digits=\"1\" " + "number:decimal-places=\"2\" " +
-                        "" + "" + "" + "" + "" + "" + "" + "number:min-integer-digits=\"8\" " +
-                        "number:grouping=\"true\"/>" + "<style:map" + " " + "style:condition=\"value()&gt;=0\" " +
-                        "style:apply-style-name=\"test\"/>" + "</number:number-style>",
-                s);
+                        "number:language=\"en\" " +
+                        "number:country=\"FR\" style:volatile=\"true\">" +
+                        "<style:text-properties fo:color=\"#ff0000\"/>" +
+                        "<number:text>-</number:text>" +
+                        "<number:scientific-number number:min-exponent-digits=\"1\" " +
+                        "number:decimal-places=\"2\" " + "" + "" + "" + "" + "" + "" + "" +
+                        "number:min-integer-digits=\"8\" " + "number:grouping=\"true\"/>" +
+                        "<style:map" + " " + "style:condition=\"value()&gt;=0\" " +
+                        "style:apply-style-name=\"test\"/>" + "</number:number-style>", s);
     }
 
     @Test
-    public final void test2() throws IOException, SAXException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).country("FR")
-                .language("en").locale(Locale.GERMANY).volatileStyle(true).minExponentDigits(2).groupThousands(true)
-                .minIntegerDigits(8).negativeValueRed().build();
+    public final void test2() throws IOException {
+        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
+                .country("FR").language("en").locale(Locale.GERMANY).volatileStyle(true)
+                .minExponentDigits(2).groupThousands(true).minIntegerDigits(8).negativeValueRed()
+                .build();
         TestHelper.assertXMLEquals(
-                "<number:number-style style:name=\"test\" number:language=\"de\" number:country=\"DE\" " +
-                        "style:volatile=\"true\">" + "<number:scientific-number number:min-exponent-digits=\"2\" " +
-                        "number:decimal-places=\"2\" number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
+                "<number:number-style style:name=\"test\" number:language=\"de\" " +
+                        "number:country=\"DE\" " +
+                        "style:volatile=\"true\">" +
+                        "<number:scientific-number number:min-exponent-digits=\"2\" " +
+                        "number:decimal-places=\"2\" number:min-integer-digits=\"8\" " +
+                        "number:grouping=\"true\"/>" +
                         "</number:number-style>" + "<number:number-style style:name=\"test-neg\" " +
-                        "number:language=\"de\" " + "number:country=\"DE\" style:volatile=\"true\">" +
-                        "<style:text-properties fo:color=\"#ff0000\"/>" + "<number:text>-</number:text>" +
-                        "<number:scientific-number number:min-exponent-digits=\"2\" " + "number:decimal-places=\"2\" " +
-                        "" + "" + "" + "" + "" + "" + "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
-                        "<style:map" + " " + "style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
-                        "</number:number-style>",
-                s);
+                        "number:language=\"de\" " +
+                        "number:country=\"DE\" style:volatile=\"true\">" +
+                        "<style:text-properties fo:color=\"#ff0000\"/>" +
+                        "<number:text>-</number:text>" +
+                        "<number:scientific-number number:min-exponent-digits=\"2\" " +
+                        "number:decimal-places=\"2\" " + "" + "" + "" + "" + "" + "" +
+                        "number:min-integer-digits=\"8\" number:grouping=\"true\"/>" +
+                        "<style:map" + " " +
+                        "style:condition=\"value()&gt;=0\" style:apply-style-name=\"test\"/>" +
+                        "</number:number-style>", s);
     }
 
     @Test
-    public final void testNegativeValueColor() throws IOException, SAXException {
+    public final void testNegativeValueColor() throws IOException {
         final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
                 .negativeValueColor(SimpleColor.BLUE).build();
         TestHelper.assertXMLEquals(
-                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\"><number:scientific-number number:min-exponent-digits=\"0\" " +
+                "<number:number-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\"><number:scientific-number " +
+                        "number:min-exponent-digits=\"0\" " +
                         "number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/></number:number-style><number:number-style " +
+                        "number:min-integer-digits=\"1\"/></number:number-style><number:number" +
+                        "-style " +
                         "style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" " +
                         "style:volatile=\"true\"><style:text-properties " +
-                        "fo:color=\"#0000ff\"/><number:text>-</number:text><number:scientific-number " +
+                        "fo:color=\"#0000ff\"/><number:text>-</number:text><number:scientific" +
+                        "-number " +
                         "number:min-exponent-digits=\"0\" number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/><style:map style:condition=\"value()&gt;=0\" " +
-                        "style:apply-style-name=\"test\"/></number:number-style>",
-                s);
+                        "number:min-integer-digits=\"1\"/><style:map style:condition=\"value()" +
+                        "&gt;=0\" " +
+                        "style:apply-style-name=\"test\"/></number:number-style>", s);
     }
 
     @Test
-    public final void testGetters() throws IOException {
+    public final void testGetters() {
         DataStyleTestHelper.testGetters(new ScientificNumberStyleBuilder("test", this.locale));
     }
 
     @Test
-    public final void testDecimalPlaces() throws IOException, SAXException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).decimalPlaces(10).build();
+    public final void testDecimalPlaces() throws IOException {
+        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
+                .decimalPlaces(10).build();
         TestHelper.assertXMLEquals(
-                "<number:number-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\"><number:scientific-number number:min-exponent-digits=\"0\" " +
-                        "number:decimal-places=\"10\" number:min-integer-digits=\"1\"/></number:number-style>",
+                "<number:number-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\"><number:scientific-number " +
+                        "number:min-exponent-digits=\"0\" " +
+                        "number:decimal-places=\"10\" " +
+                        "number:min-integer-digits=\"1\"/></number:number-style>",
                 s);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testWithNoName() {
-        final ScientificNumberStyle sns = new ScientificNumberStyleBuilder(null, this.locale).build();
+        new ScientificNumberStyleBuilder(null, this.locale).build();
     }
 
     @Test
-    public final void testAddToElements() throws IOException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale).build();
+    public final void testAddToElements() {
+        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
+                .build();
         DataStyleTestHelper.testAddToElements(s);
     }
 }

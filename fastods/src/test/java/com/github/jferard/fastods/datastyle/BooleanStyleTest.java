@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,28 +40,31 @@ public class BooleanStyleTest {
 
     @Test
     public final void testLocaleVolatile() throws IOException {
-        final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(false).build();
+        final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).locale(Locale.FRANCE)
+                .volatileStyle(false).build();
         TestHelper.assertXMLEquals(
-                "<number:boolean-style style:name=\"test\" number:language=\"fr\" number:country=\"FR\"/>",
+                "<number:boolean-style style:name=\"test\" number:language=\"fr\" " +
+                        "number:country=\"FR\"/>",
                 bs);
     }
 
     @Test
     public final void testLanguageCountry() throws IOException {
-        final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).language("a").country("b").build();
+        final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).language("a")
+                .country("b").build();
         TestHelper.assertXMLEquals(
-                "<number:boolean-style style:name=\"test\" number:language=\"a\" number:country=\"B\" " +
-                        "style:volatile=\"true\"/>",
-                bs);
+                "<number:boolean-style style:name=\"test\" number:language=\"a\" " +
+                        "number:country=\"B\" " +
+                        "style:volatile=\"true\"/>", bs);
     }
 
     @Test
-    public final void testGetters() throws IOException {
+    public final void testGetters() {
         DataStyleTestHelper.testGetters(new BooleanStyleBuilder("test", this.locale));
     }
 
     @Test
-    public final void testAddToElements() throws IOException {
+    public final void testAddToElements() {
         final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).build();
         DataStyleTestHelper.testAddToElements(bs);
     }

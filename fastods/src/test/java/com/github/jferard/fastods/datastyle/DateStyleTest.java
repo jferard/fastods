@@ -39,98 +39,122 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat1() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYY).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.DDMMYY).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " + "style" +
-                        ":volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\"><number:day number:style=\"long\"/>" + "<number:text>" + "" +
-                        ".</number:text><number:month number:style=\"long\"/>" + "<number:text>" + "" + "" + "" + ""
-                        + ".</number:text><number:year/>" + "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style" + ":volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\"><number:day number:style=\"long\"/>" +
+                        "<number:text>" + "" +
+                        ".</number:text><number:month number:style=\"long\"/>" + "<number:text>" +
+                        "" + "" + "" + "" + ".</number:text><number:year/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithFormat2() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYYYY).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.DDMMYYYY).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">" +
-                        "<number:day number:style=\"long\"/>" + "<number:text>.</number:text>" + "<number:month " +
-                        "number:style=\"long\"/>" + "<number:text>.</number:text>" + "<number:year " +
-                        "number:style=\"long\"/>" + "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\">" +
+                        "<number:day number:style=\"long\"/>" + "<number:text>.</number:text>" +
+                        "<number:month " + "number:style=\"long\"/>" +
+                        "<number:text>.</number:text>" + "<number:year " +
+                        "number:style=\"long\"/>" + "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithFormat3() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.MMMM).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.MMMM).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">" +
-                        "<number:month number:style=\"long\" number:textual=\"true\"/>" + "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\">" +
+                        "<number:month number:style=\"long\" number:textual=\"true\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithFormat4() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.MMYY).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.MMYY).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">" +
-                        "<number:month number:style=\"long\"/>" + "<number:text>.</number:text>" + "<number:year/>" +
-                        "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\">" +
+                        "<number:month number:style=\"long\"/>" + "<number:text>.</number:text>" +
+                        "<number:year/>" + "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithFormat5() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.TMMMMYYYY).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.TMMMMYYYY).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">" +
-                        "<number:day/>" + "<number:text>. </number:text>" + "<number:month number:style=\"long\" " +
-                        "number:textual=\"true\"/>" + "<number:text> </number:text>" + "<number:year " +
-                        "number:style=\"long\"/>" + "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\">" +
+                        "<number:day/>" + "<number:text>. </number:text>" +
+                        "<number:month number:style=\"long\" " + "number:textual=\"true\"/>" +
+                        "<number:text> </number:text>" + "<number:year " +
+                        "number:style=\"long\"/>" + "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithFormat6() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.WW).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.WW).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">" +
-                        "<number:week-of-year/>" + "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\">" +
+                        "<number:week-of-year/>" + "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithFormat7() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.YYYYMMDD).build();
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.YYYYMMDD).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"fixed\">" +
-                        "<number:year number:style=\"long\"/>" + "<number:text>-</number:text>" + "<number:month " +
-                        "number:style=\"long\"/>" + "<number:text>-</number:text>" + "<number:day " +
-                        "number:style=\"long\"/>" + "</number:date-style>",
-                ds);
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"fixed\">" +
+                        "<number:year number:style=\"long\"/>" + "<number:text>-</number:text>" +
+                        "<number:month " + "number:style=\"long\"/>" +
+                        "<number:text>-</number:text>" + "<number:day " +
+                        "number:style=\"long\"/>" + "</number:date-style>", ds);
     }
 
     @Test
     public final void testWithLanguage() throws IOException {
         final DateStyle ds = new DateStyleBuilder("test", this.locale).language("fr").build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"fr\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
+                "<number:date-style style:name=\"test\" number:language=\"fr\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"language\"/>",
                 ds);
     }
 
     @Test
     public final void testWithLocale() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", Locale.FRANCE).locale(this.locale).build();
+        final DateStyle ds = new DateStyleBuilder("test", Locale.FRANCE).locale(this.locale)
+                .build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" number:format-source=\"language\"/>",
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
+                        "number:format-source=\"language\"/>",
                 ds);
     }
 
@@ -143,8 +167,10 @@ public class DateStyleTest {
     public final void testWithOrder() throws IOException {
         final DateStyle ds = new DateStyleBuilder("test", this.locale).automaticOrder(true).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"test\" number:language=\"en\" number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"true\" number:format-source=\"language\"/>",
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" " +
+                        "style:volatile=\"true\" number:automatic-order=\"true\" " +
+                        "number:format-source=\"language\"/>",
                 ds);
     }
 
@@ -152,19 +178,20 @@ public class DateStyleTest {
     public final void testWithVolatile() throws IOException {
         final DateStyle ds = new DateStyleBuilder("test", this.locale).volatileStyle(false).build();
         TestHelper.assertXMLEquals(
-                "<number:date-style number:language=\"en\" style:name=\"test\" number:country=\"US\" " +
-                        "number:automatic-order=\"false\" number:format-source=\"language\"/>",
-                ds);
+                "<number:date-style number:language=\"en\" style:name=\"test\" " +
+                        "number:country=\"US\" " +
+                        "number:automatic-order=\"false\" number:format-source=\"language\"/>", ds);
     }
 
     @Test
-    public final void testGetters() throws IOException {
+    public final void testGetters() {
         DataStyleTestHelper.testGetters(new DateStyleBuilder("test", this.locale));
     }
 
     @Test
-    public final void testAddToElements() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYY).build();
+    public final void testAddToElements() {
+        final DateStyle ds = new DateStyleBuilder("test", this.locale)
+                .dateFormat(DateStyle.Format.DDMMYY).build();
         DataStyleTestHelper.testAddToElements(ds);
     }
 }

@@ -76,12 +76,14 @@ public class DataStylesTest {
 
     @Test
     public void testGetDate() {
-        Assert.assertEquals(this.dataStyles.getDateDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.DATE));
+        Assert.assertEquals(this.dataStyles.getDateDataStyle(),
+                this.dataStyles.getDataStyle(TableCell.Type.DATE));
     }
 
     @Test
     public void testGetFloat() {
-        Assert.assertEquals(this.dataStyles.getFloatDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.FLOAT));
+        Assert.assertEquals(this.dataStyles.getFloatDataStyle(),
+                this.dataStyles.getDataStyle(TableCell.Type.FLOAT));
     }
 
     @Test
@@ -92,7 +94,8 @@ public class DataStylesTest {
 
     @Test
     public void testGetTime() {
-        Assert.assertEquals(this.dataStyles.getTimeDataStyle(), this.dataStyles.getDataStyle(TableCell.Type.TIME));
+        Assert.assertEquals(this.dataStyles.getTimeDataStyle(),
+                this.dataStyles.getDataStyle(TableCell.Type.TIME));
     }
 
     @Test
@@ -107,32 +110,38 @@ public class DataStylesTest {
 
         final DataStyles ds = dsb.build();
         TestHelper.assertXMLEquals(
-                "<number:boolean-style style:name=\"boolean-data\" number:language=\"en\" " + "number:country=\"A\" " +
-                        "style:volatile=\"true\"/>",
+                "<number:boolean-style style:name=\"boolean-data\" number:language=\"en\" " +
+                        "number:country=\"A\" " + "style:volatile=\"true\"/>",
                 ds.getBooleanDataStyle());
         TestHelper.assertXMLEquals(
-                "<number:currency-style style:name=\"currency-data\" number:language=\"en\" " + "number:country=\"B\"" +
+                "<number:currency-style style:name=\"currency-data\" number:language=\"en\" " +
+                        "number:country=\"B\"" +
                         " style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/><number:text> " +
-                        "</number:text><number:currency-symbol>$</number:currency-symbol></number:currency-style>",
+                        "</number:text><number:currency-symbol>$</number:currency-symbol></number" +
+                        ":currency-style>",
                 ds.getCurrencyDataStyle());
         TestHelper.assertXMLEquals(
-                "<number:date-style style:name=\"date-data\" number:language=\"en\" " + "number:country=\"C\" " +
+                "<number:date-style style:name=\"date-data\" number:language=\"en\" " +
+                        "number:country=\"C\" " +
                         "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"language\"/>",
-                ds.getDateDataStyle());
+                        "number:format-source=\"language\"/>", ds.getDateDataStyle());
         TestHelper.assertXMLEquals(
-                "<number:number-style style:name=\"float-data\" number:language=\"en\" " + "number:country=\"D\" " +
+                "<number:number-style style:name=\"float-data\" number:language=\"en\" " +
+                        "number:country=\"D\" " +
                         "style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/></number:number-style>",
                 ds.getFloatDataStyle());
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"percentage-data\" number:language=\"en\" " +
-                        "number:country=\"E\" style:volatile=\"true\"><number:number number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/><number:text>%</number:text></number:percentage-style>",
+                        "number:country=\"E\" style:volatile=\"true\"><number:number " +
+                        "number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/><number:text>%</number:text></number" +
+                        ":percentage-style>",
                 ds.getPercentageDataStyle());
         TestHelper.assertXMLEquals(
-                "<number:time-style style:name=\"time-data\" number:language=\"en\" " + "number:country=\"F\" " +
+                "<number:time-style style:name=\"time-data\" number:language=\"en\" " +
+                        "number:country=\"F\" " +
                         "style:volatile=\"true\" number:format-source=\"language\"/>",
                 ds.getTimeDataStyle());
     }
