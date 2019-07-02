@@ -145,7 +145,20 @@ public class TableColumnStyleTest {
     public final void testOptimalWidth() throws IOException {
         final TableColumnStyle test = TableColumnStyle.builder("test").optimalWidth().build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
+                        "style:family=\"table-column\"><style:table-column-properties " +
+                        "fo:break-before=\"auto\" " +
+                        "style:use-optimal-column-width=\"true\"/></style:style>",
+                test);
+    }
+
+    @Test
+    public final void testWidth4cm() throws IOException {
+        final TableCellStyle tableCellStyle = TableCellStyle.builder("c1")
+                .fontName(LOFonts.LIBERATION_MONO).fontSize(SimpleLength.pt(10)).build();
+        final TableColumnStyle test = TableColumnStyle.builder("test")
+                .defaultCellStyle(tableCellStyle).columnWidth(SimpleLength.cm(4)).build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
                 "style:family=\"table-column\"><style:table-column-properties " +
-                "fo:break-before=\"auto\" style:use-optimal-column-width=\"true\"/></style:style>", test);
+                "fo:break-before=\"auto\" style:column-width=\"4cm\"/></style:style>", test);
     }
 }

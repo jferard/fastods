@@ -130,6 +130,18 @@ public class TableRowStyle implements FontFaceContainerStyle {
 
     @Override
     public FontFace getFontFace() {
-        return this.defaultCellStyle.getFontFace();
+        if (this.defaultCellStyle == null) {
+            return null;
+        } else {
+            return this.defaultCellStyle.getFontFace();
+        }
+    }
+
+
+    /**
+     * @return the table cell style. May be null.
+     */
+    public TableCellStyle getDefaultCellStyle() {
+        return this.defaultCellStyle;
     }
 }

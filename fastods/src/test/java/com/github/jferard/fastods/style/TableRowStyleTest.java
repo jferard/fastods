@@ -69,7 +69,7 @@ public class TableRowStyleTest {
     @Test
     public final void testGetNoFontFace() {
         final TableRowStyle test = TableRowStyle.builder("test").build();
-        Assert.assertEquals(new FontFace(LOFonts.LIBERATION_SANS), test.getFontFace());
+        Assert.assertNull(test.getFontFace());
     }
 
     @Test

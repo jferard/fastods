@@ -380,7 +380,7 @@ class TableBuilder {
      *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
      * @throws FastOdsException Thrown if col has an invalid value.
      */
-    public void setColumnStyle(final int col, final TableColumnStyle ts) throws FastOdsException {
+    public void setColumnStyle(final int col, final TableColumnStyle ts) {
         TableBuilder.checkCol(col);
         this.stylesContainer.addContentFontFaceContainerStyle(ts);
         ts.addToContentStyles(this.stylesContainer);

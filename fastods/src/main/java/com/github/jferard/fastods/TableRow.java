@@ -68,8 +68,8 @@ public class TableRow {
     private final FastFullList<TableCell> cells;
     private final boolean libreOfficeMode;
     private DataStyles dataStyles;
-    private TableCellStyle defaultCellStyle;
     private TableRowStyle rowStyle;
+    private TableCellStyle defaultCellStyle;
 
     /**
      * Create a new TableRow
@@ -99,19 +99,6 @@ public class TableRow {
         this.cells = FastFullList.newListWithCapacity(columnCapacity);
     }
 
-    private void appendRowOpenTag(final XMLUtil util, final Appendable appendable)
-            throws IOException {
-        appendable.append("<table:table-row");
-        if (this.rowStyle != null) {
-            util.appendEAttribute(appendable, "table:style-name", this.rowStyle.getName());
-        }
-        if (this.defaultCellStyle != null) {
-            util.appendEAttribute(appendable, "table:default-cell-style-name",
-                    this.defaultCellStyle.getName());
-        }
-        appendable.append(">");
-    }
-
     /**
      * Write the XML dataStyles for this object.<br>
      * This is used while writing the ODS file.
@@ -138,6 +125,20 @@ public class TableRow {
         }
 
         appendable.append("</table:table-row>");
+    }
+
+    private void appendRowOpenTag(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<table:table-row");
+        if (this.rowStyle != null) {
+            util.appendEAttribute(appendable, "table:style-name", this.rowStyle.getName());
+        }
+        final TableCellStyle defaultCellStyle = this.getDefaultCellStyle();
+        if (defaultCellStyle != null) {
+            util.appendEAttribute(appendable, "table:default-cell-style-name",
+                    defaultCellStyle.getName());
+        }
+        appendable.append(">");
     }
 
     private void appendRepeatedCell(final XMLUtil util, final Appendable appendable,
@@ -211,16 +212,6 @@ public class TableRow {
     }
 
     /**
-     * Set the cell rowStyle for the cell at col to ts.
-     *
-     * @param ts The table rowStyle to be used
-     */
-    public void setDefaultCellStyle(final TableCellStyle ts) {
-        this.stylesContainer.addContentFontFaceContainerStyle(ts);
-        this.defaultCellStyle = ts;
-    }
-
-    /**
      * Add a format to this TableRow
      *
      * @param format the format
@@ -277,6 +268,11 @@ public class TableRow {
     public void setStyle(final TableRowStyle rowStyle) {
         this.stylesContainer.addContentFontFaceContainerStyle(rowStyle);
         this.stylesContainer.addContentStyle(rowStyle);
+        final TableCellStyle dcs = rowStyle.getDefaultCellStyle();
+        if (dcs != null) {
+            this.stylesContainer.addStylesFontFaceContainerStyle(dcs);
+            this.stylesContainer.addContentStyle(dcs);
+        }
         this.rowStyle = rowStyle;
     }
 
@@ -303,11 +299,29 @@ public class TableRow {
      * @return the style, never null
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
-        TableCellStyle s = this.defaultCellStyle;
+        TableCellStyle s = this.getDefaultCellStyle();
         if (s == null) {
             s = this.parent.findDefaultCellStyle(columnIndex);
         }
         return s;
+    }
+
+    private TableCellStyle getDefaultCellStyle() {
+        TableCellStyle s = this.defaultCellStyle;
+        if (s == null) {
+            s = this.rowStyle.getDefaultCellStyle();
+        }
+        return s;
+    }
+
+    /**
+     * Set the cell rowStyle for the cell at col to ts.
+     *
+     * @param ts The table rowStyle to be used
+     */
+    public void setDefaultCellStyle(final TableCellStyle ts) {
+        this.stylesContainer.addContentFontFaceContainerStyle(ts);
+        this.defaultCellStyle = ts;
     }
 
     public int index() {

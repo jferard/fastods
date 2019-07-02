@@ -87,4 +87,9 @@ public class FastODSExamplesIT {
     public void advancedTest2() throws IOException, SQLException {
         H_Advanced.example2();
     }
+
+    @Test
+    public void multiplicationTableTest() throws IOException {
+        I_MultiplicationTable.example();
+    }
 }

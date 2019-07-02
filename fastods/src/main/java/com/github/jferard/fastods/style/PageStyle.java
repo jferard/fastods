@@ -250,4 +250,12 @@ public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles,
 									   final Appendable appendable) throws IOException {
 		this.masterPageStyle.appendXMLToMasterStyle(util, appendable);
 	}
+
+
+	/**
+	 * 20.353style:table-centering
+	 */
+	public enum Centering {
+		BOTH, HORIZONTAL, NONE, VERTICAL
+	}
 }

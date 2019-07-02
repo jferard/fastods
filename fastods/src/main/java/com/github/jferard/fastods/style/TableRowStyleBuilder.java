@@ -49,7 +49,7 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Showab
         this.name = TableStyleBuilder.checker.checkStyleName(name);
         this.rowHeight = DEFAULT_ROW_HEIGHT;
         this.hidden = true;
-        this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
+        this.defaultCellStyle = null;
         this.optimalHeight = false;
     }
 

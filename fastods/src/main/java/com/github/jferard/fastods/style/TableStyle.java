@@ -73,12 +73,15 @@ public class TableStyle implements ObjectStyle {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table");
-        if (this.pageStyle != null)
-            util.appendEAttribute(appendable, "style:master-page-name", this.pageStyle.getMasterName());
+        if (this.pageStyle != null) {
+            util.appendEAttribute(appendable, "style:master-page-name",
+                    this.pageStyle.getMasterName());
+        }
         appendable.append("><style:table-properties");
         util.appendAttribute(appendable, "table:display", "true");
         util.appendAttribute(appendable, "style:writing-mode", "lr-tb");
@@ -97,7 +100,9 @@ public class TableStyle implements ObjectStyle {
 
     @Override
     public String getKey() {
-        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        if (this.key == null) {
+            this.key = this.getFamily() + "@" + this.getName();
+        }
         return this.key;
     }
 

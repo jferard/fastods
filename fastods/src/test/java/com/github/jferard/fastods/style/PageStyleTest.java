@@ -167,8 +167,8 @@ public class PageStyleTest {
                 .writingMode(WritingMode.PAGE).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
-                "<style:page-layout-properties fo:page-width=\"21cm\" " +
-                "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
+                "<style:page-layout-properties fo:page-width=\"29.7cm\" " +
+                "fo:page-height=\"21cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
                 "style:print-orientation=\"landscape\" fo:margin=\"1.5cm\"/>" +
                 "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +

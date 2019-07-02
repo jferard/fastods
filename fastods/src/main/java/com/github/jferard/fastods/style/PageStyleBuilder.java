@@ -26,6 +26,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.OdsFileWriterBuilder;
 import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
@@ -55,6 +56,9 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
 	private MasterPageStyle masterPageStyle;
 	private PageLayoutStyle pageLayoutStyle;
 	private boolean hidden;
+	private int scaleTo;
+	private int scaleToPages;
+	private PageStyle.Centering centering;
 
 	/**
 	 * Create a new page style builder.
@@ -77,11 +81,15 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
 
 		this.printOrientation = PageStyle.DEFAULT_PRINT_ORIENTATION;
 		this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
+		this.scaleTo = 100;
+		this.scaleToPages = 0;
+		this.centering = PageStyle.Centering.NONE;
 
 		final TextStyle noneStyle = TextProperties.builder().buildHiddenStyle("none");
 		this.header = PageSection.simpleHeader("", noneStyle);
 		this.footer = PageSection.simpleFooter("", noneStyle);
 		this.hidden = false;
+
 	}
 
 	/**
@@ -119,7 +127,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
 			this.pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(), this
 					.pageWidth,
 					this.pageHeight, this.numFormat, this.backgroundColor, this.header, this.footer, this
-					.printOrientation, this.paperFormat, this.writingMode);
+					.printOrientation, this.paperFormat, this.writingMode, this.scaleTo, this.scaleToPages, this.centering);
 		}
 		return new PageStyle(this.hidden, this.masterPageStyle, this.pageLayoutStyle);
 	}
@@ -256,6 +264,8 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
      * @return this for fluent style
      */
     public PageStyleBuilder printOrientationHorizontal() {
+		this.pageWidth = this.paperFormat.getHeight();
+		this.pageHeight = this.paperFormat.getWidth();
 		this.printOrientation = PageStyle.PrintOrientation.HORIZONTAL;
 		return this;
 	}
@@ -265,6 +275,8 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
      * @return this for fluent style
      */
 	public PageStyleBuilder printOrientationVertical() {
+		this.pageWidth = this.paperFormat.getWidth();
+		this.pageHeight = this.paperFormat.getHeight();
 		this.printOrientation = PageStyle.PrintOrientation.VERTICAL;
 		return this;
 	}
@@ -287,6 +299,36 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
 	@Override
 	public PageStyleBuilder hidden() {
 		this.hidden = true;
+		return this;
+	}
+
+	/**
+	 * 20.344style:scale-to
+	 * @param percentage the percentage value to scale
+	 * @return this for fluent style
+	 */
+	public PageStyleBuilder scaleTo(final int percentage) {
+		this.scaleTo = percentage;
+		return this;
+	}
+
+	/**
+	 * 20.345style:scale-to-pages
+	 * @param pages "the number of pages on which a document should be printed."
+	 * @return this for fluent style
+	 */
+	public PageStyleBuilder scaleToPages(final int pages) {
+		this.scaleToPages = pages;
+		return this;
+	}
+
+	/**
+	 * 20.353 style:table-centering
+	 * @param centering "specifies whether tables are centered horizontally and/or vertically on the page"
+	 * @return this for fluent styles
+	 */
+	public PageStyleBuilder centering(final PageStyle.Centering centering) {
+		this.centering = centering;
 		return this;
 	}
 }

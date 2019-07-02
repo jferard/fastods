@@ -29,7 +29,6 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Angle;
 import com.github.jferard.fastods.util.Length;
-import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -120,17 +119,22 @@ public class TableCellStyle implements FontFaceContainerStyle {
     private void appendCellProperties(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<style:table-cell-properties");
-        if (this.backgroundColor != SimpleColor.NONE)
+        if (this.backgroundColor != SimpleColor.NONE) {
             util.appendAttribute(appendable, "fo:background-color",
                     this.backgroundColor.hexValue());
+        }
 
-        if (this.verticalAlign != null)
+        if (this.verticalAlign != null) {
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign.attrValue);
-        if (this.rotating != null)
+        }
+        if (this.rotating != null) {
             util.appendAttribute(appendable, "style:rotation-angle", this.rotating.toString());
+        }
         this.borders.appendXMLContent(util, appendable);
 
-        if (this.wrap) util.appendAttribute(appendable, "fo:wrap-option", "wrap");
+        if (this.wrap) {
+            util.appendAttribute(appendable, "fo:wrap-option", "wrap");
+        }
 
         appendable.append("/>");
     }
@@ -141,11 +145,13 @@ public class TableCellStyle implements FontFaceContainerStyle {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table-cell");
-        if (this.parentCellStyle != null)
+        if (this.parentCellStyle != null) {
             util.appendEAttribute(appendable, "style:parent-style-name",
                     this.parentCellStyle.getRealName());
-        if (this.dataStyle != null)
+        }
+        if (this.dataStyle != null) {
             util.appendEAttribute(appendable, "style:data-style-name", this.dataStyle.getName());
+        }
 
         if (this.hasCellProperties() || this.hasTextProperties() || this.hasParagraphProperties()) {
             appendable.append(">");
@@ -159,8 +165,9 @@ public class TableCellStyle implements FontFaceContainerStyle {
 
             if (this.hasParagraphProperties()) {
                 appendable.append("<style:paragraph-properties");
-                if (this.textAlign != null)
+                if (this.textAlign != null) {
                     util.appendAttribute(appendable, "fo:text-align", this.textAlign.attrValue);
+                }
 
                 this.margins.appendXMLContent(util, appendable);
                 appendable.append("/>");
@@ -193,7 +200,9 @@ public class TableCellStyle implements FontFaceContainerStyle {
 
     @Override
     public String getKey() {
-        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        if (this.key == null) {
+            this.key = this.getFamily() + "@" + this.getName();
+        }
         return this.key;
     }
 
@@ -207,8 +216,11 @@ public class TableCellStyle implements FontFaceContainerStyle {
      */
     public String getRealName() {
         final int index = this.name.indexOf("-_-");
-        if (index > 0) return this.name.substring(0, index);
-        else return this.name;
+        if (index > 0) {
+            return this.name.substring(0, index);
+        } else {
+            return this.name;
+        }
     }
 
     private boolean hasCellProperties() {

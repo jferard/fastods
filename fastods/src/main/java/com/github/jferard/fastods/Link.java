@@ -36,123 +36,132 @@ import java.net.URL;
 /**
  * 6.1.8 text:a
  * 19.910 xlink:href
- *
- * See: https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#anyURI and https://www.ietf.org/rfc/rfc2396.txt
- *
+ * <p>
+ * See: https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#anyURI and https://www.ietf
+ * .org/rfc/rfc2396.txt
+ * <p>
  * Represents a link to a table, an URI, an URL or a custom ref.
  *
  * @author Julien Férard
  */
 public final class Link implements ParagraphElement {
-	private final String text;
-	private final String href;
-	private final TextStyle ts;
-
     /**
      * Create a new styled Link to a table
-     * @param text the text content
-     * @param ts the style
+     *
+     * @param text  the text content
+     * @param ts    the style
      * @param table the destination
      * @return the link
      */
     public static Link create(final String text, final TextStyle ts, final NamedObject table) {
-		return new Link(text, ts, '#'+table.getName());
-	}
+        return new Link(text, ts, '#' + table.getName());
+    }
 
     /**
      * Create a new Link to a table
-     * @param text the text content
+     *
+     * @param text  the text content
      * @param table the destination
      * @return the link
      */
     public static Link create(final String text, final NamedObject table) {
-        return new Link(text, null, '#'+table.getName());
+        return new Link(text, null, '#' + table.getName());
     }
-
 
     /**
      * Create a new styled link to a given ref
-     * @param text the text content
-     * @param ts the style
+     *
+     * @param text        the text content
+     * @param ts          the style
      * @param relativeRef the ref
      * @return the link
      */
-	public static Link create(final String text, final TextStyle ts, final String relativeRef) {
-        return new Link(text, ts, '#'+relativeRef);
-	}
+    public static Link create(final String text, final TextStyle ts, final String relativeRef) {
+        return new Link(text, ts, '#' + relativeRef);
+    }
 
     /**
      * Create a new link to a given ref
-     * @param text the text content
+     *
+     * @param text        the text content
      * @param relativeRef the ref
      * @return the link
      */
-	public static Link create(final String text, final String relativeRef) {
-		return new Link(text, null, '#'+relativeRef);
-	}
+    public static Link create(final String text, final String relativeRef) {
+        return new Link(text, null, '#' + relativeRef);
+    }
 
     /**
      * Create a new styled link to a given file
+     *
      * @param text the text content
-     * @param ts the style
+     * @param ts   the style
      * @param file the file
      * @return the link
      */
-	public static Link create(final String text, final TextStyle ts, final File file) {
-		return new Link(text, ts, file.toURI().toString());
-	}
+    public static Link create(final String text, final TextStyle ts, final File file) {
+        return new Link(text, ts, file.toURI().toString());
+    }
 
     /**
      * Create a new link to a given file
+     *
      * @param text the text content
      * @param file the file
      * @return the link
      */
-	public static Link create(final String text, final File file) {
+    public static Link create(final String text, final File file) {
         return new Link(text, null, file.toURI().toString());
-	}
+    }
 
     /**
      * Create a new styled link to a given url
+     *
      * @param text the text content
-     * @param ts the style
-     * @param url the url
+     * @param ts   the style
+     * @param url  the url
      * @return the link
      */
-	public static Link create(final String text, final TextStyle ts, final URL url) {
-		return new Link(text, ts, url.toString());
-	}
+    public static Link create(final String text, final TextStyle ts, final URL url) {
+        return new Link(text, ts, url.toString());
+    }
 
     /**
      * Create a new link to a given url
+     *
      * @param text the text content
-     * @param url the url
+     * @param url  the url
      * @return the link
      */
-	public static Link create(final String text, final URL url) {
+    public static Link create(final String text, final URL url) {
         return new Link(text, null, url.toString());
-	}
+    }
 
-	/**
-	 * Create a new styled link to a given uri
-	 * @param text the text content
-	 * @param ts the style
-	 * @param uri the uri
-	 * @return the link
-	 */
-	public static Link create(final String text, final TextStyle ts, final URI uri) {
-		return new Link(text, ts, uri.toString());
-	}
+    /**
+     * Create a new styled link to a given uri
+     *
+     * @param text the text content
+     * @param ts   the style
+     * @param uri  the uri
+     * @return the link
+     */
+    public static Link create(final String text, final TextStyle ts, final URI uri) {
+        return new Link(text, ts, uri.toString());
+    }
 
-	/**
-	 * Create a new link to a given url
-	 * @param text the text content
-	 * @param uri the file
-	 * @return the link
-	 */
-	public static Link create(final String text, final URI uri) {
-		return new Link(text, null, uri.toString());
-	}
+    /**
+     * Create a new link to a given url
+     *
+     * @param text the text content
+     * @param uri  the file
+     * @return the link
+     */
+    public static Link create(final String text, final URI uri) {
+        return new Link(text, null, uri.toString());
+    }
+    private final String text;
+    private final String href;
+    private final TextStyle ts;
 
     private Link(final String text, final TextStyle ts, final String href) {
         this.text = text;
@@ -161,40 +170,46 @@ public final class Link implements ParagraphElement {
     }
 
     @Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
-		appendable.append("<text:a");
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<text:a");
+        if (this.ts != null) {
+            util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+        }
+        util.appendEAttribute(appendable, "xlink:href", this.href);
+        util.appendAttribute(appendable, "xlink:type", "simple");
+        appendable.append(">").append(this.text).append("</text:a>");
+    }
+
+    @Override
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
 		if (this.ts != null) {
-			util.appendEAttribute(appendable, "text:style-name",
-					this.ts.getName());
+			stylesContainer.addStylesFontFaceContainerStyle(this.ts);
 		}
-		util.appendEAttribute(appendable, "xlink:href", this.href);
-		util.appendAttribute(appendable, "xlink:type", "simple");
-		appendable.append(">").append(this.text).append("</text:a>");
-	}
+    }
 
-	@Override
-	public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        if (this.ts != null) stylesContainer.addStylesFontFaceContainerStyle(this.ts);
-	}
+    @Override
+    public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
+		if (this.ts != null) {
+			stylesContainer.addContentFontFaceContainerStyle(this.ts);
+		}
+    }
 
-	@Override
-	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-        if (this.ts != null) stylesContainer.addContentFontFaceContainerStyle(this.ts);
-	}
-
-	@Override
-	public boolean equals(final Object o) {
-		if (o == this)
+    @Override
+    public boolean equals(final Object o) {
+		if (o == this) {
 			return true;
-		if (!(o instanceof Link))
+		}
+		if (!(o instanceof Link)) {
 			return false;
+		}
 
-		final Link other = (Link) o;
-		return this.href.equals(other.href) && this.text.equals(other.text);
-	}
+        final Link other = (Link) o;
+        return this.href.equals(other.href) && this.text.equals(other.text);
+    }
 
-	@Override
-	public final int hashCode() {
-		return 31*this.href.hashCode() + this.text.hashCode();
-	}
+    @Override
+    public final int hashCode() {
+        return 31 * this.href.hashCode() + this.text.hashCode();
+    }
 }

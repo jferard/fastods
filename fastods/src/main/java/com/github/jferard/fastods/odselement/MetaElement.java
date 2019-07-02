@@ -89,7 +89,7 @@ public class MetaElement implements OdsElement {
                 "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
         util.appendAttribute(writer, "xmlns:ooo",
                 "http://openoffice.org/2004/office");
-        util.appendAttribute(writer, "office:version", "1.1");
+        util.appendAttribute(writer, "office:version", "1.2");
         writer.append("><office:meta>");
         util.appendTag(writer, "meta:generator", this.generator);
         util.appendTag(writer, "dc:creator", this.creator);

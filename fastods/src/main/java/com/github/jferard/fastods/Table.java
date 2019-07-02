@@ -48,7 +48,6 @@ public class Table implements NamedObject {
     /**
      * Create a new Table with a name and a row/column capacity
      *
-     *
      * @param contentElement
      * @param positionUtil    an util
      * @param writeUtil       an util
@@ -61,14 +60,15 @@ public class Table implements NamedObject {
      * @param libreOfficeMode
      * @return the table
      */
-    public static Table create(final ContentElement contentElement, final PositionUtil positionUtil, final WriteUtil writeUtil,
-                               final XMLUtil xmlUtil, final String name, final int rowCapacity,
-                               final int columnCapacity, final StylesContainer stylesContainer,
-                               final DataStyles format, final boolean libreOfficeMode) {
+    public static Table create(final ContentElement contentElement, final PositionUtil positionUtil,
+                               final WriteUtil writeUtil, final XMLUtil xmlUtil, final String name,
+                               final int rowCapacity, final int columnCapacity,
+                               final StylesContainer stylesContainer, final DataStyles format,
+                               final boolean libreOfficeMode) {
         positionUtil.checkTableName(name);
         final TableBuilder builder = TableBuilder
-                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode, name,
-                        rowCapacity, columnCapacity);
+                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode,
+                        name, rowCapacity, columnCapacity);
         return new Table(name, contentElement, builder);
     }
 
@@ -80,9 +80,10 @@ public class Table implements NamedObject {
 
     /**
      * Create an new table with a given builder
-     *  @param name    the name of the table
+     *
+     * @param name           the name of the table
      * @param contentElement
-     * @param builder the builder
+     * @param builder        the builder
      */
     Table(final String name, final ContentElement contentElement, final TableBuilder builder) {
         this.name = name;
@@ -201,7 +202,9 @@ public class Table implements NamedObject {
      * @param name The name of this table.
      */
     public void setName(final String name) {
-        if (this.appender.isPreambleWritten()) throw new IllegalStateException();
+        if (this.appender.isPreambleWritten()) {
+            throw new IllegalStateException();
+        }
 
         this.name = name;
     }
@@ -212,7 +215,7 @@ public class Table implements NamedObject {
      * @param rowIndex the index
      * @return the row
      * @throws IllegalArgumentException if the index is invalid
-     * @throws IOException      if the row was flushed
+     * @throws IOException              if the row was flushed
      */
     public TableRow getRow(final int rowIndex) throws IOException {
         return this.builder.getRow(this, this.appender, rowIndex);
@@ -252,7 +255,7 @@ public class Table implements NamedObject {
     /**
      * Set the merging of multiple cells to one cell.
      *
-     * @param address         The cell position e.g. 'A1'
+     * @param address     The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
      * @throws FastOdsException if the row index or the col index is negative
@@ -272,8 +275,10 @@ public class Table implements NamedObject {
      *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
      * @throws FastOdsException Thrown if col has an invalid value.
      */
-    public void setColumnStyle(final int col, final TableColumnStyle ts) throws FastOdsException {
-        if (this.appender.isPreambleWritten()) throw new IllegalStateException();
+    public void setColumnStyle(final int col, final TableColumnStyle ts) {
+        if (this.appender.isPreambleWritten()) {
+            throw new IllegalStateException();
+        }
 
         this.builder.setColumnStyle(col, ts);
     }
@@ -292,8 +297,8 @@ public class Table implements NamedObject {
     /**
      * Set one of the settings
      *
-     * @param item   the item name
-     * @param value  the item value
+     * @param item  the item name
+     * @param value the item value
      */
     public void updateConfigItem(final String item, final String value) {
         this.builder.updateConfigItem(item, value);
