@@ -57,9 +57,9 @@ public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {
 	 * Create a new footer or header object.
 	 */
 	PageSectionBuilder() {
-		this.minHeight = SimpleLength.cm(0.0);
+		this.minHeight = Length.NULL_LENGTH;
 		this.marginsBuilder = new MarginsBuilder();
-		this.marginsBuilder.all(SimpleLength.cm(0.0));
+		this.marginsBuilder.all(Length.NULL_LENGTH);
 	}
 
 	/**

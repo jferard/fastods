@@ -99,7 +99,7 @@ public class TableCellStyleTest {
                 "<style:style style:name=\"Default\" style:family=\"table-cell\">" +
                         "<style:table-cell-properties style:vertical-align=\"top\"/>" +
                         "<style:text-properties style:font-name=\"Liberation Sans\"/>" +
-                        "<style:paragraph-properties fo:text-align=\"start\" fo:margin=\"0mm\"/>" +
+                        "<style:paragraph-properties fo:text-align=\"start\" fo:margin=\"0cm\"/>" +
                         "</style:style>", TableCellStyle.DEFAULT_CELL_STYLE);
     }
 

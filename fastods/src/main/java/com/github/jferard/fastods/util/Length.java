@@ -25,9 +25,25 @@ package com.github.jferard.fastods.util;
 
 /**
  * A blank interface.
+ *
  * @author Julien Férard
  */
 public interface Length {
+    /**
+     * A null length
+     */
+    Length NULL_LENGTH = new Length() {
+        @Override
+        public boolean isNull() {
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "0cm";
+        }
+    };
+
     /**
      * @return true if this length is 0
      */

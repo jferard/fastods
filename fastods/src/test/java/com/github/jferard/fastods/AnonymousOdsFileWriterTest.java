@@ -66,7 +66,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    public static final int EMPTY_DOCUMENT_SIZE = 5286;
+    public static final int EMPTY_DOCUMENT_SIZE = 5284;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -252,7 +252,7 @@ public class AnonymousOdsFileWriterTest {
         }
         Collections.sort(names);
 
-        Assert.assertTrue(Math.abs(EMPTY_DOCUMENT_SIZE*2-buf.length)<=2);
+        Assert.assertTrue(Math.abs(EMPTY_DOCUMENT_SIZE*2-buf.length)<=10);
         // Every element appears twice
         Assert.assertEquals(
                 Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",

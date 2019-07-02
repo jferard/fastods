@@ -78,10 +78,8 @@ public class TableColumnStyleTest {
     public final void testDefaultCellStyle() throws IOException {
         final TableCellStyle cs = TableCellStyle.builder("t").build();
         final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cs).build();
-        this.assertXMLTableEquals(
-                "<table:table-column table:style-name=\"test\" " +
-                        "table:default-cell-style-name=\"t\"/>",
-                tcs, -1);
+        this.assertXMLTableEquals("<table:table-column table:style-name=\"test\" " +
+                "table:default-cell-style-name=\"t\"/>", tcs, -1);
     }
 
     @Test
@@ -91,19 +89,16 @@ public class TableColumnStyleTest {
                 "<style:style style:name=\"test\" style:family=\"table-column\">" +
                         "<style:table-column-properties " + "fo:break-before=\"auto\" " +
                         "style:column-width=\"2.5cm\"/>" + "</style:style>", tcs);
-        this.assertXMLTableEquals(
-                "<table:table-column table:style-name=\"test\" " +
-                        "table:default-cell-style-name=\"Default\"/>",
-                tcs, -1);
+        this.assertXMLTableEquals("<table:table-column table:style-name=\"test\" " +
+                "table:default-cell-style-name=\"Default\"/>", tcs, -1);
     }
 
     @Test
     public final void testEmpty2() throws IOException {
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
-        this.assertXMLTableEquals(
-                "<table:table-column table:style-name=\"test\" " +
-                        "table:number-columns-repeated=\"2\" " +
-                        "table:default-cell-style-name=\"Default\"/>", tcs, 2);
+        this.assertXMLTableEquals("<table:table-column table:style-name=\"test\" " +
+                "table:number-columns-repeated=\"2\" " +
+                "table:default-cell-style-name=\"Default\"/>", tcs, 2);
     }
 
     @Test
@@ -129,5 +124,28 @@ public class TableColumnStyleTest {
     @Test
     public final void testGetters() {
         StyleTestHelper.testGettersHidden(TableColumnStyle.builder("test"));
+    }
+
+    @Test
+    public final void testGetNoFontFace() {
+        final TableColumnStyle test = TableColumnStyle.builder("test").build();
+        Assert.assertEquals(new FontFace(LOFonts.LIBERATION_SANS), test.getFontFace());
+    }
+
+    @Test
+    public final void testGetFontFace() {
+        final TableCellStyle tcs = TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL)
+                .build();
+        final TableColumnStyle test = TableColumnStyle.builder("test").defaultCellStyle(tcs)
+                .build();
+        Assert.assertEquals(new FontFace(LOFonts.OPENSYMBOL), test.getFontFace());
+    }
+
+    @Test
+    public final void testOptimalWidth() throws IOException {
+        final TableColumnStyle test = TableColumnStyle.builder("test").optimalWidth().build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
+                "style:family=\"table-column\"><style:table-column-properties " +
+                "fo:break-before=\"auto\" style:use-optimal-column-width=\"true\"/></style:style>", test);
     }
 }

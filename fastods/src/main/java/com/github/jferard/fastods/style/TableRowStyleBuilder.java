@@ -37,6 +37,8 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Showab
     private final String name;
     private Length rowHeight;
     private boolean hidden;
+    private TableCellStyle defaultCellStyle;
+    private boolean optimalHeight;
 
     /**
      * The style will be visible by default
@@ -47,11 +49,24 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Showab
         this.name = TableStyleBuilder.checker.checkStyleName(name);
         this.rowHeight = DEFAULT_ROW_HEIGHT;
         this.hidden = true;
+        this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
+        this.optimalHeight = false;
     }
 
     @Override
     public TableRowStyle build() {
-        return new TableRowStyle(this.name, this.hidden, this.rowHeight);
+        return new TableRowStyle(this.name, this.hidden, this.rowHeight, this.defaultCellStyle, this.optimalHeight);
+    }
+
+    /**
+     * Set a default cell style
+     *
+     * @param defaultCellStyle the style
+     * @return this for fluent style
+     */
+    public TableRowStyleBuilder defaultCellStyle(final TableCellStyle defaultCellStyle) {
+        this.defaultCellStyle = defaultCellStyle;
+        return this;
     }
 
     @Override
@@ -69,6 +84,20 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Showab
      */
     public TableRowStyleBuilder rowHeight(final Length height) {
         this.rowHeight = height;
+        this.optimalHeight = false;
+        return this;
+    }
+
+    /**
+     * Set the width to the optimal value *permanently*: the consumer should adapt the width
+     * when the text changes. BUT LIBREOFFICE HAS NO SUCH FEATURE.
+     *
+     * @return this for fluent style
+     */
+    @Deprecated
+    public TableRowStyleBuilder optimalHeight() {
+        this.optimalHeight = true;
+        this.rowHeight = Length.NULL_LENGTH;
         return this;
     }
 }

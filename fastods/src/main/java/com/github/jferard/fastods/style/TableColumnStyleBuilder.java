@@ -67,6 +67,7 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>, 
      */
     public TableColumnStyleBuilder columnWidth(final Length width) {
         this.columnWidth = width;
+        this.optimalWidth = false;
         return this;
     }
 
@@ -88,8 +89,9 @@ public class TableColumnStyleBuilder implements StyleBuilder<TableColumnStyle>, 
      * @return this for fluent style
      */
     @Deprecated
-    public TableColumnStyleBuilder setOptimalWidth() {
+    public TableColumnStyleBuilder optimalWidth() {
         this.optimalWidth = true;
+        this.columnWidth = Length.NULL_LENGTH;
         return this;
     }
 

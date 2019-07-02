@@ -54,7 +54,7 @@ public enum PaperFormat {
     /**
      * user defined: 0 by convention.
      */
-    USER(SimpleLength.cm(0.0), SimpleLength.cm(0.0));
+    USER(Length.NULL_LENGTH, Length.NULL_LENGTH);
 
     private final Length height;
     private final Length width;

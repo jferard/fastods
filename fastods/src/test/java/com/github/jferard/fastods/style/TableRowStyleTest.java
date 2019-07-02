@@ -22,6 +22,7 @@
  */
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -43,17 +44,46 @@ public class TableRowStyleTest {
         final TableRowStyle style = TableRowStyle.builder("test").visible()
                 .rowHeight(SimpleLength.cm(5)).build();
 
-        final Appendable sb = new StringBuilder();
-        style.appendXMLContent(this.util, sb);
-        Assert.assertEquals("<style:style style:name=\"test\" " +
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
                 "style:family=\"table-row\"><style:table-row-properties " +
                 "style:row-height=\"5cm\" " +
                 "fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/></style" +
-                ":style>", sb.toString());
+                ":style>", style);
+    }
+
+    @Test
+    public final void testOptimalHeight() throws IOException {
+        final TableRowStyle style = TableRowStyle.builder("test").optimalHeight().build();
+
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
+                "style:family=\"table-row\"><style:table-row-properties " +
+                "style:use-optimal-row-width=\"true\" fo:break-before=\"auto\" " +
+                "style:use-optimal-row-height=\"true\"/></style:style>", style);
     }
 
     @Test
     public final void testGetters() {
         StyleTestHelper.testGettersHidden(TableRowStyle.builder("test"));
+    }
+
+    @Test
+    public final void testGetNoFontFace() {
+        final TableRowStyle test = TableRowStyle.builder("test").build();
+        Assert.assertEquals(new FontFace(LOFonts.LIBERATION_SANS), test.getFontFace());
+    }
+
+    @Test
+    public final void testGetRowHeight() {
+        final SimpleLength height = SimpleLength.cm(3);
+        final TableRowStyle test = TableRowStyle.builder("test").rowHeight(height).build();
+        Assert.assertEquals(height, test.getRowHeight());
+    }
+
+    @Test
+    public final void testGetFontFace() {
+        final TableCellStyle tcs = TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL)
+                .build();
+        final TableRowStyle test = TableRowStyle.builder("test").defaultCellStyle(tcs).build();
+        Assert.assertEquals(new FontFace(LOFonts.OPENSYMBOL), test.getFontFace());
     }
 }

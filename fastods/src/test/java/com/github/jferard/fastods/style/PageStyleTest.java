@@ -25,10 +25,14 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -256,4 +260,49 @@ public class PageStyleTest {
         DomTester.assertEquals(xml, sb.toString());
     }
 
+    @Test
+    public final void testAddEmbeddedStyle() {
+        final PageStyle pageStyle = PageStyle.builder("test").build();
+        final StylesContainer stc = PowerMock.createMock(StylesContainer.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(stc.addStylesFontFaceContainerStyle(EasyMock.isA(TextStyle.class)))
+                .andReturn(true).times(2);
+
+        PowerMock.replayAll();
+        pageStyle.addEmbeddedStyles(stc);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testHidden() {
+        final PageStyle ps1 = PageStyle.builder("test").build();
+        Assert.assertFalse(ps1.isHidden());
+        final PageStyle ps2 = PageStyle.builder("test").hidden().build();
+        Assert.assertTrue(ps2.isHidden());
+    }
+
+    @Test
+    public final void testLayoutAdd() {
+        final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
+        final PageStyle ps1 = PageStyle.builder("test").build();
+        final PageLayoutStyle ls = ps1.getPageLayoutStyle();
+
+        PowerMock.resetAll();
+        odsElements.addPageLayoutStyle(ls);
+
+        PowerMock.replayAll();
+        ls.addToElements(odsElements);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testLayoutWM() {
+        final PageStyle ps1 = PageStyle.builder("test").build();
+        final PageLayoutStyle ls = ps1.getPageLayoutStyle();
+
+        Assert.assertEquals(PageStyle.DEFAULT_WRITING_MODE, ls.getWritingMode());
+    }
 }

@@ -46,7 +46,7 @@ public class BordersTest {
     }
 
     @Test
-    public final void testEqual() throws IOException {
+    public final void testXMLEqual() throws IOException {
         final Borders b = new BordersBuilder().all(this.a1).top(this.a1).right(this.a1)
                 .bottom(this.a1).left(this.a1).build();
         this.assertAttrXMLEquals(" fo:border=\"10pt double #000000\"", b);
@@ -91,6 +91,7 @@ public class BordersTest {
         final Borders b2 = new BordersBuilder().all(this.a2).build();
         final Borders b3 = new BordersBuilder().all(this.a1).build();
 
+        Assert.assertNotEquals(b1, new Object());
         Assert.assertNotEquals(null, b1);
         Assert.assertNotEquals("a", b1);
         Assert.assertNotEquals(b1, b2);
@@ -111,6 +112,15 @@ public class BordersTest {
         final Borders b = new BordersBuilder()
                 .all(new BorderAttributeBuilder().borderSize(SimpleLength.pt(1)).build()).build();
         this.assertAttrXMLEquals(" fo:border=\"1pt\"", b);
+    }
+
+    @Test
+    public final void testToString() {
+        final Borders b = new BordersBuilder()
+                .all(new BorderAttributeBuilder().borderSize(SimpleLength.pt(1)).build()).build();
+        Assert.assertEquals(
+                "Borders[top=null, right=null, bottom=null, left=null, all=BorderAttribute[1pt]]",
+                b.toString());
     }
 
     private void assertAttrXMLEquals(final String xml, final Borders b) throws IOException {

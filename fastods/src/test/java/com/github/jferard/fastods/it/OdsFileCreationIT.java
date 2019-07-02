@@ -270,11 +270,11 @@ public class OdsFileCreationIT {
     }
 
     private void createStyles() {
+        this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
+                .fontWeightBold().build();
         this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
                 .defaultCellStyle(this.tcls).build();
         this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
-        this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
-                .fontWeightBold().build();
         this.tcs0 = TableCellStyle.builder("tcs0")
                 .backgroundColor(ColorHelper.fromString("#0000ff")).build();
         this.tcs1 = TableCellStyle.builder("tcs1")
@@ -371,6 +371,7 @@ public class OdsFileCreationIT {
         document.addChildCellStyle(this.tcs2, TableCell.Type.FLOAT);
         document.addChildCellStyle(this.tcs3, TableCell.Type.FLOAT);
         document.addChildCellStyle(this.tcls, TableCell.Type.FLOAT);
+        document.addChildCellStyle(this.tcls, TableCell.Type.BOOLEAN);
         document.addChildCellStyle(TableCell.Type.BOOLEAN);
         document.addChildCellStyle(TableCell.Type.CURRENCY);
         document.addChildCellStyle(TableCell.Type.FLOAT);

@@ -28,6 +28,7 @@ import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Angle;
+import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -46,7 +47,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
      */
     public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
             .textAlign(TableCellStyle.Align.LEFT).verticalAlign(TableCellStyle.VerticalAlign.TOP)
-            .fontWrap(false).backgroundColor(SimpleColor.NONE).allMargins(SimpleLength.mm(0.0))
+            .fontWrap(false).backgroundColor(SimpleColor.NONE).allMargins(Length.NULL_LENGTH)
             .fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
 
     /**

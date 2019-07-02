@@ -37,7 +37,7 @@ import com.github.jferard.fastods.util.StyleBuilder;
 /**
  * @author Julien Férard
  */
-public class PageStyleBuilder implements StyleBuilder<PageStyle> {
+public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder<PageStyleBuilder> {
 	private static final Length DEFAULT_MARGIN_SIZE = SimpleLength.cm(1.5);
 	private Color backgroundColor;
 	private Footer footer;
@@ -81,6 +81,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 		final TextStyle noneStyle = TextProperties.builder().buildHiddenStyle("none");
 		this.header = PageSection.simpleHeader("", noneStyle);
 		this.footer = PageSection.simpleFooter("", noneStyle);
+		this.hidden = false;
 	}
 
 	/**
@@ -280,6 +281,12 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle> {
 			throw new IllegalArgumentException();
 
 		this.writingMode = writingMode;
+		return this;
+	}
+
+	@Override
+	public PageStyleBuilder hidden() {
+		this.hidden = true;
 		return this;
 	}
 }

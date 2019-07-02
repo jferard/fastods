@@ -96,7 +96,8 @@ public class BorderAttribute {
 
         if (this.borderSize == null) {
             if (this.borderColor != SimpleColor.NONE) {
-                sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR).append(this.borderColor.hexValue());
+                sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
+                        .append(this.borderColor.hexValue());
             }
         } else if (this.borderColor == SimpleColor.NONE) {
             sb.append(this.borderSize);
@@ -107,10 +108,15 @@ public class BorderAttribute {
         return sb;
     }
 
+    @Override
+    public String toString() {
+        return "BorderAttribute[" + this.toXMLAttributeValue() + "]";
+    }
+
     /**
-     * @param util an xml util
+     * @param util       an xml util
      * @param appendable where to write
-     * @param attrName the attribute name
+     * @param attrName   the attribute name
      * @throws IOException if an I/O error occurs
      */
     public void appendXMLAttribute(final XMLUtil util, final Appendable appendable,
@@ -125,16 +131,20 @@ public class BorderAttribute {
         /**
          * All borders
          */
-        ALL("fo:border"), /**
+        ALL("fo:border"),
+        /**
          * The bottom boder
          */
-        BOTTOM("fo:border-bottom"), /**
+        BOTTOM("fo:border-bottom"),
+        /**
          * The left border
          */
-        LEFT("fo:border-left"), /**
+        LEFT("fo:border-left"),
+        /**
          * the right border
          */
-        RIGHT("fo:border-right"), /**
+        RIGHT("fo:border-right"),
+        /**
          * The top border
          */
         TOP("fo:border-top");
@@ -153,7 +163,7 @@ public class BorderAttribute {
     /**
      * Extensible Stylesheet Language (XSL)
      * Version 1.0, 7.7.20 "border-top-style"
-     *
+     * <p>
      * The style of the border
      */
     public enum Style {

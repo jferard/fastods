@@ -90,9 +90,9 @@ public class TableColumnStyle implements FontFaceContainerStyle {
         util.appendAttribute(appendable, "style:family", "table-column");
         appendable.append("><style:table-column-properties");
         util.appendAttribute(appendable, "fo:break-before", "auto");
-        if (this.optimalWidth)
+        if (this.optimalWidth) {
             util.appendAttribute(appendable, "style:use-optimal-column-width", this.optimalWidth);
-        if (!this.columnWidth.isNull()) {
+        } else if (!this.columnWidth.isNull()) {
             util.appendAttribute(appendable, "style:column-width", this.columnWidth.toString());
         }
         appendable.append("/></style:style>");
@@ -110,21 +110,28 @@ public class TableColumnStyle implements FontFaceContainerStyle {
             throws IOException {
         appendable.append("<table:table-column");
         util.appendEAttribute(appendable, "table:style-name", this.name);
-        if (count > 1) util.appendAttribute(appendable, "table:number-columns-repeated", count);
-        if (this.defaultCellStyle != null)
+        if (count > 1) {
+            util.appendAttribute(appendable, "table:number-columns-repeated", count);
+        }
+        if (this.defaultCellStyle != null) {
             util.appendEAttribute(appendable, "table:default-cell-style-name",
                     this.defaultCellStyle.getName());
+        }
         appendable.append("/>");
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) return true;
+        if (this == obj) {
+            return true;
+        }
 
         if (obj instanceof TableColumnStyle) {
             final TableColumnStyle other = (TableColumnStyle) obj;
             return this.name.equals(other.name);
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -162,7 +169,9 @@ public class TableColumnStyle implements FontFaceContainerStyle {
 
     @Override
     public String getKey() {
-        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        if (this.key == null) {
+            this.key = this.getFamily() + "@" + this.getName();
+        }
         return this.key;
     }
 
@@ -178,16 +187,11 @@ public class TableColumnStyle implements FontFaceContainerStyle {
      */
     public void addToContentStyles(final StylesContainer stylesContainer) {
         stylesContainer.addContentStyle(this);
-        if (this.defaultCellStyle != null) {
-            stylesContainer.addContentStyle(this.defaultCellStyle);
-        }
+        stylesContainer.addContentStyle(this.defaultCellStyle);
     }
 
     @Override
     public FontFace getFontFace() {
-        if (this.defaultCellStyle != null)
-            return this.defaultCellStyle.getFontFace();
-        else
-            return null;
+        return this.defaultCellStyle.getFontFace();
     }
 }

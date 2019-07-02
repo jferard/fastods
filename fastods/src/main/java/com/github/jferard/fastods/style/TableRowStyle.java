@@ -37,7 +37,8 @@ public class TableRowStyle implements FontFaceContainerStyle {
     /**
      * The default style, see LO.
      */
-    public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1").build();
+    public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE = TableRowStyle.builder("ro1")
+            .build();
 
     /**
      * @param name the name of the TableRowStyle to create
@@ -50,20 +51,26 @@ public class TableRowStyle implements FontFaceContainerStyle {
     private final String name;
     private final boolean hidden;
     private final Length rowHeight;
-    private TableCellStyle defaultCellStyle;
+    private final TableCellStyle defaultCellStyle;
+    private final boolean optimalHeight;
     private String key;
 
     /**
      * Create a new table row style.
      *
-     * @param styleName A unique name for this style
-     * @param hidden    true if the row is hidden
-     * @param rowHeight The height of the row
+     * @param styleName        A unique name for this style
+     * @param hidden           true if the row is hidden
+     * @param rowHeight        The height of the row
+     * @param defaultCellStyle The default cell style
+     * @param optimalHeight    True if we use optimal height
      */
-    TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight) {
+    TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight,
+                  final TableCellStyle defaultCellStyle, final boolean optimalHeight) {
         this.name = styleName;
         this.hidden = hidden;
         this.rowHeight = rowHeight;
+        this.defaultCellStyle = defaultCellStyle;
+        this.optimalHeight = optimalHeight;
     }
 
     @Override
@@ -72,12 +79,17 @@ public class TableRowStyle implements FontFaceContainerStyle {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:style");
         util.appendAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "table-row");
         appendable.append("><style:table-row-properties");
-        if (this.rowHeight != null) util.appendAttribute(appendable, "style:row-height", this.rowHeight.toString());
+        if (this.optimalHeight) {
+            util.appendAttribute(appendable, "style:use-optimal-row-width", this.optimalHeight);
+        } else if (!this.rowHeight.isNull()) {
+            util.appendAttribute(appendable, "style:row-height", this.rowHeight.toString());
+        }
         util.appendAttribute(appendable, "fo:break-before", "auto");
         util.appendAttribute(appendable, "style:use-optimal-row-height", "true");
         appendable.append("/></style:style>");
@@ -105,7 +117,9 @@ public class TableRowStyle implements FontFaceContainerStyle {
 
     @Override
     public String getKey() {
-        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        if (this.key == null) {
+            this.key = this.getFamily() + "@" + this.getName();
+        }
         return this.key;
     }
 
@@ -116,9 +130,6 @@ public class TableRowStyle implements FontFaceContainerStyle {
 
     @Override
     public FontFace getFontFace() {
-        if (this.defaultCellStyle != null)
-            return this.defaultCellStyle.getFontFace();
-        else
-            return null;
+        return this.defaultCellStyle.getFontFace();
     }
 }
