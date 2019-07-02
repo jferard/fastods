@@ -8,11 +8,12 @@
 
 A very fast and lightweight (no dependency) library for creating ODS (Open Document Spreadsheet, mainly for Calc) files in Java. It's a Martin Schulz's SimpleODS fork.
 
-**Please note that FastODS is almost ready for production use. The version 1.0 is coming.**
+**News:**
+ 
+* **Please note that FastODS is almost ready for production use. The version 1.0 is coming.**
 
-**Ask a question:** [feel free to ask a question](https://github.com/jferard/fastods/issues/new).
-
-**Have a look at the [tutorial (WIP)](https://github.com/jferard/fastods/wiki/Tutorial)**
+* **I wrote a little [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) that covers most of the features of FastODS, 
+but [feel free to ask a question or make a suggestion](https://github.com/jferard/fastods/issues/new).**
 
 ## Table of contents
 * [Why FastODS?](#why-fastods)
