@@ -40,7 +40,7 @@ public class ZipUTF8WriterTest {
 	private ByteArrayOutputStream out;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.writer = new StringWriter();
 		this.out = new ByteArrayOutputStream();
 		this.zipUTF8Writer = new ZipUTF8WriterImpl(new ZipOutputStream(this.out), this.writer);

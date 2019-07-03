@@ -23,139 +23,99 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.FastOdsException;
-import com.google.common.base.Joiner;
+import com.github.jferard.fastods.testlib.CodePointTester;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class NameCheckerTest {
+    private NameChecker checker;
+
+    @Before
+    public void setUp() {
+        this.checker = new NameChecker();
+    }
 
     @Test
     public void testNameStartChar() {
-        final NameChecker checker = new NameChecker();
         Assert.assertEquals(
-                "'-' | ':' | [A-Z] | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " + "[#x370-#x37d] | " +
-                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | [#x2c00-#x2fef] " + "" + "" + "| " +
-                        "[#x3001-#xd7ff] | " + "[#xf900-#xfdcf] | [#xfdf0-#xfffd] | [#x10000-#xeffff]",
-                this.filter(new CategoryFilter() {
+                "'-' | ':' | [A-Z] | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " +
+                        "[#x370-#x37d] | " +
+                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | [#x2c00-#x2fef] " +
+                        "" + "" + "| " + "[#x3001-#xd7ff] | " +
+                        "[#xf900-#xfdcf] | [#xfdf0-#xfffd] | [#x10000-#xeffff]",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
                     @Override
-                    public boolean ok(final int codePoint) {
-                        return checker.isNameStartChar(codePoint);
+                    public boolean check(final int codePoint) {
+                        return NameCheckerTest.this.checker.isNameStartChar(codePoint);
                     }
                 }));
     }
 
     @Test
     public void testNameChar() {
-        final NameChecker checker = new NameChecker();
-        Assert.assertEquals(
-                "[--.] | [0-:] | [A-Z] | '_' | [a-z] | #xb7 | [#xc0-#xd6] | " + "[#xd8-#xf6] | [#xf8-#x37d] | " +
-                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x203f-#x2040] | " + "[#x2070-#x218f] | [#x2c00-#x2fef] " +
-                        "| [#x3001-#xd7ff] | [#xf900-#xfdcf] | [#xfdf0-#xfffd] | " + "[#x10000-#xeffff]",
-                this.filter(new CategoryFilter() {
+        Assert.assertEquals("[--.] | [0-:] | [A-Z] | '_' | [a-z] | #xb7 | [#xc0-#xd6] | " +
+                        "[#xd8-#xf6] | [#xf8-#x37d] | " +
+                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x203f-#x2040] | " +
+                        "[#x2070-#x218f] | [#x2c00-#x2fef] " +
+                        "| [#x3001-#xd7ff] | [#xf900-#xfdcf] | [#xfdf0-#xfffd] | " + "[#x10000" +
+                        "-#xeffff]",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
                     @Override
-                    public boolean ok(final int codePoint) {
-                        return checker.isNameChar(codePoint);
+                    public boolean check(final int codePoint) {
+                        return NameCheckerTest.this.checker.isNameChar(codePoint);
                     }
                 }));
     }
 
     @Test
     public void testNCNameStartChar() {
-        final NameChecker checker = new NameChecker();
-        Assert.assertEquals(
-                "'-' | [A-Z] | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " + "[#x370-#x37d] | " +
-                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | [#x2c00-#x2fef] " + "" + "" + "| " +
-                        "[#x3001-#xd7ff] | " + "[#xf900-#xfdcf] | [#xfdf0-#xfffd] | [#x10000-#xeffff]",
-                this.filter(new CategoryFilter() {
+        Assert.assertEquals("'-' | [A-Z] | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " +
+                        "[#x370-#x37d] | " +
+                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | [#x2c00-#x2fef] " + "" + "" +
+                        "| " + "[#x3001-#xd7ff] | " +
+                        "[#xf900-#xfdcf] | [#xfdf0-#xfffd] | [#x10000-#xeffff]",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
                     @Override
-                    public boolean ok(final int codePoint) {
-                        return checker.isNCNameStartChar(codePoint);
+                    public boolean check(final int codePoint) {
+                        return NameCheckerTest.this.checker.isNCNameStartChar(codePoint);
                     }
                 }));
     }
 
     @Test
     public void testNCNameChar() {
-        final NameChecker checker = new NameChecker();
-        Assert.assertEquals(
-                "[--.] | [0-9] | [A-Z] | '_' | [a-z] | #xb7 | [#xc0-#xd6] | " + "[#xd8-#xf6] | [#xf8-#x37d] | " +
-                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x203f-#x2040] | " + "[#x2070-#x218f] | [#x2c00-#x2fef] " +
-                        "| [#x3001-#xd7ff] | [#xf900-#xfdcf] | [#xfdf0-#xfffd] | " + "[#x10000-#xeffff]",
-                this.filter(new CategoryFilter() {
+        Assert.assertEquals("[--.] | [0-9] | [A-Z] | '_' | [a-z] | #xb7 | [#xc0-#xd6] | " +
+                        "[#xd8-#xf6] | [#xf8-#x37d] | " +
+                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x203f-#x2040] | " +
+                        "[#x2070-#x218f] | [#x2c00-#x2fef] " +
+                        "| [#x3001-#xd7ff] | [#xf900-#xfdcf] | [#xfdf0-#xfffd] | " + "[#x10000" +
+                        "-#xeffff]",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
                     @Override
-                    public boolean ok(final int codePoint) {
-                        return checker.isNCNameChar(codePoint);
+                    public boolean check(final int codePoint) {
+                        return NameCheckerTest.this.checker.isNCNameChar(codePoint);
                     }
                 }));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void wrongChildCellTest() throws FastOdsException {
-        final NameChecker checker = new NameChecker();
-        checker.checkStyleName("style@@datastyle");
+    public void wrongChildCellTest() {
+        this.checker.checkStyleName("style@@datastyle");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void wrongChildCellTest2() throws FastOdsException {
-        final NameChecker checker = new NameChecker();
-        checker.checkStyleName("style-:-datastyle");
+    public void wrongChildCellTest2() {
+        this.checker.checkStyleName("style-:-datastyle");
     }
 
     @Test
-    public void correctChildCellTest() throws FastOdsException {
-        final NameChecker checker = new NameChecker();
-        checker.checkStyleName("style-_-datastyle");
+    public void correctChildCellTest() {
+        this.checker.checkStyleName("style-_-datastyle");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void digitTest() throws FastOdsException {
-        final NameChecker checker = new NameChecker();
-        checker.checkStyleName("0style-:-datastyle");
-    }
-
-    private String filter(final CategoryFilter filter) {
-        final List<String> segments = new ArrayList<String>();
-        int from = -1;
-        int i;
-        for (i = 0; i < 0xfffff; i++) {
-            if (filter.ok(i)) {
-                if (from == -1) from = i;
-            } else {
-                if (from >= 0) {
-                    segments.add(this.format(from, i - 1));
-                    from = -1;
-                }
-            }
-        }
-        if (from >= 0) segments.add(this.format(from, i));
-        return Joiner.on(" | ").join(segments);
-    }
-
-    private String format(final int from, final int to) {
-        if (from == to) {
-            if (from < 0x80) return String.format("'%c'", from);
-            else return String.format("#x%x", from);
-        } else {
-            if (to <= 0x80) return String.format("[%c-%c]", from, to);
-            else return String.format("[#x%x-#x%x]", from, to);
-        }
-    }
-
-    private void printRange(final int from, final int to) {
-        final Set<Integer> types = new HashSet<Integer>();
-        for (int cp = from; cp <= to; cp++) {
-            types.add(Character.getType(cp));
-        }
-        System.out.println(types);
-    }
-
-    private interface CategoryFilter {
-        boolean ok(int codePoint);
+    public void digitTest() {
+        this.checker.checkStyleName("0style-:-datastyle");
     }
 }

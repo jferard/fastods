@@ -30,18 +30,24 @@ import org.junit.Test;
  * Created by jferard on 09/04/17.
  */
 public class AbsoluteLengthTest {
+
+    private static final double VALUE = 10.0;
+    private static final double OTHER_VALUE = 11.0;
+
     @Test
     public void testEquals() {
-        Assert.assertEquals(AbsoluteLength.pt(10.0), AbsoluteLength.pt(10.0));
-//        Assert.assertNotEquals(AbsoluteLength.pt(10.0), AbsoluteLength.cm(10.0));
-        Assert.assertNotEquals(AbsoluteLength.in(10.0), AbsoluteLength.in(11.0));
-        Assert.assertNotEquals(AbsoluteLength.in(11.0), AbsoluteLength.in(10.0));
-        Assert.assertFalse(AbsoluteLength.mm(10.0).equals("10"));
+        Assert.assertEquals(AbsoluteLength.pt(VALUE), AbsoluteLength.pt(VALUE));
+        Assert.assertNotEquals(AbsoluteLength.pt(VALUE), AbsoluteLength.cm(VALUE));
+        Assert.assertNotEquals(AbsoluteLength.in(VALUE), AbsoluteLength.in(OTHER_VALUE));
+        Assert.assertNotEquals(AbsoluteLength.in(OTHER_VALUE), AbsoluteLength.in(VALUE));
+        Assert.assertNotEquals("10", AbsoluteLength.mm(VALUE));
+        Assert.assertNotEquals(AbsoluteLength.mm(VALUE), "10");
     }
 
     @Test
     public void testHashCode() {
-        Assert.assertEquals(AbsoluteLength.pc(10.0).hashCode(), AbsoluteLength.pc(10.0).hashCode());
+        Assert.assertEquals(AbsoluteLength.pc(VALUE).hashCode(),
+                AbsoluteLength.pc(VALUE).hashCode());
     }
 
     @Test
@@ -50,16 +56,16 @@ public class AbsoluteLengthTest {
         Assert.assertFalse(AbsoluteLength.cm(1.0).isNull());
         Assert.assertFalse(AbsoluteLength.cm(-1.0).isNull());
     }
-    
+
     @Test
     public void testEqualsCmMm() {
-        Assert.assertEquals(AbsoluteLength.cm(1.0), AbsoluteLength.mm(10.0));
+        Assert.assertEquals(AbsoluteLength.cm(1.0), AbsoluteLength.mm(VALUE));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("3.881mm", AbsoluteLength.pt(11.0).toString());
-        Assert.assertEquals("3.528mm", AbsoluteLength.pt(10.0).toString());
+        Assert.assertEquals("3.881mm", AbsoluteLength.pt(OTHER_VALUE).toString());
+        Assert.assertEquals("3.528mm", AbsoluteLength.pt(VALUE).toString());
     }
 
 }

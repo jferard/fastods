@@ -40,93 +40,93 @@ public class TableNameUtilTest {
     }
 
     @Test
-    public void testCheckTableNameQuoteAtFirstPlace() throws Exception {
+    public void testCheckTableNameQuoteAtFirstPlace() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not start with ': 'quote at first place");
         this.util.checkTableName("'quote at first place");
     }
 
     @Test
-    public void testCheckTableNameNoQuoteAtFirstPlace() throws Exception {
+    public void testCheckTableNameNoQuoteAtFirstPlace() {
         this.util.checkTableName(" 'quote at second place");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar1() throws Exception {
+    public void testCheckTableNameForbiddenChar1() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with [");
         this.util.checkTableName("a name with [");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar2() throws Exception {
+    public void testCheckTableNameForbiddenChar2() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with ]");
         this.util.checkTableName("a name with ]");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar3() throws Exception {
+    public void testCheckTableNameForbiddenChar3() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with *");
         this.util.checkTableName("a name with *");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar4() throws Exception {
+    public void testCheckTableNameForbiddenChar4() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with ?");
         this.util.checkTableName("a name with ?");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar5() throws Exception {
+    public void testCheckTableNameForbiddenChar5() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with :");
         this.util.checkTableName("a name with :");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar6() throws Exception {
+    public void testCheckTableNameForbiddenChar6() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with /");
         this.util.checkTableName("a name with /");
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar7() throws Exception {
+    public void testCheckTableNameForbiddenChar7() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("Table name should not contain []*?:/\\: a name with \\");
         this.util.checkTableName("a name with \\");
     }
 
     @Test
-    public void escapeTableNameOk() throws Exception {
+    public void escapeTableNameOk() {
         Assert.assertEquals("no_problem", this.util.escapeTableName("no_problem"));
     }
 
     @Test
-    public void escapeTableNameSpace() throws Exception {
+    public void escapeTableNameSpace() {
         Assert.assertEquals("'a space'", this.util.escapeTableName("a space"));
     }
 
     @Test
-    public void escapeTableNameQuote() throws Exception {
+    public void escapeTableNameQuote() {
         Assert.assertEquals("'a '' quote'", this.util.escapeTableName("a ' quote"));
     }
 
     @Test
-    public void escapeTableNameTwoQuotes() throws Exception {
+    public void escapeTableNameTwoQuotes() {
         Assert.assertEquals("'two '' '' quotes'", this.util.escapeTableName("two ' ' quotes"));
     }
 
     @Test
-    public void escapeTableNameBlank() throws Exception {
+    public void escapeTableNameBlank() {
         Assert.assertEquals("'a\nnewline'", this.util.escapeTableName("a\nnewline"));
     }
 
     @Test
-    public void escapeTableNameDot() throws Exception {
+    public void escapeTableNameDot() {
         Assert.assertEquals("'a.dot'", this.util.escapeTableName("a.dot"));
     }
 }

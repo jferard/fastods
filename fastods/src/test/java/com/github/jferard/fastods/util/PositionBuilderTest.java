@@ -27,8 +27,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class PositionBuilderTest {
     private EqualityUtil equalityUtil;
     private TableNameUtil tableNameUtil;
@@ -41,7 +39,8 @@ public class PositionBuilderTest {
 
     @Test
     public void testAbs() {
-        final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil, 1, 2);
+        final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil,
+                1, 2);
         builder.absCol().absRow().absTable("at").file("f");
         Assert.assertEquals(new Position(this.equalityUtil, this.tableNameUtil, "f", "at", 1, 2, 7),
                 builder.build());
@@ -49,9 +48,11 @@ public class PositionBuilderTest {
 
     @Test
     public void test() {
-        final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil, 8, 7);
+        final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil,
+                8, 7);
         builder.absCol().absRow().table("at");
-        Assert.assertEquals(new Position(this.equalityUtil, this.tableNameUtil, null, "at", 8, 7, 3),
+        Assert.assertEquals(
+                new Position(this.equalityUtil, this.tableNameUtil, null, "at", 8, 7, 3),
                 builder.build());
     }
 }

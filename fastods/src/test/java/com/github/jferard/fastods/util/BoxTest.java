@@ -26,12 +26,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ *
  */
 public class BoxTest {
-	@Test
-	public void test() {
-		final Box<String> b = new Box<String>();
-		b.set("a");
-		Assert.assertEquals("a", b.get());
-	}
+    @Test
+    public void test() {
+        final Box<String> b = new Box<String>();
+        b.set("a");
+        Assert.assertEquals("a", b.get());
+    }
 }

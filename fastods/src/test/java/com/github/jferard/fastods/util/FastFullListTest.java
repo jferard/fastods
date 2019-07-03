@@ -26,70 +26,69 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class FastFullListTest {
-	@Test
-	public final void testSetAndAdd() {
-		final String be = "blank";
-		final FastFullList<String> fl = FastFullList.<String> builder().blankElement(be)
-				.capacity(10).build();
+    @Test
+    public final void testSetAndAdd() {
+        final String be = "blank";
+        final FastFullList<String> fl = FastFullList.<String>builder().blankElement(be).capacity(10)
+                .build();
 
-		Assert.assertEquals(0, fl.usedSize());
-		Assert.assertEquals(be, fl.get(100));
+        Assert.assertEquals(0, fl.usedSize());
+        Assert.assertEquals(be, fl.get(100));
 
-		fl.set(100, "non blank");
-		Assert.assertEquals(101, fl.usedSize());
-		Assert.assertEquals("non blank", fl.get(100));
+        fl.set(100, "non blank");
+        Assert.assertEquals(101, fl.usedSize());
+        Assert.assertEquals("non blank", fl.get(100));
 
-		fl.set(1000, be);
-		Assert.assertEquals(101, fl.usedSize());
-		Assert.assertEquals(be, fl.get(1000));
-	}
+        fl.set(1000, be);
+        Assert.assertEquals(101, fl.usedSize());
+        Assert.assertEquals(be, fl.get(1000));
+    }
 
-	@Test
-	public final void testSet() {
-		final FastFullList<String> fl = FastFullList.<String> builder()
-				.capacity(10).build();
+    @Test
+    public final void testSet() {
+        final FastFullList<String> fl = FastFullList.<String>builder().capacity(10).build();
 
-		Assert.assertEquals(0, fl.usedSize());
-		Assert.assertEquals(null, fl.get(100));
+        Assert.assertEquals(0, fl.usedSize());
+        Assert.assertNull(fl.get(100));
 
-		for (int i = 0; i<100; i++) {
+        for (int i = 0; i < 100; i++) {
             fl.set(i, "non blank");
             Assert.assertEquals(i + 1, fl.usedSize());
         }
         fl.set(100, null);
-		Assert.assertEquals(100, fl.usedSize());
-	}
+        Assert.assertEquals(100, fl.usedSize());
+    }
 
-	@Test
-	public final void testGet() {
-		final FastFullList<String> fl = FastFullList.<String>builder().build();
-		Assert.assertNull(fl.get(10));
-		Assert.assertEquals(0, fl.usedSize());
-	}
+    @Test
+    public final void testGet() {
+        final FastFullList<String> fl = FastFullList.<String>builder().build();
+        Assert.assertNull(fl.get(10));
+        Assert.assertEquals(0, fl.usedSize());
+    }
 
-	@Test
-	public final void testRemoveTrail() {
-		final FastFullList<String> fl = FastFullList.<String>builder().build();
-		fl.set(10, "10");
-		fl.set(10, "20");
-		fl.set(5, "5");
-		fl.set(10, null);
-		Assert.assertEquals(6, fl.usedSize());
-	}
+    @Test
+    public final void testRemoveTrail() {
+        final FastFullList<String> fl = FastFullList.<String>builder().build();
+        fl.set(10, "10");
+        fl.set(10, "20");
+        fl.set(5, "5");
+        fl.set(10, null);
+        Assert.assertEquals(6, fl.usedSize());
+    }
 
-	@Test
-	public final void testRemoveTrail0() {
-		final FastFullList<String> fl = FastFullList.<String>builder().build();
-		fl.set(0, "10");
-		fl.set(0, null);
-		Assert.assertEquals(0, fl.usedSize());
-	}
+    @Test
+    public final void testRemoveTrail0() {
+        final FastFullList<String> fl = FastFullList.<String>builder().build();
+        fl.set(0, "10");
+        fl.set(0, null);
+        Assert.assertEquals(0, fl.usedSize());
+    }
 
-	@Test
-	public final void testRemoveTrail1() {
-		final FastFullList<String> fl = FastFullList.<String>builder().build();
-		fl.set(1, "10");
-		fl.set(1, null);
-		Assert.assertEquals(0, fl.usedSize());
-	}
+    @Test
+    public final void testRemoveTrail1() {
+        final FastFullList<String> fl = FastFullList.<String>builder().build();
+        fl.set(1, "10");
+        fl.set(1, null);
+        Assert.assertEquals(0, fl.usedSize());
+    }
 }

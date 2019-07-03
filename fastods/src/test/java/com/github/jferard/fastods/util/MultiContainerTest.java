@@ -22,8 +22,6 @@
  */
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.TestHelper;
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,8 +30,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class MultiContainerTest {
@@ -41,7 +37,7 @@ public class MultiContainerTest {
     private Logger logger;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.logger = PowerMock.createMock(Logger.class);
         this.container = new MultiContainer<String, Dest, Integer>(this.logger, Dest.class);
         PowerMock.resetAll();
@@ -94,8 +90,9 @@ public class MultiContainerTest {
     public final void testUpdateWithoutCreation() {
         this.container.setMode(Container.Mode.UPDATE);
         Assert.assertFalse(this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1));
-        for (final Dest s : Dest.values())
+        for (final Dest s : Dest.values()) {
             Assert.assertFalse(this.container.getValues(s).iterator().hasNext());
+        }
     }
 
     @Test(expected = IllegalStateException.class)
@@ -122,8 +119,8 @@ public class MultiContainerTest {
         this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
         Assert.assertEquals(Integer.valueOf(1),
                 this.container.get("a", Dest.CONTENT_AUTOMATIC_STYLES));
-        Assert.assertEquals(null, this.container.get("a", Dest.STYLES_AUTOMATIC_STYLES));
-        Assert.assertEquals(null, this.container.get("b", Dest.CONTENT_AUTOMATIC_STYLES));
+        Assert.assertNull(this.container.get("a", Dest.STYLES_AUTOMATIC_STYLES));
+        Assert.assertNull(this.container.get("b", Dest.CONTENT_AUTOMATIC_STYLES));
 
         final Map<String, Integer> m = new HashMap<String, Integer>();
         m.put("a", 1);

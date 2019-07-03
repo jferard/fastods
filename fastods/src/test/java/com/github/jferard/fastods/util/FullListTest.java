@@ -80,8 +80,8 @@ public class FullListTest {
 		for (int i = 0; i < 100; i++)
 			l.add(be);
 		l.add("non blank");
-		Assert.assertTrue(l.equals(fl));
-		Assert.assertTrue(fl.equals(l));
+		Assert.assertEquals(l, fl);
+		Assert.assertEquals(fl, l);
 		Assert.assertEquals(fl.hashCode(), l.hashCode());
 	}
 

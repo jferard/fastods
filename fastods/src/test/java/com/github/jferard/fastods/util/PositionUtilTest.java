@@ -111,8 +111,7 @@ public class PositionUtilTest {
 
     @Test(expected = ParseException.class)
     public final void testWeirdPos5() throws ParseException {
-        Position p = this.util.newPosition("AA$.");
-        System.out.println(p);
+        this.util.newPosition("AA$.");
     }
 
     @Test(expected = ParseException.class)
@@ -194,8 +193,7 @@ public class PositionUtilTest {
         EasyMock.expect(t.getName()).andReturn("no problem");
 
         PowerMock.replayAll();
-        final String cellAddress =
-                this.util.newPosition(t, 0, 0).toString();
+        final String cellAddress = this.util.newPosition(t, 0, 0).toString();
 
         PowerMock.verifyAll();
         Assert.assertEquals("'no problem'.A1", cellAddress);

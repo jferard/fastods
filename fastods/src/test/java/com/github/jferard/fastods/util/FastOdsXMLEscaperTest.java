@@ -27,158 +27,150 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class FastOdsXMLEscaperTest {
-	XMLEscaper escaper;
+    private XMLEscaper escaper;
 
-	@Before
-	public void setUp() {
-		this.escaper = FastOdsXMLEscaper.create();
-	}
+    @Before
+    public void setUp() {
+        this.escaper = FastOdsXMLEscaper.create();
+    }
 
-	@Test
-	public final void testAttrAmp() {
-		String s = this.escaper.escapeXMLAttribute("&0");
-		Assert.assertEquals("&amp;0", s);
-		s = this.escaper.escapeXMLAttribute("& 0");
-		Assert.assertEquals("&amp; 0", s);
-	}
+    @Test
+    public final void testAttrAmp() {
+        this.assertEqualsToAttrEscaped("&amp;0", "&0");
+        this.assertEqualsToAttrEscaped("&amp; 0", "& 0");
+    }
 
-	@Test
-	public final void testAttrApos() {
-		final String s = this.escaper.escapeXMLAttribute("' 0");
-		Assert.assertEquals("&apos; 0", s);
-	}
+    @Test
+    public final void testAttrApos() {
+        this.assertEqualsToAttrEscaped("&apos; 0", "' 0");
+    }
 
-	@Test
-	public final void testAttrBuffer() {
-		final XMLEscaper escaper2 = new FastOdsXMLEscaper(124);
-		final StringBuilder sb = new StringBuilder(8 * (2 << 5));
-		final StringBuilder sb2 = new StringBuilder(8 * (2 << 5));
-		sb.append("'ae< >");
-		sb2.append("&apos;ae&lt; &gt;");
-		for (int i = 0; i < 5; i++) {
-			sb.append(sb.toString()).append(sb.toString());
-			sb2.append(sb2.toString()).append(sb2.toString());
-		}
+    @Test
+    public final void testAttrBuffer() {
+        final XMLEscaper escaper = new FastOdsXMLEscaper(124);
+        final StringBuilder sb1 = new StringBuilder(8 * (2 << 5));
+        final StringBuilder sb2 = new StringBuilder(8 * (2 << 5));
+        sb1.append("'ae< >");
+        sb2.append("&apos;ae&lt; &gt;");
+        for (int i = 0; i < 5; i++) {
+            sb1.append(sb1.toString()).append(sb1.toString());
+            sb2.append(sb2.toString()).append(sb2.toString());
+        }
 
-		Assert.assertEquals(sb2.toString(),
-				escaper2.escapeXMLAttribute(sb.toString()));
-	}
+        Assert.assertEquals(sb2.toString(), escaper.escapeXMLAttribute(sb1.toString()));
+    }
 
-	@Test
-	public final void testAttrExpression() {
-		final String s = this.escaper.escapeXMLAttribute("w<& ' d\"gfgh >");
-		Assert.assertEquals("w&lt;&amp; &apos; d&quot;gfgh &gt;", s);
-	}
+    @Test
+    public final void testAttrExpression() {
+        this.assertEqualsToAttrEscaped("w&lt;&amp; &apos; d&quot;gfgh &gt;", "w<& ' d\"gfgh >");
+    }
 
-	@Test
-	public final void testAttrLt() {
-		final String s = this.escaper.escapeXMLAttribute("< 0");
-		Assert.assertEquals("&lt; 0", s);
-	}
+    @Test
+    public final void testAttrLt() {
+        this.assertEqualsToAttrEscaped("&lt; 0", "< 0");
+    }
 
-	@Test
-	public final void testAttrNullString() {
-		final String s = this.escaper.escapeXMLAttribute(null);
-		Assert.assertEquals(null, s);
-	}
+    @Test
+    public final void testAttrNullString() {
+        Assert.assertNull(this.escaper.escapeXMLAttribute(null));
+    }
 
-	@Test
-	public final void testAttrOther() {
-		final String s = this.escaper.escapeXMLAttribute("\t\n\r\b");
-		Assert.assertEquals("&#x9;&#xA;&#xD;\\uFFFD", s);
-	}
+    @Test
+    public final void testAttrOther() {
+        this.assertEqualsToAttrEscaped("&#x9;&#xA;&#xD;\\uFFFD", "\t\n\r\b");
+    }
 
-	@Test
-	public final void testBasicChars() {
-		final String s = this.escaper.escapeXMLAttribute("abcde");
-		Assert.assertEquals("abcde", s);
-	}
+    @Test
+    public final void testBasicChars() {
+		this.assertEqualsToAttrEscaped("abcde", "abcde");
+		this.assertEqualsToContentEscaped("abcde", "abcde");
+    }
 
-	@Test
-	public final void testContentAmp() {
-		final String s = this.escaper.escapeXMLContent("& 0");
-		Assert.assertEquals("&amp; 0", s);
-	}
+    @Test
+    public final void testContentAmp() {
+        this.assertEqualsToContentEscaped("&amp; 0", "& 0");
+    }
 
-	@Test
-	public final void testContentBuffer() {
-		final XMLEscaper escaper2 = new FastOdsXMLEscaper(124);
-		final StringBuilder sb = new StringBuilder(8 * (2 << 5));
-		final StringBuilder sb2 = new StringBuilder(8 * (2 << 5));
-		sb.append("'ae< >");
-		sb2.append("'ae&lt; &gt;");
-		for (int i = 0; i < 5; i++) {
-			sb.append(sb.toString()).append(sb.toString());
-			sb2.append(sb2.toString()).append(sb2.toString());
-		}
+    @Test
+    public final void testContentBuffer() {
+        final XMLEscaper escaper = new FastOdsXMLEscaper(124);
+        final StringBuilder sb1 = new StringBuilder(8 * (2 << 5));
+        final StringBuilder sb2 = new StringBuilder(8 * (2 << 5));
+        sb1.append("'ae< >");
+        sb2.append("'ae&lt; &gt;");
+        for (int i = 0; i < 5; i++) {
+            sb1.append(sb1.toString()).append(sb1.toString());
+            sb2.append(sb2.toString()).append(sb2.toString());
+        }
 
-		Assert.assertEquals(sb2.toString(),
-				escaper2.escapeXMLContent(sb.toString()));
-	}
-	
-	@Test
-	public final void testContentBuffer2() {
-		final XMLEscaper escaper2 = new FastOdsXMLEscaper(5);
-		final String s = "<ae";
-		final String s2 = "&lt;ae";
-		Assert.assertEquals(s2,
-				escaper2.escapeXMLContent(s));
-	}
-	
-	@Test
-	public final void testAttrBuffer2() {
-		final XMLEscaper escaper2 = new FastOdsXMLEscaper(5);
-		final String s = "<ae";
-		final String s2 = "&lt;ae";
-		Assert.assertEquals(s2,
-				escaper2.escapeXMLAttribute(s));
-	}
+        Assert.assertEquals(sb2.toString(), escaper.escapeXMLContent(sb1.toString()));
+    }
 
-	@Test
-	public final void testContentExpression() {
-		final String s = this.escaper.escapeXMLContent("w<& ' d\"gfgh >");
-		Assert.assertEquals("w&lt;&amp; ' d\"gfgh &gt;", s);
-	}
+    @Test
+    public final void testContentBuffer2() {
+        final XMLEscaper escaper = new FastOdsXMLEscaper(5);
+        final String expected = "<ae";
+        final String actual = "&lt;ae";
+        Assert.assertEquals(actual, escaper.escapeXMLContent(expected));
+    }
 
-	@Test
-	public final void testContentLt() {
-		final String s = this.escaper.escapeXMLContent("<");
-		Assert.assertEquals("&lt;", s);
-	}
+    @Test
+    public final void testAttrBuffer2() {
+        final XMLEscaper escaper = new FastOdsXMLEscaper(5);
+        final String actual = "<ae";
+        final String expected = "&lt;ae";
+        Assert.assertEquals(expected, escaper.escapeXMLAttribute(actual));
+    }
 
-	@Test
-	public final void testContentNullString() {
-		final String s = this.escaper.escapeXMLContent(null);
-		Assert.assertEquals(null, s);
-	}
+    @Test
+    public final void testContentExpression() {
+        this.assertEqualsToContentEscaped("w&lt;&amp; ' d\"gfgh &gt;", "w<& ' d\"gfgh >");
+    }
 
-	@Test
-	public final void testContentOther() {
-		final String s = this.escaper.escapeXMLContent("\t\n\r\b");
-		Assert.assertEquals("\t\n\r\\uFFFD", s);
-	}
+    @Test
+    public final void testContentLt() {
+		this.assertEqualsToContentEscaped("&lt;", "<");
+    }
 
-	@Test
-	public final void testDifferentCaches() {
-		String s = this.escaper.escapeXMLAttribute("\t\n\r\b");
-		Assert.assertEquals("&#x9;&#xA;&#xD;\\uFFFD", s);
-		s = this.escaper.escapeXMLAttribute("\t\n\r\b");
-		Assert.assertEquals("&#x9;&#xA;&#xD;\\uFFFD", s);
-		s = this.escaper.escapeXMLContent("\t\n\r\b");
-		Assert.assertEquals("\t\n\r\\uFFFD", s);
-		s = this.escaper.escapeXMLContent("\t\n\r\b");
-		Assert.assertEquals("\t\n\r\\uFFFD", s);
-	}
+    @Test
+    public final void testContentNullString() {
+        Assert.assertNull(this.escaper.escapeXMLContent(null));
+    }
 
-	@Test
-	public final void testEmptyString() {
-		final String s = this.escaper.escapeXMLAttribute("");
-		Assert.assertEquals("", s);
-	}
+    @Test
+    public final void testContentOther() {
+        this.assertEqualsToContentEscaped("\t\n\r\\uFFFD", "\t\n\r\b");
+    }
 
-	@Test
-	public final void testFinalChars() {
-		final String s = this.escaper.escapeXMLAttribute("'abcde");
-		Assert.assertEquals("&apos;abcde", s);
-	}
+    @Test
+    public final void testDifferentCaches() {
+        final String actualToEscape = "\t\n\r\b";
+        final String expectedAttr = "&#x9;&#xA;&#xD;\\uFFFD";
+        final String expectedContent = "\t\n\r\\uFFFD";
+
+        this.assertEqualsToAttrEscaped(expectedAttr, actualToEscape);
+        this.assertEqualsToAttrEscaped(expectedAttr, actualToEscape);
+        this.assertEqualsToContentEscaped(expectedContent, actualToEscape);
+        this.assertEqualsToContentEscaped(expectedContent, actualToEscape);
+    }
+
+    @Test
+    public final void testEmptyString() {
+		this.assertEqualsToAttrEscaped("", "");
+		this.assertEqualsToContentEscaped("", "");
+    }
+
+    @Test
+    public final void testFinalChars() {
+		this.assertEqualsToAttrEscaped("&apos;abcde", "'abcde");
+		this.assertEqualsToContentEscaped("'abcde", "'abcde");
+    }
+
+    private void assertEqualsToAttrEscaped(final String expected, final String actualToEscape) {
+        Assert.assertEquals(expected, this.escaper.escapeXMLAttribute(actualToEscape));
+    }
+
+    private void assertEqualsToContentEscaped(final String expected, final String actualToEscape) {
+        Assert.assertEquals(expected, this.escaper.escapeXMLContent(actualToEscape));
+    }
 }

@@ -25,23 +25,25 @@ package com.github.jferard.fastods.util;
 
 /**
  * A Box contains a content. The content can be set or get. The box itself may be final.
+ * Similar to a singleton.
+ *
  * @param <T> the content of a box
  * @author Julien Férard
  */
 public class Box<T> {
-	private T content;
+    private T content;
 
-	/**
-	 * @return the content of the box
-	 */
-	public T get() {
-		return this.content;
-	}
+    /**
+     * @return the content of the box
+     */
+    public T get() {
+        return this.content;
+    }
 
-	/**
-	 * @param content the content of the box
-	 */
-	public void set(final T content) {
-		this.content = content;
-	}
+    /**
+     * @param content the content of the box
+     */
+    public void set(final T content) {
+        this.content = content;
+    }
 }

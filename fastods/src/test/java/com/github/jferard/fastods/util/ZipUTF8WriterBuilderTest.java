@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 public class ZipUTF8WriterBuilderTest {
+    public static final int C_SIZE = 118;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -41,7 +42,7 @@ public class ZipUTF8WriterBuilderTest {
     private ByteArrayOutputStream out;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.builder = new ZipUTF8WriterBuilder();
         this.out = new ByteArrayOutputStream();
         PowerMock.resetAll();
@@ -53,7 +54,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(C_SIZE, this.out.size());
     }
 
     @Test
@@ -62,7 +63,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     @Test
@@ -71,7 +72,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     @Test
@@ -80,7 +81,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     @Test
@@ -89,7 +90,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     @Test
@@ -131,13 +132,13 @@ public class ZipUTF8WriterBuilderTest {
         writer.append(
                 "some long text that can be zipped some long text that can be zipped some long text that can be zipped some long text that can be zipped ");
         writer.close();
-        Assert.assertEquals(118, this.out.size());
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     @Test
-    public final void testLevel99() throws IOException {
+    public final void testLevel99() {
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage("invalid compression level");
-        final ZipUTF8Writer writer = this.builder.level(99).build(this.out);
+        this.builder.level(99).build(this.out);
     }
 }

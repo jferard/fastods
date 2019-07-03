@@ -22,8 +22,6 @@
  */
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.TestHelper;
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,9 +30,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class ContainerTest {
@@ -95,7 +91,7 @@ public class ContainerTest {
     public final void testGet() {
         this.container.add("a", 1);
         Assert.assertEquals(Integer.valueOf(1), this.container.get("a"));
-        Assert.assertEquals(null, this.container.get("b"));
+        Assert.assertNull(this.container.get("b"));
 
         final Map<String, Integer> m = new HashMap<String, Integer>();
         m.put("a", 1);

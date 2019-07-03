@@ -27,8 +27,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class PositionTest {
     private EqualityUtil equalityUtil;
     private TableNameUtil tableNameUtil;
@@ -41,37 +39,50 @@ public class PositionTest {
 
     @Test
     public void testD3() {
-        Assert.assertEquals("D3", new Position(this.equalityUtil, this.tableNameUtil, null, null, 2,3, 0).toString());
+        Assert.assertEquals("D3",
+                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 0)
+                        .toString());
     }
 
     @Test
     public void testD3AbsCol() {
-        Assert.assertEquals("$D3", new Position(this.equalityUtil, this.tableNameUtil, null, null, 2,3, 1).toString());
+        Assert.assertEquals("$D3",
+                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 1)
+                        .toString());
     }
 
     @Test
     public void testD3AbsRow() {
-        Assert.assertEquals("D$3", new Position(this.equalityUtil, this.tableNameUtil, null, null, 2,3, 2).toString());
+        Assert.assertEquals("D$3",
+                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 2)
+                        .toString());
     }
 
     @Test
     public void testD3AbsTable() {
-        Assert.assertEquals("D3", new Position(this.equalityUtil, this.tableNameUtil, null, null, 2,3, 4).toString());
+        Assert.assertEquals("D3",
+                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 4)
+                        .toString());
     }
 
     @Test
     public void testD3AbsTable2() {
-        Assert.assertEquals("$t.D3", new Position(this.equalityUtil, this.tableNameUtil, null, "t", 2,3, 4).toString());
+        Assert.assertEquals("$t.D3",
+                new Position(this.equalityUtil, this.tableNameUtil, null, "t", 2, 3, 4).toString());
     }
 
     @Test
     public void testD3AbsTable3() {
-        Assert.assertEquals("'$t''t'.D3", new Position(this.equalityUtil, this.tableNameUtil, null, "t't", 2,3, 4).toString());
+        Assert.assertEquals("'$t''t'.D3",
+                new Position(this.equalityUtil, this.tableNameUtil, null, "t't", 2, 3, 4)
+                        .toString());
     }
 
     @Test
     public void testFilename() {
-        Assert.assertEquals("'f'''#'$t''t'.D3", new Position(this.equalityUtil, this.tableNameUtil, "f'", "t't", 2,3, 4).toString());
+        Assert.assertEquals("'f'''#'$t''t'.D3",
+                new Position(this.equalityUtil, this.tableNameUtil, "f'", "t't", 2, 3, 4)
+                        .toString());
     }
 
 }

@@ -49,8 +49,8 @@ public class XMLUtilTest {
 
     @Test
     public void testIntAttr() throws IOException {
-        this.xu.appendAttribute(this.sb, "attr", 20);
-        Assert.assertEquals(" attr=\"20\"", this.sb.toString());
+        this.xu.appendAttribute(this.sb, "attr", 7);
+        Assert.assertEquals(" attr=\"7\"", this.sb.toString());
     }
 
     @Test

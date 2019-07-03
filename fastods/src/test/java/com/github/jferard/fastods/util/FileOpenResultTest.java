@@ -38,66 +38,66 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
+ *
  */
 public class FileOpenResultTest {
-	private OdsFactory odsFactory;
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+    private OdsFactory odsFactory;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+    @Before
+    public void setUp() {
+        final Logger logger = PowerMock.createMock(Logger.class);
+        this.odsFactory = OdsFactory.create(logger, Locale.US);
+    }
 
-	@Before
-	public void setUp() {
-		final Logger logger = PowerMock.createMock(Logger.class);
-		this.odsFactory = OdsFactory.create(logger, Locale.US);
-	}
+    @Test
+    public void testIsDir() throws Exception {
+        final FileOpenResult fileOpenResult = this.odsFactory.openFile(".");
 
-	@Test
-	public void testIsDir() throws Exception {
-		final FileOpenResult fileOpenResult = this.odsFactory.openFile(".");
+        Assert.assertSame(FileOpenResult.FILE_IS_DIR, fileOpenResult);
+        this.thrown.expect(IllegalStateException.class);
+        fileOpenResult.getStream();
+    }
 
-		Assert.assertTrue(FileOpenResult.FILE_IS_DIR == fileOpenResult);
-		this.thrown.expect(IllegalStateException.class);
-		fileOpenResult.getStream();
-	}
+    @Test
+    public void testOpen() throws Exception {
+        final File aTest = new File("atest");
 
-	@Test
-	public void testOpen() throws Exception {
-		final File aTest = new File("atest");
+        try {
+            final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
+            Assert.assertTrue(fileOpenResult instanceof FileOpen);
+            Assert.assertEquals(0, aTest.length());
+            // the file has been touched
+            final OutputStream s = fileOpenResult.getStream();
+            s.write(new byte[]{'a', 'b', 'c'});
+            s.close();
+            Assert.assertEquals(3, aTest.length());
+        } finally {
+            Assert.assertTrue(aTest.delete());
+        }
+    }
 
-		try {
-			final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
-			Assert.assertTrue(fileOpenResult instanceof FileOpen);
-			Assert.assertEquals(0, aTest.length());
-			// the file has been touched
-			final OutputStream s = fileOpenResult.getStream();
-			s.write(new byte[]{'a', 'b','c'});
-			s.close();
-			Assert.assertEquals(3, aTest.length());
-		} finally {
-			aTest.delete();
-		}
-	}
+    @Test
+    public void testExists() throws Exception {
+        final File aTest = new File("atest");
 
-	@Test
-	public void testExists() throws Exception {
-		final File aTest = new File("atest");
-
-		// create a file
-		OutputStream s = new FileOutputStream(aTest);
-		s.write(new byte[]{'a', 'b','c'});
-		s.close();
-		Assert.assertEquals(3, aTest.length());
-		try {
-			final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
-			Assert.assertTrue(fileOpenResult instanceof FileExists);
-			// the file has not been touched
-			Assert.assertEquals(3, aTest.length());
-			// the file has been touched
-			s = fileOpenResult.getStream();
-			s.close();
-			Assert.assertEquals(0, aTest.length());
-		} finally {
-			aTest.delete();
-		}
-	}
+        // create a file
+        OutputStream s = new FileOutputStream(aTest);
+        s.write(new byte[]{'a', 'b', 'c'});
+        s.close();
+        Assert.assertEquals(3, aTest.length());
+        try {
+            final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
+            Assert.assertTrue(fileOpenResult instanceof FileExists);
+            // the file has not been touched
+            Assert.assertEquals(3, aTest.length());
+            // the file has been touched
+            s = fileOpenResult.getStream();
+            s.close();
+            Assert.assertEquals(0, aTest.length());
+        } finally {
+            Assert.assertTrue(aTest.delete());
+        }
+    }
 }

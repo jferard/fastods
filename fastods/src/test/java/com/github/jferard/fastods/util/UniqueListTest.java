@@ -95,7 +95,7 @@ public class UniqueListTest {
 		ul.add(element);
 		ul.add(new FirstLetter("GastODS"));
 
-		Assert.assertEquals(null, ul.removeByName("H"));
+		Assert.assertNull(ul.removeByName("H"));
 	}
 
 	@Test()
@@ -105,7 +105,7 @@ public class UniqueListTest {
 		ul.add(element);
 		ul.add(new FirstLetter("GastODS"));
 
-		Assert.assertEquals(true, ul.remove(element));
+		Assert.assertTrue(ul.remove(element));
 	}
 
 	@Test()
@@ -115,7 +115,7 @@ public class UniqueListTest {
 		ul.add(element);
 		ul.add(new FirstLetter("GastODS"));
 
-		Assert.assertEquals(false, ul.remove("foo"));
+		Assert.assertFalse(ul.remove("foo"));
 	}
 
 	@Test()

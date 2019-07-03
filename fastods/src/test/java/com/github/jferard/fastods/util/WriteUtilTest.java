@@ -30,7 +30,7 @@ public class WriteUtilTest {
 	private WriteUtil util;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.util = WriteUtil.create();
 	}
 

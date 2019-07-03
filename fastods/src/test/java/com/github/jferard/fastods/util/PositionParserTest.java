@@ -58,7 +58,8 @@ public class PositionParserTest {
     public void test() throws ParseException {
         Assert.assertEquals(
                 new Position(this.equalityUtil, this.tableNameUtil, "f'", "t't", 2, 3, 7),
-                new PositionParser(this.equalityUtil, this.tableNameUtil, "'f'''#'$t''t'.$D$3").parse());
+                new PositionParser(this.equalityUtil, this.tableNameUtil, "'f'''#'$t''t'.$D$3")
+                        .parse());
 
     }
 }

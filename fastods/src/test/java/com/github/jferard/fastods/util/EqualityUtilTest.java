@@ -22,58 +22,47 @@
  */
 package com.github.jferard.fastods.util;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 public class EqualityUtilTest {
-	EqualityUtil equalityUtil;
+    private EqualityUtil equalityUtil;
 
-	@Before
-	public void setUp() {
-		PowerMock.createMock(PositionUtil.class);
-		PowerMock.createMock(WriteUtil.class);
-		this.equalityUtil = new EqualityUtil();
-		PowerMock.resetAll();
-	}
+    @Before
+    public void setUp() {
+        this.equalityUtil = new EqualityUtil();
+    }
 
-	@After
-	public void tearDown() {
-		PowerMock.verifyAll();
-	}
+    @Test
+    public final void testEquals() {
+        Assert.assertTrue(this.equalityUtil.equal(null, null));
+        final Object s = "object";
+        Assert.assertFalse(this.equalityUtil.equal(null, s));
+        Assert.assertFalse(this.equalityUtil.equal(s, null));
+        Assert.assertTrue(this.equalityUtil.equal(s, s));
+    }
 
-	@Test
-	public final void testEquals() {
-		PowerMock.replayAll();
-		Assert.assertTrue(this.equalityUtil.equal(null, null));
-		final Object s = "object";
-		Assert.assertFalse(this.equalityUtil.equal(null, s));
-		Assert.assertFalse(this.equalityUtil.equal(s, null));
-		Assert.assertTrue(this.equalityUtil.equal(s, s));
-	}
-	
-	@Test
-	public final void testDifferent() {
-		PowerMock.replayAll();
-		Assert.assertFalse(this.equalityUtil.different(null, null));
-		final Object s = "object";
-		Assert.assertTrue(this.equalityUtil.different(null, s));
-		Assert.assertTrue(this.equalityUtil.different(s, null));
-		Assert.assertFalse(this.equalityUtil.different(s, s));
-	}
+    @Test
+    public final void testDifferent() {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        Assert.assertFalse(this.equalityUtil.different(null, null));
+        final Object s = "object";
+        Assert.assertTrue(this.equalityUtil.different(null, s));
+        Assert.assertTrue(this.equalityUtil.different(s, null));
+        Assert.assertFalse(this.equalityUtil.different(s, s));
+    }
 
-	@Test
-	public final void testHashObjects() {
-		PowerMock.replayAll();
-		final Object[] integers = {null, 1, null, 2};
-		Assert.assertEquals(924484, this.equalityUtil.hashObjects(integers));
-	}
-	
-	@Test
-	public final void testHashInts() {
-		PowerMock.replayAll();
-		Assert.assertEquals(994, this.equalityUtil.hashInts(1, 2));
-	}
+    @Test
+    public final void testHashObjects() {
+        final Object[] integers = {null, 1, null, 2};
+        Assert.assertEquals(924484, this.equalityUtil.hashObjects(integers));
+    }
+
+    @Test
+    public final void testHashInts() {
+        Assert.assertEquals(994, this.equalityUtil.hashInts(1, 2));
+    }
 }

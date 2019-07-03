@@ -30,18 +30,22 @@ import org.junit.Test;
  * Created by jferard on 09/04/17.
  */
 public class SimpleLengthTest {
+    private static final double VALUE = 10.0;
+    private static final double OTHER_VALUE = 11.0;
+
     @Test
     public void testEquals() {
-        Assert.assertEquals(SimpleLength.pt(10.0), SimpleLength.pt(10.0));
-        Assert.assertNotEquals(SimpleLength.pt(10.0), SimpleLength.cm(10.0));
-        Assert.assertNotEquals(SimpleLength.in(10.0), SimpleLength.in(11.0));
-        Assert.assertNotEquals(SimpleLength.in(11.0), SimpleLength.in(10.0));
-        Assert.assertFalse(SimpleLength.mm(10.0).equals("10"));
+        Assert.assertEquals(SimpleLength.pt(VALUE), SimpleLength.pt(VALUE));
+        Assert.assertNotEquals(SimpleLength.pt(VALUE), SimpleLength.cm(VALUE));
+        Assert.assertNotEquals(SimpleLength.in(VALUE), SimpleLength.in(OTHER_VALUE));
+        Assert.assertNotEquals(SimpleLength.in(OTHER_VALUE), SimpleLength.in(VALUE));
+        Assert.assertNotEquals("10", SimpleLength.mm(VALUE));
+        Assert.assertNotEquals(SimpleLength.mm(VALUE), "10");
     }
 
     @Test
     public void testHashCode() {
-        Assert.assertEquals(SimpleLength.pc(10.0).hashCode(), SimpleLength.pc(10.0).hashCode());
+        Assert.assertEquals(SimpleLength.pc(VALUE).hashCode(), SimpleLength.pc(VALUE).hashCode());
     }
 
     @Test
@@ -53,8 +57,8 @@ public class SimpleLengthTest {
 
     @Test
     public void testToString() {
-        Assert.assertEquals("11pt", SimpleLength.pt(11.0).toString());
-        Assert.assertEquals("10pt", SimpleLength.pt(10.0).toString());
+        Assert.assertEquals("11pt", SimpleLength.pt(OTHER_VALUE).toString());
+        Assert.assertEquals("10pt", SimpleLength.pt(VALUE).toString());
     }
 
 }
