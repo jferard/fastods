@@ -83,9 +83,9 @@ class J_PeriodicTable {
         // ## The data
         //
         // We'll use h2 again (see Advanced part of the tutorial). The content of the resources
-        // files
-        // can be found at []() and [](). The results where parsed from the article
-        // https://en.wikipedia.org/wiki/List_of_chemical_elements.
+        // files can be found at https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
+        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/insert.sql.
+        // The results where parsed from the article https://en.wikipedia.org/wiki/List_of_chemical_elements.
         //
         // We open a connection and populate the database:
         final JdbcDataSource dataSource = new JdbcDataSource();
@@ -281,5 +281,9 @@ class J_PeriodicTable {
                 .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).backgroundColor(orangered)
                 .build();
     }
+
+    // *Note*: The code of this section is badly structured because of the tutorial format. I
+    // don't want to create a lot a small functions because it would be harder for the reader
+    // to follow the logic.
     // << END TUTORIAL (directive to extract part of a tutorial from this file)
 }
