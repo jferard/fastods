@@ -92,4 +92,9 @@ public class FastODSExamplesIT {
     public void multiplicationTableTest() throws IOException {
         I_MultiplicationTable.example();
     }
+
+    @Test
+    public void periodicTableTest() throws IOException, SQLException {
+        J_PeriodicTable.example();
+    }
 }

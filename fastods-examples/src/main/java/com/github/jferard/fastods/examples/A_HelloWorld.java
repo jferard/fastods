@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 class A_HelloWorld {
-    static void example() throws IOException, FastOdsException {
+    static void example() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Hello, world!
         //

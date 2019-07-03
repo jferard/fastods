@@ -52,7 +52,7 @@ class I_MultiplicationTable {
         //
         // # A multiplication table
         // Let's create a new document and a new table:
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("hello-world"), Locale.US);
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("multiplication"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("multiplication-table");
