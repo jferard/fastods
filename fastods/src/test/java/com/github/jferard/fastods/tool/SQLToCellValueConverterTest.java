@@ -44,15 +44,15 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class SQLToCellValueConverterTest {
-    public static final Charset CHARSET = Charset.forName("US-ASCII");
-    public static final String XML_FASTODS =
+    private static final Charset CHARSET = Charset.forName("US-ASCII");
+    private static final String XML_FASTODS =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<fastods />";
-    public static final String XML_FASTODS_RAW = "<fastods/>";
-    public static final String FASTODS = "FastODS";
-    public static final Date SQL_DATE = new Date(100);
-    public static final java.util.Date UTIL_DATE = new java.util.Date(100);
-    public static final TimeValue TIME_VALUE = new TimeValue(false, 0, 0, 0, 0, 0, 0);
-    public static final StringValue EMPTY_STRING_VALUE = new StringValue("");
+    private static final String XML_FASTODS_RAW = "<fastods/>";
+    private static final String FASTODS = "FastODS";
+    private static final Date SQL_DATE = new Date(100);
+    private static final java.util.Date UTIL_DATE = new java.util.Date(100);
+    private static final TimeValue TIME_VALUE = new TimeValue(false, 0, 0, 0, 0, 0, 0);
+    private static final StringValue EMPTY_STRING_VALUE = new StringValue("");
     private static final Time SQL_TIME = new Time(100);
     private static final Timestamp SQL_TS = new Timestamp(100);
     private SQLToCellValueConverter.IntervalConverter intervalConverter;
@@ -71,7 +71,8 @@ public class SQLToCellValueConverterTest {
     @Test
     public void testFromBase() throws FastOdsException {
         PowerMock.resetAll();
-        EasyMock.expect(this.wrappedConverter.from(TableCell.Type.FLOAT, FASTODS)).andReturn(EMPTY_STRING_VALUE);
+        EasyMock.expect(this.wrappedConverter.from(TableCell.Type.FLOAT, FASTODS))
+                .andReturn(EMPTY_STRING_VALUE);
 
         PowerMock.replayAll();
         Assert.assertEquals(EMPTY_STRING_VALUE, this.converter.from(TableCell.Type.FLOAT, FASTODS));

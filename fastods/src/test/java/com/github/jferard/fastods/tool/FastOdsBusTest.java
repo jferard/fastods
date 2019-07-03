@@ -34,10 +34,10 @@ public class FastOdsBusTest {
     public void testBus() {
         final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
         b.put(10);
-        b.put(20);
+        b.put(2);
         Assert.assertFalse(b.isClosed());
         Assert.assertEquals(Integer.valueOf(10), b.get());
-        Assert.assertEquals(Integer.valueOf(20), b.get());
+        Assert.assertEquals(Integer.valueOf(2), b.get());
         b.close();
         Assert.assertTrue(b.isClosed());
     }
@@ -87,7 +87,7 @@ public class FastOdsBusTest {
                     try {
                         sb.append(e.getMessage());
                     } catch (final IOException e1) {
-                        e1.printStackTrace();
+                        Assert.fail();
                     }
                 }
             }

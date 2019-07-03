@@ -47,11 +47,11 @@ public class ResultSetDataWrapperBuilderTest {
         final TableRow row = PowerMock.createMock(TableRow.class);
         final TableCellWalker walker = PowerMock.createMock(TableCellWalker.class);
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
-        final SQLToCellValueConverter.IntervalConverter conv = PowerMock.createMock(SQLToCellValueConverter.IntervalConverter.class);
+        final SQLToCellValueConverter.IntervalConverter converter = PowerMock.createMock(SQLToCellValueConverter.IntervalConverter.class);
         final Logger logger = PowerMock.createMock(Logger.class);
         final ResultSetMetaData md = PowerMock.createMock(ResultSetMetaData.class);
 
-        final ResultSetDataWrapper b = ResultSetDataWrapper.builder(rs).converter(conv)
+        final ResultSetDataWrapper b = ResultSetDataWrapper.builder(rs).converter(converter)
                 .charset(Charset.forName("US-ASCII")).currency("€").nullValue(new StringValue(""))
                 .noHeadStyle().noAutoFilter().typeValue(0, TableCell.Type.VOID).max(10)
                 .headStyle(TableCellStyle.builder("dummy").build()).logger(logger).build();

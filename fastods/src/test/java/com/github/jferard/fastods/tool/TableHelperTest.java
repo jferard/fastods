@@ -52,7 +52,7 @@ public class TableHelperTest {
     private TableRow row;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         this.table = PowerMock.createMock(Table.class);
         this.row = PowerMock.createMock(TableRow.class);
@@ -63,9 +63,6 @@ public class TableHelperTest {
 
     @Test
     public final void testSetCellMerge() throws FastOdsException, IOException, ParseException {
-        final CellValue value = new StringValue("@");
-        final TableCellStyle ts = TableCellStyle.builder("b").build();
-
         PowerMock.resetAll();
         EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
         EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
@@ -116,7 +113,7 @@ public class TableHelperTest {
     }
 
     @Test
-    public final void testSetCellValue() throws FastOdsException, IOException, ParseException {
+    public final void testSetCellValue() throws FastOdsException, IOException {
         final CellValue value = new StringValue("@");
 
         PowerMock.resetAll();
@@ -133,7 +130,7 @@ public class TableHelperTest {
 
     @Test
     public final void testSetCellValueWithStyle()
-            throws FastOdsException, IOException, ParseException {
+            throws FastOdsException, IOException {
         final CellValue value = new StringValue("@");
         final TableCellStyle ts = TableCellStyle.builder("b").build();
 

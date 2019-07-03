@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.OdsDocument;
@@ -35,6 +36,7 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
+import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -139,6 +141,8 @@ class J_PeriodicTable {
                         SimpleColor.BLUE));
                 cellStyleBySubcategory.put("lanthanide", getCellStyle("lanthanide",
                         SimpleColor.YELLOWGREEN));
+                final TableCellStyle unknownStyle = getCellStyle("other", SimpleColor.WHITE);
+
                 // The function `getCellStyle` is defined at the bottom of the section
 
                 // Cells must be square:
@@ -221,10 +225,11 @@ class J_PeriodicTable {
 
                     final TableCell cell = row.getOrCreateCell(c);
                     cell.setText(text);
-                    final TableCellStyle cellStyle = cellStyleBySubcategory.get(subcategory);
-                    if (cellStyle != null) {
-                        cell.setStyle(cellStyle);
+                    TableCellStyle cellStyle = cellStyleBySubcategory.get(subcategory);
+                    if (cellStyle == null) {
+                        cellStyle = unknownStyle;
                     }
+                    cell.setStyle(cellStyle);
 
                     // ### Printing
                     // It's almost over. We just need a footer and a header. It's a copycat from
@@ -276,9 +281,9 @@ class J_PeriodicTable {
     }
 
     // And to produce similar cell styles:
-    private static TableCellStyle getCellStyle(String alkalimetal, SimpleColor orangered) {
-        return TableCellStyle.builder(alkalimetal).textAlign(TableCellStyle.Align.CENTER)
-                .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).backgroundColor(orangered)
+    private static TableCellStyle getCellStyle(final String name, final Color color) {
+        return TableCellStyle.builder(name).textAlign(TableCellStyle.Align.CENTER)
+                .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).backgroundColor(color).borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderAttribute.Style.SOLID)
                 .build();
     }
 

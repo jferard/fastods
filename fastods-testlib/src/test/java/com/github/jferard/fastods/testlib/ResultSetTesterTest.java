@@ -21,15 +21,36 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.tool;
+package com.github.jferard.fastods.testlib;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-public class SQLToCellValueTest {
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class ResultSetTesterTest {
     @Test
-    public void testArray() {
+    public void test() throws SQLException {
+        final ResultSetTester tester = ResultSetTester.create();
+        final ResultSet rs = tester.createResultSet(Collections.singletonList("number"),
+                Arrays.asList(Collections.<Object>singletonList(1),
+                        Collections.<Object>singletonList(2),
+                        Collections.<Object>singletonList(3)));
 
-
+        final ResultSetMetaData metaData = rs.getMetaData();
+        Assert.assertEquals(1, metaData.getColumnCount());
+        Assert.assertEquals("number", metaData.getColumnName(1));
+        Assert.assertTrue(rs.next());
+        Assert.assertEquals(1, rs.getInt(1));
+        Assert.assertTrue(rs.next());
+        Assert.assertEquals(2, rs.getInt(1));
+        Assert.assertTrue(rs.next());
+        Assert.assertEquals(3, rs.getInt(1));
+        Assert.assertFalse(rs.next());
     }
 
 }

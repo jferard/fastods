@@ -90,7 +90,6 @@
         <dependency>
             <groupId>com.mockrunner</groupId>
             <artifactId>mockrunner-jdbc</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

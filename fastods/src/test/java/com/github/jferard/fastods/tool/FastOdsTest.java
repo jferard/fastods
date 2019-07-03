@@ -23,14 +23,9 @@
 package com.github.jferard.fastods.tool;
 
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.awt.*;
 import java.io.File;
@@ -47,8 +42,8 @@ public class FastOdsTest {
 
     @Test
     public final void testOpenFile() throws IOException {
-        final File f = new File(".", "pom.xml");
         FastOds.desktop = PowerMock.createMock(Desktop.class);
+        final File f = new File(".", "pom.xml");
 
         PowerMock.resetAll();
         FastOds.desktop.open(f);
@@ -61,12 +56,13 @@ public class FastOdsTest {
     }
 
     @Test
-    public final void testOpenInexistentFile() throws IOException {
+    public final void testOpenInexistentFile() {
         final File f = PowerMock.createMock(File.class);
 
         PowerMock.resetAll();
-        if (FastOds.desktop != null)
+        if (FastOds.desktop != null) {
             EasyMock.expect(f.exists()).andReturn(false);
+        }
 
         PowerMock.replayAll();
         Assert.assertFalse(FastOds.openFile(f));
@@ -75,7 +71,7 @@ public class FastOdsTest {
     }
 
     @Test
-    public final void testOpenDirMock() throws IOException {
+    public final void testOpenDirMock() {
         final File f = PowerMock.createMock(File.class);
 
         PowerMock.resetAll();
@@ -93,8 +89,9 @@ public class FastOdsTest {
         // let's hide logging infos
         final Logger rootLogger = Logger.getLogger("");
         rootLogger.setLevel(Level.OFF);
-        for (final Handler h : rootLogger.getHandlers())
+        for (final Handler h : rootLogger.getHandlers()) {
             h.setLevel(Level.OFF);
+        }
 
         final File f = new File(".", "pom.xml");
         FastOds.desktop = PowerMock.createMock(Desktop.class);
