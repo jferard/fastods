@@ -61,10 +61,12 @@ public class PercentageValue implements CellValue {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof PercentageValue))
+        }
+        if (!(o instanceof PercentageValue)) {
             return false;
+        }
 
         final PercentageValue other = (PercentageValue) o;
         return Math.abs(this.value - other.value) < FloatValue.FLOAT_DELTA;

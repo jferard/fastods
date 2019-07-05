@@ -38,40 +38,40 @@ import java.io.IOException;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class PercentageStyle implements DataStyle {
-	private final FloatStyle floatStyle;
+    private final FloatStyle floatStyle;
 
-	/**
-	 * A percentage style
+    /**
+     * A percentage style
+     *
      * @param floatStyle the embedded float style
-	 */
-	PercentageStyle(final FloatStyle floatStyle) {
-		this.floatStyle = floatStyle;
-	}
+     */
+    PercentageStyle(final FloatStyle floatStyle) {
+        this.floatStyle = floatStyle;
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		final StringBuilder percentage = new StringBuilder();
-		this.floatStyle.appendNumberTag(util, percentage);
-		percentage.append("<number:text>%</number:text>");
-		this.floatStyle.appendXMLHelper(util, appendable, "percentage-style", percentage);
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        final StringBuilder percentage = new StringBuilder();
+        this.floatStyle.appendNumberTag(util, percentage);
+        percentage.append("<number:text>%</number:text>");
+        this.floatStyle.appendXMLHelper(util, appendable, "percentage-style", percentage);
+    }
 
-	@Override
-	public String getName() {
-		return this.floatStyle.getName();
-	}
+    @Override
+    public String getName() {
+        return this.floatStyle.getName();
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.floatStyle.isHidden();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.floatStyle.isHidden();
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

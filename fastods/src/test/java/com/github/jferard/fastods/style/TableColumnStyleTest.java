@@ -145,10 +145,9 @@ public class TableColumnStyleTest {
     public final void testOptimalWidth() throws IOException {
         final TableColumnStyle test = TableColumnStyle.builder("test").optimalWidth().build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
-                        "style:family=\"table-column\"><style:table-column-properties " +
-                        "fo:break-before=\"auto\" " +
-                        "style:use-optimal-column-width=\"true\"/></style:style>",
-                test);
+                "style:family=\"table-column\"><style:table-column-properties " +
+                "fo:break-before=\"auto\" " +
+                "style:use-optimal-column-width=\"true\"/></style:style>", test);
     }
 
     @Test

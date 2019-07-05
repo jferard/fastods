@@ -32,29 +32,31 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class UnsortedChildrenTester extends ChildrenTester {
-	/**
-	 * the logger
-	 */
-	static Logger logger = Logger.getLogger("DomTester");
+    /**
+     * the logger
+     */
+    static Logger logger = Logger.getLogger("DomTester");
 
-	@Override
-	public boolean childrenEquals(final Node element1, final Node element2) {
-		final NodeList nodes1 = element1.getChildNodes();
-		final NodeList nodes2 = element2.getChildNodes();
-		final UnsortedNodeList list1 = new UnsortedNodeList(nodes1);
-		final UnsortedNodeList list2 = new UnsortedNodeList(nodes2);
+    @Override
+    public boolean childrenEquals(final Node element1, final Node element2) {
+        final NodeList nodes1 = element1.getChildNodes();
+        final NodeList nodes2 = element2.getChildNodes();
+        final UnsortedNodeList list1 = new UnsortedNodeList(nodes1);
+        final UnsortedNodeList list2 = new UnsortedNodeList(nodes2);
 
-		if (list1.size() != list2.size())
-			return false;
+        if (list1.size() != list2.size()) {
+            return false;
+        }
 
-		final Iterator<Node> i1 = list1.iterator();
-		final Iterator<Node> i2 = list2.iterator();
+        final Iterator<Node> i1 = list1.iterator();
+        final Iterator<Node> i2 = list2.iterator();
 
-		while (i1.hasNext()) {
-			if (!this.equals(i1.next(), i2.next()))
-				return false;
-		}
+        while (i1.hasNext()) {
+            if (!this.equals(i1.next(), i2.next())) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

@@ -53,7 +53,6 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     private final Length pageHeight;
 
     private final Length pageWidth;
-    private final PaperFormat paperFormat;
 
     private final PageStyle.PrintOrientation printOrientation;
 
@@ -70,23 +69,21 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
      * @param pageWidth        the width of the page
      * @param pageHeight       the height of the page
      * @param numFormat        the format of the sequence of page numbers (20.314 style:num-format)
-     * @param backgroundColor  the color of the background, as an heaxdecimal number
+     * @param backgroundColor  the color of the background, as an hexadecimal number
      * @param header           the header for this style
      * @param footer           the footer for this style
      * @param printOrientation the print orientation
-     * @param paperFormat      the format of the paper
      * @param writingMode      the writing mode
-     * @param scaleTo
-     * @param scaleToPages
-     * @param centering
+     * @param scaleTo          a percentage for print scale
+     * @param scaleToPages     a number of pages for print scale
+     * @param centering        center the table in the page if true
      */
     PageLayoutStyle(final String name, final Margins margins, final Length pageWidth,
                     final Length pageHeight, final String numFormat, final Color backgroundColor,
                     final Header header, final Footer footer,
                     final PageStyle.PrintOrientation printOrientation,
-                    final PaperFormat paperFormat, final PageStyle.WritingMode writingMode,
-                    final int scaleTo, final int scaleToPages,
-                    final PageStyle.Centering centering) {
+                    final PageStyle.WritingMode writingMode, final int scaleTo,
+                    final int scaleToPages, final PageStyle.Centering centering) {
         this.name = name;
         this.margins = margins;
         this.pageWidth = pageWidth;
@@ -96,7 +93,6 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
         this.footer = footer;
         this.header = header;
         this.printOrientation = printOrientation;
-        this.paperFormat = paperFormat;
         this.writingMode = writingMode;
         this.scaleTo = scaleTo;
         this.scaleToPages = scaleToPages;
@@ -130,8 +126,8 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
             util.appendAttribute(appendable, "style:scale-to-pages", this.scaleToPages);
         }
         if (this.centering != PageStyle.Centering.NONE) {
-            util.appendAttribute(appendable, "style:table-centering", this.centering.toString().toLowerCase(
-                    Locale.US));
+            util.appendAttribute(appendable, "style:table-centering",
+                    this.centering.toString().toLowerCase(Locale.US));
         }
 
         util.appendEAttribute(appendable, "style:num-format", this.numFormat);
@@ -157,15 +153,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     }
 
     /**
-     * Get the writing mode<br>
-     * . STYLE_WRITINGMODE_LRTB lr-tb (left to right; top to bottom)<br>
-     * STYLE_WRITINGMODE_RLTB<br>
-     * STYLE_WRITINGMODE_TBRL<br>
-     * STYLE_WRITINGMODE_TBLR<br>
-     * STYLE_WRITINGMODE_LR<br>
-     * STYLE_WRITINGMODE_RL<br>
-     * STYLE_WRITINGMODE_TB<br>
-     * STYLE_WRITINGMODE_PAGE<br>
+     * Get the writing mode
      *
      * @return The current writing mode.
      */

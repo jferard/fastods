@@ -28,6 +28,7 @@ import com.github.jferard.fastods.util.SimpleLength;
 
 /**
  * Format of the paper
+ *
  * @author Julien Férard
  */
 public enum PaperFormat {
@@ -56,22 +57,6 @@ public enum PaperFormat {
      */
     USER(Length.NULL_LENGTH, Length.NULL_LENGTH);
 
-    private final Length height;
-    private final Length width;
-
-    PaperFormat(final Length height, final Length width) {
-        this.height = height;
-        this.width = width;
-    }
-
-    Length getHeight() {
-        return this.height;
-    }
-
-    Length getWidth() {
-        return this.width;
-    }
-
     private static class Defaults {
         static final Length A3_H = SimpleLength.cm(42.0);
         static final Length A3_W = SimpleLength.cm(29.7);
@@ -80,6 +65,27 @@ public enum PaperFormat {
         static final Length LEGAL_H = SimpleLength.cm(35.57);
         static final Length LETTER_H = SimpleLength.cm(27.94);
         static final Length LETTER_W = SimpleLength.cm(21.59);
+    }
+    private final Length height;
+    private final Length width;
+
+    PaperFormat(final Length height, final Length width) {
+        this.height = height;
+        this.width = width;
+    }
+
+    /**
+     * @return the height of the paper
+     */
+    Length getHeight() {
+        return this.height;
+    }
+
+    /**
+     * @return the width of the paper
+     */
+    Length getWidth() {
+        return this.width;
     }
 
 }

@@ -57,12 +57,10 @@ public class TableStyleTest {
     public final void testPageStyle() throws IOException {
         final PageStyle ps = PageStyle.builder("p").build();
         final TableStyle ts = TableStyle.builder("test").pageStyle(ps).build();
-        TestHelper.assertXMLEquals(
-                "<style:style style:name=\"test\" style:family=\"table\" " +
-                        "style:master-page-name=\"p\">" +
-                        "<style:table-properties table:display=\"true\" " +
-                        "style:writing-mode=\"lr-tb\"/>" +
-                        "</style:style>", ts);
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table\" " +
+                "style:master-page-name=\"p\">" +
+                "<style:table-properties table:display=\"true\" " +
+                "style:writing-mode=\"lr-tb\"/>" + "</style:style>", ts);
         Assert.assertEquals("test", ts.getName());
     }
 

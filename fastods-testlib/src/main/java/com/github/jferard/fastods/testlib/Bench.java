@@ -60,16 +60,16 @@ public abstract class Bench {
     }
 
     /**
-     * @return the computations without the warmup included
+     * @return the computations without the warm up included
      */
-    public Computations getWithWarmup() {
+    public Computations getWithWarmUp() {
         return new Computations(this.name, this.times.subList(2, this.times.size()));
     }
 
     /**
      * @return the computations with the warmup
      */
-    public Computations getWithoutWarmup() {
+    public Computations getWithoutWarmUp() {
         return new Computations(this.name, this.times);
     }
 

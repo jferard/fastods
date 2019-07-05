@@ -36,40 +36,40 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class StylesEntryTest {
-	private DataStyle ds1;
-	private DataStyle ds2;
-	private Locale locale;
-	private PageStyle ps1;
-	private PageStyle ps2;
-	private TableCellStyle st1;
-	private TableCellStyle st2;
-	private StylesContainer stylesContainer;
-	private StylesElement stylesElement;
-	private XMLUtil util;
-	private Logger logger;
+    private DataStyle ds1;
+    private DataStyle ds2;
+    private Locale locale;
+    private PageStyle ps1;
+    private PageStyle ps2;
+    private TableCellStyle st1;
+    private TableCellStyle st2;
+    private StylesContainer stylesContainer;
+    private StylesElement stylesElement;
+    private XMLUtil util;
+    private Logger logger;
 
-	@Before
-	public void setUp() {
-		this.logger = PowerMock.createMock(Logger.class);
-		this.stylesContainer = new StylesContainer(this.logger);
-		this.stylesElement = new StylesElement(this.stylesContainer);
-		this.util = XMLUtil.create();
-		this.locale = Locale.US;
+    @Before
+    public void setUp() {
+        this.logger = PowerMock.createMock(Logger.class);
+        this.stylesContainer = new StylesContainer(this.logger);
+        this.stylesElement = new StylesElement(this.stylesContainer);
+        this.util = XMLUtil.create();
+        this.locale = Locale.US;
 
-		this.st1 = TableCellStyle.builder("a").fontStyleItalic().build();
-		this.st2 = TableCellStyle.builder("a").fontWeightBold().build();
+        this.st1 = TableCellStyle.builder("a").fontStyleItalic().build();
+        this.st2 = TableCellStyle.builder("a").fontWeightBold().build();
 
-		this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").build();
-		this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").build();
+        this.ds1 = new BooleanStyleBuilder("a", this.locale).country("a").build();
+        this.ds2 = new BooleanStyleBuilder("a", this.locale).country("b").build();
 
-		this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
-		this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
-		PowerMock.resetAll();
-		PowerMock.replayAll();
-	}
+        this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
+        this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+    }
 
-	@After
-	public void tearDown() {
-		PowerMock.resetAll();
-	}
+    @After
+    public void tearDown() {
+        PowerMock.resetAll();
+    }
 }

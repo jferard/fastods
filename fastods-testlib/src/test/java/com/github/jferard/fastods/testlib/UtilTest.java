@@ -61,7 +61,7 @@ public class UtilTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testExistingFile() {
         final File f = PowerMock.createMock(File.class);
         EasyMock.expect(f.exists()).andReturn(true);

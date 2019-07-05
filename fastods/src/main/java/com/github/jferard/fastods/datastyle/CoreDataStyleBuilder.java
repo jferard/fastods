@@ -35,7 +35,8 @@ import java.util.Locale;
  *
  * @author Julien Férard
  */
-final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>,
+final class CoreDataStyleBuilder
+        implements StyleBuilder<CoreDataStyle>, LocalizedBuilder<CoreDataStyleBuilder>,
         IsVolatileBuilder<CoreDataStyleBuilder>, ShowableBuilder<CoreDataStyleBuilder> {
     private static final NameChecker checker = new NameChecker();
     /**
@@ -43,7 +44,8 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
      */
     private final String name;
     /**
-     * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
+     * 19.342 number:country : "The number:country attribute specifies a country code for a data
+     * style"
      */
     private String countryCode;
     /**
@@ -52,7 +54,8 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
     private String languageCode;
     /**
      * 19.517 : "The style:volatile attribute specifies whether unused style in
-     * a document are retained or discarded by consumers." and "false: consumers should discard the unused styles,
+     * a document are retained or discarded by consumers." and "false: consumers should discard
+     * the unused styles,
      * true: consumers should keep unused styles."
      */
     private boolean volatileStyle;
@@ -74,7 +77,8 @@ final class CoreDataStyleBuilder implements StyleBuilder<CoreDataStyle>, Localiz
 
     @Override
     public CoreDataStyle build() {
-        return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode, this.volatileStyle);
+        return new CoreDataStyle(this.name, this.hidden, this.languageCode, this.countryCode,
+                this.volatileStyle);
 
     }
 

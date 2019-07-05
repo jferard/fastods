@@ -21,19 +21,4 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.style;
-
-/**
- * A builder for a style that may go in automatic or common styles
- *
- * @param <T> the type of the concrete builder
- * @author Julien Férard
- */
-public interface HidableBuilder<T> {
-    /**
-     * Make this style hidden, ie part of automatic styles
-     *
-     * @return this for fluent style
-     */
-    T hidden();
-}
+package com.github.jferard.fastods.it;

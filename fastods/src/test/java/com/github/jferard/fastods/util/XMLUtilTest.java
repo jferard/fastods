@@ -83,26 +83,26 @@ public class XMLUtilTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFormatIntervalNegValue() {
-        this.xu.formatTimeInterval(-1,0,0,0,0,0);
+        this.xu.formatTimeInterval(-1, 0, 0, 0, 0, 0);
     }
 
     // XML Schema 3.2.6.1 Lexical representation examples
     @Test
     public void testFormatInterval() {
-        Assert.assertEquals("P1Y2M3DT10H30M", this.xu.formatTimeInterval(1,2,3,10,30,0));
-        Assert.assertEquals("-P120D", this.xu.formatNegTimeInterval(0,0,120,0,0,0));
-        Assert.assertEquals("P1347Y", this.xu.formatTimeInterval(1347,0,0,0,0,0));
-        Assert.assertEquals("P1347M", this.xu.formatTimeInterval(0,1347,0,0,0,0));
-        Assert.assertEquals("P1Y2MT2H", this.xu.formatTimeInterval(1,2,0,2,0,0));
-        Assert.assertEquals("-P1Y2M", this.xu.formatNegTimeInterval(1,2,0,0,0,0));
+        Assert.assertEquals("P1Y2M3DT10H30M", this.xu.formatTimeInterval(1, 2, 3, 10, 30, 0));
+        Assert.assertEquals("-P120D", this.xu.formatNegTimeInterval(0, 0, 120, 0, 0, 0));
+        Assert.assertEquals("P1347Y", this.xu.formatTimeInterval(1347, 0, 0, 0, 0, 0));
+        Assert.assertEquals("P1347M", this.xu.formatTimeInterval(0, 1347, 0, 0, 0, 0));
+        Assert.assertEquals("P1Y2MT2H", this.xu.formatTimeInterval(1, 2, 0, 2, 0, 0));
+        Assert.assertEquals("-P1Y2M", this.xu.formatNegTimeInterval(1, 2, 0, 0, 0, 0));
     }
 
     // Other examples
     @Test
     public void testFormatIntervalOther() {
-        Assert.assertEquals("P0Y", this.xu.formatTimeInterval(0,0,0,0,0,0));
-        Assert.assertEquals("P1Y2M3D", this.xu.formatTimeInterval(1,2,3,0,0,0));
-        Assert.assertEquals("PT4H5M6.0S", this.xu.formatTimeInterval(0,0,0,4,5,6.0));
+        Assert.assertEquals("P0Y", this.xu.formatTimeInterval(0, 0, 0, 0, 0, 0));
+        Assert.assertEquals("P1Y2M3D", this.xu.formatTimeInterval(1, 2, 3, 0, 0, 0));
+        Assert.assertEquals("PT4H5M6.0S", this.xu.formatTimeInterval(0, 0, 0, 4, 5, 6.0));
     }
 
     @Test

@@ -62,7 +62,7 @@ public class TableColumnStyle implements FontFaceContainerStyle {
      * Create a new column style
      *
      * @param name             A unique name for this style
-     * @param hidden           ture if the style is automatic
+     * @param hidden           true if the style is automatic
      * @param columnWidth      the width of the column
      * @param defaultCellStyle the default style for cells
      * @param optimalWidth     true if the optimal width is set

@@ -30,8 +30,10 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class PercentageStyleBuilder implements DataStyleBuilder<PercentageStyle, PercentageStyleBuilder>,
-        NumberStyleBuilder<PercentageStyle, PercentageStyleBuilder>, DecimalStyleBuilder<PercentageStyleBuilder> {
+public class PercentageStyleBuilder
+        implements DataStyleBuilder<PercentageStyle, PercentageStyleBuilder>,
+        NumberStyleBuilder<PercentageStyle, PercentageStyleBuilder>,
+        DecimalStyleBuilder<PercentageStyleBuilder> {
     private final FloatStyleBuilder floatStyleBuilder;
 
     /**

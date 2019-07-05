@@ -151,8 +151,8 @@ public class FastOdsXMLEscaper implements XMLEscaper {
             previousDestIndex += identicalCount;
         }
         // third : put the new chars in the buffer
-        for (int i = 0; i < tcl; i++) {
-            this.buffer[previousDestIndex++] = toCopy[i];
+        for (final char c : toCopy) {
+            this.buffer[previousDestIndex++] = c;
         }
         return previousDestIndex;
     }

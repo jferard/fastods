@@ -46,7 +46,15 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 5 of the tutorial
+ *
+ * @author J. Férard
+ */
 class E_SettingTheCellStyle {
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
@@ -62,12 +70,12 @@ class E_SettingTheCellStyle {
         //
         // We create a table and get the first cell:
         final Table table = document.addTable("styles");
-        TableRow tableRow = table.nextRow();
-        TableCellWalker cellWalker = tableRow.getWalker();
+        TableRow row = table.nextRow();
+        TableCellWalker walker = row.getWalker();
 
         // Now, we add a value and set the style
-        cellWalker.setStringValue("A1");
-        cellWalker.setStyle(grayStyle);
+        walker.setStringValue("A1");
+        walker.setStyle(grayStyle);
 
         // ### Common Styles and Automatic Styles
         // In LO, you'll see a new style named "gray" in the "Styles" window. That's because
@@ -76,9 +84,9 @@ class E_SettingTheCellStyle {
         final TableCellStyle hiddenGrayStyle = TableCellStyle.builder("hiddenGray")
                 .backgroundColor(SimpleColor.GRAY64).fontWeightBold().hidden().build();
 
-        cellWalker.next();
-        cellWalker.setStringValue("A2");
-        cellWalker.setStyle(grayStyle);
+        walker.next();
+        walker.setStringValue("A2");
+        walker.setStyle(hiddenGrayStyle);
 
         // The "gray2" style is not present in the Style window of LO. This distinction between
         // "visible" and "hidden" styles matches the distinction between common and automatic
@@ -99,31 +107,34 @@ class E_SettingTheCellStyle {
         final TableCellStyle rotateStyle = TableCellStyle.builder("rotate")
                 .fontColor(SimpleColor.RED).textRotating(Angle.deg(37)).build();
 
-        cellWalker.next();
-        cellWalker.setStringValue("A3");
-        cellWalker.setStyle(rotateStyle);
+        walker.next();
+        walker.setStringValue("A3");
+        walker.setStyle(rotateStyle);
 
         // You can explore the `TableCellStyle` to create the style you need. A last example:
-        final TableCellStyle borderStyle = TableCellStyle.builder("border").fontName(LOFonts.DEJAVU_SANS).fontSize(SimpleLength.pt(24))
-                .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderAttribute.Style.OUTSET).build();
+        final TableCellStyle borderStyle = TableCellStyle.builder("border")
+                .fontName(LOFonts.DEJAVU_SANS).fontSize(SimpleLength.pt(24))
+                .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderAttribute.Style.OUTSET)
+                .build();
 
-        cellWalker.next();
-        cellWalker.setStringValue("A4");
-        cellWalker.setStyle(borderStyle);
+        walker.next();
+        walker.setStringValue("A4");
+        walker.setStyle(borderStyle);
         // I think you get it now.
 
         // ### Rows and Columns Styles
         // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
         // the height of the row was not adapted. You have to adapt it yourself. Let's try with
         // another row:
-        final TableRowStyle tallRowStyle = TableRowStyle.builder("tall-row").rowHeight(SimpleLength.cm(3)).
-                build();
+        final TableRowStyle tallRowStyle = TableRowStyle.builder("tall-row")
+                .rowHeight(SimpleLength.cm(3)).
+                        build();
 
-        tableRow = table.nextRow();
-        tableRow.setStyle(tallRowStyle);
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("B1");
-        cellWalker.setStyle(borderStyle);
+        row = table.nextRow();
+        row.setStyle(tallRowStyle);
+        walker = row.getWalker();
+        walker.setStringValue("B1");
+        walker.setStyle(borderStyle);
 
         // You have to set the height of the row manually. There's nothing like an Optimal
         // height/width in the OpenDocument specification, and FastODS won't provide those
@@ -134,16 +145,16 @@ class E_SettingTheCellStyle {
                 .columnWidth(SimpleLength.cm(9)).build();
         table.setColumnStyle(0, wideColumn);
 
-        // Obvioulsy, you can combine a style and a data style:
+        // Obviously, you can combine a style and a data style:
         final DataStyle timeDataStyle = new TimeStyleBuilder("time-datastyle", Locale.US)
                 .timeFormat(new DateTimeStyleFormat(DateTimeStyleFormat.text("Hour: "),
                         DateTimeStyleFormat.LONG_HOURS)).visible().build();
 
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setTimeValue(10000000);
-        cellWalker.setStyle(rotateStyle);
-        cellWalker.setDataStyle(timeDataStyle);
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setTimeValue(10000000);
+        walker.setStyle(rotateStyle);
+        walker.setDataStyle(timeDataStyle);
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.

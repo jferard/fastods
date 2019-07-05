@@ -68,8 +68,12 @@ public class MasterPageStyle implements AddableToOdsElements, StyleWithEmbeddedS
      */
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        if (this.header != null) this.header.addEmbeddedStyles(stylesContainer);
-        if (this.footer != null) this.footer.addEmbeddedStyles(stylesContainer);
+        if (this.header != null) {
+            this.header.addEmbeddedStyles(stylesContainer);
+        }
+        if (this.footer != null) {
+            this.footer.addEmbeddedStyles(stylesContainer);
+        }
     }
 
     @Override
@@ -78,7 +82,7 @@ public class MasterPageStyle implements AddableToOdsElements, StyleWithEmbeddedS
     }
 
     /**
-     * Return the master-style informations for this PageStyle.
+     * Return the master-style information for this PageStyle.
      *
      * @param util       a util for XML writing
      * @param appendable where to write

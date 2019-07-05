@@ -34,7 +34,8 @@ public class BenchTest {
     @Before
     public void setUp() {
         this.bench = new Bench(Logger.getLogger("l"), "test", 10, 20) {
-            int i=0;
+            int i = 0;
+
             @Override
             public long test() {
                 return this.i++;
@@ -52,33 +53,33 @@ public class BenchTest {
 
     @Test
     public void testEmptyWithoutWarmup() {
-        Assert.assertEquals(-1, this.bench.getWithoutWarmup().getAvgTime());
+        Assert.assertEquals(-1, this.bench.getWithoutWarmUp().getAvgTime());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEmptyWithWarmup() {
-        this.bench.getWithWarmup();
+        this.bench.getWithWarmUp();
     }
 
     @Test
     public void testTenWithoutWarmup() throws IOException {
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             this.bench.iteration();
         }
-        final Computations withoutWarmup = this.bench.getWithoutWarmup();
+        final Computations withoutWarmup = this.bench.getWithoutWarmUp();
         Assert.assertEquals(9l, withoutWarmup.getWorstTime());
         Assert.assertEquals(0l, withoutWarmup.getBestTime());
-        Assert.assertEquals(45/10, withoutWarmup.getAvgTime());
+        Assert.assertEquals(45 / 10, withoutWarmup.getAvgTime());
     }
 
     @Test
     public void testTenWithWarmup() throws IOException {
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             this.bench.iteration();
         }
-        final Computations withoutWarmup = this.bench.getWithWarmup();
+        final Computations withoutWarmup = this.bench.getWithWarmUp();
         Assert.assertEquals(9l, withoutWarmup.getWorstTime());
         Assert.assertEquals(2l, withoutWarmup.getBestTime());
-        Assert.assertEquals(44/8, withoutWarmup.getAvgTime());
+        Assert.assertEquals(44 / 8, withoutWarmup.getAvgTime());
     }
 }

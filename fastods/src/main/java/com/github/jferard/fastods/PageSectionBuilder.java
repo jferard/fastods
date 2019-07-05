@@ -32,147 +32,147 @@ import com.github.jferard.fastods.util.Length;
  * A builder for a page section. It will build a header or a footer
  *
  * @param <F> L-bound for the page section builder itself
- *
  * @author Julien Férard
- *
  */
 @SuppressWarnings("unchecked")
 public abstract class PageSectionBuilder<F extends PageSectionBuilder<F>> {
-	/**
-	 * The region box that is currently written
-	 */
-	protected Box<Text> curRegionBox;
-	/**
-	 * a margins builder
-	 */
-	protected final MarginsBuilder marginsBuilder;
+    /**
+     * The region box that is currently written
+     */
+    protected Box<Text> curRegionBox;
+    /**
+     * a margins builder
+     */
+    protected final MarginsBuilder marginsBuilder;
 
-	/**
-	 * the minimum height of the page section
-	 */
-	protected Length minHeight;
+    /**
+     * the minimum height of the page section
+     */
+    protected Length minHeight;
 
-	/**
-	 * Create a new footer or header object.
-	 */
-	PageSectionBuilder() {
-		this.minHeight = Length.NULL_LENGTH;
-		this.marginsBuilder = new MarginsBuilder();
-		this.marginsBuilder.all(Length.NULL_LENGTH);
-	}
+    /**
+     * Create a new footer or header object.
+     */
+    PageSectionBuilder() {
+        this.minHeight = Length.NULL_LENGTH;
+        this.marginsBuilder = new MarginsBuilder();
+        this.marginsBuilder.all(Length.NULL_LENGTH);
+    }
 
-	/**
-	 * Set the margin at the top, bottom, left and right.
-	 *
-	 * @param margin the margin size
-	 * @return this for fluent style
-	 */
-	public F allMargins(final Length margin) {
-		this.marginsBuilder.all(margin);
-		return (F) this;
-	}
+    /**
+     * Set the margin at the top, bottom, left and right.
+     *
+     * @param margin the margin size
+     * @return this for fluent style
+     */
+    public F allMargins(final Length margin) {
+        this.marginsBuilder.all(margin);
+        return (F) this;
+    }
 
-	/**
-	 * For public calls, see buildFooter or buildHeader
-	 * @return the page section
-	 */
-	protected abstract PageSection build();
+    /**
+     * For public calls, see buildFooter or buildHeader
+     *
+     * @return the page section
+     */
+    protected abstract PageSection build();
 
-	/**
-	 * Set the text content of the section
-	 * @param string the text
-	 * @return this for fluent style
-	 */
-	public F content(final String string) {
-		this.curRegionBox.set(Text.content(string));
-		return (F) this;
-	}
+    /**
+     * Set the text content of the section
+     *
+     * @param string the text
+     * @return this for fluent style
+     */
+    public F content(final String string) {
+        this.curRegionBox.set(Text.content(string));
+        return (F) this;
+    }
 
-	/**
-	 * Set the bottom margin. margin is a length value
-	 *
-	 * @param margin the margin size
-	 * @return this for fluent style
-	 */
-	public F marginBottom(final Length margin) {
-		this.marginsBuilder.bottom(margin);
-		return (F) this;
-	}
+    /**
+     * Set the bottom margin. margin is a length value
+     *
+     * @param margin the margin size
+     * @return this for fluent style
+     */
+    public F marginBottom(final Length margin) {
+        this.marginsBuilder.bottom(margin);
+        return (F) this;
+    }
 
-	/**
-	 * Set the left margin. Margin is a length value
-	 *
-	 * @param margin the margin size
-	 * @return this for fluent style
-	 */
-	public F marginLeft(final Length margin) {
-		this.marginsBuilder.left(margin);
-		return (F) this;
-	}
+    /**
+     * Set the left margin. Margin is a length value
+     *
+     * @param margin the margin size
+     * @return this for fluent style
+     */
+    public F marginLeft(final Length margin) {
+        this.marginsBuilder.left(margin);
+        return (F) this;
+    }
 
-	/**
-	 * Set the right margin. Margin is a length value
-	 *
-	 * @param margin the margin size
-	 * @return this for fluent style
-	 */
-	public F marginRight(final Length margin) {
-		this.marginsBuilder.right(margin);
-		return (F) this;
-	}
+    /**
+     * Set the right margin. Margin is a length value
+     *
+     * @param margin the margin size
+     * @return this for fluent style
+     */
+    public F marginRight(final Length margin) {
+        this.marginsBuilder.right(margin);
+        return (F) this;
+    }
 
-	/**
-	 * Set the top margin. Margin is a length value
-	 *
-	 * @param margin the margin size
-	 * @return this for fluent style
-	 */
-	public F marginTop(final Length margin) {
-		this.marginsBuilder.top(margin);
-		return (F) this;
-	}
+    /**
+     * Set the top margin. Margin is a length value
+     *
+     * @param margin the margin size
+     * @return this for fluent style
+     */
+    public F marginTop(final Length margin) {
+        this.marginsBuilder.top(margin);
+        return (F) this;
+    }
 
-	/**
-	 * Set the minimum height. Min height is a length value
-	 *
-	 * @param height the height of the footer/header
-	 * @return this for fluent style
-	 */
-	public F minHeight(final Length height) {
-		this.minHeight = height;
-		return (F) this;
-	}
+    /**
+     * Set the minimum height. Min height is a length value
+     *
+     * @param height the height of the footer/header
+     * @return this for fluent style
+     */
+    public F minHeight(final Length height) {
+        this.minHeight = height;
+        return (F) this;
+    }
 
-	/**
-	 * @param text The text to write
-	 * @param ts   the text style
-	 * @return this for fluent style
-	 */
-	public F styledContent(final String text, final TextStyle ts) {
-		this.curRegionBox.set(Text.styledContent(text, ts));
-		return (F) this;
-	}
+    /**
+     * @param text The text to write
+     * @param ts   the text style
+     * @return this for fluent style
+     */
+    public F styledContent(final String text, final TextStyle ts) {
+        this.curRegionBox.set(Text.styledContent(text, ts));
+        return (F) this;
+    }
 
-	/**
-	 * @param text The text to write
-	 * @return this for fluent style
-	 */
-	public F text(final Text text) {
-		this.curRegionBox.set(text);
-		return (F) this;
-	}
+    /**
+     * @param text The text to write
+     * @return this for fluent style
+     */
+    public F text(final Text text) {
+        this.curRegionBox.set(text);
+        return (F) this;
+    }
 
-	/**
-	 * @return the header
-	 */
-	public Header buildHeader() {
-		return new Header(this.build());
-	}
+    /**
+     * @return the header
+     */
+    public Header buildHeader() {
+        return new Header(this.build());
+    }
 
-	/**
-	 * @return the footer
-	 */
-	public Footer buildFooter() {
-		return new Footer(this.build());
-	}
+    /**
+     * @return the footer
+     */
+    public Footer buildFooter() {
+        return new Footer(this.build());
+    }
 }

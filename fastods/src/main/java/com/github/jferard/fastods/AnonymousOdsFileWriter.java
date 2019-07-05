@@ -128,6 +128,7 @@ public class AnonymousOdsFileWriter {
 
     /**
      * Save the document to filename.
+     *
      * @param filename the name of the destination file
      * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
      *                 level, ...)

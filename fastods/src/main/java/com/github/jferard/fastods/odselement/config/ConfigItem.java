@@ -32,66 +32,66 @@ import java.io.IOException;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class ConfigItem implements ConfigBlock {
-	private final String name;
-	private final String type;
-	private String value;
+    private final String name;
+    private final String type;
+    private String value;
 
-	/**
-	 * Create an item for name, type and value
-	 * @param name the name of the item
-	 * @param type the type of the item, as a string
-	 * @param value the value of the item
-	 */
-	public ConfigItem(final String name, final String type,
-			final String value) {
-		this.name = name;
-		this.type = type;
-		this.value = value;
-	}
+    /**
+     * Create an item for name, type and value
+     *
+     * @param name  the name of the item
+     * @param type  the type of the item, as a string
+     * @param value the value of the item
+     */
+    public ConfigItem(final String name, final String type, final String value) {
+        this.name = name;
+        this.type = type;
+        this.value = value;
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util,
-                                 final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item");
-		util.appendEAttribute(appendable, "config:name", this.name);
-		util.appendEAttribute(appendable, "config:type", this.type);
-		appendable.append(">");
-		appendable.append(util.escapeXMLContent(this.value));
-		appendable.append("</config:config-item>");
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<config:config-item");
+        util.appendEAttribute(appendable, "config:name", this.name);
+        util.appendEAttribute(appendable, "config:type", this.type);
+        appendable.append(">");
+        appendable.append(util.escapeXMLContent(this.value));
+        appendable.append("</config:config-item>");
+    }
 
-	/**
-	 * Get the name of this ConfigItem.
-	 *
-	 * @return The name of this ConfigItem
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    /**
+     * Get the name of this ConfigItem.
+     *
+     * @return The name of this ConfigItem
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	/**
-	 * @return the type of the item
-	 */
-	public String getType() {
-		return this.type;
-	}
+    /**
+     * @return the type of the item
+     */
+    public String getType() {
+        return this.type;
+    }
 
-	/**
-	 * @return the value of the item
-	 */
-	public String getValue() {
-		return this.value;
-	}
+    /**
+     * @return the value of the item
+     */
+    public String getValue() {
+        return this.value;
+    }
 
-	/**
-	 * Set the value of the item
-	 * @param value the vlaue of the item
-	 */
-	public void setValue(final String value) {
-		this.value = value;
-	}
+    /**
+     * Set the value of the item
+     *
+     * @param value the value of the item
+     */
+    public void setValue(final String value) {
+        this.value = value;
+    }
 }

@@ -34,77 +34,168 @@ import java.io.IOException;
 /**
  * OpenDocument 16.5 style:page-layout
  * OpenDocument 16.9 style:master-page
- *
+ * <p>
  * The PageStyle class represents a combination of a master page style and a page layout style.
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles, Hidable {
-	/**
-	 * The classic default master page name
-	 */
-	public static final String DEFAULT_MASTER_PAGE_NAME = "DefaultMasterPage";
-	/**
-	 * The default format (A4)
-	 */
-	public static final PaperFormat DEFAULT_FORMAT;
-	/**
-	 * The default print orientation (VERTICAL)
-	 */
-	public static final PrintOrientation DEFAULT_PRINT_ORIENTATION;
-	/**
-	 * The default writing mode (left to right and top to bottom)
-	 */
-	public static final WritingMode DEFAULT_WRITING_MODE;
-	/**
-	 * The default master page style
-	 */
-	public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
-	/**
-	 * The default style
-	 */
-	public static final PageStyle DEFAULT_PAGE_STYLE;
+    /**
+     * The classic default master page name
+     */
+    public static final String DEFAULT_MASTER_PAGE_NAME = "DefaultMasterPage";
+    /**
+     * The default format (A4)
+     */
+    public static final PaperFormat DEFAULT_FORMAT;
+    /**
+     * The default print orientation (VERTICAL)
+     */
+    public static final PrintOrientation DEFAULT_PRINT_ORIENTATION;
+    /**
+     * The default writing mode (left to right and top to bottom)
+     */
+    public static final WritingMode DEFAULT_WRITING_MODE;
+    /**
+     * The default master page style
+     */
+    public static final PageStyle DEFAULT_MASTER_PAGE_STYLE;
+    /**
+     * The default style
+     */
+    public static final PageStyle DEFAULT_PAGE_STYLE;
 
-	@Override
-	public boolean isHidden() {
-		return this.hidden;
-	}
+    /**
+     * Create a new builder
+     *
+     * @param name the name of the style to build
+     * @return the builder
+     */
+    public static PageStyleBuilder builder(final String name) {
+        return new PageStyleBuilder(name);
+    }
 
-	/**
-	 * 20.325style:print-orientation
-	 * The print orientation of the page (either landscape or portrait)
-	 */
-	public enum PrintOrientation {
-		/**
-		 * "a page is printed in landscape orientation"
-		 */
-		HORIZONTAL("landscape"),
+    static {
+        DEFAULT_FORMAT = PaperFormat.A4;
+        DEFAULT_WRITING_MODE = WritingMode.LRTB;
+        DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
+        DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
+        DEFAULT_MASTER_PAGE_STYLE = PageStyle.builder(PageStyle.DEFAULT_MASTER_PAGE_NAME).build();
+    }
+
+    private final boolean hidden;
+    private final MasterPageStyle masterPageStyle;
+    private final PageLayoutStyle pageLayoutStyle;
+    /**
+     * Create a new page style.
+     *
+     * @param hidden          if the page style is hidden (automatic)
+     * @param masterPageStyle the master page style
+     * @param pageLayoutStyle the page layout style
+     */
+    PageStyle(final boolean hidden, final MasterPageStyle masterPageStyle,
+              final PageLayoutStyle pageLayoutStyle) {
+        this.hidden = hidden;
+        this.masterPageStyle = masterPageStyle;
+        this.pageLayoutStyle = pageLayoutStyle;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return this.hidden;
+    }
+
+    /**
+     * @return the contained master style
+     */
+    public MasterPageStyle getMasterPageStyle() {
+        return this.masterPageStyle;
+    }
+
+    /**
+     * @return the contained page layout
+     */
+    public PageLayoutStyle getPageLayoutStyle() {
+        return this.pageLayoutStyle;
+    }
+
+    /**
+     * @return the name of the contained master style
+     */
+    public String getMasterName() {
+        return this.masterPageStyle.getName();
+    }
+
+    @Override
+    public void addEmbeddedStyles(final StylesContainer stylesContainer) {
+        this.masterPageStyle.addEmbeddedStyles(stylesContainer);
+    }
+
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addMasterPageStyle(this.masterPageStyle);
+        odsElements.addPageLayoutStyle(this.pageLayoutStyle);
+    }
+
+    /**
+     * Write the XML format for this object.<br>
+     * This is used while writing the ODS file.
+     *
+     * @param util       a util to write XML
+     * @param appendable where to write
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendXMLToAutomaticStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.pageLayoutStyle.appendXMLToAutomaticStyle(util, appendable);
+    }
+
+    /**
+     * @param util       a util to write XML
+     * @param appendable where to write
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.masterPageStyle.appendXMLToMasterStyle(util, appendable);
+    }
+
+    /**
+     * 20.325style:print-orientation
+     * The print orientation of the page (either landscape or portrait)
+     */
+    public enum PrintOrientation {
         /**
-		 * "a page is printed in portrait orientation"
-		 */
-		VERTICAL("portrait");
+         * "a page is printed in landscape orientation"
+         */
+        HORIZONTAL("landscape"),
+        /**
+         * "a page is printed in portrait orientation"
+         */
+        VERTICAL("portrait");
 
-		private final String attrValue;
+        private final String attrValue;
 
-		/**
-		 * @param attrValue landscape|portrait
-		 */
-		PrintOrientation(final String attrValue) {
-			this.attrValue = attrValue;
-		}
+        /**
+         * @param attrValue landscape|portrait
+         */
+        PrintOrientation(final String attrValue) {
+            this.attrValue = attrValue;
+        }
 
         /**
          * @return landscape|portrait
          */
         String getAttrValue() {
-			return this.attrValue;
-		}
-	}
+            return this.attrValue;
+        }
+    }
 
     /**
      * 20.394 style:writing-mode
-     * see See §7.27.7 of [XSL] (https://www.w3.org/TR/2001/REC-xsl-20011015/slice7.html#writing-mode-related)
+     * see See §7.27.7 of [XSL] (https://www.w3.org/TR/2001/REC-xsl-20011015/slice7
+     * .html#writing-mode-related)
      */
     public enum WritingMode {
         /**
@@ -140,121 +231,44 @@ public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles,
          */
         TBRL("tb-rl");
 
-		private final String attrValue;
+        private final String attrValue;
 
         /**
          * @param attrValue the value See §7.27.7 of [XSL]
          */
         WritingMode(final String attrValue) {
-			this.attrValue = attrValue;
-		}
+            this.attrValue = attrValue;
+        }
 
         /**
          * @return the value See §7.27.7 of [XSL]
          */
         String getAttrValue() {
-			return this.attrValue;
-		}
+            return this.attrValue;
+        }
 
-	}
+    }
 
-
-	static {
-		DEFAULT_FORMAT = PaperFormat.A4;
-		DEFAULT_WRITING_MODE = WritingMode.LRTB;
-		DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
-		DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
-		DEFAULT_MASTER_PAGE_STYLE = PageStyle
-				.builder(PageStyle.DEFAULT_MASTER_PAGE_NAME).build();
-	}
-
-	private final boolean hidden;
-	private final MasterPageStyle masterPageStyle;
-	private final PageLayoutStyle pageLayoutStyle;
-
-	/**
-	 * Create a new page style.
-	 *
-     * @param hidden if the page style is hidden (automatic)
-	 * @param masterPageStyle the master page style
-	 * @param pageLayoutStyle the page layout style
-	 */
-	PageStyle(final boolean hidden, final MasterPageStyle masterPageStyle, final PageLayoutStyle pageLayoutStyle) {
-		this.hidden = hidden;
-		this.masterPageStyle = masterPageStyle;
-		this.pageLayoutStyle = pageLayoutStyle;
-	}
 
     /**
-     * Create a new builder
-     * @param name the name of the style to build
-     * @return the builder
+     * 20.353style:table-centering
      */
-    public static PageStyleBuilder builder(final String name) {
-		return new PageStyleBuilder(name);
-	}
-
-    /**
-     * @return the contained master style
-     */
-    public MasterPageStyle getMasterPageStyle() {
-		return this.masterPageStyle;
-	}
-
-    /**
-     * @return the contained page layout
-     */
-    public PageLayoutStyle getPageLayoutStyle() {
-		return this.pageLayoutStyle;
-	}
-
-    /**
-     * @return the name of the contained master style
-     */
-    public String getMasterName() {
-		return this.masterPageStyle.getName();
-	}
-
-	@Override
-    public void addEmbeddedStyles(
-			final StylesContainer stylesContainer) {
-		this.masterPageStyle.addEmbeddedStyles(stylesContainer);
-	}
-
-    @Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addMasterPageStyle(this.masterPageStyle);
-		odsElements.addPageLayoutStyle(this.pageLayoutStyle);
-	}
-
-	/**
-	 * Write the XML format for this object.<br>
-	 * This is used while writing the ODS file.
-	 *
-	 * @param util       a util to write XML
-	 * @param appendable where to write
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendXMLToAutomaticStyle(final XMLUtil util,
-										  final Appendable appendable) throws IOException {
-		this.pageLayoutStyle.appendXMLToAutomaticStyle(util, appendable);
-	}
-
-	/**
-	 * @param util       a util to write XML
-	 * @param appendable where to write
-	 * @throws IOException If an I/O error occurs
-	 */
-	public void appendXMLToMasterStyle(final XMLUtil util,
-									   final Appendable appendable) throws IOException {
-		this.masterPageStyle.appendXMLToMasterStyle(util, appendable);
-	}
-
-
-	/**
-	 * 20.353style:table-centering
-	 */
-	public enum Centering {
-		BOTH, HORIZONTAL, NONE, VERTICAL
-	}
+    public enum Centering {
+        /**
+         * Center horizontally and vertically
+         */
+        BOTH,
+        /**
+         * Center horizontally
+         */
+        HORIZONTAL,
+        /**
+         * Do not center
+         */
+        NONE,
+        /**
+         * Center vertically
+         */
+        VERTICAL
+    }
 }

@@ -222,9 +222,9 @@ public class Table implements NamedObject {
     }
 
     /**
-     * Get the current TableFamilyStyle
+     * Get the current Table Style
      *
-     * @return The current TableStlye
+     * @return The current TableStyle
      */
     public String getStyleName() {
         return this.builder.getStyleName();
@@ -272,7 +272,7 @@ public class Table implements NamedObject {
      *
      * @param col The column number
      * @param ts  The style to be used
-     * @throws IllegalStateException if the preamble was already written
+     * @throws IllegalStateException    if the preamble was already written
      * @throws IllegalArgumentException if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
@@ -337,7 +337,7 @@ public class Table implements NamedObject {
     }
 
     /**
-     * Add a new autofilter
+     * Add a new auto filter
      *
      * @param r1 first row of the range
      * @param c1 first col of the range

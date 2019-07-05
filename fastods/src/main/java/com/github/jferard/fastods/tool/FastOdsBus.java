@@ -56,59 +56,63 @@ import java.util.Queue;
  * @author Julien Férard
  */
 public class FastOdsBus<E> {
-	private final Queue<E> elements;
-	private boolean closed;
+    private final Queue<E> elements;
+    private boolean closed;
 
-	/**
-	 * Create a new bus
-	 */
-	public FastOdsBus() {
-		this.elements = new LinkedList<E>();
-		this.closed = false;
-	}
+    /**
+     * Create a new bus
+     */
+    public FastOdsBus() {
+        this.elements = new LinkedList<E>();
+        this.closed = false;
+    }
 
-	/**
-	 * close the bus
-	 */
-	public void close() {
-		this.closed = true;
-	}
+    /**
+     * close the bus
+     */
+    public void close() {
+        this.closed = true;
+    }
 
-	/**
-	 * Get an element from the bus. Blocking method.
-	 * @return the next element in the bus
-	 */
-	synchronized public E get() {
-		if (this.isClosed())
-			throw new NoSuchElementException();
+    /**
+     * Get an element from the bus. Blocking method.
+     *
+     * @return the next element in the bus
+     */
+    synchronized public E get() {
+        if (this.isClosed()) {
+            throw new NoSuchElementException();
+        }
 
-		while (this.elements.isEmpty()) {
-			try {
-				this.wait();
-			} catch (final InterruptedException e) {
-				Thread.currentThread().interrupt();
-				throw new RuntimeException(e);
-			}
-		}
-		return this.elements.remove();
-	}
+        while (this.elements.isEmpty()) {
+            try {
+                this.wait();
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }
+        return this.elements.remove();
+    }
 
-	/**
-	 * @return true if the bus was closed
-	 */
-	synchronized public boolean isClosed() {
-		return this.closed && this.elements.isEmpty();
-	}
+    /**
+     * @return true if the bus was closed
+     */
+    synchronized public boolean isClosed() {
+        return this.closed && this.elements.isEmpty();
+    }
 
-	/**
-	 * Add an element to the bus
-	 * @param element the element
-	 */
-	synchronized public void put(final E element) {
-		if (this.closed)
-			throw new IllegalStateException("Bus is closed");
+    /**
+     * Add an element to the bus
+     *
+     * @param element the element
+     */
+    synchronized public void put(final E element) {
+        if (this.closed) {
+            throw new IllegalStateException("Bus is closed");
+        }
 
-		this.elements.add(element);
-		this.notifyAll();
-	}
+        this.elements.add(element);
+        this.notifyAll();
+    }
 }

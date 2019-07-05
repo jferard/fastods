@@ -36,13 +36,14 @@ public interface ToCellValueConverter {
      * @return the CellValue
      */
     CellValue from(final Object o);
+
     /**
      * Converts a value to a CellValue
      *
      * @param type a hint
      * @param o    the value
      * @return the CellValue
-     * @throws FastOdsException
+     * @throws FastOdsException if the cast was not possible
      */
     CellValue from(final TableCell.Type type, final Object o) throws FastOdsException;
 }

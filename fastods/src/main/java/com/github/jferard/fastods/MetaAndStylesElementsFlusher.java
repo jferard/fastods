@@ -39,10 +39,12 @@ public class MetaAndStylesElementsFlusher implements OdsFlusher {
 
     /**
      * Create a new meta and styles elements
-     * @param odsElements ods elements (content.xml, styles.xml, ...)
+     *
+     * @param odsElements    ods elements (content.xml, styles.xml, ...)
      * @param contentElement content.xml element
      */
-    public MetaAndStylesElementsFlusher(final OdsElements odsElements, final ContentElement contentElement) {
+    public MetaAndStylesElementsFlusher(final OdsElements odsElements,
+                                        final ContentElement contentElement) {
         this.odsElements = odsElements;
         this.contentElement = contentElement;
     }

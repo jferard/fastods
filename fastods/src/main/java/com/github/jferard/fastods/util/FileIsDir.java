@@ -27,11 +27,12 @@ import java.io.OutputStream;
 
 /**
  * Return value if one tries to open a directory.
+ *
  * @author Julien Férard
  */
 public class FileIsDir implements FileOpenResult {
-	@Override
-	public OutputStream getStream() {
-		throw new IllegalStateException();
-	}
+    @Override
+    public OutputStream getStream() {
+        throw new IllegalStateException();
+    }
 }

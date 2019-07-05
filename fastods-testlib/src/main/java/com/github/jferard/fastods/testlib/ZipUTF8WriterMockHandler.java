@@ -69,10 +69,12 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
             if (objects[0] instanceof Character) {
                 this.mock.append((Character) objects[0]);
             } else {
-                if (objects.length > 1) this.mock
-                        .append((CharSequence) objects[0], (Integer) objects[1],
-                                (Integer) objects[2]);
-                else this.mock.append((CharSequence) objects[0]);
+                if (objects.length > 1) {
+                    this.mock.append((CharSequence) objects[0], (Integer) objects[1],
+                            (Integer) objects[2]);
+                } else {
+                    this.mock.append((CharSequence) objects[0]);
+                }
             }
             return this.mock;
         } else if (name.equals("close")) {
@@ -127,7 +129,9 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
     public Document getEntryAsDocument(final String name)
             throws IOException, SAXException, ParserConfigurationException {
         final StringBuilder stringBuilder = this.mock.getBuilder(name);
-        if (stringBuilder == null) return null;
+        if (stringBuilder == null) {
+            return null;
+        }
 
         final String xml = stringBuilder.toString();
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

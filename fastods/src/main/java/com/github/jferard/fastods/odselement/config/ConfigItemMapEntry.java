@@ -24,35 +24,40 @@
 package com.github.jferard.fastods.odselement.config;
 
 /**
- * A ConfigItemMapEntry represents an entry in the settings. It can be a sequence, a set or a singleton.
- *
+ * A ConfigItemMapEntry represents an entry in the settings. It can be a sequence, a set or a
+ * singleton.
+ * <p>
  * See 3.10.5 config:config-item-map-entry
+ *
  * @author Julien Férard
  */
 public interface ConfigItemMapEntry extends ConfigItemCollection<ConfigBlock> {
-	/**
-	 * Add a block to this entry.
-	 * @param block the block to add to this entry. May throw
-	 * @return true if the block was added
-	 * @throws UnsupportedOperationException if the entry is a singleton
-	 */
-	boolean add(ConfigBlock block);
+    /**
+     * Add a block to this entry.
+     *
+     * @param block the block to add to this entry. May throw
+     * @return true if the block was added
+     * @throws UnsupportedOperationException if the entry is a singleton
+     */
+    boolean add(ConfigBlock block);
 
-	/**
-	 * Put a block in this entry. Replace existing block with the same name.
-	 * @param block the block to add to this entry. May throw
-	 * @return the previous block or null.
-	 * @throws UnsupportedOperationException if the entry is a singleton or a list
-	 */
-	ConfigBlock put(ConfigBlock block);
+    /**
+     * Put a block in this entry. Replace existing block with the same name.
+     *
+     * @param block the block to add to this entry. May throw
+     * @return the previous block or null.
+     * @throws UnsupportedOperationException if the entry is a singleton or a list
+     */
+    ConfigBlock put(ConfigBlock block);
 
-	/**
-	 * Add an ConfigItem to this entry. Shortcut for {@code add(new ConfigItem(name, type, value))}.
-	 * @param name the name of the item
-	 * @param type the type of the item
-	 * @param value the value of the item
-	 * @return true if the block was added
-	 * @throws UnsupportedOperationException if the entry is a singleton
-	 */
-	boolean add(String name, String type, String value);
+    /**
+     * Add an ConfigItem to this entry. Shortcut for {@code add(new ConfigItem(name, type, value))}.
+     *
+     * @param name  the name of the item
+     * @param type  the type of the item
+     * @param value the value of the item
+     * @return true if the block was added
+     * @throws UnsupportedOperationException if the entry is a singleton
+     */
+    boolean add(String name, String type, String value);
 }

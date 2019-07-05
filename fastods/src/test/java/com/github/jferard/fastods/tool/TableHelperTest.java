@@ -23,7 +23,6 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
@@ -77,8 +76,7 @@ public class TableHelperTest {
     }
 
     @Test
-    public final void testSetCellValueByAddress()
-            throws IOException, ParseException {
+    public final void testSetCellValueByAddress() throws IOException, ParseException {
         final CellValue value = new StringValue("@");
 
         PowerMock.resetAll();
@@ -94,8 +92,7 @@ public class TableHelperTest {
     }
 
     @Test
-    public final void testSetCellValueWithStyleByAddress()
-            throws IOException, ParseException {
+    public final void testSetCellValueWithStyleByAddress() throws IOException, ParseException {
         final CellValue value = new StringValue("@");
         final TableCellStyle ts = TableCellStyle.builder("b").build();
 
@@ -129,8 +126,7 @@ public class TableHelperTest {
     }
 
     @Test
-    public final void testSetCellValueWithStyle()
-            throws IOException {
+    public final void testSetCellValueWithStyle() throws IOException {
         final CellValue value = new StringValue("@");
         final TableCellStyle ts = TableCellStyle.builder("b").build();
 
@@ -147,18 +143,17 @@ public class TableHelperTest {
         PowerMock.verifyAll();
     }
 
-	@Test
-	public final void getCell()
-			throws IOException, ParseException {
-		PowerMock.resetAll();
-		EasyMock.expect(this.table.getRow(1)).andReturn(this.row);
-		EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
-		this.walker.to(2);
+    @Test
+    public final void getCell() throws IOException, ParseException {
+        PowerMock.resetAll();
+        EasyMock.expect(this.table.getRow(1)).andReturn(this.row);
+        EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
+        this.walker.to(2);
 
-		PowerMock.replayAll();
-		final TableCellWalker w = this.tableHelper.getCell(this.table, "C2");
-		Assert.assertEquals(this.walker, w);
+        PowerMock.replayAll();
+        final TableCellWalker w = this.tableHelper.getCell(this.table, "C2");
+        Assert.assertEquals(this.walker, w);
 
-		PowerMock.verifyAll();
-	}
+        PowerMock.verifyAll();
+    }
 }

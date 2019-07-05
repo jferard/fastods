@@ -36,7 +36,7 @@ import java.util.Locale;
  */
 public class SimpleLength implements Length {
     /**
-     * Create an simple lenght in millimeters
+     * Create an simple length in millimeters
      *
      * @param value the length in millimeters
      * @return the length
@@ -46,7 +46,7 @@ public class SimpleLength implements Length {
     }
 
     /**
-     * Create an simple lenght in centimeters
+     * Create an simple length in centimeters
      *
      * @param value the length in centimeters
      * @return the length
@@ -56,7 +56,7 @@ public class SimpleLength implements Length {
     }
 
     /**
-     * Create an simple lenght in inches
+     * Create an simple length in inches
      *
      * @param value the length in inches
      * @return the length
@@ -66,7 +66,7 @@ public class SimpleLength implements Length {
     }
 
     /**
-     * Create an simple lenght in points
+     * Create an simple length in points
      *
      * @param value the length in points
      * @return the length
@@ -76,7 +76,7 @@ public class SimpleLength implements Length {
     }
 
     /**
-     * Create an simple lenght in picas
+     * Create an simple length in picas
      *
      * @param value the length in picas
      * @return the length
@@ -86,7 +86,7 @@ public class SimpleLength implements Length {
     }
 
     /**
-     * Create an simple lenght in em
+     * Create an simple length in em
      *
      * @param value the length in ems
      * @return the length

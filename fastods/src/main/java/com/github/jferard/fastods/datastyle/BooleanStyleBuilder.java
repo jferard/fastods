@@ -29,51 +29,51 @@ import java.util.Locale;
  * @author Julien Férard
  */
 public class BooleanStyleBuilder implements DataStyleBuilder<BooleanStyle, BooleanStyleBuilder> {
-	private final CoreDataStyleBuilder dataStyleBuilder;
+    private final CoreDataStyleBuilder dataStyleBuilder;
 
-	/**
-	 * The builder
-	 *
-	 * @param name   The name of this style
-	 * @param locale The default locale.
-	 */
+    /**
+     * The builder
+     *
+     * @param name   The name of this style
+     * @param locale The default locale.
+     */
     public BooleanStyleBuilder(final String name, final Locale locale) {
-		this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
-	}
+        this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
+    }
 
-	@Override
-	public BooleanStyle build() {
-		return new BooleanStyle(this.dataStyleBuilder.build());
-	}
+    @Override
+    public BooleanStyle build() {
+        return new BooleanStyle(this.dataStyleBuilder.build());
+    }
 
-	@Override
-	public BooleanStyleBuilder country(final String countryCode) {
-		this.dataStyleBuilder.country(countryCode);
-		return this;
-	}
+    @Override
+    public BooleanStyleBuilder country(final String countryCode) {
+        this.dataStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	@Override
-	public BooleanStyleBuilder language(final String languageCode) {
-		this.dataStyleBuilder.language(languageCode);
-		return this;
-	}
+    @Override
+    public BooleanStyleBuilder language(final String languageCode) {
+        this.dataStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	@Override
-	public BooleanStyleBuilder locale(final Locale locale) {
-		this.dataStyleBuilder.locale(locale);
-		return this;
-	}
+    @Override
+    public BooleanStyleBuilder locale(final Locale locale) {
+        this.dataStyleBuilder.locale(locale);
+        return this;
+    }
 
-	@Override
-	public BooleanStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.dataStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    @Override
+    public BooleanStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.dataStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
 
-	@Override
-	public BooleanStyleBuilder visible() {
-    	this.dataStyleBuilder.visible();
-		return this;
-	}
+    @Override
+    public BooleanStyleBuilder visible() {
+        this.dataStyleBuilder.visible();
+        return this;
+    }
 }
 

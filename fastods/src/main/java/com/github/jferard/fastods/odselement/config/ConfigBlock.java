@@ -30,8 +30,10 @@ import com.github.jferard.fastods.Tag;
  * <ul>
  * <li>{@code config:config-item-set} is the root. It may contain any config block</li>
  * <li>{@code config:config-item} is the simplest config block</li>
- * <li>{@code config:config-item-map-indexed} is a config block that contains {@code config:config-item-map-entry}</li>
- * <li>{@code config:config-item-map-named} is a config block that contains {@code config:config-item-map-entry}</li>
+ * <li>{@code config:config-item-map-indexed} is a config block that contains {@code config
+ * :config-item-map-entry}</li>
+ * <li>{@code config:config-item-map-named} is a config block that contains {@code config:config
+ * -item-map-entry}</li>
  * <li>{@code config:config-item-map-entry} may contain any config block</li>
  * </ul>
  *

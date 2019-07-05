@@ -85,7 +85,7 @@ public class TableCellImpl implements TableCell {
      * @param stylesContainer the styles containers that will dispatch styles to document.xml and
      *                        styles.xml
      * @param dataStyles      the styles
-     * @param libreOfficeMode
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @param parent          the parent row
      * @param columnIndex     index in parent row
      */
@@ -246,14 +246,14 @@ public class TableCellImpl implements TableCell {
         final DataStyle curDataStyle = curStyle.getDataStyle();
         if (curDataStyle == null) { // no data style yet: create a custom child style
             this.style = this.stylesContainer.addChildCellStyle(curStyle, dataStyle);
-        } else { // a style and a datastyle => create a custom sibling cell style
+        } else { // a style and a data style => create a custom sibling cell style
             this.style = this.stylesContainer
                     .addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
         }
     }
 
     /**
-     * For implicit datastyle, e.g. will set an implicit datastyle if the data style is not set
+     * For implicit data style, e.g. will set an implicit data style if the data style is not set
      */
     private void setImplicitDataStyle(final DataStyle dataStyle) {
         assert dataStyle != null;
@@ -352,13 +352,13 @@ public class TableCellImpl implements TableCell {
 
         this.stylesContainer.addContentFontFaceContainerStyle(style);
         final TableCellStyle curStyle = this.style;
-        if (curStyle == null) { // we know that dataStyle is null
+        if (curStyle == null) { // we know that data style is null
             this.style = style; // just set the new style as current style
         } else {
             final DataStyle dataStyle = curStyle.getDataStyle();
             if (dataStyle == null) {
                 this.style = style; // just replace the current style by the new style
-            } else { // a style and a datastyle => create a custom child cell style
+            } else { // a style and a data style => create a custom child cell style
                 this.style = this.stylesContainer.addChildCellStyle(style, dataStyle);
             }
         }

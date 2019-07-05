@@ -48,9 +48,9 @@ public class TextBuilder {
     private ParagraphBuilder curParagraphBuilder;
 
     /**
-     * Build a text builder with given styles and paragrapps
-     * @param paragraphs the paragraphs
+     * Build a text builder with given styles and paragraphs
      *
+     * @param paragraphs the paragraphs
      */
     TextBuilder(final List<Paragraph> paragraphs) {
         this.paragraphs = paragraphs;
@@ -67,6 +67,7 @@ public class TextBuilder {
 
     /**
      * Create a new paragraph
+     *
      * @return this for fluent style
      */
     public TextBuilder par() {
@@ -83,6 +84,7 @@ public class TextBuilder {
 
     /**
      * Create a new paragraph with a text content
+     *
      * @param text the text
      * @return this for fluent style
      */
@@ -92,8 +94,9 @@ public class TextBuilder {
 
     /**
      * Create a new paragraph with a text content
+     *
      * @param text the text
-     * @param ts the style
+     * @param ts   the style
      * @return this for fluent style
      */
     public TextBuilder parStyledContent(final String text, final TextStyle ts) {
@@ -102,6 +105,7 @@ public class TextBuilder {
 
     /**
      * Create a span in the current paragraph.
+     *
      * @param text the text
      * @return this for fluent style
      */
@@ -112,7 +116,8 @@ public class TextBuilder {
 
     /**
      * Create a link in the current paragraph.
-     * @param text the text
+     *
+     * @param text  the text
      * @param table the destination
      * @return this for fluent style
      */
@@ -123,8 +128,9 @@ public class TextBuilder {
 
     /**
      * Create a styled link in the current paragraph.
-     * @param text the text
-     * @param ts the style
+     *
+     * @param text  the text
+     * @param ts    the style
      * @param table the destination
      * @return this for fluent style
      */
@@ -135,6 +141,7 @@ public class TextBuilder {
 
     /**
      * Create a link in the current paragraph.
+     *
      * @param text the text
      * @param file the destination
      * @return this for fluent style
@@ -146,8 +153,9 @@ public class TextBuilder {
 
     /**
      * Create a styled link in the current paragraph.
+     *
      * @param text the text
-     * @param ts the style
+     * @param ts   the style
      * @param file the destination
      * @return this for fluent style
      */
@@ -158,8 +166,9 @@ public class TextBuilder {
 
     /**
      * Create a link in the current paragraph.
+     *
      * @param text the text
-     * @param url the destination
+     * @param url  the destination
      * @return this for fluent style
      */
     public TextBuilder link(final String text, final URL url) {
@@ -169,9 +178,10 @@ public class TextBuilder {
 
     /**
      * Create a styled link in the current paragraph.
+     *
      * @param text the text
-     * @param ts the style
-     * @param url the destination
+     * @param ts   the style
+     * @param url  the destination
      * @return this for fluent style
      */
     public TextBuilder styledLink(final String text, final TextStyle ts, final URL url) {
@@ -181,8 +191,9 @@ public class TextBuilder {
 
     /**
      * Create a link in the current paragraph.
+     *
      * @param text the text
-     * @param uri the destination
+     * @param uri  the destination
      * @return this for fluent style
      */
     public TextBuilder link(final String text, final URI uri) {
@@ -192,9 +203,10 @@ public class TextBuilder {
 
     /**
      * Create a styled link in the current paragraph.
+     *
      * @param text the text
-     * @param ts the style
-     * @param uri the destination
+     * @param ts   the style
+     * @param uri  the destination
      * @return this for fluent style
      */
     public TextBuilder styledLink(final String text, final TextStyle ts, final URI uri) {
@@ -204,8 +216,9 @@ public class TextBuilder {
 
     /**
      * Create a link in the current paragraph.
+     *
      * @param text the text
-     * @param ref the destination
+     * @param ref  the destination
      * @return this for fluent style
      */
     public TextBuilder link(final String text, final String ref) {
@@ -215,9 +228,10 @@ public class TextBuilder {
 
     /**
      * Create a styled link in the current paragraph.
+     *
      * @param text the text
-     * @param ts the style
-     * @param ref the destination
+     * @param ts   the style
+     * @param ref  the destination
      * @return this for fluent style
      */
     public TextBuilder styledLink(final String text, final TextStyle ts, final String ref) {

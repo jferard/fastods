@@ -50,7 +50,9 @@ public class ProfileFastODS {
     @BeforeClass
     public static final void beforeClass() {
         final File generated_files = new File("generated_files");
-        if (generated_files.exists()) return;
+        if (generated_files.exists()) {
+            return;
+        }
 
         generated_files.mkdir();
     }
@@ -61,6 +63,7 @@ public class ProfileFastODS {
         profileFastODS.testFast();
         profileFastODS.tearDown();
     }
+
     @Rule
     public TestName name = new TestName();
     private Logger logger;
@@ -82,7 +85,9 @@ public class ProfileFastODS {
                 walker.setFloatValue(this.random.nextInt(1000));
                 walker.next();
             }
-            if (y % (ProfileFastODS.ROW_COUNT / 100) == 0) this.logger.info("Row " + y);
+            if (y % (ProfileFastODS.ROW_COUNT / 100) == 0) {
+                this.logger.info("Row " + y);
+            }
         }
 
         writer.saveAs(new File("generated_files", "fastods_profile.ods"));
@@ -114,7 +119,9 @@ public class ProfileFastODS {
                 walker.setFloatValue(this.random.nextInt(1000));
                 walker.next();
             }
-            if (y % (ProfileFastODS.ROW_COUNT / 200) == 0) this.logger.info("Row " + y);
+            if (y % (ProfileFastODS.ROW_COUNT / 200) == 0) {
+                this.logger.info("Row " + y);
+            }
         }
 
         writer.saveAs(new File("generated_files", "fastods_profile.ods"));
@@ -140,7 +147,9 @@ public class ProfileFastODS {
                 walker.setFloatValue(this.random.nextInt(1000));
                 walker.next();
             }
-            if (y % (ProfileFastODS.ROW_COUNT / 50) == 0) this.logger.info("Row " + y);
+            if (y % (ProfileFastODS.ROW_COUNT / 50) == 0) {
+                this.logger.info("Row " + y);
+            }
         }
 
         writer.saveAs(new File("generated_files", "fastods_profile.ods"));

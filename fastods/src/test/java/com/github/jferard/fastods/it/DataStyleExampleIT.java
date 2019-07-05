@@ -186,9 +186,10 @@ public class DataStyleExampleIT {
         cell.setDateValue(cal);
         // Add a custom format
         final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale)
-                .dateFormat(new DateTimeStyleFormat(DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT,
-                        DateTimeStyleFormat.MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.YEAR)).visible()
-                .build();
+                .dateFormat(
+                        new DateTimeStyleFormat(DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT,
+                                DateTimeStyleFormat.MONTH, DateTimeStyleFormat.DOT,
+                                DateTimeStyleFormat.YEAR)).visible().build();
         cell.setDataStyle(dateStyle);
 
         // 5TH ROW

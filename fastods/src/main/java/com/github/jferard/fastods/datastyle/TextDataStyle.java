@@ -38,36 +38,37 @@ public class TextDataStyle implements DataStyle {
     private final String text;
 
     /**
-	 * A text-style
+     * A text-style
+     *
      * @param dataStyle the embedded data style
-     * @param text the text ("<number:text-content>" for instance)
+     * @param text      the text ("<number:text-content>" for instance)
      */
-	TextDataStyle(final CoreDataStyle dataStyle, final String text) {
-		this.dataStyle = dataStyle;
+    TextDataStyle(final CoreDataStyle dataStyle, final String text) {
+        this.dataStyle = dataStyle;
         this.text = text;
     }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<number:text-style");
-		util.appendEAttribute(appendable, "style:name", this.getName());
-		this.dataStyle.appendLVAttributes(util, appendable);
-		appendable.append(">").append(this.text).append("</number:text-style>");
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<number:text-style");
+        util.appendEAttribute(appendable, "style:name", this.getName());
+        this.dataStyle.appendLVAttributes(util, appendable);
+        appendable.append(">").append(this.text).append("</number:text-style>");
+    }
 
-	@Override
-	public String getName() {
-		return this.dataStyle.getName();
-	}
+    @Override
+    public String getName() {
+        return this.dataStyle.getName();
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.dataStyle.isHidden();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.dataStyle.isHidden();
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

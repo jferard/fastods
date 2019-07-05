@@ -31,7 +31,8 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public final class NumberStyleHelperBuilder implements NumberStyleBuilder<NumberStyleHelper, NumberStyleHelperBuilder> {
+public final class NumberStyleHelperBuilder
+        implements NumberStyleBuilder<NumberStyleHelper, NumberStyleHelperBuilder> {
     private final CoreDataStyleBuilder dataStyleBuilder;
     private boolean grouping;
     private int minIntegerDigits;
@@ -105,8 +106,8 @@ public final class NumberStyleHelperBuilder implements NumberStyleBuilder<Number
 
     @Override
     public NumberStyleHelper build() {
-        return new NumberStyleHelper(this.dataStyleBuilder.build(), this.grouping, this.minIntegerDigits,
-                this.negativeValueColor);
+        return new NumberStyleHelper(this.dataStyleBuilder.build(), this.grouping,
+                this.minIntegerDigits, this.negativeValueColor);
     }
 
 }

@@ -37,7 +37,7 @@ import java.io.IOException;
  * <p>
  * The PageSection class represents the union of a page section content and a page section
  * style. It may be a footer or a header.
- *
+ * <p>
  * Some styles are embedded in the content (e.g. text styles)
  *
  * @author Julien Férard
@@ -45,7 +45,8 @@ import java.io.IOException;
  */
 public class PageSection implements StyleWithEmbeddedStyles {
     /**
-     * Secure version of {@code pageSection.appendPageSectionStyleXMLToAutomaticStyle}: if the footer (or header) is
+     * Secure version of {@code pageSection.appendPageSectionStyleXMLToAutomaticStyle}: if the
+     * footer (or header) is
      * null,
      * then the default type is used.
      *
@@ -54,14 +55,20 @@ public class PageSection implements StyleWithEmbeddedStyles {
      * @param appendable the object ot which append footer/header style
      * @throws IOException if footer/header style wasn't appended.
      */
-    public static void appendPageSectionStyleXMLToAutomaticStyle(final Header header, final XMLUtil util,
-                                                                 final Appendable appendable) throws IOException {
-        if (header == null) appendable.append("<style:header-style />");
-        else header.appendPageSectionStyleXMLToAutomaticStyle(util, appendable);
+    public static void appendPageSectionStyleXMLToAutomaticStyle(final Header header,
+                                                                 final XMLUtil util,
+                                                                 final Appendable appendable)
+            throws IOException {
+        if (header == null) {
+            appendable.append("<style:header-style />");
+        } else {
+            header.appendPageSectionStyleXMLToAutomaticStyle(util, appendable);
+        }
     }
 
     /**
-     * Secure version of {@code pageSection.appendPageSectionStyleXMLToAutomaticStyle}: if the footer (or header) is
+     * Secure version of {@code pageSection.appendPageSectionStyleXMLToAutomaticStyle}: if the
+     * footer (or header) is
      * null,
      * then the default type is used.
      *
@@ -70,14 +77,20 @@ public class PageSection implements StyleWithEmbeddedStyles {
      * @param appendable the object ot which append footer/header style
      * @throws IOException if footer/header style wasn't appended.
      */
-    public static void appendPageSectionStyleXMLToAutomaticStyle(final Footer footer, final XMLUtil util,
-                                                                 final Appendable appendable) throws IOException {
-        if (footer == null) appendable.append("<style:footer-style />");
-        else footer.appendPageSectionStyleXMLToAutomaticStyle(util, appendable);
+    public static void appendPageSectionStyleXMLToAutomaticStyle(final Footer footer,
+                                                                 final XMLUtil util,
+                                                                 final Appendable appendable)
+            throws IOException {
+        if (footer == null) {
+            appendable.append("<style:footer-style />");
+        } else {
+            footer.appendPageSectionStyleXMLToAutomaticStyle(util, appendable);
+        }
     }
 
     /**
-     * Create a builder for a region builder, ie a builder for a footer/header with left, center and right
+     * Create a builder for a region builder, ie a builder for a footer/header with left, center
+     * and right
      *
      * @return the builder
      */
@@ -86,7 +99,8 @@ public class PageSection implements StyleWithEmbeddedStyles {
     }
 
     /**
-     * Create a builder for a simple builder, ie a builder for a footer/header with only a center region
+     * Create a builder for a simple builder, ie a builder for a footer/header with only a center
+     * region
      *
      * @return the builder
      */
@@ -141,9 +155,13 @@ public class PageSection implements StyleWithEmbeddedStyles {
      * @param pageSectionType the type (FOOTER or HEADER)
      * @throws IOException If an I/O error occurs
      */
-    public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util, final Appendable appendable,
-                                                          final Type pageSectionType) throws IOException {
-        PageSectionStyle.appendFooterHeaderStyleXMLToAutomaticStyle(this.style, pageSectionType, util, appendable);
+    public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util,
+                                                          final Appendable appendable,
+                                                          final Type pageSectionType)
+            throws IOException {
+        PageSectionStyle
+                .appendFooterHeaderStyleXMLToAutomaticStyle(this.style, pageSectionType, util,
+                        appendable);
     }
 
     /**
@@ -151,7 +169,8 @@ public class PageSection implements StyleWithEmbeddedStyles {
      * @param appendable the appendable element where the method will write the XML
      * @throws IOException If an I/O error occurs
      */
-    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         this.content.appendXMLToMasterStyle(util, appendable);
     }
 
@@ -162,7 +181,8 @@ public class PageSection implements StyleWithEmbeddedStyles {
         /**
          * Footer
          */
-        FOOTER("footer"), /**
+        FOOTER("footer"),
+        /**
          * Header
          */
         HEADER("header");

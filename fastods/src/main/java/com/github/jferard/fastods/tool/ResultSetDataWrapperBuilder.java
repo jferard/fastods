@@ -38,8 +38,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * A builder for a ResultSetDataWrapper
+ *
+ * @author J. Férard
+ */
 public class ResultSetDataWrapperBuilder {
-    public static final TableCellStyle HEAD_STYLE = TableCellStyle.builder("rs-data-wrapper")
+    private static final TableCellStyle HEADER_STYLE = TableCellStyle.builder("rs-data-wrapper")
             .backgroundColor(SimpleColor.GRAY48).fontWeightBold().build();
 
     private final ResultSet rs;
@@ -48,16 +53,19 @@ public class ResultSetDataWrapperBuilder {
     private SQLToCellValueConverter.IntervalConverter converter;
     private String currency;
     private Logger logger;
-    private TableCellStyle headStyle;
+    private TableCellStyle headerStyle;
     private boolean autoFilter;
     private int max;
     private CellValue nullValue;
 
 
+    /**
+     * @param rs the result set
+     */
     public ResultSetDataWrapperBuilder(final ResultSet rs) {
         this.rs = rs;
         this.logger = null;
-        this.headStyle = HEAD_STYLE;
+        this.headerStyle = HEADER_STYLE;
         this.autoFilter = true;
         this.max = -1;
         this.cellTypeByIndex = new HashMap<Integer, TableCell.Type>();
@@ -72,63 +80,126 @@ public class ResultSetDataWrapperBuilder {
         };
     }
 
+    /**
+     * Set a logger
+     *
+     * @param logger the logger
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder logger(final Logger logger) {
         this.logger = logger;
         return this;
     }
 
-    public ResultSetDataWrapperBuilder headStyle(final TableCellStyle headStyle) {
-        this.headStyle = headStyle;
+    /**
+     * Set a header style
+     *
+     * @param headerStyle the cell style for the header
+     * @return this for fluent style
+     */
+    public ResultSetDataWrapperBuilder headerStyle(final TableCellStyle headerStyle) {
+        this.headerStyle = headerStyle;
         return this;
     }
 
-    public ResultSetDataWrapperBuilder noHeadStyle() {
-        this.headStyle = null;
+    /**
+     * Remove the default header style
+     *
+     * @return this for fluent style
+     */
+    public ResultSetDataWrapperBuilder noHeaderStyle() {
+        this.headerStyle = null;
         return this;
     }
 
+    /**
+     * Set a limit to the number of rows
+     *
+     * @param max the last line written
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder max(final int max) {
         this.max = max;
         return this;
     }
 
+    /**
+     * Remove the auto filter
+     *
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder noAutoFilter() {
         this.autoFilter = false;
         return this;
     }
 
+    /**
+     * Give a hint for a column type
+     *
+     * @param j        the col index
+     * @param cellType the expected cell type
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder typeValue(final int j, final TableCell.Type cellType) {
         this.cellTypeByIndex.put(j, cellType);
         return this;
     }
 
+    /**
+     * Set a value for SQL NULLs.
+     *
+     * @param nullValue the null value
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder nullValue(final CellValue nullValue) {
         this.nullValue = nullValue;
         return this;
     }
 
+    /**
+     * Set the currency
+     *
+     * @param currency the currency
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder currency(final String currency) {
         this.currency = currency;
         return this;
     }
 
+    /**
+     * Set the charset for byte values
+     *
+     * @param charset the charset
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder charset(final Charset charset) {
         this.charset = charset;
         return this;
     }
 
+    /**
+     * JDBC misses some way to handle intervals. If the Result set
+     * contains intervals, one must provide a custom converter.
+     *
+     * @param converter the converter for Interval
+     * @return this for fluent style
+     */
     public ResultSetDataWrapperBuilder converter(
             final SQLToCellValueConverter.IntervalConverter converter) {
         this.converter = converter;
         return this;
     }
 
+    /**
+     * @return the data wrapper
+     */
     public ResultSetDataWrapper build() {
         final SQLToCellValueConverter sqlToCellValueConverter = SQLToCellValueConverter
                 .create(this.converter, this.currency, this.charset);
         final Map<Integer, TableCell.Type> cellTypeByIndexOrNull = this.cellTypeByIndex
                 .isEmpty() ? null : this.cellTypeByIndex;
         return new ResultSetDataWrapper(this.logger, sqlToCellValueConverter, this.rs,
-                this.headStyle, this.autoFilter, cellTypeByIndexOrNull, this.nullValue, this.max);
+                this.headerStyle, this.autoFilter, cellTypeByIndexOrNull, this.nullValue, this.max);
     }
 }

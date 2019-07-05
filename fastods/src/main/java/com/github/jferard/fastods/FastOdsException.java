@@ -25,40 +25,41 @@ package com.github.jferard.fastods;
 
 /**
  * FastOdsException represents an exception in FastOds.
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class FastOdsException extends Exception {
-	private static final long serialVersionUID = 6239730778542315077L;
+    private static final long serialVersionUID = 6239730778542315077L;
 
-	/**
-	 * @param n the number of a non existing table
-	 * @return the exception
-	 */
-	public static FastOdsException wrongTableNumber(final int n) {
-		return new FastOdsException("Wrong table number [" + n + "]");
-	}
+    /**
+     * @param n the number of a non existing table
+     * @return the exception
+     */
+    public static FastOdsException wrongTableNumber(final int n) {
+        return new FastOdsException("Wrong table number [" + n + "]");
+    }
 
-	/**
-	 * @param name the name of a non existing table
-	 * @return the exception
-	 */
-	public static FastOdsException wrongTableName(final String name) {
-		return new FastOdsException("Wrong table name [" + name + "]");
-	}
+    /**
+     * @param name the name of a non existing table
+     * @return the exception
+     */
+    public static FastOdsException wrongTableName(final String name) {
+        return new FastOdsException("Wrong table name [" + name + "]");
+    }
 
 
-	/**
-	 * @param message the message
-	 */
-	public FastOdsException(final String message) {
-		super(message);
-	}
+    /**
+     * @param message the message
+     */
+    public FastOdsException(final String message) {
+        super(message);
+    }
 
-	/**
-	 * @param e an exception
-	 */
-	public FastOdsException(final Exception e) {
-		super(e);
-	}
+    /**
+     * @param e an exception
+     */
+    public FastOdsException(final Exception e) {
+        super(e);
+    }
 }

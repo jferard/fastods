@@ -29,7 +29,8 @@ import com.github.jferard.fastods.util.StyleBuilder;
 import org.junit.Assert;
 
 class StyleTestHelper {
-    public static <S extends NamedObject & Hidable, T extends StyleBuilder<S> & HidableBuilder<T>> void testGetters(
+    public static <S extends NamedObject & Hidable,
+            T extends StyleBuilder<S> & HidableBuilder<T>> void testGetters(
             final T builder) {
         final S style = builder.build();
         Assert.assertEquals("test", style.getName());
@@ -38,7 +39,8 @@ class StyleTestHelper {
 
     }
 
-    public static <S extends NamedObject & Hidable, T extends StyleBuilder<S> & ShowableBuilder<T>> void testGettersHidden(
+    public static <S extends NamedObject & Hidable,
+            T extends StyleBuilder<S> & ShowableBuilder<T>> void testGettersHidden(
             final T builder) {
         final S style = builder.build();
         Assert.assertEquals("test", style.getName());

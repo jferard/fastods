@@ -34,43 +34,47 @@ import java.util.List;
 
 /**
  * A list of attributes
+ *
  * @author Julien Férard
  */
 public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
-	/**
-	 * The attributes comparator, on name then on value.
-	 */
-	private static final Comparator<Attr> cmp = new Comparator<Attr>() {
-		@Override
-		public int compare(final Attr o1, final Attr o2) {
-			if (o1 == null)
-				return o2 == null ? 0 : 1;
-			if (o2 == null)
-				return -1;
+    /**
+     * The attributes comparator, on name then on value.
+     */
+    private static final Comparator<Attr> cmp = new Comparator<Attr>() {
+        @Override
+        public int compare(final Attr o1, final Attr o2) {
+            if (o1 == null) {
+                return o2 == null ? 0 : 1;
+            }
+            if (o2 == null) {
+                return -1;
+            }
 
-			final int cmpNames = o1.getName().compareTo(o2.getName());
-			if (cmpNames != 0)
-				return cmpNames;
+            final int cmpNames = o1.getName().compareTo(o2.getName());
+            if (cmpNames != 0) {
+                return cmpNames;
+            }
 
-			return o1.getValue().compareTo(o2.getValue());
-		}
-	};
+            return o1.getValue().compareTo(o2.getValue());
+        }
+    };
 
-	private final int length;
-	private final List<Attr> attrs;
+    private final int length;
+    private final List<Attr> attrs;
 
-	/**
-	 * @param attributes the attributes
+    /**
+     * @param attributes the attributes
      * @return the attr list
-	 */
-	static AttrList create(final NamedNodeMap attributes) {
+     */
+    static AttrList create(final NamedNodeMap attributes) {
         final int l = attributes.getLength();
         final List<Attr> as = new ArrayList<Attr>(l);
-		for (int i = 0; i < l; i++) {
-			as.add((Attr) attributes.item(i));
-		}
-		return new AttrList(as);
-	}
+        for (int i = 0; i < l; i++) {
+            as.add((Attr) attributes.item(i));
+        }
+        return new AttrList(as);
+    }
 
     /**
      * @param attrs the attributes
@@ -78,65 +82,71 @@ public class AttrList implements Iterable<Attr>, Comparable<AttrList> {
     AttrList(final List<Attr> attrs) {
         this.length = attrs.size();
         this.attrs = attrs;
-		Collections.sort(this.attrs, cmp);
-	}
+        Collections.sort(this.attrs, cmp);
+    }
 
     /**
      * @return the number of attributes
      */
     public int size() {
-		return this.length;
-	}
+        return this.length;
+    }
 
-	@Override
-	public Iterator<Attr> iterator() {
-		return this.attrs.iterator();
-	}
+    @Override
+    public Iterator<Attr> iterator() {
+        return this.attrs.iterator();
+    }
 
-	@Override
-	public String toString() {
-		return this.attrs.toString();
-	}
+    @Override
+    public String toString() {
+        return this.attrs.toString();
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
         // WARNING : Attr does not implement a specific hashCode method,
         // thus, attrs.hashCode() will be different even if the elements
         // are the same. attrs.size() is a very bad hash code, but the
         // semantic is right...
-		return this.attrs.size();
-	}
+        return this.attrs.size();
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof AttrList))
-			return false;
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AttrList)) {
+            return false;
+        }
 
-		final AttrList other = (AttrList) o;
-		return this.compareTo(other) == 0;
-	}
+        final AttrList other = (AttrList) o;
+        return this.compareTo(other) == 0;
+    }
 
-	@Override
-	public int compareTo(final AttrList other) {
-		if (other == null)
-		    throw new NullPointerException();
+    @Override
+    public int compareTo(final AttrList other) {
+        if (other == null) {
+            throw new NullPointerException();
+        }
 
-        if (this == other)
+        if (this == other) {
             return 0;
-		if (this.length != other.length)
-			return this.length - other.length;
+        }
+        if (this.length != other.length) {
+            return this.length - other.length;
+        }
 
-		final Iterator<Attr> i1 = this.attrs.iterator();
-		final Iterator<Attr> i2 = other.attrs.iterator();
+        final Iterator<Attr> i1 = this.attrs.iterator();
+        final Iterator<Attr> i2 = other.attrs.iterator();
 
-		while (i1.hasNext()) {
-			final int c = cmp.compare(i1.next(), i2.next());
-			if (c != 0)
-				return c;
-		}
-		return 0;
-	}
+        while (i1.hasNext()) {
+            final int c = cmp.compare(i1.next(), i2.next());
+            if (c != 0) {
+                return c;
+            }
+        }
+        return 0;
+    }
 }
 

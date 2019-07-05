@@ -30,8 +30,9 @@ import java.util.Locale;
 /**
  * @author Julien Férard
  */
-public class ScientificNumberStyleBuilder implements DataStyleBuilder<ScientificNumberStyle,
-        ScientificNumberStyleBuilder>, NumberStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>,
+public class ScientificNumberStyleBuilder
+        implements DataStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>,
+        NumberStyleBuilder<ScientificNumberStyle, ScientificNumberStyleBuilder>,
         DecimalStyleBuilder<ScientificNumberStyleBuilder> {
     private final FloatStyleBuilder floatStyleBuilder;
     private int minExponentDigits;

@@ -40,11 +40,13 @@ import java.util.logging.Logger;
 public class OdsFileDirectWriter implements NamedOdsFileWriter {
     /**
      * Return a builder for direct writer
-     * @param logger the logger
+     *
+     * @param logger   the logger
      * @param document the document to write
      * @return the builder
      */
-    public static OdsFileWriterBuilder builder(final Logger logger, final NamedOdsDocument document) {
+    public static OdsFileWriterBuilder builder(final Logger logger,
+                                               final NamedOdsDocument document) {
         return new OdsFileWriterBuilder(logger, document);
     }
 
@@ -55,12 +57,14 @@ public class OdsFileDirectWriter implements NamedOdsFileWriter {
 
     /**
      * Create a new ODS file.
-     *  @param logger   the logger
-     * @param xmlUtil an util
+     *
+     * @param logger   the logger
+     * @param xmlUtil  an util
      * @param document the document to write
      * @param writer   The writer for this file
      */
-    OdsFileDirectWriter(final Logger logger, final XMLUtil xmlUtil, final NamedOdsDocument document, final ZipUTF8Writer writer) {
+    OdsFileDirectWriter(final Logger logger, final XMLUtil xmlUtil, final NamedOdsDocument document,
+                        final ZipUTF8Writer writer) {
         this.logger = logger;
         this.document = document;
         this.xmlUtil = xmlUtil;

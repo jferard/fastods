@@ -73,9 +73,8 @@ public class NamedOdsDocument implements OdsDocument {
      * @param odsElements       the ods elements (file entries in zip archive)
      * @param commonOdsDocument the common part of an ods document
      */
-    NamedOdsDocument(final Logger logger, final XMLUtil xmlUtil,
-                             final OdsElements odsElements,
-                             final CommonOdsDocument commonOdsDocument) {
+    NamedOdsDocument(final Logger logger, final XMLUtil xmlUtil, final OdsElements odsElements,
+                     final CommonOdsDocument commonOdsDocument) {
         this.logger = logger;
         this.odsElements = odsElements;
         this.xmlUtil = xmlUtil;
@@ -261,7 +260,7 @@ public class NamedOdsDocument implements OdsDocument {
     }
 
     /**
-     * Prepare the document for flush (ie write empty elements, manifest, mimetype, ...)
+     * Prepare the document for flush (ie write empty elements, manifest, mime type, ...)
      *
      * @throws IOException if an element can't be written
      */

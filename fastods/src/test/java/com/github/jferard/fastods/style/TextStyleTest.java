@@ -42,10 +42,8 @@ public class TextStyleTest {
 
     @Test
     public void testXML() throws IOException {
-        TestHelper.assertXMLEquals(
-                "<style:style style:name=\"ts\" " +
-                        "style:family=\"text\"><style:text-properties/></style:style>",
-                this.ts);
+        TestHelper.assertXMLEquals("<style:style style:name=\"ts\" " +
+                "style:family=\"text\"><style:text-properties/></style:style>", this.ts);
     }
 
     @Test

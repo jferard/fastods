@@ -23,6 +23,10 @@
 
 package com.github.jferard.fastods;
 
+/**
+ * A text value
+ * @author J. Férard
+ */
 public class TextValue implements CellValue {
     private final Text text;
 
@@ -35,10 +39,12 @@ public class TextValue implements CellValue {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof TextValue))
+        }
+        if (!(o instanceof TextValue)) {
             return false;
+        }
 
         final TextValue other = (TextValue) o;
         return this.text.equals(other.text);

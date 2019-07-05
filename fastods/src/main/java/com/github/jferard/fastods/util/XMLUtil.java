@@ -57,7 +57,7 @@ public class XMLUtil {
 
     /**
      * Escape then append.
-     *
+     * <p>
      * Append a space and new element to the appendable element, the name of the element is
      * attrName and the value is attrRawValue. The will be escaped if necessary
      *

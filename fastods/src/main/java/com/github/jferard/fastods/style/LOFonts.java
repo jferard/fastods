@@ -24,10 +24,12 @@
 package com.github.jferard.fastods.style;
 
 /**
- * All the information is taken from the 2019-04-19 version of: https://wiki.documentfoundation.org/Fonts (under
- *  Creative Commons Attribution-ShareAlike 3.0 Unported License,
- *  https://creativecommons.org/licenses/by-sa/3.0/).
- * @author
+ * All the information is taken from the 2019-04-19 version of: https://wiki.documentfoundation
+ * .org/Fonts (under
+ * Creative Commons Attribution-ShareAlike 3.0 Unported License,
+ * https://creativecommons.org/licenses/by-sa/3.0/).
+ *
+ * @author J. Férard
  */
 public final class LOFonts {
     /**

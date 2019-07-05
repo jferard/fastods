@@ -54,6 +54,7 @@ public class MergeExampleIT {
     public static void beforeClass() {
         Util.mkdir(GENERATED_FILES);
     }
+
     private Logger logger;
     private OdsFactory odsFactory;
 
@@ -70,7 +71,8 @@ public class MergeExampleIT {
     }
 
     private void validateMerge(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document = SpreadsheetDocument
+                .loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
@@ -91,7 +93,7 @@ public class MergeExampleIT {
         Assert.assertEquals(1, cell4.getColumnSpannedNumber());
         Assert.assertEquals(10, cell4.getRowSpannedNumber());
 
-        for (int c=0; c<5; c++) {
+        for (int c = 0; c < 5; c++) {
             for (int r = 0; r < 3; r++) {
                 if (c == 0 && r == 0 || c <= 1 && r == 1) {
                     continue;
@@ -118,8 +120,8 @@ public class MergeExampleIT {
         // 1st row
         final TableRow row1 = table.nextRow();
         final TableCellWalker cell1 = row1.getWalker();
-        for (int c=0; c<5; c++) {
-            cell1.setFloatValue(c+1);
+        for (int c = 0; c < 5; c++) {
+            cell1.setFloatValue(c + 1);
             cell1.next();
         }
         row1.setCellMerge(0, 1, 5);
@@ -127,16 +129,16 @@ public class MergeExampleIT {
         // 2nd row
         final TableRow row2 = table.nextRow();
         final TableCellWalker cell2 = row2.getWalker();
-        for (int c=0; c<5; c++) {
-            cell2.setFloatValue(c+6);
+        for (int c = 0; c < 5; c++) {
+            cell2.setFloatValue(c + 6);
             cell2.next();
         }
 
         // 3rd row
         final TableRow row3 = table.nextRow();
         final TableCellWalker cell3 = row3.getWalker();
-        for (int c=0; c<5; c++) {
-            cell3.setFloatValue(c+11);
+        for (int c = 0; c < 5; c++) {
+            cell3.setFloatValue(c + 11);
             cell3.next();
         }
 

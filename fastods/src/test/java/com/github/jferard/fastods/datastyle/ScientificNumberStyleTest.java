@@ -45,12 +45,11 @@ public class ScientificNumberStyleTest {
                 .groupThousands(true).minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"FR\" " +
-                        "style:volatile=\"true\">" +
+                        "number:country=\"FR\" " + "style:volatile=\"true\">" +
                         "<number:scientific-number number:min-exponent-digits=\"1\" " +
                         "number:decimal-places=\"2\" number:min-integer-digits=\"8\" " +
-                        "number:grouping=\"true\"/>" +
-                        "</number:number-style>" + "<number:number-style style:name=\"test-neg\" " +
+                        "number:grouping=\"true\"/>" + "</number:number-style>" +
+                        "<number:number-style style:name=\"test-neg\" " +
                         "number:language=\"en\" " +
                         "number:country=\"FR\" style:volatile=\"true\">" +
                         "<style:text-properties fo:color=\"#ff0000\"/>" +
@@ -70,12 +69,11 @@ public class ScientificNumberStyleTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"de\" " +
-                        "number:country=\"DE\" " +
-                        "style:volatile=\"true\">" +
+                        "number:country=\"DE\" " + "style:volatile=\"true\">" +
                         "<number:scientific-number number:min-exponent-digits=\"2\" " +
                         "number:decimal-places=\"2\" number:min-integer-digits=\"8\" " +
-                        "number:grouping=\"true\"/>" +
-                        "</number:number-style>" + "<number:number-style style:name=\"test-neg\" " +
+                        "number:grouping=\"true\"/>" + "</number:number-style>" +
+                        "<number:number-style style:name=\"test-neg\" " +
                         "number:language=\"de\" " +
                         "number:country=\"DE\" style:volatile=\"true\">" +
                         "<style:text-properties fo:color=\"#ff0000\"/>" +
@@ -96,8 +94,7 @@ public class ScientificNumberStyleTest {
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
                         "style:volatile=\"true\"><number:scientific-number " +
-                        "number:min-exponent-digits=\"0\" " +
-                        "number:decimal-places=\"2\" " +
+                        "number:min-exponent-digits=\"0\" " + "number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/></number:number-style><number:number" +
                         "-style " +
                         "style:name=\"test-neg\" number:language=\"en\" number:country=\"US\" " +
@@ -106,8 +103,7 @@ public class ScientificNumberStyleTest {
                         "-number " +
                         "number:min-exponent-digits=\"0\" number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/><style:map style:condition=\"value()" +
-                        "&gt;=0\" " +
-                        "style:apply-style-name=\"test\"/></number:number-style>", s);
+                        "&gt;=0\" " + "style:apply-style-name=\"test\"/></number:number-style>", s);
     }
 
     @Test
@@ -123,10 +119,8 @@ public class ScientificNumberStyleTest {
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
                         "style:volatile=\"true\"><number:scientific-number " +
-                        "number:min-exponent-digits=\"0\" " +
-                        "number:decimal-places=\"10\" " +
-                        "number:min-integer-digits=\"1\"/></number:number-style>",
-                s);
+                        "number:min-exponent-digits=\"0\" " + "number:decimal-places=\"10\" " +
+                        "number:min-integer-digits=\"1\"/></number:number-style>", s);
     }
 
     @Test(expected = IllegalArgumentException.class)

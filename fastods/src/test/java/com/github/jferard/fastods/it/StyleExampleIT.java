@@ -110,17 +110,17 @@ public class StyleExampleIT {
         table.setColumnStyle(0, columnStyleA);
 
         // second column has OpenSymbol font
-        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell").fontName(LOFonts.OPENSYMBOL).hidden().build();
+        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell")
+                .fontName(LOFonts.OPENSYMBOL).hidden().build();
         final TableColumnStyle columnStyleB = TableColumnStyle.builder("symbol-col")
                 .columnWidth(SimpleLength.cm(5)).defaultCellStyle(symbolStyle).build();
         table.setColumnStyle(1, columnStyleB);
 
         // second row has title Liberation Font
-        final TableCellStyle liberationStyle = TableCellStyle.builder("libe-cell").fontName(
-                LOFonts.LIBERATION_MONO)
-                .hidden().build();
-        final TableRowStyle rowStyle2 = TableRowStyle.builder("libe-row").rowHeight(SimpleLength.cm(1.5))
-                .build();
+        final TableCellStyle liberationStyle = TableCellStyle.builder("libe-cell")
+                .fontName(LOFonts.LIBERATION_MONO).hidden().build();
+        final TableRowStyle rowStyle2 = TableRowStyle.builder("libe-row")
+                .rowHeight(SimpleLength.cm(1.5)).build();
 
         // lonely style
         final TableCellStyle boldStyle = TableCellStyle.builder("bold").fontWeightBold().build();

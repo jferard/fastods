@@ -28,6 +28,7 @@ import com.github.jferard.fastods.util.NamedObject;
 
 /**
  * A number style
+ *
  * @author Julien Férard
  */
 public interface NumberStyle extends NamedObject, Hidable {

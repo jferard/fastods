@@ -45,7 +45,15 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 7 of the tutorial
+ *
+ * @author J. Férard
+ */
 class G_PageFormat {
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example() throws IOException {
         // As usual:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
@@ -84,12 +92,10 @@ class G_PageFormat {
                 .buildFooter();
 
         // We now insert the header and the footer in a page style:
-        PageStyle pageStyle = PageStyle.builder("page-style").header(header).footer(footer)
-                .build();
+        PageStyle pageStyle = PageStyle.builder("page-style").header(header).footer(footer).build();
 
         // And add the page style into the table style:
-        TableStyle tableStyle = TableStyle.builder("table-style").pageStyle(pageStyle)
-                .build();
+        TableStyle tableStyle = TableStyle.builder("table-style").pageStyle(pageStyle).build();
 
         // And set this table style:
         table.setStyle(tableStyle);
@@ -102,7 +108,8 @@ class G_PageFormat {
         walker.setStringValue("Text");
 
         // We can create a very simple header:
-        final Header minimalHeader = PageSection.simpleBuilder().content("minimal header").buildHeader();
+        final Header minimalHeader = PageSection.simpleBuilder().content("minimal header")
+                .buildHeader();
 
         // Or a complex footer:
         final TextBuilder textBuilder = Text.builder();
@@ -119,17 +126,17 @@ class G_PageFormat {
 
         // In one call:
         textBuilder.parStyledContent(Text.TEXT_DATE,
-                TextProperties.builder().fontSize(SimpleLength.pt(25)).fontWeightBold().buildHiddenStyle("footer2")
-        );
+                TextProperties.builder().fontSize(SimpleLength.pt(25)).fontWeightBold()
+                        .buildHiddenStyle("footer2"));
 
         // And build the text:
         final Text footerContent = textBuilder.build();
         final Footer complexFooter = PageSection.simpleBuilder().text(footerContent).buildFooter();
 
         // As above:
-        pageStyle = PageStyle.builder("page-style2").header(minimalHeader).footer(complexFooter).build();
-        tableStyle = TableStyle.builder("table-style2").pageStyle(pageStyle)
+        pageStyle = PageStyle.builder("page-style2").header(minimalHeader).footer(complexFooter)
                 .build();
+        tableStyle = TableStyle.builder("table-style2").pageStyle(pageStyle).build();
         table.setStyle(tableStyle);
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)

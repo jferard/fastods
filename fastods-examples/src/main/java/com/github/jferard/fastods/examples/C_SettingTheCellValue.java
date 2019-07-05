@@ -43,7 +43,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 3 of the tutorial
+ *
+ * @author J. Férard
+ */
 class C_SettingTheCellValue {
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
@@ -61,67 +69,67 @@ class C_SettingTheCellValue {
         final Table table = document.addTable("types");
 
         // We add a header:
-        TableRow tableRow = table.nextRow();
-        TableCellWalker cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Type");
-        cellWalker.next();
-        cellWalker.setStringValue("Example");
+        TableRow row = table.nextRow();
+        TableCellWalker walker = row.getWalker();
+        walker.setStringValue("Type");
+        walker.next();
+        walker.setStringValue("Example");
 
         // The first row contains a boolean:
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Boolean");
-        cellWalker.next();
-        cellWalker.setBooleanValue(true);
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Boolean");
+        walker.next();
+        walker.setBooleanValue(true);
 
         // The second row contains a currency:
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Currency");
-        cellWalker.next();
-        cellWalker.setCurrencyValue(10.5, "USD");
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Currency");
+        walker.next();
+        walker.setCurrencyValue(10.5, "USD");
 
         // The third row contains a date:
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Date");
-        cellWalker.next();
-        cellWalker.setDateValue(new GregorianCalendar(2014, 9, 17, 9, 0, 0));
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Date");
+        walker.next();
+        walker.setDateValue(new GregorianCalendar(2014, 9, 17, 9, 0, 0));
 
         // The fourth row contains a float:
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Float");
-        cellWalker.next();
-        cellWalker.setFloatValue(3.14159);
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Float");
+        walker.next();
+        walker.setFloatValue(3.14159);
 
         // The fifth row contains a percentage:
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Percentage");
-        cellWalker.next();
-        cellWalker.setPercentageValue(0.545);
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Percentage");
+        walker.next();
+        walker.setPercentageValue(0.545);
 
         // The sixth row contains...
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("String");
-        cellWalker.next();
-        cellWalker.setStringValue("A String");
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("String");
+        walker.next();
+        walker.setStringValue("A String");
 
         // The seventh row contains a time (that mean a duration):
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Time");
-        cellWalker.next();
-        cellWalker.setTimeValue(3600);
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Time");
+        walker.next();
+        walker.setTimeValue(3600);
 
         // The eighth row contains nothing
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setStringValue("Void");
-        cellWalker.next();
-        cellWalker.setVoidValue();
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setStringValue("Void");
+        walker.next();
+        walker.setVoidValue();
 
         // ### Type Guess
         // FastODS can guess types, based on Java object types. It's useful when we try to auto
@@ -132,10 +140,11 @@ class C_SettingTheCellValue {
         final List<String> A = Arrays
                 .asList("Type", "Boolean", "Currency", "Date", "Float", "Percentage", "String",
                         "Void");
-        final List<Object> B = Arrays.<Object>asList("Type guess example", true,
-                new CurrencyValue(10.5, "USD"), new GregorianCalendar(2014, 9, 17, 9, 0, 0),
-                3.14159, new PercentageValue(0.545), new TimeValue(false, 0, 0, 0, 0, 0, 3.6),
-                "A String", null);
+        final List<Object> B = Arrays
+                .asList("Type guess example", true, new CurrencyValue(10.5, "USD"),
+                        new GregorianCalendar(2014, 9, 17, 9, 0, 0), 3.14159,
+                        new PercentageValue(0.545), new TimeValue(false, 0, 0, 0, 0, 0, 3.6),
+                        "A String", null);
 
         // And a converter:
         final ToCellValueConverter converter = new ObjectToCellValueConverter("USD");
@@ -149,11 +158,11 @@ class C_SettingTheCellValue {
 
         // Now, we can use `setValue` to take advantage of the type guess:
         for (int r = 0; r < A.size(); r++) {
-            tableRow = table.nextRow();
-            cellWalker = tableRow.getWalker();
-            cellWalker.setStringValue(A.get(r));
-            cellWalker.next();
-            cellWalker.setCellValue(converter.from(B.get(r)));
+            row = table.nextRow();
+            walker = row.getWalker();
+            walker.setStringValue(A.get(r));
+            walker.next();
+            walker.setCellValue(converter.from(B.get(r)));
         }
 
         // *Note:* We saw all the cell type available in the OpenDocument specification.

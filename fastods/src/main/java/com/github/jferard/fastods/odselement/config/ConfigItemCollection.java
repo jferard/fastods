@@ -26,8 +26,8 @@ package com.github.jferard.fastods.odselement.config;
 import java.util.Iterator;
 
 /**
- * @author Julien Férard
  * @param <T> the type of the elements
+ * @author Julien Férard
  */
 public interface ConfigItemCollection<T extends ConfigBlock> extends ConfigBlock {
     /**
@@ -41,7 +41,7 @@ public interface ConfigItemCollection<T extends ConfigBlock> extends ConfigBlock
     boolean isEmpty();
 
     /**
-     * @return an interator on the elements stored in this entry
+     * @return an iterator on the elements stored in this entry
      */
     Iterator<T> iterator();
 }

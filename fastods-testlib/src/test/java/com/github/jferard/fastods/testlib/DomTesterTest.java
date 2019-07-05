@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *
  */
 public class DomTesterTest {
     @Rule
@@ -98,7 +99,8 @@ public class DomTesterTest {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage("expected:<<a [b=\"2\" c]=\"1\"/>> but was:<<a [c=\"2\" b]=\"1\"/>>");
+        this.thrown.expectMessage(
+                "expected:<<a [b=\"2\" c]=\"1\"/>> but was:<<a [c=\"2\" b]=\"1\"/>>");
         DomTester.assertEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>");
 
         PowerMock.verifyAll();
@@ -195,7 +197,8 @@ public class DomTesterTest {
     @Test
     public void testBadFormat() {
         PowerMock.resetAll();
-        DomTester.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.isA(Throwable.class));
+        DomTester.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(),
+                EasyMock.isA(Throwable.class));
 
         PowerMock.replayAll();
         Assert.assertFalse(DomTester.equals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\">"));

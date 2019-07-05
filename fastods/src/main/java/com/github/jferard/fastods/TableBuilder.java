@@ -52,7 +52,7 @@ class TableBuilder {
     /**
      * The size of the buffer
      */
-    public static final int BUFFER_SIZE = 8 * 1024;
+    private static final int BUFFER_SIZE = 8 * 1024;
 
     /**
      * Check if a col index is valid, otherwise throws an exception
@@ -146,7 +146,7 @@ class TableBuilder {
      * @param xmlUtil         an util
      * @param stylesContainer the container
      * @param format          the available data styles
-     * @param libreOfficeMode
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @param name            the name of the table
      * @param rowCapacity     the row capacity of the table
      * @param columnCapacity  the column capacity of the table
@@ -196,7 +196,8 @@ class TableBuilder {
      */
     public void flushBeginTable(final TableAppender appender) throws IOException {
         if (this.observer == null) {
-            throw new IOException("Can't flush a table from an anonymous writer (there is no file)");
+            throw new IOException(
+                    "Can't flush a table from an anonymous writer (there is no file)");
         }
         this.observer.update(new BeginTableFlusher(appender));
     }
@@ -258,7 +259,7 @@ class TableBuilder {
      * @return the table row
      * @throws IllegalArgumentException if the index is invalid
      * @throws IOException              if an I/O error occurs
-     * @throws ParseException
+     * @throws ParseException           If the address can't be parsed.
      */
     public TableRow getRow(final Table table, final TableAppender appender, final String address)
             throws IOException, ParseException {
@@ -305,9 +306,9 @@ class TableBuilder {
     }
 
     /**
-     * Get the current TableFamilyStyle
+     * Get the current Table Style
      *
-     * @return The current TableStlye
+     * @return The current Table Style
      */
     public String getStyleName() {
         return this.style.getName();
@@ -362,9 +363,9 @@ class TableBuilder {
      * @param address     The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
-     * @throws FastOdsException if the row index or the col index is negative
-     * @throws IOException      if the cells can't be merged
-     * @throws ParseException
+     * @throws IllegalArgumentException if the row index or the col index is negative
+     * @throws IOException              if the cells can't be merged
+     * @throws ParseException           If the address can't be parsed.
      */
     @Deprecated
     public void setCellMerge(final Table table, final TableAppender appender, final String address,
@@ -379,8 +380,7 @@ class TableBuilder {
      * Set the style of a column.
      *
      * @param col The column number
-     * @param ts  The style to be used, make sure the style is of type
-     *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
+     * @param ts  The style to be used
      * @throws IllegalArgumentException Thrown if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {

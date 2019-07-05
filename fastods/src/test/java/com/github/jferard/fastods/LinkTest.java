@@ -57,10 +57,8 @@ public class LinkTest {
 
         PowerMock.replayAll();
         final Link link = Link.create("table", this.ts, table);
-        TestHelper.assertXMLEquals(
-                "<text:a text:style-name=\"test\" xlink:href=\"#t\" " +
-                        "xlink:type=\"simple\">table</text:a>",
-                link);
+        TestHelper.assertXMLEquals("<text:a text:style-name=\"test\" xlink:href=\"#t\" " +
+                "xlink:type=\"simple\">table</text:a>", link);
 
         PowerMock.verifyAll();
     }
@@ -71,8 +69,8 @@ public class LinkTest {
                 .create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"https://www.github" +
-                        ".com/jferard/fastods\" " +
-                        "xlink" + ":type=\"simple\">url</text:a>", link);
+                        ".com/jferard/fastods\" " + "xlink" + ":type=\"simple\">url</text:a>",
+                link);
     }
 
     @Test

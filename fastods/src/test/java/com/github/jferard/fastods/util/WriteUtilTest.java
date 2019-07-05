@@ -27,25 +27,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WriteUtilTest {
-	private WriteUtil util;
-	
-	@Before
-	public void setUp() {
-		this.util = WriteUtil.create();
-	}
+    private WriteUtil util;
 
-	@Test
-	public final void test() {
-		Assert.assertEquals("1", this.util.toString(1));
-		Assert.assertEquals("1", this.util.toString(1));
-		Assert.assertEquals("1001", this.util.toString(1001));
-		Assert.assertEquals("1001", this.util.toString(1001));
-		Assert.assertEquals("-500", this.util.toString(-500));
-		Assert.assertEquals("-500", this.util.toString(-500));
-		Assert.assertEquals("-1001", this.util.toString(-1001));
-		Assert.assertEquals("-1001", this.util.toString(-1001));
-	}
+    @Before
+    public void setUp() {
+        this.util = WriteUtil.create();
+    }
 
+    @Test
+    public final void test() {
+        Assert.assertEquals("1", this.util.toString(1));
+        Assert.assertEquals("1", this.util.toString(1));
+        Assert.assertEquals("1001", this.util.toString(1001));
+        Assert.assertEquals("1001", this.util.toString(1001));
+        Assert.assertEquals("-500", this.util.toString(-500));
+        Assert.assertEquals("-500", this.util.toString(-500));
+        Assert.assertEquals("-1001", this.util.toString(-1001));
+        Assert.assertEquals("-1001", this.util.toString(-1001));
+    }
 
 
 }

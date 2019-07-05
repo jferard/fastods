@@ -32,8 +32,8 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @param <T> the concrete number style builder
  * @author Julien Férard
  */
-public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>> extends StyleBuilder<S>,
-        LocalizedBuilder<T>, IsVolatileBuilder<T>, ShowableBuilder<T> {
+public interface NumberStyleBuilder<S, T extends NumberStyleBuilder<S, T>>
+        extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T>, ShowableBuilder<T> {
     /**
      * @param grouping if true, the thousands separator is shown.
      * @return this for fluent style

@@ -54,8 +54,9 @@ public class NameChecker {
      * @throws IllegalArgumentException if the name is rejected
      */
     public String checkStyleName(final String name) {
-        if (name == null || name.isEmpty())
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException(String.format("Bad name: %s", name));
+        }
 
         final int firstCodePoint = name.codePointAt(0);
         if (!this.isNCNameStartChar(firstCodePoint)) {

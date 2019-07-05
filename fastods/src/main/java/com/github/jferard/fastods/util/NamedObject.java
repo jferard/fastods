@@ -28,10 +28,10 @@ package com.github.jferard.fastods.util;
  */
 public interface NamedObject {
 
-	/**
-	 * Get the name of this object.
-	 *
-	 * @return The name of the object
-	 */
-	String getName();
+    /**
+     * Get the name of this object.
+     *
+     * @return The name of the object
+     */
+    String getName();
 }

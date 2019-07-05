@@ -30,16 +30,16 @@ package com.github.jferard.fastods.util;
  * @author Martin Schulz
  */
 public class TableNameUtil {
-    public static final char SINGLE_QUOTE = '\'';
-    public static final char[] FORBIDDEN_CHARS = "[]*?:/\\".toCharArray();
+    private static final char SINGLE_QUOTE = '\'';
+    private static final char[] FORBIDDEN_CHARS = "[]*?:/\\".toCharArray();
 
     /**
      * Check if the table name is ok. Currently, this does stick to LO limitations (excepted for
-     * the check of duplicate names), but may the condtions may be relaxed in a future version.
+     * the check of duplicate names), but may the conditions may be relaxed in a future version.
      *
      * @param name the name to check
      */
-    public void checkTableName(final String name) {
+    public void checkTableName(final CharSequence name) {
         if (name.charAt(0) == SINGLE_QUOTE) {
             throw new IllegalArgumentException(
                     "Table name should not start with " + SINGLE_QUOTE + ": " + name);
@@ -66,7 +66,7 @@ public class TableNameUtil {
      * @param tableName the name of the table
      * @return the name of the table escaped
      */
-    public String escapeTableName(final String tableName) {
+    public String escapeTableName(final CharSequence tableName) {
         // step 1: to quote or no? how many single quotes?
         boolean toQuote = false;
         int apostropheCount = 0;

@@ -63,7 +63,8 @@ public class ScientificNumberStyle implements DataStyle {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         final StringBuilder number = new StringBuilder();
         this.appendNumber(util, number);
         this.floatStyle.appendXMLHelper(util, appendable, "number-style", number);

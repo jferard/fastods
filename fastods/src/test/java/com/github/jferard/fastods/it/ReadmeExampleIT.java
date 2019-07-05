@@ -67,6 +67,7 @@ public class ReadmeExampleIT {
     public static void beforeClass() {
         Util.mkdir(GENERATED_FILES);
     }
+
     private Logger logger;
     private OdsFactory odsFactory;
     private TableCellStyle style;
@@ -92,15 +93,18 @@ public class ReadmeExampleIT {
     }
 
     private void validateReadme(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document = SpreadsheetDocument
+                .loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
         Assert.assertEquals(50, sheet.getRowCount());
-        final OdfStyle gcs = OdfToolkitUtil.getDocumentStyle(document, GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
+        final OdfStyle gcs = OdfToolkitUtil
+                .getDocumentStyle(document, GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
         Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
         final Node properties = OdfToolkitUtil.getFirstElement(gcs, "style:table-cell-properties");
-        Assert.assertEquals(GREEN_COLOR.hexValue(), OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
+        Assert.assertEquals(GREEN_COLOR.hexValue(),
+                OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
         for (int y = 0; y < 50; y++) {
             for (int x = 0; x < 5; x++) {
                 final Cell cell = sheet.getCellByPosition(x, y);
@@ -108,7 +112,8 @@ public class ReadmeExampleIT {
                 Assert.assertEquals("float", cell.getValueType());
 
                 final TableTableCellElementBase element = cell.getOdfElement();
-                Assert.assertEquals(GREEN_CELL_STYLE + "-_-float-data", OdfToolkitUtil.getStyleName(cell));
+                Assert.assertEquals(GREEN_CELL_STYLE + "-_-float-data",
+                        OdfToolkitUtil.getStyleName(cell));
                 Assert.assertEquals("table-cell", OdfToolkitUtil.getStyleFamilyName(cell));
                 Assert.assertEquals(GREEN_CELL_STYLE, OdfToolkitUtil.getParentStyleName(cell));
             }
@@ -138,8 +143,8 @@ public class ReadmeExampleIT {
     }
 
     private void readmeWithFlush() throws IOException {
-        final NamedOdsFileWriter writer =
-                this.odsFactory.createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
+        final NamedOdsFileWriter writer = this.odsFactory
+                .createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
         final NamedOdsDocument document = writer.document();
 
         document.addObjectStyle(this.style);

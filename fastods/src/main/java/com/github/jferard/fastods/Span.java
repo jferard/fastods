@@ -31,73 +31,80 @@ import java.io.IOException;
 
 /**
  * 6.1.7 text:span
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class Span implements ParagraphElement {
-	private final String text;
-	private final /*@Nullable*/ TextStyle ts;
+    private final String text;
+    private final /*@Nullable*/ TextStyle ts;
 
-	/**
-	 * Create a span with some text
-	 * @param text the text
-	 */
-	public Span(final String text) {
-		this(text, null);
-	}
+    /**
+     * Create a span with some text
+     *
+     * @param text the text
+     */
+    public Span(final String text) {
+        this(text, null);
+    }
 
-	/**
-	 * Create a span with some text
-	 * @param text the text
-	 * @param ts the style
-	 */
-	public Span(final String text, final TextStyle ts) {
-		this.ts = ts;
-		this.text = text;
-	}
+    /**
+     * Create a span with some text
+     *
+     * @param text the text
+     * @param ts   the style
+     */
+    public Span(final String text, final TextStyle ts) {
+        this.ts = ts;
+        this.text = text;
+    }
 
-	/**
-	 * @param util the xml util
-	 * @param appendable where to add str
-	 *
-	 * @throws IOException If an I/O error occurs
-	 */
-	@Override
-	public void appendXMLContent(final XMLUtil util,
-								 final Appendable appendable) throws IOException {
-		if (this.ts == null) {
-			appendable.append(this.text);
-		} else {
-			appendable.append("<text:span");
-			util.appendEAttribute(appendable, "text:style-name",
-					this.ts.getName());
-			appendable.append(">").append(this.text).append("</text:span>");
-		}
-	}
+    /**
+     * @param util       the xml util
+     * @param appendable where to add str
+     * @throws IOException If an I/O error occurs
+     */
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        if (this.ts == null) {
+            appendable.append(this.text);
+        } else {
+            appendable.append("<text:span");
+            util.appendEAttribute(appendable, "text:style-name", this.ts.getName());
+            appendable.append(">").append(this.text).append("</text:span>");
+        }
+    }
 
-	@Override
-	public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-		if (this.ts != null) stylesContainer.addStylesFontFaceContainerStyle(this.ts);
-	}
+    @Override
+    public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
+        if (this.ts != null) {
+            stylesContainer.addStylesFontFaceContainerStyle(this.ts);
+        }
+    }
 
-	@Override
-	public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-		if (this.ts != null) stylesContainer.addContentFontFaceContainerStyle(this.ts);
-	}
+    @Override
+    public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
+        if (this.ts != null) {
+            stylesContainer.addContentFontFaceContainerStyle(this.ts);
+        }
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof Span))
-			return false;
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Span)) {
+            return false;
+        }
 
-		final Span other = (Span) o;
-		return this.text.equals(other.text);
-	}
+        final Span other = (Span) o;
+        return this.text.equals(other.text);
+    }
 
-	@Override
-	public final int hashCode() {
-		return this.text.hashCode();
-	}
+    @Override
+    public final int hashCode() {
+        return this.text.hashCode();
+    }
 }

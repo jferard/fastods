@@ -41,8 +41,8 @@ public class ColorHelperTest {
 
     @Test
     public void testBlack() {
-        Assert.assertEquals("#000000", ColorHelper.fromRGB(0,0,0).hexValue());
-        Assert.assertEquals(SimpleColor.BLACK, ColorHelper.fromRGB(0,0,0));
+        Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).hexValue());
+        Assert.assertEquals(SimpleColor.BLACK, ColorHelper.fromRGB(0, 0, 0));
 
     }
 }

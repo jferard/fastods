@@ -29,54 +29,58 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class StringValue implements CellValue {
-	/**
-	 * @param o the object to cast
-	 * @return the float value
-	 */
+    /**
+     * @param o the object to cast
+     * @return the float value
+     */
     public static CellValue from(final Object o) {
-		if (o instanceof String) {
-			return new StringValue((String) o);
-		} else if (o instanceof Text) {
-			return new TextValue((Text) o);
-		} else if (o instanceof StringValue) {
-			return (StringValue) o;
-		} else if (o instanceof TextValue) {
-			return (TextValue) o;
-		} else {
-			return new StringValue(o.toString());
-		}
+        if (o instanceof String) {
+            return new StringValue((String) o);
+        } else if (o instanceof Text) {
+            return new TextValue((Text) o);
+        } else if (o instanceof StringValue) {
+            return (StringValue) o;
+        } else if (o instanceof TextValue) {
+            return (TextValue) o;
+        } else {
+            return new StringValue(o.toString());
+        }
     }
 
     private final String value;
 
-	/**
-	 * @param value the string
-	 */
-	public StringValue(final String value) {
-		this.value = value;
-	}
+    /**
+     * @param value the string
+     */
+    public StringValue(final String value) {
+        this.value = value;
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o == this)
+    @Override
+    public boolean equals(final Object o) {
+		if (o == this) {
 			return true;
-		if (!(o instanceof StringValue))
+		}
+		if (!(o instanceof StringValue)) {
 			return false;
+		}
 
-		final StringValue other = (StringValue) o;
-		return this.value.equals(other.value);
-	}
+        final StringValue other = (StringValue) o;
+        return this.value.equals(other.value);
+    }
 
-	@Override
-	public final int hashCode() {
-		return this.value.hashCode();
-	}
+    @Override
+    public final int hashCode() {
+        return this.value.hashCode();
+    }
 
-	@Override
-	public void setToCell(final TableCell cell) {
-		cell.setStringValue(this.value);
-	}
+    @Override
+    public void setToCell(final TableCell cell) {
+        cell.setStringValue(this.value);
+    }
 
-	@Override
-	public final String toString() { return "StringValue["+this.value+"]"; }
+    @Override
+    public final String toString() {
+        return "StringValue[" + this.value + "]";
+    }
 }

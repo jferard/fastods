@@ -48,13 +48,21 @@ import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 8 of the tutorial
+ *
+ * @author J. Férard
+ */
 class H_Advanced {
 
     /**
      * Number of nanoseconds in a second
      */
-    public static final int NANOSECONDS_PER_SECONDS = 1000000000;
+    private static final int NANOSECONDS_PER_SECONDS = 1000000000;
 
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example1() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Advanced Features
@@ -106,6 +114,10 @@ class H_Advanced {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 
+    /**
+     * @throws IOException if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
     static void example2() throws IOException, SQLException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
@@ -113,7 +125,7 @@ class H_Advanced {
         final Table table = document.addTable("advanced");
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Writing a ResultSet to the Spreadsheet
-        // We need a ResultSet. Let's use SQLite:
+        // We need a ResultSet. Let's use H2:
 
         final JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setUrl("jdbc:h2:mem:test");

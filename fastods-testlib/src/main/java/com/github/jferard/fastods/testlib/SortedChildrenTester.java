@@ -27,30 +27,32 @@ import org.w3c.dom.NodeList;
 
 /**
  * A tester that checks the order of the children
+ *
  * @author Julien Férard
  */
 public class SortedChildrenTester extends ChildrenTester {
-	@Override
-	public boolean childrenEquals(final Node element1, final Node element2) {
-		final NodeList nodes1 = element1.getChildNodes();
-		final NodeList nodes2 = element2.getChildNodes();
-		final int l1 = nodes1.getLength();
-		final int l2 = nodes2.getLength();
-		if (l1 != l2) {
-			UnsortedChildrenTester.logger.info("Different children number " + element1 + "->"
-					+ nodes1 + " vs " + element2 + "->" + nodes2);
-			return false;
-		}
+    @Override
+    public boolean childrenEquals(final Node element1, final Node element2) {
+        final NodeList nodes1 = element1.getChildNodes();
+        final NodeList nodes2 = element2.getChildNodes();
+        final int l1 = nodes1.getLength();
+        final int l2 = nodes2.getLength();
+        if (l1 != l2) {
+            UnsortedChildrenTester.logger
+                    .info("Different children number " + element1 + "->" + nodes1 + " vs " +
+                            element2 + "->" + nodes2);
+            return false;
+        }
 
-		for (int i = 0; i < l1; i++) {
-			final Node c1 = nodes1.item(i);
-			final Node c2 = nodes2.item(i);
-			if (!this.equals(c1, c2)) {
-				UnsortedChildrenTester.logger.info("Different children " + c1 + " vs " + c2);
-				return false;
-			}
-		}
+        for (int i = 0; i < l1; i++) {
+            final Node c1 = nodes1.item(i);
+            final Node c2 = nodes2.item(i);
+            if (!this.equals(c1, c2)) {
+                UnsortedChildrenTester.logger.info("Different children " + c1 + " vs " + c2);
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

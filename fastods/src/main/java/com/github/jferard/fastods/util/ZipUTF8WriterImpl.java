@@ -30,80 +30,81 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * A writer for a zip file/ It's a writer and a zipper
+ *
  * @author Julien Férard
  */
-public class ZipUTF8WriterImpl
-		implements ZipUTF8Writer {
-	private final Writer writer;
-	private final ZipOutputStream zipStream;
+public class ZipUTF8WriterImpl implements ZipUTF8Writer {
+    private final Writer writer;
+    private final ZipOutputStream zipStream;
 
-	/**
-	 * Create a new writer. Do not use directly. Use a builder if you want to avoid mistakes
-	 * @param zipStream the zip stream
-	 * @param writer the utf-8 writer
-	 */
-	ZipUTF8WriterImpl(final ZipOutputStream zipStream, final Writer writer) {
-		this.zipStream = zipStream;
-		this.writer = writer;
-	}
+    /**
+     * Create a new writer. Do not use directly. Use a builder if you want to avoid mistakes
+     *
+     * @param zipStream the zip stream
+     * @param writer    the utf-8 writer
+     */
+    ZipUTF8WriterImpl(final ZipOutputStream zipStream, final Writer writer) {
+        this.zipStream = zipStream;
+        this.writer = writer;
+    }
 
     /**
      * @return a new builder
      */
     public static ZipUTF8WriterBuilder builder() {
-		return new ZipUTF8WriterBuilder();
-	}
+        return new ZipUTF8WriterBuilder();
+    }
 
-	@Override
-	public Appendable append(final char c) throws IOException {
-		return this.writer.append(c);
-	}
+    @Override
+    public Appendable append(final char c) throws IOException {
+        return this.writer.append(c);
+    }
 
-	@Override
-	public Appendable append(final CharSequence arg0) throws IOException {
-		return this.writer.append(arg0);
-	}
+    @Override
+    public Appendable append(final CharSequence arg0) throws IOException {
+        return this.writer.append(arg0);
+    }
 
-	@Override
-	public Appendable append(final CharSequence csq, final int start, final int end)
-			throws IOException {
-		return this.writer.append(csq, start, end);
-	}
+    @Override
+    public Appendable append(final CharSequence csq, final int start, final int end)
+            throws IOException {
+        return this.writer.append(csq, start, end);
+    }
 
-	@Override
-	public void close() throws IOException {
-		this.zipStream.close();
-	}
+    @Override
+    public void close() throws IOException {
+        this.zipStream.close();
+    }
 
-	@Override
-	public void closeEntry() throws IOException {
-		this.writer.flush();
-		this.zipStream.closeEntry();
-	}
+    @Override
+    public void closeEntry() throws IOException {
+        this.writer.flush();
+        this.zipStream.closeEntry();
+    }
 
-	@Override
-	public void finish() throws IOException {
-		this.writer.flush();
-		this.zipStream.finish();
-	}
+    @Override
+    public void finish() throws IOException {
+        this.writer.flush();
+        this.zipStream.finish();
+    }
 
-	@Override
-	public void flush() throws IOException {
-		this.writer.flush();
-	}
+    @Override
+    public void flush() throws IOException {
+        this.writer.flush();
+    }
 
-	@Override
-	public void putNextEntry(final ZipEntry entry) throws IOException {
-		this.zipStream.putNextEntry(entry);
-	}
+    @Override
+    public void putNextEntry(final ZipEntry entry) throws IOException {
+        this.zipStream.putNextEntry(entry);
+    }
 
-	@Override
-	public void setComment(final String comment) {
-		this.zipStream.setComment(comment);
-	}
+    @Override
+    public void setComment(final String comment) {
+        this.zipStream.setComment(comment);
+    }
 
-	@Override
-	public void write(final String str) throws IOException {
-		this.writer.write(str);
-	}
+    @Override
+    public void write(final String str) throws IOException {
+        this.writer.write(str);
+    }
 }

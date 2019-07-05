@@ -95,7 +95,8 @@ public class ZipUTF8WriterBuilderTest {
 
     @Test
     public final void testExplicitDefault() throws IOException {
-        final ZipUTF8Writer writer = this.builder.defaultWriterBuffer().defaultZipBuffer().build(this.out);
+        final ZipUTF8Writer writer = this.builder.defaultWriterBuffer().defaultZipBuffer()
+                .build(this.out);
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();
@@ -119,7 +120,8 @@ public class ZipUTF8WriterBuilderTest {
         final ZipUTF8Writer writer = this.builder.level(0).build(this.out);
         writer.putNextEntry(new ZipEntry("a"));
         writer.append(
-                "some long text that can be zipped some long text that can be zipped some long text that can be " +
+                "some long text that can be zipped some long text that can be zipped some long " +
+                        "text that can be " +
                         "zipped some long text that can be zipped ");
         writer.close();
         Assert.assertEquals(121, this.out.size());
@@ -130,7 +132,8 @@ public class ZipUTF8WriterBuilderTest {
         final ZipUTF8Writer writer = this.builder.level(9).build(this.out);
         writer.putNextEntry(new ZipEntry("a"));
         writer.append(
-                "some long text that can be zipped some long text that can be zipped some long text that can be zipped some long text that can be zipped ");
+                "some long text that can be zipped some long text that can be zipped some long " +
+                        "text that can be zipped some long text that can be zipped ");
         writer.close();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }

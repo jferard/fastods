@@ -35,10 +35,10 @@ import java.io.IOException;
 public interface XMLConvertible {
     /**
      * Write the XML format for this object. This is used while writing the ODS file.
-     * @param util a helper object
+     *
+     * @param util       a helper object
      * @param appendable the appendable to append data to
      * @throws IOException if the style can't be added
      */
-    void appendXMLContent(XMLUtil util, Appendable appendable)
-            throws IOException;
+    void appendXMLContent(XMLUtil util, Appendable appendable) throws IOException;
 }

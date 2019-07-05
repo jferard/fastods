@@ -126,8 +126,7 @@ public class ConfigItemMapIndexedTest {
         m.add(this.set);
         TestHelper.assertXMLEquals(
                 "<config:config-item-map-indexed config:name=\"mapindexed\">" + this.setXML +
-                        "</config:config-item-map-indexed>",
-                m);
+                        "</config:config-item-map-indexed>", m);
     }
 
 }

@@ -27,113 +27,103 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.Position;
+import com.github.jferard.fastods.util.PositionUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
 
 /**
  * An helper for multi table work.
+ *
  * @author Julien Férard
  */
 public class OdsFileHelper {
-	private final NamedOdsDocument odsDocument;
-	private final PositionUtil positionUtil;
-	private final TableHelper tableHelper;
+    private final NamedOdsDocument odsDocument;
+    private final PositionUtil positionUtil;
+    private final TableHelper tableHelper;
 
-	/**
-	 * Create the helper.
-	 * @param odsDocument the document
-	 * @param tableHelper a sub helper
-	 * @param positionUtil an util
-	 */
-	public OdsFileHelper(final NamedOdsDocument odsDocument, final TableHelper tableHelper,
+    /**
+     * Create the helper.
+     *
+     * @param odsDocument  the document
+     * @param tableHelper  a sub helper
+     * @param positionUtil an util
+     */
+    public OdsFileHelper(final NamedOdsDocument odsDocument, final TableHelper tableHelper,
                          final PositionUtil positionUtil) {
-		this.odsDocument = odsDocument;
-		this.tableHelper = tableHelper;
-		this.positionUtil = positionUtil;
-	}
+        this.odsDocument = odsDocument;
+        this.tableHelper = tableHelper;
+        this.positionUtil = positionUtil;
+    }
 
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param rowMerge the number of rows to merge
-	 * @param columnMerge the number of columns to merge
-	 * @throws IOException if the cells can't be merged
-	 */
-	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
-			final int rowMerge, final int columnMerge) throws IOException {
-		for (final Table table : this.odsDocument.getTables()) {
-			this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge,
-					columnMerge);
-		}
-	}
+    /**
+     * Set the merging of multiple cells to one cell.
+     *
+     * @param rowIndex    The row, 0 is the first row
+     * @param colIndex    The column, 0 is the first column
+     * @param rowMerge    the number of rows to merge
+     * @param columnMerge the number of columns to merge
+     * @throws IOException if the cells can't be merged
+     */
+    public void setCellMergeInAllTables(final int rowIndex, final int colIndex, final int rowMerge,
+                                        final int columnMerge) throws IOException {
+        for (final Table table : this.odsDocument.getTables()) {
+            this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge, columnMerge);
+        }
+    }
 
-	/**
-	 * Set the merging of multiple cells to one cell in all existing tables.
-	 *
-	 * @param address
-	 *            The cell position e.g. 'A1'
-	 * @param rowMerge the number of rows to merge
-	 * @param columnMerge the number of columns to merge
-	 * @throws IOException if the cells can't be merged
-     * @throws ParseException
-	 */
-	public void setCellMergeInAllTables(final String address, final int rowMerge,
-			final int columnMerge) throws IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(address);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
-	}
+    /**
+     * Set the merging of multiple cells to one cell in all existing tables.
+     *
+     * @param address     The cell position e.g. 'A1'
+     * @param rowMerge    the number of rows to merge
+     * @param columnMerge the number of columns to merge
+     * @throws IOException    if the cells can't be merged
+     * @throws ParseException if the address can't be parsed
+     */
+    public void setCellMergeInAllTables(final String address, final int rowMerge,
+                                        final int columnMerge) throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(address);
+        final int row = position.getRow();
+        final int col = position.getColumn();
+        this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
+    }
 
-	/**
-	 * Sets the cell value in all tables to the date from the Calendar object.
-	 *
-	 * @param rowIndex
-	 *            The row, 0 is the first row
-	 * @param colIndex
-	 *            The column, 0 is the first column
-	 * @param value
-	 *            The cell value
-	 * @param ts
-	 *            The table style for this cell, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws IOException if the cells can't be merged
-	 */
-	public void setCellValueInAllTables(final int rowIndex, final int colIndex,
-			final CellValue value, final TableCellStyle ts)
-			throws IOException {
+    /**
+     * Sets the cell value in all tables to the date from the Calendar object.
+     *
+     * @param rowIndex The row, 0 is the first row
+     * @param colIndex The column, 0 is the first column
+     * @param value    The cell value
+     * @param ts       The table style for this cell
+     * @throws IOException if the cells can't be merged
+     */
+    public void setCellValueInAllTables(final int rowIndex, final int colIndex,
+                                        final CellValue value, final TableCellStyle ts)
+            throws IOException {
 
-		for (final Table table : this.odsDocument.getTables()) {
-			this.tableHelper.setCellValue(table, rowIndex, colIndex, value, ts);
-		}
+        for (final Table table : this.odsDocument.getTables()) {
+            this.tableHelper.setCellValue(table, rowIndex, colIndex, value, ts);
+        }
 
-	}
+    }
 
-	/**
-	 * Sets the cell value in all tables to the date from the Calendar object.
-	 *
-	 * @param address
-	 *            The cell position e.g. 'A1'
-	 * @param value
-	 *            The cell value
-	 * @param ts
-	 *            The table style for this cells, must be of type
-	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws IOException if the cells can't be merged
-     * @throws ParseException
-	 */
-	public void setCellValueInAllTables(final String address, final CellValue value,
-			final TableCellStyle ts) throws IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(address);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellValueInAllTables(row, col, value, ts);
-	}
+    /**
+     * Sets the cell value in all tables to the date from the Calendar object.
+     *
+     * @param address The cell position e.g. 'A1'
+     * @param value   The cell value
+     * @param ts      The table style for this cells
+     * @throws IOException    if the cells can't be merged
+     * @throws ParseException if the address can't be parsed
+     */
+    public void setCellValueInAllTables(final String address, final CellValue value,
+                                        final TableCellStyle ts)
+            throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(address);
+        final int row = position.getRow();
+        final int col = position.getColumn();
+        this.setCellValueInAllTables(row, col, value, ts);
+    }
 }

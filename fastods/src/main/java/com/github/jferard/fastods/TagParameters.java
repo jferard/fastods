@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 /**
  * A tag parameters
+ *
  * @author Julien Férard
  */
 public interface TagParameters extends XMLConvertible {

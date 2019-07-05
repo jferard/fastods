@@ -39,74 +39,76 @@ import java.util.logging.Logger;
  * @author Martin Schulz
  */
 public class OdsFileWriterBuilder {
-	private final Logger logger;
-	private final NamedOdsDocument document;
-	private OutputStream out;
-	private ZipUTF8WriterBuilder builder;
-	private String filename;
+    private final Logger logger;
+    private final NamedOdsDocument document;
+    private OutputStream out;
+    private ZipUTF8WriterBuilder builder;
+    private String filename;
 
-	/**
-	 * Create a new ODS file.
-	 *
-	 * @param logger   the logger
-	 * @param document the document to write
-	 */
-	OdsFileWriterBuilder(final Logger logger, final NamedOdsDocument document) {
-		this.logger = logger;
-		this.document = document;
-		this.builder = ZipUTF8WriterImpl.builder();
-	}
-
-	/**
-	 * @param filename the name of the destination file
-	 * @return this for fluent style
+    /**
+     * Create a new ODS file.
+     *
+     * @param logger   the logger
+     * @param document the document to write
      */
-	@Deprecated
-	public OdsFileWriterBuilder filename(final String filename) {
-		this.filename = filename;
-		return this;
-	}
+    OdsFileWriterBuilder(final Logger logger, final NamedOdsDocument document) {
+        this.logger = logger;
+        this.document = document;
+        this.builder = ZipUTF8WriterImpl.builder();
+    }
 
-	/**
-	 * @param out where to write
-	 * @return this for fluent style
-	 */
-	public OdsFileWriterBuilder outputStream(final OutputStream out) {
-		this.out = out;
-		return this;
-	}
+    /**
+     * @param filename the name of the destination file
+     * @return this for fluent style
+     */
+    @Deprecated
+    public OdsFileWriterBuilder filename(final String filename) {
+        this.filename = filename;
+        return this;
+    }
 
-	/**
-	 * @param lockResult the result of a file lock
-	 * @return this for fluent style
-	 * @throws FileNotFoundException the file exists but is a directory
-	 *                               rather than a regular file, does not exist but cannot
-	 *                               be created, or cannot be opened for any other reason
-	 */
-	public OdsFileWriterBuilder openResult(final FileOpenResult lockResult) throws FileNotFoundException {
-		this.out = lockResult.getStream();
-		return this;
-	}
+    /**
+     * @param out where to write
+     * @return this for fluent style
+     */
+    public OdsFileWriterBuilder outputStream(final OutputStream out) {
+        this.out = out;
+        return this;
+    }
 
-	/**
-	 * @return the writer for the ods file
-	 * @throws FileNotFoundException if there is no stream to write
-	 */
-	public NamedOdsFileWriter build() throws FileNotFoundException {
-		if (this.out == null)
-			this.out = new FileOutputStream(this.filename);
+    /**
+     * @param lockResult the result of a file lock
+     * @return this for fluent style
+     * @throws FileNotFoundException the file exists but is a directory
+     *                               rather than a regular file, does not exist but cannot
+     *                               be created, or cannot be opened for any other reason
+     */
+    public OdsFileWriterBuilder openResult(final FileOpenResult lockResult)
+            throws FileNotFoundException {
+        this.out = lockResult.getStream();
+        return this;
+    }
 
-		final ZipUTF8Writer writer = this.builder.build(this.out);
-		return new OdsFileDirectWriter(this.logger, XMLUtil.create(), this.document, writer);
-	}
+    /**
+     * @return the writer for the ods file
+     * @throws FileNotFoundException if there is no stream to write
+     */
+    public NamedOdsFileWriter build() throws FileNotFoundException {
+        if (this.out == null) {
+            this.out = new FileOutputStream(this.filename);
+        }
 
-	/**
-	 * @param builder a builder for the ZipOutputStream and the Writer (buffers,
-	 *                level, ...)
-	 * @return this for fluent style
-	 */
-	public OdsFileWriterBuilder zipBuilder(final ZipUTF8WriterBuilder builder) {
-		this.builder = builder;
-		return this;
-	}
+        final ZipUTF8Writer writer = this.builder.build(this.out);
+        return new OdsFileDirectWriter(this.logger, XMLUtil.create(), this.document, writer);
+    }
+
+    /**
+     * @param builder a builder for the ZipOutputStream and the Writer (buffers,
+     *                level, ...)
+     * @return this for fluent style
+     */
+    public OdsFileWriterBuilder zipBuilder(final ZipUTF8WriterBuilder builder) {
+        this.builder = builder;
+        return this;
+    }
 }

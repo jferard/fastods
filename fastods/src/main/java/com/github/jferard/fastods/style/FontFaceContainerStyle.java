@@ -23,6 +23,14 @@
 
 package com.github.jferard.fastods.style;
 
+/**
+ * A style that may contain a font face usage
+ *
+ * @author J. Férard
+ */
 public interface FontFaceContainerStyle extends ObjectStyle {
+    /**
+     * @return the font fact contained in the style
+     */
     FontFace getFontFace();
 }

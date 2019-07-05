@@ -27,15 +27,15 @@ package com.github.jferard.fastods.util;
  * @author Julien Férard
  */
 public interface XMLEscaper {
-	/**
-	 * @param s the input string
-	 * @return the string escaped as an attribute. \n and \ r are replaced by spaces.
-	 */
-	String escapeXMLAttribute(final String s);
+    /**
+     * @param s the input string
+     * @return the string escaped as an attribute. \n and \ r are replaced by spaces.
+     */
+    String escapeXMLAttribute(final String s);
 
-	/**
-	 * @param s the input string
-	 * @return the string escaped as a content (text node)
-	 */
-	String escapeXMLContent(final String s);
+    /**
+     * @param s the input string
+     * @return the string escaped as a content (text node)
+     */
+    String escapeXMLContent(final String s);
 }

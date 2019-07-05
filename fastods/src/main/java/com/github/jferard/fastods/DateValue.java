@@ -28,61 +28,64 @@ import java.util.Date;
 
 /**
  * A CellValue that contains a date
+ *
  * @author Julien Férard
  */
 public class DateValue implements CellValue {
-	/**
-	 * @param o the object to cast
-	 * @return the date value
-	 * @throws FastOdsException if the cast was not possible
-	 */
-	public static DateValue from(final Object o) throws FastOdsException {
-		if (o instanceof Date) {
-			return new DateValue((Date) o);
-		} else if (o instanceof Calendar) {
-			return new DateValue(((Calendar) o).getTime());
-		} else if (o instanceof Number) {
-			return new DateValue(new Date(((Number) o).longValue()));
-		} else if (o instanceof DateValue) {
-			return (DateValue) o;
-		} else{
-			throw new FastOdsException("Can't cast " + o + " to Date");
-		}
-	}
+    /**
+     * @param o the object to cast
+     * @return the date value
+     * @throws FastOdsException if the cast was not possible
+     */
+    public static DateValue from(final Object o) throws FastOdsException {
+        if (o instanceof Date) {
+            return new DateValue((Date) o);
+        } else if (o instanceof Calendar) {
+            return new DateValue(((Calendar) o).getTime());
+        } else if (o instanceof Number) {
+            return new DateValue(new Date(((Number) o).longValue()));
+        } else if (o instanceof DateValue) {
+            return (DateValue) o;
+        } else {
+            throw new FastOdsException("Can't cast " + o + " to Date");
+        }
+    }
 
     private final Date value;
 
-	/**
-	 * @param value the date
-	 */
-	public DateValue(final Date value) {
-		this.value = new Date(value.getTime());
-	}
+    /**
+     * @param value the date
+     */
+    public DateValue(final Date value) {
+        this.value = new Date(value.getTime());
+    }
 
-	@Override
-	public void setToCell(final TableCell cell) {
-		cell.setDateValue(this.value);
-	}
+    @Override
+    public void setToCell(final TableCell cell) {
+        cell.setDateValue(this.value);
+    }
 
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof DateValue))
-			return false;
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DateValue)) {
+            return false;
+        }
 
-		final DateValue other = (DateValue) o;
-		return this.value.equals(other.value);
-	}
+        final DateValue other = (DateValue) o;
+        return this.value.equals(other.value);
+    }
 
-	@Override
-	public final int hashCode() {
-		return this.value.hashCode();
-	}
+    @Override
+    public final int hashCode() {
+        return this.value.hashCode();
+    }
 
-	@Override
-	public String toString() {
-		return "DateValue["+this.value+"]";
-	}
+    @Override
+    public String toString() {
+        return "DateValue[" + this.value + "]";
+    }
 }

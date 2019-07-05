@@ -30,20 +30,28 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 /**
- * WHERE ? mimetype
+ * 2.2.4 OpenDocument Spreadsheet Document
+ *
+ * > An OpenDocument Spreadsheet document shall meet all requirements of a Conforming OpenDocument
+ * > Document, as well as the following additional requirements:
+ * >     ...
+ * >
+ * >    B)If the document is an OpenDocument package then it shall contain a file named mimetype
+ * >    containing one of these strings: "application/vnd.oasis.opendocument.spreadsheet" or
+ * >    "application/vnd.oasis.opendocument.spreadsheet-template".
+ * >
+ * >     ...
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class MimetypeElement implements OdsElement {
-	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer)
-			throws IOException {
-		writer.putNextEntry(new ZipEntry("mimetype"));
-		writer.write("application/vnd.oasis.opendocument.spreadsheet");
-		writer.flush();
-		writer.closeEntry();
-	}
+    @Override
+    public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+        writer.putNextEntry(new ZipEntry("mimetype"));
+        writer.write("application/vnd.oasis.opendocument.spreadsheet");
+        writer.flush();
+        writer.closeEntry();
+    }
 
 }

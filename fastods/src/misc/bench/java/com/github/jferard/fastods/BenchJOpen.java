@@ -33,34 +33,32 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class BenchJOpen extends Bench {
-	private final Logger logger;
+    private final Logger logger;
 
-	public BenchJOpen(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "JOpenDocument", rowCount, colCount);
-		this.logger = logger;
-	}
+    public BenchJOpen(final Logger logger, final int rowCount, final int colCount) {
+        super(logger, "JOpenDocument", rowCount, colCount);
+        this.logger = logger;
+    }
 
-	@Override
-	public long test() throws IOException {
-		// the file.
-		this.logger.info("testJOpen: filling a " + this.getRowCount() + " rows, "
-				+ this.getColCount() + " columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-		final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel())
-				.getSheet(0);
-		sheet.ensureColumnCount(this.getColCount());
-		sheet.ensureRowCount(this.getRowCount());
+    @Override
+    public long test() throws IOException {
+        // the file.
+        this.logger.info("testJOpen: filling a " + this.getRowCount() + " rows, " +
+                this.getColCount() + " columns spreadsheet");
+        final long t1 = System.currentTimeMillis();
+        final Sheet sheet = SpreadSheet.createEmpty(new DefaultTableModel()).getSheet(0);
+        sheet.ensureColumnCount(this.getColCount());
+        sheet.ensureRowCount(this.getRowCount());
 
-		for (int y = 0; y < this.getRowCount(); y++) {
-			for (int x = 0; x < this.getColCount(); x++) {
-				sheet.setValueAt(String.valueOf(this.getRandom().nextInt(1000)), x,
-						y);
-			}
-		}
-		final File outputFile = new File("generated_files", "jopendocument_benchmark.ods");
-		sheet.getSpreadSheet().saveAs(outputFile);
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-		return t2-t1;
-	}
+        for (int y = 0; y < this.getRowCount(); y++) {
+            for (int x = 0; x < this.getColCount(); x++) {
+                sheet.setValueAt(String.valueOf(this.getRandom().nextInt(1000)), x, y);
+            }
+        }
+        final File outputFile = new File("generated_files", "jopendocument_benchmark.ods");
+        sheet.getSpreadSheet().saveAs(outputFile);
+        final long t2 = System.currentTimeMillis();
+        this.logger.info("Filled in " + (t2 - t1) + " ms");
+        return t2 - t1;
+    }
 }

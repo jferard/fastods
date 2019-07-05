@@ -46,13 +46,22 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 9 of the tutorial
+ *
+ * @author J. Férard
+ */
 class I_MultiplicationTable {
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         //
         // # A multiplication table
         // Let's create a new document and a new table:
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("multiplication"), Locale.US);
+        final OdsFactory odsFactory = OdsFactory
+                .create(Logger.getLogger("multiplication"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("multiplication-table");
@@ -99,7 +108,7 @@ class I_MultiplicationTable {
 
                 final int r = ((j - 1) / COLS) * (MAX + 1) + (i - 1);
 
-                // We use `String.fromat` and set a width (2 for operands, 3 for the result
+                // We use `String.format` and set a width (2 for operands, 3 for the result
                 table.getRow(r).getOrCreateCell(c)
                         .setStringValue(String.format("%2d \u00D7 %2d = %3d", i, j, i * j));
             }

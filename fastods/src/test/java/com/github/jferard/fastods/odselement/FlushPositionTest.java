@@ -33,7 +33,7 @@ public class FlushPositionTest {
     @Test
     public void test() {
         final FlushPosition fp = new FlushPosition();
-        fp.set(1,10);
+        fp.set(1, 10);
         Assert.assertEquals(10, fp.getLastRowIndex());
         Assert.assertEquals(1, fp.getTableIndex());
     }
@@ -42,11 +42,11 @@ public class FlushPositionTest {
     public void testUndefined() {
         final FlushPosition fp = new FlushPosition();
         Assert.assertTrue(fp.isUndefined());
-        fp.set(-1,10);
+        fp.set(-1, 10);
         Assert.assertFalse(fp.isUndefined());
-        fp.set(1,-1);
+        fp.set(1, -1);
         Assert.assertFalse(fp.isUndefined());
-        fp.set(1,10);
+        fp.set(1, 10);
         Assert.assertFalse(fp.isUndefined());
     }
 }

@@ -31,7 +31,7 @@ import java.util.Collection;
 /**
  * A class to test code points
  *
- * @author
+ * @author J. Férard
  */
 public class CodePointTester {
 
@@ -40,7 +40,7 @@ public class CodePointTester {
 
     /**
      * @param filter the filter to apply
-     * @return the matching codepoints as a string
+     * @return the matching code points as a string
      */
     public static String codePointsAsString(final CategoryFilter filter) {
         final Collection<String> segments = new ArrayList<String>();
@@ -81,7 +81,14 @@ public class CodePointTester {
         }
     }
 
+    /**
+     * A filter
+     */
     public interface CategoryFilter {
+        /**
+         * @param codePoint the code point to check
+         * @return true if the code point matches
+         */
         boolean check(int codePoint);
     }
 }

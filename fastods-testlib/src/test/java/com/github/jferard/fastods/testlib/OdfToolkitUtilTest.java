@@ -73,7 +73,8 @@ public class OdfToolkitUtilTest {
     @Test
     public void testStyleFamilyName() {
         this.cell.setCellStyleName("default");
-        Assert.assertEquals(OdfStyleFamily.TableCell.getName(), OdfToolkitUtil.getStyleFamilyName(this.cell));
+        Assert.assertEquals(OdfStyleFamily.TableCell.getName(),
+                OdfToolkitUtil.getStyleFamilyName(this.cell));
     }
 
     @Test
@@ -128,7 +129,9 @@ public class OdfToolkitUtilTest {
 
     @Test
     public void testDocumentStyle() throws Exception {
-        final OdfStyle style = this.document.getDocumentStyles().newStyle("gcs", OdfStyleFamily.TableCell);
-        Assert.assertEquals(style, OdfToolkitUtil.getDocumentStyle(this.document, "gcs", OdfStyleFamily.TableCell));
+        final OdfStyle style = this.document.getDocumentStyles()
+                .newStyle("gcs", OdfStyleFamily.TableCell);
+        Assert.assertEquals(style,
+                OdfToolkitUtil.getDocumentStyle(this.document, "gcs", OdfStyleFamily.TableCell));
     }
 }

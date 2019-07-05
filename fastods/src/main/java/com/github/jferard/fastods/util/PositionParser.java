@@ -32,15 +32,11 @@ import java.util.Locale;
  */
 class PositionParser {
     /**
-     * a..z -> 26 letters
+     * A single quote
      */
-    public static final int ALPHABET_SIZE = 26;
-    /**
-     * the base for computing
-     */
-    public static final int ORD_A = 'A';
     public static final int SINGLE_QUOTE = '\'';
-    public static final int HASH = '#';
+
+    private static final int HASH = '#';
     private static final int BEGIN_ROW = 3;
     private static final int BEGIN_COL = 0;
     private static final int FIRST_DIGIT = 4;
@@ -52,7 +48,6 @@ class PositionParser {
     private final EqualityUtil equalityUtil;
     private final TableNameUtil tableNameUtil;
     private final String address;
-    private final int length;
     private int cur;
     private int status;
     private String tableName;
@@ -61,12 +56,11 @@ class PositionParser {
     private int col;
 
     /**
-     * Create a new position util
+     * Create a new position parser
      *
-     * @param equalityUtil
-     * @param tableNameUtil
-     * @param address ['<filename>'#][<tablename>.]<col><row>
-     * @return
+     * @param equalityUtil  to check equality
+     * @param tableNameUtil to check/escape table names
+     * @param address       ['<filename>'#][<tablename>.]<col><row>
      */
     public PositionParser(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil,
                           final String address) {
@@ -77,21 +71,19 @@ class PositionParser {
         this.row = 0;
         this.col = 0;
         this.cur = 0;
-        this.length = address.length();
     }
 
     /**
-     *
-     * @return
-     * @throws ParseException
+     * @return a new position
+     * @throws ParseException If the address can't be parsed.
      */
     public Position parse() throws ParseException {
         this.parseFilename();
         this.parseTableName();
         this.parseColRow();
 
-        return new Position(this.equalityUtil, this.tableNameUtil, this.filename,
-                this.tableName, this.row - 1, this.col - 1, this.status);
+        return new Position(this.equalityUtil, this.tableNameUtil, this.filename, this.tableName,
+                this.row - 1, this.col - 1, this.status);
     }
 
     private void parseFilename() throws ParseException {
@@ -182,7 +174,6 @@ class PositionParser {
                     state = FIRST_LETTER;
                     break;
                 case BEGIN_ROW: // check for opt $
-                    state++;
                     if (c == '$') {
                         this.status += Position.ABSOLUTE_ROW;
                         n++;
@@ -200,13 +191,14 @@ class PositionParser {
                     break;
                 case OPT_SECOND_LETTER: // opt letter
                     if ('A' <= c && c <= 'Z') {
-                        this.col = this.col * ALPHABET_SIZE + c - ORD_A + 1;
+                        this.col =
+                                this.col * PositionUtil.ALPHABET_SIZE + c - PositionUtil.ORD_A + 1;
                         n++;
                     } else {
                         state = PositionParser.BEGIN_ROW;
                     }
                     break;
-                case FIRST_DIGIT: // mand digit
+                case FIRST_DIGIT: // mandatory digit
                     if ('0' <= c && c <= '9') {
                         this.row = c - '0';
                         state = PositionParser.OPT_DIGIT;

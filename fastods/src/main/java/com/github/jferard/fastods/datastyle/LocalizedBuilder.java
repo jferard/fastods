@@ -27,12 +27,14 @@ import java.util.Locale;
 
 /**
  * A builder for Localized elements
+ *
  * @param <T> the real type of the builder
  * @author Julien Férard
  */
 public interface LocalizedBuilder<T> {
     /**
      * Set the country code
+     *
      * @param countryCode The two letter country code, e.g. 'US'
      * @return this for fluent style
      */
@@ -40,13 +42,16 @@ public interface LocalizedBuilder<T> {
 
     /**
      * Set the language code
-     * @param languageCode The two letter language code, e.g. 'en'. See http://www.ietf.org/rfc/rfc3066.txt
+     *
+     * @param languageCode The two letter language code, e.g. 'en'. See http://www.ietf
+     *                     .org/rfc/rfc3066.txt
      * @return this for fluent style
      */
     T language(String languageCode);
 
     /**
      * Set the locale
+     *
      * @param locale the locale
      * @return this for fluent style
      */

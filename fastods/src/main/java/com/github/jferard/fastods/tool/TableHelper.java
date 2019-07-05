@@ -29,156 +29,159 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.Position;
+import com.github.jferard.fastods.util.PositionUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
 
 /**
  * A table helper
+ *
  * @author Julien Férard
  */
 public class TableHelper {
-	private final PositionUtil positionUtil;
+    /**
+     * @return a new TableHelper
+     */
+    public static TableHelper create() {
+        return new TableHelper(PositionUtil.create());
+    }
 
-	/**
-	 * @return a new TableHelper
-	 */
-	public static TableHelper create() {
-		return new TableHelper(PositionUtil.create());
-	}
+    private final PositionUtil positionUtil;
 
-	/**
-	 * Create the table helper.
-	 * @param positionUtil an util
-	 */
-	public TableHelper(final PositionUtil positionUtil) {
-		this.positionUtil = positionUtil;
-	}
+    /**
+     * Create the table helper.
+     *
+     * @param positionUtil an util
+     */
+    public TableHelper(final PositionUtil positionUtil) {
+        this.positionUtil = positionUtil;
+    }
 
-	/**
-	 * Set the merging of multiple cells to one cell.
-	 *
-	 * @param table       the table where the cells to merge are
-	 * @param rowIndex    The row, 0 is the first row
-	 * @param colIndex    The column, 0 is the first column
-	 * @param rowMerge    the number of rows to merge
-	 * @param columnMerge the number of columns to merge
-	 * @throws IOException if the cells can't be merged
-	 */
-	public void setCellMerge(final Table table, final int rowIndex,
-							 final int colIndex, final int rowMerge, final int columnMerge)
-			throws IOException {
-		final TableCell cell = this.getCell(table, rowIndex, colIndex);
-		cell.setRowsSpanned(rowMerge);
-		cell.setColumnsSpanned(columnMerge);
-	}
+    /**
+     * Set the merging of multiple cells to one cell.
+     *
+     * @param table       the table where the cells to merge are
+     * @param rowIndex    The row, 0 is the first row
+     * @param colIndex    The column, 0 is the first column
+     * @param rowMerge    the number of rows to merge
+     * @param columnMerge the number of columns to merge
+     * @throws IOException if the cells can't be merged
+     */
+    public void setCellMerge(final Table table, final int rowIndex, final int colIndex,
+                             final int rowMerge, final int columnMerge) throws IOException {
+        final TableCell cell = this.getCell(table, rowIndex, colIndex);
+        cell.setRowsSpanned(rowMerge);
+        cell.setColumnsSpanned(columnMerge);
+    }
 
-	/**
-	 * Set the merging of multiple cells to one cell in all existing tables.
-	 *
-	 * @param table       the table where the cells to merge are
-	 * @param address         The cell position e.g. 'A1'
-	 * @param rowMerge    the number of rows to merge
-	 * @param columnMerge the number of cells to merge
-	 * @throws IOException if the cells can't be merged
-     * @throws ParseException
-	 */
-	public void setCellMerge(final Table table, final String address,
-							 final int rowMerge, final int columnMerge)
-			throws IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(address);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellMerge(table, row, col, rowMerge, columnMerge);
-	}
+    /**
+     * Set the merging of multiple cells to one cell in all existing tables.
+     *
+     * @param table       the table where the cells to merge are
+     * @param address     The cell position e.g. 'A1'
+     * @param rowMerge    the number of rows to merge
+     * @param columnMerge the number of cells to merge
+     * @throws IOException    if the cells can't be merged
+     * @throws ParseException if the address can't be parsed
+     */
+    public void setCellMerge(final Table table, final String address, final int rowMerge,
+                             final int columnMerge) throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(address);
+        final int row = position.getRow();
+        final int col = position.getColumn();
+        this.setCellMerge(table, row, col, rowMerge, columnMerge);
+    }
 
-	/**
-	 * @param table       the table where the cells to merge are
-	 * @param rowIndex    The row, 0 is the first row
-	 * @param colIndex    The column, 0 is the first column
-	 * @param value       the value to set
-	 * @param ts          the cell style
-	 * @throws IOException if the cell value can't be set
-	 */
-	public void setCellValue(final Table table, final int rowIndex,
-							 final int colIndex, final CellValue value, final TableCellStyle ts)
-			throws IOException {
-		final TableCell cell = this.getCell(table, rowIndex, colIndex);
-		cell.setCellValue(value);
-		cell.setStyle(ts);
-	}
+    /**
+     * @param table    the table where the cells to merge are
+     * @param rowIndex The row, 0 is the first row
+     * @param colIndex The column, 0 is the first column
+     * @param value    the value to set
+     * @param ts       the cell style
+     * @throws IOException if the cell value can't be set
+     */
+    public void setCellValue(final Table table, final int rowIndex, final int colIndex,
+                             final CellValue value, final TableCellStyle ts) throws IOException {
+        final TableCell cell = this.getCell(table, rowIndex, colIndex);
+        cell.setCellValue(value);
+        cell.setStyle(ts);
+    }
 
-	/**
-	 * @param table       the table where the cells to merge are
-	 * @param rowIndex    The row, 0 is the first row
-	 * @param colIndex    The column, 0 is the first column
-	 * @param value       the value to set
-	 * @throws IOException if the cell value can't be set
-	 */
-	public void setCellValue(final Table table, final int rowIndex,
-							 final int colIndex, final CellValue value)
-			throws IOException {
-		final TableCell cell = this.getCell(table, rowIndex, colIndex);
-		cell.setCellValue(value);
-	}
+    /**
+     * @param table    the table where the cells to merge are
+     * @param rowIndex The row, 0 is the first row
+     * @param colIndex The column, 0 is the first column
+     * @param value    the value to set
+     * @throws IOException if the cell value can't be set
+     */
+    public void setCellValue(final Table table, final int rowIndex, final int colIndex,
+                             final CellValue value) throws IOException {
+        final TableCell cell = this.getCell(table, rowIndex, colIndex);
+        cell.setCellValue(value);
+    }
 
-	/**
-	 * Sets the cell value in all tables to the given values.
-	 *
-	 * @param address   The cell position e.g. 'A1'
-	 * @param table The tlbe where the value is set
-	 * @param value The value to set the cell to
-	 * @param ts    The table style for this cell
-	 * @throws IOException if the cell value can't be set
-     * @throws ParseException
-	 */
-	public void setCellValue(final Table table, final String address,
-							 final CellValue value, final TableCellStyle ts)
-			throws IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(address);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellValue(table, row, col, value, ts);
-	}
+    /**
+     * Sets the cell value in all tables to the given values.
+     *
+     * @param address The cell position e.g. 'A1'
+     * @param table   The table where the value is set
+     * @param value   The value to set the cell to
+     * @param ts      The table style for this cell
+     * @throws IOException    if the cell value can't be set
+     * @throws ParseException if the address can't be parsed
+     */
+    public void setCellValue(final Table table, final String address, final CellValue value,
+                             final TableCellStyle ts) throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(address);
+        final int row = position.getRow();
+        final int col = position.getColumn();
+        this.setCellValue(table, row, col, value, ts);
+    }
 
-	/**
-	 * Sets the cell value in all tables to the given values.
-	 *
-	 * @param address   The cell position e.g. 'A1'
-	 * @param table The tlbe where the value is set
-	 * @param value The value to set the cell to
-	 * @throws IOException if the cell value can't be set
-     * @throws ParseException
-	 */
-	public void setCellValue(final Table table, final String address,
-							 final CellValue value)
-			throws IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(address);
-		final int row = position.getRow();
-		final int col = position.getColumn();
-		this.setCellValue(table, row, col, value);
-	}
+    /**
+     * Sets the cell value in all tables to the given values.
+     *
+     * @param address The cell position e.g. 'A1'
+     * @param table   The table where the value is set
+     * @param value   The value to set the cell to
+     * @throws IOException    if the cell value can't be set
+     * @throws ParseException if the address can't be parsed
+     */
+    public void setCellValue(final Table table, final String address, final CellValue value)
+            throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(address);
+        final int row = position.getRow();
+        final int col = position.getColumn();
+        this.setCellValue(table, row, col, value);
+    }
 
-	/**
-	 * @param table       the table where the cells to merge are
-	 * @param rowIndex    The row, 0 is the first row
-	 * @param colIndex    The column, 0 is the first column
-	 * @return the cell
-	 * @throws IOException
-	 */
-	public TableCellWalker getCell(final Table table, final int rowIndex,
-									final int colIndex) throws IOException {
-		final TableRow row = table.getRow(rowIndex);
-		final TableCellWalker walker = row.getWalker();
-		walker.to(colIndex);
-		return walker;
-	}
+    /**
+     * @param table    the table where the cells to merge are
+     * @param rowIndex The row, 0 is the first row
+     * @param colIndex The column, 0 is the first column
+     * @return the cell walker
+     * @throws IOException if the row was flushed
+     */
+    public TableCellWalker getCell(final Table table, final int rowIndex, final int colIndex)
+            throws IOException {
+        final TableRow row = table.getRow(rowIndex);
+        final TableCellWalker walker = row.getWalker();
+        walker.to(colIndex);
+        return walker;
+    }
 
-	public TableCellWalker getCell(final Table table, final String address)
-			throws IOException, ParseException {
-		final Position position = this.positionUtil.newPosition(address);
-		return this.getCell(table, position.getRow(), position.getColumn());
-	}
+    /**
+     * @param table   the table where the cells to merge are
+     * @param address the address
+     * @return the cell walker
+     * @throws IOException    if the row was flushed
+     * @throws ParseException if the address can't be parsed
+     */
+    public TableCellWalker getCell(final Table table, final String address)
+            throws IOException, ParseException {
+        final Position position = this.positionUtil.newPosition(address);
+        return this.getCell(table, position.getRow(), position.getColumn());
+    }
 }

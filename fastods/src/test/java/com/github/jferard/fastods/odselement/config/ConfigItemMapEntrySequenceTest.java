@@ -96,9 +96,8 @@ public class ConfigItemMapEntrySequenceTest {
         this.sequence.add(this.item);
         this.sequence.add(this.block);
         TestHelper.assertXMLEquals(
-                "<config:config-item-map-entry config:name=\"seq\">" + this.itemXML + this.blockXML +
-                        "</config:config-item-map-entry>",
-                this.sequence);
+                "<config:config-item-map-entry config:name=\"seq\">" + this.itemXML +
+                        this.blockXML + "</config:config-item-map-entry>", this.sequence);
     }
 
     @Test
@@ -106,9 +105,8 @@ public class ConfigItemMapEntrySequenceTest {
         final ConfigItemMapEntrySequence seq = ConfigItemMapEntrySequence.createSequence();
         seq.add(this.item);
         seq.add(this.block);
-        TestHelper.assertXMLEquals(
-                "<config:config-item-map-entry>" + this.itemXML + this.blockXML + "</config:config-item-map-entry>",
-                seq);
+        TestHelper.assertXMLEquals("<config:config-item-map-entry>" + this.itemXML + this.blockXML +
+                "</config:config-item-map-entry>", seq);
     }
 
     @Test

@@ -39,7 +39,7 @@ import java.util.Map;
 
 /**
  * 3.10 office:settings
- *
+ * <p>
  * A typical {@code settings.xml} file has two {@code config-item-set}s:
  * <ul>
  * <li>{@code ooo:view-settings}
@@ -67,8 +67,10 @@ public class Settings {
         viewSettings.add(new ConfigItem("VisibleAreaWidth", "int", "680"));
         viewSettings.add(new ConfigItem("VisibleAreaHeight", "int", "400"));
 
-        // https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
-        // https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html
+        // https://api.libreoffice
+        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
+        // https://api.libreoffice
+        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html
         final ConfigItemMapEntrySet firstView = ConfigItemMapEntrySet.createSet();
         firstView.add(new ConfigItem("ViewId", "string", "View1"));
         firstView.add(new ConfigItem("ActiveTable", "string", "Tab1"));
@@ -93,7 +95,8 @@ public class Settings {
         firstView.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
         firstView.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
 
-        // https://api.libreoffice.org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
+        // https://api.libreoffice
+        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
         final ConfigItemSet configurationSettings = new ConfigItemSet("ooo:configuration-settings");
         configurationSettings.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
         configurationSettings.add(new ConfigItem("ShowNotes", "boolean", "true"));
@@ -127,19 +130,22 @@ public class Settings {
 
     /**
      * Create a new settings representation
-     * @param viewSettings inner view settings
-     * @param firstView the view to display
+     *
+     * @param viewSettings          inner view settings
+     * @param firstView             the view to display
      * @param configurationSettings the configuration
      * @return the settings representation
      */
     static Settings create(final ConfigItemSet viewSettings, final ConfigItemMapEntrySet firstView,
-                                 final ConfigItemSet configurationSettings) {
+                           final ConfigItemSet configurationSettings) {
         final List<ConfigBlock> rootBlocks = new ArrayList<ConfigBlock>();
         final ConfigItemMapIndexed views = new ConfigItemMapIndexed("Views");
-        final Map<String, ConfigItemMapEntrySet> viewById = new HashMap<String, ConfigItemMapEntrySet>();
+        final Map<String, ConfigItemMapEntrySet> viewById = new HashMap<String,
+                ConfigItemMapEntrySet>();
         final ConfigItemMapNamed tablesMap = new ConfigItemMapNamed("Tables");
 
-        return new Settings(rootBlocks, viewSettings, views, viewById, firstView, tablesMap, configurationSettings);
+        return new Settings(rootBlocks, viewSettings, views, viewById, firstView, tablesMap,
+                configurationSettings);
     }
 
     private final ConfigItemMapEntrySet firstView;
@@ -149,17 +155,18 @@ public class Settings {
 
     /**
      * Create a new settings representation
-     * @param rootBlocks the root blocks
-     * @param viewSettings inner view settings
-     * @param views the views
-     * @param viewById a map id -> view
-     * @param firstView the view to display
-     * @param tablesMap the tables map
+     *
+     * @param rootBlocks            the root blocks
+     * @param viewSettings          inner view settings
+     * @param views                 the views
+     * @param viewById              a map id -> view
+     * @param firstView             the view to display
+     * @param tablesMap             the tables map
      * @param configurationSettings the configuration
      */
-    Settings(final List<ConfigBlock> rootBlocks, final ConfigItemSet viewSettings, final ConfigItemMapIndexed views,
-             final Map<String, ConfigItemMapEntrySet> viewById, final ConfigItemMapEntrySet firstView,
-             final ConfigItemMapNamed tablesMap,
+    Settings(final List<ConfigBlock> rootBlocks, final ConfigItemSet viewSettings,
+             final ConfigItemMapIndexed views, final Map<String, ConfigItemMapEntrySet> viewById,
+             final ConfigItemMapEntrySet firstView, final ConfigItemMapNamed tablesMap,
              final ConfigItemSet configurationSettings) {
         this.rootBlocks = rootBlocks;
         this.viewById = viewById;
@@ -177,6 +184,7 @@ public class Settings {
 
     /**
      * Add a table
+     *
      * @param table the table to add
      */
     public void addTable(final Table table) {
@@ -186,6 +194,7 @@ public class Settings {
 
     /**
      * A a config for a table
+     *
      * @param configEntry the table config
      */
     public void addTableConfig(final ConfigItemMapEntry configEntry) {
@@ -194,6 +203,7 @@ public class Settings {
 
     /**
      * Get the root blocks, ie item, item-set, item-map that are at the top of the settings.
+     *
      * @return the root blocks
      */
     public List<ConfigBlock> getRootBlocks() {
@@ -207,30 +217,33 @@ public class Settings {
      * @param table The table to show
      */
     public void setActiveTable(final Table table) {
-        this.firstView.add(new ConfigItem("ActiveTable", "string",
-                table.getName()));
+        this.firstView.add(new ConfigItem("ActiveTable", "string", table.getName()));
     }
 
     /**
      * Set the tables (replace all existing tables)
+     *
      * @param tables the tables
      */
     public void setTables(final List<Table> tables) {
         this.tablesMap.clear();
-        for (final Table table : tables)
+        for (final Table table : tables) {
             this.addTableConfig(table.getConfigEntry());
+        }
     }
 
     /**
      * Set a view setting
+     *
      * @param viewId the view to which add the setting
-     * @param item the item name
-     * @param value the item value
+     * @param item   the item name
+     * @param value  the item value
      */
     public void setViewSetting(final String viewId, final String item, final String value) {
         final ConfigItemMapEntrySet view = this.viewById.get(viewId);
-        if (view == null)
+        if (view == null) {
             return;
+        }
 
         view.set(item, value);
     }

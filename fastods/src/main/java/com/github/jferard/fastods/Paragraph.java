@@ -65,18 +65,22 @@ public class Paragraph implements TagParameters, ParagraphElement {
             appendable.append("<text:p/>");
         } else {
             appendable.append("<text:p");
-            if (this.style != null)
+            if (this.style != null) {
                 util.appendEAttribute(appendable, "text:style-name", this.style.getName());
+            }
             appendable.append('>');
-            for (final ParagraphElement paragraphElement : this.paragraphElements)
+            for (final ParagraphElement paragraphElement : this.paragraphElements) {
                 paragraphElement.appendXMLContent(util, appendable);
+            }
             appendable.append("</text:p>");
         }
     }
 
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        if (this.style != null) stylesContainer.addStylesFontFaceContainerStyle(this.style);
+        if (this.style != null) {
+            stylesContainer.addStylesFontFaceContainerStyle(this.style);
+        }
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromFooterHeader(stylesContainer);
         }
@@ -84,7 +88,9 @@ public class Paragraph implements TagParameters, ParagraphElement {
 
     @Override
     public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-        if (this.style != null) stylesContainer.addContentFontFaceContainerStyle(this.style);
+        if (this.style != null) {
+            stylesContainer.addContentFontFaceContainerStyle(this.style);
+        }
         for (final ParagraphElement element : this.paragraphElements) {
             element.addEmbeddedStylesFromCell(stylesContainer);
         }
@@ -92,10 +98,12 @@ public class Paragraph implements TagParameters, ParagraphElement {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof Paragraph))
+        }
+        if (!(o instanceof Paragraph)) {
             return false;
+        }
 
         final Paragraph other = (Paragraph) o;
         return this.paragraphElements.equals(other.paragraphElements);

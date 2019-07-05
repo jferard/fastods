@@ -159,6 +159,7 @@ public final class Link implements ParagraphElement {
     public static Link create(final String text, final URI uri) {
         return new Link(text, null, uri.toString());
     }
+
     private final String text;
     private final String href;
     private final TextStyle ts;
@@ -183,26 +184,26 @@ public final class Link implements ParagraphElement {
 
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-		if (this.ts != null) {
-			stylesContainer.addStylesFontFaceContainerStyle(this.ts);
-		}
+        if (this.ts != null) {
+            stylesContainer.addStylesFontFaceContainerStyle(this.ts);
+        }
     }
 
     @Override
     public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-		if (this.ts != null) {
-			stylesContainer.addContentFontFaceContainerStyle(this.ts);
-		}
+        if (this.ts != null) {
+            stylesContainer.addContentFontFaceContainerStyle(this.ts);
+        }
     }
 
     @Override
     public boolean equals(final Object o) {
-		if (o == this) {
-			return true;
-		}
-		if (!(o instanceof Link)) {
-			return false;
-		}
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Link)) {
+            return false;
+        }
 
         final Link other = (Link) o;
         return this.href.equals(other.href) && this.text.equals(other.text);

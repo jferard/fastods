@@ -32,43 +32,43 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class BenchFast extends Bench {
-	private final Logger logger;
-	private final OdsFactory odsFactory;
+    private final Logger logger;
+    private final OdsFactory odsFactory;
 
-	public BenchFast(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "FastODS", rowCount, colCount);
-		this.logger = logger;
-		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-	}
+    public BenchFast(final Logger logger, final int rowCount, final int colCount) {
+        super(logger, "FastODS", rowCount, colCount);
+        this.logger = logger;
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+    }
 
-	@Test
-	public void test0() throws IOException  {
-		this.test();
-	}
+    @Test
+    public void test0() throws IOException {
+        this.test();
+    }
 
-	@Override
-	public long test() throws IOException {
-		// Open the file.
-		this.logger.info("testFast: filling a " + this.getRowCount() + " rows, "
-				+ this.getColCount() + " columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-		final AnonymousOdsFileWriter writer =
-				this.odsFactory.createWriter();
-		final OdsDocument document = writer.document();
-		final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
+    @Override
+    public long test() throws IOException {
+        // Open the file.
+        this.logger
+                .info("testFast: filling a " + this.getRowCount() + " rows, " + this.getColCount() +
+                        " columns spreadsheet");
+        final long t1 = System.currentTimeMillis();
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
 
-		for (int y = 0; y < this.getRowCount(); y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < this.getColCount(); x++) {
-				walker.setFloatValue(this.getRandom().nextInt(1000));
-				walker.next();
-			}
-		}
+        for (int y = 0; y < this.getRowCount(); y++) {
+            final TableRow row = table.nextRow();
+            final TableCellWalker walker = row.getWalker();
+            for (int x = 0; x < this.getColCount(); x++) {
+                walker.setFloatValue(this.getRandom().nextInt(1000));
+                walker.next();
+            }
+        }
 
-		writer.saveAs(new File("generated_files", "fastods_benchmark.ods"));
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-		return t2 - t1;
-	}
+        writer.saveAs(new File("generated_files", "fastods_benchmark.ods"));
+        final long t2 = System.currentTimeMillis();
+        this.logger.info("Filled in " + (t2 - t1) + " ms");
+        return t2 - t1;
+    }
 }

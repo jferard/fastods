@@ -40,13 +40,6 @@ public class PositionUtil {
      * the base for computing
      */
     public static final int ORD_A = 'A';
-    public static final char SINGLE_QUOTE = '\'';
-    private static final int BEGIN_ROW = 3;
-    private static final int BEGIN_COL = 0;
-    private static final int FIRST_DIGIT = 4;
-    private static final int FIRST_LETTER = 1;
-    private static final int OPT_DIGIT = 5;
-    private static final int OPT_SECOND_LETTER = 2;
 
     /**
      * @return a new position util
@@ -61,8 +54,9 @@ public class PositionUtil {
 
     /**
      * Create a new position util
-     *  @param equalityUtil   an util
-     * @param tableNameUtil
+     *
+     * @param equalityUtil  an util the check equality
+     * @param tableNameUtil an util to check table names
      */
     public PositionUtil(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil) {
         this.equalityUtil = equalityUtil;
@@ -75,7 +69,7 @@ public class PositionUtil {
      * @param address The cell position in the range 'A1' to 'IV65536'
      * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
      * 4
-     * @throws ParseException
+     * @throws ParseException If the address can't be parsed.
      */
     public Position newPosition(final String address) throws ParseException {
         return new PositionParser(this.equalityUtil, this.tableNameUtil, address).parse();
@@ -91,13 +85,14 @@ public class PositionUtil {
     }
 
     /**
-     * @param table
-     * @param row the row
-     * @param col the col
+     * @param table the table
+     * @param row   the row
+     * @param col   the col
      * @return the position
      */
     public Position newPosition(final Table table, final int row, final int col) {
-        return new Position(this.equalityUtil, this.tableNameUtil, null, table.getName(), row, col, 0);
+        return new Position(this.equalityUtil, this.tableNameUtil, null, table.getName(), row, col,
+                0);
     }
 
     /**
@@ -112,7 +107,7 @@ public class PositionUtil {
     }
 
     /**
-     * the Excel/OO/LO address of a cell, preceeded by the table name
+     * the Excel/OO/LO address of a cell, preceded by the table name
      *
      * @param row   the row
      * @param col   the col
@@ -137,7 +132,7 @@ public class PositionUtil {
     }
 
     /**
-     * Return the Excel/OO/LO address of a range, preceeded by the table name
+     * Return the Excel/OO/LO address of a range, preceded by the table name
      *
      * @param row1  the first row
      * @param col1  the first col
@@ -151,10 +146,20 @@ public class PositionUtil {
         return this.toCellAddress(table, row1, col1) + ":" + this.toCellAddress(table, row2, col2);
     }
 
+    /**
+     * Check if the name is valid.
+     *
+     * @param name the name of the table
+     */
     public void checkTableName(final String name) {
         this.tableNameUtil.checkTableName(name);
     }
 
+    /**
+     * @param row the row
+     * @param col the col
+     * @return a new PositionBuilder
+     */
     public PositionBuilder builder(final int row, final int col) {
         return new PositionBuilder(this.equalityUtil, this.tableNameUtil, row, col);
     }

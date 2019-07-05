@@ -88,7 +88,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
      * @param parentCellStyle the parent style
      * @param borders         the borders of the cell
      * @param margins         the margins of the cell
-     * @param textRotating
+     * @param textRotating    an angle for the rotation
      */
     TableCellStyle(final String name, final boolean hidden, final DataStyle dataStyle,
                    final Color backgroundColor, final TextProperties textProperties,

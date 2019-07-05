@@ -50,7 +50,8 @@ public class UnsortedChildrenTesterTest {
         this.tester = new UnsortedChildrenTester();
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
-        final Document document = this.builder.parse(new ByteArrayInputStream(("<r a='1' b='2'><s/><t/></r>").getBytes(UTF_8)));
+        final Document document = this.builder
+                .parse(new ByteArrayInputStream(("<r a='1' b='2'><s/><t/></r>").getBytes(UTF_8)));
         this.r = document.getFirstChild();
     }
 

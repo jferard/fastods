@@ -32,6 +32,7 @@ import java.util.List;
 
 /**
  * A test for ResultSets
+ *
  * @author J. Férard
  */
 public class ResultSetTester {
@@ -45,6 +46,11 @@ public class ResultSetTester {
 
     private final StatementResultSetHandler resultSetHandler;
 
+    /**
+     * Create a new tester
+     *
+     * @param resultSetHandler the handler
+     */
     ResultSetTester(final StatementResultSetHandler resultSetHandler) {
         this.resultSetHandler = resultSetHandler;
     }

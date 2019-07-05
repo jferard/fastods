@@ -27,13 +27,14 @@ import java.io.IOException;
 
 /**
  * A DataWrapper instance store some data that will be added to a table.
+ *
  * @author Julien Férard
  */
 public interface DataWrapper {
-	/**
-	 * @param table the table to which add the data
-	 * @return true if the data was added
-	 * @throws IOException if an I/O error occured.
-	 */
-	boolean addToTable(Table table) throws IOException;
+    /**
+     * @param table the table to which add the data
+     * @return true if the data was added
+     * @throws IOException if an I/O error occurred.
+     */
+    boolean addToTable(Table table) throws IOException;
 }

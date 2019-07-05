@@ -25,11 +25,22 @@ package com.github.jferard.fastods;
 
 /**
  * The value in this cell will be void
+ *
  * @author Julien Férard
  */
 public final class VoidValue implements CellValue {
+    /**
+     * The one and only instance of void.
+     */
     public static final VoidValue INSTANCE = new VoidValue();
 
+    /**
+     * Converts a value to a void value
+     *
+     * @param o the value
+     * @return the void value
+     * @throws FastOdsException if the cast was not possible
+     */
     public static VoidValue from(final Object o) throws FastOdsException {
         if (o == null || o instanceof VoidValue) {
             return INSTANCE;
@@ -38,10 +49,11 @@ public final class VoidValue implements CellValue {
         }
     }
 
-    private VoidValue() {}
+    private VoidValue() {
+    }
 
     @Override
-	public void setToCell(final TableCell tableCell) {
-		tableCell.setVoidValue();
-	}
+    public void setToCell(final TableCell tableCell) {
+        tableCell.setVoidValue();
+    }
 }

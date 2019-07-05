@@ -30,7 +30,7 @@ import java.util.zip.ZipEntry;
 
 /**
  * See https://github.com/jferard/fastods/issues/29
- *
+ * <p>
  * Usage:
  * <pre>{@code
  *     final ZipUTF8WriterMockHandler mockHandler = ZipUTF8WriterMockHandler.create();
@@ -38,7 +38,7 @@ import java.util.zip.ZipEntry;
  *     // do something with instance
  *     // mockHandler.getEntryAsDocument(name) returns the chosen entry.
  * }</pre>
- *
+ * <p>
  * This class is just a container for data in a mock zip file.
  *
  * @author Julien Férard
@@ -64,8 +64,9 @@ public class ZipUTF8WriterMock implements Appendable {
 
     @Override
     public Appendable append(final char c) throws IOException {
-        if (this.curBuilder == null)
+        if (this.curBuilder == null) {
             throw new IOException();
+        }
 
         this.curBuilder.append(c);
         return this;
@@ -73,8 +74,9 @@ public class ZipUTF8WriterMock implements Appendable {
 
     @Override
     public Appendable append(final CharSequence arg0) throws IOException {
-        if (this.curBuilder == null)
+        if (this.curBuilder == null) {
             throw new IOException();
+        }
 
         return this.curBuilder.append(arg0);
     }
@@ -82,30 +84,33 @@ public class ZipUTF8WriterMock implements Appendable {
     @Override
     public Appendable append(final CharSequence csq, final int start, final int end)
             throws IOException {
-        if (this.curBuilder == null)
+        if (this.curBuilder == null) {
             throw new IOException();
+        }
 
         return this.curBuilder.append(csq, start, end);
     }
 
     /**
      * close the zip mock
+     *
      * @throws IOException if an I/O error occurs
      */
     public void close() throws IOException {
-        if (this.curBuilder != null)
+        if (this.curBuilder != null) {
             throw new IOException();
-
-        this.curBuilder = null;
+        }
     }
 
     /**
      * close the current entry of the zip mock
+     *
      * @throws IOException if an I/O error occurs
      */
     public void closeEntry() throws IOException {
-        if (this.curBuilder == null)
+        if (this.curBuilder == null) {
             throw new IOException();
+        }
 
         this.curBuilder = null;
     }
@@ -133,18 +138,23 @@ public class ZipUTF8WriterMock implements Appendable {
 
     /**
      * Do not use this!
+     *
      * @param comment set a comment
      */
-    public void setComment(final String comment) { throw new RuntimeException(); }
+    public void setComment(final String comment) {
+        throw new RuntimeException();
+    }
 
     /**
      * Write a string in the current entry
+     *
      * @param str the string
      * @throws IOException if an I/O error occurs
      */
     public void write(final String str) throws IOException {
-        if (this.curBuilder == null)
+        if (this.curBuilder == null) {
             throw new IOException();
+        }
 
         this.curBuilder.append(str);
     }

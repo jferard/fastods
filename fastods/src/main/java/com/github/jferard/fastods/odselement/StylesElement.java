@@ -34,76 +34,92 @@ import java.util.zip.ZipEntry;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class StylesElement implements OdsElement {
-	private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
-			final Appendable appendable, final String name) throws IOException {
-		appendable.append("<style:style");
-		util.appendEAttribute(appendable, "style:name", name);
-		util.appendAttribute(appendable, "style:family", "paragraph");
-		util.appendAttribute(appendable, "style:parent-style-name",
-				"Standard");
-		util.appendAttribute(appendable, "style:class", "extra");
-		appendable.append("><style:paragraph-properties");
-		util.appendAttribute(appendable, "text:number-lines", false);
-		util.appendAttribute(appendable, "text:line-number", 0);
-		appendable.append("/></style:style>");
-	}
+    private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
+                                                       final Appendable appendable,
+                                                       final String name) throws IOException {
+        appendable.append("<style:style");
+        util.appendEAttribute(appendable, "style:name", name);
+        util.appendAttribute(appendable, "style:family", "paragraph");
+        util.appendAttribute(appendable, "style:parent-style-name", "Standard");
+        util.appendAttribute(appendable, "style:class", "extra");
+        appendable.append("><style:paragraph-properties");
+        util.appendAttribute(appendable, "text:number-lines", false);
+        util.appendAttribute(appendable, "text:line-number", 0);
+        appendable.append("/></style:style>");
+    }
 
-	private final StylesContainer stylesContainer;
+    private final StylesContainer stylesContainer;
 
-	/**
-	 * @param stylesContainer the container for all styles
-	 */
-	public StylesElement(final StylesContainer stylesContainer) {
-		this.stylesContainer = stylesContainer;
-	}
+    /**
+     * @param stylesContainer the container for all styles
+     */
+    public StylesElement(final StylesContainer stylesContainer) {
+        this.stylesContainer = stylesContainer;
+    }
 
-	/**
-	 * @return the container of the styles
-	 */
-	public StylesContainer getStyleTagsContainer() {
-		return this.stylesContainer;
-	}
+    /**
+     * @return the container of the styles
+     */
+    public StylesContainer getStyleTagsContainer() {
+        return this.stylesContainer;
+    }
 
-	@Override
-	public void write(final XMLUtil util, final ZipUTF8Writer writer)
-			throws IOException {
-		final HasFooterHeader hasFooterHeader = this.stylesContainer
-				.hasFooterHeader();
+    @Override
+    public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+        final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
 
-		writer.putNextEntry(new ZipEntry("styles.xml"));
-		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		writer.write(
-				"<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" office:version=\"1.1\">");
-		this.stylesContainer.writeFontFaceDecls(util, writer);
-		writer.write("<office:styles>");
-		this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
-		this.stylesContainer.writeVisibleDataStyles(util, writer); // table-cell
+        writer.putNextEntry(new ZipEntry("styles.xml"));
+        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        writer.write(
+                "<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
+                        ":office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style" +
+                        ":1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
+                        "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
+                        "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
+                        "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" +
+                        " xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl" +
+                        ".org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument" +
+                        ":xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns" +
+                        ":datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument" +
+                        ":xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument" +
+                        ":xmlns:svg-compatible:1.0\" " +
+                        "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " +
+                        "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" " +
+                        "xmlns:math=\"http://www.w3.org/1998/Math/MathML\" " +
+                        "xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " +
+                        "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
+                        "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
+                        "xmlns:ooow=\"http://openoffice.org/2004/writer\" " +
+                        "xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3" +
+                        ".org/2001/xml-events\" office:version=\"1.1\">");
+        this.stylesContainer.writeFontFaceDecls(util, writer);
+        writer.write("<office:styles>");
+        this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
+        this.stylesContainer.writeVisibleDataStyles(util, writer); // table-cell
 
-		if (hasFooterHeader.hasHeader()) {
-			StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Header");
-		}
-		if (hasFooterHeader.hasFooter()) {
-			StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Footer");
-		}
+        if (hasFooterHeader.hasHeader()) {
+            StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Header");
+        }
+        if (hasFooterHeader.hasFooter()) {
+            StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Footer");
+        }
 
-		writer.write("</office:styles>");
-		writer.write("<office:automatic-styles>");
+        writer.write("</office:styles>");
+        writer.write("<office:automatic-styles>");
 
-		this.stylesContainer.writeStylesAutomaticStyles(util, writer);
-		this.stylesContainer.writePageLayoutStyles(util,
-				writer);
+        this.stylesContainer.writeStylesAutomaticStyles(util, writer);
+        this.stylesContainer.writePageLayoutStyles(util, writer);
 
-		writer.write("</office:automatic-styles>");
-		writer.write("<office:master-styles>");
+        writer.write("</office:automatic-styles>");
+        writer.write("<office:master-styles>");
 
-		this.stylesContainer.writeMasterPageStyles(util, writer);
+        this.stylesContainer.writeMasterPageStyles(util, writer);
 
-		writer.write("</office:master-styles>");
-		writer.write("</office:document-styles>");
-		writer.flush();
-		writer.closeEntry();
-	}
+        writer.write("</office:master-styles>");
+        writer.write("</office:document-styles>");
+        writer.flush();
+        writer.closeEntry();
+    }
 }

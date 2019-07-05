@@ -88,7 +88,8 @@ public class SortedChildrenTesterTest {
     @Test
     public void testChildrenEquals() throws IOException, SAXException {
         PowerMock.resetAll();
-        UnsortedChildrenTester.logger.info("Different children number [x: null]->[x: null] vs [y: null]->[y: null]");
+        UnsortedChildrenTester.logger
+                .info("Different children number [x: null]->[x: null] vs [y: null]->[y: null]");
         UnsortedChildrenTester.logger.info("Different children [t: null] vs [u: null]");
 
         PowerMock.replayAll();

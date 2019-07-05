@@ -44,7 +44,15 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 4 of the tutorial
+ *
+ * @author J. Férard
+ */
 class D_SettingTheCellDataStyle {
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example1() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
@@ -63,56 +71,61 @@ class D_SettingTheCellDataStyle {
         // As usual, we create a table and get the first cell:
         final Table table = document.addTable("data styles");
 
-        // We'll place a float with the standard format, and a float with a custom format side by side
-        TableRow tableRow = table.nextRow();
-        TableCellWalker cellWalker = tableRow.getWalker();
+        // We'll place a float with the standard format, and a float with a custom format side by
+        // side
+        TableRow row = table.nextRow();
+        TableCellWalker walker = row.getWalker();
 
         // Standard format:
-        cellWalker.setFloatValue(123456.789);
+        walker.setFloatValue(123456.789);
 
         // And now create a custom data style:
         final DataStyle floatDataStyle = new FloatStyleBuilder("float-datastyle", Locale.US)
                 .decimalPlaces(8).groupThousands(true).build();
-        cellWalker.next();
-        cellWalker.setFloatValue(123456.789);
-        cellWalker.setDataStyle(floatDataStyle);
+        walker.next();
+        walker.setFloatValue(123456.789);
+        walker.setDataStyle(floatDataStyle);
 
         // We can do the same with dates:
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
+        row = table.nextRow();
+        walker = row.getWalker();
 
         // A date with the standard format:
         final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
-        cellWalker.setDateValue(cal);
+        walker.setDateValue(cal);
 
         // And a custom format:
         final DataStyle dateDataStyle = new DateStyleBuilder("date-datastyle", Locale.US)
-                .dateFormat(new DateTimeStyleFormat(DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT,
-                        DateTimeStyleFormat.MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.YEAR)).visible()
-                .build();
-        cellWalker.next();
-        cellWalker.setDateValue(cal);
-        cellWalker.setDataStyle(dateDataStyle);
+                .dateFormat(
+                        new DateTimeStyleFormat(DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT,
+                                DateTimeStyleFormat.MONTH, DateTimeStyleFormat.DOT,
+                                DateTimeStyleFormat.YEAR)).visible().build();
+        walker.next();
+        walker.setDateValue(cal);
+        walker.setDataStyle(dateDataStyle);
 
         // A last try with a time (duration):
-        tableRow = table.nextRow();
-        cellWalker = tableRow.getWalker();
-        cellWalker.setTimeValue(10000000);
+        row = table.nextRow();
+        walker = row.getWalker();
+        walker.setTimeValue(10000000);
 
         // And:
         final DataStyle timeDataStyle = new TimeStyleBuilder("time-datastyle", Locale.US)
                 .timeFormat(new DateTimeStyleFormat(DateTimeStyleFormat.text("Hour: "),
                         DateTimeStyleFormat.LONG_HOURS)).visible().build();
 
-        cellWalker.next();
-        cellWalker.setTimeValue(10000000);
-        cellWalker.setDataStyle(timeDataStyle);
+        walker.next();
+        walker.setTimeValue(10000000);
+        walker.setDataStyle(timeDataStyle);
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "d_data_style1.ods"));
     }
 
+    /**
+     * @throws IOException if the file can't be written
+     */
     public static void example2() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 

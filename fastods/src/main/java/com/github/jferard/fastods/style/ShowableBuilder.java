@@ -25,12 +25,14 @@ package com.github.jferard.fastods.style;
 
 /**
  * A builder for a style that may go in automatic or common styles
+ *
  * @param <T> the type of the concrete builder
  * @author Julien Férard
  */
 public interface ShowableBuilder<T> {
     /**
      * Make this style visible, ie part of common styles
+     *
      * @return this for fluent style
      */
     T visible();

@@ -38,57 +38,55 @@ import java.io.IOException;
  *
  * @author Julien Férard
  * @author Martin Schulz
- *
  */
 public class FractionStyle implements DataStyle {
-	private final NumberStyleHelper numberStyle;
-	private final int minDenominatorDigits;
-	private final int minNumeratorDigits;
+    private final NumberStyleHelper numberStyle;
+    private final int minDenominatorDigits;
+    private final int minNumeratorDigits;
 
-	/**
-	 * Create a new fraction style
-	 * @param numberStyle the embedded number style
-	 * @param minNumeratorDigits the minimum digits for numerator
-	 * @param minDenominatorDigits  the minimum digits for denominator
-	 */
-	FractionStyle(final NumberStyleHelper numberStyle, final int minNumeratorDigits,
+    /**
+     * Create a new fraction style
+     *
+     * @param numberStyle          the embedded number style
+     * @param minNumeratorDigits   the minimum digits for numerator
+     * @param minDenominatorDigits the minimum digits for denominator
+     */
+    FractionStyle(final NumberStyleHelper numberStyle, final int minNumeratorDigits,
                   final int minDenominatorDigits) {
-		this.numberStyle = numberStyle;
-		this.minNumeratorDigits = minNumeratorDigits;
-		this.minDenominatorDigits = minDenominatorDigits;
-	}
+        this.numberStyle = numberStyle;
+        this.minNumeratorDigits = minNumeratorDigits;
+        this.minDenominatorDigits = minDenominatorDigits;
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
-		final CharSequence number = this.computeNumberTag(util);
-		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        final CharSequence number = this.computeNumberTag(util);
+        this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
+    }
 
-	private CharSequence computeNumberTag(final XMLUtil util)
-			throws IOException {
-		final StringBuilder number = new StringBuilder();
-		number.append("<number:fraction");
-		util.appendAttribute(number, "number:min-numerator-digits",
-				this.minNumeratorDigits);
-		util.appendAttribute(number, "number:min-denominator-digits",
-				this.minDenominatorDigits);
-		this.numberStyle.appendNumberAttribute(util, number);
-		number.append("/>");
-		return number;
-	}
+    private CharSequence computeNumberTag(final XMLUtil util) throws IOException {
+        final StringBuilder number = new StringBuilder();
+        number.append("<number:fraction");
+        util.appendAttribute(number, "number:min-numerator-digits", this.minNumeratorDigits);
+        util.appendAttribute(number, "number:min-denominator-digits", this.minDenominatorDigits);
+        this.numberStyle.appendNumberAttribute(util, number);
+        number.append("/>");
+        return number;
+    }
 
-	@Override
-	public String getName() {
-		return this.numberStyle.getName();
-	}
+    @Override
+    public String getName() {
+        return this.numberStyle.getName();
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.numberStyle.isHidden();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.numberStyle.isHidden();
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

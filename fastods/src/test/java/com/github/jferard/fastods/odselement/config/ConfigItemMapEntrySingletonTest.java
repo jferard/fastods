@@ -47,7 +47,8 @@ public class ConfigItemMapEntrySingletonTest {
 
     @Test
     public void testCreateSingleton() {
-        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton.createSingleton(this.item);
+        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton
+                .createSingleton(this.item);
         Assert.assertEquals(1, sing.size());
         Assert.assertFalse(sing.isEmpty());
         Assert.assertNull(sing.getName());
@@ -64,8 +65,7 @@ public class ConfigItemMapEntrySingletonTest {
     public void testAppendXML() throws Exception {
         TestHelper.assertXMLEquals(
                 "<config:config-item-map-entry config:name=\"singleton\">" + this.itemXML +
-                        "</config:config-item-map-entry>",
-                this.singleton);
+                        "</config:config-item-map-entry>", this.singleton);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -112,7 +112,8 @@ public class ConfigItemMapEntrySingletonTest {
 
     @Test
     public void testSet3() {
-        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton.createSingleton(this.singleton);
+        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton
+                .createSingleton(this.singleton);
         Assert.assertNull(sing.set("value"));
     }
 }

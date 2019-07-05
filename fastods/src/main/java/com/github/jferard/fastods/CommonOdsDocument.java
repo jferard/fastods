@@ -137,7 +137,9 @@ class CommonOdsDocument implements OdsDocument {
 
     @Override
     public boolean setActiveTable(final int tableIndex) {
-        if (tableIndex < 0 || tableIndex >= this.odsElements.getTableCount()) return false;
+        if (tableIndex < 0 || tableIndex >= this.odsElements.getTableCount()) {
+            return false;
+        }
 
         final Table table = this.odsElements.getTable(tableIndex);
         this.odsElements.setActiveTable(table);

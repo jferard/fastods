@@ -25,12 +25,14 @@ package com.github.jferard.fastods.datastyle;
 
 /**
  * A style with a decimal number
+ *
  * @author Julien Férard
  */
 public interface DecimalStyle {
     /**
      * 19.343 number:decimal-places
      * Get how many digits are to the right of the decimal symbol.
+     *
      * @return The number of digits
      */
     int getDecimalPlaces();

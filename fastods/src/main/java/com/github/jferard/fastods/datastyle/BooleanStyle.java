@@ -34,28 +34,29 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class BooleanStyle implements DataStyle {
-	private final CoreDataStyle dataStyle;
+    private final CoreDataStyle dataStyle;
 
-	/**
-	 * Create a new boolean style
+    /**
+     * Create a new boolean style
+     *
      * @param dataStyle the embedded core data style
-	 */
-	BooleanStyle(final CoreDataStyle dataStyle) {
-		this.dataStyle = dataStyle;
-	}
+     */
+    BooleanStyle(final CoreDataStyle dataStyle) {
+        this.dataStyle = dataStyle;
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<number:boolean-style");
-		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
-		this.dataStyle.appendLVAttributes(util, appendable);
-		appendable.append("/>");
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<number:boolean-style");
+        util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
+        this.dataStyle.appendLVAttributes(util, appendable);
+        appendable.append("/>");
+    }
 
-	@Override
+    @Override
     public String getName() {
-	    return this.dataStyle.getName();
+        return this.dataStyle.getName();
     }
 
     @Override
@@ -63,8 +64,8 @@ public class BooleanStyle implements DataStyle {
         return this.dataStyle.isHidden();
     }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

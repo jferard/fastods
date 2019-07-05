@@ -24,16 +24,21 @@
 package com.github.jferard.fastods;
 
 /**
+ * A time value
  *
- * @author
+ * @author J. Férard
  */
 public class TimeValue implements CellValue {
-
     private static final int MONTHS_BY_YEAR = 12;
     private static final int HOURS_BY_DAY = 24;
     private static final int MINUTES_BY_HOUR = 60;
     private static final int SECONDS_BY_MINUTE = 60;
 
+    /**
+     * @param o the object to cast
+     * @return the time value
+     * @throws FastOdsException if the cast was not possible
+     */
     public static TimeValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
             final Number number = (Number) o;
@@ -58,6 +63,17 @@ public class TimeValue implements CellValue {
     private final long minutes;
     private final double seconds;
 
+    /**
+     * Create a new time value. Users must ensure that all values are positive.
+     *
+     * @param neg true if the time value is negative
+     * @param years the number of years
+     * @param months the number of months
+     * @param days the number of days
+     * @param hours the number of hours
+     * @param minutes the number of minutes
+     * @param seconds the number of seconds
+     */
     public TimeValue(final boolean neg, final long years, final long months, final long days,
                      final long hours, final long minutes, final double seconds) {
         this.neg = neg;

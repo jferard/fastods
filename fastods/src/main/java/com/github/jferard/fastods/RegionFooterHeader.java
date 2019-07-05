@@ -48,7 +48,9 @@ class RegionFooterHeader implements PageSectionContent {
                                                      final Appendable appendable, final Text region,
                                                      final CharSequence regionName)
             throws IOException {
-        if (region == null || region.isEmpty()) return;
+        if (region == null || region.isEmpty()) {
+            return;
+        }
 
         appendable.append("<style:").append(regionName).append(">");
         region.appendXMLContent(util, appendable);
@@ -74,12 +76,15 @@ class RegionFooterHeader implements PageSectionContent {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        if (this.leftRegion != null && !this.leftRegion.isEmpty())
+        if (this.leftRegion != null && !this.leftRegion.isEmpty()) {
             this.leftRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
-        if (this.centerRegion != null && !this.centerRegion.isEmpty())
+        }
+        if (this.centerRegion != null && !this.centerRegion.isEmpty()) {
             this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
-        if (this.rightRegion != null && !this.rightRegion.isEmpty())
+        }
+        if (this.rightRegion != null && !this.rightRegion.isEmpty()) {
             this.rightRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        }
     }
 
     /**

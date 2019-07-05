@@ -49,8 +49,9 @@ public class EndTableFlusher implements OdsFlusher {
 
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        for (final TableRow row : this.rows)
+        for (final TableRow row : this.rows) {
             row.appendXMLToTable(xmlUtil, writer);
+        }
         this.appender.appendPostamble(writer);
     }
 

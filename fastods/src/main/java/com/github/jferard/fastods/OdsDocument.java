@@ -51,8 +51,8 @@ public interface OdsDocument {
      * influence to the program, the active table is the first table that is shown in
      * OpenOffice.
      *
-     * @param name - The name of the table to add
-     * @param rowCapacity the initial row capacity
+     * @param name           - The name of the table to add
+     * @param rowCapacity    the initial row capacity
      * @param columnCapacity the initial column capacity
      * @return the table
      * @throws IOException if the table can't be added to document
@@ -61,6 +61,7 @@ public interface OdsDocument {
 
     /**
      * Get a table by index
+     *
      * @param n the index
      * @return the table
      * @throws FastOdsException if the table index is negative or >= number of tables
@@ -69,6 +70,7 @@ public interface OdsDocument {
 
     /**
      * Get a table by name
+     *
      * @param name the name of the table
      * @return the table
      * @throws FastOdsException if the table does not exist.
@@ -116,9 +118,10 @@ public interface OdsDocument {
 
     /**
      * Set a view setting
+     *
      * @param viewId the view id
-     * @param item the item name
-     * @param value the value
+     * @param item   the item name
+     * @param value  the value
      */
     void setViewSetting(String viewId, String item, String value);
 
@@ -131,18 +134,19 @@ public interface OdsDocument {
 
     /**
      * Add an autoFilter to a range address
+     *
      * @param table the table
-     * @param r1 the top row
-     * @param c1 the left column
-     * @param r2 the bottom row
-     * @param c2 the right column
+     * @param r1    the top row
+     * @param c1    the left column
+     * @param r2    the bottom row
+     * @param c2    the right column
      * @deprecated use {@code table.addAutoFilter(r1, c1, r2, c2)}
      */
     @Deprecated
     void addAutoFilter(Table table, int r1, int c1, int r2, int c2);
 
     /**
-     * @param table the table
+     * @param table    the table
      * @param rowCount the number of rows to freeze
      * @param colCount the number of cols to freeze
      */

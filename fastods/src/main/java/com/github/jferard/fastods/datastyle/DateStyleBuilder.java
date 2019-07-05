@@ -51,7 +51,8 @@ public class DateStyleBuilder implements DataStyleBuilder<DateStyle, DateStyleBu
      * for the language and country of the date style.
      *
      * @param automatic specifies whether data is ordered to match the default
-     *                  order for the language and country of a data style (19.340 number:automatic-order).
+     *                  order for the language and country of a data style (19.340
+     *                  number:automatic-order).
      * @return this for fluent style
      */
     public DateStyleBuilder automaticOrder(final boolean automatic) {

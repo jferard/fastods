@@ -30,7 +30,8 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
- * A flusher for mimetype and meta elements.
+ * A flusher for mime type and meta elements.
+ *
  * @author Julien Férard
  */
 public class ImmutableElementsFlusher implements OdsFlusher {

@@ -67,8 +67,8 @@ public class TextPropertiesBuilder {
         } else {
             fontSize = null;
         }
-        return new TextProperties(this.fontColor, this.fontName, this.fontWeight, this.fontStyle, fontSize,
-                this.fontUnderlineColor, this.fontUnderlineStyle);
+        return new TextProperties(this.fontColor, this.fontName, this.fontWeight, this.fontStyle,
+                fontSize, this.fontUnderlineColor, this.fontUnderlineStyle);
     }
 
     /**
@@ -86,7 +86,8 @@ public class TextPropertiesBuilder {
     public TextStyle buildHiddenStyle(final String name) {
         if (this.fontSizePercentage > 0) {
             throw new IllegalArgumentException(
-                    "20.183 fo:font-size: fontSizePercentage values can be used within common styles only");
+                    "20.183 fo:font-size: fontSizePercentage values can be used within common " +
+                            "styles only");
         }
         return new TextStyle(name, true, this.build());
     }

@@ -40,25 +40,29 @@ public final class ColorHelper {
 
     /**
      * Create a color from RGB values
-     * @param red the red value, between 0-255
+     *
+     * @param red   the red value, between 0-255
      * @param green the green value, between 0-255
-     * @param blue the blue value, between 0-255
+     * @param blue  the blue value, between 0-255
      * @return the color
      */
     public static Color fromRGB(final int red, final int green, final int blue) {
-        if (ColorHelper.helper == null)
+        if (ColorHelper.helper == null) {
             ColorHelper.helper = new ColorHelper();
+        }
         return ColorHelper.helper.getFromRGB(red, green, blue);
     }
 
     /**
      * Create a color from the hex representation
+     *
      * @param hexValue e.g. "#123456"
      * @return the color
      */
     public static Color fromString(final String hexValue) {
-        if (ColorHelper.helper == null)
+        if (ColorHelper.helper == null) {
             ColorHelper.helper = new ColorHelper();
+        }
         return ColorHelper.helper.getFromString(hexValue);
     }
 
@@ -85,22 +89,29 @@ public final class ColorHelper {
      * @return The hex string in the format '#rrggbb'
      */
     public Color getFromRGB(final int red, final int green, final int blue) {
-        return this.getFromString("#" + this.toHexString(red) + this.toHexString(green) + this
-                        .toHexString(blue));
+        return this.getFromString(
+                "#" + this.toHexString(red) + this.toHexString(green) + this.toHexString(blue));
     }
 
     private String toHexString(final int n) {
-        if (n < 0) return "00";
-        if (n > ColorHelper.X_FF) return "ff";
+        if (n < 0) {
+            return "00";
+        }
+        if (n > ColorHelper.X_FF) {
+            return "ff";
+        }
 
         final StringBuilder sbReturn = new StringBuilder();
-        if (n <= ColorHelper.X_F) sbReturn.append('0');
+        if (n <= ColorHelper.X_F) {
+            sbReturn.append('0');
+        }
         sbReturn.append(Integer.toHexString(n));
         return sbReturn.toString();
     }
 
     /**
      * Create a color from the hex representation
+     *
      * @param hexValue e.g. "#123456"
      * @return the color
      */

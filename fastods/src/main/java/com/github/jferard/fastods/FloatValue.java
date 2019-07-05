@@ -29,53 +29,55 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class FloatValue implements CellValue {
-	/**
-	 * The min delta between to different floats
-	 */
+    /**
+     * The min delta between to different floats
+     */
     static final double FLOAT_DELTA = 0.00001;
 
-	/**
-	 * @param o the object to cast
-	 * @return the float value
-	 * @throws FastOdsException if the cast was not possible
-	 */
+    /**
+     * @param o the object to cast
+     * @return the float value
+     * @throws FastOdsException if the cast was not possible
+     */
     public static FloatValue from(final Object o) throws FastOdsException {
-		if (o instanceof Number) {
-			return new FloatValue(((Number) o).doubleValue());
-		} else if (o instanceof FloatValue) {
-			return (FloatValue) o;
-		} else {
-			throw new FastOdsException("Can't cast " + o + " to Float");
-		}
-	}
+        if (o instanceof Number) {
+            return new FloatValue(((Number) o).doubleValue());
+        } else if (o instanceof FloatValue) {
+            return (FloatValue) o;
+        } else {
+            throw new FastOdsException("Can't cast " + o + " to Float");
+        }
+    }
 
-	private final Number value;
+    private final Number value;
 
-	/**
-	 * @param value the float
-	 */
-	FloatValue(final Number value) {
-		this.value = value;
-	}
+    /**
+     * @param value the float
+     */
+    FloatValue(final Number value) {
+        this.value = value;
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof FloatValue))
-			return false;
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FloatValue)) {
+            return false;
+        }
 
-		final FloatValue other = (FloatValue) o;
-		return this.value.equals(other.value);
-	}
+        final FloatValue other = (FloatValue) o;
+        return this.value.equals(other.value);
+    }
 
-	@Override
-	public final int hashCode() {
-		return this.value.hashCode();
-	}
+    @Override
+    public final int hashCode() {
+        return this.value.hashCode();
+    }
 
-	@Override
-	public void setToCell(final TableCell tableCell) {
-		tableCell.setFloatValue(this.value);
-	}
+    @Override
+    public void setToCell(final TableCell tableCell) {
+        tableCell.setFloatValue(this.value);
+    }
 }

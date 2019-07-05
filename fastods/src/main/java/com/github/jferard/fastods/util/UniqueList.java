@@ -36,103 +36,102 @@ import java.util.Set;
  * object already present in the list is inserted with {@code add} or
  * {@code set}, then an {@code IllegalArgumentException} is thrown.
  *
+ * @param <T> a NamedObject type.
  * @author Julien Férard
- *
- * @param <T>
- *            a NamedObject type.
  */
-public class UniqueList<T extends NamedObject> extends AbstractList<T>
-		implements List<T> {
-	private final Map<String, T> elementByName;
-	private final List<T> list;
+public class UniqueList<T extends NamedObject> extends AbstractList<T> implements List<T> {
+    private final Map<String, T> elementByName;
+    private final List<T> list;
 
-	/**
-	 * Creates the list
-	 */
-	public UniqueList() {
-		this.list = new LinkedList<T>();
-		this.elementByName = new HashMap<String, T>();
-	}
+    /**
+     * Creates the list
+     */
+    public UniqueList() {
+        this.list = new LinkedList<T>();
+        this.elementByName = new HashMap<String, T>();
+    }
 
-	/*
-	 * @see java.util.List#add(int, java.lang.Object)
-	 * @throws IllegalArgumentException if the element exists in the list
-	 */
-	@Override
-	public void add(final int index, final T element) {
-		final String elementName = element.getName();
-		if (this.elementByName.containsKey(elementName))
-			throw new IllegalArgumentException(
-					"Element " + element + " already in list");
+    /*
+     * @see java.util.List#add(int, java.lang.Object)
+     * @throws IllegalArgumentException if the element exists in the list
+     */
+    @Override
+    public void add(final int index, final T element) {
+        final String elementName = element.getName();
+        if (this.elementByName.containsKey(elementName)) {
+            throw new IllegalArgumentException("Element " + element + " already in list");
+        }
 
-		this.elementByName.put(elementName, element);
-		this.list.add(index, element);
-	}
+        this.elementByName.put(elementName, element);
+        this.list.add(index, element);
+    }
 
-	@Override
-	public T get(final int index) {
-		return this.list.get(index);
-	}
+    @Override
+    public T get(final int index) {
+        return this.list.get(index);
+    }
 
-	/**
-	 * @param name the name
-	 * @return the element of the list that has the name.
-	 */
-	public T getByName(final String name) {
-		return this.elementByName.get(name);
-	}
+    /**
+     * @param name the name
+     * @return the element of the list that has the name.
+     */
+    public T getByName(final String name) {
+        return this.elementByName.get(name);
+    }
 
-	/**
-	 * @return the name set of the objects stored in the list
-	 */
-	public Set<String> nameSet() {
-		return this.elementByName.keySet();
-	}
+    /**
+     * @return the name set of the objects stored in the list
+     */
+    public Set<String> nameSet() {
+        return this.elementByName.keySet();
+    }
 
-	@Override
-	public T remove(final int index) {
-		final T element = this.list.remove(index);
-		this.elementByName.remove(element.getName());
-		return element;
-	}
+    @Override
+    public T remove(final int index) {
+        final T element = this.list.remove(index);
+        this.elementByName.remove(element.getName());
+        return element;
+    }
 
-	@Override
-	public boolean remove(final Object o) {
-		if (this.elementByName.containsValue(o)) {
-			this.elementByName.remove(((NamedObject) o).getName());
-			this.list.remove(o);
-			return true;
-		} else
-			return false;
-	}
+    @Override
+    public boolean remove(final Object o) {
+        if (this.elementByName.containsValue(o)) {
+            this.elementByName.remove(((NamedObject) o).getName());
+            this.list.remove(o);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * @param name the name of the element to remove
-	 * @return the previous element of that name, null otherwise.
-	 */
-	public T removeByName(final String name) {
-		if (this.elementByName.containsKey(name)) {
-			final T t = this.elementByName.get(name);
-			this.elementByName.remove(name);
-			this.list.remove(t);
-			return t;
-		} else
-			return null;
-	}
+    /**
+     * @param name the name of the element to remove
+     * @return the previous element of that name, null otherwise.
+     */
+    public T removeByName(final String name) {
+        if (this.elementByName.containsKey(name)) {
+            final T t = this.elementByName.get(name);
+            this.elementByName.remove(name);
+            this.list.remove(t);
+            return t;
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	public T set(final int index, final T element) {
-		final String elementName = element.getName();
-		if (this.elementByName.containsKey(elementName))
-			throw new IllegalArgumentException(
-					"Element " + elementName + " already in list");
+    @Override
+    public T set(final int index, final T element) {
+        final String elementName = element.getName();
+        if (this.elementByName.containsKey(elementName)) {
+            throw new IllegalArgumentException("Element " + elementName + " already in list");
+        }
 
-		this.elementByName.put(elementName, element);
-		return this.list.set(index, element);
-	}
+        this.elementByName.put(elementName, element);
+        return this.list.set(index, element);
+    }
 
-	@Override
-	public int size() {
-		return this.list.size();
-	}
+    @Override
+    public int size() {
+        return this.list.size();
+    }
 }

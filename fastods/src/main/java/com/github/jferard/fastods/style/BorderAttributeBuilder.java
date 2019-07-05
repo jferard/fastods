@@ -33,86 +33,81 @@ import com.github.jferard.fastods.util.SimpleLength;
  * @author Julien Férard
  */
 public class BorderAttributeBuilder {
-	/**
-	 * The border color
-	 */
-	private Color borderColor;
+    /**
+     * The border color
+     */
+    private Color borderColor;
 
-	/**
-	 * The border size.
-	 */
-	private Length borderSize;
+    /**
+     * The border size.
+     */
+    private Length borderSize;
 
-	/**
-	 * The border style. Either BorderAttribute.BORDER_SOLID or
-	 * BorderAttribute.BORDER_DOUBLE.<br>
-	 * Default is BorderAttribute.BORDER_SOLID.
-	 */
-	private Style style;
+    /**
+     * The border style. Either BorderAttribute.BORDER_SOLID or
+     * BorderAttribute.BORDER_DOUBLE.<br>
+     * Default is BorderAttribute.BORDER_SOLID.
+     */
+    private Style style;
 
-	/**
-	 * A new builder
-	 */
-	BorderAttributeBuilder() {
-		this.style = BorderAttribute.DEFAULT_STYLE;
-		this.borderColor = SimpleColor.NONE;
-	}
+    /**
+     * A new builder
+     */
+    BorderAttributeBuilder() {
+        this.style = BorderAttribute.DEFAULT_STYLE;
+        this.borderColor = SimpleColor.NONE;
+    }
 
-	/**
-	 * Set the currently set border color.
-	 *
-	 * @param borderColor
-	 *            The color in format #rrggbb
-	 * @return this for fluent style
-	 */
-	public BorderAttributeBuilder borderColor(final Color borderColor) {
-		this.borderColor = borderColor;
-		return this;
-	}
+    /**
+     * Set the currently set border color.
+     *
+     * @param borderColor The color in format #rrggbb
+     * @return this for fluent style
+     */
+    public BorderAttributeBuilder borderColor(final Color borderColor) {
+        this.borderColor = borderColor;
+        return this;
+    }
 
-	/**
-	 * Sets the current value of border size in pt.
-	 *
-	 * @param size
-	 *            The size as int, in pt
-	 * @return this for fluent style
-	 */
-	public BorderAttributeBuilder borderSize(final int size) {
-		this.borderSize = SimpleLength.pt(size);
-		return this;
-	}
+    /**
+     * Sets the current value of border size in pt.
+     *
+     * @param size The size as int, in pt
+     * @return this for fluent style
+     */
+    public BorderAttributeBuilder borderSize(final int size) {
+        this.borderSize = SimpleLength.pt(size);
+        return this;
+    }
 
-	/**
-	 * Sets the current value of border size.
-	 *
-	 * @param borderSize
-	 *            The size as length
-	 * @return this for fluent style
-	 */
-	public BorderAttributeBuilder borderSize(final Length borderSize) {
-		this.borderSize = borderSize;
-		return this;
-	}
+    /**
+     * Sets the current value of border size.
+     *
+     * @param borderSize The size as length
+     * @return this for fluent style
+     */
+    public BorderAttributeBuilder borderSize(final Length borderSize) {
+        this.borderSize = borderSize;
+        return this;
+    }
 
-	/**
-	 * Sets the current border NamedObject.
-	 *
-	 * @param style
-	 *            BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
-	 * @return this for fluent style
-	 */
-	public BorderAttributeBuilder borderStyle(final Style style) {
-		this.style = style;
-		return this;
-	}
+    /**
+     * Sets the current border NamedObject.
+     *
+     * @param style BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+     * @return this for fluent style
+     */
+    public BorderAttributeBuilder borderStyle(final Style style) {
+        this.style = style;
+        return this;
+    }
 
-	/**
-	 * Builds a border style
-	 *
-	 * @return ths BorderAttribute
-	 */
-	public BorderAttribute build() {
-		return new BorderAttribute(this.borderSize, this.borderColor,
-				this.style);
-	}
+    /**
+     * Builds a border style
+     *
+     * @return ths BorderAttribute
+     */
+    public BorderAttribute build() {
+        return new BorderAttribute(this.borderSize, this.borderColor, this.style);
+    }
 }

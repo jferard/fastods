@@ -163,7 +163,8 @@ public class DomTester {
      * Create a tester
      *
      * @throws ParserConfigurationException in case of service configuration error or if the
-     * implementation is not available or cannot be instantiated.
+     *                                      implementation is not available or cannot be
+     *                                      instantiated.
      */
     DomTester() throws ParserConfigurationException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -185,7 +186,9 @@ public class DomTester {
         for (int n = 0; n < childNodes1.getLength(); n++) {
             final Node e1 = childNodes1.item(n);
             final Node e2 = childNodes2.item(n);
-            if (!childrenTester.equals(e1, e2)) return false;
+            if (!childrenTester.equals(e1, e2)) {
+                return false;
+            }
         }
         return true;
     }

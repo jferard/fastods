@@ -166,8 +166,8 @@ public class ContentElement implements OdsElement {
     }
 
     private void flushRemainingRowsFromCurTable(final XMLUtil util, final ZipUTF8Writer writer,
-                                               final SettingsElement settingsElement,
-                                               final int curTableIndex) throws IOException {
+                                                final SettingsElement settingsElement,
+                                                final int curTableIndex) throws IOException {
         final int firstRowIndex = this.flushPosition.getLastRowIndex() + 1;
         final Table curTable = this.tables.get(curTableIndex);
         curTable.flushRemainingRowsFrom(util, writer, firstRowIndex);

@@ -33,7 +33,7 @@ import java.io.IOException;
 /**
  * 16.6<style:header-style>
  * 16.7<style:footer-style>
- *
+ * <p>
  * "The <style:header-style> element specifies the formatting properties for a header element."
  * "The <style:footer-style> element specifies the formatting properties for a footer element."
  *
@@ -41,55 +41,58 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 class PageSectionStyle {
-	private final Margins margins;
-	private final Length minHeight;
+    private final Margins margins;
+    private final Length minHeight;
 
-	/**
-	 * Create a new footer object.
-	 * @param margins the margins
-	 * @param minHeight the height of the footer/header
-	 */
-	PageSectionStyle(final Margins margins, final Length minHeight) {
-		this.margins = margins;
-		this.minHeight = minHeight;
-	}
+    /**
+     * Create a new footer object.
+     *
+     * @param margins   the margins
+     * @param minHeight the height of the footer/header
+     */
+    PageSectionStyle(final Margins margins, final Length minHeight) {
+        this.margins = margins;
+        this.minHeight = minHeight;
+    }
 
-	/**
-	 * Secure version of {@code pageSectionStyle.appendPageSectionStyleXMLToAutomaticStyle}: if the footer (or header) is null,
-	 * then the default type is used.
-	 *
-	 * @param pageSectionStyle the footer or header style, could be null
-	 * @param pageSectionType the type if pageSectionStyle is null.
-	 * @param util an util
-	 * @param appendable the destination
-	 * @throws IOException if an I/O error occurs
-	 */
-	public static void appendFooterHeaderStyleXMLToAutomaticStyle(final PageSectionStyle pageSectionStyle,
-																  final Type pageSectionType, final XMLUtil util,
-																  final Appendable appendable) throws IOException {
-		if (pageSectionStyle == null)
-			appendable.append("</style:").append(pageSectionType.getTypeName())
-					.append("-style />");
-		else
-			pageSectionStyle.appendFooterHeaderStyleXMLToAutomaticStyle(util,
-					appendable, pageSectionType);
-	}
+    /**
+     * Secure version of {@code pageSectionStyle.appendPageSectionStyleXMLToAutomaticStyle}: if
+     * the footer (or header) is null,
+     * then the default type is used.
+     *
+     * @param pageSectionStyle the footer or header style, could be null
+     * @param pageSectionType  the type if pageSectionStyle is null.
+     * @param util             an util
+     * @param appendable       the destination
+     * @throws IOException if an I/O error occurs
+     */
+    public static void appendFooterHeaderStyleXMLToAutomaticStyle(
+            final PageSectionStyle pageSectionStyle, final Type pageSectionType, final XMLUtil util,
+            final Appendable appendable) throws IOException {
+        if (pageSectionStyle == null) {
+            appendable.append("</style:").append(pageSectionType.getTypeName()).append("-style />");
+        } else {
+            pageSectionStyle
+                    .appendFooterHeaderStyleXMLToAutomaticStyle(util, appendable, pageSectionType);
+        }
+    }
 
-	/**
-	 * Append a footer/header to styles.xml/automatic-styles
-	 * @param util an util
-	 * @param appendable the destination
-	 * @param pageSectionType the type if pageSectionStyle is null.
-	 * @throws IOException if an I/O error occurs
-	 */
-	public void appendFooterHeaderStyleXMLToAutomaticStyle(final XMLUtil util,
-														   final Appendable appendable, final Type pageSectionType) throws IOException {
-		appendable.append("<style:").append(pageSectionType.getTypeName())
-				.append("-style>");
-		appendable.append("<style:header-footer-properties");
-		util.appendAttribute(appendable, "fo:min-height", this.minHeight.toString());
-		this.margins.appendXMLContent(util, appendable);
-		appendable.append("/></style:").append(pageSectionType.getTypeName())
-				.append("-style>");
-	}
+    /**
+     * Append a footer/header to styles.xml/automatic-styles
+     *
+     * @param util            an util
+     * @param appendable      the destination
+     * @param pageSectionType the type if pageSectionStyle is null.
+     * @throws IOException if an I/O error occurs
+     */
+    public void appendFooterHeaderStyleXMLToAutomaticStyle(final XMLUtil util,
+                                                           final Appendable appendable,
+                                                           final Type pageSectionType)
+            throws IOException {
+        appendable.append("<style:").append(pageSectionType.getTypeName()).append("-style>");
+        appendable.append("<style:header-footer-properties");
+        util.appendAttribute(appendable, "fo:min-height", this.minHeight.toString());
+        this.margins.appendXMLContent(util, appendable);
+        appendable.append("/></style:").append(pageSectionType.getTypeName()).append("-style>");
+    }
 }

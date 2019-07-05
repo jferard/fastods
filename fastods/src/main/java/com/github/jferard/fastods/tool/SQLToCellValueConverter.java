@@ -41,7 +41,20 @@ import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+/**
+ * A converter SQL -> OpenDocument cell value
+ *
+ * @author J. Férard
+ */
 public class SQLToCellValueConverter implements ToCellValueConverter {
+    /**
+     * Create a new converter
+     *
+     * @param intervalConverter a custom converter for SQL intervals. May be null
+     * @param currency          the currency
+     * @param charset           the charset for SQL byte object conversion
+     * @return a new converter
+     */
     public static SQLToCellValueConverter create(final IntervalConverter intervalConverter,
                                                  final String currency, final Charset charset) {
         return new SQLToCellValueConverter(new ObjectToCellValueConverter(currency),
@@ -52,6 +65,11 @@ public class SQLToCellValueConverter implements ToCellValueConverter {
     private final SQLToCellValueConverter.IntervalConverter intervalConverter;
     private final Charset charset;
 
+    /**
+     * @param converter         the wrapped POJO -> Cell value converter
+     * @param intervalConverter a custom converter for SQL intervals. May be null
+     * @param charset           the charset for SQL byte object conversion
+     */
     SQLToCellValueConverter(final ToCellValueConverter converter,
                             final IntervalConverter intervalConverter, final Charset charset) {
         this.converter = converter;
@@ -127,19 +145,23 @@ public class SQLToCellValueConverter implements ToCellValueConverter {
                         return timeValue;
                     }
                     break;
-                default:
+                default: // other cases
                     return this.converter.from(type, o);
             }
         } catch (final SQLException e) {
             throw new FastOdsException(e);
         }
-        throw new FastOdsException("Can't cast "+o+" to "+type);
+        throw new FastOdsException("Can't cast " + o + " to " + type);
     }
 
+    /**
+     * JDBC does not provide a way to identify SQL Intervals. If the result set
+     * contains intervals, we need to try a cast from the specific driver object.
+     */
     public interface IntervalConverter {
         /**
          * @param o the object to cast
-         * @return the time of the interval in milliseconds or -1 if the object was not casted
+         * @return the time value or null if the object was not casted
          */
         TimeValue castToInterval(Object o);
     }

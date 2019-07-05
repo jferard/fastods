@@ -33,108 +33,114 @@ import java.util.List;
 /**
  * A sequence of ConfigBlocks.
  * See 3.10.5 config:config-item-map-entry
+ *
  * @author Julien Férard
  */
 public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
-	private final List<ConfigBlock> blocks;
-	private final String name;
+    private final List<ConfigBlock> blocks;
+    private final String name;
 
-	/**
-	 * @return a new sequence
-	 */
-	public static ConfigItemMapEntrySequence createSequence() {
-		return new ConfigItemMapEntrySequence(null, new ArrayList<ConfigBlock>());
-	}
+    /**
+     * @return a new sequence
+     */
+    public static ConfigItemMapEntrySequence createSequence() {
+        return new ConfigItemMapEntrySequence(null, new ArrayList<ConfigBlock>());
+    }
 
-	/**
-	 * @param name the name of the sequence
-	 * @return a new named sequence
-	 */
-	public static ConfigItemMapEntrySequence createSequence(final String name) {
-		return new ConfigItemMapEntrySequence(name, new ArrayList<ConfigBlock>());
-	}
+    /**
+     * @param name the name of the sequence
+     * @return a new named sequence
+     */
+    public static ConfigItemMapEntrySequence createSequence(final String name) {
+        return new ConfigItemMapEntrySequence(name, new ArrayList<ConfigBlock>());
+    }
 
 
-	/**
-	 * @param name the name of the sequence
-	 * @param blocks the block sequence, as a list
-	 */
-	ConfigItemMapEntrySequence(final String name, final List<ConfigBlock> blocks) {
-		this.name = name;
-		this.blocks = blocks;
-	}
+    /**
+     * @param name   the name of the sequence
+     * @param blocks the block sequence, as a list
+     */
+    ConfigItemMapEntrySequence(final String name, final List<ConfigBlock> blocks) {
+        this.name = name;
+        this.blocks = blocks;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	@Override
-	public int size() {
-		return this.blocks.size();
-	}
+    @Override
+    public int size() {
+        return this.blocks.size();
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return this.blocks.isEmpty();
-	}
+    @Override
+    public boolean isEmpty() {
+        return this.blocks.isEmpty();
+    }
 
-	@Override
-	public boolean add(final ConfigBlock block) {
-		return this.blocks.add(block);
-	}
+    @Override
+    public boolean add(final ConfigBlock block) {
+        return this.blocks.add(block);
+    }
 
-	@Override
-	public ConfigBlock put(final ConfigBlock block) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public ConfigBlock put(final ConfigBlock block) {
+        throw new UnsupportedOperationException();
+    }
 
-	/**
-	 * Remove the block at a given index.
-	 * @param i the index.
-	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
-	 */
-	public void remove(final int i) {
-		this.blocks.remove(i);
-	}
+    /**
+     * Remove the block at a given index.
+     *
+     * @param i the index.
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     */
+    public void remove(final int i) {
+        this.blocks.remove(i);
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
-		appendable.append("<config:config-item-map-entry");
-		if (this.name != null)
-			util.appendEAttribute(appendable, "config:name", this.name);
-		appendable.append(">");
-		for (final ConfigBlock block : this.blocks)
-			block.appendXMLContent(util, appendable);
-		appendable.append("</config:config-item-map-entry>");
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<config:config-item-map-entry");
+        if (this.name != null) {
+            util.appendEAttribute(appendable, "config:name", this.name);
+        }
+        appendable.append(">");
+        for (final ConfigBlock block : this.blocks) {
+            block.appendXMLContent(util, appendable);
+        }
+        appendable.append("</config:config-item-map-entry>");
+    }
 
-	@Override
-	public Iterator<ConfigBlock> iterator() {
-		return this.blocks.iterator();
-	}
+    @Override
+    public Iterator<ConfigBlock> iterator() {
+        return this.blocks.iterator();
+    }
 
-	/**
-	 * Set a value for an item at a given index
-	 * @param i the index
-	 * @param value the new value
-	 * @return the previous value
-	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
-	 */
-	public String set(final int i, final String value) {
-		final ConfigBlock block = this.blocks.get(i);
-		if (block instanceof ConfigItem) {
-			final ConfigItem item = (ConfigItem) block;
-			final String previousValue = item.getValue();
-			item.setValue(value);
-			return previousValue;
-		}
-		return null;
-	}
+    /**
+     * Set a value for an item at a given index
+     *
+     * @param i     the index
+     * @param value the new value
+     * @return the previous value
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     */
+    public String set(final int i, final String value) {
+        final ConfigBlock block = this.blocks.get(i);
+        if (block instanceof ConfigItem) {
+            final ConfigItem item = (ConfigItem) block;
+            final String previousValue = item.getValue();
+            item.setValue(value);
+            return previousValue;
+        }
+        return null;
+    }
 
-	@Override
-	public boolean add(final String name, final String type, final String value) {
-		final ConfigItem item = new ConfigItem(name, type, value);
-		return this.blocks.add(item);
-	}
+    @Override
+    public boolean add(final String name, final String type, final String value) {
+        final ConfigItem item = new ConfigItem(name, type, value);
+        return this.blocks.add(item);
+    }
 }

@@ -74,7 +74,7 @@ public class TableRow {
      *
      * @param writeUtil       an util
      * @param xmlUtil         an util
-     * @param stylesContainer the styles containes
+     * @param stylesContainer the styles container
      * @param dataStyles      the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
      * @param parent          the parent table

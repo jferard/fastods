@@ -34,110 +34,110 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BenchFastFlushWithThreads extends Bench {
-	private final Logger logger;
-	private final OdsFactory odsFactory;
+    private final Logger logger;
+    private final OdsFactory odsFactory;
 
-	public BenchFastFlushWithThreads(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "FastODSFlushWithThreads", rowCount, colCount);
-		this.logger = logger;
-		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-	}
+    public BenchFastFlushWithThreads(final Logger logger, final int rowCount, final int colCount) {
+        super(logger, "FastODSFlushWithThreads", rowCount, colCount);
+        this.logger = logger;
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+    }
 
-	@Test
-	public void test0() throws IOException  {
-		this.test();
-	}
+    @Test
+    public void test0() throws IOException {
+        this.test();
+    }
 
-	@Override
-	public long test() throws IOException {
-		try {
-			// Open the file.
-			this.logger.info("testFastFlushThread: filling a " + this.getRowCount() + " rows, "
-					+ this.getColCount() + " columns spreadsheet");
-			final long t1 = System.currentTimeMillis();
-			final OdsFileWriterAdapter writerAdapter =
-					this.odsFactory.createWriterAdapter(new File("generated_files", "fastods_flush_thread_benchmark" +
-							".ods"));
-			final NamedOdsDocument document = writerAdapter.document();
-			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(),
+    @Override
+    public long test() throws IOException {
+        try {
+            // Open the file.
+            this.logger.info("testFastFlushThread: filling a " + this.getRowCount() + " rows, " +
+                    this.getColCount() + " columns spreadsheet");
+            final long t1 = System.currentTimeMillis();
+            final OdsFileWriterAdapter writerAdapter = this.odsFactory.createWriterAdapter(
+                    new File("generated_files", "fastods_flush_thread_benchmark" + ".ods"));
+            final NamedOdsDocument document = writerAdapter.document();
+            final Producer a = new Producer(document, this.getRowCount(), this.getColCount(),
                     this.getRandom());
-			final Consumer b = new Consumer(this.logger, writerAdapter);
-			b.start();
-			a.start();
-			a.join();
-			b.join();
-			final long t2 = System.currentTimeMillis();
+            final Consumer b = new Consumer(this.logger, writerAdapter);
+            b.start();
+            a.start();
+            a.join();
+            b.join();
+            final long t2 = System.currentTimeMillis();
 
-			this.logger.info("Filled in " + (t2 - t1) + " ms");
-			return t2 - t1;
-		} catch (final InterruptedException e) {
-			this.logger.log(Level.SEVERE, "", e);
-		}
-		return 0;
-	}
+            this.logger.info("Filled in " + (t2 - t1) + " ms");
+            return t2 - t1;
+        } catch (final InterruptedException e) {
+            this.logger.log(Level.SEVERE, "", e);
+        }
+        return 0;
+    }
 
-	static class Consumer extends Thread {
-		private final Logger logger;
-		private final OdsFileWriterAdapter writerAdapter;
+    static class Consumer extends Thread {
+        private final Logger logger;
+        private final OdsFileWriterAdapter writerAdapter;
 
-		public Consumer(final Logger logger, final OdsFileWriterAdapter writerAdapter) {
-			this.logger = logger;
-			this.writerAdapter = writerAdapter;
-		}
+        public Consumer(final Logger logger, final OdsFileWriterAdapter writerAdapter) {
+            this.logger = logger;
+            this.writerAdapter = writerAdapter;
+        }
 
-		@Override
-		public void run() {
-			long t = 0;
-			try {
-				while (this.writerAdapter.isNotStopped()) {
-					this.writerAdapter.waitForData();
-					final long t1 = System.currentTimeMillis();
-					this.writerAdapter.flushAdaptee();
-					final long t2 = System.currentTimeMillis();
-					t += t2 - t1;
-				}
-				final long t1 = System.currentTimeMillis();
-				this.writerAdapter.flushAdaptee();
-				final long t2 = System.currentTimeMillis();
-				t += t2 - t1;
-			} catch (final IOException e) {
-				this.logger.log(Level.SEVERE, "", e);
-			}
-			System.out.println(">> Write time " + t + " ms");
-		}
-	}
+        @Override
+        public void run() {
+            long t = 0;
+            try {
+                while (this.writerAdapter.isNotStopped()) {
+                    this.writerAdapter.waitForData();
+                    final long t1 = System.currentTimeMillis();
+                    this.writerAdapter.flushAdaptee();
+                    final long t2 = System.currentTimeMillis();
+                    t += t2 - t1;
+                }
+                final long t1 = System.currentTimeMillis();
+                this.writerAdapter.flushAdaptee();
+                final long t2 = System.currentTimeMillis();
+                t += t2 - t1;
+            } catch (final IOException e) {
+                this.logger.log(Level.SEVERE, "", e);
+            }
+            System.out.println(">> Write time " + t + " ms");
+        }
+    }
 
-	static class Producer extends Thread {
-		private final NamedOdsDocument document;
-		private final int rowCount;
-		private final int colCount;
-		private final Random random;
+    static class Producer extends Thread {
+        private final NamedOdsDocument document;
+        private final int rowCount;
+        private final int colCount;
+        private final Random random;
 
-		public Producer(final NamedOdsDocument document, final int rowCount, final int colCount, final Random random) {
-			this.document = document;
-			this.rowCount = rowCount;
-			this.colCount = colCount;
-			this.random = random;
-		}
+        public Producer(final NamedOdsDocument document, final int rowCount, final int colCount,
+                        final Random random) {
+            this.document = document;
+            this.rowCount = rowCount;
+            this.colCount = colCount;
+            this.random = random;
+        }
 
-		@Override
-		public void run() {
-			try {
-				final Table table = this.document.addTable("test", this.rowCount, this.colCount);
+        @Override
+        public void run() {
+            try {
+                final Table table = this.document.addTable("test", this.rowCount, this.colCount);
 
-				for (int y = 0; y < this.rowCount; y++) {
-					final TableRow row = table.nextRow();
-					final TableCellWalker walker = row.getWalker();
-					for (int x = 0; x < this.colCount; x++) {
-						walker.setFloatValue(this.random.nextInt(1000));
-						walker.next();
-					}
-				}
+                for (int y = 0; y < this.rowCount; y++) {
+                    final TableRow row = table.nextRow();
+                    final TableCellWalker walker = row.getWalker();
+                    for (int x = 0; x < this.colCount; x++) {
+                        walker.setFloatValue(this.random.nextInt(1000));
+                        walker.next();
+                    }
+                }
 
-				this.document.save();
-			} catch (final IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+                this.document.save();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -102,7 +102,7 @@ public class OdsElements {
     private final Logger logger;
     private final ManifestElement manifestElement;
     private final MetaElement metaElement;
-    private final MimetypeElement mimetypeElement;
+    private final MimetypeElement mimeTypeElement;
     private final SettingsElement settingsElement;
     private final StylesContainer stylesContainer;
     private final StylesElement stylesElement;
@@ -113,7 +113,7 @@ public class OdsElements {
      *
      * @param logger          the logger
      * @param stylesContainer the styles container (before dispatch to styles.xml and content.xml)
-     * @param mimetypeElement the mimetype element
+     * @param mimeTypeElement the mime type element
      * @param manifestElement the manifest element
      * @param settingsElement the settings.xml element
      * @param metaElement     the meta element
@@ -121,11 +121,11 @@ public class OdsElements {
      * @param stylesElement   the styles.xml element
      */
     OdsElements(final Logger logger, final StylesContainer stylesContainer,
-                final MimetypeElement mimetypeElement, final ManifestElement manifestElement,
+                final MimetypeElement mimeTypeElement, final ManifestElement manifestElement,
                 final SettingsElement settingsElement, final MetaElement metaElement,
                 final ContentElement contentElement, final StylesElement stylesElement) {
         this.logger = logger;
-        this.mimetypeElement = mimetypeElement;
+        this.mimeTypeElement = mimeTypeElement;
         this.manifestElement = manifestElement;
         this.settingsElement = settingsElement;
         this.metaElement = metaElement;
@@ -268,7 +268,7 @@ public class OdsElements {
     public void createEmptyElements(final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing empty ods elements to zip file");
         for (final String elementName : EMPTY_ELEMENT_NAMES) {
-            this.logger.log(Level.FINEST, "Writing odselement: {0} to zip file", elementName);
+            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", elementName);
             writer.putNextEntry(new ZipEntry(elementName));
             writer.closeEntry();
         }
@@ -408,7 +408,7 @@ public class OdsElements {
      * @throws IOException if write fails
      */
     public void writeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.logger.log(Level.FINER, "Writing odselement: contentElement to zip file");
+        this.logger.log(Level.FINER, "Writing ods element: contentElement to zip file");
         this.contentElement.write(xmlUtil, writer);
     }
 
@@ -421,9 +421,9 @@ public class OdsElements {
      */
     public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
             throws IOException {
-        this.logger.log(Level.FINER, "Writing odselement: mimeTypeEntry to zip file");
-        this.mimetypeElement.write(xmlUtil, writer);
-        this.logger.log(Level.FINER, "Writing odselement: manifestElement to zip file");
+        this.logger.log(Level.FINER, "Writing ods element: mimeTypeEntry to zip file");
+        this.mimeTypeElement.write(xmlUtil, writer);
+        this.logger.log(Level.FINER, "Writing ods element: manifestElement to zip file");
         this.manifestElement.write(xmlUtil, writer);
     }
 
@@ -435,7 +435,7 @@ public class OdsElements {
      * @throws IOException if write fails
      */
     public void writeMeta(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.logger.log(Level.FINER, "Writing odselement: metaElement to zip file");
+        this.logger.log(Level.FINER, "Writing ods element: metaElement to zip file");
         this.metaElement.write(xmlUtil, writer);
     }
 
@@ -449,7 +449,7 @@ public class OdsElements {
     public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
             throws IOException {
         this.settingsElement.setTables(this.getTables());
-        this.logger.log(Level.FINER, "Writing odselement: settingsElement to zip file");
+        this.logger.log(Level.FINER, "Writing ods element: settingsElement to zip file");
         this.settingsElement.write(xmlUtil, writer);
     }
 
@@ -461,7 +461,7 @@ public class OdsElements {
      * @throws IOException if write fails
      */
     public void writeStyles(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.logger.log(Level.FINER, "Writing odselement: stylesElement to zip file");
+        this.logger.log(Level.FINER, "Writing ods element: stylesElement to zip file");
         this.stylesElement.write(xmlUtil, writer);
     }
 

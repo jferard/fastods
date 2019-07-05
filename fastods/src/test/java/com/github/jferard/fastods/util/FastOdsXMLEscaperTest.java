@@ -82,8 +82,8 @@ public class FastOdsXMLEscaperTest {
 
     @Test
     public final void testBasicChars() {
-		this.assertEqualsToAttrEscaped("abcde", "abcde");
-		this.assertEqualsToContentEscaped("abcde", "abcde");
+        this.assertEqualsToAttrEscaped("abcde", "abcde");
+        this.assertEqualsToContentEscaped("abcde", "abcde");
     }
 
     @Test
@@ -129,7 +129,7 @@ public class FastOdsXMLEscaperTest {
 
     @Test
     public final void testContentLt() {
-		this.assertEqualsToContentEscaped("&lt;", "<");
+        this.assertEqualsToContentEscaped("&lt;", "<");
     }
 
     @Test
@@ -156,14 +156,14 @@ public class FastOdsXMLEscaperTest {
 
     @Test
     public final void testEmptyString() {
-		this.assertEqualsToAttrEscaped("", "");
-		this.assertEqualsToContentEscaped("", "");
+        this.assertEqualsToAttrEscaped("", "");
+        this.assertEqualsToContentEscaped("", "");
     }
 
     @Test
     public final void testFinalChars() {
-		this.assertEqualsToAttrEscaped("&apos;abcde", "'abcde");
-		this.assertEqualsToContentEscaped("'abcde", "'abcde");
+        this.assertEqualsToAttrEscaped("&apos;abcde", "'abcde");
+        this.assertEqualsToContentEscaped("'abcde", "'abcde");
     }
 
     private void assertEqualsToAttrEscaped(final String expected, final String actualToEscape) {

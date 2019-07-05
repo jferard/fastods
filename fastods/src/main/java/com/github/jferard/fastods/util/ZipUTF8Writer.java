@@ -31,44 +31,49 @@ import java.util.zip.ZipEntry;
 
 /**
  * A writer for a zip file/ It's a writer and a zipper
+ *
  * @author Julien Férard
  */
-public interface ZipUTF8Writer
-		extends Closeable, Flushable, Appendable {
-	/**
-	 * the utf-8 encoding
-	 */
-	Charset UTF_8 = Charset.forName("UTF-8");
+public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
+    /**
+     * the utf-8 encoding
+     */
+    Charset UTF_8 = Charset.forName("UTF-8");
 
-	/**
-	 * Close the current entry
-	 * @throws IOException if an I/O error occurs
-	 */
-	void closeEntry() throws IOException;
+    /**
+     * Close the current entry
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    void closeEntry() throws IOException;
 
-	/**
+    /**
      * finish the zip file
-	 * @throws IOException if an I/O error occurs
-	 */
-	void finish() throws IOException;
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    void finish() throws IOException;
 
-	/**
+    /**
      * Put a new entry into the zip. This becomes the current entry
-	 * @param entry the entry
-	 * @throws IOException if an I/O error occurs
-	 */
-	void putNextEntry(final ZipEntry entry) throws IOException;
+     *
+     * @param entry the entry
+     * @throws IOException if an I/O error occurs
+     */
+    void putNextEntry(final ZipEntry entry) throws IOException;
 
-	/**
-	 * Add a comment to the zip
-	 * @param comment the comment
-	 */
-	void setComment(final String comment);
+    /**
+     * Add a comment to the zip
+     *
+     * @param comment the comment
+     */
+    void setComment(final String comment);
 
-	/**
-	 * Write a string to the writer
-	 * @param str the string
-	 * @throws IOException if an I/O error occurs
-	 */
-	void write(final String str) throws IOException;
+    /**
+     * Write a string to the writer
+     *
+     * @param str the string
+     * @throws IOException if an I/O error occurs
+     */
+    void write(final String str) throws IOException;
 }

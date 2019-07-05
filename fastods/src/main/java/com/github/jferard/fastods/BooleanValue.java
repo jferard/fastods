@@ -36,8 +36,8 @@ public class BooleanValue implements CellValue {
         if (o instanceof Boolean) {
             return new BooleanValue((Boolean) o);
         } else if (o instanceof BooleanValue) {
-			return (BooleanValue) o;
-		} else {
+            return (BooleanValue) o;
+        } else {
             throw new FastOdsException("Can't cast " + o + " to Boolean");
         }
     }
@@ -60,10 +60,12 @@ public class BooleanValue implements CellValue {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof BooleanValue))
+        }
+        if (!(o instanceof BooleanValue)) {
             return false;
+        }
 
         final BooleanValue other = (BooleanValue) o;
         return this.value.equals(other.value);

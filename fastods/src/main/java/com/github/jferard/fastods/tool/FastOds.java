@@ -37,48 +37,47 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public final class FastOds {
-	private static final XMLUtil xmlUtil = XMLUtil.create();
-	/**
-	 * The desktop
-	 */
-	static Desktop desktop;
+    private static final XMLUtil xmlUtil = XMLUtil.create();
+    /**
+     * The desktop
+     */
+    static Desktop desktop;
 
-	static {
-		try {
-			desktop = Desktop.getDesktop();
-		} catch (final Exception e) {
-			Logger.getAnonymousLogger().warning("Cant' find desktop");
-		}
-	}
+    static {
+        try {
+            desktop = Desktop.getDesktop();
+        } catch (final Exception e) {
+            Logger.getAnonymousLogger().warning("Cant' find desktop");
+        }
+    }
 
-	/**
-	 * @return the default XMLUtil.
-	 */
-	public static XMLUtil getXMLUtil() {
-		return FastOds.xmlUtil;
-	}
+    /**
+     * @return the default XMLUtil.
+     */
+    public static XMLUtil getXMLUtil() {
+        return FastOds.xmlUtil;
+    }
 
-	/**
-	 * Opens a file with the default application.
-	 *
-	 * @param f
-	 *            the file to open
-	 * @return true if succeeded, false otherwise.
-	 */
-	public static boolean openFile(final File f) {
-		if (desktop != null && f.exists() && f.isFile()) {
-			try {
-				desktop.open(f);
-				return true;
-			} catch (final IOException e) {
-				Logger.getLogger(FastOds.class.getName()).log(Level.SEVERE,
-						"Can't open file " + f + " in appropriate application",
-						e);
-			}
-		}
-		return false;
-	}
+    /**
+     * Opens a file with the default application.
+     *
+     * @param f the file to open
+     * @return true if succeeded, false otherwise.
+     */
+    public static boolean openFile(final File f) {
+        if (desktop != null && f.exists() && f.isFile()) {
+            try {
+                desktop.open(f);
+                return true;
+            } catch (final IOException e) {
+                Logger.getLogger(FastOds.class.getName())
+                        .log(Level.SEVERE, "Can't open file " + f + " in appropriate application",
+                                e);
+            }
+        }
+        return false;
+    }
 
-	private FastOds() {
-	}
+    private FastOds() {
+    }
 }

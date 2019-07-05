@@ -28,6 +28,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 /**
+ *
  */
 public class ConfigBlockTest {
     @Test
@@ -38,23 +39,30 @@ public class ConfigBlockTest {
         set1.add(new ConfigItem("item2", "string", "str"));
         cb.add(set1);
         final ConfigItemMapIndexed map1 = new ConfigItemMapIndexed("map1");
-        map1.add(ConfigItemMapEntrySingleton.createSingleton("entry1", new ConfigItem("item3", "short", "0")));
+        map1.add(ConfigItemMapEntrySingleton
+                .createSingleton("entry1", new ConfigItem("item3", "short", "0")));
         cb.add(map1);
         final ConfigItemMapNamed map2 = new ConfigItemMapNamed("map2");
-        map2.put(ConfigItemMapEntrySingleton.createSingleton("entry2", new ConfigItem("item4", "long", "123456789")));
+        map2.put(ConfigItemMapEntrySingleton
+                .createSingleton("entry2", new ConfigItem("item4", "long", "123456789")));
         cb.add(map2);
 
-        TestHelper.assertXMLUnsortedEquals(
-                "<config:config-item-set config:name=\"root\">" + "<config:config-item config:name=\"item1\" " + "config:type=\"int\">1</config:config-item>" + "<config:config-item-set config:name=\"set1\">"
-						+ "<config:config-item config:name=\"item2\" config:type=\"string\">str</config:config-item>"
-						+ "</config:config-item-set>" + "<config:config-item-map-indexed config:name=\"map1\">" +
-						"<config:config-item-map-entry config:name=\"entry1\">" + "<config:config-item " +
-						"config:name=\"item3\" config:type=\"short\">0</config:config-item>" +
-						"</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
-						"<config:config-item-map-named config:name=\"map2\">" + "<config:config-item-map-entry " +
-						"config:name=\"entry2\">" + "<config:config-item config:name=\"item4\" " +
-						"config:type=\"long\">123456789</config:config-item>" + "</config:config-item-map-entry>" +
-						"</config:config-item-map-named>" + "</config:config-item-set>",
-                cb);
+        TestHelper.assertXMLUnsortedEquals("<config:config-item-set config:name=\"root\">" +
+                "<config:config-item config:name=\"item1\" " +
+                "config:type=\"int\">1</config:config-item>" +
+                "<config:config-item-set config:name=\"set1\">" +
+                "<config:config-item config:name=\"item2\" " +
+                "config:type=\"string\">str</config:config-item>" +
+                "</config:config-item-set>" +
+                "<config:config-item-map-indexed config:name=\"map1\">" +
+                "<config:config-item-map-entry config:name=\"entry1\">" + "<config:config-item " +
+                "config:name=\"item3\" config:type=\"short\">0</config:config-item>" +
+                "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
+                "<config:config-item-map-named config:name=\"map2\">" +
+                "<config:config-item-map-entry " + "config:name=\"entry2\">" +
+                "<config:config-item config:name=\"item4\" " +
+                "config:type=\"long\">123456789</config:config-item>" +
+                "</config:config-item-map-entry>" + "</config:config-item-map-named>" +
+                "</config:config-item-set>", cb);
     }
 }

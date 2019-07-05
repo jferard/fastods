@@ -38,7 +38,8 @@ public class TextStyle implements FontFaceContainerStyle {
     /**
      * The default text style
      */
-    public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder().buildStyle("Default");
+    public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
+            .buildStyle("Default");
     private final String name;
     private final boolean hidden;
     private final TextProperties textProperties;
@@ -58,7 +59,8 @@ public class TextStyle implements FontFaceContainerStyle {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:style");
         util.appendEAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "text");
@@ -96,7 +98,9 @@ public class TextStyle implements FontFaceContainerStyle {
 
     @Override
     public String getKey() {
-        if (this.key == null) this.key = this.getFamily() + "@" + this.getName();
+        if (this.key == null) {
+            this.key = this.getFamily() + "@" + this.getName();
+        }
         return this.key;
     }
 

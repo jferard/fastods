@@ -30,24 +30,26 @@ import java.io.OutputStream;
 
 /**
  * The file tested already exists.
+ *
  * @author Julien Férard
  */
 public class FileExists implements FileOpenResult {
-	private final File file;
-	private OutputStream out;
+    private final File file;
+    private OutputStream out;
 
-	/**
-	 * @param file the tested file
-	 */
-	public FileExists(final File file) {
-		this.file = file;
-	}
+    /**
+     * @param file the tested file
+     */
+    public FileExists(final File file) {
+        this.file = file;
+    }
 
-	@Override
-	public OutputStream getStream() throws FileNotFoundException {
-		if (this.out == null)
-			this.out = new FileOutputStream(this.file);
+    @Override
+    public OutputStream getStream() throws FileNotFoundException {
+        if (this.out == null) {
+            this.out = new FileOutputStream(this.file);
+        }
 
-		return this.out;
-	}
+        return this.out;
+    }
 }

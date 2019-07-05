@@ -23,7 +23,6 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.BooleanValue;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -72,8 +71,7 @@ public class OdsDocumentHelperTest {
 
 
     @Test
-    public final void testCellMergeInAllTables()
-            throws IOException, ParseException {
+    public final void testCellMergeInAllTables() throws IOException, ParseException {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(1234567891011L);
 
@@ -89,8 +87,7 @@ public class OdsDocumentHelperTest {
     }
 
     @Test
-    public final void testCellValueInAllTables()
-            throws IOException, ParseException {
+    public final void testCellValueInAllTables() throws IOException, ParseException {
         final TableCellStyle ts = TableCellStyle.builder("a").build();
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(1234567891011L);

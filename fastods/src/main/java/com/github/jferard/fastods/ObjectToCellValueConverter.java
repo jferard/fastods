@@ -34,6 +34,11 @@ import java.util.Date;
 public class ObjectToCellValueConverter implements ToCellValueConverter {
     private final String currency;
 
+    /**
+     * Create a new converter
+     *
+     * @param currency the currency for currency values
+     */
     public ObjectToCellValueConverter(final String currency) {
         this.currency = currency;
     }

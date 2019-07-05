@@ -41,11 +41,14 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class StylesContainerTest {
-    private static final String PS1_MASTER_XML = "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">"
-            + "<style:header>" + "<text:p><text:span text:style-name=\"none\"></text:span></text:p>" +
-            "</style:header>" + "<style:header-left style:display=\"false\"/>" + "<style:footer><text:p><text:span "
-            + "text:style-name=\"none\"></text:span></text:p>" + "</style:footer><style:footer-left " +
-            "style:display=\"false\"/>" + "</style:master-page>";
+    private static final String PS1_MASTER_XML =
+            "<style:master-page style:name=\"a\" style:page-layout-name=\"a\">" + "<style:header>" +
+                    "<text:p><text:span text:style-name=\"none\"></text:span></text:p>" +
+                    "</style:header>" + "<style:header-left style:display=\"false\"/>" +
+                    "<style:footer><text:p><text:span " +
+                    "text:style-name=\"none\"></text:span></text:p>" +
+                    "</style:footer><style:footer-left " + "style:display=\"false\"/>" +
+                    "</style:master-page>";
 
     private static final String PS_LAYOUT_XML_FORMAT;
     private static final String PS1_LAYOUT_XML;
@@ -56,19 +59,22 @@ public class StylesContainerTest {
     private static final String DS1_XML;
 
     static {
-        DS_XML_FORMAT = "<number:boolean-style style:name=\"a\" number:language=\"en\" " + "number:country=\"%s\" " +
-                "style:volatile=\"true\"/>";
+        DS_XML_FORMAT = "<number:boolean-style style:name=\"a\" number:language=\"en\" " +
+                "number:country=\"%s\" " + "style:volatile=\"true\"/>";
 
         DS1_XML = String.format(DS_XML_FORMAT, "A");
         DS2_XML = String.format(DS_XML_FORMAT, "B");
 
-        PS_LAYOUT_XML_FORMAT = "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties " +
-                "fo:page-width=\"21cm\" " + "fo:page-height=\"29.7cm\" " + "style:num-format=\"1\" " +
-                "style:writing-mode=\"lr-tb\" " + "style:print-orientation=\"portrait\" " + "fo:margin=\"%s\"/>" +
-                "<style:header-style>" + "<style:header-footer-properties " + "fo:min-height=\"0cm\" " +
-                "fo:margin=\"0cm\"/>" + "</style:header-style>" + "<style:footer-style>" +
-                "<style:header-footer-properties " + "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" +
-                "</style:footer-style>" + "</style:page-layout>";
+        PS_LAYOUT_XML_FORMAT =
+                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties " +
+                        "fo:page-width=\"21cm\" " + "fo:page-height=\"29.7cm\" " +
+                        "style:num-format=\"1\" " + "style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " + "fo:margin=\"%s\"/>" +
+                        "<style:header-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:header-style>" +
+                        "<style:footer-style>" + "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:footer-style>" +
+                        "</style:page-layout>";
         PS1_LAYOUT_XML = String.format(PS_LAYOUT_XML_FORMAT, "1pt");
         PS2_LAYOUT_XML = String.format(PS_LAYOUT_XML_FORMAT, "2pt");
     }

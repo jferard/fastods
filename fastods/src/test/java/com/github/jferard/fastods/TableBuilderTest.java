@@ -114,8 +114,7 @@ public class TableBuilderTest {
     }
 
     @Test
-    public final void testGetRowFromStringPos()
-            throws IOException, ParseException {
+    public final void testGetRowFromStringPos() throws IOException, ParseException {
         final List<TableRow> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));

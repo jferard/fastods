@@ -38,8 +38,9 @@ public class TooltipParameter implements TagParameters {
 
     /**
      * Create a new tooltip parameter
-     * @param width the width
-     * @param height the height
+     *
+     * @param width   the width
+     * @param height  the height
      * @param visible true if the tooltip is visible
      */
     TooltipParameter(final Length width, final Length height, final boolean visible) {
@@ -49,21 +50,23 @@ public class TooltipParameter implements TagParameters {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
-        util.appendAttribute(appendable,"office:display", this.visible ? "true" : "false");
-        util.appendAttribute(appendable,"svg:width", this.width.toString());
-        util.appendAttribute(appendable,"svg:height", this.height.toString());
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        util.appendAttribute(appendable, "office:display", this.visible ? "true" : "false");
+        util.appendAttribute(appendable, "svg:width", this.width.toString());
+        util.appendAttribute(appendable, "svg:height", this.height.toString());
         // weird patch for LO bug
-        util.appendAttribute(appendable,"svg:x", "");
+        util.appendAttribute(appendable, "svg:x", "");
     }
 
     /**
-     * @param width the width
-     * @param height the height
+     * @param width   the width
+     * @param height  the height
      * @param visible true if the tooltip is visible
      * @return the new tooltip parameter
      */
-    public static TooltipParameter create(final Length width, final Length height, final boolean visible) {
+    public static TooltipParameter create(final Length width, final Length height,
+                                          final boolean visible) {
         return new TooltipParameter(width, height, visible);
     }
 }

@@ -32,7 +32,8 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Martin Schulz
  * TODO: no reason to have a ShowableBuilder, but LO can't figure common row styles.
  */
-public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, ShowableBuilder<TableRowStyleBuilder> {
+public class TableRowStyleBuilder
+        implements StyleBuilder<TableRowStyle>, ShowableBuilder<TableRowStyleBuilder> {
     private static final Length DEFAULT_ROW_HEIGHT = SimpleLength.cm(0.45);
     private final String name;
     private Length rowHeight;
@@ -55,7 +56,8 @@ public class TableRowStyleBuilder implements StyleBuilder<TableRowStyle>, Showab
 
     @Override
     public TableRowStyle build() {
-        return new TableRowStyle(this.name, this.hidden, this.rowHeight, this.defaultCellStyle, this.optimalHeight);
+        return new TableRowStyle(this.name, this.hidden, this.rowHeight, this.defaultCellStyle,
+                this.optimalHeight);
     }
 
     /**

@@ -44,15 +44,16 @@ public class BenchSimpleOdf extends Bench {
     public long test() throws IOException {
         try {
             // Open the file.
-            this.logger.info("testSimpleOdf: filling a " + this.getRowCount() + " rows, " + this
-                    .getColCount() + " columns spreadsheet");
+            this.logger.info("testSimpleOdf: filling a " + this.getRowCount() + " rows, " +
+                    this.getColCount() + " columns spreadsheet");
             final long t1 = System.currentTimeMillis();
             final SpreadsheetDocument document = SpreadsheetDocument.newSpreadsheetDocument();
             final Table table = document.appendSheet("test");
             for (int y = 0; y < this.getRowCount(); y++) {
                 final Row row = table.appendRow();
                 for (int x = 0; x < this.getColCount(); x++) {
-                    row.getCellByIndex(x).setStringValue(String.valueOf(this.getRandom().nextInt(1000)));
+                    row.getCellByIndex(x)
+                            .setStringValue(String.valueOf(this.getRandom().nextInt(1000)));
                 }
             }
 

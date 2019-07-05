@@ -44,8 +44,7 @@ public class BooleanStyleTest {
                 .volatileStyle(false).build();
         TestHelper.assertXMLEquals(
                 "<number:boolean-style style:name=\"test\" number:language=\"fr\" " +
-                        "number:country=\"FR\"/>",
-                bs);
+                        "number:country=\"FR\"/>", bs);
     }
 
     @Test
@@ -54,8 +53,7 @@ public class BooleanStyleTest {
                 .country("b").build();
         TestHelper.assertXMLEquals(
                 "<number:boolean-style style:name=\"test\" number:language=\"a\" " +
-                        "number:country=\"B\" " +
-                        "style:volatile=\"true\"/>", bs);
+                        "number:country=\"B\" " + "style:volatile=\"true\"/>", bs);
     }
 
     @Test

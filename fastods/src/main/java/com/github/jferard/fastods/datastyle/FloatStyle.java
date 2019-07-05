@@ -37,83 +37,88 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class FloatStyle implements DataStyle {
-	private final NumberStyleHelper numberStyle;
-	private final int decimalPlaces;
+    private final NumberStyleHelper numberStyle;
+    private final int decimalPlaces;
 
-	/**
-	 * Create a float style
-	 * @param numberStyle the embedded core data style
-	 * @param decimalPlaces the number of digits after the separator
-	 */
-	public FloatStyle(final NumberStyleHelper numberStyle,
-						 final int decimalPlaces) {
-		this.numberStyle = numberStyle;
-		this.decimalPlaces = decimalPlaces;
-	}
+    /**
+     * Create a float style
+     *
+     * @param numberStyle   the embedded core data style
+     * @param decimalPlaces the number of digits after the separator
+     */
+    public FloatStyle(final NumberStyleHelper numberStyle, final int decimalPlaces) {
+        this.numberStyle = numberStyle;
+        this.decimalPlaces = decimalPlaces;
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
-		final CharSequence number = this.computeNumberTag(util);
-		this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        final CharSequence number = this.computeNumberTag(util);
+        this.numberStyle.appendXMLHelper(util, appendable, "number-style", number);
+    }
 
-	/**
+    /**
      * @param util an util
-     * @return the numbre:number tag
+     * @return the number:number tag
      * @throws IOException if an I/O error occurs
      */
-    StringBuilder computeNumberTag(final XMLUtil util)
-			throws IOException {
-		final StringBuilder number = new StringBuilder();
-		this.appendNumberTag(util, number);
-		return number;
-	}
+    StringBuilder computeNumberTag(final XMLUtil util) throws IOException {
+        final StringBuilder number = new StringBuilder();
+        this.appendNumberTag(util, number);
+        return number;
+    }
 
-	/**
-	 * Append the number:number tag
-	 * @param util an util
-	 * @param appendable the destination
-	 * @throws IOException if an I/O error occurs
-	 */
-	public void appendNumberTag(final XMLUtil util, final Appendable appendable) throws IOException {
-		appendable.append("<number:number");
-		this.appendXMLAttributes(util, appendable);
-		appendable.append("/>");
-	}
-
-	/**
-	 * Append number:decimal-places, number:min-integer-digits and number:grouping
-	 * @param util an XML util
-	 * @param appendable the appendable
-	 * @throws IOException if an I/O error occurs
-	 */
-	void appendXMLAttributes(final XMLUtil util, final Appendable appendable) throws IOException {
-		util.appendAttribute(appendable, "number:decimal-places",
-				this.decimalPlaces);
-		this.numberStyle.appendNumberAttribute(util, appendable);
-	}
-
-	/**
-     * A helper to create the XML representation of the float style
-     * @param util a util
+    /**
+     * Append the number:number tag
+     *
+     * @param util       an util
      * @param appendable the destination
-     * @param numberStyleName the style name ("currency-style", ...)
-     * @param number the number itslef
      * @throws IOException if an I/O error occurs
      */
-    void appendXMLHelper(final XMLUtil util, final Appendable appendable, final String numberStyleName, final CharSequence number) throws IOException {
-		this.numberStyle.appendXMLHelper(util, appendable, numberStyleName, number);
-	}
+    public void appendNumberTag(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<number:number");
+        this.appendXMLAttributes(util, appendable);
+        appendable.append("/>");
+    }
 
-	@Override
-	public String getName() {
-		return this.numberStyle.getName();
-	}
+    /**
+     * Append number:decimal-places, number:min-integer-digits and number:grouping
+     *
+     * @param util       an XML util
+     * @param appendable the appendable
+     * @throws IOException if an I/O error occurs
+     */
+    void appendXMLAttributes(final XMLUtil util, final Appendable appendable) throws IOException {
+        util.appendAttribute(appendable, "number:decimal-places", this.decimalPlaces);
+        this.numberStyle.appendNumberAttribute(util, appendable);
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.numberStyle.isHidden();
-	}
+    /**
+     * A helper to create the XML representation of the float style
+     *
+     * @param util            a util
+     * @param appendable      the destination
+     * @param numberStyleName the style name ("currency-style", ...)
+     * @param number          the number itself
+     * @throws IOException if an I/O error occurs
+     */
+    void appendXMLHelper(final XMLUtil util, final Appendable appendable,
+                         final String numberStyleName, final CharSequence number)
+            throws IOException {
+        this.numberStyle.appendXMLHelper(util, appendable, numberStyleName, number);
+    }
+
+    @Override
+    public String getName() {
+        return this.numberStyle.getName();
+    }
+
+    @Override
+    public boolean isHidden() {
+        return this.numberStyle.isHidden();
+    }
 
     @Override
     public void addToElements(final OdsElements odsElements) {

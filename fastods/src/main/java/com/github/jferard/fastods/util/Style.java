@@ -28,6 +28,7 @@ import com.github.jferard.fastods.style.AddableToOdsElements;
 
 /**
  * A style (data style or object style)
+ *
  * @author Julien Férard
  */
 public interface Style extends NamedObject, AddableToOdsElements, Tag, Hidable {

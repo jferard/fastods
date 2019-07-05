@@ -35,27 +35,27 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipUTF8WriterTest {
 
-	private ZipUTF8Writer zipUTF8Writer;
-	private StringWriter writer;
-	private ByteArrayOutputStream out;
+    private ZipUTF8Writer zipUTF8Writer;
+    private StringWriter writer;
+    private ByteArrayOutputStream out;
 
-	@Before
-	public void setUp() {
-		this.writer = new StringWriter();
-		this.out = new ByteArrayOutputStream();
-		this.zipUTF8Writer = new ZipUTF8WriterImpl(new ZipOutputStream(this.out), this.writer);
-		PowerMock.resetAll();
-	}
+    @Before
+    public void setUp() {
+        this.writer = new StringWriter();
+        this.out = new ByteArrayOutputStream();
+        this.zipUTF8Writer = new ZipUTF8WriterImpl(new ZipOutputStream(this.out), this.writer);
+        PowerMock.resetAll();
+    }
 
-	@Test
-	public final void test() throws IOException {
-		this.zipUTF8Writer.setComment("comment");
-		this.zipUTF8Writer.putNextEntry(new ZipEntry("a"));
-		this.zipUTF8Writer.append("text", 0, 2);
-		Assert.assertEquals(this.writer.toString(), "te");
-		Assert.assertEquals(31, this.out.toByteArray().length);
-		this.zipUTF8Writer.closeEntry();
-		this.zipUTF8Writer.finish();
-	}
+    @Test
+    public final void test() throws IOException {
+        this.zipUTF8Writer.setComment("comment");
+        this.zipUTF8Writer.putNextEntry(new ZipEntry("a"));
+        this.zipUTF8Writer.append("text", 0, 2);
+        Assert.assertEquals(this.writer.toString(), "te");
+        Assert.assertEquals(31, this.out.toByteArray().length);
+        this.zipUTF8Writer.closeEntry();
+        this.zipUTF8Writer.finish();
+    }
 
 }

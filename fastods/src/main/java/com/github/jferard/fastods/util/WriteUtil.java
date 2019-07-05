@@ -60,6 +60,8 @@ public class WriteUtil {
                 this.ints[i] = Integer.toString(value);
             }
             return this.ints[i];
-        } else return Integer.toString(value);
+        } else {
+            return Integer.toString(value);
+        }
     }
 }

@@ -121,7 +121,7 @@ public class Position {
      * <li>1023 gives "AMJ"</li>
      * </ul>
      * <p>
-     * Remainder: '<filename>'#<tablename>.<col><row>
+     * Remainder: '<filename>'#<table-name>.<col><row>
      *
      * @return the Excel/OO/LO address
      */

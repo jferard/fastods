@@ -60,7 +60,8 @@ public class ZipUTF8WriterMockHandlerTest {
         this.mock.closeEntry();
         this.mock.close();
         Assert.assertEquals("<document />", this.handler.getEntryAsString("test"));
-        Assert.assertEquals("document", this.handler.getEntryAsDocument("test").getDocumentElement().getTagName());
+        Assert.assertEquals("document",
+                this.handler.getEntryAsDocument("test").getDocumentElement().getTagName());
     }
 
     @Test
@@ -71,7 +72,7 @@ public class ZipUTF8WriterMockHandlerTest {
         this.mock.close();
         this.mock.finish();
         final Iterable instance = this.handler.getInstance(Iterable.class);
-        Assert.assertEquals(null, instance.iterator());
+        Assert.assertNull(instance.iterator());
     }
 
     @Test
@@ -83,7 +84,8 @@ public class ZipUTF8WriterMockHandlerTest {
         instance.close();
         instance.finish();
         Assert.assertEquals("<document />", this.handler.getEntryAsString("test"));
-        Assert.assertEquals("document", this.handler.getEntryAsDocument("test").getDocumentElement().getTagName());
+        Assert.assertEquals("document",
+                this.handler.getEntryAsDocument("test").getDocumentElement().getTagName());
     }
 
 
@@ -122,12 +124,15 @@ public class ZipUTF8WriterMockHandlerTest {
         Assert.assertNull(this.handler.getEntryAsDocument("ok"));
     }
 
-    private interface ZUW
-		extends Closeable, Flushable, Appendable {
+    private interface ZUW extends Closeable, Flushable, Appendable {
         void closeEntry();
+
         void finish();
+
         void putNextEntry(final ZipEntry entry);
+
         void setComment(final String comment);
+
         void write(final String str);
     }
 }

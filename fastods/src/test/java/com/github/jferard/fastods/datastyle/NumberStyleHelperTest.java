@@ -45,8 +45,7 @@ public class NumberStyleHelperTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
                         NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS +
                         "</number:number-style>", ns);
     }
@@ -57,13 +56,11 @@ public class NumberStyleHelperTest {
                 .locale(this.locale).build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
                         NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS +
                         "</number:number-style>" +
                         "<number:number-style style:name=\"test-neg\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
                         "<style:text-properties fo:color=\"#ff0000\"/>" +
                         "<number:text>-</number:text>" +
                         NumberStyleHelperTest.NUMBER_NUMBER_DECIMAL_PLACES_AND_MIN_INTEGER_DIGITS +

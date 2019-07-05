@@ -27,6 +27,7 @@ import java.util.Locale;
 
 /**
  * 16.27.25 <number:text-style>
+ *
  * @author Julien Férard
  */
 public class TextDataStyleBuilder implements DataStyleBuilder<TextDataStyle, TextDataStyleBuilder> {
@@ -49,6 +50,11 @@ public class TextDataStyleBuilder implements DataStyleBuilder<TextDataStyle, Tex
         return new TextDataStyle(this.dataStyleBuilder.build(), this.text);
     }
 
+
+    /**
+     * @param text the XML representation of the content
+     * @return this for fluent style
+     */
     public TextDataStyleBuilder text(final String text) {
         this.text = text;
         return this;

@@ -32,54 +32,52 @@ import com.github.jferard.fastods.util.Box;
  * page/style:header
  *
  * @author Julien Férard
- *
  */
-public class RegionPageSectionBuilder
-		extends PageSectionBuilder<RegionPageSectionBuilder> {
+public class RegionPageSectionBuilder extends PageSectionBuilder<RegionPageSectionBuilder> {
 
-	private final Box<Text> centerRegionBox;
-	private final Box<Text> leftRegionBox;
-	private final Box<Text> rightRegionBox;
+    private final Box<Text> centerRegionBox;
+    private final Box<Text> leftRegionBox;
+    private final Box<Text> rightRegionBox;
 
-	/**
-	 * Create a new footer object.
-	 */
-	RegionPageSectionBuilder() {
-		super();
-		this.leftRegionBox = new Box<Text>();
-		this.centerRegionBox = new Box<Text>();
-		this.rightRegionBox = new Box<Text>();
-	}
+    /**
+     * Create a new footer object.
+     */
+    RegionPageSectionBuilder() {
+        super();
+        this.leftRegionBox = new Box<Text>();
+        this.centerRegionBox = new Box<Text>();
+        this.rightRegionBox = new Box<Text>();
+    }
 
-	@Override
-	public PageSection build() {
-		final PageSectionStyle style = new PageSectionStyle(this.marginsBuilder.build(),
-				this.minHeight);
-		final PageSectionContent header = new RegionFooterHeader(
-				this.centerRegionBox.get(), this.leftRegionBox.get(),
-				this.rightRegionBox.get());
-		return new PageSection(header, style);
-	}
+    @Override
+    public PageSection build() {
+        final PageSectionStyle style = new PageSectionStyle(this.marginsBuilder.build(),
+                this.minHeight);
+        final PageSectionContent header = new RegionFooterHeader(this.centerRegionBox.get(),
+                this.leftRegionBox.get(), this.rightRegionBox.get());
+        return new PageSection(header, style);
+    }
 
-	/**
-	 * Switch to a new region
-	 * @param region the region that will be set
-	 * @return this for fluent style
-	 */
-	public RegionPageSectionBuilder region(final PageSectionContent.Region region) {
-		switch (region) {
-		case LEFT: // Use left region
-			this.curRegionBox = this.leftRegionBox;
-			break;
-		case CENTER: // Use center region
-			this.curRegionBox = this.centerRegionBox;
-			break;
-		case RIGHT: // Use right region
-			this.curRegionBox = this.rightRegionBox;
-			break;
-		default: // Invalid footerRegionValue, use center region as default
-			throw new IllegalStateException();
-		}
-		return this;
-	}
+    /**
+     * Switch to a new region
+     *
+     * @param region the region that will be set
+     * @return this for fluent style
+     */
+    public RegionPageSectionBuilder region(final PageSectionContent.Region region) {
+        switch (region) {
+            case LEFT: // Use left region
+                this.curRegionBox = this.leftRegionBox;
+                break;
+            case CENTER: // Use center region
+                this.curRegionBox = this.centerRegionBox;
+                break;
+            case RIGHT: // Use right region
+                this.curRegionBox = this.rightRegionBox;
+                break;
+            default: // Invalid footerRegionValue, use center region as default
+                throw new IllegalStateException();
+        }
+        return this;
+    }
 }

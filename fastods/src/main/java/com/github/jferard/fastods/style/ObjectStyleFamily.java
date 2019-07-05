@@ -25,6 +25,7 @@ package com.github.jferard.fastods.style;
 
 /**
  * 19.476 style:family
+ *
  * @author Julien Férard
  */
 public enum ObjectStyleFamily {
@@ -57,6 +58,7 @@ public enum ObjectStyleFamily {
 
     /**
      * Create a new family
+     *
      * @param attributeName the attribute
      */
     ObjectStyleFamily(final String attributeName) {

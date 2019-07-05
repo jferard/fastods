@@ -30,13 +30,15 @@ import java.io.IOException;
 
 /**
  * Represents the header of a print page.
+ *
  * @author Julien Férard
  */
-public class Header  implements HeaderOrFooter {
+public class Header implements HeaderOrFooter {
     private final PageSection pageSection;
 
     /**
      * Create a new header from a page section
+     *
      * @param pageSection the page section
      */
     public Header(final PageSection pageSection) {
@@ -50,12 +52,16 @@ public class Header  implements HeaderOrFooter {
     }
 
     @Override
-    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         this.pageSection.appendXMLToMasterStyle(util, appendable);
     }
 
     @Override
-    public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util, final Appendable appendable) throws IOException {
-        this.pageSection.appendPageSectionStyleXMLToAutomaticStyle(util, appendable, PageSection.Type.HEADER);
+    public void appendPageSectionStyleXMLToAutomaticStyle(final XMLUtil util,
+                                                          final Appendable appendable)
+            throws IOException {
+        this.pageSection.appendPageSectionStyleXMLToAutomaticStyle(util, appendable,
+                PageSection.Type.HEADER);
     }
 }

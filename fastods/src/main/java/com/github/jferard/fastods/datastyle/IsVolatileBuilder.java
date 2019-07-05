@@ -25,13 +25,16 @@ package com.github.jferard.fastods.datastyle;
 
 /**
  * A style that may be volatile
+ *
  * @param <T> the concrete builder
  * @author Julien Férard
  */
 public interface IsVolatileBuilder<T> {
     /**
      * 19.517 style:volatile
-     * "The style:volatile attribute specifies whether unused style in a document are retained or discarded by consumers."
+     * "The style:volatile attribute specifies whether unused style in a document are retained or
+     * discarded by consumers."
+     *
      * @param volatileStyle true if "consumers should keep unused styles", false otherwise.
      * @return this for fluent style
      */

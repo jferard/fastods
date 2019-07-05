@@ -33,41 +33,41 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class BenchSimpleOds extends Bench {
-	private final Logger logger;
+    private final Logger logger;
 
-	public BenchSimpleOds(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "SimpleODS", rowCount, colCount);
-		this.logger = logger;
-	}
+    public BenchSimpleOds(final Logger logger, final int rowCount, final int colCount) {
+        super(logger, "SimpleODS", rowCount, colCount);
+        this.logger = logger;
+    }
 
-	@Override
-	public long test() throws IOException {
-		try {
-			// Open the file.
-			this.logger.info("testSimpleOds: filling a " + this.getRowCount() + " rows, "
-					+ this.getColCount() + " columns spreadsheet");
-			final long t1 = System.currentTimeMillis();
-			final OdsFile file = new OdsFile(
-					new File("generated_files", "simpleods_benchmark.ods").getPath());
-			file.addTable("test");
-			final org.simpleods.Table table = (org.simpleods.Table) file
-					.getContent().getTableQueue().get(0);
+    @Override
+    public long test() throws IOException {
+        try {
+            // Open the file.
+            this.logger.info("testSimpleOds: filling a " + this.getRowCount() + " rows, " +
+                    this.getColCount() + " columns spreadsheet");
+            final long t1 = System.currentTimeMillis();
+            final OdsFile file = new OdsFile(
+                    new File("generated_files", "simpleods_benchmark.ods").getPath());
+            file.addTable("test");
+            final org.simpleods.Table table = (org.simpleods.Table) file.getContent()
+                    .getTableQueue().get(0);
 
-			final ObjectQueue rows = table.getRows();
-			for (int y = 0; y < this.getRowCount(); y++) {
-				final org.simpleods.TableRow row = new org.simpleods.TableRow();
-				rows.add(row);
-				for (int x = 0; x < this.getColCount(); x++) {
-					row.setCell(x, String.valueOf(this.getRandom().nextInt(1000)));
-				}
-			}
+            final ObjectQueue rows = table.getRows();
+            for (int y = 0; y < this.getRowCount(); y++) {
+                final org.simpleods.TableRow row = new org.simpleods.TableRow();
+                rows.add(row);
+                for (int x = 0; x < this.getColCount(); x++) {
+                    row.setCell(x, String.valueOf(this.getRandom().nextInt(1000)));
+                }
+            }
 
-			file.save();
-			final long t2 = System.currentTimeMillis();
-			this.logger.info("Filled in " + (t2 - t1) + " ms");
-			return t2-t1;
-		} catch (final SimpleOdsException e) {
-			throw new IOException(e);
-		}
-	}
+            file.save();
+            final long t2 = System.currentTimeMillis();
+            this.logger.info("Filled in " + (t2 - t1) + " ms");
+            return t2 - t1;
+        } catch (final SimpleOdsException e) {
+            throw new IOException(e);
+        }
+    }
 }

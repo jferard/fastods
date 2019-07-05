@@ -35,70 +35,69 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public class TimeStyle implements DataStyle {
-	private final CoreDataStyle dataStyle;
-	private final DateTimeStyleFormat timeFormat;
+    private final CoreDataStyle dataStyle;
+    private final DateTimeStyleFormat timeFormat;
 
-	/**
-	 * Create a new date style
-	 * @param dataStyle the embedded core data style
-	 * @param timeFormat the format
-	 */
-	TimeStyle(final CoreDataStyle dataStyle,
-						final DateTimeStyleFormat timeFormat) {
-		this.dataStyle = dataStyle;
-		this.timeFormat = timeFormat;
-	}
+    /**
+     * Create a new date style
+     *
+     * @param dataStyle  the embedded core data style
+     * @param timeFormat the format
+     */
+    TimeStyle(final CoreDataStyle dataStyle, final DateTimeStyleFormat timeFormat) {
+        this.dataStyle = dataStyle;
+        this.timeFormat = timeFormat;
+    }
 
-	@Override
-	public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-			throws IOException {
-		appendable.append("<number:time-style");
-		util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
-		this.dataStyle.appendLVAttributes(util, appendable);
-		if (this.timeFormat == null) {
-			util.appendAttribute(appendable, "number:format-source",
-					"language");
-			appendable.append("/>");
-		} else {
-			util.appendAttribute(appendable, "number:format-source", "fixed");
-			appendable.append(">");
-			this.timeFormat.appendXMLContent(util, appendable);
-			appendable.append("</number:time-style>");
-		}
-	}
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<number:time-style");
+        util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
+        this.dataStyle.appendLVAttributes(util, appendable);
+        if (this.timeFormat == null) {
+            util.appendAttribute(appendable, "number:format-source", "language");
+            appendable.append("/>");
+        } else {
+            util.appendAttribute(appendable, "number:format-source", "fixed");
+            appendable.append(">");
+            this.timeFormat.appendXMLContent(util, appendable);
+            appendable.append("</number:time-style>");
+        }
+    }
 
-	/**
-	 * A time format
-	 */
-	public static class Format {
-		/**
-		 * Set the time format like '01:02:03'.
-		 */
-		public static final DateTimeStyleFormat HHMMSS = new DateTimeStyleFormat(
-				DateTimeStyleFormat.LONG_HOURS,
-				DateTimeStyleFormat.COLON, DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
-				DateTimeStyleFormat.LONG_SECONDS);
-		/**
-		 * Set the time format like '01:02:03.45'.
-		 */
-		public static final DateTimeStyleFormat HHMMSS00 = new DateTimeStyleFormat(
-				DateTimeStyleFormat.LONG_HOURS,
-				DateTimeStyleFormat.COLON, DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
-				DateTimeStyleFormat.longSeconds(2));
-	}
+    /**
+     * A time format
+     */
+    public static class Format {
+        /**
+         * Set the time format like '01:02:03'.
+         */
+        public static final DateTimeStyleFormat HHMMSS = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_HOURS, DateTimeStyleFormat.COLON,
+                DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
+                DateTimeStyleFormat.LONG_SECONDS);
+        /**
+         * Set the time format like '01:02:03.45'.
+         */
+        public static final DateTimeStyleFormat HHMMSS00 = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_HOURS, DateTimeStyleFormat.COLON,
+                DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
+                DateTimeStyleFormat.longSeconds(2));
+    }
 
-	@Override
-	public String getName() {
-		return this.dataStyle.getName();
-	}
+    @Override
+    public String getName() {
+        return this.dataStyle.getName();
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.dataStyle.isHidden();
-	}
+    @Override
+    public boolean isHidden() {
+        return this.dataStyle.isHidden();
+    }
 
-	@Override
-	public void addToElements(final OdsElements odsElements) {
-		odsElements.addDataStyle(this);
-	}
+    @Override
+    public void addToElements(final OdsElements odsElements) {
+        odsElements.addDataStyle(this);
+    }
 }

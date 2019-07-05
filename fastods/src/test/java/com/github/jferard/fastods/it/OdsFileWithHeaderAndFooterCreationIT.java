@@ -76,20 +76,20 @@ public class OdsFileWithHeaderAndFooterCreationIT {
     public static final String FASTODS_FOOTER_HEADER_ODS = "fastods_footer_header.ods";
     public static final String FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS =
             "fastods_footer_header_with_flush.ods";
-    public static final String LEFT_HEADER_PATH =
-            "//style:master-page[@style:name='test-master-page']//style:header//style:region-left";
+    public static final String LEFT_HEADER_PATH = "//style:master-page[@style:name='test-master" +
+            "-page']//style:header//style:region-left";
     public static final String CENTER_HEADER_PATH =
             "//style:master-page[@style:name='test-master-page']//style:header//style:region" +
                     "-center";
-    public static final String LEFT_FOOTER_PATH =
-            "//style:master-page[@style:name='test-master-page']//style:footer//style:region-left";
+    public static final String LEFT_FOOTER_PATH = "//style:master-page[@style:name='test-master" +
+            "-page']//style:footer//style:region-left";
     public static final String CENTER_FOOTER_PATH =
             "//style:master-page[@style:name='test-master-page']//style:footer//style:region" +
                     "-center";
-    private static final String RIGHT_HEADER_PATH =
-            "//style:master-page[@style:name='test-master-page']//style:header//style:region-right";
-    private static final String RIGHT_FOOTER_PATH =
-            "//style:master-page[@style:name='test-master-page']//style:footer//style:region-right";
+    private static final String RIGHT_HEADER_PATH = "//style:master-page[@style:name='test-master" +
+            "-page']//style:header//style:region-right";
+    private static final String RIGHT_FOOTER_PATH = "//style:master-page[@style:name='test-master" +
+            "-page']//style:footer//style:region-right";
 
     @BeforeClass
     public static void beforeClass() {
@@ -131,8 +131,9 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         // let's display logging infos
         final Logger rootLogger = Logger.getLogger("");
         rootLogger.setLevel(Level.FINEST);
-        for (final Handler h : rootLogger.getHandlers())
+        for (final Handler h : rootLogger.getHandlers()) {
             h.setLevel(Level.FINEST);
+        }
     }
 
     @Test
@@ -208,8 +209,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
                 contentDom.getRootElement()));
         Assert.assertEquals("10cm", contentDom.getXPath().evaluate(
                 "//style:style[@style:name='ccs']//style:table-column-properties/@style:column" +
-                        "-width",
-                contentDom.getRootElement()));
+                        "-width", contentDom.getRootElement()));
 
         Assert.assertEquals("bold", contentDom.getXPath()
                 .evaluate("//style:style[@style:name='bold-text']//@fo:font-weight",

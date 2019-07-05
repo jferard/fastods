@@ -28,10 +28,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * The OdsFileWriterAdapter class represents an adapter to a writer. It stores a queue of flushers. Usage:
+ * The OdsFileWriterAdapter class represents an adapter to a writer. It stores a queue of
+ * flushers. Usage:
  * <ul>
  * <li>A producer thread that writes on a OdsFileWriterAdapter.document()</li>
- * <li>A consumer thread that uses the following stucture</li>
+ * <li>A consumer thread that uses the following structure</li>
  * </ul>
  * <p>
  * <pre>
@@ -96,7 +97,9 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
      */
     public synchronized void flushAdaptee() throws IOException {
         OdsFlusher flusher = this.flushers.poll();
-        if (flusher == null) return;
+        if (flusher == null) {
+            return;
+        }
 
         while (flusher != null) {
             this.adaptee.update(flusher);

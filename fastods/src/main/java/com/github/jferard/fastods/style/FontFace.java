@@ -28,15 +28,26 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
+/**
+ * A font
+ *
+ * @author J. Férard
+ */
 public class FontFace implements XMLConvertible {
     private final String fontName;
 
+    /**
+     * Create a new font face
+     *
+     * @param fontName the name of the font. See LOFonts
+     */
     public FontFace(final String fontName) {
         this.fontName = fontName;
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<style:font-face");
         util.appendAttribute(appendable, "style:name", this.fontName);
         util.appendAttribute(appendable, "svg:font-family", this.fontName);
@@ -50,9 +61,12 @@ public class FontFace implements XMLConvertible {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof FontFace))
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FontFace)) {
             return false;
+        }
 
         final FontFace other = (FontFace) o;
         return this.fontName.equals(other.fontName);

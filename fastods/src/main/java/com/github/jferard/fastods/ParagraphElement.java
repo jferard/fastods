@@ -35,6 +35,7 @@ public interface ParagraphElement extends Tag {
      * Add the styles contained in this paragraph element to the styles container.
      * Use if this paragraph elements is inside the page layout.
      * TODO: store font faces
+     *
      * @param stylesContainer the styles container
      */
     void addEmbeddedStylesFromFooterHeader(StylesContainer stylesContainer);
@@ -43,6 +44,7 @@ public interface ParagraphElement extends Tag {
      * Add the styles contained in this paragraph element to the styles container.
      * Use if this paragraph elements is inside a cell.
      * TODO: store font faces
+     *
      * @param stylesContainer the styles container
      */
     void addEmbeddedStylesFromCell(StylesContainer stylesContainer);

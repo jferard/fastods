@@ -68,8 +68,7 @@ public class MarginsTest {
                 .left(SimpleLength.pt(13.0)).build();
         TestHelper.assertXMLEquals(
                 " fo:margin=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" " +
-                        "fo:margin-left=\"13pt\"",
-                margins);
+                        "fo:margin-left=\"13pt\"", margins);
     }
 
     @Test
@@ -79,8 +78,7 @@ public class MarginsTest {
                 .left(SimpleLength.pt(13.0)).build();
         TestHelper.assertXMLEquals(
                 " fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" " +
-                        "fo:margin-left=\"13pt\"",
-                margins);
+                        "fo:margin-left=\"13pt\"", margins);
     }
 
     @Test

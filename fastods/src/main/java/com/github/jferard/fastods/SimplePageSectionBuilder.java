@@ -32,28 +32,24 @@ import com.github.jferard.fastods.util.Box;
  * page/style:header
  *
  * @author Julien Férard
- *
  */
-public class SimplePageSectionBuilder
-		extends PageSectionBuilder<SimplePageSectionBuilder> {
-	/**
-	 * Create a new simple header/footer object.
-	 *
-	 */
-	SimplePageSectionBuilder() {
-		super();
-		this.curRegionBox = new Box<Text>();
-	}
+public class SimplePageSectionBuilder extends PageSectionBuilder<SimplePageSectionBuilder> {
+    /**
+     * Create a new simple header/footer object.
+     */
+    SimplePageSectionBuilder() {
+        super();
+        this.curRegionBox = new Box<Text>();
+    }
 
-	/*
-	 * {@inheritDoc}
-	 */
-	@Override
-	public PageSection build() {
-		final PageSectionStyle style = new PageSectionStyle(this.marginsBuilder.build(),
-				this.minHeight);
-		final PageSectionContent header = new SimpleFooterHeader(
-				this.curRegionBox.get());
-		return new PageSection(header, style);
-	}
+    /*
+     * {@inheritDoc}
+     */
+    @Override
+    public PageSection build() {
+        final PageSectionStyle style = new PageSectionStyle(this.marginsBuilder.build(),
+                this.minHeight);
+        final PageSectionContent header = new SimpleFooterHeader(this.curRegionBox.get());
+        return new PageSection(header, style);
+    }
 }

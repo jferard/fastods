@@ -146,8 +146,7 @@ public class OdsFileCreationIT {
                 contentDom.getRootElement()));
         Assert.assertEquals("10cm", contentDom.getXPath().evaluate(
                 "//style:style[@style:name='ccs']//style:table-column-properties/@style:column" +
-                        "-width",
-                contentDom.getRootElement()));
+                        "-width", contentDom.getRootElement()));
 
         final OdfStylesDom stylesDom = document.getStylesDom();
         Assert.assertEquals("#dddddd", stylesDom.getXPath()
@@ -229,7 +228,8 @@ public class OdsFileCreationIT {
             Assert.assertEquals("x", OdfToolkitUtil.getStringValue(c));
             Assert.assertEquals("cc", c.getStyleName());
             /*
-            ODFToolkit does not know about duration https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#duration
+            ODFToolkit does not know about duration https://www.w3
+            .org/TR/2004/REC-xmlschema-2-20041028/#duration
             final Calendar timeValue = row.getCellByIndex(3).getTimeValue();
             Assert.assertEquals(3 * 60 * 1000,
                     timeValue.getTimeInMillis() + timeValue.getTimeZone().getRawOffset());
@@ -284,8 +284,7 @@ public class OdsFileCreationIT {
                 .build();
     }
 
-    private void fillDocument(final OdsDocument document, final int n)
-            throws IOException {
+    private void fillDocument(final OdsDocument document, final int n) throws IOException {
         document.setViewSetting("View1", "ZoomValue", "207");
 
         for (int i = 0; i < n; i++) {

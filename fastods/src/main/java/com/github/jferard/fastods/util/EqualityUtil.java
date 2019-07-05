@@ -25,60 +25,63 @@ package com.github.jferard.fastods.util;
 
 /**
  * An util to checkStyleName equality between objects
+ *
  * @author Julien Férard
  */
 public class EqualityUtil {
-	/**
-	 * @param o1 the first object
-	 * @param o2 the second object
-	 * @return true if the objects are different
-	 */
-	public boolean different(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 != null;
-		} else {
-			return !o1.equals(o2);
-		}
-	}
+    /**
+     * @param o1 the first object
+     * @param o2 the second object
+     * @return true if the objects are different
+     */
+    public boolean different(final Object o1, final Object o2) {
+        if (o1 == null) {
+            return o2 != null;
+        } else {
+            return !o1.equals(o2);
+        }
+    }
 
-	/**
-	 * @param o1 the first object
-	 * @param o2 the second object
-	 * @return true if the objects are equal
-	 */
-	public boolean equal(final Object o1, final Object o2) {
-		if (o1 == null) {
-			return o2 == null;
-		} else {
-			return o1.equals(o2);
-		}
-	}
+    /**
+     * @param o1 the first object
+     * @param o2 the second object
+     * @return true if the objects are equal
+     */
+    public boolean equal(final Object o1, final Object o2) {
+        if (o1 == null) {
+            return o2 == null;
+        } else {
+            return o1.equals(o2);
+        }
+    }
 
-	/**
-	 * Hash a bunch of objects
-	 * @param objects the objects
-	 * @return a hash code
-	 */
-	public int hashObjects(final Object... objects) {
-		final int prime = 31;
-		int result = 1;
-		for (final Object object : objects) {
-			result = prime * result
-					+ ((object == null) ? 0 : object.hashCode());
-		}
-		return result;
-	}
+    /**
+     * Hash a bunch of objects
+     *
+     * @param objects the objects
+     * @return a hash code
+     */
+    public int hashObjects(final Object... objects) {
+        final int prime = 31;
+        int result = 1;
+        for (final Object object : objects) {
+            result = prime * result + ((object == null) ? 0 : object.hashCode());
+        }
+        return result;
+    }
 
     /**
      * Hash a bunch of integers
+     *
      * @param integers the integers
      * @return a hash code
      */
-	public int hashInts(final int... integers) {
-		final int prime = 31;
-		int result = 1;
-		for (final int integer : integers)
-			result = prime * result + integer;
-		return result;
-	}	
+    public int hashInts(final int... integers) {
+        final int prime = 31;
+        int result = 1;
+        for (final int integer : integers) {
+            result = prime * result + integer;
+        }
+        return result;
+    }
 }

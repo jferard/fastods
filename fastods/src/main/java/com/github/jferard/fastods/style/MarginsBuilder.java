@@ -28,75 +28,76 @@ import com.github.jferard.fastods.util.Length;
 
 /**
  * A builder for margins
+ *
  * @author Julien Férard
  */
 public class MarginsBuilder {
-	private Length all;
-	private Length bottom;
-	private Length left;
-	private Length right;
-	private Length top;
+    private Length all;
+    private Length bottom;
+    private Length left;
+    private Length right;
+    private Length top;
 
-	/**
-	 * Set the margin at the top, bottom, left and right.
-	 *
-	 * @param size the margin size
-	 * @return this for fluent style
-	 */
-	public MarginsBuilder all(final Length size) {
-		this.all = size;
-		return this;
-	}
+    /**
+     * Set the margin at the top, bottom, left and right.
+     *
+     * @param size the margin size
+     * @return this for fluent style
+     */
+    public MarginsBuilder all(final Length size) {
+        this.all = size;
+        return this;
+    }
 
-	/**
-	 * Set the bottom margin. margin is a length value
-	 *
-	 * @param size the margin size
-	 * @return this for fluent style
-	 */
-	public MarginsBuilder bottom(final Length size) {
-		this.bottom = size;
-		return this;
-	}
+    /**
+     * Set the bottom margin. margin is a length value
+     *
+     * @param size the margin size
+     * @return this for fluent style
+     */
+    public MarginsBuilder bottom(final Length size) {
+        this.bottom = size;
+        return this;
+    }
 
-	/**
-	 * @return the margins
-	 */
-	public Margins build() {
-		return new Margins(new EqualityUtil(), this.all, this.top, this.right, this.bottom,
-				this.left);
-	}
+    /**
+     * @return the margins
+     */
+    public Margins build() {
+        return new Margins(new EqualityUtil(), this.all, this.top, this.right, this.bottom,
+                this.left);
+    }
 
-	/**
-	 * Set the left margin. Margin is a length value
-	 *
-	 * @param size the margin size
-	 * @return this for fluent style
-	 */
-	public MarginsBuilder left(final Length size) {
-		this.left = size;
-		return this;
-	}
+    /**
+     * Set the left margin. Margin is a length value
+     *
+     * @param size the margin size
+     * @return this for fluent style
+     */
+    public MarginsBuilder left(final Length size) {
+        this.left = size;
+        return this;
+    }
 
-	/**
-	 * Set the right margin. Margin is a length value
-	 *
-	 * @param size the margin size
-	 * @return this for fluent style
-	 */
-	public MarginsBuilder right(final Length size) {
-		this.right = size;
-		return this;
-	}
+    /**
+     * Set the right margin. Margin is a length value
+     *
+     * @param size the margin size
+     * @return this for fluent style
+     */
+    public MarginsBuilder right(final Length size) {
+        this.right = size;
+        return this;
+    }
 
-	/**
-	 * Set the top margin. Margin is a length value
-	 *
-	 * @param size the margin size
-	 * @return this for fluent style
-	 */
-	public MarginsBuilder top(final Length size) {
-		this.top = size;
-		return this;
-	}
+    /**
+     * Set the top margin. Margin is a length value
+     *
+     * @param size the margin size
+     * @return this for fluent style
+     */
+    public MarginsBuilder top(final Length size) {
+        this.top = size;
+        return this;
+    }
 }

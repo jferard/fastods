@@ -25,6 +25,7 @@ package com.github.jferard.fastods.testlib;
 
 /**
  * A fibonacci numbers generator
+ *
  * @author Julien Férard
  */
 public class Fibonacci {
@@ -35,22 +36,25 @@ public class Fibonacci {
      * @return a new Fibonacci sequence, with 0 and 1 as first elements
      */
     public static Fibonacci create() {
-        return new Fibonacci(0,1);
+        return new Fibonacci(0, 1);
     }
 
     /**
      * Create a new Fibonacci sequence
-     * @param first the first element
+     *
+     * @param first  the first element
      * @param second the second element
      */
     public Fibonacci(final int first, final int second) {
-        // a bit hackish: we step back to gain momentum. This avoids a special treatment of the first steps.
+        // a bit hackish: we step back to gain momentum. This avoids a special treatment of the
+        // first steps.
         // nextInt does alternatively :
         // is[0] += is[1], return is[0]
         // is[1] += is[0], return is[1]
-        // what will happen on the first call? is[0] += is[1] : first - (second - first), second - first = first
+        // what will happen on the first call? is[0] += is[1] : first - (second - first), second
+        // - first = first
         // on second call? index=1, so is[1] += is[0] : second - first + first = second
-        this.is = new int[] {first - (second - first), second - first};
+        this.is = new int[]{first - (second - first), second - first};
         this.index = 0;
     }
 
@@ -67,8 +71,8 @@ public class Fibonacci {
     }
 
     /**
-     * @return the next int in the Fibonacci suite
      * @param max modulo when the values exceed the max
+     * @return the next int in the Fibonacci suite
      */
     public int nextInt(final int max) {
         // alternatively :

@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 /**
  * A walker over cells
+ *
  * @author Julien Férard
  */
 public interface TableCellWalker extends TableCell {
@@ -36,7 +37,7 @@ public interface TableCellWalker extends TableCell {
     /**
      * @return true if the walker has a previous cell on the row
      */
-	boolean hasPrevious();
+    boolean hasPrevious();
 
     /**
      * Set the walker on the last cell of the row
@@ -46,16 +47,17 @@ public interface TableCellWalker extends TableCell {
     /**
      * Set the walker on the next cell of the row
      */
-	void next();
+    void next();
 
     /**
      * Set the walker on the previous cell of the row
      */
-	void previous();
+    void previous();
 
     /**
      * Set the walker on the row
+     *
      * @param i the index of the cell
      */
-	void to(final int i);
+    void to(final int i);
 }

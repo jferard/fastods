@@ -33,112 +33,110 @@ import java.util.Locale;
  * @author Julien Férard
  */
 public class CurrencyStyleBuilder implements DataStyleBuilder<CurrencyStyle, CurrencyStyleBuilder>,
-		NumberStyleBuilder<CurrencyStyle, CurrencyStyleBuilder>, DecimalStyleBuilder<CurrencyStyleBuilder> {
-	private final FloatStyleBuilder floatStyleBuilder;
-	private SymbolPosition currencyPosition;
-	private String currencySymbol;
+        NumberStyleBuilder<CurrencyStyle, CurrencyStyleBuilder>,
+        DecimalStyleBuilder<CurrencyStyleBuilder> {
+    private final FloatStyleBuilder floatStyleBuilder;
+    private SymbolPosition currencyPosition;
+    private String currencySymbol;
 
-	/**
-	 * The builder
-	 *
-	 * @param name   The name of this style
-	 * @param locale The locale used
-	 */
-	public CurrencyStyleBuilder(final String name, final Locale locale) {
-		this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
-		this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
-		this.currencyPosition = CurrencyStyle.SymbolPosition.END;
-	}
+    /**
+     * The builder
+     *
+     * @param name   The name of this style
+     * @param locale The locale used
+     */
+    public CurrencyStyleBuilder(final String name, final Locale locale) {
+        this.floatStyleBuilder = new FloatStyleBuilder(name, locale);
+        this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
+        this.currencyPosition = CurrencyStyle.SymbolPosition.END;
+    }
 
-	@Override
-	public CurrencyStyle build() {
-		return new CurrencyStyle(this.floatStyleBuilder.build(), this.currencySymbol,
-				this.currencyPosition);
-	}
+    @Override
+    public CurrencyStyle build() {
+        return new CurrencyStyle(this.floatStyleBuilder.build(), this.currencySymbol,
+                this.currencyPosition);
+    }
 
-	/**
-	 * Change the currency symbol, e.g. '$'.
-	 *
-	 * @param currencySymbol 16.27.8 number:currency-symbol
-	 * @return this for fluent style
-	 */
-	public CurrencyStyleBuilder currencySymbol(final String currencySymbol) {
-		this.currencySymbol = currencySymbol;
-		return this;
-	}
+    /**
+     * Change the currency symbol, e.g. '$'.
+     *
+     * @param currencySymbol 16.27.8 number:currency-symbol
+     * @return this for fluent style
+     */
+    public CurrencyStyleBuilder currencySymbol(final String currencySymbol) {
+        this.currencySymbol = currencySymbol;
+        return this;
+    }
 
-	/**
-	 * Set the position of the currency symbol
-	 *
-	 * @param symbolPosition either
-	 *                       CurrencyStyle.SYMBOLPOSITION_BEGIN or CurrencyStyle.SYMBOLPOSITION_END.
-	 * @return this for fluent style
-	 */
-	public CurrencyStyleBuilder currencySymbolPosition(
-			final SymbolPosition symbolPosition) {
-		this.currencyPosition = symbolPosition;
-		return this;
-	}
+    /**
+     * Set the position of the currency symbol
+     *
+     * @param symbolPosition the position of the symbol (before or after the value).
+     * @return this for fluent style
+     */
+    public CurrencyStyleBuilder currencySymbolPosition(final SymbolPosition symbolPosition) {
+        this.currencyPosition = symbolPosition;
+        return this;
+    }
 
     @Override
     public CurrencyStyleBuilder decimalPlaces(final int decimalPlaces) {
-		this.floatStyleBuilder.decimalPlaces(decimalPlaces);
-		return this;
-	}
+        this.floatStyleBuilder.decimalPlaces(decimalPlaces);
+        return this;
+    }
 
-	@Override
+    @Override
     public CurrencyStyleBuilder groupThousands(final boolean grouping) {
-		this.floatStyleBuilder.groupThousands(grouping);
-		return this;
-	}
+        this.floatStyleBuilder.groupThousands(grouping);
+        return this;
+    }
 
-	@Override
-	public final CurrencyStyleBuilder locale(final Locale locale) {
-		this.floatStyleBuilder.locale(locale);
-		this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
-		return this;
-	}
+    @Override
+    public final CurrencyStyleBuilder locale(final Locale locale) {
+        this.floatStyleBuilder.locale(locale);
+        this.currencySymbol = Currency.getInstance(locale).getSymbol(locale);
+        return this;
+    }
 
-	@Override
+    @Override
     public CurrencyStyleBuilder minIntegerDigits(final int minIntegerDigits) {
-		this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
-		return this;
-	}
+        this.floatStyleBuilder.minIntegerDigits(minIntegerDigits);
+        return this;
+    }
 
-	@Override
-    public CurrencyStyleBuilder negativeValueColor(
-			final Color negativeValueColor) {
-		this.floatStyleBuilder.negativeValueColor(negativeValueColor);
-		return this;
-	}
+    @Override
+    public CurrencyStyleBuilder negativeValueColor(final Color negativeValueColor) {
+        this.floatStyleBuilder.negativeValueColor(negativeValueColor);
+        return this;
+    }
 
-	@Override
+    @Override
     public CurrencyStyleBuilder negativeValueRed() {
-		this.floatStyleBuilder.negativeValueRed();
-		return this;
-	}
+        this.floatStyleBuilder.negativeValueRed();
+        return this;
+    }
 
-	@Override
-	public CurrencyStyleBuilder country(final String countryCode) {
-		this.floatStyleBuilder.country(countryCode);
-		return this;
-	}
+    @Override
+    public CurrencyStyleBuilder country(final String countryCode) {
+        this.floatStyleBuilder.country(countryCode);
+        return this;
+    }
 
-	@Override
-	public CurrencyStyleBuilder language(final String languageCode) {
-		this.floatStyleBuilder.language(languageCode);
-		return this;
-	}
+    @Override
+    public CurrencyStyleBuilder language(final String languageCode) {
+        this.floatStyleBuilder.language(languageCode);
+        return this;
+    }
 
-	@Override
-	public CurrencyStyleBuilder volatileStyle(final boolean volatileStyle) {
-		this.floatStyleBuilder.volatileStyle(volatileStyle);
-		return this;
-	}
+    @Override
+    public CurrencyStyleBuilder volatileStyle(final boolean volatileStyle) {
+        this.floatStyleBuilder.volatileStyle(volatileStyle);
+        return this;
+    }
 
-	@Override
-	public CurrencyStyleBuilder visible() {
-		this.floatStyleBuilder.visible();
-		return this;
-	}
+    @Override
+    public CurrencyStyleBuilder visible() {
+        this.floatStyleBuilder.visible();
+        return this;
+    }
 }

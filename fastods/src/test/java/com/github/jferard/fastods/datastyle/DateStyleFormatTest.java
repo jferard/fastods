@@ -32,7 +32,8 @@ public class DateStyleFormatTest {
     @Test
     public final void test() throws IOException {
         final DateTimeStyleFormat ds = new DateTimeStyleFormat(DateTimeStyleFormat.text("dfs"),
-                DateTimeStyleFormat.MINUTES, DateTimeStyleFormat.COLON, DateTimeStyleFormat.longSeconds(5));
+                DateTimeStyleFormat.MINUTES, DateTimeStyleFormat.COLON,
+                DateTimeStyleFormat.longSeconds(5));
         TestHelper.assertXMLEquals(
                 "<number:text>dfs</number:text><number:minutes/><number:text>:</number:text" +
                         "><number:seconds number:style=\"long\" number:decimal-places=\"5\"/>", ds);

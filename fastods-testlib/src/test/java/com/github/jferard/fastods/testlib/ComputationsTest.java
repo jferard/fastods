@@ -36,7 +36,8 @@ public class ComputationsTest {
         Assert.assertEquals(2L, c.getAvgTime());
         Assert.assertEquals(1L, c.getBestTime());
         Assert.assertEquals(3L, c.getWorstTime());
-        Assert.assertEquals("Computations[name = comp, avg = 2, best = 1, worst = 3]", c.toString());
+        Assert.assertEquals("Computations[name = comp, avg = 2, best = 1, worst = 3]",
+                c.toString());
     }
 
     @Test
@@ -45,6 +46,7 @@ public class ComputationsTest {
         Assert.assertEquals(-1L, c.getAvgTime());
         Assert.assertEquals(-1L, c.getBestTime());
         Assert.assertEquals(-1L, c.getWorstTime());
-        Assert.assertEquals("Computations[name = comp, avg = -1, best = -1, worst = -1]", c.toString());
+        Assert.assertEquals("Computations[name = comp, avg = -1, best = -1, worst = -1]",
+                c.toString());
     }
 }

@@ -34,7 +34,8 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, HidableBuilder<TableCellStyleBuilder> {
+public class TableCellStyleBuilder
+        implements StyleBuilder<TableCellStyle>, HidableBuilder<TableCellStyleBuilder> {
     private final BordersBuilder bordersBuilder;
     private final MarginsBuilder marginsBuilder;
     private final String name;
@@ -52,6 +53,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
 
     /**
      * The style will be visible by default.
+     *
      * @param name A unique name for this style
      */
     TableCellStyleBuilder(final String name) {
@@ -76,9 +78,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     }
 
     /**
-     * Set the cell background color to color.<br>
-     * The TableFamilyStyle must be of a format of
-     * TableFamilyStyle.STYLE_TABLECELL
+     * Set the cell background color to color
      *
      * @param color - The color to be used in format #rrggbb e.g. #ff0000 for a
      *              red cell background
@@ -94,7 +94,8 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
      *
      * @param size        the size of the line
      * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
-     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or
+     *                    BorderAttribute.BORDER_DOUBLE
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderAll(final Length size, final Color borderColor,
@@ -109,7 +110,8 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
      *
      * @param size        the size of the line
      * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
-     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or
+     *                    BorderAttribute.BORDER_DOUBLE
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderBottom(final Length size, final Color borderColor,
@@ -124,7 +126,8 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
      *
      * @param size        the size of the line
      * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
-     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or
+     *                    BorderAttribute.BORDER_DOUBLE
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderLeft(final Length size, final Color borderColor,
@@ -139,7 +142,8 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
      *
      * @param size        the size of the line
      * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
-     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or
+     *                    BorderAttribute.BORDER_DOUBLE
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderRight(final Length size, final Color borderColor,
@@ -154,7 +158,8 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
      *
      * @param size        the size of the line
      * @param borderColor the color to be used in format #rrggbb e.g. '#ff0000' for a red border
-     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
+     * @param style       the style of the border line, either BorderAttribute.BORDER_SOLID or
+     *                    BorderAttribute.BORDER_DOUBLE
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderTop(final Length size, final Color borderColor,
@@ -166,13 +171,15 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
 
     @Override
     public TableCellStyle build() {
-        return new TableCellStyle(this.name, this.hidden, this.dataStyle, this.backgroundColor, this.tpBuilder.build(),
-                this.textAlign, this.verticalAlign, this.wrap, this.parentCellStyle, this.bordersBuilder.build(),
-                this.marginsBuilder.build(), this.textRotating);
+        return new TableCellStyle(this.name, this.hidden, this.dataStyle, this.backgroundColor,
+                this.tpBuilder.build(), this.textAlign, this.verticalAlign, this.wrap,
+                this.parentCellStyle, this.bordersBuilder.build(), this.marginsBuilder.build(),
+                this.textRotating);
     }
 
     /**
      * Set text rotation angle
+     *
      * @param angle TextRotation to be used
      * @return this for fluent style
      */
@@ -180,6 +187,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
         this.textRotating = angle;
         return this;
     }
+
     /**
      * Set the data style for this TableFamilyStyle to ds.<br>
      * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
@@ -289,9 +297,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     }
 
     /**
-     * Set the font weight to bold.<br>
-     * The TableFamilyStyle must be of a format of
-     * TableFamilyStyle.STYLE_TABLECELL
+     * Set the font weight to bold.
      *
      * @return true - the value was set,<br>
      * false - This object is no table cell, you can not set it to bold
@@ -302,9 +308,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     }
 
     /**
-     * Set the font weight to normal.<br>
-     * The TableFamilyStyle must be of a format of
-     * TableFamilyStyle.STYLE_TABLECELL
+     * Set the font weight to normal.
      *
      * @return this for fluent style
      */
@@ -314,9 +318,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     }
 
     // /**
-    // * Set the data style for this TableFamilyStyle to ns.<br>
-    // * If the StyleType of this TableFamilyStyle is not STYLE_TABLECELL, an
-    // * exception is thrown
+    // * Set the data style for this TableFamilyStyle to ns.
     // *
     // * @param ns
     // * The number style to be used
@@ -409,9 +411,7 @@ public class TableCellStyleBuilder implements StyleBuilder<TableCellStyle>, Hida
     /**
      * Set the vertical alignment of text.
      *
-     * @param align - The vertical alignment flag,<br>
-     *              either: VERTICALALIGN_TOP,VERTICALALIGN_MIDDLE or
-     *              VERTICALALIGN_BOTTOM
+     * @param align - The vertical alignment flag
      * @return this for fluent style
      */
     public TableCellStyleBuilder verticalAlign(final TableCellStyle.VerticalAlign align) {

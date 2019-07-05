@@ -107,8 +107,7 @@ public class ConfigItemMapNamedTest {
         m.put(this.set);
         TestHelper.assertXMLEquals(
                 "<config:config-item-map-named config:name=\"mapnamed\">" + this.setXML +
-                        "</config:config-item-map-named>",
-                m);
+                        "</config:config-item-map-named>", m);
     }
 
 }

@@ -25,6 +25,7 @@ package com.github.jferard.fastods.datastyle;
 
 /**
  * A builder for decimal styles
+ *
  * @param <T> the concrete builder
  * @author Julien Férard
  */
@@ -32,7 +33,10 @@ public interface DecimalStyleBuilder<T> {
     /**
      * 20.250 style:decimal-places
      * Set how many digits are to the right of the decimal symbol.
-     * @param decimalPlaces "the maximum number of decimal places that are displayed if numbers are formatted by a data style that has no setting for number of decimal places itself"
+     *
+     * @param decimalPlaces "the maximum number of decimal places that are displayed if numbers
+     *                      are formatted by a data style that has no setting for number of
+     *                      decimal places itself"
      * @return this for fluent style
      */
     T decimalPlaces(int decimalPlaces);

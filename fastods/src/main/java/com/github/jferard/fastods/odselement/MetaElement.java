@@ -65,15 +65,15 @@ public class MetaElement implements OdsElement {
 
     /**
      * Set the create of the document
-     * @param creator the creator's name (e.g. Julien Férard)
+     *
+     * @param creator the creator's name (e.g. J. Férard)
      */
     public void setCreator(final String creator) {
         this.creator = creator;
     }
 
     @Override
-    public void write(final XMLUtil util, final ZipUTF8Writer writer)
-            throws IOException {
+    public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("meta.xml"));
         writer.append("<?xml");
         util.appendAttribute(writer, "version", "1.0");
@@ -81,14 +81,11 @@ public class MetaElement implements OdsElement {
         writer.append("?><office:document-meta");
         util.appendAttribute(writer, "xmlns:office",
                 "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
-        util.appendAttribute(writer, "xmlns:xlink",
-                "http://www.w3.org/1999/xlink");
-        util.appendAttribute(writer, "xmlns:dc",
-                "http://purl.org/dc/elements/1.1/");
+        util.appendAttribute(writer, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+        util.appendAttribute(writer, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
         util.appendAttribute(writer, "xmlns:meta",
                 "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
-        util.appendAttribute(writer, "xmlns:ooo",
-                "http://openoffice.org/2004/office");
+        util.appendAttribute(writer, "xmlns:ooo", "http://openoffice.org/2004/office");
         util.appendAttribute(writer, "office:version", "1.2");
         writer.append("><office:meta>");
         util.appendTag(writer, "meta:generator", this.generator);
@@ -115,7 +112,6 @@ public class MetaElement implements OdsElement {
     private void setDateTimeNow() {
         final Date dt = new Date();
 
-        this.dateTime = MetaElement.DF_DATE.format(dt) +
-                "T" + MetaElement.DF_TIME.format(dt);
+        this.dateTime = MetaElement.DF_DATE.format(dt) + "T" + MetaElement.DF_TIME.format(dt);
     }
 }

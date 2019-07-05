@@ -29,41 +29,46 @@ import org.junit.Test;
 public class CodePointTesterTest {
     @Test
     public void testRandom() {
-        Assert.assertEquals("#xc5 | #x18a | #x24f | #x314 | #x3d9 | #x49e | #x563 | #x628 | #x6ed | #x7b2", CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
-            @Override
-            public boolean check(final int codePoint) {
-                return codePoint > 10 && codePoint < 1999 && codePoint % 197 == 0;
-            }
-        }));
+        Assert.assertEquals(
+                "#xc5 | #x18a | #x24f | #x314 | #x3d9 | #x49e | #x563 | #x628 | #x6ed | #x7b2",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
+                    @Override
+                    public boolean check(final int codePoint) {
+                        return codePoint > 10 && codePoint < 1999 && codePoint % 197 == 0;
+                    }
+                }));
     }
 
     @Test
     public void testAscii() {
-        Assert.assertEquals("[#x0-~]", CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
-            @Override
-            public boolean check(final int codePoint) {
-                return codePoint < 127;
-            }
-        }));
+        Assert.assertEquals("[#x0-~]",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
+                    @Override
+                    public boolean check(final int codePoint) {
+                        return codePoint < 127;
+                    }
+                }));
     }
 
     @Test
     public void testTwoBlocks() {
-        Assert.assertEquals("[#x0-~] | [#x101-#x1ff]", CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
-            @Override
-            public boolean check(final int codePoint) {
-                return (codePoint < 127) || (256 < codePoint) && (codePoint < 512);
-            }
-        }));
+        Assert.assertEquals("[#x0-~] | [#x101-#x1ff]",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
+                    @Override
+                    public boolean check(final int codePoint) {
+                        return (codePoint < 127) || (256 < codePoint) && (codePoint < 512);
+                    }
+                }));
     }
 
     @Test
     public void testNone() {
-        Assert.assertEquals("", CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
-            @Override
-            public boolean check(final int codePoint) {
-                return false;
-            }
-        }));
+        Assert.assertEquals("",
+                CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
+                    @Override
+                    public boolean check(final int codePoint) {
+                        return false;
+                    }
+                }));
     }
 }

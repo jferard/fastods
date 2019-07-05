@@ -30,13 +30,14 @@ import java.io.IOException;
 
 /**
  * An OdsElement represents an element of the archive: content.xml, settings.xml, styles.xml, ...
+ *
  * @author Julien Férard
  */
 public interface OdsElement {
-	/**
-	 * @param util an util tool to write XML data
-	 * @param writer the writer to which write the element
-	 * @throws IOException if the element can't be written
-	 */
-	void write(XMLUtil util, ZipUTF8Writer writer) throws IOException;
+    /**
+     * @param util   an util tool to write XML data
+     * @param writer the writer to which write the element
+     * @throws IOException if the element can't be written
+     */
+    void write(XMLUtil util, ZipUTF8Writer writer) throws IOException;
 }

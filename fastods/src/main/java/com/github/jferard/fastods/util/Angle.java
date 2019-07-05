@@ -26,12 +26,26 @@ package com.github.jferard.fastods.util;
 /**
  * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1
  * .2-os-part1.html#__RefHeading__1420142_253892949
- * @author
+ *
+ * @author J. Férard
+ * @author https://github.com/qmor
  */
 public class Angle {
+    /**
+     * No rotation
+     */
     public static final Angle NO_ROTATING = Angle.deg(0);
+    /**
+     * North
+     */
     public static final Angle ROTATE_90 = Angle.deg(90);
+    /**
+     * West
+     */
     public static final Angle ROTATE_180 = Angle.deg(180);
+    /**
+     * South
+     */
     public static final Angle ROTATE_270 = Angle.deg(270);
 
     /**
@@ -43,7 +57,7 @@ public class Angle {
     }
 
     /**
-     * @param grads the number of gradians
+     * @param grads the number of gradients
      * @return an Angle
      */
     public static Angle grad(final double grads) {
@@ -88,7 +102,21 @@ public class Angle {
         return ret;
     }
 
+    /**
+     * The unit
+     */
     public enum Unit {
-        GRAD, RAD, DEG
+        /**
+         * Degrees
+         */
+        DEG,
+        /**
+         * Gradients
+         */
+        GRAD,
+        /**
+         * Radians
+         */
+        RAD
     }
 }

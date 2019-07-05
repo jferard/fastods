@@ -27,18 +27,16 @@ import java.io.File;
 
 /**
  * An utility class for creating directories
+ *
  * @author Julien Férard
  */
 public final class Util {
-    private Util() {}
-
     /**
-     * @param fname the name of the directory to create
+     * @param dirName the name of the directory to create
      * @return true if the directory was created
      */
-    public static boolean mkdir(final String fname)
-    {
-        return Util.mkdir(new File(fname));
+    public static boolean mkdir(final String dirName) {
+        return Util.mkdir(new File(dirName));
     }
 
     /**
@@ -47,11 +45,15 @@ public final class Util {
      */
     public static boolean mkdir(final File file) {
         if (file.exists()) {
-            if (file.isDirectory())
+            if (file.isDirectory()) {
                 return false;
-            else
+            } else {
                 throw new IllegalStateException();
+            }
         }
         return file.mkdir();
+    }
+
+    private Util() {
     }
 }

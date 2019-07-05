@@ -23,9 +23,14 @@
 
 package com.github.jferard.fastods.examples;
 
+/**
+ * Section 0 of the tutorial
+ * @author J. Férard
+ */
 // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 // This tutorial is extracted from
-// https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github/jferard/fastods/examples.
+// https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github
+// /jferard/fastods/examples.
 // See the classes in this directory for the full code.
 //
 // Writing a full documentation would be a considerable work, because every time you change the

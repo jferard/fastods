@@ -32,43 +32,43 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class BenchFastFlush extends Bench {
-	private final Logger logger;
-	private final OdsFactory odsFactory;
+    private final Logger logger;
+    private final OdsFactory odsFactory;
 
-	public BenchFastFlush(final Logger logger, final int rowCount, final int colCount) {
-		super(logger, "FastODSFlush", rowCount, colCount);
-		this.logger = logger;
-		this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-	}
+    public BenchFastFlush(final Logger logger, final int rowCount, final int colCount) {
+        super(logger, "FastODSFlush", rowCount, colCount);
+        this.logger = logger;
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+    }
 
-	@Test
-	public void test0() throws IOException  {
-		this.test();
-	}
+    @Test
+    public void test0() throws IOException {
+        this.test();
+    }
 
-	@Override
-	public long test() throws IOException {
-		// Open the file.
-		this.logger.info("testFastFlush: filling a " + this.getRowCount() + " rows, "
-				+ this.getColCount() + " columns spreadsheet");
-		final long t1 = System.currentTimeMillis();
-		final NamedOdsFileWriter writer =
-				this.odsFactory.createWriter(new File("generated_files", "fastods_flush_benchmark.ods"));
-		final NamedOdsDocument document = writer.document();
-		final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
+    @Override
+    public long test() throws IOException {
+        // Open the file.
+        this.logger.info("testFastFlush: filling a " + this.getRowCount() + " rows, " +
+                this.getColCount() + " columns spreadsheet");
+        final long t1 = System.currentTimeMillis();
+        final NamedOdsFileWriter writer = this.odsFactory
+                .createWriter(new File("generated_files", "fastods_flush_benchmark.ods"));
+        final NamedOdsDocument document = writer.document();
+        final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
 
-		for (int y = 0; y < this.getRowCount(); y++) {
-			final TableRow row = table.nextRow();
-			final TableCellWalker walker = row.getWalker();
-			for (int x = 0; x < this.getColCount(); x++) {
-				walker.setFloatValue(this.getRandom().nextInt(1000));
-				walker.next();
-			}
-		}
+        for (int y = 0; y < this.getRowCount(); y++) {
+            final TableRow row = table.nextRow();
+            final TableCellWalker walker = row.getWalker();
+            for (int x = 0; x < this.getColCount(); x++) {
+                walker.setFloatValue(this.getRandom().nextInt(1000));
+                walker.next();
+            }
+        }
 
-		document.save();
-		final long t2 = System.currentTimeMillis();
-		this.logger.info("Filled in " + (t2 - t1) + " ms");
-		return t2 - t1;
-	}
+        document.save();
+        final long t2 = System.currentTimeMillis();
+        this.logger.info("Filled in " + (t2 - t1) + " ms");
+        return t2 - t1;
+    }
 }

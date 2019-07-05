@@ -23,19 +23,19 @@
 
 package com.github.jferard.fastods.examples;
 
-import com.github.jferard.fastods.FastOdsException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class FastODSExamplesIT {
     @BeforeClass
-    public static void beforeClass() throws IOException {
-        Files.createDirectories(Paths.get("generated_files"));
+    public static void beforeClass() {
+        final File directory = new File("generated_files");
+        directory.mkdir();
     }
 
     @Test

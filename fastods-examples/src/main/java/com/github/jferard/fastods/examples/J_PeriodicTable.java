@@ -65,7 +65,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Section 10 of the tutorial
+ *
+ * @author J. Férard
+ */
 class J_PeriodicTable {
+    /**
+     * @throws IOException if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
     static void example() throws IOException, SQLException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         //
@@ -86,18 +95,20 @@ class J_PeriodicTable {
         // ## The data
         //
         // We'll use h2 again (see Advanced part of the tutorial). The content of the resources
-        // files can be found at https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
-        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/insert.sql.
-        // The results where parsed from the article https://en.wikipedia.org/wiki/List_of_chemical_elements.
+        // files can be found at https://github
+        // .com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
+        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources
+        // /insert.sql.
+        // The results where parsed from the article https://en.wikipedia
+        // .org/wiki/List_of_chemical_elements.
         //
         // We open a connection and populate the database:
         final JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setUrl("jdbc:h2:mem:test");
-        final Connection conn;
         try {
-            conn = dataSource.getConnection();
+            final Connection connection = dataSource.getConnection();
             try {
-                final Statement s = conn.createStatement();
+                final Statement s = connection.createStatement();
                 s.execute(resourceToString("create.sql"));
                 s.execute(resourceToString("insert.sql"));
 
@@ -124,24 +135,23 @@ class J_PeriodicTable {
                 // We put those styles in a map:
                 final Map<String, TableCellStyle> cellStyleBySubcategory = new HashMap<String,
                         TableCellStyle>();
-                cellStyleBySubcategory.put("alkali metal", getCellStyle("alkalimetal",
-                        SimpleColor.ORANGERED));
-                cellStyleBySubcategory.put("alkaline earth metal", getCellStyle("alkalineearthmetal",
-                        SimpleColor.ORANGE));
-                cellStyleBySubcategory.put("transition metal", getCellStyle("transitionmetal",
-                        SimpleColor.YELLOW));
-                cellStyleBySubcategory.put("actinide", getCellStyle("actinide",
-                        SimpleColor.GREEN));
-                cellStyleBySubcategory.put("metalloid", getCellStyle("metalloid",
-                        SimpleColor.LIGHTCYAN));
-                cellStyleBySubcategory.put("noble gas", getCellStyle("noblegas",
-                        SimpleColor.VIOLET));
-                cellStyleBySubcategory.put("post-transition metal", getCellStyle("posttransitionmetal",
-                        SimpleColor.STEELBLUE));
-                cellStyleBySubcategory.put("reactive nonmetal", getCellStyle("reactivenonmetal",
-                        SimpleColor.BLUE));
-                cellStyleBySubcategory.put("lanthanide", getCellStyle("lanthanide",
-                        SimpleColor.YELLOWGREEN));
+                cellStyleBySubcategory
+                        .put("alkali metal", getCellStyle("alkalimetal", SimpleColor.ORANGERED));
+                cellStyleBySubcategory.put("alkaline earth metal",
+                        getCellStyle("alkalineearthmetal", SimpleColor.ORANGE));
+                cellStyleBySubcategory.put("transition metal",
+                        getCellStyle("transitionmetal", SimpleColor.YELLOW));
+                cellStyleBySubcategory.put("actinide", getCellStyle("actinide", SimpleColor.GREEN));
+                cellStyleBySubcategory
+                        .put("metalloid", getCellStyle("metalloid", SimpleColor.LIGHTCYAN));
+                cellStyleBySubcategory
+                        .put("noble gas", getCellStyle("noblegas", SimpleColor.VIOLET));
+                cellStyleBySubcategory.put("post-transition metal",
+                        getCellStyle("posttransitionmetal", SimpleColor.STEELBLUE));
+                cellStyleBySubcategory.put("reactive nonmetal",
+                        getCellStyle("reactivenonmetal", SimpleColor.BLUE));
+                cellStyleBySubcategory
+                        .put("lanthanide", getCellStyle("lanthanide", SimpleColor.YELLOWGREEN));
                 final TableCellStyle unknownStyle = getCellStyle("other", SimpleColor.WHITE);
 
                 // The function `getCellStyle` is defined at the bottom of the section
@@ -237,9 +247,11 @@ class J_PeriodicTable {
                     // the previous section:
                     final TextStyle titleStyle = TextProperties.builder().fontWeightBold()
                             .fontSize(SimpleLength.pt(24)).buildHiddenStyle("title");
-                    final TextStyle dedicationStyle = TextProperties.builder().fontSize(SimpleLength.pt(8))
-                            .fontStyleItalic().buildHiddenStyle("dedication");
-                    final Text headerText = Text.builder().parStyledContent("Periodic Table", titleStyle)
+                    final TextStyle dedicationStyle = TextProperties.builder()
+                            .fontSize(SimpleLength.pt(8)).fontStyleItalic()
+                            .buildHiddenStyle("dedication");
+                    final Text headerText = Text.builder()
+                            .parStyledContent("Periodic Table", titleStyle)
                             .parStyledContent("For Maia", dedicationStyle).build();
                     final Header header = PageSection.simpleBuilder().text(headerText)
                             .minHeight(SimpleLength.cm(2)).buildHeader();
@@ -247,18 +259,19 @@ class J_PeriodicTable {
                             "Copyright (C) 2019 J. Férard <https://github.com/jferard> " +
                                     "Creative Commons BY-SA / created with FastODS " +
                                     "(https://github.com/jferard/fastods)");
-                    final Footer footer = PageSection.simpleBuilder().styledContent(footerText, dedicationStyle)
-                            .buildFooter();
-                    final PageStyle pageStyle = PageStyle.builder("page").header(header).footer(footer)
-                            .printOrientationHorizontal().scaleTo(95).centering(PageStyle.Centering.BOTH)
+                    final Footer footer = PageSection.simpleBuilder()
+                            .styledContent(footerText, dedicationStyle).buildFooter();
+                    final PageStyle pageStyle = PageStyle.builder("page").header(header)
+                            .footer(footer).printOrientationHorizontal().scaleTo(95)
+                            .centering(PageStyle.Centering.BOTH).build();
+                    final TableStyle tableStyle = TableStyle.builder("table").pageStyle(pageStyle)
                             .build();
-                    final TableStyle tableStyle = TableStyle.builder("table").pageStyle(pageStyle).build();
                     table.setStyle(tableStyle);
                 }
             } catch (final SQLException e) {
                 periodicLogger.log(Level.SEVERE, "", e);
             } finally {
-                conn.close();
+                connection.close();
             }
         } catch (final SQLException e) {
             periodicLogger.log(Level.SEVERE, "", e);
@@ -275,7 +288,7 @@ class J_PeriodicTable {
 
     // Finally, the expected functions:
     // I use Guava to convert this resources to Strings:
-    static String resourceToString(final String resourceName) throws IOException {
+    private static String resourceToString(final String resourceName) throws IOException {
         final Reader reader = Resources
                 .asCharSource(Resources.getResource(resourceName), Charsets.UTF_8).openStream();
         return CharStreams.toString(reader);
@@ -284,7 +297,8 @@ class J_PeriodicTable {
     // And to produce similar cell styles:
     private static TableCellStyle getCellStyle(final String name, final Color color) {
         return TableCellStyle.builder(name).textAlign(TableCellStyle.Align.CENTER)
-                .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).backgroundColor(color).borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderAttribute.Style.SOLID)
+                .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).backgroundColor(color)
+                .borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderAttribute.Style.SOLID)
                 .build();
     }
 

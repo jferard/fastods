@@ -42,7 +42,8 @@ public interface PageSectionContent extends StyleWithEmbeddedStyles {
 
     /**
      * Append the XML representation of a page section to a stream
-     * @param util an util
+     *
+     * @param util       an util
      * @param appendable the stream
      * @throws IOException If an I/O error occurs
      */
@@ -55,10 +56,12 @@ public interface PageSectionContent extends StyleWithEmbeddedStyles {
         /**
          * the center region
          */
-        CENTER, /**
+        CENTER,
+        /**
          * the left region
          */
-        LEFT, /**
+        LEFT,
+        /**
          * the right region
          */
         RIGHT

@@ -82,11 +82,12 @@ public class OdsFactory {
 
     /**
      * Create a new OdsFactory
-     *  @param logger       the logger
-     * @param positionUtil an util
-     * @param writeUtil    an util
-     * @param xmlUtil      an util
-     * @param format       the data styles
+     *
+     * @param logger          the logger
+     * @param positionUtil    an util
+     * @param writeUtil       an util
+     * @param xmlUtil         an util
+     * @param format          the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
      */
     OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
@@ -172,7 +173,7 @@ public class OdsFactory {
     }
 
     /**
-     * Create a new ODS file writer from a document. Be careful: this method opens immediatly a
+     * Create a new ODS file writer from a document. Be careful: this method opens immediately a
      * stream.
      *
      * @param file the destination file
@@ -212,9 +213,13 @@ public class OdsFactory {
      * @throws FileNotFoundException if the file does not exist
      */
     public FileOpenResult openFile(final File file) throws FileNotFoundException {
-        if (file.isDirectory()) return FileOpenResult.FILE_IS_DIR;
+        if (file.isDirectory()) {
+            return FileOpenResult.FILE_IS_DIR;
+        }
 
-        if (file.exists()) return new FileExists(file);
+        if (file.exists()) {
+            return new FileExists(file);
+        }
 
         return new FileOpen(new FileOutputStream(file));
     }
@@ -239,10 +244,12 @@ public class OdsFactory {
         /**
          * the file is a directory
          */
-        IS_DIRECTORY, /**
+        IS_DIRECTORY,
+        /**
          * the file already exists
          */
-        FILE_EXISTS, /**
+        FILE_EXISTS,
+        /**
          * the file may be written
          */
         OK

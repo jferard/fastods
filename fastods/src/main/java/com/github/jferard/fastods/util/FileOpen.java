@@ -27,20 +27,21 @@ import java.io.OutputStream;
 
 /**
  * The file is already open as a stream.
+ *
  * @author Julien Férard
  */
 public class FileOpen implements FileOpenResult {
-	private final OutputStream stream;
+    private final OutputStream stream;
 
-	/**
-	 * @param stream the output stream
-	 */
-	public FileOpen(final OutputStream stream) {
-		this.stream = stream;
-	}
+    /**
+     * @param stream the output stream
+     */
+    public FileOpen(final OutputStream stream) {
+        this.stream = stream;
+    }
 
-	@Override
-	public OutputStream getStream() {
-		return this.stream;
-	}
+    @Override
+    public OutputStream getStream() {
+        return this.stream;
+    }
 }

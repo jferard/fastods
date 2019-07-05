@@ -44,31 +44,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This file OldLightTableRow.java is part of FastODS.
- *
- * <pre>
- * {@code
- * 		NamedOdsDocument file = NamedOdsDocument.create("7columns.ods");
- * 		final Table table = file.addTable("test", 50, 5);
- * 		XMLUtil xmlUtil = FastOds.getXMLUtil();
- * 		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")
- * 				.backgroundColor("#dddddd").fontWeightBold().build();
- * 		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
- * 		DataWrapper data2 = new ResultSetDataWrapper(rs2, tcls, 100);
- *
- * 		table.addData(data);
- * 		table.nextRow();
- * 		table.addData(data2);
- * 		TableCellStyle tcls = TableCellStyle.builder(xmlUtil, "rs-head")
- * 				.backgroundColor("#dddddd").fontWeightBold().build();
- * 		DataWrapper data = new ResultSetDataWrapper(rs, tcls, 100);
- * 		DataWrapper data2 = new ResultSetDataWrapper(rs2, tcls, 100);
- *
- * 		table.addData(data);
- * 		table.nextRow();
- * 		table.addData(data2);
- * }
- * </pre>
+ * A wrapper for a result set.
  *
  * @author Julien Férard
  */
@@ -106,7 +82,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * @param converter          a converter SQL -> OpenDocument
      * @param rs                 the result cell
      * @param headCellStyle      a style for header, null if none
-     * @param autoFilter         set an autofilter if true
+     * @param autoFilter         set an auto filter if true
      * @param cellTypeByColIndex a hint for cell types
      * @param nullValue          the default value for NULL
      * @param max                the maximum number of rows, -1 for unlimited

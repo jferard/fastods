@@ -89,8 +89,8 @@ public class ConfigItemSetTest {
     public void testAppendXML() throws Exception {
         final ConfigItemSet m = new ConfigItemSet("set");
         m.add(this.item);
-        TestHelper.assertXMLEquals(
-                "<config:config-item-set config:name=\"set\">" + this.itemXML + "</config:config-item-set>", m);
+        TestHelper.assertXMLEquals("<config:config-item-set config:name=\"set\">" + this.itemXML +
+                "</config:config-item-set>", m);
     }
 
     @Test

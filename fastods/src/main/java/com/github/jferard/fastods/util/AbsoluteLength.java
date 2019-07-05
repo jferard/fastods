@@ -35,12 +35,15 @@ import java.util.Locale;
  */
 public class AbsoluteLength implements Length {
     private static final double CM_FACTOR = 10.0;
-    private static final double INCH_FACTOR = 2.54 * CM_FACTOR; // inch -> cm = *2.54, cm -> mm = *10
-    private static final double PT_FACTOR = INCH_FACTOR / 72.0; // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
-    private static final double PC_FACTOR = PT_FACTOR * 12.0; // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
+    private static final double INCH_FACTOR =
+            2.54 * CM_FACTOR; // inch -> cm = *2.54, cm -> mm = *10
+    private static final double PT_FACTOR =
+            INCH_FACTOR / 72.0; // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
+    private static final double PC_FACTOR = PT_FACTOR *
+            12.0; // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
 
     /**
-     * @param value the length in millimiters
+     * @param value the length in millimeters
      * @return the created AbsoluteLength
      */
     public static AbsoluteLength mm(final double value) {
@@ -48,7 +51,7 @@ public class AbsoluteLength implements Length {
     }
 
     /**
-     * @param value the length in centimers
+     * @param value the length in centimeters
      * @return the created AbsoluteLength
      */
     public static AbsoluteLength cm(final double value) {
@@ -78,6 +81,7 @@ public class AbsoluteLength implements Length {
     public static AbsoluteLength pc(final double value) {
         return new AbsoluteLength(value * PC_FACTOR);
     }
+
     private final double mm;
 
     /**
@@ -91,8 +95,9 @@ public class AbsoluteLength implements Length {
 
     @Override
     public boolean equals(final Object o) {
-        if (!(o instanceof AbsoluteLength))
+        if (!(o instanceof AbsoluteLength)) {
             return false;
+        }
 
         final AbsoluteLength other = (AbsoluteLength) o;
         return this.mm - other.mm < MAX_DELTA && other.mm - this.mm < MAX_DELTA;
@@ -105,7 +110,8 @@ public class AbsoluteLength implements Length {
 
     @Override
     public String toString() {
-        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) + "mm";
+        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) +
+                "mm";
     }
 
     @Override

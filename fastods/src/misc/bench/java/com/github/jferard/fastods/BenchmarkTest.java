@@ -33,7 +33,6 @@ import org.junit.rules.TestName;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -49,7 +48,9 @@ public class BenchmarkTest {
     @BeforeClass
     public static void beforeClass() {
         final File generated_files = new File("generated_files");
-        if (generated_files.exists()) return;
+        if (generated_files.exists()) {
+            return;
+        }
 
         generated_files.mkdir();
     }
@@ -57,11 +58,9 @@ public class BenchmarkTest {
     @Rule
     public TestName name = new TestName();
     private Logger logger;
-    private Random random;
 
     @Before
     public final void setUp() {
-        this.random = new Random();
         this.logger = Logger.getLogger("Benchmark");
     }
 
@@ -71,19 +70,25 @@ public class BenchmarkTest {
     }
 
     private void test(final int rowCount, final int colCount, final int times) throws IOException {
-        final List<Bench> benches = Lists.newArrayList(new BenchFast(this.logger, rowCount, colCount),
-                new BenchFastFlush(this.logger, rowCount, colCount),
-                new BenchFastFlushWithThreads(this.logger, rowCount, colCount),
-                new BenchSimpleOds(this.logger, rowCount, colCount), new BenchJOpen(this.logger, rowCount, colCount));
-        if (rowCount < 10000) benches.add(new BenchSimpleOdf(this.logger, rowCount, colCount));
-
-        for (int i = 0; i < times; i++) {
-            for (final Bench bench : benches)
-                bench.iteration();
+        final List<Bench> benches = Lists
+                .newArrayList(new BenchFast(this.logger, rowCount, colCount),
+                        new BenchFastFlush(this.logger, rowCount, colCount),
+                        new BenchFastFlushWithThreads(this.logger, rowCount, colCount),
+                        new BenchSimpleOds(this.logger, rowCount, colCount),
+                        new BenchJOpen(this.logger, rowCount, colCount));
+        if (rowCount < 10000) {
+            benches.add(new BenchSimpleOdf(this.logger, rowCount, colCount));
         }
 
-        for (final Bench bench : benches)
-            this.logger.info(bench.getWithoutWarmup().toString());
+        for (int i = 0; i < times; i++) {
+            for (final Bench bench : benches) {
+                bench.iteration();
+            }
+        }
+
+        for (final Bench bench : benches) {
+            this.logger.info(bench.getWithoutWarmUp().toString());
+        }
     }
 
     @Test
@@ -107,6 +112,6 @@ public class BenchmarkTest {
         for (int i = 0; i < 1000; i++) {
             bench1c.iteration();
         }
-        this.logger.info(bench1c.getWithoutWarmup().toString());
+        this.logger.info(bench1c.getWithoutWarmUp().toString());
     }
 }

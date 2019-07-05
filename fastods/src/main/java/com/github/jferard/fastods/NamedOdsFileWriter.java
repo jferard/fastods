@@ -34,6 +34,7 @@ import java.io.IOException;
 public interface NamedOdsFileWriter {
     /**
      * Close this writer
+     *
      * @throws IOException if an I/O error occurs
      */
     void close() throws IOException;
@@ -51,8 +52,9 @@ public interface NamedOdsFileWriter {
      */
     void save() throws IOException;
 
-	/**
+    /**
      * Update the writer with a flusher
+     *
      * @param flusher the chosen flusher
      * @throws IOException if an I/O error occurs
      */

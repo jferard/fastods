@@ -51,11 +51,12 @@ import java.util.logging.Logger;
  * @author Martin Schulz
  */
 public class StylesContainer {
+    private static final FontFace DEFAULT_FONT_FACE = new FontFace("Liberation Sans");
 
-    public static final FontFace DEFAULT_FONT_FACE = new FontFace("Liberation Sans");
-
-    /** A cell style, child of a table cell style and a data style/
-     * This class is a key for a Map */
+    /**
+     * A cell style, child of a table cell style and a data style/
+     * This class is a key for a Map
+     */
     private static class ChildCellStyle {
         private final TableCellStyle style;
         private final DataStyle dataStyle;
@@ -67,9 +68,11 @@ public class StylesContainer {
 
         @Override
         public boolean equals(final Object o) {
-            if (this == o) return true;
-            else if (!(o instanceof ChildCellStyle)) return false;
-            else {
+            if (this == o) {
+                return true;
+            } else if (!(o instanceof ChildCellStyle)) {
+                return false;
+            } else {
                 final ChildCellStyle other = (ChildCellStyle) o;
                 return this.style.getKey().equals(other.style.getKey()) &&
                         this.dataStyle.getName().equals(other.dataStyle.getName());
@@ -104,10 +107,12 @@ public class StylesContainer {
 
     /**
      * Create a styles container
-     * @param logger
+     *
+     * @param logger the logger
      */
     StylesContainer(final Logger logger) {
-        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(logger, Dest.class);
+        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(logger,
+                Dest.class);
         this.dataStylesContainer = new MultiContainer<String, Dest, DataStyle>(logger, Dest.class);
         this.masterPageStylesContainer = new Container<String, MasterPageStyle>(logger);
         this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>(logger);
@@ -146,6 +151,7 @@ public class StylesContainer {
 
     /**
      * Add a cell style to the content container and register the font face
+     *
      * @param ffcStyle the cell style or the text style
      * @return true if the style was created or updated
      */
@@ -159,6 +165,7 @@ public class StylesContainer {
 
     /**
      * Add a cell style to the content container and register the font face
+     *
      * @param ffcStyle the cell style or the text style
      * @return true if the style was created or updated
      */
@@ -206,7 +213,9 @@ public class StylesContainer {
         if (this.masterPageStylesContainer.add(masterPageStyle.getName(), masterPageStyle)) {
             masterPageStyle.addEmbeddedStyles(this);
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -342,7 +351,9 @@ public class StylesContainer {
         boolean hasFooter = false;
 
         for (final MasterPageStyle ps : this.masterPageStylesContainer.getValues()) {
-            if (hasHeader && hasFooter) break;
+            if (hasHeader && hasFooter) {
+                break;
+            }
             hasHeader = hasHeader || ps.hasHeader();
             hasFooter = hasFooter || ps.hasFooter();
         }
@@ -351,14 +362,15 @@ public class StylesContainer {
 
     private void write(final Iterable<ObjectStyle> iterable, final XMLUtil util,
                        final Appendable appendable) throws IOException {
-        for (final ObjectStyle os : iterable)
+        for (final ObjectStyle os : iterable) {
             os.appendXMLContent(util, appendable);
+        }
     }
 
     /**
      * Write the various styles in the automatic styles.
      *
-     * @param util   an XML util
+     * @param util       an XML util
      * @param appendable the destination
      * @throws IOException if the styles can't be written
      */
@@ -366,8 +378,9 @@ public class StylesContainer {
             throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer
                 .getValues(Dest.CONTENT_AUTOMATIC_STYLES);
-        for (final ObjectStyle style : styles)
+        for (final ObjectStyle style : styles) {
             assert style.isHidden() : style.toString();
+        }
 
         this.write(styles, util, appendable);
     }
@@ -375,7 +388,7 @@ public class StylesContainer {
     /**
      * Write the data styles in the automatic-styles. They belong to content.xml/automatic-styles
      *
-     * @param util   an XML util
+     * @param util       an XML util
      * @param appendable the destination
      * @throws IOException if the styles can't be written
      */
@@ -392,7 +405,7 @@ public class StylesContainer {
      * .xml/automatic-styles, since
      * it's an automatic style (see 16.5) and it is not "used in a document" (3.1.3.2)
      *
-     * @param util   an util
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
@@ -408,7 +421,7 @@ public class StylesContainer {
      * Write master page styles. The master page style always belong to to styles
      * .xml/master-styles (3.15.4)
      *
-     * @param util   an util
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
@@ -422,7 +435,7 @@ public class StylesContainer {
     /**
      * Write styles to styles.xml/automatic-styles
      *
-     * @param util   an util
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
@@ -430,8 +443,9 @@ public class StylesContainer {
             throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer
                 .getValues(Dest.STYLES_AUTOMATIC_STYLES);
-        for (final ObjectStyle style : styles)
+        for (final ObjectStyle style : styles) {
             assert style.isHidden() : style.toString();
+        }
 
         this.write(styles, util, appendable);
     }
@@ -439,7 +453,7 @@ public class StylesContainer {
     /**
      * Write styles to styles.xml/common-styles
      *
-     * @param util   an util
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
@@ -447,9 +461,10 @@ public class StylesContainer {
             throws IOException {
         final Iterable<ObjectStyle> styles = this.objectStylesContainer
                 .getValues(Dest.STYLES_COMMON_STYLES);
-        for (final ObjectStyle style : styles)
+        for (final ObjectStyle style : styles) {
             assert !style.isHidden() : style.toString() + " - " + style.getName() +
                     TableCellStyle.DEFAULT_CELL_STYLE.toString();
+        }
 
         this.write(styles, util, appendable);
     }
@@ -457,7 +472,7 @@ public class StylesContainer {
     /**
      * Write data styles to styles.xml/common-styles
      *
-     * @param util   an util
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
@@ -473,6 +488,11 @@ public class StylesContainer {
         }
     }
 
+    /**
+     * @param util       the util to write XML
+     * @param appendable where to write
+     * @throws IOException if the font face declarations were not written
+     */
     public void writeFontFaceDecls(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<office:font-face-decls>");
@@ -489,10 +509,12 @@ public class StylesContainer {
         /**
          * content.xml/automatic-styles
          */
-        CONTENT_AUTOMATIC_STYLES, /**
+        CONTENT_AUTOMATIC_STYLES,
+        /**
          * styles.xml/automatic-styles
          */
-        STYLES_AUTOMATIC_STYLES, /**
+        STYLES_AUTOMATIC_STYLES,
+        /**
          * styles.xml/common-styles
          */
         STYLES_COMMON_STYLES,

@@ -36,18 +36,21 @@ import java.util.List;
  * <p>
  * The destination of embedded styles depends on the location of the text:
  * * if the text is in a cell, the embedded styles will belong to content.xml/automatic-styles
- * * if the text is in a footer/header, this footer/header style will belong to styles.xml/master-styles, and
- * the embedded styles will go to syles.xml/automatic-styles.
+ * * if the text is in a footer/header, this footer/header style will belong to styles
+ * .xml/master-styles, and
+ * the embedded styles will go to styles.xml/automatic-styles.
  *
  * @author Julien Férard
  */
 public class Text implements ParagraphElement {
     /**
-     * 7.3.2<text:date> "The <text:date> element displays a date, by default this is the current date."
+     * 7.3.2<text:date> "The <text:date> element displays a date, by default this is the current
+     * date."
      */
     public static final String TEXT_DATE = "<text:date/>";
     /**
-     * 7.3.9<text:file-name> "The <text:file-name> element represents a field that displays the name of a file that
+     * 7.3.9<text:file-name> "The <text:file-name> element represents a field that displays the
+     * name of a file that
      * is being edited."
      */
     public static final String TEXT_FILE_NAME = "<text:file-name/>";
@@ -60,12 +63,14 @@ public class Text implements ParagraphElement {
      */
     public static final String TEXT_PAGE_NUMBER = "<text:page-number>1</text:page-number>";
     /**
-     * 7.3.11<text:sheet-name> "The <text:sheet-name> element displays represents the name of a sheet that is
-	 * currently being edited in a Spreadsheet document."
+     * 7.3.11<text:sheet-name> "The <text:sheet-name> element displays represents the name of a
+     * sheet that is
+     * currently being edited in a Spreadsheet document."
      */
     public static final String TEXT_SHEET_NAME = "<text:sheet-name/>";
     /**
-     * 7.3.3<text:time> "The <text:time> element displays a time, by default this is the current time."
+     * 7.3.3<text:time> "The <text:time> element displays a time, by default this is the current
+     * time."
      */
     public static final String TEXT_TIME = "<text:time/>";
 
@@ -109,31 +114,34 @@ public class Text implements ParagraphElement {
     }
 
     /**
-     * Add the styles to a container, in content.xml/automatic-syles
+     * Add the styles to a container, in content.xml/automatic-styles
      * Use if the text is in a cell
      *
      * @param stylesContainer the container
      */
     @Override
     public void addEmbeddedStylesFromCell(final StylesContainer stylesContainer) {
-        for (final Paragraph par : this.paragraphs)
+        for (final Paragraph par : this.paragraphs) {
             par.addEmbeddedStylesFromCell(stylesContainer);
+        }
     }
 
     /**
-     * Add the styles to a container, in styles.xml/automatic-syles
+     * Add the styles to a container, in styles.xml/automatic-styles
      * Use if the text is in a footer/header
      *
      * @param stylesContainer the container
      */
     @Override
     public void addEmbeddedStylesFromFooterHeader(final StylesContainer stylesContainer) {
-        for (final Paragraph par : this.paragraphs)
+        for (final Paragraph par : this.paragraphs) {
             par.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        }
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         for (final Paragraph paragraph : this.paragraphs) {
             paragraph.appendXMLContent(util, appendable);
         }
@@ -148,10 +156,12 @@ public class Text implements ParagraphElement {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof Text))
+        }
+        if (!(o instanceof Text)) {
             return false;
+        }
 
         final Text other = (Text) o;
         return this.paragraphs.equals(other.paragraphs);

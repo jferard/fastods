@@ -27,20 +27,23 @@ import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
 /**
- * A FileOpenResult is the result of an attempt to lock a file. There are three cases : 1. the file is a dir:
- * can't get the stream; 2. the file exists: getStream() will get the lock; 3. the file doesn't exist: thee lock is
+ * A FileOpenResult is the result of an attempt to lock a file. There are three cases : 1. the
+ * file is a dir:
+ * can't get the stream; 2. the file exists: getStream() will get the lock; 3. the file doesn't
+ * exist: thee lock is
  * immediately put on it.
+ *
  * @author Julien Férard
  */
 public interface FileOpenResult {
-	/**
-	 * A constant to return when the file is a dir
-	 */
-	FileOpenResult FILE_IS_DIR = new FileIsDir();
+    /**
+     * A constant to return when the file is a dir
+     */
+    FileOpenResult FILE_IS_DIR = new FileIsDir();
 
-	/**
-	 * @return a stream if the file exists and can be opened
-	 * @throws FileNotFoundException if the file doesn't exist or is locked
-	 */
-	OutputStream getStream() throws FileNotFoundException;
+    /**
+     * @return a stream if the file exists and can be opened
+     * @throws FileNotFoundException if the file doesn't exist or is locked
+     */
+    OutputStream getStream() throws FileNotFoundException;
 }

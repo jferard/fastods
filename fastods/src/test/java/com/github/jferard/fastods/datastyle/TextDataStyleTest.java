@@ -51,9 +51,9 @@ public class TextDataStyleTest {
     public final void testLanguageCountry() throws IOException {
         final TextDataStyle bs = new TextDataStyleBuilder("test", this.locale).language("a")
                 .country("b").build();
-        TestHelper.assertXMLEquals(
-                "<number:text-style style:name=\"test\" number:language=\"a\" " +
-                        "number:country=\"B\" " + "style:volatile=\"true\"><number:text-content/></number:text-style>", bs);
+        TestHelper.assertXMLEquals("<number:text-style style:name=\"test\" number:language=\"a\" " +
+                "number:country=\"B\" " +
+                "style:volatile=\"true\"><number:text-content/></number:text-style>", bs);
     }
 
     @Test

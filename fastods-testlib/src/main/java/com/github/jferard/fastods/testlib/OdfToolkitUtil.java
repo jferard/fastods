@@ -37,7 +37,8 @@ import org.w3c.dom.Node;
  * @author Julien Férard
  */
 public final class OdfToolkitUtil {
-    private OdfToolkitUtil() {}
+    private OdfToolkitUtil() {
+    }
 
     /**
      * @param cell the cell
@@ -57,29 +58,32 @@ public final class OdfToolkitUtil {
 
     /**
      * Return styles.xml representation
-     * @param document the document
-     * @param styleName the style name
+     *
+     * @param document    the document
+     * @param styleName   the style name
      * @param styleFamily the style family
      * @return the styles
      * @throws Exception if an exception occurs
      */
-    public static OdfStyle getDocumentStyle(final SpreadsheetDocument document, final String styleName,
+    public static OdfStyle getDocumentStyle(final SpreadsheetDocument document,
+                                            final String styleName,
                                             final OdfStyleFamily styleFamily) throws Exception {
         return document.getStylesDom().getOfficeStyles().getStyle(styleName, styleFamily);
     }
 
     /**
      * Get the first tag with a name
+     *
      * @param element the root
-     * @param tagname the name of the tag
+     * @param tagName the name of the tag
      * @return the first node with that tag name inside element
      */
-    public static Node getFirstElement(final Element element, final String tagname) {
-        return element.getElementsByTagName(tagname).item(0);
+    public static Node getFirstElement(final Element element, final String tagName) {
+        return element.getElementsByTagName(tagName).item(0);
     }
 
     /**
-     * @param node the node
+     * @param node          the node
      * @param attributeName the name of the attribute
      * @return the value of the attribute as a string
      */

@@ -35,7 +35,15 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * The section 1 of the tutorial
+ *
+ * @author J. Férard
+ */
 class A_HelloWorld {
+    /**
+     * @throws IOException if the file can't be written
+     */
     static void example() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Hello, world!

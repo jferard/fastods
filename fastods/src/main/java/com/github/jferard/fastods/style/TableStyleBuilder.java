@@ -31,7 +31,8 @@ import com.github.jferard.fastods.util.StyleBuilder;
  *
  * @author Julien Férard
  */
-public class TableStyleBuilder implements StyleBuilder<TableStyle>, ShowableBuilder<TableStyleBuilder> {
+public class TableStyleBuilder
+        implements StyleBuilder<TableStyle>, ShowableBuilder<TableStyleBuilder> {
 
     /**
      * A name checker

@@ -41,7 +41,16 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+/**
+ * Section 6 of the tutorial
+ *
+ * @author J. Férard
+ */
 class F_MoreOnCells {
+    /**
+     * @throws IOException if the file can't be written
+     * @throws URISyntaxException if the uri is not valid
+     */
     static void example() throws IOException, URISyntaxException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
@@ -175,8 +184,8 @@ class F_MoreOnCells {
         // Or a link to a table:
         final Table table2 = document.addTable("target");
         walker.to(4);
-        walker.setText(Text.builder().par().span("A link to ")
-                .link("target table", table2).build());
+        walker.setText(
+                Text.builder().par().span("A link to ").link("target table", table2).build());
 
         // ### Tooltips
         // << END TUTORIAL (directive to extract part of a tutorial from this file)

@@ -27,12 +27,12 @@ import com.github.jferard.fastods.util.Style;
 
 /**
  * 16.2 <style:style>
- *
+ * <p>
  * The ObjectStyle class represents a style:style element.
  * There are four possibilities:
  * * Style category: style of a content or style of a style
  * * Style visibility: hidden or visible
- *
+ * <p>
  * Three destinations:
  * * visible: styles.xml/styles
  * * hidden + content: content.xml/automatic-styles
@@ -41,15 +41,17 @@ import com.github.jferard.fastods.util.Style;
  * @author Julien Férard
  */
 public interface ObjectStyle extends Style {
-	/**
-	 * 19.476 style:family
-	 * @return the famlily name of this style
-	 */
-	ObjectStyleFamily getFamily();
+    /**
+     * 19.476 style:family
+     *
+     * @return the family name of this style
+     */
+    ObjectStyleFamily getFamily();
 
-	/**
-	 * The identifier of this style is built on the name (19.498 style:name) and the family
-	 * @return a unique identifier for this style
-	 */
-	String getKey();
+    /**
+     * The identifier of this style is built on the name (19.498 style:name) and the family
+     *
+     * @return a unique identifier for this style
+     */
+    String getKey();
 }

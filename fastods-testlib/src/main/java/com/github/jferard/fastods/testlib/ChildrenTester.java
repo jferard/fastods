@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 /**
  * A tester for children of a node.
+ *
  * @author Julien Férard
  */
 public abstract class ChildrenTester {
@@ -45,15 +46,20 @@ public abstract class ChildrenTester {
      * node
      */
     protected boolean attributesEquals(final Node element1, final Node element2) {
-        if (element1 == element2) return true;
+        if (element1 == element2) {
+            return true;
+        }
 
         final NamedNodeMap attributes1 = element1.getAttributes();
         final NamedNodeMap attributes2 = element2.getAttributes();
         if (attributes1 == null) {
             return attributes2 == null;
-        } else if (attributes2 == null) return false;
-        else {
-            if (attributes1.getLength() != attributes2.getLength()) return false;
+        } else if (attributes2 == null) {
+            return false;
+        } else {
+            if (attributes1.getLength() != attributes2.getLength()) {
+                return false;
+            }
 
             final AttrList list1 = AttrList.create(attributes1);
             final AttrList list2 = AttrList.create(attributes2);
@@ -76,9 +82,11 @@ public abstract class ChildrenTester {
     protected boolean equals(final Node element1, final Node element2) {
         logger.fine("element1" + UnsortedNodeList.toString(element1) + ",\nelement2" +
                 UnsortedNodeList.toString(element2));
-        if (element1 == null) return element2 == null;
-        else if (element2 == null) return false;
-        else { // element1 != null && element2 != null
+        if (element1 == null) {
+            return element2 == null;
+        } else if (element2 == null) {
+            return false;
+        } else { // element1 != null && element2 != null
             logger.fine("" + this.namesEquals(element1, element2) +
                     this.attributesEquals(element1, element2) +
                     this.childrenEquals(element1, element2));

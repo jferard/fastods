@@ -58,7 +58,7 @@ public class DateTimeStyleFormat implements XMLConvertible {
      * A day (long)
      */
     public static final String LONG_TEXTUAL_DAY =
-            "<number:day number:style=\"long\" number:textual=\"true\"/>";
+            "<number:day number:style=\"long\" " + "number:textual=\"true\"/>";
 
 
     /**
@@ -81,7 +81,7 @@ public class DateTimeStyleFormat implements XMLConvertible {
      * A month name (long)
      */
     public static final String LONG_TEXTUAL_MONTH =
-            "<number:month number:style=\"long\" number:textual=\"true\"/>";
+            "<number:month number:style=\"long\" " + "number:textual=\"true\"/>";
 
     /**
      * 16.27.13<number:year>
@@ -119,15 +119,6 @@ public class DateTimeStyleFormat implements XMLConvertible {
      */
     public static final String SPACE = "<number:text> </number:text>";
     /**
-     * A free text
-     * @param s
-     * @return
-     */
-    public static String text(final String s) {
-        return "<number:text>"+s+"</number:text>";
-    }
-
-    /**
      * 16.27.15<number:day-of-week>
      * Day of week
      */
@@ -137,7 +128,6 @@ public class DateTimeStyleFormat implements XMLConvertible {
      * A week number in the year
      */
     public static final String WEEK = "<number:week-of-year/>";
-
     /**
      * 16.27.19<number:hours>
      * Hours
@@ -170,10 +160,21 @@ public class DateTimeStyleFormat implements XMLConvertible {
     public static final String LONG_SECONDS = "<number:seconds number:style=\"long\"/>";
 
     /**
+     * A free text
+     *
+     * @param s the text
+     * @return the XML representation of the text
+     */
+    public static String text(final String s) {
+        return "<number:text>" + s + "</number:text>";
+    }
+
+    /**
      * 16.27.21<number:seconds>
      * Seconds (long)
+     *
      * @param n number of digits
-     * @return
+     * @return the XML representation of the data time with n digits
      */
     public static String longSeconds(final int n) {
         return "<number:seconds number:style=\"long\" number:decimal-places=\"" + n + "\"/>";
@@ -194,7 +195,8 @@ public class DateTimeStyleFormat implements XMLConvertible {
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        for (final String string : this.strings)
+        for (final String string : this.strings) {
             appendable.append(string);
+        }
     }
 }

@@ -33,6 +33,6 @@ import com.github.jferard.fastods.util.StyleBuilder;
  * @param <T> the destination style builder
  * @author Julien Férard
  */
-public interface DataStyleBuilder<S extends DataStyle, T extends DataStyleBuilder<S, T>> extends StyleBuilder<S>,
-        LocalizedBuilder<T>, IsVolatileBuilder<T>, ShowableBuilder<T> {
+public interface DataStyleBuilder<S extends DataStyle, T extends DataStyleBuilder<S, T>>
+        extends StyleBuilder<S>, LocalizedBuilder<T>, IsVolatileBuilder<T>, ShowableBuilder<T> {
 }

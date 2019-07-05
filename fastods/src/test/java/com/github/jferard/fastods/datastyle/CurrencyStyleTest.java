@@ -52,8 +52,7 @@ public class CurrencyStyleTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style" + ":volatile=\"true\">" +
+                        "number:country=\"US\" " + "style" + ":volatile=\"true\">" +
                         "<number:number number:decimal-places=\"5\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
@@ -65,8 +64,8 @@ public class CurrencyStyleTest {
         final CurrencyStyle cs = new CurrencyStyleBuilder("currency-data", Locale.FRANCE).build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"currency-data\" number:language=\"fr\" " +
-                        "number:country=\"FR\" " +
-                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:country=\"FR\" " + "style:volatile=\"true\">" +
+                        "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.frSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>", cs);
@@ -78,8 +77,8 @@ public class CurrencyStyleTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
+                        "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\" number:grouping=\"true\"/>" +
                         "<number:text> </number:text>" + "<number:currency-symbol>" +
                         this.usSymbol + "</number:currency-symbol>" + "</number:currency-style>",
@@ -92,8 +91,8 @@ public class CurrencyStyleTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
+                        "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"8\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>", cs);
@@ -105,8 +104,8 @@ public class CurrencyStyleTest {
                 .negativeValueColor(SimpleColor.GREEN).build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
+                        "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>" +
@@ -115,9 +114,8 @@ public class CurrencyStyleTest {
                         "<style:text-properties fo:color=\"#008000\"/>" +
                         "<number:text>-</number:text>" +
                         "<number:number number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/>" +
-                        "<number:text> </number:text>" + "<number:currency-symbol>" +
-                        this.usSymbol + "</number:currency-symbol>" +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
+                        "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:currency-style>", cs);
     }
@@ -128,8 +126,8 @@ public class CurrencyStyleTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
+                        "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>" +
@@ -138,9 +136,8 @@ public class CurrencyStyleTest {
                         "<style:text-properties fo:color=\"#ff0000\"/>" +
                         "<number:text>-</number:text>" +
                         "<number:number number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/>" +
-                        "<number:text> </number:text>" + "<number:currency-symbol>" +
-                        this.usSymbol + "</number:currency-symbol>" +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
+                        "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:currency-style>", cs);
     }
@@ -151,8 +148,8 @@ public class CurrencyStyleTest {
                 .build();
         TestHelper.assertXMLEquals(
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\">" + "<number:number number:decimal-places=\"2\" " +
+                        "number:country=\"US\" " + "style:volatile=\"true\">" +
+                        "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
                         "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "</number:currency-style>" +
@@ -161,9 +158,8 @@ public class CurrencyStyleTest {
                         "<style:text-properties fo:color=\"#ff0000\"/>" +
                         "<number:text>-</number:text>" +
                         "<number:number number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/>" +
-                        "<number:text> </number:text>" + "<number:currency-symbol>" +
-                        this.usSymbol + "</number:currency-symbol>" +
+                        "number:min-integer-digits=\"1\"/>" + "<number:text> </number:text>" +
+                        "<number:currency-symbol>" + this.usSymbol + "</number:currency-symbol>" +
                         "<style:map style:condition=\"value()&gt;=0\" " +
                         "style:apply-style-name=\"test\"/>" + "</number:currency-style>", cs);
     }
@@ -176,10 +172,8 @@ public class CurrencyStyleTest {
                 "<number:currency-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
                         "style:volatile=\"true\"><number:currency-symbol>ABC</number:currency" +
-                        "-symbol><number:number " +
-                        "number:decimal-places=\"2\" " +
-                        "number:min-integer-digits=\"1\"/></number:currency-style>",
-                cs);
+                        "-symbol><number:number " + "number:decimal-places=\"2\" " +
+                        "number:min-integer-digits=\"1\"/></number:currency-style>", cs);
     }
 
     @Test

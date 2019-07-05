@@ -50,5 +50,6 @@ public interface HeaderOrFooter extends StyleWithEmbeddedStyles {
      * @param appendable the stream
      * @throws IOException if one can't append the content
      */
-    void appendPageSectionStyleXMLToAutomaticStyle(XMLUtil util, Appendable appendable) throws IOException;
+    void appendPageSectionStyleXMLToAutomaticStyle(XMLUtil util, Appendable appendable)
+            throws IOException;
 }

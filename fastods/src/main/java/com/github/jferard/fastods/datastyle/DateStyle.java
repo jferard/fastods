@@ -31,7 +31,7 @@ import java.io.IOException;
 /**
  * content.xml/office:document-content/office:automatic-styles/number:
  * date-style styles.xml/office:document-styles/office:styles/number:date-style
- *
+ * <p>
  * To create a custom `DateStyle`, first create a new `DateStyleFormat` and pass it to
  * a `DateStyleBuilder`:
  *
@@ -63,7 +63,8 @@ public class DateStyle implements DataStyle {
          */
         public static final DateTimeStyleFormat DDMMYYYY = new DateTimeStyleFormat(
                 DateTimeStyleFormat.LONG_DAY, DateTimeStyleFormat.DOT,
-                DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.LONG_YEAR);
+                DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT,
+                DateTimeStyleFormat.LONG_YEAR);
 
         /**
          * Set the date format like '10.07.12'.
@@ -75,35 +76,38 @@ public class DateStyle implements DataStyle {
         /**
          * Set the date format like 'July'.
          */
-        public static final DateTimeStyleFormat MMMM = new DateTimeStyleFormat(DateTimeStyleFormat.LONG_TEXTUAL_MONTH);
+        public static final DateTimeStyleFormat MMMM = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_TEXTUAL_MONTH);
 
         /**
          * Set the date format like '07.12'.<br>
          * Month.Year
          */
-        public static final DateTimeStyleFormat MMYY = new DateTimeStyleFormat(DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT,
-                DateTimeStyleFormat.YEAR);
+        public static final DateTimeStyleFormat MMYY = new DateTimeStyleFormat(
+                DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DOT, DateTimeStyleFormat.YEAR);
 
         /**
          * Set the date format like '10.July 2012'.
          */
         public static final DateTimeStyleFormat TMMMMYYYY = new DateTimeStyleFormat(
-                DateTimeStyleFormat.DAY,
-                DateTimeStyleFormat.DOT_SPACE, DateTimeStyleFormat.LONG_TEXTUAL_MONTH, DateTimeStyleFormat.SPACE,
+                DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT_SPACE,
+                DateTimeStyleFormat.LONG_TEXTUAL_MONTH, DateTimeStyleFormat.SPACE,
                 DateTimeStyleFormat.LONG_YEAR);
 
         /**
          * Set the date format to the weeknumber like '28'.<br>
          * Week number
          */
-        public static final DateTimeStyleFormat WW = new DateTimeStyleFormat(DateTimeStyleFormat.WEEK);
+        public static final DateTimeStyleFormat WW = new DateTimeStyleFormat(
+                DateTimeStyleFormat.WEEK);
 
         /**
          * Set the date format like '2012-07-10'.<br>
          */
         public static final DateTimeStyleFormat YYYYMMDD = new DateTimeStyleFormat(
-                DateTimeStyleFormat.LONG_YEAR,
-                DateTimeStyleFormat.DASH, DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DASH, DateTimeStyleFormat.LONG_DAY);
+                DateTimeStyleFormat.LONG_YEAR, DateTimeStyleFormat.DASH,
+                DateTimeStyleFormat.LONG_MONTH, DateTimeStyleFormat.DASH,
+                DateTimeStyleFormat.LONG_DAY);
     }
 
     /**
@@ -121,14 +125,16 @@ public class DateStyle implements DataStyle {
      * @param dateFormat     the format for the date
      * @param automaticOrder true if the order comes from the current locale
      */
-    DateStyle(final CoreDataStyle dataStyle, final DateTimeStyleFormat dateFormat, final boolean automaticOrder) {
+    DateStyle(final CoreDataStyle dataStyle, final DateTimeStyleFormat dateFormat,
+              final boolean automaticOrder) {
         this.dataStyle = dataStyle;
         this.dateFormat = dateFormat;
         this.automaticOrder = automaticOrder;
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<number:date-style");
         util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
         this.dataStyle.appendLVAttributes(util, appendable);

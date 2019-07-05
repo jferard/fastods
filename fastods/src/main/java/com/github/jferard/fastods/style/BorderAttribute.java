@@ -133,7 +133,7 @@ public class BorderAttribute {
          */
         ALL("fo:border"),
         /**
-         * The bottom boder
+         * The bottom border
          */
         BOTTOM("fo:border-bottom"),
         /**
@@ -155,6 +155,9 @@ public class BorderAttribute {
             this.attrName = attrName;
         }
 
+        /**
+         * @return the name of the attribute for XML use
+         */
         String getAttrName() {
             return this.attrName;
         }
@@ -223,6 +226,10 @@ public class BorderAttribute {
             this.attrValue = attrValue;
         }
 
+
+        /**
+         * @return the value of the attribute for XML use
+         */
         String getAttrValue() {
             return this.attrValue;
         }
