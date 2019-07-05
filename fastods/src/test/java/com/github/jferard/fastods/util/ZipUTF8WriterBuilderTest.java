@@ -36,7 +36,7 @@ import java.util.zip.ZipEntry;
 public class ZipUTF8WriterBuilderTest {
     public static final int C_SIZE = 118;
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     private ZipUTF8WriterBuilder builder;
     private ByteArrayOutputStream out;

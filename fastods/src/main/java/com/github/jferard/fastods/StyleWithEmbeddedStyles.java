@@ -24,8 +24,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container;
-import com.github.jferard.fastods.util.Style;
 
 /**
  * An element that embeds styles and does *not* belong to the content of the document.

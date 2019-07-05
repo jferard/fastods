@@ -25,8 +25,15 @@ package com.github.jferard.fastods;
 
 /**
  *
+ * @author
  */
 public class TimeValue implements CellValue {
+
+    private static final int MONTHS_BY_YEAR = 12;
+    private static final int HOURS_BY_DAY = 24;
+    private static final int MINUTES_BY_HOUR = 60;
+    private static final int SECONDS_BY_MINUTE = 60;
+
     public static TimeValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
             final Number number = (Number) o;
@@ -76,15 +83,16 @@ public class TimeValue implements CellValue {
         // See XMLSchema part 2, 3.2.6.2 Order relation on duration
         // TODO: check if the implementation is correct
         return this.neg == other.neg && this.totalMonths() == other.totalMonths() &&
-                Math.abs(this.totalSeconds() - other.totalSeconds()) < 0.000000001;
+                Math.abs(this.totalSeconds() - other.totalSeconds()) < FloatValue.FLOAT_DELTA;
     }
 
     private long totalMonths() {
-        return this.years * 12 + this.months;
+        return this.years * MONTHS_BY_YEAR + this.months;
     }
 
     private double totalSeconds() {
-        return ((this.days * 24 + this.hours) * 60 + this.minutes) * 60 + this.seconds;
+        return ((this.days * HOURS_BY_DAY + this.hours) * MINUTES_BY_HOUR + this.minutes) *
+                SECONDS_BY_MINUTE + this.seconds;
     }
 
     @Override
@@ -105,9 +113,8 @@ public class TimeValue implements CellValue {
 
     @Override
     public String toString() {
-        return "TimeValue[" + (this.neg ? "-P" :
-                "P") + this.years + "Y" + this.months + "M" + this.days + "DT" + this.hours + "H" +
-                        this.minutes + "M" + this.seconds + "S" + "]";
+        return "TimeValue[" + (this.neg ? "-P" : "P") + this.years + "Y" + this.months + "M" +
+                this.days + "DT" + this.hours + "H" + this.minutes + "M" + this.seconds + "S" + "]";
 
     }
 }

@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import org.junit.After;
 import org.junit.Assert;
@@ -57,8 +56,9 @@ public class OdsFactoryTest {
     }
 
     @Test
-    public void createFactory() throws Exception {
-        final OdsFactory factory = OdsFactory.create().dataStyles(DataStylesBuilder.create(Locale.US).build()).noLibreOfficeMode();
+    public void createFactory() {
+        final OdsFactory factory = OdsFactory.create()
+                .dataStyles(DataStylesBuilder.create(Locale.US).build()).noLibreOfficeMode();
         factory.createWriter();
     }
 

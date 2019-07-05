@@ -31,6 +31,11 @@ import java.util.Date;
  * @author Julien Férard
  */
 public class DateValue implements CellValue {
+	/**
+	 * @param o the object to cast
+	 * @return the date value
+	 * @throws FastOdsException if the cast was not possible
+	 */
 	public static DateValue from(final Object o) throws FastOdsException {
 		if (o instanceof Date) {
 			return new DateValue((Date) o);

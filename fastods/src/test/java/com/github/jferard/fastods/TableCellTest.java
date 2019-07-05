@@ -52,7 +52,7 @@ import java.util.Locale;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(TableColdCell.class)
 public class TableCellTest {
-    public static final long TIME_IN_MILLIS = 1234567891011L;
+    private static final long TIME_IN_MILLIS = 1234567891011L;
     private static final int COLUMN_INDEX = 11;
     private static final int ROW_INDEX = 10;
     private Locale locale;
@@ -67,7 +67,7 @@ public class TableCellTest {
     private ToCellValueConverter converter;
 
     @Before
-    public void setUp() throws FastOdsException {
+    public void setUp() {
         this.converter = new ObjectToCellValueConverter("USD");
         this.locale = Locale.US;
         this.stc = PowerMock.createMock(StylesContainer.class);
@@ -520,7 +520,7 @@ public class TableCellTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testMarkColumnsSpannedNeg() throws IOException {
+    public final void testMarkColumnsSpannedNeg() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.cell.markColumnsSpanned(-8);
@@ -529,7 +529,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testMarkColumnsSpanned1() throws IOException {
+    public final void testMarkColumnsSpanned1() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.cell.markColumnsSpanned(1);
@@ -590,7 +590,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testMarkRowsSpanned1() throws IOException {
+    public final void testMarkRowsSpanned1() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.cell.markColumnsSpanned(1);
@@ -599,7 +599,7 @@ public class TableCellTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testMarkRowsSpannedNeg() throws IOException {
+    public final void testMarkRowsSpannedNeg() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.cell.markRowsSpanned(-8);
@@ -608,7 +608,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testMerge() throws IOException, FastOdsException {
+    public final void testMerge() throws IOException {
         PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc)
                 .anyTimes();
@@ -622,7 +622,7 @@ public class TableCellTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public final void testMergeNeg() throws IOException, FastOdsException {
+    public final void testMergeNeg() throws IOException {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.cell.setCellMerge(-10, 10);
@@ -631,7 +631,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testMerge1() throws IOException, FastOdsException {
+    public final void testMerge1() throws IOException {
         PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc)
                 .anyTimes();
@@ -644,7 +644,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testDataStyle() throws IOException {
+    public final void testDataStyle() {
         final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
 
         PowerMock.resetAll();
@@ -659,7 +659,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testDataStyleNonNull() throws IOException {
+    public final void testDataStyleNonNull() {
         final FloatStyle dataStyle = this.ds.getFloatDataStyle();
 
         PowerMock.resetAll();
@@ -676,7 +676,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testDataStyleNonNullPreviousStyle() throws IOException {
+    public final void testDataStyleNonNullPreviousStyle() {
         final DataStyle dataStyle = this.ds.getFloatDataStyle();
         final TableCellStyle cellStyle = TableCellStyle.builder("a").dataStyle(dataStyle).build();
         final CurrencyStyle newDs = this.ds.getCurrencyDataStyle();
@@ -695,7 +695,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testDataStyleNull() throws IOException {
+    public final void testDataStyleNull() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.cell.setDataStyle(null);
@@ -733,8 +733,9 @@ public class TableCellTest {
         this.cell.setTimeValue(0);
 
         PowerMock.verifyAll();
-        Assert.assertEquals("<table:table-cell office:value-type=\"time\" " +
-                "office:time-value=\"P0Y\"/>", this.getCellXML());
+        Assert.assertEquals(
+                "<table:table-cell office:value-type=\"time\" " + "office:time-value=\"P0Y\"/>",
+                this.getCellXML());
     }
 
     @Test
@@ -750,8 +751,9 @@ public class TableCellTest {
         this.cell.setTimeValue(-987654);
 
         PowerMock.verifyAll();
-        Assert.assertEquals("<table:table-cell office:value-type=\"time\" " +
-                "office:time-value=\"-PT987.654S\"/>", this.getCellXML());
+        Assert.assertEquals(
+                "<table:table-cell office:value-type=\"time\" office:time-value=\"-PT987.654S\"/>",
+                this.getCellXML());
     }
 
     @Test

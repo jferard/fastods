@@ -33,74 +33,78 @@ import java.io.IOException;
  * @author Julien Férard
  */
 final class CoreDataStyle implements NamedObject, Hidable {
-	private final boolean hidden;
-	/**
-	 * 19.342 number:country : "The number:country attribute specifies a country code for a data style"
-	 */
-	private final String countryCode;
-	/**
-	 * 19.349 number:language : "The number:language attribute specifies a language code"
-	 */
-	private final String languageCode;
-	/**
-	 * the name of a data style (19.498.2)
-	 */
-	private final String name;
+    private final boolean hidden;
+    /**
+     * 19.342 number:country : "The number:country attribute specifies a country code for a data
+     * style"
+     */
+    private final String countryCode;
+    /**
+     * 19.349 number:language : "The number:language attribute specifies a language code"
+     */
+    private final String languageCode;
+    /**
+     * the name of a data style (19.498.2)
+     */
+    private final String name;
 
-	private final boolean volatileStyle;
+    private final boolean volatileStyle;
 
-	/**
-	 * Create a new core data style
-	 * @param name the name of the style
-	 * @param hidden if true, an automatic style
-	 * @param languageCode the language code (e.g. "en")
-	 * @param countryCode the country code (e.g. "US")
-	 * @param volatileStyle true if the style should be kept
-	 */
-	CoreDataStyle(final String name, final boolean hidden, final String languageCode,
-						final String countryCode, final boolean volatileStyle) {
-		this.name = name;
-		this.hidden = hidden;
-		this.countryCode = countryCode;
-		this.languageCode = languageCode;
-		this.volatileStyle = volatileStyle;
-	}
+    /**
+     * Create a new core data style
+     *
+     * @param name          the name of the style
+     * @param hidden        if true, an automatic style
+     * @param languageCode  the language code (e.g. "en")
+     * @param countryCode   the country code (e.g. "US")
+     * @param volatileStyle true if the style should be kept
+     */
+    CoreDataStyle(final String name, final boolean hidden, final String languageCode,
+                  final String countryCode, final boolean volatileStyle) {
+        this.name = name;
+        this.hidden = hidden;
+        this.countryCode = countryCode;
+        this.languageCode = languageCode;
+        this.volatileStyle = volatileStyle;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Append locale and volatile attributes
-     * @param util an util
+     *
+     * @param util       an util
      * @param appendable the destination
      * @throws IOException if an error occurs
      */
-    public void appendLVAttributes(final XMLUtil util,
-									  final Appendable appendable) throws IOException {
-		this.appendLocaleAttributes(util, appendable);
-		this.appendVolatileAttribute(util, appendable);
-	}
-
-    private void appendLocaleAttributes(final XMLUtil util,
-                                        final Appendable appendable) throws IOException {
-        if (this.languageCode != null)
-            util.appendEAttribute(appendable, "number:language",
-                    this.languageCode);
-        if (this.countryCode != null)
-            util.appendEAttribute(appendable, "number:country",
-                    this.countryCode);
+    public void appendLVAttributes(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.appendLocaleAttributes(util, appendable);
+        this.appendVolatileAttribute(util, appendable);
     }
 
-    private void appendVolatileAttribute(final XMLUtil util,
-										   final Appendable appendable) throws IOException {
-		if (this.volatileStyle)
-			util.appendAttribute(appendable, "style:volatile",	this.volatileStyle);
-	}
+    private void appendLocaleAttributes(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+		if (this.languageCode != null) {
+			util.appendEAttribute(appendable, "number:language", this.languageCode);
+		}
+		if (this.countryCode != null) {
+			util.appendEAttribute(appendable, "number:country", this.countryCode);
+		}
+    }
 
-	@Override
-	public boolean isHidden() {
-		return this.hidden;
-	}
+    private void appendVolatileAttribute(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+		if (this.volatileStyle) {
+			util.appendAttribute(appendable, "style:volatile", this.volatileStyle);
+		}
+    }
+
+    @Override
+    public boolean isHidden() {
+        return this.hidden;
+    }
 }

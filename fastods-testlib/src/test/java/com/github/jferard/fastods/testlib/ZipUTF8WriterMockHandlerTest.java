@@ -46,7 +46,7 @@ public class ZipUTF8WriterMockHandlerTest {
     }
 
     @Test
-    public void testCreate() throws IOException, ParserConfigurationException, SAXException {
+    public void testCreate() {
         final ZipUTF8WriterMockHandler h = ZipUTF8WriterMockHandler.create();
         PowerMock.resetAll();
         PowerMock.replayAll();
@@ -64,7 +64,7 @@ public class ZipUTF8WriterMockHandlerTest {
     }
 
     @Test
-    public void testGetInstance() throws IOException, ParserConfigurationException, SAXException {
+    public void testGetInstance() throws IOException {
         this.mock.putNextEntry(new ZipEntry("test"));
         this.mock.append("<document />");
         this.mock.closeEntry();
@@ -124,10 +124,10 @@ public class ZipUTF8WriterMockHandlerTest {
 
     private interface ZUW
 		extends Closeable, Flushable, Appendable {
-        void closeEntry() throws IOException;
-        void finish() throws IOException;
-        void putNextEntry(final ZipEntry entry) throws IOException;
+        void closeEntry();
+        void finish();
+        void putNextEntry(final ZipEntry entry);
         void setComment(final String comment);
-        void write(final String str) throws IOException;
+        void write(final String str);
     }
 }

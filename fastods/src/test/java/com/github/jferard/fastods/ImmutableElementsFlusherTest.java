@@ -46,7 +46,7 @@ public class ImmutableElementsFlusherTest {
         odsElements.writeImmutableElements(util, w);
 
         PowerMock.replayAll();
-        final ImmutableElementsFlusher flusher = new ImmutableElementsFlusher(odsElements);
+        final OdsFlusher flusher = new ImmutableElementsFlusher(odsElements);
         flusher.flushInto(util, w);
 
         PowerMock.verifyAll();

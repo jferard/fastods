@@ -88,6 +88,7 @@ class TableBuilder {
      * @param xmlUtil         an util
      * @param stylesContainer the container
      * @param format          the available data styles
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @param name            the name of the table
      * @param rowCapacity     the row capacity of the table
      * @param columnCapacity  the column capacity of the table
@@ -257,9 +258,10 @@ class TableBuilder {
      * @return the table row
      * @throws IllegalArgumentException if the index is invalid
      * @throws IOException              if an I/O error occurs
+     * @throws ParseException
      */
     public TableRow getRow(final Table table, final TableAppender appender, final String address)
-            throws FastOdsException, IOException, ParseException {
+            throws IOException, ParseException {
         final int row = this.positionUtil.newPosition(address).getRow();
         return this.getRow(table, appender, row);
     }
@@ -362,6 +364,7 @@ class TableBuilder {
      * @param columnMerge the number of cells to merge
      * @throws FastOdsException if the row index or the col index is negative
      * @throws IOException      if the cells can't be merged
+     * @throws ParseException
      */
     @Deprecated
     public void setCellMerge(final Table table, final TableAppender appender, final String address,
@@ -378,7 +381,7 @@ class TableBuilder {
      * @param col The column number
      * @param ts  The style to be used, make sure the style is of type
      *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
-     * @throws FastOdsException Thrown if col has an invalid value.
+     * @throws IllegalArgumentException Thrown if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
         TableBuilder.checkCol(col);

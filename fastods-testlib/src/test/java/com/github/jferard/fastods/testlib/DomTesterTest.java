@@ -28,7 +28,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,10 +35,10 @@ import java.util.logging.Logger;
  */
 public class DomTesterTest {
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setUp() throws ParserConfigurationException {
+    public void setUp() {
         UnsortedChildrenTester.logger = PowerMock.createMock(Logger.class);
         DomTester.logger = PowerMock.createMock(Logger.class);
     }

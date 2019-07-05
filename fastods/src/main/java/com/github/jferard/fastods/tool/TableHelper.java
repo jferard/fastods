@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
@@ -66,12 +65,11 @@ public class TableHelper {
 	 * @param colIndex    The column, 0 is the first column
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of columns to merge
-	 * @throws FastOdsException if the rowIndex or the colIndex is negative
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMerge(final Table table, final int rowIndex,
 							 final int colIndex, final int rowMerge, final int columnMerge)
-			throws FastOdsException, IOException {
+			throws IOException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setRowsSpanned(rowMerge);
 		cell.setColumnsSpanned(columnMerge);
@@ -84,12 +82,12 @@ public class TableHelper {
 	 * @param address         The cell position e.g. 'A1'
 	 * @param rowMerge    the number of rows to merge
 	 * @param columnMerge the number of cells to merge
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
+     * @throws ParseException
 	 */
 	public void setCellMerge(final Table table, final String address,
 							 final int rowMerge, final int columnMerge)
-			throws FastOdsException, IOException, ParseException {
+			throws IOException, ParseException {
 		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -102,12 +100,11 @@ public class TableHelper {
 	 * @param colIndex    The column, 0 is the first column
 	 * @param value       the value to set
 	 * @param ts          the cell style
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cell value can't be set
 	 */
 	public void setCellValue(final Table table, final int rowIndex,
 							 final int colIndex, final CellValue value, final TableCellStyle ts)
-			throws FastOdsException, IOException {
+			throws IOException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setCellValue(value);
 		cell.setStyle(ts);
@@ -118,12 +115,11 @@ public class TableHelper {
 	 * @param rowIndex    The row, 0 is the first row
 	 * @param colIndex    The column, 0 is the first column
 	 * @param value       the value to set
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cell value can't be set
 	 */
 	public void setCellValue(final Table table, final int rowIndex,
 							 final int colIndex, final CellValue value)
-			throws FastOdsException, IOException {
+			throws IOException {
 		final TableCell cell = this.getCell(table, rowIndex, colIndex);
 		cell.setCellValue(value);
 	}
@@ -135,12 +131,12 @@ public class TableHelper {
 	 * @param table The tlbe where the value is set
 	 * @param value The value to set the cell to
 	 * @param ts    The table style for this cell
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cell value can't be set
+     * @throws ParseException
 	 */
 	public void setCellValue(final Table table, final String address,
 							 final CellValue value, final TableCellStyle ts)
-			throws FastOdsException, IOException, ParseException {
+			throws IOException, ParseException {
 		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -153,12 +149,12 @@ public class TableHelper {
 	 * @param address   The cell position e.g. 'A1'
 	 * @param table The tlbe where the value is set
 	 * @param value The value to set the cell to
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cell value can't be set
+     * @throws ParseException
 	 */
 	public void setCellValue(final Table table, final String address,
 							 final CellValue value)
-			throws FastOdsException, IOException, ParseException {
+			throws IOException, ParseException {
 		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -170,11 +166,10 @@ public class TableHelper {
 	 * @param rowIndex    The row, 0 is the first row
 	 * @param colIndex    The column, 0 is the first column
 	 * @return the cell
-	 * @throws FastOdsException
 	 * @throws IOException
 	 */
 	public TableCellWalker getCell(final Table table, final int rowIndex,
-									final int colIndex) throws FastOdsException, IOException {
+									final int colIndex) throws IOException {
 		final TableRow row = table.getRow(rowIndex);
 		final TableCellWalker walker = row.getWalker();
 		walker.to(colIndex);
@@ -182,7 +177,7 @@ public class TableHelper {
 	}
 
 	public TableCellWalker getCell(final Table table, final String address)
-			throws FastOdsException, IOException, ParseException {
+			throws IOException, ParseException {
 		final Position position = this.positionUtil.newPosition(address);
 		return this.getCell(table, position.getRow(), position.getColumn());
 	}

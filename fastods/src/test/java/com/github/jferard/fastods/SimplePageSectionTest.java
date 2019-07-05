@@ -26,7 +26,6 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -54,13 +53,12 @@ public class SimplePageSectionTest {
         final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
         final Header header = PageSection.simpleBuilder().marginTop(SimpleLength.pt(10.0))
                 .marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0))
-                .marginLeft(SimpleLength.pt(13.0)).minHeight(SimpleLength.pt(120.0)).styledContent("text", ts)
-                .buildHeader();
-        this.assertAutomaticXMLEquals(
-                "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"0cm\" "
-                        + "fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" " +
-                        "fo:margin-left=\"13pt\"/>" + "</style:header-style>",
-                header);
+                .marginLeft(SimpleLength.pt(13.0)).minHeight(SimpleLength.pt(120.0))
+                .styledContent("text", ts).buildHeader();
+        this.assertAutomaticXMLEquals("<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"120pt\" fo:margin=\"0cm\" " +
+                "fo:margin-top=\"10pt\" fo:margin-right=\"11pt\" fo:margin-bottom=\"12pt\" " +
+                "fo:margin-left=\"13pt\"/>" + "</style:header-style>", header);
     }
 
     @Test
@@ -68,10 +66,9 @@ public class SimplePageSectionTest {
         final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
         final Header header = PageSection.simpleBuilder().allMargins(SimpleLength.pt(10.0))
                 .minHeight(SimpleLength.pt(120.0)).styledContent("text", ts).buildHeader();
-        this.assertAutomaticXMLEquals(
-                "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"120pt\" " +
-                        "fo:margin=\"10pt\"/>" + "</style:header-style>",
-                header);
+        this.assertAutomaticXMLEquals("<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"120pt\" " +
+                "fo:margin=\"10pt\"/>" + "</style:header-style>", header);
     }
 
     @Test
@@ -81,11 +78,10 @@ public class SimplePageSectionTest {
         final PageSection header = PageSection.simpleBuilder()
                 .text(Text.builder().parStyledContent(Text.TEXT_PAGE_NUMBER, ts1)
                         .parStyledContent(Text.TEXT_PAGE_COUNT, ts2).build()).build();
-        this.assertMasterXMLEquals(
-                "<text:p>" + "<text:span text:style-name=\"test1\">" + "<text:page-number>1</text:page-number>" +
-                        "</text:span>" + "</text:p>" + "<text:p>" + "<text:span text:style-name=\"test2\">" +
-                        "<text:page-count>99</text:page-count>" + "</text:span>" + "</text:p>",
-                header);
+        this.assertMasterXMLEquals("<text:p>" + "<text:span text:style-name=\"test1\">" +
+                "<text:page-number>1</text:page-number>" + "</text:span>" + "</text:p>" +
+                "<text:p>" + "<text:span text:style-name=\"test2\">" +
+                "<text:page-count>99</text:page-count>" + "</text:span>" + "</text:p>", header);
     }
 
     @Test
@@ -93,23 +89,21 @@ public class SimplePageSectionTest {
         final TextStyle ts1 = TextProperties.builder().buildStyle("test1");
         final TextStyle ts2 = TextProperties.builder().buildStyle("test2");
         final PageSection header = PageSection.simpleBuilder()
-                .text(Text.builder().par().styledSpan(Text.TEXT_PAGE_NUMBER, ts1).styledSpan(Text.TEXT_PAGE_COUNT, ts2)
-                        .build()).build();
-        this.assertMasterXMLEquals(
-                "<text:p>" + "<text:span text:style-name=\"test1\">" + "<text:page-number>1</text:page-number>" +
-                        "</text:span>" + "<text:span text:style-name=\"test2\">" +
-                        "<text:page-count>99</text:page-count>" + "</text:span>" + "</text:p>",
-                header);
+                .text(Text.builder().par().styledSpan(Text.TEXT_PAGE_NUMBER, ts1)
+                        .styledSpan(Text.TEXT_PAGE_COUNT, ts2).build()).build();
+        this.assertMasterXMLEquals("<text:p>" + "<text:span text:style-name=\"test1\">" +
+                "<text:page-number>1</text:page-number>" + "</text:span>" +
+                "<text:span text:style-name=\"test2\">" + "<text:page-count>99</text:page-count>" +
+                "</text:span>" + "</text:p>", header);
     }
 
     @Test
     public final void testSimpleFooterToAutomaticStyle() throws IOException {
         final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
         final Header header = PageSection.simpleHeader("text", ts);
-        this.assertAutomaticXMLEquals(
-                "<style:header-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-                        + "</style:header-style>",
-                header);
+        this.assertAutomaticXMLEquals("<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>", header);
     }
 
     @Test
@@ -117,7 +111,8 @@ public class SimplePageSectionTest {
         final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
         final Header header = PageSection.simpleHeader("text", ts);
         this.assertMasterXMLEquals(
-                "<text:p>" + "<text:span text:style-name=\"style\">" + "text" + "</text:span>" + "</text:p>", header);
+                "<text:p>" + "<text:span text:style-name=\"style\">" + "text" + "</text:span>" +
+                        "</text:p>", header);
     }
 
     @Test
@@ -125,22 +120,22 @@ public class SimplePageSectionTest {
         final TextStyle ts = TextProperties.builder().buildStyle("test");
         final String text = "text";
         final Footer footer = PageSection.simpleBuilder().styledContent(text, ts).buildFooter();
-        this.assertAutomaticXMLEquals(
-                "<style:footer-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-                        + "</style:footer-style>",
-                footer);
+        this.assertAutomaticXMLEquals("<style:footer-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>", footer);
     }
 
     @Test
     public final void testSimpleStyledTextToMasterStyle() throws IOException {
         final TextStyle ts = TextProperties.builder().buildStyle("test");
         final PageSection footer = PageSection.simpleBuilder().styledContent("text", ts).build();
-        this.assertMasterXMLEquals("<text:p>" + "<text:span text:style-name=\"test\">text</text:span>" + "</text:p>",
+        this.assertMasterXMLEquals(
+                "<text:p>" + "<text:span text:style-name=\"test\">text</text:span>" + "</text:p>",
                 footer);
     }
 
     @Test
-    public final void testAddEmbbeded() throws IOException {
+    public final void testAddEmbbeded() {
         final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
         PowerMock.resetAll();
 
@@ -152,19 +147,22 @@ public class SimplePageSectionTest {
         PowerMock.verifyAll();
     }
 
-    private void assertAutomaticXMLEquals(final String xml, final HeaderOrFooter header) throws IOException {
+    private void assertAutomaticXMLEquals(final String xml, final HeaderOrFooter header)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         header.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 
-    private void assertMasterXMLEquals(final String xml, final HeaderOrFooter section) throws IOException {
+    private void assertMasterXMLEquals(final String xml, final HeaderOrFooter section)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         section.appendXMLToMasterStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 
-    private void assertMasterXMLEquals(final String xml, final PageSection section) throws IOException {
+    private void assertMasterXMLEquals(final String xml, final PageSection section)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         section.appendXMLToMasterStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());

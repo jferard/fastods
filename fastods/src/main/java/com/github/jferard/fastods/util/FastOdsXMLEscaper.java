@@ -88,17 +88,21 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 
     @Override
     public String escapeXMLAttribute(final String s) {
-        if (s == null) return null;
+        if (s == null) {
+            return null;
+        }
 
-        String s2 = this.attrCacheMap.get(s);
-        if (s2 != null) return s2;
+        final String cached = this.attrCacheMap.get(s);
+        if (cached != null) {
+            return cached;
+        }
 
-        s2 = this.getEscapedString(s, CHAR_SUBSTITUTES_IN_ATTRIBUTE);
-        this.attrCacheMap.put(s, s2);
-        return s2;
+        final String escaped = this.getEscapedString(s, CHAR_SUBSTITUTES_IN_ATTRIBUTE);
+        this.attrCacheMap.put(s, escaped);
+        return escaped;
     }
 
-    private String getEscapedString(String s, char[][] charSubstitutes) {
+    private String getEscapedString(final String s, final char[][] charSubstitutes) {
         final int sourceLength = s.length();
         int previousDestIndex = 0;
         int firstIdenticalCharInSourceIndex = 0;
@@ -120,7 +124,9 @@ public class FastOdsXMLEscaper implements XMLEscaper {
         if (oneSpecialChar) {
             s2 = this
                     .getString(s, sourceLength, previousDestIndex, firstIdenticalCharInSourceIndex);
-        } else s2 = s;
+        } else {
+            s2 = s;
+        }
         return s2;
     }
 
@@ -173,13 +179,17 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 
     @Override
     public String escapeXMLContent(final String s) {
-        if (s == null) return null;
+        if (s == null) {
+            return null;
+        }
 
-        String s2 = this.contentCacheMap.get(s);
-        if (s2 != null) return s2;
+        final String cached = this.contentCacheMap.get(s);
+        if (cached != null) {
+            return cached;
+        }
 
-        s2 = this.getEscapedString(s, CHAR_SUBSTITUTES_IN_CONTENT);
-        this.attrCacheMap.put(s, s2);
-        return s2;
+        final String escaped = this.getEscapedString(s, CHAR_SUBSTITUTES_IN_CONTENT);
+        this.contentCacheMap.put(s, escaped);
+        return escaped;
     }
 }

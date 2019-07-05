@@ -27,6 +27,11 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class BooleanValue implements CellValue {
+    /**
+     * @param o the object to cast
+     * @return the boolean value
+     * @throws FastOdsException if the cast was not possible
+     */
     public static BooleanValue from(final Object o) throws FastOdsException {
         if (o instanceof Boolean) {
             return new BooleanValue((Boolean) o);

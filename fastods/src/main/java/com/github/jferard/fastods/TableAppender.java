@@ -157,10 +157,9 @@ class TableAppender {
 
         int count = 1;
         int endCount = MAX_COLUMN_COUNT;
-        TableColumnStyle prevTCS;
         TableColumnStyle curTCS = iterator.next(); // will be shifted to prevTCS
         while (iterator.hasNext()) {
-            prevTCS = curTCS;
+            final TableColumnStyle prevTCS = curTCS;
             curTCS = iterator.next();
 
             if (curTCS.equals(prevTCS)) {

@@ -46,29 +46,31 @@ public class RegionPageSectionTest {
     @Test
     public final void testNullOrEmptyRegions() throws IOException {
         PowerMock.replayAll();
-        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT).content("l")
-                .region(Region.CENTER).text(Text.builder().par().build()).build();
+        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
+                .content("l").region(Region.CENTER).text(Text.builder().par().build()).build();
         this.assertMasterXMLEquals(
-                "<style:region-left>" + "<text:p>l</text:p>" + "</style:region-left>" + "<style:region-center>" +
-                        "<text:p>" + "</text:p>" + "</style:region-center>",
-                headerSection);
+                "<style:region-left>" + "<text:p>l</text:p>" + "</style:region-left>" +
+                        "<style:region-center>" + "<text:p>" + "</text:p>" +
+                        "</style:region-center>", headerSection);
     }
 
     @Test
     public final void testRegionsToMasterStyle() throws IOException {
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
-        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
+        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
+                .buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
         final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .styledContent("left-text", ts1).region(Region.CENTER).styledContent("center-text", ts2)
-                .region(Region.RIGHT).styledContent("right-text", ts3).build();
-        this.assertMasterXMLEquals(
-                "<style:region-left>" + "<text:p>" + "<text:span text:style-name=\"style1\">left-text</text:span>" +
-                        "</text:p>" + "</style:region-left>" + "<style:region-center>" + "<text:p>" + "<text:span " +
-                        "text:style-name=\"style2\">center-text</text:span>" + "</text:p>" + "</style:region-center>"
-                        + "<style:region-right>" + "<text:p>" + "<text:span " +
-                        "text:style-name=\"style3\">right-text</text:span>" + "</text:p>" + "</style:region-right>",
-                headerSection);
+                .styledContent("left-text", ts1).region(Region.CENTER)
+                .styledContent("center-text", ts2).region(Region.RIGHT)
+                .styledContent("right-text", ts3).build();
+        this.assertMasterXMLEquals("<style:region-left>" + "<text:p>" +
+                "<text:span text:style-name=\"style1\">left-text</text:span>" + "</text:p>" +
+                "</style:region-left>" + "<style:region-center>" + "<text:p>" + "<text:span " +
+                "text:style-name=\"style2\">center-text</text:span>" + "</text:p>" +
+                "</style:region-center>" + "<style:region-right>" + "<text:p>" + "<text:span " +
+                "text:style-name=\"style3\">right-text</text:span>" + "</text:p>" +
+                "</style:region-right>", headerSection);
     }
 
     @Test
@@ -77,11 +79,11 @@ public class RegionPageSectionTest {
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
         final StringBuilder sb = new StringBuilder();
-        footerSection.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb, PageSection.Type.FOOTER);
-        DomTester.assertEquals(
-                "<style:footer-style>" + "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>"
-                        + "</style:footer-style>",
-                sb.toString());
+        footerSection
+                .appendPageSectionStyleXMLToAutomaticStyle(this.util, sb, PageSection.Type.FOOTER);
+        DomTester.assertEquals("<style:footer-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>", sb.toString());
     }
 
     @Test
@@ -92,19 +94,20 @@ public class RegionPageSectionTest {
         this.assertMasterXMLEquals(
                 "<style:region-center>" + "<text:p>" + "<text:span text:style-name=\"style\">" +
                         "<text:page-number>1</text:page-number>" + "</text:span>" + "</text:p>" +
-                        "</style:region-center>",
-                footerSection);
+                        "</style:region-center>", footerSection);
     }
 
     @Test
-    public final void testEmbedded() throws IOException {
+    public final void testEmbedded() {
         final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
-        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
+        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
+                .buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
         final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .styledContent("left-text", ts1).region(Region.CENTER).styledContent("center-text", ts2)
-                .region(Region.RIGHT).styledContent("right-text", ts3).build();
+                .styledContent("left-text", ts1).region(Region.CENTER)
+                .styledContent("center-text", ts2).region(Region.RIGHT)
+                .styledContent("right-text", ts3).build();
 
         PowerMock.resetAll();
         EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);
@@ -118,40 +121,7 @@ public class RegionPageSectionTest {
     }
 
     @Test
-    public final void testEmbeddedNull() throws IOException {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
-        final PageSection headerSecton = PageSection.regionBuilder().build();
-
-        PowerMock.resetAll();
-        PowerMock.replayAll();
-        headerSecton.addEmbeddedStyles(sc);
-
-        PowerMock.verifyAll();
-    }
-
-    @Test
-    public final void testEmbeddedMode() throws IOException {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
-        final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
-        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
-        final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
-        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .styledContent("left-text", ts1).region(Region.CENTER).styledContent("center-text", ts2)
-                .region(Region.RIGHT).styledContent("right-text", ts3).build();
-
-        PowerMock.resetAll();
-        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);
-        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts2)).andReturn(true);
-        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts3)).andReturn(true);
-
-        PowerMock.replayAll();
-        headerSection.addEmbeddedStyles(sc);
-
-        PowerMock.verifyAll();
-    }
-
-    @Test
-    public final void testEmbeddedNullMode() throws IOException {
+    public final void testEmbeddedNull() {
         final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
         final PageSection headerSection = PageSection.regionBuilder().build();
 
@@ -162,7 +132,43 @@ public class RegionPageSectionTest {
         PowerMock.verifyAll();
     }
 
-    private void assertMasterXMLEquals(final String xml, final PageSection section) throws IOException {
+    @Test
+    public final void testEmbeddedMode() {
+        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
+        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
+                .buildStyle("style2");
+        final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
+        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
+                .styledContent("left-text", ts1).region(Region.CENTER)
+                .styledContent("center-text", ts2).region(Region.RIGHT)
+                .styledContent("right-text", ts3).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts2)).andReturn(true);
+        EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts3)).andReturn(true);
+
+        PowerMock.replayAll();
+        headerSection.addEmbeddedStyles(sc);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testEmbeddedNullMode() {
+        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final PageSection headerSection = PageSection.regionBuilder().build();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        headerSection.addEmbeddedStyles(sc);
+
+        PowerMock.verifyAll();
+    }
+
+    private void assertMasterXMLEquals(final String xml, final PageSection section)
+            throws IOException {
         final StringBuilder sb = new StringBuilder();
         section.appendXMLToMasterStyle(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());

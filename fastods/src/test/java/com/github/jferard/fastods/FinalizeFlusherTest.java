@@ -49,7 +49,7 @@ public class FinalizeFlusherTest {
         w.close();
 
         PowerMock.replayAll();
-        final FinalizeFlusher flusher = new FinalizeFlusher(contentElement, settingsElements);
+        final OdsFlusher flusher = new FinalizeFlusher(contentElement, settingsElements);
         flusher.flushInto(util, w);
 
         PowerMock.verifyAll();

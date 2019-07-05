@@ -26,8 +26,6 @@ package com.github.jferard.fastods;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class VoidValueTest {
     @Test
     public void testFromNull() throws FastOdsException {

@@ -25,11 +25,9 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
@@ -92,18 +90,17 @@ public class TableColdCellTest {
     @Test
     public final void testTooltip() throws IOException {
         this.coldCell.setTooltip("tooltip");
-        this.assertXMLEquals(
-                "<table:table-cell><office:annotation>" + "<text:p>tooltip</text:p>" +
-                        "</office:annotation></table:table-cell>");
+        this.assertXMLEquals("<table:table-cell><office:annotation>" + "<text:p>tooltip</text:p>" +
+                "</office:annotation></table:table-cell>");
     }
 
     @Test
     public final void testTooltipWithSize() throws IOException {
         this.coldCell.setTooltip("tooltip", SimpleLength.cm(1), SimpleLength.cm(2), true);
-        this.assertXMLEquals(
-                "<table:table-cell>" + "<office:annotation office:display=\"true\" svg:width=\"1cm\" " +
-                        "svg:height=\"2cm\" svg:x=\"\">" + "<text:p>tooltip</text:p>" + "</office:annotation>" +
-                        "</table:table-cell>");
+        this.assertXMLEquals("<table:table-cell>" +
+                "<office:annotation office:display=\"true\" svg:width=\"1cm\" " +
+                "svg:height=\"2cm\" svg:x=\"\">" + "<text:p>tooltip</text:p>" +
+                "</office:annotation>" + "</table:table-cell>");
     }
 
     @Test
@@ -119,16 +116,17 @@ public class TableColdCellTest {
         this.coldCell.setTooltip("tooltip\nline 1\nline2");
         this.assertXMLEquals(
                 "<table:table-cell><office:annotation>" + "<text:p>tooltip</text:p><text:p>line " +
-                        "1</text:p><text:p>line2</text:p>" + "</office:annotation></table:table-cell>");
+                        "1</text:p><text:p>line2</text:p>" +
+                        "</office:annotation></table:table-cell>");
     }
 
     @Test
     public final void testAppendTextAndTooltip() throws IOException {
         this.coldCell.setText(Text.content("c"));
         this.coldCell.setTooltip("tooltip");
-        this.assertXMLEquals(
-                "<table:table-cell>" + "<text:p>c</text:p>" +
-                        "<office:annotation><text:p>tooltip</text:p></office:annotation>" + "</table:table-cell>");
+        this.assertXMLEquals("<table:table-cell>" + "<text:p>c</text:p>" +
+                "<office:annotation><text:p>tooltip</text:p></office:annotation>" +
+                "</table:table-cell>");
     }
 
     private void assertXMLEquals(final String xml) throws IOException {

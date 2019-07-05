@@ -79,21 +79,21 @@ public class ZipUTF8WriterMockTest {
     }
 
     @Test(expected=IOException.class)
-    public void testAppendCharWithoutBuilder() throws IOException, ParserConfigurationException, SAXException {
+    public void testAppendCharWithoutBuilder() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.append('c');
 
     }
 
     @Test(expected=RuntimeException.class)
-    public void testComment() throws IOException, ParserConfigurationException, SAXException {
+    public void testComment() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.setComment("a dummy comment");
     }
 
 
     @Test
-    public void testAppendWithBuilder() throws IOException, ParserConfigurationException, SAXException {
+    public void testAppendWithBuilder() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         final ZipUTF8WriterMockHandler mockHandler = new ZipUTF8WriterMockHandler(mock);
         mock.putNextEntry(new ZipEntry("1"));
@@ -106,27 +106,27 @@ public class ZipUTF8WriterMockTest {
     }
 
     @Test(expected=IOException.class)
-    public void testAppendCharSequenceWithoutBuilder() throws IOException, ParserConfigurationException, SAXException {
+    public void testAppendCharSequenceWithoutBuilder() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.append("c");
 
     }
 
     @Test(expected=IOException.class)
-    public void testAppendCharSequencePartWithoutBuilder() throws IOException, ParserConfigurationException, SAXException {
+    public void testAppendCharSequencePartWithoutBuilder() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.append("c", 0,1);
 
     }
 
     @Test(expected=IOException.class)
-    public void testCloseUnopenedEntry() throws IOException, ParserConfigurationException, SAXException {
+    public void testCloseUnopenedEntry() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.closeEntry();
     }
 
     @Test(expected=IOException.class)
-    public void testCloseWithUnclosedEntry() throws IOException, ParserConfigurationException, SAXException {
+    public void testCloseWithUnclosedEntry() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.putNextEntry(new ZipEntry("1"));
         mock.close();

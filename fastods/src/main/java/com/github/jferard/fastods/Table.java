@@ -48,7 +48,7 @@ public class Table implements NamedObject {
     /**
      * Create a new Table with a name and a row/column capacity
      *
-     * @param contentElement
+     * @param contentElement  the content.xml representation
      * @param positionUtil    an util
      * @param writeUtil       an util
      * @param xmlUtil         an util
@@ -57,7 +57,7 @@ public class Table implements NamedObject {
      * @param columnCapacity  the column capacity
      * @param stylesContainer the container for styles
      * @param format          the data styles
-     * @param libreOfficeMode
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @return the table
      */
     public static Table create(final ContentElement contentElement, final PositionUtil positionUtil,
@@ -82,7 +82,7 @@ public class Table implements NamedObject {
      * Create an new table with a given builder
      *
      * @param name           the name of the table
-     * @param contentElement
+     * @param contentElement the content.xml representation
      * @param builder        the builder
      */
     Table(final String name, final ContentElement contentElement, final TableBuilder builder) {
@@ -258,12 +258,12 @@ public class Table implements NamedObject {
      * @param address     The cell position e.g. 'A1'
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of cells to merge
-     * @throws FastOdsException if the row index or the col index is negative
-     * @throws IOException      if the cells can't be merged
+     * @throws IOException    if the cells can't be merged
+     * @throws ParseException if the address can't be parsed
      */
     @Deprecated
     public void setCellMerge(final String address, final int rowMerge, final int columnMerge)
-            throws FastOdsException, IOException, ParseException {
+            throws IOException, ParseException {
         this.builder.setCellMerge(this, this.appender, address, rowMerge, columnMerge);
     }
 
@@ -271,9 +271,9 @@ public class Table implements NamedObject {
      * Set the style of a column.
      *
      * @param col The column number
-     * @param ts  The style to be used, make sure the style is of type
-     *            TableFamilyStyle.STYLEFAMILY_TABLECOLUMN
-     * @throws FastOdsException Thrown if col has an invalid value.
+     * @param ts  The style to be used
+     * @throws IllegalStateException if the preamble was already written
+     * @throws IllegalArgumentException if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
         if (this.appender.isPreambleWritten()) {
@@ -336,6 +336,14 @@ public class Table implements NamedObject {
         return this.builder.findDefaultCellStyle(columnIndex);
     }
 
+    /**
+     * Add a new autofilter
+     *
+     * @param r1 first row of the range
+     * @param c1 first col of the range
+     * @param r2 last row
+     * @param c2 last col
+     */
     public void addAutoFilter(final int r1, final int c1, final int r2, final int c2) {
         this.contentElement.addAutoFilter(this, r1, c1, r2, c2);
     }

@@ -35,7 +35,7 @@ import java.util.TimeZone;
  * @author Julien Férard
  */
 public class DateValueTest {
-    public static final Date DATE = new Date(123466);
+    private static final Date DATE = new Date(123466);
 
     @Test
     public final void testSetConstructor() {
@@ -71,10 +71,10 @@ public class DateValueTest {
     public final void testFromCalendar() throws FastOdsException {
         PowerMock.resetAll();
         final TableCell cell = PowerMock.createMock(TableCell.class);
-        cell.setDateValue(new GregorianCalendar(0, 0, 0, 0, 0, 127).getTime());
+        cell.setDateValue(new GregorianCalendar(0, Calendar.JANUARY, 0, 0, 0, 127).getTime());
 
         PowerMock.replayAll();
-        final Calendar cal = new GregorianCalendar(0, 0, 0, 0, 0, 127);
+        final Calendar cal = new GregorianCalendar(0, Calendar.JANUARY, 0, 0, 0, 127);
         final CellValue dv = DateValue.from(cal);
         cal.setTimeInMillis(0);
         dv.setToCell(cell);
@@ -97,7 +97,7 @@ public class DateValueTest {
 
     @Test(expected = FastOdsException.class)
     public final void testFromString() throws FastOdsException {
-        final CellValue dv = DateValue.from("10");
+        DateValue.from("10");
     }
 
     @Test
@@ -105,11 +105,11 @@ public class DateValueTest {
         final DateValue dv1 = new DateValue(DATE);
         final DateValue dv2 = DateValue.from(dv1);
         Assert.assertEquals(123466, dv1.hashCode());
-        Assert.assertEquals(123466, dv1.hashCode());
+        Assert.assertEquals(123466, dv2.hashCode());
     }
 
     @Test
-    public void testToString() throws FastOdsException {
+    public void testToString() {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
         final DateValue dv1 = new DateValue(DATE);
         Assert.assertEquals("DateValue[Thu Jan 01 00:02:03 GMT 1970]", dv1.toString());

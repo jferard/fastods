@@ -39,47 +39,47 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void helloWorldTest() throws IOException, FastOdsException {
+    public void helloWorldTest() throws IOException {
         A_HelloWorld.example();
     }
 
     @Test
-    public void accessingTablesRowsAndCellsTest() throws IOException, FastOdsException {
+    public void accessingTablesRowsAndCellsTest() throws IOException {
         B_AccessingTablesRowsAndCells.example();
     }
 
     @Test
-    public void cellValueTest() throws IOException, FastOdsException {
+    public void cellValueTest() throws IOException {
         C_SettingTheCellValue.example();
     }
 
     @Test
-    public void cellDataStyleTest1() throws IOException, FastOdsException {
+    public void cellDataStyleTest1() throws IOException {
         D_SettingTheCellDataStyle.example1();
     }
 
     @Test
-    public void cellDataStyleTest2() throws IOException, FastOdsException {
+    public void cellDataStyleTest2() throws IOException {
         D_SettingTheCellDataStyle.example2();
     }
 
     @Test
-    public void cellStyleTest() throws IOException, FastOdsException {
+    public void cellStyleTest() throws IOException {
         E_SettingTheCellStyle.example();
     }
 
     @Test
-    public void moreOnCellsTest() throws IOException, FastOdsException, URISyntaxException {
+    public void moreOnCellsTest() throws IOException, URISyntaxException {
         F_MoreOnCells.example();
     }
 
     @Test
-    public void pageFormatTest() throws IOException, FastOdsException {
+    public void pageFormatTest() throws IOException {
         G_PageFormat.example();
     }
 
     @Test
-    public void advancedTest1() throws IOException, FastOdsException {
+    public void advancedTest1() throws IOException {
         H_Advanced.example1();
     }
 

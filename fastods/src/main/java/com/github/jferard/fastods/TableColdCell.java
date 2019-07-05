@@ -116,7 +116,6 @@ class TableColdCell {
 	/**
 	 * @param util a util class to write XML data
 	 * @param appendable the object to wich data will be appended
-	 * @param covered true if the cell is covered
 	 * @throws IOException if data can't be appended
 	 */
 	public void appendXMLToTable(final XMLUtil util,

@@ -26,7 +26,6 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.StyleWithEmbeddedStyles;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.XMLUtil;
 

@@ -66,14 +66,14 @@ public class TableTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table = Table
-                .create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "mytable", 10, 100,
+                .create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "my_table", 10, 100,
                         this.stc, this.ds, false);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
     }
 
     @Test
-    public final void testContentEntry() throws IOException, FastOdsException {
+    public final void testContentEntry() throws IOException {
         final List<TableColumnStyle> tcss = new ArrayList<TableColumnStyle>(4);
         for (int c = 0; c < 3; c++) {
             final TableColumnStyle tcs = TableColumnStyle.builder("test" + c).build();
@@ -94,7 +94,7 @@ public class TableTest {
             this.table.setColumnStyle(c, tcs);
         }
         this.table.getRow(100);
-        this.assertTableXMLEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+        this.assertTableXMLEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                 "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
                 "form:apply-design-mode=\"false\"/>" +
                 "<table:table-column table:style-name=\"test0\" " +
@@ -191,7 +191,7 @@ public class TableTest {
         final String ROW = "<table:table-row table:style-name=\"ro1\"><table:table-cell " +
                 "table:number-columns-repeated=\"9\"/><table:covered-table-cell/></table:table" +
                 "-row>";
-        this.assertTableXMLEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+        this.assertTableXMLEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                 "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
                 "form:apply-design-mode=\"false\"/>" +
                 "<table:table-column table:style-name=\"co1\" " +
@@ -224,7 +224,7 @@ public class TableTest {
 
     @Test
     @SuppressWarnings("deprecated")
-    public final void testMergePos() throws IOException, FastOdsException, ParseException {
+    public final void testMergePos() throws IOException, ParseException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
@@ -256,7 +256,7 @@ public class TableTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public final void testColumnStyle() throws IOException, FastOdsException {
+    public final void testColumnStyle() throws IOException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
 
@@ -365,7 +365,7 @@ public class TableTest {
         this.table.flushSomeAvailableRowsFrom(this.xmlUtil, app, 0);
 
         PowerMock.verifyAll();
-        DomTester.assertEquals("<table:table table:name=\"mytable\" table:style-name=\"ta1\" " +
+        DomTester.assertEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                         "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
                         "form:apply-design-mode=\"false\"/><table:table-column " +
                         "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +

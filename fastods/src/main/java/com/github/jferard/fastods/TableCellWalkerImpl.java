@@ -50,8 +50,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
     }
 
     @Override
-    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
-            throws IOException {
+    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable) {
         throw new UnsupportedOperationException();
     }
 

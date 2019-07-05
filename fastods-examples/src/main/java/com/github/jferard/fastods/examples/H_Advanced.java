@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
@@ -56,7 +55,7 @@ class H_Advanced {
      */
     public static final int NANOSECONDS_PER_SECONDS = 1000000000;
 
-    static void example1() throws IOException, FastOdsException {
+    static void example1() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Advanced Features
         // ## A Named Writer

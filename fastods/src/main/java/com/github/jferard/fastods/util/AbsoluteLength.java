@@ -38,7 +38,6 @@ public class AbsoluteLength implements Length {
     private static final double INCH_FACTOR = 2.54 * CM_FACTOR; // inch -> cm = *2.54, cm -> mm = *10
     private static final double PT_FACTOR = INCH_FACTOR / 72.0; // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
     private static final double PC_FACTOR = PT_FACTOR * 12.0; // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
-    private static final double MIN_DELTA = 0.001;
 
     /**
      * @param value the length in millimiters
@@ -96,7 +95,7 @@ public class AbsoluteLength implements Length {
             return false;
 
         final AbsoluteLength other = (AbsoluteLength) o;
-        return this.mm - other.mm < MIN_DELTA && other.mm - this.mm < MIN_DELTA;
+        return this.mm - other.mm < MAX_DELTA && other.mm - this.mm < MAX_DELTA;
     }
 
     @Override
@@ -110,7 +109,7 @@ public class AbsoluteLength implements Length {
     }
 
     @Override
-    public boolean isNull() {
-        return -MIN_DELTA < this.mm  && this.mm < MIN_DELTA;
+    public boolean isNotNull() {
+        return this.mm <= -MAX_DELTA || this.mm >= MAX_DELTA;
     }
 }

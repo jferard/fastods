@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -52,7 +50,7 @@ public class TimeValueTest {
 
     @Test(expected = FastOdsException.class)
     public void testFromString() throws FastOdsException {
-        final TimeValue tv1 = TimeValue.from("");
+        TimeValue.from("");
     }
 
     @Test
@@ -70,7 +68,7 @@ public class TimeValueTest {
 
     @Test
     public void testEquals() throws FastOdsException {
-        final TimeValue tv1 = new TimeValue(false, 0,0,1,2,3,4);
+        final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
         final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
         Assert.assertEquals(tv1, TimeValue.from(l));
         Assert.assertNotEquals(tv1, TimeValue.from(-l));
@@ -78,15 +76,15 @@ public class TimeValueTest {
 
     @Test
     public void testHashcode() throws FastOdsException {
-        final TimeValue tv1 = new TimeValue(false, 0,0,1,2,3,4);
+        final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
         final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
         Assert.assertEquals(93784, tv1.hashCode());
         Assert.assertEquals(93784, TimeValue.from(l).hashCode());
     }
 
     @Test
-    public void testToString() throws FastOdsException {
-        final TimeValue tv1 = new TimeValue(false, 0,0,1,2,3,4);
+    public void testToString() {
+        final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
         Assert.assertEquals("TimeValue[P0Y0M1DT2H3M4.0S]", tv1.toString());
     }
 }

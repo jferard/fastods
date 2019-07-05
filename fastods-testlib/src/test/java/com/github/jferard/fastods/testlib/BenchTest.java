@@ -36,7 +36,7 @@ public class BenchTest {
         this.bench = new Bench(Logger.getLogger("l"), "test", 10, 20) {
             int i=0;
             @Override
-            public long test() throws IOException {
+            public long test() {
                 return this.i++;
             }
         };
@@ -46,7 +46,7 @@ public class BenchTest {
     public void testValues() {
         Assert.assertEquals(20, this.bench.getColCount());
         Assert.assertEquals(10, this.bench.getRowCount());
-        int r = this.bench.getRandom().nextInt(10);
+        final int r = this.bench.getRandom().nextInt(10);
         Assert.assertTrue(0 <= r && r < 10);
     }
 

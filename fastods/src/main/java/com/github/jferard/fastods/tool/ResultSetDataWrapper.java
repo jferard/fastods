@@ -74,7 +74,8 @@ import java.util.logging.Logger;
  */
 public final class ResultSetDataWrapper implements DataWrapper {
     /**
-     *
+     * @param rs the result set
+     * @return the data wrapper
      */
     public static ResultSetDataWrapperBuilder builder(final ResultSet rs) {
         return new ResultSetDataWrapperBuilder(rs);
@@ -96,29 +97,31 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * the ResultSet.
      */
     private final ResultSet resultSet;
-    private final Map<Integer, TableCell.Type> cellTypeByIndex;
+    private final Map<Integer, TableCell.Type> cellTypeByColIndex;
     private final CellValue nullValue;
 
 
     /**
-     * @param logger          a logger
-     * @param converter
-     * @param rs              the result cell
-     * @param headCellStyle   a style for header, null if none
-     * @param cellTypeByIndex
-     * @param max             the maximum number of rows, -1 for unlimited
+     * @param logger             a logger
+     * @param converter          a converter SQL -> OpenDocument
+     * @param rs                 the result cell
+     * @param headCellStyle      a style for header, null if none
+     * @param autoFilter         set an autofilter if true
+     * @param cellTypeByColIndex a hint for cell types
+     * @param nullValue          the default value for NULL
+     * @param max                the maximum number of rows, -1 for unlimited
      */
     public ResultSetDataWrapper(final Logger logger, final ToCellValueConverter converter,
-                                final ResultSet rs,
-                                final TableCellStyle headCellStyle, final boolean autoFilter,
-                                final Map<Integer, TableCell.Type> cellTypeByIndex,
+                                final ResultSet rs, final TableCellStyle headCellStyle,
+                                final boolean autoFilter,
+                                final Map<Integer, TableCell.Type> cellTypeByColIndex,
                                 final CellValue nullValue, final int max) {
         this.logger = logger;
         this.converter = converter;
         this.resultSet = rs;
         this.headCellStyle = headCellStyle;
         this.autoFilter = autoFilter;
-        this.cellTypeByIndex = cellTypeByIndex;
+        this.cellTypeByColIndex = cellTypeByColIndex;
         this.nullValue = nullValue;
         this.max = max;
     }
@@ -128,20 +131,18 @@ public final class ResultSetDataWrapper implements DataWrapper {
         int rowCount = 0; // at least
         try {
             final ResultSetMetaData metadata = this.resultSet.getMetaData();
-            TableRow row;
             try {
-                row = table.nextRow();
+                TableRow row = table.nextRow();
                 final int columnCount = metadata.getColumnCount();
                 final int r1;
                 final int c1;
-                int r2;
                 final int c2;
                 if (this.autoFilter) {
                     r1 = row.index();
                     c1 = 0;
                     c2 = c1 + columnCount - 1;
                 } else {
-                    r1 = c1 = c2 = r2 = -1;
+                    r1 = c1 = c2 = -1;
                 }
                 this.writeFirstLineDataTo(metadata, row);
                 if (this.resultSet.next()) {
@@ -155,7 +156,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
                 final boolean oneMoreLine = this
                         .writeMaybeLastLineDataTo(columnCount, table, rowCount);
                 if (this.autoFilter) {
-                    r2 = row.index() - 1;
+                    int r2 = row.index() - 1;
                     if (oneMoreLine) {
                         r2 += 1;
                     }
@@ -174,19 +175,21 @@ public final class ResultSetDataWrapper implements DataWrapper {
                 this.logger.log(Level.SEVERE, "Can't read ResultSet metadata", e);
             }
             throw new RuntimeException(e);
-        } return rowCount > 0;
+        }
+        return rowCount > 0;
     }
 
     /**
-     * @param metadata the resultset metadata
+     * @param metadata the result set metadata
      * @return the name of the columns
      * @throws SQLException if a database access error occurs
      */
     private List<String> getColumnNames(final ResultSetMetaData metadata) throws SQLException {
         final int columnCount = metadata.getColumnCount();
         final List<String> names = new ArrayList<String>(columnCount);
-        for (int i = 0; i < columnCount; i++)
+        for (int i = 0; i < columnCount; i++) {
             names.add(metadata.getColumnName(i + 1));
+        }
 
         return names;
     }
@@ -211,8 +214,8 @@ public final class ResultSetDataWrapper implements DataWrapper {
             final Object object = columnValues.get(j);
             if (object == null) {
                 walker.setCellValue(this.nullValue);
-            } else if (this.cellTypeByIndex != null) {
-                final TableCell.Type cellType = this.cellTypeByIndex.get(j);
+            } else if (this.cellTypeByColIndex != null) {
+                final TableCell.Type cellType = this.cellTypeByColIndex.get(j);
                 if (cellType != null) {
                     walker.setCellValue(this.converter.from(cellType, object));
                 }

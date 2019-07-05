@@ -27,8 +27,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import java.util.Date;
-
 public class BooleanValueTest {
     @Test
     public final void testSetConstructor() {

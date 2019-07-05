@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
+ *
  */
 public class LinkTest {
     private TextStyle ts;
@@ -51,42 +52,44 @@ public class LinkTest {
     public final void testTable() throws IOException {
         final Table table = PowerMock.createMock(Table.class);
 
-        // PLAY
         PowerMock.resetAll();
         EasyMock.expect(table.getName()).andReturn("t");
 
         PowerMock.replayAll();
         final Link link = Link.create("table", this.ts, table);
         TestHelper.assertXMLEquals(
-                "<text:a text:style-name=\"test\" xlink:href=\"#t\" xlink:type=\"simple\">table</text:a>", link);
+                "<text:a text:style-name=\"test\" xlink:href=\"#t\" " +
+                        "xlink:type=\"simple\">table</text:a>",
+                link);
 
         PowerMock.verifyAll();
     }
 
     @Test
     public final void testURL() throws IOException {
-        final Link link = Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
+        final Link link = Link
+                .create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
         TestHelper.assertXMLEquals(
-                "<text:a text:style-name=\"test\" xlink:href=\"https://www.github.com/jferard/fastods\" " + "xlink" +
-                        ":type=\"simple\">url</text:a>",
-                link);
+                "<text:a text:style-name=\"test\" xlink:href=\"https://www.github" +
+                        ".com/jferard/fastods\" " +
+                        "xlink" + ":type=\"simple\">url</text:a>", link);
     }
 
     @Test
     public final void testURI() throws IOException, URISyntaxException {
         final Link link = Link.create("A mail", this.ts, new URI("mailto:mduerst@ifi.unizh.ch"));
         TestHelper.assertXMLEquals(
-                "<text:a text:style-name=\"test\" xlink:href=\"mailto:mduerst@ifi.unizh.ch\" " + "xlink" +
-                        ":type=\"simple\">A mail</text:a>",
-                link);
+                "<text:a text:style-name=\"test\" xlink:href=\"mailto:mduerst@ifi.unizh.ch\" " +
+                        "xlink" + ":type=\"simple\">A mail</text:a>", link);
     }
 
     @Test
     public final void testFile() throws IOException {
         final File f = new File("generated_files", "fastods_50_5.ods");
         final Link link = Link.create("file", this.ts, f);
-        TestHelper.assertXMLEquals("<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI()
-                .toString() + "\" xlink:type=\"simple\">file</text:a>", link);
+        TestHelper.assertXMLEquals(
+                "<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI().toString() +
+                        "\" xlink:type=\"simple\">file</text:a>", link);
     }
 
     @Test

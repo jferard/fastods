@@ -29,6 +29,10 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class StringValue implements CellValue {
+	/**
+	 * @param o the object to cast
+	 * @return the float value
+	 */
     public static CellValue from(final Object o) {
 		if (o instanceof String) {
 			return new StringValue((String) o);

@@ -29,6 +29,12 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class PercentageValue implements CellValue {
+
+    /**
+     * @param o the object to cast
+     * @return the percentage value
+     * @throws FastOdsException if the cast was not possible
+     */
     public static PercentageValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
             return new PercentageValue(((Number) o).floatValue());
@@ -61,7 +67,7 @@ public class PercentageValue implements CellValue {
             return false;
 
         final PercentageValue other = (PercentageValue) o;
-        return Math.abs(this.value - other.value) < 0.0001;
+        return Math.abs(this.value - other.value) < FloatValue.FLOAT_DELTA;
     }
 
     @Override

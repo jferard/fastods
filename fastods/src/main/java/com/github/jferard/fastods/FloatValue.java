@@ -29,7 +29,17 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class FloatValue implements CellValue {
-	public static FloatValue from(final Object o) throws FastOdsException {
+	/**
+	 * The min delta between to different floats
+	 */
+    static final double FLOAT_DELTA = 0.00001;
+
+	/**
+	 * @param o the object to cast
+	 * @return the float value
+	 * @throws FastOdsException if the cast was not possible
+	 */
+    public static FloatValue from(final Object o) throws FastOdsException {
 		if (o instanceof Number) {
 			return new FloatValue(((Number) o).doubleValue());
 		} else if (o instanceof FloatValue) {

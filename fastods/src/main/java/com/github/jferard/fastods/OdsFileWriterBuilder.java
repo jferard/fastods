@@ -60,10 +60,9 @@ public class OdsFileWriterBuilder {
 	/**
 	 * @param filename the name of the destination file
 	 * @return this for fluent style
-	 * @throws FileNotFoundException if the file can't be found
-	 */
+     */
 	@Deprecated
-	public OdsFileWriterBuilder filename(final String filename) throws FileNotFoundException {
+	public OdsFileWriterBuilder filename(final String filename) {
 		this.filename = filename;
 		return this;
 	}

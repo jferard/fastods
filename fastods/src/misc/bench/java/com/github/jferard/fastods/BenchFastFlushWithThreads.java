@@ -59,7 +59,8 @@ public class BenchFastFlushWithThreads extends Bench {
 					this.odsFactory.createWriterAdapter(new File("generated_files", "fastods_flush_thread_benchmark" +
 							".ods"));
 			final NamedOdsDocument document = writerAdapter.document();
-			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
+			final Producer a = new Producer(document, this.getRowCount(), this.getColCount(),
+                    this.getRandom());
 			final Consumer b = new Consumer(this.logger, writerAdapter);
 			b.start();
 			a.start();
@@ -75,7 +76,7 @@ public class BenchFastFlushWithThreads extends Bench {
 		return 0;
 	}
 
-	class Consumer extends Thread {
+	static class Consumer extends Thread {
 		private final Logger logger;
 		private final OdsFileWriterAdapter writerAdapter;
 
@@ -106,7 +107,7 @@ public class BenchFastFlushWithThreads extends Bench {
 		}
 	}
 
-	class Producer extends Thread {
+	static class Producer extends Thread {
 		private final NamedOdsDocument document;
 		private final int rowCount;
 		private final int colCount;

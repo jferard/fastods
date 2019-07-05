@@ -51,6 +51,7 @@ public class NamedOdsDocument implements OdsDocument {
      * @param logger      the logger
      * @param xmlUtil     a util for XML writing
      * @param odsElements the ods elements (file entries in zip archive)
+     * @return a named ods document
      */
     static NamedOdsDocument create(final Logger logger, final XMLUtil xmlUtil,
                                    final OdsElements odsElements) {
@@ -72,7 +73,7 @@ public class NamedOdsDocument implements OdsDocument {
      * @param odsElements       the ods elements (file entries in zip archive)
      * @param commonOdsDocument the common part of an ods document
      */
-    private NamedOdsDocument(final Logger logger, final XMLUtil xmlUtil,
+    NamedOdsDocument(final Logger logger, final XMLUtil xmlUtil,
                              final OdsElements odsElements,
                              final CommonOdsDocument commonOdsDocument) {
         this.logger = logger;

@@ -55,7 +55,7 @@ import java.util.logging.Logger;
 
 public class OdsDocumentTest {
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
     private ZipUTF8WriterBuilder builder;
 
     private OdsElements odsElements;
@@ -77,7 +77,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public final void testAddBooleanStyle() throws FastOdsException {
+    public final void testAddBooleanStyle() {
         final DataStyle ds = new BooleanStyleBuilder("b", Locale.US).build();
 
         PowerMock.resetAll();
@@ -124,7 +124,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public final void testAddTableDefault() throws FastOdsException, IOException {
+    public final void testAddTableDefault() throws IOException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
@@ -166,7 +166,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public final void testGetOrAddTable() throws FastOdsException, IOException {
+    public final void testGetOrAddTable() throws IOException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
@@ -358,7 +358,7 @@ public class OdsDocumentTest {
         Assert.assertTrue(set0);
     }
 
-    protected void initMockOdsElements() {
+    private void initMockOdsElements() {
         TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
         TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
         TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToElements(this.odsElements);
@@ -424,7 +424,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddStyleToContentAutomaticStyles() throws IOException {
+    public void testAddStyleToContentAutomaticStyles() {
         PowerMock.resetAll();
         this.initMockOdsElements();
         this.odsElements.addStyleToContentAutomaticStyles(TableCellStyle.DEFAULT_CELL_STYLE);
@@ -437,10 +437,11 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddChildCellStyle() throws IOException {
+    public void testAddChildCellStyle() {
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.odsElements
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -450,7 +451,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddPageStyle2() throws IOException {
+    public void testAddPageStyle2() {
         PowerMock.resetAll();
         this.initMockOdsElements();
         this.odsElements.addPageStyle(PageStyle.DEFAULT_PAGE_STYLE);
@@ -479,7 +480,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddObjectStyle() throws IOException {
+    public void testAddObjectStyle() {
         PowerMock.resetAll();
         this.initMockOdsElements();
         this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
@@ -492,7 +493,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddPageLayoutStyle() throws IOException {
+    public void testAddPageLayoutStyle() {
         final PageLayoutStyle pls = PowerMock.createMock(PageLayoutStyle.class);
 
         PowerMock.resetAll();
@@ -507,7 +508,7 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddMasterPageStyle() throws IOException {
+    public void testAddMasterPageStyle() {
         final MasterPageStyle mps = PowerMock.createMock(MasterPageStyle.class);
 
         PowerMock.resetAll();
@@ -522,10 +523,11 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testChildCellStyle() throws IOException {
+    public void testChildCellStyle() {
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.odsElements
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -535,10 +537,11 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testChildCellVoidStyle() throws IOException {
+    public void testChildCellVoidStyle() {
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.odsElements
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -548,16 +551,16 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddAutoFilter() throws IOException {
+    public void testAddAutoFilter() {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.addAutoFilter(t, 0,1,2,3);
+        this.odsElements.addAutoFilter(t, 0, 1, 2, 3);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addAutoFilter(t, 0,1,2,3);
+        document.addAutoFilter(t, 0, 1, 2, 3);
 
         PowerMock.verifyAll();
     }

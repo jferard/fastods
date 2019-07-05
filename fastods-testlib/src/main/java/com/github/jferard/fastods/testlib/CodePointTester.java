@@ -30,8 +30,14 @@ import java.util.Collection;
 
 /**
  * A class to test code points
+ *
+ * @author
  */
 public class CodePointTester {
+
+    private static final int FIRST_ASCII_PRINTABLE_CHAR = 0x20;
+    private static final int LAST_ASCII_PRINTABLE_CHAR = 0x80 - 1;
+
     /**
      * @param filter the filter to apply
      * @return the matching codepoints as a string
@@ -40,7 +46,7 @@ public class CodePointTester {
         final Collection<String> segments = new ArrayList<String>();
         int from = -1;
         int i;
-        for (i = 0; i < 0xfffff; i++) {
+        for (i = Character.MIN_CODE_POINT; i <= Character.MAX_CODE_POINT; i++) {
             if (filter.check(i)) {
                 if (from == -1) {
                     from = i;
@@ -60,23 +66,18 @@ public class CodePointTester {
 
     private static String format(final int from, final int to) {
         if (from == to) {
-            if (0x20 < from && from < 0x80) {
-                return String.format("'%c'", from);
-            } else {
-                return String.format("#x%x", from);
-            }
+            return formatChar("'%c'", "#x%x", from);
         } else {
-            String s = "";
-            if (0x20 <= from && from < 0x80) {
-                s += String.format("[%c-", from);
-            } else {
-                s += String.format("[#x%x-", from);
-            }
-            if (0x20 <= to && to < 0x80) {
-                return s + String.format("%c]", to);
-            } else {
-                return s + String.format("#x%x]", to);
-            }
+            return formatChar("[%c-", "[#x%x-", from) + formatChar("%c]", "#x%x]", to);
+        }
+    }
+
+    private static String formatChar(final String printableFormat, final String nonPrintableFormat,
+                                     final int from) {
+        if (FIRST_ASCII_PRINTABLE_CHAR <= from && from <= LAST_ASCII_PRINTABLE_CHAR) {
+            return String.format(printableFormat, from);
+        } else {
+            return String.format(nonPrintableFormat, from);
         }
     }
 

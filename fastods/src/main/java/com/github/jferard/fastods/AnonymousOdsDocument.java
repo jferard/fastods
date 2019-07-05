@@ -40,13 +40,14 @@ import java.util.logging.Logger;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class AnonymousOdsDocument implements OdsDocument {
+public final class AnonymousOdsDocument implements OdsDocument {
     /**
      * Create a new anonymous ODS document.
      *
      * @param logger      the logger
      * @param xmlUtil     a util for XML writing
      * @param odsElements the ods elements (file entries in zip archive)
+     * @return an anonymous document
      */
     static AnonymousOdsDocument create(final Logger logger, final XMLUtil xmlUtil,
                                        final OdsElements odsElements) {

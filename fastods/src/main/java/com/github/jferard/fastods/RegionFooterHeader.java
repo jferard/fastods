@@ -24,7 +24,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -68,7 +67,6 @@ class RegionFooterHeader implements PageSectionContent {
      * @param rightRegion  the right region
      */
     RegionFooterHeader(final Text centerRegion, final Text leftRegion, final Text rightRegion) {
-        super();
         this.centerRegion = centerRegion;
         this.leftRegion = leftRegion;
         this.rightRegion = rightRegion;

@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.OdsDocument;
@@ -47,7 +46,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 class G_PageFormat {
-    static void example() throws IOException, FastOdsException {
+    static void example() throws IOException {
         // As usual:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();

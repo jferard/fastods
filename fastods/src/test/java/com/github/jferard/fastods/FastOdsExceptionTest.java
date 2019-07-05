@@ -33,7 +33,7 @@ public class FastOdsExceptionTest {
 	}
 
 	@Test
-	public final void testWrongTableNumber() throws FastOdsException {
+	public final void testWrongTableNumber() {
 		final Exception e = FastOdsException.wrongTableNumber(10);
 		Assert.assertEquals("Wrong table number [10]", e.getMessage());
 	}

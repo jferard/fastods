@@ -29,6 +29,12 @@ package com.github.jferard.fastods;
  * @author Julien Férard
  */
 public class CurrencyValue implements CellValue {
+    /**
+     * @param o        the object to cast
+     * @param currency the currency
+     * @return the currency value
+     * @throws FastOdsException if the cast was not possible
+     */
     public static CurrencyValue from(final Object o, final String currency)
             throws FastOdsException {
         if (o instanceof Number) {
@@ -60,8 +66,12 @@ public class CurrencyValue implements CellValue {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof CurrencyValue)) return false;
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CurrencyValue)) {
+            return false;
+        }
 
         final CurrencyValue other = (CurrencyValue) o;
         return this.value.equals(other.value) && this.currency.equals(other.currency);

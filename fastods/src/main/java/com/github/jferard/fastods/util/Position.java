@@ -24,12 +24,23 @@
 package com.github.jferard.fastods.util;
 
 /**
- * A position (row + col)
+ * A position (file - table - row - col)
+ *
+ * @author J. Férard
  */
 public class Position {
-    public static final int ABSOLUTE_COL = 1;
-    public static final int ABSOLUTE_ROW = 2;
-    public static final int ABSOLUTE_TABLE = 4;
+    /**
+     * The col is absolute
+     */
+    static final int ABSOLUTE_COL = 1;
+    /**
+     * The row is absolute
+     */
+    static final int ABSOLUTE_ROW = 2;
+    /**
+     * The table is absolute
+     */
+    static final int ABSOLUTE_TABLE = 4;
 
     private final EqualityUtil equalityUtil;
     private final int column;
@@ -42,11 +53,16 @@ public class Position {
     /**
      * Create a position
      *
-     * @param equalityUtil an util
-     * @param row          the row
-     * @param column       the column
+     * @param equalityUtil  an util for testing equality
+     * @param tableNameUtil an util for checking./escaping table name
+     * @param fileName      the filename
+     * @param tableName     the name of the table
+     * @param row           the row
+     * @param column        the column
+     * @param status        the absolute status = col | row | table.
      */
-    public Position(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil, final String fileName, final String tableName, final int row, final int column,
+    public Position(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil,
+                    final String fileName, final String tableName, final int row, final int column,
                     final int status) {
         this.equalityUtil = equalityUtil;
         this.tableNameUtil = tableNameUtil;
@@ -59,18 +75,23 @@ public class Position {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-
-        if (!(o instanceof Position)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Position)) {
+            return false;
+        }
 
         final Position other = (Position) o;
-        return this.equalityUtil.equal(this.filename, other.filename) && this.equalityUtil.equal(this.tableName, other.tableName) &&
-                this.row == other.row && this.column == other.column && this.status == other.status;
+        return this.equalityUtil.equal(this.filename, other.filename) &&
+                this.equalityUtil.equal(this.tableName, other.tableName) && this.row == other.row &&
+                this.column == other.column && this.status == other.status;
     }
 
     @Override
     public int hashCode() {
-        return this.equalityUtil.hashObjects(this.filename, this.tableName, this.row, this.column, this.status);
+        return this.equalityUtil
+                .hashObjects(this.filename, this.tableName, this.row, this.column, this.status);
     }
 
     /**
@@ -99,7 +120,7 @@ public class Position {
      * <li>52 gives "BA"</li>
      * <li>1023 gives "AMJ"</li>
      * </ul>
-     *
+     * <p>
      * Remainder: '<filename>'#<tablename>.<col><row>
      *
      * @return the Excel/OO/LO address
@@ -116,7 +137,7 @@ public class Position {
     private void appendFilename(final StringBuilder sb) {
         if (this.filename != null) {
             sb.append((char) PositionParser.SINGLE_QUOTE);
-            for (int i=0; i<this.filename.length(); i++) {
+            for (int i = 0; i < this.filename.length(); i++) {
                 final char c = this.filename.charAt(i);
                 if (c == PositionParser.SINGLE_QUOTE) {
                     sb.append((char) PositionParser.SINGLE_QUOTE);

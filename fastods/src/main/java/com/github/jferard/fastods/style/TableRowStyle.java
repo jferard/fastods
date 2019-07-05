@@ -87,7 +87,7 @@ public class TableRowStyle implements FontFaceContainerStyle {
         appendable.append("><style:table-row-properties");
         if (this.optimalHeight) {
             util.appendAttribute(appendable, "style:use-optimal-row-width", this.optimalHeight);
-        } else if (!this.rowHeight.isNull()) {
+        } else if (this.rowHeight.isNotNull()) {
             util.appendAttribute(appendable, "style:row-height", this.rowHeight.toString());
         }
         util.appendAttribute(appendable, "fo:break-before", "auto");

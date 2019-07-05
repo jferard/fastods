@@ -32,9 +32,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class ObjectToCellValueConverterTest {
-    public static final String FASTODS = "FastODS";
-    public static final Date DATE_123 = new Date(123);
-    private static final Calendar CALENDAR_456 = new GregorianCalendar(00, 0, 0, 0, 0, 456);
+    private static final String FAST_ODS = "FastODS";
+    private static final Date DATE_123 = new Date(123);
+    private static final Calendar CALENDAR_456 = new GregorianCalendar(0, Calendar.JANUARY, 0, 0, 0,
+            456);
 
     private static final Date DATE_456000 = CALENDAR_456.getTime();
     private ObjectToCellValueConverter converter;
@@ -60,8 +61,8 @@ public class ObjectToCellValueConverterTest {
     }
 
     @Test
-    public void testFromString() throws FastOdsException {
-        Assert.assertEquals(new StringValue(FASTODS), this.converter.from(FASTODS));
+    public void testFromString() {
+        Assert.assertEquals(new StringValue(FAST_ODS), this.converter.from(FAST_ODS));
     }
 
     @Test
@@ -71,29 +72,29 @@ public class ObjectToCellValueConverterTest {
 
     @Test(expected = FastOdsException.class)
     public void testFromHintFailString() throws FastOdsException {
-        this.converter.from(TableCell.Type.VOID, FASTODS);
+        this.converter.from(TableCell.Type.VOID, FAST_ODS);
     }
 
     @Test
-    public void testFromText() throws FastOdsException {
-        final Text content = Text.content(FASTODS);
+    public void testFromText() {
+        final Text content = Text.content(FAST_ODS);
         Assert.assertEquals(new TextValue(content), this.converter.from(content));
     }
 
     @Test
     public void testFromHintText() throws FastOdsException {
-        final Text content = Text.content(FASTODS);
+        final Text content = Text.content(FAST_ODS);
         Assert.assertEquals(new TextValue(content),
                 this.converter.from(TableCell.Type.STRING, content));
     }
 
     @Test(expected = FastOdsException.class)
     public void testFromHintFailText() throws FastOdsException {
-        this.converter.from(TableCell.Type.VOID, Text.content(FASTODS));
+        this.converter.from(TableCell.Type.VOID, Text.content(FAST_ODS));
     }
 
     @Test
-    public void testFromNumber() throws FastOdsException {
+    public void testFromNumber() {
         Assert.assertEquals(new FloatValue(8.5), this.converter.from(8.5));
     }
 
@@ -108,7 +109,7 @@ public class ObjectToCellValueConverterTest {
     }
 
     @Test
-    public void testFromBoolean() throws FastOdsException {
+    public void testFromBoolean() {
         Assert.assertEquals(new BooleanValue(true), this.converter.from(true));
     }
 
@@ -124,7 +125,7 @@ public class ObjectToCellValueConverterTest {
     }
 
     @Test
-    public void testFromDate() throws FastOdsException {
+    public void testFromDate() {
         Assert.assertEquals(new DateValue(DATE_123), this.converter.from(DATE_123));
     }
 
@@ -139,7 +140,7 @@ public class ObjectToCellValueConverterTest {
     }
 
     @Test
-    public void testFromCalendar() throws FastOdsException {
+    public void testFromCalendar() {
         Assert.assertEquals(new DateValue(DATE_456000), this.converter.from(CALENDAR_456));
     }
 
@@ -179,7 +180,7 @@ public class ObjectToCellValueConverterTest {
     @Test
     public void testFromHintTime() throws FastOdsException {
         Assert.assertEquals(new TimeValue(false, 0, 0, 0, 0, 0, 165),
-                this.converter.from(TableCell.Type.TIME, 165*1000));
+                this.converter.from(TableCell.Type.TIME, 165 * 1000));
     }
 
     @Test(expected = FastOdsException.class)

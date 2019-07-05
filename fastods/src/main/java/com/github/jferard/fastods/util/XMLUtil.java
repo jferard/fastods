@@ -157,8 +157,7 @@ public class XMLUtil {
      * @return the string that represents this interval
      */
     public String formatTimeInterval(final long milliseconds) {
-        final String sb = "PT" + (double) milliseconds / 1000 + "S";
-        return sb;
+        return "PT" + (double) milliseconds / 1000 + "S";
     }
 
     /**

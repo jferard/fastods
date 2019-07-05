@@ -26,8 +26,6 @@ package com.github.jferard.fastods.testlib;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class CodePointTesterTest {
     @Test
     public void testRandom() {

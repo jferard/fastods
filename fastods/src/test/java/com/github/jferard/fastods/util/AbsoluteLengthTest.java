@@ -52,9 +52,9 @@ public class AbsoluteLengthTest {
 
     @Test
     public void testIsNull() {
-        Assert.assertTrue(AbsoluteLength.cm(0.0).isNull());
-        Assert.assertFalse(AbsoluteLength.cm(1.0).isNull());
-        Assert.assertFalse(AbsoluteLength.cm(-1.0).isNull());
+        Assert.assertFalse(AbsoluteLength.cm(0.0).isNotNull());
+        Assert.assertTrue(AbsoluteLength.cm(1.0).isNotNull());
+        Assert.assertTrue(AbsoluteLength.cm(-1.0).isNotNull());
     }
 
     @Test

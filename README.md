@@ -27,7 +27,7 @@ but [feel free to ask a question or make a suggestion](https://github.com/jferar
 ## Why FastODS?
 Because I need to write big and simple ODS files very fast in Java.
 
-There are some very good libraries for [OASIS Open Document Format](https://www.oasis-open.org/standards#opendocumentv1.2), like [Simple ODF](http://incubator.apache.org/odftoolkit/simple/) or [JOpenDocument](www.jopendocument.org/), but they are a little bit slow and cumberstone for only writing **very simple** spreadsheets.
+There are some very good libraries for [OASIS Open Document Format](https://www.oasis-open.org/standards#opendocumentv1.2), like [Simple ODF](http://incubator.apache.org/odftoolkit/simple/) or [JOpenDocument](http://www.jopendocument.org/), but they are a little bit slow and cumberstone for only writing **very simple** spreadsheets.
 There is a simple and fast library by Martin Schulz, [Simple ODS](http://simpleods.sourceforge.net/), but it is now discontinued, outdated (Java 1.3), has a few limitations (incorrect handling of UTF-8 encoding, missing XML escaping for attributes) and can be speed up.
 
 FastODS is a fork of SimpleODS that aims to be a very fast ODS writing library in Java.

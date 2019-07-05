@@ -37,44 +37,45 @@ import java.io.IOException;
  * @autohr Martin Schulz
  */
 public class BorderAttributeTest {
-    XMLUtil util;
+    private XMLUtil util;
 
     @Before
     public void setUp() {
         this.util = XMLUtil.create();
     }
 
-	@Test
-	public final void basicTest() throws IOException {
-		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
-				.borderColor(SimpleColor.ALICEBLUE)
-				.borderStyle(BorderAttribute.Style.SOLID).build();
-		this.assertXMLEquals("1cm solid #f0f8ff", ba);
-	}
+    @Test
+    public final void basicTest() throws IOException {
+        final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
+                .borderColor(SimpleColor.ALICEBLUE).borderStyle(BorderAttribute.Style.SOLID)
+                .build();
+        this.assertXMLEquals("1cm solid #f0f8ff", ba);
+    }
 
-	@Test
-	public final void nullColorTest() throws IOException {
-		final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
-				.build();
-		this.assertXMLEquals("1cm", ba);
-	}
+    @Test
+    public final void nullColorTest() throws IOException {
+        final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
+                .build();
+        this.assertXMLEquals("1cm", ba);
+    }
 
-	@Test
-	public final void nullSizeTest() throws IOException {
-		final BorderAttribute ba = BorderAttribute.builder()
-				.borderColor(SimpleColor.AQUAMARINE).build();
-		this.assertXMLEquals("solid #7fffd4", ba);
-	}
+    @Test
+    public final void nullSizeTest() throws IOException {
+        final BorderAttribute ba = BorderAttribute.builder().borderColor(SimpleColor.AQUAMARINE)
+                .build();
+        this.assertXMLEquals("solid #7fffd4", ba);
+    }
 
-	@Test
-	public final void nullTest() throws IOException {
-		final BorderAttribute ba = BorderAttribute.builder().build();
-		this.assertXMLEquals("", ba);
-	}
+    @Test
+    public final void nullTest() throws IOException {
+        final BorderAttribute ba = BorderAttribute.builder().build();
+        this.assertXMLEquals("", ba);
+    }
 
-    private void assertXMLEquals(final String expected, final BorderAttribute ba) throws IOException {
-	    final StringBuilder sb = new StringBuilder();
+    private void assertXMLEquals(final String expected, final BorderAttribute ba)
+            throws IOException {
+        final StringBuilder sb = new StringBuilder();
         ba.appendXMLAttribute(this.util, sb, "@");
-	    Assert.assertEquals(" @=\""+expected+"\"", sb.toString());
+        Assert.assertEquals(" @=\"" + expected + "\"", sb.toString());
     }
 }

@@ -25,6 +25,8 @@ package com.github.jferard.fastods.util;
 
 /**
  * A position (row + col)
+ *
+ * @author J. Férard
  */
 public class PositionBuilder {
     private final int column;
@@ -38,8 +40,8 @@ public class PositionBuilder {
     /**
      * Create a position
      *
-     * @param equalityUtil
-     * @param tableNameUtil
+     * @param equalityUtil  util for testing equality
+     * @param tableNameUtil util for check/escaping the table name
      * @param row           the row
      * @param column        the column
      */
@@ -60,7 +62,7 @@ public class PositionBuilder {
      * @return this for fluent style
      */
     public PositionBuilder absRow() {
-        this.status += Position.ABSOLUTE_ROW;
+        this.status |= Position.ABSOLUTE_ROW;
         return this;
     }
 
@@ -70,16 +72,17 @@ public class PositionBuilder {
      * @return this for fluent style
      */
     public PositionBuilder absCol() {
-        this.status += Position.ABSOLUTE_COL;
+        this.status |= Position.ABSOLUTE_COL;
         return this;
     }
 
     /**
      * Set the table name
      *
+     * @param tableName the name of the table
      * @return this for fluent style
      */
-    public PositionBuilder table(final String tableName) {
+    public PositionBuilder tableName(final String tableName) {
         this.tableName = tableName;
         return this;
     }
@@ -87,17 +90,43 @@ public class PositionBuilder {
     /**
      * Set the table name
      *
+     * @param tableName the name of the table
      * @return this for fluent style
      */
-    public PositionBuilder absTable(final String tableName) {
+    public PositionBuilder absTableName(final String tableName) {
         this.tableName = tableName;
-        this.status += Position.ABSOLUTE_TABLE;
+        this.status |= Position.ABSOLUTE_TABLE;
         return this;
     }
 
     /**
      * Set the table name
      *
+     * @param table the table
+     * @return this for fluent style
+     */
+    public PositionBuilder table(final NamedObject table) {
+        this.tableName = table.getName();
+        return this;
+    }
+
+    /**
+     * Set the table
+     *
+     * @param table the table
+     * @return this for fluent style
+     */
+    public PositionBuilder absTable(final NamedObject table) {
+        this.tableName = table.getName();
+        this.status |= Position.ABSOLUTE_TABLE;
+        return this;
+    }
+
+
+    /**
+     * Set the file name
+     *
+     * @param fileName the name of the file
      * @return this for fluent style
      */
     public PositionBuilder file(final String fileName) {
@@ -105,6 +134,9 @@ public class PositionBuilder {
         return this;
     }
 
+    /**
+     * @return the position
+     */
     public Position build() {
         return new Position(this.equalityUtil, this.tableNameUtil, this.fileName, this.tableName,
                 this.row, this.column, this.status);

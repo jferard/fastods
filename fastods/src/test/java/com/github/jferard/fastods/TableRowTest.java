@@ -61,7 +61,8 @@ public class TableRowTest {
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10, 100);
+        this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
+                100);
         this.tcs = TableCellStyle.builder("---").build();
         PowerMock.mockStatic(TableColdCell.class);
         PowerMock.resetAll();
@@ -107,8 +108,10 @@ public class TableRowTest {
     @Test
     public void testIsCoveredTrue() {
         PowerMock.resetAll();
-        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
-        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil))
+                .andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil))
+                .andReturn(new TableColdCell(this.xmlUtil));
 
         PowerMock.replayAll();
         this.row.setColumnsSpanned(0, 2);
@@ -134,8 +137,10 @@ public class TableRowTest {
     @Test(expected = IllegalArgumentException.class)
     public void testColumnsSpannedCellError() {
         PowerMock.resetAll();
-        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
-        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil))
+                .andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil))
+                .andReturn(new TableColdCell(this.xmlUtil));
 
         PowerMock.replayAll();
         this.row.setColumnsSpanned(0, 2);
@@ -157,8 +162,10 @@ public class TableRowTest {
     @Test(expected = IllegalArgumentException.class)
     public void testRowsSpannedCellError() throws IOException {
         PowerMock.resetAll();
-        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
-        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil))
+                .andReturn(new TableColdCell(this.xmlUtil));
+        EasyMock.expect(TableColdCell.create(this.xmlUtil))
+                .andReturn(new TableColdCell(this.xmlUtil));
 
         PowerMock.replayAll();
         this.row.setColumnsSpanned(0, 2);
@@ -178,7 +185,7 @@ public class TableRowTest {
     }
 
     @Test
-    public void testSetFormat() throws IOException {
+    public void testSetFormat() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.row.setFormat(null);
@@ -204,16 +211,20 @@ public class TableRowTest {
         PowerMock.verifyAll();
         this.assertTableXMLEquals(
                 "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
-                        "table:number-columns-repeated=\"5\"/>" + "<table:table-cell table:style-name=\"---\" " +
-                        "office:value-type=\"boolean\" office:boolean-value=\"true\"/>" + "<table:table-cell " +
-                        "table:number-columns-repeated=\"4\"/>" + "<table:table-cell office:value-type=\"string\" " +
+                        "table:number-columns-repeated=\"5\"/>" +
+                        "<table:table-cell table:style-name=\"---\" " +
+                        "office:value-type=\"boolean\" office:boolean-value=\"true\"/>" +
+                        "<table:table-cell " + "table:number-columns-repeated=\"4\"/>" +
+                        "<table:table-cell office:value-type=\"string\" " +
                         "office:string-value=\"a\"/>" + "</table:table-row>");
     }
 
     @Test
     public final void testAppendRowOpenTag() throws IOException {
         PowerMock.resetAll();
-        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
+        EasyMock.expect(
+                this.stc.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
 
         PowerMock.replayAll();
         this.row.removeStyle();
@@ -223,8 +234,6 @@ public class TableRowTest {
         this.assertTableXMLEquals("<table:table-row table:default-cell-style-name=\"Default" +
                 "\"></table:table-row>");
     }
-
-
 
 
     private void assertTableXMLEquals(final String xml) throws IOException {

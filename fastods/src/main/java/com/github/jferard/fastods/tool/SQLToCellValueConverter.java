@@ -36,7 +36,6 @@ import java.nio.charset.Charset;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
-import java.sql.NClob;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Time;

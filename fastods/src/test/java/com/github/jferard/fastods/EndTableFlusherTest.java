@@ -43,7 +43,7 @@ public class EndTableFlusherTest {
     private TableAppender appender;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.util = XMLUtil.create();
         this.w = PowerMock.createMock(ZipUTF8Writer.class);
         this.appender = PowerMock.createMock(TableAppender.class);
@@ -63,7 +63,7 @@ public class EndTableFlusherTest {
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();
-        final EndTableFlusher f = new EndTableFlusher(this.appender, rows);
+        final OdsFlusher f = new EndTableFlusher(this.appender, rows);
         f.flushInto(this.util, this.w);
     }
 
@@ -79,7 +79,7 @@ public class EndTableFlusherTest {
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();
-        final EndTableFlusher f = new EndTableFlusher(this.appender, rows);
+        final OdsFlusher f = new EndTableFlusher(this.appender, rows);
         f.flushInto(this.util, this.w);
     }
 }

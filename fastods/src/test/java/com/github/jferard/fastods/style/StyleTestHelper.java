@@ -23,10 +23,8 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.Style;
 import com.github.jferard.fastods.util.StyleBuilder;
 import org.junit.Assert;
 

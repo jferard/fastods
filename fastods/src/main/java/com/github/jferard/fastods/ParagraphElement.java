@@ -24,7 +24,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container;
 
 /**
  * A paragraph element represents an element inside paragraph (p tag)

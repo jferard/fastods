@@ -41,7 +41,7 @@ public class PositionBuilderTest {
     public void testAbs() {
         final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil,
                 1, 2);
-        builder.absCol().absRow().absTable("at").file("f");
+        builder.absCol().absRow().absTableName("at").file("f");
         Assert.assertEquals(new Position(this.equalityUtil, this.tableNameUtil, "f", "at", 1, 2, 7),
                 builder.build());
     }
@@ -50,7 +50,7 @@ public class PositionBuilderTest {
     public void test() {
         final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil,
                 8, 7);
-        builder.absCol().absRow().table("at");
+        builder.absCol().absRow().tableName("at");
         Assert.assertEquals(
                 new Position(this.equalityUtil, this.tableNameUtil, null, "at", 8, 7, 3),
                 builder.build());

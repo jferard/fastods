@@ -36,7 +36,6 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -47,7 +46,7 @@ public class TextTest {
     private ContentElement ce;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         this.ce = PowerMock.createMock(ContentElement.class);
         this.ts = TextProperties.builder().fontName("fn").fontColor(ColorHelper.fromString("fc"))
                 .buildStyle("ts");
@@ -123,8 +122,8 @@ public class TextTest {
 
     @Test
     public void linkTable() throws Exception {
-        final Table table = Table.create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null,
-                false);
+        final Table table = Table
+                .create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null, false);
         final Text t = TextBuilder.create().par().link("a", table).build();
         Assert.assertEquals("n", table.getName());
         TestHelper.assertXMLEquals(
@@ -133,8 +132,8 @@ public class TextTest {
 
     @Test
     public void styledLinkTable() throws Exception {
-        final Table table = Table.create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null,
-                false);
+        final Table table = Table
+                .create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null, false);
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
         TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +
                 "xlink:type=\"simple\">a</text:a></text:p>", t);
@@ -158,18 +157,20 @@ public class TextTest {
     }
 
     @Test
-    public void testEquals() throws FastOdsException {
+    public void testEquals() {
         final Text text1 = Text.builder().parContent("text").link("url", "url")
                 .parStyledContent("text2", null).span("span").build();
         final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
                 .span("text2").span("span").build();
         Assert.assertEquals(text1, text1);
-        Assert.assertFalse(text1.equals("text1"));
+        Assert.assertNotEquals(text1, "text1");
+        Assert.assertNotEquals("text1", text1);
         Assert.assertEquals(text1, text2);
+        Assert.assertEquals(text2, text1);
     }
 
     @Test
-    public void testHashCode() throws FastOdsException {
+    public void testHashCode() {
         final Text text1 = Text.builder().parContent("text").link("url", "url")
                 .parStyledContent("text2", null).span("span").build();
         final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()

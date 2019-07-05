@@ -92,7 +92,7 @@ public class TableColumnStyle implements FontFaceContainerStyle {
         util.appendAttribute(appendable, "fo:break-before", "auto");
         if (this.optimalWidth) {
             util.appendAttribute(appendable, "style:use-optimal-column-width", this.optimalWidth);
-        } else if (!this.columnWidth.isNull()) {
+        } else if (this.columnWidth.isNotNull()) {
             util.appendAttribute(appendable, "style:column-width", this.columnWidth.toString());
         }
         appendable.append("/></style:style>");

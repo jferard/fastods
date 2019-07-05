@@ -63,6 +63,8 @@ class PositionParser {
     /**
      * Create a new position util
      *
+     * @param equalityUtil
+     * @param tableNameUtil
      * @param address ['<filename>'#][<tablename>.]<col><row>
      * @return
      */
@@ -80,6 +82,8 @@ class PositionParser {
 
     /**
      *
+     * @return
+     * @throws ParseException
      */
     public Position parse() throws ParseException {
         this.parseFilename();

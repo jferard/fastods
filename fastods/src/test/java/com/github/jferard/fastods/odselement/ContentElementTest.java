@@ -48,13 +48,15 @@ public class ContentElementTest {
     private StylesContainer container;
     private ContentElement content;
     private DataStyles format;
+    private SettingsElement settingsElement;
 
     @Before
     public void setUp() {
         this.container = PowerMock.createMock(StylesContainer.class);
         this.format = DataStylesBuilder.create(Locale.US).build();
-        this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(), this.format,
-                true, this.container);
+        this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(),
+                WriteUtil.create(), this.format, true, this.container);
+        this.settingsElement = PowerMock.createMock(SettingsElement.class);
         PowerMock.resetAll();
     }
 
@@ -68,27 +70,26 @@ public class ContentElementTest {
         final TableCellStyle style = PowerMock.createNiceMock(TableCellStyle.class);
 
         // play
-        EasyMock.expect(
-                this.container.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, this.format.getBooleanDataStyle()))
-                .andReturn(style);
+        EasyMock.expect(this.container.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE,
+                this.format.getBooleanDataStyle())).andReturn(style);
 
         PowerMock.replayAll();
-        Assert.assertEquals(style,
-                this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN));
+        Assert.assertEquals(style, this.content
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN));
     }
 
     @Test
     public void testAddChildCellStyleOfTypeString() {
         PowerMock.replayAll();
-        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
-                this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING));
+        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE, this.content
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING));
     }
 
     @Test
     public void testAddChildCellStyleOfTypeVoid() {
         PowerMock.replayAll();
-        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
-                this.content.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.VOID));
+        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE, this.content
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.VOID));
     }
 
     @Test
@@ -169,28 +170,28 @@ public class ContentElementTest {
         this.playWriteHeader(util);
 
         PowerMock.replayAll();
-        this.content.flushTables(util, z);
+        this.content.flushTables(util, z, this.settingsElement);
     }
 
     @Test()
     public void flushTablesWithOneTable() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        this.content.addTable("t1",1,1);
+        this.content.addTable("t1", 1, 1);
 
         // play
         this.playWriteHeader(util);
 
         PowerMock.replayAll();
-        this.content.flushTables(util, z);
+        this.content.flushTables(util, z, this.settingsElement);
     }
 
     @Test()
     public void flushTablesWithTwoTables() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        this.content.addTable("t1",1,1);
-        this.content.addTable("t2",2,2);
+        this.content.addTable("t1", 1, 1);
+        this.content.addTable("t2", 2, 2);
 
         // play
         this.playWriteHeader(util);
@@ -203,14 +204,14 @@ public class ContentElementTest {
     public void flushTablesWithThreeTables() throws IOException {
         final ZipUTF8Writer z = ZipUTF8WriterMockHandler.create().getInstance(ZipUTF8Writer.class);
         final XMLUtil util = XMLUtil.create();
-        this.content.addTable("t1",1,1);
-        this.content.addTable("t2",2,2);
-        this.content.addTable("t2",3,3);
+        this.content.addTable("t1", 1, 1);
+        this.content.addTable("t2", 2, 2);
+        this.content.addTable("t2", 3, 3);
 
         // play
         this.playWriteHeader(util);
 
         PowerMock.replayAll();
-        this.content.flushTables(util, z);
+        this.content.flushTables(util, z, this.settingsElement);
     }
 }

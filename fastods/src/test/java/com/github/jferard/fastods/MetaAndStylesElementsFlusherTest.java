@@ -50,7 +50,7 @@ public class MetaAndStylesElementsFlusherTest {
         contentElement.writePreamble(util, w);
 
         PowerMock.replayAll();
-        final MetaAndStylesElementsFlusher flusher = new MetaAndStylesElementsFlusher(odsElements, contentElement);
+        final OdsFlusher flusher = new MetaAndStylesElementsFlusher(odsElements, contentElement);
         flusher.flushInto(util, w);
 
         PowerMock.verifyAll();

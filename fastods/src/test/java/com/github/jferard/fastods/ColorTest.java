@@ -27,7 +27,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ColorTest {
-
     @Test
     public final void test() {
         Assert.assertEquals("#ffffff", ColorHelper.fromRGB(255, 255, 255).hexValue());

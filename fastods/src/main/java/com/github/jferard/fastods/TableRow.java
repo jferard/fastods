@@ -34,8 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * WHERE ? content.xml/office:document-content/office:body/office:spreadsheet/
- * table:table/table:table-row
+ * 9.1.3 <table:table-row>
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -59,7 +58,6 @@ public class TableRow {
     }
 
 
-    private final int columnCapacity;
     private final Table parent;
     private final int rowIndex;
     private final StylesContainer stylesContainer;
@@ -78,7 +76,7 @@ public class TableRow {
      * @param xmlUtil         an util
      * @param stylesContainer the styles containes
      * @param dataStyles      the data styles
-     * @param libreOfficeMode
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @param parent          the parent table
      * @param rowIndex        the index of this row
      * @param columnCapacity  the max column
@@ -94,7 +92,6 @@ public class TableRow {
         this.libreOfficeMode = libreOfficeMode;
         this.parent = parent;
         this.rowIndex = rowIndex;
-        this.columnCapacity = columnCapacity;
         this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
         this.cells = FastFullList.newListWithCapacity(columnCapacity);
     }
@@ -183,6 +180,12 @@ public class TableRow {
         this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
     }
 
+    /**
+     * Cover the cells to the right of a given index.
+     *
+     * @param colIndex the start index
+     * @param n        the number of cells to cover
+     */
     public void coverRightCells(final int colIndex, final int n) {
         for (int c = colIndex + 1; c < colIndex + n; c++) {
             this.getOrCreateCell(c).setCovered();
@@ -324,6 +327,9 @@ public class TableRow {
         this.defaultCellStyle = ts;
     }
 
+    /**
+     * @return the index of this row in the table
+     */
     public int index() {
         return this.rowIndex;
     }

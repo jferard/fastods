@@ -59,7 +59,7 @@ public class PreprocessedRowsFlusherTest {
         final List<TableRow> rows = Collections.emptyList();
 
         PowerMock.replayAll();
-        final PreprocessedRowsFlusher flusher = PreprocessedRowsFlusher.create(this.util, rows);
+        PreprocessedRowsFlusher.create(this.util, rows);
         PowerMock.verifyAll();
     }
 
@@ -69,7 +69,7 @@ public class PreprocessedRowsFlusherTest {
         EasyMock.expect(this.w.append(this.sb)).andReturn(this.sb);
 
         PowerMock.replayAll();
-        final PreprocessedRowsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
+        final OdsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }
@@ -85,7 +85,7 @@ public class PreprocessedRowsFlusherTest {
         EasyMock.expect(this.w.append(this.sb)).andReturn(this.sb);
 
         PowerMock.replayAll();
-        final PreprocessedRowsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
+        final OdsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
         flusher.flushInto(this.util, this.w);
         Assert.assertEquals("", this.sb.toString());
         PowerMock.verifyAll();
@@ -100,7 +100,7 @@ public class PreprocessedRowsFlusherTest {
         EasyMock.expect(this.w.append(EasyMock.capture(capturedArgument))).andReturn(this.w);
 
         PowerMock.replayAll();
-        final PreprocessedRowsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
+        final OdsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
         flusher.flushInto(this.util, this.w);
         Assert.assertEquals("<row />", capturedArgument.getValue().toString());
         PowerMock.verifyAll();

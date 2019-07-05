@@ -31,7 +31,7 @@ import org.powermock.api.easymock.PowerMock;
 
 public class TextValueTest {
     @Test
-    public void testSet() throws FastOdsException {
+    public void testSet() {
         PowerMock.resetAll();
         final TableCell cell = PowerMock.createMock(TableCell.class);
         final Capture<Text> capturedValue = Capture.newInstance();
@@ -39,7 +39,7 @@ public class TextValueTest {
 
         PowerMock.replayAll();
         final Text text = Text.content("text");
-        final TextValue cv = new TextValue(text);
+        final CellValue cv = new TextValue(text);
         cv.setToCell(cell);
         Assert.assertEquals(text, capturedValue.getValue());
 
@@ -47,19 +47,21 @@ public class TextValueTest {
     }
 
     @Test
-    public void testEquals() throws FastOdsException {
+    public void testEquals() {
         final Text text1 = Text.builder().parContent("text").link("url", "url")
                 .parStyledContent("text2", null).span("span").build();
         final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
                 .span("text2").span("span").build();
         final TextValue expected = new TextValue(text1);
         Assert.assertEquals(expected, expected);
-        Assert.assertFalse(expected.equals("new TextValue(text1)"));
+        Assert.assertNotEquals("new TextValue(text1)", expected);
+        Assert.assertNotEquals(expected, "new TextValue(text1)");
         Assert.assertEquals(expected, new TextValue(text2));
+        Assert.assertEquals(new TextValue(text2), expected);
     }
 
     @Test
-    public void testHashCode() throws FastOdsException {
+    public void testHashCode() {
         final Text text1 = Text.builder().parContent("text").link("url", "url")
                 .parStyledContent("text2", null).span("span").build();
         final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()

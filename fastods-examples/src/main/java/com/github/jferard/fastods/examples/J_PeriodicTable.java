@@ -44,6 +44,7 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Charsets;
@@ -107,7 +108,7 @@ class J_PeriodicTable {
                 // we don't need the intervals:
 
                 ResultSet rs = s.executeQuery("SELECT * FROM chemical_element");
-                // dataTable.addData(ResultSetDataWrapper.builder(rs).build());
+                dataTable.addData(ResultSetDataWrapper.builder(rs).build());
 
                 // ## The table
                 // Ok, that was the easy part, just to show once more how easy it is to write a

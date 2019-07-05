@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods.style;
 
-import java.io.IOException;
-
 public interface FontFaceContainerStyle extends ObjectStyle {
     FontFace getFontFace();
 }

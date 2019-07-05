@@ -23,14 +23,12 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.datastyle.TextDataStyleBuilder;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Locale;
 
 public class TextStyleTest {
     private XMLUtil util;
@@ -51,7 +49,7 @@ public class TextStyleTest {
     }
 
     @Test
-    public void testGetter() throws IOException {
+    public void testGetter() {
         Assert.assertEquals("ts", this.ts.getName());
         Assert.assertEquals(ObjectStyleFamily.TEXT, this.ts.getFamily());
         Assert.assertEquals("TEXT@ts", this.ts.getKey());

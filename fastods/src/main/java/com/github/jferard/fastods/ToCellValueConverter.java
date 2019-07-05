@@ -23,9 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * The value of a cell
  *
@@ -45,6 +42,7 @@ public interface ToCellValueConverter {
      * @param type a hint
      * @param o    the value
      * @return the CellValue
+     * @throws FastOdsException
      */
     CellValue from(final TableCell.Type type, final Object o) throws FastOdsException;
 }

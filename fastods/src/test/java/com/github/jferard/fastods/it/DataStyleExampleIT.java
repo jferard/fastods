@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
@@ -96,7 +95,7 @@ public class DataStyleExampleIT {
         // TODO: Add more validation tests"
     }
 
-    private void dataStyle() throws IOException, FastOdsException {
+    private void dataStyle() throws IOException {
         // Create a new default "data styles"
         final DataStylesBuilder dsb = DataStylesBuilder.create(Locale.US);
         dsb.floatStyleBuilder().decimalPlaces(0);
@@ -116,7 +115,7 @@ public class DataStyleExampleIT {
         writer.saveAs(dest);
     }
 
-    private void createTable(final OdsDocument document) throws IOException, FastOdsException {
+    private void createTable(final OdsDocument document) throws IOException {
         final GregorianCalendar cal = new GregorianCalendar(this.locale);
 
         // Define some styles

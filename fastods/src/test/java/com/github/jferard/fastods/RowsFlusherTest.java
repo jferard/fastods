@@ -51,8 +51,9 @@ public class RowsFlusherTest {
     public void flushIntoEmptyList() throws Exception {
         final List<TableRow> rows = Collections.emptyList();
 
+        PowerMock.resetAll();
         PowerMock.replayAll();
-        final RowsFlusher flusher = new RowsFlusher(rows);
+        final OdsFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }
@@ -63,11 +64,12 @@ public class RowsFlusherTest {
         final TableRow r2 = PowerMock.createMock(TableRow.class);
         final List<TableRow> rows = Arrays.asList(r1, r2);
 
+        PowerMock.resetAll();
         r1.appendXMLToTable(this.util, this.w);
         r2.appendXMLToTable(this.util, this.w);
 
         PowerMock.replayAll();
-        final RowsFlusher flusher = new RowsFlusher(rows);
+        final OdsFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }
@@ -77,8 +79,9 @@ public class RowsFlusherTest {
         final List<TableRow> rows = new ArrayList<TableRow>();
         rows.add(null);
 
+        PowerMock.resetAll();
         PowerMock.replayAll();
-        final RowsFlusher flusher = new RowsFlusher(rows);
+        final OdsFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }

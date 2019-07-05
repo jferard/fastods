@@ -24,10 +24,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

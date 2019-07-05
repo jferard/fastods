@@ -23,7 +23,6 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.NamedOdsDocument;
@@ -57,6 +56,7 @@ import org.odftoolkit.odfdom.dom.OdfStylesDom;
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
+import org.odftoolkit.simple.text.Paragraph;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
@@ -237,7 +237,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Row row = sheet.getRowByIndex(0);
         Cell cell = row.getCellByIndex(0);
         Assert.assertEquals("", OdfToolkitUtil.getStringValue(cell));
-        final Iterator<org.odftoolkit.simple.text.Paragraph> it = cell.getParagraphIterator();
+        final Iterator<Paragraph> it = cell.getParagraphIterator();
         Assert.assertEquals("This is a", it.next().getTextContent());
         Assert.assertEquals("multiline",
                 it.next().getOdfElement().getFirstElementChild().getTextContent());
@@ -262,7 +262,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Assert.assertEquals(" after link to table", nodes.item(2).getTextContent());
     }
 
-    private void createDocumentWithFooterAndHeader() throws FastOdsException, IOException {
+    private void createDocumentWithFooterAndHeader() throws IOException {
         this.createStyles();
 
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
@@ -273,7 +273,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         writer.saveAs(new File(GENERATED_FILES, FASTODS_FOOTER_HEADER_ODS));
     }
 
-    private void fillDocument(final OdsDocument document) throws IOException, FastOdsException {
+    private void fillDocument(final OdsDocument document) throws IOException {
         final Table table = document.addTable("test", 1, 5);
         table.setStyle(this.ttts);
         table.setColumnStyle(0, this.tcns);
@@ -348,7 +348,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).build();
     }
 
-    private void createDocumentWithFooterAndHeaderWithFlush() throws IOException, FastOdsException {
+    private void createDocumentWithFooterAndHeaderWithFlush() throws IOException {
         this.createStyles();
         final NamedOdsFileWriter writer = this.odsFactory
                 .createWriter(new File(GENERATED_FILES, FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS));

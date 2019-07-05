@@ -23,13 +23,9 @@
 
 package com.github.jferard.fastods;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-
-import java.util.Date;
 
 public class CurrencyValueTest {
     @Test

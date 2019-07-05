@@ -112,24 +112,21 @@ public class ZipUTF8WriterMock implements Appendable {
 
     /**
      * finish the zip mock
-     * @throws IOException if an I/O error occurs
      */
-    public void finish() throws IOException {
+    public void finish() {
         this.curBuilder = null;
     }
 
     /**
      * flush data
-     * @throws IOException if an I/O error occurs
      */
-    public void flush() throws IOException {
+    public void flush() {
     }
 
     /**
      * @param arg0 the entry to put
-     * @throws IOException if an I/O exception occurs
      */
-    public void putNextEntry(final ZipEntry arg0) throws IOException {
+    public void putNextEntry(final ZipEntry arg0) {
         this.curBuilder = new StringBuilder();
         this.builderByEntryName.put(arg0.getName(), this.curBuilder);
     }

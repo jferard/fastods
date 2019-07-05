@@ -87,10 +87,10 @@ public class OdsFactory {
      * @param writeUtil    an util
      * @param xmlUtil      an util
      * @param format       the data styles
-     * @param libreOfficeMode
+     * @param libreOfficeMode try to get full compatibility with LO if true
      */
     OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
-               final XMLUtil xmlUtil, final DataStyles format, boolean libreOfficeMode) {
+               final XMLUtil xmlUtil, final DataStyles format, final boolean libreOfficeMode) {
         this.logger = logger;
         this.positionUtil = positionUtil;
         this.writeUtil = writeUtil;

@@ -141,5 +141,10 @@ public interface OdsDocument {
     @Deprecated
     void addAutoFilter(Table table, int r1, int c1, int r2, int c2);
 
+    /**
+     * @param table the table
+     * @param rowCount the number of rows to freeze
+     * @param colCount the number of cols to freeze
+     */
     void freezeCells(Table table, int rowCount, int colCount);
 }

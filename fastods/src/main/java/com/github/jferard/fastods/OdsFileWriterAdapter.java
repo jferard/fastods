@@ -70,7 +70,7 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
     }
 
     @Override
@@ -79,11 +79,11 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     }
 
     @Override
-    public synchronized void save() throws IOException {
+    public synchronized void save() {
     }
 
     @Override
-    public synchronized void update(final OdsFlusher flusher) throws IOException {
+    public synchronized void update(final OdsFlusher flusher) {
         this.flushers.add(flusher);
         this.notifyAll();
     }

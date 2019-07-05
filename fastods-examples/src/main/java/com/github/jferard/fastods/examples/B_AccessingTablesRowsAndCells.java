@@ -24,8 +24,6 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
@@ -43,7 +41,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 class B_AccessingTablesRowsAndCells {
-    public static void example() throws IOException, FastOdsException {
+    public static void example() throws IOException {
         //
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Accessing Tables, Rows and Cells

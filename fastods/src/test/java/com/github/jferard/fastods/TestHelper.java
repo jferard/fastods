@@ -41,18 +41,21 @@ public class TestHelper {
         return sb.toString();
     }
 
-    public static void assertXMLEquals(final String xml, final XMLConvertible o) throws IOException {
+    public static void assertXMLEquals(final String xml, final XMLConvertible o)
+            throws IOException {
         DomTester.assertEquals(xml, TestHelper.toXML(o));
     }
 
-    public static void assertXMLUnsortedEquals(final String xml, final XMLConvertible o) throws IOException {
+    public static void assertXMLUnsortedEquals(final String xml, final XMLConvertible o)
+            throws IOException {
         DomTester.assertUnsortedEquals(xml, TestHelper.toXML(o));
     }
 
     public static Handler getMockHandler(final Logger logger) {
         final Handler handler = PowerMock.createMock(Handler.class);
-        for (final Handler h : logger.getHandlers())
+        for (final Handler h : logger.getHandlers()) {
             logger.removeHandler(h);
+        }
         logger.setUseParentHandlers(false);
         logger.addHandler(handler);
         logger.setLevel(Level.ALL);

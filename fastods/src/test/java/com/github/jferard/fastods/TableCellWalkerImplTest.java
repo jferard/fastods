@@ -44,7 +44,7 @@ import java.util.Locale;
 import static org.easymock.EasyMock.expect;
 
 public class TableCellWalkerImplTest {
-    public static final long TIME_IN_MILLIS = 1234567891011L;
+    private static final long TIME_IN_MILLIS = 1234567891011L;
     private TableCellWalkerImpl cellWalker;
     private TableRow row;
     private XMLUtil util;
@@ -63,7 +63,7 @@ public class TableCellWalkerImplTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public final void testAppendXML() throws IOException {
+    public final void testAppendXML() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
@@ -420,7 +420,6 @@ public class TableCellWalkerImplTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public final void testObject() {
         final CellValue value = this.converter.from(null);
 

@@ -35,12 +35,6 @@ import java.util.Locale;
  * @author Julien Férard
  */
 public class SimpleLength implements Length {
-
-    /**
-     * For double comparison. d1 == d2 iff abs(d1-d2) < MAX_DELTA.
-     */
-    public static final double MAX_DELTA = 0.001;
-
     /**
      * Create an simple lenght in millimeters
      *
@@ -124,15 +118,17 @@ public class SimpleLength implements Length {
      */
     @Override
     public boolean equals(final Object o) {
-        if (!(o instanceof SimpleLength))
+        if (!(o instanceof SimpleLength)) {
             return false;
+        }
 
         final SimpleLength other = (SimpleLength) o;
         if (this.unit == other.unit) {
             final double delta = this.value - other.value;
             return (delta >= 0.0) ? (delta < MAX_DELTA) : (delta > -MAX_DELTA);
-        } else
+        } else {
             return false;
+        }
 
     }
 
@@ -146,12 +142,13 @@ public class SimpleLength implements Length {
      */
     @Override
     public String toString() {
-        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value) + this.unit.toString().toLowerCase(Locale.US);
+        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value) +
+                this.unit.toString().toLowerCase(Locale.US);
     }
 
     @Override
-    public boolean isNull() {
-        return -MAX_DELTA < this.value && this.value < MAX_DELTA;
+    public boolean isNotNull() {
+        return this.value <= -MAX_DELTA || this.value >= MAX_DELTA;
     }
 
     /**

@@ -23,13 +23,9 @@
 
 package com.github.jferard.fastods;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-
-import static org.junit.Assert.*;
 
 public class PercentageValueTest {
     @Test
@@ -54,6 +50,6 @@ public class PercentageValueTest {
 
     @Test(expected = FastOdsException.class)
     public void testFromObject() throws FastOdsException {
-        final PercentageValue cv1 = PercentageValue.from(new Object());
+        PercentageValue.from(new Object());
     }
 }

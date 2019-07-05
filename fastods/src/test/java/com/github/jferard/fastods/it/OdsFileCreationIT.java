@@ -23,7 +23,6 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
@@ -253,7 +252,7 @@ public class OdsFileCreationIT {
         }
     }
 
-    private File standardDocument(final int n) throws IOException, FastOdsException {
+    private File standardDocument(final int n) throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final OdsDocument document = writer.document();
         this.createStyles();
@@ -286,7 +285,7 @@ public class OdsFileCreationIT {
     }
 
     private void fillDocument(final OdsDocument document, final int n)
-            throws IOException, FastOdsException {
+            throws IOException {
         document.setViewSetting("View1", "ZoomValue", "207");
 
         for (int i = 0; i < n; i++) {
@@ -352,7 +351,7 @@ public class OdsFileCreationIT {
         }
     }
 
-    private File standardDocumentWithFlush(final int n) throws FastOdsException, IOException {
+    private File standardDocumentWithFlush(final int n) throws IOException {
         final File output = new File("generated_files", this.standadDocumentName(true, n));
         final NamedOdsFileWriter writer = this.odsFactory.createWriter(output);
         final NamedOdsDocument document = writer.document();

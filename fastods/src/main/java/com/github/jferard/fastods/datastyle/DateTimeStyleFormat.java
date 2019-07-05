@@ -120,6 +120,8 @@ public class DateTimeStyleFormat implements XMLConvertible {
     public static final String SPACE = "<number:text> </number:text>";
     /**
      * A free text
+     * @param s
+     * @return
      */
     public static String text(final String s) {
         return "<number:text>"+s+"</number:text>";
@@ -171,6 +173,7 @@ public class DateTimeStyleFormat implements XMLConvertible {
      * 16.27.21<number:seconds>
      * Seconds (long)
      * @param n number of digits
+     * @return
      */
     public static String longSeconds(final int n) {
         return "<number:seconds number:style=\"long\" number:decimal-places=\"" + n + "\"/>";

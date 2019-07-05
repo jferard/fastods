@@ -42,7 +42,7 @@ import java.util.logging.Logger;
  */
 public class FileOpenResultTest {
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
     private OdsFactory odsFactory;
 
     @Before

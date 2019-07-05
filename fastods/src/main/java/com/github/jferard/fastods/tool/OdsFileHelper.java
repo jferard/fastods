@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -65,11 +64,10 @@ public class OdsFileHelper {
 	 *            The column, 0 is the first column
 	 * @param rowMerge the number of rows to merge
 	 * @param columnMerge the number of columns to merge
-	 * @throws FastOdsException if the rowIndex or the colIndex is negative
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellMergeInAllTables(final int rowIndex, final int colIndex,
-			final int rowMerge, final int columnMerge) throws FastOdsException, IOException {
+			final int rowMerge, final int columnMerge) throws IOException {
 		for (final Table table : this.odsDocument.getTables()) {
 			this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge,
 					columnMerge);
@@ -83,11 +81,11 @@ public class OdsFileHelper {
 	 *            The cell position e.g. 'A1'
 	 * @param rowMerge the number of rows to merge
 	 * @param columnMerge the number of columns to merge
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
+     * @throws ParseException
 	 */
 	public void setCellMergeInAllTables(final String address, final int rowMerge,
-			final int columnMerge) throws FastOdsException, IOException, ParseException {
+			final int columnMerge) throws IOException, ParseException {
 		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();
@@ -106,12 +104,11 @@ public class OdsFileHelper {
 	 * @param ts
 	 *            The table style for this cell, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
 	 */
 	public void setCellValueInAllTables(final int rowIndex, final int colIndex,
 			final CellValue value, final TableCellStyle ts)
-			throws FastOdsException, IOException {
+			throws IOException {
 
 		for (final Table table : this.odsDocument.getTables()) {
 			this.tableHelper.setCellValue(table, rowIndex, colIndex, value, ts);
@@ -129,11 +126,11 @@ public class OdsFileHelper {
 	 * @param ts
 	 *            The table style for this cells, must be of type
 	 *            TableCellStyle.STYLEFAMILY_TABLECELL
-	 * @throws FastOdsException if the row index or the col index is negative
 	 * @throws IOException if the cells can't be merged
+     * @throws ParseException
 	 */
 	public void setCellValueInAllTables(final String address, final CellValue value,
-			final TableCellStyle ts) throws FastOdsException, IOException, ParseException {
+			final TableCellStyle ts) throws IOException, ParseException {
 		final Position position = this.positionUtil.newPosition(address);
 		final int row = position.getRow();
 		final int col = position.getColumn();

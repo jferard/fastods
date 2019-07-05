@@ -50,32 +50,41 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 /**
- * The OdsElements class is simply a facade in front of various OdsElement classes (ContentElement, StylesElement, ...).
+ * The OdsElements class is simply a facade in front of various OdsElement classes
+ * (ContentElement, StylesElement, ...).
  * See GOF Facade pattern.
  *
  * @author Julien Férard
  */
 public class OdsElements {
-    private static final String[] EMPTY_ELEMENT_NAMES = {"Thumbnails/", "Configurations2/accelerator/current.xml",
-            "Configurations2/floater/", "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
-            "Configurations2/popupmenu/", "Configurations2/progressbar/", "Configurations2/statusbar/",
-            "Configurations2/toolbar/"};
-
-    // LO only
-    public static final String SC_SPLIT_NORMAL = "0";
-    public static final String SC_SPLIT_FIX = "2";
 
     /**
-     * @param positionUtil an util for cell addresses (e.g. "A1")
-     * @param xmlUtil      an XML util
-     * @param writeUtil    an util for write
-     * @param format       the data styles
-     * @param libreOfficeMode
+     * LO only: do not freeze cells
+     */
+    public static final String SC_SPLIT_NORMAL = "0";
+
+    /**
+     * LO only: freeze cells
+     */
+    public static final String SC_SPLIT_FIX = "2";
+
+    private static final String[] EMPTY_ELEMENT_NAMES = {"Thumbnails/",
+            "Configurations2/accelerator/current.xml", "Configurations2/floater/",
+            "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+            "Configurations2/popupmenu/", "Configurations2/progressbar/",
+            "Configurations2/statusbar/", "Configurations2/toolbar/"};
+
+    /**
+     * @param positionUtil    an util for cell addresses (e.g. "A1")
+     * @param xmlUtil         an XML util
+     * @param writeUtil       an util for write
+     * @param format          the data styles
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @return a new OdsElements, with newly build elements.
      */
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-                                     final WriteUtil writeUtil,
-                                     final DataStyles format, final boolean libreOfficeMode) {
+                                     final WriteUtil writeUtil, final DataStyles format,
+                                     final boolean libreOfficeMode) {
         final Logger logger = Logger.getLogger(OdsElements.class.getName());
         final MimetypeElement mimetypeElement = new MimetypeElement();
         final ManifestElement manifestElement = new ManifestElement();
@@ -83,10 +92,10 @@ public class OdsElements {
         final MetaElement metaElement = new MetaElement();
         final StylesContainer stylesContainer = new StylesContainer(logger);
         final StylesElement stylesElement = new StylesElement(stylesContainer);
-        final ContentElement contentElement = new ContentElement(positionUtil, xmlUtil, writeUtil, format,
-                libreOfficeMode, stylesContainer);
-        return new OdsElements(logger, stylesContainer, mimetypeElement,
-                manifestElement, settingsElement, metaElement, contentElement, stylesElement);
+        final ContentElement contentElement = new ContentElement(positionUtil, xmlUtil, writeUtil,
+                format, libreOfficeMode, stylesContainer);
+        return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
+                settingsElement, metaElement, contentElement, stylesElement);
     }
 
     private final ContentElement contentElement;
@@ -111,9 +120,10 @@ public class OdsElements {
      * @param contentElement  the content.xml element
      * @param stylesElement   the styles.xml element
      */
-    OdsElements(final Logger logger, final StylesContainer stylesContainer, final MimetypeElement mimetypeElement,
-                final ManifestElement manifestElement, final SettingsElement settingsElement,
-                final MetaElement metaElement, final ContentElement contentElement, final StylesElement stylesElement) {
+    OdsElements(final Logger logger, final StylesContainer stylesContainer,
+                final MimetypeElement mimetypeElement, final ManifestElement manifestElement,
+                final SettingsElement settingsElement, final MetaElement metaElement,
+                final ContentElement contentElement, final StylesElement stylesElement) {
         this.logger = logger;
         this.mimetypeElement = mimetypeElement;
         this.manifestElement = manifestElement;
@@ -237,7 +247,7 @@ public class OdsElements {
     /**
      * Freeze cells. See https://help.libreoffice.org/Calc/Freezing_Rows_or_Columns_as_Headers
      *
-     * @param table the table to freeze
+     * @param table    the table to freeze
      * @param rowCount the number of rows to freeze (e.g. 1 -> freeze the first row)
      * @param colCount the number of cols to freeze.
      */
@@ -278,8 +288,9 @@ public class OdsElements {
      * @param writer  the stream to write
      * @throws IOException when write fails
      */
-    public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.contentElement.flushTables(xmlUtil, writer);
+    public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+            throws IOException {
+        this.contentElement.flushTables(xmlUtil, writer, this.settingsElement);
         this.contentElement.writePostamble(xmlUtil, writer);
     }
 
@@ -302,7 +313,7 @@ public class OdsElements {
      * @throws IOException when write fails
      */
     public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        this.contentElement.flushTables(util, writer);
+        this.contentElement.flushTables(util, writer, this.settingsElement);
     }
 
     /**
@@ -362,7 +373,9 @@ public class OdsElements {
      */
     public void save() throws IOException {
         final Table previousTable = this.contentElement.getLastTable();
-        if (previousTable != null) previousTable.flush();
+        if (previousTable != null) {
+            previousTable.flush();
+        }
 
         this.observer.update(new FinalizeFlusher(this.contentElement, this.settingsElement));
     }
@@ -406,7 +419,8 @@ public class OdsElements {
      * @param writer  the writer
      * @throws IOException if write fails
      */
-    public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+    public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+            throws IOException {
         this.logger.log(Level.FINER, "Writing odselement: mimeTypeEntry to zip file");
         this.mimetypeElement.write(xmlUtil, writer);
         this.logger.log(Level.FINER, "Writing odselement: manifestElement to zip file");
@@ -432,7 +446,8 @@ public class OdsElements {
      * @param writer  the writer
      * @throws IOException if write fails
      */
-    public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
+    public void writeSettings(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+            throws IOException {
         this.settingsElement.setTables(this.getTables());
         this.logger.log(Level.FINER, "Writing odselement: settingsElement to zip file");
         this.settingsElement.write(xmlUtil, writer);
@@ -459,7 +474,8 @@ public class OdsElements {
      * @param r2    to row
      * @param c2    to col
      */
-    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
+    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
+                              final int c2) {
         table.addAutoFilter(r1, c1, r2, c2);
     }
 }

@@ -66,10 +66,11 @@ public class FloatValueTest {
         final CellValue fv1 = FloatValue.from(10.0);
         final CellValue fv2 = FloatValue.from(fv1);
         Assert.assertEquals(fv1, fv2);
+        Assert.assertEquals(fv2, fv1);
     }
 
     @Test(expected = FastOdsException.class)
     public void testFromObject() throws FastOdsException {
-        final CellValue fv1 = FloatValue.from(new Object());
+        FloatValue.from(new Object());
     }
 }

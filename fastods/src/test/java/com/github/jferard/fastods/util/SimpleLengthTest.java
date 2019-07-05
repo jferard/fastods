@@ -50,9 +50,9 @@ public class SimpleLengthTest {
 
     @Test
     public void testIsNull() {
-        Assert.assertTrue(SimpleLength.em(0.0).isNull());
-        Assert.assertFalse(SimpleLength.em(1.0).isNull());
-        Assert.assertFalse(SimpleLength.em(-1.0).isNull());
+        Assert.assertFalse(SimpleLength.em(0.0).isNotNull());
+        Assert.assertTrue(SimpleLength.em(1.0).isNotNull());
+        Assert.assertTrue(SimpleLength.em(-1.0).isNotNull());
     }
 
     @Test

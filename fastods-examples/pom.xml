@@ -32,7 +32,6 @@
         <version>0.6.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.github.jferard</groupId>
     <artifactId>fastods-examples</artifactId>
     <version>0.6.2-SNAPSHOT</version>
 

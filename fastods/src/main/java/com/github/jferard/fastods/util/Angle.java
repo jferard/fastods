@@ -26,6 +26,7 @@ package com.github.jferard.fastods.util;
 /**
  * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1
  * .2-os-part1.html#__RefHeading__1420142_253892949
+ * @author
  */
 public class Angle {
     public static final Angle NO_ROTATING = Angle.deg(0);

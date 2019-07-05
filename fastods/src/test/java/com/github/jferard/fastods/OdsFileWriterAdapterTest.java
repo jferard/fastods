@@ -54,7 +54,7 @@ public class OdsFileWriterAdapterTest {
     }
 
     @Test
-    public void testClose() throws Exception {
+    public void testClose() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.wa.close();
@@ -84,7 +84,7 @@ public class OdsFileWriterAdapterTest {
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void testSave() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.wa.save();
@@ -93,7 +93,7 @@ public class OdsFileWriterAdapterTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdate() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
@@ -179,7 +179,7 @@ public class OdsFileWriterAdapterTest {
                     wal.flushAdaptee();
                     PowerMock.verifyAll();
                 } catch (final IOException e) {
-                    e.printStackTrace();
+                    Assert.fail();
                 }
             }
         };
@@ -207,6 +207,7 @@ public class OdsFileWriterAdapterTest {
                     wal.flushAdaptee();
                     PowerMock.verifyAll();
                 } catch (final IOException e) {
+                    Assert.fail();
                 } catch (final RuntimeException e) {
                     return;
                 }

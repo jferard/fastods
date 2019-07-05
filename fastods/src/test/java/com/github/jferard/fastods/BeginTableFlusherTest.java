@@ -31,13 +31,11 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
-
 public class BeginTableFlusherTest {
     @Test
     public void test() throws IOException {
         final TableAppender appender = PowerMock.createMock(TableAppender.class);
-        final BeginTableFlusher btf = new BeginTableFlusher(appender);
+        final OdsFlusher btf = new BeginTableFlusher(appender);
         final XMLUtil xmlUtil = XMLUtil.create();
         final ZipUTF8Writer writer = PowerMock.createMock(ZipUTF8Writer.class);
 

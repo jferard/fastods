@@ -62,7 +62,7 @@ public class TableHelperTest {
     }
 
     @Test
-    public final void testSetCellMerge() throws FastOdsException, IOException, ParseException {
+    public final void testSetCellMerge() throws IOException, ParseException {
         PowerMock.resetAll();
         EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
         EasyMock.expect(this.row.getWalker()).andReturn(this.walker);
@@ -78,7 +78,7 @@ public class TableHelperTest {
 
     @Test
     public final void testSetCellValueByAddress()
-            throws FastOdsException, IOException, ParseException {
+            throws IOException, ParseException {
         final CellValue value = new StringValue("@");
 
         PowerMock.resetAll();
@@ -95,7 +95,7 @@ public class TableHelperTest {
 
     @Test
     public final void testSetCellValueWithStyleByAddress()
-            throws FastOdsException, IOException, ParseException {
+            throws IOException, ParseException {
         final CellValue value = new StringValue("@");
         final TableCellStyle ts = TableCellStyle.builder("b").build();
 
@@ -113,7 +113,7 @@ public class TableHelperTest {
     }
 
     @Test
-    public final void testSetCellValue() throws FastOdsException, IOException {
+    public final void testSetCellValue() throws IOException {
         final CellValue value = new StringValue("@");
 
         PowerMock.resetAll();
@@ -130,7 +130,7 @@ public class TableHelperTest {
 
     @Test
     public final void testSetCellValueWithStyle()
-            throws FastOdsException, IOException {
+            throws IOException {
         final CellValue value = new StringValue("@");
         final TableCellStyle ts = TableCellStyle.builder("b").build();
 
@@ -149,7 +149,7 @@ public class TableHelperTest {
 
 	@Test
 	public final void getCell()
-			throws FastOdsException, IOException, ParseException {
+			throws IOException, ParseException {
 		PowerMock.resetAll();
 		EasyMock.expect(this.table.getRow(1)).andReturn(this.row);
 		EasyMock.expect(this.row.getWalker()).andReturn(this.walker);

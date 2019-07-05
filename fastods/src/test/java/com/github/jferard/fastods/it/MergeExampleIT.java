@@ -24,27 +24,19 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.NamedOdsDocument;
-import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRow;
-import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odftoolkit.odfdom.dom.element.table.TableCoveredTableCellElement;
-import org.odftoolkit.odfdom.dom.element.table.TableTableCellElementBase;
-import org.odftoolkit.odfdom.dom.style.OdfStyleFamily;
-import org.odftoolkit.odfdom.incubator.doc.style.OdfStyle;
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
-import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.IOException;

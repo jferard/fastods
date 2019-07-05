@@ -35,21 +35,21 @@ public class StringValueTest {
     }
 
     @Test
-    public void testFromStringValue() throws FastOdsException {
+    public void testFromStringValue() {
         final CellValue sv1 = StringValue.from("ok");
         final CellValue sv2 = StringValue.from(sv1);
         Assert.assertEquals(sv1, sv2);
     }
 
     @Test
-    public void testFromTextValue() throws FastOdsException {
+    public void testFromTextValue() {
         final CellValue tv1 = new TextValue(Text.content("ok"));
         final CellValue sv2 = StringValue.from(tv1);
         Assert.assertEquals(tv1, sv2);
     }
 
     @Test
-    public void testFromObject() throws FastOdsException {
+    public void testFromObject() {
         final Object o = new Object();
         final CellValue sv1 = StringValue.from(o);
         Assert.assertEquals(new StringValue(o.toString()), sv1);
@@ -58,10 +58,13 @@ public class StringValueTest {
     @Test
     public void testEquals() {
         final StringValue v = new StringValue("ok");
-        Assert.assertTrue(v.equals(v));
-        Assert.assertFalse(v.equals(1));
-        Assert.assertTrue(v.equals(new StringValue("ok")));
-        Assert.assertFalse(v.equals(new StringValue("ko")));
+        Assert.assertEquals(v, v);
+        Assert.assertNotEquals(1, v);
+        Assert.assertNotEquals(v, 1);
+        Assert.assertEquals(v, new StringValue("ok"));
+        Assert.assertEquals(new StringValue("ok"), v);
+        Assert.assertNotEquals(v, new StringValue("ko"));
+        Assert.assertNotEquals(new StringValue("ko"), v);
     }
 
     @Test
@@ -71,7 +74,7 @@ public class StringValueTest {
         cell.setStringValue("ok");
 
         PowerMock.replayAll();
-        final StringValue v = new StringValue("ok");
+        final CellValue v = new StringValue("ok");
         v.setToCell(cell);
 
         PowerMock.verifyAll();

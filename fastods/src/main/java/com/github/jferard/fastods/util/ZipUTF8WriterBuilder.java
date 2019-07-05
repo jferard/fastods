@@ -25,7 +25,6 @@ package com.github.jferard.fastods.util;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;

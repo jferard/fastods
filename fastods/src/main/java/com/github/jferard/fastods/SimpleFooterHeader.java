@@ -24,7 +24,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -48,7 +47,6 @@ class SimpleFooterHeader implements PageSectionContent {
      * The NamedOdsDocument where this object belong to.
      */
     private final Text centerRegion;
-    private Mode mode;
 
     /**
      * Create a new footer object.
@@ -56,15 +54,16 @@ class SimpleFooterHeader implements PageSectionContent {
      * @param centerRegion the content of the center centerRegion
      */
     SimpleFooterHeader(final Text centerRegion) {
-        super();
         this.centerRegion = centerRegion;
-        this.mode = Mode.CREATE;
     }
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        if (this.centerRegion != null && !this.centerRegion.isEmpty())
-            this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
+        if (this.centerRegion == null || this.centerRegion.isEmpty()) {
+            return;
+        }
+
+        this.centerRegion.addEmbeddedStylesFromFooterHeader(stylesContainer);
     }
 
     /**
@@ -73,8 +72,12 @@ class SimpleFooterHeader implements PageSectionContent {
      * @throws IOException If an I/O error occurs
      */
     @Override
-    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.centerRegion != null && !this.centerRegion.isEmpty())
-            this.centerRegion.appendXMLContent(util, appendable);
+    public void appendXMLToMasterStyle(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        if (this.centerRegion == null || this.centerRegion.isEmpty()) {
+            return;
+        }
+
+        this.centerRegion.appendXMLContent(util, appendable);
     }
 }

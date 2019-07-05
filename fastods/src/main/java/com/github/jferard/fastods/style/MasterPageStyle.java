@@ -28,7 +28,6 @@ import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.StyleWithEmbeddedStyles;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

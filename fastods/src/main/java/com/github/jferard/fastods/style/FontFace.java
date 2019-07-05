@@ -49,7 +49,7 @@ public class FontFace implements XMLConvertible {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == this) return true;
         if (!(o instanceof FontFace))
             return false;

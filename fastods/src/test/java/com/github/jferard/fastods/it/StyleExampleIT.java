@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
@@ -44,7 +43,6 @@ import org.odftoolkit.simple.SpreadsheetDocument;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -89,7 +87,7 @@ public class StyleExampleIT {
         // TODO: Add more validation tests"
     }
 
-    private void style() throws IOException, FastOdsException {
+    private void style() throws IOException {
         // Pass the created "data styles" to the factory
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -100,7 +98,7 @@ public class StyleExampleIT {
         writer.saveAs(dest);
     }
 
-    private void createTable(final OdsDocument document) throws IOException, FastOdsException {
+    private void createTable(final OdsDocument document) throws IOException {
         final Table table = document.addTable("test_style");
 
         // Define some styles

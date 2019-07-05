@@ -106,7 +106,7 @@ public class OdsElementsTest {
 
         PowerMock.resetAll();
         this.contentElement.flushRows(this.util, w, this.settingsElement);
-        this.contentElement.flushTables(this.util, w);
+        this.contentElement.flushTables(this.util, w, settingsElement);
         EasyMock.expectLastCall().times(2);
         this.contentElement.writePostamble(this.util, w);
         EasyMock.expect(this.contentElement.getLastTable()).andReturn(t);

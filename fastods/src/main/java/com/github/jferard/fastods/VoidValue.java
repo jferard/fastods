@@ -27,7 +27,7 @@ package com.github.jferard.fastods;
  * The value in this cell will be void
  * @author Julien Férard
  */
-public class VoidValue implements CellValue {
+public final class VoidValue implements CellValue {
     public static final VoidValue INSTANCE = new VoidValue();
 
     public static VoidValue from(final Object o) throws FastOdsException {

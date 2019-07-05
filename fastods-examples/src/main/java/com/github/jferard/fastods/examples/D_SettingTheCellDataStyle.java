@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
@@ -46,7 +45,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 class D_SettingTheCellDataStyle {
-    static void example1() throws IOException, FastOdsException {
+    static void example1() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();

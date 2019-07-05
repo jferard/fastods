@@ -75,6 +75,7 @@ public class PositionUtil {
      * @param address The cell position in the range 'A1' to 'IV65536'
      * @return The row, e.g. A1 will return 0, B1 will return 1, E1 will return
      * 4
+     * @throws ParseException
      */
     public Position newPosition(final String address) throws ParseException {
         return new PositionParser(this.equalityUtil, this.tableNameUtil, address).parse();
@@ -90,6 +91,7 @@ public class PositionUtil {
     }
 
     /**
+     * @param table
      * @param row the row
      * @param col the col
      * @return the position

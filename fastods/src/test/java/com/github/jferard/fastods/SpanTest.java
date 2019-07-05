@@ -32,13 +32,13 @@ public class SpanTest {
     @Test
     public final void testFHTextWithStyle() throws IOException {
         final TextStyle ts = TextProperties.builder().buildStyle("test");
-        final Span fhtext = new Span("text", ts);
+        final XMLConvertible fhtext = new Span("text", ts);
         TestHelper.assertXMLEquals("<text:span text:style-name=\"test\">text</text:span>", fhtext);
     }
 
     @Test
     public final void testSimpleFHText() throws IOException {
-        final Span fhtext = new Span("text");
+        final XMLConvertible fhtext = new Span("text");
         TestHelper.assertXMLEquals("text", fhtext);
     }
 }

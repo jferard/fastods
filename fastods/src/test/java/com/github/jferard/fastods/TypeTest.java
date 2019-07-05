@@ -33,7 +33,7 @@ import org.junit.Test;
 public class TypeTest {
     @Test
     public void test() {
-        Assert.assertArrayEquals(new Type[] {Type.FOOTER, Type.HEADER}, Type.values());
+        Assert.assertArrayEquals(new Type[]{Type.FOOTER, Type.HEADER}, Type.values());
         Assert.assertEquals(Type.FOOTER, Type.valueOf("FOOTER"));
         Assert.assertEquals(Type.HEADER, Type.valueOf("HEADER"));
     }

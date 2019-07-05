@@ -84,7 +84,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test(expected = FastOdsException.class)
-    public void testGetTableByNameFail() throws IOException, FastOdsException {
+    public void testGetTableByNameFail() throws FastOdsException {
         PowerMock.resetAll();
         this.initStyles(this.odsElements);
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(null);
@@ -97,7 +97,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testGetTableByNameSuccess() throws IOException, FastOdsException {
+    public void testGetTableByNameSuccess() throws FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
@@ -113,7 +113,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testGetTableName() throws IOException, FastOdsException {
+    public void testGetTableName() throws FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
@@ -130,8 +130,8 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testGetTables() throws IOException, FastOdsException {
-        @SuppressWarnings("rawtypes") final List<Table> l = PowerMock.createMock(List.class);
+    public void testGetTables() {
+        final List<Table> l = PowerMock.createMock(List.class);
 
         PowerMock.resetAll();
         this.initStyles(this.odsElements);
@@ -146,21 +146,21 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testTableCount() throws IOException, FastOdsException {
+    public void testTableCount() {
         PowerMock.resetAll();
         this.initStyles(this.odsElements);
-        EasyMock.expect(this.odsElements.getTableCount()).andReturn(20);
+        EasyMock.expect(this.odsElements.getTableCount()).andReturn(2);
 
         PowerMock.replayAll();
         this.document = this.getDocument();
         final int actual = this.document.tableCount();
 
         PowerMock.verifyAll();
-        Assert.assertEquals(20, actual);
+        Assert.assertEquals(2, actual);
     }
 
     @Test(expected = FastOdsException.class)
-    public void testGetTableByIndexNeg() throws IOException, FastOdsException {
+    public void testGetTableByIndexNeg() throws FastOdsException {
         PowerMock.resetAll();
         this.initStyles(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
@@ -173,7 +173,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test(expected = FastOdsException.class)
-    public void testGetTableByIndex10() throws IOException, FastOdsException {
+    public void testGetTableByIndex10() throws FastOdsException {
         PowerMock.resetAll();
         this.initStyles(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
@@ -186,7 +186,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testGetTableByIndex0() throws IOException, FastOdsException {
+    public void testGetTableByIndex0() throws FastOdsException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
@@ -202,7 +202,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testGetOrAddTable() throws IOException, FastOdsException {
+    public void testGetOrAddTable() throws IOException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
@@ -220,7 +220,7 @@ public class AnonymousOdsDocumentTest {
     }
 
     @Test
-    public void testGetOrAddTable2() throws IOException, FastOdsException {
+    public void testGetOrAddTable2() throws IOException {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();

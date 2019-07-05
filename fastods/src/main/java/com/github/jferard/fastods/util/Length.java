@@ -30,12 +30,17 @@ package com.github.jferard.fastods.util;
  */
 public interface Length {
     /**
+     * For double comparison. d1 == d2 iff abs(d1-d2) < MAX_DELTA.
+     */
+    double MAX_DELTA = 0.00001;
+
+    /**
      * A null length
      */
     Length NULL_LENGTH = new Length() {
         @Override
-        public boolean isNull() {
-            return true;
+        public boolean isNotNull() {
+            return false;
         }
 
         @Override
@@ -47,5 +52,5 @@ public interface Length {
     /**
      * @return true if this length is 0
      */
-    boolean isNull();
+    boolean isNotNull();
 }

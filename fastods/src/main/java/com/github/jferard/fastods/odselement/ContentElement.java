@@ -53,19 +53,20 @@ public class ContentElement implements OdsElement {
     private final UniqueList<Table> tables;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
-    private List<String> autoFilters;
     private final boolean libreOfficeMode;
+    private List<String> autoFilters;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
      * @param xmlUtil         an util object to write xml
      * @param writeUtil       an util to compute some data
      * @param format          the format for data styles
-     * @param libreOfficeMode
+     * @param libreOfficeMode try to get full compatibility with LO if true
      * @param stylesContainer a styles container.
      */
-    ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil, final WriteUtil writeUtil,
-                   final DataStyles format, final boolean libreOfficeMode, final StylesContainer stylesContainer) {
+    ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+                   final WriteUtil writeUtil, final DataStyles format,
+                   final boolean libreOfficeMode, final StylesContainer stylesContainer) {
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
         this.positionUtil = positionUtil;
@@ -97,22 +98,24 @@ public class ContentElement implements OdsElement {
 
     /**
      * @param name           the name of the table to create
-     * @param columnCapacity the initial capacity in columns: this will be allocated at table creation
+     * @param columnCapacity the initial capacity in columns: this will be allocated at table
+     *                       creation
      * @param rowCapacity    the initial capacity in rows: this will be allocated at table creation
      * @return the table (whether it existed before call or not). Never null
      */
     public Table addTable(final String name, final int rowCapacity, final int columnCapacity) {
         Table table = this.tables.getByName(name);
         if (table == null) {
-            table = Table
-                    .create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
-                            columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);
+            table = Table.create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name,
+                    rowCapacity, columnCapacity, this.stylesContainer, this.format,
+                    this.libreOfficeMode);
             this.tables.add(table);
         }
         return table;
     }
 
-    private void ensureContentBegin(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+    private void ensureContentBegin(final XMLUtil util, final ZipUTF8Writer writer)
+            throws IOException {
         if (this.flushPosition.isUndefined()) {
             this.writePreamble(util, writer);
             this.flushPosition.set(0, -1);
@@ -131,51 +134,74 @@ public class ContentElement implements OdsElement {
                           final SettingsElement settingsElement) throws IOException {
         this.ensureContentBegin(util, writer);
         final int lastTableIndex = this.tables.size() - 1;
-        if (lastTableIndex == -1) return;
-
-        int tableIndex = this.flushPosition.getTableIndex();
-        Table table = this.tables.get(tableIndex);
-        if (tableIndex < lastTableIndex) {
-            table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
-            settingsElement.addTableConfig(table.getConfigEntry());
-            tableIndex++;
-            while (tableIndex < lastTableIndex) {
-                table = this.tables.get(tableIndex);
-                table.appendXMLToContentEntry(util, writer);
-                settingsElement.addTableConfig(table.getConfigEntry());
-                tableIndex++;
-            }
-            table = this.tables.get(lastTableIndex);
-            table.flushAllAvailableRows(util, writer);
-        } else {
-            table.flushSomeAvailableRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
+        if (lastTableIndex == -1) { // no table yet
+            return;
         }
-        this.flushPosition.set(lastTableIndex, this.tables.get(lastTableIndex).getLastRowNumber());
+
+        final int curTableIndex = this.flushPosition.getTableIndex();
+
+        if (curTableIndex < lastTableIndex) {
+            this.flushPendingTablesAndLastTableAvailableRows(util, writer, settingsElement,
+                    lastTableIndex, curTableIndex);
+        } else {
+            final Table lastTable = this.tables.get(lastTableIndex);
+            final int firstRowIndex = this.flushPosition.getLastRowIndex() + 1;
+            lastTable.flushSomeAvailableRowsFrom(util, writer, firstRowIndex);
+        }
+
+        final Table lastTable = this.tables.get(lastTableIndex);
+        this.flushPosition.set(lastTableIndex, lastTable.getLastRowNumber());
+    }
+
+    private void flushPendingTablesAndLastTableAvailableRows(final XMLUtil util,
+                                                             final ZipUTF8Writer writer,
+                                                             final SettingsElement settingsElement,
+                                                             final int lastTableIndex,
+                                                             final int curTableIndex)
+            throws IOException {
+        final Table lastTable = this.tables.get(lastTableIndex);
+        this.flushRemainingRowsFromCurTable(util, writer, settingsElement, curTableIndex);
+        this.flushCompleteTables(util, writer, settingsElement, lastTableIndex, curTableIndex);
+        lastTable.flushAllAvailableRows(util, writer);
+    }
+
+    private void flushRemainingRowsFromCurTable(final XMLUtil util, final ZipUTF8Writer writer,
+                                               final SettingsElement settingsElement,
+                                               final int curTableIndex) throws IOException {
+        final int firstRowIndex = this.flushPosition.getLastRowIndex() + 1;
+        final Table curTable = this.tables.get(curTableIndex);
+        curTable.flushRemainingRowsFrom(util, writer, firstRowIndex);
+        settingsElement.addTableConfig(curTable.getConfigEntry());
+    }
+
+    private void flushCompleteTables(final XMLUtil util, final ZipUTF8Writer writer,
+                                     final SettingsElement settingsElement, final int from,
+                                     final int to) throws IOException {
+        for (int index = to + 1; index < from; index++) {
+            final Table table = this.tables.get(index);
+            table.appendXMLToContentEntry(util, writer);
+            settingsElement.addTableConfig(table.getConfigEntry());
+        }
     }
 
     /**
      * Flush the tables.
      *
-     * @param util   an XML util
-     * @param writer destination
+     * @param util            an XML util
+     * @param writer          destination
+     * @param settingsElement the settings.xml representation
      * @throws IOException if the tables were not flushed
      */
-    public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+    public void flushTables(final XMLUtil util, final ZipUTF8Writer writer,
+                            final SettingsElement settingsElement) throws IOException {
         this.ensureContentBegin(util, writer);
         final int lastTableIndex = this.tables.size() - 1;
-        if (lastTableIndex < 0)
+        if (lastTableIndex < 0) {
             return;
-
-        int tableIndex = this.flushPosition.getTableIndex();
-
-        Table table = this.tables.get(tableIndex);
-        table.flushRemainingRowsFrom(util, writer, this.flushPosition.getLastRowIndex() + 1);
-        tableIndex++;
-        while (tableIndex <= lastTableIndex) {
-            table = this.tables.get(tableIndex);
-            table.appendXMLToContentEntry(util, writer);
-            tableIndex++;
         }
+
+        final int curTableIndex = this.flushPosition.getTableIndex();
+        this.flushCompleteTables(util, writer, settingsElement, curTableIndex, lastTableIndex + 1);
     }
 
     /**
@@ -226,20 +252,24 @@ public class ContentElement implements OdsElement {
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         this.writePreamble(util, writer);
-        for (final Table table : this.tables)
+        for (final Table table : this.tables) {
             table.appendXMLToContentEntry(util, writer);
+        }
         this.writePostamble(util, writer);
     }
 
     /**
-     * Write the postamble into the given writer. Used by the FinalizeFlusher and by standard write method
+     * Write the postamble into the given writer. Used by the FinalizeFlusher and by standard
+     * write method
      *
      * @param util   an XML util
      * @param writer the destination
      * @throws IOException if the postamble could not be written
      */
     public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        if (this.autoFilters != null) this.appendAutoFilters(writer, util);
+        if (this.autoFilters != null) {
+            this.appendAutoFilters(writer, util);
+        }
         writer.write("</office:spreadsheet>");
         writer.write("</office:body>");
         writer.write("</office:document-content>");
@@ -248,7 +278,8 @@ public class ContentElement implements OdsElement {
     }
 
     /**
-     * Write the preamble into the given writer. Used by the MetaAndStylesElementsFlusher and by standard write method
+     * Write the preamble into the given writer. Used by the MetaAndStylesElementsFlusher and by
+     * standard write method
      *
      * @param util   an XML util
      * @param writer the destination
@@ -258,7 +289,35 @@ public class ContentElement implements OdsElement {
         writer.putNextEntry(new ZipEntry("content.xml"));
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         writer.write(
-                "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " + "xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" " + "xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " + "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " + "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " + "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" " + "xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " + "xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" " + "xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" " + "xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" " + "xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" " + "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " + "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www" + ".w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " + "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " + "xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice" + ".org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www" + ".w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" " + "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www" + ".w3.org/2001/XMLSchema-instance\" office:version=\"1.1\">");
+                "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
+                        ":office:1.0\" " +
+                        "xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" " +
+                        "xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
+                        "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
+                        "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
+                        "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" +
+                        " " +
+                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl" +
+                        ".org/dc/elements/1.1/\" " +
+                        "xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" " +
+                        "xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" " +
+                        "xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation" +
+                        ":1.0\" " +
+                        "xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" " +
+                        "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " +
+                        "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" " +
+                        "xmlns:math=\"http://www" +
+                        ".w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument" +
+                        ":xmlns:form:1.0\" " +
+                        "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
+                        "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
+                        "xmlns:ooow=\"http://openoffice" +
+                        ".org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" " +
+                        "xmlns:dom=\"http://www" +
+                        ".w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\"" +
+                        " " +
+                        "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www" +
+                        ".w3.org/2001/XMLSchema-instance\" office:version=\"1.2\">");
         writer.write("<office:scripts/>");
         this.stylesContainer.writeFontFaceDecls(util, writer);
         writer.write("<office:automatic-styles>");
@@ -269,7 +328,8 @@ public class ContentElement implements OdsElement {
         writer.write("<office:spreadsheet>");
     }
 
-    private void appendAutoFilters(final Appendable appendable, final XMLUtil util) throws IOException {
+    private void appendAutoFilters(final Appendable appendable, final XMLUtil util)
+            throws IOException {
         appendable.append("<table:database-ranges>");
         for (final String autoFilter : this.autoFilters) {
             appendable.append("<table:database-range");
@@ -289,8 +349,11 @@ public class ContentElement implements OdsElement {
      * @param r2    last row index
      * @param c2    last col index
      */
-    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2, final int c2) {
-        if (this.autoFilters == null) this.autoFilters = new ArrayList<String>();
+    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
+                              final int c2) {
+        if (this.autoFilters == null) {
+            this.autoFilters = new ArrayList<String>();
+        }
 
         this.autoFilters.add(this.positionUtil.toRangeAddress(table, r1, c1, r2, c2));
     }

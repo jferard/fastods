@@ -23,11 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.tool.FastOds;
-
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * The value of a cell
  *
