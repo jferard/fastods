@@ -27,7 +27,7 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
@@ -149,7 +149,7 @@ public class DataStyleExampleIT {
         // FIRST ROW
         TableRowImpl row = table.nextRow();
         row.setRowStyle(rowStyle);
-        TableCellWalker cell = row.getWalker();
+        RowCellWalker cell = row.getWalker();
         cell.setStringValue("An int with the new default format: ");
         cell.next();
         cell.setFloatValue(123456.789);

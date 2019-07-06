@@ -33,6 +33,7 @@ import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
@@ -95,12 +96,10 @@ class J_PeriodicTable {
         // ## The data
         //
         // We'll use h2 again (see Advanced part of the tutorial). The content of the resources
-        // files can be found at https://github
-        // .com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
-        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources
-        // /insert.sql.
-        // The results where parsed from the article https://en.wikipedia
-        // .org/wiki/List_of_chemical_elements.
+        // files can be found at https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
+        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/insert.sql.
+        //
+        // The results where parsed from the article https://en.wikipedia.org/wiki/List_of_chemical_elements.
         //
         // We open a connection and populate the database:
         final JdbcDataSource dataSource = new JdbcDataSource();
@@ -119,7 +118,8 @@ class J_PeriodicTable {
                 // we don't need the intervals:
 
                 ResultSet rs = s.executeQuery("SELECT * FROM chemical_element");
-                dataTable.addData(ResultSetDataWrapper.builder(rs).build());
+                final TableCellWalker walker = dataTable.getWalker();
+                walker.addData(ResultSetDataWrapper.builder(rs).build());
 
                 // ## The table
                 // Ok, that was the easy part, just to show once more how easy it is to write a

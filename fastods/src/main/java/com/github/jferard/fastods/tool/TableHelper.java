@@ -26,7 +26,7 @@ package com.github.jferard.fastods.tool;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Position;
@@ -164,10 +164,10 @@ public class TableHelper {
      * @return the cell walker
      * @throws IOException if the row was flushed
      */
-    public TableCellWalker getCell(final Table table, final int rowIndex, final int colIndex)
+    public RowCellWalker getCell(final Table table, final int rowIndex, final int colIndex)
             throws IOException {
         final TableRowImpl row = table.getRow(rowIndex);
-        final TableCellWalker walker = row.getWalker();
+        final RowCellWalker walker = row.getWalker();
         walker.to(colIndex);
         return walker;
     }
@@ -179,7 +179,7 @@ public class TableHelper {
      * @throws IOException    if the row was flushed
      * @throws ParseException if the address can't be parsed
      */
-    public TableCellWalker getCell(final Table table, final String address)
+    public RowCellWalker getCell(final Table table, final String address)
             throws IOException, ParseException {
         final Position position = this.positionUtil.newPosition(address);
         return this.getCell(table, position.getRow(), position.getColumn());

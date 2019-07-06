@@ -23,41 +23,359 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.util.Length;
+
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
- * A walker over cells
- *
  * @author Julien Férard
  */
-public interface TableCellWalker extends TableCell {
-    /**
-     * @return true if the walker has a next cell on the row
-     */
-    boolean hasNext();
+public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColumn {
+    private final Table table;
+    private TableRowImpl row;
+    private TableCell cell;
+    private int r;
+    private int c;
 
     /**
-     * @return true if the walker has a previous cell on the row
-     */
-    boolean hasPrevious();
-
-    /**
-     * Set the walker on the last cell of the row
-     */
-    void last();
-
-    /**
-     * Set the walker on the next cell of the row
-     */
-    void next();
-
-    /**
-     * Set the walker on the previous cell of the row
-     */
-    void previous();
-
-    /**
-     * Set the walker on the row
+     * Create a walker on the given row
      *
-     * @param i the index of the cell
+     * @param table the table
+     * @throws IOException if the row was already flushed
      */
-    void to(final int i);
+    TableCellWalker(final Table table) throws IOException {
+        this.table = table;
+        this.r = 0;
+        this.c = 0;
+        this.updateShortcuts(table);
+    }
+
+    private final void updateShortcuts(final Table table) throws IOException {
+        this.row = table.getRow(this.r);
+        this.cell = this.row.getOrCreateCell(this.c);
+    }
+
+    @Override
+    public void markRowsSpanned(final int n) {
+        this.cell.markRowsSpanned(n);
+    }
+
+    @Override
+    public void setBooleanValue(final boolean value) {
+        this.cell.setBooleanValue(value);
+    }
+
+    @Override
+    public void setText(final Text text) {
+        this.cell.setText(text);
+    }
+
+    @Override
+    public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
+        if (rowMerge < 0 || columnMerge < 0) {
+            throw new IllegalArgumentException("row merge and col merge must be >= 0");
+        } else if (rowMerge <= 1 && columnMerge <= 1) {
+            return;
+        }
+        this.table.setCellMerge(this.r, this.c, rowMerge, columnMerge);
+    }
+
+    @Override
+    public void setColumnsSpanned(final int n) {
+        this.row.setColumnsSpanned(this.c, n);
+    }
+
+    @Override
+    public void markColumnsSpanned(final int n) {
+        this.cell.markRowsSpanned(n);
+    }
+
+    @Override
+    public void setDateValue(final Date value) {
+        this.cell.setDateValue(value);
+    }
+
+    @Override
+    public void setFloatValue(final Number value) {
+        this.cell.setFloatValue(value);
+    }
+
+    @Override
+    public void setPercentageValue(final Number value) {
+        this.cell.setPercentageValue(value);
+    }
+
+    @Override
+    public void setRowsSpanned(final int n) throws IOException {
+        this.row.setRowsSpanned(this.c, n);
+    }
+
+    @Override
+    public void setVoidValue() {
+        this.cell.setVoidValue();
+    }
+
+    @Override
+    public void setStringValue(final String value) {
+        this.cell.setStringValue(value);
+    }
+
+    @Override
+    public void setTimeValue(final long timeInMillis) {
+        this.cell.setTimeValue(timeInMillis);
+    }
+
+    @Override
+    public void setTimeValue(final long years, final long months, final long days, final long hours,
+                             final long minutes, final double seconds) {
+        this.cell.setTimeValue(years, months, days, hours, minutes, seconds);
+    }
+
+    @Override
+    public void setNegTimeValue(final long years, final long months, final long days,
+                                final long hours, final long minutes, final double seconds) {
+        this.cell.setNegTimeValue(years, months, days, hours, minutes, seconds);
+    }
+
+    @Override
+    public void setTooltip(final String tooltip) {
+        this.cell.setTooltip(tooltip);
+    }
+
+    @Override
+    public void setTooltip(final String tooltip, final Length width, final Length height,
+                           final boolean visible) {
+        this.cell.setTooltip(tooltip, width, height, visible);
+    }
+
+    @Override
+    public void setFormula(final String formula) {
+        this.cell.setFormula(formula);
+
+    }
+
+    @Override
+    public boolean hasValue() {
+        return this.cell.hasValue();
+    }
+
+    @Override
+    public boolean isCovered() {
+        return this.cell.isCovered();
+    }
+
+    @Override
+    public void setCovered() {
+        this.cell.setCovered();
+    }
+
+    @Override
+    public void setCellValue(final CellValue value) {
+        this.cell.setCellValue(value);
+    }
+
+    @Override
+    public void setCurrencyValue(final float value, final String currency) {
+        this.cell.setCurrencyValue(value, currency);
+    }
+
+    @Override
+    public void setCurrencyValue(final int value, final String currency) {
+        this.cell.setCurrencyValue(value, currency);
+    }
+
+    @Override
+    public void setCurrencyValue(final Number value, final String currency) {
+        this.cell.setCurrencyValue(value, currency);
+    }
+
+    @Override
+    public void setDateValue(final Calendar cal) {
+        this.cell.setDateValue(cal);
+    }
+
+    @Override
+    public void setFloatValue(final float value) {
+        this.cell.setFloatValue(value);
+    }
+
+    @Override
+    public void setFloatValue(final int value) {
+        this.cell.setFloatValue(value);
+    }
+
+    @Override
+    public void setPercentageValue(final float value) {
+        this.cell.setPercentageValue(value);
+    }
+
+    @Override
+    public void setPercentageValue(final int value) {
+        this.cell.setPercentageValue(value);
+    }
+
+    @Override
+    public void setStyle(final TableCellStyle style) {
+        this.cell.setStyle(style);
+    }
+
+    @Override
+    public void setDataStyle(final DataStyle dataStyle) {
+        this.cell.setDataStyle(dataStyle);
+    }
+
+    @Override
+    public void setColumnStyle(final TableColumnStyle columnStyle) {
+        this.table.setColumnStyle(this.c, columnStyle);
+    }
+
+    @Override
+    public void setFormat(final DataStyles format) {
+        this.row.setFormat(format);
+    }
+
+    @Override
+    public void setRowStyle(final TableRowStyle rowStyle) {
+        this.row.setRowStyle(rowStyle);
+    }
+
+    @Override
+    public int getColumnCount() {
+        return this.row.getColumnCount();
+    }
+
+    @Override
+    public void setDefaultCellStyle(final TableCellStyle ts) {
+        this.row.setDefaultCellStyle(ts);
+    }
+
+    @Override
+    public int rowIndex() {
+        return this.r;
+    }
+
+    @Override
+    public int colIndex() {
+        return this.c;
+    }
+
+    @Override
+    public void removeRowStyle() {
+        this.row.removeRowStyle();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return this.c < this.row.getColumnCount();
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        return this.c > 0 && this.c <= this.row.getColumnCount();
+    }
+
+    @Override
+    public void last() {
+        this.c = this.row.getColumnCount() - 1;
+        this.cell = this.row.getOrCreateCell(this.c);
+    }
+
+    @Override
+    public void next() {
+        if (this.c >= this.row.getColumnCount()) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.c++;
+        this.cell = this.row.getOrCreateCell(this.c);
+    }
+
+    @Override
+    public void previous() {
+        if (this.c <= 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.c--;
+        this.cell = this.row.getOrCreateCell(this.c);
+    }
+
+    @Override
+    public void to(final int c) {
+        if (c < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.c = c;
+        this.cell = this.row.getOrCreateCell(this.c);
+    }
+
+
+    @Override
+    public boolean hasNextRow() {
+        return this.r < this.table.getRowCount();
+    }
+
+    @Override
+    public boolean hasPreviousRow() {
+        return this.r > 0 && this.r <= this.table.getRowCount();
+    }
+
+    @Override
+    public void lastRow() throws IOException {
+        this.r = this.table.getRowCount() - 1;
+        this.c = 0;
+        this.updateShortcuts(this.table);
+    }
+
+    @Override
+    public void nextRow() throws IOException {
+        if (this.r >= this.table.getRowCount()) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.r++;
+        this.c = 0;
+        this.updateShortcuts(this.table);
+    }
+
+    @Override
+    public void previousRow() throws IOException {
+        if (this.r <= 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.r--;
+        this.c = 0;
+        this.updateShortcuts(this.table);
+    }
+
+    @Override
+    public void toRow(final int r) throws IOException {
+        if (r < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        this.r = r;
+        this.c = 0;
+        this.updateShortcuts(this.table);
+    }
+
+    /**
+     * @return the current table for auto-filter etc.
+     */
+    public Table getTable() {
+        return this.table;
+    }
+
+    /**
+     * Add a wrapped data
+     *
+     * @param data the wrapped data
+     * @throws IOException if an error occurs
+     */
+    public void addData(final DataWrapper data) throws IOException {
+        data.addToTable(this);
+    }
 }

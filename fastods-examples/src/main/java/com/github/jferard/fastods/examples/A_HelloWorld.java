@@ -73,7 +73,7 @@ class A_HelloWorld {
 
         // Note that we could have chained the calls:
         // `TableCell cell = document.addTable("hello-world").getRow(0).getOrCreateCell(0)`
-
+        //
         // Finally, we put the famous sentence in this cell A1
         cell.setStringValue("Hello, world!");
 

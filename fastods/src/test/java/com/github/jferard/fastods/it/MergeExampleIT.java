@@ -27,7 +27,7 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
@@ -119,7 +119,7 @@ public class MergeExampleIT {
 
         // 1st row
         final TableRowImpl row1 = table.nextRow();
-        final TableCellWalker cell1 = row1.getWalker();
+        final RowCellWalker cell1 = row1.getWalker();
         for (int c = 0; c < 5; c++) {
             cell1.setFloatValue(c + 1);
             cell1.next();
@@ -128,7 +128,7 @@ public class MergeExampleIT {
 
         // 2nd row
         final TableRowImpl row2 = table.nextRow();
-        final TableCellWalker cell2 = row2.getWalker();
+        final RowCellWalker cell2 = row2.getWalker();
         for (int c = 0; c < 5; c++) {
             cell2.setFloatValue(c + 6);
             cell2.next();
@@ -136,7 +136,7 @@ public class MergeExampleIT {
 
         // 3rd row
         final TableRowImpl row3 = table.nextRow();
-        final TableCellWalker cell3 = row3.getWalker();
+        final RowCellWalker cell3 = row3.getWalker();
         for (int c = 0; c < 5; c++) {
             cell3.setFloatValue(c + 11);
             cell3.next();
@@ -147,7 +147,7 @@ public class MergeExampleIT {
 
         // 4th row
         final TableRowImpl row4 = table.nextRow();
-        final TableCellWalker cell4 = row4.getWalker();
+        final RowCellWalker cell4 = row4.getWalker();
         cell4.setFloatValue(15);
         cell4.setRowsSpanned(10);
     }

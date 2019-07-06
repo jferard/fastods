@@ -114,19 +114,6 @@ public class TableTest {
     }
 
     @Test
-    public final void testDataWrapper() throws IOException {
-        final DataWrapper data = PowerMock.createMock(DataWrapper.class);
-
-        PowerMock.resetAll();
-        EasyMock.expect(data.addToTable(this.table)).andReturn(true);
-
-        PowerMock.replayAll();
-        this.table.addData(data);
-
-        PowerMock.verifyAll();
-    }
-
-    @Test
     public final void testGetRow() throws IOException {
         PowerMock.resetAll();
 

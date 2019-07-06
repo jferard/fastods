@@ -59,7 +59,7 @@ public class BenchFastFlush extends Bench {
 
         for (int y = 0; y < this.getRowCount(); y++) {
             final TableRowImpl row = table.nextRow();
-            final TableCellWalker walker = row.getWalker();
+            final RowCellWalker walker = row.getWalker();
             for (int x = 0; x < this.getColCount(); x++) {
                 walker.setFloatValue(this.getRandom().nextInt(1000));
                 walker.next();

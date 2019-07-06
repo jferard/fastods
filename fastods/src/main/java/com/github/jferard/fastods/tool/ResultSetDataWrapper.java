@@ -26,10 +26,8 @@ package com.github.jferard.fastods.tool;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
 
@@ -103,41 +101,38 @@ public final class ResultSetDataWrapper implements DataWrapper {
     }
 
     @Override
-    public boolean addToTable(final Table table) throws IOException {
+    public boolean addToTable(final TableCellWalker walker) throws IOException {
         int rowCount = 0; // at least
         try {
             final ResultSetMetaData metadata = this.resultSet.getMetaData();
             try {
-                TableRowImpl row = table.nextRow();
+                final int r1 = walker.rowIndex();
+                final int c1 = walker.colIndex();
+
                 final int columnCount = metadata.getColumnCount();
-                final int r1;
-                final int c1;
-                final int c2;
-                if (this.autoFilter) {
-                    r1 = row.rowIndex();
-                    c1 = 0;
-                    c2 = c1 + columnCount - 1;
-                } else {
-                    r1 = c1 = c2 = -1;
-                }
-                this.writeFirstLineDataTo(metadata, row);
+
+                this.writeFirstLineDataTo(walker, metadata);
                 if (this.resultSet.next()) {
                     do {
                         if (this.max == -1 || ++rowCount <= this.max) {
-                            row = table.nextRow();
-                            this.writeDataLineTo(row, columnCount);
+                            walker.nextRow();
+                            walker.to(c1);
+                            this.writeDataLineTo(walker, columnCount);
                         }
                     } while (this.resultSet.next());
                 }
-                final boolean oneMoreLine = this
-                        .writeMaybeLastLineDataTo(columnCount, table, rowCount);
-                if (this.autoFilter) {
-                    int r2 = row.rowIndex() - 1;
-                    if (oneMoreLine) {
-                        r2 += 1;
-                    }
-                    table.addAutoFilter(r1, c1, r2, c2);
+                final boolean oneBlankLine = rowCount == 0 || rowCount > this.max;
+                if (oneBlankLine) {
+                    walker.nextRow();
+                    walker.to(c1);
+                    this.writeLastLineDataTo(walker, columnCount, rowCount);
                 }
+                if (this.autoFilter) {
+                    final int r2 = walker.rowIndex();
+                    final int c2 = c1 + columnCount - 1;
+                    walker.getTable().addAutoFilter(r1, c1, r2, c2);
+                }
+                walker.nextRow();
             } catch (final SQLException e) {
                 if (this.logger != null) {
                     this.logger.log(Level.SEVERE, "Can't read ResultSet row", e);
@@ -160,11 +155,11 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * @return the name of the columns
      * @throws SQLException if a database access error occurs
      */
-    private List<String> getColumnNames(final ResultSetMetaData metadata) throws SQLException {
+    private List<String> getColumnLabels(final ResultSetMetaData metadata) throws SQLException {
         final int columnCount = metadata.getColumnCount();
         final List<String> names = new ArrayList<String>(columnCount);
         for (int i = 0; i < columnCount; i++) {
-            names.add(metadata.getColumnName(i + 1));
+            names.add(metadata.getColumnLabel(i + 1));
         }
 
         return names;
@@ -182,10 +177,24 @@ public final class ResultSetDataWrapper implements DataWrapper {
         return values;
     }
 
-    private void writeDataLineTo(final TableRowImpl row, final int columnCount)
+    private void writeFirstLineDataTo(final TableCellWalker walker,
+                                      final ResultSetMetaData metadata)
+            throws SQLException, IOException {
+        final int columnCount = metadata.getColumnCount();
+        final List<String> columnLabels = this.getColumnLabels(metadata);
+        for (int j = 0; j <= columnCount - 1; j++) {
+            final String label = columnLabels.get(j);
+            walker.setStringValue(label);
+            if (this.headCellStyle != null) {
+                walker.setStyle(this.headCellStyle);
+            }
+            walker.next();
+        }
+    }
+
+    private void writeDataLineTo(final TableCellWalker walker, final int columnCount)
             throws SQLException, FastOdsException {
         final List<Object> columnValues = this.getColumnValues(columnCount);
-        final TableCellWalker walker = row.getWalker();
         for (int j = 0; j <= columnCount - 1; j++) {
             final Object object = columnValues.get(j);
             if (object == null) {
@@ -202,42 +211,19 @@ public final class ResultSetDataWrapper implements DataWrapper {
         }
     }
 
-    private void writeFirstLineDataTo(final ResultSetMetaData metadata, final TableRowImpl row)
-            throws SQLException {
-        final int columnCount = metadata.getColumnCount();
-        final List<String> columnNames = this.getColumnNames(metadata);
-        final TableCellWalker walker = row.getWalker();
-        for (int j = 0; j <= columnCount - 1; j++) {
-            final String name = columnNames.get(j);
-            walker.setStringValue(name);
-            if (this.headCellStyle != null) {
-                walker.setStyle(this.headCellStyle);
-            }
-            walker.next();
-        }
-    }
-
-    private boolean writeMaybeLastLineDataTo(final int columnCount, final Table table,
-                                             final int rowCount) throws IOException {
-        final TableRowImpl row;
+    private void writeLastLineDataTo(final TableCellWalker walker, final int columnCount,
+                                     final int rowCount) throws IOException {
         if (rowCount == 0) { // no data row
-            row = table.nextRow();
-            final TableCellWalker walker = row.getWalker();
             for (int j = 0; j <= columnCount - 1; j++) {
                 walker.setStringValue("");
                 walker.next();
             }
-            return true;
         } else if (rowCount > this.max) {
-            row = table.nextRow();
-            final TableCellWalker walker = row.getWalker();
             for (int j = 0; j <= columnCount - 1; j++) {
                 walker.setStringValue(
                         String.format("... (%d rows remaining)", rowCount - this.max));
                 walker.next();
             }
-            return true;
         }
-        return false;
     }
 }

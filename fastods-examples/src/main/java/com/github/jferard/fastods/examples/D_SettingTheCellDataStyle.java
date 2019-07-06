@@ -28,7 +28,6 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
@@ -73,8 +72,7 @@ class D_SettingTheCellDataStyle {
 
         // We'll place a float with the standard format, and a float with a custom format side by
         // side
-        TableRowImpl row = table.nextRow();
-        TableCellWalker walker = row.getWalker();
+        final TableCellWalker walker = table.getWalker();
 
         // Standard format:
         walker.setFloatValue(123456.789);
@@ -87,8 +85,7 @@ class D_SettingTheCellDataStyle {
         walker.setDataStyle(floatDataStyle);
 
         // We can do the same with dates:
-        row = table.nextRow();
-        walker = row.getWalker();
+        walker.nextRow();
 
         // A date with the standard format:
         final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
@@ -105,8 +102,7 @@ class D_SettingTheCellDataStyle {
         walker.setDataStyle(dateDataStyle);
 
         // A last try with a time (duration):
-        row = table.nextRow();
-        walker = row.getWalker();
+        walker.nextRow();
         walker.setTimeValue(10000000);
 
         // And:
@@ -159,13 +155,12 @@ class D_SettingTheCellDataStyle {
 
         // And create the same cells as above:
         final Table table = document.addTable("data styles");
-        final TableRowImpl tableRow = table.nextRow();
-        final TableCellWalker cellWalker = tableRow.getWalker();
+        final TableCellWalker walker = table.getWalker();
 
-        cellWalker.setFloatValue(123456.789);
+        walker.setFloatValue(123456.789);
         final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
-        cellWalker.next();
-        cellWalker.setDateValue(cal);
+        walker.next();
+        walker.setDateValue(cal);
 
         // And save the file.
         writer.saveAs(new File("generated_files", "d_data_style2.ods"));

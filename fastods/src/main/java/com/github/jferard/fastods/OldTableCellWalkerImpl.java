@@ -24,12 +24,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.Length;
-import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -38,7 +34,7 @@ import java.util.Date;
 /**
  * @author Julien Férard
  */
-public class TableCellWalkerImpl implements TableCellWalker {
+public class OldTableCellWalkerImpl implements RowCellWalker {
     private final TableRowImpl row;
     private int c;
 
@@ -47,7 +43,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
      *
      * @param row the row
      */
-    TableCellWalkerImpl(final TableRowImpl row) {
+    OldTableCellWalkerImpl(final TableRowImpl row) {
         this.row = row;
         this.c = 0;
     }
@@ -257,7 +253,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
     }
 
     @Override
-    public int cellIndex() {
+    public int colIndex() {
         return this.c;
     }
 }

@@ -27,7 +27,6 @@ import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -43,8 +42,6 @@ import java.util.logging.Logger;
 public class ResultSetDataWrapperBuilderTest {
     @Test
     public void test() throws IOException, SQLException {
-        final Table table = PowerMock.createMock(Table.class);
-        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
         final TableCellWalker walker = PowerMock.createMock(TableCellWalker.class);
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
         final SQLToCellValueConverter.IntervalConverter converter = PowerMock
@@ -58,14 +55,17 @@ public class ResultSetDataWrapperBuilderTest {
                 .headerStyle(TableCellStyle.builder("dummy").build()).logger(logger).build();
 
         PowerMock.resetAll();
+        EasyMock.expect(walker.rowIndex()).andReturn(0);
+        EasyMock.expect(walker.colIndex()).andReturn(0);
         EasyMock.expect(rs.getMetaData()).andReturn(md);
         EasyMock.expect(md.getColumnCount()).andReturn(0).anyTimes();
-        EasyMock.expect(table.nextRow()).andReturn(row).times(2);
-        EasyMock.expect(row.getWalker()).andReturn(walker).times(2);
         EasyMock.expect(rs.next()).andReturn(false);
+        walker.nextRow();
+        walker.to(0);
+        walker.nextRow();
 
         PowerMock.replayAll();
-        b.addToTable(table);
+        b.addToTable(walker);
 
         PowerMock.verifyAll();
     }

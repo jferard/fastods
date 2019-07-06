@@ -30,7 +30,6 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
@@ -103,8 +102,7 @@ class H_Advanced {
         //     document.addObjectStyle(aTextStyle);
         //
         // An now, you can fill the Spreadsheet as usual.
-        final TableRowImpl row = table.getRow(0);
-        final TableCellWalker walker = row.getWalker();
+        final TableCellWalker walker = table.getWalker();
         walker.setStringValue("A huge document");
         walker.setStyle(boldCellStyle);
 
@@ -115,7 +113,7 @@ class H_Advanced {
     }
 
     /**
-     * @throws IOException if the file can't be written
+     * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
      */
     static void example2() throws IOException, SQLException {
@@ -123,6 +121,7 @@ class H_Advanced {
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("advanced");
+        final TableCellWalker walker = table.getWalker();
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Writing a ResultSet to the Spreadsheet
         // We need a ResultSet. Let's use H2:
@@ -140,13 +139,14 @@ class H_Advanced {
             final ResultSet rs = s.executeQuery("SELECT * FROM document");
 
             // Now, we can write the result on a document. It will use the current row of the table:
-            table.addData(ResultSetDataWrapper.builder(rs).build());
+            walker.addData(ResultSetDataWrapper.builder(rs).build());
 
             // It's possible to add multiple ResultSets:
-            table.nextRow();
+            walker.toRow(0);
+            walker.to(3);
             final ResultSet rs2 = s
-                    .executeQuery("SELECT * FROM document WHERE LENGTH(file_type) > 7");
-            table.addData(ResultSetDataWrapper.builder(rs2).build());
+                    .executeQuery("SELECT file_type as file_type7, extension FROM document WHERE LENGTH(file_type) > 7");
+            walker.addData(ResultSetDataWrapper.builder(rs2).build());
 
             // Let's create another table to test data types:
             s.execute("CREATE TABLE item (id CHAR(12), name TEXT, price DECIMAL, tax DECIMAL, " +
@@ -207,8 +207,8 @@ class H_Advanced {
             };
 
             // And skip another row, then write the result:
-            table.nextRow();
-            table.addData(ResultSetDataWrapper.builder(rs3).converter(converter).build());
+            walker.toRow(12);
+            walker.addData(ResultSetDataWrapper.builder(rs3).converter(converter).build());
         } finally {
             conn.close();
         }
@@ -218,6 +218,7 @@ class H_Advanced {
         table.updateConfigItem("ZoomValue", "150");
 
         // For more doc, see:
+        //
         // * [Settings Service Reference](https://api.libreoffice
         // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1document_1_1Settings.html)
         // * [ViewSettings Service Reference](https://api.libreoffice

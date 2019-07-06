@@ -259,7 +259,7 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public int cellIndex() {
+    public int colIndex() {
         return this.columnIndex;
     }
 

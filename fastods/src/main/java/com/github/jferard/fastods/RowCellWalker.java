@@ -23,18 +23,41 @@
 
 package com.github.jferard.fastods;
 
-import java.io.IOException;
-
 /**
- * A DataWrapper instance store some data that will be added to a table.
+ * A walker over cells
  *
  * @author Julien Férard
  */
-public interface DataWrapper {
+public interface RowCellWalker extends TableCell {
     /**
-     * @param walker a walker with a position (typically the top right corner of the data)
-     * @return true if the data was added
-     * @throws IOException if an I/O error occurred.
+     * @return true if the walker has a next cell on the row
      */
-    boolean addToTable(TableCellWalker walker) throws IOException;
+    boolean hasNext();
+
+    /**
+     * @return true if the walker has a previous cell on the row
+     */
+    boolean hasPrevious();
+
+    /**
+     * Set the walker on the last cell of the row
+     */
+    void last();
+
+    /**
+     * Set the walker on the next cell of the row
+     */
+    void next();
+
+    /**
+     * Set the walker on the previous cell of the row
+     */
+    void previous();
+
+    /**
+     * Set the walker on the row
+     *
+     * @param i the index of the cell
+     */
+    void to(final int i);
 }

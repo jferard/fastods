@@ -27,7 +27,7 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -127,7 +127,7 @@ public class StyleExampleIT {
 
         // FIRST ROW
         TableRowImpl row = table.nextRow();
-        TableCellWalker cell = row.getWalker();
+        RowCellWalker cell = row.getWalker();
         cell.setStringValue("Cell A1. Default text, wrapped. I said: default text, wrapped.");
         cell.next();
         cell.setStringValue("Cell B1. OpenSymbol font");

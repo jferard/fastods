@@ -83,23 +83,16 @@ In your POM, you'll have to include the following dependency:
 
 ## Examples
 ### Basic example
+Taken from the tutorial:
+
 ```java
-final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("example"), Locale.US);
+final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("hello-world"), Locale.US);
 final AnonymousOdsFileWriter writer = odsFactory.createWriter();
 final OdsDocument document = writer.document();
-final Table table = document.addTable("test");
-
-final TableCellStyle style = TableCellStyle.builder("green cell style").backgroundColor("#00ff00").build();
-for (int y = 0; y < 50; y++) {
-	final TableRow row = table.nextRow();
-	final TableCellWalker cell = row.getWalker();
-	for (int x = 0; x < 5; x++) {
-		cell.setFloatValue(x*y);
-		cell.setStyle(style);
-		cell.next();
-	}
-}
-
+final Table table = document.addTable("hello-world");
+final TableRowImpl row = table.getRow(0);
+final TableCell cell = row.getOrCreateCell(0);
+cell.setStringValue("Hello, world!");
 writer.saveAs(new File("generated_files", "readme_example.ods"));
 ```
 

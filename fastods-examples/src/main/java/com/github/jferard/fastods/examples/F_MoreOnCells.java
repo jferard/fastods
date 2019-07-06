@@ -27,6 +27,7 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
@@ -64,8 +65,7 @@ class F_MoreOnCells {
         final Table table = document.addTable("more");
 
         // We add a header:
-        TableRowImpl row = table.nextRow();
-        TableCellWalker walker = row.getWalker();
+        TableCellWalker walker = table.getWalker();
 
         // ## Merging Cells
         // Cells can be merged easily:
@@ -80,8 +80,8 @@ class F_MoreOnCells {
         walker.setStringValue("A3 (covered)");
         walker.next();
         walker.setStringValue("A4 (not covered)");
-        row = table.nextRow();
-        walker = row.getWalker();
+
+        walker.nextRow();
         walker.setStringValue("B1 (covered)");
         walker.next();
         walker.setStringValue("B2 (covered)");
@@ -89,8 +89,8 @@ class F_MoreOnCells {
         walker.setStringValue("B3 (covered)");
         walker.next();
         walker.setStringValue("B4 (not covered)");
-        row = table.nextRow();
-        walker = row.getWalker();
+
+        walker.nextRow();
         walker.setStringValue("C1 (not covered)");
         walker.next();
         walker.setStringValue("C2 (not covered)");
@@ -139,12 +139,11 @@ class F_MoreOnCells {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // We skip a few rows:
         for (int i = 0; i < 3; i++) {
-            row = table.nextRow();
+            walker.nextRow();
         }
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 
         // We need some room:
-        walker = row.getWalker();
         walker.setRowsSpanned(3);
 
         // Let's start with something simple. First, we build a text:
@@ -167,11 +166,10 @@ class F_MoreOnCells {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // We skip a few rows:
         for (int i = 0; i < 5; i++) {
-            row = table.nextRow();
+            walker.nextRow();
         }
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // Links can be absolute or relative. For instance, an absolute Link may be an absolute URL:
-        walker = row.getWalker();
         walker.setText(Text.builder().par().span("Hello, ")
                 .link("FastODS", new URL("https://www.github.com/jferard/fastods")).span("!")
                 .build());
@@ -191,11 +189,10 @@ class F_MoreOnCells {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // We skip a few rows:
         for (int i = 0; i < 5; i++) {
-            row = table.nextRow();
+            walker.nextRow();
         }
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // Tooltips are LO dependent:
-        walker = row.getWalker();
         walker.setStringValue("A Cell with a tooltip");
         walker.setTooltip("The Tooltip");
         // << END TUTORIAL (directive to extract part of a tutorial from this file)

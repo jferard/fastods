@@ -28,6 +28,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -70,8 +71,7 @@ class E_SettingTheCellStyle {
         //
         // We create a table and get the first cell:
         final Table table = document.addTable("styles");
-        TableRowImpl row = table.nextRow();
-        TableCellWalker walker = row.getWalker();
+        final TableCellWalker walker = table.getWalker();
 
         // Now, we add a value and set the style
         walker.setStringValue("A1");
@@ -130,28 +130,35 @@ class E_SettingTheCellStyle {
                 .rowHeight(SimpleLength.cm(3)).
                         build();
 
-        row = table.nextRow();
-        row.setRowStyle(tallRowStyle);
-        walker = row.getWalker();
-        walker.setStringValue("B1");
-        walker.setStyle(borderStyle);
+        walker.nextRow();
 
-        // You have to set the height of the row manually. There's nothing like an Optimal
-        // height/width in the OpenDocument specification, and FastODS won't provide those
-        // features. (Maybe one day I'll write a tool to compute the width/height of a text.)
+        // The walker position is now: row 1, column 0. Hence, `walker.setRowStyle(...)` is
+        // equivalent here to `table.getRow(1).setRowStyle(...)`
+        // because the walker inherits the methods from the cell **and** from the row (and from the
+        // column too):
+        walker.setRowStyle(tallRowStyle);
 
-        // You can also add a column style:
+        // You have to set the height of the row manually. There's an optimal
+        // height/width in the OpenDocument specification (20.383 and 20.384) but LO does not
+        // understand it, and FastODS won't compute this optimal value from the cell contents.
+        // (Maybe one day I'll write a tool to compute the width/height of a text.)
+
+        // You can also add a column style. `walker.setColumnStyle(...)` is equivalent here to
+        // `table.setColumnStyle(0, ...):
         final TableColumnStyle wideColumn = TableColumnStyle.builder("wide-col")
                 .columnWidth(SimpleLength.cm(9)).build();
-        table.setColumnStyle(0, wideColumn);
+        walker.setColumnStyle(wideColumn);
+
+        // We add a content and a style to the cell.
+        walker.setStringValue("B1");
+        walker.setStyle(borderStyle);
 
         // Obviously, you can combine a style and a data style:
         final DataStyle timeDataStyle = new TimeStyleBuilder("time-datastyle", Locale.US)
                 .timeFormat(new DateTimeStyleFormat(DateTimeStyleFormat.text("Hour: "),
                         DateTimeStyleFormat.LONG_HOURS)).visible().build();
 
-        row = table.nextRow();
-        walker = row.getWalker();
+        walker.nextRow();
         walker.setTimeValue(10000000);
         walker.setStyle(rotateStyle);
         walker.setDataStyle(timeDataStyle);

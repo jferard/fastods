@@ -31,7 +31,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
@@ -134,7 +134,7 @@ public class ReadmeExampleIT {
         for (int y = 0; y < 50; y++) {
             final TableRowImpl row = table.nextRow();
             row.setDefaultCellStyle(this.style);
-            final TableCellWalker cell = row.getWalker();
+            final RowCellWalker cell = row.getWalker();
             for (int x = 0; x < 5; x++) {
                 cell.setFloatValue(x * y);
                 cell.next();

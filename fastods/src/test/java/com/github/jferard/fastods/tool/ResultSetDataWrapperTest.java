@@ -26,9 +26,7 @@ import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.StringValue;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ResultSetTester;
@@ -69,7 +67,7 @@ public class ResultSetDataWrapperTest {
 
     private Logger logger;
     private OdsFactory odsFactory;
-    private Table table;
+    private TableCellWalker walker;
     private TableCellStyle tcls;
     private ToCellValueConverter converter;
     private ResultSetTester tester;
@@ -81,7 +79,7 @@ public class ResultSetDataWrapperTest {
         this.tester = ResultSetTester.create();
         this.logger = PowerMock.createMock(Logger.class);
         this.tcls = PowerMock.createNiceMock(TableCellStyle.class);
-        this.table = PowerMock.createMock(Table.class);
+        this.walker = PowerMock.createMock(TableCellWalker.class);
     }
 
     @Test
@@ -94,33 +92,32 @@ public class ResultSetDataWrapperTest {
         }
 
         final DataWrapper wrapper = this.createWrapper(Collections.singletonList("number"), r, 3);
-        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
-        final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(10);
         // header row
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setStringValue("number");
-        w.setStyle(this.tcls);
+        this.walker.setStringValue("number");
+        this.walker.setStyle(this.tcls);
+        this.walker.next();
 
         // data rows
         for (int v = FROM; v < Math.min(FROM + 3, TO); v++) {
-            EasyMock.expect(this.table.nextRow()).andReturn(row);
-            EasyMock.expect(row.getWalker()).andReturn(w);
-            w.next();
-            w.setCellValue(this.converter.from(v));
+            this.walker.nextRow();
+            this.walker.to(10);
+            this.walker.setCellValue(this.converter.from(v));
+            this.walker.next();
         }
 
         // data row 4 is replaced by the number of rows remaining
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setStringValue("... (2 rows remaining)");
+        this.walker.nextRow();
+        this.walker.to(10);
+        this.walker.setStringValue("... (2 rows remaining)");
+        this.walker.next();
+        this.walker.nextRow();
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.table);
+        wrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
     }
@@ -133,11 +130,13 @@ public class ResultSetDataWrapperTest {
         final SQLException e = new SQLException();
 
         PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
         EasyMock.expect(rs.getMetaData()).andThrow(e);
         this.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.eq(e));
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.table);
+        wrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
     }
@@ -146,29 +145,28 @@ public class ResultSetDataWrapperTest {
     public final void testNoRow() throws IOException {
         final DataWrapper wrapper = this.createWrapper(Arrays.asList("number", "word"),
                 Collections.<List<Object>>emptyList(), 100);
-        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
-        final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setStringValue("number");
-        w.setStyle(this.tcls);
-        w.next();
-        w.setStringValue("word");
-        w.setStyle(this.tcls);
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
+        this.walker.setStringValue("number");
+        this.walker.setStyle(this.tcls);
+        this.walker.next();
+        this.walker.setStringValue("word");
+        this.walker.setStyle(this.tcls);
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
 
         // empty row
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setStringValue("");
-        w.next();
-        w.setStringValue("");
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.nextRow();
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.table);
+        wrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
     }
@@ -180,25 +178,24 @@ public class ResultSetDataWrapperTest {
         final DataWrapper wrapper = this
                 .createWrapper(Collections.singletonList("value"), Collections.singletonList(l),
                         100);
-        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
-        final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
         // header
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setStringValue("value");
-        w.setStyle(this.tcls);
+        this.walker.setStringValue("value");
+        this.walker.setStyle(this.tcls);
+        this.walker.next();
 
         // data row
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setCellValue(new StringValue("<NULL>"));
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setCellValue(new StringValue("<NULL>"));
+        this.walker.next();
+        this.walker.nextRow();
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.table);
+        wrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
     }
@@ -207,30 +204,29 @@ public class ResultSetDataWrapperTest {
     public final void testOneRow() throws IOException {
         final DataWrapper wrapper = this.createWrapper(Arrays.asList("number", "word"),
                 Collections.singletonList(Arrays.<Object>asList(7, "a")), 100);
-        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
-        final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
         // header
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setStringValue("number");
-        w.setStyle(this.tcls);
-        w.next();
-        w.setStringValue("word");
-        w.setStyle(this.tcls);
+        this.walker.setStringValue("number");
+        this.walker.setStyle(this.tcls);
+        this.walker.next();
+        this.walker.setStringValue("word");
+        this.walker.setStyle(this.tcls);
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
 
         // data row
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
-        EasyMock.expect(row.getWalker()).andReturn(w);
-        w.next();
-        w.setCellValue(this.converter.from(7));
-        w.next();
-        w.setCellValue(this.converter.from("a"));
+        this.walker.setCellValue(this.converter.from(7));
+        this.walker.next();
+        this.walker.setCellValue(this.converter.from("a"));
+        this.walker.next();
+        this.walker.nextRow();
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.table);
+        wrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
     }
@@ -277,19 +273,18 @@ public class ResultSetDataWrapperTest {
                 .headerStyle(this.tcls).max(100).noAutoFilter().build();
         final SQLException e = new SQLException();
         final ResultSetMetaData metaData = PowerMock.createMock(ResultSetMetaData.class);
-        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
 
         PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
         EasyMock.expect(rs.getMetaData()).andReturn(metaData);
-        EasyMock.expect(this.table.nextRow()).andReturn(row);
         EasyMock.expect(metaData.getColumnCount()).andReturn(0).anyTimes();
-        EasyMock.expect(row.getWalker()).andReturn(null);
 
         EasyMock.expect(rs.next()).andThrow(e);
         this.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.eq(e));
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.table);
+        wrapper.addToTable(this.walker);
 
         PowerMock.replayAll();
     }

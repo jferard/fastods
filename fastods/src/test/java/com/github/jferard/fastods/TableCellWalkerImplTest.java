@@ -45,7 +45,7 @@ import static org.easymock.EasyMock.expect;
 
 public class TableCellWalkerImplTest {
     private static final long TIME_IN_MILLIS = 1234567891011L;
-    private TableCellWalkerImpl cellWalker;
+    private OldTableCellWalkerImpl cellWalker;
     private TableRowImpl row;
     private XMLUtil util;
     private StringBuilder sb;
@@ -57,7 +57,7 @@ public class TableCellWalkerImplTest {
         this.converter = new ObjectToCellValueConverter("USD");
         this.row = PowerMock.createMock(TableRowImpl.class);
         this.cell = PowerMock.createMock(TableCell.class);
-        this.cellWalker = new TableCellWalkerImpl(this.row);
+        this.cellWalker = new OldTableCellWalkerImpl(this.row);
         this.util = XMLUtil.create();
         this.sb = new StringBuilder();
     }
@@ -375,7 +375,7 @@ public class TableCellWalkerImplTest {
     @Test
     public final void testMove() {
         final TableRowImpl row = this.initRealRow();
-        final TableCellWalkerImpl cell = new TableCellWalkerImpl(row);
+        final OldTableCellWalkerImpl cell = new OldTableCellWalkerImpl(row);
         PowerMock.replayAll();
         cell.to(49);
         cell.setStringValue("s");
@@ -403,7 +403,7 @@ public class TableCellWalkerImplTest {
         PowerMock.replayAll();
 
         final TableRowImpl row = this.initRealRow();
-        final TableCellWalker cell = new TableCellWalkerImpl(row);
+        final RowCellWalker cell = new OldTableCellWalkerImpl(row);
         cell.to(-1);
 
         PowerMock.verifyAll();
@@ -533,4 +533,19 @@ public class TableCellWalkerImplTest {
         final WriteUtil writeUtil = WriteUtil.create();
         return new TableRowImpl(writeUtil, xmlUtil, stc, ds, false, null, 10, 100);
     }
+
+    /*
+    @Test
+    public final void testDataWrapper() throws IOException {
+        final DataWrapper data = PowerMock.createMock(DataWrapper.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(data.addToTable(this.cellWalker)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.table.addData(data);
+
+        PowerMock.verifyAll();
+    }
+     */
 }

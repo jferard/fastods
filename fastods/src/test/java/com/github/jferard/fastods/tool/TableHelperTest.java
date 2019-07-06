@@ -26,7 +26,7 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.EqualityUtil;
@@ -47,7 +47,7 @@ public class TableHelperTest {
     private PositionUtil positionUtil;
     private Table table;
     private TableHelper tableHelper;
-    private TableCellWalker walker;
+    private RowCellWalker walker;
     private TableRowImpl row;
 
     @Before
@@ -55,7 +55,7 @@ public class TableHelperTest {
         this.positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
         this.table = PowerMock.createMock(Table.class);
         this.row = PowerMock.createMock(TableRowImpl.class);
-        this.walker = PowerMock.createMock(TableCellWalker.class);
+        this.walker = PowerMock.createMock(RowCellWalker.class);
         this.cell = PowerMock.createMock(TableCell.class);
         this.tableHelper = new TableHelper(this.positionUtil);
     }
@@ -151,7 +151,7 @@ public class TableHelperTest {
         this.walker.to(2);
 
         PowerMock.replayAll();
-        final TableCellWalker w = this.tableHelper.getCell(this.table, "C2");
+        final RowCellWalker w = this.tableHelper.getCell(this.table, "C2");
         Assert.assertEquals(this.walker, w);
 
         PowerMock.verifyAll();

@@ -299,7 +299,7 @@ public interface TableCell {
     /**
      * @return the index of the cell in the current row
      */
-    int cellIndex();
+    int colIndex();
 
     /**
      * 19.385 office:value-type.

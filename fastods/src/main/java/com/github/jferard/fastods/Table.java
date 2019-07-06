@@ -92,17 +92,6 @@ public class Table implements NamedObject {
         this.appender = new TableAppender(builder);
     }
 
-
-    /**
-     * Add a wrapped data
-     *
-     * @param data the wrapped data
-     * @throws IOException if an error occurs
-     */
-    public void addData(final DataWrapper data) throws IOException {
-        data.addToTable(this);
-    }
-
     /**
      * Add an observer to this table
      *
@@ -241,9 +230,10 @@ public class Table implements NamedObject {
 
     /**
      * @return a CellWalker on the row
+     * @throws IOException if the first row was flushed
      */
     public TableCellWalker getWalker() throws IOException {
-        return new TableCellWalkerImpl2(this);
+        return new TableCellWalker(this);
     }
 
     /**

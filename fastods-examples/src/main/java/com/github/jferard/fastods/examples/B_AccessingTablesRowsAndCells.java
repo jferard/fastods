@@ -29,6 +29,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
@@ -54,7 +55,7 @@ class B_AccessingTablesRowsAndCells {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Accessing Tables, Rows and Cells
         //
-        // Now, we want to write values in other cells that the A1 cell.
+        // Put a text in the A1 cell is interesting but still limited.
         //
         // We start with the (now) usual boilerplate code to get a document:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("accessing"), Locale.US);
@@ -76,11 +77,13 @@ class B_AccessingTablesRowsAndCells {
             // And set a value.
             cell.setStringValue("A1");
 
-            // *Note that the access is a write only access. You can't read the content of a cell.*
-
-            // You can have direct access to any cell, but it has a cost. If the row doesn't exist
-            // yet in the list of rows, it  will create all rows between the last row and the actual
-            // row.
+            // *Note that the access is a write only access. You can't read the content of a cell.
+            // This is by design: FastODS stores the content of the spreadsheet and outputs a file,
+            // that's all.*
+            //
+            // Note that the access to any cell has a cost. If the row doesn't exist
+            // yet in the list of rows, FastODS  will create all rows between the last row and the
+            // actual row.
             row = table.getRow(6);
 
             // You can have direct access to cells
@@ -122,19 +125,12 @@ class B_AccessingTablesRowsAndCells {
         {
             // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
             final Table table = document.addTable("relative-access");
+            // And then create a "walker" for this table:
+            final TableCellWalker walker = table.getWalker();
 
             // We want ten rows of data
             for (int r = 0; r < 10; r++) {
-                // The Table object has an internal row index (that is updated by the `getRow`
-                // method).
-                // Just call `nextRow` to make the index advance by one (you have to call `nextRow`
-                // before you write data, to get the first row):
-                final TableRowImpl row = table.nextRow();
-
-                // And then create a "walker" for this row:
-                final TableCellWalker walker = row.getWalker();
-
-                // Now, we want nine columns for each row:
+                // And nine columns for each row:
                 for (int c = 0; c < 9; c++) {
 
                     // Add the value to each cell
@@ -143,18 +139,52 @@ class B_AccessingTablesRowsAndCells {
                     // And then push one cell right.
                     walker.next();
                 }
+
+                // Then one cell down.
+                walker.nextRow();
+
+                // Remember that `walker.nextRow()` moves the walker to the **first cell** of the
+                // next row.
             }
             // << END TUTORIAL (directive to extract part of a tutorial from this file)
         }
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+
+        // ## Deprecated Relative Access
+        //
+        // Before version 0.6.2, relative access was different (and slightly inconsistent).
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        {
+            // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+            final Table table = document.addTable("relative-access-deprecated");
+
+            // Our ten rows of data
+            for (int r = 0; r < 10; r++) {
+                // The Table object had an internal row index (that was updated by the `getRow`
+                // method).
+                // A call to the method `nextRow` to made index advance by one (you had to
+                // call `nextRow` before you start to write data):
+                final TableRowImpl row = table.nextRow();
+
+                // And then create a "walker" for this row (there was one walker per row, not per
+                // table):
+                final RowCellWalker walker = row.getWalker();
+
+                for (int c = 0; c < 9; c++) {
+                    // Add the value to each cell as above
+                    walker.setStringValue((char) (c + 'A') + String.valueOf(r + 1));
+                    // And then push one cell right.
+                    walker.next();
+                }
+            }
+            // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        }
+
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "b_accessing_example.ods"));
         //
-        // *Note 1:* There is a slight inconsistency between `table.newtRow` (before using
-        // the row) and `cellWalker.next` (after using the cell). Maybe I'll fix it before
-        // version 1.0...
-        //
-        // *Note 2:* We will see how to merge cells in the Advanced part of this tutorial.
+        // *Note:* We will see how to merge cells in the Advanced part of this tutorial.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 }
