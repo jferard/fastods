@@ -32,7 +32,7 @@ import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.PageSectionContent;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.style.PageStyle;
@@ -67,7 +67,7 @@ class G_PageFormat {
 
         // Let's start with a new table:
         Table table = document.addTable("format-page");
-        TableRow row = table.getRow(0);
+        TableRowImpl row = table.getRow(0);
         TableCellWalker walker = row.getWalker();
         walker.setStringValue("Text");
 

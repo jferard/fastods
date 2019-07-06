@@ -28,7 +28,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
@@ -73,7 +73,7 @@ class D_SettingTheCellDataStyle {
 
         // We'll place a float with the standard format, and a float with a custom format side by
         // side
-        TableRow row = table.nextRow();
+        TableRowImpl row = table.nextRow();
         TableCellWalker walker = row.getWalker();
 
         // Standard format:
@@ -159,7 +159,7 @@ class D_SettingTheCellDataStyle {
 
         // And create the same cells as above:
         final Table table = document.addTable("data styles");
-        final TableRow tableRow = table.nextRow();
+        final TableRowImpl tableRow = table.nextRow();
         final TableCellWalker cellWalker = tableRow.getWalker();
 
         cellWalker.setFloatValue(123456.789);

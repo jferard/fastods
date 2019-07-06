@@ -30,7 +30,7 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.tool.TableHelper;
 
@@ -70,7 +70,7 @@ class B_AccessingTablesRowsAndCells {
             final Table table = document.addTable("direct-access");
 
             // Get the first row and the first cell of the first row:
-            TableRow row = table.getRow(0);
+            TableRowImpl row = table.getRow(0);
             TableCell cell = row.getOrCreateCell(0);
 
             // And set a value.
@@ -129,7 +129,7 @@ class B_AccessingTablesRowsAndCells {
                 // method).
                 // Just call `nextRow` to make the index advance by one (you have to call `nextRow`
                 // before you write data, to get the first row):
-                final TableRow row = table.nextRow();
+                final TableRowImpl row = table.nextRow();
 
                 // And then create a "walker" for this row:
                 final TableCellWalker walker = row.getWalker();

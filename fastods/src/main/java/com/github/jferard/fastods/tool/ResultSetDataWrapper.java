@@ -29,7 +29,7 @@ import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
 
@@ -108,13 +108,13 @@ public final class ResultSetDataWrapper implements DataWrapper {
         try {
             final ResultSetMetaData metadata = this.resultSet.getMetaData();
             try {
-                TableRow row = table.nextRow();
+                TableRowImpl row = table.nextRow();
                 final int columnCount = metadata.getColumnCount();
                 final int r1;
                 final int c1;
                 final int c2;
                 if (this.autoFilter) {
-                    r1 = row.index();
+                    r1 = row.rowIndex();
                     c1 = 0;
                     c2 = c1 + columnCount - 1;
                 } else {
@@ -132,7 +132,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
                 final boolean oneMoreLine = this
                         .writeMaybeLastLineDataTo(columnCount, table, rowCount);
                 if (this.autoFilter) {
-                    int r2 = row.index() - 1;
+                    int r2 = row.rowIndex() - 1;
                     if (oneMoreLine) {
                         r2 += 1;
                     }
@@ -182,7 +182,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
         return values;
     }
 
-    private void writeDataLineTo(final TableRow row, final int columnCount)
+    private void writeDataLineTo(final TableRowImpl row, final int columnCount)
             throws SQLException, FastOdsException {
         final List<Object> columnValues = this.getColumnValues(columnCount);
         final TableCellWalker walker = row.getWalker();
@@ -202,7 +202,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
         }
     }
 
-    private void writeFirstLineDataTo(final ResultSetMetaData metadata, final TableRow row)
+    private void writeFirstLineDataTo(final ResultSetMetaData metadata, final TableRowImpl row)
             throws SQLException {
         final int columnCount = metadata.getColumnCount();
         final List<String> columnNames = this.getColumnNames(metadata);
@@ -219,7 +219,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
     private boolean writeMaybeLastLineDataTo(final int columnCount, final Table table,
                                              final int rowCount) throws IOException {
-        final TableRow row;
+        final TableRowImpl row;
         if (rowCount == 0) { // no data row
             row = table.nextRow();
             final TableCellWalker walker = row.getWalker();

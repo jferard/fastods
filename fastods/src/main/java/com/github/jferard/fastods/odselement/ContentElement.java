@@ -150,7 +150,7 @@ public class ContentElement implements OdsElement {
         }
 
         final Table lastTable = this.tables.get(lastTableIndex);
-        this.flushPosition.set(lastTableIndex, lastTable.getLastRowNumber());
+        this.flushPosition.set(lastTableIndex, lastTable.getRowCount()-1);
     }
 
     private void flushPendingTablesAndLastTableAvailableRows(final XMLUtil util,

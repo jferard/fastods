@@ -46,7 +46,7 @@ import static org.easymock.EasyMock.expect;
 public class TableCellWalkerImplTest {
     private static final long TIME_IN_MILLIS = 1234567891011L;
     private TableCellWalkerImpl cellWalker;
-    private TableRow row;
+    private TableRowImpl row;
     private XMLUtil util;
     private StringBuilder sb;
     private TableCell cell;
@@ -55,21 +55,11 @@ public class TableCellWalkerImplTest {
     @Before
     public void setUp() {
         this.converter = new ObjectToCellValueConverter("USD");
-        this.row = PowerMock.createMock(TableRow.class);
+        this.row = PowerMock.createMock(TableRowImpl.class);
         this.cell = PowerMock.createMock(TableCell.class);
         this.cellWalker = new TableCellWalkerImpl(this.row);
         this.util = XMLUtil.create();
         this.sb = new StringBuilder();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public final void testAppendXML() {
-        PowerMock.resetAll();
-
-        PowerMock.replayAll();
-        this.cellWalker.appendXMLToTableRow(this.util, this.sb);
-
-        PowerMock.verifyAll();
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -384,7 +374,7 @@ public class TableCellWalkerImplTest {
 
     @Test
     public final void testMove() {
-        final TableRow row = this.initRealRow();
+        final TableRowImpl row = this.initRealRow();
         final TableCellWalkerImpl cell = new TableCellWalkerImpl(row);
         PowerMock.replayAll();
         cell.to(49);
@@ -393,7 +383,7 @@ public class TableCellWalkerImplTest {
         Assert.assertTrue(cell.hasNext());
         Assert.assertFalse(cell.hasPrevious());
         cell.next();
-        cell.lastCell();
+        cell.last();
         cell.to(49);
         Assert.assertTrue(cell.hasNext());
         cell.next();
@@ -412,7 +402,7 @@ public class TableCellWalkerImplTest {
         PowerMock.resetAll();
         PowerMock.replayAll();
 
-        final TableRow row = this.initRealRow();
+        final TableRowImpl row = this.initRealRow();
         final TableCellWalker cell = new TableCellWalkerImpl(row);
         cell.to(-1);
 
@@ -536,11 +526,11 @@ public class TableCellWalkerImplTest {
         Assert.assertTrue(ret);
     }
 
-    private TableRow initRealRow() {
+    private TableRowImpl initRealRow() {
         final StylesContainer stc = PowerMock.createMock(StylesContainer.class);
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
         final WriteUtil writeUtil = WriteUtil.create();
-        return new TableRow(writeUtil, xmlUtil, stc, ds, false, null, 10, 100);
+        return new TableRowImpl(writeUtil, xmlUtil, stc, ds, false, null, 10, 100);
     }
 }

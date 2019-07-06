@@ -48,7 +48,7 @@ import java.util.Locale;
 public class TableRowTest {
     public static final long TIME_IN_MILLIS = 1234567891011L;
     private DataStyles ds;
-    private TableRow row;
+    private TableRowImpl row;
     private StylesContainer stc;
     private Table table;
     private TableCellStyle tcs;
@@ -61,7 +61,7 @@ public class TableRowTest {
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
+        this.row = new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
                 100);
         this.tcs = TableCellStyle.builder("---").build();
         PowerMock.mockStatic(TableColdCell.class);
@@ -77,7 +77,7 @@ public class TableRowTest {
         EasyMock.expect(this.stc.addContentStyle(trs)).andReturn(true);
 
         PowerMock.replayAll();
-        this.row.setStyle(trs);
+        this.row.setRowStyle(trs);
 
         PowerMock.verifyAll();
     }
@@ -227,7 +227,7 @@ public class TableRowTest {
                 .andReturn(true);
 
         PowerMock.replayAll();
-        this.row.removeStyle();
+        this.row.removeRowStyle();
         this.row.setDefaultCellStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();

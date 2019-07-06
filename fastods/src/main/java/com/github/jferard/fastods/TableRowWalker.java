@@ -23,40 +23,43 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-
 import java.io.IOException;
-import java.util.List;
 
 /**
- * A flusher for the end of the table. Writes remaining rows and the table postamble.
+ * A walker over cells
  *
  * @author Julien Férard
  */
-public class EndTableFlusher implements OdsFlusher {
-    private final TableAppender appender;
-    private final List<TableRowImpl> rows;
+public interface TableRowWalker extends TableRow {
+    /**
+     * @return true if the walker has a next row on the table
+     */
+    boolean hasNextRow();
 
     /**
-     * @param appender the table to end
-     * @param rows     the remaining rows.
+     * @return true if the walker has a previous row on the table
      */
-    public EndTableFlusher(final TableAppender appender, final List<TableRowImpl> rows) {
-        this.appender = appender;
-        this.rows = rows;
-    }
+    boolean hasPreviousRow();
 
-    @Override
-    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        for (final TableRowImpl row : this.rows) {
-            row.appendXMLToTable(xmlUtil, writer);
-        }
-        this.appender.appendPostamble(writer);
-    }
+    /**
+     * Set the walker on the last row of the table
+     */
+    void lastRow() throws IOException;
 
-    @Override
-    public boolean isEnd() {
-        return false;
-    }
+    /**
+     * Set the walker on the next row of the table
+     */
+    void nextRow() throws IOException;
+
+    /**
+     * Set the walker on the previous row of the table
+     */
+    void previousRow() throws IOException;
+
+    /**
+     * Set the walker on the table
+     *
+     * @param i the index of the row
+     */
+    void toRow(final int i) throws IOException;
 }

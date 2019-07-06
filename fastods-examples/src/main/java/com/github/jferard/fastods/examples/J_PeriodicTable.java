@@ -33,7 +33,7 @@ import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.style.BorderAttribute;
@@ -225,8 +225,8 @@ class J_PeriodicTable {
                     // The background color depends on the `subcategory`.
                     //
                     //
-                    final TableRow row = table.getRow(r);
-                    row.setStyle(tableRowStyle);
+                    final TableRowImpl row = table.getRow(r);
+                    row.setRowStyle(tableRowStyle);
                     final Text text = TextBuilder.create()
                             .parStyledContent(elementName, elementStyle)
                             .parStyledContent(String.valueOf(atomicNumber), atomicNumberStyle)

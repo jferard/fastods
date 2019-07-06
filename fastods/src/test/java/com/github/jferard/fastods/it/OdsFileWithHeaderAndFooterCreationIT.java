@@ -33,7 +33,7 @@ import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.PageSectionContent.Region;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -277,8 +277,8 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         final Table table = document.addTable("test", 1, 5);
         table.setStyle(this.ttts);
         table.setColumnStyle(0, this.tcns);
-        TableRow row = table.getRow(0);
-        row.setStyle(this.trs);
+        TableRowImpl row = table.getRow(0);
+        row.setRowStyle(this.trs);
         row.setDefaultCellStyle(this.tcls);
 
         row = table.getRow(0);

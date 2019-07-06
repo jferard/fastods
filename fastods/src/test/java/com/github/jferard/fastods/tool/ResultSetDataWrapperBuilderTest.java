@@ -27,7 +27,7 @@ import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class ResultSetDataWrapperBuilderTest {
     @Test
     public void test() throws IOException, SQLException {
         final Table table = PowerMock.createMock(Table.class);
-        final TableRow row = PowerMock.createMock(TableRow.class);
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
         final TableCellWalker walker = PowerMock.createMock(TableCellWalker.class);
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
         final SQLToCellValueConverter.IntervalConverter converter = PowerMock

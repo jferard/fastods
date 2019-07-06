@@ -29,7 +29,7 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DateTimeStyleFormat;
 import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
@@ -70,7 +70,7 @@ class E_SettingTheCellStyle {
         //
         // We create a table and get the first cell:
         final Table table = document.addTable("styles");
-        TableRow row = table.nextRow();
+        TableRowImpl row = table.nextRow();
         TableCellWalker walker = row.getWalker();
 
         // Now, we add a value and set the style
@@ -131,7 +131,7 @@ class E_SettingTheCellStyle {
                         build();
 
         row = table.nextRow();
-        row.setStyle(tallRowStyle);
+        row.setRowStyle(tallRowStyle);
         walker = row.getWalker();
         walker.setStringValue("B1");
         walker.setStyle(borderStyle);

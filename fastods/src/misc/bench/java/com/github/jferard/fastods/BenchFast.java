@@ -58,7 +58,7 @@ public class BenchFast extends Bench {
         final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
 
         for (int y = 0; y < this.getRowCount(); y++) {
-            final TableRow row = table.nextRow();
+            final TableRowImpl row = table.nextRow();
             final TableCellWalker walker = row.getWalker();
             for (int x = 0; x < this.getColCount(); x++) {
                 walker.setFloatValue(this.getRandom().nextInt(1000));

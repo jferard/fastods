@@ -59,7 +59,7 @@ public class TableCellImpl implements TableCell {
         DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    private final TableRow parent;
+    private final TableRowImpl parent;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final StylesContainer stylesContainer;
@@ -91,7 +91,7 @@ public class TableCellImpl implements TableCell {
      */
     TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
                   final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final boolean libreOfficeMode, final TableRow parent, final int columnIndex) {
+                  final boolean libreOfficeMode, final TableRowImpl parent, final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -101,7 +101,13 @@ public class TableCellImpl implements TableCell {
         this.columnIndex = columnIndex;
     }
 
-    @Override
+    /**
+     * Generate the XML for the table cell.
+     *
+     * @param util       an util.
+     * @param appendable the appendable to fill
+     * @throws IOException if an error occurs
+     */
     public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
             throws IOException {
         final boolean covered = this.isCovered();
@@ -250,6 +256,11 @@ public class TableCellImpl implements TableCell {
             this.style = this.stylesContainer
                     .addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
         }
+    }
+
+    @Override
+    public int cellIndex() {
+        return this.columnIndex;
     }
 
     /**

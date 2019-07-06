@@ -27,7 +27,7 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Position;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -166,7 +166,7 @@ public class TableHelper {
      */
     public TableCellWalker getCell(final Table table, final int rowIndex, final int colIndex)
             throws IOException {
-        final TableRow row = table.getRow(rowIndex);
+        final TableRowImpl row = table.getRow(rowIndex);
         final TableCellWalker walker = row.getWalker();
         walker.to(colIndex);
         return walker;

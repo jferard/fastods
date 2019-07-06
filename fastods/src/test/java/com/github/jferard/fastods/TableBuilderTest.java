@@ -100,7 +100,7 @@ public class TableBuilderTest {
 
     @Test
     public final void testGetRow() throws IOException {
-        final List<TableRow> rows = Lists.newArrayList();
+        final List<TableRowImpl> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }
@@ -115,14 +115,14 @@ public class TableBuilderTest {
 
     @Test
     public final void testGetRowFromStringPos() throws IOException, ParseException {
-        final List<TableRow> rows = Lists.newArrayList();
+        final List<TableRowImpl> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        final TableRow row = this.builder.getRow(this.table, this.appender, "A5");
+        final TableRowImpl row = this.builder.getRow(this.table, this.appender, "A5");
 
         PowerMock.verifyAll();
         Assert.assertEquals(rows.get(4), row);
@@ -137,7 +137,7 @@ public class TableBuilderTest {
             this.builder.nextRow(this.table, this.appender);
         }
         this.builder.getRow(this.table, this.appender, 100);
-        Assert.assertEquals(100, this.builder.getLastRowNumber());
+        Assert.assertEquals(101, this.builder.getRowCount());
 
         PowerMock.verifyAll();
     }
@@ -154,15 +154,15 @@ public class TableBuilderTest {
     public final void testLastRow() throws IOException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        final int num1 = this.builder.getLastRowNumber();
+        final int initialRowCount = this.builder.getRowCount();
         for (int r = 0; r < 7; r++) { // 8 times
             this.builder.nextRow(this.table, this.appender);
         }
-        final int num2 = this.builder.getLastRowNumber();
+        final int rowCount = this.builder.getRowCount();
 
         PowerMock.verifyAll();
-        Assert.assertEquals(-1, num1);
-        Assert.assertEquals(6, num2);
+        Assert.assertEquals(0, initialRowCount);
+        Assert.assertEquals(7, rowCount);
     }
 
     @Test

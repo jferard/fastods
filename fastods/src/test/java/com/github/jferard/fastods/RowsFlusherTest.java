@@ -49,7 +49,7 @@ public class RowsFlusherTest {
 
     @Test
     public void flushIntoEmptyList() throws Exception {
-        final List<TableRow> rows = Collections.emptyList();
+        final List<TableRowImpl> rows = Collections.emptyList();
 
         PowerMock.resetAll();
         PowerMock.replayAll();
@@ -60,9 +60,9 @@ public class RowsFlusherTest {
 
     @Test
     public void flushInto() throws Exception {
-        final TableRow r1 = PowerMock.createMock(TableRow.class);
-        final TableRow r2 = PowerMock.createMock(TableRow.class);
-        final List<TableRow> rows = Arrays.asList(r1, r2);
+        final TableRowImpl r1 = PowerMock.createMock(TableRowImpl.class);
+        final TableRowImpl r2 = PowerMock.createMock(TableRowImpl.class);
+        final List<TableRowImpl> rows = Arrays.asList(r1, r2);
 
         PowerMock.resetAll();
         r1.appendXMLToTable(this.util, this.w);
@@ -76,7 +76,7 @@ public class RowsFlusherTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void flushIntoNullRow() throws Exception {
-        final List<TableRow> rows = new ArrayList<TableRow>();
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         rows.add(null);
 
         PowerMock.resetAll();

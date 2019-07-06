@@ -28,7 +28,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ class A_HelloWorld {
         final Table table = document.addTable("hello-world");
 
         // We get the first row:
-        final TableRow row = table.getRow(0);
+        final TableRowImpl row = table.getRow(0);
 
         // And the first cell of the first row:
         final TableCell cell = row.getOrCreateCell(0);

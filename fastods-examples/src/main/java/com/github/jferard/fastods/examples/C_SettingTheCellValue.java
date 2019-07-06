@@ -31,7 +31,7 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PercentageValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
 
@@ -69,7 +69,7 @@ class C_SettingTheCellValue {
         final Table table = document.addTable("types");
 
         // We add a header:
-        TableRow row = table.nextRow();
+        TableRowImpl row = table.nextRow();
         TableCellWalker walker = row.getWalker();
         walker.setStringValue("Type");
         walker.next();

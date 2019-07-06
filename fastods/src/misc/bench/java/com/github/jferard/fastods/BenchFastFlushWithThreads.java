@@ -126,7 +126,7 @@ public class BenchFastFlushWithThreads extends Bench {
                 final Table table = this.document.addTable("test", this.rowCount, this.colCount);
 
                 for (int y = 0; y < this.rowCount; y++) {
-                    final TableRow row = table.nextRow();
+                    final TableRowImpl row = table.nextRow();
                     final TableCellWalker walker = row.getWalker();
                     for (int x = 0; x < this.colCount; x++) {
                         walker.setFloatValue(this.random.nextInt(1000));

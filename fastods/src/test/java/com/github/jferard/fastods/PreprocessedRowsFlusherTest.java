@@ -56,7 +56,7 @@ public class PreprocessedRowsFlusherTest {
 
     @Test
     public void create() throws Exception {
-        final List<TableRow> rows = Collections.emptyList();
+        final List<TableRowImpl> rows = Collections.emptyList();
 
         PowerMock.replayAll();
         PreprocessedRowsFlusher.create(this.util, rows);
@@ -65,7 +65,7 @@ public class PreprocessedRowsFlusherTest {
 
     @Test
     public void flushIntoEmptyList() throws Exception {
-        final List<TableRow> rows = Collections.emptyList();
+        final List<TableRowImpl> rows = Collections.emptyList();
         EasyMock.expect(this.w.append(this.sb)).andReturn(this.sb);
 
         PowerMock.replayAll();
@@ -76,9 +76,9 @@ public class PreprocessedRowsFlusherTest {
 
     @Test
     public void flushInto() throws Exception {
-        final TableRow r1 = PowerMock.createMock(TableRow.class);
-        final TableRow r2 = PowerMock.createMock(TableRow.class);
-        final List<TableRow> rows = Arrays.asList(r1, r2);
+        final TableRowImpl r1 = PowerMock.createMock(TableRowImpl.class);
+        final TableRowImpl r2 = PowerMock.createMock(TableRowImpl.class);
+        final List<TableRowImpl> rows = Arrays.asList(r1, r2);
 
         r1.appendXMLToTable(this.util, this.sb);
         r2.appendXMLToTable(this.util, this.sb);
@@ -93,7 +93,7 @@ public class PreprocessedRowsFlusherTest {
 
     @Test
     public void flushIntoNullRow() throws Exception {
-        final List<TableRow> rows = new ArrayList<TableRow>();
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         rows.add(null);
 
         final Capture<CharSequence> capturedArgument = EasyMock.newCapture();

@@ -47,7 +47,7 @@ class PreprocessedRowsFlusher implements OdsFlusher {
      * @throws IOException if an I/O error occurs
      */
     public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil,
-                                                 final List<TableRow> tableRows)
+                                                 final List<TableRowImpl> tableRows)
             throws IOException {
         return new PreprocessedRowsFlusher(xmlUtil, tableRows,
                 new StringBuilder(STRING_BUILDER_SIZE));
@@ -61,12 +61,12 @@ class PreprocessedRowsFlusher implements OdsFlusher {
      * @param sb      the destination
      * @throws IOException if an I/O error occurs
      */
-    PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRow> rows,
+    PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRowImpl> rows,
                             final StringBuilder sb) throws IOException {
         // use an appender
         this.sb = sb;
-        for (final TableRow row : rows) {
-            TableRow.appendXMLToTable(row, xmlUtil, this.sb);
+        for (final TableRowImpl row : rows) {
+            TableRowImpl.appendXMLToTable(row, xmlUtil, this.sb);
         }
 
         // free rows

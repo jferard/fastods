@@ -57,12 +57,12 @@ public class TableCellTest {
     private static final int ROW_INDEX = 10;
     private Locale locale;
     private DataStyles ds;
-    private TableRow row;
+    private TableRowImpl row;
     private StylesContainer stc;
     private Table table;
     private TableCellStyle tcs;
     private XMLUtil xmlUtil;
-    private TableCell cell;
+    private TableCellImpl cell;
     private TableColdCell tcc;
     private ToCellValueConverter converter;
 
@@ -77,7 +77,7 @@ public class TableCellTest {
 
         this.tcc = TableColdCell.create(this.xmlUtil);
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.row = new TableRow(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table,
+        this.row = new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table,
                 ROW_INDEX, 100);
         this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.row,
                 COLUMN_INDEX);

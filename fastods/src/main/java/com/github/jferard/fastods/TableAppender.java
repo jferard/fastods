@@ -188,7 +188,7 @@ class TableAppender {
 
         final int size = this.builder.getTableRowsUsedSize();
         for (int r = firstRowIndex; r < size; r++) {
-            final TableRow tr = this.builder.getTableRow(r);
+            final TableRowImpl tr = this.builder.getTableRow(r);
             if (tr == null) {
                 this.nullFieldCounter++;
             } else {

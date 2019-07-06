@@ -28,7 +28,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -126,7 +126,7 @@ public class StyleExampleIT {
         final TableCellStyle boldStyle = TableCellStyle.builder("bold").fontWeightBold().build();
 
         // FIRST ROW
-        TableRow row = table.nextRow();
+        TableRowImpl row = table.nextRow();
         TableCellWalker cell = row.getWalker();
         cell.setStringValue("Cell A1. Default text, wrapped. I said: default text, wrapped.");
         cell.next();
@@ -134,7 +134,7 @@ public class StyleExampleIT {
 
         // SECOND ROW
         row = table.nextRow();
-        row.setStyle(rowStyle2);
+        row.setRowStyle(rowStyle2);
         row.setDefaultCellStyle(liberationStyle);
         cell = row.getWalker();
         cell.setStyle(boldStyle);

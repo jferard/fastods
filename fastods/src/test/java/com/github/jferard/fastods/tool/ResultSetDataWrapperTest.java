@@ -28,7 +28,7 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ResultSetTester;
@@ -94,7 +94,7 @@ public class ResultSetDataWrapperTest {
         }
 
         final DataWrapper wrapper = this.createWrapper(Collections.singletonList("number"), r, 3);
-        final TableRow row = PowerMock.createMock(TableRow.class);
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
@@ -146,7 +146,7 @@ public class ResultSetDataWrapperTest {
     public final void testNoRow() throws IOException {
         final DataWrapper wrapper = this.createWrapper(Arrays.asList("number", "word"),
                 Collections.<List<Object>>emptyList(), 100);
-        final TableRow row = PowerMock.createMock(TableRow.class);
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
@@ -180,7 +180,7 @@ public class ResultSetDataWrapperTest {
         final DataWrapper wrapper = this
                 .createWrapper(Collections.singletonList("value"), Collections.singletonList(l),
                         100);
-        final TableRow row = PowerMock.createMock(TableRow.class);
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
@@ -207,7 +207,7 @@ public class ResultSetDataWrapperTest {
     public final void testOneRow() throws IOException {
         final DataWrapper wrapper = this.createWrapper(Arrays.asList("number", "word"),
                 Collections.singletonList(Arrays.<Object>asList(7, "a")), 100);
-        final TableRow row = PowerMock.createMock(TableRow.class);
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
         final TableCellWalker w = PowerMock.createMock(TableCellWalker.class);
 
         PowerMock.resetAll();
@@ -277,7 +277,7 @@ public class ResultSetDataWrapperTest {
                 .headerStyle(this.tcls).max(100).noAutoFilter().build();
         final SQLException e = new SQLException();
         final ResultSetMetaData metaData = PowerMock.createMock(ResultSetMetaData.class);
-        final TableRow row = PowerMock.createMock(TableRow.class);
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
 
         PowerMock.resetAll();
         EasyMock.expect(rs.getMetaData()).andReturn(metaData);

@@ -28,7 +28,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
@@ -147,8 +147,8 @@ public class DataStyleExampleIT {
                 .dataStyle(floatStyle2).build();
 
         // FIRST ROW
-        TableRow row = table.nextRow();
-        row.setStyle(rowStyle);
+        TableRowImpl row = table.nextRow();
+        row.setRowStyle(rowStyle);
         TableCellWalker cell = row.getWalker();
         cell.setStringValue("An int with the new default format: ");
         cell.next();
@@ -156,7 +156,7 @@ public class DataStyleExampleIT {
 
         // SECOND ROW
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         cell = row.getWalker();
         cell.setStringValue("An int with a custom format: ");
         cell.next();
@@ -169,7 +169,7 @@ public class DataStyleExampleIT {
 
         // THIRD ROW
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         cell = row.getWalker();
         cell.setStringValue("An date with the new default format: ");
         cell.next();
@@ -178,7 +178,7 @@ public class DataStyleExampleIT {
 
         // FOURTH ROW
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         cell = row.getWalker();
         cell.setStringValue("An date with a custom format: ");
         cell.next();
@@ -194,7 +194,7 @@ public class DataStyleExampleIT {
 
         // 5TH ROW
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         cell = row.getWalker();
         cell.setStringValue("A time with the default format: ");
         cell.next();
@@ -202,7 +202,7 @@ public class DataStyleExampleIT {
 
         // 6TH ROW
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         cell = row.getWalker();
         cell.setStringValue("A time with a custom format: ");
         cell.next();
@@ -215,7 +215,7 @@ public class DataStyleExampleIT {
 
         // 7TH ROW: same as FOURTH, but the datastyle is put before the value
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         cell = row.getWalker();
         cell.setStringValue("An date with a custom format (datastyle set before the value): ");
         cell.next();
@@ -226,7 +226,7 @@ public class DataStyleExampleIT {
 
         // 8TH ROW
         row = table.nextRow();
-        row.setStyle(rowStyle);
+        row.setRowStyle(rowStyle);
         row.setDefaultCellStyle(cellStyle2);
         cell = row.getWalker();
         cell.setFloatValue(100000);

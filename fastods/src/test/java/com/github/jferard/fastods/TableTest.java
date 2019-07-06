@@ -131,7 +131,7 @@ public class TableTest {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        final List<TableRow> rows = Lists.newArrayList();
+        final List<TableRowImpl> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.table.nextRow());
         }
@@ -152,10 +152,10 @@ public class TableTest {
             this.table.nextRow();
         }
         this.table.getRow(100);
-        final int lastRowNumber = this.table.getLastRowNumber();
+        final int rowCount = this.table.getRowCount();
 
         PowerMock.verifyAll();
-        Assert.assertEquals(100, lastRowNumber);
+        Assert.assertEquals(101, rowCount);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -171,15 +171,15 @@ public class TableTest {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        final int initialLastRowNumber = this.table.getLastRowNumber();
+        final int initialRowCount = this.table.getRowCount();
         for (int r = 0; r < 7; r++) { // 8 times
             this.table.nextRow();
         }
-        final int lastRowNumber = this.table.getLastRowNumber();
+        final int rowCount = this.table.getRowCount();
 
         PowerMock.verifyAll();
-        Assert.assertEquals(-1, initialLastRowNumber);
-        Assert.assertEquals(6, lastRowNumber);
+        Assert.assertEquals(0, initialRowCount);
+        Assert.assertEquals(7, rowCount);
     }
 
     @Test
@@ -360,7 +360,7 @@ public class TableTest {
 
         PowerMock.replayAll();
         this.table.addObserver(now);
-        final TableRow row = this.table.nextRow();
+        final TableRowImpl row = this.table.nextRow();
         row.getOrCreateCell(0).setBooleanValue(true);
         this.table.flushSomeAvailableRowsFrom(this.xmlUtil, app, 0);
 

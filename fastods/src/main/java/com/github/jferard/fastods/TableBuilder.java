@@ -127,7 +127,7 @@ class TableBuilder {
     private final DataStyles format;
     private final PositionUtil positionUtil;
     private final StylesContainer stylesContainer;
-    private final FastFullList<TableRow> tableRows;
+    private final FastFullList<TableRowImpl> tableRows;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
@@ -228,10 +228,10 @@ class TableBuilder {
     }
 
     /**
-     * @return the index of the last used row
+     * @return the number of rows
      */
-    public int getLastRowNumber() {
-        return this.tableRows.usedSize() - 1;
+    public int getRowCount() {
+        return this.tableRows.usedSize();
     }
 
     /**
@@ -244,7 +244,7 @@ class TableBuilder {
      * @throws IllegalArgumentException if the index is invalid
      * @throws IOException              if an I/O error occurs
      */
-    public TableRow getRow(final Table table, final TableAppender appender, final int rowIndex)
+    public TableRowImpl getRow(final Table table, final TableAppender appender, final int rowIndex)
             throws IOException {
         TableBuilder.checkRow(rowIndex);
         return this.getRowSecure(table, appender, rowIndex, true);
@@ -261,18 +261,18 @@ class TableBuilder {
      * @throws IOException              if an I/O error occurs
      * @throws ParseException           If the address can't be parsed.
      */
-    public TableRow getRow(final Table table, final TableAppender appender, final String address)
-            throws IOException, ParseException {
+    public TableRowImpl getRow(final Table table, final TableAppender appender,
+                               final String address) throws IOException, ParseException {
         final int row = this.positionUtil.newPosition(address).getRow();
         return this.getRow(table, appender, row);
     }
 
-    private TableRow getRowSecure(final Table table, final TableAppender appender,
-                                  final int rowIndex, final boolean updateRowIndex)
+    private TableRowImpl getRowSecure(final Table table, final TableAppender appender,
+                                      final int rowIndex, final boolean updateRowIndex)
             throws IOException {
-        TableRow tr = this.tableRows.get(rowIndex);
+        TableRowImpl tr = this.tableRows.get(rowIndex);
         if (tr == null) {
-            tr = new TableRow(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,
+            tr = new TableRowImpl(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,
                     this.libreOfficeMode, table, rowIndex, this.columnCapacity);
             this.tableRows.set(rowIndex, tr);
             if (rowIndex > this.lastRowIndex) {
@@ -301,7 +301,7 @@ class TableBuilder {
     }
 
     private OdsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
-        return PreprocessedRowsFlusher.create(this.xmlUtil, new ArrayList<TableRow>(
+        return PreprocessedRowsFlusher.create(this.xmlUtil, new ArrayList<TableRowImpl>(
                 this.tableRows.subList(this.lastFlushedRowIndex, toRowIndex)));
     }
 
@@ -322,7 +322,8 @@ class TableBuilder {
      * @return the row
      * @throws IOException if an I/O error occurs
      */
-    public TableRow nextRow(final Table table, final TableAppender appender) throws IOException {
+    public TableRowImpl nextRow(final Table table, final TableAppender appender)
+            throws IOException {
         return this.getRowSecure(table, appender, this.curRowIndex + 1, true);
     }
 
@@ -340,7 +341,7 @@ class TableBuilder {
     public void setCellMerge(final Table table, final TableAppender appender, final int rowIndex,
                              final int colIndex, final int rowCount, final int colCount)
             throws IOException {
-        final TableRow row = this.getRowSecure(table, appender, rowIndex, true);
+        final TableRowImpl row = this.getRowSecure(table, appender, rowIndex, true);
         final TableCell firstCell = row.getOrCreateCell(colIndex);
         if (firstCell.isCovered()) {// already spanned
             throw new IllegalArgumentException("Can't merge cells from a covered cell");
@@ -350,7 +351,7 @@ class TableBuilder {
         firstCell.markRowsSpanned(rowCount);
         row.coverRightCells(colIndex, colCount);
         for (int r = rowIndex + 1; r < rowIndex + rowCount; r++) {
-            final TableRow otherRow = this.getRowSecure(table, appender, r, false);
+            final TableRowImpl otherRow = this.getRowSecure(table, appender, r, false);
             otherRow.coverRightCells(colIndex - 1, colCount + 1);
         }
     }
@@ -455,7 +456,7 @@ class TableBuilder {
                                  final int rowIndex, final int colIndex, final int n)
             throws IOException {
         for (int r = rowIndex + 1; r < rowIndex + n; r++) {
-            final TableRow row = this.getRowSecure(table, appender, r, false);
+            final TableRowImpl row = this.getRowSecure(table, appender, r, false);
             final TableCell cell = row.getOrCreateCell(colIndex);
             cell.setCovered();
         }
@@ -490,7 +491,7 @@ class TableBuilder {
      * @param r the index
      * @return the row
      */
-    public TableRow getTableRow(final int r) {
+    public TableRowImpl getTableRow(final int r) {
         return this.tableRows.get(r);
     }
 

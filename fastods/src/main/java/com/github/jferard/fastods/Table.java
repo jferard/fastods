@@ -182,8 +182,8 @@ public class Table implements NamedObject {
     /**
      * @return the number of the last row (0..)
      */
-    public int getLastRowNumber() {
-        return this.builder.getLastRowNumber();
+    public int getRowCount() {
+        return this.builder.getRowCount();
     }
 
     /**
@@ -217,7 +217,7 @@ public class Table implements NamedObject {
      * @throws IllegalArgumentException if the index is invalid
      * @throws IOException              if the row was flushed
      */
-    public TableRow getRow(final int rowIndex) throws IOException {
+    public TableRowImpl getRow(final int rowIndex) throws IOException {
         return this.builder.getRow(this, this.appender, rowIndex);
     }
 
@@ -234,8 +234,16 @@ public class Table implements NamedObject {
      * @return the next row
      * @throws IOException if an error occurs
      */
-    public TableRow nextRow() throws IOException {
+    @Deprecated
+    public TableRowImpl nextRow() throws IOException {
         return this.builder.nextRow(this, this.appender);
+    }
+
+    /**
+     * @return a CellWalker on the row
+     */
+    public TableCellWalker getWalker() throws IOException {
+        return new TableCellWalkerImpl2(this);
     }
 
     /**

@@ -42,7 +42,7 @@ public interface TableCellWalker extends TableCell {
     /**
      * Set the walker on the last cell of the row
      */
-    void lastCell();
+    void last();
 
     /**
      * Set the walker on the next cell of the row

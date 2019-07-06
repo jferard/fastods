@@ -30,7 +30,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRow;
+import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
@@ -103,7 +103,7 @@ class H_Advanced {
         //     document.addObjectStyle(aTextStyle);
         //
         // An now, you can fill the Spreadsheet as usual.
-        final TableRow row = table.getRow(0);
+        final TableRowImpl row = table.getRow(0);
         final TableCellWalker walker = row.getWalker();
         walker.setStringValue("A huge document");
         walker.setStyle(boldCellStyle);

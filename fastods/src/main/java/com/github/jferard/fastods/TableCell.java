@@ -39,15 +39,6 @@ import java.util.Date;
  */
 public interface TableCell {
     /**
-     * Generate the XML for the table cell.
-     *
-     * @param util       an util.
-     * @param appendable the appendable to fill
-     * @throws IOException if an error occurs
-     */
-    void appendXMLToTableRow(XMLUtil util, Appendable appendable) throws IOException;
-
-    /**
      * Marks a number of rows with a span
      *
      * @param n the number of rows
@@ -304,6 +295,11 @@ public interface TableCell {
      * @param dataStyle the data style
      */
     void setDataStyle(DataStyle dataStyle);
+
+    /**
+     * @return the index of the cell in the current row
+     */
+    int cellIndex();
 
     /**
      * 19.385 office:value-type.

@@ -24,7 +24,10 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -36,7 +39,7 @@ import java.util.Date;
  * @author Julien Férard
  */
 public class TableCellWalkerImpl implements TableCellWalker {
-    private final TableRow row;
+    private final TableRowImpl row;
     private int c;
 
     /**
@@ -44,14 +47,9 @@ public class TableCellWalkerImpl implements TableCellWalker {
      *
      * @param row the row
      */
-    TableCellWalkerImpl(final TableRow row) {
+    TableCellWalkerImpl(final TableRowImpl row) {
         this.row = row;
         this.c = 0;
-    }
-
-    @Override
-    public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -175,7 +173,7 @@ public class TableCellWalkerImpl implements TableCellWalker {
     }
 
     @Override
-    public void lastCell() {
+    public void last() {
         this.c = this.row.getColumnCount() - 1;
     }
 
@@ -256,5 +254,10 @@ public class TableCellWalkerImpl implements TableCellWalker {
     @Override
     public void setDataStyle(final DataStyle dataStyle) {
         this.row.getOrCreateCell(this.c).setDataStyle(dataStyle);
+    }
+
+    @Override
+    public int cellIndex() {
+        return this.c;
     }
 }
