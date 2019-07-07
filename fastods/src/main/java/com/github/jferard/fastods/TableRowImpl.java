@@ -158,8 +158,9 @@ public class TableRowImpl implements TableRow {
     /**
      * @return a CellWalker on the row
      */
+    @Deprecated
     public RowCellWalker getWalker() {
-        return new OldTableCellWalkerImpl(this);
+        return new RowCellWalkerImpl(this);
     }
 
     /**

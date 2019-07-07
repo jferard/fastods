@@ -27,9 +27,7 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
@@ -49,7 +47,7 @@ import java.util.logging.Logger;
  */
 class F_MoreOnCells {
     /**
-     * @throws IOException if the file can't be written
+     * @throws IOException        if the file can't be written
      * @throws URISyntaxException if the uri is not valid
      */
     static void example() throws IOException, URISyntaxException {

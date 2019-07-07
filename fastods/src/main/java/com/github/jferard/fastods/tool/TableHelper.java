@@ -26,8 +26,7 @@ package com.github.jferard.fastods.tool;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.RowCellWalker;
-import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.Position;
 import com.github.jferard.fastods.util.PositionUtil;
@@ -68,12 +67,12 @@ public class TableHelper {
      * @param rowMerge    the number of rows to merge
      * @param columnMerge the number of columns to merge
      * @throws IOException if the cells can't be merged
+     * @deprecated use table.setCellMerge.
      */
+    @Deprecated
     public void setCellMerge(final Table table, final int rowIndex, final int colIndex,
                              final int rowMerge, final int columnMerge) throws IOException {
-        final TableCell cell = this.getCell(table, rowIndex, colIndex);
-        cell.setRowsSpanned(rowMerge);
-        cell.setColumnsSpanned(columnMerge);
+        table.setCellMerge(rowIndex, colIndex, rowMerge, columnMerge);
     }
 
     /**
@@ -91,7 +90,7 @@ public class TableHelper {
         final Position position = this.positionUtil.newPosition(address);
         final int row = position.getRow();
         final int col = position.getColumn();
-        this.setCellMerge(table, row, col, rowMerge, columnMerge);
+        table.setCellMerge(row, col, rowMerge, columnMerge);
     }
 
     /**
@@ -164,10 +163,10 @@ public class TableHelper {
      * @return the cell walker
      * @throws IOException if the row was flushed
      */
-    public RowCellWalker getCell(final Table table, final int rowIndex, final int colIndex)
+    public TableCellWalker getCell(final Table table, final int rowIndex, final int colIndex)
             throws IOException {
-        final TableRowImpl row = table.getRow(rowIndex);
-        final RowCellWalker walker = row.getWalker();
+        final TableCellWalker walker = table.getWalker();
+        walker.toRow(rowIndex);
         walker.to(colIndex);
         return walker;
     }
@@ -179,7 +178,7 @@ public class TableHelper {
      * @throws IOException    if the row was flushed
      * @throws ParseException if the address can't be parsed
      */
-    public RowCellWalker getCell(final Table table, final String address)
+    public TableCellWalker getCell(final Table table, final String address)
             throws IOException, ParseException {
         final Position position = this.positionUtil.newPosition(address);
         return this.getCell(table, position.getRow(), position.getColumn());

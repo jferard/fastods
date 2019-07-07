@@ -34,7 +34,8 @@ import java.util.Date;
 /**
  * @author Julien Férard
  */
-public class OldTableCellWalkerImpl implements RowCellWalker {
+@Deprecated
+public class RowCellWalkerImpl implements RowCellWalker {
     private final TableRowImpl row;
     private int c;
 
@@ -43,7 +44,7 @@ public class OldTableCellWalkerImpl implements RowCellWalker {
      *
      * @param row the row
      */
-    OldTableCellWalkerImpl(final TableRowImpl row) {
+    RowCellWalkerImpl(final TableRowImpl row) {
         this.row = row;
         this.c = 0;
     }
