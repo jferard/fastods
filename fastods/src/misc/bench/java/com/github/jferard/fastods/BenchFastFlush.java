@@ -56,14 +56,14 @@ public class BenchFastFlush extends Bench {
                 .createWriter(new File("generated_files", "fastods_flush_benchmark.ods"));
         final NamedOdsDocument document = writer.document();
         final Table table = document.addTable("test", this.getRowCount(), this.getColCount());
+        final TableCellWalker walker = table.getWalker();
 
         for (int y = 0; y < this.getRowCount(); y++) {
-            final TableRowImpl row = table.nextRow();
-            final RowCellWalker walker = row.getWalker();
             for (int x = 0; x < this.getColCount(); x++) {
                 walker.setFloatValue(this.getRandom().nextInt(1000));
                 walker.next();
             }
+            walker.nextRow();
         }
 
         document.save();
