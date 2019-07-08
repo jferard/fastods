@@ -123,6 +123,39 @@ class H_Advanced {
         final Table table = document.addTable("advanced");
         final TableCellWalker walker = table.getWalker();
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Auto filters
+        // It's easy to add manually an autofilter. Let's create some content:
+        walker.setStringValue("File Type");
+        walker.next();
+        walker.setStringValue("Extension");
+        walker.nextRow();
+        walker.setStringValue("Text");
+        walker.next();
+        walker.setStringValue(".odt");
+        walker.nextRow();
+        walker.setStringValue("Spreadsheet");
+        walker.next();
+        walker.setStringValue(".ods");
+
+        // Now we need to set the filter:
+        table.addAutoFilter(0,0, walker.rowIndex(), walker.colIndex());
+
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "h_advanced_autofilter.ods"));
+    }
+
+    /**
+     * @throws IOException  if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
+    static void example3() throws IOException, SQLException {
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("advanced");
+        final TableCellWalker walker = table.getWalker();
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Writing a ResultSet to the Spreadsheet
         // We need a ResultSet. Let's use H2:
 
@@ -228,6 +261,6 @@ class H_Advanced {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "h_advanced.ods"));
+        writer.saveAs(new File("generated_files", "h_advanced_rs.ods"));
     }
 }

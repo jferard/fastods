@@ -77,10 +77,9 @@ public class ProfileFastODS {
         final OdsDocument document = writer.document();
         final Table table = document
                 .addTable("test", ProfileFastODS.ROW_COUNT / 2, ProfileFastODS.COL_COUNT / 2);
+        final TableCellWalker walker = table.getWalker();
 
         for (int y = 0; y < ProfileFastODS.ROW_COUNT / 2; y++) {
-            final TableRow row = table.nextRow();
-            final TableCellWalker walker = row.getWalker();
             for (int x = 0; x < ProfileFastODS.COL_COUNT / 2; x++) {
                 walker.setFloatValue(this.random.nextInt(1000));
                 walker.next();
@@ -88,6 +87,7 @@ public class ProfileFastODS {
             if (y % (ProfileFastODS.ROW_COUNT / 100) == 0) {
                 this.logger.info("Row " + y);
             }
+            walker.nextRow();
         }
 
         writer.saveAs(new File("generated_files", "fastods_profile.ods"));
@@ -111,10 +111,9 @@ public class ProfileFastODS {
         final OdsDocument document = writer.document();
         final Table table = document
                 .addTable("test", ProfileFastODS.ROW_COUNT / 4, ProfileFastODS.COL_COUNT / 4);
+        final TableCellWalker walker = table.getWalker();
 
         for (int y = 0; y < ProfileFastODS.ROW_COUNT / 4; y++) {
-            final TableRow row = table.nextRow();
-            final TableCellWalker walker = row.getWalker();
             for (int x = 0; x < ProfileFastODS.COL_COUNT / 4; x++) {
                 walker.setFloatValue(this.random.nextInt(1000));
                 walker.next();
@@ -122,6 +121,7 @@ public class ProfileFastODS {
             if (y % (ProfileFastODS.ROW_COUNT / 200) == 0) {
                 this.logger.info("Row " + y);
             }
+            walker.nextRow();
         }
 
         writer.saveAs(new File("generated_files", "fastods_profile.ods"));
@@ -135,23 +135,25 @@ public class ProfileFastODS {
 
     @Test
     public final void testFast() throws IOException {
-        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final OdsDocument document = writer.document();
-        final Table table = document
-                .addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
+        while (true) {
+            final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+            final OdsDocument document = writer.document();
+            final Table table = document
+                    .addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
+            final TableCellWalker walker = table.getWalker();
 
-        for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
-            final TableRow row = table.nextRow();
-            final TableCellWalker walker = row.getWalker();
-            for (int x = 0; x < ProfileFastODS.COL_COUNT; x++) {
-                walker.setFloatValue(this.random.nextInt(1000));
-                walker.next();
+            for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {
+                for (int x = 0; x < ProfileFastODS.COL_COUNT; x++) {
+                    walker.setFloatValue(this.random.nextInt(1000));
+                    walker.next();
+                }
+                if (y % (ProfileFastODS.ROW_COUNT / 50) == 0) {
+                    this.logger.info("Row " + y);
+                }
+                walker.nextRow();
             }
-            if (y % (ProfileFastODS.ROW_COUNT / 50) == 0) {
-                this.logger.info("Row " + y);
-            }
+
+            writer.saveAs(new File("generated_files", "fastods_profile.ods"));
         }
-
-        writer.saveAs(new File("generated_files", "fastods_profile.ods"));
     }
 }

@@ -168,7 +168,6 @@ class TableBuilder {
         this.columnCapacity = columnCapacity;
         this.configEntry = configEntry;
         this.style = TableStyle.DEFAULT_TABLE_STYLE;
-
         this.columnStyles = FastFullList.<TableColumnStyle>builder()
                 .blankElement(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE)
                 .capacity(this.columnCapacity).build();

@@ -59,7 +59,7 @@ public class TableCellImpl implements TableCell {
         DATE_VALUE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    private final TableRowImpl parent;
+    private final TableRowImpl parentRow;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final StylesContainer stylesContainer;
@@ -86,18 +86,18 @@ public class TableCellImpl implements TableCell {
      *                        styles.xml
      * @param dataStyles      the styles
      * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param parent          the parent row
+     * @param parentRow          the parent row
      * @param columnIndex     index in parent row
      */
     TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
                   final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final boolean libreOfficeMode, final TableRowImpl parent, final int columnIndex) {
+                  final boolean libreOfficeMode, final TableRowImpl parentRow, final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
         this.libreOfficeMode = libreOfficeMode;
-        this.parent = parent;
+        this.parentRow = parentRow;
         this.columnIndex = columnIndex;
     }
 
@@ -157,7 +157,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setColumnsSpanned(final int n) {
-        this.parent.setColumnsSpanned(this.columnIndex, n);
+        this.parentRow.setColumnsSpanned(this.columnIndex, n);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setRowsSpanned(final int n) throws IOException {
-        this.parent.setRowsSpanned(this.columnIndex, n);
+        this.parentRow.setRowsSpanned(this.columnIndex, n);
     }
 
     @Override
@@ -289,7 +289,7 @@ public class TableCellImpl implements TableCell {
      */
     private TableCellStyle getCurCellStyle() {
         if (this.style == null) {
-            return this.parent.findDefaultCellStyle(this.columnIndex);
+            return this.parentRow.findDefaultCellStyle(this.columnIndex);
         } else {
             return this.style;
         }
@@ -386,7 +386,7 @@ public class TableCellImpl implements TableCell {
 
     @Override
     public void setCellMerge(final int rowMerge, final int columnMerge) throws IOException {
-        this.parent.setCellMerge(this.columnIndex, rowMerge, columnMerge);
+        this.parentRow.setCellMerge(this.columnIndex, rowMerge, columnMerge);
     }
 
     @Override

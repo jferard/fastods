@@ -58,7 +58,7 @@ public class TableRowImpl implements TableRow {
     }
 
 
-    private final Table parent;
+    private final Table parentTable;
     private final int rowIndex;
     private final StylesContainer stylesContainer;
     private final WriteUtil writeUtil;
@@ -77,20 +77,20 @@ public class TableRowImpl implements TableRow {
      * @param stylesContainer the styles container
      * @param dataStyles      the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param parent          the parent table
+     * @param parentTable     the parent table
      * @param rowIndex        the index of this row
      * @param columnCapacity  the max column
      */
     TableRowImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
                  final StylesContainer stylesContainer, final DataStyles dataStyles,
-                 final boolean libreOfficeMode, final Table parent, final int rowIndex,
+                 final boolean libreOfficeMode, final Table parentTable, final int rowIndex,
                  final int columnCapacity) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
         this.libreOfficeMode = libreOfficeMode;
-        this.parent = parent;
+        this.parentTable = parentTable;
         this.rowIndex = rowIndex;
         this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
         this.cells = FastFullList.newListWithCapacity(columnCapacity);
@@ -130,10 +130,9 @@ public class TableRowImpl implements TableRow {
         if (this.rowStyle != null) {
             util.appendEAttribute(appendable, "table:style-name", this.rowStyle.getName());
         }
-        final TableCellStyle defaultCellStyle = this.getDefaultCellStyle();
-        if (defaultCellStyle != null) {
+        if (this.defaultCellStyle != null) {
             util.appendEAttribute(appendable, "table:default-cell-style-name",
-                    defaultCellStyle.getName());
+                    this.defaultCellStyle.getName());
         }
         appendable.append(">");
     }
@@ -178,7 +177,7 @@ public class TableRowImpl implements TableRow {
         } else if (rowMerge <= 1 && columnMerge <= 1) {
             return;
         }
-        this.parent.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
+        this.parentTable.setCellMerge(this.rowIndex, colIndex, rowMerge, columnMerge);
     }
 
     /**
@@ -240,7 +239,7 @@ public class TableRowImpl implements TableRow {
             throw new IllegalArgumentException("Can't span from covered cell");
         }
 
-        this.parent.setRowsSpanned(this.rowIndex, colIndex, n);
+        this.parentTable.setRowsSpanned(this.rowIndex, colIndex, n);
     }
 
     /**
@@ -270,6 +269,7 @@ public class TableRowImpl implements TableRow {
             this.stylesContainer.addContentStyle(dcs);
         }
         this.rowStyle = rowStyle;
+        this.defaultCellStyle = rowStyle.getDefaultCellStyle();
     }
 
     @Override
@@ -293,17 +293,9 @@ public class TableRowImpl implements TableRow {
      * @return the style, never null
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
-        TableCellStyle s = this.getDefaultCellStyle();
-        if (s == null) {
-            s = this.parent.findDefaultCellStyle(columnIndex);
-        }
-        return s;
-    }
-
-    private TableCellStyle getDefaultCellStyle() {
         TableCellStyle s = this.defaultCellStyle;
         if (s == null) {
-            s = this.rowStyle.getDefaultCellStyle();
+            s = this.parentTable.findDefaultCellStyle(columnIndex);
         }
         return s;
     }
