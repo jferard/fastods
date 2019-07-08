@@ -30,6 +30,7 @@ import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -343,6 +344,6 @@ public class Table implements NamedObject {
      * @param c2 last col
      */
     public void addAutoFilter(final int r1, final int c1, final int r2, final int c2) {
-        this.contentElement.addAutoFilter(this, r1, c1, r2, c2);
+        this.contentElement.addAutoFilter(AutoFilter.builder(this, r1, c1, r2, c2).build());
     }
 }

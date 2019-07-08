@@ -28,6 +28,7 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -54,7 +55,7 @@ public class ContentElement implements OdsElement {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
-    private List<String> autoFilters;
+    private List<AutoFilter> autoFilters;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
@@ -154,7 +155,7 @@ public class ContentElement implements OdsElement {
     }
 
     private void flushPendingTablesAndLastTableAvailableRows(final XMLUtil util,
-                                                             final ZipUTF8Writer writer,
+                                                             final Appendable writer,
                                                              final SettingsElement settingsElement,
                                                              final int lastTableIndex,
                                                              final int curTableIndex)
@@ -165,7 +166,7 @@ public class ContentElement implements OdsElement {
         lastTable.flushAllAvailableRows(util, writer);
     }
 
-    private void flushRemainingRowsFromCurTable(final XMLUtil util, final ZipUTF8Writer writer,
+    private void flushRemainingRowsFromCurTable(final XMLUtil util, final Appendable writer,
                                                 final SettingsElement settingsElement,
                                                 final int curTableIndex) throws IOException {
         final int firstRowIndex = this.flushPosition.getLastRowIndex() + 1;
@@ -174,7 +175,7 @@ public class ContentElement implements OdsElement {
         settingsElement.addTableConfig(curTable.getConfigEntry());
     }
 
-    private void flushCompleteTables(final XMLUtil util, final ZipUTF8Writer writer,
+    private void flushCompleteTables(final XMLUtil util, final Appendable writer,
                                      final SettingsElement settingsElement, final int from,
                                      final int to) throws IOException {
         for (int index = to + 1; index < from; index++) {
@@ -268,7 +269,7 @@ public class ContentElement implements OdsElement {
      */
     public void writePostamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         if (this.autoFilters != null) {
-            this.appendAutoFilters(writer, util);
+            this.appendAutoFilters(util, writer);
         }
         writer.write("</office:spreadsheet>");
         writer.write("</office:body>");
@@ -328,14 +329,11 @@ public class ContentElement implements OdsElement {
         writer.write("<office:spreadsheet>");
     }
 
-    private void appendAutoFilters(final Appendable appendable, final XMLUtil util)
+    private void appendAutoFilters(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<table:database-ranges>");
-        for (final String autoFilter : this.autoFilters) {
-            appendable.append("<table:database-range");
-            util.appendAttribute(appendable, "table:display-filter-buttons", "true");
-            util.appendAttribute(appendable, "table:target-range-address", autoFilter);
-            appendable.append("/>");
+        for (final AutoFilter autoFilter : this.autoFilters) {
+            autoFilter.appendXMLContent(util, appendable);
         }
         appendable.append("</table:database-ranges>");
     }
@@ -343,19 +341,13 @@ public class ContentElement implements OdsElement {
     /**
      * Add an autoFilter to a table
      *
-     * @param table the table where the filter goes
-     * @param r1    first row index (0..n-1)
-     * @param c1    first col index
-     * @param r2    last row index
-     * @param c2    last col index
+     * @param autoFilter the auto filter
      */
-    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
-                              final int c2) {
+    public void addAutoFilter(final AutoFilter autoFilter) {
         if (this.autoFilters == null) {
-            this.autoFilters = new ArrayList<String>();
+            this.autoFilters = new ArrayList<AutoFilter>();
         }
-
-        this.autoFilters.add(this.positionUtil.toRangeAddress(table, r1, c1, r2, c2));
+        this.autoFilters.add(autoFilter);
     }
 
 }
