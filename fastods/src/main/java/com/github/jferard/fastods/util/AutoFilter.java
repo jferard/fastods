@@ -52,18 +52,21 @@ public class AutoFilter implements XMLConvertible {
     }
 
     private final String rangeAddress;
+    private final boolean displayButtons;
 
     /**
      * @param rangeAddress the range address
+     * @param displayButtons display buttons if true
      */
-    public AutoFilter(final String rangeAddress) {
+    public AutoFilter(final String rangeAddress, final boolean displayButtons) {
         this.rangeAddress = rangeAddress;
+        this.displayButtons = displayButtons;
     }
 
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<table:database-range");
-        util.appendAttribute(appendable, "table:display-filter-buttons", "true");
+        util.appendAttribute(appendable, "table:display-filter-buttons", this.displayButtons);
         util.appendAttribute(appendable, "table:target-range-address", this.rangeAddress);
         appendable.append("/>");
     }

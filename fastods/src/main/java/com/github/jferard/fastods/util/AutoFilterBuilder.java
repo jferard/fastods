@@ -28,18 +28,31 @@ package com.github.jferard.fastods.util;
  */
 public class AutoFilterBuilder {
     private final String rangeAddress;
+    private boolean displayButtons;
 
     /**
      * @param rangeAddress the range address
      */
     public AutoFilterBuilder(final String rangeAddress) {
         this.rangeAddress = rangeAddress;
+        this.displayButtons = true;
     }
 
     /**
      * @return the auto filter
      */
     public AutoFilter build() {
-        return new AutoFilter(this.rangeAddress);
+        return new AutoFilter(this.rangeAddress, this.displayButtons);
+    }
+
+    /**
+     * 19.620 table:display-filter-buttons
+     *
+     * Don't display buttons
+     * @return this for fluent style
+     */
+    public AutoFilterBuilder hideButtons() {
+        this.displayButtons = false;
+        return this;
     }
 }
