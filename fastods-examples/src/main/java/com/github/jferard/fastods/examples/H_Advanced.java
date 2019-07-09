@@ -34,6 +34,8 @@ import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
+import com.github.jferard.fastods.util.AutoFilter;
+import com.github.jferard.fastods.util.FilterEnumerate;
 import com.github.jferard.fastods.util.SimpleLength;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
@@ -114,9 +116,8 @@ class H_Advanced {
 
     /**
      * @throws IOException  if the file can't be written
-     * @throws SQLException in something goes wrong with the local database
      */
-    static void example2() throws IOException, SQLException {
+    static void example2() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -136,9 +137,39 @@ class H_Advanced {
         walker.setStringValue("Spreadsheet");
         walker.next();
         walker.setStringValue(".ods");
+        walker.nextRow();
+        walker.setStringValue("Presentation");
+        walker.next();
+        walker.setStringValue(".odp");
+        walker.nextRow();
+        walker.setStringValue("Drawing");
+        walker.next();
+        walker.setStringValue(".odg");
+        walker.nextRow();
+        walker.setStringValue("Chart");
+        walker.next();
+        walker.setStringValue(".odc");
+        walker.nextRow();
+        walker.setStringValue("Formula");
+        walker.next();
+        walker.setStringValue(".odf");
+        walker.nextRow();
+        walker.setStringValue("Image");
+        walker.next();
+        walker.setStringValue(".odi");
+        walker.nextRow();
+        walker.setStringValue("Master Document");
+        walker.next();
+        walker.setStringValue(".odm");
+        walker.nextRow();
+        walker.setStringValue("Database");
+        walker.next();
+        walker.setStringValue(".odb");
 
         // Now we need to set the filter:
-        table.addAutoFilter(0,0, walker.rowIndex(), walker.colIndex());
+        table.addAutoFilter(AutoFilter.builder(table, 0, 0, walker.rowIndex(), walker.colIndex())
+                .filter(new FilterEnumerate(0, "Spreadsheet", "Presentation", "Master Document"))
+                .build());
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
@@ -177,8 +208,9 @@ class H_Advanced {
             // It's possible to add multiple ResultSets:
             walker.toRow(0);
             walker.to(3);
-            final ResultSet rs2 = s
-                    .executeQuery("SELECT file_type as file_type7, extension FROM document WHERE LENGTH(file_type) > 7");
+            final ResultSet rs2 = s.executeQuery(
+                    "SELECT file_type as file_type7, extension FROM document WHERE LENGTH" +
+                            "(file_type) > 7");
             walker.addData(ResultSetDataWrapper.builder(rs2).build());
 
             // Let's create another table to test data types:

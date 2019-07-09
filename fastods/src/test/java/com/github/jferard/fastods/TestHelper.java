@@ -41,6 +41,13 @@ public class TestHelper {
         return sb.toString();
     }
 
+    /**
+     *
+     * Beware: sensitive to spaces (spaces are children)
+     * @param xml
+     * @param o
+     * @throws IOException
+     */
     public static void assertXMLEquals(final String xml, final XMLConvertible o)
             throws IOException {
         DomTester.assertEquals(xml, TestHelper.toXML(o));

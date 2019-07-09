@@ -30,44 +30,55 @@ import java.io.IOException;
 
 /**
  * 9.4.15 <table:database-range>
- *
+ * <p>
  * A filter on a range
  *
  * @author J. Férard
  */
 public class AutoFilter implements XMLConvertible {
     /**
-     *
      * @param table the table
-     * @param r1 first row of the range
-     * @param c1 first col of the range
-     * @param r2 last row
-     * @param c2 last col
+     * @param r1    first row of the range
+     * @param c1    first col of the range
+     * @param r2    last row
+     * @param c2    last col
      * @return a new builder
      */
-    public static AutoFilterBuilder builder(final Table table, final int r1, final int c1, final int r2,
-                              final int c2) {
+    public static AutoFilterBuilder builder(final Table table, final int r1, final int c1,
+                                            final int r2, final int c2) {
         final String rangeAddress = PositionUtil.create().toRangeAddress(table, r1, c1, r2, c2);
         return new AutoFilterBuilder(rangeAddress);
     }
 
     private final String rangeAddress;
     private final boolean displayButtons;
+    private final Filter filter;
 
     /**
-     * @param rangeAddress the range address
+     * @param rangeAddress   the range address
      * @param displayButtons display buttons if true
+     * @param filter         the filter
      */
-    public AutoFilter(final String rangeAddress, final boolean displayButtons) {
+    public AutoFilter(final String rangeAddress, final boolean displayButtons,
+                      final Filter filter) {
         this.rangeAddress = rangeAddress;
         this.displayButtons = displayButtons;
+        this.filter = filter;
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<table:database-range");
+        util.appendAttribute(appendable, "table:name", "this");
         util.appendAttribute(appendable, "table:display-filter-buttons", this.displayButtons);
         util.appendAttribute(appendable, "table:target-range-address", this.rangeAddress);
-        appendable.append("/>");
+        if (this.filter == null) {
+            appendable.append("/>");
+        } else {
+            appendable.append("><table:filter>");
+            this.filter.appendXMLContent(util, appendable);
+            appendable.append("</table:filter></table:database-range>");
+        }
     }
 }

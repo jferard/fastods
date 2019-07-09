@@ -23,52 +23,12 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.XMLConvertible;
+
 /**
- * A builder for AutoFilter class
+ * 9.5.2<table:filter>
  *
  * @author J. Férard
  */
-public class AutoFilterBuilder {
-    private final String rangeAddress;
-    private boolean displayButtons;
-    private Filter filter;
-
-    /**
-     * @param rangeAddress the range address
-     */
-    public AutoFilterBuilder(final String rangeAddress) {
-        this.rangeAddress = rangeAddress;
-        this.displayButtons = true;
-    }
-
-    /**
-     * @return the auto filter
-     */
-    public AutoFilter build() {
-        return new AutoFilter(this.rangeAddress, this.displayButtons, this.filter);
-    }
-
-    /**
-     * 9.5.2<table:filter>
-     *
-     *
-     * @param filter the filter
-     * @return this for fluent style
-     */
-    public AutoFilterBuilder filter(final Filter filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /**
-     * 19.620 table:display-filter-buttons
-     * <p>
-     * Don't display buttons
-     *
-     * @return this for fluent style
-     */
-    public AutoFilterBuilder hideButtons() {
-        this.displayButtons = false;
-        return this;
-    }
+public interface Filter extends XMLConvertible {
 }

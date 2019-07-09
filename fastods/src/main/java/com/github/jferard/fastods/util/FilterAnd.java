@@ -23,52 +23,29 @@
 
 package com.github.jferard.fastods.util;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * A builder for AutoFilter class
- *
- * @author J. Férard
+ * 9.5.3<table:filter-and>
  */
-public class AutoFilterBuilder {
-    private final String rangeAddress;
-    private boolean displayButtons;
-    private Filter filter;
+public class FilterAnd implements Filter {
+    private final List<Filter> filters;
 
     /**
-     * @param rangeAddress the range address
+     * @param filters the filters
      */
-    public AutoFilterBuilder(final String rangeAddress) {
-        this.rangeAddress = rangeAddress;
-        this.displayButtons = true;
+    FilterAnd(final Filter... filters) {
+        this.filters = Arrays.asList(filters);
     }
 
-    /**
-     * @return the auto filter
-     */
-    public AutoFilter build() {
-        return new AutoFilter(this.rangeAddress, this.displayButtons, this.filter);
-    }
-
-    /**
-     * 9.5.2<table:filter>
-     *
-     *
-     * @param filter the filter
-     * @return this for fluent style
-     */
-    public AutoFilterBuilder filter(final Filter filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /**
-     * 19.620 table:display-filter-buttons
-     * <p>
-     * Don't display buttons
-     *
-     * @return this for fluent style
-     */
-    public AutoFilterBuilder hideButtons() {
-        this.displayButtons = false;
-        return this;
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<table:filter-and>");
+        for (final Filter filter : this.filters) {
+            filter.appendXMLContent(util, appendable);
+        }
+        appendable.append("</table:filter-and>");
     }
 }

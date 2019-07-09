@@ -23,52 +23,40 @@
 
 package com.github.jferard.fastods.util;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * A builder for AutoFilter class
- *
+ * 9.5.6<table:filter-set-item>
  * @author J. Férard
+ *
+ * TODO: See compatibility note in 9.5.5<table:filter-condition>
  */
-public class AutoFilterBuilder {
-    private final String rangeAddress;
-    private boolean displayButtons;
-    private Filter filter;
+public class FilterEnumerate implements Filter {
+    private final int colIndex;
+    private final List<String> values;
 
     /**
-     * @param rangeAddress the range address
+     * @param colIndex the index
+     * @param values the values
      */
-    public AutoFilterBuilder(final String rangeAddress) {
-        this.rangeAddress = rangeAddress;
-        this.displayButtons = true;
+    public FilterEnumerate(final int colIndex, final String... values) {
+        this.colIndex = colIndex;
+        this.values = Arrays.asList(values);
     }
 
-    /**
-     * @return the auto filter
-     */
-    public AutoFilter build() {
-        return new AutoFilter(this.rangeAddress, this.displayButtons, this.filter);
-    }
-
-    /**
-     * 9.5.2<table:filter>
-     *
-     *
-     * @param filter the filter
-     * @return this for fluent style
-     */
-    public AutoFilterBuilder filter(final Filter filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /**
-     * 19.620 table:display-filter-buttons
-     * <p>
-     * Don't display buttons
-     *
-     * @return this for fluent style
-     */
-    public AutoFilterBuilder hideButtons() {
-        this.displayButtons = false;
-        return this;
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<table:filter-condition");
+        util.appendAttribute(appendable, "table:field-number", this.colIndex);
+        appendable.append(">");
+        for (final String value : this.values) {
+            appendable.append("<table:filter-set-item");
+            util.appendAttribute(appendable, "table:value", value);
+            appendable.append("/>");
+        }
+        appendable.append("</table:filter-condition>");
     }
 }
