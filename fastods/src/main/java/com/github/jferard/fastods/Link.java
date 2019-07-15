@@ -24,8 +24,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.ref.TableRef;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
@@ -46,6 +46,14 @@ import java.net.URL;
  */
 public final class Link implements ParagraphElement {
     /**
+     * @param text the text content
+     * @return the link builder
+     */
+    public static LinkBuilder builder(final String text) {
+        return new LinkBuilder(text);
+    }
+
+    /**
      * Create a new styled Link to a table
      *
      * @param text  the text content
@@ -53,8 +61,9 @@ public final class Link implements ParagraphElement {
      * @param table the destination
      * @return the link
      */
-    public static Link create(final String text, final TextStyle ts, final NamedObject table) {
-        return new Link(text, ts, '#' + table.getName());
+    @Deprecated
+    public static Link create(final String text, final TextStyle ts, final Table table) {
+        return Link.builder(text).style(ts).to(table).build();
     }
 
     /**
@@ -64,8 +73,9 @@ public final class Link implements ParagraphElement {
      * @param table the destination
      * @return the link
      */
-    public static Link create(final String text, final NamedObject table) {
-        return new Link(text, null, '#' + table.getName());
+    @Deprecated
+    public static Link create(final String text, final Table table) {
+        return Link.builder(text).to(table).build();
     }
 
     /**
@@ -76,8 +86,9 @@ public final class Link implements ParagraphElement {
      * @param relativeRef the ref
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final TextStyle ts, final String relativeRef) {
-        return new Link(text, ts, '#' + relativeRef);
+        return Link.builder(text).style(ts).to(relativeRef).build();
     }
 
     /**
@@ -87,8 +98,9 @@ public final class Link implements ParagraphElement {
      * @param relativeRef the ref
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final String relativeRef) {
-        return new Link(text, null, '#' + relativeRef);
+        return Link.builder(text).to(relativeRef).build();
     }
 
     /**
@@ -99,8 +111,9 @@ public final class Link implements ParagraphElement {
      * @param file the file
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final TextStyle ts, final File file) {
-        return new Link(text, ts, file.toURI().toString());
+        return Link.builder(text).style(ts).to(file).build();
     }
 
     /**
@@ -110,8 +123,9 @@ public final class Link implements ParagraphElement {
      * @param file the file
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final File file) {
-        return new Link(text, null, file.toURI().toString());
+        return Link.builder(text).to(file).build();
     }
 
     /**
@@ -122,8 +136,9 @@ public final class Link implements ParagraphElement {
      * @param url  the url
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final TextStyle ts, final URL url) {
-        return new Link(text, ts, url.toString());
+        return Link.builder(text).style(ts).to(url).build();
     }
 
     /**
@@ -133,8 +148,9 @@ public final class Link implements ParagraphElement {
      * @param url  the url
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final URL url) {
-        return new Link(text, null, url.toString());
+        return Link.builder(text).to(url).build();
     }
 
     /**
@@ -145,8 +161,34 @@ public final class Link implements ParagraphElement {
      * @param uri  the uri
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final TextStyle ts, final URI uri) {
-        return new Link(text, ts, uri.toString());
+        return Link.builder(text).style(ts).to(uri).build();
+    }
+
+    /**
+     * Create a new link to a given table ref
+     *
+     * @param text     the text content
+     * @param tableRef the table ref
+     * @return the link
+     */
+    @Deprecated
+    public static Link create(final String text, final TableRef tableRef) {
+        return Link.builder(text).to(tableRef).build();
+    }
+
+    /**
+     * Create a new styled link to a given uri
+     *
+     * @param text     the text content
+     * @param ts       the style
+     * @param tableRef the table ref
+     * @return the link
+     */
+    @Deprecated
+    public static Link create(final String text, final TextStyle ts, final TableRef tableRef) {
+        return Link.builder(text).style(ts).to(tableRef).build();
     }
 
     /**
@@ -156,6 +198,7 @@ public final class Link implements ParagraphElement {
      * @param uri  the file
      * @return the link
      */
+    @Deprecated
     public static Link create(final String text, final URI uri) {
         return new Link(text, null, uri.toString());
     }
@@ -164,7 +207,12 @@ public final class Link implements ParagraphElement {
     private final String href;
     private final TextStyle ts;
 
-    private Link(final String text, final TextStyle ts, final String href) {
+    /**
+     * @param text the text
+     * @param ts   the style or null
+     * @param href the ref
+     */
+    Link(final String text, final TextStyle ts, final String href) {
         this.text = text;
         this.href = href;
         this.ts = ts;

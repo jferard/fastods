@@ -21,38 +21,28 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.ref;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PositionBuilderTest {
-    private EqualityUtil equalityUtil;
+import java.io.IOException;
+import java.text.ParseException;
+
+public class TableAddressParserTest {
     private TableNameUtil tableNameUtil;
 
     @Before
     public void setUp() {
-        this.equalityUtil = new EqualityUtil();
         this.tableNameUtil = new TableNameUtil();
     }
 
     @Test
-    public void testAbs() {
-        final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil,
-                1, 2);
-        builder.absCol().absRow().absTableName("at").file("f");
-        Assert.assertEquals(new Position(this.equalityUtil, this.tableNameUtil, "f", "at", 1, 2, 7),
-                builder.build());
+    public void test() throws ParseException, IOException {
+        Assert.assertEquals(new TableRef(this.tableNameUtil, "f'", "t't", 4),
+                new TableAddressParser(this.tableNameUtil).parse("'f'''#'$t''t'"));
+
     }
 
-    @Test
-    public void test() {
-        final PositionBuilder builder = new PositionBuilder(this.equalityUtil, this.tableNameUtil,
-                8, 7);
-        builder.absCol().absRow().tableName("at");
-        Assert.assertEquals(
-                new Position(this.equalityUtil, this.tableNameUtil, null, "at", 8, 7, 3),
-                builder.build());
-    }
 }

@@ -33,8 +33,8 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.util.Position;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.CellRef;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -262,7 +262,7 @@ class TableBuilder {
      */
     public TableRowImpl getRow(final Table table, final TableAppender appender,
                                final String address) throws IOException, ParseException {
-        final int row = this.positionUtil.newPosition(address).getRow();
+        final int row = this.positionUtil.newCellRef(address).getRow();
         return this.getRow(table, appender, row);
     }
 
@@ -371,7 +371,7 @@ class TableBuilder {
     public void setCellMerge(final Table table, final TableAppender appender, final String address,
                              final int rowMerge, final int columnMerge)
             throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         this.setCellMerge(table, appender, position.getRow(), position.getColumn(), rowMerge,
                 columnMerge);
     }

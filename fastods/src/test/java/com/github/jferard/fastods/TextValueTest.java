@@ -62,9 +62,9 @@ public class TextValueTest {
 
     @Test
     public void testHashCode() {
-        final Text text1 = Text.builder().parContent("text").link("url", "url")
+        final Text text1 = Text.builder().parContent("text").link("url", "#url")
                 .parStyledContent("text2", null).span("span").build();
-        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
+        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "#url").par()
                 .span("text2").span("span").build();
         Assert.assertEquals(-633306896, new TextValue(text1).hashCode());
         Assert.assertEquals(-633306896, new TextValue(text2).hashCode());

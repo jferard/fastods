@@ -30,9 +30,8 @@ import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.TableNameUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
@@ -58,7 +57,7 @@ public class TableBuilderTest {
 
     @Before
     public void setUp() {
-        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
+        final PositionUtil positionUtil = new PositionUtil(new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
 
         this.stc = PowerMock.createMock(StylesContainer.class);

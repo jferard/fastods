@@ -74,7 +74,7 @@ public class ParagraphTest {
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
-        this.parBuilder.link("to_ref", "ref").link("to_file", new File("f"))
+        this.parBuilder.link("to_ref", "#ref").link("to_file", new File("f"))
                 .link("to_url", new URL("http://a")).link("to_uri", new URI("protocol:a"))
                 .link("to_table", table);
         this.assertParXMLEquals(
@@ -101,7 +101,7 @@ public class ParagraphTest {
         EasyMock.expect(table.getName()).andReturn("tableName");
 
         PowerMock.replayAll();
-        this.parBuilder.styledLink("to_ref", ts, "ref").styledLink("to_file", ts, new File("f"))
+        this.parBuilder.styledLink("to_ref", ts, "#ref").styledLink("to_file", ts, new File("f"))
                 .styledLink("to_url", ts, new URL("http://a"))
                 .styledLink("to_uri", ts, new URI("protocol:a")).styledLink("to_table", ts, table);
         this.assertParXMLEquals(

@@ -32,7 +32,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 

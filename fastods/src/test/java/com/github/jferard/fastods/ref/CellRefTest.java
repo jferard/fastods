@@ -21,68 +21,59 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.ref;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PositionTest {
-    private EqualityUtil equalityUtil;
+public class CellRefTest {
     private TableNameUtil tableNameUtil;
 
     @Before
     public void setUp() {
-        this.equalityUtil = new EqualityUtil();
         this.tableNameUtil = new TableNameUtil();
     }
 
     @Test
     public void testD3() {
-        Assert.assertEquals("D3",
-                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 0)
-                        .toString());
+        Assert.assertEquals("D3", CellRef.create(2, 3, 0).toString());
     }
 
     @Test
     public void testD3AbsCol() {
-        Assert.assertEquals("$D3",
-                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 1)
-                        .toString());
+        Assert.assertEquals("$D3", CellRef.create(2, 3, 1).toString());
     }
 
     @Test
     public void testD3AbsRow() {
-        Assert.assertEquals("D$3",
-                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 2)
-                        .toString());
+        Assert.assertEquals("D$3", CellRef.create(2, 3, 2).toString());
     }
 
     @Test
     public void testD3AbsTable() {
-        Assert.assertEquals("D3",
-                new Position(this.equalityUtil, this.tableNameUtil, null, null, 2, 3, 4)
-                        .toString());
+        Assert.assertEquals("D3", CellRef.create(2, 3, 4).toString());
     }
 
     @Test
-    public void testD3AbsTable2() {
-        Assert.assertEquals("$t.D3",
-                new Position(this.equalityUtil, this.tableNameUtil, null, "t", 2, 3, 4).toString());
+    public void testD3Table2() {
+        Assert.assertEquals("t.D3",
+                new CellRef(TableRef.builder(this.tableNameUtil).table("t").build(),
+                        new LocalCellRef(2, 3, 4)).toString());
     }
 
     @Test
     public void testD3AbsTable3() {
-        Assert.assertEquals("'$t''t'.D3",
-                new Position(this.equalityUtil, this.tableNameUtil, null, "t't", 2, 3, 4)
-                        .toString());
+        Assert.assertEquals("$'t''t'.D3",
+                new CellRef(TableRef.builder(this.tableNameUtil).absTable("t't").build(),
+                        new LocalCellRef(2, 3, 4)).toString());
     }
 
     @Test
     public void testFilename() {
-        Assert.assertEquals("'f'''#'$t''t'.D3",
-                new Position(this.equalityUtil, this.tableNameUtil, "f'", "t't", 2, 3, 4)
-                        .toString());
+        Assert.assertEquals("'f'''#$t.D3",
+                new CellRef(TableRef.builder(this.tableNameUtil).file("f'").absTable("t").build(),
+                        new LocalCellRef(2, 3, 4)).toString());
     }
 
 }

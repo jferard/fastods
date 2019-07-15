@@ -93,7 +93,7 @@ public class BordersBuilder {
      * @return the borders
      */
     public Borders build() {
-        return new Borders(new EqualityUtil(), this.all, this.top, this.right, this.bottom,
+        return new Borders(this.all, this.top, this.right, this.bottom,
                 this.left);
     }
 

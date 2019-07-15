@@ -27,9 +27,8 @@ import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.TableNameUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,7 +47,7 @@ public class TableHelperTest {
 
     @Before
     public void setUp() {
-        this.positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
+        this.positionUtil = new PositionUtil(new TableNameUtil());
         this.table = PowerMock.createMock(Table.class);
         this.walker = PowerMock.createMock(TableCellWalker.class);
         this.tableHelper = new TableHelper(this.positionUtil);

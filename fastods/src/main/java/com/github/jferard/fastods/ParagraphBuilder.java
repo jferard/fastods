@@ -74,7 +74,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder link(final String text, final String ref) {
-        final ParagraphElement paragraphElement = Link.create(text, ref);
+        final ParagraphElement paragraphElement = Link.builder(text).to(ref).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -88,7 +88,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder styledLink(final String text, final TextStyle ts, final String ref) {
-        final ParagraphElement paragraphElement = Link.create(text, ts, ref);
+        final ParagraphElement paragraphElement = Link.builder(text).style(ts).to(ref).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -101,7 +101,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder link(final String text, final Table table) {
-        final ParagraphElement paragraphElement = Link.create(text, table);
+        final ParagraphElement paragraphElement = Link.builder(text).to(table).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -115,7 +115,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder styledLink(final String text, final TextStyle ts, final Table table) {
-        final ParagraphElement paragraphElement = Link.create(text, ts, table);
+        final ParagraphElement paragraphElement = Link.builder(text).style(ts).to(table).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -128,7 +128,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder link(final String text, final File file) {
-        final ParagraphElement paragraphElement = Link.create(text, file);
+        final ParagraphElement paragraphElement = Link.builder(text).to(file).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -142,7 +142,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder styledLink(final String text, final TextStyle ts, final File file) {
-        final ParagraphElement paragraphElement = Link.create(text, ts, file);
+        final ParagraphElement paragraphElement = Link.builder(text).style(ts).to(file).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -155,7 +155,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder link(final String text, final URL url) {
-        final ParagraphElement paragraphElement = Link.create(text, url);
+        final ParagraphElement paragraphElement = Link.builder(text).to(url).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -169,7 +169,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder styledLink(final String text, final TextStyle ts, final URL url) {
-        final ParagraphElement paragraphElement = Link.create(text, ts, url);
+        final ParagraphElement paragraphElement = Link.builder(text).style(ts).to(url).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -182,7 +182,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder link(final String text, final URI uri) {
-        final ParagraphElement paragraphElement = Link.create(text, uri);
+        final ParagraphElement paragraphElement = Link.builder(text).to(uri).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -196,7 +196,7 @@ public class ParagraphBuilder {
      * @return this for fluent style
      */
     public ParagraphBuilder styledLink(final String text, final TextStyle ts, final URI uri) {
-        final ParagraphElement paragraphElement = Link.create(text, ts, uri);
+        final ParagraphElement paragraphElement = Link.builder(text).style(ts).to(uri).build();
         this.paragraphElements.add(paragraphElement);
         return this;
     }
@@ -222,6 +222,15 @@ public class ParagraphBuilder {
     public ParagraphBuilder styledSpan(final String text, final TextStyle ts) {
         final ParagraphElement paragraphElement = new Span(text, ts);
         this.paragraphElements.add(paragraphElement);
+        return this;
+    }
+
+    /**
+     * @param element a element to add
+     * @return this for fluent style
+     */
+    public ParagraphBuilder element(final ParagraphElement element) {
+        this.paragraphElements.add(element);
         return this;
     }
 }

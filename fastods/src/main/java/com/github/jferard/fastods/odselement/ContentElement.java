@@ -29,7 +29,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;

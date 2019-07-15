@@ -26,9 +26,8 @@ import com.github.jferard.fastods.BooleanValue;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.TableNameUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +52,7 @@ public class OdsDocumentHelperTest {
 
     @Before
     public void setUp() {
-        this.positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
+        this.positionUtil = new PositionUtil(new TableNameUtil());
         this.odsDocument = PowerMock.createMock(NamedOdsDocument.class);
         this.tableHelper = PowerMock.createMock(TableHelper.class);
         this.t1 = PowerMock.createMock(Table.class);

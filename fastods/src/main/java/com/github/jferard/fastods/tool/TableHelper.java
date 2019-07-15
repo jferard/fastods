@@ -28,8 +28,8 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Position;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.CellRef;
+import com.github.jferard.fastods.ref.PositionUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -87,7 +87,7 @@ public class TableHelper {
      */
     public void setCellMerge(final Table table, final String address, final int rowMerge,
                              final int columnMerge) throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         final int row = position.getRow();
         final int col = position.getColumn();
         table.setCellMerge(row, col, rowMerge, columnMerge);
@@ -133,7 +133,7 @@ public class TableHelper {
      */
     public void setCellValue(final Table table, final String address, final CellValue value,
                              final TableCellStyle ts) throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         final int row = position.getRow();
         final int col = position.getColumn();
         this.setCellValue(table, row, col, value, ts);
@@ -150,7 +150,7 @@ public class TableHelper {
      */
     public void setCellValue(final Table table, final String address, final CellValue value)
             throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         final int row = position.getRow();
         final int col = position.getColumn();
         this.setCellValue(table, row, col, value);
@@ -180,7 +180,7 @@ public class TableHelper {
      */
     public TableCellWalker getCell(final Table table, final String address)
             throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         return this.getCell(table, position.getRow(), position.getColumn());
     }
 }

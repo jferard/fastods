@@ -40,19 +40,16 @@ public class Borders implements TagParameters {
     private final BorderAttribute left;
     private final BorderAttribute right;
     private final BorderAttribute top;
-    private final EqualityUtil equalityUtil;
 
     /**
-     * @param equalityUtil the util class to compare borders
-     * @param all          all borders
-     * @param top          the top border
-     * @param right        the right border
-     * @param bottom       the bottom border
-     * @param left         the left border
+     * @param all    all borders
+     * @param top    the top border
+     * @param right  the right border
+     * @param bottom the bottom border
+     * @param left   the left border
      */
-    Borders(final EqualityUtil equalityUtil, final BorderAttribute all, final BorderAttribute top,
-            final BorderAttribute right, final BorderAttribute bottom, final BorderAttribute left) {
-        this.equalityUtil = equalityUtil;
+    Borders(final BorderAttribute all, final BorderAttribute top, final BorderAttribute right,
+            final BorderAttribute bottom, final BorderAttribute left) {
         this.all = all;
         this.top = top;
         this.right = right;
@@ -112,11 +109,11 @@ public class Borders implements TagParameters {
         }
 
         final Borders other = (Borders) o;
-        return this.equalityUtil.equal(this.top, other.top) &&
-                this.equalityUtil.equal(this.right, other.right) &&
-                this.equalityUtil.equal(this.bottom, other.bottom) &&
-                this.equalityUtil.equal(this.left, other.left) &&
-                this.equalityUtil.equal(this.all, other.all);
+        return EqualityUtil.equal(this.top, other.top) &&
+                EqualityUtil.equal(this.right, other.right) &&
+                EqualityUtil.equal(this.bottom, other.bottom) &&
+                EqualityUtil.equal(this.left, other.left) &&
+                EqualityUtil.equal(this.all, other.all);
     }
 
     @Override
@@ -128,7 +125,6 @@ public class Borders implements TagParameters {
 
     @Override
     public int hashCode() {
-        return this.equalityUtil
-                .hashObjects(this.all, this.bottom, this.left, this.right, this.top);
+        return EqualityUtil.hashObjects(this.all, this.bottom, this.left, this.right, this.top);
     }
 }

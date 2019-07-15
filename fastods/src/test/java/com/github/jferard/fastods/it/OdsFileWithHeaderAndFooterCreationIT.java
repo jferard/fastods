@@ -289,7 +289,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         row.getOrCreateCell(2).setStringValue("text3");
         row = table.getRow(1);
         row.getOrCreateCell(0).setText(
-                Text.builder().par().span("before link to table: ").link("table", "target")
+                Text.builder().par().span("before link to table: ").link("table", "#target")
                         .span(" after link to table").build());
         row.getOrCreateCell(1).setText(Text.builder().par().span("before link to url: ")
                 .link("url", new URL("https://www.github.com/jferard/fastods"))

@@ -25,6 +25,7 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.ref.PositionUtil;
 
 import java.io.IOException;
 

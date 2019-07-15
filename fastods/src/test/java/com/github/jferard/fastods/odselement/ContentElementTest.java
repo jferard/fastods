@@ -29,7 +29,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;

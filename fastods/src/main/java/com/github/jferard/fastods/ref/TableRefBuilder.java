@@ -21,81 +21,54 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.ref;
+
+import com.github.jferard.fastods.Table;
+
+import java.io.File;
 
 /**
- * A position (row + col)
+ * A position builder: file + table + row/col
  *
  * @author J. Férard
  */
-public class PositionBuilder {
-    private final int column;
-    private final EqualityUtil equalityUtil;
+public class TableRefBuilder {
     private final TableNameUtil tableNameUtil;
-    private final int row;
     private int status;
     private String tableName;
-    private String fileName;
+    private String filename;
 
     /**
      * Create a position
      *
-     * @param equalityUtil  util for testing equality
      * @param tableNameUtil util for check/escaping the table name
-     * @param row           the row
-     * @param column        the column
      */
-    PositionBuilder(final EqualityUtil equalityUtil, final TableNameUtil tableNameUtil,
-                    final int row, final int column) {
-        this.equalityUtil = equalityUtil;
+    TableRefBuilder(final TableNameUtil tableNameUtil) {
         this.tableNameUtil = tableNameUtil;
-        this.fileName = null;
-        this.tableName = null;
-        this.row = row;
-        this.column = column;
+        this.filename = null;
         this.status = 0;
     }
 
     /**
-     * Set the row absolute
-     *
-     * @return this for fluent style
-     */
-    public PositionBuilder absRow() {
-        this.status |= Position.ABSOLUTE_ROW;
-        return this;
-    }
-
-    /**
-     * Set the column absolute
-     *
-     * @return this for fluent style
-     */
-    public PositionBuilder absCol() {
-        this.status |= Position.ABSOLUTE_COL;
-        return this;
-    }
-
-    /**
-     * Set the table name
+     * Set the table name absolute
      *
      * @param tableName the name of the table
      * @return this for fluent style
      */
-    public PositionBuilder tableName(final String tableName) {
+    public TableRefBuilder absTable(final String tableName) {
         this.tableName = tableName;
+        this.status |= TableRef.ABSOLUTE_TABLE;
         return this;
     }
 
     /**
-     * Set the table name
+     * Set the table name relative
      *
      * @param tableName the name of the table
      * @return this for fluent style
      */
-    public PositionBuilder absTableName(final String tableName) {
+    public TableRefBuilder table(final String tableName) {
         this.tableName = tableName;
-        this.status |= Position.ABSOLUTE_TABLE;
         return this;
     }
 
@@ -105,7 +78,7 @@ public class PositionBuilder {
      * @param table the table
      * @return this for fluent style
      */
-    public PositionBuilder table(final NamedObject table) {
+    public TableRefBuilder table(final Table table) {
         this.tableName = table.getName();
         return this;
     }
@@ -116,9 +89,9 @@ public class PositionBuilder {
      * @param table the table
      * @return this for fluent style
      */
-    public PositionBuilder absTable(final NamedObject table) {
+    public TableRefBuilder absTable(final Table table) {
         this.tableName = table.getName();
-        this.status |= Position.ABSOLUTE_TABLE;
+        this.status |= TableRef.ABSOLUTE_TABLE;
         return this;
     }
 
@@ -126,19 +99,33 @@ public class PositionBuilder {
     /**
      * Set the file name
      *
-     * @param fileName the name of the file
+     * @param filename the name of the file
      * @return this for fluent style
      */
-    public PositionBuilder file(final String fileName) {
-        this.fileName = fileName;
+    public TableRefBuilder file(final String filename) {
+        this.filename = filename;
         return this;
     }
 
     /**
-     * @return the position
+     * Set the file name
+     *
+     * @param file the name of the file
+     * @return this for fluent style
      */
-    public Position build() {
-        return new Position(this.equalityUtil, this.tableNameUtil, this.fileName, this.tableName,
-                this.row, this.column, this.status);
+    public TableRefBuilder file(final File file) {
+        this.filename = file.getPath();
+        return this;
+    }
+
+    /**
+     * @return the table ref or null
+     */
+    public TableRef build() {
+        if (this.tableName == null) {
+            return null;
+        } else {
+            return new TableRef(this.tableNameUtil, this.filename, this.tableName, this.status);
+        }
     }
 }

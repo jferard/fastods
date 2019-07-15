@@ -41,21 +41,18 @@ public class Margins implements TagParameters {
     private final Length left;
     private final Length right;
     private final Length top;
-    private final EqualityUtil equalityUtil;
 
     /**
      * Create the margins
      *
-     * @param equalityUtil an util
-     * @param all          the length of all margin
-     * @param top          the length of top margin
-     * @param right        the length of right margin
-     * @param bottom       the length of bottom margin
-     * @param left         the length of left margin
+     * @param all    the length of all margin
+     * @param top    the length of top margin
+     * @param right  the length of right margin
+     * @param bottom the length of bottom margin
+     * @param left   the length of left margin
      */
-    Margins(final EqualityUtil equalityUtil, final Length all, final Length top, final Length right,
-            final Length bottom, final Length left) {
-        this.equalityUtil = equalityUtil;
+    Margins(final Length all, final Length top, final Length right, final Length bottom,
+            final Length left) {
         this.all = all;
         this.top = top;
         this.right = right;
@@ -121,11 +118,11 @@ public class Margins implements TagParameters {
         }
 
         final Margins other = (Margins) o;
-        return this.equalityUtil.equal(this.top, other.top) &&
-                this.equalityUtil.equal(this.right, other.right) &&
-                this.equalityUtil.equal(this.bottom, other.bottom) &&
-                this.equalityUtil.equal(this.left, other.left) &&
-                this.equalityUtil.equal(this.all, other.all);
+        return EqualityUtil.equal(this.top, other.top) &&
+                EqualityUtil.equal(this.right, other.right) &&
+                EqualityUtil.equal(this.bottom, other.bottom) &&
+                EqualityUtil.equal(this.left, other.left) &&
+                EqualityUtil.equal(this.all, other.all);
     }
 
     @Override
@@ -137,7 +134,6 @@ public class Margins implements TagParameters {
 
     @Override
     public int hashCode() {
-        return this.equalityUtil
-                .hashObjects(this.all, this.bottom, this.left, this.right, this.top);
+        return EqualityUtil.hashObjects(this.all, this.bottom, this.left, this.right, this.top);
     }
 }

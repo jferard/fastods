@@ -26,12 +26,11 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FileExists;
 import com.github.jferard.fastods.util.FileOpen;
 import com.github.jferard.fastods.util.FileOpenResult;
-import com.github.jferard.fastods.util.PositionUtil;
-import com.github.jferard.fastods.util.TableNameUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -66,7 +65,7 @@ public class OdsFactory {
      * @return the factory
      */
     public static OdsFactory create(final Logger logger, final Locale locale) {
-        final PositionUtil positionUtil = new PositionUtil(new EqualityUtil(), new TableNameUtil());
+        final PositionUtil positionUtil = new PositionUtil(new TableNameUtil());
         final WriteUtil writeUtil = WriteUtil.create();
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles format = DataStylesBuilder.create(locale).build();

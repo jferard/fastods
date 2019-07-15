@@ -38,7 +38,7 @@ import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;

@@ -245,7 +245,7 @@ public class OdsFileCreationIT {
                     row.getCellByIndex(0).getNoteText());
 
             // filter
-            Assert.assertEquals("table" + i + ".A1:table" + i + ".F4", contentDom.getXPath()
+            Assert.assertEquals("table" + i + ".A1:F4", contentDom.getXPath()
                     .evaluate(
                             "//table:database-range[" + (i + 1) + "]//@table:target-range-address",
                             contentDom.getRootElement()));

@@ -28,41 +28,34 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 public class EqualityUtilTest {
-    private EqualityUtil equalityUtil;
-
-    @Before
-    public void setUp() {
-        this.equalityUtil = new EqualityUtil();
-    }
-
     @Test
     public final void testEquals() {
-        Assert.assertTrue(this.equalityUtil.equal(null, null));
+        Assert.assertTrue(EqualityUtil.equal(null, null));
         final Object s = "object";
-        Assert.assertFalse(this.equalityUtil.equal(null, s));
-        Assert.assertFalse(this.equalityUtil.equal(s, null));
-        Assert.assertTrue(this.equalityUtil.equal(s, s));
+        Assert.assertFalse(EqualityUtil.equal(null, s));
+        Assert.assertFalse(EqualityUtil.equal(s, null));
+        Assert.assertTrue(EqualityUtil.equal(s, s));
     }
 
     @Test
     public final void testDifferent() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertFalse(this.equalityUtil.different(null, null));
+        Assert.assertFalse(EqualityUtil.different(null, null));
         final Object s = "object";
-        Assert.assertTrue(this.equalityUtil.different(null, s));
-        Assert.assertTrue(this.equalityUtil.different(s, null));
-        Assert.assertFalse(this.equalityUtil.different(s, s));
+        Assert.assertTrue(EqualityUtil.different(null, s));
+        Assert.assertTrue(EqualityUtil.different(s, null));
+        Assert.assertFalse(EqualityUtil.different(s, s));
     }
 
     @Test
     public final void testHashObjects() {
         final Object[] integers = {null, 1, null, 2};
-        Assert.assertEquals(924484, this.equalityUtil.hashObjects(integers));
+        Assert.assertEquals(924484, EqualityUtil.hashObjects(integers));
     }
 
     @Test
     public final void testHashInts() {
-        Assert.assertEquals(994, this.equalityUtil.hashInts(1, 2));
+        Assert.assertEquals(994, EqualityUtil.hashInts(1, 2));
     }
 }

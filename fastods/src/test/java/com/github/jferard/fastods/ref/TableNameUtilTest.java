@@ -21,8 +21,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.ref;
 
+import com.github.jferard.fastods.ref.TableNameUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

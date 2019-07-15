@@ -27,8 +27,8 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Position;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.CellRef;
+import com.github.jferard.fastods.ref.PositionUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -84,7 +84,7 @@ public class OdsFileHelper {
      */
     public void setCellMergeInAllTables(final String address, final int rowMerge,
                                         final int columnMerge) throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         final int row = position.getRow();
         final int col = position.getColumn();
         this.setCellMergeInAllTables(row, col, rowMerge, columnMerge);
@@ -121,7 +121,7 @@ public class OdsFileHelper {
     public void setCellValueInAllTables(final String address, final CellValue value,
                                         final TableCellStyle ts)
             throws IOException, ParseException {
-        final Position position = this.positionUtil.newPosition(address);
+        final CellRef position = this.positionUtil.newCellRef(address);
         final int row = position.getRow();
         final int col = position.getColumn();
         this.setCellValueInAllTables(row, col, value, ts);

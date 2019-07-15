@@ -28,7 +28,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.util.PositionUtil;
+import com.github.jferard.fastods.ref.PositionUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,14 +75,14 @@ public class TextTest {
 
     @Test
     public void linkRef() throws Exception {
-        final Text t = TextBuilder.create().par().link("a", "ref").build();
+        final Text t = TextBuilder.create().par().link("a", "#ref").build();
         TestHelper.assertXMLEquals(
                 "<text:p><text:a xlink:href=\"#ref\" xlink:type=\"simple\">a</text:a></text:p>", t);
     }
 
     @Test
     public void styledLinkRef() throws Exception {
-        final Text t = TextBuilder.create().par().styledLink("a", this.ts, "ref").build();
+        final Text t = TextBuilder.create().par().styledLink("a", this.ts, "#ref").build();
         TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#ref\" " +
                 "xlink:type=\"simple\">a</text:a></text:p>", t);
     }
@@ -171,9 +171,9 @@ public class TextTest {
 
     @Test
     public void testHashCode() {
-        final Text text1 = Text.builder().parContent("text").link("url", "url")
+        final Text text1 = Text.builder().parContent("text").link("url", "#url")
                 .parStyledContent("text2", null).span("span").build();
-        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
+        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "#url").par()
                 .span("text2").span("span").build();
         Assert.assertEquals(-633306896, text1.hashCode());
         Assert.assertEquals(-633306896, text2.hashCode());
