@@ -94,7 +94,7 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
 
     @Override
     public void markColumnsSpanned(final int n) {
-        this.cell.markRowsSpanned(n);
+        this.cell.markColumnsSpanned(n);
     }
 
     @Override
