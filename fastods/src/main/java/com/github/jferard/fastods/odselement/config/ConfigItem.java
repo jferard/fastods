@@ -34,6 +34,10 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class ConfigItem implements ConfigBlock {
+    public static ConfigItem create(final ConfigElement element, final String value) {
+        return new ConfigItem(element.getName(), element.getType(), value);
+    }
+
     private final String name;
     private final String type;
     private String value;

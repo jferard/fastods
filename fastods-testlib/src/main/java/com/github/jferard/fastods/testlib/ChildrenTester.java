@@ -22,11 +22,16 @@
  */
 package com.github.jferard.fastods.testlib;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.util.logging.Logger;
+import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * A tester for children of a node.
@@ -34,10 +39,15 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public abstract class ChildrenTester {
-    /**
-     * The logger
-     */
-    static final Logger logger = Logger.getLogger("ChildrenTester");
+    protected final Stack<String> state1;
+    protected final Stack<String> state2;
+    private String firstDifference;
+
+    protected ChildrenTester() {
+        this.state1 = new Stack<String>();
+        this.state2 = new Stack<String>();
+        this.firstDifference = null;
+    }
 
     /**
      * @param element1 the first node
@@ -53,46 +63,77 @@ public abstract class ChildrenTester {
         final NamedNodeMap attributes1 = element1.getAttributes();
         final NamedNodeMap attributes2 = element2.getAttributes();
         if (attributes1 == null) {
-            return attributes2 == null;
+            if (attributes2 != null) {
+                this.logFail("Node %s has attributes while node %s hasn't");
+                return false;
+            }
         } else if (attributes2 == null) {
+            this.logFail("Node %s has no attribute while node %s has some");
             return false;
         } else {
-            if (attributes1.getLength() != attributes2.getLength()) {
+            final int l1 = attributes1.getLength();
+            final int l2 = attributes2.getLength();
+            if (l1 != l2) {
+                this.logFail("Different attributes number: %s vs %s (%d vs %d)", l1, l2);
                 return false;
             }
 
             final AttrList list1 = AttrList.create(attributes1);
             final AttrList list2 = AttrList.create(attributes2);
-            return list1.equals(list2);
+            if (!list1.equals(list2)) {
+                this.logFail("Different attributes: %s vs %s (%s vs %s)", list1, list2);
+                return false;
+            }
         }
+        return true;
     }
 
     private boolean namesEquals(final Node element1, final Node element2) {
-        return element1.getNodeType() == element2.getNodeType() &&
-                Objects.equal(element1.getNodeName(), element2.getNodeName()) &&
-                Objects.equal(element1.getNodeValue(), element2.getNodeValue()) &&
-                Objects.equal(element1.getNamespaceURI(), element2.getNamespaceURI());
+        final boolean typesEqual = element1.getNodeType() == element2.getNodeType();
+        if (!typesEqual) {
+            this.logFail("Different nodes types: %s vs %s");
+            return false;
+        }
+        final boolean namesEqual = Objects.equal(element1.getNodeName(), element2.getNodeName());
+        if (!namesEqual) {
+            this.logFail("Different nodes names: %s vs %s");
+            return false;
+        }
+        final boolean valuesEqual = Objects.equal(element1.getNodeValue(), element2.getNodeValue());
+        if (!valuesEqual) {
+            this.logFail("Different nodes values: %s vs %s");
+            return false;
+        }
+        final boolean nsURIEqual = Objects
+                .equal(element1.getNamespaceURI(), element2.getNamespaceURI());
+        if (!nsURIEqual) {
+            this.logFail("Different nodes namespaces: %s vs %s");
+            return false;
+        }
+        return true;
     }
 
     /**
+     * Entry point
+     *
      * @param element1 the first node
      * @param element2 the second node
      * @return true if the first node is equal the second node
      */
-    protected boolean equals(final Node element1, final Node element2) {
-        logger.fine("element1" + UnsortedNodeList.toString(element1) + ",\nelement2" +
-                UnsortedNodeList.toString(element2));
+    boolean equals(final Node element1, final Node element2) {
         if (element1 == null) {
             return element2 == null;
         } else if (element2 == null) {
             return false;
         } else { // element1 != null && element2 != null
-            logger.fine("" + this.namesEquals(element1, element2) +
-                    this.attributesEquals(element1, element2) +
-                    this.childrenEquals(element1, element2));
-            return this.namesEquals(element1, element2) &&
-                    this.attributesEquals(element1, element2) &&
-                    this.childrenEquals(element1, element2);
+            this.state1.push(element1.getNodeName());
+            this.state2.push(element2.getNodeName());
+            final boolean ne = this.namesEquals(element1, element2);
+            final boolean ae = this.attributesEquals(element1, element2);
+            final boolean ce = this.childrenEquals(element1, element2);
+            this.state1.pop();
+            this.state2.pop();
+            return ne && ae && ce;
         }
     }
 
@@ -102,4 +143,29 @@ public abstract class ChildrenTester {
      * @return true if the children of the first node are equal to the children of the second node
      */
     public abstract boolean childrenEquals(final Node element1, final Node element2);
+
+
+    private String getStateStr(final Stack<String> p) {
+        if (p.size() <= 1) {
+            return "<root>";
+        } else {
+            return Joiner.on("/").join(p.subList(1, p.size()));
+        }
+    }
+
+    protected void logFail(final String format, final Object... extra) {
+        final Object[] objects = Iterables.toArray(Iterables
+                .concat(Arrays.asList(this.getStateStr(this.state1), this.getStateStr(this.state2)),
+                        Arrays.asList(extra)), Object.class);
+
+        this.firstDifference = String.format(format, objects);
+    }
+
+    public Optional<String> getFirstDifference() {
+        return Optional.fromNullable(this.firstDifference);
+    }
+
+    public void setFirstDifference(final String difference) {
+        this.firstDifference = difference;
+    }
 }

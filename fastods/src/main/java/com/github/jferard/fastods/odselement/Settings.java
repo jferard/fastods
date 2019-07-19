@@ -25,6 +25,7 @@ package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.odselement.config.ConfigBlock;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
@@ -62,68 +63,79 @@ public class Settings {
     public static Settings create() {
         final ConfigItemSet viewSettings = new ConfigItemSet("ooo:view-settings");
 
-        viewSettings.add(new ConfigItem("VisibleAreaTop", "int", "0"));
-        viewSettings.add(new ConfigItem("VisibleAreaLeft", "int", "0"));
-        viewSettings.add(new ConfigItem("VisibleAreaWidth", "int", "680"));
-        viewSettings.add(new ConfigItem("VisibleAreaHeight", "int", "400"));
+        // undocumented unokywds.hxx
+        viewSettings.add(ConfigItem.create(ConfigElement.VISIBLE_AREA_TOP, "0"));
+        viewSettings.add(ConfigItem.create(ConfigElement.VISIBLE_AREA_LEFT, "0"));
+        viewSettings.add(ConfigItem.create(ConfigElement.VISIBLE_AREA_WIDTH, "680"));
+        viewSettings.add(ConfigItem.create(ConfigElement.VISIBLE_AREA_HEIGHT, "400"));
 
-        // https://api.libreoffice
-        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
-        // https://api.libreoffice
-        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html
         final ConfigItemMapEntrySet firstView = ConfigItemMapEntrySet.createSet();
-        firstView.add(new ConfigItem("ViewId", "string", "View1"));
-        firstView.add(new ConfigItem("ActiveTable", "string", "Tab1"));
-        firstView.add(new ConfigItem("HorizontalScrollbarWidth", "int", "270"));
-        firstView.add(new ConfigItem("ZoomType", "short", "0"));
-        firstView.add(new ConfigItem("ZoomValue", "int", "100"));
-        firstView.add(new ConfigItem("PageViewZoomValue", "int", "60"));
-        firstView.add(new ConfigItem("ShowPageBreakPreview", "boolean", "false"));
-        firstView.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
-        firstView.add(new ConfigItem("ShowNotes", "boolean", "true"));
-        firstView.add(new ConfigItem("ShowGrid", "boolean", "true"));
-        firstView.add(new ConfigItem("GridColor", "long", "12632256"));
-        firstView.add(new ConfigItem("ShowPageBreaks", "boolean", "true"));
-        firstView.add(new ConfigItem("HasColumnRowHeaders", "boolean", "true"));
-        firstView.add(new ConfigItem("HasSheetTabs", "boolean", "true"));
-        firstView.add(new ConfigItem("IsOutlineSymbolsSet", "boolean", "true"));
-        firstView.add(new ConfigItem("IsSnapToRaster", "boolean", "false"));
-        firstView.add(new ConfigItem("RasterIsVisible", "boolean", "false"));
-        firstView.add(new ConfigItem("RasterResolutionX", "int", "1000"));
-        firstView.add(new ConfigItem("RasterResolutionY", "int", "1000"));
-        firstView.add(new ConfigItem("RasterSubdivisionX", "int", "1"));
-        firstView.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
-        firstView.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
+        // com.sun.star.sheet.SpreadsheetViewSettings
+        firstView.add(ConfigItem.create(ConfigElement.ZOOM_TYPE, "0"));
+        firstView.add(ConfigItem.create(ConfigElement.ZOOM_VALUE, "100"));
+        firstView.add(ConfigItem.create(ConfigElement.SHOW_ZERO_VALUES, "true"));
+        firstView.add(ConfigItem.create(ConfigElement.SHOW_NOTES, "true"));
+        firstView.add(ConfigItem.create(ConfigElement.SHOW_GRID, "true"));
+        firstView.add(ConfigItem.create(ConfigElement.GRID_COLOR, "12632256"));
+        firstView.add(ConfigItem.create(ConfigElement.SHOW_PAGE_BREAKS, "true"));
+        firstView.add(ConfigItem.create(ConfigElement.HAS_COLUMN_ROW_HEADERS, "true"));
+        firstView.add(ConfigItem.create(ConfigElement.HAS_SHEET_TABS, "true"));
+        firstView.add(ConfigItem.create(ConfigElement.IS_OUTLINE_SYMBOLS_SET, "true"));
 
-        // https://api.libreoffice
-        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1text_1_1ViewSettings.html
+        // com.sun.star.sheet.DocumentSettings
+        firstView.add(ConfigItem.create(ConfigElement.IS_SNAP_TO_RASTER, "false"));
+        firstView.add(ConfigItem.create(ConfigElement.RASTER_IS_VISIBLE, "false"));
+        firstView.add(ConfigItem.create(ConfigElement.RASTER_RESOLUTION_X, "1000"));
+        firstView.add(ConfigItem.create(ConfigElement.RASTER_RESOLUTION_Y, "1000"));
+        firstView.add(ConfigItem.create(ConfigElement.RASTER_SUBDIVISION_X, "1"));
+        firstView.add(ConfigItem.create(ConfigElement.RASTER_SUBDIVISION_Y, "1"));
+        firstView.add(ConfigItem.create(ConfigElement.IS_RASTER_AXIS_SYNCHRONIZED, "true"));
+
+
+        // undocumented ViewSettingsSequenceDefines.hxx
+        firstView.add(ConfigItem.create(ConfigElement.VIEW_ID, "View1"));
+        firstView.add(ConfigItem.create(ConfigElement.ACTIVE_TABLE, "Tab1"));
+        firstView.add(ConfigItem.create(ConfigElement.HORIZONTAL_SCROLLBAR_WIDTH, "270"));
+        firstView.add(ConfigItem.create(ConfigElement.PAGE_VIEW_ZOOM_VALUE, "60"));
+        firstView.add(ConfigItem.create(ConfigElement.SHOW_PAGE_BREAK_PREVIEW, "false"));
+
         final ConfigItemSet configurationSettings = new ConfigItemSet("ooo:configuration-settings");
-        configurationSettings.add(new ConfigItem("ShowZeroValues", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("ShowNotes", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("ShowGrid", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("GridColor", "long", "12632256"));
-        configurationSettings.add(new ConfigItem("ShowPageBreaks", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("LinkUpdateMode", "short", "3"));
-        configurationSettings.add(new ConfigItem("HasColumnRowHeaders", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("HasSheetTabs", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("IsOutlineSymbolsSet", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("IsSnapToRaster", "boolean", "false"));
-        configurationSettings.add(new ConfigItem("RasterIsVisible", "boolean", "false"));
-        configurationSettings.add(new ConfigItem("RasterResolutionX", "int", "1000"));
-        configurationSettings.add(new ConfigItem("RasterResolutionY", "int", "1000"));
-        configurationSettings.add(new ConfigItem("RasterSubdivisionX", "int", "1"));
-        configurationSettings.add(new ConfigItem("RasterSubdivisionY", "int", "1"));
-        configurationSettings.add(new ConfigItem("IsRasterAxisSynchronized", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("AutoCalculate", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("PrinterName", "string", ""));
-        configurationSettings.add(new ConfigItem("PrinterSetup", "base64Binary", ""));
-        configurationSettings.add(new ConfigItem("ApplyUserData", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("CharacterCompressionType", "short", "0"));
-        configurationSettings.add(new ConfigItem("IsKernAsianPunctuation", "boolean", "false"));
-        configurationSettings.add(new ConfigItem("SaveVersionOnClose", "boolean", "false"));
-        configurationSettings.add(new ConfigItem("UpdateFromTemplate", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("AllowPrintJobCancel", "boolean", "true"));
-        configurationSettings.add(new ConfigItem("LoadReadonly", "boolean", "false"));
+
+        // com.sun.star.sheet.SpreadsheetViewSettings
+        configurationSettings.add(ConfigItem.create(ConfigElement.SHOW_ZERO_VALUES, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.SHOW_NOTES, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.SHOW_GRID, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.GRID_COLOR, "12632256"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.SHOW_PAGE_BREAKS, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.HAS_COLUMN_ROW_HEADERS, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.HAS_SHEET_TABS, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.IS_OUTLINE_SYMBOLS_SET, "true"));
+
+        // com.sun.star.document.Settings
+        configurationSettings.add(ConfigItem.create(ConfigElement.LINK_UPDATE_MODE, "3"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.PRINTER_NAME, ""));
+        configurationSettings.add(ConfigItem.create(ConfigElement.PRINTER_SETUP, ""));
+        configurationSettings.add(ConfigItem.create(ConfigElement.APPLY_USER_DATA, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.CHARACTER_COMPRESSION_TYPE, "0"));
+        configurationSettings
+                .add(ConfigItem.create(ConfigElement.IS_KERN_ASIAN_PUNCTUATION, "false"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.SAVE_VERSION_ON_CLOSE, "false"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.UPDATE_FROM_TEMPLATE, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.AUTO_CALCULATE, "true"));
+
+        // com.sun.star.sheet.DocumentSettings
+        configurationSettings.add(ConfigItem.create(ConfigElement.IS_SNAP_TO_RASTER, "false"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.RASTER_IS_VISIBLE, "false"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.RASTER_RESOLUTION_X, "1000"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.RASTER_RESOLUTION_Y, "1000"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.RASTER_SUBDIVISION_X, "1"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.RASTER_SUBDIVISION_Y, "1"));
+        configurationSettings
+                .add(ConfigItem.create(ConfigElement.IS_RASTER_AXIS_SYNCHRONIZED, "true"));
+
+        // undocumented unonames.hxx
+        configurationSettings.add(ConfigItem.create(ConfigElement.ALLOW_PRINT_JOB_CANCEL, "true"));
+        configurationSettings.add(ConfigItem.create(ConfigElement.LOAD_READONLY, "false"));
 
         return Settings.create(viewSettings, firstView, configurationSettings);
     }
@@ -217,7 +229,7 @@ public class Settings {
      * @param table The table to show
      */
     public void setActiveTable(final Table table) {
-        this.firstView.add(new ConfigItem("ActiveTable", "string", table.getName()));
+        this.firstView.add(ConfigItem.create(ConfigElement.ACTIVE_TABLE, table.getName()));
     }
 
     /**

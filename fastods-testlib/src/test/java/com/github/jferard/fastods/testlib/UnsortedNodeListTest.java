@@ -105,7 +105,7 @@ public class UnsortedNodeListTest {
     @Test
     public void testToString() {
         Assert.assertEquals("[[r: null], [r: null]]", this.r.toString());
-        Assert.assertEquals("Node[r, null, [c=\"3\"]]",
+        Assert.assertEquals("Node[name=r, value=null, attr=[c=\"3\"]]",
                 UnsortedNodeList.toString(this.r.iterator().next()));
         Assert.assertEquals("[null]", UnsortedNodeList.toString(null));
     }

@@ -20,16 +20,12 @@
  */
 package com.github.jferard.fastods.testlib;
 
-import org.easymock.EasyMock;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.xml.sax.SAXParseException;
 
 /**
  *
@@ -38,192 +34,109 @@ public class DomTesterTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
 
-    @Before
-    public void setUp() {
-        UnsortedChildrenTester.logger = PowerMock.createMock(Logger.class);
-        DomTester.logger = PowerMock.createMock(Logger.class);
-    }
-
     @Test
     public void testEmpty() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertEquals("", "");
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSelfClosing() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertEquals("<a/>", "<a></a>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testAttributes() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertEquals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>");
         DomTester.assertEquals("<a b=\"1\" c=\"2\"/>", "<a c=\"2\" b=\"1\"/>");
         DomTester.assertNotEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>");
-
         Assert.assertTrue(DomTester.equals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>"));
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testAttributesFail() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage("Values should be different. Actual: <a b=\"1\" c=\"2\"/>");
+        this.thrown.expectMessage(
+                "XML contents <a b=\"1\" c=\"2\"/> and <a b=\"1\" c=\"2\"/> " + "where equal");
         DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testAttributesFail2() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         this.thrown.expect(AssertionError.class);
         DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a c=\"2\" b=\"1\"/>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testAttributesFail3() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         this.thrown.expect(AssertionError.class);
         this.thrown.expectMessage(
-                "expected:<<a [b=\"2\" c]=\"1\"/>> but was:<<a [c=\"2\" b]=\"1\"/>>");
+                "Different attributes: a vs a ([b=\"2\", c=\"1\"] vs [b=\"1\", c=\"2\"]");
         DomTester.assertEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testOrderFail() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage("expected:<<a><[b/><c]/></a>> but was:<<a><[c/><d]/></a>>");
+        this.thrown.expectMessage("Different nodes names: a/b vs a/c");
         DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><d/></a>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSortedChildren() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertEquals("<a><b/><c/></a>", "<a><b></b><c></c></a>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testSortedChildren2() {
-        PowerMock.resetAll();
-        UnsortedChildrenTester.logger.info("Different children [b: null] vs [c: null]");
-        EasyMock.expectLastCall().times(2);
-
-        PowerMock.replayAll();
         DomTester.assertNotEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testUnsortedChildren() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><b></b><c></c></a>");
         DomTester.assertUnsortedEquals("<a><b><x/><y/></b><c/></a>", "<a><c/><b><y/><x/></b></a>");
         DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testEuro() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertEquals("<a b=\"€\"/>", "<a b=\"€\"/>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testUnsorted() {
-        PowerMock.resetAll();
-        UnsortedChildrenTester.logger.info("Different children [b: null] vs [c: null]");
-        EasyMock.expectLastCall().times(2);
-
-        PowerMock.replayAll();
         DomTester.assertNotEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testUnsorted2() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><b/></a>");
         DomTester.assertUnsortedNotEquals("<a><b/><c/></a>", "<a><c/><d/></a>");
         DomTester.assertEquals("<a><b/><c/></a>", "<a><c/><b/></a>", new UnsortedChildrenTester());
         Assert.assertTrue(DomTester.unsortedEquals("<a><b/><c/></a>", "<a><c/><b/></a>"));
-
-        PowerMock.verifyAll();
     }
 
     @Test
-    public void testUnsorted3() {
-        PowerMock.resetAll();
-        UnsortedChildrenTester.logger.info("Different children [b: null] vs [c: null]");
-        EasyMock.expectLastCall().times(2);
-
-        PowerMock.replayAll();
+    public void testSorted() {
         DomTester.assertNotEquals("<a><b/><c/></a>", "<a><c/><b/></a>", new SortedChildrenTester());
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testBadFormat() {
-        PowerMock.resetAll();
-        DomTester.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(),
-                EasyMock.isA(Throwable.class));
-
-        PowerMock.replayAll();
         Assert.assertFalse(DomTester.equals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\">"));
-
-        PowerMock.verifyAll();
     }
 
     @Test
     public void testTwoRoots() {
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertNotEquals("<a b=\"1\"/><a b=\"2\"/>", "<a b=\"1\"/>");
-
-        PowerMock.verifyAll();
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void bug() {
+        this.thrown.expect(AssertionError.class);
+        this.thrown.expectMessage("Different nodes names: a vs b");
         final SortedChildrenTester tester = new SortedChildrenTester();
-
-        PowerMock.resetAll();
-        PowerMock.replayAll();
         DomTester.assertEquals("<a/>", "<b/>", tester);
-
-        PowerMock.verifyAll();
 
     }
 }

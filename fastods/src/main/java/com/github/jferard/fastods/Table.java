@@ -26,6 +26,8 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
+import com.github.jferard.fastods.odselement.config.ConfigElementType;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -304,6 +306,16 @@ public class Table implements NamedObject {
     }
 
     /**
+     * Set one of the settings
+     *
+     * @param element the config element
+     * @param value the item value
+     */
+    public void updateConfigItem(final ConfigElement element, final String value) {
+        this.builder.updateConfigItem(element.getName(), value);
+    }
+
+    /**
      * Set a new TableFamilyStyle
      *
      * @param style The new TableStyle to be used
@@ -349,6 +361,7 @@ public class Table implements NamedObject {
 
     /**
      * Add a new auto filter
+     * @param autoFilter the filter
      */
     public void addAutoFilter(final AutoFilter autoFilter) {
         this.contentElement.addAutoFilter(autoFilter);

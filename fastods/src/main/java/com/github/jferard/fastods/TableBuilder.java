@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
@@ -100,21 +101,20 @@ class TableBuilder {
                                       final String name, final int rowCapacity,
                                       final int columnCapacity) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
-        configEntry.add(new ConfigItem("CursorPositionX", "int", "0"));
-        configEntry.add(new ConfigItem("CursorPositionY", "int", "0"));
-        configEntry
-                .add(new ConfigItem("HorizontalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
-        configEntry.add(new ConfigItem("VerticalSplitMode", "short", OdsElements.SC_SPLIT_NORMAL));
-        configEntry.add(new ConfigItem("HorizontalSplitPosition", "int", "0"));
-        configEntry.add(new ConfigItem("VerticalSplitPosition", "int", "0"));
-        configEntry.add(new ConfigItem("ActiveSplitRange", "short", "2"));
-        configEntry.add(new ConfigItem("PositionLeft", "int", "0"));
-        configEntry.add(new ConfigItem("PositionRight", "int", "0"));
-        configEntry.add(new ConfigItem("PositionTop", "int", "0"));
-        configEntry.add(new ConfigItem("PositionBottom", "int", "0"));
-        configEntry.add(new ConfigItem("ZoomType", "short", "0"));
-        configEntry.add(new ConfigItem("ZoomValue", "int", "100"));
-        configEntry.add(new ConfigItem("PageViewZoomValue", "int", "60"));
+        configEntry.add(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
+        configEntry.add(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
+        configEntry.add(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_POSITION, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_POSITION, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.ZOOM_TYPE, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.ZOOM_VALUE, "100"));
+        configEntry.add(ConfigItem.create(ConfigElement.PAGE_VIEW_ZOOM_VALUE, "60"));
+        configEntry.add(ConfigItem.create(ConfigElement.CURSOR_POSITION_X, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.CURSOR_POSITION_Y, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.ACTIVE_SPLIT_RANGE, "2"));
+        configEntry.add(ConfigItem.create(ConfigElement.POSITION_LEFT, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.POSITION_RIGHT, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.POSITION_TOP, "0"));
+        configEntry.add(ConfigItem.create(ConfigElement.POSITION_BOTTOM, "0"));
 
         return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format,
                 libreOfficeMode, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);

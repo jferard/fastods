@@ -46,7 +46,6 @@ public class UnsortedChildrenTesterTest {
 
     @Before
     public void setUp() throws ParserConfigurationException, IOException, SAXException {
-        UnsortedChildrenTester.logger = PowerMock.createMock(Logger.class);
         this.tester = new UnsortedChildrenTester();
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();

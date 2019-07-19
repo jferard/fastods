@@ -22,11 +22,11 @@
  */
 package com.github.jferard.fastods.testlib;
 
+import org.omg.CORBA.UNSUPPORTED_POLICY;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 /**
  * @author Julien Férard
@@ -35,24 +35,28 @@ public class UnsortedChildrenTester extends ChildrenTester {
     /**
      * the logger
      */
-    static Logger logger = Logger.getLogger("DomTester");
-
     @Override
     public boolean childrenEquals(final Node element1, final Node element2) {
         final NodeList nodes1 = element1.getChildNodes();
         final NodeList nodes2 = element2.getChildNodes();
-        final UnsortedNodeList list1 = new UnsortedNodeList(nodes1);
-        final UnsortedNodeList list2 = new UnsortedNodeList(nodes2);
 
-        if (list1.size() != list2.size()) {
+        final int l1 = nodes1.getLength();
+        final int l2 = nodes2.getLength();
+        if (l1 != l2) {
+            this.logFail("Different children number: %s vs %s (%d vs %d)", l1, l2);
             return false;
         }
 
+        final UnsortedNodeList list1 = new UnsortedNodeList(nodes1);
+        final UnsortedNodeList list2 = new UnsortedNodeList(nodes2);
         final Iterator<Node> i1 = list1.iterator();
         final Iterator<Node> i2 = list2.iterator();
 
         while (i1.hasNext()) {
-            if (!this.equals(i1.next(), i2.next())) {
+            final Node c1 = i1.next();
+            final Node c2 = i2.next();
+            final boolean ret = this.equals(c1, c2);
+            if (!ret) {
                 return false;
             }
         }

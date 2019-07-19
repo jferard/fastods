@@ -26,6 +26,7 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.config.ConfigBlock;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySingleton;
@@ -101,7 +102,7 @@ public class SettingsTest {
                         "<config:config-item config:name=\"ZoomType\" " +
                         "config:type=\"short\">0</config:config-item>" + "<config:config-item " +
                         "config:name=\"ZoomValue\" " +
-                        "config:type=\"int\">100</config:config-item>" + "<config:config-item " +
+                        "config:type=\"short\">100</config:config-item>" + "<config:config-item " +
                         "config:name=\"ShowPageBreakPreview\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
                         "<config:config-item " + "config:name=\"ShowZeroValues\" " +
@@ -126,13 +127,13 @@ public class SettingsTest {
                         "<config:config-item " + "config:name=\"RasterIsVisible\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
                         "<config:config-item " + "config:name=\"RasterResolutionX\" " +
-                        "config:type=\"int\">1000</config:config-item>" + "<config:config-item " +
+                        "config:type=\"long\">1000</config:config-item>" + "<config:config-item " +
                         "config:name=\"RasterResolutionY\" " +
-                        "config:type=\"int\">1000</config:config-item>" + "<config:config-item " +
+                        "config:type=\"long\">1000</config:config-item>" + "<config:config-item " +
                         "config:name=\"RasterSubdivisionX\" " +
-                        "config:type=\"int\">1</config:config-item>" + "<config:config-item " +
+                        "config:type=\"long\">1</config:config-item>" + "<config:config-item " +
                         "config:name=\"RasterSubdivisionY\" " +
-                        "config:type=\"int\">1</config:config-item>" + "<config:config-item " +
+                        "config:type=\"long\">1</config:config-item>" + "<config:config-item " +
                         "config:name=\"IsRasterAxisSynchronized\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
@@ -173,13 +174,13 @@ public class SettingsTest {
                         "config:name=\"RasterIsVisible\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
                         "<config:config-item config:name=\"RasterResolutionX\" " +
-                        "config:type=\"int\">1000</config:config-item>" + "<config:config-item " +
+                        "config:type=\"long\">1000</config:config-item>" + "<config:config-item " +
                         "config:name=\"RasterResolutionY\" " +
-                        "config:type=\"int\">1000</config:config-item>" +
+                        "config:type=\"long\">1000</config:config-item>" +
                         "<config:config-item config:name=\"RasterSubdivisionX\" " +
-                        "config:type=\"int\">1</config:config-item>" + "<config:config-item " +
+                        "config:type=\"long\">1</config:config-item>" + "<config:config-item " +
                         "config:name=\"RasterSubdivisionY\" " +
-                        "config:type=\"int\">1</config:config-item>" +
+                        "config:type=\"long\">1</config:config-item>" +
                         "<config:config-item config:name=\"IsRasterAxisSynchronized\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item " +
@@ -289,7 +290,7 @@ public class SettingsTest {
     private Settings createVoidSettings() {
         final ConfigItemSet viewSettings = new ConfigItemSet("ooo:view-settings");
         final ConfigItemMapEntrySet firstView = ConfigItemMapEntrySet.createSet();
-        firstView.add(new ConfigItem("ViewId", "string", "View1"));
+        firstView.add(ConfigItem.create(ConfigElement.VIEW_ID, "View1"));
         final ConfigItemSet configurationSettings = new ConfigItemSet("ooo:configuration-settings");
         return Settings.create(viewSettings, firstView, configurationSettings);
     }

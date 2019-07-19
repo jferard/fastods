@@ -44,30 +44,44 @@ public class UtilTest {
     @Test
     public void testNewDirFile() {
         final File f = PowerMock.createMock(File.class);
+
+        PowerMock.resetAll();
         EasyMock.expect(f.exists()).andReturn(false);
         EasyMock.expect(f.mkdir()).andReturn(true);
+
         PowerMock.replayAll();
-        Assert.assertTrue(Util.mkdir(f));
+        final boolean mkdir = Util.mkdir(f);
+
         PowerMock.verifyAll();
+        Assert.assertTrue(mkdir);
     }
 
     @Test
     public void testExistingDir() {
         final File f = PowerMock.createMock(File.class);
+
+        PowerMock.resetAll();
         EasyMock.expect(f.exists()).andReturn(true);
         EasyMock.expect(f.isDirectory()).andReturn(true);
+
         PowerMock.replayAll();
-        Assert.assertFalse(Util.mkdir(f));
+        final boolean mkdir = Util.mkdir(f);
+
         PowerMock.verifyAll();
+        Assert.assertFalse(mkdir);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testExistingFile() {
         final File f = PowerMock.createMock(File.class);
+
+        PowerMock.resetAll();
         EasyMock.expect(f.exists()).andReturn(true);
         EasyMock.expect(f.isDirectory()).andReturn(false);
+
         PowerMock.replayAll();
         Util.mkdir(f);
+
         PowerMock.verifyAll();
     }
 }

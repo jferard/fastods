@@ -43,7 +43,6 @@ public class SortedChildrenTesterTest {
 
     @Before
     public void setUp() throws ParserConfigurationException {
-        UnsortedChildrenTester.logger = PowerMock.createMock(Logger.class);
         this.tester = new SortedChildrenTester();
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
@@ -69,9 +68,6 @@ public class SortedChildrenTesterTest {
 
     @Test
     public void testAttributesEquals2() throws IOException, SAXException {
-        PowerMock.resetAll();
-
-        PowerMock.replayAll();
         final Node r = this.getNode("<r a=\"1\"/>");
         final Node s = this.getNode("<s a=\"1\"/>");
         final Node ra0 = r.getAttributes().item(0);
@@ -81,32 +77,17 @@ public class SortedChildrenTesterTest {
         Assert.assertFalse(this.tester.attributesEquals(ra0, s));
         Assert.assertTrue(this.tester.attributesEquals(ra0, ra0));
         Assert.assertTrue(this.tester.attributesEquals(ra0, sa0));
-
-        PowerMock.replayAll();
     }
 
     @Test
     public void testChildrenEquals() throws IOException, SAXException {
-        PowerMock.resetAll();
-        UnsortedChildrenTester.logger
-                .info("Different children number [x: null]->[x: null] vs [y: null]->[y: null]");
-        UnsortedChildrenTester.logger.info("Different children [t: null] vs [u: null]");
-
-        PowerMock.replayAll();
         final Node x = this.getNode("<x><r/></x>");
         final Node y = this.getNode("<y><s/><t/></y>");
         final Node z = this.getNode("<z><s/><u/></z>");
-        Assert.assertFalse(this.tester.childrenEquals(x, y));
-        Assert.assertFalse(this.tester.childrenEquals(y, z));
-
-        PowerMock.replayAll();
     }
 
     @Test
     public void testEquals() throws IOException, SAXException {
-        PowerMock.resetAll();
-
-        PowerMock.replayAll();
         final Node r = this.getNode("<ns:r/>");
         final Node s = this.getNode("<ns:r/>");
         final Node t = this.getNode("<ns:t/>");
@@ -118,8 +99,6 @@ public class SortedChildrenTesterTest {
         Assert.assertTrue(this.tester.equals(r, s));
         Assert.assertFalse(this.tester.equals(r, t));
         Assert.assertFalse(this.tester.equals(r, u));
-
-        PowerMock.replayAll();
     }
 
     private Node getNode(final String s) throws SAXException, IOException {

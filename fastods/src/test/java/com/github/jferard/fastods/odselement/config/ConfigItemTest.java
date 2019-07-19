@@ -38,12 +38,18 @@ public class ConfigItemTest {
     }
 
     @Test
+    public final void testElement() {
+        final ConfigItem loadReadonly = ConfigItem.create(ConfigElement.LOAD_READONLY, "false");
+        Assert.assertEquals("LoadReadonly", loadReadonly.getName());
+        Assert.assertEquals("boolean", loadReadonly.getType());
+        Assert.assertEquals("false", loadReadonly.getValue());
+    }
+
+    @Test
     public final void testXML() throws IOException {
         final ConfigItem loadReadonly = new ConfigItem("LoadReadonly", "boolean", "false");
-        TestHelper.assertXMLEquals(
-                "<config:config-item config:name=\"LoadReadonly\" " +
-                        "config:type=\"boolean\">false</config:config-item>",
-                loadReadonly);
+        TestHelper.assertXMLEquals("<config:config-item config:name=\"LoadReadonly\" " +
+                "config:type=\"boolean\">false</config:config-item>", loadReadonly);
     }
 
     @Test
@@ -51,7 +57,6 @@ public class ConfigItemTest {
         final ConfigItem escape = new ConfigItem("LoadReadonly", "&", "<");
         TestHelper.assertXMLEquals(
                 "<config:config-item config:name=\"LoadReadonly\" config:type=\"&amp;\">&lt;" +
-                        "</config:config-item>",
-                escape);
+                        "</config:config-item>", escape);
     }
 }

@@ -22,10 +22,8 @@
  */
 package com.github.jferard.fastods.testlib;
 
-import org.junit.Assert;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,8 +32,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A tester for nodes
@@ -43,11 +39,6 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class DomTester {
-    /**
-     * the logger
-     */
-    static Logger logger = Logger.getLogger("DomTester");
-
     /**
      * Assert that two XML strings are equal
      *
@@ -78,8 +69,7 @@ public class DomTester {
     public static void assertEquals(final String expected, final String actual,
                                     final ChildrenTester childrenTester) {
         if (!DomTester.equals(expected, actual, childrenTester)) {
-            Assert.assertEquals(expected, actual); // shows the difference
-            Assert.fail(); // in case there was a bug in DomTester, but strings are equal
+            throw new AssertionError(childrenTester.getFirstDifference().get());
         }
     }
 
@@ -113,8 +103,18 @@ public class DomTester {
     public static void assertNotEquals(final String expected, final String actual,
                                        final ChildrenTester childrenTester) {
         if (DomTester.equals(expected, actual, childrenTester)) {
-            Assert.assertNotEquals(expected, actual); // shows the difference
-            Assert.fail(); // in case there was a bug in DomTester, but strings are equal
+            throw new AssertionError(
+                    String.format("XML contents %s and %s where equal", getEllipsis(expected),
+                            getEllipsis(actual)));
+        }
+    }
+
+    private static String getEllipsis(final String str) {
+        final int length = str.length();
+        if (length < 20) {
+            return str;
+        } else {
+            return str.substring(0, 20) + "...";
         }
     }
 
@@ -150,10 +150,9 @@ public class DomTester {
             final DomTester tester = new DomTester();
             return tester.stringEquals(s1, s2, childrenTester);
         } catch (final Throwable e) {
-            DomTester.logger
-                    .log(Level.SEVERE, "can't test equality between " + s1 + " and " + s2, e);
-            return false;
+            childrenTester.setFirstDifference(e.toString());
         }
+        return false;
     }
 
     private final Charset UTF_8 = Charset.forName("UTF-8");
@@ -174,22 +173,12 @@ public class DomTester {
     private boolean stringEquals(final String s1, final String s2,
                                  final ChildrenTester childrenTester)
             throws SAXException, IOException {
-        final Document document1 = this.builder
-                .parse(new ByteArrayInputStream(("<r>" + s1 + "</r>").getBytes(this.UTF_8)));
-        final Document document2 = this.builder
-                .parse(new ByteArrayInputStream(("<r>" + s2 + "</r>").getBytes(this.UTF_8)));
-        final NodeList childNodes1 = document1.getDocumentElement().getChildNodes();
-        final NodeList childNodes2 = document2.getDocumentElement().getChildNodes();
-        if (childNodes1.getLength() != childNodes2.getLength()) {
-            return false;
-        }
-        for (int n = 0; n < childNodes1.getLength(); n++) {
-            final Node e1 = childNodes1.item(n);
-            final Node e2 = childNodes2.item(n);
-            if (!childrenTester.equals(e1, e2)) {
-                return false;
-            }
-        }
-        return true;
+        final Document document1 = this.builder.parse(new ByteArrayInputStream(
+                ("<domtesterroot>" + s1 + "</domtesterroot>").getBytes(this.UTF_8)));
+        final Document document2 = this.builder.parse(new ByteArrayInputStream(
+                ("<domtesterroot>" + s2 + "</domtesterroot>").getBytes(this.UTF_8)));
+        final Element element1 = document1.getDocumentElement();
+        final Element element2 = document2.getDocumentElement();
+        return childrenTester.equals(element1, element2);
     }
 }

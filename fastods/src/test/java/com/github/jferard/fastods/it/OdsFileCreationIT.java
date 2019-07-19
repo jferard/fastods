@@ -31,6 +31,7 @@ import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -290,7 +291,7 @@ public class OdsFileCreationIT {
         for (int i = 0; i < n; i++) {
             final Table table = document.addTable("table" + i, 50, 5);
             table.setColumnStyle(0, this.tcns);
-            table.updateConfigItem("ZoomValue", "206");
+            table.updateConfigItem(ConfigElement.ZOOM_VALUE, "206");
             TableRowImpl row = table.getRow(0);
             row.setRowStyle(this.trs);
             row.setDefaultCellStyle(this.tcls);

@@ -31,14 +31,15 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -253,10 +254,12 @@ public class OdsElements {
      */
     public void freezeCells(final Table table, final int rowCount, final int colCount) {
         final ConfigItemMapEntry tableConfig = table.getConfigEntry();
-        tableConfig.put(new ConfigItem("HorizontalSplitMode", "short", SC_SPLIT_FIX));
-        tableConfig.put(new ConfigItem("VerticalSplitMode", "short", SC_SPLIT_FIX));
-        tableConfig.put(new ConfigItem("HorizontalSplitPosition", "int", String.valueOf(rowCount)));
-        tableConfig.put(new ConfigItem("VerticalSplitPosition", "int", String.valueOf(colCount)));
+        tableConfig.put(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, SC_SPLIT_FIX));
+        tableConfig.put(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, SC_SPLIT_FIX));
+        tableConfig.put(ConfigItem
+                .create(ConfigElement.HORIZONTAL_SPLIT_POSITION, String.valueOf(rowCount)));
+        tableConfig.put(ConfigItem
+                .create(ConfigElement.VERTICAL_SPLIT_POSITION, String.valueOf(colCount)));
     }
 
     /**

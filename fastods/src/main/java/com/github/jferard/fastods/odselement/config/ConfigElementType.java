@@ -20,37 +20,48 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.jferard.fastods.testlib;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+package com.github.jferard.fastods.odselement.config;
 
-/**
- * A tester that checks the order of the children
- *
- * @author Julien Férard
- */
-public class SortedChildrenTester extends ChildrenTester {
+public enum ConfigElementType {
+    /**
+     * A boolean
+     */
+    BOOLEAN("boolean"),
+
+    /**
+     * A long int, e.g. for colors
+     */
+    LONG("long"),
+
+    /**
+     * An int
+     */
+    INT("int"),
+
+    /**
+     * A short int
+     */
+    SHORT("short"),
+
+    /**
+     * A string
+     */
+    STRING("string"),
+
+    /**
+     * Binary information for PrinterSetup
+     */
+    BASE64_BINARY("base64Binary");
+
+    private final String typeName;
+
+    ConfigElementType(final String typeName) {
+        this.typeName = typeName;
+    }
+
     @Override
-    public boolean childrenEquals(final Node element1, final Node element2) {
-        final NodeList nodes1 = element1.getChildNodes();
-        final NodeList nodes2 = element2.getChildNodes();
-        final int l1 = nodes1.getLength();
-        final int l2 = nodes2.getLength();
-        if (l1 != l2) {
-            this.logFail("Different children number: %s vs %s (%d vs %d)", l1, l2);
-            return false;
-        }
-
-        for (int i = 0; i < l1; i++) {
-            final Node c1 = nodes1.item(i);
-            final Node c2 = nodes2.item(i);
-            final boolean ret = this.equals(c1, c2);
-            if (!ret) {
-                return false;
-            }
-        }
-
-        return true;
+    public String toString() {
+        return this.typeName;
     }
 }
