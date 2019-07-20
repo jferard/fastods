@@ -27,7 +27,6 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
-import com.github.jferard.fastods.odselement.config.ConfigElementType;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -117,13 +116,32 @@ public class Table implements NamedObject {
     }
 
     /**
-     * Flush the XML
+     * Async flush the XML
      *
      * @throws IOException if an error occurs
      */
-    public void flush() throws IOException {
-        this.builder.flushBeginTable(this.appender);
-        this.builder.flushEndTable(this.appender);
+    @Deprecated
+    public void asyncFlush() throws IOException {
+        this.builder.asyncFlushBeginTable(this.appender);
+        this.builder.asyncFlushEndTable(this.appender);
+    }
+
+    /**
+     * Async flush the XML
+     *
+     * @throws IOException if an error occurs
+     */
+    public void asyncFlushBeginTable() throws IOException {
+        this.builder.asyncFlushBeginTable(this.appender);
+    }
+
+    /**
+     * Async flush the XML
+     *
+     * @throws IOException if an error occurs
+     */
+    public void asyncFlushEndTable() throws IOException {
+        this.builder.asyncFlushEndTable(this.appender);
     }
 
     /**
@@ -135,7 +153,7 @@ public class Table implements NamedObject {
      */
     public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        this.appender.flushAllAvailableRows(util, appendable);
+        this.appender.appendAllAvailableRows(util, appendable);
     }
 
     /**
@@ -148,7 +166,7 @@ public class Table implements NamedObject {
      */
     public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
                                        final int rowIndex) throws IOException {
-        this.appender.flushRemainingRowsFrom(util, appendable, rowIndex);
+        this.appender.appendRemainingRowsFrom(util, appendable, rowIndex);
     }
 
     /**
@@ -161,7 +179,7 @@ public class Table implements NamedObject {
      */
     public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
                                            final int rowIndex) throws IOException {
-        this.appender.flushSomeAvailableRowsFrom(util, appendable, rowIndex);
+        this.appender.appendSomeAvailableRowsFrom(util, appendable, rowIndex);
     }
 
     /**
@@ -186,19 +204,6 @@ public class Table implements NamedObject {
     @Override
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name of this table.
-     *
-     * @param name The name of this table.
-     */
-    public void setName(final String name) {
-        if (this.appender.isPreambleWritten()) {
-            throw new IllegalStateException();
-        }
-
-        this.name = name;
     }
 
     /**
@@ -277,10 +282,6 @@ public class Table implements NamedObject {
      * @throws IllegalArgumentException if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
-        if (this.appender.isPreambleWritten()) {
-            throw new IllegalStateException();
-        }
-
         this.builder.setColumnStyle(col, ts);
     }
 

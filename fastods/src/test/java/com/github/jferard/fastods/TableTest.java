@@ -225,7 +225,7 @@ public class TableTest {
     }
 
     @Test
-    public final void testNameAndStyle() {
+    public final void testStyle() {
         final TableStyle ts = TableStyle.builder("b").build();
 
         PowerMock.resetAll();
@@ -233,15 +233,14 @@ public class TableTest {
         EasyMock.expect(this.stc.addPageStyle(ts.getPageStyle())).andReturn(true);
 
         PowerMock.replayAll();
-        this.table.setName("tname");
         this.table.setStyle(ts);
-        Assert.assertEquals("tname", this.table.getName());
+        Assert.assertEquals("my_table", this.table.getName());
         Assert.assertEquals("b", this.table.getStyleName());
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public final void testColumnStyle() throws IOException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
@@ -252,6 +251,7 @@ public class TableTest {
         EasyMock.expect(tb.getColumnStyles())
                 .andReturn(FastFullList.<TableColumnStyle>builder().build());
         EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
+        t.setColumnStyle(0, null);
 
         PowerMock.replayAll();
         t.flushAllAvailableRows(this.xmlUtil, this.sb);
@@ -260,7 +260,7 @@ public class TableTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public final void testName() throws IOException {
         final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
         final Table t = new Table("test", this.ce, tb);
@@ -274,7 +274,6 @@ public class TableTest {
 
         PowerMock.replayAll();
         t.flushAllAvailableRows(this.xmlUtil, this.sb);
-        t.setName("ko");
 
         PowerMock.verifyAll();
     }
@@ -312,7 +311,7 @@ public class TableTest {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.table.flush();
+        this.table.asyncFlush();
 
         PowerMock.verifyAll();
     }
@@ -327,7 +326,7 @@ public class TableTest {
 
         PowerMock.replayAll();
         this.table.addObserver(now);
-        this.table.flush();
+        this.table.asyncFlush();
 
         PowerMock.verifyAll();
     }
@@ -339,7 +338,6 @@ public class TableTest {
         final BooleanStyle bs = this.ds.getBooleanDataStyle();
 
         PowerMock.resetAll();
-        now.update(EasyMock.isA(BeginTableFlusher.class));
         EasyMock.expect(this.stc.addDataStyle(bs)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, bs))
                 .andReturn(null);

@@ -56,7 +56,7 @@ public class EndTableFlusherTest {
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();
-        final OdsFlusher f = new EndTableFlusher(this.appender, rows);
+        final OdsAsyncFlusher f = new EndTableFlusher(this.appender, rows);
         f.flushInto(this.util, this.w);
 
         PowerMock.verifyAll();
@@ -74,7 +74,7 @@ public class EndTableFlusherTest {
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();
-        final OdsFlusher f = new EndTableFlusher(this.appender, rows);
+        final OdsAsyncFlusher f = new EndTableFlusher(this.appender, rows);
         f.flushInto(this.util, this.w);
 
         PowerMock.verifyAll();

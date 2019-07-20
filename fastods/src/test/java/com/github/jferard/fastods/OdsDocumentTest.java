@@ -246,15 +246,11 @@ public class OdsDocumentTest {
     public final void testSaveTo() throws IOException {
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.writeMeta(this.xmlUtil, this.writer);
-        this.odsElements.writeStyles(this.xmlUtil, this.writer);
-        this.odsElements.writeContent(this.xmlUtil, this.writer);
-        this.odsElements.writeSettings(this.xmlUtil, this.writer);
-        this.writer.close();
+        this.odsElements.saveAsync();
 
         PowerMock.replayAll();
         final NamedOdsDocument d = this.getDocument();
-        d.save(this.writer);
+        d.save();
 
         PowerMock.verifyAll();
     }
@@ -263,20 +259,14 @@ public class OdsDocumentTest {
     public final void testSaveToCloseException() throws IOException {
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.createEmptyElements(this.writer);
-        this.odsElements.writeImmutableElements(this.xmlUtil, this.writer);
-        this.odsElements.writeMeta(this.xmlUtil, this.writer);
-        this.odsElements.writeStyles(this.xmlUtil, this.writer);
-        this.odsElements.writeContent(this.xmlUtil, this.writer);
-        this.odsElements.writeSettings(this.xmlUtil, this.writer);
-        this.writer.close();
+        this.odsElements.saveAsync();
         EasyMock.expectLastCall().andThrow(new IOException("@"));
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
         this.thrown.expect(IOException.class);
         this.thrown.expectMessage("@");
-        document.save(this.writer);
+        document.save();
 
         PowerMock.verifyAll();
     }
@@ -293,7 +283,7 @@ public class OdsDocumentTest {
         this.thrown.expect(RuntimeException.class);
         this.thrown.expectMessage("@");
         final NamedOdsDocument d = this.getDocument();
-        d.save(this.writer);
+        d.save();
 
         PowerMock.verifyAll();
     }
@@ -377,7 +367,7 @@ public class OdsDocumentTest {
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
         document.freezeStyles();
-        document.addObjectStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        document.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
     }
@@ -480,14 +470,14 @@ public class OdsDocumentTest {
     }
 
     @Test
-    public void testAddObjectStyle() {
+    public void testaddContentStyle() {
         PowerMock.resetAll();
         this.initMockOdsElements();
         this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addObjectStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        document.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
     }
@@ -569,7 +559,7 @@ public class OdsDocumentTest {
     public void testSave() throws IOException {
         PowerMock.resetAll();
         this.initMockOdsElements();
-        this.odsElements.save();
+        this.odsElements.saveAsync();
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();

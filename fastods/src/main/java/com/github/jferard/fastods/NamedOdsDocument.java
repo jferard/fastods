@@ -31,7 +31,6 @@ import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +38,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * An ods document.
+ * An ods document with a name. The named is not stored in the NamedOdsDocument object, but the
+ * NamedOdsDocument object is injected in a NamedOdsWriter.
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -232,8 +232,19 @@ public class NamedOdsDocument implements OdsDocument {
      *
      * @param objectStyle the object style to add to this document
      */
-    public void addObjectStyle(final ObjectStyle objectStyle) {
+    public void addContentStyle(final ObjectStyle objectStyle) {
         this.odsElements.addContentStyle(objectStyle);
+    }
+
+    /**
+     * Add an object style to this document. Use only if you want to flush data before the end of
+     * the document
+     * construction.
+     *
+     * @param objectStyle the object style to add to this document
+     */
+    public void addStylesStyle(final ObjectStyle objectStyle) {
+        this.odsElements.addStylesStyle(objectStyle);
     }
 
     /**
@@ -264,8 +275,8 @@ public class NamedOdsDocument implements OdsDocument {
      *
      * @throws IOException if an element can't be written
      */
-    public void prepareFlush() throws IOException {
-        this.odsElements.prepare();
+    public void prepare() throws IOException {
+        this.odsElements.prepareAsync();
     }
 
     /**
@@ -274,24 +285,7 @@ public class NamedOdsDocument implements OdsDocument {
      * @throws IOException if the save fails
      */
     public void save() throws IOException {
-        this.odsElements.save();
-    }
-
-    /**
-     * Saves a file
-     *
-     * @param writer where to write
-     * @throws IOException if the document can't be saved
-     */
-    public void save(final ZipUTF8Writer writer) throws IOException {
-        try {
-            this.odsElements.writeMeta(this.xmlUtil, writer);
-            this.odsElements.writeStyles(this.xmlUtil, writer);
-            this.odsElements.writeContent(this.xmlUtil, writer);
-            this.odsElements.writeSettings(this.xmlUtil, writer);
-        } finally {
-            writer.close();
-        }
+        this.odsElements.saveAsync();
         this.logger.log(Level.FINE, "file saved");
     }
 }

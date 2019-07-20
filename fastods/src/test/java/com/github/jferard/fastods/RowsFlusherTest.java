@@ -53,7 +53,7 @@ public class RowsFlusherTest {
 
         PowerMock.resetAll();
         PowerMock.replayAll();
-        final OdsFlusher flusher = new RowsFlusher(rows);
+        final OdsAsyncFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }
@@ -69,7 +69,7 @@ public class RowsFlusherTest {
         r2.appendXMLToTable(this.util, this.w);
 
         PowerMock.replayAll();
-        final OdsFlusher flusher = new RowsFlusher(rows);
+        final OdsAsyncFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }
@@ -81,7 +81,7 @@ public class RowsFlusherTest {
 
         PowerMock.resetAll();
         PowerMock.replayAll();
-        final OdsFlusher flusher = new RowsFlusher(rows);
+        final OdsAsyncFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
     }

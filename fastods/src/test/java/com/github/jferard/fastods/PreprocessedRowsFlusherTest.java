@@ -51,26 +51,30 @@ public class PreprocessedRowsFlusherTest {
         this.util = XMLUtil.create();
         this.w = PowerMock.createMock(ZipUTF8Writer.class);
         this.sb = new StringBuilder(1024 * 32);
-        PowerMock.resetAll();
     }
 
     @Test
     public void create() throws Exception {
         final List<TableRowImpl> rows = Collections.emptyList();
 
+        PowerMock.resetAll();
         PowerMock.replayAll();
         PreprocessedRowsFlusher.create(this.util, rows);
+
         PowerMock.verifyAll();
     }
 
     @Test
     public void flushIntoEmptyList() throws Exception {
         final List<TableRowImpl> rows = Collections.emptyList();
+
+        PowerMock.resetAll();
         EasyMock.expect(this.w.append(this.sb)).andReturn(this.sb);
 
         PowerMock.replayAll();
-        final OdsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
+        final OdsAsyncFlusher flusher = new PreprocessedRowsFlusher(this.sb);
         flusher.flushInto(this.util, this.w);
+
         PowerMock.verifyAll();
     }
 
@@ -80,15 +84,17 @@ public class PreprocessedRowsFlusherTest {
         final TableRowImpl r2 = PowerMock.createMock(TableRowImpl.class);
         final List<TableRowImpl> rows = Arrays.asList(r1, r2);
 
-        r1.appendXMLToTable(this.util, this.sb);
-        r2.appendXMLToTable(this.util, this.sb);
-        EasyMock.expect(this.w.append(this.sb)).andReturn(this.sb);
+        PowerMock.resetAll();
+        r1.appendXMLToTable(EasyMock.eq(this.util), EasyMock.anyObject(StringBuilder.class));
+        r2.appendXMLToTable(EasyMock.eq(this.util), EasyMock.anyObject(StringBuilder.class));
+        EasyMock.expect(this.w.append(EasyMock.anyObject(StringBuilder.class))).andReturn(this.sb);
 
         PowerMock.replayAll();
-        final OdsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
+        final OdsAsyncFlusher flusher = PreprocessedRowsFlusher.create(this.util, rows);
         flusher.flushInto(this.util, this.w);
-        Assert.assertEquals("", this.sb.toString());
+
         PowerMock.verifyAll();
+        Assert.assertEquals("", this.sb.toString());
     }
 
     @Test
@@ -96,13 +102,15 @@ public class PreprocessedRowsFlusherTest {
         final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         rows.add(null);
 
+        PowerMock.resetAll();
         final Capture<CharSequence> capturedArgument = EasyMock.newCapture();
         EasyMock.expect(this.w.append(EasyMock.capture(capturedArgument))).andReturn(this.w);
 
         PowerMock.replayAll();
-        final OdsFlusher flusher = new PreprocessedRowsFlusher(this.util, rows, this.sb);
+        final OdsAsyncFlusher flusher = PreprocessedRowsFlusher.create(this.util, rows);
         flusher.flushInto(this.util, this.w);
-        Assert.assertEquals("<row />", capturedArgument.getValue().toString());
+
         PowerMock.verifyAll();
+        Assert.assertEquals("<row />", capturedArgument.getValue().toString());
     }
 }

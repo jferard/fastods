@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public interface OdsFlusher {
+public interface OdsAsyncFlusher {
     /**
      * @param xmlUtil an instance of the util class
      * @param writer  where to write data

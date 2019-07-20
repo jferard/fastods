@@ -31,11 +31,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A flusher for a collection of rows
+ *  * An OdsFLusher flushes data to a writer, but does not preprocess the rows;
  *
  * @author Julien Férard
+ * @deprecated use PreprocessedRowsFlusher
  */
-class RowsFlusher implements OdsFlusher {
+@Deprecated
+class RowsFlusher implements OdsAsyncFlusher {
     private final List<TableRowImpl> rows;
 
     /**

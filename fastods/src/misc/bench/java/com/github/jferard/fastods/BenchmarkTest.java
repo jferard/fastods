@@ -65,8 +65,37 @@ public class BenchmarkTest {
     }
 
     @Test
+    public void test0() throws IOException {
+        this.test(200, 20, BenchmarkTest.TIMES);
+    }
+
+    @Test
     public void test1() throws IOException {
         this.test(BenchmarkTest.ROW_COUNT, BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
+    }
+
+    @Test
+    public void test2() throws IOException {
+        this.test(2 * BenchmarkTest.ROW_COUNT, 2 * BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
+    }
+
+    @Test
+    public void test3() throws IOException {
+        this.test(3 * BenchmarkTest.ROW_COUNT, 3 * BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
+    }
+
+    //@Test
+    public void test4() throws IOException {
+        this.test(6 * BenchmarkTest.ROW_COUNT, 6 * BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
+    }
+
+    //	@Test
+    public void checkThreads() throws IOException {
+        final Bench bench1c = new BenchFastFlushWithThreads(this.logger, 15, 20);
+        for (int i = 0; i < 1000; i++) {
+            bench1c.iteration();
+        }
+        this.logger.info(bench1c.getWithoutWarmUp().toString());
     }
 
     private void test(final int rowCount, final int colCount, final int times) throws IOException {
@@ -75,7 +104,8 @@ public class BenchmarkTest {
                         new BenchFastFlush(this.logger, rowCount, colCount),
                         new BenchFastFlushWithThreads(this.logger, rowCount, colCount),
                         new BenchSimpleOds(this.logger, rowCount, colCount),
-                        new BenchJOpen(this.logger, rowCount, colCount));
+                        new BenchJOpen(this.logger, rowCount, colCount)
+                );
         if (rowCount < 10000) {
             benches.add(new BenchSimpleOdf(this.logger, rowCount, colCount));
         }
@@ -91,27 +121,4 @@ public class BenchmarkTest {
         }
     }
 
-    @Test
-    public void test2() throws IOException {
-        this.test(2 * BenchmarkTest.ROW_COUNT, 2 * BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
-    }
-
-    @Test
-    public void test3() throws IOException {
-        this.test(3 * BenchmarkTest.ROW_COUNT, 3 * BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
-    }
-
-    //	@Test
-    public void test4() throws IOException {
-        this.test(6 * BenchmarkTest.ROW_COUNT, 6 * BenchmarkTest.COL_COUNT, BenchmarkTest.TIMES);
-    }
-
-    //	@Test
-    public void checkThreads() throws IOException {
-        final Bench bench1c = new BenchFastFlushWithThreads(this.logger, 15, 20);
-        for (int i = 0; i < 1000; i++) {
-            bench1c.iteration();
-        }
-        this.logger.info(bench1c.getWithoutWarmUp().toString());
-    }
 }

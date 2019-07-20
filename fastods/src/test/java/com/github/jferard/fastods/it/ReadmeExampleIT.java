@@ -147,7 +147,7 @@ public class ReadmeExampleIT {
                 .createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
         final NamedOdsDocument document = writer.document();
 
-        document.addObjectStyle(this.style);
+        document.addContentStyle(this.style);
         document.addChildCellStyle(TableCell.Type.FLOAT);
         document.addChildCellStyle(this.style, TableCell.Type.FLOAT);
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors

@@ -357,13 +357,13 @@ public class OdsFileCreationIT {
         final NamedOdsDocument document = writer.document();
 
         this.createStyles();
-        document.addObjectStyle(this.trs);
-        document.addObjectStyle(this.tcls);
-        document.addObjectStyle(this.tcns);
-        document.addObjectStyle(this.tcs0);
-        document.addObjectStyle(this.tcs1);
-        document.addObjectStyle(this.tcs2);
-        document.addObjectStyle(this.tcs3);
+        document.addContentStyle(this.trs);
+        document.addContentStyle(this.tcls);
+        document.addContentStyle(this.tcns);
+        document.addContentStyle(this.tcs0);
+        document.addContentStyle(this.tcs1);
+        document.addContentStyle(this.tcs2);
+        document.addContentStyle(this.tcs3);
 
         document.addChildCellStyle(this.tcs0, TableCell.Type.FLOAT);
         document.addChildCellStyle(this.tcs1, TableCell.Type.FLOAT);

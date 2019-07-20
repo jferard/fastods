@@ -24,6 +24,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import org.easymock.Capture;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -89,12 +91,17 @@ public class OdsFactoryTest {
 
     @Test
     public void createWriterAdapter() throws Exception {
+        final Capture<String> msgCapture = Capture.newInstance();
+
         PowerMock.resetAll();
+        this.logger.fine(EasyMock.capture(msgCapture));
+
         PowerMock.replayAll();
 
         this.odsFactory.createWriterAdapter(this.file);
 
         PowerMock.verifyAll();
+        Assert.assertTrue(msgCapture.getValue().startsWith("Add new flusher"));
     }
 
     @Test

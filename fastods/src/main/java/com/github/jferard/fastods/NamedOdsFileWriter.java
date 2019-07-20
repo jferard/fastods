@@ -58,5 +58,5 @@ public interface NamedOdsFileWriter {
      * @param flusher the chosen flusher
      * @throws IOException if an I/O error occurs
      */
-    void update(final OdsFlusher flusher) throws IOException;
+    void update(final OdsAsyncFlusher flusher) throws IOException;
 }

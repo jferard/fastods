@@ -84,11 +84,11 @@ public class OdsFileDirectWriter implements NamedOdsFileWriter {
 
     @Override
     public void save() throws IOException {
-        this.document.save(this.writer);
+        this.document.save();
     }
 
     @Override
-    public void update(final OdsFlusher flusher) throws IOException {
+    public void update(final OdsAsyncFlusher flusher) throws IOException {
         flusher.flushInto(this.xmlUtil, this.writer);
     }
 }

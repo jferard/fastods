@@ -34,47 +34,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BenchFastFlushWithThreads extends Bench {
-    private final Logger logger;
-    private final OdsFactory odsFactory;
-
-    public BenchFastFlushWithThreads(final Logger logger, final int rowCount, final int colCount) {
-        super(logger, "FastODSFlushWithThreads", rowCount, colCount);
-        this.logger = logger;
-        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-    }
-
-    @Test
-    public void test0() throws IOException {
-        this.test();
-    }
-
-    @Override
-    public long test() throws IOException {
-        try {
-            // Open the file.
-            this.logger.info("testFastFlushThread: filling a " + this.getRowCount() + " rows, " +
-                    this.getColCount() + " columns spreadsheet");
-            final long t1 = System.currentTimeMillis();
-            final OdsFileWriterAdapter writerAdapter = this.odsFactory.createWriterAdapter(
-                    new File("generated_files", "fastods_flush_thread_benchmark" + ".ods"));
-            final NamedOdsDocument document = writerAdapter.document();
-            final Producer a = new Producer(document, this.getRowCount(), this.getColCount(),
-                    this.getRandom());
-            final Consumer b = new Consumer(this.logger, writerAdapter);
-            b.start();
-            a.start();
-            a.join();
-            b.join();
-            final long t2 = System.currentTimeMillis();
-
-            this.logger.info("Filled in " + (t2 - t1) + " ms");
-            return t2 - t1;
-        } catch (final InterruptedException e) {
-            this.logger.log(Level.SEVERE, "", e);
-        }
-        return 0;
-    }
-
     static class Consumer extends Thread {
         private final Logger logger;
         private final OdsFileWriterAdapter writerAdapter;
@@ -90,22 +49,27 @@ public class BenchFastFlushWithThreads extends Bench {
             try {
                 while (this.writerAdapter.isNotStopped()) {
                     this.writerAdapter.waitForData();
-                    final long t1 = System.currentTimeMillis();
-                    this.writerAdapter.flushAdaptee();
-                    final long t2 = System.currentTimeMillis();
-                    t += t2 - t1;
+                    t += this.flushAdaptee();
                 }
-                final long t1 = System.currentTimeMillis();
-                this.writerAdapter.flushAdaptee();
-                final long t2 = System.currentTimeMillis();
-                t += t2 - t1;
+                t += this.flushAdaptee();
             } catch (final IOException e) {
                 this.logger.log(Level.SEVERE, "", e);
             }
             System.out.println(">> Write time " + t + " ms");
         }
+
+        public long flushAdaptee() throws IOException {
+            final long t1 = System.currentTimeMillis();
+            this.writerAdapter.flushAdaptee();
+            final long t2 = System.currentTimeMillis();
+            final long t = t2 - t1;
+            return t;
+        }
     }
 
+    /**
+     * The Producer ads data to the document
+     */
     static class Producer extends Thread {
         private final NamedOdsDocument document;
         private final int rowCount;
@@ -139,5 +103,54 @@ public class BenchFastFlushWithThreads extends Bench {
                 e.printStackTrace();
             }
         }
+    }
+
+    private final Logger logger;
+    private final OdsFactory odsFactory;
+
+    public BenchFastFlushWithThreads(final Logger logger, final int rowCount, final int colCount) {
+        super(logger, "FastODSFlushWithThreads", rowCount, colCount);
+        this.logger = logger;
+        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
+    }
+
+    @Test
+    public void test0() throws IOException {
+        this.test();
+    }
+
+    @Override
+    public long test() throws IOException {
+        try {
+            // Open the file.
+            this.logger.info("testFastFlushThread: filling a " + this.getRowCount() + " rows, " +
+                    this.getColCount() + " columns spreadsheet");
+            final long t1 = System.currentTimeMillis();
+            final OdsFileWriterAdapter writerAdapter = this.odsFactory.createWriterAdapter(
+                    new File("generated_files", "fastods_flush_thread_benchmark" + ".ods"));
+            final NamedOdsDocument document = writerAdapter.document();
+            final Producer producer = this.createProducer(document);
+            final Consumer consumer = this.createConsumer(writerAdapter);
+            consumer.start();
+            producer.start();
+            producer.join();
+            consumer.join();
+            final long t2 = System.currentTimeMillis();
+
+            this.logger.info("Filled in " + (t2 - t1) + " ms");
+            return t2 - t1;
+        } catch (final InterruptedException e) {
+            this.logger.log(Level.SEVERE, "", e);
+        }
+        return 0;
+    }
+
+    public Consumer createConsumer(OdsFileWriterAdapter writerAdapter) {
+        return new Consumer(this.logger, writerAdapter);
+    }
+
+    private Producer createProducer(NamedOdsDocument document) {
+        return new Producer(document, this.getRowCount(), this.getColCount(),
+                this.getRandom());
     }
 }

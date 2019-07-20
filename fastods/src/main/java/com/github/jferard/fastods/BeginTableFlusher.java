@@ -29,9 +29,12 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
+ * An async flusher to append the preamble of the table.
+ * Used when user gets the first row of a table.
+ *
  * @author Julien Férard
  */
-public class BeginTableFlusher implements OdsFlusher {
+public class BeginTableFlusher implements OdsAsyncFlusher {
     private final TableAppender appender;
 
     /**

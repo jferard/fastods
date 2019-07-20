@@ -31,51 +31,51 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A flusher for a collection of rows
+ * An async flusher for a collection of rows
+ *
+ * Sent when a table with a row index that is a multiple of 1024 is used.
  *
  * @author Julien Férard
  */
-class PreprocessedRowsFlusher implements OdsFlusher {
+class PreprocessedRowsFlusher implements OdsAsyncFlusher {
     private static final int STRING_BUILDER_SIZE = 1024 * 32;
 
     /**
      * Create an new rows flusher
+     * Warning, consume the rows by removing the refs.
      *
      * @param xmlUtil   an util
-     * @param tableRows the rows
+     * @param tableRows a view on the rows
      * @return the flusher
      * @throws IOException if an I/O error occurs
      */
     public static PreprocessedRowsFlusher create(final XMLUtil xmlUtil,
                                                  final List<TableRowImpl> tableRows)
             throws IOException {
-        return new PreprocessedRowsFlusher(xmlUtil, tableRows,
-                new StringBuilder(STRING_BUILDER_SIZE));
+        // create a char sequence
+        final StringBuilder sb = new StringBuilder(STRING_BUILDER_SIZE);
+        for (final TableRowImpl row : tableRows) {
+            TableRowImpl.appendXMLToTable(row, xmlUtil, sb);
+        }
+        // free rows
+        Collections.fill(tableRows, null);
+
+        return new PreprocessedRowsFlusher(sb);
     }
 
-    private final StringBuilder sb;
+    private final CharSequence cs;
 
     /**
-     * @param xmlUtil an util
-     * @param rows    the rows to flush
-     * @param sb      the destination
+     * @param cs the destination
      * @throws IOException if an I/O error occurs
      */
-    PreprocessedRowsFlusher(final XMLUtil xmlUtil, final List<TableRowImpl> rows,
-                            final StringBuilder sb) throws IOException {
-        // use an appender
-        this.sb = sb;
-        for (final TableRowImpl row : rows) {
-            TableRowImpl.appendXMLToTable(row, xmlUtil, this.sb);
-        }
-
-        // free rows
-        Collections.fill(rows, null);
+    PreprocessedRowsFlusher(final CharSequence cs) throws IOException {
+        this.cs = cs;
     }
 
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        writer.append(this.sb);
+        writer.append(this.cs);
     }
 
     @Override

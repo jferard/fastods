@@ -167,7 +167,7 @@ public class OdsFactory {
         final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document)
                 .openResult(this.openFile(filename)).build();
         document.addObserver(writer);
-        document.prepareFlush();
+        document.prepare();
         return writer;
     }
 
@@ -184,7 +184,7 @@ public class OdsFactory {
         final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document)
                 .openResult(this.openFile(file)).build();
         document.addObserver(writer);
-        document.prepareFlush();
+        document.prepare();
         return writer;
     }
 
@@ -199,10 +199,10 @@ public class OdsFactory {
         final NamedOdsDocument document = this.createNamedDocument();
         final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
         final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter
-                .create(OdsFileDirectWriter.builder(this.logger, document)
+                .create(this.logger, OdsFileDirectWriter.builder(this.logger, document)
                         .openResult(this.openFile(file)).zipBuilder(zipUTF8Writer).build());
         document.addObserver(writerAdapter);
-        document.prepareFlush();
+        document.prepare();
         return writerAdapter;
     }
 

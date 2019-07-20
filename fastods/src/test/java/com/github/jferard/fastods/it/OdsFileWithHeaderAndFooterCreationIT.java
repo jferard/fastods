@@ -354,16 +354,16 @@ public class OdsFileWithHeaderAndFooterCreationIT {
                 .createWriter(new File(GENERATED_FILES, FASTODS_FOOTER_HEADER_WITH_FLUSH_ODS));
         final NamedOdsDocument document = writer.document();
         document.addPageStyle(this.ps);
-        document.addObjectStyle(this.ttts);
-        document.addObjectStyle(this.ttts2);
-        document.addObjectStyle(this.lts);
-        document.addObjectStyle(this.cts);
-        document.addObjectStyle(this.rts);
+        document.addContentStyle(this.ttts);
+        document.addContentStyle(this.ttts2);
+        document.addContentStyle(this.lts);
+        document.addContentStyle(this.cts);
+        document.addContentStyle(this.rts);
         document.addStyleToContentAutomaticStyles(this.boldStyle);
         document.addStyleToContentAutomaticStyles(this.italicStyle);
-        document.addObjectStyle(this.trs);
-        document.addObjectStyle(this.tcls);
-        document.addObjectStyle(this.tcns);
+        document.addContentStyle(this.trs);
+        document.addContentStyle(this.tcls);
+        document.addContentStyle(this.tcns);
         document.freezeStyles();
 
         this.fillDocument(document);

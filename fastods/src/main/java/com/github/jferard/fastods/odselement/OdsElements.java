@@ -25,8 +25,8 @@ package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.FinalizeFlusher;
 import com.github.jferard.fastods.ImmutableElementsFlusher;
-import com.github.jferard.fastods.MetaAndStylesElementsFlusher;
 import com.github.jferard.fastods.NamedOdsFileWriter;
+import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
@@ -54,6 +54,11 @@ import java.util.zip.ZipEntry;
  * The OdsElements class is simply a facade in front of various OdsElement classes
  * (ContentElement, StylesElement, ...).
  * See GOF Facade pattern.
+ * <p>
+ * Contains method for flush and async flush:
+ * <ul>
+ * <li>all add...Style methods are used to declare the styles before flushing data</li>
+ * </ul>
  *
  * @author Julien Férard
  */
@@ -136,6 +141,15 @@ public class OdsElements {
     }
 
     /**
+     * The OdsElements is observable by a writer.
+     *
+     * @param o the file writer
+     */
+    public void addObserver(final NamedOdsFileWriter o) {
+        this.observer = o;
+    }
+
+    /**
      * Create an automatic style for this TableCellStyle and this type of cell.
      * Do not produce any effect if the type is Type.STRING or Type.VOID
      *
@@ -165,15 +179,6 @@ public class OdsElements {
     }
 
     /**
-     * The OdsElements is observable by a writer.
-     *
-     * @param o the file writer
-     */
-    public void addObserver(final NamedOdsFileWriter o) {
-        this.observer = o;
-    }
-
-    /**
      * Add a page layout style
      *
      * @param pageLayoutStyle the style
@@ -192,7 +197,7 @@ public class OdsElements {
     }
 
     /**
-     * Add a style to OdsElements.
+     * Add a style to OdsElements, in content.xml
      *
      * @param objectStyle the style to add
      */
@@ -201,11 +206,11 @@ public class OdsElements {
     }
 
     /**
-     * Add a style to OdsElements.
+     * Add a style to OdsElements, in styles.xml
      *
      * @param objectStyle the style to add
      */
-    public void addStyleStyle(final ObjectStyle objectStyle) {
+    public void addStylesStyle(final ObjectStyle objectStyle) {
         this.stylesContainer.addStylesStyle(objectStyle);
     }
 
@@ -216,50 +221,6 @@ public class OdsElements {
      */
     public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
         this.stylesContainer.addContentStyle(objectStyle);
-    }
-
-    /**
-     * Add a new table to content. The config for this table is added to the settings.
-     * If the OdsElements is observed, the previous table is flushed. If there is no previous table,
-     * meta.xml, styles.xml and the preamble of content.xml are written to destination.
-     *
-     * @param name           name of the table
-     * @param rowCapacity    estimated rows
-     * @param columnCapacity estimated columns
-     * @return the table
-     * @throws IOException if the OdsElements is observed and there is a write exception
-     */
-    public Table addTableToContent(final String name, final int rowCapacity,
-                                   final int columnCapacity) throws IOException {
-        final Table previousTable = this.contentElement.getLastTable();
-        final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
-        this.settingsElement.addTableConfig(table.getConfigEntry());
-        if (this.observer != null) {
-            if (previousTable == null) {
-                this.observer.update(new MetaAndStylesElementsFlusher(this, this.contentElement));
-            } else {
-                previousTable.flush();
-            }
-            table.addObserver(this.observer);
-        }
-        return table;
-    }
-
-    /**
-     * Freeze cells. See https://help.libreoffice.org/Calc/Freezing_Rows_or_Columns_as_Headers
-     *
-     * @param table    the table to freeze
-     * @param rowCount the number of rows to freeze (e.g. 1 -> freeze the first row)
-     * @param colCount the number of cols to freeze.
-     */
-    public void freezeCells(final Table table, final int rowCount, final int colCount) {
-        final ConfigItemMapEntry tableConfig = table.getConfigEntry();
-        tableConfig.put(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, SC_SPLIT_FIX));
-        tableConfig.put(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, SC_SPLIT_FIX));
-        tableConfig.put(ConfigItem
-                .create(ConfigElement.HORIZONTAL_SPLIT_POSITION, String.valueOf(rowCount)));
-        tableConfig.put(ConfigItem
-                .create(ConfigElement.VERTICAL_SPLIT_POSITION, String.valueOf(colCount)));
     }
 
     /**
@@ -285,41 +246,6 @@ public class OdsElements {
     }
 
     /**
-     * Flush tables and write end of document
-     *
-     * @param xmlUtil the util
-     * @param writer  the stream to write
-     * @throws IOException when write fails
-     */
-    public void finalizeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
-            throws IOException {
-        this.contentElement.flushTables(xmlUtil, writer, this.settingsElement);
-        this.contentElement.writePostamble(xmlUtil, writer);
-    }
-
-    /**
-     * Flush the rows
-     *
-     * @param util   the util
-     * @param writer the stream to write
-     * @throws IOException when write fails
-     */
-    public void flushRows(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        this.contentElement.flushRows(util, writer, this.settingsElement);
-    }
-
-    /**
-     * Flush the tables
-     *
-     * @param util   the util
-     * @param writer the stream to write
-     * @throws IOException when write fails
-     */
-    public void flushTables(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        this.contentElement.flushTables(util, writer, this.settingsElement);
-    }
-
-    /**
      * Freeze the styles: adding a new style to the container will generate an IllegalStateException
      */
     public void freezeStyles() {
@@ -327,80 +253,71 @@ public class OdsElements {
     }
 
     /**
-     * Return a table from an index
+     * Add a new table to content. The config for this table is added to the settings.
+     * If the OdsElements is observed the previous table is async flushed. If there
+     * is no previous table, meta and styles are async flushed.
+     * If there is no previous table, meta.xml, styles.xml and the preamble of content.xml
+     * are written to destination.
      *
-     * @param tableIndex the index
+     * @param name           name of the table
+     * @param rowCapacity    estimated rows
+     * @param columnCapacity estimated columns
      * @return the table
+     * @throws IOException if the OdsElements is observed and there is a write exception
      */
-    public Table getTable(final int tableIndex) {
-        return this.contentElement.getTable(tableIndex);
+    public Table addTableToContent(final String name, final int rowCapacity,
+                                   final int columnCapacity) throws IOException {
+        final Table previousTable = this.contentElement.getLastTable();
+        final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
+        this.settingsElement.addTableConfig(table.getConfigEntry());
+        if (this.observer != null) {
+            this.asyncFlushToTable(previousTable, table);
+        }
+        return table;
     }
 
     /**
-     * Return a table from a name
+     * flush everything up to the new table excluded: the previous table is async flushed. If there
+     * is no previous table, meta and styles are async flushed.
      *
-     * @param name the name
-     * @return the table
+     * @param previousTable
+     * @param table         the table
      */
-    public Table getTable(final String name) {
-        return this.contentElement.getTable(name);
-    }
-
-    /**
-     * @return the table count
-     */
-    public int getTableCount() {
-        return this.contentElement.getTableCount();
-    }
-
-    /**
-     * @return the list of tables
-     */
-    public List<Table> getTables() {
-        return this.contentElement.getTables();
+    private void asyncFlushToTable(final Table previousTable, final Table table)
+            throws IOException {
+        table.addObserver(this.observer);
+        if (previousTable == null) {
+            this.observer.update(new PrepareContentFlusher(this, this.contentElement));
+        } else {
+            previousTable.asyncFlushEndTable();
+        }
+        table.asyncFlushBeginTable();
     }
 
     /**
      * Prepare the elements for writing.
+     * Performs an async flush.
      *
      * @throws IOException if the preparation fails
      */
-    public void prepare() throws IOException {
+    public void prepareAsync() throws IOException {
         this.observer.update(new ImmutableElementsFlusher(this));
     }
 
     /**
-     * Save the elements
+     * Save the elements, the file is already open. (launches async flushes)
      *
      * @throws IOException if the write fails
      */
-    public void save() throws IOException {
+    public void saveAsync() throws IOException {
         final Table previousTable = this.contentElement.getLastTable();
-        if (previousTable != null) {
-            previousTable.flush();
+        if (previousTable == null) {
+            this.observer.update(new PrepareContentFlusher(this, this.contentElement));
+        } else {
+            previousTable.asyncFlushEndTable();
         }
 
         this.observer.update(new FinalizeFlusher(this.contentElement, this.settingsElement));
-    }
-
-    /**
-     * Set a new active table
-     *
-     * @param table the table
-     */
-    public void setActiveTable(final Table table) {
-        this.settingsElement.setActiveTable(table);
-    }
-
-    /**
-     * Set a view setting
-     *
-     * @param viewId the id of the view
-     * @param item   the item name
-     * @param value  the item value
-     */
-    public void setViewSetting(final String viewId, final String item, final String value) {
-        this.settingsElement.setViewSetting(viewId, item, value);
     }
 
     /**
@@ -466,6 +383,78 @@ public class OdsElements {
     public void writeStyles(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing ods element: stylesElement to zip file");
         this.stylesElement.write(xmlUtil, writer);
+    }
+
+
+    /**
+     * Freeze cells. See https://help.libreoffice.org/Calc/Freezing_Rows_or_Columns_as_Headers
+     *
+     * @param table    the table to freeze
+     * @param rowCount the number of rows to freeze (e.g. 1 -> freeze the first row)
+     * @param colCount the number of cols to freeze.
+     */
+    public void freezeCells(final Table table, final int rowCount, final int colCount) {
+        final ConfigItemMapEntry tableConfig = table.getConfigEntry();
+        tableConfig.put(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, SC_SPLIT_FIX));
+        tableConfig.put(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, SC_SPLIT_FIX));
+        tableConfig.put(ConfigItem
+                .create(ConfigElement.HORIZONTAL_SPLIT_POSITION, String.valueOf(rowCount)));
+        tableConfig.put(ConfigItem
+                .create(ConfigElement.VERTICAL_SPLIT_POSITION, String.valueOf(colCount)));
+    }
+
+    /**
+     * Return a table from an index
+     *
+     * @param tableIndex the index
+     * @return the table
+     */
+    public Table getTable(final int tableIndex) {
+        return this.contentElement.getTable(tableIndex);
+    }
+
+    /**
+     * Return a table from a name
+     *
+     * @param name the name
+     * @return the table
+     */
+    public Table getTable(final String name) {
+        return this.contentElement.getTable(name);
+    }
+
+    /**
+     * @return the table count
+     */
+    public int getTableCount() {
+        return this.contentElement.getTableCount();
+    }
+
+    /**
+     * @return the list of tables
+     */
+    public List<Table> getTables() {
+        return this.contentElement.getTables();
+    }
+
+    /**
+     * Set a new active table
+     *
+     * @param table the table
+     */
+    public void setActiveTable(final Table table) {
+        this.settingsElement.setActiveTable(table);
+    }
+
+    /**
+     * Set a view setting
+     *
+     * @param viewId the id of the view
+     * @param item   the item name
+     * @param value  the item value
+     */
+    public void setViewSetting(final String viewId, final String item, final String value) {
+        this.settingsElement.setViewSetting(viewId, item, value);
     }
 
     /**

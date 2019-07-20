@@ -265,8 +265,8 @@ public class TableBuilderTest {
 
         PowerMock.replayAll();
         this.builder.addObserver(o);
-        this.builder.flushBeginTable(this.appender);
-        this.builder.flushEndTable(this.appender);
+        this.builder.asyncFlushBeginTable(this.appender);
+        this.builder.asyncFlushEndTable(this.appender);
 
         PowerMock.verifyAll();
     }
@@ -348,11 +348,11 @@ public class TableBuilderTest {
         final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
 
         PowerMock.resetAll();
-        o.update(EasyMock.isA(BeginTableFlusher.class));
+        o.update(EasyMock.isA(PreprocessedRowsFlusher.class));
 
         PowerMock.replayAll();
         this.builder.addObserver(o);
-        this.builder.getRow(this.table, this.appender, 0);
+        this.builder.getRow(this.table, this.appender, 1024);
 
         PowerMock.verifyAll();
     }

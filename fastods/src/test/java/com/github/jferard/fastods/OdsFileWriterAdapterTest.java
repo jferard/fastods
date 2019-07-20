@@ -33,23 +33,26 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.Logger;
 
 /**
  * Created by jferard on 09/05/17.
  */
 public class OdsFileWriterAdapterTest {
     private NamedOdsFileWriter w;
-    private OdsFlusher f;
+    private OdsAsyncFlusher f;
     private OdsFileWriterAdapter wa;
-    private Queue<OdsFlusher> flushers;
+    private Queue<OdsAsyncFlusher> flushers;
     private NamedOdsDocument d;
+    private Logger logger;
 
     @Before
     public void setUp() {
         this.w = PowerMock.createMock(NamedOdsFileWriter.class);
-        this.f = PowerMock.createMock(OdsFlusher.class);
-        this.flushers = new LinkedList<OdsFlusher>();
-        this.wa = new OdsFileWriterAdapter(this.w, this.flushers);
+        this.f = PowerMock.createMock(OdsAsyncFlusher.class);
+        this.flushers = new LinkedList<OdsAsyncFlusher>();
+        this.logger = PowerMock.createMock(Logger.class);
+        this.wa = new OdsFileWriterAdapter(this.logger, this.w, this.flushers);
         this.d = PowerMock.createMock(NamedOdsDocument.class);
     }
 
@@ -65,7 +68,8 @@ public class OdsFileWriterAdapterTest {
     public void testCreate() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        final OdsFileWriterAdapter odsFileWriterAdapter = OdsFileWriterAdapter.create(this.w);
+        final OdsFileWriterAdapter odsFileWriterAdapter = OdsFileWriterAdapter.create(this.logger,
+                this.w);
 
         PowerMock.verifyAll();
         Assert.assertEquals(OdsFileWriterAdapter.class, odsFileWriterAdapter.getClass());
@@ -95,6 +99,7 @@ public class OdsFileWriterAdapterTest {
     @Test
     public void testUpdate() {
         PowerMock.resetAll();
+        this.logger.fine("Add new flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
 
         PowerMock.replayAll();
         this.wa.update(this.f);
@@ -106,8 +111,11 @@ public class OdsFileWriterAdapterTest {
     @Test
     public void testFlushAdapteeWithEmptyQueue() throws Exception {
         PowerMock.resetAll();
+        this.logger.fine("Retrieve first flusher: null");
+
         PowerMock.replayAll();
         this.wa.flushAdaptee();
+
         PowerMock.verifyAll();
     }
 
@@ -117,6 +125,7 @@ public class OdsFileWriterAdapterTest {
         this.flushers.add(ff);
 
         PowerMock.resetAll();
+        this.logger.fine("Retrieve first flusher: EasyMock for class com.github.jferard.fastods.FinalizeFlusher");
         EasyMock.expect(ff.isEnd()).andReturn(true);
         this.w.update(ff);
 
@@ -148,6 +157,8 @@ public class OdsFileWriterAdapterTest {
         };
 
         PowerMock.resetAll();
+        this.logger.fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
+        this.logger.fine("Retrieve next flusher: EasyMock for class com.github.jferard.fastods.FinalizeFlusher");
         EasyMock.expect(this.f.isEnd()).andReturn(false);
         EasyMock.expect(ff.isEnd()).andReturn(true);
         this.w.update(this.f);
@@ -163,8 +174,9 @@ public class OdsFileWriterAdapterTest {
     @Test
     public void testFlushAdapteeWithoutEnd() throws Exception {
         final OdsFileWriterAdapter wal = this.wa;
-        final OdsFlusher fl = this.f;
+        final OdsAsyncFlusher fl = this.f;
         final NamedOdsFileWriter wl = this.w;
+        final Logger l = this.logger;
         this.flushers.add(this.f);
 
         final Thread t = new Thread() {
@@ -172,6 +184,7 @@ public class OdsFileWriterAdapterTest {
             public void run() {
                 try {
                     PowerMock.resetAll();
+                    l.fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
                     wl.update(fl);
                     EasyMock.expect(fl.isEnd()).andReturn(true);
 
@@ -191,8 +204,9 @@ public class OdsFileWriterAdapterTest {
     @Test
     public void testInterruptAdapterInFlush() throws Exception {
         final OdsFileWriterAdapter wal = this.wa;
-        final OdsFlusher fl = this.f;
+        final OdsAsyncFlusher fl = this.f;
         final NamedOdsFileWriter wl = this.w;
+        final Logger l = this.logger;
         this.flushers.add(fl);
 
         final Thread t = new Thread() {
@@ -200,18 +214,20 @@ public class OdsFileWriterAdapterTest {
             public void run() {
                 try {
                     PowerMock.resetAll();
+                    l.fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
+                    l.fine("Retrieve next flusher: null");
                     wl.update(fl);
                     EasyMock.expect(fl.isEnd()).andReturn(false);
 
                     PowerMock.replayAll();
                     wal.flushAdaptee();
+
                     PowerMock.verifyAll();
                 } catch (final IOException e) {
                     Assert.fail();
                 } catch (final RuntimeException e) {
-                    return;
+                    Assert.fail();
                 }
-                Assert.fail();
             }
         };
 
@@ -249,14 +265,18 @@ public class OdsFileWriterAdapterTest {
     @Test
     public void testInterruptFlushAdatee() throws Exception {
         final OdsFileWriterAdapter wal = this.wa;
+        final Logger l = this.logger;
 
         final Thread t = new Thread() {
             @Override
             public void run() {
                 try {
                     PowerMock.resetAll();
+                    l.fine("Retrieve first flusher: null");
+
                     PowerMock.replayAll();
                     wal.flushAdaptee();
+
                     PowerMock.verifyAll();
                 } catch (final RuntimeException e) {
                     return;

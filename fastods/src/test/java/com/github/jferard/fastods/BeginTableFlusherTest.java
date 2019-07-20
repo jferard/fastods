@@ -35,7 +35,7 @@ public class BeginTableFlusherTest {
     @Test
     public void test() throws IOException {
         final TableAppender appender = PowerMock.createMock(TableAppender.class);
-        final OdsFlusher btf = new BeginTableFlusher(appender);
+        final OdsAsyncFlusher btf = new BeginTableFlusher(appender);
         final XMLUtil xmlUtil = XMLUtil.create();
         final ZipUTF8Writer writer = PowerMock.createMock(ZipUTF8Writer.class);
 

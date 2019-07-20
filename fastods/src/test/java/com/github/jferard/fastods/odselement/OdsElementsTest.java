@@ -22,20 +22,15 @@
  */
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.FinalizeFlusher;
-import com.github.jferard.fastods.MetaAndStylesElementsFlusher;
+import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
-import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -91,36 +86,6 @@ public class OdsElementsTest {
         Assert.assertEquals(t, this.oe.getTable(TABLE_INDEX));
         Assert.assertEquals(t, this.oe.getTable("nine"));
         Assert.assertEquals(TABLE_INDEX + 1, this.oe.getTableCount());
-
-        PowerMock.verifyAll();
-    }
-
-    @Test
-    public final void testFlush() throws IOException {
-        final DataStyle ds = new BooleanStyleBuilder("ds", this.locale).build();
-        final ObjectStyle os = TableCellStyle.builder("os").build();
-        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
-        final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
-        final Table t = PowerMock.createMock(Table.class);
-
-
-        PowerMock.resetAll();
-        this.contentElement.flushRows(this.util, w, this.settingsElement);
-        this.contentElement.flushTables(this.util, w, this.settingsElement);
-        EasyMock.expectLastCall().times(2);
-        this.contentElement.writePostamble(this.util, w);
-        EasyMock.expect(this.contentElement.getLastTable()).andReturn(t);
-        t.flush();
-        o.update(EasyMock.isA(FinalizeFlusher.class));
-
-        PowerMock.replayAll();
-        this.oe.addObserver(o);
-        this.oe.addDataStyle(ds);
-        this.oe.addStyleStyle(os);
-        this.oe.flushRows(this.util, w);
-        this.oe.flushTables(this.util, w);
-        this.oe.finalizeContent(this.util, w);
-        this.oe.save();
 
         PowerMock.verifyAll();
     }
@@ -251,8 +216,9 @@ public class OdsElementsTest {
         EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
+        t.asyncFlushBeginTable();
         t.addObserver(w);
-        w.update(EasyMock.isA(MetaAndStylesElementsFlusher.class));
+        w.update(EasyMock.isA(PrepareContentFlusher.class));
 
         PowerMock.replayAll();
         this.oe.addObserver(w);
@@ -273,8 +239,9 @@ public class OdsElementsTest {
         EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
-        lt.flush();
+        lt.asyncFlushEndTable();
         t.addObserver(w);
+        t.asyncFlushBeginTable();
 
         PowerMock.replayAll();
         this.oe.addObserver(w);

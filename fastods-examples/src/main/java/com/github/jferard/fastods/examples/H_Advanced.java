@@ -92,16 +92,16 @@ class H_Advanced {
 
         final TableCellStyle boldCellStyle = TableCellStyle.builder("cell").fontWeightBold()
                 .fontSize(SimpleLength.pt(24)).build();
-        document.addObjectStyle(boldCellStyle);
+        document.addContentStyle(boldCellStyle);
         //
         // And, if necessary:
         //
         //     document.addPageStyle(aPageStyle);
-        //     document.addObjectStyle(aTableStyle);
-        //     document.addObjectStyle(aTableRowStyle);
-        //     document.addObjectStyle(aTableColumnStyle);
-        //     document.addObjectStyle(aTableCellStyle);
-        //     document.addObjectStyle(aTextStyle);
+        //     document.addContentStyle(aTableStyle);
+        //     document.addContentStyle(aTableRowStyle);
+        //     document.addContentStyle(aTableColumnStyle);
+        //     document.addContentStyle(aTableCellStyle);
+        //     document.addContentStyle(aTextStyle);
         //
         // An now, you can fill the Spreadsheet as usual.
         final TableCellWalker walker = table.getWalker();

@@ -31,11 +31,14 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
- * The flusher to finalize file. Writes postamble for contents, and the settings.
+ * An async flusher flusher to finalize the file.
+ * Writes postamble for contents, and the settings.
+ *
+ * Sent by the NamedOdsDocument.save method.
  *
  * @author Julien Férard
  */
-public class FinalizeFlusher implements OdsFlusher {
+public class FinalizeFlusher implements OdsAsyncFlusher {
     private final ContentElement contentElement;
     private final SettingsElement settingsElements;
 

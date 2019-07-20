@@ -30,12 +30,12 @@ import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
+import com.github.jferard.fastods.ref.CellRef;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.ref.CellRef;
-import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -101,8 +101,10 @@ class TableBuilder {
                                       final String name, final int rowCapacity,
                                       final int columnCapacity) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
-        configEntry.add(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
-        configEntry.add(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
+        configEntry.add(ConfigItem
+                .create(ConfigElement.HORIZONTAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
+        configEntry.add(ConfigItem
+                .create(ConfigElement.VERTICAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
         configEntry.add(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_POSITION, "0"));
         configEntry.add(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_POSITION, "0"));
         configEntry.add(ConfigItem.create(ConfigElement.ZOOM_TYPE, "0"));
@@ -193,7 +195,7 @@ class TableBuilder {
      * @param appender the destination
      * @throws IOException if an error occurs
      */
-    public void flushBeginTable(final TableAppender appender) throws IOException {
+    public void asyncFlushBeginTable(final TableAppender appender) throws IOException {
         if (this.observer == null) {
             throw new IOException(
                     "Can't flush a table from an anonymous writer (there is no file)");
@@ -202,12 +204,12 @@ class TableBuilder {
     }
 
     /**
-     * Flush the end of the table
+     * Flush the end of the table: rows + postamble
      *
      * @param appender the destination
      * @throws IOException if an error occurs
      */
-    public void flushEndTable(final TableAppender appender) throws IOException {
+    public void asyncFlushEndTable(final TableAppender appender) throws IOException {
         this.observer.update(new EndTableFlusher(appender,
                 this.tableRows.subList(this.lastFlushedRowIndex, this.tableRows.usedSize())));
     }
@@ -278,7 +280,9 @@ class TableBuilder {
                 this.lastRowIndex = rowIndex;
             }
 
-            this.notifyIfHasObserver(appender, rowIndex);
+            if (this.observer != null) {
+                this.asyncTryToFlush(appender, rowIndex);
+            }
         }
         if (updateRowIndex && this.curRowIndex < rowIndex) {
             this.curRowIndex = rowIndex;
@@ -286,22 +290,19 @@ class TableBuilder {
         return tr;
     }
 
-    private void notifyIfHasObserver(final TableAppender appender, final int rowIndex)
+    /**
+     * async flush if rowIndex % this.bufferSize == 0. If 0, async flush the begin of the table
+     * else if rowIndex is a multiple of this.bufferSize, flush the preprocessed rows
+     */
+    private void asyncTryToFlush(final TableAppender appender, final int rowIndex)
             throws IOException {
-        if (this.observer != null) {
-            if (rowIndex == 0) {
-                this.observer.update(new BeginTableFlusher(appender));
-            } else if (rowIndex % this.bufferSize == 0) {
-                this.observer.update(this
-                        .createPreprocessedRowsFlusher(rowIndex)); // (0..1023), (1024..2047)
-                this.lastFlushedRowIndex = rowIndex;
-            }
+        if (rowIndex > 0 && rowIndex % this.bufferSize == 0) {
+            final OdsAsyncFlusher preprocessedRowsFlusher = PreprocessedRowsFlusher
+                    .create(this.xmlUtil, new ArrayList<TableRowImpl>(
+                            this.tableRows.subList(this.lastFlushedRowIndex, rowIndex)));
+            this.observer.update(preprocessedRowsFlusher); // (0..1023), (1024..2047)
+            this.lastFlushedRowIndex = rowIndex;
         }
-    }
-
-    private OdsFlusher createPreprocessedRowsFlusher(final int toRowIndex) throws IOException {
-        return PreprocessedRowsFlusher.create(this.xmlUtil, new ArrayList<TableRowImpl>(
-                this.tableRows.subList(this.lastFlushedRowIndex, toRowIndex)));
     }
 
     /**

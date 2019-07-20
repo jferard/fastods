@@ -27,20 +27,21 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * A flusher for the end of the table. Writes remaining rows and the table postamble.
+ * An async flusher for the end of the table. Writes remaining rows and the table postamble.
  *
  * @author Julien Férard
  */
-public class EndTableFlusher implements OdsFlusher {
+public class EndTableFlusher implements OdsAsyncFlusher {
     private final TableAppender appender;
     private final List<TableRowImpl> rows;
 
     /**
      * @param appender the table to end
-     * @param rows     the remaining rows.
+     * @param rows     a view on the remaining rows.
      */
     public EndTableFlusher(final TableAppender appender, final List<TableRowImpl> rows) {
         this.appender = appender;
@@ -50,8 +51,10 @@ public class EndTableFlusher implements OdsFlusher {
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         for (final TableRowImpl row : this.rows) {
-            row.appendXMLToTable(xmlUtil, writer);
+            TableRowImpl.appendXMLToTable(row, xmlUtil, writer);
         }
+        // free rows
+        Collections.fill(this.rows, null);
         this.appender.appendPostamble(writer);
     }
 

@@ -30,11 +30,15 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
- * A flusher for mime type and meta elements.
+ * An async flusher for mime type and meta elements.
+ * Those files are always the same and do not depend on anything:
+ * Thumbnails, Configurations2/accelerator/current.xml, ...
+ *
+ * Automatically sent when the NamedOdsWriter is created.
  *
  * @author Julien Férard
  */
-public class ImmutableElementsFlusher implements OdsFlusher {
+public class ImmutableElementsFlusher implements OdsAsyncFlusher {
     private final OdsElements odsElements;
 
     /**

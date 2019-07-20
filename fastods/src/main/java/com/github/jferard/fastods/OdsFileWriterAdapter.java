@@ -26,13 +26,14 @@ package com.github.jferard.fastods;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.Logger;
 
 /**
  * The OdsFileWriterAdapter class represents an adapter to a writer. It stores a queue of
  * flushers. Usage:
  * <ul>
  * <li>A producer thread that writes on a OdsFileWriterAdapter.document()</li>
- * <li>A consumer thread that uses the following structure</li>
+ * <li>A consumer thread that uses the following structure to flush the data</li>
  * </ul>
  * <p>
  * <pre>
@@ -48,24 +49,29 @@ import java.util.Queue;
  */
 public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     /**
+     *
+     * @param logger the logger
      * @param adaptee the adaptee writer
      * @return the new adapter
      */
-    public static OdsFileWriterAdapter create(final NamedOdsFileWriter adaptee) {
-        return new OdsFileWriterAdapter(adaptee, new LinkedList<OdsFlusher>());
+    public static OdsFileWriterAdapter create(final Logger logger, final NamedOdsFileWriter adaptee) {
+        return new OdsFileWriterAdapter(logger, adaptee, new LinkedList<OdsAsyncFlusher>());
     }
 
+    private Logger logger;
     private final NamedOdsFileWriter adaptee;
-    private final Queue<OdsFlusher> flushers;
+    private final Queue<OdsAsyncFlusher> flushers;
     private boolean stopped;
 
     /**
      * Create an new adapter
      *
+     * @param logger the logger
      * @param adaptee  the adaptee writer
      * @param flushers the queue of flushers
      */
-    OdsFileWriterAdapter(final NamedOdsFileWriter adaptee, final Queue<OdsFlusher> flushers) {
+    OdsFileWriterAdapter(final Logger logger, final NamedOdsFileWriter adaptee, final Queue<OdsAsyncFlusher> flushers) {
+        this.logger = logger;
         this.adaptee = adaptee;
         this.flushers = flushers;
     }
@@ -84,8 +90,9 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     }
 
     @Override
-    public synchronized void update(final OdsFlusher flusher) {
+    public synchronized void update(final OdsAsyncFlusher flusher) {
         this.flushers.add(flusher);
+        this.logger.fine("Add new flusher: " + flusher);
         this.notifyAll();
     }
 
@@ -96,8 +103,10 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
      * @throws IOException if the adaptee throws an IOException
      */
     public synchronized void flushAdaptee() throws IOException {
-        OdsFlusher flusher = this.flushers.poll();
+        OdsAsyncFlusher flusher = this.flushers.poll();
+        this.logger.fine("Retrieve first flusher: " + flusher);
         if (flusher == null) {
+            this.notifyAll(); // wakes up other threads: no flusher available
             return;
         }
 
@@ -109,12 +118,7 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
                 return;
             }
             flusher = this.flushers.poll();
-        }
-        try {
-            this.wait();
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+            this.logger.fine("Retrieve next flusher: " + flusher);
         }
         this.notifyAll(); // wakes up other threads: no flusher left
     }

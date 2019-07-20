@@ -267,11 +267,7 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.resetAll();
         this.initOdsElements();
         EasyMock.expect(zb.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
-        this.odsElements.writeMeta(this.xmlUtil, z);
-        this.odsElements.writeStyles(this.xmlUtil, z);
-        this.odsElements.writeContent(this.xmlUtil, z);
-        this.odsElements.writeSettings(this.xmlUtil, z);
-        z.close();
+        this.odsElements.saveAsync();
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getNamedDocument();

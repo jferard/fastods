@@ -32,6 +32,11 @@ import java.util.Iterator;
 /**
  * OpenDocument 9.1.2 table:table
  *
+ * Provides methods to flush rows from TableBuilder (ie. TableRow objects) to a given appendable.
+ *
+ * Users will either call `appendXMLToContentEntry` to convert the whole TableBuilder, or have
+ * a finer control with appendPreamble, appendAllAvailableRows, ...
+ *
  * @author Julien Férard
  * @author Martin Schulz
  */
@@ -49,6 +54,20 @@ class TableAppender {
     TableAppender(final TableBuilder builder) {
         this.preambleWritten = false;
         this.builder = builder;
+    }
+
+    /**
+     * Add XML to content.xml
+     *
+     * @param util       an util
+     * @param appendable the output
+     * @throws IOException if the XML could not be written
+     */
+    public void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.appendPreamble(util, appendable);
+        this.appendRows(util, appendable);
+        this.appendPostamble(appendable);
     }
 
     /**
@@ -86,27 +105,13 @@ class TableAppender {
     }
 
     /**
-     * Add XML to content.xml
-     *
-     * @param util       an util
-     * @param appendable the output
-     * @throws IOException if the XML could not be written
-     */
-    public void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
-            throws IOException {
-        this.appendPreamble(util, appendable);
-        this.appendRows(util, appendable);
-        this.appendPostamble(appendable);
-    }
-
-    /**
      * Open the table, flush all rows from start, but do not freeze the table
      *
      * @param util       a XMLUtil instance for writing XML
      * @param appendable where to write
      * @throws IOException if an I/O error occurs during the flush
      */
-    public void flushAllAvailableRows(final XMLUtil util, final Appendable appendable)
+    public void appendAllAvailableRows(final XMLUtil util, final Appendable appendable)
             throws IOException {
         this.appendPreamble(util, appendable);
         this.appendRows(util, appendable, 0);
@@ -120,8 +125,8 @@ class TableAppender {
      * @param rowIndex   the first index to use.
      * @throws IOException if an I/O error occurs during the flush
      */
-    public void flushRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
-                                       final int rowIndex) throws IOException {
+    public void appendRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
+                                        final int rowIndex) throws IOException {
         if (rowIndex == 0) {
             this.appendPreamble(util, appendable);
         }
@@ -137,8 +142,8 @@ class TableAppender {
      * @param rowIndex   the index of the row
      * @throws IOException if an I/O error occurs during the flush
      */
-    public void flushSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
-                                           final int rowIndex) throws IOException {
+    public void appendSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
+                                            final int rowIndex) throws IOException {
         if (rowIndex == 0) {
             this.appendPreamble(util, appendable);
         }

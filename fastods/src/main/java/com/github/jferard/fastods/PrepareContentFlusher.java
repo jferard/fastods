@@ -31,9 +31,14 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 
 /**
+ * When the first table is created.
+ * Flush everything before the tables.
+ *
+ * Sent by the first table creation.
+ *
  * @author Julien Férard
  */
-public class MetaAndStylesElementsFlusher implements OdsFlusher {
+public class PrepareContentFlusher implements OdsAsyncFlusher {
     private final OdsElements odsElements;
     private final ContentElement contentElement;
 
@@ -43,8 +48,8 @@ public class MetaAndStylesElementsFlusher implements OdsFlusher {
      * @param odsElements    ods elements (content.xml, styles.xml, ...)
      * @param contentElement content.xml element
      */
-    public MetaAndStylesElementsFlusher(final OdsElements odsElements,
-                                        final ContentElement contentElement) {
+    public PrepareContentFlusher(final OdsElements odsElements,
+                                 final ContentElement contentElement) {
         this.odsElements = odsElements;
         this.contentElement = contentElement;
     }
