@@ -23,7 +23,9 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -143,5 +145,20 @@ public class TableRowStyle implements FontFaceContainerStyle {
      */
     public TableCellStyle getDefaultCellStyle() {
         return this.defaultCellStyle;
+    }
+
+    /**
+     * Add this style to a styles container
+     *
+     * @param stylesContainer the styles container
+     */
+    public void addToContentStyles(final StylesContainer stylesContainer) {
+        stylesContainer.addContentFontFaceContainerStyle(this);
+        stylesContainer.addContentStyle(this);
+        final TableCellStyle defaultCellStyle = this.getDefaultCellStyle();
+        if (defaultCellStyle != null) {
+            stylesContainer.addStylesFontFaceContainerStyle(defaultCellStyle);
+            stylesContainer.addContentStyle(defaultCellStyle);
+        }
     }
 }

@@ -27,6 +27,7 @@ import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -545,7 +546,7 @@ public class RowCellWalkerImplTest {
     }
 
     private TableRowImpl initRealRow() {
-        final StylesContainer stc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer stc = PowerMock.createMock(StylesContainerImpl.class);
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
         final WriteUtil writeUtil = WriteUtil.create();

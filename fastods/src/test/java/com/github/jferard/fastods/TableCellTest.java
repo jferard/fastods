@@ -30,6 +30,7 @@ import com.github.jferard.fastods.datastyle.FloatStyle;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.datastyle.TimeStyle;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -70,7 +71,7 @@ public class TableCellTest {
     public void setUp() {
         this.converter = new ObjectToCellValueConverter("USD");
         this.locale = Locale.US;
-        this.stc = PowerMock.createMock(StylesContainer.class);
+        this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.table = PowerMock.createMock(Table.class);
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();

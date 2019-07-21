@@ -359,8 +359,8 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         document.addContentStyle(this.lts);
         document.addContentStyle(this.cts);
         document.addContentStyle(this.rts);
-        document.addStyleToContentAutomaticStyles(this.boldStyle);
-        document.addStyleToContentAutomaticStyles(this.italicStyle);
+        document.addContentStyle(this.boldStyle);
+        document.addContentStyle(this.italicStyle);
         document.addContentStyle(this.trs);
         document.addContentStyle(this.tcls);
         document.addContentStyle(this.tcns);

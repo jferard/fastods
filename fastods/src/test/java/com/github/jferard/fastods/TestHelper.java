@@ -23,8 +23,15 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
@@ -71,5 +78,26 @@ public class TestHelper {
         final Handler[] handlers = logger.getHandlers();
         assert handlers.length == 1 && handlers[0] == handler : handlers;
         return handler;
+    }
+
+    /**
+     * When creating a doc with mock odsElements
+     * @param mockOdsElements the mocked odsElements
+     */
+    public static void initMockDocument(final OdsElements mockOdsElements) {
+        EasyMock.expect(mockOdsElements.addContentStyle(TableStyle.DEFAULT_TABLE_STYLE))
+                .andReturn(true);
+        EasyMock.expect(mockOdsElements.addContentStyle(TableRowStyle.DEFAULT_TABLE_ROW_STYLE))
+                .andReturn(true);
+        EasyMock.expect(mockOdsElements.addContentStyle(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE))
+                .andReturn(true);
+        EasyMock.expect(mockOdsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true).times(2);
+        EasyMock.expect(
+                mockOdsElements.addMasterPageStyle(PageStyle.DEFAULT_PAGE_STYLE.getMasterPageStyle()))
+                .andReturn(true);
+        EasyMock.expect(
+                mockOdsElements.addPageLayoutStyle(PageStyle.DEFAULT_PAGE_STYLE.getPageLayoutStyle()))
+                .andReturn(true);
     }
 }

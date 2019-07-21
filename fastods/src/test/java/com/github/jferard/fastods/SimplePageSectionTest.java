@@ -23,6 +23,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -136,7 +137,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testAddEmbbeded() {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         PowerMock.resetAll();
 
         PowerMock.replayAll();

@@ -27,6 +27,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
@@ -60,7 +61,7 @@ public class TableTest {
     @Before
     public void setUp() {
         this.ce = PowerMock.createMock(ContentElement.class);
-        this.stc = PowerMock.createMock(StylesContainer.class);
+        this.stc = PowerMock.createMock(StylesContainerImpl.class);
         final PositionUtil positionUtil = new PositionUtil(new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
@@ -333,17 +334,18 @@ public class TableTest {
 
     @Test
     public final void testFlushSomeAvailableRows() throws IOException {
-        final NamedOdsFileWriter now = PowerMock.createMock(NamedOdsFileWriter.class);
+        final NamedOdsFileWriter writer = PowerMock.createMock(NamedOdsFileWriter.class);
         final StringBuilder app = new StringBuilder();
         final BooleanStyle bs = this.ds.getBooleanDataStyle();
 
         PowerMock.resetAll();
+        writer.update(EasyMock.isA(BeginTableFlusher.class));
         EasyMock.expect(this.stc.addDataStyle(bs)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, bs))
                 .andReturn(null);
 
         PowerMock.replayAll();
-        this.table.addObserver(now);
+        this.table.addObserver(writer);
         final TableRowImpl row = this.table.nextRow();
         row.getOrCreateCell(0).setBooleanValue(true);
         this.table.flushSomeAvailableRowsFrom(this.xmlUtil, app, 0);

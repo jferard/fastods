@@ -84,14 +84,14 @@ public class StylesContainerTest {
     private Locale locale;
     private PageStyle ps1;
     private PageStyle ps2;
-    private StylesContainer stylesContainer;
+    private StylesContainerImpl stylesContainer;
     private XMLUtil util;
     private Logger logger;
 
     @Before
     public void setUp() {
         this.logger = PowerMock.createMock(Logger.class);
-        this.stylesContainer = new StylesContainer(this.logger);
+        this.stylesContainer = new StylesContainerImpl(this.logger);
         this.util = XMLUtil.create();
         this.locale = Locale.US;
 

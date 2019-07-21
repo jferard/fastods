@@ -50,7 +50,7 @@ public class ContentElement implements OdsElement {
     private final FlushPosition flushPosition;
     private final DataStyles format;
     private final PositionUtil positionUtil;
-    private final StylesContainer stylesContainer;
+    private final StylesContainerImpl stylesContainer;
     private final UniqueList<Table> tables;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
@@ -67,7 +67,7 @@ public class ContentElement implements OdsElement {
      */
     ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
                    final WriteUtil writeUtil, final DataStyles format,
-                   final boolean libreOfficeMode, final StylesContainer stylesContainer) {
+                   final boolean libreOfficeMode, final StylesContainerImpl stylesContainer) {
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
         this.positionUtil = positionUtil;

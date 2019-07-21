@@ -27,6 +27,7 @@ import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.PageStyle.WritingMode;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
@@ -107,16 +108,20 @@ public class PageStyleTest {
         final PageStyle pageStyle = PageStyle.builder("test").header(header).footer(footer).build();
         final StringBuilder sb = new StringBuilder();
 
+        PowerMock.resetAll();
         header.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb);
         footer.appendPageSectionStyleXMLToAutomaticStyle(this.util, sb);
+
         PowerMock.replayAll();
         pageStyle.appendXMLToAutomaticStyle(this.util, sb);
+
+        PowerMock.verifyAll();
         DomTester.assertEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
                 "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
                 "</style:page-layout>", sb.toString());
-        PowerMock.verifyAll();
+
     }
 
     @Test
@@ -263,7 +268,7 @@ public class PageStyleTest {
     @Test
     public final void testAddEmbeddedStyle() {
         final PageStyle pageStyle = PageStyle.builder("test").build();
-        final StylesContainer stc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer stc = PowerMock.createMock(StylesContainerImpl.class);
 
         PowerMock.resetAll();
         EasyMock.expect(stc.addStylesFontFaceContainerStyle(EasyMock.isA(TextStyle.class)))
@@ -290,7 +295,7 @@ public class PageStyleTest {
         final PageLayoutStyle ls = ps1.getPageLayoutStyle();
 
         PowerMock.resetAll();
-        odsElements.addPageLayoutStyle(ls);
+        EasyMock.expect(odsElements.addPageLayoutStyle(ls)).andReturn(true);
 
         PowerMock.replayAll();
         ls.addToElements(odsElements);

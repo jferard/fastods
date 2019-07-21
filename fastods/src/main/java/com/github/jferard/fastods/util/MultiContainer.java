@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.util.Container.Mode;
 
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  * @param <V> the value type
  * @param <S> an enum of sub containers
  * @author Julien Férard
- * @see StylesContainer for an example.
+ * @see StylesContainerImpl for an example.
  */
 public class MultiContainer<K, S extends Enum<S>, V> {
     private final Map<K, S> subContainerByKey;

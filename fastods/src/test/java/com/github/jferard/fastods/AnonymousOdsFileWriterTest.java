@@ -77,14 +77,6 @@ public class AnonymousOdsFileWriterTest {
     private ByteArrayOutputStream os;
     private XMLUtil xmlUtil;
 
-    private void initOdsElements() {
-        TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
-        TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
-        TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToElements(this.odsElements);
-        TableCellStyle.DEFAULT_CELL_STYLE.addToElements(this.odsElements);
-        PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
-    }
-
     @Before
     public final void setUp() {
         this.logger = PowerMock.createNiceMock(Logger.class);
@@ -101,7 +93,7 @@ public class AnonymousOdsFileWriterTest {
         final OdsFactory of = OdsFactory.create(l, Locale.US);
 
         PowerMock.resetAll();
-        this.initOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
 
         PowerMock.replayAll();
         of.createWriter().saveAs(".");
@@ -265,7 +257,7 @@ public class AnonymousOdsFileWriterTest {
         final File temp = File.createTempFile("tempfile", ".tmp");
 
         PowerMock.resetAll();
-        this.initOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(zb.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
         this.odsElements.saveAsync();
 
@@ -291,7 +283,7 @@ public class AnonymousOdsFileWriterTest {
         final OutputStream outputStream = PowerMock.createMock(OutputStream.class);
 
         PowerMock.resetAll();
-        this.initOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeImmutableElements(EasyMock.eq(this.xmlUtil),
                 EasyMock.isA(ZipUTF8Writer.class));
@@ -320,7 +312,7 @@ public class AnonymousOdsFileWriterTest {
     @Test(expected = IOException.class)
     public final void testSaveAsNullFile() throws IOException {
         PowerMock.resetAll();
-        this.initOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
 
         PowerMock.replayAll();
         final AnonymousOdsDocument document = this.getAnonymousDocument();
@@ -335,7 +327,7 @@ public class AnonymousOdsFileWriterTest {
         final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
 
         PowerMock.resetAll();
-        this.initOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.builder.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
 
         this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
@@ -362,7 +354,7 @@ public class AnonymousOdsFileWriterTest {
     @Test(expected = IOException.class)
     public final void testSaveWithWriterDir() throws IOException {
         PowerMock.resetAll();
-        this.initOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
 
         PowerMock.replayAll();
         final AnonymousOdsDocument document = this.getAnonymousDocument();

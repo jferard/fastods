@@ -35,11 +35,13 @@ import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -62,7 +64,7 @@ import java.util.zip.ZipEntry;
  *
  * @author Julien Férard
  */
-public class OdsElements {
+public class OdsElements implements StylesContainer {
 
     /**
      * LO only: do not freeze cells
@@ -96,7 +98,7 @@ public class OdsElements {
         final ManifestElement manifestElement = new ManifestElement();
         final SettingsElement settingsElement = SettingsElement.create();
         final MetaElement metaElement = new MetaElement();
-        final StylesContainer stylesContainer = new StylesContainer(logger);
+        final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
         final StylesElement stylesElement = new StylesElement(stylesContainer);
         final ContentElement contentElement = new ContentElement(positionUtil, xmlUtil, writeUtil,
                 format, libreOfficeMode, stylesContainer);
@@ -110,7 +112,7 @@ public class OdsElements {
     private final MetaElement metaElement;
     private final MimetypeElement mimeTypeElement;
     private final SettingsElement settingsElement;
-    private final StylesContainer stylesContainer;
+    private final StylesContainerImpl stylesContainer;
     private final StylesElement stylesElement;
     private NamedOdsFileWriter observer;
 
@@ -126,7 +128,7 @@ public class OdsElements {
      * @param contentElement  the content.xml element
      * @param stylesElement   the styles.xml element
      */
-    OdsElements(final Logger logger, final StylesContainer stylesContainer,
+    OdsElements(final Logger logger, final StylesContainerImpl stylesContainer,
                 final MimetypeElement mimeTypeElement, final ManifestElement manifestElement,
                 final SettingsElement settingsElement, final MetaElement metaElement,
                 final ContentElement contentElement, final StylesElement stylesElement) {
@@ -149,78 +151,96 @@ public class OdsElements {
         this.observer = o;
     }
 
+
     /**
-     * Create an automatic style for this TableCellStyle and this type of cell.
+     * Add a cell style for a given data type. Use only if you want to flush data before the end
+     * of the document
+     * construction.
      * Do not produce any effect if the type is Type.STRING or Type.VOID
      *
-     * @param style the style of the cell (color, data style, etc.)
-     * @param type  the type of the cell
+     * @param style the style
+     * @param types  the types
      */
-    public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
-        this.contentElement.addChildCellStyle(style, type);
+    public void addCellStyle(final TableCellStyle style, final TableCell.Type... types) {
+        this.stylesContainer.addContentStyle(style);
+        for (final TableCell.Type type : types) {
+            this.contentElement.addChildCellStyle(style, type);
+        }
     }
 
-    /**
-     * Create a new data style into styles container. No duplicate style name is allowed.
-     *
-     * @param dataStyle the data style to add
-     */
-    public void addDataStyle(final DataStyle dataStyle) {
-        this.stylesContainer.addDataStyle(dataStyle);
+    @Override
+    public boolean addDataStyle(final DataStyle dataStyle) {
+        return this.stylesContainer.addDataStyle(dataStyle);
     }
 
-    /**
-     * Create a new master page style into styles container. No duplicate style name is allowed.
-     *
-     * @param masterPageStyle the data style to add
-     */
-    public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
-        this.stylesContainer.addMasterPageStyle(masterPageStyle);
+    @Override
+    public void setDataStylesMode(final Container.Mode mode) {
+        this.stylesContainer.setDataStylesMode(mode);
     }
 
-    /**
-     * Add a page layout style
-     *
-     * @param pageLayoutStyle the style
-     */
-    public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
-        this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
+    @Override
+    public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
+        return this.stylesContainer.addMasterPageStyle(masterPageStyle);
     }
 
-    /**
-     * Add a page style
-     *
-     * @param ps the style
-     */
-    public void addPageStyle(final PageStyle ps) {
-        this.stylesContainer.addPageStyle(ps);
+    @Override
+    public void setMasterPageStyleMode(final Container.Mode mode) {
+        this.stylesContainer.setMasterPageStyleMode(mode);
     }
 
-    /**
-     * Add a style to OdsElements, in content.xml
-     *
-     * @param objectStyle the style to add
-     */
-    public void addContentStyle(final ObjectStyle objectStyle) {
-        this.stylesContainer.addContentStyle(objectStyle);
+    @Override
+    public boolean addNewDataStyleFromCellStyle(final TableCellStyle style) {
+        return this.stylesContainer.addNewDataStyleFromCellStyle(style);
     }
 
-    /**
-     * Add a style to OdsElements, in styles.xml
-     *
-     * @param objectStyle the style to add
-     */
-    public void addStylesStyle(final ObjectStyle objectStyle) {
-        this.stylesContainer.addStylesStyle(objectStyle);
+    @Override
+    public void setPageLayoutStyleMode(final Container.Mode mode) {
+        this.stylesContainer.setPageLayoutStyleMode(mode);
     }
 
-    /**
-     * Add a style to content.xml/automatic-styles
-     *
-     * @param objectStyle the style
-     */
-    public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
-        this.stylesContainer.addContentStyle(objectStyle);
+    @Override
+    public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
+        return this.stylesContainer.addPageLayoutStyle(pageLayoutStyle);
+    }
+
+    @Override
+    public void setPageStyleMode(final Container.Mode mode) {
+        this.stylesContainer.setPageStyleMode(mode);
+    }
+
+    @Override
+    public boolean addPageStyle(final PageStyle ps) {
+        return this.stylesContainer.addPageStyle(ps);
+    }
+
+    @Override
+    public void setObjectStyleMode(final Container.Mode mode) {
+        this.stylesContainer.setObjectStyleMode(mode);
+    }
+
+    @Override
+    public boolean addContentStyle(final ObjectStyle objectStyle) {
+        return this.stylesContainer.addContentStyle(objectStyle);
+    }
+
+    @Override
+    public boolean addStylesStyle(final ObjectStyle objectStyle) {
+        return this.stylesContainer.addStylesStyle(objectStyle);
+    }
+
+    @Override
+    public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
+        return this.stylesContainer.addChildCellStyle(style, dataStyle);
+    }
+
+    @Override
+    public boolean addContentFontFaceContainerStyle(final FontFaceContainerStyle objectStyle) {
+        return this.stylesContainer.addContentFontFaceContainerStyle(objectStyle);
+    }
+
+    @Override
+    public boolean addStylesFontFaceContainerStyle(final FontFaceContainerStyle ffcStyle) {
+        return this.stylesContainer.addContentFontFaceContainerStyle(ffcStyle);
     }
 
     /**
@@ -271,7 +291,7 @@ public class OdsElements {
         final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
         this.settingsElement.addTableConfig(table.getConfigEntry());
         if (this.observer != null) {
-            this.asyncFlushToTable(previousTable, table);
+            this.asyncFlushPreviousTable(previousTable, table);
         }
         return table;
     }
@@ -283,7 +303,7 @@ public class OdsElements {
      * @param previousTable
      * @param table         the table
      */
-    private void asyncFlushToTable(final Table previousTable, final Table table)
+    private void asyncFlushPreviousTable(final Table previousTable, final Table table)
             throws IOException {
         table.addObserver(this.observer);
         if (previousTable == null) {
@@ -291,7 +311,6 @@ public class OdsElements {
         } else {
             previousTable.asyncFlushEndTable();
         }
-        table.asyncFlushBeginTable();
     }
 
     /**

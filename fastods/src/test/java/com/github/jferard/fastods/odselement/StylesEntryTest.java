@@ -43,7 +43,7 @@ public class StylesEntryTest {
     private PageStyle ps2;
     private TableCellStyle st1;
     private TableCellStyle st2;
-    private StylesContainer stylesContainer;
+    private StylesContainerImpl stylesContainer;
     private StylesElement stylesElement;
     private XMLUtil util;
     private Logger logger;
@@ -51,7 +51,7 @@ public class StylesEntryTest {
     @Before
     public void setUp() {
         this.logger = PowerMock.createMock(Logger.class);
-        this.stylesContainer = new StylesContainer(this.logger);
+        this.stylesContainer = new StylesContainerImpl(this.logger);
         this.stylesElement = new StylesElement(this.stylesContainer);
         this.util = XMLUtil.create();
         this.locale = Locale.US;

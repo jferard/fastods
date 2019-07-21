@@ -81,8 +81,8 @@ public class OdsDocumentTest {
         final DataStyle ds = new BooleanStyleBuilder("b", Locale.US).build();
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addDataStyle(ds);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addDataStyle(ds)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -96,8 +96,8 @@ public class OdsDocumentTest {
         final PageStyle ps = PageStyle.builder("p").build();
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addPageStyle(ps);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addPageStyle(ps)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -111,7 +111,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.addTableToContent("t1", 100, 100)).andReturn(t);
         this.odsElements.setActiveTable(t);
 
@@ -128,7 +128,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements
                 .addTableToContent(EasyMock.eq("t1"), EasyMock.anyInt(), EasyMock.anyInt()))
                 .andReturn(t);
@@ -147,7 +147,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Arrays.asList(t, t, t, t))
                 .anyTimes();
         EasyMock.expect(t.getName()).andReturn("t2").anyTimes();
@@ -170,7 +170,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTable("test")).andReturn(null);
         this.odsElements.setActiveTable(t);
         EasyMock.expect(this.odsElements
@@ -192,7 +192,7 @@ public class OdsDocumentTest {
     @Test(expected = FastOdsException.class)
     public final void testGetTableByIndexExceptionIOOB() throws FastOdsException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
@@ -205,7 +205,7 @@ public class OdsDocumentTest {
     @Test(expected = FastOdsException.class)
     public final void testGetTableByIndexExceptionNegative() throws FastOdsException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
@@ -218,7 +218,7 @@ public class OdsDocumentTest {
     @Test(expected = FastOdsException.class)
     public final void testGetTableByNameException() throws FastOdsException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTable("t1")).andReturn(null);
 
         PowerMock.replayAll();
@@ -231,7 +231,7 @@ public class OdsDocumentTest {
     @Test
     public final void testGetTableNumberByNameException() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.<Table>emptyList());
 
         PowerMock.replayAll();
@@ -245,7 +245,7 @@ public class OdsDocumentTest {
     @Test
     public final void testSaveTo() throws IOException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.saveAsync();
 
         PowerMock.replayAll();
@@ -258,7 +258,7 @@ public class OdsDocumentTest {
     @Test
     public final void testSaveToCloseException() throws IOException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.saveAsync();
         EasyMock.expectLastCall().andThrow(new IOException("@"));
 
@@ -275,9 +275,9 @@ public class OdsDocumentTest {
     @Test
     public final void testSaveWriterException() throws IOException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
+        this.odsElements.saveAsync();
         EasyMock.expectLastCall().andThrow(new RuntimeException("@"));
-        this.writer.close();
 
         PowerMock.replayAll();
         this.thrown.expect(RuntimeException.class);
@@ -291,7 +291,7 @@ public class OdsDocumentTest {
     @Test
     public final void testTableCount() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(11);
 
         PowerMock.replayAll();
@@ -307,7 +307,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTables()).andReturn(Collections.singletonList(t))
                 .anyTimes();
         EasyMock.expect(t.getName()).andReturn("@t").anyTimes();
@@ -331,7 +331,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTableCount()).andReturn(1).anyTimes();
         EasyMock.expect(this.odsElements.getTable(0)).andReturn(t).anyTimes();
         this.odsElements.setActiveTable(t);
@@ -348,18 +348,10 @@ public class OdsDocumentTest {
         Assert.assertTrue(set0);
     }
 
-    private void initMockOdsElements() {
-        TableStyle.DEFAULT_TABLE_STYLE.addToElements(this.odsElements);
-        TableRowStyle.DEFAULT_TABLE_ROW_STYLE.addToElements(this.odsElements);
-        TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.addToElements(this.odsElements);
-        TableCellStyle.DEFAULT_CELL_STYLE.addToElements(this.odsElements);
-        PageStyle.DEFAULT_PAGE_STYLE.addToElements(this.odsElements);
-    }
-
     @Test(expected = IllegalStateException.class)
     public void testFreezeStyles() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.freezeStyles();
         this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
         EasyMock.expectLastCall().andThrow(new IllegalStateException());
@@ -375,7 +367,7 @@ public class OdsDocumentTest {
     @Test
     public void testDebugStyles() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.debugStyles();
 
         PowerMock.replayAll();
@@ -388,7 +380,7 @@ public class OdsDocumentTest {
     @Test
     public void testViewSettings() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.setViewSetting("view1", "ShowZeroValues", "false");
 
         PowerMock.replayAll();
@@ -403,7 +395,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.freezeCells(t, 1, 1);
 
         PowerMock.replayAll();
@@ -416,12 +408,12 @@ public class OdsDocumentTest {
     @Test
     public void testAddStyleToContentAutomaticStyles() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addStyleToContentAutomaticStyles(TableCellStyle.DEFAULT_CELL_STYLE);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addStyleToContentAutomaticStyles(TableCellStyle.DEFAULT_CELL_STYLE);
+        document.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
     }
@@ -429,13 +421,12 @@ public class OdsDocumentTest {
     @Test
     public void testAddChildCellStyle() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        TestHelper.initMockDocument(this.odsElements);
+        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.verifyAll();
     }
@@ -443,8 +434,8 @@ public class OdsDocumentTest {
     @Test
     public void testAddPageStyle2() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addPageStyle(PageStyle.DEFAULT_PAGE_STYLE);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addPageStyle(PageStyle.DEFAULT_PAGE_STYLE)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -458,7 +449,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.addTableToContent("table1", 10, 15)).andReturn(t);
         this.odsElements.setActiveTable(t);
 
@@ -472,8 +463,8 @@ public class OdsDocumentTest {
     @Test
     public void testaddContentStyle() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -487,8 +478,8 @@ public class OdsDocumentTest {
         final PageLayoutStyle pls = PowerMock.createMock(PageLayoutStyle.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addPageLayoutStyle(pls);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addPageLayoutStyle(pls)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -502,8 +493,8 @@ public class OdsDocumentTest {
         final MasterPageStyle mps = PowerMock.createMock(MasterPageStyle.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements.addMasterPageStyle(mps);
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(this.odsElements.addMasterPageStyle(mps)).andReturn(true);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
@@ -515,13 +506,12 @@ public class OdsDocumentTest {
     @Test
     public void testChildCellStyle() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        TestHelper.initMockDocument(this.odsElements);
+        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.verifyAll();
     }
@@ -529,13 +519,12 @@ public class OdsDocumentTest {
     @Test
     public void testChildCellVoidStyle() {
         PowerMock.resetAll();
-        this.initMockOdsElements();
-        this.odsElements
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        TestHelper.initMockDocument(this.odsElements);
+        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addChildCellStyle(TableCell.Type.STRING);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.verifyAll();
     }
@@ -545,7 +534,7 @@ public class OdsDocumentTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.addAutoFilter(t, 0, 1, 2, 3);
 
         PowerMock.replayAll();
@@ -558,7 +547,7 @@ public class OdsDocumentTest {
     @Test
     public void testSave() throws IOException {
         PowerMock.resetAll();
-        this.initMockOdsElements();
+        TestHelper.initMockDocument(this.odsElements);
         this.odsElements.saveAsync();
 
         PowerMock.replayAll();

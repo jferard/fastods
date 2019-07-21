@@ -25,11 +25,14 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -44,7 +47,7 @@ import java.util.logging.Logger;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class NamedOdsDocument implements OdsDocument {
+public class NamedOdsDocument implements OdsDocument, StylesContainer {
     /**
      * Create a new named ODS document.
      *
@@ -150,53 +153,6 @@ public class NamedOdsDocument implements OdsDocument {
     }
 
     /**
-     * Add a cell style for a given data type. Use only if you want to flush data before the end
-     * of the document
-     * construction.
-     * Do not produce any effect if the type is Type.STRING or Type.VOID
-     *
-     * @param type the data type
-     */
-    public void addChildCellStyle(final TableCell.Type type) {
-        this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, type);
-    }
-
-    /**
-     * Add a cell style for a given data type. Use only if you want to flush data before the end
-     * of the document
-     * construction.
-     * Do not produce any effect if the type is Type.STRING or Type.VOID
-     *
-     * @param style the style
-     * @param type  the data type
-     */
-    public void addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
-        this.odsElements.addChildCellStyle(style, type);
-    }
-
-    /**
-     * Add a data style to this document. Use only if you want to flush data before the end of
-     * the document
-     * construction.
-     *
-     * @param dataStyle the data style to add to this document
-     */
-    public void addDataStyle(final DataStyle dataStyle) {
-        this.odsElements.addDataStyle(dataStyle);
-    }
-
-    /**
-     * Add a master page style to this document. Use only if you want to flush data before the
-     * end of the document
-     * construction.
-     *
-     * @param masterPageStyle the master page style to add to this document
-     */
-    public void addMasterPageStyle(final MasterPageStyle masterPageStyle) {
-        this.odsElements.addMasterPageStyle(masterPageStyle);
-    }
-
-    /**
      * Add an observer (see Observer pattern).
      *
      * @param writer the writer where data will be flushed
@@ -206,55 +162,101 @@ public class NamedOdsDocument implements OdsDocument {
     }
 
     /**
-     * Add a page layout style to this document. Use only if you want to flush data before the
-     * end of the document
+     * Add a cell style for a given data type. Use only if you want to flush data before the end
+     * of the document
      * construction.
+     * Do not produce any effect if the type is Type.STRING or Type.VOID
      *
-     * @param pageLayoutStyle the page layout to add to this document
+     * @param style the style
+     * @param types  the types
      */
-    public void addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
-        this.odsElements.addPageLayoutStyle(pageLayoutStyle);
+    public void addCellStyle(final TableCellStyle style, final TableCell.Type... types) {
+        this.odsElements.addCellStyle(style, types);
     }
 
     /**
-     * Add a page style to this document
-     *
-     * @param ps the page style
-     */
-    public void addPageStyle(final PageStyle ps) {
-        this.odsElements.addPageStyle(ps);
-    }
-
-    /**
-     * Add an object style to this document. Use only if you want to flush data before the end of
+     * Add a data style to this document. Use only if you want to flush data before the end of
      * the document
      * construction.
      *
-     * @param objectStyle the object style to add to this document
+     * @param dataStyle the data style to add to this document
      */
-    public void addContentStyle(final ObjectStyle objectStyle) {
-        this.odsElements.addContentStyle(objectStyle);
+    @Override
+    public boolean addDataStyle(final DataStyle dataStyle) {
+        return this.odsElements.addDataStyle(dataStyle);
     }
 
-    /**
-     * Add an object style to this document. Use only if you want to flush data before the end of
-     * the document
-     * construction.
-     *
-     * @param objectStyle the object style to add to this document
-     */
-    public void addStylesStyle(final ObjectStyle objectStyle) {
-        this.odsElements.addStylesStyle(objectStyle);
+    @Override
+    public boolean addMasterPageStyle(final MasterPageStyle masterPageStyle) {
+        return this.odsElements.addMasterPageStyle(masterPageStyle);
     }
 
-    /**
-     * Add a style to content.xml > automatic-styles
-     *
-     * @param objectStyle the style
-     */
-    public void addStyleToContentAutomaticStyles(final ObjectStyle objectStyle) {
-        this.odsElements.addStyleToContentAutomaticStyles(objectStyle);
+    @Override
+    public boolean addNewDataStyleFromCellStyle(final TableCellStyle style) {
+        return this.odsElements.addNewDataStyleFromCellStyle(style);
     }
+
+    @Override
+    public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
+        return this.odsElements.addPageLayoutStyle(pageLayoutStyle);
+    }
+
+    @Override
+    public boolean addPageStyle(final PageStyle ps) {
+        return this.odsElements.addPageStyle(ps);
+    }
+
+    @Override
+    public boolean addContentStyle(final ObjectStyle objectStyle) {
+        return this.odsElements.addContentStyle(objectStyle);
+    }
+
+    @Override
+    public boolean addStylesStyle(final ObjectStyle objectStyle) {
+        return this.odsElements.addStylesStyle(objectStyle);
+    }
+
+    @Override
+    public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
+        return this.odsElements.addChildCellStyle(style, dataStyle);
+    }
+
+    @Override
+    public boolean addContentFontFaceContainerStyle(final FontFaceContainerStyle objectStyle) {
+        return this.odsElements.addContentFontFaceContainerStyle(objectStyle);
+    }
+
+    @Override
+    public boolean addStylesFontFaceContainerStyle(final FontFaceContainerStyle ffcStyle) {
+        return this.odsElements.addStylesFontFaceContainerStyle(ffcStyle);
+    }
+
+    @Override
+    public void setDataStylesMode(final Container.Mode mode) {
+        this.commonOdsDocument.setDataStylesMode(mode);
+    }
+
+    @Override
+    public void setMasterPageStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setMasterPageStyleMode(mode);
+
+    }
+
+    @Override
+    public void setPageLayoutStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setPageLayoutStyleMode(mode);
+    }
+
+    @Override
+    public void setPageStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setPageStyleMode(mode);
+    }
+
+    @Override
+    public void setObjectStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setObjectStyleMode(mode);
+    }
+
 
     /**
      * Enable styles debugging

@@ -50,7 +50,7 @@ public class OdsElementsTest {
     private MimetypeElement mimetypeElement;
     private OdsElements oe;
     private SettingsElement settingsElement;
-    private StylesContainer stylesContainer;
+    private StylesContainerImpl stylesContainer;
     private StylesElement stylesElement;
     private XMLUtil util;
     private Logger logger;
@@ -64,7 +64,7 @@ public class OdsElementsTest {
         this.metaElement = PowerMock.createMock(MetaElement.class);
         this.contentElement = PowerMock.createMock(ContentElement.class);
         this.stylesElement = PowerMock.createMock(StylesElement.class);
-        this.stylesContainer = new StylesContainer(this.logger);
+        this.stylesContainer = new StylesContainerImpl(this.logger);
 
         this.oe = new OdsElements(this.logger, this.stylesContainer, this.mimetypeElement,
                 this.manifestElement, this.settingsElement, this.metaElement, this.contentElement,
@@ -157,7 +157,7 @@ public class OdsElementsTest {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.oe.addStyleToContentAutomaticStyles(TableCellStyle.DEFAULT_CELL_STYLE);
+        this.oe.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
         final StringBuilder sb = new StringBuilder();
@@ -173,7 +173,7 @@ public class OdsElementsTest {
                 .andReturn(null);
 
         PowerMock.replayAll();
-        this.oe.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.oe.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
 
         PowerMock.verifyAll();
     }
@@ -216,7 +216,6 @@ public class OdsElementsTest {
         EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
-        t.asyncFlushBeginTable();
         t.addObserver(w);
         w.update(EasyMock.isA(PrepareContentFlusher.class));
 
@@ -241,7 +240,6 @@ public class OdsElementsTest {
         this.settingsElement.addTableConfig(e);
         lt.asyncFlushEndTable();
         t.addObserver(w);
-        t.asyncFlushBeginTable();
 
         PowerMock.replayAll();
         this.oe.addObserver(w);

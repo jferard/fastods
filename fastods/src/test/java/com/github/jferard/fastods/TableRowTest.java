@@ -26,6 +26,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -56,7 +57,7 @@ public class TableRowTest {
 
     @Before
     public void setUp() {
-        this.stc = PowerMock.createMock(StylesContainer.class);
+        this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.table = PowerMock.createMock(Table.class);
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();

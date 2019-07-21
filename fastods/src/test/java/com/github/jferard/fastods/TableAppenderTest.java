@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -46,7 +47,7 @@ public class TableAppenderTest {
 
     @Before
     public void setUp() {
-        this.stc = PowerMock.createMock(StylesContainer.class);
+        this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.builder = PowerMock.createMock(TableBuilder.class);
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();

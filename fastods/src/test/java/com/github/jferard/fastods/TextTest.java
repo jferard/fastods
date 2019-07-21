@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.ColorHelper;
@@ -141,7 +142,7 @@ public class TextTest {
 
     @Test
     public void testEmbeddedStyles() {
-        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer container = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
         final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts)
                 .build();

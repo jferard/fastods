@@ -133,6 +133,7 @@ class TableBuilder {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
+    private boolean tablePreambleWritten;
     private NamedOdsFileWriter observer;
     private int curRowIndex;
     private int lastFlushedRowIndex;
@@ -178,6 +179,7 @@ class TableBuilder {
         this.lastFlushedRowIndex = 0;
         this.lastRowIndex = -1;
         this.bufferSize = bufferSize;
+        this.tablePreambleWritten = false;
     }
 
     /**
@@ -201,6 +203,7 @@ class TableBuilder {
                     "Can't flush a table from an anonymous writer (there is no file)");
         }
         this.observer.update(new BeginTableFlusher(appender));
+        this.tablePreambleWritten = true;
     }
 
     /**
@@ -210,6 +213,9 @@ class TableBuilder {
      * @throws IOException if an error occurs
      */
     public void asyncFlushEndTable(final TableAppender appender) throws IOException {
+        if (!this.tablePreambleWritten) {
+            this.observer.update(new BeginTableFlusher(appender));
+        }
         this.observer.update(new EndTableFlusher(appender,
                 this.tableRows.subList(this.lastFlushedRowIndex, this.tableRows.usedSize())));
     }
@@ -296,12 +302,17 @@ class TableBuilder {
      */
     private void asyncTryToFlush(final TableAppender appender, final int rowIndex)
             throws IOException {
-        if (rowIndex > 0 && rowIndex % this.bufferSize == 0) {
-            final OdsAsyncFlusher preprocessedRowsFlusher = PreprocessedRowsFlusher
-                    .create(this.xmlUtil, new ArrayList<TableRowImpl>(
-                            this.tableRows.subList(this.lastFlushedRowIndex, rowIndex)));
-            this.observer.update(preprocessedRowsFlusher); // (0..1023), (1024..2047)
-            this.lastFlushedRowIndex = rowIndex;
+        if (this.tablePreambleWritten) {
+            if (rowIndex > 0 && rowIndex % this.bufferSize == 0) {
+                final OdsAsyncFlusher preprocessedRowsFlusher = PreprocessedRowsFlusher
+                        .create(this.xmlUtil, new ArrayList<TableRowImpl>(
+                                this.tableRows.subList(this.lastFlushedRowIndex, rowIndex)));
+                this.observer.update(preprocessedRowsFlusher); // (0..1023), (1024..2047)
+                this.lastFlushedRowIndex = rowIndex;
+            }
+        } else {
+            this.asyncFlushBeginTable(appender);
+            this.tablePreambleWritten = true;
         }
     }
 
@@ -386,7 +397,6 @@ class TableBuilder {
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
         TableBuilder.checkCol(col);
-        this.stylesContainer.addContentFontFaceContainerStyle(ts);
         ts.addToContentStyles(this.stylesContainer);
         this.columnStyles.set(col, ts);
     }

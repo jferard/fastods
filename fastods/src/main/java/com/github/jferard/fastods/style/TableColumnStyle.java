@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Length;
@@ -186,6 +187,7 @@ public class TableColumnStyle implements FontFaceContainerStyle {
      * @param stylesContainer the styles container
      */
     public void addToContentStyles(final StylesContainer stylesContainer) {
+        stylesContainer.addContentFontFaceContainerStyle(this);
         stylesContainer.addContentStyle(this);
         stylesContainer.addContentStyle(this.defaultCellStyle);
     }

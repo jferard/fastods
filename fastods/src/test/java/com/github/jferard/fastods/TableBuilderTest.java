@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -60,7 +61,7 @@ public class TableBuilderTest {
         final PositionUtil positionUtil = new PositionUtil(new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
 
-        this.stc = PowerMock.createMock(StylesContainer.class);
+        this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.ce = ConfigItemMapEntrySet.createSet("mytable");
         this.builder = new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil, this.stc,
@@ -202,11 +203,11 @@ public class TableBuilderTest {
 
     @Test
     public final void testMergeWithObserver1() throws IOException {
-        final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
+        final NamedOdsFileWriter writer = PowerMock.createMock(NamedOdsFileWriter.class);
 
         PowerMock.resetAll();
-        this.builder.addObserver(o);
-        o.update(EasyMock.isA(PreprocessedRowsFlusher.class));
+        this.builder.addObserver(writer);
+        writer.update(EasyMock.isA(BeginTableFlusher.class));
 
         PowerMock.replayAll();
         this.builder.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
@@ -348,10 +349,12 @@ public class TableBuilderTest {
         final NamedOdsFileWriter o = PowerMock.createMock(NamedOdsFileWriter.class);
 
         PowerMock.resetAll();
+        o.update(EasyMock.isA(BeginTableFlusher.class));
         o.update(EasyMock.isA(PreprocessedRowsFlusher.class));
 
         PowerMock.replayAll();
         this.builder.addObserver(o);
+        this.builder.getRow(this.table, this.appender, 0);
         this.builder.getRow(this.table, this.appender, 1024);
 
         PowerMock.verifyAll();

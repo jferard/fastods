@@ -74,8 +74,8 @@ public class OdsFileCreationIT {
     private Logger logger;
     private OdsFactory odsFactory;
     private Fibonacci fibonacci;
-    private TableColumnStyle tcns;
-    private TableRowStyle trs;
+    private TableColumnStyle columnStyle;
+    private TableRowStyle rowStyle;
     private TableCellStyle tcls;
     private TableCellStyle tcs0;
     private TableCellStyle tcs1;
@@ -246,10 +246,9 @@ public class OdsFileCreationIT {
                     row.getCellByIndex(0).getNoteText());
 
             // filter
-            Assert.assertEquals("table" + i + ".A1:F4", contentDom.getXPath()
-                    .evaluate(
-                            "//table:database-range[" + (i + 1) + "]//@table:target-range-address",
-                            contentDom.getRootElement()));
+            Assert.assertEquals("table" + i + ".A1:F4", contentDom.getXPath().evaluate(
+                    "//table:database-range[" + (i + 1) + "]//@table:target-range-address",
+                    contentDom.getRootElement()));
         }
     }
 
@@ -260,21 +259,21 @@ public class OdsFileCreationIT {
 
         this.fillDocument(document, n);
 
-        final File output = new File(GENERATED_FILES, this.standadDocumentName(false, n));
+        final File output = new File(GENERATED_FILES, this.standardDocumentName(false, n));
         writer.saveAs(output);
         return output;
     }
 
-    private String standadDocumentName(final boolean flush, final int n) {
-        return "standard_document" + (flush ? "with_flush" : "") + "_" + n + ".ods";
+    private String standardDocumentName(final boolean flush, final int n) {
+        return "standard_document" + (flush ? "_with_flush_" : "_") + n + ".ods";
     }
 
     private void createStyles() {
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
                 .fontWeightBold().build();
-        this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
+        this.columnStyle = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
                 .defaultCellStyle(this.tcls).build();
-        this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
+        this.rowStyle = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
         this.tcs0 = TableCellStyle.builder("tcs0")
                 .backgroundColor(ColorHelper.fromString("#0000ff")).build();
         this.tcs1 = TableCellStyle.builder("tcs1")
@@ -290,10 +289,10 @@ public class OdsFileCreationIT {
 
         for (int i = 0; i < n; i++) {
             final Table table = document.addTable("table" + i, 50, 5);
-            table.setColumnStyle(0, this.tcns);
+            table.setColumnStyle(0, this.columnStyle);
             table.updateConfigItem(ConfigElement.ZOOM_VALUE, "206");
             TableRowImpl row = table.getRow(0);
-            row.setRowStyle(this.trs);
+            row.setRowStyle(this.rowStyle);
             row.setDefaultCellStyle(this.tcls);
 
             // FIRST ROW
@@ -352,31 +351,21 @@ public class OdsFileCreationIT {
     }
 
     private File standardDocumentWithFlush(final int n) throws IOException {
-        final File output = new File("generated_files", this.standadDocumentName(true, n));
+        final File output = new File("generated_files", this.standardDocumentName(true, n));
         final NamedOdsFileWriter writer = this.odsFactory.createWriter(output);
         final NamedOdsDocument document = writer.document();
 
         this.createStyles();
-        document.addContentStyle(this.trs);
-        document.addContentStyle(this.tcls);
-        document.addContentStyle(this.tcns);
-        document.addContentStyle(this.tcs0);
-        document.addContentStyle(this.tcs1);
-        document.addContentStyle(this.tcs2);
-        document.addContentStyle(this.tcs3);
-
-        document.addChildCellStyle(this.tcs0, TableCell.Type.FLOAT);
-        document.addChildCellStyle(this.tcs1, TableCell.Type.FLOAT);
-        document.addChildCellStyle(this.tcs2, TableCell.Type.FLOAT);
-        document.addChildCellStyle(this.tcs3, TableCell.Type.FLOAT);
-        document.addChildCellStyle(this.tcls, TableCell.Type.FLOAT);
-        document.addChildCellStyle(this.tcls, TableCell.Type.BOOLEAN);
-        document.addChildCellStyle(TableCell.Type.BOOLEAN);
-        document.addChildCellStyle(TableCell.Type.CURRENCY);
-        document.addChildCellStyle(TableCell.Type.FLOAT);
-        document.addChildCellStyle(TableCell.Type.DATE);
-        document.addChildCellStyle(TableCell.Type.PERCENTAGE);
-        document.addChildCellStyle(TableCell.Type.TIME);
+        this.rowStyle.addToContentStyles(document);
+        this.columnStyle.addToContentStyles(document);
+        document.addCellStyle(this.tcls, TableCell.Type.FLOAT, TableCell.Type.BOOLEAN);
+        document.addCellStyle(this.tcs0, TableCell.Type.FLOAT);
+        document.addCellStyle(this.tcs1, TableCell.Type.FLOAT);
+        document.addCellStyle(this.tcs2, TableCell.Type.FLOAT);
+        document.addCellStyle(this.tcs3, TableCell.Type.FLOAT);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN,
+                TableCell.Type.CURRENCY, TableCell.Type.FLOAT, TableCell.Type.DATE,
+                TableCell.Type.PERCENTAGE, TableCell.Type.TIME);
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.fillDocument(document, n);

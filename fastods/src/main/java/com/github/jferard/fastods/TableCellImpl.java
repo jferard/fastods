@@ -362,7 +362,9 @@ public class TableCellImpl implements TableCell {
         }
 
         this.stylesContainer.addContentFontFaceContainerStyle(style);
+
         final TableCellStyle curStyle = this.style;
+
         if (curStyle == null) { // we know that data style is null
             this.style = style; // just set the new style as current style
         } else {

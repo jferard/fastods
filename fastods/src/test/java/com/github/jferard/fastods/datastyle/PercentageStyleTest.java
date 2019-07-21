@@ -25,6 +25,7 @@ package com.github.jferard.fastods.datastyle;
 import com.github.jferard.fastods.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.OdsElements;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,20 +70,22 @@ public class PercentageStyleTest {
     public final void testMinIntegerDigits() throws IOException {
         final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale)
                 .minIntegerDigits(8).build();
+
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(elements.addDataStyle(ps)).andReturn(true);
+
+        PowerMock.replayAll();
+        ps.addToElements(elements);
+
+        PowerMock.verifyAll();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style:volatile=\"true\">" +
                         "<number:number number:decimal-places=\"2\" " +
                         "number:min-integer-digits=\"8\"/>" + "<number:text>%</number:text>" +
                         "</number:percentage-style>", ps);
-
-        PowerMock.resetAll();
-        final OdsElements elements = PowerMock.createMock(OdsElements.class);
-
-        elements.addDataStyle(ps);
-        PowerMock.replayAll();
-        ps.addToElements(elements);
-        PowerMock.verifyAll();
     }
 
     @Test

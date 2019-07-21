@@ -148,8 +148,8 @@ public class ReadmeExampleIT {
         final NamedOdsDocument document = writer.document();
 
         document.addContentStyle(this.style);
-        document.addChildCellStyle(TableCell.Type.FLOAT);
-        document.addChildCellStyle(this.style, TableCell.Type.FLOAT);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.FLOAT);
+        document.addCellStyle(this.style, TableCell.Type.FLOAT);
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.createTable(document);

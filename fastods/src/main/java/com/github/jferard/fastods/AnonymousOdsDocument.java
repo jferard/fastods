@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -143,6 +144,32 @@ public final class AnonymousOdsDocument implements OdsDocument {
     @Override
     public void freezeCells(final Table table, final int rowCount, final int colCount) {
         this.commonOdsDocument.freezeCells(table, rowCount, colCount);
+    }
+
+    @Override
+    public void setDataStylesMode(final Container.Mode mode) {
+        this.commonOdsDocument.setDataStylesMode(mode);
+    }
+
+    @Override
+    public void setMasterPageStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setMasterPageStyleMode(mode);
+
+    }
+
+    @Override
+    public void setPageLayoutStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setPageLayoutStyleMode(mode);
+    }
+
+    @Override
+    public void setPageStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setPageStyleMode(mode);
+    }
+
+    @Override
+    public void setObjectStyleMode(final Container.Mode mode) {
+        this.commonOdsDocument.setObjectStyleMode(mode);
     }
 
     /**

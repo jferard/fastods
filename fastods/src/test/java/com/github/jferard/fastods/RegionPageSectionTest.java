@@ -24,6 +24,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.PageSectionContent.Region;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -99,7 +100,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testEmbedded() {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
         final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
                 .buildStyle("style2");
@@ -122,7 +123,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testEmbeddedNull() {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         final PageSection headerSection = PageSection.regionBuilder().build();
 
         PowerMock.resetAll();
@@ -134,7 +135,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testEmbeddedMode() {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
         final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
                 .buildStyle("style2");
@@ -157,7 +158,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testEmbeddedNullMode() {
-        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+        final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         final PageSection headerSection = PageSection.regionBuilder().build();
 
         PowerMock.resetAll();

@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -41,7 +42,7 @@ public class RegionFooterHeaderTest {
     @Before
     public void setUp() {
         this.util = XMLUtil.create();
-        this.stylesContainer = PowerMock.createMock(StylesContainer.class);
+        this.stylesContainer = PowerMock.createMock(StylesContainerImpl.class);
     }
 
     @Test

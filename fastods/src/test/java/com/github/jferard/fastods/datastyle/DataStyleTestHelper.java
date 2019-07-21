@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.powermock.api.easymock.PowerMock;
 
@@ -35,7 +36,7 @@ public class DataStyleTestHelper {
         final OdsElements elements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();
-        elements.addDataStyle(dataStyle);
+        EasyMock.expect(elements.addDataStyle(dataStyle)).andReturn(true);
 
         PowerMock.replayAll();
         dataStyle.addToElements(elements);

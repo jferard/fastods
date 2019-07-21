@@ -29,6 +29,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.Container;
 
 import java.io.IOException;
 import java.util.List;
@@ -165,5 +166,31 @@ class CommonOdsDocument implements OdsDocument {
     @Override
     public void freezeCells(final Table table, final int rowCount, final int colCount) {
         this.odsElements.freezeCells(table, rowCount, colCount);
+    }
+
+    @Override
+    public void setDataStylesMode(final Container.Mode mode) {
+        this.odsElements.setDataStylesMode(mode);
+    }
+
+    @Override
+    public void setMasterPageStyleMode(final Container.Mode mode) {
+        this.odsElements.setMasterPageStyleMode(mode);
+
+    }
+
+    @Override
+    public void setPageLayoutStyleMode(final Container.Mode mode) {
+        this.odsElements.setPageLayoutStyleMode(mode);
+    }
+
+    @Override
+    public void setPageStyleMode(final Container.Mode mode) {
+        this.odsElements.setPageStyleMode(mode);
+    }
+
+    @Override
+    public void setObjectStyleMode(final Container.Mode mode) {
+        this.odsElements.setObjectStyleMode(mode);
     }
 }

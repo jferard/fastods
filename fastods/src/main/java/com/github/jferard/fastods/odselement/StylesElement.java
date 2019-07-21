@@ -50,12 +50,12 @@ public class StylesElement implements OdsElement {
         appendable.append("/></style:style>");
     }
 
-    private final StylesContainer stylesContainer;
+    private final StylesContainerImpl stylesContainer;
 
     /**
      * @param stylesContainer the container for all styles
      */
-    public StylesElement(final StylesContainer stylesContainer) {
+    public StylesElement(final StylesContainerImpl stylesContainer) {
         this.stylesContainer = stylesContainer;
     }
 

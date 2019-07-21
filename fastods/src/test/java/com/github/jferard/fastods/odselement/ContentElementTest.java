@@ -28,7 +28,6 @@ import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -45,14 +44,14 @@ import java.util.Collections;
 import java.util.Locale;
 
 public class ContentElementTest {
-    private StylesContainer container;
+    private StylesContainerImpl container;
     private ContentElement content;
     private DataStyles format;
     private SettingsElement settingsElement;
 
     @Before
     public void setUp() {
-        this.container = PowerMock.createMock(StylesContainer.class);
+        this.container = PowerMock.createMock(StylesContainerImpl.class);
         this.format = DataStylesBuilder.create(Locale.US).build();
         this.content = new ContentElement(PositionUtil.create(), XMLUtil.create(),
                 WriteUtil.create(), this.format, true, this.container);

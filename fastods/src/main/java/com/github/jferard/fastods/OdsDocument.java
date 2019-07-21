@@ -23,6 +23,9 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesModeSetter;
+import com.github.jferard.fastods.util.Container;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -32,7 +35,7 @@ import java.util.List;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public interface OdsDocument {
+public interface OdsDocument extends StylesModeSetter {
     /**
      * Add a new table to the file, the new table is set to the active table.<br>
      * Use setActiveTable to override the current active table, this has no

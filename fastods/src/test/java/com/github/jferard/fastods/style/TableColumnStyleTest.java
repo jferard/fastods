@@ -27,6 +27,7 @@ import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +49,8 @@ public class TableColumnStyleTest {
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();
-        odsElements.addContentStyle(tcs);
-        odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        EasyMock.expect(odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
+        EasyMock.expect(odsElements.addContentStyle(tcs)).andReturn(true);
 
         PowerMock.replayAll();
         tcs.addToElements(odsElements);
@@ -65,8 +66,8 @@ public class TableColumnStyleTest {
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();
-        odsElements.addContentStyle(tcs);
-        odsElements.addContentStyle(cellStyle);
+        EasyMock.expect(odsElements.addContentStyle(tcs)).andReturn(true);
+        EasyMock.expect(odsElements.addContentStyle(cellStyle)).andReturn(true);
 
         PowerMock.replayAll();
         tcs.addToElements(odsElements);
