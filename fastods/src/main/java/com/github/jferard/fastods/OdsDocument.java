@@ -23,10 +23,12 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.odselement.StylesModeSetter;
 import com.github.jferard.fastods.util.Container;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -164,7 +166,13 @@ public interface OdsDocument extends StylesModeSetter {
     void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence);
 
     /**
-     * @param fullPath tyhe path of the dir
+     * @param fullPath the path of the dir
      */
     void addExtraDir(final String fullPath);
+
+    /**
+     * Add some events to the document
+     * @param events the events to add
+     */
+    void addEvents(final ScriptEventListener... events);
 }

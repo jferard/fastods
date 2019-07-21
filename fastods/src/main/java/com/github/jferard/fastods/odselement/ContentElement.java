@@ -37,6 +37,7 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
@@ -56,6 +57,7 @@ public class ContentElement implements OdsElement {
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
     private List<AutoFilter> autoFilters;
+    private final List<ScriptEventListener> scriptEvents;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
@@ -76,6 +78,7 @@ public class ContentElement implements OdsElement {
         this.stylesContainer = stylesContainer;
         this.tables = new UniqueList<Table>();
         this.flushPosition = new FlushPosition();
+        this.scriptEvents = new ArrayList<ScriptEventListener>();
     }
 
     /**
@@ -227,7 +230,7 @@ public class ContentElement implements OdsElement {
                         " " +
                         "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www" +
                         ".w3.org/2001/XMLSchema-instance\" office:version=\"1.2\">");
-        writer.write("<office:scripts/>");
+        this.writeEvents(util, writer);
         this.stylesContainer.writeFontFaceDecls(util, writer);
         writer.write("<office:automatic-styles>");
         this.stylesContainer.writeHiddenDataStyles(util, writer);
@@ -235,6 +238,18 @@ public class ContentElement implements OdsElement {
         writer.write("</office:automatic-styles>");
         writer.write("<office:body>");
         writer.write("<office:spreadsheet>");
+    }
+
+    public void writeEvents(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+        if (this.scriptEvents.isEmpty()) {
+            return;
+        }
+
+        writer.write("<office:scripts><office:event-listeners>");
+        for (final ScriptEventListener event: this.scriptEvents) {
+            event.appendXMLContent(util, writer);
+        }
+        writer.write("</office:event-listeners></office:scripts>");
     }
 
     private void appendAutoFilters(final XMLUtil util, final Appendable appendable)
@@ -258,4 +273,11 @@ public class ContentElement implements OdsElement {
         this.autoFilters.add(autoFilter);
     }
 
+    /**
+     * Add some events to the document
+     * @param events the events to add
+     */
+    public void addEvents(final ScriptEventListener... events) {
+        this.scriptEvents.addAll(Arrays.asList(events));
+    }
 }

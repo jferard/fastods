@@ -33,6 +33,7 @@ import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
@@ -149,15 +150,16 @@ public class ReadmeExampleIT {
         final NamedOdsFileWriter writer = this.odsFactory
                 .createWriter(new File(GENERATED_FILES, README_EXAMPLE_WITH_FLUSH_ODS));
         final NamedOdsDocument document = writer.document();
-
+        this.macroHelper.addRefreshMacro(document);
         document.addContentStyle(this.style);
         document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.FLOAT);
         document.addCellStyle(this.style, TableCell.Type.FLOAT);
+        document.addEvents(ScriptEventListener.create("dom:load", "Standard.FastODS.Refresh"));
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.createTable(document);
-        this.macroHelper.addRefreshMacro(document);
-        
+
+
         document.save();
     }
 }

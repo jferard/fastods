@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -32,6 +33,7 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.Container;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -203,4 +205,10 @@ class CommonOdsDocument implements OdsDocument {
     public void addExtraDir(final String fullPath) {
         this.odsElements.addExtraDir(fullPath);
     }
+
+    @Override
+    public void addEvents(final ScriptEventListener... events) {
+        this.odsElements.addEvents(events);
+    }
+
 }

@@ -542,4 +542,12 @@ public class OdsElements implements StylesContainer {
         this.logger.log(Level.FINER, "Writing ods element: manifestElement to zip file");
         this.manifestElement.write(xmlUtil, writer);
     }
+
+    /**
+     * Add some events to the document
+     * @param events the events to add
+     */
+    public void addEvents(final ScriptEventListener... events) {
+        this.contentElement.addEvents(events);
+    }
 }

@@ -65,7 +65,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5253;
+    private static final int EMPTY_DOCUMENT_SIZE = 5249;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

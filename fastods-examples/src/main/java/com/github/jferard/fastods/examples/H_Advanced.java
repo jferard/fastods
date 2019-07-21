@@ -32,6 +32,7 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.tool.MacroHelper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
 import com.github.jferard.fastods.util.AutoFilter;
@@ -166,11 +167,22 @@ class H_Advanced {
         walker.next();
         walker.setStringValue(".odb");
 
-        // Now we need to set the filter:
+        // Now we need to set the filter. It's possible to preset some filter with the `filter`
+        // method of the builder.
         table.addAutoFilter(AutoFilter.builder(table, 0, 0, walker.rowIndex(), walker.colIndex())
                 .filter(new FilterEnumerate(0, "Spreadsheet", "Presentation", "Master Document"))
                 .build());
 
+        // The filter will be set (the little square appears and if you click on the arrow,
+        // only Spreadsheet", "Presentation" and "Master Document" are checked. But... the rows
+        // remain visible, making the function of very limited interest.
+        //
+        // To hide the filtered rows, FastODS should apply (and not just declare) the filter to
+        // mark the rows as "filtered". But that's really overkill. There's an alternative solution:
+        // it's possible to add a macro to the document, and to trigger that macro on document load.
+        new MacroHelper().addRefreshMacro(document);
+
+        // This macro will refresh all autofilters and hide the columns.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "h_advanced_autofilter.ods"));

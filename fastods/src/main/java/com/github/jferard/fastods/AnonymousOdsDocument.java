@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -97,6 +98,11 @@ public final class AnonymousOdsDocument implements OdsDocument {
     @Override
     public void addExtraDir(final String fullPath) {
         this.commonOdsDocument.addExtraDir(fullPath);
+    }
+
+    @Override
+    public void addEvents(final ScriptEventListener... events) {
+        this.commonOdsDocument.addEvents(events);
     }
 
     @Override

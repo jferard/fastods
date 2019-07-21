@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
@@ -282,13 +283,19 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     }
 
     @Override
-    public void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence) {
+    public void addExtraFile(final String fullPath, final String mediaType,
+                             final CharSequence sequence) {
         this.commonOdsDocument.addExtraFile(fullPath, mediaType, sequence);
     }
 
     @Override
     public void addExtraDir(final String fullPath) {
         this.commonOdsDocument.addExtraDir(fullPath);
+    }
+
+    @Override
+    public void addEvents(final ScriptEventListener... events) {
+        this.commonOdsDocument.addEvents(events);
     }
 
     /**

@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.odselement.ScriptEventListener;
 
 /**
  * A helper
@@ -60,9 +61,12 @@ public class MacroHelper {
                         "<script:module xmlns:script=\"http://openoffice.org/2000/script\" " +
                         "script:name=\"FastODS\" script:language=\"StarBasic\" " +
                         "script:moduleType=\"normal\">" + "REM FastODS (C) J. Férard\n" +
-                        "REM Auto update macro\n\n" + "Sub Main\n" +
+                        "REM Auto update macro\n\n" +
+                        "Sub Refresh\n" +
                         "\tfor each oElem in ThisComponent.DatabaseRanges\n" +
-                        "\t\toElem.refresh\n" + "\tnext oElem\n" + "End Sub\n" +
+                        "\t\toElem.refresh\n" + "\tnext oElem\n" +
+                        "End Sub\n" +
                         "</script:module>");
+        document.addEvents(ScriptEventListener.create("dom:load", "Standard.FastODS.Refresh"));
     }
 }
