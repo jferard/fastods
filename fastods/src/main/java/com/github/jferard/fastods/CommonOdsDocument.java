@@ -193,4 +193,14 @@ class CommonOdsDocument implements OdsDocument {
     public void setObjectStyleMode(final Container.Mode mode) {
         this.odsElements.setObjectStyleMode(mode);
     }
+
+    @Override
+    public void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence) {
+        this.odsElements.addExtraFile(fullPath, mediaType, sequence);
+    }
+
+    @Override
+    public void addExtraDir(final String fullPath) {
+        this.odsElements.addExtraDir(fullPath);
+    }
 }

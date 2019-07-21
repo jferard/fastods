@@ -43,7 +43,7 @@ public class ImmutableElementsFlusherTest {
 
         PowerMock.resetAll();
         odsElements.createEmptyElements(w);
-        odsElements.writeImmutableElements(util, w);
+        odsElements.writeMimeType(util, w);
 
         PowerMock.replayAll();
         final OdsAsyncFlusher flusher = new ImmutableElementsFlusher(odsElements);

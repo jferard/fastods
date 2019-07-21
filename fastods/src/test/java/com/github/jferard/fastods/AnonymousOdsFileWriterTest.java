@@ -65,7 +65,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5284;
+    private static final int EMPTY_DOCUMENT_SIZE = 5253;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -124,6 +124,7 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
+        System.out.println(buf.length);
         Assert.assertTrue(Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) <= 2);
         Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
                 "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
@@ -285,13 +286,17 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
         this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements.writeImmutableElements(EasyMock.eq(this.xmlUtil),
+        this.odsElements.writeMimeType(EasyMock.eq(this.xmlUtil),
                 EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeManifest(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeExtras(EasyMock.isA(ZipUTF8Writer.class));
         outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();
@@ -331,13 +336,17 @@ public class AnonymousOdsFileWriterTest {
         EasyMock.expect(this.builder.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
 
         this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements.writeImmutableElements(EasyMock.eq(this.xmlUtil),
+        this.odsElements.writeMimeType(EasyMock.eq(this.xmlUtil),
                 EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeManifest(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeExtras(EasyMock.isA(ZipUTF8Writer.class));
         outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();

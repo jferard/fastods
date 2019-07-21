@@ -34,6 +34,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
@@ -47,7 +48,9 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -95,7 +98,7 @@ public class OdsElements implements StylesContainer {
                                      final boolean libreOfficeMode) {
         final Logger logger = Logger.getLogger(OdsElements.class.getName());
         final MimetypeElement mimetypeElement = new MimetypeElement();
-        final ManifestElement manifestElement = new ManifestElement();
+        final ManifestElement manifestElement = ManifestElement.create();
         final SettingsElement settingsElement = SettingsElement.create();
         final MetaElement metaElement = new MetaElement();
         final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
@@ -114,6 +117,7 @@ public class OdsElements implements StylesContainer {
     private final SettingsElement settingsElement;
     private final StylesContainerImpl stylesContainer;
     private final StylesElement stylesElement;
+    private final Map<String, CharSequence> extraFileByName;
     private NamedOdsFileWriter observer;
 
     /**
@@ -140,6 +144,7 @@ public class OdsElements implements StylesContainer {
         this.contentElement = contentElement;
         this.stylesElement = stylesElement;
         this.stylesContainer = stylesContainer;
+        this.extraFileByName = new HashMap<String, CharSequence>();
     }
 
     /**
@@ -159,7 +164,7 @@ public class OdsElements implements StylesContainer {
      * Do not produce any effect if the type is Type.STRING or Type.VOID
      *
      * @param style the style
-     * @param types  the types
+     * @param types the types
      */
     public void addCellStyle(final TableCellStyle style, final TableCell.Type... types) {
         this.stylesContainer.addContentStyle(style);
@@ -336,7 +341,7 @@ public class OdsElements implements StylesContainer {
             previousTable.asyncFlushEndTable();
         }
 
-        this.observer.update(new FinalizeFlusher(this.contentElement, this.settingsElement));
+        this.observer.update(new FinalizeFlusher(this.contentElement, this));
     }
 
     /**
@@ -349,21 +354,6 @@ public class OdsElements implements StylesContainer {
     public void writeContent(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing ods element: contentElement to zip file");
         this.contentElement.write(xmlUtil, writer);
-    }
-
-    /**
-     * Write the mimetype and manifest elements to a writer.
-     *
-     * @param xmlUtil the xml util
-     * @param writer  the writer
-     * @throws IOException if write fails
-     */
-    public void writeImmutableElements(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
-            throws IOException {
-        this.logger.log(Level.FINER, "Writing ods element: mimeTypeEntry to zip file");
-        this.mimeTypeElement.write(xmlUtil, writer);
-        this.logger.log(Level.FINER, "Writing ods element: manifestElement to zip file");
-        this.manifestElement.write(xmlUtil, writer);
     }
 
     /**
@@ -488,5 +478,68 @@ public class OdsElements implements StylesContainer {
     public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
                               final int c2) {
         table.addAutoFilter(r1, c1, r2, c2);
+    }
+
+    /**
+     * Add an extra file
+     *
+     * @param fullPath  the name of the file in the sequence
+     * @param mediaType the MIME type
+     * @param sequence  the content
+     */
+    public void addExtraFile(final String fullPath, final String mediaType,
+                             final CharSequence sequence) {
+        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType);
+        this.extraFileByName.put(fullPath, sequence);
+        this.manifestElement.add(manifestEntry);
+    }
+
+    /**
+     * @param fullPath the path of the dir
+     */
+    public void addExtraDir(final String fullPath) {
+        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, "");
+        this.manifestElement.add(manifestEntry);
+    }
+
+    /**
+     * @param writer write the extra files to the archive
+     * @throws IOException if something can"t be written
+     */
+    public void writeExtras(final ZipUTF8Writer writer) throws IOException {
+        this.logger.log(Level.FINER, "Writing extra elements to zip file");
+        for (final Map.Entry<String, CharSequence> entry : this.extraFileByName.entrySet()) {
+            final String elementName = entry.getKey();
+            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", elementName);
+            writer.putNextEntry(new ZipEntry(elementName));
+            writer.write(entry.getValue());
+            writer.closeEntry();
+        }
+    }
+
+    /**
+     * Write the mimetype element to a writer.
+     *
+     * @param xmlUtil the xml util
+     * @param writer  the writer
+     * @throws IOException if write fails
+     */
+    public void writeMimeType(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+            throws IOException {
+        this.logger.log(Level.FINER, "Writing ods element: mimeTypeEntry to zip file");
+        this.mimeTypeElement.write(xmlUtil, writer);
+    }
+
+    /**
+     * Write the manifest element to a writer.
+     *
+     * @param xmlUtil the xml util
+     * @param writer  the writer
+     * @throws IOException if write fails
+     */
+    public void writeManifest(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
+            throws IOException {
+        this.logger.log(Level.FINER, "Writing ods element: manifestElement to zip file");
+        this.manifestElement.write(xmlUtil, writer);
     }
 }

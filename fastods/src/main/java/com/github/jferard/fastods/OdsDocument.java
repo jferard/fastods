@@ -154,4 +154,17 @@ public interface OdsDocument extends StylesModeSetter {
      * @param colCount the number of cols to freeze
      */
     void freezeCells(Table table, int rowCount, int colCount);
+
+    /**
+     * Add an extra file to the document
+     * @param fullPath the path of the file in the sequence
+     * @param mediaType the MIME type of the file
+     * @param sequence the content
+     */
+    void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence);
+
+    /**
+     * @param fullPath tyhe path of the dir
+     */
+    void addExtraDir(final String fullPath);
 }

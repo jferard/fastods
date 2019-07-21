@@ -29,13 +29,14 @@ import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
+import com.github.jferard.fastods.tool.MacroHelper;
 import com.github.jferard.fastods.util.ColorHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -71,12 +72,14 @@ public class ReadmeExampleIT {
     private Logger logger;
     private OdsFactory odsFactory;
     private TableCellStyle style;
+    private MacroHelper macroHelper;
 
     @Before
     public void setUp() {
         this.logger = Logger.getLogger("readme example");
         this.odsFactory = OdsFactory.create(this.logger, Locale.US);
         this.style = TableCellStyle.builder(GREEN_CELL_STYLE).backgroundColor(GREEN_COLOR).build();
+        this.macroHelper = new MacroHelper();
     }
 
 
@@ -125,7 +128,7 @@ public class ReadmeExampleIT {
         final OdsDocument document = writer.document();
 
         this.createTable(document);
-
+        this.macroHelper.addRefreshMacro(document);
         writer.saveAs(new File(GENERATED_FILES, README_EXAMPLE_ODS));
     }
 
@@ -153,7 +156,8 @@ public class ReadmeExampleIT {
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.createTable(document);
-
+        this.macroHelper.addRefreshMacro(document);
+        
         document.save();
     }
 }

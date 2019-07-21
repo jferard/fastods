@@ -21,41 +21,34 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.odselement.config;
 
-import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 
 /**
- * An async flusher for mime type and meta elements.
- * Those files are always the same and do not depend on anything:
- * Thumbnails, Configurations2/accelerator/current.xml, ...
- *
- * Automatically sent when the NamedOdsWriter is created.
- *
- * @author Julien Férard
+ * 4.3<manifest:file-entry>
  */
-public class ImmutableElementsFlusher implements OdsAsyncFlusher {
-    private final OdsElements odsElements;
+public class ManifestEntry implements XMLConvertible {
+    private final CharSequence fullPath;
+    private final CharSequence mediaType;
 
     /**
-     * @param odsElements content.xml, styles.xml, ...
+     * @param fullPath the path
+     * @param mediaType the media MIME type
      */
-    public ImmutableElementsFlusher(final OdsElements odsElements) {
-        this.odsElements = odsElements;
+    public ManifestEntry(final CharSequence fullPath, final CharSequence mediaType) {
+        this.fullPath = fullPath;
+        this.mediaType = mediaType;
     }
 
     @Override
-    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.odsElements.createEmptyElements(writer);
-        this.odsElements.writeMimeType(xmlUtil, writer);
-    }
-
-    @Override
-    public boolean isEnd() {
-        return false;
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<manifest:file-entry");
+        util.appendAttribute(appendable, "manifest:full-path", this.fullPath);
+        util.appendAttribute(appendable, "manifest:media-type", this.mediaType);
+        appendable.append("/>");
     }
 }

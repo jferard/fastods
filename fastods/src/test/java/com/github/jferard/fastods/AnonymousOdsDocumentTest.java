@@ -291,11 +291,13 @@ public class AnonymousOdsDocumentTest {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
         this.odsElements.createEmptyElements(writer);
-        this.odsElements.writeImmutableElements(this.xmlUtil, writer);
+        this.odsElements.writeMimeType(this.xmlUtil, writer);
         this.odsElements.writeMeta(this.xmlUtil, writer);
         this.odsElements.writeStyles(this.xmlUtil, writer);
         this.odsElements.writeContent(this.xmlUtil, writer);
         this.odsElements.writeSettings(this.xmlUtil, writer);
+        this.odsElements.writeManifest(this.xmlUtil, writer);
+        this.odsElements.writeExtras(writer);
         this.logger.log(Level.FINE, "file saved");
         writer.close();
 

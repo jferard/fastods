@@ -24,6 +24,8 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.ContentElement;
+import com.github.jferard.fastods.odselement.OdsElement;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.SettingsElement;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -40,16 +42,18 @@ public class FinalizeFlusherTest {
     public final void test() throws IOException {
         final XMLUtil util = XMLUtil.create();
         final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
-        final SettingsElement settingsElements = PowerMock.createMock(SettingsElement.class);
+        final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
         final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
 
         PowerMock.resetAll();
         contentElement.writePostamble(util, w);
-        settingsElements.write(util, w);
+        odsElements.writeSettings(util, w);
+        odsElements.writeManifest(util, w);
+        odsElements.writeExtras(w);
         w.close();
 
         PowerMock.replayAll();
-        final OdsAsyncFlusher flusher = new FinalizeFlusher(contentElement, settingsElements);
+        final OdsAsyncFlusher flusher = new FinalizeFlusher(contentElement, odsElements);
         flusher.flushInto(util, w);
 
         PowerMock.verifyAll();

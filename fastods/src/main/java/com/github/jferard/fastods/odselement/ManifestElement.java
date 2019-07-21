@@ -23,68 +23,79 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.zip.ZipEntry;
 
 /**
- * See META-INF/manifest.xml/manifest:manifest
+ * 3.2Manifest and http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part3
+ * .html#Manifest_File
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class ManifestElement implements OdsElement {
-    private final String[] text = {"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>",
-            "<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1" +
-                    ".0\">",
-            "<manifest:file-entry manifest:media-type=\"application/vnd.oasis.opendocument" +
-                    ".spreadsheet\" manifest:full-path=\"/\" />",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/statusbar/\" />",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/accelerator/current.xml\" />",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/accelerator/\" /> ",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/floater/\" /> ",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/popupmenu/\" />",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/progressbar/\" />",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/menubar/\" /> ",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/toolbar/\" /> ",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/images/Bitmaps/\" />",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Configurations2/images/\" /> ",
-            "<manifest:file-entry manifest:media-type=\"application/vnd.sun.xml.ui" +
-                    ".configuration\" manifest:full-path=\"Configurations2/\" />",
-            "<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"content" +
-                    ".xml\" /> ",
-            "<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"styles" +
-                    ".xml\" /> ",
-            "<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"meta" +
-                    ".xml\" /> ",
-            "<manifest:file-entry manifest:media-type=\"\" " +
-                    "manifest:full-path=\"Thumbnails/thumbnail.png\" />",
-            "<manifest:file-entry manifest:media-type=\"\" manifest:full-path=\"Thumbnails/\" /> ",
-            "<manifest:file-entry manifest:media-type=\"text/xml\" manifest:full-path=\"settings" +
-                    ".xml\" />",
-            "</manifest:manifest>"
+    private static final List<ManifestEntry> ENTRIES = Arrays
+            .asList(new ManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet"),
+                    new ManifestEntry("content.xml", "text/xml"),
+                    new ManifestEntry("styles.xml", "text/xml"),
+                    new ManifestEntry("meta.xml", "text/xml"),
+                    new ManifestEntry("settings.xml", "text/xml"),
+                    new ManifestEntry("Configurations2/",
+                            "application/vnd.sun.xml.ui.configuration"),
+                    new ManifestEntry("Configurations2/statusbar/", ""),
+                    new ManifestEntry("Configurations2/accelerator/", ""),
+                    new ManifestEntry("Configurations2/accelerator/current.xml", ""),
+                    new ManifestEntry("Configurations2/floater/", ""),
+                    new ManifestEntry("Configurations2/popupmenu/", ""),
+                    new ManifestEntry("Configurations2/progressbar/", ""),
+                    new ManifestEntry("Configurations2/menubar/", ""),
+                    new ManifestEntry("Configurations2/toolbar/", ""),
+                    new ManifestEntry("Configurations2/images/", ""),
+                    new ManifestEntry("Configurations2/images/Bitmaps/", ""),
+                    new ManifestEntry("Thumbnails/", ""),
+                    new ManifestEntry("Thumbnails/thumbnail.png", ""));
 
-    };
+    /**
+     * @return a new ManifestElement
+     */
+    public static ManifestElement create() {
+        return new ManifestElement(ManifestElement.ENTRIES);
+    }
+
+    private final List<ManifestEntry> manifestEntries;
+
+    /**
+     * @param initialEntries the first entries
+     */
+    ManifestElement(final List<ManifestEntry> initialEntries) {
+        this.manifestEntries = new ArrayList<ManifestEntry>(initialEntries);
+    }
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-        for (final String item : this.text) {
-            writer.write(item);
+        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" +
+                "<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns" +
+                ":manifest:1.0\">");
+        for (final ManifestEntry entry : this.manifestEntries) {
+            entry.appendXMLContent(util, writer);
         }
+        writer.write("</manifest:manifest>");
         writer.flush();
         writer.closeEntry();
+    }
+
+    /**
+     * @param manifestEntry the new entry to add
+     */
+    public void add(final ManifestEntry manifestEntry) {
+        this.manifestEntries.add(manifestEntry);
     }
 }

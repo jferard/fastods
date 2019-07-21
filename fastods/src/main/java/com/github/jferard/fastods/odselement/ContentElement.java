@@ -27,9 +27,9 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -207,9 +207,8 @@ public class ContentElement implements OdsElement {
                         "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
                         "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
                         "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" +
-                        " " +
-                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl" +
-                        ".org/dc/elements/1.1/\" " +
+                        " " + "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                        "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " +
                         "xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" " +
                         "xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" " +
                         "xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation" +
@@ -217,9 +216,8 @@ public class ContentElement implements OdsElement {
                         "xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" " +
                         "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " +
                         "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" " +
-                        "xmlns:math=\"http://www" +
-                        ".w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument" +
-                        ":xmlns:form:1.0\" " +
+                        "xmlns:math=\"http://www.w3.org/1998/Math/MathML\" " +
+                        "xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " +
                         "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
                         "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
                         "xmlns:ooow=\"http://openoffice" +

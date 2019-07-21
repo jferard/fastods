@@ -24,7 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.ContentElement;
-import com.github.jferard.fastods.odselement.SettingsElement;
+import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -33,29 +33,30 @@ import java.io.IOException;
 /**
  * An async flusher flusher to finalize the file.
  * Writes postamble for contents, and the settings.
- *
+ * <p>
  * Sent by the NamedOdsDocument.save method.
  *
  * @author Julien Férard
  */
 public class FinalizeFlusher implements OdsAsyncFlusher {
     private final ContentElement contentElement;
-    private final SettingsElement settingsElements;
+    private final OdsElements odsElements;
 
     /**
-     * @param contentElement   the content to finalize
-     * @param settingsElements the settings to create (settings.xml file)
+     * @param contentElement the content to finalize
+     * @param odsElements    the elements
      */
-    public FinalizeFlusher(final ContentElement contentElement,
-                           final SettingsElement settingsElements) {
+    public FinalizeFlusher(final ContentElement contentElement, final OdsElements odsElements) {
         this.contentElement = contentElement;
-        this.settingsElements = settingsElements;
+        this.odsElements = odsElements;
     }
 
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
         this.contentElement.writePostamble(xmlUtil, writer);
-        this.settingsElements.write(xmlUtil, writer);
+        this.odsElements.writeSettings(xmlUtil, writer);
+        this.odsElements.writeManifest(xmlUtil, writer);
+        this.odsElements.writeExtras(writer);
         writer.close();
     }
 

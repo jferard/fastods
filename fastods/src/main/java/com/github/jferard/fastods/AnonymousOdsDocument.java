@@ -90,6 +90,16 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
+    public void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence) {
+        this.commonOdsDocument.addExtraFile(fullPath, mediaType, sequence);
+    }
+
+    @Override
+    public void addExtraDir(final String fullPath) {
+        this.commonOdsDocument.addExtraDir(fullPath);
+    }
+
+    @Override
     public Table getTable(final int n) throws FastOdsException {
         return this.commonOdsDocument.getTable(n);
     }
@@ -181,11 +191,13 @@ public final class AnonymousOdsDocument implements OdsDocument {
      */
     void save(final ZipUTF8Writer writer) throws IOException {
         this.odsElements.createEmptyElements(writer);
-        this.odsElements.writeImmutableElements(this.xmlUtil, writer);
+        this.odsElements.writeMimeType(this.xmlUtil, writer);
         this.odsElements.writeMeta(this.xmlUtil, writer);
         this.odsElements.writeStyles(this.xmlUtil, writer);
         this.odsElements.writeContent(this.xmlUtil, writer);
         this.odsElements.writeSettings(this.xmlUtil, writer);
+        this.odsElements.writeManifest(this.xmlUtil, writer);
+        this.odsElements.writeExtras(writer);
         this.logger.log(Level.FINE, "file saved");
     }
 }

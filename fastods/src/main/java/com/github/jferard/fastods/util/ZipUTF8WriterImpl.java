@@ -104,7 +104,7 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     }
 
     @Override
-    public void write(final String str) throws IOException {
-        this.writer.write(str);
+    public void write(final CharSequence sequence) throws IOException {
+        this.writer.append(sequence);
     }
 }

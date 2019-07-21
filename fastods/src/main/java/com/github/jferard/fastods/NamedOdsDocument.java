@@ -168,7 +168,7 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
      * Do not produce any effect if the type is Type.STRING or Type.VOID
      *
      * @param style the style
-     * @param types  the types
+     * @param types the types
      */
     public void addCellStyle(final TableCellStyle style, final TableCell.Type... types) {
         this.odsElements.addCellStyle(style, types);
@@ -279,6 +279,16 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
      */
     public void prepare() throws IOException {
         this.odsElements.prepareAsync();
+    }
+
+    @Override
+    public void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence) {
+        this.commonOdsDocument.addExtraFile(fullPath, mediaType, sequence);
+    }
+
+    @Override
+    public void addExtraDir(final String fullPath) {
+        this.commonOdsDocument.addExtraDir(fullPath);
     }
 
     /**
