@@ -25,6 +25,7 @@ package com.github.jferard.fastods.odselement.config;
 
 /**
  * An element of the configuration.
+ * See https://github.com/LibreOffice/core/blob/master/oox/source/token/properties.txt
  */
 public enum ConfigElement {
     /**
@@ -493,61 +494,62 @@ public enum ConfigElement {
 
 
     /**
-     * Undocumented
+     * Undocumented, in case of multiple views
      */
     VIEW_ID("ViewId", ConfigElementType.STRING),
 
     /**
      * Undocumented
+     * Set the active table.
      */
     ACTIVE_TABLE("ActiveTable", ConfigElementType.STRING),
 
     /**
-     * Undocumented
+     * Undocumented, deprecated
      */
     HORIZONTAL_SCROLLBAR_WIDTH("HorizontalScrollbarWidth", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, zoom for View > PageBreak
      */
     PAGE_VIEW_ZOOM_VALUE("PageViewZoomValue", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, equivalent to View > PageBreak
      */
     SHOW_PAGE_BREAK_PREVIEW("ShowPageBreakPreview", ConfigElementType.BOOLEAN),
 
     /**
-     * Undocumented
+     * Undocumented, show the cancel button
      */
     ALLOW_PRINT_JOB_CANCEL("AllowPrintJobCancel", ConfigElementType.BOOLEAN),
 
     /**
-     * Undocumented
+     * Undocumented, set the document readonly
      */
     LOAD_READONLY("LoadReadonly", ConfigElementType.BOOLEAN),
 
 
     /**
-     * Undocumented
+     * Undocumented, seems to be useful when the document is embedded
      */
     VISIBLE_AREA_TOP("VisibleAreaTop", ConfigElementType.INT),
 
 
     /**
-     * Undocumented
+     * Undocumented, seems to be useful when the document is embedded
      */
     VISIBLE_AREA_LEFT("VisibleAreaLeft", ConfigElementType.INT),
 
 
     /**
-     * Undocumented
+     * Undocumented, seems to be useful when the document is embedded
      */
     VISIBLE_AREA_WIDTH("VisibleAreaWidth", ConfigElementType.INT),
 
 
     /**
-     * Undocumented
+     * Undocumented, seems to be useful when the document is embedded
      */
     VISIBLE_AREA_HEIGHT("VisibleAreaHeight", ConfigElementType.INT),
 

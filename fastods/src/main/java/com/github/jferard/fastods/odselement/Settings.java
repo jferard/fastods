@@ -94,7 +94,7 @@ public class Settings {
 
         // undocumented ViewSettingsSequenceDefines.hxx
         firstView.add(ConfigItem.create(ConfigElement.VIEW_ID, "View1"));
-        firstView.add(ConfigItem.create(ConfigElement.ACTIVE_TABLE, "Tab1"));
+        firstView.add(ConfigItem.create(ConfigElement.ACTIVE_TABLE, "Sheet1"));
         firstView.add(ConfigItem.create(ConfigElement.HORIZONTAL_SCROLLBAR_WIDTH, "270"));
         firstView.add(ConfigItem.create(ConfigElement.PAGE_VIEW_ZOOM_VALUE, "60"));
         firstView.add(ConfigItem.create(ConfigElement.SHOW_PAGE_BREAK_PREVIEW, "false"));

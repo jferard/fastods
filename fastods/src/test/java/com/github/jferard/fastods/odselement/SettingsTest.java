@@ -94,7 +94,7 @@ public class SettingsTest {
                         "<config:config-item-map-named config:name=\"Tables\" />" +
                         "<config:config-item " +
                         "config:name=\"ActiveTable\" " +
-                        "config:type=\"string\">Tab1</config:config-item>" +
+                        "config:type=\"string\">Sheet1</config:config-item>" +
                         "<config:config-item" + " config:name=\"HorizontalScrollbarWidth\" " +
                         "config:type=\"int\">270</config:config-item>" + "<config:config-item " +
                         "config:name=\"PageViewZoomValue\" " +

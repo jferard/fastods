@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -38,8 +39,9 @@ public class MultiContainerTest {
 
     @Before
     public void setUp() {
-        this.logger = PowerMock.createMock(Logger.class);
+        this.logger = Logger.getLogger("");
         this.container = new MultiContainer<String, Dest, Integer>(this.logger, Dest.class);
+        this.container.debug();
         PowerMock.resetAll();
         PowerMock.replayAll();
     }
@@ -67,13 +69,22 @@ public class MultiContainerTest {
     @Test
     public final void testCreateTwice() {
         Assert.assertTrue(this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1));
-        Assert.assertEquals(Integer.valueOf(1),
-                this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator().next());
-        Assert.assertFalse(this.container.add("a", Dest.STYLES_AUTOMATIC_STYLES, 2));
-        Assert.assertEquals(Integer.valueOf(1),
-                this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator().next());
-        Assert.assertFalse(
-                this.container.getValues(Dest.STYLES_AUTOMATIC_STYLES).iterator().hasNext());
+        Iterator<Integer> iterator = this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES)
+                .iterator();
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertEquals(Integer.valueOf(1), iterator.next());
+        Assert.assertFalse(iterator.hasNext());
+
+        // shift "a" from content to styles
+        Assert.assertTrue(this.container.add("a", Dest.STYLES_AUTOMATIC_STYLES, 2));
+
+        Assert.assertFalse(this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES)
+                .iterator().hasNext());
+        iterator = this.container.getValues(Dest.STYLES_AUTOMATIC_STYLES)
+                .iterator();
+        Assert.assertTrue(iterator.hasNext());
+        Assert.assertEquals(Integer.valueOf(2), iterator.next());
+        Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(
                 this.container.getValues(Dest.STYLES_COMMON_STYLES).iterator().hasNext());
     }

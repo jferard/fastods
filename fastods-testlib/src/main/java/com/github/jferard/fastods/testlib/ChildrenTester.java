@@ -26,7 +26,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
-import jdk.nashorn.internal.runtime.options.Option;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -126,14 +125,22 @@ public abstract class ChildrenTester {
         } else if (element2 == null) {
             return false;
         } else { // element1 != null && element2 != null
-            this.state1.push(element1.getNodeName());
-            this.state2.push(element2.getNodeName());
+            this.pushNode(this.state1, element1);
+            this.pushNode(this.state2, element2);
             final boolean ne = this.namesEquals(element1, element2);
             final boolean ae = this.attributesEquals(element1, element2);
             final boolean ce = this.childrenEquals(element1, element2);
             this.state1.pop();
             this.state2.pop();
             return ne && ae && ce;
+        }
+    }
+
+    private void pushNode(final Stack<String> state1, final Node element1) {
+        if (element1.getNodeType() == Node.TEXT_NODE) {
+            state1.push(element1.getNodeValue());
+        } else {
+            state1.push(element1.getNodeName());
         }
     }
 

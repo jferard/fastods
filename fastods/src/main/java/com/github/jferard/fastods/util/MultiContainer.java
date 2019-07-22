@@ -96,6 +96,7 @@ public class MultiContainer<K, S extends Enum<S>, V> {
                 return false;
             }
 
+            // update
             if (subContainer != curSubContainer) {
                 if (this.closed) {
                     throw new IllegalStateException(

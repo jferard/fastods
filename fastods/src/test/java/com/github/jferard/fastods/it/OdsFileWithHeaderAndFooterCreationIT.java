@@ -53,12 +53,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
 import org.odftoolkit.odfdom.dom.OdfStylesDom;
+import org.odftoolkit.odfdom.dom.element.office.OfficeDocumentStylesElement;
 import org.odftoolkit.simple.SpreadsheetDocument;
 import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.text.Paragraph;
 import org.w3c.dom.NodeList;
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -156,52 +159,50 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
         // STYLES
         final OdfStylesDom stylesDom = document.getStylesDom();
-        Assert.assertEquals("#dddddd", stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='cc']//@fo:background-color",
-                        stylesDom.getRootElement()));
-        Assert.assertEquals("bold", stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='cc']//@fo:font-weight",
-                        stylesDom.getRootElement()));
+        final XPath stylesXPath = stylesDom.getXPath();
+        final OfficeDocumentStylesElement stylesRoot = stylesDom.getRootElement();
+        Assert.assertEquals("#dddddd", this.stylesEvaluate(stylesXPath, stylesRoot,
+                "//style:style[@style:name='cc']//@fo:background-color"));
+        Assert.assertEquals("bold", this.stylesEvaluate(stylesXPath, stylesRoot,
+                "//style:style[@style:name='cc']//@fo:font-weight"));
 
-        Assert.assertEquals(SimpleColor.RED.hexValue(), stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='red-text']//@fo:color",
-                        stylesDom.getRootElement()));
-        Assert.assertEquals(SimpleColor.BLUE.hexValue(), stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='blue-text']//@fo:color",
-                        stylesDom.getRootElement()));
-        Assert.assertEquals(SimpleColor.GREEN.hexValue(), stylesDom.getXPath()
-                .evaluate("//style:style[@style:name='green-text']//@fo:color",
-                        stylesDom.getRootElement()));
+        Assert.assertEquals(SimpleColor.RED.hexValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
+                "//style:style[@style:name='red-text']//@fo:color"));
+        Assert.assertEquals(SimpleColor.BLUE.hexValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
+                "//style:style[@style:name='blue-text']//@fo:color"));
+        Assert.assertEquals(SimpleColor.GREEN.hexValue(),
+                this.stylesEvaluate(stylesXPath, stylesRoot,
+                "//style:style[@style:name='green-text']//@fo:color"));
 
         Assert.assertEquals("left header",
-                stylesDom.getXPath().evaluate(LEFT_HEADER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("red-text", stylesDom.getXPath()
-                .evaluate(LEFT_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+                this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_HEADER_PATH));
+        Assert.assertEquals("red-text",
+                this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_HEADER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("center header1",
-                stylesDom.getXPath().evaluate(CENTER_HEADER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("blue-text", stylesDom.getXPath()
-                .evaluate(CENTER_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+                this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_HEADER_PATH));
+        Assert.assertEquals("blue-text",
+                this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_HEADER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("right header",
-                stylesDom.getXPath().evaluate(RIGHT_HEADER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("green-text", stylesDom.getXPath()
-                .evaluate(RIGHT_HEADER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+                this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_HEADER_PATH));
+        Assert.assertEquals("green-text",
+                this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_HEADER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("left footer",
-                stylesDom.getXPath().evaluate(LEFT_FOOTER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("blue-text", stylesDom.getXPath()
-                .evaluate(LEFT_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+                this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_FOOTER_PATH));
+        Assert.assertEquals("blue-text",
+                this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_FOOTER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("center footer99",
-                stylesDom.getXPath().evaluate(CENTER_FOOTER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("green-text", stylesDom.getXPath()
-                .evaluate(CENTER_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+                this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_FOOTER_PATH));
+        Assert.assertEquals("green-text",
+                this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_FOOTER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("right footer",
-                stylesDom.getXPath().evaluate(RIGHT_FOOTER_PATH, stylesDom.getRootElement()));
-        Assert.assertEquals("red-text", stylesDom.getXPath()
-                .evaluate(RIGHT_FOOTER_PATH + "//@text:style-name", stylesDom.getRootElement()));
+                this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_FOOTER_PATH));
+        Assert.assertEquals("red-text",
+                this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_FOOTER_PATH + "//@text:style-name"));
 
         final OdfContentDom contentDom = document.getContentDom();
         Assert.assertEquals("5cm", contentDom.getXPath().evaluate(
@@ -260,6 +261,11 @@ public class OdsFileWithHeaderAndFooterCreationIT {
                 nodes.item(1).getAttributes().getNamedItem("xlink:type").getNodeValue());
         Assert.assertEquals("table", nodes.item(1).getTextContent());
         Assert.assertEquals(" after link to table", nodes.item(2).getTextContent());
+    }
+
+    private String stylesEvaluate(final XPath stylesXPath, final OfficeDocumentStylesElement stylesRoot,
+                                  final String xPath) throws XPathExpressionException {
+        return stylesXPath.evaluate(xPath, stylesRoot);
     }
 
     private void createDocumentWithFooterAndHeader() throws IOException {
@@ -356,9 +362,9 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         document.addPageStyle(this.ps);
         document.addContentStyle(this.ttts);
         document.addContentStyle(this.ttts2);
-        document.addContentStyle(this.lts);
-        document.addContentStyle(this.cts);
-        document.addContentStyle(this.rts);
+        document.addStylesStyle(this.lts);
+        document.addStylesStyle(this.cts);
+        document.addStylesStyle(this.rts);
         document.addContentStyle(this.boldStyle);
         document.addContentStyle(this.italicStyle);
         document.addContentStyle(this.trs);

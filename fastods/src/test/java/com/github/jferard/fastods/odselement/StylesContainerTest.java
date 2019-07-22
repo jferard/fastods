@@ -142,8 +142,8 @@ public class StylesContainerTest {
     @Test
     public final void testDataStyleCreateTwice() throws IOException {
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
-        Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2));
-        this.assertWriteDataStylesXMLEquals(DS1_XML);
+        Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2));
+        this.assertWriteDataStylesXMLEquals(DS2_XML);
     }
 
     @Test
