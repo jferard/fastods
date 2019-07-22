@@ -33,6 +33,7 @@ import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.odselement.ScriptEvent;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
@@ -154,6 +155,8 @@ public class ReadmeExampleIT {
         document.addContentStyle(this.style);
         document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.FLOAT);
         document.addCellStyle(this.style, TableCell.Type.FLOAT);
+        document.addEvents(
+                ScriptEventListener.create(ScriptEvent.ON_LOAD, "Standard.FastODS.Refresh"));
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.createTable(document);

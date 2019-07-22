@@ -64,7 +64,7 @@ public class MultiContainer<K, S extends Enum<S>, V> {
         }
         this.closed = false;
         this.debug = false;
-        this.mode = Mode.CREATE;
+        this.mode = Mode.CREATE_OR_UPDATE;
     }
 
     /**
