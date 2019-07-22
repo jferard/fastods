@@ -45,8 +45,15 @@ public class MacroHelper {
                 .createBasic("FastODS",
                         "REM FastODS (C) J. Férard\n" + "REM Auto update macro\n\n" +
                                 "Sub Refresh\n" +
-                                "\tfor each oElem in ThisComponent.DatabaseRanges\n" +
-                                "\t\toElem.refresh\n" + "\tnext oElem\n" + "End Sub\n")).build())
+                                "    for each oElem in ThisComponent.DatabaseRanges\n" +
+                                "        oElem.refresh\n" +
+                                "    next oElem\n" +
+                                "    for each oSheet in ThisComponent.sheets\n" +
+                                "        for each oPilot in oSheet.DataPilotTables\n" +
+                                "            oPilot.refresh\n" +
+                                "        next oPilot\n" +
+                                "    next oSheet\n" +
+                                "End Sub\n")).build())
                 .add(document);
         document.addEvents(ScriptEventListener.create(ScriptEvent.ON_LOAD, "Standard.FastODS.Refresh"));
     }

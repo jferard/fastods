@@ -73,7 +73,7 @@ import java.util.logging.Logger;
  */
 class J_PeriodicTable {
     /**
-     * @throws IOException if the file can't be written
+     * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
      */
     static void example() throws IOException, SQLException {
@@ -90,16 +90,19 @@ class J_PeriodicTable {
         final OdsDocument document = writer.document();
         final Table table = document.addTable("table");
 
-        // and a simple sheet `data` to write the data:
+        // a simple sheet `data` to write the data:
         final Table dataTable = document.addTable("data");
 
         // ## The data
         //
         // We'll use h2 again (see Advanced part of the tutorial). The content of the resources
-        // files can be found at https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
-        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources/insert.sql.
+        // files can be found at https://github
+        // .com/jferard/fastods/blob/master/fastods-examples/src/test/resources/create.sql
+        // and https://github.com/jferard/fastods/blob/master/fastods-examples/src/test/resources
+        // /insert.sql.
         //
-        // The results where parsed from the article https://en.wikipedia.org/wiki/List_of_chemical_elements.
+        // The results where parsed from the article https://en.wikipedia
+        // .org/wiki/List_of_chemical_elements.
         //
         // We open a connection and populate the database:
         final JdbcDataSource dataSource = new JdbcDataSource();
@@ -277,7 +280,6 @@ class J_PeriodicTable {
             periodicLogger.log(Level.SEVERE, "", e);
             throw e;
         }
-
 
         // And save the file.
         writer.saveAs(new File("generated_files", "j_periodic_table.ods"));

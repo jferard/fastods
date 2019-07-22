@@ -30,6 +30,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.UniqueList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -58,6 +59,7 @@ public class ContentElement implements OdsElement {
     private final boolean libreOfficeMode;
     private List<AutoFilter> autoFilters;
     private final List<ScriptEventListener> scriptEvents;
+    private List<PilotTable> pilotTables;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
@@ -184,6 +186,9 @@ public class ContentElement implements OdsElement {
         if (this.autoFilters != null) {
             this.appendAutoFilters(util, writer);
         }
+        if (this.pilotTables != null) {
+            this.appendPilotTables(util, writer);
+        }
         writer.write("</office:spreadsheet>");
         writer.write("</office:body>");
         writer.write("</office:document-content>");
@@ -261,6 +266,16 @@ public class ContentElement implements OdsElement {
         appendable.append("</table:database-ranges>");
     }
 
+    private void appendPilotTables(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<table:data-pilot-tables>");
+        for (final PilotTable pilotTable : this.pilotTables) {
+            pilotTable.appendXMLContent(util, appendable);
+        }
+        appendable.append("</table:data-pilot-tables>");
+    }
+
+
     /**
      * Add an autoFilter to a table
      *
@@ -279,5 +294,16 @@ public class ContentElement implements OdsElement {
      */
     public void addEvents(final ScriptEventListener... events) {
         this.scriptEvents.addAll(Arrays.asList(events));
+    }
+
+    /**
+     * Add a new pilot table
+     * @param pilotTable the filter
+     */
+    public void addPilotTable(final PilotTable pilotTable) {
+        if (this.pilotTables == null) {
+            this.pilotTables = new ArrayList<PilotTable>();
+        }
+        this.pilotTables.add(pilotTable);
     }
 }

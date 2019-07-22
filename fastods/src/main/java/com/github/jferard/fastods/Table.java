@@ -34,6 +34,7 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -366,4 +367,13 @@ public class Table implements NamedObject {
      */
     public void addAutoFilter(final AutoFilter autoFilter) {
         this.contentElement.addAutoFilter(autoFilter);
-    }}
+    }
+
+    /**
+     * Add a new pilot table
+     * @param pilotTable the filter
+     */
+    public void addPilotTable(final PilotTable pilotTable) {
+        this.contentElement.addPilotTable(pilotTable);
+    }
+}
