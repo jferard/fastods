@@ -182,7 +182,8 @@ class H_Advanced {
         // it's possible to add a macro to the document, and to trigger that macro on document load.
         new MacroHelper().addRefreshMacro(document);
 
-        // This macro will refresh all autofilters and hide the columns.
+        // This macro will refresh all autofilters and hide the columns. (Note that adding this
+        // macro is not mandatory.)
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "h_advanced_autofilter.ods"));

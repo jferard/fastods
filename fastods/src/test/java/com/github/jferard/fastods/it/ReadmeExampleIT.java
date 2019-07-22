@@ -154,7 +154,6 @@ public class ReadmeExampleIT {
         document.addContentStyle(this.style);
         document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.FLOAT);
         document.addCellStyle(this.style, TableCell.Type.FLOAT);
-        document.addEvents(ScriptEventListener.create("dom:load", "Standard.FastODS.Refresh"));
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.createTable(document);

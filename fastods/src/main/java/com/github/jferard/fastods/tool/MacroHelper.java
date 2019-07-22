@@ -24,7 +24,14 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.odselement.ScriptEvent;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
+import com.github.jferard.fastods.util.MacroLibrary;
+import com.github.jferard.fastods.util.MacroLibraryContainer;
+import com.github.jferard.fastods.util.MacroModule;
+import com.github.jferard.fastods.util.XMLUtil;
+
+import java.io.IOException;
 
 /**
  * A helper
@@ -33,40 +40,14 @@ public class MacroHelper {
     /**
      * @param document the document
      */
-    // TODO add any nuùver of modules
-    public void addRefreshMacro(final OdsDocument document) {
-        document.addExtraDir("Basic/");
-        document.addExtraFile("Basic/script-lc.xml", "text/xml",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
-                        "OfficeDocument 1" +
-                        ".0//EN\" \"libraries.dtd\">\n" +
-                        "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
-                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-                        " <library:library library:name=\"Standard\" library:link=\"false\"/>\n" +
-                        "</library:libraries>");
-        document.addExtraDir("Basic/Standard/");
-        document.addExtraFile("Basic/Standard/script-lb.xml", "text/xml",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE library:library PUBLIC \"-//OpenOffice.org//DTD OfficeDocument" +
-                        " 1.0//EN\" \"library.dtd\">\n" +
-                        "<library:library xmlns:library=\"http://openoffice.org/2000/library\" " +
-                        "library:name=\"Standard\" library:readonly=\"false\" " +
-                        "library:passwordprotected=\"false\">\n" +
-                        " <library:element library:name=\"FastODS\"/>\n" + "</library:library>");
-        document.addExtraFile("Basic/Standard/FastODS.xml", "text/xml",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE script:module PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1" +
-                        ".0//EN\" \"module.dtd\">\n" +
-                        "<script:module xmlns:script=\"http://openoffice.org/2000/script\" " +
-                        "script:name=\"FastODS\" script:language=\"StarBasic\" " +
-                        "script:moduleType=\"normal\">" + "REM FastODS (C) J. Férard\n" +
-                        "REM Auto update macro\n\n" +
-                        "Sub Refresh\n" +
-                        "\tfor each oElem in ThisComponent.DatabaseRanges\n" +
-                        "\t\toElem.refresh\n" + "\tnext oElem\n" +
-                        "End Sub\n" +
-                        "</script:module>");
-        document.addEvents(ScriptEventListener.create("dom:load", "Standard.FastODS.Refresh"));
+    public void addRefreshMacro(final OdsDocument document) throws IOException {
+        MacroLibraryContainer.create(MacroLibrary.builder().modules(MacroModule
+                .createBasic("FastODS",
+                        "REM FastODS (C) J. Férard\n" + "REM Auto update macro\n\n" +
+                                "Sub Refresh\n" +
+                                "\tfor each oElem in ThisComponent.DatabaseRanges\n" +
+                                "\t\toElem.refresh\n" + "\tnext oElem\n" + "End Sub\n")).build())
+                .add(document);
+        document.addEvents(ScriptEventListener.create(ScriptEvent.ON_LOAD, "Standard.FastODS.Refresh"));
     }
 }

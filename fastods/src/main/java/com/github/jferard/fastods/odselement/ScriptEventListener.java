@@ -30,34 +30,63 @@ import java.io.IOException;
 
 /**
  * 14.4.2<script:event-listener>
+ * @author J. Férard
  */
 public class ScriptEventListener implements XMLConvertible {
     /**
-     * @param eventName the event, e.g dom:load
-     * @param function  the function, e.g Standard.Module1.Main
+     * For scripts in Basic
+     */
+    public static final String BASIC_LANG = "Basic";
+
+    /**
+     * For scripts in Python
+     */
+    public static final String PYTHON_LANG = "Python";
+
+    /**
+     * For scripts in Java
+     */
+    public static final String JAVA_LANG = "Java";
+
+    /**
+     * For scripts in JavaScript
+     */
+    public static final String JAVASCRIPT_LANG = "JavaScript";
+
+    /**
+     * @param event the event, e.g dom:load
+     * @param functionName  the function, e.g Standard.Module1.Main
      * @return a new listener
      */
-    // TODO: create a builder
-    public static ScriptEventListener create(final String eventName, final String function) {
-        return new ScriptEventListener("ooo:script", eventName, function, "Basic");
+    public static ScriptEventListener create(final ScriptEvent event, final String functionName) {
+        return new ScriptEventListener("ooo:script", event, functionName, BASIC_LANG);
+    }
+
+    /**
+     * @param event the event, e.g dom:load
+     * @param functionName  the function, e.g Standard.Module1.Main
+     * @return a new listener
+     */
+    public static ScriptEventListenerBuilder builder(final ScriptEvent event, final String functionName) {
+        return new ScriptEventListenerBuilder(event, functionName);
     }
 
     private final String genericLanguage;
-    private final String eventName;
-    private final String function;
+    private final ScriptEvent event;
+    private final String functionName;
     private final String language;
 
     /**
      * @param genericLanguage ooo:script
-     * @param eventName       the event, e.g dom:load
-     * @param function        the function, e.g Standard.Module1.Main
+     * @param event the event, e.g dom:load
+     * @param functionName        the function, e.g Standard.Module1.Main
      * @param language        Basic, Python, ...
      */
-    public ScriptEventListener(final String genericLanguage, final String eventName,
-                               final String function, final String language) {
+    public ScriptEventListener(final String genericLanguage, final ScriptEvent event,
+                               final String functionName, final String language) {
         this.genericLanguage = genericLanguage;
-        this.eventName = eventName;
-        this.function = function;
+        this.event = event;
+        this.functionName = functionName;
         this.language = language;
     }
 
@@ -66,9 +95,9 @@ public class ScriptEventListener implements XMLConvertible {
             throws IOException {
         appendable.append("<script:event-listener");
         util.appendAttribute(appendable, "script:language", this.genericLanguage);
-        util.appendAttribute(appendable, "script:event-name", this.eventName);
+        util.appendAttribute(appendable, "script:event-name", this.event.toString());
         util.appendAttribute(appendable, "xlink:href",
-                "vnd.sun.star.script:" + this.function + "?" + "language=" + this.language +
+                "vnd.sun.star.script:" + this.functionName + "?" + "language=" + this.language +
                         "&amp;location=document");
         util.appendAttribute(appendable, "xlink:type", "simple");
         appendable.append("/>");
