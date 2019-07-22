@@ -26,6 +26,7 @@ import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.ContentElement;
+import com.github.jferard.fastods.odselement.Settings;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -49,6 +50,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.github.jferard.fastods.odselement.config.ConfigElement.ZOOM_VALUE;
 
 public class TableTest {
     private DataStyles ds;
@@ -299,10 +302,10 @@ public class TableTest {
         final Table t = new Table("test", this.ce, tb);
 
         PowerMock.resetAll();
-        tb.updateConfigItem("item", "value");
+        tb.updateConfigItem(ZOOM_VALUE.getName(), "value");
 
         PowerMock.replayAll();
-        t.updateConfigItem("item", "value");
+        t.updateConfigItem(ZOOM_VALUE, "value");
 
         PowerMock.verifyAll();
     }

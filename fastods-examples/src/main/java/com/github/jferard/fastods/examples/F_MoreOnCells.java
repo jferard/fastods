@@ -129,6 +129,15 @@ class F_MoreOnCells {
         // .setRowsSpanned(cell_index, m)` or
         // `row.setColumnsSpanned(cell_index, n)`.
         //
+        // ## Formulas
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // We skip a few rows:
+        for (int i = 0; i < 5; i++) {
+            walker.nextRow();
+        }
+        // TODO
+        //
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Formatted text in a cell
         // I listed the cell types in a previous section. But the String cell type is not limited
         // to a plain String. It can contain formatted text. Let's learn how it works.
@@ -193,6 +202,7 @@ class F_MoreOnCells {
         // Tooltips are LO dependent:
         walker.setStringValue("A Cell with a tooltip");
         walker.setTooltip("The Tooltip");
+
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "f_more.ods"));

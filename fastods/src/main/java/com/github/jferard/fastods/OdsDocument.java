@@ -25,7 +25,9 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.odselement.StylesModeSetter;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -175,4 +177,16 @@ public interface OdsDocument extends StylesModeSetter {
      * @param events the events to add
      */
     void addEvents(final ScriptEventListener... events);
+
+    /**
+     * Add a new pilot table
+     * @param pilot the pilot table
+     */
+    void addPilotTable(PilotTable pilot);
+
+    /**
+     * Add a new auto filter
+     * @param autoFilter the filter
+     */
+    void addAutoFilter(final AutoFilter autoFilter);
 }

@@ -300,16 +300,6 @@ public class Table implements NamedObject {
     /**
      * Set one of the settings
      *
-     * @param item  the item name
-     * @param value the item value
-     */
-    public void updateConfigItem(final String item, final String value) {
-        this.builder.updateConfigItem(item, value);
-    }
-
-    /**
-     * Set one of the settings
-     *
      * @param element the config element
      * @param value the item value
      */
@@ -359,21 +349,5 @@ public class Table implements NamedObject {
      */
     public void addAutoFilter(final int r1, final int c1, final int r2, final int c2) {
         this.contentElement.addAutoFilter(AutoFilter.builder(this, r1, c1, r2, c2).build());
-    }
-
-    /**
-     * Add a new auto filter
-     * @param autoFilter the filter
-     */
-    public void addAutoFilter(final AutoFilter autoFilter) {
-        this.contentElement.addAutoFilter(autoFilter);
-    }
-
-    /**
-     * Add a new pilot table
-     * @param pilotTable the filter
-     */
-    public void addPilotTable(final PilotTable pilotTable) {
-        this.contentElement.addPilotTable(pilotTable);
     }
 }

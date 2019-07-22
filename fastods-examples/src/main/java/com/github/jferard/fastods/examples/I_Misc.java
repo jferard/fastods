@@ -31,6 +31,7 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.MacroHelper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
@@ -55,7 +56,7 @@ import java.util.logging.Logger;
  *
  * @author J. Férard
  */
-class H_Advanced {
+class I_Misc {
 
     /**
      * Number of nanoseconds in a second
@@ -67,7 +68,7 @@ class H_Advanced {
      */
     static void example1() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // # Advanced Features
+        // # Miscellanous Features
         // ## A Named Writer
         // You can create a named writer to write large files. This feature is experimental, because
         // LO will never be able to open large files.
@@ -117,83 +118,9 @@ class H_Advanced {
 
     /**
      * @throws IOException  if the file can't be written
-     */
-    static void example2() throws IOException {
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
-        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
-        final OdsDocument document = writer.document();
-        final Table table = document.addTable("advanced");
-        final TableCellWalker walker = table.getWalker();
-        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // ## Auto filters
-        // It's easy to add manually an autofilter. Let's create some content:
-        walker.setStringValue("File Type");
-        walker.next();
-        walker.setStringValue("Extension");
-        walker.nextRow();
-        walker.setStringValue("Text");
-        walker.next();
-        walker.setStringValue(".odt");
-        walker.nextRow();
-        walker.setStringValue("Spreadsheet");
-        walker.next();
-        walker.setStringValue(".ods");
-        walker.nextRow();
-        walker.setStringValue("Presentation");
-        walker.next();
-        walker.setStringValue(".odp");
-        walker.nextRow();
-        walker.setStringValue("Drawing");
-        walker.next();
-        walker.setStringValue(".odg");
-        walker.nextRow();
-        walker.setStringValue("Chart");
-        walker.next();
-        walker.setStringValue(".odc");
-        walker.nextRow();
-        walker.setStringValue("Formula");
-        walker.next();
-        walker.setStringValue(".odf");
-        walker.nextRow();
-        walker.setStringValue("Image");
-        walker.next();
-        walker.setStringValue(".odi");
-        walker.nextRow();
-        walker.setStringValue("Master Document");
-        walker.next();
-        walker.setStringValue(".odm");
-        walker.nextRow();
-        walker.setStringValue("Database");
-        walker.next();
-        walker.setStringValue(".odb");
-
-        // Now we need to set the filter. It's possible to preset some filter with the `filter`
-        // method of the builder.
-        table.addAutoFilter(AutoFilter.builder(table, 0, 0, walker.rowIndex(), walker.colIndex())
-                .filter(new FilterEnumerate(0, "Spreadsheet", "Presentation", "Master Document"))
-                .build());
-
-        // The filter will be set (the little square appears and if you click on the arrow,
-        // only Spreadsheet", "Presentation" and "Master Document" are checked. But... the rows
-        // remain visible, making the function of very limited interest.
-        //
-        // To hide the filtered rows, FastODS should apply (and not just declare) the filter to
-        // mark the rows as "filtered". But that's really overkill. There's an alternative solution:
-        // it's possible to add a macro to the document, and to trigger that macro on document load.
-        new MacroHelper().addRefreshMacro(document);
-
-        // This macro will refresh all autofilters and hide the columns. (Note that adding this
-        // macro is not mandatory.)
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        // And save the file.
-        writer.saveAs(new File("generated_files", "h_advanced_autofilter.ods"));
-    }
-
-    /**
-     * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
      */
-    static void example3() throws IOException, SQLException {
+    static void example2() throws IOException, SQLException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -293,8 +220,10 @@ class H_Advanced {
 
         // ## LO features
         // If you know what you are doing, you can play with LO settings, for instance:
-        table.updateConfigItem("ZoomValue", "150");
+        table.updateConfigItem(ConfigElement.ZOOM_VALUE, "150");
 
+        // To be continued...
+        //
         // For more doc, see:
         //
         // * [Settings Service Reference](https://api.libreoffice
@@ -303,7 +232,10 @@ class H_Advanced {
         // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1view_1_1ViewSettings.html)
         // * [SpreadsheetViewSettings Service Reference](https://api.libreoffice
         // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html)
-
+        //
+        // ## Add files to the ods archive
+        // TODO
+        //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "h_advanced_rs.ods"));

@@ -32,6 +32,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -535,7 +536,8 @@ public class OdsDocumentTest {
 
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        this.odsElements.addAutoFilter(t, 0, 1, 2, 3);
+        EasyMock.expect(t.getName()).andReturn("table");
+        this.odsElements.addAutoFilter(EasyMock.isA(AutoFilter.class));
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();

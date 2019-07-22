@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  *
  * @author J. Férard
  */
-class I_MultiplicationTable {
+class J_MultiplicationTable {
     /**
      * @throws IOException if the file can't be written
      */

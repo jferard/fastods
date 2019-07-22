@@ -30,7 +30,9 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -162,7 +164,7 @@ class CommonOdsDocument implements OdsDocument {
     @Override
     public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
                               final int c2) {
-        this.odsElements.addAutoFilter(table, r1, c1, r2, c2);
+        this.odsElements.addAutoFilter(AutoFilter.builder(table, r1, c1, r2, c2).build());
     }
 
     @Override
@@ -211,4 +213,13 @@ class CommonOdsDocument implements OdsDocument {
         this.odsElements.addEvents(events);
     }
 
+    @Override
+    public void addPilotTable(final PilotTable pilot) {
+        this.odsElements.addPilotTable(pilot);
+    }
+
+    @Override
+    public void addAutoFilter(final AutoFilter autoFilter) {
+        this.odsElements.addAutoFilter(autoFilter);
+    }
 }

@@ -79,27 +79,32 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void advancedTest1() throws IOException {
-        H_Advanced.example1();
+    public void filtersAndPilotTest1() throws IOException {
+        H_AutofiltersAndDataPilotTables.example1();
     }
 
     @Test
-    public void advancedTest2() throws IOException, SQLException {
-        H_Advanced.example2();
+    public void filtersAndPilotTest2() throws IOException {
+        H_AutofiltersAndDataPilotTables.example2();
     }
 
     @Test
-    public void advancedTest3() throws IOException, SQLException {
-        H_Advanced.example3();
+    public void miscTest1() throws IOException {
+        I_Misc.example1();
+    }
+
+    @Test
+    public void miscTest2() throws IOException, SQLException {
+        I_Misc.example2();
     }
 
     @Test
     public void multiplicationTableTest() throws IOException {
-        I_MultiplicationTable.example();
+        J_MultiplicationTable.example();
     }
 
     @Test
     public void periodicTableTest() throws IOException, SQLException {
-        J_PeriodicTable.example();
+        K_PeriodicTable.example();
     }
 }

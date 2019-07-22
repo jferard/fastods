@@ -42,7 +42,9 @@ import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -469,15 +471,10 @@ public class OdsElements implements StylesContainer {
     /**
      * Add an AutoFilter to a table
      *
-     * @param table the table
-     * @param r1    from row
-     * @param c1    from col
-     * @param r2    to row
-     * @param c2    to col
+     * @param autoFilter the filter
      */
-    public void addAutoFilter(final Table table, final int r1, final int c1, final int r2,
-                              final int c2) {
-        table.addAutoFilter(r1, c1, r2, c2);
+    public void addAutoFilter(final AutoFilter autoFilter) {
+        this.contentElement.addAutoFilter(autoFilter);
     }
 
     /**
@@ -549,5 +546,9 @@ public class OdsElements implements StylesContainer {
      */
     public void addEvents(final ScriptEventListener... events) {
         this.contentElement.addEvents(events);
+    }
+
+    public void addPilotTable(final PilotTable pilot) {
+        this.contentElement.addPilotTable(pilot);
     }
 }

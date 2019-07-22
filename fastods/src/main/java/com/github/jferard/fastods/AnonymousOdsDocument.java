@@ -25,7 +25,9 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -103,6 +105,16 @@ public final class AnonymousOdsDocument implements OdsDocument {
     @Override
     public void addEvents(final ScriptEventListener... events) {
         this.commonOdsDocument.addEvents(events);
+    }
+
+    @Override
+    public void addPilotTable(final PilotTable pilot) {
+        this.commonOdsDocument.addPilotTable(pilot);
+    }
+
+    @Override
+    public void addAutoFilter(final AutoFilter autoFilter) {
+        this.commonOdsDocument.addAutoFilter(autoFilter);
     }
 
     @Override

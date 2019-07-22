@@ -33,7 +33,9 @@ import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -296,6 +298,16 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     @Override
     public void addEvents(final ScriptEventListener... events) {
         this.commonOdsDocument.addEvents(events);
+    }
+
+    @Override
+    public void addPilotTable(final PilotTable pilot) {
+        this.commonOdsDocument.addPilotTable(pilot);
+    }
+
+    @Override
+    public void addAutoFilter(final AutoFilter autoFilter) {
+        this.commonOdsDocument.addAutoFilter(autoFilter);
     }
 
     /**

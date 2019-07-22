@@ -30,6 +30,7 @@ import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -129,10 +130,12 @@ public class OdsElementsTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        t.addAutoFilter(0, 0, 1, 1);
+        EasyMock.expect(t.getName()).andReturn("table");
+        this.contentElement.addAutoFilter(EasyMock.isA(AutoFilter.class));
 
         PowerMock.replayAll();
-        this.oe.addAutoFilter(t, 0, 0, 1, 1);
+        final AutoFilter autoFilter = AutoFilter.builder(t, 0, 0, 1, 1).build();
+        this.oe.addAutoFilter(autoFilter);
 
         PowerMock.verifyAll();
     }

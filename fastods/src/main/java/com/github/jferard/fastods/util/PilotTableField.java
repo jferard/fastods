@@ -37,17 +37,19 @@ public class PilotTableField implements XMLConvertible {
     private final String sourceFieldName;
     private final String orientation;
     private final int usedHierarchy;
-    private String function;
+    private final boolean isDataLayout;
+    private final String function;
     private final PilotTableLevel level;
 
     //         sourceFieldName = "PERIOD";
     //        orientation = "row";
     //        usedHierarchy = 0;
     public PilotTableField(final String sourceFieldName, final String orientation,
-                           final int usedHierarchy, final String function, final PilotTableLevel level) {
+                           final int usedHierarchy, final boolean isDataLayout, final String function, final PilotTableLevel level) {
         this.sourceFieldName = sourceFieldName;
         this.orientation = orientation;
         this.usedHierarchy = usedHierarchy;
+        this.isDataLayout = isDataLayout;
         this.function = function;
         this.level = level;
     }
@@ -61,6 +63,9 @@ public class PilotTableField implements XMLConvertible {
         util.appendAttribute(appendable, "table:orientation", this.orientation);
         if (this.usedHierarchy != -1) {
             util.appendAttribute(appendable, "table:used-hierarchy", this.usedHierarchy);
+        }
+        if (this.isDataLayout) {
+            util.appendAttribute(appendable, "table:is-data-layout-field", true);
         }
         util.appendAttribute(appendable, "table:function", this.function);
         if (this.level == null) {

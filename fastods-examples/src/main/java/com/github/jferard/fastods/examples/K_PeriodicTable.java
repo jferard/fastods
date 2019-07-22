@@ -71,7 +71,7 @@ import java.util.logging.Logger;
  *
  * @author J. Férard
  */
-class J_PeriodicTable {
+class K_PeriodicTable {
     /**
      * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
