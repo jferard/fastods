@@ -8,12 +8,22 @@
 
 A very fast and lightweight (no dependency) library for creating ODS (Open Document Spreadsheet, mainly for Calc) files in Java. It's a Martin Schulz's SimpleODS fork.
 
-**News:**
- 
-* **Please note that FastODS is almost ready for production use. The version 1.0 is coming.**
+## TLDR;
+* FastODS can produce complex and large ODS documents *very* fast;
+* FastODS is almost ready for production use. The version 1.0 is coming;
+* There is a little [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) that covers most of the features of FastODS;
+* Important: [feel free to ask a question or make a suggestion](https://github.com/jferard/fastods/issues/new);
 
-* **I wrote a little [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) that covers most of the features of FastODS, 
-but [feel free to ask a question or make a suggestion](https://github.com/jferard/fastods/issues/new).**
+Here's what some of the produced documents in the tutorial look like:
+
+A regular table:  
+  ![Periodic Table List of elements](https://raw.githubusercontent.com/wiki/jferard/fastods/images/capture_periodic_table.png)
+  
+A multiplication table:  
+  ![Multiplication Table](https://raw.githubusercontent.com/wiki/jferard/fastods/images/i_multiplication_table.png)
+  
+The periodic table of Mr. Dmitri Mendeleev:  
+  ![Periodic Table](https://raw.githubusercontent.com/wiki/jferard/fastods/images/j_periodic_table.png) 
 
 ## Table of contents
 * [Why FastODS?](#why-fastods)

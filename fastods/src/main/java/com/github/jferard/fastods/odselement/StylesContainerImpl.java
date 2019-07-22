@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.TextDataStyle;
 import com.github.jferard.fastods.style.FontFace;
 import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
@@ -135,6 +136,9 @@ public class StylesContainerImpl implements StylesContainer {
                     .parentCellStyle(style).dataStyle(dataStyle);
             if (dataStyle.isHidden()) {
                 anonymousStyleBuilder.hidden();
+            }
+            if (!(style.hasTextAlign() || dataStyle instanceof TextDataStyle)) {
+                anonymousStyleBuilder.textAlign(TableCellStyle.Align.RIGHT);
             }
             anonymousStyle = anonymousStyleBuilder.build();
             this.addContentFontFaceContainerStyle(anonymousStyle);

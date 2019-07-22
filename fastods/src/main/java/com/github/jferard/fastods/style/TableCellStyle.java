@@ -45,7 +45,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
      * This is the default cell style: left and top align, no wrap.
      */
     public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
-            .textAlign(TableCellStyle.Align.LEFT).verticalAlign(TableCellStyle.VerticalAlign.TOP)
+            .verticalAlign(TableCellStyle.VerticalAlign.TOP)
             .fontWrap(false).backgroundColor(SimpleColor.NONE).allMargins(Length.NULL_LENGTH)
             .fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
 
@@ -251,6 +251,13 @@ public class TableCellStyle implements FontFaceContainerStyle {
     @Override
     public FontFace getFontFace() {
         return this.textProperties.getFontFace();
+    }
+
+    /**
+     * @return true if there is an text align
+     */
+    public boolean hasTextAlign() {
+        return this.textAlign != null;
     }
 
     /**
