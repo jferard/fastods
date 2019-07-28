@@ -238,7 +238,7 @@ public class OdsFileCreationIT {
              */
             c = row.getCellByIndex(4);
             Assert.assertEquals("formula result", OdfToolkitUtil.getStringValue(c));
-            Assert.assertEquals("=1+1", c.getFormula());
+            Assert.assertEquals("of:=1+1", c.getFormula());
 
             // FIFTH ROW
             row = sheet.getRowByIndex(4);

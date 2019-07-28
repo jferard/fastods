@@ -503,7 +503,7 @@ public class TableCellTest {
         this.cell.setFormula("1");
 
         PowerMock.verifyAll();
-        this.assertCellXMLEquals("<table:table-cell table:formula=\"=1\"/>");
+        this.assertCellXMLEquals("<table:table-cell table:formula=\"of:=1\"/>");
     }
 
     @Test

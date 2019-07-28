@@ -72,7 +72,7 @@ public class TableColdCellTest {
     @Test
     public final void testFormula() throws IOException {
         this.coldCell.setFormula("1");
-        this.assertXMLEquals("<table:table-cell table:formula=\"=1\"/>");
+        this.assertXMLEquals("<table:table-cell table:formula=\"of:=1\"/>");
     }
 
     @Test
