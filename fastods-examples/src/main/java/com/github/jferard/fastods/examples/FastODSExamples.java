@@ -49,6 +49,8 @@ package com.github.jferard.fastods.examples;
 // For other build tools, look at:
 // https://search.maven.org/artifact/com.github.jferard/fastods/0.6.2/jar
 //
+// [TOC]
+//
 // << END TUTORIAL (directive to extract part of a tutorial from this file)
 public final class FastODSExamples {
     private FastODSExamples() {

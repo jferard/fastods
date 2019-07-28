@@ -267,6 +267,16 @@ public interface TableCell {
     void setVoidValue();
 
     /**
+     * Set a matrix formula
+     */
+    void setMatrixFormula(String formula);
+
+    /**
+     * Set a matrix formula
+     */
+    void setMatrixFormula(String formula, int matrixRowsSpanned, int matrixColumnsSpanned);
+
+    /**
      * @return true if the cell has a value. A void value is a value
      */
     boolean hasValue();

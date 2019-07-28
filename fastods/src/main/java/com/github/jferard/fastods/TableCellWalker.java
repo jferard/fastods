@@ -123,6 +123,17 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     }
 
     @Override
+    public void setMatrixFormula(final String formula) {
+        this.cell.setMatrixFormula(formula);
+    }
+
+    @Override
+    public void setMatrixFormula(final String formula, final int matrixRowsSpanned,
+                                 final int matrixColumnsSpanned) {
+        this.cell.setMatrixFormula(formula, matrixRowsSpanned, matrixColumnsSpanned);
+    }
+
+    @Override
     public void setStringValue(final String value) {
         this.cell.setStringValue(value);
     }

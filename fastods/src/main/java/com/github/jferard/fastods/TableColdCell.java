@@ -39,6 +39,13 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 class TableColdCell {
+    /**
+     * @param xmlUtil an util
+     * @return the cold cell
+     */
+    public static TableColdCell create(final XMLUtil xmlUtil) {
+        return new TableColdCell(xmlUtil);
+    }
     private final XMLUtil xmlUtil;
     private int columnsSpanned;
     private String currency;
@@ -47,6 +54,8 @@ class TableColdCell {
     private String tooltip;
     private TooltipParameter tooltipParameter;
     private String formula;
+    private int matrixRowsSpanned;
+    private int matrixColumnsSpanned;
 
     /**
      * Create an new "cold cell"
@@ -58,18 +67,19 @@ class TableColdCell {
     }
 
     /**
-     * @param xmlUtil an util
-     * @return the cold cell
-     */
-    public static TableColdCell create(final XMLUtil xmlUtil) {
-        return new TableColdCell(xmlUtil);
-    }
-
-    /**
      * @return the currency (see 19.369 office:currency)
      */
     public String getCurrency() {
         return this.currency;
+    }
+
+    /**
+     * Set the currency (see 19.369 office:currency)
+     *
+     * @param currency the currency
+     */
+    public void setCurrency(final String currency) {
+        this.currency = currency; // escape here
     }
 
     /**
@@ -105,7 +115,6 @@ class TableColdCell {
         this.tooltip = escapedXMLContent;
     }
 
-
     /**
      * Set a tooltip of a given size
      *
@@ -129,9 +138,16 @@ class TableColdCell {
             throws IOException {
 
         if (this.formula != null) {
-            util.appendEAttribute(appendable, "table:formula", "=" + this.formula);
+            util.appendEAttribute(appendable, "table:formula", "of:=" + this.formula);
+            if (this.matrixRowsSpanned != 0) {
+                util.appendAttribute(appendable, "table:number-matrix-rows-spanned",
+                        this.matrixRowsSpanned);
+            }
+            if (this.matrixColumnsSpanned != 0) {
+                util.appendAttribute(appendable, "table:number-matrix-columns-spanned",
+                        this.matrixColumnsSpanned);
+            }
         }
-
 
         if (!this.isCovered()) {
             if (this.columnsSpanned != 0) {
@@ -176,15 +192,6 @@ class TableColdCell {
     }
 
     /**
-     * Set the currency (see 19.369 office:currency)
-     *
-     * @param currency the currency
-     */
-    public void setCurrency(final String currency) {
-        this.currency = currency; // escape here
-    }
-
-    /**
      * 9.1.5 table:covered-table-cell
      * Set the covered flag on this cell
      */
@@ -210,5 +217,13 @@ class TableColdCell {
      */
     public void setRowsSpanned(final int n) {
         this.rowsSpanned = n;
+    }
+
+    public void setMatrixRowsSpanned(final int n) {
+        this.matrixRowsSpanned = n;
+    }
+
+    public void setMatrixColumnsSpanned(final int n) {
+        this.matrixColumnsSpanned = n;
     }
 }

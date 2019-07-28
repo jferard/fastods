@@ -70,7 +70,12 @@ public class FastODSExamplesIT {
 
     @Test
     public void moreOnCellsTest() throws IOException, URISyntaxException {
-        F_MoreOnCells.example();
+        F_MoreOnCells.example1();
+    }
+
+    @Test
+    public void moreOnCellsFormulasTest() throws IOException, URISyntaxException {
+        F_MoreOnCells.example2();
     }
 
     @Test

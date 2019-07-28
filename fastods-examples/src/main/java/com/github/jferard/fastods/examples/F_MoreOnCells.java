@@ -50,7 +50,7 @@ class F_MoreOnCells {
      * @throws IOException        if the file can't be written
      * @throws URISyntaxException if the uri is not valid
      */
-    static void example() throws IOException, URISyntaxException {
+    static void example1() throws IOException, URISyntaxException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -129,15 +129,6 @@ class F_MoreOnCells {
         // .setRowsSpanned(cell_index, m)` or
         // `row.setColumnsSpanned(cell_index, n)`.
         //
-        // ## Formulas
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        // We skip a few rows:
-        for (int i = 0; i < 5; i++) {
-            walker.nextRow();
-        }
-        // TODO
-        //
-        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Formatted text in a cell
         // I listed the cell types in a previous section. But the String cell type is not limited
         // to a plain String. It can contain formatted text. Let's learn how it works.
@@ -206,5 +197,88 @@ class F_MoreOnCells {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "f_more.ods"));
+    }
+
+    /**
+     * @throws IOException        if the file can't be written
+     * @throws URISyntaxException if the uri is not valid
+     */
+    static void example2() throws IOException, URISyntaxException {
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("formulas");
+        TableCellWalker walker = table.getWalker();
+
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Formulas
+        // ### Warning
+        // First, FastODS won't parse formulas, check syntax or semantic, evaluate results or
+        // anything like that. FastODS will write your formula in the document
+        // and that's all, even if your formula is "I'm the King of the wold!". That may be
+        // frustrating, but FastODS is not an OpenDocument consumer, just a producer.
+        //
+        // Second, it's important to understand that LibreOffice, as OpenOffice and Excel before,
+        // have made the choice to *translate* the formula language in various human languages.
+        // Let's think about that: imagine that Sun decided to translate the Java keywords
+        // in every language, and then to translate the libraries in every language.
+        // I'm not talking about internationalization of localization, but about *translation*!
+        // Programming would be harder, a lot harder... That's a stupid yet perfectly
+        // understandable idea: anyone can use Excel formulas, but anyone can't understand and
+        // remember hundred basic english words.
+        //
+        // But, as you may know, no matter what interface language you have selected, formulas are
+        // always stored in a document in the [Recalculated Formula (OpenFormula)
+        // Format](https://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part2.html),
+        // which is basically the syntax of english written LibreOffice formulas. In
+        // French, we write `SOMME.SI` but the internal name of the function is `SUMIF` whereas
+        // `SOMME.SI` is the display name. And the formula attribute of the cell will
+        // contain `SUMIF`, not `SOMME.SI`.
+        //
+        // As stated above, FastODS does not care about the content of the formula. FastODS won't
+        // complain if you write formulas in french, dutch or chinese, but LibreOffice will! If you
+        // write a formula in a language that is not english, the LibreOffice engine won't
+        // understand your formula and will return an error.
+        //
+        /// To summarize: **you are responsible for writing your formulas in english and to write
+        // them correctly.**
+        //
+        // ### Some basic examples
+        // Let's start!
+        //
+        // We have to remember the address of the current cell. It's easy here: A1.
+        walker.setStringValue("1");
+        walker.next();
+        walker.setFormula("IF(A1=1;1;0)");
+        walker.next();
+        walker.setFormula("IF(A1=\"1\";1;0)");
+        //
+        // Formula are typed, hence you have the value 0 in B1 and 1 in C1.
+        //
+        // Now, something more interesting with a matrix formula:
+        walker.nextRow();
+        walker.setFloatValue(1);
+        walker.nextRow();
+        walker.setFloatValue(2);
+        walker.nextRow();
+        walker.setFloatValue(3);
+        walker.nextRow();
+        walker.setFloatValue(4);
+        walker.nextRow();
+        walker.setFloatValue(5);
+        walker.nextRow();
+        walker.setFloatValue(6);
+        walker.nextRow();
+        walker.setFloatValue(7);
+        walker.nextRow();
+        walker.setFloatValue(8);
+        walker.nextRow();
+        walker.setMatrixFormula("SUM((MOD(A2:A9;2)=0)*(A2:A9))");
+        //
+        // The formula sums the cell A2:A9 with an even value.
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "f_formulas.ods"));
     }
 }

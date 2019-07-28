@@ -125,7 +125,7 @@ class D_SettingTheCellDataStyle {
     public static void example2() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 
-        // ### Changing the Default Data Styles
+        // ## Changing the Default Data Styles
         // Setting the data style for every cell may become cumbersome. Happily, you can decide of
         // the default data styles at the creation of the document.
         //

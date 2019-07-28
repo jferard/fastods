@@ -105,6 +105,18 @@ public class RowCellWalkerImpl implements RowCellWalker {
     }
 
     @Override
+    public void setMatrixFormula(final String formula) {
+        this.row.getOrCreateCell(this.c).setMatrixFormula(formula);
+    }
+
+    @Override
+    public void setMatrixFormula(final String formula, final int matrixRowsSpanned,
+                                 final int matrixColumnsSpanned) {
+        this.row.getOrCreateCell(this.c)
+                .setMatrixFormula(formula, matrixRowsSpanned, matrixColumnsSpanned);
+    }
+
+    @Override
     public void setStringValue(final String value) {
         this.row.getOrCreateCell(this.c).setStringValue(value);
     }

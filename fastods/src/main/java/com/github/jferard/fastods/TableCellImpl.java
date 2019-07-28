@@ -447,6 +447,22 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
+    public void setMatrixFormula(final String formula) {
+        this.ensureColdCell();
+        this.coldCell.setFormula(formula);
+        this.coldCell.setMatrixRowsSpanned(1);
+        this.coldCell.setMatrixColumnsSpanned(1);
+    }
+
+    @Override
+    public void setMatrixFormula(final String formula, final int matrixRowsSpanned, final int matrixColumnsSpanned) {
+        this.ensureColdCell();
+        this.coldCell.setFormula(formula);
+        this.coldCell.setMatrixRowsSpanned(matrixRowsSpanned);
+        this.coldCell.setMatrixColumnsSpanned(matrixColumnsSpanned);
+    }
+
+    @Override
     public boolean hasValue() {
         return this.value != null || this.hasColdCell();
     }

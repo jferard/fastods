@@ -208,14 +208,15 @@ public class ContentElement implements OdsElement {
         writer.putNextEntry(new ZipEntry("content.xml"));
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         writer.write(
-                "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
-                        ":office:1.0\" " +
+                "<office:document-content " +
+                        "xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " +
                         "xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" " +
                         "xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
                         "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
                         "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
                         "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" +
-                        " " + "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                        " " +
+                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
                         "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " +
                         "xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" " +
                         "xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" " +
@@ -228,13 +229,14 @@ public class ContentElement implements OdsElement {
                         "xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " +
                         "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
                         "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
-                        "xmlns:ooow=\"http://openoffice" +
-                        ".org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" " +
-                        "xmlns:dom=\"http://www" +
-                        ".w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\"" +
-                        " " +
-                        "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www" +
-                        ".w3.org/2001/XMLSchema-instance\" office:version=\"1.2\">");
+                        "xmlns:ooow=\"http://openoffice.org/2004/writer\" " +
+                        "xmlns:oooc=\"http://openoffice.org/2004/calc\" " +
+                        "xmlns:dom=\"http://www.w3.org/2001/xml-events\" " +
+                        "xmlns:xforms=\"http://www.w3.org/2002/xforms\" " +
+                        "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+                        "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+                        "xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" " +
+                        "office:version=\"1.2\">");
         this.writeEvents(util, writer);
         this.stylesContainer.writeFontFaceDecls(util, writer);
         writer.write("<office:automatic-styles>");

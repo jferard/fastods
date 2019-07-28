@@ -75,7 +75,7 @@ class E_SettingTheCellStyle {
         walker.setStringValue("A1");
         walker.setStyle(grayStyle);
 
-        // ### Common Styles and Automatic Styles
+        // ## Common Styles and Automatic Styles
         // In LO, you'll see a new style named "gray" in the "Styles" window. That's because
         // `TableCellStyle`s are visible by default. We can make a style hidden by adding a
         // `hidden()` call:
@@ -120,7 +120,7 @@ class E_SettingTheCellStyle {
         walker.setStyle(borderStyle);
         // I think you get it now.
 
-        // ### Rows and Columns Styles
+        // ## Rows and Columns Styles
         // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
         // the height of the row was not adapted. You have to adapt it yourself. Let's try with
         // another row:

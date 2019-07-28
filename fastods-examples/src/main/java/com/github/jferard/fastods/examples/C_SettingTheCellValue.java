@@ -123,7 +123,7 @@ class C_SettingTheCellValue {
         walker.setVoidValue();
         walker.nextRow();
 
-        // ### Type Guess
+        // ## Type Guess
         // FastODS can guess types, based on Java object types. It's useful when we try to auto
         // import typed data, e.g. from a `ResultSet`. We can use this ability to reduce the
         // boilerplate code.

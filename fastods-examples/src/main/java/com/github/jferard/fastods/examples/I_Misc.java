@@ -221,20 +221,24 @@ class I_Misc {
         // ## LO features
         // If you know what you are doing, you can play with LO settings, for instance:
         table.updateConfigItem(ConfigElement.ZOOM_VALUE, "150");
-
-        // To be continued...
         //
-        // For more doc, see:
-        //
-        // * [Settings Service Reference](https://api.libreoffice
-        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1document_1_1Settings.html)
-        // * [ViewSettings Service Reference](https://api.libreoffice
-        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1view_1_1ViewSettings.html)
-        // * [SpreadsheetViewSettings Service Reference](https://api.libreoffice
-        // .org/docs/idl/ref/servicecom_1_1sun_1_1star_1_1sheet_1_1SpreadsheetViewSettings.html)
+        // You can discover the configuration attributes in the `ConfigElement` enum.
         //
         // ## Add files to the ods archive
-        // TODO
+        // Remember thie method to add an auto update to the document? That was:
+        //
+        //     new MacroHelper().addRefreshMacro(document);
+        //
+        // Under the hood, this function adds some files to the ods archive. The ods
+        // archive contains a `manifest.xml` that lists the files. If a file was added
+        // without a matching entry in the manifest, LibreOffice will bark and refuse to
+        // open the file.
+        //
+        // Let's add a file for the fun:
+        document.addExtraDir("FastODS");
+        document.addExtraFile("FastODS/fast.txt", "text/plain", "Hello from FastODS!");
+        //
+        // You can check that the file was added with your favorite file achive viewer.
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
