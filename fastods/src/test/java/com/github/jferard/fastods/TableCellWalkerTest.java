@@ -25,12 +25,18 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
@@ -42,6 +48,10 @@ import static org.easymock.EasyMock.expect;
 
 public class TableCellWalkerTest {
     private static final long TIME_IN_MILLIS = 1234567891011L;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     private TableCellWalker cellWalker;
     private Table table;
     private XMLUtil util;
@@ -59,6 +69,111 @@ public class TableCellWalkerTest {
         this.row = PowerMock.createMock(TableRowImpl.class);
         this.util = XMLUtil.create();
         this.sb = new StringBuilder();
+    }
+
+    @Test
+    public void testNextRow() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRow(1)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.nextRow();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testToRow() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRow(10)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.toRow(10);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testToRowFail() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRow(10)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.thrown.expect(IndexOutOfBoundsException.class);
+        this.cellWalker.toRow(-10);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testPreviousRowFail() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRow(10)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+
+        this.thrown.expect(IndexOutOfBoundsException.class);
+        this.cellWalker.previousRow();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testPreviousRow() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRow(10)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        EasyMock.expect(this.table.getRow(9)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.toRow(10);
+        this.cellWalker.previousRow();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void lastRow() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRowCount()).andReturn(7);
+        EasyMock.expect(this.table.getRow(6)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.lastRow();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void last() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.row.getColumnCount()).andReturn(6);
+        EasyMock.expect(this.row.getOrCreateCell(5)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.last();
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -92,7 +207,6 @@ public class TableCellWalkerTest {
         PowerMock.resetAll();
         this.to(0, 8);
         this.cell.setBooleanValue(true);
-        expect(this.row.getColumnCount()).andReturn(10);
         expect(this.row.getOrCreateCell(9)).andReturn(this.cell);
 
         PowerMock.replayAll();
@@ -111,7 +225,6 @@ public class TableCellWalkerTest {
         PowerMock.resetAll();
         this.to(0, 8);
         this.cell.setText(t);
-        expect(this.row.getColumnCount()).andReturn(10);
         expect(this.row.getOrCreateCell(9)).andReturn(this.cell);
 
         PowerMock.replayAll();
@@ -133,6 +246,85 @@ public class TableCellWalkerTest {
         this.cellWalker = new TableCellWalker(this.table);
         this.cellWalker.to(10);
         this.cellWalker.setCellMerge(5, 6);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testCellMergeErrorNegCol() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+
+        this.thrown.expect(IllegalArgumentException.class);
+        this.cellWalker.setCellMerge(0, -1);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testCellMergeErrorNegRow() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+
+        this.thrown.expect(IllegalArgumentException.class);
+        this.cellWalker.setCellMerge(-1, 0);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testCellMergePass() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setCellMerge(1, 1);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testMatrixFormula() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.cell.setMatrixFormula("f");
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setMatrixFormula("f");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testMatrixFormulaFull() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.cell.setMatrixFormula("f", 5 , 4);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setMatrixFormula("f", 5, 4);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testStringValue() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.cell.setStringValue("S");
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setStringValue("S");
 
         PowerMock.verifyAll();
     }
@@ -250,11 +442,11 @@ public class TableCellWalkerTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public final void testNext() throws IOException {
         PowerMock.resetAll();
         this.to(0, 10);
-        expect(this.row.getColumnCount()).andReturn(10);
+        EasyMock.expect(this.row.getOrCreateCell(11)).andReturn(this.cell);
 
         PowerMock.replayAll();
         this.cellWalker = new TableCellWalker(this.table);
@@ -550,12 +742,154 @@ public class TableCellWalkerTest {
         Assert.assertTrue(ret);
     }
 
+    @Test
+    public void testSetColumnStyle() throws IOException {
+        final TableColumnStyle tcs = PowerMock.createMock(TableColumnStyle.class);
+
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.row.getOrCreateCell(1)).andReturn(this.cell);
+        this.table.setColumnStyle(1, tcs);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.next();
+        this.cellWalker.setColumnStyle(tcs);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSetFormat() throws IOException {
+        final DataStyles rf = PowerMock.createMock(DataStyles.class);
+
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.row.setRowFormat(rf);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setRowFormat(rf);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSetRowStyle() throws IOException {
+        final TableRowStyle trs = PowerMock.createMock(TableRowStyle.class);
+
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.row.setRowStyle(trs);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setRowStyle(trs);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testGetColumnCount() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.row.getColumnCount()).andReturn(2);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        final int c = this.cellWalker.getColumnCount();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(2, c);
+    }
+
+    @Test
+    public void testSetDefaultCellStyle() throws IOException {
+        final TableCellStyle tcs = PowerMock.createMock(TableCellStyle.class);
+
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.row.setDefaultCellStyle(tcs);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.setDefaultCellStyle(tcs);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testRowIndex() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.table.getRow(1)).andReturn(this.row);
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.nextRow();
+        final int r = this.cellWalker.rowIndex();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(1, r);
+    }
+
+    @Test
+    public void testColIndex() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.colIndex();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testRemoveRowStyle() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        this.row.removeRowStyle();
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.removeRowStyle();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testHasNext() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.row.getColumnCount()).andReturn(5);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.hasNext();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testHasPrevious() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        this.cellWalker.hasPrevious();
+
+        PowerMock.verifyAll();
+    }
+
     private void to(final int r, final int c) throws IOException {
         this.initWalker(r);
         expect(this.row.getOrCreateCell(c)).andReturn(this.cell);
     }
 
-    public void initWalker(final int r) throws IOException {
+    private void initWalker(final int r) throws IOException {
         expect(this.table.getRow(r)).andReturn(this.row);
         expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
     }

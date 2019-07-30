@@ -24,12 +24,11 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.OdsDocument;
-import com.github.jferard.fastods.odselement.ScriptEvent;
+import com.github.jferard.fastods.attribute.ScriptEvent;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.util.MacroLibrary;
 import com.github.jferard.fastods.util.MacroLibraryContainer;
 import com.github.jferard.fastods.util.MacroModule;
-import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 

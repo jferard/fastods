@@ -23,10 +23,10 @@
 
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.FastOdsException;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -71,7 +71,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * the ResultSet.
      */
     private final ResultSet resultSet;
-    private final Map<Integer, TableCell.Type> cellTypeByColIndex;
+    private final Map<Integer, CellType> cellTypeByColIndex;
     private final CellValue nullValue;
 
 
@@ -88,7 +88,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
     public ResultSetDataWrapper(final Logger logger, final ToCellValueConverter converter,
                                 final ResultSet rs, final TableCellStyle headCellStyle,
                                 final boolean autoFilter,
-                                final Map<Integer, TableCell.Type> cellTypeByColIndex,
+                                final Map<Integer, CellType> cellTypeByColIndex,
                                 final CellValue nullValue, final int max) {
         this.logger = logger;
         this.converter = converter;
@@ -200,7 +200,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
             if (object == null) {
                 walker.setCellValue(this.nullValue);
             } else if (this.cellTypeByColIndex != null) {
-                final TableCell.Type cellType = this.cellTypeByColIndex.get(j);
+                final CellType cellType = this.cellTypeByColIndex.get(j);
                 if (cellType != null) {
                     walker.setCellValue(this.converter.from(cellType, object));
                 }

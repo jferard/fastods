@@ -23,10 +23,10 @@
 
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.CellValue;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.StringValue;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.style.TableCellStyle;
 
@@ -48,7 +48,7 @@ public class ResultSetDataWrapperBuilder {
             .backgroundColor(SimpleColor.GRAY48).fontWeightBold().build();
 
     private final ResultSet rs;
-    private final Map<Integer, TableCell.Type> cellTypeByIndex;
+    private final Map<Integer, CellType> cellTypeByIndex;
     private Charset charset;
     private SQLToCellValueConverter.IntervalConverter converter;
     private String currency;
@@ -68,7 +68,7 @@ public class ResultSetDataWrapperBuilder {
         this.headerStyle = HEADER_STYLE;
         this.autoFilter = true;
         this.max = -1;
-        this.cellTypeByIndex = new HashMap<Integer, TableCell.Type>();
+        this.cellTypeByIndex = new HashMap<Integer, CellType>();
         this.currency = NumberFormat.getCurrencyInstance(Locale.US).getCurrency().getSymbol();
         this.charset = Charset.forName("US-ASCII");
         this.nullValue = new StringValue("<NULL>");
@@ -140,7 +140,7 @@ public class ResultSetDataWrapperBuilder {
      * @param cellType the expected cell type
      * @return this for fluent style
      */
-    public ResultSetDataWrapperBuilder typeValue(final int j, final TableCell.Type cellType) {
+    public ResultSetDataWrapperBuilder typeValue(final int j, final CellType cellType) {
         this.cellTypeByIndex.put(j, cellType);
         return this;
     }
@@ -197,7 +197,7 @@ public class ResultSetDataWrapperBuilder {
     public ResultSetDataWrapper build() {
         final SQLToCellValueConverter sqlToCellValueConverter = SQLToCellValueConverter
                 .create(this.converter, this.currency, this.charset);
-        final Map<Integer, TableCell.Type> cellTypeByIndexOrNull = this.cellTypeByIndex
+        final Map<Integer, CellType> cellTypeByIndexOrNull = this.cellTypeByIndex
                 .isEmpty() ? null : this.cellTypeByIndex;
         return new ResultSetDataWrapper(this.logger, sqlToCellValueConverter, this.rs,
                 this.headerStyle, this.autoFilter, cellTypeByIndexOrNull, this.nullValue, this.max);

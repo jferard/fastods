@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

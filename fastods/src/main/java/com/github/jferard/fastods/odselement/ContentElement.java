@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.ref.PositionUtil;
@@ -91,7 +91,7 @@ public class ContentElement implements OdsElement {
      * @param type  the type of the cell
      * @return the created style, or style if the type is Type.STRING or Type.VOID
      */
-    public TableCellStyle addChildCellStyle(final TableCellStyle style, final TableCell.Type type) {
+    public TableCellStyle addChildCellStyle(final TableCellStyle style, final CellType type) {
         final TableCellStyle newStyle;
         final DataStyle dataStyle = this.format.getDataStyle(type);
         if (dataStyle == null) {

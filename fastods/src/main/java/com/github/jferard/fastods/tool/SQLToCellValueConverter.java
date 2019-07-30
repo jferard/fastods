@@ -23,12 +23,12 @@
 
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DateValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.StringValue;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
 
@@ -110,7 +110,7 @@ public class SQLToCellValueConverter implements ToCellValueConverter {
     }
 
     @Override
-    public CellValue from(final TableCell.Type type, final Object o) throws FastOdsException {
+    public CellValue from(final CellType type, final Object o) throws FastOdsException {
         try {
             switch (type) {
                 case STRING:

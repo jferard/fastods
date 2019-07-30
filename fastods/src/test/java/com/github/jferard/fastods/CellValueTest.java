@@ -22,6 +22,7 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class CellValueTest {
 
     @Test
     public final void testBooleanFromTypeAndObject() throws FastOdsException {
-        final CellValue v = this.converter.from(TableCell.Type.BOOLEAN, true);
+        final CellValue v = this.converter.from(CellType.BOOLEAN, true);
 
         // PLAY
         this.cell.setBooleanValue(true);

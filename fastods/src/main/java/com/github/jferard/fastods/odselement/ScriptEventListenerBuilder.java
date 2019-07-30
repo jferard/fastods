@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.ScriptEvent;
+
 public class ScriptEventListenerBuilder {
     private final ScriptEvent event;
     private final String function;

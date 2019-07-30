@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,13 +35,13 @@ public class ColorHelperTest {
     @Test
     public void testAll() {
         for (final Color c : SimpleColor.values()) {
-            Assert.assertEquals(c, ColorHelper.fromString(c.hexValue()));
+            Assert.assertEquals(c, ColorHelper.fromString(c.getValue()));
         }
     }
 
     @Test
     public void testBlack() {
-        Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).hexValue());
+        Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).getValue());
         Assert.assertEquals(SimpleColor.BLACK, ColorHelper.fromRGB(0, 0, 0));
 
     }

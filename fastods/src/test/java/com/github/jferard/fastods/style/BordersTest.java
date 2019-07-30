@@ -22,9 +22,11 @@
  */
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.style.BorderAttribute.Style;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.BorderAttribute;
+import com.github.jferard.fastods.attribute.BorderAttributeBuilder;
+import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,8 +43,8 @@ public class BordersTest {
     @Before
     public void setUp() {
         this.util = XMLUtil.create();
-        this.a1 = new BorderAttribute(SimpleLength.pt(10.0), SimpleColor.BLACK, Style.DOUBLE);
-        this.a2 = new BorderAttribute(SimpleLength.pt(11.0), SimpleColor.WHITE, Style.SOLID);
+        this.a1 = new BorderAttribute(SimpleLength.pt(10.0), SimpleColor.BLACK, BorderStyle.DOUBLE);
+        this.a2 = new BorderAttribute(SimpleLength.pt(11.0), SimpleColor.WHITE, BorderStyle.SOLID);
     }
 
     @Test
@@ -55,11 +57,11 @@ public class BordersTest {
     @Test
     public final void testThreeParam() throws IOException {
         final Borders b = new BordersBuilder()
-                .all(SimpleLength.pt(1), SimpleColor.ALICEBLUE, Style.DOUBLE)
-                .top(SimpleLength.pt(1), SimpleColor.BLACK, Style.SOLID)
-                .left(SimpleLength.pt(2), SimpleColor.ALICEBLUE, Style.DASHED)
-                .right(SimpleLength.pt(3), SimpleColor.CADETBLUE, Style.DOUBLE)
-                .bottom(SimpleLength.pt(4), SimpleColor.DARKBLUE, Style.GROOVE).build();
+                .all(SimpleLength.pt(1), SimpleColor.ALICEBLUE, BorderStyle.DOUBLE)
+                .top(SimpleLength.pt(1), SimpleColor.BLACK, BorderStyle.SOLID)
+                .left(SimpleLength.pt(2), SimpleColor.ALICEBLUE, BorderStyle.DASHED)
+                .right(SimpleLength.pt(3), SimpleColor.CADETBLUE, BorderStyle.DOUBLE)
+                .bottom(SimpleLength.pt(4), SimpleColor.DARKBLUE, BorderStyle.GROOVE).build();
         this.assertAttrXMLEquals(" fo:border=\"1pt double #f0f8ff\" fo:border-top=\"1pt solid " +
                 "#000000\" fo:border-right=\"3pt double #5f9ea0\" fo:border-bottom=\"4pt groove " +
                 "#00008b\" fo:border-left=\"2pt dashed #f0f8ff\"", b);

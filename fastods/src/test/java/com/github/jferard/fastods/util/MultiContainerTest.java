@@ -78,10 +78,9 @@ public class MultiContainerTest {
         // shift "a" from content to styles
         Assert.assertTrue(this.container.add("a", Dest.STYLES_AUTOMATIC_STYLES, 2));
 
-        Assert.assertFalse(this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES)
-                .iterator().hasNext());
-        iterator = this.container.getValues(Dest.STYLES_AUTOMATIC_STYLES)
-                .iterator();
+        Assert.assertFalse(
+                this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator().hasNext());
+        iterator = this.container.getValues(Dest.STYLES_AUTOMATIC_STYLES).iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertEquals(Integer.valueOf(2), iterator.next());
         Assert.assertFalse(iterator.hasNext());

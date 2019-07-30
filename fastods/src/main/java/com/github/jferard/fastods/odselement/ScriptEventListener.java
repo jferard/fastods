@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.attribute.ScriptEvent;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class ScriptEventListener implements XMLConvertible {
             throws IOException {
         appendable.append("<script:event-listener");
         util.appendAttribute(appendable, "script:language", this.genericLanguage);
-        util.appendAttribute(appendable, "script:event-name", this.event.toString());
+        util.appendAttribute(appendable, "script:event-name", this.event);
         util.appendAttribute(appendable, "xlink:href",
                 "vnd.sun.star.script:" + this.functionName + "?" + "language=" + this.language +
                         "&amp;location=document");

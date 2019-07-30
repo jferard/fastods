@@ -21,7 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.attribute;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -110,12 +110,17 @@ public class AbsoluteLength implements Length {
 
     @Override
     public String toString() {
-        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) +
-                "mm";
+        return this.getValue();
     }
 
     @Override
     public boolean isNotNull() {
         return this.mm <= -MAX_DELTA || this.mm >= MAX_DELTA;
+    }
+
+    @Override
+    public String getValue() {
+        return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.mm) +
+                "mm";
     }
 }

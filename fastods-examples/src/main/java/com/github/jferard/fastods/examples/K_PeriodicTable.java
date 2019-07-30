@@ -24,20 +24,22 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.attribute.CellAlign;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PageSection;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
-import com.github.jferard.fastods.style.BorderAttribute;
+import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.PageCentering;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -45,8 +47,9 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.attribute.VerticalAlign;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -131,8 +134,8 @@ class K_PeriodicTable {
                 // ### Style
                 // Cells have a color that depends on the subcategory:
                 final TableCellStyle baseCellStyle = TableCellStyle.builder("ce3")
-                        .textAlign(TableCellStyle.Align.CENTER)
-                        .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).build();
+                        .textAlign(CellAlign.CENTER)
+                        .verticalAlign(VerticalAlign.MIDDLE).build();
 
 
                 // We put those styles in a map:
@@ -266,7 +269,7 @@ class K_PeriodicTable {
                             .styledContent(footerText, dedicationStyle).buildFooter();
                     final PageStyle pageStyle = PageStyle.builder("page").header(header)
                             .footer(footer).printOrientationHorizontal().scaleTo(95)
-                            .centering(PageStyle.Centering.BOTH).build();
+                            .centering(PageCentering.BOTH).build();
                     final TableStyle tableStyle = TableStyle.builder("table").pageStyle(pageStyle)
                             .build();
                     table.setStyle(tableStyle);
@@ -298,9 +301,9 @@ class K_PeriodicTable {
 
     // And to produce similar cell styles:
     private static TableCellStyle getCellStyle(final String name, final Color color) {
-        return TableCellStyle.builder(name).textAlign(TableCellStyle.Align.CENTER)
-                .verticalAlign(TableCellStyle.VerticalAlign.MIDDLE).backgroundColor(color)
-                .borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderAttribute.Style.SOLID)
+        return TableCellStyle.builder(name).textAlign(CellAlign.CENTER)
+                .verticalAlign(VerticalAlign.MIDDLE).backgroundColor(color)
+                .borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderStyle.SOLID)
                 .build();
     }
 

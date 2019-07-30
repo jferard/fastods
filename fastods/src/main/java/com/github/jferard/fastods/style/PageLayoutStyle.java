@@ -23,18 +23,20 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSection;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.PageWritingMode;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.attribute.PageCentering;
+import com.github.jferard.fastods.attribute.PagePrintOrientation;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Hidable;
-import com.github.jferard.fastods.util.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * OpenDocument 16.5 style:page-layout
@@ -54,12 +56,12 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
 
     private final Length pageWidth;
 
-    private final PageStyle.PrintOrientation printOrientation;
+    private final PagePrintOrientation printOrientation;
 
-    private final PageStyle.WritingMode writingMode;
+    private final PageWritingMode writingMode;
     private final int scaleTo;
     private final int scaleToPages;
-    private final PageStyle.Centering centering;
+    private final PageCentering centering;
 
     /**
      * Create a new page style. Version 0.5.0 Added parameter NamedOdsDocument o
@@ -81,9 +83,9 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     PageLayoutStyle(final String name, final Margins margins, final Length pageWidth,
                     final Length pageHeight, final String numFormat, final Color backgroundColor,
                     final Header header, final Footer footer,
-                    final PageStyle.PrintOrientation printOrientation,
-                    final PageStyle.WritingMode writingMode, final int scaleTo,
-                    final int scaleToPages, final PageStyle.Centering centering) {
+                    final PagePrintOrientation printOrientation,
+                    final PageWritingMode writingMode, final int scaleTo,
+                    final int scaleToPages, final PageCentering centering) {
         this.name = name;
         this.margins = margins;
         this.pageWidth = pageWidth;
@@ -117,23 +119,21 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
         appendable.append("<style:page-layout");
         util.appendEAttribute(appendable, "style:name", this.name);
         appendable.append("><style:page-layout-properties");
-        util.appendAttribute(appendable, "fo:page-width", this.pageWidth.toString());
-        util.appendAttribute(appendable, "fo:page-height", this.pageHeight.toString());
+        util.appendAttribute(appendable, "fo:page-width", this.pageWidth);
+        util.appendAttribute(appendable, "fo:page-height", this.pageHeight);
         if (this.scaleTo != 100) {
             util.appendAttribute(appendable, "style:scale-to", this.scaleTo + "%");
         }
         if (this.scaleToPages != 0) {
             util.appendAttribute(appendable, "style:scale-to-pages", this.scaleToPages);
         }
-        if (this.centering != PageStyle.Centering.NONE) {
-            util.appendAttribute(appendable, "style:table-centering",
-                    this.centering.toString().toLowerCase(Locale.US));
+        if (this.centering != PageCentering.NONE) {
+            util.appendAttribute(appendable, "style:table-centering", this.centering);
         }
 
         util.appendEAttribute(appendable, "style:num-format", this.numFormat);
-        util.appendAttribute(appendable, "style:writing-mode", this.writingMode.getAttrValue());
-        util.appendAttribute(appendable, "style:print-orientation",
-                this.printOrientation.getAttrValue());
+        util.appendAttribute(appendable, "style:writing-mode", this.writingMode);
+        util.appendAttribute(appendable, "style:print-orientation", this.printOrientation);
         this.appendBackgroundColor(util, appendable);
         this.margins.appendXMLContent(util, appendable);
         appendable.append("/>"); // End of page-layout-properties
@@ -157,7 +157,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
      *
      * @return The current writing mode.
      */
-    public PageStyle.WritingMode getWritingMode() {
+    public PageWritingMode getWritingMode() {
         return this.writingMode;
     }
 
@@ -165,7 +165,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
             throws IOException {
         if (this.backgroundColor != SimpleColor.NONE) {
             util.appendAttribute(appendable, "fo:background-color",
-                    this.backgroundColor.hexValue());
+                    this.backgroundColor);
         }
     }
 

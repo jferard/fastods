@@ -24,13 +24,13 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
-import com.github.jferard.fastods.style.PageStyle.WritingMode;
+import com.github.jferard.fastods.attribute.PageWritingMode;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -169,7 +169,7 @@ public class PageStyleTest {
     @Test
     public final void testPrintOrientationH() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").printOrientationHorizontal()
-                .writingMode(WritingMode.PAGE).build();
+                .writingMode(PageWritingMode.PAGE).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"29.7cm\" " +
@@ -185,7 +185,7 @@ public class PageStyleTest {
     @Test
     public final void testPrintOrientationV() throws IOException {
         final PageStyle pageStyle = PageStyle.builder("test").printOrientationVertical()
-                .writingMode(WritingMode.PAGE).build();
+                .writingMode(PageWritingMode.PAGE).build();
         this.assertMasterXMLEquals(PageStyleTest.MASTER, pageStyle);
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
@@ -239,7 +239,7 @@ public class PageStyleTest {
 
     @Test
     public final void testWritingMode() throws IOException {
-        final PageStyle pageStyle = PageStyle.builder("test").writingMode(WritingMode.PAGE).build();
+        final PageStyle pageStyle = PageStyle.builder("test").writingMode(PageWritingMode.PAGE).build();
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +

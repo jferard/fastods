@@ -33,7 +33,7 @@ public interface TableRow {
      *
      * @param format the format
      */
-    void setFormat(DataStyles format);
+    void setRowFormat(DataStyles format);
 
     /**
      * Set the row style

@@ -24,6 +24,8 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.StyleWithEmbeddedStyles;
+import com.github.jferard.fastods.attribute.PagePrintOrientation;
+import com.github.jferard.fastods.attribute.PageWritingMode;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.Hidable;
@@ -52,11 +54,11 @@ public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles,
     /**
      * The default print orientation (VERTICAL)
      */
-    public static final PrintOrientation DEFAULT_PRINT_ORIENTATION;
+    public static final PagePrintOrientation DEFAULT_PRINT_ORIENTATION;
     /**
      * The default writing mode (left to right and top to bottom)
      */
-    public static final WritingMode DEFAULT_WRITING_MODE;
+    public static final PageWritingMode DEFAULT_WRITING_MODE;
     /**
      * The default master page style
      */
@@ -78,8 +80,8 @@ public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles,
 
     static {
         DEFAULT_FORMAT = PaperFormat.A4;
-        DEFAULT_WRITING_MODE = WritingMode.LRTB;
-        DEFAULT_PRINT_ORIENTATION = PrintOrientation.VERTICAL;
+        DEFAULT_WRITING_MODE = PageWritingMode.LRTB;
+        DEFAULT_PRINT_ORIENTATION = PagePrintOrientation.VERTICAL;
         DEFAULT_PAGE_STYLE = PageStyle.builder("Mpm1").build();
         DEFAULT_MASTER_PAGE_STYLE = PageStyle.builder(PageStyle.DEFAULT_MASTER_PAGE_NAME).build();
     }
@@ -161,114 +163,5 @@ public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles,
         this.masterPageStyle.appendXMLToMasterStyle(util, appendable);
     }
 
-    /**
-     * 20.325style:print-orientation
-     * The print orientation of the page (either landscape or portrait)
-     */
-    public enum PrintOrientation {
-        /**
-         * "a page is printed in landscape orientation"
-         */
-        HORIZONTAL("landscape"),
-        /**
-         * "a page is printed in portrait orientation"
-         */
-        VERTICAL("portrait");
 
-        private final String attrValue;
-
-        /**
-         * @param attrValue landscape|portrait
-         */
-        PrintOrientation(final String attrValue) {
-            this.attrValue = attrValue;
-        }
-
-        /**
-         * @return landscape|portrait
-         */
-        String getAttrValue() {
-            return this.attrValue;
-        }
-    }
-
-    /**
-     * 20.394 style:writing-mode
-     * see See §7.27.7 of [XSL] (https://www.w3.org/TR/2001/REC-xsl-20011015/slice7
-     * .html#writing-mode-related)
-     */
-    public enum WritingMode {
-        /**
-         * "Shorthand for lr-tb"
-         */
-        LR("lr"),
-        /**
-         * left to right then top to bottom
-         */
-        LRTB("lr-tb"),
-        /**
-         * page means inherit
-         */
-        PAGE("page"),
-        /**
-         * "Shorthand for rl-tb"
-         */
-        RL("rl"),
-        /**
-         * right to left then top to bottom
-         */
-        RLTB("rl-tb"),
-        /**
-         * "Shorthand for tb-rl"
-         */
-        TB("tb"),
-        /**
-         * top to bottom then left to right
-         */
-        TBLR("tb-lr"),
-        /**
-         * top to bottom then right to left
-         */
-        TBRL("tb-rl");
-
-        private final String attrValue;
-
-        /**
-         * @param attrValue the value See §7.27.7 of [XSL]
-         */
-        WritingMode(final String attrValue) {
-            this.attrValue = attrValue;
-        }
-
-        /**
-         * @return the value See §7.27.7 of [XSL]
-         */
-        String getAttrValue() {
-            return this.attrValue;
-        }
-
-    }
-
-
-    /**
-     * 20.353style:table-centering
-     */
-    public enum Centering {
-        /**
-         * Center horizontally and vertically
-         */
-        BOTH,
-        /**
-         * Center horizontally
-         */
-        HORIZONTAL,
-        /**
-         * Do not center
-         */
-        NONE,
-        /**
-         * Center vertically
-         */
-        VERTICAL
-    }
 }

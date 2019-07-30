@@ -21,16 +21,33 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.attribute;
 
-/**
- * The Color class provides access to standard LibreOffice colors in hex format.
- *
- * @author Julien Férard
- */
-public interface Color {
-    /**
-     * @return the hex value for this color. Eg. "#123456"
-     */
-    String hexValue();
+import org.junit.Assert;
+import org.junit.Test;
+
+public class AngleTest {
+    @Test
+    public void testDeg() {
+        final Angle r = Angle.deg(10);
+        Assert.assertEquals("10", r.toString());
+    }
+
+    @Test
+    public void testRad() {
+        final Angle r = Angle.rad(3.14);
+        Assert.assertEquals("3.14rad", r.toString());
+    }
+
+    @Test
+    public void testGrad() {
+        final Angle r = Angle.grad(16);
+        Assert.assertEquals("16.0grad", r.toString());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testOther() {
+        final Angle r = new Angle(12, null);
+        r.getValue();
+    }
 }

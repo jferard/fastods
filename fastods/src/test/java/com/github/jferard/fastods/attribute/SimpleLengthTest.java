@@ -21,7 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.attribute;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class SimpleLengthTest {
     private static final double OTHER_VALUE = 11.0;
 
     @Test
-    public void testEquals() {
+    public void testNotEquals() {
         Assert.assertEquals(SimpleLength.pt(VALUE), SimpleLength.pt(VALUE));
         Assert.assertNotEquals(SimpleLength.pt(VALUE), SimpleLength.cm(VALUE));
         Assert.assertNotEquals(SimpleLength.in(VALUE), SimpleLength.in(OTHER_VALUE));
@@ -61,4 +61,14 @@ public class SimpleLengthTest {
         Assert.assertEquals("10pt", SimpleLength.pt(VALUE).toString());
     }
 
+    @Test
+    public void testEquals() {
+        final SimpleLength l1 = SimpleLength.pt(10);
+        final SimpleLength l2 = SimpleLength.pt(10 - 0.0000000000000001);
+        final SimpleLength l3 = SimpleLength.pt(10 - 0.003);
+        Assert.assertEquals(l1, l2); // 0 <= d <= MD
+        Assert.assertEquals(l2, l1); // -MD <= d < 0
+        Assert.assertNotEquals(l1, l3); // 0 <= MD <= d
+        Assert.assertNotEquals(l3, l1); // d <= -MD < 0
+    }
 }

@@ -21,7 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.odselement;
+package com.github.jferard.fastods.attribute;
 
 /**
  * https://docs.libreoffice.org/xmloff/html/EventMap_8cxx_source.html
@@ -34,7 +34,7 @@ package com.github.jferard.fastods.odselement;
  * for form events:
  * 13.6Event Listeners
  */
-public enum ScriptEvent {
+public enum ScriptEvent implements AttributeValue {
     // DOM events
     /**
      * Event: 'on-select'
@@ -452,6 +452,11 @@ public enum ScriptEvent {
 
     @Override
     public String toString() {
+        return this.getValue();
+    }
+
+    @Override
+    public String getValue() {
         return this.namespace + ":" + this.eventName;
     }
 }

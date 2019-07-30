@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
@@ -173,7 +174,7 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
      * @param style the style
      * @param types the types
      */
-    public void addCellStyle(final TableCellStyle style, final TableCell.Type... types) {
+    public void addCellStyle(final TableCellStyle style, final CellType... types) {
         this.odsElements.addCellStyle(style, types);
     }
 

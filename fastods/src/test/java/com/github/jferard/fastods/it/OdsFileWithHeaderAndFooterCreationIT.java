@@ -31,7 +31,7 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.PageSectionContent.Region;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
@@ -45,7 +45,7 @@ import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -166,11 +166,11 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Assert.assertEquals("bold", this.stylesEvaluate(stylesXPath, stylesRoot,
                 "//style:style[@style:name='cc']//@fo:font-weight"));
 
-        Assert.assertEquals(SimpleColor.RED.hexValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
+        Assert.assertEquals(SimpleColor.RED.getValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
                 "//style:style[@style:name='red-text']//@fo:color"));
-        Assert.assertEquals(SimpleColor.BLUE.hexValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
+        Assert.assertEquals(SimpleColor.BLUE.getValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
                 "//style:style[@style:name='blue-text']//@fo:color"));
-        Assert.assertEquals(SimpleColor.GREEN.hexValue(),
+        Assert.assertEquals(SimpleColor.GREEN.getValue(),
                 this.stylesEvaluate(stylesXPath, stylesRoot,
                 "//style:style[@style:name='green-text']//@fo:color"));
 

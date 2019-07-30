@@ -21,12 +21,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.style;
+package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.util.Length;
-import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -37,7 +33,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class BorderAttribute {
+public class BorderAttribute implements AttributeValue {
     /**
      * The border color default is #000000 (black).
      */
@@ -53,7 +49,7 @@ public class BorderAttribute {
     /**
      * The default style
      */
-    public static final Style DEFAULT_STYLE = Style.SOLID;
+    public static final BorderStyle DEFAULT_STYLE = BorderStyle.SOLID;
 
     /**
      * @return a builder for BorderAttribute
@@ -75,7 +71,7 @@ public class BorderAttribute {
      * BorderAttribute.BORDER_DOUBLE.<br>
      * Default is BorderAttribute.BORDER_SOLID.
      */
-    private final Style style;
+    private final BorderStyle style;
 
     /**
      * size is a length value
@@ -85,32 +81,33 @@ public class BorderAttribute {
      * @param style The style of the border, BorderAttribute.BORDER_SOLID or
      *              BorderAttribute.BORDER_DOUBLE
      */
-    BorderAttribute(final Length size, final Color color, final Style style) {
+    public BorderAttribute(final Length size, final Color color, final BorderStyle style) {
         this.borderSize = size;
         this.borderColor = color;
         this.style = style;
     }
 
-    private CharSequence toXMLAttributeValue() {
+    @Override
+    public CharSequence getValue() {
         final StringBuilder sb = new StringBuilder();
 
         if (this.borderSize == null) {
             if (this.borderColor != SimpleColor.NONE) {
-                sb.append(this.style.attrValue).append(XMLUtil.SPACE_CHAR)
-                        .append(this.borderColor.hexValue());
+                sb.append(this.style.getValue()).append(XMLUtil.SPACE_CHAR)
+                        .append(this.borderColor.getValue());
             }
         } else if (this.borderColor == SimpleColor.NONE) {
             sb.append(this.borderSize);
         } else {
-            sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR).append(this.style.attrValue)
-                    .append(XMLUtil.SPACE_CHAR).append(this.borderColor.hexValue());
+            sb.append(this.borderSize).append(XMLUtil.SPACE_CHAR).append(this.style.getValue())
+                    .append(XMLUtil.SPACE_CHAR).append(this.borderColor.getValue());
         }
         return sb;
     }
 
     @Override
     public String toString() {
-        return "BorderAttribute[" + this.toXMLAttributeValue() + "]";
+        return "BorderAttribute[" + this.getValue() + "]";
     }
 
     /**
@@ -121,7 +118,7 @@ public class BorderAttribute {
      */
     public void appendXMLAttribute(final XMLUtil util, final Appendable appendable,
                                    final String attrName) throws IOException {
-        util.appendAttribute(appendable, attrName, this.toXMLAttributeValue());
+        util.appendAttribute(appendable, attrName, this);
     }
 
     /**
@@ -163,75 +160,4 @@ public class BorderAttribute {
         }
     }
 
-    /**
-     * Extensible Stylesheet Language (XSL)
-     * Version 1.0, 7.7.20 "border-top-style"
-     * <p>
-     * The style of the border
-     */
-    public enum Style {
-        /**
-         * No border
-         */
-        NONE("none"),
-
-        /**
-         * Same as 'none', with a little exception
-         */
-        HIDDEN("hidden"),
-
-        /**
-         * Series of dots
-         */
-        DOTTED("dotted"),
-
-        /**
-         * Series of dashes
-         */
-        DASHED("dashed"),
-
-        /**
-         * Solid border
-         */
-        SOLID("solid"),
-
-        /**
-         * Double lined border
-         */
-        DOUBLE("double"),
-
-        /**
-         * Carved in the canvas
-         */
-        GROOVE("groove"),
-
-        /**
-         * Coming out of the canvas
-         */
-        RIDGE("ridge"),
-
-        /**
-         * Box carved in the canvas
-         */
-        INSET("inset"),
-
-        /**
-         * Box coming out of the canvas
-         */
-        OUTSET("outset");
-
-        private final String attrValue;
-
-        Style(final String attrValue) {
-            this.attrValue = attrValue;
-        }
-
-
-        /**
-         * @return the value of the attribute for XML use
-         */
-        String getAttrValue() {
-            return this.attrValue;
-        }
-    }
 }

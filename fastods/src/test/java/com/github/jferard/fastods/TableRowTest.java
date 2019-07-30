@@ -189,7 +189,7 @@ public class TableRowTest {
     public void testSetFormat() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.row.setFormat(null);
+        this.row.setRowFormat(null);
 
         PowerMock.verifyAll();
     }

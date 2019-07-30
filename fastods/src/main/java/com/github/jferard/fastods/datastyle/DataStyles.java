@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.attribute.CellType;
 
 import java.util.EnumMap;
 
@@ -35,7 +35,7 @@ import java.util.EnumMap;
 public class DataStyles {
     private final BooleanStyle booleanDataStyle;
     private final CurrencyStyle currencyDataStyle;
-    private final EnumMap<TableCell.Type, DataStyle> dataStyleByType;
+    private final EnumMap<CellType, DataStyle> dataStyleByType;
     private final DateStyle dateDataStyle;
     private final FloatStyle floatDataStyle;
     private final PercentageStyle percentageDataStyle;
@@ -64,13 +64,13 @@ public class DataStyles {
         this.percentageDataStyle = percentageDataStyle;
         this.timeDataStyle = timeDataStyle;
 
-        this.dataStyleByType = new EnumMap<TableCell.Type, DataStyle>(TableCell.Type.class);
-        this.dataStyleByType.put(TableCell.Type.BOOLEAN, this.booleanDataStyle);
-        this.dataStyleByType.put(TableCell.Type.CURRENCY, this.currencyDataStyle);
-        this.dataStyleByType.put(TableCell.Type.DATE, this.dateDataStyle);
-        this.dataStyleByType.put(TableCell.Type.FLOAT, this.floatDataStyle);
-        this.dataStyleByType.put(TableCell.Type.PERCENTAGE, this.percentageDataStyle);
-        this.dataStyleByType.put(TableCell.Type.TIME, this.timeDataStyle);
+        this.dataStyleByType = new EnumMap<CellType, DataStyle>(CellType.class);
+        this.dataStyleByType.put(CellType.BOOLEAN, this.booleanDataStyle);
+        this.dataStyleByType.put(CellType.CURRENCY, this.currencyDataStyle);
+        this.dataStyleByType.put(CellType.DATE, this.dateDataStyle);
+        this.dataStyleByType.put(CellType.FLOAT, this.floatDataStyle);
+        this.dataStyleByType.put(CellType.PERCENTAGE, this.percentageDataStyle);
+        this.dataStyleByType.put(CellType.TIME, this.timeDataStyle);
     }
 
     /**
@@ -91,7 +91,7 @@ public class DataStyles {
      * @param type a data style type
      * @return the data style for the given type, null if the type is STRING or VOID
      */
-    public DataStyle getDataStyle(final TableCell.Type type) {
+    public DataStyle getDataStyle(final CellType type) {
         return this.dataStyleByType.get(type);
     }
 

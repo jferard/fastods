@@ -21,7 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.attribute;
 
 /**
  * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1
@@ -30,7 +30,7 @@ package com.github.jferard.fastods.util;
  * @author J. Férard
  * @author https://github.com/qmor
  */
-public class Angle {
+public class Angle implements AttributeValue {
     /**
      * No rotation
      */
@@ -87,6 +87,11 @@ public class Angle {
 
     @Override
     public String toString() {
+        return this.getValue();
+    }
+
+    @Override
+    public String getValue() {
         String ret = "";
         switch (this.unit) {
             case DEG:

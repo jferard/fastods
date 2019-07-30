@@ -22,6 +22,7 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
@@ -29,9 +30,6 @@ import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -423,11 +421,11 @@ public class OdsDocumentTest {
     public void testAddChildCellStyle() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.verifyAll();
     }
@@ -508,11 +506,11 @@ public class OdsDocumentTest {
     public void testChildCellStyle() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.verifyAll();
     }
@@ -521,11 +519,11 @@ public class OdsDocumentTest {
     public void testChildCellVoidStyle() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.verifyAll();
     }

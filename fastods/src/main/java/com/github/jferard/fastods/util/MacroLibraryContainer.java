@@ -82,7 +82,7 @@ public class MacroLibraryContainer {
                 "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
                 "OfficeDocument 1.0//EN\" \"libraries.dtd\">\n" +
                 "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
-                "xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n");
+                "xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
         for (final MacroLibrary library : this.libraries) {
             library.appendIndexLine(util, sb);
         }

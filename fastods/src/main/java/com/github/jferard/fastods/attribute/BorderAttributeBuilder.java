@@ -21,13 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.style;
-
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.style.BorderAttribute.Style;
-import com.github.jferard.fastods.util.Length;
-import com.github.jferard.fastods.util.SimpleLength;
+package com.github.jferard.fastods.attribute;
 
 /**
  * @author Julien Férard
@@ -48,12 +42,12 @@ public class BorderAttributeBuilder {
      * BorderAttribute.BORDER_DOUBLE.<br>
      * Default is BorderAttribute.BORDER_SOLID.
      */
-    private Style style;
+    private BorderStyle style;
 
     /**
      * A new builder
      */
-    BorderAttributeBuilder() {
+    public BorderAttributeBuilder() {
         this.style = BorderAttribute.DEFAULT_STYLE;
         this.borderColor = SimpleColor.NONE;
     }
@@ -97,7 +91,7 @@ public class BorderAttributeBuilder {
      * @param style BorderAttribute.BORDER_SOLID or BorderAttribute.BORDER_DOUBLE
      * @return this for fluent style
      */
-    public BorderAttributeBuilder borderStyle(final Style style) {
+    public BorderAttributeBuilder borderStyle(final BorderStyle style) {
         this.style = style;
         return this;
     }

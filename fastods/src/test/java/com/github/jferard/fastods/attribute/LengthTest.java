@@ -21,28 +21,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.attribute;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AngleTest {
+/**
+ * Created by jferard on 09/04/17.
+ */
+public class LengthTest {
     @Test
-    public void testDeg() {
-        final Angle r = Angle.deg(10);
-        Assert.assertEquals("10", r.toString());
+    public void testNullLength() {
+        Assert.assertEquals("0cm", Length.NULL_LENGTH.getValue());
+        Assert.assertEquals("0cm", Length.NULL_LENGTH.toString());
+        Assert.assertFalse(Length.NULL_LENGTH.isNotNull());
     }
-
-    @Test
-    public void testRad() {
-        final Angle r = Angle.rad(3.14);
-        Assert.assertEquals("3.14rad", r.toString());
-    }
-
-    @Test
-    public void testGrad() {
-        final Angle r = Angle.grad(16);
-        Assert.assertEquals("16.0grad", r.toString());
-    }
-
 }

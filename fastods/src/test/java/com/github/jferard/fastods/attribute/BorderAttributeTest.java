@@ -21,10 +21,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.style.BorderAttribute;
-import com.github.jferard.fastods.util.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,18 +43,23 @@ public class BorderAttributeTest {
     }
 
     @Test
+    public final void postiionNameTest() {
+        Assert.assertEquals("fo:border", BorderAttribute.Position.ALL.getAttrName());
+    }
+
+    @Test
     public final void basicTest() throws IOException {
         final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
-                .borderColor(SimpleColor.ALICEBLUE).borderStyle(BorderAttribute.Style.SOLID)
+                .borderColor(SimpleColor.ALICEBLUE).borderStyle(BorderStyle.SOLID)
                 .build();
         this.assertXMLEquals("1cm solid #f0f8ff", ba);
     }
 
     @Test
     public final void nullColorTest() throws IOException {
-        final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
+        final BorderAttribute ba = BorderAttribute.builder().borderSize(10)
                 .build();
-        this.assertXMLEquals("1cm", ba);
+        this.assertXMLEquals("10pt", ba);
     }
 
     @Test

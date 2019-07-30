@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -43,6 +43,7 @@ public class TextProperties implements TagParameters {
     public static TextPropertiesBuilder builder() {
         return new TextPropertiesBuilder();
     }
+
     private final Color fontColor;
     private final String fontName;
     private final String fontSize;
@@ -50,6 +51,7 @@ public class TextProperties implements TagParameters {
     private final Color fontUnderlineColor;
     private final Underline fontUnderlineStyle;
     private final String fontWeight;
+
     /**
      * Create a new text style with the name name.
      *
@@ -92,7 +94,7 @@ public class TextProperties implements TagParameters {
 
         // Check if a font color should be added
         if (this.fontColor != SimpleColor.NONE) {
-            util.appendAttribute(appendable, "fo:color", this.fontColor.hexValue());
+            util.appendAttribute(appendable, "fo:color", this.fontColor);
         }
         // Check if a font name should be added
         if (this.fontName != null) {
@@ -117,7 +119,7 @@ public class TextProperties implements TagParameters {
             // ---------------------------------------------------------------------------------
             if (this.fontUnderlineColor != SimpleColor.NONE) {
                 util.appendAttribute(appendable, "style:text-underline-color",
-                        this.fontUnderlineColor.hexValue());
+                        this.fontUnderlineColor);
             } else {
                 util.appendAttribute(appendable, "style:text-underline-color", "font-color");
             }

@@ -23,7 +23,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;

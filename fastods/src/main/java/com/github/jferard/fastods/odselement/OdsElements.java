@@ -23,12 +23,12 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.FinalizeFlusher;
 import com.github.jferard.fastods.ImmutableElementsFlusher;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
@@ -168,9 +168,9 @@ public class OdsElements implements StylesContainer {
      * @param style the style
      * @param types the types
      */
-    public void addCellStyle(final TableCellStyle style, final TableCell.Type... types) {
+    public void addCellStyle(final TableCellStyle style, final CellType... types) {
         this.stylesContainer.addContentStyle(style);
-        for (final TableCell.Type type : types) {
+        for (final CellType type : types) {
             this.contentElement.addChildCellStyle(style, type);
         }
     }

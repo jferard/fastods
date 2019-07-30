@@ -24,6 +24,8 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.attribute.FieldOrientation;
+import com.github.jferard.fastods.attribute.PilotFunction;
 
 import java.io.IOException;
 
@@ -35,17 +37,15 @@ import java.io.IOException;
 public class PilotTableField implements XMLConvertible {
 
     private final String sourceFieldName;
-    private final String orientation;
+    private final FieldOrientation orientation;
     private final int usedHierarchy;
     private final boolean isDataLayout;
-    private final String function;
+    private final PilotFunction function;
     private final PilotTableLevel level;
 
-    //         sourceFieldName = "PERIOD";
-    //        orientation = "row";
-    //        usedHierarchy = 0;
-    public PilotTableField(final String sourceFieldName, final String orientation,
-                           final int usedHierarchy, final boolean isDataLayout, final String function, final PilotTableLevel level) {
+    public PilotTableField(final String sourceFieldName, final FieldOrientation orientation,
+                           final int usedHierarchy, final boolean isDataLayout,
+                           final PilotFunction function, final PilotTableLevel level) {
         this.sourceFieldName = sourceFieldName;
         this.orientation = orientation;
         this.usedHierarchy = usedHierarchy;
@@ -53,7 +53,6 @@ public class PilotTableField implements XMLConvertible {
         this.function = function;
         this.level = level;
     }
-
 
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)

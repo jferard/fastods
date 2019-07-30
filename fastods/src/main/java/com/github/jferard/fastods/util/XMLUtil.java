@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.attribute.AttributeValue;
+
 import java.io.IOException;
 
 /**
@@ -112,6 +114,20 @@ public class XMLUtil {
     public void appendAttribute(final Appendable appendable, final CharSequence attrName,
                                 final CharSequence attrValue) throws IOException {
         appendable.append(' ').append(attrName).append("=\"").append(attrValue).append('"');
+    }
+
+    /**
+     * Append a space, then a new element to the appendable element, the name of the element is
+     * attrName and the value is attrValue. The value won't be escaped.
+     *
+     * @param appendable where to write
+     * @param attrName   the name of the attribute
+     * @param attrValue  escaped attribute
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendAttribute(final Appendable appendable, final CharSequence attrName,
+                                final AttributeValue attrValue) throws IOException {
+        appendable.append(' ').append(attrName).append("=\"").append(attrValue.getValue()).append('"');
     }
 
     /**

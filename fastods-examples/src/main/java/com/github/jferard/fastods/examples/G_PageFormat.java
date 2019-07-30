@@ -37,7 +37,7 @@ import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 
 import java.io.File;
 import java.io.IOException;

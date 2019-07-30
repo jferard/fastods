@@ -22,9 +22,10 @@
  */
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class TableCellStyleTest {
     @Test
     public final void testAllBorders() throws IOException {
         final TableCellStyle tcs = TableCellStyle.builder("test")
-                .borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
+                .borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE)
                 .build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\">" +
@@ -62,12 +63,12 @@ public class TableCellStyleTest {
     @Test
     public final void testBorders() throws IOException {
         final TableCellStyle tcs = TableCellStyle.builder("test")
-                .borderTop(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderAttribute.Style.DOUBLE)
-                .borderRight(SimpleLength.pt(2.0), SimpleColor.BEIGE, BorderAttribute.Style.SOLID)
+                .borderTop(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE)
+                .borderRight(SimpleLength.pt(2.0), SimpleColor.BEIGE, BorderStyle.SOLID)
                 .borderBottom(SimpleLength.pt(3.0), SimpleColor.CADETBLUE,
-                        BorderAttribute.Style.DOUBLE)
+                        BorderStyle.DOUBLE)
                 .borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE,
-                        BorderAttribute.Style.DOUBLE).build();
+                        BorderStyle.DOUBLE).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\">" +
                 "<style:table-cell-properties fo:border-bottom=\"3pt double #5f9ea0\" " +

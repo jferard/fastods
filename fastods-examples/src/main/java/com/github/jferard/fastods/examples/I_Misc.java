@@ -33,12 +33,9 @@ import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.tool.MacroHelper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
-import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.FilterEnumerate;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
 
@@ -84,17 +81,16 @@ class I_Misc {
         // In practice, you have to give the name of the file at the writer creation:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
         final NamedOdsFileWriter writer = odsFactory
-                .createWriter(new File("generated_files", "h_named_advanced.ods"));
+                .createWriter(new File("generated_files", "i_named_misc.ods"));
 
         // Then, get the document and the tables as usual.
         final NamedOdsDocument document = writer.document();
-        final Table table = document.addTable("advanced");
 
         // You have to register all the styles now:
-
         final TableCellStyle boldCellStyle = TableCellStyle.builder("cell").fontWeightBold()
                 .fontSize(SimpleLength.pt(24)).build();
         document.addContentStyle(boldCellStyle);
+        document.freezeStyles();
         //
         // And, if necessary:
         //
@@ -106,6 +102,8 @@ class I_Misc {
         //     document.addContentStyle(aTextStyle);
         //
         // An now, you can fill the Spreadsheet as usual.
+        final Table table = document.addTable("advanced");
+
         final TableCellWalker walker = table.getWalker();
         walker.setStringValue("A huge document");
         walker.setStyle(boldCellStyle);
@@ -121,10 +119,10 @@ class I_Misc {
      * @throws SQLException in something goes wrong with the local database
      */
     static void example2() throws IOException, SQLException {
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
-        final Table table = document.addTable("advanced");
+        final Table table = document.addTable("rs");
         final TableCellWalker walker = table.getWalker();
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Writing a ResultSet to the Spreadsheet
@@ -242,6 +240,6 @@ class I_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "h_advanced_rs.ods"));
+        writer.saveAs(new File("generated_files", "i_misc_rs.ods"));
     }
 }

@@ -23,10 +23,9 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -90,7 +89,7 @@ public class TableRowStyle implements FontFaceContainerStyle {
         if (this.optimalHeight) {
             util.appendAttribute(appendable, "style:use-optimal-row-width", this.optimalHeight);
         } else if (this.rowHeight.isNotNull()) {
-            util.appendAttribute(appendable, "style:row-height", this.rowHeight.toString());
+            util.appendAttribute(appendable, "style:row-height", this.rowHeight);
         }
         util.appendAttribute(appendable, "fo:break-before", "auto");
         util.appendAttribute(appendable, "style:use-optimal-row-height", "true");

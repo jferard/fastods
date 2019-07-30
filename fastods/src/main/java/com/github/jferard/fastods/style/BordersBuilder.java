@@ -23,9 +23,10 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.BorderAttribute;
+import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.Length;
 
 /**
  * The builder class for borders.
@@ -59,7 +60,7 @@ public class BordersBuilder {
      * @return this for fluent style
      */
     public BordersBuilder all(final Length size, final Color color,
-                              final BorderAttribute.Style style) {
+                              final BorderStyle style) {
         return this.all(new BorderAttribute(size, color, style));
     }
 
@@ -83,7 +84,7 @@ public class BordersBuilder {
      * @return this for fluent style
      */
     public BordersBuilder bottom(final Length size, final Color color,
-                                 final BorderAttribute.Style style) {
+                                 final BorderStyle style) {
         return this.bottom(new BorderAttribute(size, color, style));
     }
 
@@ -117,7 +118,7 @@ public class BordersBuilder {
      * @return this for fluent style
      */
     public BordersBuilder left(final Length size, final Color color,
-                               final BorderAttribute.Style style) {
+                               final BorderStyle style) {
         return this.left(new BorderAttribute(size, color, style));
     }
 
@@ -141,7 +142,7 @@ public class BordersBuilder {
      * @return this for fluent style
      */
     public BordersBuilder right(final Length size, final Color color,
-                                final BorderAttribute.Style style) {
+                                final BorderStyle style) {
         return this.right(new BorderAttribute(size, color, style));
     }
 
@@ -165,7 +166,7 @@ public class BordersBuilder {
      * @return this for fluent style
      */
     public BordersBuilder top(final Length size, final Color color,
-                              final BorderAttribute.Style style) {
+                              final BorderStyle style) {
         return this.top(new BorderAttribute(size, color, style));
     }
 }

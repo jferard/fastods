@@ -22,7 +22,7 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;

@@ -21,7 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.attribute;
 
 /**
  * The Color class provides access to standard LibreOffice colors in hex format.
@@ -772,7 +772,7 @@ public enum SimpleColor implements Color {
     }
 
     @Override
-    public String hexValue() {
+    public String getValue() {
         return this.hexValue;
     }
 }

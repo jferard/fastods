@@ -215,7 +215,7 @@ public class TableRowImpl implements TableRow {
     }
 
     @Override
-    public void setFormat(final DataStyles format) {
+    public void setRowFormat(final DataStyles format) {
         this.dataStyles = format;
     }
 

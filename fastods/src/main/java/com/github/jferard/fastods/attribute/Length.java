@@ -21,14 +21,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.attribute;
 
 /**
  * A blank interface.
  *
  * @author Julien Férard
  */
-public interface Length {
+public interface Length extends AttributeValue {
     /**
      * For double comparison. d1 == d2 iff abs(d1-d2) < MAX_DELTA.
      */
@@ -45,6 +45,11 @@ public interface Length {
 
         @Override
         public String toString() {
+            return this.getValue();
+        }
+
+        @Override
+        public String getValue() {
             return "0cm";
         }
     };

@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.SimpleColor;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -76,7 +76,7 @@ public final class ColorHelper {
     ColorHelper() {
         this.colorByHexValue = new HashMap<String, Color>();
         for (final Color c : SimpleColor.values()) {
-            this.colorByHexValue.put(c.hexValue(), c);
+            this.colorByHexValue.put(c.getValue(), c);
         }
     }
 
@@ -121,7 +121,7 @@ public final class ColorHelper {
         if (color == null) {
             color = new Color() {
                 @Override
-                public String hexValue() {
+                public String getValue() {
                     return hv;
                 }
             };

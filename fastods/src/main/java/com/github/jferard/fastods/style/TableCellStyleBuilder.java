@@ -23,11 +23,15 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Color;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.CellAlign;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.BorderAttribute;
+import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.VerticalAlign;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.util.Angle;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Angle;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
@@ -43,8 +47,8 @@ public class TableCellStyleBuilder
     private Color backgroundColor;
     private DataStyle dataStyle;
     // true
-    private TableCellStyle.Align textAlign; // 'center','end','start','justify'
-    private TableCellStyle.VerticalAlign verticalAlign; // 'middle', 'bottom',
+    private CellAlign textAlign; // 'center','end','start','justify'
+    private VerticalAlign verticalAlign; // 'middle', 'bottom',
     private Angle textRotating;
     // 'top'
     private boolean wrap; // No line wrap when false, line wrap when
@@ -99,7 +103,7 @@ public class TableCellStyleBuilder
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderAll(final Length size, final Color borderColor,
-                                           final BorderAttribute.Style style) {
+                                           final BorderStyle style) {
         final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
         this.bordersBuilder.all(bs);
         return this;
@@ -115,7 +119,7 @@ public class TableCellStyleBuilder
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderBottom(final Length size, final Color borderColor,
-                                              final BorderAttribute.Style style) {
+                                              final BorderStyle style) {
         final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
         this.bordersBuilder.bottom(bs);
         return this;
@@ -131,7 +135,7 @@ public class TableCellStyleBuilder
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderLeft(final Length size, final Color borderColor,
-                                            final BorderAttribute.Style style) {
+                                            final BorderStyle style) {
         final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
         this.bordersBuilder.left(bs);
         return this;
@@ -147,7 +151,7 @@ public class TableCellStyleBuilder
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderRight(final Length size, final Color borderColor,
-                                             final BorderAttribute.Style style) {
+                                             final BorderStyle style) {
         final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
         this.bordersBuilder.right(bs);
         return this;
@@ -163,7 +167,7 @@ public class TableCellStyleBuilder
      * @return this for fluent style
      */
     public TableCellStyleBuilder borderTop(final Length size, final Color borderColor,
-                                           final BorderAttribute.Style style) {
+                                           final BorderStyle style) {
         final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
         this.bordersBuilder.top(bs);
         return this;
@@ -403,7 +407,7 @@ public class TableCellStyleBuilder
      * @param align - The text alignment flag,
      * @return this for fluent style
      */
-    public TableCellStyleBuilder textAlign(final TableCellStyle.Align align) {
+    public TableCellStyleBuilder textAlign(final CellAlign align) {
         this.textAlign = align;
         return this;
     }
@@ -414,7 +418,7 @@ public class TableCellStyleBuilder
      * @param align - The vertical alignment flag
      * @return this for fluent style
      */
-    public TableCellStyleBuilder verticalAlign(final TableCellStyle.VerticalAlign align) {
+    public TableCellStyleBuilder verticalAlign(final VerticalAlign align) {
         this.verticalAlign = align;
         return this;
     }

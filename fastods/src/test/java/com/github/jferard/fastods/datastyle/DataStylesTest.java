@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.TableCell;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,8 +42,8 @@ public class DataStylesTest {
 
     @Test
     public void testGetAll() {
-        for (final TableCell.Type type : TableCell.Type.values()) {
-            if (type == TableCell.Type.STRING || type == TableCell.Type.VOID) {
+        for (final CellType type : CellType.values()) {
+            if (type == CellType.STRING || type == CellType.VOID) {
                 Assert.assertNull(this.ds.getDataStyle(type));
             } else {
                 Assert.assertNotNull(this.ds.getDataStyle(type));
@@ -53,47 +53,47 @@ public class DataStylesTest {
 
     @Test
     public void testGetString() {
-        Assert.assertNull(this.ds.getDataStyle(TableCell.Type.STRING));
+        Assert.assertNull(this.ds.getDataStyle(CellType.STRING));
     }
 
     @Test
     public void testGetVoid() {
-        Assert.assertNull(this.ds.getDataStyle(TableCell.Type.VOID));
+        Assert.assertNull(this.ds.getDataStyle(CellType.VOID));
     }
 
 
     @Test
     public void testGetBoolean() {
         Assert.assertEquals(this.ds.getBooleanDataStyle(),
-                this.ds.getDataStyle(TableCell.Type.BOOLEAN));
+                this.ds.getDataStyle(CellType.BOOLEAN));
     }
 
     @Test
     public void testGetCurrency() {
         Assert.assertEquals(this.ds.getCurrencyDataStyle(),
-                this.ds.getDataStyle(TableCell.Type.CURRENCY));
+                this.ds.getDataStyle(CellType.CURRENCY));
     }
 
     @Test
     public void testGetDate() {
-        Assert.assertEquals(this.ds.getDateDataStyle(), this.ds.getDataStyle(TableCell.Type.DATE));
+        Assert.assertEquals(this.ds.getDateDataStyle(), this.ds.getDataStyle(CellType.DATE));
     }
 
     @Test
     public void testGetFloat() {
         Assert.assertEquals(this.ds.getFloatDataStyle(),
-                this.ds.getDataStyle(TableCell.Type.FLOAT));
+                this.ds.getDataStyle(CellType.FLOAT));
     }
 
     @Test
     public void testGetPercentage() {
         Assert.assertEquals(this.ds.getPercentageDataStyle(),
-                this.ds.getDataStyle(TableCell.Type.PERCENTAGE));
+                this.ds.getDataStyle(CellType.PERCENTAGE));
     }
 
     @Test
     public void testGetTime() {
-        Assert.assertEquals(this.ds.getTimeDataStyle(), this.ds.getDataStyle(TableCell.Type.TIME));
+        Assert.assertEquals(this.ds.getTimeDataStyle(), this.ds.getDataStyle(CellType.TIME));
     }
 
     @Test

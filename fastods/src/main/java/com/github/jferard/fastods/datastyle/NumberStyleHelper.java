@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -143,7 +143,7 @@ class NumberStyleHelper implements NumberStyle {
     private void appendStyleColor(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<style:text-properties");
-        util.appendAttribute(appendable, "fo:color", this.negativeValueColor.hexValue());
+        util.appendAttribute(appendable, "fo:color", this.negativeValueColor);
         appendable.append("/>");
     }
 

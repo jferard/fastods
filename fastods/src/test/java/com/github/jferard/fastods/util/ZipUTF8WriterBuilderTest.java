@@ -121,8 +121,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putNextEntry(new ZipEntry("a"));
         writer.append(
                 "some long text that can be zipped some long text that can be zipped some long " +
-                        "text that can be " +
-                        "zipped some long text that can be zipped ");
+                        "text that can be " + "zipped some long text that can be zipped ");
         writer.close();
         Assert.assertEquals(121, this.out.size());
     }

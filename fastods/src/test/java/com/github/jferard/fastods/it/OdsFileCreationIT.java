@@ -23,16 +23,17 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
-import com.github.jferard.fastods.style.BorderAttribute;
+import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -40,7 +41,7 @@ import com.github.jferard.fastods.testlib.Fibonacci;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -358,14 +359,14 @@ public class OdsFileCreationIT {
         this.createStyles();
         this.rowStyle.addToContentStyles(document);
         this.columnStyle.addToContentStyles(document);
-        document.addCellStyle(this.tcls, TableCell.Type.FLOAT, TableCell.Type.BOOLEAN);
-        document.addCellStyle(this.tcs0, TableCell.Type.FLOAT);
-        document.addCellStyle(this.tcs1, TableCell.Type.FLOAT);
-        document.addCellStyle(this.tcs2, TableCell.Type.FLOAT);
-        document.addCellStyle(this.tcs3, TableCell.Type.FLOAT);
-        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN,
-                TableCell.Type.CURRENCY, TableCell.Type.FLOAT, TableCell.Type.DATE,
-                TableCell.Type.PERCENTAGE, TableCell.Type.TIME);
+        document.addCellStyle(this.tcls, CellType.FLOAT, CellType.BOOLEAN);
+        document.addCellStyle(this.tcs0, CellType.FLOAT);
+        document.addCellStyle(this.tcs1, CellType.FLOAT);
+        document.addCellStyle(this.tcs2, CellType.FLOAT);
+        document.addCellStyle(this.tcs3, CellType.FLOAT);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.BOOLEAN,
+                CellType.CURRENCY, CellType.FLOAT, CellType.DATE,
+                CellType.PERCENTAGE, CellType.TIME);
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.fillDocument(document, n);

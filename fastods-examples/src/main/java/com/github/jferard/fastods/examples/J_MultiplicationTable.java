@@ -31,6 +31,8 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.Text;
+import com.github.jferard.fastods.attribute.CellAlign;
+import com.github.jferard.fastods.attribute.PageCentering;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -38,7 +40,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
@@ -71,7 +73,7 @@ class J_MultiplicationTable {
         // to ensure a
         // nice alignment of the operations:
         final TableCellStyle tableCellStyle = TableCellStyle.builder("c2")
-                .fontName(LOFonts.LIBERATION_MONO).textAlign(TableCellStyle.Align.CENTER)
+                .fontName(LOFonts.LIBERATION_MONO).textAlign(CellAlign.CENTER)
                 .fontSize(SimpleLength.pt(10)).build();
 
         // All columns will have the same format:
@@ -142,7 +144,7 @@ class J_MultiplicationTable {
         // Let's gather the footer and the header in a page style. We center the table and set a
         // zoom:
         final PageStyle pageStyle = PageStyle.builder("page").header(header).footer(footer)
-                .printOrientationHorizontal().scaleTo(125).centering(PageStyle.Centering.BOTH)
+                .printOrientationHorizontal().scaleTo(125).centering(PageCentering.BOTH)
                 .build();
 
         // We set set the style of the current table.

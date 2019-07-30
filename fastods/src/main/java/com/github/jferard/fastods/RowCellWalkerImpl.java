@@ -25,7 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 
 import java.io.IOException;
 import java.util.Calendar;

@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.datastyle.CurrencyStyle.SymbolPosition;
 
 import java.util.Currency;

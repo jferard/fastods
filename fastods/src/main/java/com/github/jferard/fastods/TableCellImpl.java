@@ -23,11 +23,12 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -73,7 +74,7 @@ public class TableCellImpl implements TableCell {
 	private String formula;
 	*/
     private TableCellStyle style;
-    private TableCell.Type type;
+    private CellType type;
     private TableColdCell coldCell;
     private String value;
 
@@ -125,9 +126,9 @@ public class TableCellImpl implements TableCell {
         }
 
         if (this.type != null) {
-            util.appendAttribute(appendable, "office:value-type", this.type.getValueAttribute());
+            util.appendAttribute(appendable, "office:value-type", this.type);
             util.appendEAttribute(appendable, this.type.getValueType(), this.value);
-            if (this.type == TableCell.Type.CURRENCY) {
+            if (this.type == CellType.CURRENCY) {
                 final String currency = this.getCurrency();
                 util.appendEAttribute(appendable, "office:currency", currency);
             }
@@ -197,7 +198,7 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setBooleanValue(final boolean value) {
         this.value = value ? "true" : "false";
-        this.type = TableCell.Type.BOOLEAN;
+        this.type = CellType.BOOLEAN;
         this.setImplicitDataStyle(this.dataStyles.getBooleanDataStyle());
     }
 
@@ -218,7 +219,7 @@ public class TableCellImpl implements TableCell {
 
     private void setCurrencyValue(final String valueAsString, final String currency) {
         this.value = valueAsString;
-        this.type = TableCell.Type.CURRENCY;
+        this.type = CellType.CURRENCY;
         this.setImplicitDataStyle(this.dataStyles.getCurrencyDataStyle());
 
         this.ensureColdCell();
@@ -303,13 +304,13 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setDateValue(final Date value) {
         this.value = TableCellImpl.DATE_VALUE_FORMAT.format(value);
-        this.type = TableCell.Type.DATE;
+        this.type = CellType.DATE;
         this.setImplicitDataStyle(this.dataStyles.getDateDataStyle());
     }
 
     private void setFloatValue(final String valueAsString) {
         this.value = valueAsString;
-        this.type = TableCell.Type.FLOAT;
+        this.type = CellType.FLOAT;
         this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
     }
 
@@ -335,7 +336,7 @@ public class TableCellImpl implements TableCell {
 
     private void setPercentageValue(final String valueAsString) {
         this.value = valueAsString;
-        this.type = TableCell.Type.PERCENTAGE;
+        this.type = CellType.PERCENTAGE;
         this.setImplicitDataStyle(this.dataStyles.getPercentageDataStyle());
     }
 
@@ -352,7 +353,7 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setStringValue(final String value) {
         this.value = value;
-        this.type = TableCell.Type.STRING;
+        this.type = CellType.STRING;
     }
 
     @Override
@@ -382,7 +383,7 @@ public class TableCellImpl implements TableCell {
         this.ensureColdCell();
         this.coldCell.setText(text);
         this.value = "";
-        this.type = TableCell.Type.STRING;
+        this.type = CellType.STRING;
         text.addEmbeddedStylesFromCell(this.stylesContainer);
     }
 
@@ -400,7 +401,7 @@ public class TableCellImpl implements TableCell {
             this.value = this.xmlUtil
                     .formatTimeInterval(0, 0, 0, 0, 0, (double) timeInMillis / 1000);
         }
-        this.type = TableCell.Type.TIME;
+        this.type = CellType.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }
 
@@ -408,7 +409,7 @@ public class TableCellImpl implements TableCell {
     public void setTimeValue(final long years, final long months, final long days, final long hours,
                              final long minutes, final double seconds) {
         this.value = this.xmlUtil.formatTimeInterval(years, months, days, hours, minutes, seconds);
-        this.type = TableCell.Type.TIME;
+        this.type = CellType.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }
 
@@ -417,7 +418,7 @@ public class TableCellImpl implements TableCell {
                                 final long hours, final long minutes, final double seconds) {
         this.value = this.xmlUtil
                 .formatNegTimeInterval(years, months, days, hours, minutes, seconds);
-        this.type = TableCell.Type.TIME;
+        this.type = CellType.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }
 
@@ -437,7 +438,7 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setVoidValue() {
         this.value = "";
-        this.type = TableCell.Type.VOID;
+        this.type = CellType.VOID;
     }
 
     @Override

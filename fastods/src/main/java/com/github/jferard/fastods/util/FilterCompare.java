@@ -23,8 +23,10 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.attribute.FilterOperator;
+import com.github.jferard.fastods.attribute.FilterType;
+
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * 9.5.5<table:filter-condition>
@@ -33,9 +35,9 @@ import java.util.Locale;
  */
 public class FilterCompare implements Filter {
     private final int colIndex;
-    private final FilterCompare.Operator operator;
+    private final FilterOperator operator;
     private final String value;
-    private final FilterCompare.Type type;
+    private final FilterType type;
 
     /**
      * @param colIndex the index
@@ -43,8 +45,8 @@ public class FilterCompare implements Filter {
      * @param value    the value
      * @param type     the type
      */
-    FilterCompare(final int colIndex, final FilterCompare.Operator operator, final String value,
-                  final FilterCompare.Type type) {
+    FilterCompare(final int colIndex, final FilterOperator operator, final String value,
+                  final FilterType type) {
         this.colIndex = colIndex;
         this.operator = operator;
         this.value = value;
@@ -55,143 +57,11 @@ public class FilterCompare implements Filter {
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<table:filter-condition");
-        util.appendAttribute(appendable, "table:operator", this.operator.toString());
+        util.appendAttribute(appendable, "table:operator", this.operator);
         util.appendAttribute(appendable, "table:value", this.value);
-        util.appendAttribute(appendable, "table:data-type", this.type.toString().toLowerCase(Locale.US));
+        util.appendAttribute(appendable, "table:data-type", this.type);
         util.appendAttribute(appendable, "table:field-number", this.colIndex);
         appendable.append("/>");
     }
 
-    /**
-     * 19.684table:operator
-     */
-    public enum Operator {
-        /**
-         * matches
-         */
-        MATCHES("match"),
-
-        /**
-         * does not match
-         */
-        N_MATCH("!match"),
-
-        /**
-         * Equal to
-         */
-        EQ("="),
-
-        /**
-         * Not equal to
-         */
-        N_EQ("!="),
-
-        /**
-         * Less than
-         */
-        LT("<"),
-
-        /**
-         * Greater than
-         */
-        GT(">"),
-
-        /**
-         * Less than or equal to
-         */
-        LTE("<="),
-
-        /**
-         * Greater than or equal to
-         */
-        GTE(">="),
-
-        /**
-         * begins with
-         */
-        BEGINS("begins"),
-
-        /**
-         * contains
-         */
-        CONTAINS("contains"),
-
-        /**
-         * does not contain
-         */
-        N_CONTAINS("!contains"),
-
-        /**
-         * ends with
-         */
-        ENDS("ends"),
-
-        /**
-         * does not begin with
-         */
-        N_BEGINS("!begins"),
-
-        /**
-         * does not end with
-         */
-        N_ENDS("!ends"),
-
-        /**
-         * like bottom values, except that the office:value attribute specifies the number of
-         * cells for which the condition is true as a percentage
-         */
-        BOTTOM_PERCENT("bottom percent"),
-
-        /**
-         * true for the n cells that have the smallest value, where n is the value of the
-         * office:value attribute
-         */
-        BOTTOM_VALUES("bottom values"),
-
-        /**
-         * true for empty cells
-         */
-        EMPTY("empty"),
-
-        /**
-         * true for non-empty cells
-         */
-        N_EMPTY("!empty"),
-
-        /**
-         * like bottom percent, but for the largest values
-         */
-        TOP_PERCENT("top percent"),
-
-        /**
-         * like bottom values, but for the largest values
-         */
-        TOP_VALUES("top values");
-
-        private final String operatorValue;
-
-        Operator(final String operatorValue) {
-            this.operatorValue = operatorValue;
-        }
-
-        @Override
-        public String toString() {
-            return this.operatorValue;
-        }
-
-    }
-
-    /**
-     * 19.611.2<table:filter-condition>
-     */
-    public enum Type {
-        /**
-         * comparison as numeric values
-         */
-        NUMBER,
-        /**
-         * comparison as text values
-         */
-        TEXT
-    }
 }

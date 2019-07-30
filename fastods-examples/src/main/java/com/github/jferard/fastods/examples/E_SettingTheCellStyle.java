@@ -26,19 +26,19 @@ package com.github.jferard.fastods.examples;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.attribute.BorderStyle;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DateTimeStyleFormat;
 import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
-import com.github.jferard.fastods.style.BorderAttribute;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.util.Angle;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.Angle;
+import com.github.jferard.fastods.attribute.SimpleLength;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,7 +112,7 @@ class E_SettingTheCellStyle {
         // You can explore the `TableCellStyle` to create the style you need. A last example:
         final TableCellStyle borderStyle = TableCellStyle.builder("border")
                 .fontName(LOFonts.DEJAVU_SANS).fontSize(SimpleLength.pt(24))
-                .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderAttribute.Style.OUTSET)
+                .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderStyle.OUTSET)
                 .build();
 
         walker.next();

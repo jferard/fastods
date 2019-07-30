@@ -23,8 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.util.EqualityUtil;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 
 /**
  * A builder for margins

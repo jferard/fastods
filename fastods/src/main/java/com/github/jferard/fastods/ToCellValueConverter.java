@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
+
 /**
  * The value of a cell
  *
@@ -45,5 +47,5 @@ public interface ToCellValueConverter {
      * @return the CellValue
      * @throws FastOdsException if the cast was not possible
      */
-    CellValue from(final TableCell.Type type, final Object o) throws FastOdsException;
+    CellValue from(final CellType type, final Object o) throws FastOdsException;
 }

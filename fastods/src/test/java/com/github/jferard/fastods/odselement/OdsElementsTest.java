@@ -22,10 +22,10 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.PageStyle;
@@ -172,11 +172,11 @@ public class OdsElementsTest {
     public void testAddChildCellStyle() {
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING))
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING))
                 .andReturn(null);
 
         PowerMock.replayAll();
-        this.oe.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING);
+        this.oe.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
 
         PowerMock.verifyAll();
     }

@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TagParameters;
+import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 

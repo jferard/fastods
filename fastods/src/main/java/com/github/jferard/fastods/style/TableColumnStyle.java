@@ -23,10 +23,9 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -94,7 +93,7 @@ public class TableColumnStyle implements FontFaceContainerStyle {
         if (this.optimalWidth) {
             util.appendAttribute(appendable, "style:use-optimal-column-width", this.optimalWidth);
         } else if (this.columnWidth.isNotNull()) {
-            util.appendAttribute(appendable, "style:column-width", this.columnWidth.toString());
+            util.appendAttribute(appendable, "style:column-width", this.columnWidth);
         }
         appendable.append("/></style:style>");
     }

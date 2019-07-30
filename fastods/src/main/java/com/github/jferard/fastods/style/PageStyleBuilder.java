@@ -23,15 +23,16 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSection;
-import com.github.jferard.fastods.SimpleColor;
-import com.github.jferard.fastods.style.PageStyle.PrintOrientation;
-import com.github.jferard.fastods.style.PageStyle.WritingMode;
-import com.github.jferard.fastods.util.Length;
-import com.github.jferard.fastods.util.SimpleLength;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.PageCentering;
+import com.github.jferard.fastods.attribute.PagePrintOrientation;
+import com.github.jferard.fastods.attribute.PageWritingMode;
+import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**
@@ -49,14 +50,14 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     private Length pageWidth;
     private PaperFormat paperFormat;
 
-    private PrintOrientation printOrientation;
-    private WritingMode writingMode;
+    private PagePrintOrientation printOrientation;
+    private PageWritingMode writingMode;
     private MasterPageStyle masterPageStyle;
     private PageLayoutStyle pageLayoutStyle;
     private boolean hidden;
     private int scaleTo;
     private int scaleToPages;
-    private PageStyle.Centering centering;
+    private PageCentering centering;
 
     /**
      * Create a new page style builder.
@@ -83,7 +84,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
         this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
         this.scaleTo = 100;
         this.scaleToPages = 0;
-        this.centering = PageStyle.Centering.NONE;
+        this.centering = PageCentering.NONE;
 
         final TextStyle noneStyle = TextProperties.builder().buildHiddenStyle("none");
         this.header = PageSection.simpleHeader("", noneStyle);
@@ -277,7 +278,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
             this.pageWidth = this.paperFormat.getHeight();
             this.pageHeight = this.paperFormat.getWidth();
         }
-        this.printOrientation = PageStyle.PrintOrientation.HORIZONTAL;
+        this.printOrientation = PagePrintOrientation.HORIZONTAL;
         return this;
     }
 
@@ -289,7 +290,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     public PageStyleBuilder printOrientationVertical() {
         this.pageWidth = this.paperFormat.getWidth();
         this.pageHeight = this.paperFormat.getHeight();
-        this.printOrientation = PageStyle.PrintOrientation.VERTICAL;
+        this.printOrientation = PagePrintOrientation.VERTICAL;
         return this;
     }
 
@@ -300,7 +301,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
      * @param writingMode the writing mode
      * @return this for fluent style
      */
-    public PageStyleBuilder writingMode(final WritingMode writingMode) {
+    public PageStyleBuilder writingMode(final PageWritingMode writingMode) {
         if (writingMode == null) {
             throw new IllegalArgumentException();
         }
@@ -344,7 +345,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
      *                  the page"
      * @return this for fluent styles
      */
-    public PageStyleBuilder centering(final PageStyle.Centering centering) {
+    public PageStyleBuilder centering(final PageCentering centering) {
         this.centering = centering;
         return this;
     }

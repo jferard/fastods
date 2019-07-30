@@ -29,11 +29,11 @@ import org.junit.Test;
 public class ColorTest {
     @Test
     public final void test() {
-        Assert.assertEquals("#ffffff", ColorHelper.fromRGB(255, 255, 255).hexValue());
-        Assert.assertEquals("#ffffff", ColorHelper.fromRGB(2550, 2550, 2550).hexValue());
-        Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).hexValue());
-        Assert.assertEquals("#000000", ColorHelper.fromRGB(-10, -10, -10).hexValue());
-        Assert.assertEquals("#174b81", ColorHelper.fromRGB(23, 75, 129).hexValue());
+        Assert.assertEquals("#ffffff", ColorHelper.fromRGB(255, 255, 255).getValue());
+        Assert.assertEquals("#ffffff", ColorHelper.fromRGB(2550, 2550, 2550).getValue());
+        Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).getValue());
+        Assert.assertEquals("#000000", ColorHelper.fromRGB(-10, -10, -10).getValue());
+        Assert.assertEquals("#174b81", ColorHelper.fromRGB(23, 75, 129).getValue());
     }
 
 }

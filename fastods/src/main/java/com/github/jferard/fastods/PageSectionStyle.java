@@ -25,7 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.PageSection.Type;
 import com.github.jferard.fastods.style.Margins;
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -91,7 +91,7 @@ class PageSectionStyle {
             throws IOException {
         appendable.append("<style:").append(pageSectionType.getTypeName()).append("-style>");
         appendable.append("<style:header-footer-properties");
-        util.appendAttribute(appendable, "fo:min-height", this.minHeight.toString());
+        util.appendAttribute(appendable, "fo:min-height", this.minHeight);
         this.margins.appendXMLContent(util, appendable);
         appendable.append("/></style:").append(pageSectionType.getTypeName()).append("-style>");
     }

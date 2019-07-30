@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -74,21 +74,21 @@ public class ContentElementTest {
 
         PowerMock.replayAll();
         Assert.assertEquals(style, this.content
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.BOOLEAN));
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.BOOLEAN));
     }
 
     @Test
     public void testAddChildCellStyleOfTypeString() {
         PowerMock.replayAll();
         Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE, this.content
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.STRING));
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING));
     }
 
     @Test
     public void testAddChildCellStyleOfTypeVoid() {
         PowerMock.replayAll();
         Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE, this.content
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.VOID));
+                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.VOID));
     }
 
     @Test

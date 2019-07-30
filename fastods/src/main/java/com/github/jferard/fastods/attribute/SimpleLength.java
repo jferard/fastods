@@ -21,7 +21,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.attribute;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -137,11 +137,13 @@ public class SimpleLength implements Length {
         return Double.valueOf(this.value).hashCode() * 31 + this.unit.hashCode();
     }
 
-    /**
-     * @return a representation of this unit
-     */
     @Override
     public String toString() {
+        return this.getValue();
+    }
+
+    @Override
+    public String getValue() {
         return new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US)).format(this.value) +
                 this.unit.toString().toLowerCase(Locale.US);
     }

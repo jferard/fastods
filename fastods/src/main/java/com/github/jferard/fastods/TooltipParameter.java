@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.Length;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -53,8 +53,8 @@ public class TooltipParameter implements TagParameters {
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
         util.appendAttribute(appendable, "office:display", this.visible ? "true" : "false");
-        util.appendAttribute(appendable, "svg:width", this.width.toString());
-        util.appendAttribute(appendable, "svg:height", this.height.toString());
+        util.appendAttribute(appendable, "svg:width", this.width);
+        util.appendAttribute(appendable, "svg:height", this.height);
         // weird patch for LO bug
         util.appendAttribute(appendable, "svg:x", "");
     }

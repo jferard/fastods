@@ -23,9 +23,8 @@
 
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.StringValue;
-import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
 import org.easymock.EasyMock;
@@ -51,7 +50,7 @@ public class ResultSetDataWrapperBuilderTest {
 
         final ResultSetDataWrapper b = ResultSetDataWrapper.builder(rs).converter(converter)
                 .charset(Charset.forName("US-ASCII")).currency("€").nullValue(new StringValue(""))
-                .noHeaderStyle().noAutoFilter().typeValue(0, TableCell.Type.VOID).max(10)
+                .noHeaderStyle().noAutoFilter().typeValue(0, CellType.VOID).max(10)
                 .headerStyle(TableCellStyle.builder("dummy").build()).logger(logger).build();
 
         PowerMock.resetAll();

@@ -24,16 +24,16 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.Color;
+import com.github.jferard.fastods.attribute.CellType;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
-import com.github.jferard.fastods.odselement.ScriptEvent;
+import com.github.jferard.fastods.attribute.ScriptEvent;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
@@ -108,7 +108,7 @@ public class ReadmeExampleIT {
                 .getDocumentStyle(document, GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
         Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
         final Node properties = OdfToolkitUtil.getFirstElement(gcs, "style:table-cell-properties");
-        Assert.assertEquals(GREEN_COLOR.hexValue(),
+        Assert.assertEquals(GREEN_COLOR.getValue(),
                 OdfToolkitUtil.getAttribute(properties, "fo:background-color"));
         for (int y = 0; y < 50; y++) {
             for (int x = 0; x < 5; x++) {
@@ -153,8 +153,8 @@ public class ReadmeExampleIT {
         final NamedOdsDocument document = writer.document();
         this.macroHelper.addRefreshMacro(document);
         document.addContentStyle(this.style);
-        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, TableCell.Type.FLOAT);
-        document.addCellStyle(this.style, TableCell.Type.FLOAT);
+        document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.FLOAT);
+        document.addCellStyle(this.style, CellType.FLOAT);
         document.addEvents(
                 ScriptEventListener.create(ScriptEvent.ON_LOAD, "Standard.FastODS.Refresh"));
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors

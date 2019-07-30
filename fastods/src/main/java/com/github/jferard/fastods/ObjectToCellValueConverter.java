@@ -23,6 +23,8 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,7 +72,7 @@ public class ObjectToCellValueConverter implements ToCellValueConverter {
     }
 
     @Override
-    public CellValue from(final TableCell.Type type, final Object o) throws FastOdsException {
+    public CellValue from(final CellType type, final Object o) throws FastOdsException {
         switch (type) {
             case BOOLEAN:
                 return BooleanValue.from(o);

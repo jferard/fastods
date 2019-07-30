@@ -23,7 +23,6 @@
 package com.github.jferard.fastods.util;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 

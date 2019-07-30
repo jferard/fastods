@@ -28,6 +28,8 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.attribute.FieldOrientation;
+import com.github.jferard.fastods.attribute.PilotStandardFunction;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.tool.MacroHelper;
 import com.github.jferard.fastods.util.AutoFilter;
@@ -252,18 +254,20 @@ class H_AutofiltersAndDataPilotTables {
                         Arrays.asList(positionUtil.toCellAddress(pilotTable, 1, 0),
                                 positionUtil.toCellAddress(pilotTable, 0, 1)))
 
-        // And some field. First, the column and row fields. The `isDataLayout` sets the orientation of the table.
-                .field(new PilotTableField("", "column", -1, true, "auto", new PilotTableLevel(true)))
-                .field(new PilotTableField("Long or short", "row", 0, false,"auto",
-                        new PilotTableLevel(false)))
+                // And some field. First, the column and row fields. The `isDataLayout` sets the
+                // orientation of the table.
+                .field(new PilotTableField("", FieldOrientation.COLUMN, -1, true,
+                        PilotStandardFunction.AUTO, new PilotTableLevel(true)))
+                .field(new PilotTableField("Long or short", FieldOrientation.ROW, 0, false,
+                        PilotStandardFunction.AUTO, new PilotTableLevel(false)))
 
-        // Then the data fields:
-                .field(new PilotTableField("Length of type", "data", 0, false,"count",
-                        new PilotTableLevel(false)))
-                .field(new PilotTableField("Length of type", "data", 0,false, "sum",
-                        new PilotTableLevel(false)))
-                .field(new PilotTableField("Length of type", "data", 0, false,"average",
-                        new PilotTableLevel(false))).build();
+                // Then the data fields:
+                .field(new PilotTableField("Length of type", FieldOrientation.DATA, 0, false,
+                        PilotStandardFunction.COUNT, new PilotTableLevel(false)))
+                .field(new PilotTableField("Length of type", FieldOrientation.DATA, 0, false,
+                        PilotStandardFunction.SUM, new PilotTableLevel(false)))
+                .field(new PilotTableField("Length of type", FieldOrientation.DATA, 0, false,
+                        PilotStandardFunction.AVERAGE, new PilotTableLevel(false))).build();
 
         // Add the Data Pilot table to the document
         document.addPilotTable(pilot);
