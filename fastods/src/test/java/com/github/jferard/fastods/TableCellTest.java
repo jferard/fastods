@@ -813,6 +813,50 @@ public class TableCellTest {
     }
 
     @Test
+    public final void testSetMatrix() throws IOException {
+        final TableColdCell cold = PowerMock.createMock(TableColdCell.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(cold);
+        cold.setFormula("f");
+        cold.setMatrixRowsSpanned(1);
+        cold.setMatrixColumnsSpanned(1);
+        EasyMock.expect(cold.isCovered()).andReturn(false);
+        cold.appendXMLToTable(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+
+        PowerMock.replayAll();
+        this.cell.setMatrixFormula("f");
+        final String cellXML = this.getCellXML();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(
+                "<table:table-cell",
+                cellXML);
+    }
+
+    @Test
+    public final void testSetMatrixSpanned() throws IOException {
+        final TableColdCell cold = PowerMock.createMock(TableColdCell.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(this.xmlUtil)).andReturn(cold);
+        cold.setFormula("f");
+        cold.setMatrixRowsSpanned(2);
+        cold.setMatrixColumnsSpanned(3);
+        EasyMock.expect(cold.isCovered()).andReturn(true);
+        cold.appendXMLToTable(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+
+        PowerMock.replayAll();
+        this.cell.setMatrixFormula("f", 2, 3);
+        final String cellXML = this.getCellXML();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(
+                "<table:covered-table-cell",
+                cellXML);
+    }
+
+    @Test
     public void testAppendXML() throws IOException {
         PowerMock.resetAll();
         final StringBuilder sb = new StringBuilder();
