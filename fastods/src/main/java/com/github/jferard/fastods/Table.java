@@ -34,7 +34,6 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -72,27 +71,28 @@ public class Table implements NamedObject {
         final TableBuilder builder = TableBuilder
                 .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode,
                         name, rowCapacity, columnCapacity);
-        return new Table(name, contentElement, builder);
+        return new Table(name, contentElement, builder, new TableAppender(builder));
     }
 
     private final ContentElement contentElement;
     private final TableBuilder builder;
     private final TableAppender appender;
-    private String name;
+    private final String name;
 
 
     /**
      * Create an new table with a given builder
-     *
-     * @param name           the name of the table
+     *  @param name           the name of the table
      * @param contentElement the content.xml representation
      * @param builder        the builder
+     * @param tableAppender
      */
-    Table(final String name, final ContentElement contentElement, final TableBuilder builder) {
+    Table(final String name, final ContentElement contentElement, final TableBuilder builder,
+          final TableAppender tableAppender) {
         this.name = name;
         this.contentElement = contentElement;
         this.builder = builder;
-        this.appender = new TableAppender(builder);
+        this.appender = tableAppender;
     }
 
     /**

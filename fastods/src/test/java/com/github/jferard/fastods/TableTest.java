@@ -26,19 +26,21 @@ import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.ContentElement;
-import com.github.jferard.fastods.odselement.Settings;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,6 +62,9 @@ public class TableTest {
     private XMLUtil xmlUtil;
     private StringBuilder sb;
     private ContentElement ce;
+    private TableBuilder tb;
+    private Table tableWithMockBuilder;
+    private TableAppender ta;
 
     @Before
     public void setUp() {
@@ -68,11 +73,16 @@ public class TableTest {
         final PositionUtil positionUtil = new PositionUtil(new TableNameUtil());
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.table = Table
-                .create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "my_table", 10, 100,
-                        this.stc, this.ds, false);
+        this.table =
+                Table.create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "my_table", 10,
+                        100, this.stc, this.ds, false);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
+
+        this.tb = PowerMock.createMock(TableBuilder.class);
+        this.ta = PowerMock.createMock(TableAppender.class);
+
+        this.tableWithMockBuilder = new Table("test", this.ce, this.tb, this.ta);
     }
 
     @Test
@@ -199,15 +209,13 @@ public class TableTest {
 
     @Test
     public final void testMerge() throws IOException {
-        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", this.ce, tb);
-
         PowerMock.resetAll();
-        tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq(1),
-                EasyMock.eq(1), EasyMock.eq(2), EasyMock.eq(3));
+        this.tb.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
+                EasyMock.isA(TableAppender.class), EasyMock.eq(1), EasyMock.eq(1), EasyMock.eq(2),
+                EasyMock.eq(3));
 
         PowerMock.replayAll();
-        t.setCellMerge(1, 1, 2, 3);
+        this.tableWithMockBuilder.setCellMerge(1, 1, 2, 3);
 
         PowerMock.verifyAll();
     }
@@ -215,15 +223,13 @@ public class TableTest {
     @Test
     @SuppressWarnings("deprecated")
     public final void testMergePos() throws IOException, ParseException {
-        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", this.ce, tb);
-
         PowerMock.resetAll();
-        tb.setCellMerge(EasyMock.eq(t), EasyMock.isA(TableAppender.class), EasyMock.eq("A1"),
-                EasyMock.eq(2), EasyMock.eq(3));
+        this.tb.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
+                EasyMock.isA(TableAppender.class), EasyMock.eq("A1"), EasyMock.eq(2),
+                EasyMock.eq(3));
 
         PowerMock.replayAll();
-        t.setCellMerge("A1", 2, 3);
+        this.tableWithMockBuilder.setCellMerge("A1", 2, 3);
 
         PowerMock.verifyAll();
     }
@@ -246,68 +252,130 @@ public class TableTest {
 
     @Test
     public final void testColumnStyle() throws IOException {
-        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", this.ce, tb);
-
         PowerMock.resetAll();
-        EasyMock.expect(tb.getName()).andReturn("tb");
-        EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(tb.getColumnStyles())
-                .andReturn(FastFullList.<TableColumnStyle>builder().build());
-        EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
-        t.setColumnStyle(0, null);
+
+        this.ta.appendAllAvailableRows(this.xmlUtil, this.sb);
+        this.tableWithMockBuilder.setColumnStyle(0, null);
 
         PowerMock.replayAll();
-        t.flushAllAvailableRows(this.xmlUtil, this.sb);
-        t.setColumnStyle(0, null);
+        this.tableWithMockBuilder.flushAllAvailableRows(this.xmlUtil, this.sb);
+        this.tableWithMockBuilder.setColumnStyle(0, null);
 
         PowerMock.verifyAll();
+        Assert.assertEquals("", this.sb.toString());
     }
 
     @Test
     public final void testName() throws IOException {
-        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", this.ce, tb);
-
         PowerMock.resetAll();
-        EasyMock.expect(tb.getName()).andReturn("tb");
-        EasyMock.expect(tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(tb.getColumnStyles())
-                .andReturn(FastFullList.<TableColumnStyle>builder().build());
-        EasyMock.expect(tb.getTableRowsUsedSize()).andReturn(0);
+        this.ta.appendAllAvailableRows(this.xmlUtil, this.sb);
 
         PowerMock.replayAll();
-        t.flushAllAvailableRows(this.xmlUtil, this.sb);
+        this.tableWithMockBuilder.flushAllAvailableRows(this.xmlUtil, this.sb);
 
         PowerMock.verifyAll();
+        Assert.assertEquals("", this.sb.toString());
     }
 
     @Test
     public final void testConfigItem() {
-        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", this.ce, tb);
-
         PowerMock.resetAll();
-        tb.setConfigItem("item", "type", "value");
+        this.tb.setConfigItem("item", "type", "value");
 
         PowerMock.replayAll();
-        t.setConfigItem("item", "type", "value");
+        this.tableWithMockBuilder.setConfigItem("item", "type", "value");
 
         PowerMock.verifyAll();
     }
 
     @Test
     public final void testUpdateConfigItem() {
-        final TableBuilder tb = PowerMock.createMock(TableBuilder.class);
-        final Table t = new Table("test", this.ce, tb);
-
         PowerMock.resetAll();
-        tb.updateConfigItem(ZOOM_VALUE.getName(), "value");
+        this.tb.updateConfigItem(ZOOM_VALUE.getName(), "value");
 
         PowerMock.replayAll();
-        t.updateConfigItem(ZOOM_VALUE, "value");
+        this.tableWithMockBuilder.updateConfigItem(ZOOM_VALUE, "value");
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddAutoFilter() throws IOException {
+        final Capture<AutoFilter> af = EasyMock.newCapture();
+
+        PowerMock.resetAll();
+        this.ce.addAutoFilter(EasyMock.capture(af));
+
+        PowerMock.replayAll();
+        this.tableWithMockBuilder.addAutoFilter(1, 2, 3, 4);
+
+        PowerMock.verifyAll();
+        TestHelper.assertXMLEquals("<table:database-range table:name=\"this\" " +
+                "table:display-filter-buttons=\"true\" table:target-range-address=\"test" +
+                ".C2:E4\"/>", af
+                .getValue());
+    }
+
+    @Test
+    public final void testAsyncFlushBeginTable() throws IOException {
+        PowerMock.resetAll();
+        this.tb.asyncFlushBeginTable(this.ta);
+
+        PowerMock.replayAll();
+        this.tableWithMockBuilder.asyncFlushBeginTable();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAsyncFlushEndTable() throws IOException {
+        PowerMock.resetAll();
+        this.tb.asyncFlushEndTable(this.ta);
+
+        PowerMock.replayAll();
+        this.tableWithMockBuilder.asyncFlushEndTable();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFlushRemainingRowsFrom() throws IOException {
+        PowerMock.resetAll();
+        this.ta.appendRemainingRowsFrom(this.xmlUtil, this.sb, 0);
+
+        PowerMock.replayAll();
+        this.tableWithMockBuilder.flushRemainingRowsFrom(this.xmlUtil, this.sb, 0);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testGetWalker() throws IOException {
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
+        final TableCell cell = PowerMock.createMock(TableCell.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getRow(this.tableWithMockBuilder, this.ta, 0)).andReturn(row);
+        EasyMock.expect(row.getOrCreateCell(0)).andReturn(cell);
+
+        PowerMock.replayAll();
+        this.tableWithMockBuilder.getWalker();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testGetConfigEntry() {
+        final ConfigItemMapEntry entry = PowerMock.createMock(ConfigItemMapEntry.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getConfigEntry()).andReturn(entry);
+
+        PowerMock.replayAll();
+        final ConfigItemMapEntry e = this.tableWithMockBuilder.getConfigEntry();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(entry, e);
     }
 
     @Test(expected = IOException.class)

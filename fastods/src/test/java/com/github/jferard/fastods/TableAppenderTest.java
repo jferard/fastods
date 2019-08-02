@@ -43,24 +43,24 @@ public class TableAppenderTest {
     private StylesContainer stc;
     private TableAppender tableAppender;
     private XMLUtil xmlUtil;
-    private TableBuilder builder;
+    private TableBuilder tb;
 
     @Before
     public void setUp() {
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
-        this.builder = PowerMock.createMock(TableBuilder.class);
+        this.tb = PowerMock.createMock(TableBuilder.class);
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.tableAppender = new TableAppender(this.builder);
+        this.tableAppender = new TableAppender(this.tb);
         this.xmlUtil = xmlUtil;
         PowerMock.resetAll();
     }
 
     @Test
     public void appendEmptyPreambleTest() throws IOException {
-        EasyMock.expect(this.builder.getName()).andReturn("table1");
-        EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.builder.getColumnStyles())
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.<TableColumnStyle>newListWithCapacity(1));
 
         PowerMock.replayAll();
@@ -76,9 +76,9 @@ public class TableAppenderTest {
 
     @Test
     public void appendOneElementPreambleTest() throws IOException {
-        EasyMock.expect(this.builder.getName()).andReturn("table1");
-        EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.builder.getColumnStyles())
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(this.newTCS("x")));
 
         PowerMock.replayAll();
@@ -100,9 +100,9 @@ public class TableAppenderTest {
 
     @Test
     public void appendTwoElementsPreambleTest() throws IOException {
-        EasyMock.expect(this.builder.getName()).andReturn("table1");
-        EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.builder.getColumnStyles())
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(this.newTCS("x"), this.newTCS("x")));
 
         PowerMock.replayAll();
@@ -120,10 +120,10 @@ public class TableAppenderTest {
 
     @Test
     public void appendFourElementsPreambleTest() throws IOException {
-        EasyMock.expect(this.builder.getName()).andReturn("table1");
-        EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         final TableColumnStyle x = this.newTCS("x");
-        EasyMock.expect(this.builder.getColumnStyles())
+        EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(x, x, this.newTCS("y"), x));
 
         PowerMock.replayAll();
@@ -146,11 +146,11 @@ public class TableAppenderTest {
 
     @Test
     public void appendTenElementsPreambleTest() throws IOException {
-        EasyMock.expect(this.builder.getName()).andReturn("table1");
-        EasyMock.expect(this.builder.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         final TableColumnStyle x = this.newTCS("x");
         final TableColumnStyle y = this.newTCS("y");
-        EasyMock.expect(this.builder.getColumnStyles())
+        EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
@@ -178,4 +178,27 @@ public class TableAppenderTest {
         Assert.assertEquals(xml, sb.toString());
     }
 
+    @Test
+    public final void testName() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getName()).andReturn("tb");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
+        EasyMock.expect(this.tb.getColumnStyles())
+                .andReturn(FastFullList.<TableColumnStyle>builder().build());
+        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0);
+
+        PowerMock.replayAll();
+        this.tableAppender.appendAllAvailableRows(this.xmlUtil, sb);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("<table:table table:name=\"tb\" table:style-name=\"tb-style\" " +
+                        "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
+                        "form:apply-design-mode=\"false\"/><table:table-column " +
+                        "table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/>",
+                sb.toString());
+    }
 }

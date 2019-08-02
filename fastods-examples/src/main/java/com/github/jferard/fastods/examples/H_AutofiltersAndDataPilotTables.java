@@ -158,6 +158,7 @@ class H_AutofiltersAndDataPilotTables {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## A Data Pilot table
         // Let's start with some data:
+        
         walker.setStringValue("File Type");
         walker.next();
         walker.setStringValue("Extension");

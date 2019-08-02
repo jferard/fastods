@@ -22,13 +22,13 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -222,6 +222,30 @@ public class StylesContainerTest {
         Assert.assertEquals(ds, childCellStyle.getDataStyle());
     }
 
+    @Test
+    public void testWriteVisibleDataStyles() throws IOException {
+        final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).visible().build();
+
+        this.stylesContainer.addDataStyle(ds);
+
+        final StringBuilder sb = new StringBuilder();
+        this.stylesContainer.writeVisibleDataStyles(this.util, sb);
+        DomTester.assertEquals("<number:boolean-style style:name=\"bs\" number:language=\"en\" " +
+                "number:country=\"US\" style:volatile=\"true\"/>", sb.toString());
+    }
+
+    @Test
+    public void testStylesCommonStyles() throws IOException {
+        final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
+
+        this.stylesContainer.addStylesStyle(tcs);
+
+        final StringBuilder sb = new StringBuilder();
+        this.stylesContainer.writeStylesCommonStyles(this.util, sb);
+        DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" " +
+                "style:parent-style-name=\"Default\"/>", sb.toString());
+    }
+
     private void assertWriteDataStylesXMLEquals(final String xml) throws IOException {
         final Appendable sb = new StringBuilder();
         this.stylesContainer.writeHiddenDataStyles(this.util, sb);
@@ -239,4 +263,6 @@ public class StylesContainerTest {
         this.stylesContainer.writeMasterPageStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
+
+
 }
