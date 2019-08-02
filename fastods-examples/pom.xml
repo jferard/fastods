@@ -27,11 +27,11 @@
     <parent>
         <groupId>com.github.jferard</groupId>
         <artifactId>fastods-parent</artifactId>
-        <version>0.7.0</version>
+        <version>0.7.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>fastods-examples</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.github.jferard</groupId>
             <artifactId>fastods</artifactId>
-            <version>0.7.0</version>
+            <version>0.7.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
