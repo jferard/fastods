@@ -30,7 +30,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 14.4.2<script:event-listener>
+ * 14.4.2 script:event-listener
  * @author J. Férard
  */
 public class ScriptEventListener implements XMLConvertible {
