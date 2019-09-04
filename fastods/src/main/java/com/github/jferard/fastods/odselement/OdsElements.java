@@ -409,9 +409,9 @@ public class OdsElements implements StylesContainer {
         tableConfig.put(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, SC_SPLIT_FIX));
         tableConfig.put(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, SC_SPLIT_FIX));
         tableConfig.put(ConfigItem
-                .create(ConfigElement.HORIZONTAL_SPLIT_POSITION, String.valueOf(rowCount)));
+                .create(ConfigElement.HORIZONTAL_SPLIT_POSITION, String.valueOf(colCount)));
         tableConfig.put(ConfigItem
-                .create(ConfigElement.VERTICAL_SPLIT_POSITION, String.valueOf(colCount)));
+                .create(ConfigElement.VERTICAL_SPLIT_POSITION, String.valueOf(rowCount)));
     }
 
     /**

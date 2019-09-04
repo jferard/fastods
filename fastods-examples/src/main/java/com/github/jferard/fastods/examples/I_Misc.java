@@ -215,15 +215,53 @@ class I_Misc {
         } finally {
             conn.close();
         }
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "i_misc_rs.ods"));
+    }
 
+    /**
+     * @throws IOException  if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
+    static void example3() throws IOException, SQLException {
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("rs");
+        final TableCellWalker walker = table.getWalker();
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## LO features
+        // ### Freeze cells
+        // Let's create some content:
+        walker.setStringValue("File Type");
+        walker.next();
+        walker.setStringValue("Extension");
+        walker.nextRow();
+        walker.setStringValue("Text");
+        walker.next();
+        walker.setStringValue(".odt");
+        walker.nextRow();
+        walker.setStringValue("Spreadsheet");
+        walker.next();
+        walker.setStringValue(".ods");
+        walker.nextRow();
+        walker.setStringValue("Presentation");
+        walker.next();
+        walker.setStringValue(".odp");
+        //
+        // It's easy to freeze the first row:
+        //
+        document.freezeCells(table, 1, 0);
+        //
+        // ### Other features
         // If you know what you are doing, you can play with LO settings, for instance:
         table.updateConfigItem(ConfigElement.ZOOM_VALUE, "150");
         //
         // You can discover the configuration attributes in the `ConfigElement` enum.
         //
         // ## Add files to the ods archive
-        // Remember thie method to add an auto update to the document? That was:
+        // Remember the method to add an auto update to the document? That was:
         //
         //     new MacroHelper().addRefreshMacro(document);
         //
@@ -240,6 +278,6 @@ class I_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_misc_rs.ods"));
+        writer.saveAs(new File("generated_files", "i_misc_features.ods"));
     }
 }
