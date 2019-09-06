@@ -121,6 +121,10 @@ public class TableRowImpl implements TableRow {
             cell.appendXMLToTableRow(util, appendable);
         }
 
+        if (nullFieldCounter > 0) {
+            this.appendRepeatedCell(util, appendable, nullFieldCounter);
+        }
+
         appendable.append("</table:table-row>");
     }
 
