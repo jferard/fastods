@@ -11,36 +11,36 @@ public enum CellType implements AttributeValue {
     /**
      * a boolean: "true or false"
      */
-    BOOLEAN("office:boolean-value", "boolean"),
+    BOOLEAN("boolean", "office:boolean-value"),
     /**
      * a currency: "Numeric value and currency symbol"
      */
-    CURRENCY("office:value", "currency"),
+    CURRENCY("currency", "office:value"),
     /**
      * a date: "Date value as specified in §3.2.9 of [xmlschema-2], or date and time value as
      * specified in §3.2.7 of [xmlschema-2]"
      */
-    DATE("office:date-value", "date"),
+    DATE("date", "office:date-value"),
     /**
      * a float: "Numeric value"
      */
-    FLOAT("office:value", "float"),
+    FLOAT("float", "office:value"),
     /**
      * a percentage: "Numeric value"
      */
-    PERCENTAGE("office:value", "percentage"),
+    PERCENTAGE("percentage", "office:value"),
     /**
      * a string: "String"
      */
-    STRING("office:string-value", "string"),
+    STRING("string", "office:string-value"),
     /**
      * a time: "Duration, as specified in §3.2.6 of [xmlschema-2]"
      */
-    TIME("office:time-value", "time"),
+    TIME("time", "office:time-value"),
     /**
      * a void cell value: nothing.
      */
-    VOID("office-value", "");
+    VOID("", "office-value");
 
     private final String valueType;
     private final String valueAttribute;
@@ -56,17 +56,17 @@ public enum CellType implements AttributeValue {
     }
 
     /**
-     * @return the value type
+     * @return the value attribute ("office:xxx-value")
      */
-    public String getValueType() {
-        return this.valueType;
+    public String getValueAttribute() {
+        return this.valueAttribute;
     }
 
     /**
-     * @return the value attribute
+     * @return the value type attribute ("float", ...)
      */
     @Override
     public String getValue() {
-        return this.valueAttribute;
+        return this.valueType;
     }
 }
