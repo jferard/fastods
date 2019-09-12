@@ -116,7 +116,7 @@ public class TableRowImpl implements TableRow {
                 nullFieldCounter++;
                 continue;
             }
-            this.appendRepeatedCell(util, appendable, nullFieldCounter);
+            this.insertBlankCells(util, appendable, nullFieldCounter);
             nullFieldCounter = 0;
             cell.appendXMLToTableRow(util, appendable);
         }
@@ -137,8 +137,8 @@ public class TableRowImpl implements TableRow {
         appendable.append(">");
     }
 
-    private void appendRepeatedCell(final XMLUtil util, final Appendable appendable,
-                                    final int nullFieldCounter) throws IOException {
+    private void insertBlankCells(final XMLUtil util, final Appendable appendable,
+                                  final int nullFieldCounter) throws IOException {
         if (nullFieldCounter <= 0) {
             return;
         }
