@@ -65,7 +65,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5252;
+    private static final int EMPTY_DOCUMENT_SIZE = 5239;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -124,7 +124,6 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        System.out.println(buf.length);
         Assert.assertTrue(Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) <= 2);
         Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
                 "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",

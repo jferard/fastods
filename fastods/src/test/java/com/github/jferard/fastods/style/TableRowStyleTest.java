@@ -40,14 +40,13 @@ public class TableRowStyleTest {
     }
 
     @Test
-    public final void test() throws IOException {
-        final TableRowStyle style = TableRowStyle.builder("test").visible()
-                .rowHeight(SimpleLength.cm(5)).build();
+    public final void testCustomHeight() throws IOException {
+        final TableRowStyle style =
+                TableRowStyle.builder("test").visible().rowHeight(SimpleLength.cm(5)).build();
 
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
                 "style:family=\"table-row\"><style:table-row-properties " +
-                "style:row-height=\"5cm\" " +
-                "fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/></style" +
+                "style:row-height=\"5cm\" fo:break-before=\"auto\"/></style" +
                 ":style>", style);
     }
 
@@ -56,9 +55,10 @@ public class TableRowStyleTest {
         final TableRowStyle style = TableRowStyle.builder("test").optimalHeight().build();
 
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
-                "style:family=\"table-row\"><style:table-row-properties " +
-                "style:use-optimal-row-width=\"true\" fo:break-before=\"auto\" " +
-                "style:use-optimal-row-height=\"true\"/></style:style>", style);
+                        "style:family=\"table-row\"><style:table-row-properties " +
+                        "fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/></style" +
+                        ":style>",
+                style);
     }
 
     @Test
@@ -81,8 +81,8 @@ public class TableRowStyleTest {
 
     @Test
     public final void testGetFontFace() {
-        final TableCellStyle tcs = TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL)
-                .build();
+        final TableCellStyle tcs =
+                TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL).build();
         final TableRowStyle test = TableRowStyle.builder("test").defaultCellStyle(tcs).build();
         Assert.assertEquals(new FontFace(LOFonts.OPENSYMBOL), test.getFontFace());
     }
