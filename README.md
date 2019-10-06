@@ -50,6 +50,19 @@ Because it doesn't use XML internally, but only for writing files. That's why it
 It's an *OpenDocument producer* (*Open Document Format for Office Applications (OpenDocument) Version 1.2*, 2.3.1) and only an *OpenDocument producer*:
 > An *OpenDocument producer* is a program that creates at least one conforming OpenDocument document  
 
+### FastODS documents and LibreOffice/OpenOffice/Excel/...
+While an *OpenDocument producer* like FastODS can be reasonably simple because it just has to focus on the creation of OpenDocument files, 
+*OpenDocument consumer*s like LibreOffice, OpenOffice, Excel, ... are expected to handle numerous files created by various producers and are therefore more complex. 
+Although the spec states that a producer has to:
+
+> parse and interpret OpenDocument documents according to the semantics defined by this specification [...] *but it need not interpret the semantics of all elements, attributes and attribute values.* (emphasis mine)
+
+we expect those applications to open almost every proper OpenDocument file. But that's not so easy, because LibreOffice, OpenOffice, Excel, ... *do not* understand some tags, attributes or attribute values.
+
+To be pragmatic, I chose to consider LibreOffice as the reference implementation. Hence **the documents created by FastODS should be fully understood by LibreOffice** (whereas there is a specific option to disable this enforced compatibility and to produce files that are slightly more concise). 
+**There is no plan to adapt the documents created by FastODS to OpenOffice, Excel or another reader**, although it will be done if possible (your help is welcome).
+
+
 ## Installation
 ### Standard
 Add the following dependency to your POM:
@@ -57,7 +70,7 @@ Add the following dependency to your POM:
 <dependency>
 		<groupId>com.github.jferard</groupId>
 		<artifactId>fastods</artifactId>
-		<version>0.6.2</version>
+		<version>0.7.0</version>
 </dependency>
 ```
 
@@ -77,19 +90,6 @@ Then run the following command to install the jar in your local repo:
 
 ```mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=fastods-<version>.jar```
 
-### Usage
-In your POM, you'll have to include the following dependency:
-```
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.github.jferard</groupId>
-		<artifactId>fastods</artifactId>
-		<version>[set the version number here]</version>
-	</dependency>
-	...
-</dependencies>
-```
 
 ## Examples
 ### Basic example
