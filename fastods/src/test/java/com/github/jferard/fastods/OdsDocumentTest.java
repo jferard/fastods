@@ -241,11 +241,12 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
     public final void testAddExtraFile() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        this.odsElements.addExtraFile("path", "mt", "content");
+        final byte[] bytes = {'c', 'o', 'n', 't', 'e', 'n', 't'};
+        this.odsElements.addExtraFile("path", "mt", bytes);
 
         PowerMock.replayAll();
         final E document = this.getDocument();
-        document.addExtraFile("path", "mt", "content");
+        document.addExtraFile("path", "mt", bytes);
 
         PowerMock.verifyAll();
     }

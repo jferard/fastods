@@ -16,13 +16,13 @@ public class MacroLibraryContainerTest {
         final MacroLibrary library = PowerMock.createMock(MacroLibrary.class);
         final MacroLibraryContainer container =
                 new MacroLibraryContainer(XMLUtil.create(), Arrays.asList(library));
-        final Capture<StringBuilder> sb1 = new Capture<StringBuilder>();
-        final Capture<CharSequence> cs = new Capture<CharSequence>();
+        final Capture<StringBuilder> sb1 = Capture.newInstance();
+        final Capture<byte[]> bs = Capture.newInstance();
 
         PowerMock.resetAll();
         document.addExtraDir("Basic/");
         library.appendIndexLine(EasyMock.isA(XMLUtil.class), EasyMock.capture(sb1));
-        document.addExtraFile(EasyMock.eq("Basic/script-lc.xml"), EasyMock.eq("text/xml"), EasyMock.capture(cs));
+        document.addExtraFile(EasyMock.eq("Basic/script-lc.xml"), EasyMock.eq("text/xml"), EasyMock.capture(bs));
         library.add(EasyMock.isA(XMLUtil.class), EasyMock.eq(document));
 
         PowerMock.replayAll();
@@ -38,6 +38,6 @@ public class MacroLibraryContainerTest {
                 "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1" +
                 ".0//EN\" \"libraries.dtd\">\n" +
                 "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
-                "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>", cs.toString());
+                "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>", bs.toString());
     }
 }

@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -106,5 +107,10 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     @Override
     public void write(final CharSequence sequence) throws IOException {
         this.writer.append(sequence);
+    }
+
+    @Override
+    public void write(final byte[] bytes) throws IOException {
+        this.zipStream.write(bytes);
     }
 }

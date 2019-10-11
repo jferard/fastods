@@ -22,11 +22,11 @@ public class MacroModuleTest {
     @Test public void testAdd() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroModule module = new MacroModule("n", "l", "module content");
-        final Capture<StringBuilder> sb = new Capture<StringBuilder>();
+        final Capture<byte[]> bs = Capture.newInstance();
 
         PowerMock.resetAll();
         document.addExtraFile(EasyMock.eq("slash/n.xml"), EasyMock.eq("text/xml"),
-                EasyMock.capture(sb));
+                EasyMock.capture(bs));
 
         PowerMock.replayAll();
         module.add(XMLUtil.create(), document, "slash/");
@@ -36,6 +36,6 @@ public class MacroModuleTest {
                 " PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"module" +
                 ".dtd\"><script:module xmlns:script=\"http://openoffice.org/2000/script\" " +
                 "script:name=\"n\" script:language=\"l\" script:moduleType=\"normal\">module " +
-                "content</script:module>", sb.toString());
+                "content</script:module>", bs.toString());
     }
 }

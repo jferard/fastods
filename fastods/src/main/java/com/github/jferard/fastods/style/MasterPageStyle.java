@@ -25,7 +25,7 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
-import com.github.jferard.fastods.StyleWithEmbeddedStyles;
+import com.github.jferard.fastods.ElementWithEmbeddedStyles;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -38,7 +38,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class MasterPageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles {
+public class MasterPageStyle implements AddableToOdsElements, ElementWithEmbeddedStyles {
     private final String layoutName;
     private final Footer footer;
     private final Header header;

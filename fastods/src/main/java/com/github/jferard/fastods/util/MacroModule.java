@@ -72,7 +72,7 @@ public class MacroModule {
         document.addExtraFile(libraryNameSlash + this.name + ".xml", "text/xml", this.module(util));
     }
 
-    private CharSequence module(final XMLUtil util) throws IOException {
+    private byte[] module(final XMLUtil util) throws IOException {
         final StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<!DOCTYPE script:module PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\"" +
@@ -84,7 +84,7 @@ public class MacroModule {
         sb.append(">");
         sb.append(this.code);
         sb.append("</script:module>");
-        return sb;
+        return sb.toString().getBytes(ZipUTF8Writer.UTF_8);
     }
 
     /**

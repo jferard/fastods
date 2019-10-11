@@ -42,6 +42,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -140,6 +141,7 @@ class TableBuilder {
     private int lastRowIndex;
     private String name;
     private TableStyle style;
+    private List<Shape> shapes;
 
     /**
      * Create a new table builder
@@ -180,6 +182,7 @@ class TableBuilder {
         this.lastRowIndex = -1;
         this.bufferSize = bufferSize;
         this.tablePreambleWritten = false;
+        this.shapes = new ArrayList<Shape>();
     }
 
     /**
@@ -517,5 +520,21 @@ class TableBuilder {
             style = TableCellStyle.DEFAULT_CELL_STYLE;
         }
         return style;
+    }
+
+    /**
+     * @return the shapes
+     */
+    public List<Shape> getShapes() {
+        return this.shapes;
+    }
+
+    /**
+     * Add a new Shape
+     * @param shape the shape
+     */
+    public void addShape(final Shape shape) {
+        this.shapes.add(shape);
+        shape.addEmbeddedStyles(this.stylesContainer);
     }
 }

@@ -32,14 +32,14 @@ public class MacroLibraryTest {
     @Test public void testAdd() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroLibrary lib = new MacroLibrary("ml", false, Arrays.asList(this.module));
-        final Capture<StringBuilder> sb1 = new Capture<StringBuilder>();
-        final Capture<CharSequence> sb2 = new Capture<CharSequence>();
+        final Capture<StringBuilder> sb1 = Capture.newInstance();
+        final Capture<byte[]> bs = Capture.newInstance();
 
         PowerMock.resetAll();
         document.addExtraDir("Basic/ml/");
         this.module.appendIndexLine(EasyMock.eq(this.util), EasyMock.capture(sb1));
         document.addExtraFile(EasyMock.eq("Basic/ml/script-lb.xml"), EasyMock.eq("text/xml"),
-                EasyMock.capture(sb2));
+                EasyMock.capture(bs));
         this.module.add(this.util, document, "Basic/ml/");
 
         PowerMock.replayAll();
@@ -55,6 +55,6 @@ public class MacroLibraryTest {
                 "PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library" +
                 ".dtd\"><library:library xmlns:library=\"http://openoffice.org/2000/library\" " +
                 "library:name=\"ml\" library:readonly=\"false\" " +
-                "library:passwordprotected=\"false\"></library:library>", sb2.toString());
+                "library:passwordprotected=\"false\"></library:library>", bs.toString());
     }
 }

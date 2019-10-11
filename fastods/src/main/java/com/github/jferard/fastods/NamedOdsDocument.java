@@ -287,8 +287,8 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
 
     @Override
     public void addExtraFile(final String fullPath, final String mediaType,
-                             final CharSequence sequence) {
-        this.commonOdsDocument.addExtraFile(fullPath, mediaType, sequence);
+                             final byte[] bytes) {
+        this.commonOdsDocument.addExtraFile(fullPath, mediaType, bytes);
     }
 
     @Override

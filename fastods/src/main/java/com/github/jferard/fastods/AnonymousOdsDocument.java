@@ -93,8 +93,8 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence) {
-        this.commonOdsDocument.addExtraFile(fullPath, mediaType, sequence);
+    public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
+        this.commonOdsDocument.addExtraFile(fullPath, mediaType, bytes);
     }
 
     @Override

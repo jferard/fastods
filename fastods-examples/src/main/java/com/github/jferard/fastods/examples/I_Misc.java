@@ -31,16 +31,20 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
+import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.tool.InsertHelper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
-import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,15 +84,16 @@ class I_Misc {
         //
         // In practice, you have to give the name of the file at the writer creation:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
-        final NamedOdsFileWriter writer = odsFactory
-                .createWriter(new File("generated_files", "i_named_misc.ods"));
+        final NamedOdsFileWriter writer =
+                odsFactory.createWriter(new File("generated_files", "i_named_misc.ods"));
 
         // Then, get the document and the tables as usual.
         final NamedOdsDocument document = writer.document();
 
         // You have to register all the styles now:
-        final TableCellStyle boldCellStyle = TableCellStyle.builder("cell").fontWeightBold()
-                .fontSize(SimpleLength.pt(24)).build();
+        final TableCellStyle boldCellStyle =
+                TableCellStyle.builder("cell").fontWeightBold().fontSize(SimpleLength.pt(24))
+                        .build();
         document.addContentStyle(boldCellStyle);
         document.freezeStyles();
         //
@@ -164,50 +169,56 @@ class I_Misc {
             // to define a cast try to an INTERVAL.
             final SQLToCellValueConverter.IntervalConverter converter =
                     new SQLToCellValueConverter.IntervalConverter() {
-                @Override
-                public TimeValue castToInterval(final Object o) {
-                    if (o instanceof Interval) {
-                        final Interval interval = (Interval) o;
-                        final boolean neg = interval.isNegative();
-                        switch (interval.getQualifier()) {
-                            case YEAR:
-                                return new TimeValue(neg, interval.getLeading(), 0, 0, 0, 0, 0);
-                            case MONTH:
-                                return new TimeValue(neg, 0, interval.getLeading(), 0, 0, 0, 0);
-                            case YEAR_TO_MONTH:
-                                return new TimeValue(neg, interval.getLeading(),
-                                        interval.getRemaining(), 0, 0, 0, 0);
-                            case DAY:
-                                return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0, 0);
-                            case HOUR:
-                                return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0, 0);
-                            case MINUTE:
-                                return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(), 0);
-                            case SECOND:
-                                return new TimeValue(neg, 0, 0, 0, 0, 0, interval.getLeading());
-                            case DAY_TO_HOUR:
-                                return new TimeValue(neg, 0, 0, interval.getLeading(),
-                                        interval.getRemaining(), 0, 0);
-                            case DAY_TO_MINUTE:
-                                return new TimeValue(neg, 0, 0, interval.getLeading(), 0,
-                                        interval.getRemaining(), 0);
-                            case DAY_TO_SECOND:
-                                return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
-                                        interval.getRemaining() / NANOSECONDS_PER_SECONDS);
-                            case HOUR_TO_MINUTE:
-                                return new TimeValue(neg, 0, 0, 0, interval.getLeading(),
-                                        interval.getRemaining(), 0);
-                            case HOUR_TO_SECOND:
-                                return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
-                                        interval.getRemaining() / NANOSECONDS_PER_SECONDS);
-                            case MINUTE_TO_SECOND:
-                                return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
-                                        interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                        @Override
+                        public TimeValue castToInterval(final Object o) {
+                            if (o instanceof Interval) {
+                                final Interval interval = (Interval) o;
+                                final boolean neg = interval.isNegative();
+                                switch (interval.getQualifier()) {
+                                    case YEAR:
+                                        return new TimeValue(neg, interval.getLeading(), 0, 0, 0, 0,
+                                                0);
+                                    case MONTH:
+                                        return new TimeValue(neg, 0, interval.getLeading(), 0, 0, 0,
+                                                0);
+                                    case YEAR_TO_MONTH:
+                                        return new TimeValue(neg, interval.getLeading(),
+                                                interval.getRemaining(), 0, 0, 0, 0);
+                                    case DAY:
+                                        return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
+                                                0);
+                                    case HOUR:
+                                        return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
+                                                0);
+                                    case MINUTE:
+                                        return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
+                                                0);
+                                    case SECOND:
+                                        return new TimeValue(neg, 0, 0, 0, 0, 0,
+                                                interval.getLeading());
+                                    case DAY_TO_HOUR:
+                                        return new TimeValue(neg, 0, 0, interval.getLeading(),
+                                                interval.getRemaining(), 0, 0);
+                                    case DAY_TO_MINUTE:
+                                        return new TimeValue(neg, 0, 0, interval.getLeading(), 0,
+                                                interval.getRemaining(), 0);
+                                    case DAY_TO_SECOND:
+                                        return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
+                                                interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                                    case HOUR_TO_MINUTE:
+                                        return new TimeValue(neg, 0, 0, 0, interval.getLeading(),
+                                                interval.getRemaining(), 0);
+                                    case HOUR_TO_SECOND:
+                                        return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
+                                                interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                                    case MINUTE_TO_SECOND:
+                                        return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
+                                                interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                                }
+                            }
+                            return null;
                         }
-                    }
-                    return null;
-                }
-            };
+                    };
 
             // And skip another row, then write the result:
             walker.toRow(12);
@@ -272,12 +283,44 @@ class I_Misc {
         //
         // Let's add a file for the fun:
         document.addExtraDir("FastODS");
-        document.addExtraFile("FastODS/fast.txt", "text/plain", "Hello from FastODS!");
+        document.addExtraFile("FastODS/fast.txt", "text/plain",
+                "Hello from FastODS!".getBytes(ZipUTF8Writer.UTF_8));
         //
-        // You can check that the file was added with your favorite file achive viewer.
+        // You can check that the file was added with your favorite file archive viewer.
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "i_misc_features.ods"));
+    }
+
+    /**
+     * @throws IOException  if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
+    static void example4() throws IOException, SQLException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Add an image
+        //
+        // As usual:
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("test");
+
+        // We need to create the "Pictures" directory in the archive
+        document.addExtraDir("Pictures");
+
+        // And there is a tool to insert the image:
+        InsertHelper.create().insertImage(document, table,
+                new URL("https://raw.githubusercontent" +
+                        ".com/wiki/jferard/fastods/images/j_periodic_table.png")
+                        .openStream(), "periodic_table.png", Length.NULL_LENGTH, Length.NULL_LENGTH,
+                SimpleLength.cm(15), SimpleLength.cm(10));
+        //
+        // That's all!
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "i_misc_image.ods"));
     }
 }

@@ -38,7 +38,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public interface PageSectionContent extends StyleWithEmbeddedStyles {
+public interface PageSectionContent extends ElementWithEmbeddedStyles {
 
     /**
      * Append the XML representation of a page section to a stream

@@ -23,7 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.StyleWithEmbeddedStyles;
+import com.github.jferard.fastods.ElementWithEmbeddedStyles;
 import com.github.jferard.fastods.attribute.PagePrintOrientation;
 import com.github.jferard.fastods.attribute.PageWritingMode;
 import com.github.jferard.fastods.odselement.OdsElements;
@@ -42,7 +42,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageStyle implements AddableToOdsElements, StyleWithEmbeddedStyles, Hidable {
+public class PageStyle implements AddableToOdsElements, ElementWithEmbeddedStyles, Hidable {
     /**
      * The classic default master page name
      */

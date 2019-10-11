@@ -52,7 +52,7 @@ public class TooltipParameter implements TagParameters {
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        util.appendAttribute(appendable, "office:display", this.visible ? "true" : "false");
+        util.appendAttribute(appendable, "office:display", this.visible);
         util.appendAttribute(appendable, "svg:width", this.width);
         util.appendAttribute(appendable, "svg:height", this.height);
         // weird patch for LO bug

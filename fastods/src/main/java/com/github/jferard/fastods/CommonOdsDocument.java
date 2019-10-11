@@ -199,8 +199,8 @@ class CommonOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence) {
-        this.odsElements.addExtraFile(fullPath, mediaType, sequence);
+    public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
+        this.odsElements.addExtraFile(fullPath, mediaType, bytes);
     }
 
     @Override

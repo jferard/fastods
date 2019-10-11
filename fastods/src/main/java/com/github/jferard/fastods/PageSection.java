@@ -43,7 +43,7 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class PageSection implements StyleWithEmbeddedStyles {
+public class PageSection implements ElementWithEmbeddedStyles {
     /**
      * Secure version of {@code pageSection.appendPageSectionStyleXMLToAutomaticStyle}: if the
      * footer (or header) is

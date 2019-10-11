@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author Julien Férard
  */
-public interface HeaderOrFooter extends StyleWithEmbeddedStyles {
+public interface HeaderOrFooter extends ElementWithEmbeddedStyles {
     /**
      * Append the XML representation of the header/footer to a stream.
      *

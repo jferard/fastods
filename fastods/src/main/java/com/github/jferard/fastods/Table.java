@@ -350,4 +350,8 @@ public class Table implements NamedObject {
     public void addAutoFilter(final int r1, final int c1, final int r2, final int c2) {
         this.contentElement.addAutoFilter(AutoFilter.builder(this, r1, c1, r2, c2).build());
     }
+
+    public void addShape(final Shape shape) {
+        this.builder.addShape(shape);
+    }
 }

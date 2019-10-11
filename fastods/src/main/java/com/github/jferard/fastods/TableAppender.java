@@ -28,12 +28,13 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * OpenDocument 9.1.2 table:table
- *
+ * <p>
  * Provides methods to flush rows from TableBuilder (ie. TableRow objects) to a given appendable.
- *
+ * <p>
  * Users will either call `appendXMLToContentEntry` to convert the whole TableBuilder, or have
  * a finer control with appendPreamble, appendAllAvailableRows, ...
  *
@@ -96,12 +97,31 @@ class TableAppender {
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
         util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
         util.appendAttribute(appendable, "table:print", false);
-        appendable.append("><office:forms");
+        appendable.append(">");
+        this.appendForms(util, appendable);
+        this.appendColumnStyles(util, appendable, this.builder.getColumnStyles());
+        this.appendShapes(util, appendable, this.builder.getShapes());
+        this.preambleWritten = true;
+    }
+
+    private void appendShapes(final XMLUtil util, final Appendable appendable,
+                              final List<Shape> shapes) throws IOException {
+        if (shapes.isEmpty()) {
+            return;
+        }
+
+        appendable.append("<table:shapes>");
+        for (final Shape shape : shapes) {
+            shape.appendXMLContent(util, appendable);
+        }
+        appendable.append("</table:shapes>");
+    }
+
+    private void appendForms(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<office:forms");
         util.appendAttribute(appendable, "form:automatic-focus", false);
         util.appendAttribute(appendable, "form:apply-design-mode", false);
         appendable.append("/>");
-        this.appendColumnStyles(this.builder.getColumnStyles(), appendable, util);
-        this.preambleWritten = true;
     }
 
     /**
@@ -150,8 +170,8 @@ class TableAppender {
         this.appendRows(util, appendable, rowIndex);
     }
 
-    private void appendColumnStyles(final Iterable<TableColumnStyle> columnStyles,
-                                    final Appendable appendable, final XMLUtil xmlUtil)
+    private void appendColumnStyles(final XMLUtil xmlUtil, final Appendable appendable,
+                                    final Iterable<TableColumnStyle> columnStyles)
             throws IOException {
         final Iterator<TableColumnStyle> iterator = columnStyles.iterator();
         if (!iterator.hasNext()) {

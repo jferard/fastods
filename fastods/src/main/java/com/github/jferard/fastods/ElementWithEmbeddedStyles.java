@@ -31,7 +31,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
  *
  * @author Julien Férard
  */
-public interface StyleWithEmbeddedStyles {
+public interface ElementWithEmbeddedStyles {
     /**
      * Add the styles of this element to the styles container, in styles.xml/automatic-styles.
      *

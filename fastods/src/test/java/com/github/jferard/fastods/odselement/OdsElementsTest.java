@@ -272,13 +272,14 @@ public class OdsElementsTest {
 
     @Test
     public final void testAddExtraFile() throws IOException {
+        final byte[] bytes = {'c', 'o', 'n', 't', 'e', 'n', 't'};
         final Capture<ManifestEntry> capture = EasyMock.newCapture();
 
         PowerMock.resetAll();
         this.manifestElement.add(EasyMock.capture(capture));
 
         PowerMock.replayAll();
-        this.odsElements.addExtraFile("path", "mt", "content");
+        this.odsElements.addExtraFile("path", "mt", bytes);
 
         PowerMock.verifyAll();
         TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"path\" " +

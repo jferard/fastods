@@ -163,9 +163,9 @@ public interface OdsDocument extends StylesModeSetter {
      * Add an extra file to the document
      * @param fullPath the path of the file in the sequence
      * @param mediaType the MIME type of the file
-     * @param sequence the content
+     * @param bytes the content
      */
-    void addExtraFile(final String fullPath, final String mediaType, final CharSequence sequence);
+    void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes);
 
     /**
      * @param fullPath the path of the dir

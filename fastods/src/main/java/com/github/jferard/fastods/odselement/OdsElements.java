@@ -119,7 +119,7 @@ public class OdsElements implements StylesContainer {
     private final SettingsElement settingsElement;
     private final StylesContainerImpl stylesContainer;
     private final StylesElement stylesElement;
-    private final Map<String, CharSequence> extraFileByName;
+    private final Map<String, byte[]> extraFileByName;
     private NamedOdsFileWriter observer;
 
     /**
@@ -146,7 +146,7 @@ public class OdsElements implements StylesContainer {
         this.contentElement = contentElement;
         this.stylesElement = stylesElement;
         this.stylesContainer = stylesContainer;
-        this.extraFileByName = new HashMap<String, CharSequence>();
+        this.extraFileByName = new HashMap<String, byte[]>();
     }
 
     /**
@@ -482,12 +482,12 @@ public class OdsElements implements StylesContainer {
      *
      * @param fullPath  the name of the file in the sequence
      * @param mediaType the MIME type
-     * @param sequence  the content
+     * @param bytes  the content
      */
     public void addExtraFile(final String fullPath, final String mediaType,
-                             final CharSequence sequence) {
+                             final byte[] bytes) {
         final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType);
-        this.extraFileByName.put(fullPath, sequence);
+        this.extraFileByName.put(fullPath, bytes);
         this.manifestElement.add(manifestEntry);
     }
 
@@ -505,7 +505,7 @@ public class OdsElements implements StylesContainer {
      */
     public void writeExtras(final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing extra elements to zip file");
-        for (final Map.Entry<String, CharSequence> entry : this.extraFileByName.entrySet()) {
+        for (final Map.Entry<String, byte[]> entry : this.extraFileByName.entrySet()) {
             final String elementName = entry.getKey();
             this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", elementName);
             writer.putNextEntry(new ZipEntry(elementName));
