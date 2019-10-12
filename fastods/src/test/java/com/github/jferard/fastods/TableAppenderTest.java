@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Locale;
 
 public class TableAppenderTest {
@@ -53,15 +54,16 @@ public class TableAppenderTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.tableAppender = new TableAppender(this.tb);
         this.xmlUtil = xmlUtil;
-        PowerMock.resetAll();
     }
 
     @Test
     public void appendEmptyPreambleTest() throws IOException {
+        PowerMock.resetAll();
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.<TableColumnStyle>newListWithCapacity(1));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -72,14 +74,17 @@ public class TableAppenderTest {
                         "table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/>");
 
+        PowerMock.verifyAll();
     }
 
     @Test
     public void appendOneElementPreambleTest() throws IOException {
+        PowerMock.resetAll();
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(this.newTCS("x")));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -91,19 +96,18 @@ public class TableAppenderTest {
                         "<table:table-column table:style-name=\"co1\" " +
                         "table:number-columns-repeated=\"1023\" " +
                         "table:default-cell-style-name=\"Default\"/>");
-        PowerMock.verifyAll();
-    }
 
-    private TableColumnStyle newTCS(final String name) {
-        return TableColumnStyle.builder(name).build();
+        PowerMock.verifyAll();
     }
 
     @Test
     public void appendTwoElementsPreambleTest() throws IOException {
+        PowerMock.resetAll();
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(this.newTCS("x"), this.newTCS("x")));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -115,16 +119,20 @@ public class TableAppenderTest {
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
                         "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1022\" " +
                         "table:default-cell-style-name=\"Default\"/>");
+
         PowerMock.verifyAll();
     }
 
     @Test
     public void appendFourElementsPreambleTest() throws IOException {
+        final TableColumnStyle x = this.newTCS("x");
+
+        PowerMock.resetAll();
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        final TableColumnStyle x = this.newTCS("x");
         EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(x, x, this.newTCS("y"), x));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -146,12 +154,15 @@ public class TableAppenderTest {
 
     @Test
     public void appendTenElementsPreambleTest() throws IOException {
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         final TableColumnStyle x = this.newTCS("x");
         final TableColumnStyle y = this.newTCS("y");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -172,12 +183,6 @@ public class TableAppenderTest {
         PowerMock.verifyAll();
     }
 
-    private void assertPreambleXMLEquals(final String xml) throws IOException {
-        final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
-        Assert.assertEquals(xml, sb.toString());
-    }
-
     @Test
     public final void testName() throws IOException {
         final StringBuilder sb = new StringBuilder();
@@ -188,6 +193,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumnStyles())
                 .andReturn(FastFullList.<TableColumnStyle>builder().build());
         EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0);
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.tableAppender.appendAllAvailableRows(this.xmlUtil, sb);
@@ -200,5 +206,15 @@ public class TableAppenderTest {
                         "table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/>",
                 sb.toString());
+    }
+
+    private void assertPreambleXMLEquals(final String xml) throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        this.tableAppender.appendPreamble(this.xmlUtil, sb);
+        Assert.assertEquals(xml, sb.toString());
+    }
+
+    private TableColumnStyle newTCS(final String name) {
+        return TableColumnStyle.builder(name).build();
     }
 }

@@ -8,9 +8,12 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 public class MacroLibraryContainerTest {
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
+
     @Test public void test() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroLibrary library = PowerMock.createMock(MacroLibrary.class);
@@ -38,6 +41,7 @@ public class MacroLibraryContainerTest {
                 "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1" +
                 ".0//EN\" \"libraries.dtd\">\n" +
                 "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
-                "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>", bs.toString());
+                "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>", new String(bs.getValue(),
+                UTF_8));
     }
 }

@@ -10,9 +10,12 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 public class MacroLibraryTest {
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
+
     private MacroModule module;
     private XMLUtil util;
 
@@ -55,6 +58,6 @@ public class MacroLibraryTest {
                 "PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library" +
                 ".dtd\"><library:library xmlns:library=\"http://openoffice.org/2000/library\" " +
                 "library:name=\"ml\" library:readonly=\"false\" " +
-                "library:passwordprotected=\"false\"></library:library>", bs.toString());
+                "library:passwordprotected=\"false\"></library:library>", new String(bs.getValue(), UTF_8));
     }
 }

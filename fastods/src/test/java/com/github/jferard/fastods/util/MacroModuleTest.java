@@ -9,8 +9,11 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class MacroModuleTest {
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
+    
     @Test public void testIndexLine() throws IOException {
         final MacroModule module = new MacroModule("n", "l", "module content");
         final StringBuilder sb = new StringBuilder();
@@ -36,6 +39,6 @@ public class MacroModuleTest {
                 " PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"module" +
                 ".dtd\"><script:module xmlns:script=\"http://openoffice.org/2000/script\" " +
                 "script:name=\"n\" script:language=\"l\" script:moduleType=\"normal\">module " +
-                "content</script:module>", bs.toString());
+                "content</script:module>", new String(bs.getValue(), UTF_8));
     }
 }
