@@ -46,13 +46,13 @@ class TableColdCell {
     public static TableColdCell create(final XMLUtil xmlUtil) {
         return new TableColdCell(xmlUtil);
     }
+
     private final XMLUtil xmlUtil;
     private int columnsSpanned;
     private String currency;
     private int rowsSpanned;
     private Text text;
-    private String tooltip;
-    private TooltipParameter tooltipParameter;
+    private Tooltip tooltip;
     private String formula;
     private int matrixRowsSpanned;
     private int matrixColumnsSpanned;
@@ -104,29 +104,37 @@ class TableColdCell {
     /**
      * Set a tooltip
      *
-     * @param tooltip the content
+     * @param tooltipText the content
      */
-    public void setTooltip(final String tooltip) {
-        String escapedXMLContent = this.xmlUtil.escapeXMLContent(tooltip);
-        if (escapedXMLContent.contains("\n")) {
-            escapedXMLContent = escapedXMLContent.replaceAll("\r?\n", "</text:p><text:p>");
-        }
-
-        this.tooltip = escapedXMLContent;
+    public void setTooltip(final String tooltipText) {
+        this.tooltip = Tooltip.builder(this.xmlUtil, tooltipText).build();
     }
 
     /**
      * Set a tooltip of a given size
      *
-     * @param tooltip the content
+     * @param tooltipText the content
      * @param width   the width of the tooltip
      * @param height  the height of the tooltip
      * @param visible true if the tooltip is visible
      */
-    public void setTooltip(final String tooltip, final Length width, final Length height,
+    public void setTooltip(final String tooltipText, final Length width, final Length height,
                            final boolean visible) {
-        this.setTooltip(tooltip);
-        this.tooltipParameter = TooltipParameter.create(width, height, visible);
+        final TooltipBuilder builder =
+                Tooltip.builder(this.xmlUtil, tooltipText).width(width).height(height);
+        if (visible) {
+            builder.visible();
+        }
+        this.tooltip = builder.build();
+    }
+
+    /**
+     * Set a tooltip of a given size
+     *
+     * @param tooltip the tooltip
+     */
+    public void setTooltip(final Tooltip tooltip) {
+        this.tooltip = tooltip;
     }
 
     /**
@@ -167,12 +175,7 @@ class TableColdCell {
                 this.text.appendXMLContent(util, appendable);
             }
             if (this.tooltip != null) {
-                appendable.append("<office:annotation");
-                if (this.tooltipParameter != null) {
-                    this.tooltipParameter.appendXMLContent(util, appendable);
-                }
-                appendable.append("><text:p>").append(this.tooltip)
-                        .append("</text:p></office:annotation>");
+                this.tooltip.appendXMLContent(util, appendable);
             }
             if (this.isCovered()) {
                 appendable.append("</table:covered-table-cell>");

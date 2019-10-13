@@ -33,26 +33,42 @@ public enum ObjectStyleFamily {
      * "paragraph: family name of styles for paragraphs"
      */
     PARAGRAPH("paragraph"),
+
     /**
      * "table: family name of styles for tables."
      */
     TABLE("table"),
+
     /**
      * "table-cell: family name of styles for table cells."
      */
     TABLE_CELL("table-cell"),
+
     /**
      * "table-column: family name of styles for table columns."
      */
     TABLE_COLUMN("table-column"),
+
     /**
      * "table-row: family name of styles for table rows."
      */
     TABLE_ROW("table-row"),
+
     /**
      * "text: family name of styles for text."
      */
-    TEXT("text");
+    TEXT("text"),
+
+    /**
+     * "graphic: family name of styles for graphics."
+     */
+    GRAPHIC("graphic"),
+
+    /**
+     * "draw:fill-image: family name of styles for fill images."
+     */
+    DRAW_FILL_IMAGE("draw:fill-image");
+
 
     private final String attributeName;
 

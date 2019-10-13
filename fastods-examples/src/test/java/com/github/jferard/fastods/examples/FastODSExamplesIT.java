@@ -114,6 +114,11 @@ public class FastODSExamplesIT {
     }
 
     @Test
+    public void miscTest5() throws IOException, SQLException {
+        I_Misc.example5();
+    }
+
+    @Test
     public void multiplicationTableTest() throws IOException {
         J_MultiplicationTable.example();
     }

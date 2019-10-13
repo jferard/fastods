@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 
 public class MacroModuleTest {
     private static final Charset UTF_8 = Charset.forName("UTF-8");
-    
+
     @Test public void testIndexLine() throws IOException {
         final MacroModule module = new MacroModule("n", "l", "module content");
         final StringBuilder sb = new StringBuilder();

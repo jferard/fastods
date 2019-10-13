@@ -140,14 +140,19 @@ public class RowCellWalkerImpl implements RowCellWalker {
     }
 
     @Override
-    public void setTooltip(final String tooltip) {
-        this.row.getOrCreateCell(this.c).setTooltip(tooltip);
+    public void setTooltip(final String tooltipText) {
+        this.row.getOrCreateCell(this.c).setTooltip(tooltipText);
     }
 
     @Override
-    public void setTooltip(final String tooltip, final Length width, final Length height,
+    public void setTooltip(final String tooltipText, final Length width, final Length height,
                            final boolean visible) {
-        this.row.getOrCreateCell(this.c).setTooltip(tooltip, width, height, visible);
+        this.row.getOrCreateCell(this.c).setTooltip(tooltipText, width, height, visible);
+    }
+
+    @Override
+    public void setTooltip(final Tooltip tooltip) {
+        this.row.getOrCreateCell(this.c).setTooltip(tooltip);
     }
 
     @Override

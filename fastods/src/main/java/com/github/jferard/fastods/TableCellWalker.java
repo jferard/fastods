@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -156,14 +157,19 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     }
 
     @Override
-    public void setTooltip(final String tooltip) {
-        this.cell.setTooltip(tooltip);
+    public void setTooltip(final String tooltipText) {
+        this.cell.setTooltip(tooltipText);
     }
 
     @Override
-    public void setTooltip(final String tooltip, final Length width, final Length height,
+    public void setTooltip(final String tooltipText, final Length width, final Length height,
                            final boolean visible) {
-        this.cell.setTooltip(tooltip, width, height, visible);
+        this.cell.setTooltip(tooltipText, width, height, visible);
+    }
+
+    @Override
+    public void setTooltip(final Tooltip tooltip) {
+        this.cell.setTooltip(tooltip);
     }
 
     @Override

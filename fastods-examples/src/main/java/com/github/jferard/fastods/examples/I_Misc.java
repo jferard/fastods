@@ -31,19 +31,26 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
+import com.github.jferard.fastods.Tooltip;
+import com.github.jferard.fastods.TooltipBuilder;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
+import com.github.jferard.fastods.style.DrawFillImage;
+import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.InsertHelper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
+import com.github.jferard.fastods.util.FileUtil;
+import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -311,11 +318,49 @@ class I_Misc {
         document.addExtraDir("Pictures");
 
         // And there is a tool to insert the image:
-        InsertHelper.create().insertImage(document, table,
-                new URL("https://raw.githubusercontent" +
-                        ".com/wiki/jferard/fastods/images/j_periodic_table.png")
-                        .openStream(), "periodic_table.png", Length.NULL_LENGTH, Length.NULL_LENGTH,
-                SimpleLength.cm(15), SimpleLength.cm(10));
+        InsertHelper.create().insertImage(document, table, new URL("https://raw.githubusercontent" +
+                        ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream(),
+                "periodic_table.png", Length.NULL_LENGTH, Length.NULL_LENGTH, SimpleLength.cm(15),
+                SimpleLength.cm(10));
+        //
+        // That's all!
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "i_misc_image.ods"));
+    }
+
+    /**
+     * @throws IOException  if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
+    static void example5() throws IOException, SQLException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Add an image
+        //
+        // As usual:
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+
+        // We need to create the "Pictures" directory in the archive
+        document.addExtraDir("Pictures");
+
+        // And there is a tool to insert the image:
+        final InputStream is = new URL("https://raw.githubusercontent" +
+                ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
+        final byte[] bytes = FileUtil.create().readStream(is);
+        document.addExtraFile("Pictures/1.png", "image/png", bytes);
+
+        final Table table = document.addTable("test");
+        final TableCellWalker walker = table.getWalker();
+        walker.setStringValue("Check annotation");
+        final TooltipBuilder builder = Tooltip.builder(XMLUtil.create(), "text");
+        final GraphicStyle gs =
+                GraphicStyle.builder("gs").fillImage(new DrawFillImage("1", "Pictures/1.png"))
+                        .build();
+        walker.setTooltip(builder.graphicStyle(gs).build());
+
         //
         // That's all!
         //

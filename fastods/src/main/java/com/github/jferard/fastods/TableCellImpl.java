@@ -27,6 +27,7 @@ import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.WriteUtil;
@@ -67,12 +68,6 @@ public class TableCellImpl implements TableCell {
     private final DataStyles dataStyles;
     private final boolean libreOfficeMode;
     private final int columnIndex;
-    /*
-    private TableColdCell coldRow;
-	private TableCellStyle defaultCellStyle;
-	private TableRowStyle rowStyle;
-	private String formula;
-	*/
     private TableCellStyle style;
     private CellType type;
     private TableColdCell coldCell;
@@ -423,16 +418,23 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void setTooltip(final String tooltip) {
+    public void setTooltip(final String tooltipText) {
         this.ensureColdCell();
-        this.coldCell.setTooltip(tooltip);
+        this.coldCell.setTooltip(tooltipText);
     }
 
     @Override
-    public void setTooltip(final String tooltip, final Length width, final Length height,
+    public void setTooltip(final String tooltipText, final Length width, final Length height,
                            final boolean visible) {
         this.ensureColdCell();
-        this.coldCell.setTooltip(tooltip, width, height, visible);
+        this.coldCell.setTooltip(tooltipText, width, height, visible);
+    }
+
+    @Override
+    public void setTooltip(final Tooltip tooltip) {
+        this.ensureColdCell();
+        tooltip.addEmbeddedStyles(this.stylesContainer);
+        this.coldCell.setTooltip(tooltip);
     }
 
     @Override

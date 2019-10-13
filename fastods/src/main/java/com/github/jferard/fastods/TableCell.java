@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.attribute.AttributeValue;
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.attribute.Length;
 
@@ -197,19 +198,26 @@ public interface TableCell {
     /**
      * Add a tooltip to the cell
      *
-     * @param tooltip the text of the tooltip
+     * @param tooltipText the text of the tooltip
      */
-    void setTooltip(String tooltip);
+    void setTooltip(String tooltipText);
 
     /**
      * Add a tooltip to the cell
      *
-     * @param tooltip the text of the tooltip
+     * @param tooltipText the text of the tooltip
      * @param width   the width of the tooltip
      * @param height  the height of the tooltip
      * @param visible if the tooltip should be visible.
      */
-    void setTooltip(String tooltip, Length width, Length height, boolean visible);
+    void setTooltip(String tooltipText, Length width, Length height, boolean visible);
+
+    /**
+     * Add a tooltip to the cell
+     *
+     * @param tooltip the tooltip
+     */
+    void setTooltip(final Tooltip tooltip);
 
     /**
      * Sets a formula in an existing cell. The user is responsible for creating the cell and
