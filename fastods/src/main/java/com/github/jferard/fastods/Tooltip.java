@@ -47,6 +47,8 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
         return new TooltipBuilder(escapedXMLContent);
     }
 
+    private final Length x;
+    private final Length y;
     private final Length width;
     private final Length height;
     private final boolean visible;
@@ -56,13 +58,17 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
     /**
      * Create a new tooltip parameter
      *
+     * @param x
+     * @param y
      * @param width   the width
      * @param height  the height
      * @param visible true if the tooltip is visible
      */
-    Tooltip(final String text, final Length width, final Length height, final boolean visible,
-            final GraphicStyle graphicStyle) {
+    Tooltip(final String text, final Length x, final Length y, final Length width,
+            final Length height, final boolean visible, final GraphicStyle graphicStyle) {
         this.text = text;
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
         this.visible = visible;
@@ -76,6 +82,12 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
         if (this.visible) {
             util.appendAttribute(appendable, "office:display", this.visible);
         }
+        if (this.x != null) {
+            util.appendAttribute(appendable, "svg:x", this.x);
+        }
+        if (this.y != null) {
+            util.appendAttribute(appendable, "svg:y", this.y);
+        }
         if (this.width != null) {
             util.appendAttribute(appendable, "svg:width", this.width);
         }
@@ -83,7 +95,7 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
             util.appendAttribute(appendable, "svg:height", this.height);
         }
         // weird patch for LO bug
-        if (this.width != null || this.height != null) {
+        if (this.x == null && this.y == null && (this.width != null || this.height != null)) {
             util.appendAttribute(appendable, "svg:x", "");
         }
         if (this.graphicStyle != null) {

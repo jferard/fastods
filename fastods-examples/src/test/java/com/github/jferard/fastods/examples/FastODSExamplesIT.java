@@ -94,37 +94,42 @@ public class FastODSExamplesIT {
     }
 
     @Test
+    public void embeddingTest1() throws IOException {
+        I_Embedding.example1();
+    }
+
+    @Test
+    public void embeddingTest2() throws IOException {
+        I_Embedding.example2();
+    }
+
+    @Test
+    public void embeddingTest3() throws IOException {
+        I_Embedding.example3();
+    }
+
+    @Test
     public void miscTest1() throws IOException {
-        I_Misc.example1();
+        J_Misc.example1();
     }
 
     @Test
     public void miscTest2() throws IOException, SQLException {
-        I_Misc.example2();
+        J_Misc.example2();
     }
 
     @Test
     public void miscTest3() throws IOException, SQLException {
-        I_Misc.example3();
-    }
-
-    @Test
-    public void miscTest4() throws IOException, SQLException {
-        I_Misc.example4();
-    }
-
-    @Test
-    public void miscTest5() throws IOException, SQLException {
-        I_Misc.example5();
+        J_Misc.example3();
     }
 
     @Test
     public void multiplicationTableTest() throws IOException {
-        J_MultiplicationTable.example();
+        K_MultiplicationTable.example();
     }
 
     @Test
     public void periodicTableTest() throws IOException, SQLException {
-        K_PeriodicTable.example();
+        L_PeriodicTable.example();
     }
 }

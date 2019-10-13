@@ -64,7 +64,7 @@ import java.util.logging.Logger;
  *
  * @author J. Férard
  */
-class I_Misc {
+class J_Misc {
 
     /**
      * Number of nanoseconds in a second
@@ -92,7 +92,7 @@ class I_Misc {
         // In practice, you have to give the name of the file at the writer creation:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("advanced"), Locale.US);
         final NamedOdsFileWriter writer =
-                odsFactory.createWriter(new File("generated_files", "i_named_misc.ods"));
+                odsFactory.createWriter(new File("generated_files", "j_named_misc.ods"));
 
         // Then, get the document and the tables as usual.
         final NamedOdsDocument document = writer.document();
@@ -235,7 +235,7 @@ class I_Misc {
         }
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_misc_rs.ods"));
+        writer.saveAs(new File("generated_files", "j_misc_rs.ods"));
     }
 
     /**
@@ -278,94 +278,8 @@ class I_Misc {
         //
         // You can discover the configuration attributes in the `ConfigElement` enum.
         //
-        // ## Add files to the ods archive
-        // Remember the method to add an auto update to the document? That was:
-        //
-        //     new MacroHelper().addRefreshMacro(document);
-        //
-        // Under the hood, this function adds some files to the ods archive. The ods
-        // archive contains a `manifest.xml` that lists the files. If a file was added
-        // without a matching entry in the manifest, LibreOffice will bark and refuse to
-        // open the file.
-        //
-        // Let's add a file for the fun:
-        document.addExtraDir("FastODS");
-        document.addExtraFile("FastODS/fast.txt", "text/plain",
-                "Hello from FastODS!".getBytes(ZipUTF8Writer.UTF_8));
-        //
-        // You can check that the file was added with your favorite file archive viewer.
-        //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_misc_features.ods"));
-    }
-
-    /**
-     * @throws IOException  if the file can't be written
-     * @throws SQLException in something goes wrong with the local database
-     */
-    static void example4() throws IOException, SQLException {
-        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // ## Add an image
-        //
-        // As usual:
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
-        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
-        final OdsDocument document = writer.document();
-        final Table table = document.addTable("test");
-
-        // We need to create the "Pictures" directory in the archive
-        document.addExtraDir("Pictures");
-
-        // And there is a tool to insert the image:
-        InsertHelper.create().insertImage(document, table, new URL("https://raw.githubusercontent" +
-                        ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream(),
-                "periodic_table.png", Length.NULL_LENGTH, Length.NULL_LENGTH, SimpleLength.cm(15),
-                SimpleLength.cm(10));
-        //
-        // That's all!
-        //
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        // And save the file.
-        writer.saveAs(new File("generated_files", "i_misc_image.ods"));
-    }
-
-    /**
-     * @throws IOException  if the file can't be written
-     * @throws SQLException in something goes wrong with the local database
-     */
-    static void example5() throws IOException, SQLException {
-        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // ## Add an image
-        //
-        // As usual:
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
-        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
-        final OdsDocument document = writer.document();
-
-        // We need to create the "Pictures" directory in the archive
-        document.addExtraDir("Pictures");
-
-        // And there is a tool to insert the image:
-        final InputStream is = new URL("https://raw.githubusercontent" +
-                ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
-        final byte[] bytes = FileUtil.create().readStream(is);
-        document.addExtraFile("Pictures/1.png", "image/png", bytes);
-
-        final Table table = document.addTable("test");
-        final TableCellWalker walker = table.getWalker();
-        walker.setStringValue("Check annotation");
-        final TooltipBuilder builder = Tooltip.builder(XMLUtil.create(), "text");
-        final GraphicStyle gs =
-                GraphicStyle.builder("gs").fillImage(new DrawFillImage("1", "Pictures/1.png"))
-                        .build();
-        walker.setTooltip(builder.graphicStyle(gs).build());
-
-        //
-        // That's all!
-        //
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        // And save the file.
-        writer.saveAs(new File("generated_files", "i_misc_image.ods"));
+        writer.saveAs(new File("generated_files", "j_misc_features.ods"));
     }
 }

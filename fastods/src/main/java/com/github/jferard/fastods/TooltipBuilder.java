@@ -10,9 +10,21 @@ public class TooltipBuilder implements ShowableBuilder<TooltipBuilder> {
     private Length width;
     private Length height;
     private boolean display;
+    private Length x;
+    private Length y;
 
     public TooltipBuilder(final String escapedContent) {
         this.escapedContent = escapedContent;
+    }
+
+    public TooltipBuilder x(final Length x) {
+        this.x = x;
+        return this;
+    }
+
+    public TooltipBuilder y(final Length y) {
+        this.y = y;
+        return this;
     }
 
     public TooltipBuilder width(final Length width) {
@@ -37,6 +49,6 @@ public class TooltipBuilder implements ShowableBuilder<TooltipBuilder> {
     }
 
     public Tooltip build() {
-        return new Tooltip(this.escapedContent, this.width, this.height, this.display, this.graphicStyle);
+        return new Tooltip(this.escapedContent, this.x, this.y, this.width, this.height, this.display, this.graphicStyle);
     }
 }

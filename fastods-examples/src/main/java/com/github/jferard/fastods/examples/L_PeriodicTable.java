@@ -74,7 +74,7 @@ import java.util.logging.Logger;
  *
  * @author J. Férard
  */
-class K_PeriodicTable {
+class L_PeriodicTable {
     /**
      * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
@@ -285,7 +285,7 @@ class K_PeriodicTable {
         }
 
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_periodic_table.ods"));
+        writer.saveAs(new File("generated_files", "l_periodic_table.ods"));
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
 
     }

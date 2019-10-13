@@ -53,7 +53,7 @@ import java.util.logging.Logger;
  *
  * @author J. Férard
  */
-class J_MultiplicationTable {
+class K_MultiplicationTable {
     /**
      * @throws IOException if the file can't be written
      */
@@ -152,7 +152,7 @@ class J_MultiplicationTable {
         table.setStyle(tableStyle);
 
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_multiplication_table.ods"));
+        writer.saveAs(new File("generated_files", "k_multiplication_table.ods"));
 
         // As you see, it's possible to create a nice document in roughly 40 lines of code (I don't
         // count the imports)
