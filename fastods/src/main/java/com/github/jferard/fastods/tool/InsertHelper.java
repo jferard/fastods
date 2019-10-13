@@ -46,14 +46,16 @@ public class InsertHelper {
      * @param height   the height
      * @throws IOException if an I/O error occurs
      */
-    public void insertImage(final OdsDocument document, final Table table, final File source,
-                            final String destName, final Length x, final Length y,
-                            final Length width, final Length height) throws IOException {
+    public void insertImage(final OdsDocument document, final Table table, final String frameName,
+                            final File source, final String destName, final Length x,
+                            final Length y, final Length width, final Length height)
+            throws IOException {
 
         final String sourceName = source.getName();
         final String mediaType = this.getMediaType(sourceName);
         document.addExtraFile("Pictures/" + destName, mediaType, this.fileUtil.readFile(source));
-        table.addShape(DrawFrame.builder(new DrawImage("Pictures/" + destName), x, y, width, height)
+        table.addShape(DrawFrame
+                .builder(frameName, new DrawImage("Pictures/" + destName), x, y, width, height)
                 .build());
     }
 
@@ -70,7 +72,7 @@ public class InsertHelper {
      * @param height       the height
      * @throws IOException if an I/O error occurs
      */
-    public void insertImage(final OdsDocument document, final Table table,
+    public void insertImage(final OdsDocument document, final Table table, final String frameName,
                             final InputStream sourceStream, final String destName, final Length x,
                             final Length y, final Length width, final Length height)
             throws IOException {
@@ -78,7 +80,8 @@ public class InsertHelper {
         final String mediaType = this.getMediaType(destName);
         document.addExtraFile("Pictures/" + destName, mediaType,
                 this.fileUtil.readStream(sourceStream));
-        table.addShape(DrawFrame.builder(new DrawImage("Pictures/" + destName), x, y, width, height)
+        table.addShape(DrawFrame
+                .builder(frameName, new DrawImage("Pictures/" + destName), x, y, width, height)
                 .build());
     }
 

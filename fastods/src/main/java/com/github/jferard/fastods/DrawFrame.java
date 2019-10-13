@@ -2,17 +2,31 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.DrawStyle;
+import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
+/**
+ * 10.4.2<draw:frame>
+ */
 public class DrawFrame implements Shape {
-    public static DrawFrameBuilder builder(final FrameContent content, final Length x,
-                                           final Length y, final Length width,
+    /**
+     * Create a new builder
+     *
+     * @param name    the name of the frame
+     * @param content the content of the frame
+     * @param x       the x position of the frame
+     * @param y       the y position of the frame
+     * @param width   the width of the frame
+     * @param height  the height of the frame
+     * @return the builder
+     */
+    public static DrawFrameBuilder builder(final String name, final FrameContent content,
+                                           final Length x, final Length y, final Length width,
                                            final Length height) {
-        return new DrawFrameBuilder(content, x, y, width, height);
+        return new DrawFrameBuilder(name, content, x, y, width, height);
     }
 
     private final FrameContent content;
@@ -21,12 +35,25 @@ public class DrawFrame implements Shape {
     private final Length width;
     private final Length height;
     private final int zIndex;
-    private final DrawStyle drawStyle;
+    private final GraphicStyle drawStyle;
     private final TextStyle textStyle;
+    private final String name;
 
-    public DrawFrame(final FrameContent content, final Length x, final Length y, final Length width,
-                     final Length height, final int zIndex, final DrawStyle drawStyle,
-                     final TextStyle textStyle) {
+    /**
+     * @param name      the name of the frame
+     * @param content   the content of the frame
+     * @param x         the x position of the frame
+     * @param y         the y position of the frame
+     * @param width     the width of the frame
+     * @param height    the height of the frame
+     * @param zIndex    the z index
+     * @param drawStyle a style of family graphic
+     * @param textStyle the text style
+     */
+    DrawFrame(final String name, final FrameContent content, final Length x, final Length y,
+              final Length width, final Length height, final int zIndex,
+              final GraphicStyle drawStyle, final TextStyle textStyle) {
+        this.name = name;
         this.content = content;
         this.x = x;
         this.y = y;
@@ -47,9 +74,9 @@ public class DrawFrame implements Shape {
         appendable.append("</draw:frame>");
     }
 
-    public void appendAttributes(final XMLUtil util, final Appendable appendable)
+    private void appendAttributes(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        util.appendAttribute(appendable, "draw:name", "Frame 1");
+        util.appendAttribute(appendable, "draw:name", this.name);
         util.appendAttribute(appendable, "draw:z-index", this.zIndex);
         if (this.drawStyle != null) {
             util.appendAttribute(appendable, "draw:style-name", this.drawStyle.getName());

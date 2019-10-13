@@ -22,6 +22,7 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
@@ -36,6 +37,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -73,6 +75,36 @@ public class TableAppenderTest {
                         "<table:table-column table:style-name=\"co1\" " +
                         "table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/>");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void appendShapesTest() throws IOException {
+        final DrawFrame drawFrame = DrawFrame
+                .builder("a", new DrawImage("href"), SimpleLength.cm(0), SimpleLength.cm(1),
+                        SimpleLength.cm(2), SimpleLength.cm(3)).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getColumnStyles())
+                .andReturn(FastFullList.<TableColumnStyle>newListWithCapacity(1));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Arrays.<Shape>asList(drawFrame));
+
+        PowerMock.replayAll();
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
+                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
+                        "form:apply-design-mode=\"false\"/>" +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:shapes><draw:frame draw:name=\"a\" " +
+                        "draw:z-index=\"0\" svg:width=\"2cm\" svg:height=\"3cm\" svg:x=\"0cm\" " +
+                        "svg:y=\"1cm\"><draw:image xlink:href=\"href\" xlink:type=\"simple\" " +
+                        "xlink:show=\"embed\" xlink:actuate=\"onLoad\"/>" +
+                        "</draw:frame></table:shapes>");
 
         PowerMock.verifyAll();
     }
@@ -200,12 +232,10 @@ public class TableAppenderTest {
 
         PowerMock.verifyAll();
         Assert.assertEquals("<table:table table:name=\"tb\" table:style-name=\"tb-style\" " +
-                        "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/><table:table-column " +
-                        "table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
-                        "table:default-cell-style-name=\"Default\"/>",
-                sb.toString());
+                "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
+                "form:apply-design-mode=\"false\"/><table:table-column " +
+                "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
+                "table:default-cell-style-name=\"Default\"/>", sb.toString());
     }
 
     private void assertPreambleXMLEquals(final String xml) throws IOException {

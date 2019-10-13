@@ -106,7 +106,9 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        this.graphicStyle.addEmbeddedStyles(stylesContainer);
-        stylesContainer.addContentStyle(this.graphicStyle);
+        if (this.graphicStyle != null) {
+            this.graphicStyle.addEmbeddedStyles(stylesContainer);
+            stylesContainer.addContentStyle(this.graphicStyle);
+        }
     }
 }

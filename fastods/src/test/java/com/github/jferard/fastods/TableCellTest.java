@@ -22,6 +22,7 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.CurrencyStyle;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
@@ -31,10 +32,11 @@ import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.datastyle.TimeStyle;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
+import com.github.jferard.fastods.style.DrawFillImage;
+import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
@@ -333,7 +335,7 @@ public class TableCellTest {
     }
 
     @Test
-    public final void testFullTooltip() throws IOException {
+    public final void testLargeTooltip() throws IOException {
         PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
 
@@ -345,6 +347,40 @@ public class TableCellTest {
                 "<office:annotation office:display=\"true\" svg:width=\"1cm\" " +
                 "svg:height=\"2cm\" svg:x=\"\">" + "<text:p>tooltip</text:p>" +
                 "</office:annotation>" + "</table:table-cell>");
+    }
+
+    @Test
+    public final void testFullTooltip() throws IOException {
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setTooltip(Tooltip.builder(this.xmlUtil, "tooltip").build());
+
+        PowerMock.verifyAll();
+        this.assertCellXMLEquals(
+                "<table:table-cell>" + "<office:annotation>" + "<text:p>tooltip</text:p>" +
+                        "</office:annotation>" + "</table:table-cell>");
+    }
+
+    @Test
+    public final void testFullTooltipWithGS() throws IOException {
+        final DrawFillImage dfi = new DrawFillImage("n", "h");
+        final GraphicStyle gs = GraphicStyle.builder("gs").fillImage(dfi).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
+        EasyMock.expect(this.stc.addStylesStyle(dfi)).andReturn(true);
+        EasyMock.expect(this.stc.addContentStyle(gs)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.cell.setTooltip(Tooltip.builder(this.xmlUtil, "tooltip").graphicStyle(gs).build());
+
+        PowerMock.verifyAll();
+        this.assertCellXMLEquals(
+                "<table:table-cell>" + "<office:annotation draw:style-name=\"gs\">" +
+                        "<text:p>tooltip</text:p>" + "</office:annotation>" +
+                        "</table:table-cell>");
     }
 
     @Test
@@ -829,9 +865,7 @@ public class TableCellTest {
         final String cellXML = this.getCellXML();
 
         PowerMock.verifyAll();
-        Assert.assertEquals(
-                "<table:table-cell",
-                cellXML);
+        Assert.assertEquals("<table:table-cell", cellXML);
     }
 
     @Test
@@ -851,9 +885,7 @@ public class TableCellTest {
         final String cellXML = this.getCellXML();
 
         PowerMock.verifyAll();
-        Assert.assertEquals(
-                "<table:covered-table-cell",
-                cellXML);
+        Assert.assertEquals("<table:covered-table-cell", cellXML);
     }
 
     @Test

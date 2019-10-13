@@ -115,7 +115,7 @@ class I_Embedding {
         // And there is a tool to insert the image:
         final InputStream sourceStream = new URL("https://raw.githubusercontent" +
                 ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
-        InsertHelper.create().insertImage(document, table, sourceStream, "periodic_table.png",
+        InsertHelper.create().insertImage(document, table, "Frame 1", sourceStream, "periodic_table.png",
                 Length.NULL_LENGTH, Length.NULL_LENGTH, SimpleLength.cm(15), SimpleLength.cm(10));
         //
         // That's all!

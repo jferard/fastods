@@ -11,6 +11,7 @@ public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
     public static GraphicStyleBuilder builder(final String name) {
         return new GraphicStyleBuilder(name);
     }
+
     private final String name;
     private final boolean hidden;
     private final DrawFillImage drawFillImage;
@@ -68,6 +69,8 @@ public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        stylesContainer.addStylesStyle(this.drawFillImage);
+        if (this.drawFillImage != null) {
+            stylesContainer.addStylesStyle(this.drawFillImage);
+        }
     }
 }
