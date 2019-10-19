@@ -100,6 +100,22 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     }
 
     @Override
+    public boolean addTable(final Table table) throws IOException {
+        return this.commonOdsDocument.addTable(table);
+    }
+
+    @Override
+    public Table createTable(final String name) throws IOException {
+        return this.commonOdsDocument.createTable(name);
+    }
+
+    @Override
+    public Table createTable(final String name, final int rowCapacity, final int columnCapacity)
+            throws IOException {
+        return this.commonOdsDocument.createTable(name, rowCapacity, columnCapacity);
+    }
+
+    @Override
     public Table getTable(final int n) throws FastOdsException {
         return this.commonOdsDocument.getTable(n);
     }
@@ -286,8 +302,7 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     }
 
     @Override
-    public void addExtraFile(final String fullPath, final String mediaType,
-                             final byte[] bytes) {
+    public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
         this.commonOdsDocument.addExtraFile(fullPath, mediaType, bytes);
     }
 

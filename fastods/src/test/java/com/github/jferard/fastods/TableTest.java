@@ -36,7 +36,6 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
@@ -434,7 +433,7 @@ public class TableTest {
 
     private void assertTableXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
-        this.table.appendXMLToContentEntry(this.xmlUtil, sb);
+        this.table.appendXMLContent(this.xmlUtil, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
 }

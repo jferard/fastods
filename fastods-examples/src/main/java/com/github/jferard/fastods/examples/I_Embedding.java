@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
+import com.github.jferard.fastods.DrawFrame;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
@@ -115,8 +116,10 @@ class I_Embedding {
         // And there is a tool to insert the image:
         final InputStream sourceStream = new URL("https://raw.githubusercontent" +
                 ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
-        InsertHelper.create().insertImage(document, table, "Frame 1", sourceStream, "periodic_table.png",
-                Length.NULL_LENGTH, Length.NULL_LENGTH, SimpleLength.cm(15), SimpleLength.cm(10));
+        InsertHelper.create()
+                .insertImage(document, table, "Frame 1", sourceStream, "periodic_table.png",
+                        Length.NULL_LENGTH, Length.NULL_LENGTH, SimpleLength.cm(15),
+                        SimpleLength.cm(10));
         //
         // That's all!
         //
@@ -168,5 +171,37 @@ class I_Embedding {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "i_embed_tt_image.ods"));
+    }
+
+    /**
+     * @throws IOException if the file can't be written
+     */
+    static void example4() throws IOException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## An table inside a table
+        //
+        // As usual, we create a document and a table:
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table outerTable = document.createTable("outer");
+        document.addTable(outerTable);
+        document.addTable(outerTable);
+        final TableCellWalker outerWalker = outerTable.getWalker();
+        outerWalker.setStringValue("I'm the outer table");
+
+        final Table innerTable = document.createTable("inner");
+        final TableCellWalker innerWalker = innerTable.getWalker();
+        innerWalker.setStringValue("I'm the inner table");
+
+        outerTable.addShape(DrawFrame
+                .builder("embbed", innerTable, SimpleLength.cm(1), SimpleLength.cm(1),
+                        SimpleLength.cm(15), SimpleLength.cm(10)).build());
+        //
+        // That's all!
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "i_embedding_table.ods"));
     }
 }

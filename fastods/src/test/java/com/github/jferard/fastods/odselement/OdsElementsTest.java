@@ -220,7 +220,7 @@ public class OdsElementsTest {
 
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement.getLastTable()).andReturn(null);
-        EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
+        EasyMock.expect(this.contentElement.addTable(t)).andReturn(true);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
         t.addObserver(w);
@@ -228,7 +228,7 @@ public class OdsElementsTest {
 
         PowerMock.replayAll();
         this.odsElements.addObserver(w);
-        this.odsElements.addTableToContent("table1", 10, 5);
+        this.odsElements.addTableToContent(t);
 
         PowerMock.verifyAll();
     }
@@ -242,7 +242,7 @@ public class OdsElementsTest {
 
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement.getLastTable()).andReturn(lt);
-        EasyMock.expect(this.contentElement.addTable("table1", 10, 5)).andReturn(t);
+        EasyMock.expect(this.contentElement.addTable(t)).andReturn(true);
         EasyMock.expect(t.getConfigEntry()).andReturn(e);
         this.settingsElement.addTableConfig(e);
         lt.asyncFlushEndTable();
@@ -250,7 +250,7 @@ public class OdsElementsTest {
 
         PowerMock.replayAll();
         this.odsElements.addObserver(w);
-        this.odsElements.addTableToContent("table1", 10, 5);
+        this.odsElements.addTableToContent(t);
 
         PowerMock.verifyAll();
     }

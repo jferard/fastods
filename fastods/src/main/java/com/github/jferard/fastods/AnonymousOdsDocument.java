@@ -93,6 +93,24 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
+    public boolean addTable(final Table table)
+            throws IOException {
+        return this.commonOdsDocument.addTable(table);
+    }
+
+    @Override
+    public Table createTable(final String name) throws IOException {
+        return this.odsElements.createTable(name, CommonOdsDocument.DEFAULT_ROW_CAPACITY,
+                CommonOdsDocument.DEFAULT_COLUMN_CAPACITY);
+    }
+
+    @Override
+    public Table createTable(final String name, final int rowCapacity, final int columnCapacity)
+            throws IOException {
+        return this.commonOdsDocument.createTable(name, rowCapacity, columnCapacity);
+    }
+
+    @Override
     public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
         this.commonOdsDocument.addExtraFile(fullPath, mediaType, bytes);
     }

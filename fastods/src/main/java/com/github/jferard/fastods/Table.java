@@ -46,7 +46,7 @@ import java.text.ParseException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class Table implements NamedObject {
+public class Table implements NamedObject, FrameContent {
     /**
      * Create a new Table with a name and a row/column capacity
      *
@@ -111,7 +111,8 @@ public class Table implements NamedObject {
      * @param appendable the output
      * @throws IOException if the XML could not be written
      */
-    public void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
         this.appender.appendXMLToContentEntry(util, appendable);
     }

@@ -26,11 +26,9 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.odselement.StylesModeSetter;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,7 +39,7 @@ import java.util.List;
  */
 public interface OdsDocument extends StylesModeSetter {
     /**
-     * Add a new table to the file, the new table is set to the active table.<br>
+     * Add a new table to the document, the new table is set to the active table.<br>
      * Use setActiveTable to override the current active table, this has no
      * influence to the program, the active table is the first table that is shown in
      * OpenOffice.
@@ -53,10 +51,46 @@ public interface OdsDocument extends StylesModeSetter {
     Table addTable(String name) throws IOException;
 
     /**
-     * Add a new table to the file, the new table is set to the active table.<br>
+     * Add a new table to the document, the new table is set to the active table.<br>
      * Use setActiveTable to override the current active table, this has no
      * influence to the program, the active table is the first table that is shown in
      * OpenOffice.
+     *
+     * @param name           the name of the table to add
+     * @param rowCapacity    the initial row capacity
+     * @param columnCapacity the initial column capacity
+     * @return the table or nll if the name already exists
+     * @throws IOException if the table can't be added to document
+     */
+    Table addTable(String name, int rowCapacity, int columnCapacity) throws IOException;
+
+    /**
+     * Add a new table to the document, the new table is set to the active table.<br>
+     * Use setActiveTable to override the current active table, this has no
+     * influence to the program, the active table is the first table that is shown in
+     * OpenOffice.
+     *
+     * @param table the table to add
+     * @return true if the table was added
+     * @throws IOException if the table can't be added to document
+     */
+    boolean addTable(Table table) throws IOException;
+
+    /**
+     * *You probably need {@code addTable}*
+     * <p>
+     * Create a new table.
+     *
+     * @param name - The name of the table to add
+     * @return the table
+     * @throws IOException if the table can't be added to document
+     */
+    Table createTable(String name) throws IOException;
+
+    /**
+     * *You probably need {@code addTable}*
+     * <p>
+     * Create a new table.
      *
      * @param name           - The name of the table to add
      * @param rowCapacity    the initial row capacity
@@ -64,7 +98,7 @@ public interface OdsDocument extends StylesModeSetter {
      * @return the table
      * @throws IOException if the table can't be added to document
      */
-    Table addTable(String name, int rowCapacity, int columnCapacity) throws IOException;
+    Table createTable(String name, int rowCapacity, int columnCapacity) throws IOException;
 
     /**
      * Get a table by index
@@ -161,9 +195,10 @@ public interface OdsDocument extends StylesModeSetter {
 
     /**
      * Add an extra file to the document
-     * @param fullPath the path of the file in the sequence
+     *
+     * @param fullPath  the path of the file in the sequence
      * @param mediaType the MIME type of the file
-     * @param bytes the content
+     * @param bytes     the content
      */
     void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes);
 
@@ -174,18 +209,21 @@ public interface OdsDocument extends StylesModeSetter {
 
     /**
      * Add some events to the document
+     *
      * @param events the events to add
      */
     void addEvents(final ScriptEventListener... events);
 
     /**
      * Add a new pilot table
+     *
      * @param pilot the pilot table
      */
     void addPilotTable(PilotTable pilot);
 
     /**
      * Add a new auto filter
+     *
      * @param autoFilter the filter
      */
     void addAutoFilter(final AutoFilter autoFilter);

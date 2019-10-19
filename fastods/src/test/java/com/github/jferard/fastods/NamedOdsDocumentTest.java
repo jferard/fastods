@@ -219,7 +219,8 @@ public class NamedOdsDocumentTest extends OdsDocumentTest<NamedOdsDocument> {
 
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        EasyMock.expect(this.odsElements.addTableToContent("table1", 10, 15)).andReturn(t);
+        EasyMock.expect(this.odsElements.createTable("table1", 10, 15)).andReturn(t);
+        EasyMock.expect(this.odsElements.addTableToContent(t)).andReturn(true);
         this.odsElements.setActiveTable(t);
 
         PowerMock.replayAll();

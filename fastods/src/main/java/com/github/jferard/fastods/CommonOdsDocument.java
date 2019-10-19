@@ -35,7 +35,6 @@ import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -81,9 +80,34 @@ class CommonOdsDocument implements OdsDocument {
     @Override
     public Table addTable(final String name, final int rowCapacity, final int columnCapacity)
             throws IOException {
-        final Table table = this.odsElements.addTableToContent(name, rowCapacity, columnCapacity);
-        this.odsElements.setActiveTable(table);
-        return table;
+        final Table table = this.odsElements.createTable(name, rowCapacity, columnCapacity);
+        if (this.addTable(table)) {
+            return table;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean addTable(final Table table) throws IOException {
+        if (this.odsElements.addTableToContent(table)) {
+            this.odsElements.setActiveTable(table);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public Table createTable(final String name) throws IOException {
+        return this.odsElements.createTable(name, CommonOdsDocument.DEFAULT_ROW_CAPACITY,
+                CommonOdsDocument.DEFAULT_COLUMN_CAPACITY);
+    }
+
+    @Override
+    public Table createTable(final String name, final int rowCapacity, final int columnCapacity)
+            throws IOException {
+        return this.odsElements.createTable(name, rowCapacity, columnCapacity);
     }
 
     @Override

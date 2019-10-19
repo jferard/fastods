@@ -109,6 +109,7 @@ public class ContentElement implements OdsElement {
      * @param rowCapacity    the initial capacity in rows: this will be allocated at table creation
      * @return the table (whether it existed before call or not). Never null
      */
+    @Deprecated
     public Table addTable(final String name, final int rowCapacity, final int columnCapacity) {
         Table table = this.tables.getByName(name);
         if (table == null) {
@@ -121,7 +122,34 @@ public class ContentElement implements OdsElement {
     }
 
     /**
-     * @return the last table in the document
+     * @param table the table
+     * @return true if the table was added
+     */
+    public boolean addTable(final Table table) {
+        final Table t = this.tables.getByName(table.getName());
+        final boolean add = t == null;
+        if (add) {
+            this.tables.add(table);
+        }
+        return add;
+    }
+
+    /**
+     * Create a new table
+     *
+     * @param name the name of the new table
+     * @param rowCapacity the row capacity
+     * @param columnCapacity the column capacity
+     * @return the newly created table
+     */
+    public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
+        return Table.create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name,
+                rowCapacity, columnCapacity, this.stylesContainer, this.format,
+                this.libreOfficeMode);
+    }
+
+    /**
+     * @return the last table in the document or null
      */
     public Table getLastTable() {
         final int size = this.tables.size();
@@ -169,7 +197,7 @@ public class ContentElement implements OdsElement {
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         this.writePreamble(util, writer);
         for (final Table table : this.tables) {
-            table.appendXMLToContentEntry(util, writer);
+            table.appendXMLContent(util, writer);
         }
         this.writePostamble(util, writer);
     }

@@ -23,12 +23,12 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.FinalizeFlusher;
 import com.github.jferard.fastods.ImmutableElementsFlusher;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
@@ -81,11 +81,11 @@ public class OdsElements implements StylesContainer {
      */
     public static final String SC_SPLIT_FIX = "2";
 
-    private static final String[] EMPTY_ELEMENT_NAMES = {"Thumbnails/",
-            "Configurations2/accelerator/current.xml", "Configurations2/floater/",
-            "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
-            "Configurations2/popupmenu/", "Configurations2/progressbar/",
-            "Configurations2/statusbar/", "Configurations2/toolbar/"};
+    private static final String[] EMPTY_ELEMENT_NAMES =
+            {"Thumbnails/", "Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                    "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+                    "Configurations2/popupmenu/", "Configurations2/progressbar/",
+                    "Configurations2/statusbar/", "Configurations2/toolbar/"};
 
     /**
      * @param positionUtil    an util for cell addresses (e.g. "A1")
@@ -105,8 +105,9 @@ public class OdsElements implements StylesContainer {
         final MetaElement metaElement = new MetaElement();
         final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
         final StylesElement stylesElement = new StylesElement(stylesContainer);
-        final ContentElement contentElement = new ContentElement(positionUtil, xmlUtil, writeUtil,
-                format, libreOfficeMode, stylesContainer);
+        final ContentElement contentElement =
+                new ContentElement(positionUtil, xmlUtil, writeUtil, format, libreOfficeMode,
+                        stylesContainer);
         return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
                 settingsElement, metaElement, contentElement, stylesElement);
     }
@@ -289,25 +290,52 @@ public class OdsElements implements StylesContainer {
      * @param name           name of the table
      * @param rowCapacity    estimated rows
      * @param columnCapacity estimated columns
-     * @return the table
+     * @return the table or null
      * @throws IOException if the OdsElements is observed and there is a write exception
      */
+    @Deprecated
     public Table addTableToContent(final String name, final int rowCapacity,
                                    final int columnCapacity) throws IOException {
-        final Table previousTable = this.contentElement.getLastTable();
-        final Table table = this.contentElement.addTable(name, rowCapacity, columnCapacity);
-        this.settingsElement.addTableConfig(table.getConfigEntry());
-        if (this.observer != null) {
-            this.asyncFlushPreviousTable(previousTable, table);
+        final Table table = this.contentElement.createTable(name, rowCapacity, columnCapacity);
+        if (this.addTableToContent(table)) {
+            return table;
+        } else {
+            return null;
         }
-        return table;
     }
+
+    /**
+     * Add a new table to content. The config for this table is added to the settings.
+     * If the OdsElements is observed the previous table is async flushed. If there
+     * is no previous table, meta and styles are async flushed.
+     * If there is no previous table, meta.xml, styles.xml and the preamble of content.xml
+     * are written to destination.
+     *
+     * @param table the table
+     * @throws IOException if the OdsElements is observed and there is a write exception
+     */
+    public boolean addTableToContent(final Table table) throws IOException {
+        final Table previousTable = this.contentElement.getLastTable();
+        final boolean add = this.contentElement.addTable(table);
+        if (add) {
+            this.settingsElement.addTableConfig(table.getConfigEntry());
+            if (this.observer != null) {
+                this.asyncFlushPreviousTable(previousTable, table);
+            }
+        }
+        return add;
+    }
+
+    public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
+        return this.contentElement.createTable(name, rowCapacity, columnCapacity);
+    }
+
 
     /**
      * flush everything up to the new table excluded: the previous table is async flushed. If there
      * is no previous table, meta and styles are async flushed.
      *
-     * @param previousTable
+     * @param previousTable the previous table
      * @param table         the table
      */
     private void asyncFlushPreviousTable(final Table previousTable, final Table table)
@@ -482,10 +510,9 @@ public class OdsElements implements StylesContainer {
      *
      * @param fullPath  the name of the file in the sequence
      * @param mediaType the MIME type
-     * @param bytes  the content
+     * @param bytes     the content
      */
-    public void addExtraFile(final String fullPath, final String mediaType,
-                             final byte[] bytes) {
+    public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
         final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType);
         this.extraFileByName.put(fullPath, bytes);
         this.manifestElement.add(manifestEntry);
@@ -542,6 +569,7 @@ public class OdsElements implements StylesContainer {
 
     /**
      * Add some events to the document
+     *
      * @param events the events to add
      */
     public void addEvents(final ScriptEventListener... events) {

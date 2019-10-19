@@ -109,6 +109,11 @@ public class FastODSExamplesIT {
     }
 
     @Test
+    public void embeddingTest4() throws IOException {
+        I_Embedding.example4();
+    }
+
+    @Test
     public void miscTest1() throws IOException {
         J_Misc.example1();
     }
