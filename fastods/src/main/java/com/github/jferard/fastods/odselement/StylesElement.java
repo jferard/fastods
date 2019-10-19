@@ -93,7 +93,7 @@ public class StylesElement implements OdsElement {
                         "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
                         "xmlns:ooow=\"http://openoffice.org/2004/writer\" " +
                         "xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3" +
-                        ".org/2001/xml-events\" office:version=\"1.1\">");
+                        ".org/2001/xml-events\" office:version=\"1.2\">");
         this.stylesContainer.writeFontFaceDecls(util, writer);
         writer.write("<office:styles>");
         this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell

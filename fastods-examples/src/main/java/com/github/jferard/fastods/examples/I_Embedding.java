@@ -25,6 +25,7 @@ package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.DrawFrame;
+import com.github.jferard.fastods.DrawObject;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
@@ -32,18 +33,24 @@ import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.Tooltip;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.ref.RangeRef;
 import com.github.jferard.fastods.style.DrawFillImage;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.tool.InsertHelper;
+import com.github.jferard.fastods.util.FileUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.google.common.io.Resources;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Section 8 of the tutorial
@@ -54,7 +61,7 @@ class I_Embedding {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example1() throws IOException {
+    static void exampleWithFile() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -100,7 +107,7 @@ class I_Embedding {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example2() throws IOException {
+    static void exampleWithImage() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Add an image
         //
@@ -131,7 +138,54 @@ class I_Embedding {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example3() throws IOException {
+    static void exampleWithDocument() throws IOException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Embed a document inside a table
+        //
+        // As usual, we create a document and a table:
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("test");
+
+        // We need to create the "Object 1" directory in the archive
+        document.addExtraObject("Object 1", "application/vnd.oasis.opendocument.spreadsheet",
+                "1.2");
+
+        // And to fill the directory with the interesting elements of the object
+        final InputStream inputStream =
+                Resources.asByteSource(Resources.getResource("a_hello_world_example.ods"))
+                        .openStream();
+        final ZipInputStream zipStream = new ZipInputStream(inputStream);
+        ZipEntry entry = zipStream.getNextEntry();
+        while (entry != null) {
+            final String name = entry.getName();
+            if (!name.startsWith("META-INF") && !name.startsWith("mimetype") &&
+                    !name.startsWith("Thumbnails")) {
+                final byte[] bytes = FileUtil.create().readStream(zipStream);
+                document.addExtraFile("Object 1/" + name, "text/xml", bytes);
+            }
+            entry = zipStream.getNextEntry();
+        }
+
+        // Now, we insert the document into a frame:
+        final DrawObject object = new DrawObject("./Object 1", Collections.<RangeRef>emptyList());
+        final GraphicStyle gs = GraphicStyle.builder("gs").build();
+        table.addShape(DrawFrame.builder("embed", object, SimpleLength.cm(1), SimpleLength.cm(1),
+                SimpleLength.cm(15), SimpleLength.cm(10)).style(gs)
+                .build());
+
+        // This will be a tool soon...
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "i_embedding_object.ods"));
+    }
+
+    /**
+     * @throws IOException if the file can't be written
+     */
+    static void exampleWithCommentBG() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Add an image to the background of a comment.
         // That was a feature request. Here's the way to do it.
@@ -176,16 +230,18 @@ class I_Embedding {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example4() throws IOException {
+    static void exampleWithTable() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## An table inside a table
+        // Warning: this is not understood by LibreOffice.
         //
         // As usual, we create a document and a table:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
+
+        // Then we create an outer and an inner table:
         final Table outerTable = document.createTable("outer");
-        document.addTable(outerTable);
         document.addTable(outerTable);
         final TableCellWalker outerWalker = outerTable.getWalker();
         outerWalker.setStringValue("I'm the outer table");
@@ -193,12 +249,11 @@ class I_Embedding {
         final Table innerTable = document.createTable("inner");
         final TableCellWalker innerWalker = innerTable.getWalker();
         innerWalker.setStringValue("I'm the inner table");
-
+        // We do not add the inner table to the document as usual, but we place the inner table
+        // in the outer table:
         outerTable.addShape(DrawFrame
-                .builder("embbed", innerTable, SimpleLength.cm(1), SimpleLength.cm(1),
+                .builder("embed", innerTable, SimpleLength.cm(1), SimpleLength.cm(1),
                         SimpleLength.cm(15), SimpleLength.cm(10)).build());
-        //
-        // That's all!
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.

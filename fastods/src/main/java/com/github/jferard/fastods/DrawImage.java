@@ -4,9 +4,15 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
+/**
+ * 10.4.4<draw:image>
+ */
 public class DrawImage implements FrameContent {
     private final String href;
 
+    /**
+     * @param href the ref of the image
+     */
     public DrawImage(final String href) {
         this.href = href;
     }

@@ -26,6 +26,8 @@ package com.github.jferard.fastods.util;
 import com.github.jferard.fastods.attribute.AttributeValue;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * An util for writing XML representation.
@@ -127,7 +129,32 @@ public class XMLUtil {
      */
     public void appendAttribute(final Appendable appendable, final CharSequence attrName,
                                 final AttributeValue attrValue) throws IOException {
-        appendable.append(' ').append(attrName).append("=\"").append(attrValue.getValue()).append('"');
+        appendable.append(' ').append(attrName).append("=\"").append(attrValue.getValue())
+                .append('"');
+    }
+
+    /**
+     * Append a space, then a new element to the appendable element, the name of the element is
+     * attrName and the value is a list. The value won't be escaped.
+     *
+     * @param appendable where to write
+     * @param attrName   the name of the attribute
+     * @param attrs      list of attributes
+     * @param sep        the separator
+     * @throws IOException If an I/O error occurs
+     */
+    public void appendAttribute(final Appendable appendable, final CharSequence attrName,
+                                final List<? extends Object> attrs, final String sep)
+            throws IOException {
+        appendable.append(' ').append(attrName).append("=\"");
+        if (!attrs.isEmpty()) {
+            final Iterator<? extends Object> it = attrs.iterator();
+            appendable.append(it.next().toString());
+            while (it.hasNext()) {
+                appendable.append(sep).append(it.next().toString());
+            }
+        }
+        appendable.append('"');
     }
 
     /**

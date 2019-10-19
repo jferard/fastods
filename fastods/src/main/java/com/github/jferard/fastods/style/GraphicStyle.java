@@ -44,7 +44,12 @@ public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
         util.appendAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "graphic");
         appendable.append("><style:graphic-properties");
-        if (this.drawFillImage != null) {
+        if (this.drawFillImage == null) {
+            util.appendAttribute(appendable, "draw:fill", "none");
+            util.appendAttribute(appendable, "draw:stroke", "none");
+            util.appendAttribute(appendable, "draw:textarea-horizontal-align", "center");
+            util.appendAttribute(appendable, "draw:textarea-vertical-align", "middle");
+        } else {
             util.appendAttribute(appendable, "draw:fill", "bitmap");
             util.appendAttribute(appendable, "draw:fill-image-name", this.drawFillImage.getName());
         }

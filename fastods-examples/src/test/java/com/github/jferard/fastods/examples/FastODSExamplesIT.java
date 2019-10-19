@@ -94,23 +94,28 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void embeddingTest1() throws IOException {
-        I_Embedding.example1();
+    public void embeddingFileTest() throws IOException {
+        I_Embedding.exampleWithFile();
     }
 
     @Test
-    public void embeddingTest2() throws IOException {
-        I_Embedding.example2();
+    public void embeddingImageTest() throws IOException {
+        I_Embedding.exampleWithImage();
     }
 
     @Test
-    public void embeddingTest3() throws IOException {
-        I_Embedding.example3();
+    public void embeddingDocumentTest() throws IOException {
+        I_Embedding.exampleWithDocument();
     }
 
     @Test
-    public void embeddingTest4() throws IOException {
-        I_Embedding.example4();
+    public void embeddingCommentBGTest() throws IOException {
+        I_Embedding.exampleWithCommentBG();
+    }
+
+    @Test
+    public void embeddingTableTest() throws IOException {
+        I_Embedding.exampleWithTable();
     }
 
     @Test

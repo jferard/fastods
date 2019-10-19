@@ -34,21 +34,30 @@ import java.io.IOException;
 public class ManifestEntry implements XMLConvertible {
     private final CharSequence fullPath;
     private final CharSequence mediaType;
+    private CharSequence version;
 
     /**
      * @param fullPath the path
      * @param mediaType the media MIME type
+     * @param version
      */
-    public ManifestEntry(final CharSequence fullPath, final CharSequence mediaType) {
+    public ManifestEntry(final CharSequence fullPath, final CharSequence mediaType,
+                         final CharSequence version) {
         this.fullPath = fullPath;
         this.mediaType = mediaType;
+        this.version = version;
     }
 
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<manifest:file-entry");
         util.appendAttribute(appendable, "manifest:full-path", this.fullPath);
-        util.appendAttribute(appendable, "manifest:media-type", this.mediaType);
+        if (this.mediaType != null) {
+            util.appendAttribute(appendable, "manifest:media-type", this.mediaType);
+        }
+        if (this.version != null) {
+            util.appendAttribute(appendable, "manifest:version", this.version);
+        }
         appendable.append("/>");
     }
 }

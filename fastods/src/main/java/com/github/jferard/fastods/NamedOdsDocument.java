@@ -312,6 +312,11 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     }
 
     @Override
+    public void addExtraObject(final String fullPath, final String mediaType, final String version) {
+        this.commonOdsDocument.addExtraObject(fullPath, mediaType, version);
+    }
+
+    @Override
     public void addEvents(final ScriptEventListener... events) {
         this.commonOdsDocument.addEvents(events);
     }

@@ -112,7 +112,7 @@ public class SettingsElement implements OdsElement {
                 "<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
                         ":office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
                         "xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\" " +
-                        "xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.1\">");
+                        "xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.2\">");
         writer.write("<office:settings>");
         for (final ConfigBlock block : this.settings.getRootBlocks()) {
             block.appendXMLContent(util, writer);

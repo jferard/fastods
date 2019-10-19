@@ -266,8 +266,7 @@ public class OdsElementsTest {
         this.odsElements.addExtraDir("dir");
 
         PowerMock.verifyAll();
-        TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"dir\" " +
-                "manifest:media-type=\"\"/>", capture.getValue());
+        TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"dir\" />", capture.getValue());
     }
 
     @Test

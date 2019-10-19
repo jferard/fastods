@@ -513,7 +513,7 @@ public class OdsElements implements StylesContainer {
      * @param bytes     the content
      */
     public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
-        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType);
+        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType, null);
         this.extraFileByName.put(fullPath, bytes);
         this.manifestElement.add(manifestEntry);
     }
@@ -522,7 +522,19 @@ public class OdsElements implements StylesContainer {
      * @param fullPath the path of the dir
      */
     public void addExtraDir(final String fullPath) {
-        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, "");
+        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, null, null);
+        this.manifestElement.add(manifestEntry);
+    }
+
+    /**
+     * Add an extra object (eg. a spreadsheet)
+     *
+     * @param fullPath the path of the dir
+     * @param mediaType the type of the object
+     * @param version the version
+     */
+    public void addExtraObject(final String fullPath, final String mediaType, final String version) {
+        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType, version);
         this.manifestElement.add(manifestEntry);
     }
 

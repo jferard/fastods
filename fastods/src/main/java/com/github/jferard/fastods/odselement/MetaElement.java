@@ -33,6 +33,7 @@ import java.util.zip.ZipEntry;
 
 /**
  * 3.1.3.4 office:document-meta
+ * and 4.3 Non-RDF Metadata
  *
  * @author Julien Férard
  * @author Martin Schulz

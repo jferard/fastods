@@ -34,33 +34,41 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 
 /**
- * 3.2Manifest and http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part3
- * .html#Manifest_File
+ * Part 3, 3.2 Manifest:
+ * > All OpenDocument packages shall contain a file named “META-INF/manifest.xml”. This file is
+ * the OpenDocument package manifest. The manifest provides :
+ *     •A list of all of the files in the package (except those specifically excluded from the
+ *     manifest).
+ *     •The MIME media type of each file in the package.
+ *     •If a file is stored in the file data in encrypted form, the manifest provides information
+ *     required to decrypt the file correctly when the encryption key is also supplied.
+ *
+ * Part 3, 4 Manifest File
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class ManifestElement implements OdsElement {
     private static final List<ManifestEntry> ENTRIES = Arrays
-            .asList(new ManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet"),
-                    new ManifestEntry("content.xml", "text/xml"),
-                    new ManifestEntry("styles.xml", "text/xml"),
-                    new ManifestEntry("meta.xml", "text/xml"),
-                    new ManifestEntry("settings.xml", "text/xml"),
+            .asList(new ManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
+                    new ManifestEntry("content.xml", "text/xml", null),
+                    new ManifestEntry("styles.xml", "text/xml", null),
+                    new ManifestEntry("meta.xml", "text/xml", null),
+                    new ManifestEntry("settings.xml", "text/xml", null),
                     new ManifestEntry("Configurations2/",
-                            "application/vnd.sun.xml.ui.configuration"),
-                    new ManifestEntry("Configurations2/statusbar/", ""),
-                    new ManifestEntry("Configurations2/accelerator/", ""),
-                    new ManifestEntry("Configurations2/accelerator/current.xml", ""),
-                    new ManifestEntry("Configurations2/floater/", ""),
-                    new ManifestEntry("Configurations2/popupmenu/", ""),
-                    new ManifestEntry("Configurations2/progressbar/", ""),
-                    new ManifestEntry("Configurations2/menubar/", ""),
-                    new ManifestEntry("Configurations2/toolbar/", ""),
-                    new ManifestEntry("Configurations2/images/", ""),
-                    new ManifestEntry("Configurations2/images/Bitmaps/", ""),
-                    new ManifestEntry("Thumbnails/", ""),
-                    new ManifestEntry("Thumbnails/thumbnail.png", ""));
+                            "application/vnd.sun.xml.ui.configuration", null),
+                    new ManifestEntry("Configurations2/statusbar/", "", null),
+                    new ManifestEntry("Configurations2/accelerator/", "", null),
+                    new ManifestEntry("Configurations2/accelerator/current.xml", "", null),
+                    new ManifestEntry("Configurations2/floater/", "", null),
+                    new ManifestEntry("Configurations2/popupmenu/", "", null),
+                    new ManifestEntry("Configurations2/progressbar/", "", null),
+                    new ManifestEntry("Configurations2/menubar/", "", null),
+                    new ManifestEntry("Configurations2/toolbar/", "", null),
+                    new ManifestEntry("Configurations2/images/", "", null),
+                    new ManifestEntry("Configurations2/images/Bitmaps/", "", null),
+                    new ManifestEntry("Thumbnails/", "", null),
+                    new ManifestEntry("Thumbnails/thumbnail.png", "", null));
 
     /**
      * @return a new ManifestElement
