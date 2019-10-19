@@ -17,6 +17,7 @@ generated_files
 *.old
 *.class
 *.ods
+!fastods-examples/src/test/resources/a_hello_world_example.ods
 *.*#
 
 # all jars, but simpleods
