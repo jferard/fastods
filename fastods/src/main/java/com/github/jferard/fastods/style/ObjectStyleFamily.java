@@ -65,10 +65,19 @@ public enum ObjectStyleFamily {
     GRAPHIC("graphic"),
 
     /**
-     * "draw:fill-image: family name of styles for fill images."
+     * "draw:fill-bitmap: family name of styles for fill images."
      */
-    DRAW_FILL_IMAGE("draw:fill-image");
+    DRAW_FILL_BITMAP("draw:fill-bitmap"),
 
+    /**
+     * "draw:gradient: family name of styles for gradients."
+     */
+    DRAW_FILL_GRADIENT("draw:fill-gradient"),
+
+    /**
+     * "draw:hatch: family name of styles for hatch."
+     */
+    DRAW_FILL_HATCH("draw:fill-hatch");
 
     private final String attributeName;
 

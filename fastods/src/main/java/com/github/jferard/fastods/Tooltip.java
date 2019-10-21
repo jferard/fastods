@@ -23,9 +23,9 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.GraphicStyle;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -47,30 +47,21 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
         return new TooltipBuilder(escapedXMLContent);
     }
 
-    private final Length x;
-    private final Length y;
-    private final Length width;
-    private final Length height;
     private final boolean visible;
     private final GraphicStyle graphicStyle;
     private final String text;
+    private final SVGRectangle rectangle;
 
     /**
      * Create a new tooltip parameter
      *
-     * @param x
-     * @param y
-     * @param width   the width
-     * @param height  the height
-     * @param visible true if the tooltip is visible
+     * @param rectangle the tooltip coordinates
+     * @param visible   true if the tooltip is visible
      */
-    Tooltip(final String text, final Length x, final Length y, final Length width,
-            final Length height, final boolean visible, final GraphicStyle graphicStyle) {
+    Tooltip(final String text, final SVGRectangle rectangle, final boolean visible,
+            final GraphicStyle graphicStyle) {
         this.text = text;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.rectangle = rectangle;
         this.visible = visible;
         this.graphicStyle = graphicStyle;
     }
@@ -82,21 +73,8 @@ public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
         if (this.visible) {
             util.appendAttribute(appendable, "office:display", this.visible);
         }
-        if (this.x != null) {
-            util.appendAttribute(appendable, "svg:x", this.x);
-        }
-        if (this.y != null) {
-            util.appendAttribute(appendable, "svg:y", this.y);
-        }
-        if (this.width != null) {
-            util.appendAttribute(appendable, "svg:width", this.width);
-        }
-        if (this.height != null) {
-            util.appendAttribute(appendable, "svg:height", this.height);
-        }
-        // weird patch for LO bug
-        if (this.x == null && this.y == null && (this.width != null || this.height != null)) {
-            util.appendAttribute(appendable, "svg:x", "");
+        if (this.rectangle != null) {
+            this.rectangle.appendXMLContent(util, appendable);
         }
         if (this.graphicStyle != null) {
             util.appendAttribute(appendable, "draw:style-name", this.graphicStyle.getName());

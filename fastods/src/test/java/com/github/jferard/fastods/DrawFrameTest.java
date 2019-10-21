@@ -1,10 +1,10 @@
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -27,9 +27,8 @@ public class DrawFrameTest {
     @Test
     public void testContent() throws IOException {
         final StringBuilder sb = new StringBuilder();
-        final DrawFrame frame = DrawFrame
-                .builder("Frame 1", this.content, SimpleLength.cm(1), SimpleLength.cm(2),
-                        SimpleLength.cm(3), SimpleLength.cm(4)).build();
+        final DrawFrame frame =
+                DrawFrame.builder("Frame 1", this.content, SVGRectangle.cm(1, 2, 3, 4)).build();
 
         PowerMock.resetAll();
         this.content.appendXMLContent(this.util, sb);
@@ -44,14 +43,12 @@ public class DrawFrameTest {
     }
 
     @Test
-    public void testStyles() throws IOException {
+    public void testStyles() {
         final StylesContainer container = PowerMock.createMock(StylesContainer.class);
         final GraphicStyle gs = GraphicStyle.builder("gs").build();
-        final DrawFrame frame = DrawFrame
-                .builder("Frame 1", this.content, SimpleLength.cm(1), SimpleLength.cm(2),
-                        SimpleLength.cm(3), SimpleLength.cm(4))
-                .style(gs).textStyle(TextStyle.DEFAULT_TEXT_STYLE)
-                .build();
+        final DrawFrame frame =
+                DrawFrame.builder("Frame 1", this.content, SVGRectangle.cm(1, 2, 3, 4)).style(gs)
+                        .textStyle(TextStyle.DEFAULT_TEXT_STYLE).build();
 
         PowerMock.resetAll();
         EasyMock.expect(container.addContentStyle(gs)).andReturn(true);

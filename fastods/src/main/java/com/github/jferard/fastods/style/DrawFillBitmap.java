@@ -1,16 +1,17 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
-public class DrawFillImage implements ObjectStyle {
+public class DrawFillBitmap implements DrawFill, ObjectStyle {
     private final String name;
     private final String href;
     private String key;
 
-    public DrawFillImage(final String name, final String href) {
+    public DrawFillBitmap(final String name, final String href) {
         this.name = name;
         this.href = href;
     }
@@ -34,7 +35,7 @@ public class DrawFillImage implements ObjectStyle {
 
     @Override
     public ObjectStyleFamily getFamily() {
-        return ObjectStyleFamily.DRAW_FILL_IMAGE;
+        return ObjectStyleFamily.DRAW_FILL_BITMAP;
     }
 
     @Override
@@ -52,5 +53,17 @@ public class DrawFillImage implements ObjectStyle {
     @Override
     public boolean isHidden() {
         return false;
+    }
+
+    @Override
+    public void appendAttributes(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        util.appendAttribute(appendable, "draw:fill", "bitmap");
+        util.appendAttribute(appendable, "draw:fill-image-name", this.name);
+    }
+
+    @Override
+    public void addEmbeddedStyles(final StylesContainer stylesContainer) {
+        stylesContainer.addStylesStyle(this);
     }
 }

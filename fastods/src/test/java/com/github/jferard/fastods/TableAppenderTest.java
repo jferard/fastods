@@ -22,13 +22,14 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.FastFullList;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -81,9 +82,8 @@ public class TableAppenderTest {
 
     @Test
     public void appendShapesTest() throws IOException {
-        final DrawFrame drawFrame = DrawFrame
-                .builder("a", new DrawImage("href"), SimpleLength.cm(0), SimpleLength.cm(1),
-                        SimpleLength.cm(2), SimpleLength.cm(3)).build();
+        final DrawFrame drawFrame =
+                DrawFrame.builder("a", new DrawImage("href"), SVGRectangle.cm(0, 1, 2, 3)).build();
 
         PowerMock.resetAll();
         EasyMock.expect(this.tb.getName()).andReturn("table1");
@@ -231,17 +231,19 @@ public class TableAppenderTest {
         this.tableAppender.appendAllAvailableRows(this.xmlUtil, sb);
 
         PowerMock.verifyAll();
-        Assert.assertEquals("<table:table table:name=\"tb\" table:style-name=\"tb-style\" " +
+        sb.append("</table:table>");
+        DomTester.assertEquals("<table:table table:name=\"tb\" table:style-name=\"tb-style\" " +
                 "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
                 "form:apply-design-mode=\"false\"/><table:table-column " +
                 "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
-                "table:default-cell-style-name=\"Default\"/>", sb.toString());
+                "table:default-cell-style-name=\"Default\"/></table:table>", sb.toString());
     }
 
     private void assertPreambleXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
         this.tableAppender.appendPreamble(this.xmlUtil, sb);
-        Assert.assertEquals(xml, sb.toString());
+        sb.append("</table:table>");
+        DomTester.assertEquals(xml+"</table:table>", sb.toString());
     }
 
     private TableColumnStyle newTCS(final String name) {

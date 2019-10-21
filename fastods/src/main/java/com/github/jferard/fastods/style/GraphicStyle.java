@@ -1,12 +1,16 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.ElementWithEmbeddedStyles;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
+/**
+ * 16.37 Graphic Styles
+ */
 public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
     public static GraphicStyleBuilder builder(final String name) {
         return new GraphicStyleBuilder(name);
@@ -14,14 +18,13 @@ public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
 
     private final String name;
     private final boolean hidden;
-    private final DrawFillImage drawFillImage;
+    private final DrawFill drawFill;
     private String key;
 
-    public GraphicStyle(final String name, final boolean hidden,
-                        final DrawFillImage drawFillImage) {
+    public GraphicStyle(final String name, final boolean hidden, final DrawFill drawFill) {
         this.name = name;
         this.hidden = hidden;
-        this.drawFillImage = drawFillImage;
+        this.drawFill = drawFill;
     }
 
     @Override
@@ -44,14 +47,13 @@ public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
         util.appendAttribute(appendable, "style:name", this.name);
         util.appendAttribute(appendable, "style:family", "graphic");
         appendable.append("><style:graphic-properties");
-        if (this.drawFillImage == null) {
+        if (this.drawFill != null) {
+            this.drawFill.appendAttributes(util, appendable);
+        } else {
             util.appendAttribute(appendable, "draw:fill", "none");
             util.appendAttribute(appendable, "draw:stroke", "none");
             util.appendAttribute(appendable, "draw:textarea-horizontal-align", "center");
             util.appendAttribute(appendable, "draw:textarea-vertical-align", "middle");
-        } else {
-            util.appendAttribute(appendable, "draw:fill", "bitmap");
-            util.appendAttribute(appendable, "draw:fill-image-name", this.drawFillImage.getName());
         }
         appendable.append("/></style:style>");
 
@@ -74,8 +76,8 @@ public class GraphicStyle implements ObjectStyle, ElementWithEmbeddedStyles {
 
     @Override
     public void addEmbeddedStyles(final StylesContainer stylesContainer) {
-        if (this.drawFillImage != null) {
-            stylesContainer.addStylesStyle(this.drawFillImage);
+        if (this.drawFill != null) {
+            this.drawFill.addEmbeddedStyles(stylesContainer);
         }
     }
 }

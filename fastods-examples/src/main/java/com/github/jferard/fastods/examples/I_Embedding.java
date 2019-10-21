@@ -25,19 +25,15 @@ package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.DrawFrame;
-import com.github.jferard.fastods.DrawObject;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.Tooltip;
-import com.github.jferard.fastods.attribute.Length;
-import com.github.jferard.fastods.attribute.SimpleLength;
-import com.github.jferard.fastods.ref.RangeRef;
-import com.github.jferard.fastods.style.DrawFillImage;
+import com.github.jferard.fastods.style.DrawFillBitmap;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.tool.InsertHelper;
-import com.github.jferard.fastods.util.FileUtil;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.google.common.io.Resources;
@@ -46,11 +42,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
  * Section 8 of the tutorial
@@ -65,8 +58,6 @@ class I_Embedding {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
-        final Table table = document.addTable("rs");
-        final TableCellWalker walker = table.getWalker();
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Embedding external content
         // Embedding an external content is a two steps operation: 1. embed the content in the ods
@@ -125,8 +116,7 @@ class I_Embedding {
                 ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
         InsertHelper.create()
                 .insertImage(document, table, "Frame 1", sourceStream, "periodic_table.png",
-                        Length.NULL_LENGTH, Length.NULL_LENGTH, SimpleLength.cm(15),
-                        SimpleLength.cm(10));
+                        SVGRectangle.cm(0, 0, 15, 10));
         //
         // That's all!
         //
@@ -148,35 +138,17 @@ class I_Embedding {
         final OdsDocument document = writer.document();
         final Table table = document.addTable("test");
 
-        // We need to create the "Object 1" directory in the archive
-        document.addExtraObject("Object 1", "application/vnd.oasis.opendocument.spreadsheet",
-                "1.2");
-
-        // And to fill the directory with the interesting elements of the object
+        // We get the input stream with Guava:
         final InputStream inputStream =
                 Resources.asByteSource(Resources.getResource("a_hello_world_example.ods"))
                         .openStream();
-        final ZipInputStream zipStream = new ZipInputStream(inputStream);
-        ZipEntry entry = zipStream.getNextEntry();
-        while (entry != null) {
-            final String name = entry.getName();
-            if (!name.startsWith("META-INF") && !name.startsWith("mimetype") &&
-                    !name.startsWith("Thumbnails")) {
-                final byte[] bytes = FileUtil.create().readStream(zipStream);
-                document.addExtraFile("Object 1/" + name, "text/xml", bytes);
-            }
-            entry = zipStream.getNextEntry();
-        }
 
-        // Now, we insert the document into a frame:
-        final DrawObject object = new DrawObject("./Object 1", Collections.<RangeRef>emptyList());
+        // And use a tool
         final GraphicStyle gs = GraphicStyle.builder("gs").build();
-        table.addShape(DrawFrame.builder("embed", object, SimpleLength.cm(1), SimpleLength.cm(1),
-                SimpleLength.cm(15), SimpleLength.cm(10)).style(gs)
-                .build());
+        InsertHelper.create().insertObject(document, table, "embed", "Object 1",
+                "application/vnd.oasis.opendocument.spreadsheet", "1.2", inputStream,
+                SVGRectangle.cm(1, 1, 7, 2), gs);
 
-        // This will be a tool soon...
-        //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "i_embedding_object.ods"));
@@ -209,15 +181,15 @@ class I_Embedding {
         // And there is a tool to create the fill style:
         final InputStream sourceStream = new URL("https://raw.githubusercontent" +
                 ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
-        final DrawFillImage drawFillImage = InsertHelper.create()
+        final DrawFillBitmap drawFillImage = InsertHelper.create()
                 .createDrawFillImage(document, sourceStream, "periodic", "Pictures/periodic.png");
 
         // Now that the "fill-style" is created, you just have to set the style of the tooltip.
-        final GraphicStyle gs = GraphicStyle.builder("gs").fillImage(drawFillImage).build();
+        final GraphicStyle gs = GraphicStyle.builder("gs").drawFill(drawFillImage).build();
         final Tooltip tooltip =
                 Tooltip.builder(XMLUtil.create(), "This the perodic table of elements")
-                        .x(SimpleLength.cm(9)).y(SimpleLength.cm(1)).width(SimpleLength.cm(15))
-                        .height(SimpleLength.cm(10)).graphicStyle(gs).visible().build();
+                        .rectangle(SVGRectangle.cm(9, 1, 15, 10)).graphicStyle(gs).visible()
+                        .build();
 
         // And set the tooltip:
         walker.setTooltip(tooltip);
@@ -251,12 +223,13 @@ class I_Embedding {
         innerWalker.setStringValue("I'm the inner table");
         // We do not add the inner table to the document as usual, but we place the inner table
         // in the outer table:
-        outerTable.addShape(DrawFrame
-                .builder("embed", innerTable, SimpleLength.cm(1), SimpleLength.cm(1),
-                        SimpleLength.cm(15), SimpleLength.cm(10)).build());
+        outerTable.addShape(
+                DrawFrame.builder("embed", innerTable, SVGRectangle.cm(1, 1, 15, 10)).build());
+
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "i_embedding_table.ods"));
     }
 }
+

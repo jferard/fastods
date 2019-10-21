@@ -32,7 +32,7 @@ import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.datastyle.TimeStyle;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
-import com.github.jferard.fastods.style.DrawFillImage;
+import com.github.jferard.fastods.style.DrawFillBitmap;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TextStyle;
@@ -365,8 +365,8 @@ public class TableCellTest {
 
     @Test
     public final void testFullTooltipWithGS() throws IOException {
-        final DrawFillImage dfi = new DrawFillImage("n", "h");
-        final GraphicStyle gs = GraphicStyle.builder("gs").fillImage(dfi).build();
+        final DrawFillBitmap dfi = new DrawFillBitmap("n", "h");
+        final GraphicStyle gs = GraphicStyle.builder("gs").drawFill(dfi).build();
 
         PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);

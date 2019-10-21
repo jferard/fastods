@@ -3,6 +3,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.ShowableBuilder;
+import com.github.jferard.fastods.util.SVGRectangle;
 
 public class TooltipBuilder implements ShowableBuilder<TooltipBuilder> {
     private final String escapedContent;
@@ -12,28 +13,14 @@ public class TooltipBuilder implements ShowableBuilder<TooltipBuilder> {
     private boolean display;
     private Length x;
     private Length y;
+    private SVGRectangle rectangle;
 
     public TooltipBuilder(final String escapedContent) {
         this.escapedContent = escapedContent;
     }
 
-    public TooltipBuilder x(final Length x) {
-        this.x = x;
-        return this;
-    }
-
-    public TooltipBuilder y(final Length y) {
-        this.y = y;
-        return this;
-    }
-
-    public TooltipBuilder width(final Length width) {
-        this.width = width;
-        return this;
-    }
-
-    public TooltipBuilder height(final Length height) {
-        this.height = height;
+    public TooltipBuilder rectangle(final SVGRectangle rectangle) {
+        this.rectangle = rectangle;
         return this;
     }
 
@@ -49,6 +36,6 @@ public class TooltipBuilder implements ShowableBuilder<TooltipBuilder> {
     }
 
     public Tooltip build() {
-        return new Tooltip(this.escapedContent, this.x, this.y, this.width, this.height, this.display, this.graphicStyle);
+        return new Tooltip(this.escapedContent, this.rectangle, this.display, this.graphicStyle);
     }
 }

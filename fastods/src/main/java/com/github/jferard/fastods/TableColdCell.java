@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -114,14 +115,14 @@ class TableColdCell {
      * Set a tooltip of a given size
      *
      * @param tooltipText the content
-     * @param width   the width of the tooltip
-     * @param height  the height of the tooltip
-     * @param visible true if the tooltip is visible
+     * @param width       the width of the tooltip
+     * @param height      the height of the tooltip
+     * @param visible     true if the tooltip is visible
      */
     public void setTooltip(final String tooltipText, final Length width, final Length height,
                            final boolean visible) {
-        final TooltipBuilder builder =
-                Tooltip.builder(this.xmlUtil, tooltipText).width(width).height(height);
+        final TooltipBuilder builder = Tooltip.builder(this.xmlUtil, tooltipText)
+                .rectangle(new SVGRectangle(null, null, width, height));
         if (visible) {
             builder.visible();
         }

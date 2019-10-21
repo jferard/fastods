@@ -25,7 +25,9 @@ package com.github.jferard.fastods.examples;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -104,7 +106,8 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void embeddingDocumentTest() throws IOException {
+    public void embeddingDocumentTest()
+            throws IOException, ParserConfigurationException, SAXException {
         I_Embedding.exampleWithDocument();
     }
 

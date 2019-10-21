@@ -1,8 +1,8 @@
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.util.SVGRectangle;
 
 /**
  * A builder for DrawFrame class
@@ -10,30 +10,20 @@ import com.github.jferard.fastods.style.TextStyle;
 public class DrawFrameBuilder {
     private final String name;
     private final FrameContent content;
-    private final Length x;
-    private final Length y;
-    private final Length width;
-    private final Length height;
+    private final SVGRectangle rectangle;
     private TextStyle textStyle;
     private GraphicStyle drawStyle;
     private int zIndex;
 
     /**
-     * @param name    the name of the frame
-     * @param content the content of the frame
-     * @param x       the x position of the frame
-     * @param y       the y position of the frame
-     * @param width   the width of the frame
-     * @param height  the height of the frame
+     * @param name      the name of the frame
+     * @param content   the content of the frame
+     * @param rectangle the frame coordinates
      */
-    DrawFrameBuilder(final String name, final FrameContent content, final Length x, final Length y,
-                     final Length width, final Length height) {
+    DrawFrameBuilder(final String name, final FrameContent content, final SVGRectangle rectangle) {
         this.name = name;
         this.content = content;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.rectangle = rectangle;
         this.zIndex = 0;
         this.drawStyle = null;
         this.textStyle = null;
@@ -70,7 +60,7 @@ public class DrawFrameBuilder {
      * @return the frame
      */
     public DrawFrame build() {
-        return new DrawFrame(this.name, this.content, this.x, this.y, this.width, this.height,
-                this.zIndex, this.drawStyle, this.textStyle);
+        return new DrawFrame(this.name, this.content, this.rectangle, this.zIndex, this.drawStyle,
+                this.textStyle);
     }
 }
