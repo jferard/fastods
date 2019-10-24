@@ -176,6 +176,8 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * Add an autoFilter to a range address
      *
+     *
+     * @param rangeName
      * @param table the table
      * @param r1    the top row
      * @param c1    the left column
@@ -184,7 +186,7 @@ public interface OdsDocument extends StylesModeSetter {
      * @deprecated use {@code table.addAutoFilter(r1, c1, r2, c2)}
      */
     @Deprecated
-    void addAutoFilter(Table table, int r1, int c1, int r2, int c2);
+    void addAutoFilter(String rangeName, Table table, int r1, int c1, int r2, int c2);
 
     /**
      * @param table    the table

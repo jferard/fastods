@@ -23,12 +23,12 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.ToCellValueConverter;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.style.TableCellStyle;
 
 import java.io.IOException;
@@ -51,8 +51,8 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * @param rs the result set
      * @return the data wrapper
      */
-    public static ResultSetDataWrapperBuilder builder(final ResultSet rs) {
-        return new ResultSetDataWrapperBuilder(rs);
+    public static ResultSetDataWrapperBuilder builder(final String rangeName, final ResultSet rs) {
+        return new ResultSetDataWrapperBuilder(rangeName, rs);
     }
 
     /**
@@ -67,6 +67,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
      */
     private final int max;
     private final ToCellValueConverter converter;
+    private final String rangeName;
     /**
      * the ResultSet.
      */
@@ -78,6 +79,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
     /**
      * @param logger             a logger
      * @param converter          a converter SQL -> OpenDocument
+     * @param rangeName          the name of the range
      * @param rs                 the result cell
      * @param headCellStyle      a style for header, null if none
      * @param autoFilter         set an auto filter if true
@@ -86,12 +88,13 @@ public final class ResultSetDataWrapper implements DataWrapper {
      * @param max                the maximum number of rows, -1 for unlimited
      */
     public ResultSetDataWrapper(final Logger logger, final ToCellValueConverter converter,
-                                final ResultSet rs, final TableCellStyle headCellStyle,
-                                final boolean autoFilter,
+                                final String rangeName, final ResultSet rs,
+                                final TableCellStyle headCellStyle, final boolean autoFilter,
                                 final Map<Integer, CellType> cellTypeByColIndex,
                                 final CellValue nullValue, final int max) {
         this.logger = logger;
         this.converter = converter;
+        this.rangeName = rangeName;
         this.resultSet = rs;
         this.headCellStyle = headCellStyle;
         this.autoFilter = autoFilter;
@@ -130,7 +133,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
                 if (this.autoFilter) {
                     final int r2 = walker.rowIndex();
                     final int c2 = c1 + columnCount - 1;
-                    walker.getTable().addAutoFilter(r1, c1, r2, c2);
+                    walker.getTable().addAutoFilter(this.rangeName, r1, c1, r2, c2);
                 }
                 walker.nextRow();
             } catch (final SQLException e) {
@@ -179,7 +182,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
     private void writeFirstLineDataTo(final TableCellWalker walker,
                                       final ResultSetMetaData metadata)
-            throws SQLException, IOException {
+            throws SQLException {
         final int columnCount = metadata.getColumnCount();
         final List<String> columnLabels = this.getColumnLabels(metadata);
         for (int j = 0; j <= columnCount - 1; j++) {
@@ -212,7 +215,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
     }
 
     private void writeLastLineDataTo(final TableCellWalker walker, final int columnCount,
-                                     final int rowCount) throws IOException {
+                                     final int rowCount) {
         if (rowCount == 0) { // no data row
             for (int j = 0; j <= columnCount - 1; j++) {
                 walker.setStringValue("");

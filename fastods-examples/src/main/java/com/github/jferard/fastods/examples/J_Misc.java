@@ -139,10 +139,10 @@ class J_Misc {
                     "('Presentation', '.odp'), ('Drawing', '.odg'), ('Chart', '.odc'), " +
                     "('Formula', '.odf'), ('Image', '.odi'), ('Master Document', '.odm')" +
                     ", ('Database', '.odb')");
-            final ResultSet rs = s.executeQuery("SELECT * FROM document");
+            final ResultSet rs1 = s.executeQuery("SELECT * FROM document");
 
             // Now, we can write the result on a document. It will use the current row of the table:
-            walker.addData(ResultSetDataWrapper.builder(rs).build());
+            walker.addData(ResultSetDataWrapper.builder("1", rs1).build());
 
             // It's possible to add multiple ResultSets:
             walker.toRow(0);
@@ -150,7 +150,7 @@ class J_Misc {
             final ResultSet rs2 = s.executeQuery(
                     "SELECT file_type as file_type7, extension FROM document WHERE LENGTH" +
                             "(file_type) > 7");
-            walker.addData(ResultSetDataWrapper.builder(rs2).build());
+            walker.addData(ResultSetDataWrapper.builder("2", rs2).build());
 
             // Let's create another table to test data types:
             s.execute("CREATE TABLE item (id CHAR(12), name TEXT, price DECIMAL, tax DECIMAL, " +
@@ -218,7 +218,7 @@ class J_Misc {
 
             // And skip another row, then write the result:
             walker.toRow(12);
-            walker.addData(ResultSetDataWrapper.builder(rs3).converter(converter).build());
+            walker.addData(ResultSetDataWrapper.builder("3", rs3).converter(converter).build());
         } finally {
             conn.close();
         }

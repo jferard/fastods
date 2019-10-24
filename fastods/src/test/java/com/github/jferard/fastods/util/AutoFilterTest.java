@@ -23,8 +23,8 @@ public class AutoFilterTest {
         filter.appendXMLContent(EasyMock.isA(XMLUtil.class), EasyMock.isA(Appendable.class));
 
         PowerMock.replayAll();
-        final AutoFilter af = AutoFilter.builder(table, 0, 1, 2, 3).filter(filter).hideButtons().build();
-        TestHelper.assertXMLEquals("<table:database-range table:name=\"this\" " +
+        final AutoFilter af = AutoFilter.builder("my_range", table, 0, 1, 2, 3).filter(filter).hideButtons().build();
+        TestHelper.assertXMLEquals("<table:database-range table:name=\"my_range\" " +
                 "table:display-filter-buttons=\"false\" table:target-range-address=\"t" +
                 ".B1:D3\"><table:filter></table:filter></table:database-range>", af);
 

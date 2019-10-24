@@ -306,10 +306,10 @@ public class TableTest {
         this.ce.addAutoFilter(EasyMock.capture(af));
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.addAutoFilter(1, 2, 3, 4);
+        this.tableWithMockBuilder.addAutoFilter("range", 1, 2, 3, 4);
 
         PowerMock.verifyAll();
-        TestHelper.assertXMLEquals("<table:database-range table:name=\"this\" " +
+        TestHelper.assertXMLEquals("<table:database-range table:name=\"range\" " +
                 "table:display-filter-buttons=\"true\" table:target-range-address=\"test" +
                 ".C2:E4\"/>", af
                 .getValue());

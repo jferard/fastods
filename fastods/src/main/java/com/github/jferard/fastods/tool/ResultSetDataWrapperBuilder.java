@@ -47,6 +47,7 @@ public class ResultSetDataWrapperBuilder {
     private static final TableCellStyle HEADER_STYLE = TableCellStyle.builder("rs-data-wrapper")
             .backgroundColor(SimpleColor.GRAY48).fontWeightBold().build();
 
+    private String rangeName;
     private final ResultSet rs;
     private final Map<Integer, CellType> cellTypeByIndex;
     private Charset charset;
@@ -60,9 +61,11 @@ public class ResultSetDataWrapperBuilder {
 
 
     /**
+     * @param rangeName
      * @param rs the result set
      */
-    public ResultSetDataWrapperBuilder(final ResultSet rs) {
+    public ResultSetDataWrapperBuilder(final String rangeName, final ResultSet rs) {
+        this.rangeName = rangeName;
         this.rs = rs;
         this.logger = null;
         this.headerStyle = HEADER_STYLE;
@@ -199,7 +202,7 @@ public class ResultSetDataWrapperBuilder {
                 .create(this.converter, this.currency, this.charset);
         final Map<Integer, CellType> cellTypeByIndexOrNull = this.cellTypeByIndex
                 .isEmpty() ? null : this.cellTypeByIndex;
-        return new ResultSetDataWrapper(this.logger, sqlToCellValueConverter, this.rs,
+        return new ResultSetDataWrapper(this.logger, sqlToCellValueConverter, this.rangeName, this.rs,
                 this.headerStyle, this.autoFilter, cellTypeByIndexOrNull, this.nullValue, this.max);
     }
 }

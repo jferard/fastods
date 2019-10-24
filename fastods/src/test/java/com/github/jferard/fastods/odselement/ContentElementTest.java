@@ -162,12 +162,12 @@ public class ContentElementTest {
         EasyMock.expect(t.getName()).andReturn("t");
 
         PowerMock.replayAll();
-        final AutoFilter autoFilter = AutoFilter.builder(t, 1, 2, 3, 4).build();
+        final AutoFilter autoFilter = AutoFilter.builder("range", t, 1, 2, 3, 4).build();
         this.content.addAutoFilter(autoFilter);
         this.content.writePostamble(this.xmlUtil, writer);
 
         PowerMock.verifyAll();
-        DomTester.assertEquals("<table:database-ranges><table:database-range table:name=\"this\" " +
+        DomTester.assertEquals("<table:database-ranges><table:database-range table:name=\"range\" " +
                 "table:display-filter-buttons=\"true\" table:target-range-address=\"t" +
                 ".C2:E4\"/></table:database-ranges>", handler.getEntryAsString("a"));
     }

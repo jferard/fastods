@@ -48,7 +48,7 @@ public class ResultSetDataWrapperBuilderTest {
         final Logger logger = PowerMock.createMock(Logger.class);
         final ResultSetMetaData md = PowerMock.createMock(ResultSetMetaData.class);
 
-        final ResultSetDataWrapper b = ResultSetDataWrapper.builder(rs).converter(converter)
+        final ResultSetDataWrapper b = ResultSetDataWrapper.builder("range", rs).converter(converter)
                 .charset(Charset.forName("US-ASCII")).currency("€").nullValue(new StringValue(""))
                 .noHeaderStyle().noAutoFilter().typeValue(0, CellType.VOID).max(10)
                 .headerStyle(TableCellStyle.builder("dummy").build()).logger(logger).build();

@@ -124,9 +124,10 @@ class H_AutofiltersAndDataPilotTables {
 
         // Now we need to set the filter. It's possible to preset some filter with the `filter`
         // method of the builder.
-        document.addAutoFilter(AutoFilter.builder(table, 0, 0, walker.rowIndex(), walker.colIndex())
-                .filter(new FilterEnumerate(0, "Spreadsheet", "Presentation", "Master Document"))
-                .build());
+        document.addAutoFilter(
+                AutoFilter.builder("my_range", table, 0, 0, walker.rowIndex(), walker.colIndex())
+                        .filter(new FilterEnumerate(0, "Spreadsheet", "Presentation",
+                                "Master Document")).build());
 
         // The filter will be set (the little square appears and if you click on the arrow,
         // only Spreadsheet", "Presentation" and "Master Document" are checked. But... the rows

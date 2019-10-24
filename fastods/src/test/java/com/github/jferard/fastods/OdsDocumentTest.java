@@ -296,7 +296,7 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
 
         PowerMock.replayAll();
         final E document = this.getDocument();
-        document.addAutoFilter(t, 0, 1, 2, 3);
+        document.addAutoFilter("range", t, 0, 1, 2, 3);
 
         PowerMock.verifyAll();
     }

@@ -22,11 +22,11 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.NamedOdsFileWriter;
+import com.github.jferard.fastods.PrepareContentFlusher;
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.CellType;
-import com.github.jferard.fastods.PrepareContentFlusher;
-import com.github.jferard.fastods.NamedOdsFileWriter;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ManifestEntry;
@@ -138,7 +138,7 @@ public class OdsElementsTest {
         this.contentElement.addAutoFilter(EasyMock.isA(AutoFilter.class));
 
         PowerMock.replayAll();
-        final AutoFilter autoFilter = AutoFilter.builder(t, 0, 0, 1, 1).build();
+        final AutoFilter autoFilter = AutoFilter.builder("range", t, 0, 0, 1, 1).build();
         this.odsElements.addAutoFilter(autoFilter);
 
         PowerMock.verifyAll();
@@ -266,7 +266,8 @@ public class OdsElementsTest {
         this.odsElements.addExtraDir("dir");
 
         PowerMock.verifyAll();
-        TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"dir\" />", capture.getValue());
+        TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"dir\" />",
+                capture.getValue());
     }
 
     @Test

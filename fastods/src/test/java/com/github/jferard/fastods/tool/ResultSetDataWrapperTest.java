@@ -125,7 +125,7 @@ public class ResultSetDataWrapperTest {
     @Test(expected = RuntimeException.class)
     public final void testMetaDataException() throws SQLException, IOException {
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
-        final ResultSetDataWrapper wrapper = ResultSetDataWrapper.builder(rs).logger(this.logger)
+        final ResultSetDataWrapper wrapper = ResultSetDataWrapper.builder("range", rs).logger(this.logger)
                 .headerStyle(this.tcls).max(100).noAutoFilter().build();
         final SQLException e = new SQLException();
 
@@ -269,7 +269,7 @@ public class ResultSetDataWrapperTest {
     @Test(expected = RuntimeException.class)
     public final void testRSException() throws SQLException, IOException {
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
-        final ResultSetDataWrapper wrapper = ResultSetDataWrapper.builder(rs).logger(this.logger)
+        final ResultSetDataWrapper wrapper = ResultSetDataWrapper.builder("range", rs).logger(this.logger)
                 .headerStyle(this.tcls).max(100).noAutoFilter().build();
         final SQLException e = new SQLException();
         final ResultSetMetaData metaData = PowerMock.createMock(ResultSetMetaData.class);
@@ -292,7 +292,7 @@ public class ResultSetDataWrapperTest {
     private DataWrapper createWrapper(final Iterable<String> head,
                                       final Iterable<List<Object>> rows, final int max) {
         final MockResultSet rs = this.tester.createResultSet(head, rows);
-        return ResultSetDataWrapper.builder(rs).logger(this.logger).headerStyle(this.tcls).max(max)
+        return ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls).max(max)
                 .noAutoFilter().build();
     }
 }

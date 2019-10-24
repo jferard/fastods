@@ -45,12 +45,13 @@ public class AutoFilter implements XMLConvertible {
      * @param c2    last col
      * @return a new builder
      */
-    public static AutoFilterBuilder builder(final Table table, final int r1, final int c1,
+    public static AutoFilterBuilder builder(final String rangeName, final Table table, final int r1, final int c1,
                                             final int r2, final int c2) {
         final String rangeAddress = PositionUtil.create().toRangeAddress(table, r1, c1, r2, c2);
-        return new AutoFilterBuilder(rangeAddress);
+        return new AutoFilterBuilder(rangeName, rangeAddress);
     }
 
+    private final String rangeName;
     private final String rangeAddress;
     private final boolean displayButtons;
     private final Filter filter;
@@ -60,8 +61,9 @@ public class AutoFilter implements XMLConvertible {
      * @param displayButtons display buttons if true
      * @param filter         the filter
      */
-    public AutoFilter(final String rangeAddress, final boolean displayButtons,
+    public AutoFilter(final String rangeName, final String rangeAddress, final boolean displayButtons,
                       final Filter filter) {
+        this.rangeName = rangeName;
         this.rangeAddress = rangeAddress;
         this.displayButtons = displayButtons;
         this.filter = filter;
@@ -71,7 +73,7 @@ public class AutoFilter implements XMLConvertible {
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<table:database-range");
-        util.appendAttribute(appendable, "table:name", "this");
+        util.appendAttribute(appendable, "table:name", this.rangeName);
         util.appendAttribute(appendable, "table:display-filter-buttons", this.displayButtons);
         util.appendAttribute(appendable, "table:target-range-address", this.rangeAddress);
         if (this.filter == null) {

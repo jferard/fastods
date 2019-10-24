@@ -30,13 +30,16 @@ package com.github.jferard.fastods.util;
  */
 public class AutoFilterBuilder {
     private final String rangeAddress;
+    private final String rangeName;
     private boolean displayButtons;
     private Filter filter;
 
     /**
+     * @param rangeName    the name of the table
      * @param rangeAddress the range address
      */
-    public AutoFilterBuilder(final String rangeAddress) {
+    public AutoFilterBuilder(final String rangeName, final String rangeAddress) {
+        this.rangeName = rangeName;
         this.rangeAddress = rangeAddress;
         this.displayButtons = true;
     }
@@ -45,12 +48,11 @@ public class AutoFilterBuilder {
      * @return the auto filter
      */
     public AutoFilter build() {
-        return new AutoFilter(this.rangeAddress, this.displayButtons, this.filter);
+        return new AutoFilter(this.rangeName, this.rangeAddress, this.displayButtons, this.filter);
     }
 
     /**
      * 9.5.2<table:filter>
-     *
      *
      * @param filter the filter
      * @return this for fluent style

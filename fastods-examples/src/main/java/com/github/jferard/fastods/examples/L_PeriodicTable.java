@@ -125,7 +125,7 @@ class L_PeriodicTable {
 
                 ResultSet rs = s.executeQuery("SELECT * FROM chemical_element");
                 final TableCellWalker walker = dataTable.getWalker();
-                walker.addData(ResultSetDataWrapper.builder(rs).build());
+                walker.addData(ResultSetDataWrapper.builder("rs", rs).build());
 
                 // ## The table
                 // Ok, that was the easy part, just to show once more how easy it is to write a
