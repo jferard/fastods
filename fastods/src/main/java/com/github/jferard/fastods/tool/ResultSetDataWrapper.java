@@ -181,8 +181,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
     }
 
     private void writeFirstLineDataTo(final TableCellWalker walker,
-                                      final ResultSetMetaData metadata)
-            throws SQLException {
+                                      final ResultSetMetaData metadata) throws SQLException {
         final int columnCount = metadata.getColumnCount();
         final List<String> columnLabels = this.getColumnLabels(metadata);
         for (int j = 0; j <= columnCount - 1; j++) {
@@ -206,6 +205,8 @@ public final class ResultSetDataWrapper implements DataWrapper {
                 final CellType cellType = this.cellTypeByColIndex.get(j);
                 if (cellType != null) {
                     walker.setCellValue(this.converter.from(cellType, object));
+                } else {
+                    walker.setCellValue(this.converter.from(object));
                 }
             } else {
                 walker.setCellValue(this.converter.from(object));

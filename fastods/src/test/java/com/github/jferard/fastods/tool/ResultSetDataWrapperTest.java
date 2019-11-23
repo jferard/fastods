@@ -23,11 +23,15 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.DataWrapper;
+import com.github.jferard.fastods.FastOdsException;
+import com.github.jferard.fastods.FloatValue;
 import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.PercentageValue;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.ToCellValueConverter;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ResultSetTester;
 import com.mockrunner.mock.jdbc.MockResultSet;
@@ -125,8 +129,9 @@ public class ResultSetDataWrapperTest {
     @Test(expected = RuntimeException.class)
     public final void testMetaDataException() throws SQLException, IOException {
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
-        final ResultSetDataWrapper wrapper = ResultSetDataWrapper.builder("range", rs).logger(this.logger)
-                .headerStyle(this.tcls).max(100).noAutoFilter().build();
+        final ResultSetDataWrapper wrapper =
+                ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls)
+                        .max(100).noAutoFilter().build();
         final SQLException e = new SQLException();
 
         PowerMock.resetAll();
@@ -175,8 +180,8 @@ public class ResultSetDataWrapperTest {
     public final void testNullValue() throws IOException {
         final List<Object> l = new ArrayList<Object>(1);
         l.add(null);
-        final DataWrapper wrapper = this
-                .createWrapper(Collections.singletonList("value"), Collections.singletonList(l),
+        final DataWrapper wrapper =
+                this.createWrapper(Collections.singletonList("value"), Collections.singletonList(l),
                         100);
 
         PowerMock.resetAll();
@@ -231,46 +236,77 @@ public class ResultSetDataWrapperTest {
         PowerMock.verifyAll();
     }
 
-    /*
     @Test
-    public final void testRealDataSets() throws IOException {
+    public final void testRealDataSets() throws IOException, FastOdsException {
         final Logger logger = PowerMock.createNiceMock(Logger.class);
         final MockResultSet rs = this.tester
                 .createResultSet(Arrays.asList("number", "word", "code"),
                         Arrays.asList(Arrays.<Object>asList(13, "a", "13a"),
                                 Arrays.<Object>asList(14, "b", "14b"),
                                 Arrays.<Object>asList(15, "c", "15c")));
-        final MockResultSet rs2 = this.tester
-                .createResultSet(Arrays.asList("number", "word", "code"),
-                        Arrays.asList(Arrays.<Object>asList(13, "a", "13a"),
-                                Arrays.<Object>asList(14, "b", "14b"),
-                                Arrays.<Object>asList(15, "c", "15c")));
+        final ResultSetDataWrapper wrapper =
+                ResultSetDataWrapper.builder("range", rs).logger(this.logger).noAutoFilter()
+                        .build();
 
-        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
-        final OdsDocument document = writer.document();
-        final Table table = document.addTable("test", 50, 5);
-        final TableCellStyle tcls = TableCellStyle.builder("rs-head")
-                .backgroundColor(ColorHelper.fromString("#dddddd")).fontWeightBold().build();
-        final DataWrapper data = ResultSetDataWrapper.builder(rs).logger(logger).headStyle(tcls)
-                .max(100).build();
-        final DataWrapper data2 = ResultSetDataWrapper.builder(rs2).logger(logger).headStyle(tcls)
-                .max(100).build();
+        PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
 
-        table.addData(data);
-        table.nextRow();
-        table.addData(data2);
-        writer.saveAs(new File("generated_files", "7columns.ods"));
+        this.walker.setStringValue("number");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.setStringValue("word");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.setStringValue("code");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setCellValue(FloatValue.from(13));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("a"));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("13a"));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setCellValue(FloatValue.from(14));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("b"));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("14b"));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setCellValue(FloatValue.from(15));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("c"));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("15c"));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.nextRow();
+
         PowerMock.replayAll();
+        wrapper.addToTable(this.walker);
+
         PowerMock.verifyAll();
     }
-
-     */
 
     @Test(expected = RuntimeException.class)
     public final void testRSException() throws SQLException, IOException {
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
-        final ResultSetDataWrapper wrapper = ResultSetDataWrapper.builder("range", rs).logger(this.logger)
-                .headerStyle(this.tcls).max(100).noAutoFilter().build();
+        final ResultSetDataWrapper wrapper =
+                ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls)
+                        .max(100).noAutoFilter().build();
         final SQLException e = new SQLException();
         final ResultSetMetaData metaData = PowerMock.createMock(ResultSetMetaData.class);
 
@@ -286,13 +322,61 @@ public class ResultSetDataWrapperTest {
         PowerMock.replayAll();
         wrapper.addToTable(this.walker);
 
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testWrapperWithColumnHints()
+            throws SQLException, IOException, FastOdsException {
+        final Logger logger = PowerMock.createNiceMock(Logger.class);
+        final MockResultSet rs = this.tester
+                .createResultSet(Arrays.asList("number", "word", "code"),
+                        Arrays.asList(Arrays.<Object>asList(0.13, "a", "13a")));
+        final ResultSetDataWrapper wrapper =
+                ResultSetDataWrapper.builder("range", rs).logger(this.logger).noAutoFilter()
+                        .typeValue(0, CellType.PERCENTAGE).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
+
+        this.walker.setStringValue("number");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.setStringValue("word");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.setStringValue("code");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setCellValue(PercentageValue.from(0.13));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("a"));
+        this.walker.next();
+        this.walker.setCellValue(StringValue.from("13a"));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.setStringValue("");
+        this.walker.next();
+        this.walker.nextRow();
+
         PowerMock.replayAll();
+        wrapper.addToTable(this.walker);
+
+        PowerMock.verifyAll();
     }
 
     private DataWrapper createWrapper(final Iterable<String> head,
                                       final Iterable<List<Object>> rows, final int max) {
         final MockResultSet rs = this.tester.createResultSet(head, rows);
-        return ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls).max(max)
-                .noAutoFilter().build();
+        return ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls)
+                .max(max).noAutoFilter().build();
     }
 }

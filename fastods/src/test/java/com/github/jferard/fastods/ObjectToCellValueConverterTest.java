@@ -191,13 +191,13 @@ public class ObjectToCellValueConverterTest {
 
     @Test
     public void testFromCellValue() throws FastOdsException {
-        Assert.assertEquals(new FloatValue(10.0), this.converter.from(FloatValue.from(10)));
+        Assert.assertEquals(new FloatValue(10), this.converter.from(FloatValue.from(10)));
     }
 
     @Test
     public void testFromHintCellValue() throws FastOdsException {
         Assert.assertEquals(new FloatValue(10.0),
-                this.converter.from(CellType.FLOAT, FloatValue.from(10)));
+                this.converter.from(CellType.FLOAT, FloatValue.from(10.0)));
     }
 
     @Test(expected = FastOdsException.class)

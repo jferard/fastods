@@ -41,7 +41,7 @@ public class FloatValue implements CellValue {
      */
     public static FloatValue from(final Object o) throws FastOdsException {
         if (o instanceof Number) {
-            return new FloatValue(((Number) o).doubleValue());
+            return new FloatValue((Number) o);
         } else if (o instanceof FloatValue) {
             return (FloatValue) o;
         } else {
@@ -79,5 +79,10 @@ public class FloatValue implements CellValue {
     @Override
     public void setToCell(final TableCell tableCell) {
         tableCell.setFloatValue(this.value);
+    }
+
+    @Override
+    public String toString() {
+        return "FloatValue["+ this.value +"]";
     }
 }

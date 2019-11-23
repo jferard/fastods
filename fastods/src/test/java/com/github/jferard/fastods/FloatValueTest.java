@@ -73,4 +73,9 @@ public class FloatValueTest {
     public void testFromObject() throws FastOdsException {
         FloatValue.from(new Object());
     }
+
+    @Test
+    public void testNumber() throws FastOdsException {
+        Assert.assertEquals(FloatValue.from(13), new FloatValue(13));
+    }
 }

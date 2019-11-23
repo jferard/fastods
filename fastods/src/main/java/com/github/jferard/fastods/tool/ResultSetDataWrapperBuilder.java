@@ -45,9 +45,9 @@ import java.util.logging.Logger;
  */
 public class ResultSetDataWrapperBuilder {
     private static final TableCellStyle HEADER_STYLE = TableCellStyle.builder("rs-data-wrapper")
-            .backgroundColor(SimpleColor.GRAY48).fontWeightBold().build();
+            .backgroundColor(SimpleColor.GRAY64).fontWeightBold().build();
 
-    private String rangeName;
+    private final String rangeName;
     private final ResultSet rs;
     private final Map<Integer, CellType> cellTypeByIndex;
     private Charset charset;
