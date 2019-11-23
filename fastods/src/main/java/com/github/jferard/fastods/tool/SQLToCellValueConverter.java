@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.DateValue;
 import com.github.jferard.fastods.FastOdsException;
@@ -31,6 +30,7 @@ import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
+import com.github.jferard.fastods.attribute.CellType;
 
 import java.nio.charset.Charset;
 import java.sql.Blob;
@@ -146,12 +146,12 @@ public class SQLToCellValueConverter implements ToCellValueConverter {
                     }
                     break;
                 default: // other cases
-                    return this.converter.from(type, o);
+                    break;
             }
         } catch (final SQLException e) {
             throw new FastOdsException(e);
         }
-        throw new FastOdsException("Can't cast " + o + " to " + type);
+        return this.converter.from(type, o);
     }
 
     /**

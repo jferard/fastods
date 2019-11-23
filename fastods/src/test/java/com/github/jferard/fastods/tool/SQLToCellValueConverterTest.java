@@ -32,6 +32,7 @@ import com.github.jferard.fastods.ToCellValueConverter;
 import com.mockrunner.mock.jdbc.MockBlob;
 import com.mockrunner.mock.jdbc.MockClob;
 import com.mockrunner.mock.jdbc.MockSQLXML;
+import javafx.scene.control.Cell;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -153,6 +154,31 @@ public class SQLToCellValueConverterTest {
         PowerMock.replayAll();
         Assert.assertEquals(new StringValue(XML_FASTODS),
                 this.converter.from(new MockSQLXML(XML_FASTODS_RAW)));
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testFromString() {
+        PowerMock.resetAll();
+
+        EasyMock.expect(this.intervalConverter.castToInterval("test")).andReturn(null);
+        EasyMock.expect(this.wrappedConverter.from("test")).andReturn(new StringValue("test"));
+        PowerMock.replayAll();
+        Assert.assertEquals(new StringValue("test"),
+                this.converter.from("test"));
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testFromHintString() throws FastOdsException {
+        PowerMock.resetAll();
+
+        EasyMock.expect(this.wrappedConverter.from(CellType.STRING, "test")).andReturn(new StringValue("test"));
+        PowerMock.replayAll();
+        Assert.assertEquals(new StringValue("test"),
+                this.converter.from(CellType.STRING, "test"));
 
         PowerMock.verifyAll();
     }
@@ -314,6 +340,7 @@ public class SQLToCellValueConverterTest {
         PowerMock.resetAll();
         final Object interval = new Object();
         EasyMock.expect(this.intervalConverter.castToInterval(interval)).andReturn(null);
+        EasyMock.expect(this.wrappedConverter.from(CellType.TIME, interval)).andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
         this.converter.from(CellType.TIME, interval);

@@ -58,8 +58,8 @@ public class MetaElement implements OdsElement {
      */
     public MetaElement() {
         this.setDateTimeNow();
-        this.generator = "FastOds 0.5.0 2017";
-        this.creator = "FastOds 0.5.0";
+        this.generator = "FastOds 0.7.2";
+        this.creator = "FastOds 0.7.2";
         this.editingCycles = "1";
         this.editingDuration = "PT1M00S";
     }
