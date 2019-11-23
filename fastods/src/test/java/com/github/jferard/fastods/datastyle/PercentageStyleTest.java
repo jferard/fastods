@@ -22,8 +22,8 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.odselement.OdsElements;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -44,8 +44,8 @@ public class PercentageStyleTest {
 
     @Test
     public final void testDecimalPlaces() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).decimalPlaces(5)
-                .build();
+        final PercentageStyle ps =
+                new PercentageStyleBuilder("test", this.locale).decimalPlaces(5).build();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style" + ":volatile=\"true\">" +
@@ -56,8 +56,8 @@ public class PercentageStyleTest {
 
     @Test
     public final void testGroupThousands() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale)
-                .groupThousands(true).build();
+        final PercentageStyle ps =
+                new PercentageStyleBuilder("test", this.locale).groupThousands(true).build();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style:volatile=\"true\">" +
@@ -68,8 +68,8 @@ public class PercentageStyleTest {
 
     @Test
     public final void testMinIntegerDigits() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale)
-                .minIntegerDigits(8).build();
+        final PercentageStyle ps =
+                new PercentageStyleBuilder("test", this.locale).minIntegerDigits(8).build();
 
         final OdsElements elements = PowerMock.createMock(OdsElements.class);
 
@@ -110,8 +110,8 @@ public class PercentageStyleTest {
 
     @Test
     public final void testNegativeValueRed() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale)
-                .negativeValueRed().build();
+        final PercentageStyle ps =
+                new PercentageStyleBuilder("test", this.locale).negativeValueRed().build();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style:volatile=\"true\">" +
@@ -131,8 +131,9 @@ public class PercentageStyleTest {
 
     @Test
     public final void testCountryLanguage() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale).country("a")
-                .language("b").visible().build();
+        final PercentageStyle ps =
+                new PercentageStyleBuilder("test", this.locale).country("a").language("b").visible()
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"b\" " +
                         "number:country=\"A\" " + "style:volatile=\"true\">" +
@@ -144,8 +145,9 @@ public class PercentageStyleTest {
 
     @Test
     public final void testLocaleVolatile() throws IOException {
-        final PercentageStyle ps = new PercentageStyleBuilder("test", this.locale)
-                .locale(Locale.FRANCE).volatileStyle(true).build();
+        final PercentageStyle ps =
+                new PercentageStyleBuilder("test", this.locale).locale(Locale.FRANCE)
+                        .volatileStyle(true).build();
         TestHelper.assertXMLEquals(
                 "<number:percentage-style style:name=\"test\" number:language=\"fr\" " +
                         "number:country=\"FR\" " + "style:volatile=\"true\">" +

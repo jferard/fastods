@@ -35,8 +35,8 @@ import java.util.GregorianCalendar;
 public class ObjectToCellValueConverterTest {
     private static final String FAST_ODS = "FastODS";
     private static final Date DATE_123 = new Date(123);
-    private static final Calendar CALENDAR_456 = new GregorianCalendar(0, Calendar.JANUARY, 0, 0, 0,
-            456);
+    private static final Calendar CALENDAR_456 =
+            new GregorianCalendar(0, Calendar.JANUARY, 0, 0, 0, 456);
 
     private static final Date DATE_456000 = CALENDAR_456.getTime();
     private ObjectToCellValueConverter converter;
@@ -85,8 +85,7 @@ public class ObjectToCellValueConverterTest {
     @Test
     public void testFromHintText() throws FastOdsException {
         final Text content = Text.content(FAST_ODS);
-        Assert.assertEquals(new TextValue(content),
-                this.converter.from(CellType.STRING, content));
+        Assert.assertEquals(new TextValue(content), this.converter.from(CellType.STRING, content));
     }
 
     @Test(expected = FastOdsException.class)
@@ -116,8 +115,7 @@ public class ObjectToCellValueConverterTest {
 
     @Test
     public void testFromHintBoolean() throws FastOdsException {
-        Assert.assertEquals(new BooleanValue(true),
-                this.converter.from(CellType.BOOLEAN, true));
+        Assert.assertEquals(new BooleanValue(true), this.converter.from(CellType.BOOLEAN, true));
     }
 
     @Test(expected = FastOdsException.class)
@@ -158,8 +156,7 @@ public class ObjectToCellValueConverterTest {
 
     @Test
     public void testFromHintCurrency() throws FastOdsException {
-        Assert.assertEquals(new CurrencyValue(5, "USD"),
-                this.converter.from(CellType.CURRENCY, 5));
+        Assert.assertEquals(new CurrencyValue(5, "USD"), this.converter.from(CellType.CURRENCY, 5));
     }
 
     @Test(expected = FastOdsException.class)

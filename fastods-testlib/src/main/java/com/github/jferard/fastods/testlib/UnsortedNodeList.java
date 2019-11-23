@@ -65,8 +65,8 @@ public class UnsortedNodeList implements Iterable<Node>, Comparable<UnsortedNode
                 return -1;
             }
 
-            final int cmpAttrs = AttrList.create(attributes1)
-                    .compareTo(AttrList.create(attributes2));
+            final int cmpAttrs =
+                    AttrList.create(attributes1).compareTo(AttrList.create(attributes2));
             if (cmpAttrs != 0) {
                 return cmpAttrs;
             }

@@ -49,8 +49,8 @@ public class BooleanStyleTest {
 
     @Test
     public final void testLanguageCountry() throws IOException {
-        final BooleanStyle bs = new BooleanStyleBuilder("test", this.locale).language("a")
-                .country("b").build();
+        final BooleanStyle bs =
+                new BooleanStyleBuilder("test", this.locale).language("a").country("b").build();
         TestHelper.assertXMLEquals(
                 "<number:boolean-style style:name=\"test\" number:language=\"a\" " +
                         "number:country=\"B\" " + "style:volatile=\"true\"/>", bs);

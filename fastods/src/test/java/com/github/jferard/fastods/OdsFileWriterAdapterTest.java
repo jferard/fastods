@@ -68,8 +68,8 @@ public class OdsFileWriterAdapterTest {
     public void testCreate() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        final OdsFileWriterAdapter odsFileWriterAdapter = OdsFileWriterAdapter.create(this.logger,
-                this.w);
+        final OdsFileWriterAdapter odsFileWriterAdapter =
+                OdsFileWriterAdapter.create(this.logger, this.w);
 
         PowerMock.verifyAll();
         Assert.assertEquals(OdsFileWriterAdapter.class, odsFileWriterAdapter.getClass());
@@ -99,7 +99,9 @@ public class OdsFileWriterAdapterTest {
     @Test
     public void testUpdate() {
         PowerMock.resetAll();
-        this.logger.fine("Add new flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
+        this.logger
+                .fine("Add new flusher: EasyMock for interface com.github.jferard.fastods" +
+                        ".OdsAsyncFlusher");
 
         PowerMock.replayAll();
         this.wa.update(this.f);
@@ -125,7 +127,9 @@ public class OdsFileWriterAdapterTest {
         this.flushers.add(ff);
 
         PowerMock.resetAll();
-        this.logger.fine("Retrieve first flusher: EasyMock for class com.github.jferard.fastods.FinalizeFlusher");
+        this.logger
+                .fine("Retrieve first flusher: EasyMock for class com.github.jferard.fastods" +
+                        ".FinalizeFlusher");
         EasyMock.expect(ff.isEnd()).andReturn(true);
         this.w.update(ff);
 
@@ -157,8 +161,12 @@ public class OdsFileWriterAdapterTest {
         };
 
         PowerMock.resetAll();
-        this.logger.fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
-        this.logger.fine("Retrieve next flusher: EasyMock for class com.github.jferard.fastods.FinalizeFlusher");
+        this.logger
+                .fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods" +
+                        ".OdsAsyncFlusher");
+        this.logger
+                .fine("Retrieve next flusher: EasyMock for class com.github.jferard.fastods" +
+                        ".FinalizeFlusher");
         EasyMock.expect(this.f.isEnd()).andReturn(false);
         EasyMock.expect(ff.isEnd()).andReturn(true);
         this.w.update(this.f);
@@ -184,7 +192,8 @@ public class OdsFileWriterAdapterTest {
             public void run() {
                 try {
                     PowerMock.resetAll();
-                    l.fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
+                    l.fine("Retrieve first flusher: EasyMock for interface com.github.jferard" +
+                            ".fastods.OdsAsyncFlusher");
                     wl.update(fl);
                     EasyMock.expect(fl.isEnd()).andReturn(true);
 
@@ -214,7 +223,8 @@ public class OdsFileWriterAdapterTest {
             public void run() {
                 try {
                     PowerMock.resetAll();
-                    l.fine("Retrieve first flusher: EasyMock for interface com.github.jferard.fastods.OdsAsyncFlusher");
+                    l.fine("Retrieve first flusher: EasyMock for interface com.github.jferard" +
+                            ".fastods.OdsAsyncFlusher");
                     l.fine("Retrieve next flusher: null");
                     wl.update(fl);
                     EasyMock.expect(fl.isEnd()).andReturn(false);

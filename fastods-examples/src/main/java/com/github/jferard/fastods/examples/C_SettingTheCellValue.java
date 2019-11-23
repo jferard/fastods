@@ -129,11 +129,11 @@ class C_SettingTheCellValue {
         // boilerplate code.
         //
         // Let's define two lists:
-        final List<String> A = Arrays
-                .asList("Type", "Boolean", "Currency", "Date", "Float", "Percentage", "String",
-                        "Void");
-        final List<Object> B = Arrays
-                .asList("Type guess example", true, new CurrencyValue(10.5, "USD"),
+        final List<String> A =
+                Arrays.asList("Type", "Boolean", "Currency", "Date", "Float", "Percentage",
+                        "String", "Void");
+        final List<Object> B =
+                Arrays.asList("Type guess example", true, new CurrencyValue(10.5, "USD"),
                         new GregorianCalendar(2014, 9, 17, 9, 0, 0), 3.14159,
                         new PercentageValue(0.545), new TimeValue(false, 0, 0, 0, 0, 0, 3.6),
                         "A String", null);

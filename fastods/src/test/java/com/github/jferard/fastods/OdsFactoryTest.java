@@ -60,9 +60,9 @@ public class OdsFactoryTest {
 
     @Test
     public void createFactory() {
-        final OdsFactory factory = OdsFactory.create()
-                .dataStyles(DataStylesBuilder.create(Locale.US).build()).noLibreOfficeMode().metaElement(
-                        MetaElement.create());
+        final OdsFactory factory =
+                OdsFactory.create().dataStyles(DataStylesBuilder.create(Locale.US).build())
+                        .noLibreOfficeMode().metaElement(MetaElement.create());
         factory.createWriter();
     }
 

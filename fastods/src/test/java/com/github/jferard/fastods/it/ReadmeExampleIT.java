@@ -24,8 +24,6 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.attribute.CellType;
-import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
@@ -33,6 +31,8 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.attribute.CellType;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.ScriptEvent;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -98,8 +98,8 @@ public class ReadmeExampleIT {
     }
 
     private void validateReadme(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument
-                .loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document =
+                SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);

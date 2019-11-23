@@ -529,11 +529,12 @@ public class OdsElements implements StylesContainer {
     /**
      * Add an extra object (eg. a spreadsheet)
      *
-     * @param fullPath the path of the dir
+     * @param fullPath  the path of the dir
      * @param mediaType the type of the object
-     * @param version the version
+     * @param version   the version
      */
-    public void addExtraObject(final String fullPath, final String mediaType, final String version) {
+    public void addExtraObject(final String fullPath, final String mediaType,
+                               final String version) {
         final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType, version);
         this.manifestElement.add(manifestEntry);
     }

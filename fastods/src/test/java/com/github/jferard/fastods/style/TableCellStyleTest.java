@@ -22,9 +22,9 @@
  */
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Before;
@@ -43,8 +43,7 @@ public class TableCellStyleTest {
     @Test
     public final void testAllBorders() throws IOException {
         final TableCellStyle tcs = TableCellStyle.builder("test")
-                .borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE)
-                .build();
+                .borderAll(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\">" +
                 "<style:table-cell-properties fo:border=\"1pt double #00ffff\"/>" +
@@ -53,8 +52,8 @@ public class TableCellStyleTest {
 
     @Test
     public final void testAllMargins() throws IOException {
-        final TableCellStyle tcs = TableCellStyle.builder("tcs").allMargins(SimpleLength.pt(10.0))
-                .build();
+        final TableCellStyle tcs =
+                TableCellStyle.builder("tcs").allMargins(SimpleLength.pt(10.0)).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\">" +
                 "<style:paragraph-properties fo:margin=\"10pt\"/>" + "</style:style>", tcs);
@@ -65,10 +64,8 @@ public class TableCellStyleTest {
         final TableCellStyle tcs = TableCellStyle.builder("test")
                 .borderTop(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE)
                 .borderRight(SimpleLength.pt(2.0), SimpleColor.BEIGE, BorderStyle.SOLID)
-                .borderBottom(SimpleLength.pt(3.0), SimpleColor.CADETBLUE,
-                        BorderStyle.DOUBLE)
-                .borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE,
-                        BorderStyle.DOUBLE).build();
+                .borderBottom(SimpleLength.pt(3.0), SimpleColor.CADETBLUE, BorderStyle.DOUBLE)
+                .borderLeft(SimpleLength.pt(4.0), SimpleColor.DARKBLUE, BorderStyle.DOUBLE).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\">" +
                 "<style:table-cell-properties fo:border-bottom=\"3pt double #5f9ea0\" " +
@@ -100,8 +97,8 @@ public class TableCellStyleTest {
                 "<style:style style:name=\"Default\" style:family=\"table-cell\">" +
                         "<style:table-cell-properties style:vertical-align=\"top\"/>" +
                         "<style:text-properties style:font-name=\"Liberation Sans\"/>" +
-                        "<style:paragraph-properties fo:margin=\"0cm\"/>" +
-                        "</style:style>", TableCellStyle.DEFAULT_CELL_STYLE);
+                        "<style:paragraph-properties fo:margin=\"0cm\"/>" + "</style:style>",
+                TableCellStyle.DEFAULT_CELL_STYLE);
     }
 
     @Test
@@ -111,8 +108,8 @@ public class TableCellStyleTest {
 
     @Test
     public final void testFontName() throws IOException {
-        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell")
-                .fontName(LOFonts.OPENSYMBOL).build();
+        final TableCellStyle symbolStyle =
+                TableCellStyle.builder("symbol-cell").fontName(LOFonts.OPENSYMBOL).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"symbol-cell\" " +
                 "style:family=\"table-cell\" style:parent-style-name=\"Default\"><style:text" +
                 "-properties style:font-name=\"OpenSymbol\"/></style:style>", symbolStyle);
@@ -120,8 +117,8 @@ public class TableCellStyleTest {
 
     @Test
     public final void testFontNormal() throws IOException {
-        final TableCellStyle s = TableCellStyle.builder("test").fontStyleNormal().fontWeightNormal()
-                .build();
+        final TableCellStyle s =
+                TableCellStyle.builder("test").fontStyleNormal().fontWeightNormal().build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\"><style:text-properties " +
                 "fo:font-weight=\"normal\" style:font-weight-asian=\"normal\" " +
@@ -132,9 +129,9 @@ public class TableCellStyleTest {
 
     @Test
     public final void testFontUnderline() throws IOException {
-        final TableCellStyle s = TableCellStyle.builder("test")
-                .fontUnderlineStyle(TextProperties.Underline.DASH)
-                .fontUnderlineColor(SimpleColor.RED).build();
+        final TableCellStyle s =
+                TableCellStyle.builder("test").fontUnderlineStyle(TextProperties.Underline.DASH)
+                        .fontUnderlineColor(SimpleColor.RED).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\"><style:text-properties " +
                 "style:text-underline-style=\"dash\" style:text-underline-width=\"auto\" " +
@@ -160,8 +157,8 @@ public class TableCellStyleTest {
 
     @Test
     public final void testFontSize() throws IOException {
-        final TableCellStyle s = TableCellStyle.builder("test").fontSize(SimpleLength.pt(12.5))
-                .build();
+        final TableCellStyle s =
+                TableCellStyle.builder("test").fontSize(SimpleLength.pt(12.5)).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\"><style:text-properties " +
                 "fo:font-size=\"12.5pt\" style:font-size-asian=\"12.5pt\" " +

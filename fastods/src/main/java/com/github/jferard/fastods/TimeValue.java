@@ -66,11 +66,11 @@ public class TimeValue implements CellValue {
     /**
      * Create a new time value. Users must ensure that all values are positive.
      *
-     * @param neg true if the time value is negative
-     * @param years the number of years
-     * @param months the number of months
-     * @param days the number of days
-     * @param hours the number of hours
+     * @param neg     true if the time value is negative
+     * @param years   the number of years
+     * @param months  the number of months
+     * @param days    the number of days
+     * @param hours   the number of hours
      * @param minutes the number of minutes
      * @param seconds the number of seconds
      */

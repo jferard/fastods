@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.ref.PositionUtil;
@@ -137,15 +137,15 @@ public class ContentElement implements OdsElement {
     /**
      * Create a new table
      *
-     * @param name the name of the new table
-     * @param rowCapacity the row capacity
+     * @param name           the name of the new table
+     * @param rowCapacity    the row capacity
      * @param columnCapacity the column capacity
      * @return the newly created table
      */
     public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
-        return Table.create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name,
-                rowCapacity, columnCapacity, this.stylesContainer, this.format,
-                this.libreOfficeMode);
+        return Table
+                .create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
+                        columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);
     }
 
     /**
@@ -235,36 +235,34 @@ public class ContentElement implements OdsElement {
     public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("content.xml"));
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        writer.write(
-                "<office:document-content " +
-                        "xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " +
-                        "xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" " +
-                        "xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
-                        "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
-                        "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
-                        "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" +
-                        " " +
-                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
-                        "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " +
-                        "xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" " +
-                        "xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" " +
-                        "xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation" +
-                        ":1.0\" " +
-                        "xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" " +
-                        "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " +
-                        "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" " +
-                        "xmlns:math=\"http://www.w3.org/1998/Math/MathML\" " +
-                        "xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " +
-                        "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
-                        "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
-                        "xmlns:ooow=\"http://openoffice.org/2004/writer\" " +
-                        "xmlns:oooc=\"http://openoffice.org/2004/calc\" " +
-                        "xmlns:dom=\"http://www.w3.org/2001/xml-events\" " +
-                        "xmlns:xforms=\"http://www.w3.org/2002/xforms\" " +
-                        "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-                        "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                        "xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" " +
-                        "office:version=\"1.2\">");
+        writer.write("<office:document-content " +
+                "xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " +
+                "xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" " +
+                "xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
+                "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
+                "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
+                "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" + " " +
+                "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" " +
+                "xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" " +
+                "xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" " +
+                "xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation" +
+                ":1.0\" " +
+                "xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" " +
+                "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " +
+                "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" " +
+                "xmlns:math=\"http://www.w3.org/1998/Math/MathML\" " +
+                "xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " +
+                "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
+                "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
+                "xmlns:ooow=\"http://openoffice.org/2004/writer\" " +
+                "xmlns:oooc=\"http://openoffice.org/2004/calc\" " +
+                "xmlns:dom=\"http://www.w3.org/2001/xml-events\" " +
+                "xmlns:xforms=\"http://www.w3.org/2002/xforms\" " +
+                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+                "xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" " +
+                "office:version=\"1.2\">");
         this.writeEvents(util, writer);
         this.stylesContainer.writeFontFaceDecls(util, writer);
         writer.write("<office:automatic-styles>");
@@ -281,7 +279,7 @@ public class ContentElement implements OdsElement {
         }
 
         writer.write("<office:scripts><office:event-listeners>");
-        for (final ScriptEventListener event: this.scriptEvents) {
+        for (final ScriptEventListener event : this.scriptEvents) {
             event.appendXMLContent(util, writer);
         }
         writer.write("</office:event-listeners></office:scripts>");
@@ -320,6 +318,7 @@ public class ContentElement implements OdsElement {
 
     /**
      * Add some events to the document
+     *
      * @param events the events to add
      */
     public void addEvents(final ScriptEventListener... events) {
@@ -328,6 +327,7 @@ public class ContentElement implements OdsElement {
 
     /**
      * Add a new pilot table
+     *
      * @param pilotTable the filter
      */
     public void addPilotTable(final PilotTable pilotTable) {

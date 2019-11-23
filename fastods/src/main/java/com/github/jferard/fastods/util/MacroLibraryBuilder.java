@@ -79,6 +79,7 @@ public class MacroLibraryBuilder {
 
     /**
      * Variadic version
+     *
      * @param modules the modules
      * @return this for fluent style
      */

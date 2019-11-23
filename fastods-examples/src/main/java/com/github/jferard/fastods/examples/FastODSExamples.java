@@ -25,6 +25,7 @@ package com.github.jferard.fastods.examples;
 
 /**
  * Section 0 of the tutorial
+ *
  * @author J. Férard
  */
 // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)

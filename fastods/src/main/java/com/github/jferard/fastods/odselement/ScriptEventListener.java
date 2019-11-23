@@ -31,6 +31,7 @@ import java.io.IOException;
 
 /**
  * 14.4.2 script:event-listener
+ *
  * @author J. Férard
  */
 public class ScriptEventListener implements XMLConvertible {
@@ -55,8 +56,8 @@ public class ScriptEventListener implements XMLConvertible {
     public static final String JAVASCRIPT_LANG = "JavaScript";
 
     /**
-     * @param event the event, e.g dom:load
-     * @param functionName  the function, e.g Standard.Module1.Main
+     * @param event        the event, e.g dom:load
+     * @param functionName the function, e.g Standard.Module1.Main
      * @return a new listener
      */
     public static ScriptEventListener create(final ScriptEvent event, final String functionName) {
@@ -64,11 +65,12 @@ public class ScriptEventListener implements XMLConvertible {
     }
 
     /**
-     * @param event the event, e.g dom:load
-     * @param functionName  the function, e.g Standard.Module1.Main
+     * @param event        the event, e.g dom:load
+     * @param functionName the function, e.g Standard.Module1.Main
      * @return a new listener
      */
-    public static ScriptEventListenerBuilder builder(final ScriptEvent event, final String functionName) {
+    public static ScriptEventListenerBuilder builder(final ScriptEvent event,
+                                                     final String functionName) {
         return new ScriptEventListenerBuilder(event, functionName);
     }
 
@@ -79,8 +81,8 @@ public class ScriptEventListener implements XMLConvertible {
 
     /**
      * @param genericLanguage ooo:script
-     * @param event the event, e.g dom:load
-     * @param functionName        the function, e.g Standard.Module1.Main
+     * @param event           the event, e.g dom:load
+     * @param functionName    the function, e.g Standard.Module1.Main
      * @param language        Basic, Python, ...
      */
     public ScriptEventListener(final String genericLanguage, final ScriptEvent event,

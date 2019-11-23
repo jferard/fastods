@@ -152,8 +152,8 @@ public class Settings {
                            final ConfigItemSet configurationSettings) {
         final List<ConfigBlock> rootBlocks = new ArrayList<ConfigBlock>();
         final ConfigItemMapIndexed views = new ConfigItemMapIndexed("Views");
-        final Map<String, ConfigItemMapEntrySet> viewById = new HashMap<String,
-                ConfigItemMapEntrySet>();
+        final Map<String, ConfigItemMapEntrySet> viewById =
+                new HashMap<String, ConfigItemMapEntrySet>();
         final ConfigItemMapNamed tablesMap = new ConfigItemMapNamed("Tables");
 
         return new Settings(rootBlocks, viewSettings, views, viewById, firstView, tablesMap,

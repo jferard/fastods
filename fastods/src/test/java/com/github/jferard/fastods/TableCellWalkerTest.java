@@ -23,9 +23,9 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -307,7 +307,7 @@ public class TableCellWalkerTest {
     public final void testMatrixFormulaFull() throws IOException {
         PowerMock.resetAll();
         this.initWalker(0);
-        this.cell.setMatrixFormula("f", 5 , 4);
+        this.cell.setMatrixFormula("f", 5, 4);
 
         PowerMock.replayAll();
         this.cellWalker = new TableCellWalker(this.table);

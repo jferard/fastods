@@ -47,8 +47,8 @@ public class ConfigItemMapEntrySingletonTest {
 
     @Test
     public void testCreateSingleton() {
-        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton
-                .createSingleton(this.item);
+        final ConfigItemMapEntrySingleton sing =
+                ConfigItemMapEntrySingleton.createSingleton(this.item);
         Assert.assertEquals(1, sing.size());
         Assert.assertFalse(sing.isEmpty());
         Assert.assertNull(sing.getName());
@@ -112,8 +112,8 @@ public class ConfigItemMapEntrySingletonTest {
 
     @Test
     public void testSet3() {
-        final ConfigItemMapEntrySingleton sing = ConfigItemMapEntrySingleton
-                .createSingleton(this.singleton);
+        final ConfigItemMapEntrySingleton sing =
+                ConfigItemMapEntrySingleton.createSingleton(this.singleton);
         Assert.assertNull(sing.set("value"));
     }
 }

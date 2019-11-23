@@ -34,7 +34,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class SortedChildrenTesterTest {
     private static final String UTF_8 = "utf-8";

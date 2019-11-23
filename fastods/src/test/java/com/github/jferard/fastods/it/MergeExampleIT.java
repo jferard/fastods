@@ -26,8 +26,8 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.RowCellWalker;
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
@@ -71,8 +71,8 @@ public class MergeExampleIT {
     }
 
     private void validateMerge(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument
-                .loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document =
+                SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);

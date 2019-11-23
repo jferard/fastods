@@ -23,15 +23,15 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.attribute.CellAlign;
-import com.github.jferard.fastods.attribute.Color;
-import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.Angle;
 import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.CellAlign;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.VerticalAlign;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.attribute.Angle;
-import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.StyleBuilder;
 
 /**

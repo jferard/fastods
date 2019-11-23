@@ -24,7 +24,6 @@
 package com.github.jferard.fastods.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;

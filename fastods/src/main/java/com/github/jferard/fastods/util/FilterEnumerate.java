@@ -29,8 +29,9 @@ import java.util.List;
 
 /**
  * 9.5.6<table:filter-set-item>
- * @author J. Férard
  *
+ * @author J. Férard
+ * <p>
  * TODO: See compatibility note in 9.5.5<table:filter-condition>
  */
 public class FilterEnumerate implements Filter {
@@ -39,7 +40,7 @@ public class FilterEnumerate implements Filter {
 
     /**
      * @param colIndex the index
-     * @param values the values
+     * @param values   the values
      */
     public FilterEnumerate(final int colIndex, final String... values) {
         this.colIndex = colIndex;

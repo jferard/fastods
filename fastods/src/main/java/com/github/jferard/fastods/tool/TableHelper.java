@@ -27,9 +27,9 @@ import com.github.jferard.fastods.CellValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.ref.CellRef;
 import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.style.TableCellStyle;
 
 import java.io.IOException;
 import java.text.ParseException;

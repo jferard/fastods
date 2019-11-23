@@ -3,8 +3,6 @@ package com.github.jferard.fastods.attribute;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class ScriptEventTest {
     @Test
     public void testOnSelect() {

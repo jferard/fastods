@@ -22,8 +22,8 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,9 +40,10 @@ public class FractionStyleTest {
 
     @Test
     public final void test1() throws IOException {
-        final FractionStyle fs = FractionStyleBuilder.create("test", this.locale).country("FR")
-                .language("en").volatileStyle(true).fractionValues(1, 3).groupThousands(true)
-                .minIntegerDigits(8).negativeValueRed().build();
+        final FractionStyle fs =
+                FractionStyleBuilder.create("test", this.locale).country("FR").language("en")
+                        .volatileStyle(true).fractionValues(1, 3).groupThousands(true)
+                        .minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"FR\" " + "style:volatile=\"true\">" +
@@ -63,9 +64,10 @@ public class FractionStyleTest {
 
     @Test
     public final void test2() throws IOException {
-        final FractionStyle fs = new FractionStyleBuilder("test", this.locale).country("FR")
-                .language("en").locale(Locale.GERMANY).volatileStyle(true).fractionValues(1, 3)
-                .groupThousands(true).minIntegerDigits(8).negativeValueRed().build();
+        final FractionStyle fs =
+                new FractionStyleBuilder("test", this.locale).country("FR").language("en")
+                        .locale(Locale.GERMANY).volatileStyle(true).fractionValues(1, 3)
+                        .groupThousands(true).minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"de\" " +
                         "number:country=\"DE\" " + "style:volatile=\"true\">" +
@@ -86,8 +88,9 @@ public class FractionStyleTest {
 
     @Test
     public final void testNegativeValueColor() throws IOException {
-        final FractionStyle fs = new FractionStyleBuilder("test", this.locale)
-                .negativeValueColor(SimpleColor.BLACK).build();
+        final FractionStyle fs =
+                new FractionStyleBuilder("test", this.locale).negativeValueColor(SimpleColor.BLACK)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style:volatile=\"true\"><number:fraction " +

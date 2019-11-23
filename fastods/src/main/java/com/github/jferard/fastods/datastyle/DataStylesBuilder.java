@@ -36,14 +36,14 @@ public class DataStylesBuilder {
      * @return the DataStyles associated with this locale
      */
     public static DataStylesBuilder create(final Locale locale) {
-        final BooleanStyleBuilder booleanDataStyle = new BooleanStyleBuilder("boolean-data",
-                locale);
-        final CurrencyStyleBuilder currencyDataStyle = new CurrencyStyleBuilder("currency-data",
-                locale);
+        final BooleanStyleBuilder booleanDataStyle =
+                new BooleanStyleBuilder("boolean-data", locale);
+        final CurrencyStyleBuilder currencyDataStyle =
+                new CurrencyStyleBuilder("currency-data", locale);
         final DateStyleBuilder dateDataStyle = new DateStyleBuilder("date-data", locale);
         final FloatStyleBuilder numberDataStyle = new FloatStyleBuilder("float-data", locale);
-        final PercentageStyleBuilder percentageDataStyle = new PercentageStyleBuilder(
-                "percentage-data", locale);
+        final PercentageStyleBuilder percentageDataStyle =
+                new PercentageStyleBuilder("percentage-data", locale);
         final TimeStyleBuilder timeDataStyle = new TimeStyleBuilder("time-data", locale);
         return new DataStylesBuilder(booleanDataStyle, currencyDataStyle, dateDataStyle,
                 numberDataStyle, percentageDataStyle, timeDataStyle);

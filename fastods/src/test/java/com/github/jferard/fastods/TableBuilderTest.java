@@ -28,11 +28,11 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.collect.Lists;
@@ -64,8 +64,9 @@ public class TableBuilderTest {
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.ce = ConfigItemMapEntrySet.createSet("mytable");
-        this.builder = new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil, this.stc,
-                this.ds, false, "mytable", 10, 100, this.ce, 2);
+        this.builder =
+                new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil, this.stc, this.ds,
+                        false, "mytable", 10, 100, this.ce, 2);
         this.xmlUtil = xmlUtil;
 
         this.table = PowerMock.createMock(Table.class);
@@ -94,7 +95,7 @@ public class TableBuilderTest {
             final TableColumnStyle tcs = tcss.get(c);
             this.builder.setColumnStyle(c, tcs);
         }
-//        Assert.assertEquals(tcss, this.builder.getColumnStyles());
+        //        Assert.assertEquals(tcss, this.builder.getColumnStyles());
         PowerMock.verifyAll();
     }
 
@@ -249,9 +250,10 @@ public class TableBuilderTest {
         PowerMock.replayAll();
         this.builder.addObserver(o);
 
-//        final TableRow row = this.builder.getRowSecure(this.table, this.appender,10, true);
-//        final TableCell cell = row.getOrCreateCell(11);
-//        cell.setStringValue("a");
+        //        final TableRow row = this.builder.getRowSecure(this.table, this.appender,10,
+        //        true);
+        //        final TableCell cell = row.getOrCreateCell(11);
+        //        cell.setStringValue("a");
 
         PowerMock.verifyAll();
     }

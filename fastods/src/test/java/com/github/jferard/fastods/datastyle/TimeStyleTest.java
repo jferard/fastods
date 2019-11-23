@@ -39,8 +39,9 @@ public class TimeStyleTest {
 
     @Test
     public final void testFormat() throws IOException {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale)
-                .timeFormat(TimeStyle.Format.HHMMSS).build();
+        final TimeStyle ts =
+                new TimeStyleBuilder("test", this.locale).timeFormat(TimeStyle.Format.HHMMSS)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style" +
@@ -70,8 +71,9 @@ public class TimeStyleTest {
 
     @Test
     public final void testLocaleVolatile() throws IOException {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).locale(Locale.FRANCE)
-                .volatileStyle(false).build();
+        final TimeStyle ts =
+                new TimeStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(false)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"fr\" " +
                         "number:country=\"FR\" " + "number:format-source=\"language\"/>", ts);
@@ -79,8 +81,8 @@ public class TimeStyleTest {
 
     @Test
     public final void testLanguageCountry() throws IOException {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).language("a").country("b")
-                .build();
+        final TimeStyle ts =
+                new TimeStyleBuilder("test", this.locale).language("a").country("b").build();
         TestHelper.assertXMLEquals("<number:time-style style:name=\"test\" number:language=\"a\" " +
                 "number:country=\"B\" " +
                 "style:volatile=\"true\" number:format-source=\"language\"/>", ts);
@@ -93,8 +95,9 @@ public class TimeStyleTest {
 
     @Test
     public final void testAddToElements() {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).locale(Locale.FRANCE)
-                .volatileStyle(false).build();
+        final TimeStyle ts =
+                new TimeStyleBuilder("test", this.locale).locale(Locale.FRANCE).volatileStyle(false)
+                        .build();
         DataStyleTestHelper.testAddToElements(ts);
     }
 

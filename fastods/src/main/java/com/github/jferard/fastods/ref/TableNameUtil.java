@@ -87,8 +87,8 @@ public class TableNameUtil {
             }
         }
 
-        final StringBuilder sb = new StringBuilder(
-                tableName.length() + (toQuote ? 2 : 0) + apostropheCount);
+        final StringBuilder sb =
+                new StringBuilder(tableName.length() + (toQuote ? 2 : 0) + apostropheCount);
 
         // step 2: build the string
         if (toQuote) {

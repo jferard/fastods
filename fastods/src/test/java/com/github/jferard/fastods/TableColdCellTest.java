@@ -22,8 +22,8 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;

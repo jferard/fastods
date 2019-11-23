@@ -26,9 +26,10 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.RowCellWalker;
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
@@ -41,7 +42,6 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Util;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -86,8 +86,8 @@ public class DataStyleExampleIT {
     }
 
     private void validateDatastyle(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument
-                .loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document =
+                SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
@@ -119,32 +119,35 @@ public class DataStyleExampleIT {
         final GregorianCalendar cal = new GregorianCalendar(this.locale);
 
         // Define some styles
-        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true)
-                .hidden().build();
-        final TableRowStyle rowStyle = TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5))
-                .build();
+        final TableCellStyle cellStyle =
+                TableCellStyle.builder("wrapped-cell").fontWrap(true).hidden().build();
+        final TableRowStyle rowStyle =
+                TableRowStyle.builder("row").rowHeight(SimpleLength.cm(1.5)).build();
 
         final Table table = document.addTable("test");
-        final TableColumnStyle columnStyle0 = TableColumnStyle.builder("wrapped-col")
-                .defaultCellStyle(cellStyle).build();
+        final TableColumnStyle columnStyle0 =
+                TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle).build();
         table.setColumnStyle(0, columnStyle0);
-        final TableColumnStyle columnStyle1 = TableColumnStyle.builder("col")
-                .columnWidth(SimpleLength.cm(5)).build();
+        final TableColumnStyle columnStyle1 =
+                TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5)).build();
         table.setColumnStyle(1, columnStyle1);
 
         // a column datastyle
-        final FloatStyle floatStyle = new FloatStyleBuilder("second-custom-int-datastyle",
-                this.locale).decimalPlaces(8).build();
-        final TableCellStyle cellStyle1 = TableCellStyle.builder("datastyle0").dataStyle(floatStyle)
-                .build();
-        final TableColumnStyle columnDataStyle = TableColumnStyle.builder("col-datastyle")
-                .columnWidth(SimpleLength.cm(5)).defaultCellStyle(cellStyle1).build();
+        final FloatStyle floatStyle =
+                new FloatStyleBuilder("second-custom-int-datastyle", this.locale).decimalPlaces(8)
+                        .build();
+        final TableCellStyle cellStyle1 =
+                TableCellStyle.builder("datastyle0").dataStyle(floatStyle).build();
+        final TableColumnStyle columnDataStyle =
+                TableColumnStyle.builder("col-datastyle").columnWidth(SimpleLength.cm(5))
+                        .defaultCellStyle(cellStyle1).build();
         table.setColumnStyle(2, columnDataStyle);
 
-        final FloatStyle floatStyle2 = new FloatStyleBuilder("third-custom-int-datastyle",
-                this.locale).decimalPlaces(6).build();
-        final TableCellStyle cellStyle2 = TableCellStyle.builder("datastyle1")
-                .dataStyle(floatStyle2).build();
+        final FloatStyle floatStyle2 =
+                new FloatStyleBuilder("third-custom-int-datastyle", this.locale).decimalPlaces(6)
+                        .build();
+        final TableCellStyle cellStyle2 =
+                TableCellStyle.builder("datastyle1").dataStyle(floatStyle2).build();
 
         // FIRST ROW
         TableRowImpl row = table.nextRow();
@@ -162,8 +165,9 @@ public class DataStyleExampleIT {
         cell.next();
         cell.setFloatValue(789654.321);
         // Now add a custom format.
-        final DataStyle intStyle = new FloatStyleBuilder("custom-int-datastyle", this.locale)
-                .decimalPlaces(8).groupThousands(true).build();
+        final DataStyle intStyle =
+                new FloatStyleBuilder("custom-int-datastyle", this.locale).decimalPlaces(8)
+                        .groupThousands(true).build();
         // This operation may be slow because the default data style was already added
         cell.setDataStyle(intStyle);
 

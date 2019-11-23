@@ -23,8 +23,6 @@
 
 package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.attribute.AttributeValue;
-
 /**
  * The Color class provides access to standard LibreOffice colors in hex format.
  * The value is the hex value for this color. Eg. "#123456"

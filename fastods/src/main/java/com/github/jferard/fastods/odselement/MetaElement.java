@@ -47,6 +47,7 @@ public class MetaElement implements OdsElement {
      * the date format: 2017-12-31
      */
     final static SimpleDateFormat DF_DATE;
+
     static {
         DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
         DF_DATE.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -56,8 +57,10 @@ public class MetaElement implements OdsElement {
      * the time format: 18:12:59
      */
     final static SimpleDateFormat DF_TIME;
+
     static {
-        DF_TIME = new SimpleDateFormat("HH:mm:ss");;
+        DF_TIME = new SimpleDateFormat("HH:mm:ss");
+        ;
         DF_TIME.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 

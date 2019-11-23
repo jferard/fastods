@@ -37,8 +37,8 @@ public class FullListTest {
     @Test
     public final void testAddBlank() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
         fl.set(100, "non blank");
 
         Assert.assertFalse(fl.add(be));
@@ -61,8 +61,8 @@ public class FullListTest {
     @Test
     public final void testClear() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
         fl.set(100, "non blank2");
         fl.clear();
         Assert.assertEquals(0, fl.usedSize());
@@ -88,8 +88,8 @@ public class FullListTest {
     @Test
     public final void testContains() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
         Assert.assertTrue(fl.contains(be));
 
         Assert.assertTrue(fl.containsAll(Lists.newArrayList(be, be, be)));
@@ -141,8 +141,8 @@ public class FullListTest {
     @Test
     public final void testRemove() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
         fl.set(100, "non blank2");
 
         Assert.assertEquals(be, fl.remove(10));
@@ -162,8 +162,8 @@ public class FullListTest {
     @Test
     public final void testRemoveAll() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
         fl.set(50, "non blank");
         fl.set(100, "non blank2");
 
@@ -174,8 +174,8 @@ public class FullListTest {
     @Test
     public final void testRetain() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
         fl.set(100, "non blank2");
         fl.retainAll(Lists.newArrayList("foo"));
         Assert.assertEquals(0, fl.usedSize());
@@ -193,8 +193,8 @@ public class FullListTest {
     @Test
     public final void testSetAndAdd() {
         final String be = "blank";
-        final FullList<String> fl = FullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FullList<String> fl =
+                FullList.<String>builder().blankElement(be).capacity(10).build();
 
         Assert.assertEquals(0, fl.usedSize());
         Assert.assertEquals(be, fl.get(100));

@@ -82,10 +82,10 @@ class RangeAddressParser {
         if (colonSepIndex == -1) {
             throw new ParseException("Expected a `:` symbol: " + localRangeAddress, 0);
         }
-        final LocalCellRef localFromCellRef = this.localCellAddressParser
-                .parse(localRangeAddress.substring(0, colonSepIndex));
-        final LocalCellRef localToCellRef = this.localCellAddressParser
-                .parse(localRangeAddress.substring(colonSepIndex + 1));
+        final LocalCellRef localFromCellRef =
+                this.localCellAddressParser.parse(localRangeAddress.substring(0, colonSepIndex));
+        final LocalCellRef localToCellRef =
+                this.localCellAddressParser.parse(localRangeAddress.substring(colonSepIndex + 1));
 
         return new RangeRef(tableRef, localFromCellRef, localToCellRef);
     }

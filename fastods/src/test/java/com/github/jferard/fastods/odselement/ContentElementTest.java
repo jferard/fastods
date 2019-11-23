@@ -167,9 +167,10 @@ public class ContentElementTest {
         this.content.writePostamble(this.xmlUtil, writer);
 
         PowerMock.verifyAll();
-        DomTester.assertEquals("<table:database-ranges><table:database-range table:name=\"range\" " +
-                "table:display-filter-buttons=\"true\" table:target-range-address=\"t" +
-                ".C2:E4\"/></table:database-ranges>", handler.getEntryAsString("a"));
+        DomTester.assertEquals(
+                "<table:database-ranges><table:database-range table:name=\"range\" " +
+                        "table:display-filter-buttons=\"true\" table:target-range-address=\"t" +
+                        ".C2:E4\"/></table:database-ranges>", handler.getEntryAsString("a"));
     }
 
     @Test
@@ -216,8 +217,8 @@ public class ContentElementTest {
 
         DomTester.assertEquals("<script:event-listener script:language=\"ooo:script\" " +
                         "script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star" +
-                        ".script:func?language=Basic&amp;location=document\" " +
-                        "xlink:type=\"simple\"/>",
+                        ".script:func?language=Basic&amp;location=document\" " + "xlink:type" +
+                        "=\"simple\"/>",
                 handler.getEntryAsString("content.xml"));
     }
 

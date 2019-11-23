@@ -45,8 +45,8 @@ public class AutoFilter implements XMLConvertible {
      * @param c2    last col
      * @return a new builder
      */
-    public static AutoFilterBuilder builder(final String rangeName, final Table table, final int r1, final int c1,
-                                            final int r2, final int c2) {
+    public static AutoFilterBuilder builder(final String rangeName, final Table table, final int r1,
+                                            final int c1, final int r2, final int c2) {
         final String rangeAddress = PositionUtil.create().toRangeAddress(table, r1, c1, r2, c2);
         return new AutoFilterBuilder(rangeName, rangeAddress);
     }
@@ -61,8 +61,8 @@ public class AutoFilter implements XMLConvertible {
      * @param displayButtons display buttons if true
      * @param filter         the filter
      */
-    public AutoFilter(final String rangeName, final String rangeAddress, final boolean displayButtons,
-                      final Filter filter) {
+    public AutoFilter(final String rangeName, final String rangeAddress,
+                      final boolean displayButtons, final Filter filter) {
         this.rangeName = rangeName;
         this.rangeAddress = rangeAddress;
         this.displayButtons = displayButtons;

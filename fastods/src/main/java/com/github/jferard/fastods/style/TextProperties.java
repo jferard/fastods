@@ -23,9 +23,9 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.SimpleColor;
-import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

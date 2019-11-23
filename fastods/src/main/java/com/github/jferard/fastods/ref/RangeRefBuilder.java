@@ -208,6 +208,7 @@ public class RangeRefBuilder {
      * @return the position or null
      */
     public RangeRef build() {
-        return new RangeRef(this.tableRefBuilder.build(), this.fromLocalCellRefBuilder.build(), toLocalCellRefBuilder.build());
+        return new RangeRef(this.tableRefBuilder.build(), this.fromLocalCellRefBuilder.build(),
+                toLocalCellRefBuilder.build());
     }
 }

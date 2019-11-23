@@ -23,10 +23,10 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.style.MarginsBuilder;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.Box;
-import com.github.jferard.fastods.attribute.Length;
 
 /**
  * A builder for a page section. It will build a header or a footer

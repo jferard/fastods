@@ -22,10 +22,10 @@
  */
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.attribute.BorderAttributeBuilder;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -49,8 +49,9 @@ public class BordersTest {
 
     @Test
     public final void testXMLEqual() throws IOException {
-        final Borders b = new BordersBuilder().all(this.a1).top(this.a1).right(this.a1)
-                .bottom(this.a1).left(this.a1).build();
+        final Borders b =
+                new BordersBuilder().all(this.a1).top(this.a1).right(this.a1).bottom(this.a1)
+                        .left(this.a1).build();
         this.assertAttrXMLEquals(" fo:border=\"10pt double #000000\"", b);
     }
 
@@ -69,8 +70,9 @@ public class BordersTest {
 
     @Test
     public final void testDifferent() throws IOException {
-        final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a2)
-                .bottom(this.a2).left(this.a2).build();
+        final Borders b =
+                new BordersBuilder().all(this.a1).top(this.a2).right(this.a2).bottom(this.a2)
+                        .left(this.a2).build();
         this.assertAttrXMLEquals(
                 " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" " +
                         "fo:border-right=\"11pt " +
@@ -80,8 +82,9 @@ public class BordersTest {
 
     @Test
     public final void test() throws IOException {
-        final Borders b = new BordersBuilder().all(this.a1).top(this.a2).right(this.a1)
-                .bottom(this.a2).left(this.a1).build();
+        final Borders b =
+                new BordersBuilder().all(this.a1).top(this.a2).right(this.a1).bottom(this.a2)
+                        .left(this.a1).build();
         this.assertAttrXMLEquals(
                 " fo:border=\"10pt double #000000\" fo:border-top=\"11pt solid #ffffff\" " +
                         "fo:border-bottom=\"11pt " + "solid #ffffff\"", b);

@@ -23,15 +23,15 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSection;
-import com.github.jferard.fastods.attribute.PageWritingMode;
-import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.PageCentering;
 import com.github.jferard.fastods.attribute.PagePrintOrientation;
+import com.github.jferard.fastods.attribute.PageWritingMode;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Hidable;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -83,9 +83,8 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     PageLayoutStyle(final String name, final Margins margins, final Length pageWidth,
                     final Length pageHeight, final String numFormat, final Color backgroundColor,
                     final Header header, final Footer footer,
-                    final PagePrintOrientation printOrientation,
-                    final PageWritingMode writingMode, final int scaleTo,
-                    final int scaleToPages, final PageCentering centering) {
+                    final PagePrintOrientation printOrientation, final PageWritingMode writingMode,
+                    final int scaleTo, final int scaleToPages, final PageCentering centering) {
         this.name = name;
         this.margins = margins;
         this.pageWidth = pageWidth;
@@ -164,8 +163,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     private void appendBackgroundColor(final XMLUtil util, final Appendable appendable)
             throws IOException {
         if (this.backgroundColor != SimpleColor.NONE) {
-            util.appendAttribute(appendable, "fo:background-color",
-                    this.backgroundColor);
+            util.appendAttribute(appendable, "fo:background-color", this.backgroundColor);
         }
     }
 

@@ -19,20 +19,24 @@ public class MacroLibraryTest {
     private MacroModule module;
     private XMLUtil util;
 
-    @Before public void setUp() {
+    @Before
+    public void setUp() {
         this.module = PowerMock.createMock(MacroModule.class);
         this.util = XMLUtil.create();
     }
 
-    @Test public void testIndexLine() throws IOException {
-        final MacroLibrary lib = MacroLibrary.builder().name("ml").modules(this.module).readOnly().build();
+    @Test
+    public void testIndexLine() throws IOException {
+        final MacroLibrary lib =
+                MacroLibrary.builder().name("ml").modules(this.module).readOnly().build();
         final StringBuilder sb = new StringBuilder();
         lib.appendIndexLine(XMLUtil.create(), sb);
         DomTester.assertEquals("<library:library library:name=\"ml\" library:link=\"false\"/>",
                 sb.toString());
     }
 
-    @Test public void testAdd() throws IOException {
+    @Test
+    public void testAdd() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroLibrary lib = new MacroLibrary("ml", false, Arrays.asList(this.module));
         final Capture<StringBuilder> sb1 = Capture.newInstance();
@@ -55,9 +59,11 @@ public class MacroLibraryTest {
                 "library:name=\"ml\" library:readonly=\"false\" " +
                 "library:passwordprotected=\"false\"></library:library>", sb1.toString());
         Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE library:library " +
-                "PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library" +
-                ".dtd\"><library:library xmlns:library=\"http://openoffice.org/2000/library\" " +
-                "library:name=\"ml\" library:readonly=\"false\" " +
-                "library:passwordprotected=\"false\"></library:library>", new String(bs.getValue(), UTF_8));
+                        "PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library" +
+                        ".dtd\"><library:library xmlns:library=\"http://openoffice" +
+                        ".org/2000/library\" " +
+                        "library:name=\"ml\" library:readonly=\"false\" " +
+                        "library:passwordprotected=\"false\"></library:library>",
+                new String(bs.getValue(), UTF_8));
     }
 }

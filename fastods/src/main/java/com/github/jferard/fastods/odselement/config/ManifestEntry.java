@@ -37,7 +37,7 @@ public class ManifestEntry implements XMLConvertible {
     private CharSequence version;
 
     /**
-     * @param fullPath the path
+     * @param fullPath  the path
      * @param mediaType the media MIME type
      * @param version
      */
@@ -49,7 +49,8 @@ public class ManifestEntry implements XMLConvertible {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<manifest:file-entry");
         util.appendAttribute(appendable, "manifest:full-path", this.fullPath);
         if (this.mediaType != null) {

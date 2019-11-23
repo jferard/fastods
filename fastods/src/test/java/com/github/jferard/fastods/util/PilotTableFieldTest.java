@@ -8,7 +8,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class PilotTableFieldTest {
-    @Test public void test() throws IOException {
+    @Test
+    public void test() throws IOException {
         final PilotTableField field = new PilotTableField("sfn", FieldOrientation.COLUMN, 1, true,
                 PilotStandardFunction.AVERAGE, new PilotTableLevel(false));
 

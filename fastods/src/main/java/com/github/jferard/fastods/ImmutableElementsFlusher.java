@@ -33,7 +33,7 @@ import java.io.IOException;
  * An async flusher for mime type and meta elements.
  * Those files are always the same and do not depend on anything:
  * Thumbnails, Configurations2/accelerator/current.xml, ...
- *
+ * <p>
  * Automatically sent when the NamedOdsWriter is created.
  *
  * @author Julien Férard

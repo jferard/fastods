@@ -31,6 +31,7 @@ import java.util.List;
 
 /**
  * 9.6Data Pilot Tables
+ *
  * @author J. Férard
  */
 public class PilotTable implements XMLConvertible {
@@ -48,8 +49,8 @@ public class PilotTable implements XMLConvertible {
     private final boolean drillDownOnDoubleClick;
 
     public PilotTable(final String name, final String sourceCellRange, final String targetRange,
-                      final List<String> buttons, final List<PilotTableField> fields, final boolean showFilterButton,
-                      final boolean drillDownOnDoubleClick) {
+                      final List<String> buttons, final List<PilotTableField> fields,
+                      final boolean showFilterButton, final boolean drillDownOnDoubleClick) {
         this.fields = fields;
         this.sourceCellRange = sourceCellRange;
         this.name = name;

@@ -30,7 +30,6 @@ import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.Container;
 
 /**
  * A container for styles

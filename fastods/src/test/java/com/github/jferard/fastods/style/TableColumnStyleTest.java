@@ -23,9 +23,9 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -49,7 +49,8 @@ public class TableColumnStyleTest {
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
+        EasyMock.expect(odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
         EasyMock.expect(odsElements.addContentStyle(tcs)).andReturn(true);
 
         PowerMock.replayAll();
@@ -61,8 +62,8 @@ public class TableColumnStyleTest {
     @Test
     public final void testAddNewDefaultCellStyleToFile() {
         final TableCellStyle cellStyle = TableCellStyle.builder("ok").hidden().build();
-        final TableColumnStyle tcs = TableColumnStyle.builder("test").defaultCellStyle(cellStyle)
-                .build();
+        final TableColumnStyle tcs =
+                TableColumnStyle.builder("test").defaultCellStyle(cellStyle).build();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();
@@ -104,8 +105,8 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testWidth() throws IOException {
-        final TableColumnStyle tcs = TableColumnStyle.builder("test")
-                .columnWidth(SimpleLength.pt(1.0)).build();
+        final TableColumnStyle tcs =
+                TableColumnStyle.builder("test").columnWidth(SimpleLength.pt(1.0)).build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table-column\">" +
                         "<style:table-column-properties " + "fo:break-before=\"auto\" " +
@@ -135,10 +136,10 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testGetFontFace() {
-        final TableCellStyle tcs = TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL)
-                .build();
-        final TableColumnStyle test = TableColumnStyle.builder("test").defaultCellStyle(tcs)
-                .build();
+        final TableCellStyle tcs =
+                TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL).build();
+        final TableColumnStyle test =
+                TableColumnStyle.builder("test").defaultCellStyle(tcs).build();
         Assert.assertEquals(new FontFace(LOFonts.OPENSYMBOL), test.getFontFace());
     }
 
@@ -153,10 +154,12 @@ public class TableColumnStyleTest {
 
     @Test
     public final void testWidth4cm() throws IOException {
-        final TableCellStyle tableCellStyle = TableCellStyle.builder("c1")
-                .fontName(LOFonts.LIBERATION_MONO).fontSize(SimpleLength.pt(10)).build();
-        final TableColumnStyle test = TableColumnStyle.builder("test")
-                .defaultCellStyle(tableCellStyle).columnWidth(SimpleLength.cm(4)).build();
+        final TableCellStyle tableCellStyle =
+                TableCellStyle.builder("c1").fontName(LOFonts.LIBERATION_MONO)
+                        .fontSize(SimpleLength.pt(10)).build();
+        final TableColumnStyle test =
+                TableColumnStyle.builder("test").defaultCellStyle(tableCellStyle)
+                        .columnWidth(SimpleLength.cm(4)).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
                 "style:family=\"table-column\"><style:table-column-properties " +
                 "fo:break-before=\"auto\" style:column-width=\"4cm\"/></style:style>", test);

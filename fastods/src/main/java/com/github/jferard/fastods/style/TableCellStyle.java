@@ -23,11 +23,11 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.attribute.Angle;
 import com.github.jferard.fastods.attribute.CellAlign;
 import com.github.jferard.fastods.attribute.Color;
-import com.github.jferard.fastods.attribute.SimpleColor;
-import com.github.jferard.fastods.attribute.Angle;
 import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.VerticalAlign;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.OdsElements;
@@ -46,10 +46,10 @@ public class TableCellStyle implements FontFaceContainerStyle {
     /**
      * This is the default cell style: left and top align, no wrap.
      */
-    public static final TableCellStyle DEFAULT_CELL_STYLE = TableCellStyle.builder("Default")
-            .verticalAlign(VerticalAlign.TOP).fontWrap(false)
-            .backgroundColor(SimpleColor.NONE).allMargins(Length.NULL_LENGTH)
-            .fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
+    public static final TableCellStyle DEFAULT_CELL_STYLE =
+            TableCellStyle.builder("Default").verticalAlign(VerticalAlign.TOP).fontWrap(false)
+                    .backgroundColor(SimpleColor.NONE).allMargins(Length.NULL_LENGTH)
+                    .fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
 
     /**
      * Create a builder

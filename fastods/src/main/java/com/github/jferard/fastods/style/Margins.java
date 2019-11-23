@@ -24,8 +24,8 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TagParameters;
-import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;

@@ -17,7 +17,8 @@ public class UserDefinedTest {
     @Test
     public void fromDate() throws IOException {
         TestHelper.assertXMLEquals(
-                "<meta:user-defined meta:name=\"d\" meta:type=\"date\">1970-01-01</meta:user-defined>",
+                "<meta:user-defined meta:name=\"d\" " +
+                        "meta:type=\"date\">1970-01-01</meta:user-defined>",
                 UserDefined.fromDate("d", new Date(0)));
     }
 
@@ -31,14 +32,16 @@ public class UserDefinedTest {
     @Test
     public void fromTime() throws IOException {
         TestHelper.assertXMLEquals(
-                "<meta:user-defined meta:name=\"t\" meta:type=\"time\">00:20:34</meta:user-defined>",
+                "<meta:user-defined meta:name=\"t\" " +
+                        "meta:type=\"time\">00:20:34</meta:user-defined>",
                 UserDefined.fromTime("t", new Date(1234567)));
     }
 
     @Test
     public void fromString() throws IOException {
         TestHelper.assertXMLEquals(
-                "<meta:user-defined meta:name=\"s\" meta:type=\"string\">a string</meta:user-defined>",
+                "<meta:user-defined meta:name=\"s\" meta:type=\"string\">a " +
+                        "string</meta:user-defined>",
                 UserDefined.fromString("s", "a string"));
     }
 

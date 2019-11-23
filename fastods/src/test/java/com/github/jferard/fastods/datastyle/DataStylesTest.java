@@ -23,8 +23,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.CellType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,8 +64,7 @@ public class DataStylesTest {
 
     @Test
     public void testGetBoolean() {
-        Assert.assertEquals(this.ds.getBooleanDataStyle(),
-                this.ds.getDataStyle(CellType.BOOLEAN));
+        Assert.assertEquals(this.ds.getBooleanDataStyle(), this.ds.getDataStyle(CellType.BOOLEAN));
     }
 
     @Test
@@ -81,8 +80,7 @@ public class DataStylesTest {
 
     @Test
     public void testGetFloat() {
-        Assert.assertEquals(this.ds.getFloatDataStyle(),
-                this.ds.getDataStyle(CellType.FLOAT));
+        Assert.assertEquals(this.ds.getFloatDataStyle(), this.ds.getDataStyle(CellType.FLOAT));
     }
 
     @Test

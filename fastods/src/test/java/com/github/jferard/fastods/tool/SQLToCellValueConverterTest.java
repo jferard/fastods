@@ -23,16 +23,15 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.DateValue;
 import com.github.jferard.fastods.FastOdsException;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
+import com.github.jferard.fastods.attribute.CellType;
 import com.mockrunner.mock.jdbc.MockBlob;
 import com.mockrunner.mock.jdbc.MockClob;
 import com.mockrunner.mock.jdbc.MockSQLXML;
-import javafx.scene.control.Cell;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,11 +61,11 @@ public class SQLToCellValueConverterTest {
 
     @Before
     public void setUp() {
-        this.intervalConverter = PowerMock
-                .createMock(SQLToCellValueConverter.IntervalConverter.class);
+        this.intervalConverter =
+                PowerMock.createMock(SQLToCellValueConverter.IntervalConverter.class);
         this.wrappedConverter = PowerMock.createMock(ToCellValueConverter.class);
-        this.converter = new SQLToCellValueConverter(this.wrappedConverter, this.intervalConverter,
-                CHARSET);
+        this.converter =
+                new SQLToCellValueConverter(this.wrappedConverter, this.intervalConverter, CHARSET);
     }
 
     @Test
@@ -99,8 +98,8 @@ public class SQLToCellValueConverterTest {
     public void testFromHintBlob() throws FastOdsException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertEquals(new StringValue(FASTODS), this.converter
-                .from(CellType.STRING, new MockBlob(FASTODS.getBytes(CHARSET))));
+        Assert.assertEquals(new StringValue(FASTODS),
+                this.converter.from(CellType.STRING, new MockBlob(FASTODS.getBytes(CHARSET))));
 
         PowerMock.verifyAll();
     }
@@ -165,8 +164,7 @@ public class SQLToCellValueConverterTest {
         EasyMock.expect(this.intervalConverter.castToInterval("test")).andReturn(null);
         EasyMock.expect(this.wrappedConverter.from("test")).andReturn(new StringValue("test"));
         PowerMock.replayAll();
-        Assert.assertEquals(new StringValue("test"),
-                this.converter.from("test"));
+        Assert.assertEquals(new StringValue("test"), this.converter.from("test"));
 
         PowerMock.verifyAll();
     }
@@ -175,10 +173,10 @@ public class SQLToCellValueConverterTest {
     public void testFromHintString() throws FastOdsException {
         PowerMock.resetAll();
 
-        EasyMock.expect(this.wrappedConverter.from(CellType.STRING, "test")).andReturn(new StringValue("test"));
+        EasyMock.expect(this.wrappedConverter.from(CellType.STRING, "test"))
+                .andReturn(new StringValue("test"));
         PowerMock.replayAll();
-        Assert.assertEquals(new StringValue("test"),
-                this.converter.from(CellType.STRING, "test"));
+        Assert.assertEquals(new StringValue("test"), this.converter.from(CellType.STRING, "test"));
 
         PowerMock.verifyAll();
     }
@@ -219,8 +217,7 @@ public class SQLToCellValueConverterTest {
     public void testFromHintDate() throws FastOdsException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertEquals(new DateValue(UTIL_DATE),
-                this.converter.from(CellType.DATE, SQL_DATE));
+        Assert.assertEquals(new DateValue(UTIL_DATE), this.converter.from(CellType.DATE, SQL_DATE));
 
         PowerMock.verifyAll();
     }
@@ -250,8 +247,7 @@ public class SQLToCellValueConverterTest {
     public void testFromHintTime() throws FastOdsException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertEquals(new DateValue(UTIL_DATE),
-                this.converter.from(CellType.DATE, SQL_TIME));
+        Assert.assertEquals(new DateValue(UTIL_DATE), this.converter.from(CellType.DATE, SQL_TIME));
 
         PowerMock.verifyAll();
     }
@@ -280,8 +276,7 @@ public class SQLToCellValueConverterTest {
     public void testFromHintTimestamp() throws FastOdsException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertEquals(new DateValue(UTIL_DATE),
-                this.converter.from(CellType.DATE, SQL_TS));
+        Assert.assertEquals(new DateValue(UTIL_DATE), this.converter.from(CellType.DATE, SQL_TS));
 
         PowerMock.verifyAll();
     }
@@ -340,7 +335,8 @@ public class SQLToCellValueConverterTest {
         PowerMock.resetAll();
         final Object interval = new Object();
         EasyMock.expect(this.intervalConverter.castToInterval(interval)).andReturn(null);
-        EasyMock.expect(this.wrappedConverter.from(CellType.TIME, interval)).andThrow(new FastOdsException(""));
+        EasyMock.expect(this.wrappedConverter.from(CellType.TIME, interval))
+                .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
         this.converter.from(CellType.TIME, interval);

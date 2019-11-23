@@ -24,12 +24,11 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.attribute.CellType;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -82,12 +81,13 @@ public class TableCellImpl implements TableCell {
      *                        styles.xml
      * @param dataStyles      the styles
      * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param parentRow          the parent row
+     * @param parentRow       the parent row
      * @param columnIndex     index in parent row
      */
     TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
                   final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final boolean libreOfficeMode, final TableRowImpl parentRow, final int columnIndex) {
+                  final boolean libreOfficeMode, final TableRowImpl parentRow,
+                  final int columnIndex) {
         this.writeUtil = writeUtil;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -393,8 +393,8 @@ public class TableCellImpl implements TableCell {
             this.value = this.xmlUtil
                     .formatNegTimeInterval(0, 0, 0, 0, 0, (double) -timeInMillis / 1000);
         } else {
-            this.value = this.xmlUtil
-                    .formatTimeInterval(0, 0, 0, 0, 0, (double) timeInMillis / 1000);
+            this.value =
+                    this.xmlUtil.formatTimeInterval(0, 0, 0, 0, 0, (double) timeInMillis / 1000);
         }
         this.type = CellType.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
@@ -411,8 +411,8 @@ public class TableCellImpl implements TableCell {
     @Override
     public void setNegTimeValue(final long years, final long months, final long days,
                                 final long hours, final long minutes, final double seconds) {
-        this.value = this.xmlUtil
-                .formatNegTimeInterval(years, months, days, hours, minutes, seconds);
+        this.value =
+                this.xmlUtil.formatNegTimeInterval(years, months, days, hours, minutes, seconds);
         this.type = CellType.TIME;
         this.setImplicitDataStyle(this.dataStyles.getTimeDataStyle());
     }
@@ -458,7 +458,8 @@ public class TableCellImpl implements TableCell {
     }
 
     @Override
-    public void setMatrixFormula(final String formula, final int matrixRowsSpanned, final int matrixColumnsSpanned) {
+    public void setMatrixFormula(final String formula, final int matrixRowsSpanned,
+                                 final int matrixColumnsSpanned) {
         this.ensureColdCell();
         this.coldCell.setFormula(formula);
         this.coldCell.setMatrixRowsSpanned(matrixRowsSpanned);

@@ -89,6 +89,7 @@ public class PageStyle implements AddableToOdsElements, ElementWithEmbeddedStyle
     private final boolean hidden;
     private final MasterPageStyle masterPageStyle;
     private final PageLayoutStyle pageLayoutStyle;
+
     /**
      * Create a new page style.
      *

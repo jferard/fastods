@@ -41,6 +41,7 @@ public class MacroLibraryContainer {
 
     /**
      * Variadic version
+     *
      * @param libraries the libraries
      * @return a container
      */
@@ -53,7 +54,7 @@ public class MacroLibraryContainer {
     private final List<MacroLibrary> libraries;
 
     /**
-     * @param util an util to write XML
+     * @param util      an util to write XML
      * @param libraries the libraries of the module
      */
     public MacroLibraryContainer(final XMLUtil util, final List<MacroLibrary> libraries) {

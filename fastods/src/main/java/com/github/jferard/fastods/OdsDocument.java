@@ -176,13 +176,12 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * Add an autoFilter to a range address
      *
-     *
      * @param rangeName
-     * @param table the table
-     * @param r1    the top row
-     * @param c1    the left column
-     * @param r2    the bottom row
-     * @param c2    the right column
+     * @param table     the table
+     * @param r1        the top row
+     * @param c1        the left column
+     * @param r2        the bottom row
+     * @param c2        the right column
      * @deprecated use {@code table.addAutoFilter(r1, c1, r2, c2)}
      */
     @Deprecated
@@ -206,6 +205,7 @@ public interface OdsDocument extends StylesModeSetter {
 
     /**
      * Add an extra directory
+     *
      * @param fullPath the path of the dir
      */
     void addExtraDir(final String fullPath);
@@ -213,9 +213,9 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * Add an extra object (eg. a spreadsheet)
      *
-     * @param fullPath the path of the dir
+     * @param fullPath  the path of the dir
      * @param mediaType the type of the object
-     * @param version the version
+     * @param version   the version
      */
     void addExtraObject(String fullPath, String mediaType, String version);
 

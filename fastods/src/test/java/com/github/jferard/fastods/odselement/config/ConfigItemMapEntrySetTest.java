@@ -58,8 +58,8 @@ public class ConfigItemMapEntrySetTest {
 
     @Test
     public void testCreateSingletonSet() {
-        final ConfigItemMapEntrySet s = new ConfigItemMapEntrySet("n",
-                Sets.<ConfigBlock>newHashSet(this.item));
+        final ConfigItemMapEntrySet s =
+                new ConfigItemMapEntrySet("n", Sets.<ConfigBlock>newHashSet(this.item));
         Assert.assertEquals(1, s.size());
         Assert.assertFalse(s.isEmpty());
     }

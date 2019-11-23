@@ -31,15 +31,15 @@ import java.io.File;
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest(Util.class)
 public class UtilTest {
-//    @Test
-//    public void testNewDirString() throws NoSuchMethodException {
-//        PowerMock.mockStatic(Util.class, Util.class.getMethod("mkdir", File.class));
-//
-//        EasyMock.expect(Util.mkdir(EasyMock.isA(File.class))).andReturn(true);
-//        PowerMock.replayAll();
-//        Assert.assertTrue(Util.mkdir("f"));
-//        PowerMock.verifyAll();
-//    }
+    //    @Test
+    //    public void testNewDirString() throws NoSuchMethodException {
+    //        PowerMock.mockStatic(Util.class, Util.class.getMethod("mkdir", File.class));
+    //
+    //        EasyMock.expect(Util.mkdir(EasyMock.isA(File.class))).andReturn(true);
+    //        PowerMock.replayAll();
+    //        Assert.assertTrue(Util.mkdir("f"));
+    //        PowerMock.verifyAll();
+    //    }
 
     @Test
     public void testNewDirFile() {

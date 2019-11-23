@@ -18,7 +18,8 @@ public class DrawImage implements FrameContent {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<draw:image");
         util.appendAttribute(appendable, "xlink:href", this.href);
         util.appendAttribute(appendable, "xlink:type", "simple");

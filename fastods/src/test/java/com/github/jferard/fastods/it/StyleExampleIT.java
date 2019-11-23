@@ -26,15 +26,15 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.RowCellWalker;
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.Util;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -78,8 +78,8 @@ public class StyleExampleIT {
     }
 
     private void validateStyle(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument
-                .loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document =
+                SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test_style");
         Assert.assertNotNull(sheet);
@@ -103,24 +103,27 @@ public class StyleExampleIT {
 
         // Define some styles
         // first column is wrapped
-        final TableCellStyle cellStyle = TableCellStyle.builder("wrapped-cell").fontWrap(true)
-                .hidden().build();
-        final TableColumnStyle columnStyleA = TableColumnStyle.builder("wrapped-col")
-                .defaultCellStyle(cellStyle).columnWidth(SimpleLength.cm(2)).build();
+        final TableCellStyle cellStyle =
+                TableCellStyle.builder("wrapped-cell").fontWrap(true).hidden().build();
+        final TableColumnStyle columnStyleA =
+                TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle)
+                        .columnWidth(SimpleLength.cm(2)).build();
         table.setColumnStyle(0, columnStyleA);
 
         // second column has OpenSymbol font
-        final TableCellStyle symbolStyle = TableCellStyle.builder("symbol-cell")
-                .fontName(LOFonts.OPENSYMBOL).hidden().build();
-        final TableColumnStyle columnStyleB = TableColumnStyle.builder("symbol-col")
-                .columnWidth(SimpleLength.cm(5)).defaultCellStyle(symbolStyle).build();
+        final TableCellStyle symbolStyle =
+                TableCellStyle.builder("symbol-cell").fontName(LOFonts.OPENSYMBOL).hidden().build();
+        final TableColumnStyle columnStyleB =
+                TableColumnStyle.builder("symbol-col").columnWidth(SimpleLength.cm(5))
+                        .defaultCellStyle(symbolStyle).build();
         table.setColumnStyle(1, columnStyleB);
 
         // second row has title Liberation Font
-        final TableCellStyle liberationStyle = TableCellStyle.builder("libe-cell")
-                .fontName(LOFonts.LIBERATION_MONO).hidden().build();
-        final TableRowStyle rowStyle2 = TableRowStyle.builder("libe-row")
-                .rowHeight(SimpleLength.cm(1.5)).build();
+        final TableCellStyle liberationStyle =
+                TableCellStyle.builder("libe-cell").fontName(LOFonts.LIBERATION_MONO).hidden()
+                        .build();
+        final TableRowStyle rowStyle2 =
+                TableRowStyle.builder("libe-row").rowHeight(SimpleLength.cm(1.5)).build();
 
         // lonely style
         final TableCellStyle boldStyle = TableCellStyle.builder("bold").fontWeightBold().build();

@@ -41,8 +41,8 @@ public class NumberStyleHelperTest {
 
     @Test
     public final void testEmpty() throws IOException {
-        final FloatStyle ns = new FloatStyleBuilder("test", this.locale).locale(this.locale)
-                .build();
+        final FloatStyle ns =
+                new FloatStyleBuilder("test", this.locale).locale(this.locale).build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style:volatile=\"true\">" +
@@ -52,8 +52,9 @@ public class NumberStyleHelperTest {
 
     @Test
     public final void testNegative() throws IOException {
-        final FloatStyle ns = new FloatStyleBuilder("test", this.locale).negativeValueRed()
-                .locale(this.locale).build();
+        final FloatStyle ns =
+                new FloatStyleBuilder("test", this.locale).negativeValueRed().locale(this.locale)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style:volatile=\"true\">" +

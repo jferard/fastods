@@ -1,7 +1,5 @@
 package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.attribute.AttributeValue;
-
 import java.util.Locale;
 
 /**

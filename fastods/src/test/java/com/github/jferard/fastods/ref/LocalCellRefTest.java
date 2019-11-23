@@ -26,8 +26,6 @@ package com.github.jferard.fastods.ref;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class LocalCellRefTest {
     @Test
     public void testA1() {

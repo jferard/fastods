@@ -29,7 +29,8 @@ package com.github.jferard.fastods.util;
  * @author Julien Férard
  */
 public final class EqualityUtil {
-    private EqualityUtil() {}
+    private EqualityUtil() {
+    }
 
     /**
      * @param o1 the first object

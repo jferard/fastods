@@ -33,6 +33,7 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.attribute.CellAlign;
 import com.github.jferard.fastods.attribute.PageCentering;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -40,7 +41,6 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
@@ -62,8 +62,8 @@ class K_MultiplicationTable {
         //
         // # A multiplication table
         // Let's create a new document and a new table:
-        final OdsFactory odsFactory = OdsFactory
-                .create(Logger.getLogger("multiplication"), Locale.US);
+        final OdsFactory odsFactory =
+                OdsFactory.create(Logger.getLogger("multiplication"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("multiplication-table");
@@ -72,13 +72,14 @@ class K_MultiplicationTable {
         // First, we need to set a default font that is monospaced and a text that is centered,
         // to ensure a
         // nice alignment of the operations:
-        final TableCellStyle tableCellStyle = TableCellStyle.builder("c2")
-                .fontName(LOFonts.LIBERATION_MONO).textAlign(CellAlign.CENTER)
-                .fontSize(SimpleLength.pt(10)).build();
+        final TableCellStyle tableCellStyle =
+                TableCellStyle.builder("c2").fontName(LOFonts.LIBERATION_MONO)
+                        .textAlign(CellAlign.CENTER).fontSize(SimpleLength.pt(10)).build();
 
         // All columns will have the same format:
-        final TableColumnStyle tableColumnStyle = TableColumnStyle.builder("co2")
-                .defaultCellStyle(tableCellStyle).columnWidth(SimpleLength.cm(3.5)).build();
+        final TableColumnStyle tableColumnStyle =
+                TableColumnStyle.builder("co2").defaultCellStyle(tableCellStyle)
+                        .columnWidth(SimpleLength.cm(3.5)).build();
         for (int c = 0; c < 6; c++) {
             table.setColumnStyle(c, tableColumnStyle);
         }
@@ -121,17 +122,20 @@ class K_MultiplicationTable {
         //
         // For the header, we need a style for the title and another for a discreet dedication
         // (note the use of `buildHiddenStyle`: common styles in footer/header are ignored by LO):
-        final TextStyle titleStyle = TextProperties.builder().fontWeightBold()
-                .fontSize(SimpleLength.pt(24)).buildHiddenStyle("title");
-        final TextStyle dedicationStyle = TextProperties.builder().fontSize(SimpleLength.pt(8))
-                .fontStyleItalic().buildHiddenStyle("dedication");
+        final TextStyle titleStyle =
+                TextProperties.builder().fontWeightBold().fontSize(SimpleLength.pt(24))
+                        .buildHiddenStyle("title");
+        final TextStyle dedicationStyle =
+                TextProperties.builder().fontSize(SimpleLength.pt(8)).fontStyleItalic()
+                        .buildHiddenStyle("dedication");
 
         // Now, we create the text of the header:
         final Text headerText = Text.builder().parStyledContent("Multiplication Table", titleStyle)
                 .parStyledContent("For Léon", dedicationStyle).build();
         // And the header itself:
-        final Header header = PageSection.simpleBuilder().text(headerText)
-                .minHeight(SimpleLength.cm(2)).buildHeader();
+        final Header header =
+                PageSection.simpleBuilder().text(headerText).minHeight(SimpleLength.cm(2))
+                        .buildHeader();
 
         // The footer is simple, but we need to escape the content because of the `<` and `>`:
         final String footerText = XMLUtil.create().escapeXMLContent(
@@ -143,9 +147,9 @@ class K_MultiplicationTable {
 
         // Let's gather the footer and the header in a page style. We center the table and set a
         // zoom:
-        final PageStyle pageStyle = PageStyle.builder("page").header(header).footer(footer)
-                .printOrientationHorizontal().scaleTo(125).centering(PageCentering.BOTH)
-                .build();
+        final PageStyle pageStyle =
+                PageStyle.builder("page").header(header).footer(footer).printOrientationHorizontal()
+                        .scaleTo(125).centering(PageCentering.BOTH).build();
 
         // We set set the style of the current table.
         final TableStyle tableStyle = TableStyle.builder("table").pageStyle(pageStyle).build();

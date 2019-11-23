@@ -208,7 +208,7 @@ public enum ConfigElement {
      * <p>
      * specifies the update mode for links when loading text documents
      */
-    LINK_UPDATE_MODE("LinkUpdateMode", ConfigElementType.SHORT ),
+    LINK_UPDATE_MODE("LinkUpdateMode", ConfigElementType.SHORT),
 
 
     /**
@@ -216,7 +216,7 @@ public enum ConfigElement {
      * <p>
      * printer used by the document
      */
-    PRINTER_NAME("PrinterName", ConfigElementType.STRING ),
+    PRINTER_NAME("PrinterName", ConfigElementType.STRING),
 
 
     /**
@@ -224,7 +224,7 @@ public enum ConfigElement {
      * <p>
      * platform and driver dependent printer setup data
      */
-    PRINTER_SETUP("PrinterSetup", ConfigElementType.BASE64_BINARY ),
+    PRINTER_SETUP("PrinterSetup", ConfigElementType.BASE64_BINARY),
 
 
     /**
@@ -232,7 +232,7 @@ public enum ConfigElement {
      * <p>
      * specifies if kerning is applied to Asian punctuation
      */
-    IS_KERN_ASIAN_PUNCTUATION("IsKernAsianPunctuation", ConfigElementType.BOOLEAN ),
+    IS_KERN_ASIAN_PUNCTUATION("IsKernAsianPunctuation", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -240,23 +240,25 @@ public enum ConfigElement {
      * <p>
      * specifies the compression (character spacing) type used for Asian characters
      */
-    CHARACTER_COMPRESSION_TYPE("CharacterCompressionType", ConfigElementType.SHORT ),
+    CHARACTER_COMPRESSION_TYPE("CharacterCompressionType", ConfigElementType.SHORT),
 
 
     /**
      * com.sun.star.document.Settings
      * <p>
-     * specifies if the user-specific settings saved within a document should be loaded with the document
+     * specifies if the user-specific settings saved within a document should be loaded with the
+     * document
      */
-    APPLY_USER_DATA("ApplyUserData", ConfigElementType.BOOLEAN ),
+    APPLY_USER_DATA("ApplyUserData", ConfigElementType.BOOLEAN),
 
 
     /**
      * com.sun.star.document.Settings
      * <p>
-     * specifies if a new version is created if a document has been modified and you want to close it
+     * specifies if a new version is created if a document has been modified and you want to
+     * close it
      */
-    SAVE_VERSION_ON_CLOSE("SaveVersionOnClose", ConfigElementType.BOOLEAN ),
+    SAVE_VERSION_ON_CLOSE("SaveVersionOnClose", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -264,7 +266,7 @@ public enum ConfigElement {
      * <p>
      * specifies if the document should be updated when the template it was created from changes
      */
-    UPDATE_FROM_TEMPLATE("UpdateFromTemplate", ConfigElementType.BOOLEAN ),
+    UPDATE_FROM_TEMPLATE("UpdateFromTemplate", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -272,23 +274,25 @@ public enum ConfigElement {
      * <p>
      * specifies if fields in text documents are updated automatically
      */
-    FIELD_AUTO_UPDATE("FieldAutoUpdate", ConfigElementType.BOOLEAN ),
+    FIELD_AUTO_UPDATE("FieldAutoUpdate", ConfigElementType.BOOLEAN),
 
 
     /**
      * com.sun.star.document.Settings
      * <p>
-     * The name of the globally registered com::sun::star::sdb::DataSource from which the current data is taken
+     * The name of the globally registered com::sun::star::sdb::DataSource from which the current
+     * data is taken
      */
-    CURRENT_DATABASE_DATA_SOURCE("CurrentDatabaseDataSource", ConfigElementType.STRING ),
+    CURRENT_DATABASE_DATA_SOURCE("CurrentDatabaseDataSource", ConfigElementType.STRING),
 
 
     /**
      * com.sun.star.document.Settings
      * <p>
-     * a string value, specifying the name of the object displayed currently (or the SQL statement used)
+     * a string value, specifying the name of the object displayed currently (or the SQL
+     * statement used)
      */
-    CURRENT_DATABASE_COMMAND("CurrentDatabaseCommand", ConfigElementType.STRING ),
+    CURRENT_DATABASE_COMMAND("CurrentDatabaseCommand", ConfigElementType.STRING),
 
 
     /**
@@ -296,28 +300,22 @@ public enum ConfigElement {
      * <p>
      * determines the interpretation of the property DataTableNam
      */
-    CURRENT_DATABASE_COMMAND_TYPE("CurrentDatabaseCommandType", ConfigElementType.LONG ),
+    CURRENT_DATABASE_COMMAND_TYPE("CurrentDatabaseCommandType", ConfigElementType.LONG),
 
 
     /**
      * com.sun.star.document.Settings
      */
-    DEFAULT_TAB_STOP("DefaultTabStop", ConfigElementType.LONG ),
-
-    /**
-     * com.sun.star.document.Settings
-     * <p>
-     * determines if the document will be printed as a booklet (brochure), i.e., two document pages are put together on one physical page, such that you can fold the print result and get a booklet
-     */
-    IS_PRINT_BOOKLET("IsPrintBooklet", ConfigElementType.BOOLEAN ),
-
+    DEFAULT_TAB_STOP("DefaultTabStop", ConfigElementType.LONG),
 
     /**
      * com.sun.star.document.Settings
      * <p>
-     * is only effective, if IsPrintBooklet is TRUE
+     * determines if the document will be printed as a booklet (brochure), i.e., two document
+     * pages are put together on one physical page, such that you can fold the print result and
+     * get a booklet
      */
-    IS_PRINT_BOOKLET_FRONT("IsPrintBookletFront", ConfigElementType.BOOLEAN ),
+    IS_PRINT_BOOKLET("IsPrintBooklet", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -325,7 +323,15 @@ public enum ConfigElement {
      * <p>
      * is only effective, if IsPrintBooklet is TRUE
      */
-    IS_PRINT_BOOKLET_BACK("IsPrintBookletBack", ConfigElementType.BOOLEAN ),
+    IS_PRINT_BOOKLET_FRONT("IsPrintBookletFront", ConfigElementType.BOOLEAN),
+
+
+    /**
+     * com.sun.star.document.Settings
+     * <p>
+     * is only effective, if IsPrintBooklet is TRUE
+     */
+    IS_PRINT_BOOKLET_BACK("IsPrintBookletBack", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -333,53 +339,54 @@ public enum ConfigElement {
      * <p>
      * how printing uses col
      */
-    PRINT_QUALITY("PrintQuality", ConfigElementType.LONG ),
+    PRINT_QUALITY("PrintQuality", ConfigElementType.LONG),
 
 
     /**
      * com.sun.star.document.Settings
      * <p>
-     * contains the URL that points to a color table (file extension .soc) that will be used for showing a palette in dialogs using colors
+     * contains the URL that points to a color table (file extension .soc) that will be used for
+     * showing a palette in dialogs using colors
      */
-    COLOR_TABLE_URL("ColorTableURL", ConfigElementType.STRING ),
+    COLOR_TABLE_URL("ColorTableURL", ConfigElementType.STRING),
 
 
     /**
      * com.sun.star.document.Settings
      */
-    DASH_TABLE_URL("DashTableURL", ConfigElementType.STRING ),
+    DASH_TABLE_URL("DashTableURL", ConfigElementType.STRING),
 
     /**
      * com.sun.star.document.Settings
      */
-    LINE_END_TABLE_URL("LineEndTableURL", ConfigElementType.STRING ),
+    LINE_END_TABLE_URL("LineEndTableURL", ConfigElementType.STRING),
 
     /**
      * com.sun.star.document.Settings
      */
-    HATCH_TABLE_URL("HatchTableURL", ConfigElementType.STRING ),
+    HATCH_TABLE_URL("HatchTableURL", ConfigElementType.STRING),
 
     /**
      * com.sun.star.document.Settings
      */
-    GRADIENT_TABLE_URL("GradientTableURL", ConfigElementType.STRING ),
+    GRADIENT_TABLE_URL("GradientTableURL", ConfigElementType.STRING),
 
     /**
      * com.sun.star.document.Settings
      */
-    BITMAP_TABLE_URL("BitmapTableURL", ConfigElementType.STRING ),
+    BITMAP_TABLE_URL("BitmapTableURL", ConfigElementType.STRING),
 
     /**
      * com.sun.star.document.Settings
      */
-    AUTO_CALCULATE("AutoCalculate", ConfigElementType.BOOLEAN ),
+    AUTO_CALCULATE("AutoCalculate", ConfigElementType.BOOLEAN),
 
     /**
      * com.sun.star.document.Settings
      * <p>
      * forbid use of printer metrics for layout
      */
-    PRINTER_INDEPENDENT_LAYOUT("PrinterIndependentLayout", ConfigElementType.SHORT ),
+    PRINTER_INDEPENDENT_LAYOUT("PrinterIndependentLayout", ConfigElementType.SHORT),
 
 
     /**
@@ -387,7 +394,7 @@ public enum ConfigElement {
      * <p>
      * layout engine should add value of a Font's "external leading" attribute to the line spacing
      */
-    ADD_EXTERNAL_LEADING("AddExternalLeading", ConfigElementType.BOOLEAN ),
+    ADD_EXTERNAL_LEADING("AddExternalLeading", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -395,7 +402,7 @@ public enum ConfigElement {
      * <p>
      * Whether to embed fonts used by the document (see e.g
      */
-    EMBED_FONTS("EmbedFonts", ConfigElementType.BOOLEAN ),
+    EMBED_FONTS("EmbedFonts", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -403,7 +410,7 @@ public enum ConfigElement {
      * <p>
      * Whether to embed also system fonts used by the document
      */
-    EMBED_SYSTEM_FONTS("EmbedSystemFonts", ConfigElementType.BOOLEAN ),
+    EMBED_SYSTEM_FONTS("EmbedSystemFonts", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -411,7 +418,7 @@ public enum ConfigElement {
      * <p>
      * Whether to embed only the fonts that are used in the document
      */
-    EMBED_ONLY_USED_FONTS("EmbedOnlyUsedFonts", ConfigElementType.BOOLEAN ),
+    EMBED_ONLY_USED_FONTS("EmbedOnlyUsedFonts", ConfigElementType.BOOLEAN),
 
 
     /**
@@ -419,7 +426,7 @@ public enum ConfigElement {
      * <p>
      * Whether to embed Latin script fonts
      */
-    EMBED_LATIN_SCRIPT_FONTS("EmbedLatinScriptFonts", ConfigElementType.SHORT ),
+    EMBED_LATIN_SCRIPT_FONTS("EmbedLatinScriptFonts", ConfigElementType.SHORT),
 
 
     /**
@@ -427,7 +434,7 @@ public enum ConfigElement {
      * <p>
      * Whether to embed Asian script fonts
      */
-    EMBED_ASIAN_SCRIPT_FONTS("EmbedAsianScriptFonts", ConfigElementType.SHORT ),
+    EMBED_ASIAN_SCRIPT_FONTS("EmbedAsianScriptFonts", ConfigElementType.SHORT),
 
 
     /**
@@ -435,7 +442,7 @@ public enum ConfigElement {
      * <p>
      * Whether to embed Complex script fonts
      */
-    EMBED_COMPLEX_SCRIPT_FONTS("EmbedComplexScriptFonts", ConfigElementType.SHORT ),
+    EMBED_COMPLEX_SCRIPT_FONTS("EmbedComplexScriptFonts", ConfigElementType.SHORT),
 
     /**
      * com.sun.star.sheet.DocumentSettings

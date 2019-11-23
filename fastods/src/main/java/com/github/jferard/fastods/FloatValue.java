@@ -83,6 +83,6 @@ public class FloatValue implements CellValue {
 
     @Override
     public String toString() {
-        return "FloatValue["+ this.value +"]";
+        return "FloatValue[" + this.value + "]";
     }
 }

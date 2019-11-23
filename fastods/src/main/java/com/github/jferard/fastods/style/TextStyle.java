@@ -38,8 +38,8 @@ public class TextStyle implements FontFaceContainerStyle {
     /**
      * The default text style
      */
-    public static final TextStyle DEFAULT_TEXT_STYLE = TextProperties.builder()
-            .buildStyle("Default");
+    public static final TextStyle DEFAULT_TEXT_STYLE =
+            TextProperties.builder().buildStyle("Default");
     private final String name;
     private final boolean hidden;
     private final TextProperties textProperties;

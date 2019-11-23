@@ -49,8 +49,8 @@ public class TestHelper {
     }
 
     /**
-     *
      * Beware: sensitive to spaces (spaces are children)
+     *
      * @param xml
      * @param o
      * @throws IOException
@@ -82,6 +82,7 @@ public class TestHelper {
 
     /**
      * When creating a doc with mock odsElements
+     *
      * @param mockOdsElements the mocked odsElements
      */
     public static void initMockDocument(final OdsElements mockOdsElements) {
@@ -89,15 +90,16 @@ public class TestHelper {
                 .andReturn(true);
         EasyMock.expect(mockOdsElements.addContentStyle(TableRowStyle.DEFAULT_TABLE_ROW_STYLE))
                 .andReturn(true);
-        EasyMock.expect(mockOdsElements.addContentStyle(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE))
+        EasyMock.expect(
+                mockOdsElements.addContentStyle(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE))
                 .andReturn(true);
         EasyMock.expect(mockOdsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
                 .andReturn(true).times(2);
-        EasyMock.expect(
-                mockOdsElements.addMasterPageStyle(PageStyle.DEFAULT_PAGE_STYLE.getMasterPageStyle()))
+        EasyMock.expect(mockOdsElements
+                .addMasterPageStyle(PageStyle.DEFAULT_PAGE_STYLE.getMasterPageStyle()))
                 .andReturn(true);
-        EasyMock.expect(
-                mockOdsElements.addPageLayoutStyle(PageStyle.DEFAULT_PAGE_STYLE.getPageLayoutStyle()))
+        EasyMock.expect(mockOdsElements
+                .addPageLayoutStyle(PageStyle.DEFAULT_PAGE_STYLE.getPageLayoutStyle()))
                 .andReturn(true);
     }
 }

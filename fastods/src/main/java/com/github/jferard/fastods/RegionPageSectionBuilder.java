@@ -51,10 +51,11 @@ public class RegionPageSectionBuilder extends PageSectionBuilder<RegionPageSecti
 
     @Override
     public PageSection build() {
-        final PageSectionStyle style = new PageSectionStyle(this.marginsBuilder.build(),
-                this.minHeight);
-        final PageSectionContent header = new RegionFooterHeader(this.centerRegionBox.get(),
-                this.leftRegionBox.get(), this.rightRegionBox.get());
+        final PageSectionStyle style =
+                new PageSectionStyle(this.marginsBuilder.build(), this.minHeight);
+        final PageSectionContent header =
+                new RegionFooterHeader(this.centerRegionBox.get(), this.leftRegionBox.get(),
+                        this.rightRegionBox.get());
         return new PageSection(header, style);
     }
 

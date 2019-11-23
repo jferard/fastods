@@ -1,7 +1,5 @@
 package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.attribute.AttributeValue;
-
 /**
  * 19.385 office:value-type.
  * Javadoc text below is taken from Open Document Format for Office Applications

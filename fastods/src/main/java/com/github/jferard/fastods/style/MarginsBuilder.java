@@ -63,8 +63,7 @@ public class MarginsBuilder {
      * @return the margins
      */
     public Margins build() {
-        return new Margins(this.all, this.top, this.right, this.bottom,
-                this.left);
+        return new Margins(this.all, this.top, this.right, this.bottom, this.left);
     }
 
     /**

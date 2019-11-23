@@ -103,8 +103,8 @@ public abstract class ChildrenTester {
             this.logFail("Different nodes values: %s vs %s");
             return false;
         }
-        final boolean nsURIEqual = Objects
-                .equal(element1.getNamespaceURI(), element2.getNamespaceURI());
+        final boolean nsURIEqual =
+                Objects.equal(element1.getNamespaceURI(), element2.getNamespaceURI());
         if (!nsURIEqual) {
             this.logFail("Different nodes namespaces: %s vs %s");
             return false;

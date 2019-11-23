@@ -41,9 +41,9 @@ public class MacroLibrary {
     private final List<MacroModule> modules;
 
     /**
-     * @param name name of the library e.g. Standard
+     * @param name     name of the library e.g. Standard
      * @param readOnly if this library is readonly
-     * @param modules the modules
+     * @param modules  the modules
      */
     public MacroLibrary(final String name, final boolean readOnly,
                         final List<MacroModule> modules) {
@@ -54,7 +54,8 @@ public class MacroLibrary {
 
     /**
      * Add this library to a document
-     * @param util an util to write XML
+     *
+     * @param util     an util to write XML
      * @param document the document
      * @throws IOException if can't write
      */

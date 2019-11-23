@@ -163,8 +163,7 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
 
     @Override
     public void addAutoFilter(final String rangeName, final Table table, final int r1, final int c1,
-                              final int r2,
-                              final int c2) {
+                              final int r2, final int c2) {
         this.commonOdsDocument.addAutoFilter(rangeName, table, r1, c1, r2, c2);
     }
 
@@ -313,7 +312,8 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     }
 
     @Override
-    public void addExtraObject(final String fullPath, final String mediaType, final String version) {
+    public void addExtraObject(final String fullPath, final String mediaType,
+                               final String version) {
         this.commonOdsDocument.addExtraObject(fullPath, mediaType, version);
     }
 

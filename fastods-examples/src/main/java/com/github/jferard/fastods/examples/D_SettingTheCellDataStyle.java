@@ -78,8 +78,9 @@ class D_SettingTheCellDataStyle {
         walker.setFloatValue(123456.789);
 
         // And now create a custom data style:
-        final DataStyle floatDataStyle = new FloatStyleBuilder("float-datastyle", Locale.US)
-                .decimalPlaces(8).groupThousands(true).build();
+        final DataStyle floatDataStyle =
+                new FloatStyleBuilder("float-datastyle", Locale.US).decimalPlaces(8)
+                        .groupThousands(true).build();
         walker.next();
         walker.setFloatValue(123456.789);
         walker.setDataStyle(floatDataStyle);

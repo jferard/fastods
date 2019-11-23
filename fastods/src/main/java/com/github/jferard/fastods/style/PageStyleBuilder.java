@@ -23,15 +23,15 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSection;
-import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.PageCentering;
 import com.github.jferard.fastods.attribute.PagePrintOrientation;
 import com.github.jferard.fastods.attribute.PageWritingMode;
-import com.github.jferard.fastods.attribute.Length;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.StyleBuilder;
 
@@ -121,15 +121,16 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     @Override
     public PageStyle build() {
         if (this.masterPageStyle == null) {
-            this.masterPageStyle = new MasterPageStyle(this.name, this.name, this.header,
-                    this.footer);
+            this.masterPageStyle =
+                    new MasterPageStyle(this.name, this.name, this.header, this.footer);
         }
 
         if (this.pageLayoutStyle == null) {
-            this.pageLayoutStyle = new PageLayoutStyle(this.name, this.marginsBuilder.build(),
-                    this.pageWidth, this.pageHeight, this.numFormat, this.backgroundColor,
-                    this.header, this.footer, this.printOrientation, this.writingMode, this.scaleTo,
-                    this.scaleToPages, this.centering);
+            this.pageLayoutStyle =
+                    new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
+                            this.pageHeight, this.numFormat, this.backgroundColor, this.header,
+                            this.footer, this.printOrientation, this.writingMode, this.scaleTo,
+                            this.scaleToPages, this.centering);
         }
         return new PageStyle(this.hidden, this.masterPageStyle, this.pageLayoutStyle);
     }

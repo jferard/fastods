@@ -73,17 +73,17 @@ public class TimeStyle implements DataStyle {
         /**
          * Set the time format like '01:02:03'.
          */
-        public static final DateTimeStyleFormat HHMMSS = new DateTimeStyleFormat(
-                DateTimeStyleFormat.LONG_HOURS, DateTimeStyleFormat.COLON,
-                DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
-                DateTimeStyleFormat.LONG_SECONDS);
+        public static final DateTimeStyleFormat HHMMSS =
+                new DateTimeStyleFormat(DateTimeStyleFormat.LONG_HOURS, DateTimeStyleFormat.COLON,
+                        DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
+                        DateTimeStyleFormat.LONG_SECONDS);
         /**
          * Set the time format like '01:02:03.45'.
          */
-        public static final DateTimeStyleFormat HHMMSS00 = new DateTimeStyleFormat(
-                DateTimeStyleFormat.LONG_HOURS, DateTimeStyleFormat.COLON,
-                DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
-                DateTimeStyleFormat.longSeconds(2));
+        public static final DateTimeStyleFormat HHMMSS00 =
+                new DateTimeStyleFormat(DateTimeStyleFormat.LONG_HOURS, DateTimeStyleFormat.COLON,
+                        DateTimeStyleFormat.LONG_MINUTES, DateTimeStyleFormat.COLON,
+                        DateTimeStyleFormat.longSeconds(2));
     }
 
     @Override

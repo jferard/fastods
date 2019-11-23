@@ -47,8 +47,9 @@ public class RegionPageSectionTest {
     @Test
     public final void testNullOrEmptyRegions() throws IOException {
         PowerMock.replayAll();
-        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .content("l").region(Region.CENTER).text(Text.builder().par().build()).build();
+        final PageSection headerSection =
+                PageSection.regionBuilder().region(Region.LEFT).content("l").region(Region.CENTER)
+                        .text(Text.builder().par().build()).build();
         this.assertMasterXMLEquals(
                 "<style:region-left>" + "<text:p>l</text:p>" + "</style:region-left>" +
                         "<style:region-center>" + "<text:p>" + "</text:p>" +
@@ -58,13 +59,13 @@ public class RegionPageSectionTest {
     @Test
     public final void testRegionsToMasterStyle() throws IOException {
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
-        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
-                .buildStyle("style2");
+        final TextStyle ts2 =
+                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
-        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .styledContent("left-text", ts1).region(Region.CENTER)
-                .styledContent("center-text", ts2).region(Region.RIGHT)
-                .styledContent("right-text", ts3).build();
+        final PageSection headerSection =
+                PageSection.regionBuilder().region(Region.LEFT).styledContent("left-text", ts1)
+                        .region(Region.CENTER).styledContent("center-text", ts2)
+                        .region(Region.RIGHT).styledContent("right-text", ts3).build();
         this.assertMasterXMLEquals("<style:region-left>" + "<text:p>" +
                 "<text:span text:style-name=\"style1\">left-text</text:span>" + "</text:p>" +
                 "</style:region-left>" + "<style:region-center>" + "<text:p>" + "<text:span " +
@@ -102,13 +103,13 @@ public class RegionPageSectionTest {
     public final void testEmbedded() {
         final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
-        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
-                .buildStyle("style2");
+        final TextStyle ts2 =
+                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
-        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .styledContent("left-text", ts1).region(Region.CENTER)
-                .styledContent("center-text", ts2).region(Region.RIGHT)
-                .styledContent("right-text", ts3).build();
+        final PageSection headerSection =
+                PageSection.regionBuilder().region(Region.LEFT).styledContent("left-text", ts1)
+                        .region(Region.CENTER).styledContent("center-text", ts2)
+                        .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         PowerMock.resetAll();
         EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);
@@ -137,13 +138,13 @@ public class RegionPageSectionTest {
     public final void testEmbeddedMode() {
         final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
-        final TextStyle ts2 = TextProperties.builder().fontStyleNormal().fontWeightNormal()
-                .buildStyle("style2");
+        final TextStyle ts2 =
+                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
         final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
-        final PageSection headerSection = PageSection.regionBuilder().region(Region.LEFT)
-                .styledContent("left-text", ts1).region(Region.CENTER)
-                .styledContent("center-text", ts2).region(Region.RIGHT)
-                .styledContent("right-text", ts3).build();
+        final PageSection headerSection =
+                PageSection.regionBuilder().region(Region.LEFT).styledContent("left-text", ts1)
+                        .region(Region.CENTER).styledContent("center-text", ts2)
+                        .region(Region.RIGHT).styledContent("right-text", ts3).build();
 
         PowerMock.resetAll();
         EasyMock.expect(sc.addStylesFontFaceContainerStyle(ts1)).andReturn(true);

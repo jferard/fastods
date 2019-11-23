@@ -60,8 +60,8 @@ public class ParagraphTest {
 
     @Test
     public final void testWithStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal()
-                .buildStyle("style");
+        final TextStyle ts =
+                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
         this.parBuilder.style(ts).span("text");
         this.assertParXMLEquals("<text:p text:style-name=\"style\">text</text:p>");
     }
@@ -93,8 +93,8 @@ public class ParagraphTest {
 
     @Test
     public final void testStyledLinks() throws IOException, URISyntaxException {
-        final TextStyle ts = TextProperties.builder().fontStyleNormal().fontWeightNormal()
-                .buildStyle("style");
+        final TextStyle ts =
+                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
         final Table table = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();

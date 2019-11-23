@@ -455,8 +455,8 @@ class TableBuilder {
             return;
         }
 
-        final TableCell firstCell = this.getRowSecure(table, appender, rowIndex, false)
-                .getOrCreateCell(colIndex);
+        final TableCell firstCell =
+                this.getRowSecure(table, appender, rowIndex, false).getOrCreateCell(colIndex);
         if (firstCell.isCovered()) {
             throw new IllegalArgumentException("Can't span from a covered cell");
         }
@@ -531,6 +531,7 @@ class TableBuilder {
 
     /**
      * Add a new Shape
+     *
      * @param shape the shape
      */
     public void addShape(final Shape shape) {

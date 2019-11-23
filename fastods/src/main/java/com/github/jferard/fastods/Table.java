@@ -28,12 +28,12 @@ import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -82,7 +82,8 @@ public class Table implements NamedObject, FrameContent {
 
     /**
      * Create an new table with a given builder
-     *  @param name           the name of the table
+     *
+     * @param name           the name of the table
      * @param contentElement the content.xml representation
      * @param builder        the builder
      * @param tableAppender
@@ -302,7 +303,7 @@ public class Table implements NamedObject, FrameContent {
      * Set one of the settings
      *
      * @param element the config element
-     * @param value the item value
+     * @param value   the item value
      */
     public void updateConfigItem(final ConfigElement element, final String value) {
         this.builder.updateConfigItem(element.getName(), value);
@@ -344,14 +345,15 @@ public class Table implements NamedObject, FrameContent {
      * Add a new auto filter
      *
      * @param rangeName
-     * @param r1 first row of the range
-     * @param c1 first col of the range
-     * @param r2 last row
-     * @param c2 last col
+     * @param r1        first row of the range
+     * @param c1        first col of the range
+     * @param r2        last row
+     * @param c2        last col
      */
     public void addAutoFilter(final String rangeName, final int r1, final int c1, final int r2,
                               final int c2) {
-        this.contentElement.addAutoFilter(AutoFilter.builder(rangeName, this, r1, c1, r2, c2).build());
+        this.contentElement
+                .addAutoFilter(AutoFilter.builder(rangeName, this, r1, c1, r2, c2).build());
     }
 
     public void addShape(final Shape shape) {

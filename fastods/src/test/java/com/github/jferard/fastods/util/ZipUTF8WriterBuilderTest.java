@@ -95,8 +95,8 @@ public class ZipUTF8WriterBuilderTest {
 
     @Test
     public final void testExplicitDefault() throws IOException {
-        final ZipUTF8Writer writer = this.builder.defaultWriterBuffer().defaultZipBuffer()
-                .build(this.out);
+        final ZipUTF8Writer writer =
+                this.builder.defaultWriterBuffer().defaultZipBuffer().build(this.out);
         writer.putNextEntry(new ZipEntry("a"));
         writer.append('c');
         writer.close();

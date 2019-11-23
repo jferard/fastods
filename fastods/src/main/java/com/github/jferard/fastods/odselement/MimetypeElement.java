@@ -31,7 +31,7 @@ import java.util.zip.ZipEntry;
 
 /**
  * 2.2.4 OpenDocument Spreadsheet Document
- *
+ * <p>
  * > An OpenDocument Spreadsheet document shall meet all requirements of a Conforming OpenDocument
  * > Document, as well as the following additional requirements:
  * >     ...

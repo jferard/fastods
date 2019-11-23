@@ -47,8 +47,9 @@ public class RangeRefBuilderTest {
     @Test
     public void testToAbs() {
         final RangeRef r = this.builder.toAbsColumn(2).toAbsRow(1).absTable("at").file("f").build();
-        final RangeRef expectedRef = new RangeRef(new TableRef(this.tableNameUtil, "f", "at", 4),
-                A1, new LocalCellRef(1, 2, 3));
+        final RangeRef expectedRef =
+                new RangeRef(new TableRef(this.tableNameUtil, "f", "at", 4), A1,
+                        new LocalCellRef(1, 2, 3));
         Assert.assertEquals(expectedRef, r);
     }
 

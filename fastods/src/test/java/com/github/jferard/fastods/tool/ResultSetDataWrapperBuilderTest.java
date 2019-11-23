@@ -23,9 +23,9 @@
 
 package com.github.jferard.fastods.tool;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.style.TableCellStyle;
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -43,15 +43,18 @@ public class ResultSetDataWrapperBuilderTest {
     public void test() throws IOException, SQLException {
         final TableCellWalker walker = PowerMock.createMock(TableCellWalker.class);
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
-        final SQLToCellValueConverter.IntervalConverter converter = PowerMock
-                .createMock(SQLToCellValueConverter.IntervalConverter.class);
+        final SQLToCellValueConverter.IntervalConverter converter =
+                PowerMock.createMock(SQLToCellValueConverter.IntervalConverter.class);
         final Logger logger = PowerMock.createMock(Logger.class);
         final ResultSetMetaData md = PowerMock.createMock(ResultSetMetaData.class);
 
-        final ResultSetDataWrapper b = ResultSetDataWrapper.builder("range", rs).converter(converter)
-                .charset(Charset.forName("US-ASCII")).currency("€").nullValue(new StringValue(""))
-                .noHeaderStyle().noAutoFilter().typeValue(0, CellType.VOID).max(10)
-                .headerStyle(TableCellStyle.builder("dummy").build()).logger(logger).build();
+        final ResultSetDataWrapper b =
+                ResultSetDataWrapper.builder("range", rs).converter(converter)
+                        .charset(Charset.forName("US-ASCII")).currency("€")
+                        .nullValue(new StringValue("")).noHeaderStyle().noAutoFilter()
+                        .typeValue(0, CellType.VOID).max(10)
+                        .headerStyle(TableCellStyle.builder("dummy").build()).logger(logger)
+                        .build();
 
         PowerMock.resetAll();
         EasyMock.expect(walker.rowIndex()).andReturn(0);

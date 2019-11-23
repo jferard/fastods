@@ -113,8 +113,8 @@ public class StylesContainerImpl implements StylesContainer {
      * @param logger the logger
      */
     StylesContainerImpl(final Logger logger) {
-        this.objectStylesContainer = new MultiContainer<String, Dest, ObjectStyle>(logger,
-                Dest.class);
+        this.objectStylesContainer =
+                new MultiContainer<String, Dest, ObjectStyle>(logger, Dest.class);
         this.dataStylesContainer = new MultiContainer<String, Dest, DataStyle>(logger, Dest.class);
         this.masterPageStylesContainer = new Container<String, MasterPageStyle>(logger);
         this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>(logger);
@@ -133,8 +133,8 @@ public class StylesContainerImpl implements StylesContainer {
                 this.addContentFontFaceContainerStyle(style);
             }
             final String name = style.getRealName() + "-_-" + dataStyle.getName();
-            final TableCellStyleBuilder anonymousStyleBuilder = TableCellStyle.builder(name)
-                    .parentCellStyle(style).dataStyle(dataStyle);
+            final TableCellStyleBuilder anonymousStyleBuilder =
+                    TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle);
             if (dataStyle.isHidden()) {
                 anonymousStyleBuilder.hidden();
             }
@@ -308,8 +308,8 @@ public class StylesContainerImpl implements StylesContainer {
      */
     public void writeContentAutomaticStyles(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        final Iterable<ObjectStyle> styles = this.objectStylesContainer
-                .getValues(Dest.CONTENT_AUTOMATIC_STYLES);
+        final Iterable<ObjectStyle> styles =
+                this.objectStylesContainer.getValues(Dest.CONTENT_AUTOMATIC_STYLES);
         for (final ObjectStyle style : styles) {
             assert style.isHidden() : style.toString();
         }
@@ -373,8 +373,8 @@ public class StylesContainerImpl implements StylesContainer {
      */
     public void writeStylesAutomaticStyles(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        final Iterable<ObjectStyle> styles = this.objectStylesContainer
-                .getValues(Dest.STYLES_AUTOMATIC_STYLES);
+        final Iterable<ObjectStyle> styles =
+                this.objectStylesContainer.getValues(Dest.STYLES_AUTOMATIC_STYLES);
         for (final ObjectStyle style : styles) {
             assert style.isHidden() : style.toString();
         }
@@ -391,8 +391,8 @@ public class StylesContainerImpl implements StylesContainer {
      */
     public void writeStylesCommonStyles(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        final Iterable<ObjectStyle> styles = this.objectStylesContainer
-                .getValues(Dest.STYLES_COMMON_STYLES);
+        final Iterable<ObjectStyle> styles =
+                this.objectStylesContainer.getValues(Dest.STYLES_COMMON_STYLES);
         for (final ObjectStyle style : styles) {
             assert !style.isHidden() : style.toString() + " - " + style.getName() +
                     TableCellStyle.DEFAULT_CELL_STYLE.toString();
@@ -410,8 +410,8 @@ public class StylesContainerImpl implements StylesContainer {
      */
     public void writeVisibleDataStyles(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        final Iterable<DataStyle> dataStyles = this.dataStylesContainer
-                .getValues(Dest.STYLES_COMMON_STYLES);
+        final Iterable<DataStyle> dataStyles =
+                this.dataStylesContainer.getValues(Dest.STYLES_COMMON_STYLES);
         for (final DataStyle dataStyle : dataStyles) {
             assert !dataStyle.isHidden() : dataStyle.toString() + " - " + dataStyle.getName() +
                     TableCellStyle.DEFAULT_CELL_STYLE.toString();

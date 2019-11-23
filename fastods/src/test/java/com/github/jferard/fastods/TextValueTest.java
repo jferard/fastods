@@ -48,10 +48,12 @@ public class TextValueTest {
 
     @Test
     public void testEquals() {
-        final Text text1 = Text.builder().parContent("text").link("url", "url")
-                .parStyledContent("text2", null).span("span").build();
-        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
-                .span("text2").span("span").build();
+        final Text text1 =
+                Text.builder().parContent("text").link("url", "url").parStyledContent("text2", null)
+                        .span("span").build();
+        final Text text2 =
+                Text.builder().par().styledSpan("text", null).link("url", "url").par().span("text2")
+                        .span("span").build();
         final TextValue expected = new TextValue(text1);
         Assert.assertEquals(expected, expected);
         Assert.assertNotEquals("new TextValue(text1)", expected);

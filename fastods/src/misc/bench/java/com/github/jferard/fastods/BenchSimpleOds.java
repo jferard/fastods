@@ -47,11 +47,11 @@ public class BenchSimpleOds extends Bench {
             this.logger.info("testSimpleOds: filling a " + this.getRowCount() + " rows, " +
                     this.getColCount() + " columns spreadsheet");
             final long t1 = System.currentTimeMillis();
-            final OdsFile file = new OdsFile(
-                    new File("generated_files", "simpleods_benchmark.ods").getPath());
+            final OdsFile file =
+                    new OdsFile(new File("generated_files", "simpleods_benchmark.ods").getPath());
             file.addTable("test");
-            final org.simpleods.Table table = (org.simpleods.Table) file.getContent()
-                    .getTableQueue().get(0);
+            final org.simpleods.Table table =
+                    (org.simpleods.Table) file.getContent().getTableQueue().get(0);
 
             final ObjectQueue rows = table.getRows();
             for (int y = 0; y < this.getRowCount(); y++) {

@@ -13,12 +13,14 @@ public class PilotTableTest {
     private PilotTableField field1;
     private XMLUtil util;
 
-    @Before public void setUp() {
+    @Before
+    public void setUp() {
         this.field1 = PowerMock.createMock(PilotTableField.class);
         this.util = XMLUtil.create();
     }
 
-    @Test public void test() throws IOException {
+    @Test
+    public void test() throws IOException {
         final PilotTable pt =
                 PilotTable.builder("n", "scr", "tr", Arrays.asList("b1", "b2")).field(this.field1)
                         .build();

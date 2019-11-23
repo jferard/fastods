@@ -14,7 +14,8 @@ import java.nio.charset.Charset;
 public class MacroModuleTest {
     private static final Charset UTF_8 = Charset.forName("UTF-8");
 
-    @Test public void testIndexLine() throws IOException {
+    @Test
+    public void testIndexLine() throws IOException {
         final MacroModule module = new MacroModule("n", "l", "module content");
         final StringBuilder sb = new StringBuilder();
         module.appendIndexLine(XMLUtil.create(), sb);
@@ -22,7 +23,8 @@ public class MacroModuleTest {
         DomTester.assertEquals("<library:element library:name=\"n\"/>", sb.toString());
     }
 
-    @Test public void testAdd() throws IOException {
+    @Test
+    public void testAdd() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroModule module = new MacroModule("n", "l", "module content");
         final Capture<byte[]> bs = Capture.newInstance();

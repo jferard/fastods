@@ -26,10 +26,10 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.odselement.ContentElement;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
+import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.ref.PositionUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -97,8 +97,8 @@ public class TextTest {
 
     @Test
     public void styledLinkURL() throws Exception {
-        final Text t = TextBuilder.create().par().styledLink("a", this.ts, new URL("http://url"))
-                .build();
+        final Text t =
+                TextBuilder.create().par().styledLink("a", this.ts, new URL("http://url")).build();
         TestHelper.assertXMLEquals(
                 "<text:p><text:a text:style-name=\"ts\" xlink:href=\"http://url\" " +
                         "xlink:type=\"simple\">a</text:a></text:p>", t);
@@ -123,8 +123,9 @@ public class TextTest {
 
     @Test
     public void linkTable() throws Exception {
-        final Table table = Table
-                .create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null, false);
+        final Table table =
+                Table.create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null,
+                        false);
         final Text t = TextBuilder.create().par().link("a", table).build();
         Assert.assertEquals("n", table.getName());
         TestHelper.assertXMLEquals(
@@ -133,8 +134,9 @@ public class TextTest {
 
     @Test
     public void styledLinkTable() throws Exception {
-        final Table table = Table
-                .create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null, false);
+        final Table table =
+                Table.create(this.ce, PositionUtil.create(), null, null, "n", 0, 0, null, null,
+                        false);
         final Text t = TextBuilder.create().par().styledLink("a", this.ts, table).build();
         TestHelper.assertXMLEquals("<text:p><text:a text:style-name=\"ts\" xlink:href=\"#n\" " +
                 "xlink:type=\"simple\">a</text:a></text:p>", t);
@@ -144,8 +146,8 @@ public class TextTest {
     public void testEmbeddedStyles() {
         final StylesContainer container = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
-        final Text text = Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts)
-                .build();
+        final Text text =
+                Text.builder().parStyledContent("ok", ts).parStyledContent("ok2", ts).build();
 
         PowerMock.resetAll();
         EasyMock.expect(container.addContentFontFaceContainerStyle(ts)).andReturn(true);
@@ -159,10 +161,12 @@ public class TextTest {
 
     @Test
     public void testEquals() {
-        final Text text1 = Text.builder().parContent("text").link("url", "url")
-                .parStyledContent("text2", null).span("span").build();
-        final Text text2 = Text.builder().par().styledSpan("text", null).link("url", "url").par()
-                .span("text2").span("span").build();
+        final Text text1 =
+                Text.builder().parContent("text").link("url", "url").parStyledContent("text2", null)
+                        .span("span").build();
+        final Text text2 =
+                Text.builder().par().styledSpan("text", null).link("url", "url").par().span("text2")
+                        .span("span").build();
         Assert.assertEquals(text1, text1);
         Assert.assertNotEquals(text1, "text1");
         Assert.assertNotEquals("text1", text1);

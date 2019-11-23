@@ -24,9 +24,9 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.style.TextProperties.Underline;
-import com.github.jferard.fastods.attribute.Length;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

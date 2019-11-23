@@ -22,8 +22,8 @@
  */
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,9 +40,10 @@ public class ScientificNumberStyleTest {
 
     @Test
     public final void test1() throws IOException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
-                .country("FR").language("en").volatileStyle(true).minExponentDigits(1)
-                .groupThousands(true).minIntegerDigits(8).negativeValueRed().build();
+        final ScientificNumberStyle s =
+                new ScientificNumberStyleBuilder("test", this.locale).country("FR").language("en")
+                        .volatileStyle(true).minExponentDigits(1).groupThousands(true)
+                        .minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"FR\" " + "style:volatile=\"true\">" +
@@ -63,10 +64,10 @@ public class ScientificNumberStyleTest {
 
     @Test
     public final void test2() throws IOException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
-                .country("FR").language("en").locale(Locale.GERMANY).volatileStyle(true)
-                .minExponentDigits(2).groupThousands(true).minIntegerDigits(8).negativeValueRed()
-                .build();
+        final ScientificNumberStyle s =
+                new ScientificNumberStyleBuilder("test", this.locale).country("FR").language("en")
+                        .locale(Locale.GERMANY).volatileStyle(true).minExponentDigits(2)
+                        .groupThousands(true).minIntegerDigits(8).negativeValueRed().build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"de\" " +
                         "number:country=\"DE\" " + "style:volatile=\"true\">" +
@@ -113,8 +114,8 @@ public class ScientificNumberStyleTest {
 
     @Test
     public final void testDecimalPlaces() throws IOException {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
-                .decimalPlaces(10).build();
+        final ScientificNumberStyle s =
+                new ScientificNumberStyleBuilder("test", this.locale).decimalPlaces(10).build();
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -130,8 +131,8 @@ public class ScientificNumberStyleTest {
 
     @Test
     public final void testAddToElements() {
-        final ScientificNumberStyle s = new ScientificNumberStyleBuilder("test", this.locale)
-                .build();
+        final ScientificNumberStyle s =
+                new ScientificNumberStyleBuilder("test", this.locale).build();
         DataStyleTestHelper.testAddToElements(s);
     }
 }

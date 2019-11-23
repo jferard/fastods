@@ -1,7 +1,6 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.ElementWithEmbeddedStyles;
-import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.XMLUtil;

@@ -46,29 +46,31 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 
     static {
         final char[] REPLACEMENT_CHAR = "\\uFFFD".toCharArray();
-        CHAR_SUBSTITUTES_IN_ATTRIBUTE = new char[][]{REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, "&#x9;".toCharArray(),
-                "&#xA;".toCharArray(), REPLACEMENT_CHAR, REPLACEMENT_CHAR, "&#xD;".toCharArray(),
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, null, null, "&quot;".toCharArray(), null, null,
-                null, "&amp;".toCharArray(), "&apos;".toCharArray(), null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                null, "&lt;".toCharArray(), null, "&gt;".toCharArray()};
-        CHAR_SUBSTITUTES_IN_CONTENT = new char[][]{REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, null, null, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, null, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
-                REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, null, null, null, null, null,
-                null, "&amp;".toCharArray(), null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null,
-                "&lt;".toCharArray(), null, "&gt;".toCharArray()};
+        CHAR_SUBSTITUTES_IN_ATTRIBUTE =
+                new char[][]{REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, "&#x9;".toCharArray(), "&#xA;".toCharArray(),
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, "&#xD;".toCharArray(), REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, null, null, "&quot;".toCharArray(), null, null, null,
+                        "&amp;".toCharArray(), "&apos;".toCharArray(), null, null, null, null, null,
+                        null, null, null, null, null, null, null, null, null, null, null, null,
+                        null, null, null, "&lt;".toCharArray(), null, "&gt;".toCharArray()};
+        CHAR_SUBSTITUTES_IN_CONTENT =
+                new char[][]{REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, null, null, REPLACEMENT_CHAR, REPLACEMENT_CHAR, null,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR, REPLACEMENT_CHAR,
+                        REPLACEMENT_CHAR, REPLACEMENT_CHAR, null, null, null, null, null, null,
+                        "&amp;".toCharArray(), null, null, null, null, null, null, null, null, null,
+                        null, null, null, null, null, null, null, null, null, null, null, null,
+                        "&lt;".toCharArray(), null, "&gt;".toCharArray()};
     }
 
     private final Map<String, String> attrCacheMap;
@@ -122,8 +124,8 @@ public class FastOdsXMLEscaper implements XMLEscaper {
 
         final String s2;
         if (oneSpecialChar) {
-            s2 = this
-                    .getString(s, sourceLength, previousDestIndex, firstIdenticalCharInSourceIndex);
+            s2 = this.getString(s, sourceLength, previousDestIndex,
+                    firstIdenticalCharInSourceIndex);
         } else {
             s2 = s;
         }

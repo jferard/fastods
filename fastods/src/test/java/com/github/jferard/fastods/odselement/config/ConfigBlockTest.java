@@ -52,8 +52,7 @@ public class ConfigBlockTest {
                 "config:type=\"int\">1</config:config-item>" +
                 "<config:config-item-set config:name=\"set1\">" +
                 "<config:config-item config:name=\"item2\" " +
-                "config:type=\"string\">str</config:config-item>" +
-                "</config:config-item-set>" +
+                "config:type=\"string\">str</config:config-item>" + "</config:config-item-set>" +
                 "<config:config-item-map-indexed config:name=\"map1\">" +
                 "<config:config-item-map-entry config:name=\"entry1\">" + "<config:config-item " +
                 "config:name=\"item3\" config:type=\"short\">0</config:config-item>" +

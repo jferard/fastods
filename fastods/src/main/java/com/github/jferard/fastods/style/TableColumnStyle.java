@@ -23,9 +23,9 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
-import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -38,8 +38,8 @@ public class TableColumnStyle implements FontFaceContainerStyle {
     /**
      * The default style, see LO.
      */
-    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE = TableColumnStyle
-            .builder("co1").build();
+    public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE =
+            TableColumnStyle.builder("co1").build();
 
     private static TableColumnStyle defaultColumnStyle;
 

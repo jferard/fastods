@@ -32,7 +32,6 @@ import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -243,7 +242,7 @@ public class TableAppenderTest {
         final StringBuilder sb = new StringBuilder();
         this.tableAppender.appendPreamble(this.xmlUtil, sb);
         sb.append("</table:table>");
-        DomTester.assertEquals(xml+"</table:table>", sb.toString());
+        DomTester.assertEquals(xml + "</table:table>", sb.toString());
     }
 
     private TableColumnStyle newTCS(final String name) {

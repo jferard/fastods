@@ -49,12 +49,12 @@ import java.util.logging.Logger;
  */
 public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     /**
-     *
-     * @param logger the logger
+     * @param logger  the logger
      * @param adaptee the adaptee writer
      * @return the new adapter
      */
-    public static OdsFileWriterAdapter create(final Logger logger, final NamedOdsFileWriter adaptee) {
+    public static OdsFileWriterAdapter create(final Logger logger,
+                                              final NamedOdsFileWriter adaptee) {
         return new OdsFileWriterAdapter(logger, adaptee, new LinkedList<OdsAsyncFlusher>());
     }
 
@@ -66,11 +66,12 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
     /**
      * Create an new adapter
      *
-     * @param logger the logger
+     * @param logger   the logger
      * @param adaptee  the adaptee writer
      * @param flushers the queue of flushers
      */
-    OdsFileWriterAdapter(final Logger logger, final NamedOdsFileWriter adaptee, final Queue<OdsAsyncFlusher> flushers) {
+    OdsFileWriterAdapter(final Logger logger, final NamedOdsFileWriter adaptee,
+                         final Queue<OdsAsyncFlusher> flushers) {
         this.logger = logger;
         this.adaptee = adaptee;
         this.flushers = flushers;

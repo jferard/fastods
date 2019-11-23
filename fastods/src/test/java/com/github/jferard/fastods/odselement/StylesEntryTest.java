@@ -22,11 +22,11 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.After;
 import org.junit.Before;

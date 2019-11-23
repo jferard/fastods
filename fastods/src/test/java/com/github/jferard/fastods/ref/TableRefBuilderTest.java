@@ -90,4 +90,5 @@ public class TableRefBuilderTest {
         Assert.assertEquals("'fname'#$table",
                 new TableRefBuilder(this.tableNameUtil).file("fname").absTable("table").build()
                         .toString());
-    }}
+    }
+}

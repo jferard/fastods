@@ -99,13 +99,12 @@ public class BenchmarkTest {
     }
 
     private void test(final int rowCount, final int colCount, final int times) throws IOException {
-        final List<Bench> benches = Lists
-                .newArrayList(new BenchFast(this.logger, rowCount, colCount),
+        final List<Bench> benches =
+                Lists.newArrayList(new BenchFast(this.logger, rowCount, colCount),
                         new BenchFastFlush(this.logger, rowCount, colCount),
                         new BenchFastFlushWithThreads(this.logger, rowCount, colCount),
                         new BenchSimpleOds(this.logger, rowCount, colCount),
-                        new BenchJOpen(this.logger, rowCount, colCount)
-                );
+                        new BenchJOpen(this.logger, rowCount, colCount));
         if (rowCount < 10000) {
             benches.add(new BenchSimpleOdf(this.logger, rowCount, colCount));
         }

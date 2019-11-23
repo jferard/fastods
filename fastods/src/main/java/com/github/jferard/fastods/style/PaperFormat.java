@@ -66,6 +66,7 @@ public enum PaperFormat {
         static final Length LETTER_H = SimpleLength.cm(27.94);
         static final Length LETTER_W = SimpleLength.cm(21.59);
     }
+
     private final Length height;
     private final Length width;
 

@@ -69,8 +69,8 @@ public class MultiContainerTest {
     @Test
     public final void testCreateTwice() {
         Assert.assertTrue(this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1));
-        Iterator<Integer> iterator = this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES)
-                .iterator();
+        Iterator<Integer> iterator =
+                this.container.getValues(Dest.CONTENT_AUTOMATIC_STYLES).iterator();
         Assert.assertTrue(iterator.hasNext());
         Assert.assertEquals(Integer.valueOf(1), iterator.next());
         Assert.assertFalse(iterator.hasNext());

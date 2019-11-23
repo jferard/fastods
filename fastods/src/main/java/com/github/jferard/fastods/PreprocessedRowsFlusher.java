@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * An async flusher for a collection of rows
- *
+ * <p>
  * Sent when a table with a row index that is a multiple of 1024 is used.
  *
  * @author Julien Férard

@@ -14,7 +14,8 @@ public class DrawFillSolid implements DrawFill {
     }
 
     @Override
-    public void appendAttributes(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendAttributes(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         util.appendAttribute(appendable, "draw:fill", "solid");
         util.appendAttribute(appendable, "draw:fill-color", this.color);
     }

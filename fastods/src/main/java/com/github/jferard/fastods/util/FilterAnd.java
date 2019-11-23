@@ -41,7 +41,8 @@ public class FilterAnd implements Filter {
     }
 
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<table:filter-and>");
         for (final Filter filter : this.filters) {
             filter.appendXMLContent(util, appendable);

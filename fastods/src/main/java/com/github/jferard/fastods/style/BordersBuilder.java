@@ -23,9 +23,9 @@
 
 package com.github.jferard.fastods.style;
 
-import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.Length;
 
 /**
@@ -59,8 +59,7 @@ public class BordersBuilder {
      * @param style the style of the borders
      * @return this for fluent style
      */
-    public BordersBuilder all(final Length size, final Color color,
-                              final BorderStyle style) {
+    public BordersBuilder all(final Length size, final Color color, final BorderStyle style) {
         return this.all(new BorderAttribute(size, color, style));
     }
 
@@ -83,8 +82,7 @@ public class BordersBuilder {
      * @param style the style of the border
      * @return this for fluent style
      */
-    public BordersBuilder bottom(final Length size, final Color color,
-                                 final BorderStyle style) {
+    public BordersBuilder bottom(final Length size, final Color color, final BorderStyle style) {
         return this.bottom(new BorderAttribute(size, color, style));
     }
 
@@ -94,8 +92,7 @@ public class BordersBuilder {
      * @return the borders
      */
     public Borders build() {
-        return new Borders(this.all, this.top, this.right, this.bottom,
-                this.left);
+        return new Borders(this.all, this.top, this.right, this.bottom, this.left);
     }
 
     /**
@@ -117,8 +114,7 @@ public class BordersBuilder {
      * @param style the style of the border
      * @return this for fluent style
      */
-    public BordersBuilder left(final Length size, final Color color,
-                               final BorderStyle style) {
+    public BordersBuilder left(final Length size, final Color color, final BorderStyle style) {
         return this.left(new BorderAttribute(size, color, style));
     }
 
@@ -141,8 +137,7 @@ public class BordersBuilder {
      * @param style the style of the border
      * @return this for fluent style
      */
-    public BordersBuilder right(final Length size, final Color color,
-                                final BorderStyle style) {
+    public BordersBuilder right(final Length size, final Color color, final BorderStyle style) {
         return this.right(new BorderAttribute(size, color, style));
     }
 
@@ -165,8 +160,7 @@ public class BordersBuilder {
      * @param style the style of the border
      * @return this for fluent style
      */
-    public BordersBuilder top(final Length size, final Color color,
-                              final BorderStyle style) {
+    public BordersBuilder top(final Length size, final Color color, final BorderStyle style) {
         return this.top(new BorderAttribute(size, color, style));
     }
 }

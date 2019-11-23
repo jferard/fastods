@@ -311,8 +311,7 @@ public class TableTest {
         PowerMock.verifyAll();
         TestHelper.assertXMLEquals("<table:database-range table:name=\"range\" " +
                 "table:display-filter-buttons=\"true\" table:target-range-address=\"test" +
-                ".C2:E4\"/>", af
-                .getValue());
+                ".C2:E4\"/>", af.getValue());
     }
 
     @Test

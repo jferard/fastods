@@ -100,8 +100,7 @@ public class RangeRefTest {
 
     @Test
     public void testGet() {
-        final RangeRef r = new RangeRef(null, new LocalCellRef(1, 0, 0),
-                new LocalCellRef(4, 2, 2));
+        final RangeRef r = new RangeRef(null, new LocalCellRef(1, 0, 0), new LocalCellRef(4, 2, 2));
         Assert.assertEquals(1, r.getFromRow());
         Assert.assertEquals(0, r.getFromColumn());
         Assert.assertEquals(4, r.getToRow());

@@ -79,10 +79,9 @@ public class SettingsTest {
         final ConfigBlock block = this.blocks.get(0);
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
-                        "<config:config-item " +
-                        "config:name=\"VisibleAreaTop\" " +
-                        "config:type=\"int\">0</config:config-item>" +
-                        "<config:config-item " + "config:name=\"VisibleAreaLeft\" " +
+                        "<config:config-item " + "config:name=\"VisibleAreaTop\" " +
+                        "config:type=\"int\">0</config:config-item>" + "<config:config-item " +
+                        "config:name=\"VisibleAreaLeft\" " +
                         "config:type=\"int\">0</config:config-item>" + "<config:config-item " +
                         "config:name=\"VisibleAreaWidth\" " +
                         "config:type=\"int\">680</config:config-item>" + "<config:config-item " +
@@ -92,8 +91,7 @@ public class SettingsTest {
                         "<config:config-item-map-entry>" + "<config:config-item " +
                         "config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" +
                         "<config:config-item-map-named config:name=\"Tables\" />" +
-                        "<config:config-item " +
-                        "config:name=\"ActiveTable\" " +
+                        "<config:config-item " + "config:name=\"ActiveTable\" " +
                         "config:type=\"string\">Sheet1</config:config-item>" +
                         "<config:config-item" + " config:name=\"HorizontalScrollbarWidth\" " +
                         "config:type=\"int\">270</config:config-item>" + "<config:config-item " +
@@ -111,8 +109,7 @@ public class SettingsTest {
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item " +
                         "config:name=\"ShowGrid\" config:type=\"boolean\">true</config:config" +
-                        "-item>" +
-                        "<config:config-item " + "config:name=\"GridColor\" " +
+                        "-item>" + "<config:config-item " + "config:name=\"GridColor\" " +
                         "config:type=\"long\">12632256</config:config-item>" +
                         "<config:config-item " + "config:name=\"ShowPageBreaks\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
@@ -146,18 +143,15 @@ public class SettingsTest {
         final ConfigBlock block = this.blocks.get(1);
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:configuration-settings\">" +
-                        "<config:config-item " +
-                        "config:name=\"ShowZeroValues\" " +
+                        "<config:config-item " + "config:name=\"ShowZeroValues\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item config:name=\"ShowNotes\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item " +
                         "config:name=\"ShowGrid\" config:type=\"boolean\">true</config:config" +
-                        "-item>" +
-                        "<config:config-item config:name=\"GridColor\" " +
+                        "-item>" + "<config:config-item config:name=\"GridColor\" " +
                         "config:type=\"long\">12632256</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"ShowPageBreaks\" " +
+                        "<config:config-item " + "config:name=\"ShowPageBreaks\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item config:name=\"LinkUpdateMode\" " +
                         "config:type=\"short\">3</config:config-item>" + "<config:config-item " +
@@ -165,13 +159,11 @@ public class SettingsTest {
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item config:name=\"HasSheetTabs\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"IsOutlineSymbolsSet\" " +
+                        "<config:config-item " + "config:name=\"IsOutlineSymbolsSet\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item config:name=\"IsSnapToRaster\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"RasterIsVisible\" " +
+                        "<config:config-item " + "config:name=\"RasterIsVisible\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
                         "<config:config-item config:name=\"RasterResolutionX\" " +
                         "config:type=\"long\">1000</config:config-item>" + "<config:config-item " +
@@ -183,26 +175,22 @@ public class SettingsTest {
                         "config:type=\"long\">1</config:config-item>" +
                         "<config:config-item config:name=\"IsRasterAxisSynchronized\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"AutoCalculate\" " +
+                        "<config:config-item " + "config:name=\"AutoCalculate\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item config:name=\"PrinterName\" config:type=\"string\"/>" +
                         "<config:config-item config:name=\"PrinterSetup\" " +
                         "config:type=\"base64Binary\"/>" +
                         "<config:config-item config:name=\"ApplyUserData\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"CharacterCompressionType\" " +
+                        "<config:config-item " + "config:name=\"CharacterCompressionType\" " +
                         "config:type=\"short\">0</config:config-item>" +
                         "<config:config-item config:name=\"IsKernAsianPunctuation\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"SaveVersionOnClose\" " +
+                        "<config:config-item " + "config:name=\"SaveVersionOnClose\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
                         "<config:config-item config:name=\"UpdateFromTemplate\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"AllowPrintJobCancel\" " +
+                        "<config:config-item " + "config:name=\"AllowPrintJobCancel\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
                         "<config:config-item config:name=\"LoadReadonly\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
@@ -215,8 +203,8 @@ public class SettingsTest {
         final Table table = PowerMock.createMock(Table.class);
 
         final ConfigItem item = new ConfigItem("n", "t", "v");
-        final ConfigItemMapEntrySingleton singleton = ConfigItemMapEntrySingleton
-                .createSingleton("singleton", item);
+        final ConfigItemMapEntrySingleton singleton =
+                ConfigItemMapEntrySingleton.createSingleton("singleton", item);
 
         // play
         EasyMock.expect(table.getConfigEntry()).andReturn(singleton);

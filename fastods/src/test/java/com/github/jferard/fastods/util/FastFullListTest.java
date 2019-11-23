@@ -29,8 +29,8 @@ public class FastFullListTest {
     @Test
     public final void testSetAndAdd() {
         final String be = "blank";
-        final FastFullList<String> fl = FastFullList.<String>builder().blankElement(be).capacity(10)
-                .build();
+        final FastFullList<String> fl =
+                FastFullList.<String>builder().blankElement(be).capacity(10).build();
 
         Assert.assertEquals(0, fl.usedSize());
         Assert.assertEquals(be, fl.get(100));

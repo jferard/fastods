@@ -75,8 +75,8 @@ public class ProfileFastODS {
     public final void mediumTestFast() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final OdsDocument document = writer.document();
-        final Table table = document
-                .addTable("test", ProfileFastODS.ROW_COUNT / 2, ProfileFastODS.COL_COUNT / 2);
+        final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT / 2,
+                ProfileFastODS.COL_COUNT / 2);
         final TableCellWalker walker = table.getWalker();
 
         for (int y = 0; y < ProfileFastODS.ROW_COUNT / 2; y++) {
@@ -109,8 +109,8 @@ public class ProfileFastODS {
     public final void smallTestFast() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final OdsDocument document = writer.document();
-        final Table table = document
-                .addTable("test", ProfileFastODS.ROW_COUNT / 4, ProfileFastODS.COL_COUNT / 4);
+        final Table table = document.addTable("test", ProfileFastODS.ROW_COUNT / 4,
+                ProfileFastODS.COL_COUNT / 4);
         final TableCellWalker walker = table.getWalker();
 
         for (int y = 0; y < ProfileFastODS.ROW_COUNT / 4; y++) {
@@ -138,8 +138,8 @@ public class ProfileFastODS {
         while (true) {
             final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
             final OdsDocument document = writer.document();
-            final Table table = document
-                    .addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
+            final Table table =
+                    document.addTable("test", ProfileFastODS.ROW_COUNT, ProfileFastODS.COL_COUNT);
             final TableCellWalker walker = table.getWalker();
 
             for (int y = 0; y < ProfileFastODS.ROW_COUNT; y++) {

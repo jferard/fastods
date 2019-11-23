@@ -39,8 +39,9 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat1() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.DDMMYY).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYY)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style" +
@@ -54,8 +55,9 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat2() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.DDMMYYYY).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYYYY)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -68,8 +70,8 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat3() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.MMMM).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.MMMM).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -81,8 +83,8 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat4() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.MMYY).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.MMYY).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -94,8 +96,9 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat5() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.TMMMMYYYY).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.TMMMMYYYY)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -108,8 +111,8 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat6() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.WW).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.WW).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -120,8 +123,9 @@ public class DateStyleTest {
 
     @Test
     public final void testWithFormat7() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.YYYYMMDD).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.YYYYMMDD)
+                        .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -144,8 +148,8 @@ public class DateStyleTest {
 
     @Test
     public final void testWithLocale() throws IOException {
-        final DateStyle ds = new DateStyleBuilder("test", Locale.FRANCE).locale(this.locale)
-                .build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", Locale.FRANCE).locale(this.locale).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
@@ -184,8 +188,9 @@ public class DateStyleTest {
 
     @Test
     public final void testAddToElements() {
-        final DateStyle ds = new DateStyleBuilder("test", this.locale)
-                .dateFormat(DateStyle.Format.DDMMYY).build();
+        final DateStyle ds =
+                new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.DDMMYY)
+                        .build();
         DataStyleTestHelper.testAddToElements(ds);
     }
 }

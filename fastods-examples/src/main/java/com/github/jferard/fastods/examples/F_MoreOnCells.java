@@ -145,15 +145,16 @@ class F_MoreOnCells {
         walker.setRowsSpanned(3);
 
         // Let's start with something simple. First, we build a text:
-        Text text = Text.builder().parContent("This is a").parContent("multiline")
-                .parContent("cell").build();
+        Text text =
+                Text.builder().parContent("This is a").parContent("multiline").parContent("cell")
+                        .build();
 
         // Second, we set the text:
         walker.setText(text);
 
         // We can use some styles:
-        final TextStyle boldStyle = TextProperties.builder().fontWeightBold()
-                .buildHiddenStyle("bold");
+        final TextStyle boldStyle =
+                TextProperties.builder().fontWeightBold().buildHiddenStyle("bold");
         text = Text.builder().par().span("This is a ").styledSpan("bold", boldStyle)
                 .span(" example").build();
         walker.to(2);

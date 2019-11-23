@@ -31,10 +31,11 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.PageSectionContent.Region;
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -45,7 +46,6 @@ import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -153,8 +153,8 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
 
     private void validateDocument(final String documentName) throws Exception {
-        final SpreadsheetDocument document = SpreadsheetDocument
-                .loadDocument(new File(GENERATED_FILES, documentName));
+        final SpreadsheetDocument document =
+                SpreadsheetDocument.loadDocument(new File(GENERATED_FILES, documentName));
         Assert.assertEquals(3, document.getSheetCount());
 
         // STYLES
@@ -168,41 +168,42 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
         Assert.assertEquals(SimpleColor.RED.getValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
                 "//style:style[@style:name='red-text']//@fo:color"));
-        Assert.assertEquals(SimpleColor.BLUE.getValue(), this.stylesEvaluate(stylesXPath, stylesRoot,
-                "//style:style[@style:name='blue-text']//@fo:color"));
+        Assert.assertEquals(SimpleColor.BLUE.getValue(),
+                this.stylesEvaluate(stylesXPath, stylesRoot,
+                        "//style:style[@style:name='blue-text']//@fo:color"));
         Assert.assertEquals(SimpleColor.GREEN.getValue(),
                 this.stylesEvaluate(stylesXPath, stylesRoot,
-                "//style:style[@style:name='green-text']//@fo:color"));
+                        "//style:style[@style:name='green-text']//@fo:color"));
 
         Assert.assertEquals("left header",
                 this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_HEADER_PATH));
-        Assert.assertEquals("red-text",
-                this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_HEADER_PATH + "//@text:style-name"));
+        Assert.assertEquals("red-text", this.stylesEvaluate(stylesXPath, stylesRoot,
+                LEFT_HEADER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("center header1",
                 this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_HEADER_PATH));
-        Assert.assertEquals("blue-text",
-                this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_HEADER_PATH + "//@text:style-name"));
+        Assert.assertEquals("blue-text", this.stylesEvaluate(stylesXPath, stylesRoot,
+                CENTER_HEADER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("right header",
                 this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_HEADER_PATH));
-        Assert.assertEquals("green-text",
-                this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_HEADER_PATH + "//@text:style-name"));
+        Assert.assertEquals("green-text", this.stylesEvaluate(stylesXPath, stylesRoot,
+                RIGHT_HEADER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("left footer",
                 this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_FOOTER_PATH));
-        Assert.assertEquals("blue-text",
-                this.stylesEvaluate(stylesXPath, stylesRoot, LEFT_FOOTER_PATH + "//@text:style-name"));
+        Assert.assertEquals("blue-text", this.stylesEvaluate(stylesXPath, stylesRoot,
+                LEFT_FOOTER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("center footer99",
                 this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_FOOTER_PATH));
-        Assert.assertEquals("green-text",
-                this.stylesEvaluate(stylesXPath, stylesRoot, CENTER_FOOTER_PATH + "//@text:style-name"));
+        Assert.assertEquals("green-text", this.stylesEvaluate(stylesXPath, stylesRoot,
+                CENTER_FOOTER_PATH + "//@text:style-name"));
 
         Assert.assertEquals("right footer",
                 this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_FOOTER_PATH));
-        Assert.assertEquals("red-text",
-                this.stylesEvaluate(stylesXPath, stylesRoot, RIGHT_FOOTER_PATH + "//@text:style-name"));
+        Assert.assertEquals("red-text", this.stylesEvaluate(stylesXPath, stylesRoot,
+                RIGHT_FOOTER_PATH + "//@text:style-name"));
 
         final OdfContentDom contentDom = document.getContentDom();
         Assert.assertEquals("5cm", contentDom.getXPath().evaluate(
@@ -263,8 +264,9 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Assert.assertEquals(" after link to table", nodes.item(2).getTextContent());
     }
 
-    private String stylesEvaluate(final XPath stylesXPath, final OfficeDocumentStylesElement stylesRoot,
-                                  final String xPath) throws XPathExpressionException {
+    private String stylesEvaluate(final XPath stylesXPath,
+                                  final OfficeDocumentStylesElement stylesRoot, final String xPath)
+            throws XPathExpressionException {
         return stylesXPath.evaluate(xPath, stylesRoot);
     }
 
@@ -320,13 +322,13 @@ public class OdsFileWithHeaderAndFooterCreationIT {
                 .defaultCellStyle(this.tcls).build();
 
         this.lts = TextProperties.builder().fontColor(SimpleColor.RED).buildHiddenStyle("red-text");
-        this.cts = TextProperties.builder().fontColor(SimpleColor.BLUE)
-                .buildHiddenStyle("blue-text");
+        this.cts =
+                TextProperties.builder().fontColor(SimpleColor.BLUE).buildHiddenStyle("blue-text");
         this.rts = TextProperties.builder().fontColor(SimpleColor.GREEN)
                 .buildHiddenStyle("green-text");
         this.boldStyle = TextProperties.builder().fontWeightBold().buildHiddenStyle("bold-text");
-        this.italicStyle = TextProperties.builder().fontStyleItalic()
-                .buildHiddenStyle("italic-text");
+        this.italicStyle =
+                TextProperties.builder().fontStyleItalic().buildHiddenStyle("italic-text");
 
         this.leftHeader = Text.styledContent("left header", this.lts);
         this.centerHeader = Text.builder().par().styledSpan("center header", this.cts)
@@ -348,9 +350,9 @@ public class OdsFileWithHeaderAndFooterCreationIT {
                 .build();
         this.ttts = TableStyle.builder("test-table-style").pageStyle(this.ps).build();
 
-        this.ps2 = PageStyle.builder("test2-master-page")
-                .masterPageStyle(this.ps.getMasterPageStyle())
-                .pageLayoutStyle(this.ps.getPageLayoutStyle()).build();
+        this.ps2 =
+                PageStyle.builder("test2-master-page").masterPageStyle(this.ps.getMasterPageStyle())
+                        .pageLayoutStyle(this.ps.getPageLayoutStyle()).build();
         this.ttts2 = TableStyle.builder("test2-table-style").pageStyle(this.ps2).build();
     }
 

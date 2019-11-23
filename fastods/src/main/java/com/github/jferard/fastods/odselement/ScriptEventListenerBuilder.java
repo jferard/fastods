@@ -32,7 +32,7 @@ public class ScriptEventListenerBuilder {
     private String language;
 
     /**
-     * @param event an event
+     * @param event    an event
      * @param function a function
      */
     public ScriptEventListenerBuilder(final ScriptEvent event, final String function) {
@@ -46,12 +46,15 @@ public class ScriptEventListenerBuilder {
      * @return the listener
      */
     public ScriptEventListener build() {
-        return new ScriptEventListener(this.genericLanguage, this.event, this.function, this.language);
+        return new ScriptEventListener(this.genericLanguage, this.event, this.function,
+                this.language);
     }
 
     /**
      * Do not confuse with language.
-     * @param genericLanguage "ooo:script" for LibreOffice, could be text/javascript in other consumers.
+     *
+     * @param genericLanguage "ooo:script" for LibreOffice, could be text/javascript in other
+     *                        consumers.
      * @return this for fluent style
      */
     public ScriptEventListenerBuilder genericLanguage(final String genericLanguage) {

@@ -34,10 +34,10 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
-import com.github.jferard.fastods.attribute.SimpleLength;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,8 +76,9 @@ class G_PageFormat {
             // ## Header
             // First, we build the three parts of a simple header:
             final Text leftHeaderContent = Text.content("left header");
-            final Text centerHeaderContent = Text.builder().par().span("center header, page ")
-                    .span(Text.TEXT_PAGE_NUMBER).build();
+            final Text centerHeaderContent =
+                    Text.builder().par().span("center header, page ").span(Text.TEXT_PAGE_NUMBER)
+                            .build();
             final Text rightHeaderContent = Text.content("right header");
 
             // Then we build the header itself:
@@ -89,16 +90,16 @@ class G_PageFormat {
 
             // ## Footer
             // For the footer, let's use the one part format:
-            final Footer footer = PageSection.simpleBuilder().text(Text.content("footer"))
-                    .buildFooter();
+            final Footer footer =
+                    PageSection.simpleBuilder().text(Text.content("footer")).buildFooter();
 
             // We now insert the header and the footer in a page style:
-            final PageStyle pageStyle = PageStyle.builder("page-style").header(header)
-                    .footer(footer).build();
+            final PageStyle pageStyle =
+                    PageStyle.builder("page-style").header(header).footer(footer).build();
 
             // And add the page style into the table style:
-            final TableStyle tableStyle = TableStyle.builder("table-style").pageStyle(pageStyle)
-                    .build();
+            final TableStyle tableStyle =
+                    TableStyle.builder("table-style").pageStyle(pageStyle).build();
 
             // And set this table style:
             table.setStyle(tableStyle);
@@ -116,8 +117,8 @@ class G_PageFormat {
             walker.setStringValue("Text");
 
             // We can create a very simple header:
-            final Header minimalHeader = PageSection.simpleBuilder().content("minimal header")
-                    .buildHeader();
+            final Header minimalHeader =
+                    PageSection.simpleBuilder().content("minimal header").buildHeader();
 
             // Or a complex footer:
             final TextBuilder textBuilder = Text.builder();
@@ -139,14 +140,15 @@ class G_PageFormat {
 
             // And build the text:
             final Text footerContent = textBuilder.build();
-            final Footer complexFooter = PageSection.simpleBuilder().text(footerContent)
-                    .buildFooter();
+            final Footer complexFooter =
+                    PageSection.simpleBuilder().text(footerContent).buildFooter();
 
             // As above:
-            final PageStyle pageStyle = PageStyle.builder("page-style2").header(minimalHeader)
-                    .footer(complexFooter).build();
-            final TableStyle tableStyle = TableStyle.builder("table-style2").pageStyle(pageStyle)
-                    .build();
+            final PageStyle pageStyle =
+                    PageStyle.builder("page-style2").header(minimalHeader).footer(complexFooter)
+                            .build();
+            final TableStyle tableStyle =
+                    TableStyle.builder("table-style2").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
 
             // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)

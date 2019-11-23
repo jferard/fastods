@@ -150,7 +150,6 @@ public class BenchFastFlushWithThreads extends Bench {
     }
 
     private Producer createProducer(NamedOdsDocument document) {
-        return new Producer(document, this.getRowCount(), this.getColCount(),
-                this.getRandom());
+        return new Producer(document, this.getRowCount(), this.getColCount(), this.getRandom());
     }
 }

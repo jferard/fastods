@@ -93,8 +93,7 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
-    public boolean addTable(final Table table)
-            throws IOException {
+    public boolean addTable(final Table table) throws IOException {
         return this.commonOdsDocument.addTable(table);
     }
 
@@ -121,7 +120,8 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addExtraObject(final String fullPath, final String mediaType, final String version) {
+    public void addExtraObject(final String fullPath, final String mediaType,
+                               final String version) {
         this.commonOdsDocument.addExtraObject(fullPath, mediaType, version);
     }
 
@@ -188,8 +188,7 @@ public final class AnonymousOdsDocument implements OdsDocument {
 
     @Override
     public void addAutoFilter(final String rangeName, final Table table, final int r1, final int c1,
-                              final int r2,
-                              final int c2) {
+                              final int r2, final int c2) {
         this.commonOdsDocument.addAutoFilter(rangeName, table, r1, c1, r2, c2);
     }
 

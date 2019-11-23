@@ -62,8 +62,9 @@ public class TableRowTest {
         final WriteUtil writeUtil = WriteUtil.create();
         this.xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.row = new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
-                100);
+        this.row =
+                new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
+                        100);
         this.tcs = TableCellStyle.builder("---").build();
         PowerMock.mockStatic(TableColdCell.class);
         PowerMock.resetAll();

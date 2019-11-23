@@ -47,8 +47,8 @@ public class AttrListTest {
     public void setUp() throws ParserConfigurationException, IOException, SAXException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
-        final Document document = this.builder
-                .parse(new ByteArrayInputStream(("<r a='1' b='2'/>").getBytes(UTF_8)));
+        final Document document =
+                this.builder.parse(new ByteArrayInputStream(("<r a='1' b='2'/>").getBytes(UTF_8)));
         this.attributes = document.getElementsByTagName("r").item(0).getAttributes();
         this.attrList = AttrList.create(this.attributes);
     }
@@ -79,8 +79,8 @@ public class AttrListTest {
         Assert.assertNotEquals("attrList", this.attrList);
         Assert.assertNotEquals(this.attrList, "attrList");
 
-        final Document document = this.builder
-                .parse(new ByteArrayInputStream(("<s b='2' a='1'/>").getBytes(UTF_8)));
+        final Document document =
+                this.builder.parse(new ByteArrayInputStream(("<s b='2' a='1'/>").getBytes(UTF_8)));
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
         final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(attrList2, this.attrList);
@@ -89,8 +89,8 @@ public class AttrListTest {
 
     @Test
     public void testCompare() throws IOException, SAXException {
-        final Document document = this.builder
-                .parse(new ByteArrayInputStream(("<s b='3' a='1'/>").getBytes(UTF_8)));
+        final Document document =
+                this.builder.parse(new ByteArrayInputStream(("<s b='3' a='1'/>").getBytes(UTF_8)));
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
         final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(0, this.attrList.compareTo(this.attrList));

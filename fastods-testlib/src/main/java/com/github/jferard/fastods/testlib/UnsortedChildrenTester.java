@@ -22,7 +22,6 @@
  */
 package com.github.jferard.fastods.testlib;
 
-import org.omg.CORBA.UNSUPPORTED_POLICY;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

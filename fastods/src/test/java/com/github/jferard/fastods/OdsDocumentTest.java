@@ -181,11 +181,8 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
         TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements.getTable("ok")).andReturn(null);
         EasyMock.expect(this.odsElements
-                .createTable(EasyMock.eq("ok"), EasyMock.anyInt(), EasyMock.anyInt()))
-                .andReturn(t);
-        EasyMock.expect(this.odsElements
-                .addTableToContent(t))
-                .andReturn(true);
+                .createTable(EasyMock.eq("ok"), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(t);
+        EasyMock.expect(this.odsElements.addTableToContent(t)).andReturn(true);
         this.odsElements.setActiveTable(t);
 
         PowerMock.replayAll();

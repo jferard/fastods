@@ -14,7 +14,8 @@ import java.util.Arrays;
 public class MacroLibraryContainerTest {
     private static final Charset UTF_8 = Charset.forName("UTF-8");
 
-    @Test public void test() throws IOException {
+    @Test
+    public void test() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroLibrary library = PowerMock.createMock(MacroLibrary.class);
         final MacroLibraryContainer container =
@@ -25,7 +26,8 @@ public class MacroLibraryContainerTest {
         PowerMock.resetAll();
         document.addExtraDir("Basic/");
         library.appendIndexLine(EasyMock.isA(XMLUtil.class), EasyMock.capture(sb1));
-        document.addExtraFile(EasyMock.eq("Basic/script-lc.xml"), EasyMock.eq("text/xml"), EasyMock.capture(bs));
+        document.addExtraFile(EasyMock.eq("Basic/script-lc.xml"), EasyMock.eq("text/xml"),
+                EasyMock.capture(bs));
         library.add(EasyMock.isA(XMLUtil.class), EasyMock.eq(document));
 
         PowerMock.replayAll();
@@ -33,15 +35,18 @@ public class MacroLibraryContainerTest {
 
         PowerMock.verifyAll();
         Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1" +
-                ".0//EN\" \"libraries.dtd\">\n" +
-                "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
-                "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>", sb1.toString());
+                        "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
+                        "OfficeDocument 1" +
+                        ".0//EN\" \"libraries.dtd\">\n" +
+                        "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
+                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>",
+                sb1.toString());
         Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1" +
-                ".0//EN\" \"libraries.dtd\">\n" +
-                "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
-                "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>", new String(bs.getValue(),
-                UTF_8));
+                        "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
+                        "OfficeDocument 1" +
+                        ".0//EN\" \"libraries.dtd\">\n" +
+                        "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
+                        "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>",
+                new String(bs.getValue(), UTF_8));
     }
 }

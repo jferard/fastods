@@ -1,13 +1,10 @@
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 public class SVGRectangleTest {
     private XMLUtil util;
@@ -62,8 +59,8 @@ public class SVGRectangleTest {
     private void testAux(final SVGRectangle rectangle, final String unit) throws IOException {
         final StringBuilder sb = new StringBuilder();
         rectangle.appendXMLContent(this.util, sb);
-        Assert.assertEquals(" svg:x=\"0@\" svg:y=\"1@\" svg:width=\"2@\" svg:height=\"3@\"".replaceAll("@",
-                unit), sb.toString());
+        Assert.assertEquals(" svg:x=\"0@\" svg:y=\"1@\" svg:width=\"2@\" svg:height=\"3@\""
+                .replaceAll("@", unit), sb.toString());
     }
 
 }

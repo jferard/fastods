@@ -46,8 +46,7 @@ public class TableRowStyleTest {
 
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
                 "style:family=\"table-row\"><style:table-row-properties " +
-                "style:row-height=\"5cm\" fo:break-before=\"auto\"/></style" +
-                ":style>", style);
+                "style:row-height=\"5cm\" fo:break-before=\"auto\"/></style" + ":style>", style);
     }
 
     @Test
@@ -55,10 +54,9 @@ public class TableRowStyleTest {
         final TableRowStyle style = TableRowStyle.builder("test").optimalHeight().build();
 
         TestHelper.assertXMLEquals("<style:style style:name=\"test\" " +
-                        "style:family=\"table-row\"><style:table-row-properties " +
-                        "fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/></style" +
-                        ":style>",
-                style);
+                "style:family=\"table-row\"><style:table-row-properties " +
+                "fo:break-before=\"auto\" style:use-optimal-row-height=\"true\"/></style" +
+                ":style>", style);
     }
 
     @Test

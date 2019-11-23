@@ -35,12 +35,12 @@ import java.util.Locale;
  */
 public class AbsoluteLength implements Length {
     private static final double CM_FACTOR = 10.0;
-    private static final double INCH_FACTOR =
-            2.54 * CM_FACTOR; // inch -> cm = *2.54, cm -> mm = *10
-    private static final double PT_FACTOR =
-            INCH_FACTOR / 72.0; // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
-    private static final double PC_FACTOR = PT_FACTOR *
-            12.0; // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
+    private static final double INCH_FACTOR = 2.54 * CM_FACTOR;
+            // inch -> cm = *2.54, cm -> mm = *10
+    private static final double PT_FACTOR = INCH_FACTOR / 72.0;
+            // pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
+    private static final double PC_FACTOR = PT_FACTOR * 12.0;
+            // pc -> pt = *12, pt -> inch = /72 inch -> cm = *2.54, cm -> mm = *10;
 
     /**
      * @param value the length in millimeters

@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  * An OdsFLusher flushes data to a writer, but does not preprocess the rows;
+ * * An OdsFLusher flushes data to a writer, but does not preprocess the rows;
  *
  * @author Julien Férard
  * @deprecated use PreprocessedRowsFlusher

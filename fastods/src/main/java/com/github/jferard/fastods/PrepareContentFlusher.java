@@ -33,7 +33,7 @@ import java.io.IOException;
 /**
  * When the first table is created.
  * Flush everything before the tables.
- *
+ * <p>
  * Sent by the first table creation.
  *
  * @author Julien Férard

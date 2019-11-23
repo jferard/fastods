@@ -23,17 +23,18 @@
 package com.github.jferard.fastods.it;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
-import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.attribute.BorderAttribute;
+import com.github.jferard.fastods.attribute.CellType;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
@@ -41,7 +42,6 @@ import com.github.jferard.fastods.testlib.Fibonacci;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -275,10 +275,12 @@ public class OdsFileCreationIT {
         this.columnStyle = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
                 .defaultCellStyle(this.tcls).build();
         this.rowStyle = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
-        this.tcs0 = TableCellStyle.builder("tcs0")
-                .backgroundColor(ColorHelper.fromString("#0000ff")).build();
-        this.tcs1 = TableCellStyle.builder("tcs1")
-                .backgroundColor(ColorHelper.fromString("#00ff00")).build();
+        this.tcs0 =
+                TableCellStyle.builder("tcs0").backgroundColor(ColorHelper.fromString("#0000ff"))
+                        .build();
+        this.tcs1 =
+                TableCellStyle.builder("tcs1").backgroundColor(ColorHelper.fromString("#00ff00"))
+                        .build();
         this.tcs2 = TableCellStyle.builder("tcs2").fontWeightBold().build();
         this.tcs3 = TableCellStyle.builder("tcs3").fontStyleItalic()
                 .borderAll(SimpleLength.mm(0.4), SimpleColor.BLACK, BorderAttribute.DEFAULT_STYLE)
@@ -365,8 +367,8 @@ public class OdsFileCreationIT {
         document.addCellStyle(this.tcs2, CellType.FLOAT);
         document.addCellStyle(this.tcs3, CellType.FLOAT);
         document.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.BOOLEAN,
-                CellType.CURRENCY, CellType.FLOAT, CellType.DATE,
-                CellType.PERCENTAGE, CellType.TIME);
+                CellType.CURRENCY, CellType.FLOAT, CellType.DATE, CellType.PERCENTAGE,
+                CellType.TIME);
         document.freezeStyles(); // if this crashes, use debugStyles to log the errors
 
         this.fillDocument(document, n);

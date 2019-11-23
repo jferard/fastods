@@ -23,13 +23,12 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.attribute.Length;
 
 import java.io.IOException;
 import java.util.Calendar;

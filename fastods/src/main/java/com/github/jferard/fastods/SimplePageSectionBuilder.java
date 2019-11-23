@@ -47,8 +47,8 @@ public class SimplePageSectionBuilder extends PageSectionBuilder<SimplePageSecti
      */
     @Override
     public PageSection build() {
-        final PageSectionStyle style = new PageSectionStyle(this.marginsBuilder.build(),
-                this.minHeight);
+        final PageSectionStyle style =
+                new PageSectionStyle(this.marginsBuilder.build(), this.minHeight);
         final PageSectionContent header = new SimpleFooterHeader(this.curRegionBox.get());
         return new PageSection(header, style);
     }

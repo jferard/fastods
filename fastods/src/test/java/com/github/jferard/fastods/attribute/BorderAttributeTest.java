@@ -50,22 +50,20 @@ public class BorderAttributeTest {
     @Test
     public final void basicTest() throws IOException {
         final BorderAttribute ba = BorderAttribute.builder().borderSize(SimpleLength.cm(1.0))
-                .borderColor(SimpleColor.ALICEBLUE).borderStyle(BorderStyle.SOLID)
-                .build();
+                .borderColor(SimpleColor.ALICEBLUE).borderStyle(BorderStyle.SOLID).build();
         this.assertXMLEquals("1cm solid #f0f8ff", ba);
     }
 
     @Test
     public final void nullColorTest() throws IOException {
-        final BorderAttribute ba = BorderAttribute.builder().borderSize(10)
-                .build();
+        final BorderAttribute ba = BorderAttribute.builder().borderSize(10).build();
         this.assertXMLEquals("10pt", ba);
     }
 
     @Test
     public final void nullSizeTest() throws IOException {
-        final BorderAttribute ba = BorderAttribute.builder().borderColor(SimpleColor.AQUAMARINE)
-                .build();
+        final BorderAttribute ba =
+                BorderAttribute.builder().borderColor(SimpleColor.AQUAMARINE).build();
         this.assertXMLEquals("solid #7fffd4", ba);
     }
 

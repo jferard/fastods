@@ -25,6 +25,7 @@ package com.github.jferard.fastods;
 
 /**
  * A text value
+ *
  * @author J. Férard
  */
 public class TextValue implements CellValue {

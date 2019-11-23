@@ -24,14 +24,11 @@
 package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.attribute.CellAlign;
-import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PageSection;
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
@@ -39,7 +36,12 @@ import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.CellAlign;
+import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.PageCentering;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.attribute.VerticalAlign;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
@@ -47,9 +49,7 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
-import com.github.jferard.fastods.attribute.VerticalAlign;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
-import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -133,14 +133,14 @@ class L_PeriodicTable {
                 //
                 // ### Style
                 // Cells have a color that depends on the subcategory:
-                final TableCellStyle baseCellStyle = TableCellStyle.builder("ce3")
-                        .textAlign(CellAlign.CENTER)
-                        .verticalAlign(VerticalAlign.MIDDLE).build();
+                final TableCellStyle baseCellStyle =
+                        TableCellStyle.builder("ce3").textAlign(CellAlign.CENTER)
+                                .verticalAlign(VerticalAlign.MIDDLE).build();
 
 
                 // We put those styles in a map:
-                final Map<String, TableCellStyle> cellStyleBySubcategory = new HashMap<String,
-                        TableCellStyle>();
+                final Map<String, TableCellStyle> cellStyleBySubcategory =
+                        new HashMap<String, TableCellStyle>();
                 cellStyleBySubcategory
                         .put("alkali metal", getCellStyle("alkalimetal", SimpleColor.ORANGERED));
                 cellStyleBySubcategory.put("alkaline earth metal",
@@ -164,21 +164,24 @@ class L_PeriodicTable {
 
                 // Cells must be square:
                 final SimpleLength CELL_SIZE = SimpleLength.cm(1.5);
-                final TableColumnStyle tableColumnStyle = TableColumnStyle.builder("co2")
-                        .columnWidth(CELL_SIZE).defaultCellStyle(baseCellStyle).build();
+                final TableColumnStyle tableColumnStyle =
+                        TableColumnStyle.builder("co2").columnWidth(CELL_SIZE)
+                                .defaultCellStyle(baseCellStyle).build();
                 for (int c = 0; c < 18; c++) {
                     table.setColumnStyle(c, tableColumnStyle);
                 }
-                final TableRowStyle tableRowStyle = TableRowStyle.builder("ro2")
-                        .rowHeight(CELL_SIZE).build();
+                final TableRowStyle tableRowStyle =
+                        TableRowStyle.builder("ro2").rowHeight(CELL_SIZE).build();
 
                 // We need some styles:
                 final TextStyle elementStyle = TextProperties.builder().fontSize(SimpleLength.pt(6))
                         .buildHiddenStyle("elementStyle");
-                final TextStyle atomicNumberStyle = TextProperties.builder()
-                        .fontSize(SimpleLength.pt(8)).buildHiddenStyle("atomicNumberStyle");
-                final TextStyle symbolStyle = TextProperties.builder().fontSize(SimpleLength.pt(12))
-                        .fontWeightBold().buildHiddenStyle("symbolStyle");
+                final TextStyle atomicNumberStyle =
+                        TextProperties.builder().fontSize(SimpleLength.pt(8))
+                                .buildHiddenStyle("atomicNumberStyle");
+                final TextStyle symbolStyle =
+                        TextProperties.builder().fontSize(SimpleLength.pt(12)).fontWeightBold()
+                                .buildHiddenStyle("symbolStyle");
 
                 // ### Cells content
                 // The row of the element is given by its `period` and the column is the `pt_group`.
@@ -233,12 +236,12 @@ class L_PeriodicTable {
                     //
                     final TableRowImpl row = table.getRow(r);
                     row.setRowStyle(tableRowStyle);
-                    final Text text = TextBuilder.create()
-                            .parStyledContent(elementName, elementStyle)
-                            .parStyledContent(String.valueOf(atomicNumber), atomicNumberStyle)
-                            .parStyledContent(symbol, symbolStyle)
-                            .parStyledContent(String.format("%.3f", atomicWeight), elementStyle)
-                            .build();
+                    final Text text =
+                            TextBuilder.create().parStyledContent(elementName, elementStyle)
+                                    .parStyledContent(String.valueOf(atomicNumber),
+                                            atomicNumberStyle).parStyledContent(symbol, symbolStyle)
+                                    .parStyledContent(String.format("%.3f", atomicWeight),
+                                            elementStyle).build();
 
                     final TableCell cell = row.getOrCreateCell(c);
                     cell.setText(text);
@@ -251,27 +254,30 @@ class L_PeriodicTable {
                     // ### Printing
                     // It's almost over. We just need a footer and a header. It's a copycat from
                     // the previous section:
-                    final TextStyle titleStyle = TextProperties.builder().fontWeightBold()
-                            .fontSize(SimpleLength.pt(24)).buildHiddenStyle("title");
-                    final TextStyle dedicationStyle = TextProperties.builder()
-                            .fontSize(SimpleLength.pt(8)).fontStyleItalic()
-                            .buildHiddenStyle("dedication");
-                    final Text headerText = Text.builder()
-                            .parStyledContent("Periodic Table", titleStyle)
-                            .parStyledContent("For Maia", dedicationStyle).build();
+                    final TextStyle titleStyle =
+                            TextProperties.builder().fontWeightBold().fontSize(SimpleLength.pt(24))
+                                    .buildHiddenStyle("title");
+                    final TextStyle dedicationStyle =
+                            TextProperties.builder().fontSize(SimpleLength.pt(8)).fontStyleItalic()
+                                    .buildHiddenStyle("dedication");
+                    final Text headerText =
+                            Text.builder().parStyledContent("Periodic Table", titleStyle)
+                                    .parStyledContent("For Maia", dedicationStyle).build();
                     final Header header = PageSection.simpleBuilder().text(headerText)
                             .minHeight(SimpleLength.cm(2)).buildHeader();
                     final String footerText = XMLUtil.create().escapeXMLContent(
                             "Copyright (C) 2019 J. Férard <https://github.com/jferard> " +
                                     "Creative Commons BY-SA / created with FastODS " +
                                     "(https://github.com/jferard/fastods)");
-                    final Footer footer = PageSection.simpleBuilder()
-                            .styledContent(footerText, dedicationStyle).buildFooter();
-                    final PageStyle pageStyle = PageStyle.builder("page").header(header)
-                            .footer(footer).printOrientationHorizontal().scaleTo(95)
-                            .centering(PageCentering.BOTH).build();
-                    final TableStyle tableStyle = TableStyle.builder("table").pageStyle(pageStyle)
-                            .build();
+                    final Footer footer =
+                            PageSection.simpleBuilder().styledContent(footerText, dedicationStyle)
+                                    .buildFooter();
+                    final PageStyle pageStyle =
+                            PageStyle.builder("page").header(header).footer(footer)
+                                    .printOrientationHorizontal().scaleTo(95)
+                                    .centering(PageCentering.BOTH).build();
+                    final TableStyle tableStyle =
+                            TableStyle.builder("table").pageStyle(pageStyle).build();
                     table.setStyle(tableStyle);
                 }
             } catch (final SQLException e) {
@@ -294,8 +300,9 @@ class L_PeriodicTable {
     // Finally, the expected functions:
     // I use Guava to convert this resources to Strings:
     private static String resourceToString(final String resourceName) throws IOException {
-        final Reader reader = Resources
-                .asCharSource(Resources.getResource(resourceName), Charsets.UTF_8).openStream();
+        final Reader reader =
+                Resources.asCharSource(Resources.getResource(resourceName), Charsets.UTF_8)
+                        .openStream();
         return CharStreams.toString(reader);
     }
 
@@ -303,8 +310,7 @@ class L_PeriodicTable {
     private static TableCellStyle getCellStyle(final String name, final Color color) {
         return TableCellStyle.builder(name).textAlign(CellAlign.CENTER)
                 .verticalAlign(VerticalAlign.MIDDLE).backgroundColor(color)
-                .borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderStyle.SOLID)
-                .build();
+                .borderAll(SimpleLength.pt(2), SimpleColor.BLACK, BorderStyle.SOLID).build();
     }
 
     // *Note*: The code of this section is badly structured because of the tutorial format. I

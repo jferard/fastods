@@ -100,7 +100,8 @@ public class LinkTest {
 
     @Test
     public final void testStyleURL() throws IOException {
-        final Link link = Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
+        final Link link =
+                Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"https://www.github" +
                         ".com/jferard/fastods\" " + "xlink" + ":type=\"simple\">url</text:a>",
@@ -151,7 +152,8 @@ public class LinkTest {
     public final void testStyleString() throws IOException {
         final Link link = Link.create("file", this.ts, "s");
         TestHelper.assertXMLEquals(
-                "<text:a text:style-name=\"test\" xlink:href=\"s\" xlink:type=\"simple\">file</text:a>",
+                "<text:a text:style-name=\"test\" xlink:href=\"s\" " +
+                        "xlink:type=\"simple\">file</text:a>",
                 link);
     }
 

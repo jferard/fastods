@@ -26,10 +26,12 @@ package com.github.jferard.fastods.examples;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.attribute.Angle;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DateTimeStyleFormat;
 import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
@@ -37,8 +39,6 @@ import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.attribute.Angle;
-import com.github.jferard.fastods.attribute.SimpleLength;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,8 +62,9 @@ class E_SettingTheCellStyle {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Setting the Cell Style
         // Let's try to add some shapes and colors. First, we have to create a style for the header:
-        final TableCellStyle grayStyle = TableCellStyle.builder("gray")
-                .backgroundColor(SimpleColor.GRAY64).fontWeightBold().build();
+        final TableCellStyle grayStyle =
+                TableCellStyle.builder("gray").backgroundColor(SimpleColor.GRAY64).fontWeightBold()
+                        .build();
 
         // The functions calls are chained in a fluent style.
         //
@@ -79,8 +80,9 @@ class E_SettingTheCellStyle {
         // In LO, you'll see a new style named "gray" in the "Styles" window. That's because
         // `TableCellStyle`s are visible by default. We can make a style hidden by adding a
         // `hidden()` call:
-        final TableCellStyle hiddenGrayStyle = TableCellStyle.builder("hiddenGray")
-                .backgroundColor(SimpleColor.GRAY64).fontWeightBold().hidden().build();
+        final TableCellStyle hiddenGrayStyle =
+                TableCellStyle.builder("hiddenGray").backgroundColor(SimpleColor.GRAY64)
+                        .fontWeightBold().hidden().build();
 
         walker.next();
         walker.setStringValue("A2");
@@ -102,18 +104,20 @@ class E_SettingTheCellStyle {
         // In most of the cases, you can simply ignore the distinction.
         //
         // Let's continue with a new style:
-        final TableCellStyle rotateStyle = TableCellStyle.builder("rotate")
-                .fontColor(SimpleColor.RED).textRotating(Angle.deg(37)).build();
+        final TableCellStyle rotateStyle =
+                TableCellStyle.builder("rotate").fontColor(SimpleColor.RED)
+                        .textRotating(Angle.deg(37)).build();
 
         walker.next();
         walker.setStringValue("A3");
         walker.setStyle(rotateStyle);
 
         // You can explore the `TableCellStyle` to create the style you need. A last example:
-        final TableCellStyle borderStyle = TableCellStyle.builder("border")
-                .fontName(LOFonts.DEJAVU_SANS).fontSize(SimpleLength.pt(24))
-                .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderStyle.OUTSET)
-                .build();
+        final TableCellStyle borderStyle =
+                TableCellStyle.builder("border").fontName(LOFonts.DEJAVU_SANS)
+                        .fontSize(SimpleLength.pt(24))
+                        .borderAll(SimpleLength.mm(2), SimpleColor.BLUE, BorderStyle.OUTSET)
+                        .build();
 
         walker.next();
         walker.setStringValue("A4");
@@ -124,8 +128,8 @@ class E_SettingTheCellStyle {
         // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
         // the height of the row was not adapted. You have to adapt it yourself. Let's try with
         // another row:
-        final TableRowStyle tallRowStyle = TableRowStyle.builder("tall-row")
-                .rowHeight(SimpleLength.cm(3)).
+        final TableRowStyle tallRowStyle =
+                TableRowStyle.builder("tall-row").rowHeight(SimpleLength.cm(3)).
                         build();
 
         walker.nextRow();
@@ -143,8 +147,8 @@ class E_SettingTheCellStyle {
 
         // You can also add a column style. `walker.setColumnStyle(...)` is equivalent here to
         // `table.setColumnStyle(0, ...):
-        final TableColumnStyle wideColumn = TableColumnStyle.builder("wide-col")
-                .columnWidth(SimpleLength.cm(9)).build();
+        final TableColumnStyle wideColumn =
+                TableColumnStyle.builder("wide-col").columnWidth(SimpleLength.cm(9)).build();
         walker.setColumnStyle(wideColumn);
 
         // We add a content and a style to the cell.

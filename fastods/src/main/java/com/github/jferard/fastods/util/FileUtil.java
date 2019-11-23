@@ -24,7 +24,7 @@ public class FileUtil {
 
     /**
      * @param bufferSize the size of the cop)y buffer
-     * @param startSize the initial size of the byte array
+     * @param startSize  the initial size of the byte array
      */
     public FileUtil(final int bufferSize, final int startSize) {
         this.bufferSize = bufferSize;
@@ -61,7 +61,7 @@ public class FileUtil {
     /**
      * Fills a byte array with the content of a stream.
      *
-     * @param is the stream to read
+     * @param is              the stream to read
      * @param customStartSize the initial size of the byte array
      * @return the byte array
      * @throws IOException if an I/O occurs

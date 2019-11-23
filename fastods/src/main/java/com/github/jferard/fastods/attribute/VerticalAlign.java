@@ -1,7 +1,5 @@
 package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.attribute.AttributeValue;
-
 /**
  * A vertical alignment
  * 20.386 style:vertical-align

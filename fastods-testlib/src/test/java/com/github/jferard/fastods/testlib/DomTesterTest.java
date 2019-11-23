@@ -24,8 +24,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.powermock.api.easymock.PowerMock;
-import org.xml.sax.SAXParseException;
 
 /**
  *

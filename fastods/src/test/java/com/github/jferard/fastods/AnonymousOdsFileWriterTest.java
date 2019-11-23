@@ -24,11 +24,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -130,7 +125,9 @@ public class AnonymousOdsFileWriterTest {
         }
 
         if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > 2) {
-            System.out.println(String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE, buf.length));
+            System.out.println(
+                    String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE,
+                            buf.length));
             Assert.fail();
         }
         Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
@@ -248,7 +245,9 @@ public class AnonymousOdsFileWriterTest {
         Collections.sort(names);
 
         if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 4) {
-            System.out.println(String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2, buf.length));
+            System.out.println(
+                    String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2,
+                            buf.length));
             Assert.fail();
         }
         // Every element appears twice
@@ -274,8 +273,9 @@ public class AnonymousOdsFileWriterTest {
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getNamedDocument();
-        final NamedOdsFileWriter writer = new OdsFileWriterBuilder(this.logger, document)
-                .zipBuilder(zb).filename(temp.getAbsolutePath()).build();
+        final NamedOdsFileWriter writer =
+                new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb)
+                        .filename(temp.getAbsolutePath()).build();
         writer.save();
 
         PowerMock.verifyAll();
@@ -296,8 +296,8 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
         this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements.writeMimeType(EasyMock.eq(this.xmlUtil),
-                EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeMimeType(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
@@ -305,8 +305,7 @@ public class AnonymousOdsFileWriterTest {
                 .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeManifest(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements
-                .writeExtras(EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeExtras(EasyMock.isA(ZipUTF8Writer.class));
         outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();
@@ -346,8 +345,8 @@ public class AnonymousOdsFileWriterTest {
         EasyMock.expect(this.builder.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
 
         this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements.writeMimeType(EasyMock.eq(this.xmlUtil),
-                EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeMimeType(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
@@ -355,8 +354,7 @@ public class AnonymousOdsFileWriterTest {
                 .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeManifest(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements
-                .writeExtras(EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeExtras(EasyMock.isA(ZipUTF8Writer.class));
         outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();

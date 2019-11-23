@@ -58,12 +58,12 @@ public class StringValue implements CellValue {
 
     @Override
     public boolean equals(final Object o) {
-		if (o == this) {
-			return true;
-		}
-		if (!(o instanceof StringValue)) {
-			return false;
-		}
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StringValue)) {
+            return false;
+        }
 
         final StringValue other = (StringValue) o;
         return this.value.equals(other.value);
