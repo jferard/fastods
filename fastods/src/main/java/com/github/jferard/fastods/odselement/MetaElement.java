@@ -28,7 +28,8 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 
 /**
@@ -39,38 +40,66 @@ import java.util.zip.ZipEntry;
  * @author Martin Schulz
  */
 public class MetaElement implements OdsElement {
+    public static final String GENERATOR = "FastOds/0.7.2";
+    public static final String OFFICE_VERSION = "1.2";
+
     /**
      * the date format: 2017-12-31
      */
-    final static SimpleDateFormat DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+    final static SimpleDateFormat DF_DATE;
+    static {
+        DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+        DF_DATE.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
     /**
      * the time format: 18:12:59
      */
-    final static SimpleDateFormat DF_TIME = new SimpleDateFormat("HH:mm:ss");
+    final static SimpleDateFormat DF_TIME;
+    static {
+        DF_TIME = new SimpleDateFormat("HH:mm:ss");;
+        DF_TIME.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    public static MetaElementBuilder builder() {
+        return new MetaElementBuilder();
+    }
+
+    public static MetaElement create() {
+        return new MetaElementBuilder().build();
+    }
+
+    private final String description;
+    private final String language;
+    private final String subject;
+    private final String title;
     private final String editingCycles;
     private final String editingDuration;
-    private final String generator;
-    private String creator;
-    private String dateTime;
+    private final String initialCreator;
+    private final List<String> keyWords;
+    private final List<UserDefined> userDefineds;
+    private final String creator;
+    private final String dateTime;
 
     /**
      * Create a new meta element
      */
-    public MetaElement() {
-        this.setDateTimeNow();
-        this.generator = "FastOds 0.7.2";
-        this.creator = "FastOds 0.7.2";
-        this.editingCycles = "1";
-        this.editingDuration = "PT1M00S";
-    }
-
-    /**
-     * Set the create of the document
-     *
-     * @param creator the creator's name (e.g. J. Férard)
-     */
-    public void setCreator(final String creator) {
+    public MetaElement(final String creator, final String dateTime, final String description,
+                       final String language, final String subject, final String title,
+                       final String editingCycles, final String editingDuration,
+                       final String initialCreator, final List<String> keyWords,
+                       final List<UserDefined> userDefineds) {
+        this.dateTime = dateTime;
         this.creator = creator;
+        this.description = description;
+        this.language = language;
+        this.subject = subject;
+        this.title = title;
+        this.editingCycles = editingCycles;
+        this.editingDuration = editingDuration;
+        this.initialCreator = initialCreator;
+        this.keyWords = keyWords;
+        this.userDefineds = userDefineds;
     }
 
     @Override
@@ -87,32 +116,37 @@ public class MetaElement implements OdsElement {
         util.appendAttribute(writer, "xmlns:meta",
                 "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
         util.appendAttribute(writer, "xmlns:ooo", "http://openoffice.org/2004/office");
-        util.appendAttribute(writer, "office:version", "1.2");
+        util.appendAttribute(writer, "office:version", OFFICE_VERSION);
         writer.append("><office:meta>");
-        util.appendTag(writer, "meta:generator", this.generator);
         util.appendTag(writer, "dc:creator", this.creator);
         util.appendTag(writer, "dc:date", this.dateTime);
+        if (this.description != null) {
+            util.appendTag(writer, "dc:description", this.description);
+        }
+        if (this.language != null) {
+            util.appendTag(writer, "dc:language", this.language);
+        }
+        if (this.subject != null) {
+            util.appendTag(writer, "dc:subject", this.subject);
+        }
+        if (this.title != null) {
+            util.appendTag(writer, "dc:title", this.title);
+        }
+        util.appendTag(writer, "meta:generator", GENERATOR);
         util.appendTag(writer, "meta:editing-cycles", this.editingCycles);
         util.appendTag(writer, "meta:editing-duration", this.editingDuration);
-        writer.append("<meta:user-defined meta:name=\"Info 1\"/>")
-                .append("<meta:user-defined meta:name=\"Info 2\"/>")
-                .append("<meta:user-defined meta:name=\"Info 3\"/>")
-                .append("<meta:user-defined meta:name=\"Info 4\"/>");
-        // .append("<meta:document-statistic");
-        // util.appendAttribute(writer, "meta:table-count", this.tableCount);
-        // util.appendAttribute(writer, "meta:cell-count", this.cellCount);
-        // writer.append("/>")
+        if (this.initialCreator != null) {
+            util.appendTag(writer, "meta:initial-creator", this.initialCreator);
+        }
+        for (final String keyword : this.keyWords) {
+            util.appendTag(writer, "meta:keyword", keyword);
+        }
+        for (final UserDefined userDefined : this.userDefineds) {
+            userDefined.appendXMLContent(util, writer);
+        }
+        //TODO: <meta:document-statistic ...>"
         writer.append("</office:meta>").append("</office:document-meta>");
         writer.flush();
         writer.closeEntry();
-    }
-
-    /**
-     * Store the date and time of the document creation in the MetaElement data.
-     */
-    private void setDateTimeNow() {
-        final Date dt = new Date();
-
-        this.dateTime = MetaElement.DF_DATE.format(dt) + "T" + MetaElement.DF_TIME.format(dt);
     }
 }

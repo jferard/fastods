@@ -57,6 +57,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -65,7 +67,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5233;
+    private static final int EMPTY_DOCUMENT_SIZE = 5215;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -80,6 +82,9 @@ public class AnonymousOdsFileWriterTest {
     @Before
     public final void setUp() {
         this.logger = PowerMock.createNiceMock(Logger.class);
+        final ConsoleHandler handler = new ConsoleHandler();
+        handler.setLevel(Level.FINEST);
+        this.logger.addHandler(handler);
         this.os = new ByteArrayOutputStream();
         this.xmlUtil = XMLUtil.create();
         this.odsElements = PowerMock.createMock(OdsElements.class);
@@ -124,7 +129,10 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        Assert.assertTrue(Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) <= 2);
+        if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > 2) {
+            System.out.println(String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE, buf.length));
+            Assert.fail();
+        }
         Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
                 "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                 "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
@@ -239,7 +247,10 @@ public class AnonymousOdsFileWriterTest {
         }
         Collections.sort(names);
 
-        Assert.assertTrue(Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) <= 10);
+        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 4) {
+            System.out.println(String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2, buf.length));
+            Assert.fail();
+        }
         // Every element appears twice
         Assert.assertEquals(
                 Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",

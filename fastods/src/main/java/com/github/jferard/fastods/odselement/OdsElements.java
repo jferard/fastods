@@ -93,16 +93,16 @@ public class OdsElements implements StylesContainer {
      * @param writeUtil       an util for write
      * @param format          the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
+     * @param metaElement
      * @return a new OdsElements, with newly build elements.
      */
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
                                      final WriteUtil writeUtil, final DataStyles format,
-                                     final boolean libreOfficeMode) {
+                                     final boolean libreOfficeMode, final MetaElement metaElement) {
         final Logger logger = Logger.getLogger(OdsElements.class.getName());
         final MimetypeElement mimetypeElement = new MimetypeElement();
         final ManifestElement manifestElement = ManifestElement.create();
         final SettingsElement settingsElement = SettingsElement.create();
-        final MetaElement metaElement = new MetaElement();
         final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
         final StylesElement stylesElement = new StylesElement(stylesContainer);
         final ContentElement contentElement =

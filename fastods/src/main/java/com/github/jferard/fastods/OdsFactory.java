@@ -25,12 +25,13 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.odselement.MetaElement;
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.ref.PositionUtil;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.FileExists;
 import com.github.jferard.fastods.util.FileOpen;
 import com.github.jferard.fastods.util.FileOpenResult;
-import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -69,7 +70,8 @@ public class OdsFactory {
         final WriteUtil writeUtil = WriteUtil.create();
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles format = DataStylesBuilder.create(locale).build();
-        return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format, true);
+        return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format, true,
+                MetaElement.create());
     }
 
     private final Logger logger;
@@ -78,6 +80,7 @@ public class OdsFactory {
     private final XMLUtil xmlUtil;
     private DataStyles format;
     private boolean libreOfficeMode;
+    private MetaElement metaElement;
 
     /**
      * Create a new OdsFactory
@@ -90,13 +93,15 @@ public class OdsFactory {
      * @param libreOfficeMode try to get full compatibility with LO if true
      */
     OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
-               final XMLUtil xmlUtil, final DataStyles format, final boolean libreOfficeMode) {
+               final XMLUtil xmlUtil, final DataStyles format, final boolean libreOfficeMode,
+               final MetaElement metaElement) {
         this.logger = logger;
         this.positionUtil = positionUtil;
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
         this.format = format;
         this.libreOfficeMode = libreOfficeMode;
+        this.metaElement = metaElement;
     }
 
     /**
@@ -122,6 +127,11 @@ public class OdsFactory {
         return this;
     }
 
+    public OdsFactory metaElement(final MetaElement metaElement) {
+        this.metaElement = metaElement;
+        return this;
+    }
+
     /**
      * Create a new, empty document for an anonymous writer. Use addTable to add tables.
      *
@@ -130,7 +140,7 @@ public class OdsFactory {
     private AnonymousOdsDocument createAnonymousDocument() {
         final OdsElements odsElements = OdsElements
                 .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
-                        this.libreOfficeMode);
+                        this.libreOfficeMode, this.metaElement);
         return AnonymousOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
 
@@ -142,7 +152,7 @@ public class OdsFactory {
     private NamedOdsDocument createNamedDocument() {
         final OdsElements odsElements = OdsElements
                 .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
-                        this.libreOfficeMode);
+                        this.libreOfficeMode, this.metaElement);
         return NamedOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
 
@@ -181,8 +191,9 @@ public class OdsFactory {
      */
     public NamedOdsFileWriter createWriter(final File file) throws IOException {
         final NamedOdsDocument document = this.createNamedDocument();
-        final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document)
-                .openResult(this.openFile(file)).build();
+        final NamedOdsFileWriter writer =
+                OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file))
+                        .build();
         document.addObserver(writer);
         document.prepare();
         return writer;
@@ -198,9 +209,9 @@ public class OdsFactory {
     public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
         final NamedOdsDocument document = this.createNamedDocument();
         final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
-        final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter
-                .create(this.logger, OdsFileDirectWriter.builder(this.logger, document)
-                        .openResult(this.openFile(file)).zipBuilder(zipUTF8Writer).build());
+        final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(this.logger,
+                OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file))
+                        .zipBuilder(zipUTF8Writer).build());
         document.addObserver(writerAdapter);
         document.prepare();
         return writerAdapter;

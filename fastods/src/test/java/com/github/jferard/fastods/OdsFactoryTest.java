@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.odselement.MetaElement;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.After;
@@ -60,7 +61,8 @@ public class OdsFactoryTest {
     @Test
     public void createFactory() {
         final OdsFactory factory = OdsFactory.create()
-                .dataStyles(DataStylesBuilder.create(Locale.US).build()).noLibreOfficeMode();
+                .dataStyles(DataStylesBuilder.create(Locale.US).build()).noLibreOfficeMode().metaElement(
+                        MetaElement.create());
         factory.createWriter();
     }
 
