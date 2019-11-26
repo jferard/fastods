@@ -31,10 +31,12 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
+import com.github.jferard.fastods.tool.ResultSetDataWrapperBuilder;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
@@ -216,9 +218,26 @@ class J_Misc {
                         }
                     };
 
-            // And skip another row, then write the result:
+            // We pass the converter to the builder.
+            final ResultSetDataWrapperBuilder builder = ResultSetDataWrapper.builder("3", rs3).converter(converter);
+
+            // Note that the wrapper accepts type hints to improve the presentation.
+            // Without hint, the columns 2 (the `price`) and 3 (the `tax`) are floats.
+            // Let the column 2 be a currency
+            builder.typeValue(2, CellType.CURRENCY);
+            // and the column 3 be a percentage.
+            builder.typeValue(3, CellType.PERCENTAGE);
+
+            // To be complete, we let the column 0 be a string. It's useless because `id` has the type `CHAR(12)` and is
+            // already converted to a string.
+            builder.typeValue(0, CellType.STRING);
+
+            // Build the wrapper.
+            final ResultSetDataWrapper wrapper = builder.build();
+
+            // Now, skip another row, then write the result:
             walker.toRow(12);
-            walker.addData(ResultSetDataWrapper.builder("3", rs3).converter(converter).build());
+            walker.addData(wrapper);
         } finally {
             conn.close();
         }
