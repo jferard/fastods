@@ -40,7 +40,7 @@ import java.util.zip.ZipEntry;
  * @author Martin Schulz
  */
 public class MetaElement implements OdsElement {
-    public static final String GENERATOR = "FastOds/0.7.2";
+    public static final String GENERATOR = "FastOds/0.7.3";
     public static final String OFFICE_VERSION = "1.2";
 
     /**

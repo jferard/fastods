@@ -339,6 +339,7 @@ public class AnonymousOdsFileWriterTest {
     public final void testSaveWithWriter() throws IOException {
         final OutputStream outputStream = PowerMock.createMock(OutputStream.class);
         final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
+        final File temp = File.createTempFile("temp-fastods", ".tmp");
 
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
@@ -363,7 +364,7 @@ public class AnonymousOdsFileWriterTest {
 
         PowerMock.replayAll();
         final AnonymousOdsDocument document = this.getAnonymousDocument();
-        new AnonymousOdsFileWriter(this.logger, document).saveAs("test", this.builder);
+        new AnonymousOdsFileWriter(this.logger, document).saveAs(temp, this.builder);
 
         PowerMock.verifyAll();
     }

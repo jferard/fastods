@@ -44,11 +44,11 @@ package com.github.jferard.fastods.examples;
 //      <dependency>
 //          <groupId>com.github.jferard</groupId>
 //          <artifactId>fastods</artifactId>
-//          <version>0.6.2</version>
+//          <version>0.7.2</version>
 //      </dependency>
 //
 // For other build tools, look at:
-// https://search.maven.org/artifact/com.github.jferard/fastods/0.6.2/jar
+// https://search.maven.org/artifact/com.github.jferard/fastods/0.7.2/jar
 //
 // [TOC]
 //
