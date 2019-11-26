@@ -24,7 +24,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jferard</groupId>
     <artifactId>fastods-parent</artifactId>
-    <version>0.7.2</version>
+    <version>0.7.3-SNAPSHOT</version>
     <name>FastODS parent</name>
     <packaging>pom</packaging>
     <description>A very fast and lightweight (no dependency) library for creating ODS (Open Document
@@ -58,7 +58,7 @@
         <connection>scm:git:git@github.com:jferard/fastods.git</connection>
         <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
         <url>git@github.com:jferard/fastods.git</url>
-        <tag>fastods-parent-0.7.2</tag>
+        <tag>fastods-parent-0.6.2-SNAPSHOT</tag>
     </scm>
 
     <distributionManagement>
