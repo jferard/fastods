@@ -84,7 +84,7 @@ public class TableCellStyleBuilder
      * @param parentCellStyle the parent style
      * @param borders         the borders of the cell
      * @param margins         the margins of the cell
-     * @param textRotating        an angle for the rotation
+     * @param textRotating    an angle for the rotation
      */
     public TableCellStyleBuilder(final String name, final boolean hidden, final Borders borders,
                                  final Margins margins, final DataStyle dataStyle,
@@ -140,8 +140,18 @@ public class TableCellStyleBuilder
      */
     public TableCellStyleBuilder borderAll(final Length size, final Color borderColor,
                                            final BorderStyle style) {
-        final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-        this.bordersBuilder.all(bs);
+        final BorderAttribute borderAttribute = new BorderAttribute(size, borderColor, style);
+        return this.borderAll(borderAttribute);
+    }
+
+    /**
+     * Add a border style for all the borders of this cell.
+     *
+     * @param borderAttribute the attribute for the border
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder borderAll(final BorderAttribute borderAttribute) {
+        this.bordersBuilder.all(borderAttribute);
         return this;
     }
 
@@ -156,8 +166,18 @@ public class TableCellStyleBuilder
      */
     public TableCellStyleBuilder borderBottom(final Length size, final Color borderColor,
                                               final BorderStyle style) {
-        final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-        this.bordersBuilder.bottom(bs);
+        final BorderAttribute borderAttribute = new BorderAttribute(size, borderColor, style);
+        return this.borderBottom(borderAttribute);
+    }
+
+    /**
+     * Add a border style for the bottom border of this cell.
+     *
+     * @param borderAttribute the attribute for the border
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder borderBottom(final BorderAttribute borderAttribute) {
+        this.bordersBuilder.bottom(borderAttribute);
         return this;
     }
 
@@ -172,8 +192,18 @@ public class TableCellStyleBuilder
      */
     public TableCellStyleBuilder borderLeft(final Length size, final Color borderColor,
                                             final BorderStyle style) {
-        final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-        this.bordersBuilder.left(bs);
+        final BorderAttribute borderAttribute = new BorderAttribute(size, borderColor, style);
+        return this.borderLeft(borderAttribute);
+    }
+
+    /**
+     * Add a border style for the left border of this cell.
+     *
+     * @param borderAttribute the attribute for the border
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder borderLeft(final BorderAttribute borderAttribute) {
+        this.bordersBuilder.left(borderAttribute);
         return this;
     }
 
@@ -188,8 +218,18 @@ public class TableCellStyleBuilder
      */
     public TableCellStyleBuilder borderRight(final Length size, final Color borderColor,
                                              final BorderStyle style) {
-        final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-        this.bordersBuilder.right(bs);
+        final BorderAttribute borderAttribute = new BorderAttribute(size, borderColor, style);
+        return this.borderRight(borderAttribute);
+    }
+
+    /**
+     * Add a border style for the left border of this cell.
+     *
+     * @param borderAttribute the attribute for the border
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder borderRight(final BorderAttribute borderAttribute) {
+        this.bordersBuilder.right(borderAttribute);
         return this;
     }
 
@@ -204,10 +244,21 @@ public class TableCellStyleBuilder
      */
     public TableCellStyleBuilder borderTop(final Length size, final Color borderColor,
                                            final BorderStyle style) {
-        final BorderAttribute bs = new BorderAttribute(size, borderColor, style);
-        this.bordersBuilder.top(bs);
+        final BorderAttribute borderAttribute = new BorderAttribute(size, borderColor, style);
+        return this.borderTop(borderAttribute);
+    }
+
+    /**
+     * Add a border style for the top border of this cell.
+     *
+     * @param borderAttribute the attribute for the border
+     * @return this for fluent style
+     */
+    public TableCellStyleBuilder borderTop(final BorderAttribute borderAttribute) {
+        this.bordersBuilder.top(borderAttribute);
         return this;
     }
+
 
     @Override
     public TableCellStyle build() {

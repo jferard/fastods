@@ -23,6 +23,7 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.attribute.BorderStyle;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
@@ -72,6 +73,31 @@ public class TableCellStyleTest {
                 "fo:border-left=\"4pt " +
                 "double #00008b\" fo:border-right=\"2pt solid #f5f5dc\" " +
                 "fo:border-top=\"1pt double " + "#00ffff\"/>" + "</style:style>", tcs);
+    }
+
+    @Test
+    public final void testSimpleBorders() throws IOException {
+        final BorderAttribute borderAttribute =
+                new BorderAttribute(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE);
+        final TableCellStyle tcs = TableCellStyle.builder("test").borderTop(borderAttribute)
+                .borderBottom(borderAttribute).borderLeft(borderAttribute)
+                .borderRight(borderAttribute).build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
+                "style:parent-style-name=\"Default\"><style:table-cell-properties fo:border=\"1pt" +
+                " double #00ffff\"/></style:style>", tcs);
+    }
+
+    @Test
+    public final void testSimpleBordersAll() throws IOException {
+        final BorderAttribute borderAttributeTop =
+                new BorderAttribute(SimpleLength.pt(1.0), SimpleColor.AQUA, BorderStyle.DOUBLE);
+        final BorderAttribute borderAttribute =
+                new BorderAttribute(SimpleLength.pt(2.0), SimpleColor.BLACK, BorderStyle.DOUBLE);
+        final TableCellStyle tcs = TableCellStyle.builder("test").borderTop(borderAttributeTop)
+                .borderAll(borderAttribute).build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
+                "style:parent-style-name=\"Default\"><style:table-cell-properties fo:border=\"2pt" +
+                " double #000000\" fo:border-top=\"1pt double #00ffff\"/></style:style>", tcs);
     }
 
     @Test

@@ -71,30 +71,34 @@ public class Borders implements TagParameters {
             throws IOException {
         // See: https://www.w3.org/TR/CSS2/box.html#propdef-border
         if (this.all == null) {
-            if (this.top != null) {
-                this.top.appendXMLAttribute(util, appendable, "fo:border-top");
-            }
-            if (this.right != null) {
-                this.right.appendXMLAttribute(util, appendable, "fo:border-right");
-            }
-            if (this.bottom != null) {
-                this.bottom.appendXMLAttribute(util, appendable, "fo:border-bottom");
-            }
-            if (this.left != null) {
-                this.left.appendXMLAttribute(util, appendable, "fo:border-left");
+            if (this.top != null && this.top.equals(this.bottom) && this.top.equals(this.right) && this.top.equals(this.left)) {
+                this.top.appendXMLAttribute(util, appendable, "fo:border");
+            } else {
+                if (this.top != null) {
+                    this.top.appendXMLAttribute(util, appendable, "fo:border-top");
+                }
+                if (this.right != null) {
+                    this.right.appendXMLAttribute(util, appendable, "fo:border-right");
+                }
+                if (this.bottom != null) {
+                    this.bottom.appendXMLAttribute(util, appendable, "fo:border-bottom");
+                }
+                if (this.left != null) {
+                    this.left.appendXMLAttribute(util, appendable, "fo:border-left");
+                }
             }
         } else { // this.all != null
             this.all.appendXMLAttribute(util, appendable, "fo:border");
-            if (this.top != null && !this.top.equals(this.all)) {
+            if (!(this.top == null || this.top.equals(this.all))) {
                 this.top.appendXMLAttribute(util, appendable, "fo:border-top");
             }
-            if (this.right != null && !this.right.equals(this.all)) {
+            if (!(this.right == null || this.right.equals(this.all))) {
                 this.right.appendXMLAttribute(util, appendable, "fo:border-right");
             }
-            if (this.bottom != null && !this.bottom.equals(this.all)) {
+            if (!(this.bottom == null || this.bottom.equals(this.all))) {
                 this.bottom.appendXMLAttribute(util, appendable, "fo:border-bottom");
             }
-            if (this.left != null && !this.left.equals(this.all)) {
+            if (!(this.left == null || this.left.equals(this.all))) {
                 this.left.appendXMLAttribute(util, appendable, "fo:border-left");
             }
         }
