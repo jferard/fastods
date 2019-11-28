@@ -25,10 +25,14 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TagParameters;
 import com.github.jferard.fastods.attribute.Color;
+import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * OpenDocument 16.27.28
@@ -46,11 +50,12 @@ public class TextProperties implements TagParameters {
 
     private final Color fontColor;
     private final String fontName;
-    private final String fontSize;
     private final String fontStyle;
     private final Color fontUnderlineColor;
     private final Underline fontUnderlineStyle;
     private final String fontWeight;
+    private final Length fontSizeLength;
+    private final double fontSizePercentage;
 
     /**
      * Create a new text style with the name name.
@@ -58,19 +63,23 @@ public class TextProperties implements TagParameters {
      * @param fontColor          the font color
      * @param fontName           the font name
      * @param fontWeight         the font weight
-     * @param fontStyle          the fon style
-     * @param fontSize           the font size
+     * @param fontStyle          the font style
+     * @param fontSizePercentage the font size percentage, or -1. Exclusive with fontSizeLength
+     * @param fontSizeLength     the font size percentage, or null. Exclusive with
+     *                           fontSizePercentage
      * @param fontUnderlineColor the font underline color
      * @param fontUnderlineStyle the font underline style
      */
     TextProperties(final Color fontColor, final String fontName, final String fontWeight,
-                   final String fontStyle, final String fontSize, final Color fontUnderlineColor,
+                   final String fontStyle, final double fontSizePercentage,
+                   final Length fontSizeLength, final Color fontUnderlineColor,
                    final Underline fontUnderlineStyle) {
         this.fontColor = fontColor;
         this.fontName = fontName;
         this.fontWeight = fontWeight;
         this.fontStyle = fontStyle;
-        this.fontSize = fontSize;
+        this.fontSizePercentage = fontSizePercentage;
+        this.fontSizeLength = fontSizeLength;
         this.fontUnderlineColor = fontUnderlineColor;
         this.fontUnderlineStyle = fontUnderlineStyle;
     }
@@ -86,6 +95,7 @@ public class TextProperties implements TagParameters {
             util.appendEAttribute(appendable, "style:font-weight-complex", this.fontWeight);
         }
 
+        // Check if the font style should be added
         if (this.fontStyle != null) {
             util.appendEAttribute(appendable, "fo:font-style", this.fontStyle);
             util.appendEAttribute(appendable, "style:font-style-asian", this.fontStyle);
@@ -101,10 +111,17 @@ public class TextProperties implements TagParameters {
             util.appendAttribute(appendable, "style:font-name", this.fontName);
         }
         // Check if a font size should be added
-        if (this.fontSize != null) {
-            util.appendAttribute(appendable, "fo:font-size", this.fontSize);
-            util.appendAttribute(appendable, "style:font-size-asian", this.fontSize);
-            util.appendAttribute(appendable, "style:font-size-complex", this.fontSize);
+        if (this.fontSizePercentage > 0) {
+            final String fontSize = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US))
+                    .format(this.fontSizePercentage) + "%";
+
+            util.appendAttribute(appendable, "fo:font-size", fontSize);
+            util.appendAttribute(appendable, "style:font-size-asian", fontSize);
+            util.appendAttribute(appendable, "style:font-size-complex", fontSize);
+        } else if (this.fontSizeLength != null) {
+            util.appendAttribute(appendable, "fo:font-size", this.fontSizeLength);
+            util.appendAttribute(appendable, "style:font-size-asian", this.fontSizeLength);
+            util.appendAttribute(appendable, "style:font-size-complex", this.fontSizeLength);
         }
 
         if (this.fontUnderlineStyle != null) {
@@ -112,17 +129,11 @@ public class TextProperties implements TagParameters {
                     this.fontUnderlineStyle.attrValue);
             util.appendAttribute(appendable, "style:text-underline-width", "auto");
 
-            // ---------------------------------------------------------------------------------
-            // If any underline color was set, add the color, otherwise use
-            // the
-            // font color
-            // ---------------------------------------------------------------------------------
-            if (this.fontUnderlineColor != SimpleColor.NONE) {
-                util.appendAttribute(appendable, "style:text-underline-color",
-                        this.fontUnderlineColor);
-            } else {
-                util.appendAttribute(appendable, "style:text-underline-color", "font-color");
-            }
+            // If any underline color was set, add the color, otherwise use the font color
+            final String underlineColor =
+                    this.fontUnderlineColor == SimpleColor.NONE ? "font-color" :
+                            this.fontUnderlineColor.getValue();
+            util.appendAttribute(appendable, "style:text-underline-color", underlineColor);
         }
         appendable.append("/>");
     }
@@ -132,9 +143,9 @@ public class TextProperties implements TagParameters {
      */
     public boolean isNotEmpty() {
         return this.fontUnderlineStyle != null || this.fontColor != SimpleColor.NONE ||
-                this.fontSize != null || this.fontStyle != null ||
-                this.fontUnderlineColor != SimpleColor.NONE || this.fontWeight != null ||
-                this.fontName != null;
+                this.fontSizePercentage > 0 || this.fontSizeLength != null ||
+                this.fontStyle != null || this.fontUnderlineColor != SimpleColor.NONE ||
+                this.fontWeight != null || this.fontName != null;
     }
 
     /**
@@ -146,6 +157,12 @@ public class TextProperties implements TagParameters {
         } else {
             return null;
         }
+    }
+
+    public TextPropertiesBuilder toBuilder() {
+        return new TextPropertiesBuilder(this.fontColor, this.fontName, this.fontWeight,
+                this.fontStyle, this.fontSizePercentage, this.fontSizeLength,
+                this.fontUnderlineColor, this.fontUnderlineStyle);
     }
 
     /**

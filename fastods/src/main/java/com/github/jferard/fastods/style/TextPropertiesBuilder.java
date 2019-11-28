@@ -28,21 +28,17 @@ import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.style.TextProperties.Underline;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 /**
  * @author Julien Férard
  */
 public class TextPropertiesBuilder {
     private Color fontColor;
     private String fontName;
-    private Length fontSizeLength;
     private String fontStyle;
     private Color fontUnderlineColor;
     private Underline fontUnderlineStyle;
     private String fontWeight;
+    private Length fontSizeLength;
     private double fontSizePercentage;
 
     /**
@@ -54,21 +50,28 @@ public class TextPropertiesBuilder {
         this.fontUnderlineColor = SimpleColor.NONE;
     }
 
+    public TextPropertiesBuilder(final Color fontColor, final String fontName,
+                                 final String fontWeight, final String fontStyle,
+                                 final double fontSizePercentage, final Length fontSizeLength,
+                                 final Color fontUnderlineColor,
+                                 final Underline fontUnderlineStyle) {
+        this.fontColor = fontColor;
+        this.fontName = fontName;
+        this.fontWeight = fontWeight;
+        this.fontStyle = fontStyle;
+        this.fontSizePercentage = fontSizePercentage;
+        this.fontSizeLength = fontSizeLength;
+        this.fontUnderlineColor = fontUnderlineColor;
+        this.fontUnderlineStyle = fontUnderlineStyle;
+    }
+
     /**
      * @return the TextProperties
      */
     public TextProperties build() {
-        final String fontSize;
-        if (this.fontSizePercentage > 0) {
-            fontSize = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US))
-                    .format(this.fontSizePercentage) + "%";
-        } else if (this.fontSizeLength != null) {
-            fontSize = this.fontSizeLength.toString();
-        } else {
-            fontSize = null;
-        }
         return new TextProperties(this.fontColor, this.fontName, this.fontWeight, this.fontStyle,
-                fontSize, this.fontUnderlineColor, this.fontUnderlineStyle);
+                this.fontSizePercentage, this.fontSizeLength, this.fontUnderlineColor,
+                this.fontUnderlineStyle);
     }
 
     /**

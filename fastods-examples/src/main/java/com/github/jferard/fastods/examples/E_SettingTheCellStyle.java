@@ -112,7 +112,7 @@ class E_SettingTheCellStyle {
         walker.setStringValue("A3");
         walker.setStyle(rotateStyle);
 
-        // You can explore the `TableCellStyle` to create the style you need. A last example:
+        // You can explore the `TableCellStyle` class to create the style you need.
         final TableCellStyle borderStyle =
                 TableCellStyle.builder("border").fontName(LOFonts.DEJAVU_SANS)
                         .fontSize(SimpleLength.pt(24))
@@ -122,10 +122,18 @@ class E_SettingTheCellStyle {
         walker.next();
         walker.setStringValue("A4");
         walker.setStyle(borderStyle);
+
+        // But sometimes, the easier is to start from a given style:
+        final TableCellStyle borderStyleWithRedBG =
+                borderStyle.toBuilder("border-red").backgroundColor(SimpleColor.RED).build();
+        walker.next();
+        walker.setStringValue("A5");
+        walker.setStyle(borderStyleWithRedBG);
+
         // I think you get it now.
 
         // ## Rows and Columns Styles
-        // What do we see? Yes, the last cell is ugly. But it is also partially hidden because
+        // What do we see? Yes, the last cells are ugly. But they are also partially hidden because
         // the height of the row was not adapted. You have to adapt it yourself. Let's try with
         // another row:
         final TableRowStyle tallRowStyle =

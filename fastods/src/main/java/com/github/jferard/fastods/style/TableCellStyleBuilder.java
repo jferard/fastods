@@ -71,6 +71,42 @@ public class TableCellStyleBuilder
     }
 
     /**
+     * Reserved to TableCellStyle.toBuilder()
+     *
+     * @param name            A unique name for this style
+     * @param hidden          true if the style is automatic
+     * @param dataStyle       the style of the data
+     * @param backgroundColor the background color
+     * @param textProperties  the text properties
+     * @param textAlign       horizontal align
+     * @param verticalAlign   vertical align
+     * @param wrap            true if the text is wrapped
+     * @param parentCellStyle the parent style
+     * @param borders         the borders of the cell
+     * @param margins         the margins of the cell
+     * @param textRotating        an angle for the rotation
+     */
+    public TableCellStyleBuilder(final String name, final boolean hidden, final Borders borders,
+                                 final Margins margins, final DataStyle dataStyle,
+                                 final Color backgroundColor, final TextProperties textProperties,
+                                 final CellAlign textAlign, final VerticalAlign verticalAlign,
+                                 final boolean wrap, final TableCellStyle parentCellStyle,
+                                 final Angle textRotating) {
+        this.name = name;
+        this.hidden = hidden;
+        this.dataStyle = dataStyle;
+        this.backgroundColor = backgroundColor;
+        this.textAlign = textAlign;
+        this.verticalAlign = verticalAlign;
+        this.wrap = wrap;
+        this.parentCellStyle = parentCellStyle;
+        this.textRotating = textRotating;
+        this.tpBuilder = textProperties.toBuilder();
+        this.bordersBuilder = borders.toBuilder();
+        this.marginsBuilder = margins.toBuilder();
+    }
+
+    /**
      * Add a margin to this cell.
      *
      * @param size The size of the margin

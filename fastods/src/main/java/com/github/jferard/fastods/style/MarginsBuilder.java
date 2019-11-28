@@ -38,6 +38,31 @@ public class MarginsBuilder {
     private Length top;
 
     /**
+     * Reservered to Margins.toBuilder()
+     *
+     * @param all    the length of all margin
+     * @param top    the length of top margin
+     * @param right  the length of right margin
+     * @param bottom the length of bottom margin
+     * @param left   the length of left margin
+     */
+    MarginsBuilder(final Length all, final Length top, final Length right, final Length bottom,
+            final Length left) {
+        this.all = all;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+        this.left = left;
+    }
+
+
+    /**
+     * Main constructor
+     */
+    public MarginsBuilder() {
+    }
+
+    /**
      * Set the margin at the top, bottom, left and right.
      *
      * @param size the margin size

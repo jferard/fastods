@@ -40,6 +40,29 @@ public class BordersBuilder {
     private BorderAttribute right;
     private BorderAttribute top;
 
+
+    /**
+     * Reserved to Borders.toBuilder()
+     * @param all    all borders
+     * @param top    the top border
+     * @param right  the right border
+     * @param bottom the bottom border
+     * @param left   the left border
+     */
+    public BordersBuilder(final BorderAttribute all, final BorderAttribute top, final BorderAttribute right, final BorderAttribute bottom, final BorderAttribute left) {
+        this.all = all;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+        this.left = left;
+    }
+
+    /**
+     * Main constructor
+     */
+    public BordersBuilder() {
+    }
+
     /**
      * Set all borders
      *

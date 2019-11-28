@@ -84,4 +84,17 @@ public class TextPropertiesTest {
                 "style:text-underline-width=\"auto\" " + "style:text-underline-color" +
                 "=\"#ff0000\"/>", prop);
     }
+
+    @Test
+    public final void testToBuilder() throws IOException {
+        final TextProperties prop =
+                TextProperties.builder().fontUnderlineStyle(TextProperties.Underline.DASH).build();
+        final TextProperties otherProp =
+                prop.toBuilder().fontUnderlineColor(SimpleColor.RED).build();
+        System.out.println(TestHelper.toXML(otherProp));
+        TestHelper.assertXMLEquals("<style:text-properties style:text-underline-style=\"dash\" " +
+                        "style:text-underline-width=\"auto\" " +
+                        "style:text-underline-color=\"#ff0000\"/>",
+                otherProp);
+    }
 }

@@ -128,4 +128,8 @@ public class Borders implements TagParameters {
     public int hashCode() {
         return EqualityUtil.hashObjects(this.all, this.bottom, this.left, this.right, this.top);
     }
+
+    public BordersBuilder toBuilder() {
+        return new BordersBuilder(this.all, this.top, this.right, this.bottom, this.left);
+    }
 }

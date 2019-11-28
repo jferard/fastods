@@ -164,4 +164,17 @@ public class TableCellStyleTest {
                 "fo:font-size=\"12.5pt\" style:font-size-asian=\"12.5pt\" " +
                 "style:font-size-complex=\"12.5pt\"/></style:style>", s);
     }
+
+    @Test
+    public final void testToBuilder() throws IOException {
+        final TableCellStyle style =
+                TableCellStyle.DEFAULT_CELL_STYLE.toBuilder("Default with red bg")
+                        .backgroundColor(SimpleColor.RED).build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"Default with red bg\" " +
+                "style:family=\"table-cell\"><style:table-cell-properties " +
+                "fo:background-color=\"#ff0000\" " +
+                "style:vertical-align=\"top\"/><style:text-properties " +
+                "style:font-name=\"Liberation Sans\"/><style:paragraph-properties " +
+                "fo:margin=\"0cm\"/></style:style>", style);
+    }
 }

@@ -128,6 +128,15 @@ public class BordersTest {
                 b.toString());
     }
 
+    @Test
+    public final void testToBuilder() throws IOException {
+        final BorderAttribute borderAttribute =
+                new BorderAttributeBuilder().borderSize(SimpleLength.pt(1)).build();
+        final Borders borders = new BordersBuilder().left(borderAttribute).build();
+        final Borders otherBorders = borders.toBuilder().right(borderAttribute).build();
+        this.assertAttrXMLEquals(" fo:border-right=\"1pt\" fo:border-left=\"1pt\"", otherBorders);
+    }
+
     private void assertAttrXMLEquals(final String xml, final Borders b) throws IOException {
         final StringBuilder sb = new StringBuilder();
         b.appendXMLContent(this.util, sb);

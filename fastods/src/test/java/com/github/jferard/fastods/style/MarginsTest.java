@@ -23,6 +23,8 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.BorderAttribute;
+import com.github.jferard.fastods.attribute.BorderAttributeBuilder;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
@@ -109,6 +111,15 @@ public class MarginsTest {
                 margins.toString());
         Assert.assertEquals("Margins[top=null, right=null, bottom=null, left=null, all=null]",
                 new MarginsBuilder().build().toString());
+    }
+
+    @Test
+    public final void testToBuilder() throws IOException {
+        final Margins margins =
+                new MarginsBuilder().top(SimpleLength.pt(15)).build();
+        final Margins otherMargins =
+                margins.toBuilder().left(SimpleLength.pt(10)).build();
+        TestHelper.assertXMLEquals(" fo:margin-top=\"15pt\" fo:margin-left=\"10pt\"", otherMargins);
     }
 
     @Test

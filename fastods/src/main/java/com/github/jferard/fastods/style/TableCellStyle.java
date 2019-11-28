@@ -71,7 +71,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
     private final CellAlign textAlign; // 'center','end','start','justify'
     private final TextProperties textProperties;
     private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
-    private final Angle rotating;
+    private final Angle textRotating;
     private final boolean wrap; // No line wrap when false, line wrap when
     private final DataStyle dataStyle;
     private String key;
@@ -108,7 +108,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
         this.verticalAlign = verticalAlign;
         this.wrap = wrap;
         this.parentCellStyle = parentCellStyle;
-        this.rotating = textRotating;
+        this.textRotating = textRotating;
     }
 
     @Override
@@ -129,8 +129,8 @@ public class TableCellStyle implements FontFaceContainerStyle {
         if (this.verticalAlign != null) {
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign);
         }
-        if (this.rotating != null) {
-            util.appendAttribute(appendable, "style:rotation-angle", this.rotating);
+        if (this.textRotating != null) {
+            util.appendAttribute(appendable, "style:rotation-angle", this.textRotating);
         }
         this.borders.appendXMLContent(util, appendable);
 
@@ -227,7 +227,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
 
     private boolean hasCellProperties() {
         return this.backgroundColor != SimpleColor.NONE || this.verticalAlign != null ||
-                !this.borders.areVoid() || this.wrap || this.rotating != null;
+                !this.borders.areVoid() || this.wrap || this.textRotating != null;
     }
 
     /**
@@ -261,4 +261,13 @@ public class TableCellStyle implements FontFaceContainerStyle {
         return this.textAlign != null;
     }
 
+    /**
+     * @return a builder with this table cell style parameters
+     * @param newName the new name of the style
+     */
+    public TableCellStyleBuilder toBuilder(final String newName) {
+        return new TableCellStyleBuilder(newName, this.hidden, this.borders, this.margins,
+                this.dataStyle, this.backgroundColor, this.textProperties, this.textAlign,
+                this.verticalAlign, this.wrap, this.parentCellStyle, this.textRotating);
+    }
 }

@@ -136,4 +136,8 @@ public class Margins implements TagParameters {
     public int hashCode() {
         return EqualityUtil.hashObjects(this.all, this.bottom, this.left, this.right, this.top);
     }
+
+    public MarginsBuilder toBuilder() {
+        return new MarginsBuilder(this.all, this.top, this.right, this.bottom, this.left);
+    }
 }
