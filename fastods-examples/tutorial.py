@@ -47,10 +47,11 @@ for line in read_lines():
                 lines.append("")
         else:
             lines.append("")
-            lines.append(sline)
+            lines.append(line.rstrip())
             state = CODE
     elif state == CODE:
         if sline.startswith("// << END TUTORIAL"):
+            lines.append("")
             state = IGNORE
         elif sline.startswith("//"):
             lines.append("")
@@ -63,7 +64,7 @@ for line in read_lines():
                 lines.append("")
             state = COMMENT
         else:
-            lines.append(sline)
+            lines.append(line.rstrip())
     else:
         raise Exception("Unknown state")
 

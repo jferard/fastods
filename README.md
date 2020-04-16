@@ -62,6 +62,10 @@ we expect those applications to open almost every proper OpenDocument file. But 
 To be pragmatic, I chose to consider LibreOffice as the reference implementation. Hence **the documents created by FastODS should be fully understood by LibreOffice** (whereas there is a specific option to disable this enforced compatibility and to produce files that are slightly more concise). 
 **There is no plan to adapt the documents created by FastODS to OpenOffice, Excel or another reader**, although it will be done if possible (your help is welcome).
 
+## Platforms and dependencies
+FastODS has no runtime dependency beyond the standard Java Library version 6 or higher. Even the XML code is manually produced.
+
+FastODS works on Android (tested on *Android 9 Pie*, see [this issue](https://github.com/jferard/fastods/issues/180)).
 
 ## Installation
 ### Standard
