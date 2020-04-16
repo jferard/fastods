@@ -63,7 +63,7 @@ public class TableRowImpl implements TableRow {
     private final StylesContainer stylesContainer;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
-    private final FastFullList<TableCellImpl> cells;
+    private final FastFullList<WritableTableCell> cells;
     private final boolean libreOfficeMode;
     private DataStyles dataStyles;
     private TableRowStyle rowStyle;
@@ -111,7 +111,7 @@ public class TableRowImpl implements TableRow {
 
         final int size = this.cells.usedSize();
         for (int c = 0; c < size; c++) {
-            final TableCellImpl cell = this.cells.get(c);
+            final WritableTableCell cell = this.cells.get(c);
             if (this.hasNoValue(cell)) {
                 nullFieldCounter++;
                 continue;
@@ -250,13 +250,23 @@ public class TableRowImpl implements TableRow {
      * @return a cell
      */
     public TableCell getOrCreateCell(final int colIndex) {
-        TableCellImpl cell = this.cells.get(colIndex);
+        WritableTableCell cell = this.cells.get(colIndex);
         if (cell == null) {
             cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer,
                     this.dataStyles, this.libreOfficeMode, this, colIndex);
             this.cells.set(colIndex, cell);
         }
         return cell;
+    }
+
+    /**
+     * Set a custom table cell at a given index.
+     *
+     * @param colIndex the index
+     * @param cell the cell
+     */
+    public void set(final int colIndex, final WritableTableCell cell) {
+        this.cells.set(colIndex, cell);
     }
 
     @Override

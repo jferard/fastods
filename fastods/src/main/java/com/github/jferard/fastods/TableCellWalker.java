@@ -309,6 +309,15 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
         this.cell = this.row.getOrCreateCell(this.c);
     }
 
+    /**
+     * Set a custom table cell.
+     *
+     * @param cell the cell
+     */
+    public void set(final WritableTableCell cell) {
+        this.row.set(this.c, cell);
+    }
+
     @Override
     public void previous() {
         if (this.c <= 0) {

@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.examples;
 
+import com.github.jferard.fastods.AbstractTableCell;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.CurrencyValue;
 import com.github.jferard.fastods.ObjectToCellValueConverter;
@@ -30,9 +31,11 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PercentageValue;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.TableCellImpl;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
+import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -158,9 +161,7 @@ class C_SettingTheCellValue {
 
         // *Note:* We saw all the cell type available in the OpenDocument specification.
         // We'll see that FastODS has another kind of String value in the Text value section.
-
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        // And save the file.
+        //
         writer.saveAs(new File("generated_files", "c_cell_value.ods"));
     }
 }

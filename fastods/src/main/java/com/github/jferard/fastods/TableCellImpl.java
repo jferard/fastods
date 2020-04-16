@@ -45,7 +45,7 @@ import java.util.TimeZone;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableCellImpl implements TableCell {
+public class TableCellImpl implements WritableTableCell {
     /**
      * The default date format
      */
@@ -97,13 +97,7 @@ public class TableCellImpl implements TableCell {
         this.columnIndex = columnIndex;
     }
 
-    /**
-     * Generate the XML for the table cell.
-     *
-     * @param util       an util.
-     * @param appendable the appendable to fill
-     * @throws IOException if an error occurs
-     */
+    @Override
     public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
             throws IOException {
         final boolean covered = this.isCovered();

@@ -65,7 +65,7 @@ public class TableCellTest {
     private Table table;
     private TableCellStyle tcs;
     private XMLUtil xmlUtil;
-    private TableCellImpl cell;
+    private WritableTableCell cell;
     private TableColdCell tcc;
     private ToCellValueConverter converter;
 

@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.examples;
 
+import com.github.jferard.fastods.AbstractTableCell;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
@@ -38,6 +39,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapperBuilder;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
 
@@ -219,7 +221,8 @@ class J_Misc {
                     };
 
             // We pass the converter to the builder.
-            final ResultSetDataWrapperBuilder builder = ResultSetDataWrapper.builder("3", rs3).converter(converter);
+            final ResultSetDataWrapperBuilder builder =
+                    ResultSetDataWrapper.builder("3", rs3).converter(converter);
 
             // Note that the wrapper accepts type hints to improve the presentation.
             // Without hint, the columns 2 (the `price`) and 3 (the `tax`) are floats.
@@ -289,5 +292,41 @@ class J_Misc {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "j_misc_features.ods"));
+    }
+
+    /**
+     * @throws IOException  if the file can't be written
+     */
+    static void example4() throws IOException {
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("rs");
+        final TableCellWalker walker = table.getWalker();
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## A custom cell (experimented users only)
+        // You may want to add a custom cell to a table. In this case you should derive
+        // `AbstractTableCell` and provide the implementation of `appendXMLToTableRow`.
+        //
+        walker.set(new AbstractTableCell() {
+            @Override
+            public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
+                    throws IOException {
+                appendable.append("<table:table-cell");
+                util.appendAttribute(appendable, "office:value-type", "string");
+                util.appendAttribute(appendable, "office:string-value", "A CUSTOM CELL");
+                util.appendAttribute(appendable, "xmlns:dc", "a value");
+                appendable.append("/>");
+            }
+        });
+        //
+        // Two remarks:
+        //
+        // 1. Use this with caution: if the XML is corrupted, your document will be unreadable.
+        // 2. If you need something that might interest other users, please [fill an issue
+        // ](https://github.com/jferard/fastods/issues/new) or propose a pull request.
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "j_misc_custom_cell.ods"));
     }
 }
