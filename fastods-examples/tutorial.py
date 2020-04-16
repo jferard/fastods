@@ -21,7 +21,9 @@ def toc_entry(sline):
     if sline.startswith('#'):
         c = sline.count('#')
         sline = sline.lstrip('#').strip()
-        return ("{} [{}](#{})".format('\t'*(c-1)+'*', sline, sline.lower().translate({ord('!'): None, ord(','):None, ord(' '):'-'})))
+        table = {**{ord(c): None for c in "!,()"}, ord(' '): '-'}
+        title_link = sline.lower().translate(table)
+        return ("{} [{}](#{})".format('\t' * (c-1) +'*', sline, title_link))
 
 tes = []
 lines = []
