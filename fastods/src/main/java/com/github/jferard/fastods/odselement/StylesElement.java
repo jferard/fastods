@@ -71,8 +71,8 @@ public class StylesElement implements OdsElement {
         final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
 
         writer.putNextEntry(new ZipEntry("styles.xml"));
-        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        writer.write(
+        writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        writer.append(
                 "<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
                         ":office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style" +
                         ":1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
@@ -95,7 +95,7 @@ public class StylesElement implements OdsElement {
                         "xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3" +
                         ".org/2001/xml-events\" office:version=\"1.2\">");
         this.stylesContainer.writeFontFaceDecls(util, writer);
-        writer.write("<office:styles>");
+        writer.append("<office:styles>");
         this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell
         this.stylesContainer.writeVisibleDataStyles(util, writer); // table-cell
 
@@ -106,19 +106,19 @@ public class StylesElement implements OdsElement {
             StylesElement.appendDefaultFooterHeaderStyle(util, writer, "Footer");
         }
 
-        writer.write("</office:styles>");
-        writer.write("<office:automatic-styles>");
+        writer.append("</office:styles>");
+        writer.append("<office:automatic-styles>");
 
         this.stylesContainer.writeStylesAutomaticStyles(util, writer);
         this.stylesContainer.writePageLayoutStyles(util, writer);
 
-        writer.write("</office:automatic-styles>");
-        writer.write("<office:master-styles>");
+        writer.append("</office:automatic-styles>");
+        writer.append("<office:master-styles>");
 
         this.stylesContainer.writeMasterPageStyles(util, writer);
 
-        writer.write("</office:master-styles>");
-        writer.write("</office:document-styles>");
+        writer.append("</office:master-styles>");
+        writer.append("</office:document-styles>");
         writer.flush();
         writer.closeEntry();
     }

@@ -103,10 +103,12 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
         this.zipStream.setComment(comment);
     }
 
+    /*
     @Override
     public void write(final CharSequence sequence) throws IOException {
         this.writer.append(sequence);
     }
+    */
 
     @Override
     public void write(final byte[] bytes) throws IOException {

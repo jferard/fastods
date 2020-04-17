@@ -88,13 +88,13 @@ public class ManifestElement implements OdsElement {
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" +
+        writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" +
                 "<manifest:manifest xmlns:manifest=\"urn:oasis:names:tc:opendocument:xmlns" +
                 ":manifest:1.0\">");
         for (final ManifestEntry entry : this.manifestEntries) {
             entry.appendXMLContent(util, writer);
         }
-        writer.write("</manifest:manifest>");
+        writer.append("</manifest:manifest>");
         writer.flush();
         writer.closeEntry();
     }

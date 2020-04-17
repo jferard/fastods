@@ -49,7 +49,7 @@ public class MimetypeElement implements OdsElement {
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("mimetype"));
-        writer.write("application/vnd.oasis.opendocument.spreadsheet");
+        writer.append("application/vnd.oasis.opendocument.spreadsheet");
         writer.flush();
         writer.closeEntry();
     }

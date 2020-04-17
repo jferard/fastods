@@ -46,9 +46,12 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.zip.ZipEntry;
 
 public class ContentElementTest {
+    private static final String XML_PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    private static final String CONTENT_OPEN_TAG = "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" office:version=\"1.2\">";
+    private static final String PREAMBLE_BODY = XML_PROLOG + CONTENT_OPEN_TAG +"<office:automatic-styles></office:automatic-styles><office:body>";
+    private static final String POSTAMBLE_BODY = "</office:body></office:document-content>";
     private StylesContainerImpl container;
     private ContentElement content;
     private DataStyles format;
@@ -155,46 +158,58 @@ public class ContentElementTest {
     public void testAddAutoFilter() throws IOException {
         final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
         final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
-        writer.putNextEntry(new ZipEntry("a"));
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
         EasyMock.expect(t.getName()).andReturn("t");
+        this.container
+                .writeFontFaceDecls(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container
+                .writeHiddenDataStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container.writeContentAutomaticStyles(EasyMock.eq(this.xmlUtil),
+                EasyMock.isA(Appendable.class));
 
         PowerMock.replayAll();
         final AutoFilter autoFilter = AutoFilter.builder("range", t, 1, 2, 3, 4).build();
+        this.content.writePreamble(this.xmlUtil, writer);
         this.content.addAutoFilter(autoFilter);
         this.content.writePostamble(this.xmlUtil, writer);
 
         PowerMock.verifyAll();
-        DomTester.assertEquals(
-                "<table:database-ranges><table:database-range table:name=\"range\" " +
-                        "table:display-filter-buttons=\"true\" table:target-range-address=\"t" +
-                        ".C2:E4\"/></table:database-ranges>", handler.getEntryAsString("a"));
+        DomTester.assertEquals(PREAMBLE_BODY + "<office:spreadsheet>" +
+                "<table:database-ranges>" +
+                "<table:database-range table:name=\"range\" table:display-filter-buttons=\"true\" " +
+                "table:target-range-address=\"t.C2:E4\"/>" +
+                "</table:database-ranges></office:spreadsheet>" + POSTAMBLE_BODY,
+                handler.getEntryAsString("content.xml"));
     }
 
     @Test
     public void testAddPilotTable() throws IOException {
         final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
         final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
-        writer.putNextEntry(new ZipEntry("a"));
         final PilotTable pilot =
                 PilotTable.builder("n", "s", "t", Collections.<String>emptyList()).build();
 
         PowerMock.resetAll();
+        this.container
+                .writeFontFaceDecls(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container
+                .writeHiddenDataStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container.writeContentAutomaticStyles(EasyMock.eq(this.xmlUtil),
+                EasyMock.isA(Appendable.class));
 
         PowerMock.replayAll();
+        this.content.writePreamble(this.xmlUtil, writer);
         this.content.addPilotTable(pilot);
         this.content.writePostamble(this.xmlUtil, writer);
 
         PowerMock.verifyAll();
-        DomTester.assertEquals("<table:data-pilot-tables><table:data-pilot-table " +
-                "table:name=\"n\" table:application-data=\"\" " +
-                "table:target-range-address=\"t\" " + "table:show-filter-button=\"true\" " +
-                "table:drill-down-on-double-click=\"false\"><table:source-cell-range " +
-                "table:cell-range-address=\"s\"/></table:data-pilot-table></table:data" +
-                "-pilot-tables>", handler.getEntryAsString("a"));
-
+        final String actual = handler.getEntryAsString("content.xml");
+        DomTester.assertEquals(PREAMBLE_BODY +
+                "<office:spreadsheet><table:data-pilot-tables><table:data-pilot-table table:name=\"n\" table:application-data=\"\" table:target-range-address=\"t\" table:show-filter-button=\"true\" table:drill-down-on-double-click=\"false\"><table:source-cell-range table:cell-range-address=\"s\"/></table:data-pilot-table></table:data-pilot-tables>" +
+                "</office:spreadsheet>" +
+                POSTAMBLE_BODY, actual);
     }
 
     @Test
@@ -213,12 +228,11 @@ public class ContentElementTest {
         PowerMock.replayAll();
         this.content.addEvents(ScriptEventListener.create(ScriptEvent.ON_LOAD, "func"));
         this.content.writePreamble(this.xmlUtil, writer);
+        this.content.writePostamble(this.xmlUtil, writer);
 
 
-        DomTester.assertEquals("<script:event-listener script:language=\"ooo:script\" " +
-                        "script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star" +
-                        ".script:func?language=Basic&amp;location=document\" " + "xlink:type" +
-                        "=\"simple\"/>",
+        DomTester.assertEquals(
+                XML_PROLOG + CONTENT_OPEN_TAG + "<office:scripts><office:event-listeners><script:event-listener script:language=\"ooo:script\" script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star.script:func?language=Basic&amp;location=document\" xlink:type=\"simple\"/></office:event-listeners></office:scripts><office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>"+POSTAMBLE_BODY,
                 handler.getEntryAsString("content.xml"));
     }
 
@@ -239,11 +253,11 @@ public class ContentElementTest {
         this.content.addTable("t", 100, 100);
         this.content.write(this.xmlUtil, writer);
 
-        DomTester.assertEquals("<table:table table:name=\"t\" table:style-name=\"ta1\" " +
-                        "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/><table:table-column " +
-                        "table:style-name=\"co1\" table:number-columns-repeated=\"1024\" " +
-                        "table:default-cell-style-name=\"Default\"/></table:table>",
+        DomTester.assertEquals(PREAMBLE_BODY +
+                        "<office:spreadsheet>" +
+                        "<table:table table:name=\"t\" table:style-name=\"ta1\" table:print=\"false\"><office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/><table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" table:default-cell-style-name=\"Default\"/></table:table>" +
+                        "</office:spreadsheet>" +
+                        POSTAMBLE_BODY,
                 handler.getEntryAsString("content.xml"));
     }
 

@@ -24,7 +24,9 @@ package com.github.jferard.fastods.testlib;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 import org.xml.sax.SAXException;
 
@@ -35,6 +37,8 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 public class ZipUTF8WriterMockHandlerTest {
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     private ZipUTF8WriterMock mock;
     private ZipUTF8WriterMockHandler handler;
@@ -72,6 +76,10 @@ public class ZipUTF8WriterMockHandlerTest {
         this.mock.close();
         this.mock.finish();
         final Iterable instance = this.handler.getInstance(Iterable.class);
+
+        this.thrown.expect(IllegalArgumentException.class);
+        this.thrown.expectMessage(
+                "Method not found: ZipUTF8WriterMock.iterator");
         Assert.assertNull(instance.iterator());
     }
 

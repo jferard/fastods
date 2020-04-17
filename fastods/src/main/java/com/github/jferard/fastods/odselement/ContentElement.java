@@ -217,9 +217,9 @@ public class ContentElement implements OdsElement {
         if (this.pilotTables != null) {
             this.appendPilotTables(util, writer);
         }
-        writer.write("</office:spreadsheet>");
-        writer.write("</office:body>");
-        writer.write("</office:document-content>");
+        writer.append("</office:spreadsheet>");
+        writer.append("</office:body>");
+        writer.append("</office:document-content>");
         writer.flush();
         writer.closeEntry();
     }
@@ -234,8 +234,8 @@ public class ContentElement implements OdsElement {
      */
     public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("content.xml"));
-        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        writer.write("<office:document-content " +
+        writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        writer.append("<office:document-content " +
                 "xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " +
                 "xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" " +
                 "xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
@@ -265,12 +265,12 @@ public class ContentElement implements OdsElement {
                 "office:version=\"1.2\">");
         this.writeEvents(util, writer);
         this.stylesContainer.writeFontFaceDecls(util, writer);
-        writer.write("<office:automatic-styles>");
+        writer.append("<office:automatic-styles>");
         this.stylesContainer.writeHiddenDataStyles(util, writer);
         this.stylesContainer.writeContentAutomaticStyles(util, writer);
-        writer.write("</office:automatic-styles>");
-        writer.write("<office:body>");
-        writer.write("<office:spreadsheet>");
+        writer.append("</office:automatic-styles>");
+        writer.append("<office:body>");
+        writer.append("<office:spreadsheet>");
     }
 
     public void writeEvents(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
@@ -278,11 +278,11 @@ public class ContentElement implements OdsElement {
             return;
         }
 
-        writer.write("<office:scripts><office:event-listeners>");
+        writer.append("<office:scripts><office:event-listeners>");
         for (final ScriptEventListener event : this.scriptEvents) {
             event.appendXMLContent(util, writer);
         }
-        writer.write("</office:event-listeners></office:scripts>");
+        writer.append("</office:event-listeners></office:scripts>");
     }
 
     private void appendAutoFilters(final XMLUtil util, final Appendable appendable)

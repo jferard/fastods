@@ -100,10 +100,8 @@ public class TableRowTest {
     @Test
     public void testIsCovered() {
         PowerMock.resetAll();
-        PowerMock.replayAll();
         final boolean covered = this.row.isCovered(0);
 
-        PowerMock.verifyAll();
         Assert.assertFalse(covered);
     }
 

@@ -89,6 +89,10 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
             this.mock.putNextEntry((ZipEntry) objects[0]);
         } else if (name.equals("setComment")) {
             this.mock.setComment((String) objects[0]);
+        } else if (name.equals("toString")) {
+            return "ZipUTF8WriterMock";
+        } else {
+            throw new IllegalArgumentException("Method not found: ZipUTF8WriterMock." + name);
         }
         return null;
     }

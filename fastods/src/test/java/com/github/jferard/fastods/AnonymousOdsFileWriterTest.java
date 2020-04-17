@@ -193,7 +193,7 @@ public class AnonymousOdsFileWriterTest {
         try {
             writer.save(zw);
             zw.putNextEntry(new ZipEntry("last"));
-            zw.write("last content");
+            zw.append("last content");
             zw.closeEntry();
         } finally {
             zw.close();

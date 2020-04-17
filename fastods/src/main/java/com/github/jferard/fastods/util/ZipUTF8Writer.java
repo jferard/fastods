@@ -75,7 +75,7 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
      * @param sequence the string
      * @throws IOException if an I/O error occurs
      */
-    void write(final CharSequence sequence) throws IOException;
+    // void write(final CharSequence sequence) throws IOException;
 
     /**
      * Write raw bytes to the output stream
