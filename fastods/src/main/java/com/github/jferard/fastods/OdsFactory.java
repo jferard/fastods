@@ -41,7 +41,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -50,6 +52,8 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class OdsFactory {
+    private Map<String, String> additionalNamespaceByPrefix;
+
     /**
      * @return a default ods factory
      */
@@ -102,6 +106,7 @@ public class OdsFactory {
         this.format = format;
         this.libreOfficeMode = libreOfficeMode;
         this.metaElement = metaElement;
+        this.additionalNamespaceByPrefix = new HashMap<String, String>();
     }
 
     /**
@@ -127,8 +132,24 @@ public class OdsFactory {
         return this;
     }
 
+    /** Use a custom meta element
+     *
+     * @param metaElement the meta element.
+     * @return this for fluent style
+     */
     public OdsFactory metaElement(final MetaElement metaElement) {
         this.metaElement = metaElement;
+        return this;
+    }
+
+    /**
+     * Use custom namespace prefixes in content element.
+     *
+     * @param additionalNamespaceByPrefix a map prefix -> namespace
+     * @return this for fluent style
+     */
+    public OdsFactory addNamespaceByPrefix(final Map<String, String> additionalNamespaceByPrefix) {
+        this.additionalNamespaceByPrefix.putAll(additionalNamespaceByPrefix);
         return this;
     }
 
@@ -140,7 +161,7 @@ public class OdsFactory {
     private AnonymousOdsDocument createAnonymousDocument() {
         final OdsElements odsElements = OdsElements
                 .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
-                        this.libreOfficeMode, this.metaElement);
+                        this.libreOfficeMode, this.metaElement, this.additionalNamespaceByPrefix);
         return AnonymousOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
 
@@ -152,7 +173,7 @@ public class OdsFactory {
     private NamedOdsDocument createNamedDocument() {
         final OdsElements odsElements = OdsElements
                 .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
-                        this.libreOfficeMode, this.metaElement);
+                        this.libreOfficeMode, this.metaElement, this.additionalNamespaceByPrefix);
         return NamedOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
 

@@ -103,11 +103,13 @@ public class OdsElements implements StylesContainer {
      * @param format          the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
      * @param metaElement
+     * @param additionalNamespaceByPrefix
      * @return a new OdsElements, with newly build elements.
      */
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
                                      final WriteUtil writeUtil, final DataStyles format,
-                                     final boolean libreOfficeMode, final MetaElement metaElement) {
+                                     final boolean libreOfficeMode, final MetaElement metaElement,
+                                     final Map<String, String> additionalNamespaceByPrefix) {
         final Logger logger = Logger.getLogger(OdsElements.class.getName());
         final MimetypeElement mimetypeElement = new MimetypeElement();
         final ManifestElement manifestElement = ManifestElement.create();
@@ -116,7 +118,7 @@ public class OdsElements implements StylesContainer {
         final StylesElement stylesElement = new StylesElement(stylesContainer);
         final ContentElement contentElement =
                 new ContentElement(positionUtil, xmlUtil, writeUtil, format, libreOfficeMode,
-                        stylesContainer);
+                        stylesContainer, additionalNamespaceByPrefix);
         return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
                 settingsElement, metaElement, contentElement, stylesElement);
     }

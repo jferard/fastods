@@ -49,7 +49,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -299,6 +301,9 @@ class J_Misc {
      */
     static void example4() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
+        namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
+        odsFactory.addNamespaceByPrefix(namespaceByPrefix);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("rs");
@@ -315,7 +320,7 @@ class J_Misc {
                 appendable.append("<table:table-cell");
                 util.appendAttribute(appendable, "office:value-type", "string");
                 util.appendAttribute(appendable, "office:string-value", "A CUSTOM CELL");
-                util.appendAttribute(appendable, "xmlns:dc", "a value");
+                util.appendAttribute(appendable, "myns:tag", "a tag value");
                 appendable.append("/>");
             }
         });

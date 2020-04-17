@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,7 +63,7 @@ public class OdsFactoryTest {
     public void createFactory() {
         final OdsFactory factory =
                 OdsFactory.create().dataStyles(DataStylesBuilder.create(Locale.US).build())
-                        .noLibreOfficeMode().metaElement(MetaElement.create());
+                        .noLibreOfficeMode().metaElement(MetaElement.create()).addNamespaceByPrefix(new HashMap<String, String>());
         factory.createWriter();
     }
 

@@ -75,6 +75,7 @@ public class ContentElement implements OdsElement {
     private final List<ScriptEventListener> scriptEvents;
     private List<AutoFilter> autoFilters;
     private List<PilotTable> pilotTables;
+    private Map<String, String> additionalNamespaceByPrefix;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
@@ -83,16 +84,19 @@ public class ContentElement implements OdsElement {
      * @param format          the format for data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
      * @param stylesContainer a styles container.
+     * @param additionalNamespaceByPrefix a map prefix -> namespace
      */
     ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
                    final WriteUtil writeUtil, final DataStyles format,
-                   final boolean libreOfficeMode, final StylesContainerImpl stylesContainer) {
+                   final boolean libreOfficeMode, final StylesContainerImpl stylesContainer,
+                   final Map<String, String> additionalNamespaceByPrefix) {
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
         this.positionUtil = positionUtil;
         this.format = format;
         this.libreOfficeMode = libreOfficeMode;
         this.stylesContainer = stylesContainer;
+        this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;
         this.tables = new UniqueList<Table>();
         this.flushPosition = new FlushPosition();
         this.scriptEvents = new ArrayList<ScriptEventListener>();
@@ -252,6 +256,9 @@ public class ContentElement implements OdsElement {
         writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         writer.append("<office:document-content");
         for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
+        for (final Map.Entry<String, String> entry: this.additionalNamespaceByPrefix.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());
         }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);
