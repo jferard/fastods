@@ -29,9 +29,12 @@ import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
+
 import java.io.IOException;
 import java.util.List;
 import java.util.zip.ZipEntry;
+
+import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
 
 /**
  * 3.1.3.5 office:document-settings and 3.10 office:settings
@@ -109,11 +112,13 @@ public class SettingsElement implements OdsElement {
         writer.putNextEntry(new ZipEntry("settings.xml"));
         writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
         writer.append(
-                "<office:document-settings xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
-                        ":office:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
-                        "xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\" " +
-                        "xmlns:ooo=\"http://openoffice.org/2004/office\" office:version=\"1.2\">");
-        writer.append("<office:settings>");
+                "<office:document-settings");
+        util.appendAttribute(writer, "xmlns:office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
+        util.appendAttribute(writer, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+        util.appendAttribute(writer, "xmlns:config", "urn:oasis:names:tc:opendocument:xmlns:config:1.0");
+        util.appendAttribute(writer, "xmlns:ooo", "http://openoffice.org/2004/office");
+        util.appendAttribute(writer, "office:version", OFFICE_VERSION);
+        writer.append("><office:settings>");
         for (final ConfigBlock block : this.settings.getRootBlocks()) {
             block.appendXMLContent(util, writer);
         }

@@ -230,7 +230,6 @@ public class ContentElementTest {
         this.content.writePreamble(this.xmlUtil, writer);
         this.content.writePostamble(this.xmlUtil, writer);
 
-
         DomTester.assertEquals(
                 XML_PROLOG + CONTENT_OPEN_TAG + "<office:scripts><office:event-listeners><script:event-listener script:language=\"ooo:script\" script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star.script:func?language=Basic&amp;location=document\" xlink:type=\"simple\"/></office:event-listeners></office:scripts><office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>"+POSTAMBLE_BODY,
                 handler.getEntryAsString("content.xml"));
