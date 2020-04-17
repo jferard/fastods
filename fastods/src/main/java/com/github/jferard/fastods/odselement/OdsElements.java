@@ -87,6 +87,15 @@ public class OdsElements implements StylesContainer {
                     "Configurations2/popupmenu/", "Configurations2/progressbar/",
                     "Configurations2/statusbar/", "Configurations2/toolbar/"};
 
+    public static final Map<String, String> BASE_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+
+    static {
+        BASE_NAMESPACE_BY_PREFIX.put("xmlns:office",
+                "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
+        BASE_NAMESPACE_BY_PREFIX.put("xmlns:xlink", "http://www.w3.org/1999/xlink");
+        BASE_NAMESPACE_BY_PREFIX.put("xmlns:ooo", "http://openoffice.org/2004/office");
+    }
+
     /**
      * @param positionUtil    an util for cell addresses (e.g. "A1")
      * @param xmlUtil         an XML util

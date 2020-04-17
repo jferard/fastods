@@ -39,7 +39,9 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 
 import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
@@ -51,6 +53,17 @@ import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
  * @author Martin Schulz
  */
 public class ContentElement implements OdsElement {
+    private static final Map<String, String> CONTENT_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+
+    static {
+        CONTENT_NAMESPACE_BY_PREFIX.putAll(StylesElement.STYLES_NAMESPACE_BY_PREFIX);
+
+        CONTENT_NAMESPACE_BY_PREFIX.put("xmlns:xforms", "http://www.w3.org/2002/xforms");
+        CONTENT_NAMESPACE_BY_PREFIX.put("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+        CONTENT_NAMESPACE_BY_PREFIX.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        CONTENT_NAMESPACE_BY_PREFIX.put("xmlns:of", "urn:oasis:names:tc:opendocument:xmlns:of:1.2");
+    }
+
     private final FlushPosition flushPosition;
     private final DataStyles format;
     private final PositionUtil positionUtil;
@@ -238,45 +251,9 @@ public class ContentElement implements OdsElement {
         writer.putNextEntry(new ZipEntry("content.xml"));
         writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         writer.append("<office:document-content");
-        util.appendAttribute(writer, "xmlns:office",
-                "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
-        util.appendAttribute(writer, "xmlns:style",
-                "urn:oasis:names:tc:opendocument:xmlns:style:1.0");
-        util.appendAttribute(writer, "xmlns:text",
-                "urn:oasis:names:tc:opendocument:xmlns:text:1.0");
-        util.appendAttribute(writer, "xmlns:table",
-                "urn:oasis:names:tc:opendocument:xmlns:table:1.0");
-        util.appendAttribute(writer, "xmlns:draw",
-                "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0");
-        util.appendAttribute(writer, "xmlns:fo",
-                "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0");
-        util.appendAttribute(writer, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-        util.appendAttribute(writer, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
-        util.appendAttribute(writer, "xmlns:meta",
-                "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
-        util.appendAttribute(writer, "xmlns:number",
-                "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0");
-        util.appendAttribute(writer, "xmlns:presentation",
-                "urn:oasis:names:tc:opendocument:xmlns:presentation" + ":1.0");
-        util.appendAttribute(writer, "xmlns:svg",
-                "urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0");
-        util.appendAttribute(writer, "xmlns:chart",
-                "urn:oasis:names:tc:opendocument:xmlns:chart:1.0");
-        util.appendAttribute(writer, "xmlns:dr3d",
-                "urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0");
-        util.appendAttribute(writer, "xmlns:math", "http://www.w3.org/1998/Math/MathML");
-        util.appendAttribute(writer, "xmlns:form",
-                "urn:oasis:names:tc:opendocument:xmlns:form:1.0");
-        util.appendAttribute(writer, "xmlns:script",
-                "urn:oasis:names:tc:opendocument:xmlns:script:1.0");
-        util.appendAttribute(writer, "xmlns:ooo", "http://openoffice.org/2004/office");
-        util.appendAttribute(writer, "xmlns:ooow", "http://openoffice.org/2004/writer");
-        util.appendAttribute(writer, "xmlns:oooc", "http://openoffice.org/2004/calc");
-        util.appendAttribute(writer, "xmlns:dom", "http://www.w3.org/2001/xml-events");
-        util.appendAttribute(writer, "xmlns:xforms", "http://www.w3.org/2002/xforms");
-        util.appendAttribute(writer, "xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-        util.appendAttribute(writer, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        util.appendAttribute(writer, "xmlns:of", "urn:oasis:names:tc:opendocument:xmlns:of:1.2");
+        for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);
         writer.append(">");
         this.writeEvents(util, writer);

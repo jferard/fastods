@@ -27,7 +27,11 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
+
+import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
 
 /**
  * styles.xml/office:document-styles
@@ -36,6 +40,33 @@ import java.util.zip.ZipEntry;
  * @author Martin Schulz
  */
 public class StylesElement implements OdsElement {
+    public static final Map<String, String> STYLES_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+
+    static {
+        STYLES_NAMESPACE_BY_PREFIX.putAll(MetaElement.META_NAMESPACE_BY_PREFIX);
+
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:style", "urn:oasis:names:tc:opendocument:xmlns:style:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:text", "urn:oasis:names:tc:opendocument:xmlns:text:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:table", "urn:oasis:names:tc:opendocument:xmlns:table:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:draw", "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:fo",
+                "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:number",
+                "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:presentation",
+                "urn:oasis:names:tc:opendocument:xmlns:presentation:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:svg",
+                "urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:chart", "urn:oasis:names:tc:opendocument:xmlns:chart:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:dr3d", "urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:math", "http://www.w3.org/1998/Math/MathML");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:form", "urn:oasis:names:tc:opendocument:xmlns:form:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:script", "urn:oasis:names:tc:opendocument:xmlns:script:1.0");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:ooow", "http://openoffice.org/2004/writer");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:oooc", "http://openoffice.org/2004/calc");
+        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:dom", "http://www.w3.org/2001/xml-events");
+    }
+
     private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
                                                        final Appendable appendable,
                                                        final String name) throws IOException {
@@ -72,28 +103,12 @@ public class StylesElement implements OdsElement {
 
         writer.putNextEntry(new ZipEntry("styles.xml"));
         writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        writer.append(
-                "<office:document-styles xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns" +
-                        ":office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style" +
-                        ":1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" " +
-                        "xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" " +
-                        "xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" " +
-                        "xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\"" +
-                        " xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl" +
-                        ".org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument" +
-                        ":xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns" +
-                        ":datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument" +
-                        ":xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument" +
-                        ":xmlns:svg-compatible:1.0\" " +
-                        "xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" " +
-                        "xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" " +
-                        "xmlns:math=\"http://www.w3.org/1998/Math/MathML\" " +
-                        "xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" " +
-                        "xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" " +
-                        "xmlns:ooo=\"http://openoffice.org/2004/office\" " +
-                        "xmlns:ooow=\"http://openoffice.org/2004/writer\" " +
-                        "xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3" +
-                        ".org/2001/xml-events\" office:version=\"1.2\">");
+        writer.append("<office:document-styles");
+        for (final Map.Entry<String, String> entry: STYLES_NAMESPACE_BY_PREFIX.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
+        util.appendAttribute(writer, "office:version", OFFICE_VERSION);
+        writer.append(">");
         this.stylesContainer.writeFontFaceDecls(util, writer);
         writer.append("<office:styles>");
         this.stylesContainer.writeStylesCommonStyles(util, writer); // table-cell

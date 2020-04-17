@@ -1,5 +1,6 @@
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -16,7 +17,7 @@ public class MetaElementTest {
         final MetaElement element = MetaElement.builder().creator("creator").date("date")
                 .language(Locale.US.getLanguage()).build();
         final String string = this.getString(element);
-        Assert.assertEquals(
+        DomTester.assertEquals(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<office:document-meta " +
                         "xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " +
                         "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
@@ -43,7 +44,7 @@ public class MetaElementTest {
                         .userDefinedString("s1", "s1").userDefinedString("s2", "s2")
                         .userDefinedTime("t", new Date(0)).build();
         final String string = this.getString(element);
-        Assert.assertEquals(
+        DomTester.assertEquals(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<office:document-meta " +
                         "xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" " +
                         "xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +

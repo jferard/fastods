@@ -31,7 +31,9 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 
 import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
@@ -70,8 +72,13 @@ import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class SettingsElement implements OdsElement {
-    private final Settings settings;
-    private List<Table> tables;
+    public static final Map<String, String> SETTINGS_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+
+    static {
+        SETTINGS_NAMESPACE_BY_PREFIX.putAll(OdsElements.BASE_NAMESPACE_BY_PREFIX);
+        SETTINGS_NAMESPACE_BY_PREFIX.put("xmlns:config",
+                "urn:oasis:names:tc:opendocument:xmlns:config:1.0");
+    }
 
     /**
      * @return a settings.xml element
@@ -79,6 +86,9 @@ public class SettingsElement implements OdsElement {
     static SettingsElement create() {
         return new SettingsElement(Settings.create());
     }
+
+    private final Settings settings;
+    private List<Table> tables;
 
     /**
      * Create a settings.xml element
@@ -111,12 +121,10 @@ public class SettingsElement implements OdsElement {
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("settings.xml"));
         writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-        writer.append(
-                "<office:document-settings");
-        util.appendAttribute(writer, "xmlns:office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
-        util.appendAttribute(writer, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-        util.appendAttribute(writer, "xmlns:config", "urn:oasis:names:tc:opendocument:xmlns:config:1.0");
-        util.appendAttribute(writer, "xmlns:ooo", "http://openoffice.org/2004/office");
+        writer.append("<office:document-settings");
+        for (final Map.Entry<String, String> entry: SETTINGS_NAMESPACE_BY_PREFIX.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);
         writer.append("><office:settings>");
         for (final ConfigBlock block : this.settings.getRootBlocks()) {

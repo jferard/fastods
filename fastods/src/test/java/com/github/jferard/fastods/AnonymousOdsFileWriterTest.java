@@ -62,7 +62,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5215;
+    private static final int EMPTY_DOCUMENT_SIZE = 5226;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -124,7 +124,7 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > 2) {
+        if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > 7) {
             System.out.println(
                     String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE,
                             buf.length));
@@ -244,7 +244,7 @@ public class AnonymousOdsFileWriterTest {
         }
         Collections.sort(names);
 
-        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 4) {
+        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 15) {
             System.out.println(
                     String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2,
                             buf.length));

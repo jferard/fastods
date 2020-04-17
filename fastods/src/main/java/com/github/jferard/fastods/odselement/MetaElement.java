@@ -28,7 +28,9 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 
@@ -72,6 +74,15 @@ public class MetaElement implements OdsElement {
         return new MetaElementBuilder().build();
     }
 
+    public static final Map<String, String> META_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+
+    static {
+        META_NAMESPACE_BY_PREFIX.putAll(OdsElements.BASE_NAMESPACE_BY_PREFIX);
+        META_NAMESPACE_BY_PREFIX.put("xmlns:dc", "http://purl.org/dc/elements/1.1/");
+        META_NAMESPACE_BY_PREFIX.put("xmlns:meta",
+                "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
+    }
+
     private final String description;
     private final String language;
     private final String subject;
@@ -112,13 +123,9 @@ public class MetaElement implements OdsElement {
         util.appendAttribute(writer, "version", "1.0");
         util.appendAttribute(writer, "encoding", "UTF-8");
         writer.append("?><office:document-meta");
-        util.appendAttribute(writer, "xmlns:office",
-                "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
-        util.appendAttribute(writer, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-        util.appendAttribute(writer, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
-        util.appendAttribute(writer, "xmlns:meta",
-                "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
-        util.appendAttribute(writer, "xmlns:ooo", "http://openoffice.org/2004/office");
+        for (final Map.Entry<String, String> entry: META_NAMESPACE_BY_PREFIX.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);
         writer.append("><office:meta>");
         util.appendTag(writer, "dc:creator", this.creator);
