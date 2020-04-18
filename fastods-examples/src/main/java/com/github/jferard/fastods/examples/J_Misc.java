@@ -300,18 +300,19 @@ class J_Misc {
      * @throws IOException  if the file can't be written
      */
     static void example4() throws IOException {
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
         namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
-        odsFactory.addNamespaceByPrefix(namespaceByPrefix);
+        final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
+                .addNamespaceByPrefix(namespaceByPrefix).build();
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("rs");
         final TableCellWalker walker = table.getWalker();
+
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## A custom cell (experimented users only)
-        // You may want to add a custom cell to a table. In this case you should derive
-        // `AbstractTableCell` and provide the implementation of `appendXMLToTableRow`.
+        // Writing a custom cell may be interesting. All you have to do is to derive
+        // `AbstractTableCell` and provide the implementation of `appendXMLToTableRow`:
         //
         walker.set(new AbstractTableCell() {
             @Override
@@ -320,7 +321,69 @@ class J_Misc {
                 appendable.append("<table:table-cell");
                 util.appendAttribute(appendable, "office:value-type", "string");
                 util.appendAttribute(appendable, "office:string-value", "A CUSTOM CELL");
+                appendable.append("/>");
+            }
+        });
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "j_misc_custom_cell.ods"));
+    }
+
+
+    /**
+     * @throws IOException  if the file can't be written
+     */
+    static void example5() throws IOException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        //
+        // The previous example might not be really impressive, because the attributes should be
+        // part of the declared namespaces (`xmlns:office`, `xmlns:ooo`, ...). If you want to
+        // use an external namespace, you have to declare it in the `OdsFactory`:
+        //
+        final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
+        namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
+        final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
+                .addNamespaceByPrefix(namespaceByPrefix).build();
+
+        // Now, create the writer, the document, the table and the walker as usual:
+
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("rs");
+        final TableCellWalker walker = table.getWalker();
+
+        // And add the attribute:
+
+        walker.set(new AbstractTableCell() {
+            @Override
+            public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
+                    throws IOException {
+                appendable.append("<table:table-cell");
+                util.appendAttribute(appendable, "office:value-type", "string");
+                util.appendAttribute(appendable, "office:string-value", "A custom cell");
                 util.appendAttribute(appendable, "myns:tag", "a tag value");
+                appendable.append("/>");
+            }
+        });
+
+        walker.nextRow();
+        // The generated XML will be inserted as a child of the current `table:row` tag, hence you
+        // are not limited to one cell:
+
+        walker.set(new AbstractTableCell() {
+            @Override
+            public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
+                    throws IOException {
+                appendable.append("<table:table-cell");
+                util.appendAttribute(appendable, "office:value-type", "string");
+                util.appendAttribute(appendable, "office:string-value", "First custom cell");
+                util.appendAttribute(appendable, "myns:tag", "a tag value");
+                appendable.append("/>");
+                appendable.append("<table:table-cell");
+                util.appendAttribute(appendable, "office:value-type", "string");
+                util.appendAttribute(appendable, "office:string-value", "Second custom cell");
+                util.appendAttribute(appendable, "myns:another-tag", "another tag value");
                 appendable.append("/>");
             }
         });
@@ -332,6 +395,6 @@ class J_Misc {
         // ](https://github.com/jferard/fastods/issues/new) or propose a pull request.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_custom_cell.ods"));
+        writer.saveAs(new File("generated_files", "j_misc_custom_cell2.ods"));
     }
 }

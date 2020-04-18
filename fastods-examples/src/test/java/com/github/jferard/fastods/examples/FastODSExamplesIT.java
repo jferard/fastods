@@ -137,8 +137,13 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void miscTest4() throws IOException, SQLException {
+    public void miscTest4() throws IOException {
         J_Misc.example4();
+    }
+
+    @Test
+    public void miscTest5() throws IOException {
+        J_Misc.example5();
     }
 
     @Test

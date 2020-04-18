@@ -144,14 +144,13 @@ class D_SettingTheCellDataStyle {
 
         final DataStyles ds = dsb.build();
 
-        // Now, create the factory
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells2"), Locale.US);
-
-        // and pass the created "data styles" to the factory:
-        odsFactory.dataStyles(ds);
+        // Now, create the factory using a factory builder. Pass the created "data styles"
+        // to the builder and build the factory :
+        final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("cells2"), Locale.US)
+                .dataStyles(ds).build();
 
         // We can continue as usual:
-        final AnonymousOdsFileWriter writer = odsFactory.dataStyles(ds).createWriter();
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
 
         // And create the same cells as above:

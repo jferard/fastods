@@ -26,6 +26,7 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
+import com.github.jferard.fastods.OdsFactoryBuilder;
 import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableRowImpl;
@@ -67,7 +68,7 @@ public class DataStyleExampleIT {
     }
 
     private Logger logger;
-    private OdsFactory odsFactory;
+    private OdsFactoryBuilder odsFactoryBuilder;
     private TableCellStyle style;
     private Locale locale;
 
@@ -75,7 +76,7 @@ public class DataStyleExampleIT {
     public void setUp() {
         this.logger = Logger.getLogger("readme example");
         this.locale = Locale.US;
-        this.odsFactory = OdsFactory.create(this.logger, this.locale);
+        this.odsFactoryBuilder = OdsFactory.builder(this.logger, this.locale);
     }
 
 
@@ -106,7 +107,8 @@ public class DataStyleExampleIT {
         final DataStyles ds = dsb.build();
 
         // Pass the created "data styles" to the factory
-        final AnonymousOdsFileWriter writer = this.odsFactory.dataStyles(ds).createWriter();
+        final AnonymousOdsFileWriter writer = this.odsFactoryBuilder.dataStyles(ds).build()
+                .createWriter();
         final OdsDocument document = writer.document();
 
         this.createTable(document);

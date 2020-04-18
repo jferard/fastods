@@ -24,11 +24,9 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.MetaElement;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.util.FileExists;
 import com.github.jferard.fastods.util.FileOpen;
 import com.github.jferard.fastods.util.FileOpenResult;
@@ -41,7 +39,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -52,7 +49,16 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class OdsFactory {
-    private Map<String, String> additionalNamespaceByPrefix;
+    /**
+     * Create an ods factory builder
+     *
+     * @param logger the logger
+     * @param locale the locale
+     * @return the factory builder
+     */
+    public static OdsFactoryBuilder builder(final Logger logger, final Locale locale) {
+        return new OdsFactoryBuilder(logger, locale);
+    }
 
     /**
      * @return a default ods factory
@@ -70,12 +76,7 @@ public class OdsFactory {
      * @return the factory
      */
     public static OdsFactory create(final Logger logger, final Locale locale) {
-        final PositionUtil positionUtil = new PositionUtil(new TableNameUtil());
-        final WriteUtil writeUtil = WriteUtil.create();
-        final XMLUtil xmlUtil = XMLUtil.create();
-        final DataStyles format = DataStylesBuilder.create(locale).build();
-        return new OdsFactory(logger, positionUtil, writeUtil, xmlUtil, format, true,
-                MetaElement.create());
+        return new OdsFactoryBuilder(logger, locale).build();
     }
 
     private final Logger logger;
@@ -85,28 +86,30 @@ public class OdsFactory {
     private DataStyles format;
     private boolean libreOfficeMode;
     private MetaElement metaElement;
+    private final Map<String, String> additionalNamespaceByPrefix;
 
     /**
      * Create a new OdsFactory
-     *
-     * @param logger          the logger
+     *  @param logger          the logger
      * @param positionUtil    an util
      * @param writeUtil       an util
      * @param xmlUtil         an util
+     * @param additionalNamespaceByPrefix  a map prefix -> namespace
      * @param format          the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
+     * @param metaElement     the meta element
      */
     OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
-               final XMLUtil xmlUtil, final DataStyles format, final boolean libreOfficeMode,
+               final XMLUtil xmlUtil, final Map<String, String> additionalNamespaceByPrefix, final DataStyles format, final boolean libreOfficeMode,
                final MetaElement metaElement) {
         this.logger = logger;
         this.positionUtil = positionUtil;
         this.writeUtil = writeUtil;
         this.xmlUtil = xmlUtil;
+        this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;
         this.format = format;
         this.libreOfficeMode = libreOfficeMode;
         this.metaElement = metaElement;
-        this.additionalNamespaceByPrefix = new HashMap<String, String>();
     }
 
     /**
@@ -114,7 +117,10 @@ public class OdsFactory {
      *
      * @param ds the data styles
      * @return this for fluent style
+     *
+     * @deprecated use OdsFactory.builder
      */
+    @Deprecated
     public OdsFactory dataStyles(final DataStyles ds) {
         this.format = ds;
         return this;
@@ -126,7 +132,10 @@ public class OdsFactory {
      * This mode is set by default, and might slow down the generation of the file.
      *
      * @return this for fluent style
+     *
+     * @deprecated use OdsFactory.builder
      */
+    @Deprecated
     public OdsFactory noLibreOfficeMode() {
         this.libreOfficeMode = false;
         return this;
@@ -136,7 +145,10 @@ public class OdsFactory {
      *
      * @param metaElement the meta element.
      * @return this for fluent style
+     *
+     * @deprecated use OdsFactory.builder
      */
+    @Deprecated
     public OdsFactory metaElement(final MetaElement metaElement) {
         this.metaElement = metaElement;
         return this;
@@ -148,6 +160,7 @@ public class OdsFactory {
      * @param additionalNamespaceByPrefix a map prefix -> namespace
      * @return this for fluent style
      */
+    @Deprecated
     public OdsFactory addNamespaceByPrefix(final Map<String, String> additionalNamespaceByPrefix) {
         this.additionalNamespaceByPrefix.putAll(additionalNamespaceByPrefix);
         return this;

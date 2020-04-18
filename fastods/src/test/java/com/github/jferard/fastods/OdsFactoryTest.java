@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.MetaElement;
 import org.easymock.Capture;
@@ -60,6 +61,7 @@ public class OdsFactoryTest {
     }
 
     @Test
+    @Deprecated
     public void createFactory() {
         final OdsFactory factory =
                 OdsFactory.create().dataStyles(DataStylesBuilder.create(Locale.US).build())
@@ -67,6 +69,16 @@ public class OdsFactoryTest {
         factory.createWriter();
     }
 
+    @Test
+    public void createFactoryBuilder() {
+        final OdsFactoryBuilder builder = OdsFactory
+                .builder(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.getDefault());
+        final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
+        final OdsFactory factory = builder.dataStyles(ds)
+                .noLibreOfficeMode().metaElement(MetaElement.create())
+                .addNamespaceByPrefix(new HashMap<String, String>()).build();
+        factory.createWriter();
+    }
 
     @Test
     public void createWriter() throws Exception {
