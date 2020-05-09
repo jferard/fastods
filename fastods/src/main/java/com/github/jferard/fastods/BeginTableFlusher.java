@@ -46,7 +46,7 @@ public class BeginTableFlusher implements OdsAsyncFlusher {
 
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.appender.appendPreamble(xmlUtil, writer);
+        this.appender.appendPreambleOnce(xmlUtil, writer);
     }
 
     @Override

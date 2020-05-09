@@ -40,7 +40,7 @@ public class BeginTableFlusherTest {
         final ZipUTF8Writer writer = PowerMock.createMock(ZipUTF8Writer.class);
 
         PowerMock.resetAll();
-        appender.appendPreamble(xmlUtil, writer);
+        appender.appendPreambleOnce(xmlUtil, writer);
 
         PowerMock.replayAll();
         final boolean end = btf.isEnd();

@@ -242,14 +242,14 @@ public class TableAppenderTest {
     public final void testAppendTwoWriters() throws IOException {
         final StringBuilder sb1 = new StringBuilder();
         final StringBuilder sb2 = new StringBuilder();
+        final FastFullList<TableColumnStyle> emptyFullList = FastFullList.<TableColumnStyle>builder().build();
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("tb");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(this.tb.getColumnStyles())
-                .andReturn(FastFullList.<TableColumnStyle>builder().build());
+        EasyMock.expect(this.tb.getName()).andReturn("tb").times(2);
+        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style").times(2);
+        EasyMock.expect(this.tb.getColumnStyles()).andReturn(emptyFullList).times(2);
         EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0).times(2);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList()).times(2);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb1);
@@ -261,7 +261,7 @@ public class TableAppenderTest {
 
     private void assertPreambleXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreamble(this.xmlUtil, sb);
+        this.tableAppender.appendPreambleOnce(this.xmlUtil, sb);
         sb.append("</table:table>");
         DomTester.assertEquals(xml + "</table:table>", sb.toString());
     }

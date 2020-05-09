@@ -88,11 +88,14 @@ class TableAppender {
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
-    public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
-        if (this.preambleWritten) {
-            return;
+    public void appendPreambleOnce(final XMLUtil util, final Appendable appendable) throws IOException {
+        if (!this.preambleWritten) {
+            this.appendPreamble(util, appendable);
+            this.preambleWritten = true;
         }
+    }
 
+    public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<table:table");
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
         util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
@@ -101,7 +104,6 @@ class TableAppender {
         this.appendForms(util, appendable);
         this.appendColumnStyles(util, appendable, this.builder.getColumnStyles());
         this.appendShapes(util, appendable, this.builder.getShapes());
-        this.preambleWritten = true;
     }
 
     private void appendShapes(final XMLUtil util, final Appendable appendable,
@@ -133,7 +135,7 @@ class TableAppender {
      */
     public void appendAllAvailableRows(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        this.appendPreamble(util, appendable);
+        this.appendPreambleOnce(util, appendable);
         this.appendRows(util, appendable, 0);
     }
 
