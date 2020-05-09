@@ -70,6 +70,7 @@ public class DomTester {
     public static void assertEquals(final String expected, final String actual,
                                     final ChildrenTester childrenTester) {
         if (!DomTester.equals(expected, actual, childrenTester)) {
+            System.err.println("Expected was:" + expected);
             System.err.println("Actual was:" + actual);
             throw new AssertionError(childrenTester.getFirstDifference().get());
         }

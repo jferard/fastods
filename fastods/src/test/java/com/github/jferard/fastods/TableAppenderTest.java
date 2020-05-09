@@ -238,6 +238,27 @@ public class TableAppenderTest {
                 "table:default-cell-style-name=\"Default\"/></table:table>", sb.toString());
     }
 
+    @Test
+    public final void testAppendTwoWriters() throws IOException {
+        final StringBuilder sb1 = new StringBuilder();
+        final StringBuilder sb2 = new StringBuilder();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getName()).andReturn("tb");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
+        EasyMock.expect(this.tb.getColumnStyles())
+                .andReturn(FastFullList.<TableColumnStyle>builder().build());
+        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0).times(2);
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+
+        PowerMock.replayAll();
+        this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb1);
+        this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb2);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(sb1.toString(), sb2.toString());
+    }
+
     private void assertPreambleXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
         this.tableAppender.appendPreamble(this.xmlUtil, sb);
