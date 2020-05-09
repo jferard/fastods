@@ -74,7 +74,19 @@ public class AnonymousOdsFileWriter {
      * @throws IOException The file can't be saved.
      */
     public void save(final OutputStream out) throws IOException {
-        final ZipUTF8WriterBuilder builder = ZipUTF8WriterImpl.builder();
+        this.save(out, ZipUTF8WriterImpl.builder());
+    }
+
+    /**
+     * Writes the document to a stream.
+     * WARNING: The user shall close the stream (since 0.6.1).
+     *
+     * @param out The OutputStream that should be used.
+     * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
+     *                 level, ...)
+     * @throws IOException The file can't be saved.
+     */
+    public void save(final OutputStream out, final ZipUTF8WriterBuilder builder) throws IOException {
         final ZipUTF8Writer writer = builder.build(out);
         this.save(writer);
         writer.finish(); // ensures the zip file is well formed
