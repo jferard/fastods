@@ -26,6 +26,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.util.Style;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -34,14 +35,12 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableColumnStyle implements FontFaceContainerStyle {
+public class TableColumnStyle implements ObjectStyle {
     /**
      * The default style, see LO.
      */
     public static final TableColumnStyle DEFAULT_TABLE_COLUMN_STYLE =
             TableColumnStyle.builder("co1").build();
-
-    private static TableColumnStyle defaultColumnStyle;
 
     /**
      * @param name the name of the style
@@ -53,7 +52,6 @@ public class TableColumnStyle implements FontFaceContainerStyle {
 
     private final boolean hidden;
     private final Length columnWidth;
-    private final TableCellStyle defaultCellStyle;
     private final String name;
     private final boolean optimalWidth;
     private String key;
@@ -64,22 +62,19 @@ public class TableColumnStyle implements FontFaceContainerStyle {
      * @param name             A unique name for this style
      * @param hidden           true if the style is automatic
      * @param columnWidth      the width of the column
-     * @param defaultCellStyle the default style for cells
      * @param optimalWidth     true if the optimal width is set
      */
     TableColumnStyle(final String name, final boolean hidden, final Length columnWidth,
-                     final TableCellStyle defaultCellStyle, final boolean optimalWidth) {
+                     final boolean optimalWidth) {
         this.name = name;
         this.hidden = hidden;
         this.columnWidth = columnWidth;
-        this.defaultCellStyle = defaultCellStyle;
         this.optimalWidth = optimalWidth;
     }
 
     @Override
     public void addToElements(final OdsElements odsElements) {
         odsElements.addContentStyle(this);
-        odsElements.addContentStyle(this.defaultCellStyle);
     }
 
     @Override
@@ -96,28 +91,6 @@ public class TableColumnStyle implements FontFaceContainerStyle {
             util.appendAttribute(appendable, "style:column-width", this.columnWidth);
         }
         appendable.append("/></style:style>");
-    }
-
-    /**
-     * Append the XML to the table representation
-     *
-     * @param util       an util
-     * @param appendable the destination
-     * @param count      the number of columns concerned
-     * @throws IOException if an I/O error occurs
-     */
-    public void appendXMLToTable(final XMLUtil util, final Appendable appendable, final int count)
-            throws IOException {
-        appendable.append("<table:table-column");
-        util.appendEAttribute(appendable, "table:style-name", this.name);
-        if (count > 1) {
-            util.appendAttribute(appendable, "table:number-columns-repeated", count);
-        }
-        if (this.defaultCellStyle != null) {
-            util.appendEAttribute(appendable, "table:default-cell-style-name",
-                    this.defaultCellStyle.getName());
-        }
-        appendable.append("/>");
     }
 
     @Override
@@ -140,13 +113,6 @@ public class TableColumnStyle implements FontFaceContainerStyle {
     @Deprecated
     public Length getColumnWidth() {
         return this.columnWidth;
-    }
-
-    /**
-     * @return the default style
-     */
-    public TableCellStyle getDefaultCellStyle() {
-        return this.defaultCellStyle;
     }
 
     @Override
@@ -186,13 +152,6 @@ public class TableColumnStyle implements FontFaceContainerStyle {
      * @param stylesContainer the styles container
      */
     public void addToContentStyles(final StylesContainer stylesContainer) {
-        stylesContainer.addContentFontFaceContainerStyle(this);
         stylesContainer.addContentStyle(this);
-        stylesContainer.addContentStyle(this.defaultCellStyle);
-    }
-
-    @Override
-    public FontFace getFontFace() {
-        return this.defaultCellStyle.getFontFace();
     }
 }

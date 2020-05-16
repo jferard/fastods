@@ -31,11 +31,14 @@ import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
+import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapperBuilder;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
@@ -297,16 +300,54 @@ class J_Misc {
     }
 
     /**
-     * @throws IOException  if the file can't be written
+     * @throws IOException if the file can't be written
      */
-    static void example4() throws IOException {
+    static void customAttributeExample() throws IOException {
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## A custom attribute
+        // FastODS can't provide support for every conceivable attribute. But you can add easily a
+        // custom attribute to a cell.
+        //
+        // First, you may need to add a namespace to the `content.xml` file:
+
+        final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
+        namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
+        final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
+                .addNamespaceByPrefix(namespaceByPrefix).build();
+
+        // Now, create the document as usual:
+
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table table = document.addTable("custom");
+        final TableCellWalker walker = table.getWalker();
+        walker.setText(Text.builder().par().span("Check custom attributes in the ")
+                .styledSpan("content.xml", TextProperties.builder().fontName(
+                        LOFonts.LIBERATION_MONO).buildHiddenStyle("source")).span(" file!").build());
+
+        // Then you can add a custom attribute to the `table:table`, `table:table-row`,
+        // `table:table-column` or `table:table-cell` tags.
+        table.setAttribute("myns:my-table-attr", "my-table-value");
+        walker.setRowAttribute("myns:my-row-attr", "my-row-value");
+        walker.setColumnAttribute("myns:my-col-attr", "my-col-value");
+        walker.setAttribute("myns:my-cell-attr", "my-cell-value");
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "j_misc_custom_attr.ods"));
+    }
+
+    /**
+     * @throws IOException if the file can't be written
+     */
+    static void example5() throws IOException {
         final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
         namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
         final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
                 .addNamespaceByPrefix(namespaceByPrefix).build();
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
-        final Table table = document.addTable("rs");
+        final Table table = document.addTable("custom");
         final TableCellWalker walker = table.getWalker();
 
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
@@ -332,9 +373,9 @@ class J_Misc {
 
 
     /**
-     * @throws IOException  if the file can't be written
+     * @throws IOException if the file can't be written
      */
-    static void example5() throws IOException {
+    static void example6() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         //
         // The previous example might not be really impressive, because the attributes should be

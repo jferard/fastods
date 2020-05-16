@@ -42,7 +42,9 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -56,12 +58,6 @@ class TableBuilder {
      */
     private static final int BUFFER_SIZE = 8 * 1024;
 
-    /**
-     * Check if a col index is valid, otherwise throws an exception
-     *
-     * @param col the index
-     * @throws IllegalArgumentException if the index is invalid
-     */
     private static void checkCol(final int col) {
         if (col < 0) {
             throw new IllegalArgumentException(
@@ -125,12 +121,12 @@ class TableBuilder {
 
     private final int bufferSize;
     private final int columnCapacity;
-    private final FastFullList<TableColumnStyle> columnStyles;
     private final ConfigItemMapEntrySet configEntry;
     private final DataStyles format;
     private final PositionUtil positionUtil;
     private final StylesContainer stylesContainer;
     private final FastFullList<TableRowImpl> tableRows;
+    private final FastFullList<TableColumnImpl> tableColumns;
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
@@ -141,7 +137,8 @@ class TableBuilder {
     private int lastRowIndex;
     private String name;
     private TableStyle style;
-    private List<Shape> shapes;
+    private final List<Shape> shapes;
+    private Map<String, CharSequence> customValueByAttribute;
 
     /**
      * Create a new table builder
@@ -173,9 +170,7 @@ class TableBuilder {
         this.columnCapacity = columnCapacity;
         this.configEntry = configEntry;
         this.style = TableStyle.DEFAULT_TABLE_STYLE;
-        this.columnStyles = FastFullList.<TableColumnStyle>builder()
-                .blankElement(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE)
-                .capacity(this.columnCapacity).build();
+        this.tableColumns = FastFullList.newListWithCapacity(this.columnCapacity);
         this.tableRows = FastFullList.newListWithCapacity(rowCapacity);
         this.curRowIndex = -1;
         this.lastFlushedRowIndex = 0;
@@ -226,8 +221,8 @@ class TableBuilder {
     /**
      * @return the list of the column styles
      */
-    public FastFullList<TableColumnStyle> getColumnStyles() {
-        return this.columnStyles;
+    public FastFullList<TableColumnImpl> getColumns() {
+        return this.tableColumns;
     }
 
     /**
@@ -399,9 +394,41 @@ class TableBuilder {
      * @throws IllegalArgumentException Thrown if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
-        TableBuilder.checkCol(col);
+        this.getTableColumn(col).setColumnStyle(ts);
         ts.addToContentStyles(this.stylesContainer);
-        this.columnStyles.set(col, ts);
+    }
+
+    /**
+     * Set a custom attribute for this column
+     * @param col the column
+     * @param attribute the attribute
+     * @param value the value
+     */
+    public void setColumnAttribute(final int col, final String attribute, final CharSequence value) {
+        this.getTableColumn(col).setColumnAttribute(attribute, value);
+    }
+
+    public void setColumnDefaultCellStyle(final int col, final TableCellStyle cellStyle) {
+        final TableColumnImpl tableColumn = this.getTableColumn(col);
+        tableColumn.setColumnDefaultCellStyle(cellStyle);
+        this.stylesContainer.addContentFontFaceContainerStyle(cellStyle);
+    }
+
+    /**
+     * Get the column
+     *
+     * @param col the index
+     * @return the column
+     * @throws IllegalArgumentException if the index is invalid
+     */
+    private TableColumnImpl getTableColumn(final int col) {
+        TableBuilder.checkCol(col);
+        TableColumnImpl tableColumn = this.tableColumns.get(col);
+        if (tableColumn == null) {
+            tableColumn = new TableColumnImpl();
+            this.tableColumns.set(col, tableColumn);
+        }
+        return tableColumn;
     }
 
     /**
@@ -515,9 +542,14 @@ class TableBuilder {
      * @return the style, *never null*
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
-        TableCellStyle style = this.columnStyles.get(columnIndex).getDefaultCellStyle();
+        final TableColumnImpl tableColumn = this.tableColumns.get(columnIndex);
+        if (tableColumn == null) {
+            return TableCellStyle.DEFAULT_CELL_STYLE;
+        }
+
+        final TableCellStyle style = tableColumn.getColumnDefaultCellStyle();
         if (style == null) {
-            style = TableCellStyle.DEFAULT_CELL_STYLE;
+            return TableCellStyle.DEFAULT_CELL_STYLE;
         }
         return style;
     }
@@ -537,5 +569,21 @@ class TableBuilder {
     public void addShape(final Shape shape) {
         this.shapes.add(shape);
         shape.addEmbeddedStyles(this.stylesContainer);
+    }
+
+    /**
+     * Set a custom attribute
+     * @param attribute the attribute
+     * @param value the value
+     */
+    public void setAttribute(final String attribute, final CharSequence value) {
+        if (this.customValueByAttribute == null) {
+            this.customValueByAttribute = new HashMap<String, CharSequence>();
+        }
+        this.customValueByAttribute.put(attribute, value);
+    }
+
+    public Map<String, CharSequence> getCustomValueByAttribute() {
+        return this.customValueByAttribute;
     }
 }

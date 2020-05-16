@@ -253,6 +253,16 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     }
 
     @Override
+    public void setColumnDefaultCellStyle(final TableCellStyle cellStyle) {
+        this.table.setColumnDefaultCellStyle(this.c, cellStyle);
+    }
+
+    @Override
+    public void setColumnAttribute(final String attribute, final CharSequence value) {
+        this.table.setColumnAttribute(this.c, attribute, value);
+    }
+
+    @Override
     public void setRowFormat(final DataStyles format) {
         this.row.setRowFormat(format);
     }
@@ -285,6 +295,11 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     @Override
     public void removeRowStyle() {
         this.row.removeRowStyle();
+    }
+
+    @Override
+    public void setRowAttribute(final String attribute, final CharSequence value) {
+        this.row.setRowAttribute(attribute, value);
     }
 
     @Override
@@ -396,5 +411,10 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
      */
     public void addData(final DataWrapper data) throws IOException {
         data.addToTable(this);
+    }
+
+    @Override
+    public void setAttribute(final String attribute, final CharSequence value) {
+        this.cell.setAttribute(attribute, value);
     }
 }

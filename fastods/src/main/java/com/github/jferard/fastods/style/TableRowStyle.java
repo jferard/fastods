@@ -34,12 +34,32 @@ import java.io.IOException;
  * @author Julien Férard
  * @author Martin Schulz
  */
-public class TableRowStyle implements FontFaceContainerStyle {
+public class TableRowStyle implements ObjectStyle {
     /**
      * The default style, see LO.
      */
     public static final TableRowStyle DEFAULT_TABLE_ROW_STYLE =
             TableRowStyle.builder("ro1").build();
+    private final String name;
+    private final boolean hidden;
+    private final Length rowHeight;
+    private final boolean optimalHeight;
+    private String key;
+    /**
+     * Create a new table row style.
+     *
+     * @param styleName     A unique name for this style
+     * @param hidden        true if the row is hidden
+     * @param rowHeight     The height of the row
+     * @param optimalHeight True if we use optimal height
+     */
+    TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight,
+                  final boolean optimalHeight) {
+        this.name = styleName;
+        this.hidden = hidden;
+        this.rowHeight = rowHeight;
+        this.optimalHeight = optimalHeight;
+    }
 
     /**
      * @param name the name of the TableRowStyle to create
@@ -47,31 +67,6 @@ public class TableRowStyle implements FontFaceContainerStyle {
      */
     public static TableRowStyleBuilder builder(final String name) {
         return new TableRowStyleBuilder(name);
-    }
-
-    private final String name;
-    private final boolean hidden;
-    private final Length rowHeight;
-    private final TableCellStyle defaultCellStyle;
-    private final boolean optimalHeight;
-    private String key;
-
-    /**
-     * Create a new table row style.
-     *
-     * @param styleName        A unique name for this style
-     * @param hidden           true if the row is hidden
-     * @param rowHeight        The height of the row
-     * @param defaultCellStyle The default cell style
-     * @param optimalHeight    True if we use optimal height
-     */
-    TableRowStyle(final String styleName, final boolean hidden, final Length rowHeight,
-                  final TableCellStyle defaultCellStyle, final boolean optimalHeight) {
-        this.name = styleName;
-        this.hidden = hidden;
-        this.rowHeight = rowHeight;
-        this.defaultCellStyle = defaultCellStyle;
-        this.optimalHeight = optimalHeight;
     }
 
     @Override
@@ -128,35 +123,12 @@ public class TableRowStyle implements FontFaceContainerStyle {
         return this.hidden;
     }
 
-    @Override
-    public FontFace getFontFace() {
-        if (this.defaultCellStyle == null) {
-            return null;
-        } else {
-            return this.defaultCellStyle.getFontFace();
-        }
-    }
-
-
-    /**
-     * @return the table cell style. May be null.
-     */
-    public TableCellStyle getDefaultCellStyle() {
-        return this.defaultCellStyle;
-    }
-
     /**
      * Add this style to a styles container
      *
      * @param stylesContainer the styles container
      */
     public void addToContentStyles(final StylesContainer stylesContainer) {
-        stylesContainer.addContentFontFaceContainerStyle(this);
         stylesContainer.addContentStyle(this);
-        final TableCellStyle defaultCellStyle = this.getDefaultCellStyle();
-        if (defaultCellStyle != null) {
-            stylesContainer.addStylesFontFaceContainerStyle(defaultCellStyle);
-            stylesContainer.addContentStyle(defaultCellStyle);
-        }
     }
 }

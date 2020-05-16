@@ -137,13 +137,18 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void miscTest4() throws IOException {
-        J_Misc.example4();
+    public void customAttributeExampleTest() throws IOException {
+        J_Misc.customAttributeExample();
     }
 
     @Test
     public void miscTest5() throws IOException {
         J_Misc.example5();
+    }
+
+    @Test
+    public void miscTest6() throws IOException {
+        J_Misc.example6();
     }
 
     @Test

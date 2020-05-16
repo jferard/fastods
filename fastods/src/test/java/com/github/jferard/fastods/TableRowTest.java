@@ -75,7 +75,6 @@ public class TableRowTest {
         final TableRowStyle trs = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
 
         PowerMock.resetAll();
-        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(trs)).andReturn(true);
         EasyMock.expect(this.stc.addContentStyle(trs)).andReturn(true);
 
         PowerMock.replayAll();
@@ -90,6 +89,7 @@ public class TableRowTest {
 
         PowerMock.resetAll();
         EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
+        EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
 
         PowerMock.replayAll();
         this.row.setDefaultCellStyle(tcs);
@@ -224,6 +224,9 @@ public class TableRowTest {
         PowerMock.resetAll();
         EasyMock.expect(
                 this.stc.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
+        EasyMock.expect(
+                this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
                 .andReturn(true);
 
         PowerMock.replayAll();

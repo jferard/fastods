@@ -289,6 +289,30 @@ public class Table implements NamedObject, FrameContent {
     }
 
     /**
+     * Set a custom attribute for a column
+     * @param col the column
+     * @param attribute the attribute
+     * @param value the value
+     */
+    public void setColumnAttribute(final int col, final String attribute,
+                                   final CharSequence value) {
+        this.builder.setColumnAttribute(col, attribute, value);
+    }
+
+    public void setColumnDefaultCellStyle(final int col, final TableCellStyle cellStyle) {
+        this.builder.setColumnDefaultCellStyle(col, cellStyle);
+    }
+
+    /**
+     * Set a custom attribute
+     * @param attribute the attribute
+     * @param value the value
+     */
+    public void setAttribute(final String attribute, final CharSequence value) {
+        this.builder.setAttribute(attribute, value);
+    }
+
+    /**
      * Set a config item
      *
      * @param name  the item name

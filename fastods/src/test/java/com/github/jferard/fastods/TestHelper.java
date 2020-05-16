@@ -94,7 +94,7 @@ public class TestHelper {
                 mockOdsElements.addContentStyle(TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE))
                 .andReturn(true);
         EasyMock.expect(mockOdsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
-                .andReturn(true).times(2);
+                .andReturn(true); //.times(2);
         EasyMock.expect(mockOdsElements
                 .addMasterPageStyle(PageStyle.DEFAULT_PAGE_STYLE.getMasterPageStyle()))
                 .andReturn(true);

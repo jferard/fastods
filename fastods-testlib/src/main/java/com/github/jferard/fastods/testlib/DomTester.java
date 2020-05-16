@@ -71,7 +71,7 @@ public class DomTester {
                                     final ChildrenTester childrenTester) {
         if (!DomTester.equals(expected, actual, childrenTester)) {
             System.err.println("Expected was:" + expected);
-            System.err.println("Actual was:" + actual);
+            System.err.println("  Actual was:" + actual);
             throw new AssertionError(childrenTester.getFirstDifference().get());
         }
     }

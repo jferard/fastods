@@ -272,8 +272,7 @@ public class OdsFileCreationIT {
     private void createStyles() {
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
                 .fontWeightBold().build();
-        this.columnStyle = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
-                .defaultCellStyle(this.tcls).build();
+        this.columnStyle = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).build();
         this.rowStyle = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
         this.tcs0 =
                 TableCellStyle.builder("tcs0").backgroundColor(ColorHelper.fromString("#0000ff"))
@@ -293,6 +292,7 @@ public class OdsFileCreationIT {
         for (int i = 0; i < n; i++) {
             final Table table = document.addTable("table" + i, 50, 5);
             table.setColumnStyle(0, this.columnStyle);
+            table.setColumnDefaultCellStyle(0, this.tcls);
             table.updateConfigItem(ConfigElement.ZOOM_VALUE, "206");
             TableRowImpl row = table.getRow(0);
             row.setRowStyle(this.rowStyle);

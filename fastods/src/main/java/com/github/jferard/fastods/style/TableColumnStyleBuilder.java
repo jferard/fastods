@@ -35,7 +35,6 @@ public class TableColumnStyleBuilder
     private static final Length DEFAULT_COLUMN_WIDTH = SimpleLength.cm(2.5);
     private final String name;
     private Length columnWidth;
-    private TableCellStyle defaultCellStyle;
     private boolean hidden;
     private boolean optimalWidth;
 
@@ -47,15 +46,13 @@ public class TableColumnStyleBuilder
     TableColumnStyleBuilder(final String name) {
         this.name = TableStyleBuilder.checker.checkStyleName(name);
         this.columnWidth = DEFAULT_COLUMN_WIDTH;
-        this.defaultCellStyle = TableCellStyle.DEFAULT_CELL_STYLE;
         this.optimalWidth = false;
         this.hidden = true;
     }
 
     @Override
     public TableColumnStyle build() {
-        return new TableColumnStyle(this.name, this.hidden, this.columnWidth, this.defaultCellStyle,
-                this.optimalWidth);
+        return new TableColumnStyle(this.name, this.hidden, this.columnWidth, this.optimalWidth);
     }
 
     /**
@@ -69,17 +66,6 @@ public class TableColumnStyleBuilder
     public TableColumnStyleBuilder columnWidth(final Length width) {
         this.columnWidth = width;
         this.optimalWidth = false;
-        return this;
-    }
-
-    /**
-     * Set a default cell style
-     *
-     * @param defaultCellStyle the style
-     * @return this for fluent style
-     */
-    public TableColumnStyleBuilder defaultCellStyle(final TableCellStyle defaultCellStyle) {
-        this.defaultCellStyle = defaultCellStyle;
         return this;
     }
 

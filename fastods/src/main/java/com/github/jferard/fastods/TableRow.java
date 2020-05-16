@@ -48,7 +48,7 @@ public interface TableRow {
     int getColumnCount();
 
     /**
-     * Set the cell rowStyle for the cell at col to ts.
+     * Set the cell style for the cell of this row to ts.
      *
      * @param ts The table rowStyle to be used
      */
@@ -63,4 +63,11 @@ public interface TableRow {
      * Remove the default row style
      */
     void removeRowStyle();
+
+    /**
+     * Add an attribute to a row
+     * @param attribute the attribute name
+     * @param value the value
+     */
+    void setRowAttribute(String attribute, CharSequence value);
 }

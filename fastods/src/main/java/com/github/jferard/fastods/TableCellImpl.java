@@ -382,6 +382,12 @@ public class TableCellImpl implements WritableTableCell {
     }
 
     @Override
+    public void setAttribute(final String attribute, final CharSequence value) {
+        this.ensureColdCell();
+        this.coldCell.setAttribute(attribute, value);
+    }
+
+    @Override
     public void setTimeValue(final long timeInMillis) {
         if (timeInMillis < 0) {
             this.value = this.xmlUtil

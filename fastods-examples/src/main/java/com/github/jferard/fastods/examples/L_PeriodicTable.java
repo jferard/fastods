@@ -165,10 +165,10 @@ class L_PeriodicTable {
                 // Cells must be square:
                 final SimpleLength CELL_SIZE = SimpleLength.cm(1.5);
                 final TableColumnStyle tableColumnStyle =
-                        TableColumnStyle.builder("co2").columnWidth(CELL_SIZE)
-                                .defaultCellStyle(baseCellStyle).build();
+                        TableColumnStyle.builder("co2").columnWidth(CELL_SIZE).build();
                 for (int c = 0; c < 18; c++) {
                     table.setColumnStyle(c, tableColumnStyle);
+                    table.setColumnDefaultCellStyle(c, baseCellStyle);
                 }
                 final TableRowStyle tableRowStyle =
                         TableRowStyle.builder("ro2").rowHeight(CELL_SIZE).build();

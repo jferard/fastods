@@ -106,17 +106,18 @@ public class StyleExampleIT {
         final TableCellStyle cellStyle =
                 TableCellStyle.builder("wrapped-cell").fontWrap(true).hidden().build();
         final TableColumnStyle columnStyleA =
-                TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle)
+                TableColumnStyle.builder("wrapped-col")
                         .columnWidth(SimpleLength.cm(2)).build();
         table.setColumnStyle(0, columnStyleA);
+        table.setColumnDefaultCellStyle(0, cellStyle);
 
         // second column has OpenSymbol font
         final TableCellStyle symbolStyle =
                 TableCellStyle.builder("symbol-cell").fontName(LOFonts.OPENSYMBOL).hidden().build();
         final TableColumnStyle columnStyleB =
-                TableColumnStyle.builder("symbol-col").columnWidth(SimpleLength.cm(5))
-                        .defaultCellStyle(symbolStyle).build();
+                TableColumnStyle.builder("symbol-col").columnWidth(SimpleLength.cm(5)).build();
         table.setColumnStyle(1, columnStyleB);
+        table.setColumnDefaultCellStyle(1, symbolStyle);
 
         // second row has title Liberation Font
         final TableCellStyle liberationStyle =

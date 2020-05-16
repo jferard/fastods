@@ -304,6 +304,13 @@ public interface TableCell {
     void setCellMerge(int rowMerge, int columnMerge) throws IOException;
 
     /**
+     * Add an attribute to a cell
+     * @param attribute the attribute name
+     * @param value the value
+     */
+    void setAttribute(String attribute, CharSequence value);
+
+    /**
      * Set a custom data style. In an Open Document, a data style is always carried by a style.
      * Thus, FastOds will create a new style, child of the current style, with the given data style.
      * The new style will have the same visibility as the data style.
@@ -316,5 +323,4 @@ public interface TableCell {
      * @return the index of the cell in the current row
      */
     int colIndex();
-
 }

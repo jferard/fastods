@@ -70,6 +70,11 @@ public class RowCellWalkerImpl implements RowCellWalker {
     }
 
     @Override
+    public void setAttribute(final String attribute, final CharSequence value) {
+        this.row.getOrCreateCell(this.c).setAttribute(attribute, value);
+    }
+
+    @Override
     public void setColumnsSpanned(final int n) {
         this.row.setColumnsSpanned(this.c, n);
     }

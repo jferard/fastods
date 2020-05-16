@@ -23,8 +23,33 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 
+/**
+ * 9.1.6 <table:table-column>
+ * A column.
+ *
+ * @author J. Férard
+ */
 public interface TableColumn {
-    void setColumnStyle(final TableColumnStyle ts);
+    /**
+     * Set a style for this column
+     * @param columnStyle the style
+     */
+    void setColumnStyle(TableColumnStyle columnStyle);
+
+    /**
+     * Set a custom attribute for this column
+     * @param attribute the attribute
+     * @param value the value
+     */
+    void setColumnAttribute(String attribute, CharSequence value);
+
+    /**
+     * Set the cell style for the cell of this column to ts.
+     *
+     * @param ts The table rowStyle to be used
+     */
+    void setColumnDefaultCellStyle(TableCellStyle ts);
 }

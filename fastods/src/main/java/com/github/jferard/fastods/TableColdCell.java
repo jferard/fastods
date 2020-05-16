@@ -28,6 +28,8 @@ import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 9.1.4 table:table-cell
@@ -57,6 +59,7 @@ class TableColdCell {
     private String formula;
     private int matrixRowsSpanned;
     private int matrixColumnsSpanned;
+    private Map<String, CharSequence> customValueByAttribute;
 
     /**
      * Create an new "cold cell"
@@ -168,6 +171,12 @@ class TableColdCell {
             }
         }
 
+        if (this.customValueByAttribute != null) {
+            for (final Map.Entry<String, CharSequence> entry : this.customValueByAttribute.entrySet()) {
+                util.appendAttribute(appendable, entry.getKey(), entry.getValue());
+            }
+        }
+
         if (this.text == null && this.tooltip == null) {
             appendable.append("/>");
         } else { // something between <cell> and </cell>
@@ -229,5 +238,12 @@ class TableColdCell {
 
     public void setMatrixColumnsSpanned(final int n) {
         this.matrixColumnsSpanned = n;
+    }
+
+    public void setAttribute(final String attribute, final CharSequence value) {
+        if (this.customValueByAttribute == null) {
+            this.customValueByAttribute = new HashMap<String, CharSequence>();
+        }
+        this.customValueByAttribute.put(attribute, value);
     }
 }

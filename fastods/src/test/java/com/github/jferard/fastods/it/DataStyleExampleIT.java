@@ -128,8 +128,9 @@ public class DataStyleExampleIT {
 
         final Table table = document.addTable("test");
         final TableColumnStyle columnStyle0 =
-                TableColumnStyle.builder("wrapped-col").defaultCellStyle(cellStyle).build();
+                TableColumnStyle.builder("wrapped-col").build();
         table.setColumnStyle(0, columnStyle0);
+        table.setColumnDefaultCellStyle(0, cellStyle);
         final TableColumnStyle columnStyle1 =
                 TableColumnStyle.builder("col").columnWidth(SimpleLength.cm(5)).build();
         table.setColumnStyle(1, columnStyle1);
@@ -141,9 +142,9 @@ public class DataStyleExampleIT {
         final TableCellStyle cellStyle1 =
                 TableCellStyle.builder("datastyle0").dataStyle(floatStyle).build();
         final TableColumnStyle columnDataStyle =
-                TableColumnStyle.builder("col-datastyle").columnWidth(SimpleLength.cm(5))
-                        .defaultCellStyle(cellStyle1).build();
+                TableColumnStyle.builder("col-datastyle").columnWidth(SimpleLength.cm(5)).build();
         table.setColumnStyle(2, columnDataStyle);
+        table.setColumnDefaultCellStyle(2, cellStyle1);
 
         final FloatStyle floatStyle2 =
                 new FloatStyleBuilder("third-custom-int-datastyle", this.locale).decimalPlaces(6)

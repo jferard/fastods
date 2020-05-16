@@ -285,6 +285,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         final Table table = document.addTable("test", 1, 5);
         table.setStyle(this.ttts);
         table.setColumnStyle(0, this.tcns);
+        table.setColumnDefaultCellStyle(0, this.tcls);
         TableRowImpl row = table.getRow(0);
         row.setRowStyle(this.trs);
         row.setDefaultCellStyle(this.tcls);
@@ -318,8 +319,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         this.trs = TableRowStyle.builder("rr").rowHeight(SimpleLength.cm(5.0)).build();
         this.tcls = TableCellStyle.builder("cc").backgroundColor(ColorHelper.fromString("#dddddd"))
                 .fontWeightBold().build();
-        this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0))
-                .defaultCellStyle(this.tcls).build();
+        this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).build();
 
         this.lts = TextProperties.builder().fontColor(SimpleColor.RED).buildHiddenStyle("red-text");
         this.cts =

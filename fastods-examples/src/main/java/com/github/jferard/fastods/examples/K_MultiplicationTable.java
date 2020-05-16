@@ -78,10 +78,11 @@ class K_MultiplicationTable {
 
         // All columns will have the same format:
         final TableColumnStyle tableColumnStyle =
-                TableColumnStyle.builder("co2").defaultCellStyle(tableCellStyle)
+                TableColumnStyle.builder("co2")
                         .columnWidth(SimpleLength.cm(3.5)).build();
         for (int c = 0; c < 6; c++) {
             table.setColumnStyle(c, tableColumnStyle);
+            table.setColumnDefaultCellStyle(c, tableCellStyle);
         }
 
         // Now, we need a little maths (this is not surprising for a multiplication table).

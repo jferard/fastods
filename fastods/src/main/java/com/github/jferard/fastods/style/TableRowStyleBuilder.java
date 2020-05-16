@@ -56,7 +56,7 @@ public class TableRowStyleBuilder
 
     @Override
     public TableRowStyle build() {
-        return new TableRowStyle(this.name, this.hidden, this.rowHeight, this.defaultCellStyle,
+        return new TableRowStyle(this.name, this.hidden, this.rowHeight,
                 this.optimalHeight);
     }
 

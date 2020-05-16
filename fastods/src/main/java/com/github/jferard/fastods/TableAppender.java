@@ -24,11 +24,13 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -88,7 +90,8 @@ class TableAppender {
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
-    public void appendPreambleOnce(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendPreambleOnce(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         if (!this.preambleWritten) {
             this.appendPreamble(util, appendable);
             this.preambleWritten = true;
@@ -100,9 +103,15 @@ class TableAppender {
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
         util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
         util.appendAttribute(appendable, "table:print", false);
+        final Map<String, CharSequence> customValueByAttribute = this.builder.getCustomValueByAttribute();
+        if (customValueByAttribute != null) {
+            for (final Map.Entry<String, CharSequence> entry : customValueByAttribute.entrySet()) {
+                util.appendAttribute(appendable, entry.getKey(), entry.getValue());
+            }
+        }
         appendable.append(">");
         this.appendForms(util, appendable);
-        this.appendColumnStyles(util, appendable, this.builder.getColumnStyles());
+        this.appendColumns(util, appendable, this.builder.getColumns());
         this.appendShapes(util, appendable, this.builder.getShapes());
     }
 
@@ -172,35 +181,35 @@ class TableAppender {
         this.appendRows(util, appendable, rowIndex);
     }
 
-    private void appendColumnStyles(final XMLUtil xmlUtil, final Appendable appendable,
-                                    final Iterable<TableColumnStyle> columnStyles)
+    private void appendColumns(final XMLUtil xmlUtil, final Appendable appendable,
+                               final FastFullList<TableColumnImpl> tableColumns)
             throws IOException {
-        final Iterator<TableColumnStyle> iterator = columnStyles.iterator();
+        final Iterator<TableColumnImpl> iterator = tableColumns.iterator();
         if (!iterator.hasNext()) {
-            TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE
+            TableColumnImpl.DEFAULT_TABLE_COLUMN
                     .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT);
             return;
         }
 
         int count = 1;
         int endCount = MAX_COLUMN_COUNT;
-        TableColumnStyle curTCS = iterator.next(); // will be shifted to prevTCS
+        TableColumnImpl curColumn = iterator.next(); // will be shifted to prevTCS
         while (iterator.hasNext()) {
-            final TableColumnStyle prevTCS = curTCS;
-            curTCS = iterator.next();
+            final TableColumnImpl prevColumn = curColumn;
+            curColumn = iterator.next();
 
-            if (curTCS.equals(prevTCS)) {
+            if (curColumn.equals(prevColumn)) {
                 count++;
             } else {
-                prevTCS.appendXMLToTable(xmlUtil, appendable, count);
+                prevColumn.appendXMLToTable(xmlUtil, appendable, count);
                 endCount -= count;
                 count = 1;
             }
 
         }
-        curTCS.appendXMLToTable(xmlUtil, appendable, count);
+        curColumn.appendXMLToTable(xmlUtil, appendable, count);
         endCount -= count;
-        TableColumnStyle.DEFAULT_TABLE_COLUMN_STYLE.appendXMLToTable(xmlUtil, appendable, endCount);
+        TableColumnImpl.DEFAULT_TABLE_COLUMN.appendXMLToTable(xmlUtil, appendable, endCount);
     }
 
     private void appendRows(final XMLUtil util, final Appendable appendable) throws IOException {

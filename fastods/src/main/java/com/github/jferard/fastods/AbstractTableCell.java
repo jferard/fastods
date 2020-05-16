@@ -195,4 +195,9 @@ public abstract class AbstractTableCell implements WritableTableCell {
     public int colIndex() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void setAttribute(final String attribute, final CharSequence value) {
+        throw new UnsupportedOperationException();
+    }
 }

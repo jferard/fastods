@@ -143,14 +143,14 @@
                 <artifactId>maven-release-plugin</artifactId>
             </plugin>
             <plugin>
-			    <groupId>biz.aQute.bnd</groupId>
-			    <artifactId>bnd-maven-plugin</artifactId>
-			    <configuration>
-			    	<bnd><![CDATA[
-		            	Export-Package: com.github.jferard.fastods.*
-			    	]]></bnd>
-			    </configuration>
-			</plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <configuration>
+                    <bnd><![CDATA[
+                        Export-Package: com.github.jferard.fastods.*
+                    ]]></bnd>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -172,18 +172,18 @@
                         <fork>true</fork>
                     </configuration>
                 </plugin>
-       			<plugin>
-				    <groupId>biz.aQute.bnd</groupId>
-				    <artifactId>bnd-maven-plugin</artifactId>
-				    <version>5.0.1</version>
-				    <executions>
-				        <execution>
-				            <goals>
-				                <goal>bnd-process</goal>
-				            </goals>
-				        </execution>
-				    </executions>
-				</plugin>
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-maven-plugin</artifactId>
+                    <version>5.0.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>bnd-process</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 
                 <!-- for OSSRH releases -->
                 <plugin>
@@ -245,16 +245,16 @@
                         </execution>
                     </executions>
                 </plugin>
-				<plugin>
-				    <groupId>org.apache.maven.plugins</groupId>
-				    <artifactId>maven-jar-plugin</artifactId>
-				    <version>3.2.0</version>
-				    <configuration>
-				        <archive>
-				            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-				        </archive>
-				    </configuration>
-				</plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+                </plugin>
                 <!-- release -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

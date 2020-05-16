@@ -32,6 +32,8 @@ import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 9.1.3 <table:table-row>
@@ -68,6 +70,7 @@ public class TableRowImpl implements TableRow {
     private DataStyles dataStyles;
     private TableRowStyle rowStyle;
     private TableCellStyle defaultCellStyle;
+    private Map<String, CharSequence> customValueByAttribute;
 
     /**
      * Create a new TableRow
@@ -133,6 +136,12 @@ public class TableRowImpl implements TableRow {
         if (this.defaultCellStyle != null) {
             util.appendEAttribute(appendable, "table:default-cell-style-name",
                     this.defaultCellStyle.getName());
+        }
+        if (this.customValueByAttribute != null) {
+            for (final Map.Entry<String, CharSequence> entry : this.customValueByAttribute
+                    .entrySet()) {
+                util.appendAttribute(appendable, entry.getKey(), entry.getValue());
+            }
         }
         appendable.append(">");
     }
@@ -263,7 +272,7 @@ public class TableRowImpl implements TableRow {
      * Set a custom table cell at a given index.
      *
      * @param colIndex the index
-     * @param cell the cell
+     * @param cell     the cell
      */
     public void set(final int colIndex, final WritableTableCell cell) {
         this.cells.set(colIndex, cell);
@@ -271,9 +280,8 @@ public class TableRowImpl implements TableRow {
 
     @Override
     public void setRowStyle(final TableRowStyle rowStyle) {
-        rowStyle.addToContentStyles(this.stylesContainer);
+        this.stylesContainer.addContentStyle(rowStyle);
         this.rowStyle = rowStyle;
-        this.defaultCellStyle = rowStyle.getDefaultCellStyle();
     }
 
     @Override
@@ -306,7 +314,9 @@ public class TableRowImpl implements TableRow {
 
     @Override
     public void setDefaultCellStyle(final TableCellStyle ts) {
+//        this.stylesContainer.addStylesFontFaceContainerStyle(ts);
         this.stylesContainer.addContentFontFaceContainerStyle(ts);
+        this.stylesContainer.addContentStyle(ts);
         this.defaultCellStyle = ts;
     }
 
@@ -318,5 +328,13 @@ public class TableRowImpl implements TableRow {
     @Override
     public void removeRowStyle() {
         this.rowStyle = null;
+    }
+
+    @Override
+    public void setRowAttribute(final String attribute, final CharSequence value) {
+        if (this.customValueByAttribute == null) {
+            this.customValueByAttribute = new HashMap<String, CharSequence>();
+        }
+        this.customValueByAttribute.put(attribute, value);
     }
 }

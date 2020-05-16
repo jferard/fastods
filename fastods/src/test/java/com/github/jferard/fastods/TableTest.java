@@ -95,8 +95,8 @@ public class TableTest {
         PowerMock.resetAll();
         for (int c = 0; c < 3; c++) {
             final TableColumnStyle tcs = tcss.get(c);
-            EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
-            EasyMock.expect(this.stc.addContentStyle(tcs.getDefaultCellStyle())).andReturn(true);
+//            EasyMock.expect(this.stc.addContentFontFaceContainerStyle(tcs)).andReturn(true);
+//            EasyMock.expect(this.stc.addContentStyle(tcs.getDefaultCellStyle())).andReturn(true);
             EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
         }
 
