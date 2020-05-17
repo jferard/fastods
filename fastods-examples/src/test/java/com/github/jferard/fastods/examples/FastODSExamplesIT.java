@@ -143,7 +143,7 @@ public class FastODSExamplesIT {
 
     @Test
     public void miscTest5() throws IOException {
-        J_Misc.example5();
+        J_Misc.customCell();
     }
 
     @Test

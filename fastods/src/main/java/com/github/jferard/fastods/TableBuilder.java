@@ -376,6 +376,7 @@ class TableBuilder {
      * @throws IllegalArgumentException if the row index or the col index is negative
      * @throws IOException              if the cells can't be merged
      * @throws ParseException           If the address can't be parsed.
+     * @deprecated use version with explicit coordinates
      */
     @Deprecated
     public void setCellMerge(final Table table, final TableAppender appender, final String address,

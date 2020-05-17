@@ -122,6 +122,7 @@ public class Table implements NamedObject, FrameContent {
      * Async flush the XML
      *
      * @throws IOException if an error occurs
+     * @deprecated use asyncFlushBeginTable, asyncFlushAvailableRows or asyncFlushEndTable
      */
     @Deprecated
     public void asyncFlush() throws IOException {

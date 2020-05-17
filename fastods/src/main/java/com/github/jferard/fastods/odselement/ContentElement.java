@@ -75,7 +75,7 @@ public class ContentElement implements OdsElement {
     private final List<ScriptEventListener> scriptEvents;
     private List<AutoFilter> autoFilters;
     private List<PilotTable> pilotTables;
-    private Map<String, String> additionalNamespaceByPrefix;
+    private final Map<String, String> additionalNamespaceByPrefix;
 
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
@@ -127,6 +127,7 @@ public class ContentElement implements OdsElement {
      *                       creation
      * @param rowCapacity    the initial capacity in rows: this will be allocated at table creation
      * @return the table (whether it existed before call or not). Never null
+     * @deprecated use `addTable(table)`
      */
     @Deprecated
     public Table addTable(final String name, final int rowCapacity, final int columnCapacity) {

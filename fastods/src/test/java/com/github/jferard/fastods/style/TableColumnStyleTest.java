@@ -109,6 +109,7 @@ public class TableColumnStyleTest {
     }
 
     @Test
+    @SuppressWarnings("deprecated")
     public final void testWidth() throws IOException {
         final TableColumnStyle tcs =
                 TableColumnStyle.builder("test").columnWidth(SimpleLength.pt(1.0)).build();
@@ -116,7 +117,6 @@ public class TableColumnStyleTest {
                 "<style:style style:name=\"test\" style:family=\"table-column\">" +
                         "<style:table-column-properties " + "fo:break-before=\"auto\" " +
                         "style:column-width=\"1pt\"/>" + "</style:style>", tcs);
-        Assert.assertEquals(SimpleLength.pt(1.0), tcs.getColumnWidth());
         Assert.assertEquals(tcs, tcs);
         Assert.assertEquals(tcs.hashCode(), tcs.hashCode());
     }

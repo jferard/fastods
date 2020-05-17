@@ -144,11 +144,11 @@ public class XMLUtil {
      * @throws IOException If an I/O error occurs
      */
     public void appendAttribute(final Appendable appendable, final CharSequence attrName,
-                                final List<? extends Object> attrs, final String sep)
+                                final List<?> attrs, final String sep)
             throws IOException {
         appendable.append(' ').append(attrName).append("=\"");
         if (!attrs.isEmpty()) {
-            final Iterator<? extends Object> it = attrs.iterator();
+            final Iterator<?> it = attrs.iterator();
             appendable.append(it.next().toString());
             while (it.hasNext()) {
                 appendable.append(sep).append(it.next().toString());

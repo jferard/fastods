@@ -62,7 +62,6 @@ public class MetaElement implements OdsElement {
 
     static {
         DF_TIME = new SimpleDateFormat("HH:mm:ss");
-        ;
         DF_TIME.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 

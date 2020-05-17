@@ -58,7 +58,7 @@ public class OdsFileWriterAdapter implements NamedOdsFileWriter {
         return new OdsFileWriterAdapter(logger, adaptee, new LinkedList<OdsAsyncFlusher>());
     }
 
-    private Logger logger;
+    private final Logger logger;
     private final NamedOdsFileWriter adaptee;
     private final Queue<OdsAsyncFlusher> flushers;
     private boolean stopped;

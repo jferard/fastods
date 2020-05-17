@@ -53,7 +53,7 @@ public class FileOpenResultTest {
 
     @Test
     public void testIsDir() throws Exception {
-        final FileOpenResult fileOpenResult = this.odsFactory.openFile(".");
+        final FileOpenResult fileOpenResult = FileOpen.openFile(".");
 
         Assert.assertSame(FileOpenResult.FILE_IS_DIR, fileOpenResult);
         this.thrown.expect(IllegalStateException.class);
@@ -65,7 +65,7 @@ public class FileOpenResultTest {
         final File aTest = new File("atest");
 
         try {
-            final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
+            final FileOpenResult fileOpenResult = FileOpen.openFile(aTest.getAbsolutePath());
             Assert.assertTrue(fileOpenResult instanceof FileOpen);
             Assert.assertEquals(0, aTest.length());
             // the file has been touched
@@ -88,7 +88,7 @@ public class FileOpenResultTest {
         s.close();
         Assert.assertEquals(3, aTest.length());
         try {
-            final FileOpenResult fileOpenResult = this.odsFactory.openFile(aTest.getAbsolutePath());
+            final FileOpenResult fileOpenResult = FileOpen.openFile(aTest.getAbsolutePath());
             Assert.assertTrue(fileOpenResult instanceof FileExists);
             // the file has not been touched
             Assert.assertEquals(3, aTest.length());

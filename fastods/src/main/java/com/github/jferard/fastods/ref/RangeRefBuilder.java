@@ -209,6 +209,6 @@ public class RangeRefBuilder {
      */
     public RangeRef build() {
         return new RangeRef(this.tableRefBuilder.build(), this.fromLocalCellRefBuilder.build(),
-                toLocalCellRefBuilder.build());
+                this.toLocalCellRefBuilder.build());
     }
 }

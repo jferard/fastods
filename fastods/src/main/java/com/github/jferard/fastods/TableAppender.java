@@ -23,7 +23,6 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.XMLUtil;
 

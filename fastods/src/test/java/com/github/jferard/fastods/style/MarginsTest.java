@@ -23,8 +23,6 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.attribute.BorderAttribute;
-import com.github.jferard.fastods.attribute.BorderAttributeBuilder;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;

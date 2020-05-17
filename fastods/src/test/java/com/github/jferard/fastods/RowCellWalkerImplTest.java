@@ -44,6 +44,10 @@ import java.util.Locale;
 
 import static org.easymock.EasyMock.expect;
 
+/**
+ * @deprecated test of a deprecated class.
+ */
+@Deprecated
 public class RowCellWalkerImplTest {
     private static final long TIME_IN_MILLIS = 1234567891011L;
     private RowCellWalkerImpl cellWalker;

@@ -42,7 +42,6 @@ import com.github.jferard.fastods.testlib.Fibonacci;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -72,7 +71,6 @@ public class OdsFileCreationIT {
         Util.mkdir(GENERATED_FILES);
     }
 
-    private Logger logger;
     private OdsFactory odsFactory;
     private Fibonacci fibonacci;
     private TableColumnStyle columnStyle;
@@ -82,23 +80,14 @@ public class OdsFileCreationIT {
     private TableCellStyle tcs1;
     private TableCellStyle tcs2;
     private TableCellStyle tcs3;
-    private long t1;
     private Locale locale;
 
     @Before
     public void setUp() {
-        this.logger = Logger.getLogger("standard document");
+        final Logger logger = Logger.getLogger("standard document");
         this.locale = Locale.US;
-        this.odsFactory = OdsFactory.create(this.logger, this.locale);
+        this.odsFactory = OdsFactory.create(logger, this.locale);
         this.fibonacci = Fibonacci.create();
-        this.logger.info("Filling a 5 rows, 5 columns spreadsheet");
-        this.t1 = System.currentTimeMillis();
-    }
-
-    @After
-    public void tearDown() {
-        final long t2 = System.currentTimeMillis();
-        this.logger.info("Filled in " + (t2 - this.t1) + " ms");
     }
 
     @Test
@@ -296,7 +285,7 @@ public class OdsFileCreationIT {
             table.updateConfigItem(ConfigElement.ZOOM_VALUE, "206");
             TableRowImpl row = table.getRow(0);
             row.setRowStyle(this.rowStyle);
-            row.setDefaultCellStyle(this.tcls);
+            row.setRowDefaultCellStyle(this.tcls);
 
             // FIRST ROW
             row = table.getRow(0);
@@ -349,7 +338,7 @@ public class OdsFileCreationIT {
                     .setTooltip("That's a <tooltip>\nwith a newline !", SimpleLength.cm(20.0),
                             SimpleLength.cm(10.0), true);
 
-            document.addAutoFilter("range", table, 0, 0, 3, 5);
+            table.addAutoFilter("range", 0, 0, 3, 5);
         }
     }
 

@@ -45,6 +45,7 @@ public class TableRowStyle implements ObjectStyle {
     private final Length rowHeight;
     private final boolean optimalHeight;
     private String key;
+
     /**
      * Create a new table row style.
      *

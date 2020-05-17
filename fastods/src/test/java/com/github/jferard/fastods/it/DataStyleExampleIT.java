@@ -27,9 +27,8 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.OdsFactoryBuilder;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
@@ -153,95 +152,86 @@ public class DataStyleExampleIT {
                 TableCellStyle.builder("datastyle1").dataStyle(floatStyle2).build();
 
         // FIRST ROW
-        TableRowImpl row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        RowCellWalker cell = row.getWalker();
-        cell.setStringValue("An int with the new default format: ");
-        cell.next();
-        cell.setFloatValue(123456.789);
+        final TableCellWalker walker = table.getWalker();
+        walker.setRowStyle(rowStyle);
+        walker.setStringValue("An int with the new default format: ");
+        walker.next();
+        walker.setFloatValue(123456.789);
 
         // SECOND ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        cell = row.getWalker();
-        cell.setStringValue("An int with a custom format: ");
-        cell.next();
-        cell.setFloatValue(789654.321);
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);
+        walker.setStringValue("An int with a custom format: ");
+        walker.next();
+        walker.setFloatValue(789654.321);
         // Now add a custom format.
         final DataStyle intStyle =
                 new FloatStyleBuilder("custom-int-datastyle", this.locale).decimalPlaces(8)
                         .groupThousands(true).build();
         // This operation may be slow because the default data style was already added
-        cell.setDataStyle(intStyle);
+        walker.setDataStyle(intStyle);
 
         // THIRD ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        cell = row.getWalker();
-        cell.setStringValue("An date with the new default format: ");
-        cell.next();
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);
+        walker.setStringValue("An date with the new default format: ");
+        walker.next();
         cal.set(2018, 1, 1, 0, 0, 0);
-        cell.setDateValue(cal);
+        walker.setDateValue(cal);
 
         // FOURTH ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        cell = row.getWalker();
-        cell.setStringValue("An date with a custom format: ");
-        cell.next();
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);
+        walker.setStringValue("An date with a custom format: ");
+        walker.next();
         cal.set(2017, 12, 1, 0, 0, 0);
-        cell.setDateValue(cal);
+        walker.setDateValue(cal);
         // Add a custom format
         final DataStyle dateStyle = new DateStyleBuilder("custom-date-datastyle", this.locale)
                 .dateFormat(
                         new DateTimeStyleFormat(DateTimeStyleFormat.DAY, DateTimeStyleFormat.DOT,
                                 DateTimeStyleFormat.MONTH, DateTimeStyleFormat.DOT,
                                 DateTimeStyleFormat.YEAR)).visible().build();
-        cell.setDataStyle(dateStyle);
+        walker.setDataStyle(dateStyle);
 
         // 5TH ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        cell = row.getWalker();
-        cell.setStringValue("A time with the default format: ");
-        cell.next();
-        cell.setTimeValue(10000000);
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);
+        walker.setStringValue("A time with the default format: ");
+        walker.next();
+        walker.setTimeValue(10000000);
 
         // 6TH ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        cell = row.getWalker();
-        cell.setStringValue("A time with a custom format: ");
-        cell.next();
-        cell.setTimeValue(10000000);
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);
+        walker.setStringValue("A time with a custom format: ");
+        walker.next();
+        walker.setTimeValue(10000000);
         // Add a custom format
         final DataStyle timeStyle = new TimeStyleBuilder("custom-time-datastyle", this.locale)
                 .timeFormat(new DateTimeStyleFormat(DateTimeStyleFormat.text("Hour: "),
                         DateTimeStyleFormat.LONG_HOURS)).visible().build();
-        cell.setDataStyle(timeStyle);
+        walker.setDataStyle(timeStyle);
 
         // 7TH ROW: same as FOURTH, but the datastyle is put before the value
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        cell = row.getWalker();
-        cell.setStringValue("An date with a custom format (datastyle set before the value): ");
-        cell.next();
-        cell.setDataStyle(dateStyle);
-        cell.setFloatValue(10);
-        cell.next();
-        cell.setFloatValue(10);
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);        walker.setStringValue("An date with a custom format (datastyle set before the value): ");
+        walker.next();
+        walker.setDataStyle(dateStyle);
+        walker.setFloatValue(10);
+        walker.next();
+        walker.setFloatValue(10);
 
         // 8TH ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle);
-        row.setDefaultCellStyle(cellStyle2);
-        cell = row.getWalker();
-        cell.setFloatValue(100000);
-        cell.next();
-        cell.setFloatValue(100000);
-        cell.next();
-        cell.setFloatValue(100000);
-        cell.next();
-        cell.setFloatValue(100000);
+        walker.nextRow();
+        walker.setRowStyle(rowStyle);
+        walker.setRowDefaultCellStyle(cellStyle2);
+        walker.setFloatValue(100000);
+        walker.next();
+        walker.setFloatValue(100000);
+        walker.next();
+        walker.setFloatValue(100000);
+        walker.next();
+        walker.setFloatValue(100000);
     }
 }

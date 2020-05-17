@@ -22,7 +22,6 @@
  */
 package com.github.jferard.fastods.testlib;
 
-import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -32,6 +31,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.charset.Charset;
 
 /**
@@ -40,6 +41,21 @@ import java.nio.charset.Charset;
  * @author Julien Férard
  */
 public class DomTester {
+    private final Charset UTF_8 = Charset.forName("UTF-8");
+    private final DocumentBuilder builder;
+
+    /**
+     * Create a tester
+     *
+     * @throws ParserConfigurationException in case of service configuration error or if the
+     *                                      implementation is not available or cannot be
+     *                                      instantiated.
+     */
+    DomTester() throws ParserConfigurationException {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        this.builder = factory.newDocumentBuilder();
+    }
+
     /**
      * Assert that two XML strings are equal
      *
@@ -70,9 +86,9 @@ public class DomTester {
     public static void assertEquals(final String expected, final String actual,
                                     final ChildrenTester childrenTester) {
         if (!DomTester.equals(expected, actual, childrenTester)) {
-            System.err.println("Expected was:" + expected);
-            System.err.println("  Actual was:" + actual);
-            throw new AssertionError(childrenTester.getFirstDifference().get());
+            final String msg = "Expected was: " + expected + "\n  Actual was: " + actual + "\n" +
+                    childrenTester.getFirstDifference().get();
+            throw new AssertionError(msg);
         }
     }
 
@@ -158,29 +174,29 @@ public class DomTester {
         return false;
     }
 
-    private final Charset UTF_8 = Charset.forName("UTF-8");
-    private final DocumentBuilder builder;
-
-    /**
-     * Create a tester
-     *
-     * @throws ParserConfigurationException in case of service configuration error or if the
-     *                                      implementation is not available or cannot be
-     *                                      instantiated.
-     */
-    DomTester() throws ParserConfigurationException {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        this.builder = factory.newDocumentBuilder();
-    }
-
     private boolean stringEquals(final String s1, final String s2,
                                  final ChildrenTester childrenTester)
-            throws SAXException, IOException {
-        final Document document1 = this.builder.parse(this.wrapXML(s1));
-        final Document document2 = this.builder.parse(this.wrapXML(s2));
+            throws IOException, SAXException {
+        final Document document1 = this.parse(this.wrapXML(s1));
+        final Document document2 = this.parse(this.wrapXML(s2));
         final Element element1 = document1.getDocumentElement();
         final Element element2 = document2.getDocumentElement();
         return childrenTester.equals(element1, element2);
+    }
+
+    private Document parse(final ByteArrayInputStream is) throws IOException, SAXException {
+        final PrintStream errBkp = System.err;
+        System.setErr(new PrintStream(new OutputStream() {
+            @Override
+            public void write(final int b) throws IOException {
+                // pass
+            }
+        }) {});
+        try {
+            return this.builder.parse(is);
+        } finally {
+            System.setErr(errBkp);
+        }
     }
 
     private ByteArrayInputStream wrapXML(final String s) {
@@ -188,7 +204,8 @@ public class DomTester {
         if (s.startsWith("<?xml")) {
             wrapped = s;
         } else {
-            wrapped = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><domtesterroot>" + s + "</domtesterroot>";
+            wrapped = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><domtesterroot>" + s +
+                    "</domtesterroot>";
         }
         return new ByteArrayInputStream((wrapped).getBytes(this.UTF_8));
     }

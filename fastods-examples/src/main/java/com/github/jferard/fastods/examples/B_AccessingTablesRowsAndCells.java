@@ -27,7 +27,6 @@ import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellWalker;
@@ -145,37 +144,6 @@ class B_AccessingTablesRowsAndCells {
 
                 // Remember that `walker.nextRow()` moves the walker to the **first cell** of the
                 // next row.
-            }
-            // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        }
-        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-
-        // ## Deprecated Relative Access
-        //
-        // Before version 0.6.2, relative access was different (and slightly inconsistent).
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        {
-            // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-            final Table table = document.addTable("relative-access-deprecated");
-
-            // Our ten rows of data
-            for (int r = 0; r < 10; r++) {
-                // The Table object had an internal row index (that was updated by the `getRow`
-                // method).
-                // A call to the method `nextRow` to made index advance by one (you had to
-                // call `nextRow` before you start to write data):
-                final TableRowImpl row = table.nextRow();
-
-                // And then create a "walker" for this row (there was one walker per row, not per
-                // table):
-                final RowCellWalker walker = row.getWalker();
-
-                for (int c = 0; c < 9; c++) {
-                    // Add the value to each cell as above
-                    walker.setStringValue((char) (c + 'A') + String.valueOf(r + 1));
-                    // And then push one cell right.
-                    walker.next();
-                }
             }
             // << END TUTORIAL (directive to extract part of a tutorial from this file)
         }

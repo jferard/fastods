@@ -105,4 +105,10 @@ public class TableColumnImpl implements TableColumn {
                 EqualityUtil.equal(this.customValueByAttribute, other.customValueByAttribute) &&
                 EqualityUtil.equal(this.defaultCellStyle, other.defaultCellStyle);
     }
+
+    @Override
+    public int hashCode() {
+        return EqualityUtil
+                .hashObjects(this.columnStyle, this.customValueByAttribute, this.defaultCellStyle);
+    }
 }

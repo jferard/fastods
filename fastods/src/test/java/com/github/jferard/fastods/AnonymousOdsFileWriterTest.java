@@ -275,7 +275,7 @@ public class AnonymousOdsFileWriterTest {
         final NamedOdsDocument document = this.getNamedDocument();
         final NamedOdsFileWriter writer =
                 new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb)
-                        .filename(temp.getAbsolutePath()).build();
+                        .file(temp.getAbsolutePath()).build();
         writer.save();
 
         PowerMock.verifyAll();

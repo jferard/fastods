@@ -237,6 +237,7 @@ public class ResultSetDataWrapperTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public final void testRealDataSets() throws IOException, FastOdsException {
         final Logger logger = PowerMock.createNiceMock(Logger.class);
         final MockResultSet rs = this.tester
@@ -326,8 +327,9 @@ public class ResultSetDataWrapperTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public final void testWrapperWithColumnHints()
-            throws SQLException, IOException, FastOdsException {
+            throws IOException, FastOdsException {
         final Logger logger = PowerMock.createNiceMock(Logger.class);
         final MockResultSet rs = this.tester
                 .createResultSet(Arrays.asList("number", "word", "code"),

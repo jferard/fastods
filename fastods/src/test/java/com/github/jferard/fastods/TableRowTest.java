@@ -92,7 +92,7 @@ public class TableRowTest {
         EasyMock.expect(this.stc.addContentStyle(tcs)).andReturn(true);
 
         PowerMock.replayAll();
-        this.row.setDefaultCellStyle(tcs);
+        this.row.setRowDefaultCellStyle(tcs);
 
         PowerMock.verifyAll();
     }
@@ -231,7 +231,7 @@ public class TableRowTest {
 
         PowerMock.replayAll();
         this.row.removeRowStyle();
-        this.row.setDefaultCellStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        this.row.setRowDefaultCellStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
         this.assertTableXMLEquals("<table:table-row table:default-cell-style-name=\"Default" +

@@ -4,7 +4,6 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -99,14 +99,13 @@ class CommonOdsDocument implements OdsDocument {
     }
 
     @Override
-    public Table createTable(final String name) throws IOException {
+    public Table createTable(final String name) {
         return this.odsElements.createTable(name, CommonOdsDocument.DEFAULT_ROW_CAPACITY,
                 CommonOdsDocument.DEFAULT_COLUMN_CAPACITY);
     }
 
     @Override
-    public Table createTable(final String name, final int rowCapacity, final int columnCapacity)
-            throws IOException {
+    public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
         return this.odsElements.createTable(name, rowCapacity, columnCapacity);
     }
 
@@ -186,10 +185,11 @@ class CommonOdsDocument implements OdsDocument {
     }
 
     @Override
+    @Deprecated
     public void addAutoFilter(final String rangeName, final Table table, final int r1, final int c1,
                               final int r2, final int c2) {
-        this.odsElements
-                .addAutoFilter(AutoFilter.builder(rangeName, table, r1, c1, r2, c2).build());
+        final AutoFilter autoFilter = AutoFilter.builder(rangeName, table, r1, c1, r2, c2).build();
+        this.odsElements.addAutoFilter(autoFilter);
     }
 
     @Override

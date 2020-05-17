@@ -97,8 +97,7 @@ public class InsertHelper {
                                               final String href) throws IOException {
         final byte[] bytes = FileUtil.create().readStream(sourceStream);
         document.addExtraFile(href, this.getMediaType(href), bytes);
-        final DrawFillBitmap drawFillImage = new DrawFillBitmap(name, href);
-        return drawFillImage;
+        return new DrawFillBitmap(name, href);
     }
 
     /**

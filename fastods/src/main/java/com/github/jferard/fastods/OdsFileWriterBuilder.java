@@ -23,14 +23,15 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.util.FileOpen;
 import com.github.jferard.fastods.util.FileOpenResult;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
 
@@ -43,7 +44,6 @@ public class OdsFileWriterBuilder {
     private final NamedOdsDocument document;
     private OutputStream out;
     private ZipUTF8WriterBuilder builder;
-    private String filename;
 
     /**
      * Create a new ODS file.
@@ -58,13 +58,32 @@ public class OdsFileWriterBuilder {
     }
 
     /**
+     * @return the writer for the ods file
+     * @throws FileNotFoundException if there is no stream to write
+     */
+    public NamedOdsFileWriter build() {
+        final ZipUTF8Writer writer = this.builder.build(this.out);
+        return new OdsFileDirectWriter(this.logger, XMLUtil.create(), this.document, writer);
+    }
+
+    /**
+     * Beware: this locks the file until the writer is closed
+     *
      * @param filename the name of the destination file
      * @return this for fluent style
      */
-    @Deprecated
-    public OdsFileWriterBuilder filename(final String filename) {
-        this.filename = filename;
-        return this;
+    public OdsFileWriterBuilder file(final String filename) throws FileNotFoundException {
+        return this.openResult(FileOpen.openFile(filename));
+    }
+
+    /**
+     * Beware: this locks the file until the writer is closed
+     *
+     * @param file the destination file
+     * @return this for fluent style
+     */
+    public OdsFileWriterBuilder file(final File file) throws FileNotFoundException {
+        return this.openResult(FileOpen.openFile(file));
     }
 
     /**
@@ -77,6 +96,7 @@ public class OdsFileWriterBuilder {
     }
 
     /**
+     * Locks the file
      * @param lockResult the result of a file lock
      * @return this for fluent style
      * @throws FileNotFoundException the file exists but is a directory
@@ -87,19 +107,6 @@ public class OdsFileWriterBuilder {
             throws FileNotFoundException {
         this.out = lockResult.getStream();
         return this;
-    }
-
-    /**
-     * @return the writer for the ods file
-     * @throws FileNotFoundException if there is no stream to write
-     */
-    public NamedOdsFileWriter build() throws FileNotFoundException {
-        if (this.out == null) {
-            this.out = new FileOutputStream(this.filename);
-        }
-
-        final ZipUTF8Writer writer = this.builder.build(this.out);
-        return new OdsFileDirectWriter(this.logger, XMLUtil.create(), this.document, writer);
     }
 
     /**

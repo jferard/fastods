@@ -69,13 +69,14 @@ public class ZipUTF8WriterMockHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetInstance() throws IOException {
         this.mock.putNextEntry(new ZipEntry("test"));
         this.mock.append("<document />");
         this.mock.closeEntry();
         this.mock.close();
         this.mock.finish();
-        final Iterable instance = this.handler.getInstance(Iterable.class);
+        final Iterable<Object> instance = (Iterable<Object>) this.handler.getInstance(Iterable.class);
 
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage(

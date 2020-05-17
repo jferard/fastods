@@ -26,9 +26,8 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.testlib.Util;
 import org.junit.Assert;
 import org.junit.Before;
@@ -76,7 +75,7 @@ public class MergeExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(13, sheet.getRowCount());
+        Assert.assertEquals(14, sheet.getRowCount());
         final Cell cell1 = sheet.getCellByPosition(0, 0);
         Assert.assertEquals(5, cell1.getColumnSpannedNumber());
         Assert.assertEquals(1, cell1.getRowSpannedNumber());
@@ -89,7 +88,7 @@ public class MergeExampleIT {
         Assert.assertEquals(4, cell3.getColumnSpannedNumber());
         Assert.assertEquals(2, cell3.getRowSpannedNumber());
 
-        final Cell cell4 = sheet.getCellByPosition(0, 3);
+        final Cell cell4 = sheet.getCellByPosition(0, 4);
         Assert.assertEquals(1, cell4.getColumnSpannedNumber());
         Assert.assertEquals(10, cell4.getRowSpannedNumber());
 
@@ -118,37 +117,37 @@ public class MergeExampleIT {
         final Table table = document.addTable("test");
 
         // 1st row
-        final TableRowImpl row1 = table.nextRow();
-        final RowCellWalker cell1 = row1.getWalker();
+        final TableCellWalker walker = table.getWalker();
         for (int c = 0; c < 5; c++) {
-            cell1.setFloatValue(c + 1);
-            cell1.next();
+            walker.setFloatValue(c + 1);
+            walker.next();
         }
-        row1.setCellMerge(0, 1, 5);
+        walker.to(0);
+        walker.setCellMerge(1, 5);
 
         // 2nd row
-        final TableRowImpl row2 = table.nextRow();
-        final RowCellWalker cell2 = row2.getWalker();
+        walker.nextRow();
         for (int c = 0; c < 5; c++) {
-            cell2.setFloatValue(c + 6);
-            cell2.next();
+            walker.setFloatValue(c + 6);
+            walker.next();
         }
+
+        walker.to(0);
+        walker.setCellMerge(2, 1);
+        walker.to(1);
+        walker.setCellMerge(2, 4);
 
         // 3rd row
-        final TableRowImpl row3 = table.nextRow();
-        final RowCellWalker cell3 = row3.getWalker();
+        walker.nextRow();
         for (int c = 0; c < 5; c++) {
-            cell3.setFloatValue(c + 11);
-            cell3.next();
+            walker.setFloatValue(c + 11);
+            walker.next();
         }
 
-        row2.setCellMerge(0, 2, 1);
-        row2.setCellMerge(1, 2, 4);
-
-        // 4th row
-        final TableRowImpl row4 = table.nextRow();
-        final RowCellWalker cell4 = row4.getWalker();
-        cell4.setFloatValue(15);
-        cell4.setRowsSpanned(10);
+        // 5th row
+        walker.nextRow();
+        walker.nextRow();
+        walker.setFloatValue(15);
+        walker.setRowsSpanned(10);
     }
 }

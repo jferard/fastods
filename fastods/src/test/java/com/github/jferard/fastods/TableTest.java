@@ -47,7 +47,6 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -132,7 +131,7 @@ public class TableTest {
         PowerMock.replayAll();
         final List<TableRowImpl> rows = Lists.newArrayList();
         for (int r = 0; r < 7; r++) { // 8 times
-            rows.add(this.table.nextRow());
+            rows.add(this.table.getRow(r));
         }
 
         for (int r = 0; r < 7; r++) { // 8 times
@@ -148,7 +147,7 @@ public class TableTest {
 
         PowerMock.replayAll();
         for (int r = 0; r < 7; r++) { // 8 times
-            this.table.nextRow();
+            this.table.getRow(r);
         }
         this.table.getRow(100);
         final int rowCount = this.table.getRowCount();
@@ -172,7 +171,7 @@ public class TableTest {
         PowerMock.replayAll();
         final int initialRowCount = this.table.getRowCount();
         for (int r = 0; r < 7; r++) { // 8 times
-            this.table.nextRow();
+            this.table.getRow(r);
         }
         final int rowCount = this.table.getRowCount();
 
@@ -220,15 +219,15 @@ public class TableTest {
     }
 
     @Test
-    @SuppressWarnings("deprecated")
-    public final void testMergePos() throws IOException, ParseException {
+    public final void testMergePos() throws IOException {
         PowerMock.resetAll();
         this.tb.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
-                EasyMock.isA(TableAppender.class), EasyMock.eq("A1"), EasyMock.eq(2),
+                EasyMock.isA(TableAppender.class), EasyMock.eq(0),
+                EasyMock.eq(1), EasyMock.eq(2),
                 EasyMock.eq(3));
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.setCellMerge("A1", 2, 3);
+        this.tableWithMockBuilder.setCellMerge(0, 1, 2, 3);
 
         PowerMock.verifyAll();
     }
@@ -377,6 +376,7 @@ public class TableTest {
     }
 
     @Test(expected = IOException.class)
+    @Deprecated
     public final void testFlushNoObserver() throws IOException {
         PowerMock.resetAll();
 
@@ -387,6 +387,7 @@ public class TableTest {
     }
 
     @Test
+    @Deprecated
     public final void testFlush() throws IOException {
         final NamedOdsFileWriter now = PowerMock.createMock(NamedOdsFileWriter.class);
 
@@ -415,8 +416,8 @@ public class TableTest {
 
         PowerMock.replayAll();
         this.table.addObserver(writer);
-        final TableRowImpl row = this.table.nextRow();
-        row.getOrCreateCell(0).setBooleanValue(true);
+        final TableCellWalker walker = this.table.getWalker();
+        walker.setBooleanValue(true);
         this.table.flushSomeAvailableRowsFrom(this.xmlUtil, app, 0);
 
         PowerMock.verifyAll();

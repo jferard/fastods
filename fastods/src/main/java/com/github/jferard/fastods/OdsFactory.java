@@ -27,9 +27,6 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.MetaElement;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.util.FileExists;
-import com.github.jferard.fastods.util.FileOpen;
-import com.github.jferard.fastods.util.FileOpenResult;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -37,7 +34,6 @@ import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +45,40 @@ import java.util.logging.Logger;
  * @author Julien Férard
  */
 public class OdsFactory {
+    private final Logger logger;
+    private final PositionUtil positionUtil;
+    private final WriteUtil writeUtil;
+    private final XMLUtil xmlUtil;
+    private final Map<String, String> additionalNamespaceByPrefix;
+    private DataStyles format;
+    private boolean libreOfficeMode;
+    private MetaElement metaElement;
+    /**
+     * Create a new OdsFactory
+     *
+     * @param logger                      the logger
+     * @param positionUtil                an util
+     * @param writeUtil                   an util
+     * @param xmlUtil                     an util
+     * @param additionalNamespaceByPrefix a map prefix -> namespace
+     * @param format                      the data styles
+     * @param libreOfficeMode             try to get full compatibility with LO if true
+     * @param metaElement                 the meta element
+     */
+    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
+               final XMLUtil xmlUtil, final Map<String, String> additionalNamespaceByPrefix,
+               final DataStyles format, final boolean libreOfficeMode,
+               final MetaElement metaElement) {
+        this.logger = logger;
+        this.positionUtil = positionUtil;
+        this.writeUtil = writeUtil;
+        this.xmlUtil = xmlUtil;
+        this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;
+        this.format = format;
+        this.libreOfficeMode = libreOfficeMode;
+        this.metaElement = metaElement;
+    }
+
     /**
      * Create an ods factory builder
      *
@@ -79,45 +109,11 @@ public class OdsFactory {
         return new OdsFactoryBuilder(logger, locale).build();
     }
 
-    private final Logger logger;
-    private final PositionUtil positionUtil;
-    private final WriteUtil writeUtil;
-    private final XMLUtil xmlUtil;
-    private DataStyles format;
-    private boolean libreOfficeMode;
-    private MetaElement metaElement;
-    private final Map<String, String> additionalNamespaceByPrefix;
-
-    /**
-     * Create a new OdsFactory
-     *  @param logger          the logger
-     * @param positionUtil    an util
-     * @param writeUtil       an util
-     * @param xmlUtil         an util
-     * @param additionalNamespaceByPrefix  a map prefix -> namespace
-     * @param format          the data styles
-     * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param metaElement     the meta element
-     */
-    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
-               final XMLUtil xmlUtil, final Map<String, String> additionalNamespaceByPrefix, final DataStyles format, final boolean libreOfficeMode,
-               final MetaElement metaElement) {
-        this.logger = logger;
-        this.positionUtil = positionUtil;
-        this.writeUtil = writeUtil;
-        this.xmlUtil = xmlUtil;
-        this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;
-        this.format = format;
-        this.libreOfficeMode = libreOfficeMode;
-        this.metaElement = metaElement;
-    }
-
     /**
      * Set the data styles
      *
      * @param ds the data styles
      * @return this for fluent style
-     *
      * @deprecated use OdsFactory.builder
      */
     @Deprecated
@@ -132,7 +128,6 @@ public class OdsFactory {
      * This mode is set by default, and might slow down the generation of the file.
      *
      * @return this for fluent style
-     *
      * @deprecated use OdsFactory.builder
      */
     @Deprecated
@@ -141,11 +136,11 @@ public class OdsFactory {
         return this;
     }
 
-    /** Use a custom meta element
+    /**
+     * Use a custom meta element
      *
      * @param metaElement the meta element.
      * @return this for fluent style
-     *
      * @deprecated use OdsFactory.builder
      */
     @Deprecated
@@ -209,7 +204,7 @@ public class OdsFactory {
     public NamedOdsFileWriter createWriter(final String filename) throws IOException {
         final NamedOdsDocument document = this.createNamedDocument();
         final NamedOdsFileWriter writer = OdsFileDirectWriter.builder(this.logger, document)
-                .openResult(this.openFile(filename)).build();
+                .file(filename).build();
         document.addObserver(writer);
         document.prepare();
         return writer;
@@ -226,7 +221,7 @@ public class OdsFactory {
     public NamedOdsFileWriter createWriter(final File file) throws IOException {
         final NamedOdsDocument document = this.createNamedDocument();
         final NamedOdsFileWriter writer =
-                OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file))
+                OdsFileDirectWriter.builder(this.logger, document).file(file)
                         .build();
         document.addObserver(writer);
         document.prepare();
@@ -244,38 +239,11 @@ public class OdsFactory {
         final NamedOdsDocument document = this.createNamedDocument();
         final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
         final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(this.logger,
-                OdsFileDirectWriter.builder(this.logger, document).openResult(this.openFile(file))
+                OdsFileDirectWriter.builder(this.logger, document).file(file)
                         .zipBuilder(zipUTF8Writer).build());
         document.addObserver(writerAdapter);
         document.prepare();
         return writerAdapter;
-    }
-
-    /**
-     * @param file the file.
-     * @return the result of the operation
-     * @throws FileNotFoundException if the file does not exist
-     */
-    public FileOpenResult openFile(final File file) throws FileNotFoundException {
-        if (file.isDirectory()) {
-            return FileOpenResult.FILE_IS_DIR;
-        }
-
-        if (file.exists()) {
-            return new FileExists(file);
-        }
-
-        return new FileOpen(new FileOutputStream(file));
-    }
-
-    /**
-     * @param filename the name of the file.
-     * @return the result of the operation
-     * @throws FileNotFoundException if the file does not exist
-     */
-    public FileOpenResult openFile(final String filename) throws FileNotFoundException {
-        final File f = new File(filename);
-        return this.openFile(f);
     }
 
     /**

@@ -23,6 +23,7 @@
 
 package com.github.jferard.fastods.style;
 
+import com.github.jferard.fastods.annotation.NoLibreOffice;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.StyleBuilder;
@@ -96,7 +97,7 @@ public class TableRowStyleBuilder
      *
      * @return this for fluent style
      */
-    @Deprecated
+    @NoLibreOffice(until="now")
     public TableRowStyleBuilder optimalHeight() {
         this.optimalHeight = true;
         this.rowHeight = Length.NULL_LENGTH;

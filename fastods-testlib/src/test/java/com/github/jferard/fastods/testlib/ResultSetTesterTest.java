@@ -31,9 +31,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class ResultSetTesterTest {
     @Test
+    @SuppressWarnings("unchecked")
     public void test() throws SQLException {
         final ResultSetTester tester = ResultSetTester.create();
         final ResultSet rs = tester.createResultSet(Collections.singletonList("number"),

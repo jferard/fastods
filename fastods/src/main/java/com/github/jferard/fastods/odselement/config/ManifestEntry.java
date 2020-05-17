@@ -34,7 +34,7 @@ import java.io.IOException;
 public class ManifestEntry implements XMLConvertible {
     private final CharSequence fullPath;
     private final CharSequence mediaType;
-    private CharSequence version;
+    private final CharSequence version;
 
     /**
      * @param fullPath  the path

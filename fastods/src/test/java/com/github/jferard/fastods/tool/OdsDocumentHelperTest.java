@@ -68,7 +68,6 @@ public class OdsDocumentHelperTest {
         PowerMock.verifyAll();
     }
 
-
     @Test
     public final void testCellMergeInAllTables() throws IOException, ParseException {
         final Calendar cal = Calendar.getInstance();
@@ -76,9 +75,9 @@ public class OdsDocumentHelperTest {
 
         // play
         EasyMock.expect(this.odsDocument.getTables()).andReturn(this.l);
-        this.tableHelper.setCellMerge(this.t1, 10, 5, 3, 2);
-        this.tableHelper.setCellMerge(this.t2, 10, 5, 3, 2);
-        this.tableHelper.setCellMerge(this.t3, 10, 5, 3, 2);
+        this.t1.setCellMerge( 10, 5, 3, 2);
+        this.t2.setCellMerge( 10, 5, 3, 2);
+        this.t3.setCellMerge( 10, 5, 3, 2);
 
         PowerMock.replayAll();
         this.helper.setCellMergeInAllTables("F11", 3, 2);

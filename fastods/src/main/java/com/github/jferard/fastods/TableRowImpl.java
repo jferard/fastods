@@ -313,7 +313,7 @@ public class TableRowImpl implements TableRow {
     }
 
     @Override
-    public void setDefaultCellStyle(final TableCellStyle ts) {
+    public void setRowDefaultCellStyle(final TableCellStyle ts) {
 //        this.stylesContainer.addStylesFontFaceContainerStyle(ts);
         this.stylesContainer.addContentFontFaceContainerStyle(ts);
         this.stylesContainer.addContentStyle(ts);

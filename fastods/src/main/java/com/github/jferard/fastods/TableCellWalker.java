@@ -29,6 +29,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.annotation.Beta;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -57,7 +58,7 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
         this.updateShortcuts(table);
     }
 
-    private final void updateShortcuts(final Table table) throws IOException {
+    private void updateShortcuts(final Table table) throws IOException {
         this.row = table.getRow(this.r);
         this.cell = this.row.getOrCreateCell(this.c);
     }
@@ -278,8 +279,8 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     }
 
     @Override
-    public void setDefaultCellStyle(final TableCellStyle ts) {
-        this.row.setDefaultCellStyle(ts);
+    public void setRowDefaultCellStyle(final TableCellStyle ts) {
+        this.row.setRowDefaultCellStyle(ts);
     }
 
     @Override
@@ -329,6 +330,7 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
      *
      * @param cell the cell
      */
+    @Beta
     public void set(final WritableTableCell cell) {
         this.row.set(this.c, cell);
     }

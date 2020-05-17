@@ -340,7 +340,7 @@ class J_Misc {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example5() throws IOException {
+    static void customCell() throws IOException {
         final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
         namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
         final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)

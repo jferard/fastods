@@ -809,11 +809,11 @@ public class TableCellWalkerTest {
 
         PowerMock.resetAll();
         this.initWalker(0);
-        this.row.setDefaultCellStyle(tcs);
+        this.row.setRowDefaultCellStyle(tcs);
 
         PowerMock.replayAll();
         this.cellWalker = new TableCellWalker(this.table);
-        this.cellWalker.setDefaultCellStyle(tcs);
+        this.cellWalker.setRowDefaultCellStyle(tcs);
 
         PowerMock.verifyAll();
     }

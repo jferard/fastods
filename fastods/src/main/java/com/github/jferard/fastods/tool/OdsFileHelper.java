@@ -69,7 +69,7 @@ public class OdsFileHelper {
     public void setCellMergeInAllTables(final int rowIndex, final int colIndex, final int rowMerge,
                                         final int columnMerge) throws IOException {
         for (final Table table : this.odsDocument.getTables()) {
-            this.tableHelper.setCellMerge(table, rowIndex, colIndex, rowMerge, columnMerge);
+            table.setCellMerge(rowIndex, colIndex, rowMerge, columnMerge);
         }
     }
 

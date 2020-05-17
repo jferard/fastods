@@ -52,7 +52,7 @@ public interface TableRow {
      *
      * @param ts The table rowStyle to be used
      */
-    void setDefaultCellStyle(TableCellStyle ts);
+    void setRowDefaultCellStyle(TableCellStyle ts);
 
     /**
      * @return the index of this row in the table

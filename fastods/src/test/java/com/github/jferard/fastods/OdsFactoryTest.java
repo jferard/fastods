@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.MetaElement;
+import com.github.jferard.fastods.util.FileOpen;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.After;
@@ -124,7 +125,7 @@ public class OdsFactoryTest {
         PowerMock.resetAll();
         PowerMock.replayAll();
 
-        this.odsFactory.openFile(this.file.getAbsolutePath());
+        FileOpen.openFile(this.file.getAbsolutePath());
 
         PowerMock.verifyAll();
     }
@@ -134,7 +135,7 @@ public class OdsFactoryTest {
         PowerMock.resetAll();
         PowerMock.replayAll();
 
-        this.odsFactory.openFile(this.file);
+        FileOpen.openFile(this.file);
 
         PowerMock.verifyAll();
     }

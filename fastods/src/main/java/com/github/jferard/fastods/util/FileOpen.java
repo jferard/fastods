@@ -23,6 +23,9 @@
 
 package com.github.jferard.fastods.util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 /**
@@ -38,6 +41,33 @@ public class FileOpen implements FileOpenResult {
      */
     public FileOpen(final OutputStream stream) {
         this.stream = stream;
+    }
+
+    /**
+     * @param file the file.
+     * @return the result of the operation
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public static FileOpenResult openFile(final File file) throws FileNotFoundException {
+        if (file.isDirectory()) {
+            return FILE_IS_DIR;
+        }
+
+        if (file.exists()) {
+            return new FileExists(file);
+        }
+
+        return new FileOpen(new FileOutputStream(file));
+    }
+
+    /**
+     * @param filename the name of the file.
+     * @return the result of the operation
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public static FileOpenResult openFile(final String filename) throws FileNotFoundException {
+        final File f = new File(filename);
+        return openFile(f);
     }
 
     @Override

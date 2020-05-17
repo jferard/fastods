@@ -62,7 +62,7 @@ public class LinkTest {
         EasyMock.expect(table.getName()).andReturn("t");
 
         PowerMock.replayAll();
-        final Link link = Link.create("table", table);
+        final Link link = Link.builder("table").to(table).build();
         TestHelper.assertXMLEquals(
                 "<text:a xlink:href=\"#t\" " + "xlink:type=\"simple\">table</text:a>", link);
 
@@ -77,7 +77,7 @@ public class LinkTest {
         EasyMock.expect(table.getName()).andReturn("t");
 
         PowerMock.replayAll();
-        final Link link = Link.create("table", this.ts, table);
+        final Link link = Link.builder("table").style(this.ts).to(table).build();
         TestHelper.assertXMLEquals("<text:a text:style-name=\"test\" xlink:href=\"#t\" " +
                 "xlink:type=\"simple\">table</text:a>", link);
 
@@ -86,22 +86,24 @@ public class LinkTest {
 
     @Test
     public final void testStyleTableRef() throws IOException {
-        final Link link = Link.create("table", this.ts, new TableRef(this.util, "f", "t", 0));
+        final Link link =
+                Link.builder("table").style(this.ts).to(new TableRef(this.util, "f", "t", 0))
+                        .build();
         TestHelper.assertXMLEquals("<text:a text:style-name=\"test\" xlink:href=\"'f'#t\" " +
                 "xlink:type=\"simple\">table</text:a>", link);
     }
 
     @Test
     public final void testTableRef() throws IOException {
-        final Link link = Link.create("table", new TableRef(this.util, "f", "t", 0));
+        final Link link = Link.builder("table").to(new TableRef(this.util, "f", "t", 0)).build();
         TestHelper.assertXMLEquals(
                 "<text:a xlink:href=\"'f'#t\" " + "xlink:type=\"simple\">table</text:a>", link);
     }
 
     @Test
     public final void testStyleURL() throws IOException {
-        final Link link =
-                Link.create("url", this.ts, new URL("https://www.github.com/jferard/fastods"));
+        final Link link = Link.builder("url").style(this.ts)
+                .to(new URL("https://www.github.com/jferard/fastods")).build();
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"https://www.github" +
                         ".com/jferard/fastods\" " + "xlink" + ":type=\"simple\">url</text:a>",
@@ -110,7 +112,8 @@ public class LinkTest {
 
     @Test
     public final void testURL() throws IOException {
-        final Link link = Link.create("url", new URL("https://www.github.com/jferard/fastods"));
+        final Link link =
+                Link.builder("url").to(new URL("https://www.github.com/jferard/fastods")).build();
         TestHelper.assertXMLEquals(
                 "<text:a xlink:href=\"https://www.github" + ".com/jferard/fastods\" " + "xlink" +
                         ":type=\"simple\">url</text:a>", link);
@@ -118,7 +121,9 @@ public class LinkTest {
 
     @Test
     public final void testStyleURI() throws IOException, URISyntaxException {
-        final Link link = Link.create("A mail", this.ts, new URI("mailto:mduerst@ifi.unizh.ch"));
+        final Link link =
+                Link.builder("A mail").style(this.ts).to(new URI("mailto:mduerst@ifi.unizh.ch"))
+                        .build();
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"mailto:mduerst@ifi.unizh.ch\" " +
                         "xlink" + ":type=\"simple\">A mail</text:a>", link);
@@ -126,7 +131,8 @@ public class LinkTest {
 
     @Test
     public final void testURI() throws IOException, URISyntaxException {
-        final Link link = Link.create("A mail", new URI("mailto:mduerst@ifi.unizh.ch"));
+        final Link link =
+                new Link("A mail", null, new URI("mailto:mduerst@ifi.unizh.ch").toString());
         TestHelper.assertXMLEquals("<text:a xlink:href=\"mailto:mduerst@ifi.unizh.ch\" " + "xlink" +
                 ":type=\"simple\">A mail</text:a>", link);
     }
@@ -134,7 +140,7 @@ public class LinkTest {
     @Test
     public final void testStyleFile() throws IOException {
         final File f = new File("generated_files", "fastods_50_5.ods");
-        final Link link = Link.create("file", this.ts, f);
+        final Link link = Link.builder("file").style(this.ts).to(f).build();
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"" + f.toURI().toString() +
                         "\" xlink:type=\"simple\">file</text:a>", link);
@@ -143,14 +149,14 @@ public class LinkTest {
     @Test
     public final void testFile() throws IOException {
         final File f = new File("generated_files", "fastods_50_5.ods");
-        final Link link = Link.create("file", f);
+        final Link link = Link.builder("file").to(f).build();
         TestHelper.assertXMLEquals("<text:a xlink:href=\"" + f.toURI().toString() +
                 "\" xlink:type=\"simple\">file</text:a>", link);
     }
 
     @Test
     public final void testStyleString() throws IOException {
-        final Link link = Link.create("file", this.ts, "s");
+        final Link link = Link.builder("file").style(this.ts).to("s").build();
         TestHelper.assertXMLEquals(
                 "<text:a text:style-name=\"test\" xlink:href=\"s\" " +
                         "xlink:type=\"simple\">file</text:a>",
@@ -159,7 +165,7 @@ public class LinkTest {
 
     @Test
     public final void testString() throws IOException {
-        final Link link = Link.create("file", "s");
+        final Link link = Link.builder("file").to("s").build();
         System.out.println(TestHelper.toXML(link));
         TestHelper.assertXMLEquals("<text:a xlink:href=\"s\" xlink:type=\"simple\">file</text:a>",
                 link);
@@ -169,7 +175,7 @@ public class LinkTest {
     public void testEmbeddedStyles() {
         final StylesContainer container = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
-        final Link link = Link.create("ok", ts, "ref");
+        final Link link = Link.builder("ok").style(ts).to("ref").build();
 
         PowerMock.resetAll();
         EasyMock.expect(container.addContentFontFaceContainerStyle(ts)).andReturn(true);
@@ -184,7 +190,7 @@ public class LinkTest {
     public void testEmbeddedStyles2() {
         final StylesContainer container = PowerMock.createMock(StylesContainerImpl.class);
         final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
-        final Link link = Link.create("ok", ts, "ref");
+        final Link link = Link.builder("ok").style(ts).to("ref").build();
 
         PowerMock.resetAll();
         EasyMock.expect(container.addStylesFontFaceContainerStyle(ts)).andReturn(true);
@@ -197,9 +203,9 @@ public class LinkTest {
 
     @Test
     public void testEquals() {
-        final Link link1 = Link.create("ok", "ref1");
-        final Link link2 = Link.create("ok", "ref2");
-        final Link link3 = Link.create("ok3", "ref1");
+        final Link link1 = Link.builder("ok").to("ref1").build();
+        final Link link2 = Link.builder("ok").to("ref2").build();
+        final Link link3 = Link.builder("ok3").to("ref1").build();
         Assert.assertEquals(link1, link1);
         Assert.assertNotEquals(new Object(), link1);
         Assert.assertNotEquals(link1, new Object());
@@ -211,7 +217,7 @@ public class LinkTest {
 
     @Test
     public void testHashCode() {
-        final Link link = Link.create("ok", "ref1");
+        final Link link = Link.builder("ok").to("ref1").build();
         Assert.assertEquals(108393374, link.hashCode());
     }
 }

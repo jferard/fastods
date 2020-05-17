@@ -177,7 +177,7 @@ public class TableBuilderTest {
     public final void testMergeWithPosString() throws IOException, ParseException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.builder.setCellMerge(this.table, this.appender, "B1", 2, 2);
+        this.builder.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
         PowerMock.verifyAll();
     }
 

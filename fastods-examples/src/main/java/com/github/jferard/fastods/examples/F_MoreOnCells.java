@@ -63,7 +63,7 @@ class F_MoreOnCells {
         final Table table = document.addTable("more");
 
         // We add a header:
-        TableCellWalker walker = table.getWalker();
+        final TableCellWalker walker = table.getWalker();
 
         // ## Merging Cells
         // Cells can be merged easily:
@@ -209,7 +209,7 @@ class F_MoreOnCells {
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("formulas");
-        TableCellWalker walker = table.getWalker();
+        final TableCellWalker walker = table.getWalker();
 
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // ## Formulas

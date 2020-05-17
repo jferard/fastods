@@ -50,8 +50,10 @@ import java.util.Locale;
 
 public class ContentElementTest {
     private static final String XML_PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-    private static final String CONTENT_OPEN_TAG = "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" office:version=\"1.2\">";
-    private static final String PREAMBLE_BODY = XML_PROLOG + CONTENT_OPEN_TAG + "<office:automatic-styles></office:automatic-styles><office:body>";
+    private static final String CONTENT_OPEN_TAG =
+            "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" office:version=\"1.2\">";
+    private static final String PREAMBLE_BODY = XML_PROLOG + CONTENT_OPEN_TAG +
+            "<office:automatic-styles></office:automatic-styles><office:body>";
     private static final String POSTAMBLE_BODY = "</office:body></office:document-content>";
     private StylesContainerImpl container;
     private ContentElement content;
@@ -114,19 +116,26 @@ public class ContentElementTest {
     @Test
     public void testTable() {
         PowerMock.resetAll();
+        final Table t1 = this.createTable("t1", 1, 1);
+        final Table t2 = this.createTable("t1", 2, 3);
 
         PowerMock.replayAll();
         Assert.assertEquals(0, this.content.getTableCount());
         Assert.assertEquals(Collections.emptyList(), this.content.getTables());
-        final Table t = this.content.addTable("t1", 1, 1);
-        Assert.assertEquals(t, this.content.addTable("t1", 2, 3));
-        Assert.assertEquals(t, this.content.getTable("t1"));
-        Assert.assertEquals(t, this.content.getTable(0));
+        Assert.assertTrue(this.content.addTable(t1));
+        Assert.assertFalse(this.content.addTable(t2));
+        Assert.assertEquals(t1, this.content.getTable("t1"));
+        Assert.assertEquals(t1, this.content.getTable(0));
         Assert.assertEquals(1, this.content.getTableCount());
-        Assert.assertEquals(Collections.singletonList(t), this.content.getTables());
-        Assert.assertEquals(t, this.content.getLastTable());
+        Assert.assertEquals(Collections.singletonList(t1), this.content.getTables());
+        Assert.assertEquals(t1, this.content.getLastTable());
 
         PowerMock.verifyAll();
+    }
+
+    private Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
+        return Table.create(this.content, PositionUtil.create(), WriteUtil.create(),
+                XMLUtil.create(), name, rowCapacity, columnCapacity, null, null, false);
     }
 
     @Test
@@ -233,7 +242,9 @@ public class ContentElementTest {
         this.content.writePostamble(this.xmlUtil, writer);
 
         DomTester.assertEquals(
-                XML_PROLOG + CONTENT_OPEN_TAG + "<office:scripts><office:event-listeners><script:event-listener script:language=\"ooo:script\" script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star.script:func?language=Basic&amp;location=document\" xlink:type=\"simple\"/></office:event-listeners></office:scripts><office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" + POSTAMBLE_BODY,
+                XML_PROLOG + CONTENT_OPEN_TAG +
+                        "<office:scripts><office:event-listeners><script:event-listener script:language=\"ooo:script\" script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star.script:func?language=Basic&amp;location=document\" xlink:type=\"simple\"/></office:event-listeners></office:scripts><office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" +
+                        POSTAMBLE_BODY,
                 handler.getEntryAsString("content.xml"));
     }
 
@@ -243,9 +254,10 @@ public class ContentElementTest {
         final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
         final HashMap<String, String> additionalNamespaceByPrefix = new HashMap<String, String>();
         additionalNamespaceByPrefix.put("xmlns:myns", "my/namespace");
-        final ContentElement contentElement = new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(),
-                this.format, true, this.container,
-                additionalNamespaceByPrefix);
+        final ContentElement contentElement =
+                new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(),
+                        this.format, true, this.container,
+                        additionalNamespaceByPrefix);
 
         PowerMock.resetAll();
         this.container
@@ -260,7 +272,10 @@ public class ContentElementTest {
         contentElement.writePostamble(this.xmlUtil, writer);
 
         DomTester.assertEquals(
-                XML_PROLOG + "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" xmlns:myns=\"my/namespace\" office:version=\"1.2\">" + "<office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" + POSTAMBLE_BODY,
+                XML_PROLOG +
+                        "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" xmlns:myns=\"my/namespace\" office:version=\"1.2\">" +
+                        "<office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" +
+                        POSTAMBLE_BODY,
                 handler.getEntryAsString("content.xml"));
     }
 
@@ -279,7 +294,8 @@ public class ContentElementTest {
                 EasyMock.isA(Appendable.class));
 
         PowerMock.replayAll();
-        this.content.addTable("t", 100, 100);
+        final Table t = this.createTable("t", 100, 100);
+        this.content.addTable(t);
         this.content.write(this.xmlUtil, writer);
 
         DomTester.assertEquals(PREAMBLE_BODY +

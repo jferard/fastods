@@ -21,6 +21,7 @@
 
 package com.github.jferard.fastods.testlib;
 
+import com.google.common.annotations.Beta;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,6 +101,7 @@ public class SortedChildrenTesterTest {
         Assert.assertFalse(this.tester.equals(r, u));
     }
 
+    @Beta
     private Node getNode(final String s) throws SAXException, IOException {
         final Document document = this.builder.parse(new ByteArrayInputStream(s.getBytes(UTF_8)));
         return document.getFirstChild();

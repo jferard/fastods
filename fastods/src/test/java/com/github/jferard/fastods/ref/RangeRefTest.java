@@ -70,8 +70,8 @@ public class RangeRefTest {
 
     @Test
     public void testTableDifferent() {
-        Object o = new Object();
-        RangeRef t = new RangeRef(new TableRef(this.tableNameUtil, null, "t", 0),
+        final Object o = new Object();
+        final RangeRef t = new RangeRef(new TableRef(this.tableNameUtil, null, "t", 0),
                 new LocalCellRef(0, 0, 0), new LocalCellRef(4, 2, 0));
         Assert.assertNotEquals(o, t);
         Assert.assertNotEquals(t, o);

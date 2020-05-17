@@ -87,6 +87,8 @@ public class OdfToolkitUtilTest {
 
         PowerMock.replayAll();
         final OdfStyle style = new OdfStyle(ownerDoc) {
+            private static final long serialVersionUID = 1114614579014922410L;
+
             @Override
             public OdfStyleBase getParentStyle() {
                 return null;

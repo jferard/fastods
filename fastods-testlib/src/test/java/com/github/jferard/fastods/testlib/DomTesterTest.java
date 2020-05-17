@@ -130,11 +130,12 @@ public class DomTesterTest {
     }
 
     @Test
-    public void bug() {
+    public void testDifferentNodes() {
         this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage("Different nodes names: a vs b");
+        this.thrown.expectMessage("Expected was: <a/>\n" +
+                "  Actual was: <b/>\n" +
+                "Different nodes names: a vs b");
         final SortedChildrenTester tester = new SortedChildrenTester();
         DomTester.assertEquals("<a/>", "<b/>", tester);
-
     }
 }

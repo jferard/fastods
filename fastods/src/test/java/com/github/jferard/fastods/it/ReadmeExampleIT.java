@@ -28,9 +28,8 @@ import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.attribute.Color;
 import com.github.jferard.fastods.attribute.ScriptEvent;
@@ -103,7 +102,7 @@ public class ReadmeExampleIT {
         Assert.assertEquals(1, document.getSheetCount());
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
-        Assert.assertEquals(50, sheet.getRowCount());
+        Assert.assertEquals(51, sheet.getRowCount());
         final OdfStyle gcs = OdfToolkitUtil
                 .getDocumentStyle(document, GREEN_CELL_STYLE, OdfStyleFamily.TableCell);
         Assert.assertEquals("Default", gcs.getStyleParentStyleNameAttribute());
@@ -136,14 +135,14 @@ public class ReadmeExampleIT {
 
     private void createTable(final OdsDocument document) throws IOException {
         final Table table = document.addTable("test");
+        final TableCellWalker walker = table.getWalker();
         for (int y = 0; y < 50; y++) {
-            final TableRowImpl row = table.nextRow();
-            row.setDefaultCellStyle(this.style);
-            final RowCellWalker cell = row.getWalker();
+            walker.setRowDefaultCellStyle(this.style);
             for (int x = 0; x < 5; x++) {
-                cell.setFloatValue(x * y);
-                cell.next();
+                walker.setFloatValue(x * y);
+                walker.next();
             }
+            walker.nextRow();
         }
     }
 

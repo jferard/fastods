@@ -28,7 +28,6 @@ package com.github.jferard.fastods;
  *
  * @author Julien Férard
  */
-@Deprecated
 public interface RowCellWalker extends TableCell {
     /**
      * @return true if the walker has a next cell on the row

@@ -26,9 +26,8 @@ package com.github.jferard.fastods.it;
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
-import com.github.jferard.fastods.RowCellWalker;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -130,20 +129,18 @@ public class StyleExampleIT {
         final TableCellStyle boldStyle = TableCellStyle.builder("bold").fontWeightBold().build();
 
         // FIRST ROW
-        TableRowImpl row = table.nextRow();
-        RowCellWalker cell = row.getWalker();
-        cell.setStringValue("Cell A1. Default text, wrapped. I said: default text, wrapped.");
-        cell.next();
-        cell.setStringValue("Cell B1. OpenSymbol font");
+        final TableCellWalker walker = table.getWalker();
+        walker.setStringValue("Cell A1. Default text, wrapped. I said: default text, wrapped.");
+        walker.next();
+        walker.setStringValue("Cell B1. OpenSymbol font");
 
         // SECOND ROW
-        row = table.nextRow();
-        row.setRowStyle(rowStyle2);
-        row.setDefaultCellStyle(liberationStyle);
-        cell = row.getWalker();
-        cell.setStyle(boldStyle);
-        cell.setStringValue("Cell A2. Default text, wrapped and bold");
-        cell.next();
-        cell.setStringValue("Cell B2. Liberation Mono font");
+        walker.nextRow();
+        walker.setRowStyle(rowStyle2);
+        walker.setRowDefaultCellStyle(liberationStyle);
+        walker.setStyle(boldStyle);
+        walker.setStringValue("Cell A2. Default text, wrapped and bold");
+        walker.next();
+        walker.setStringValue("Cell B2. Liberation Mono font");
     }
 }

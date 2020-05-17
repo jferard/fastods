@@ -46,7 +46,6 @@ import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
 import com.github.jferard.fastods.util.ColorHelper;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -67,8 +66,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -99,7 +96,6 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         Util.mkdir(GENERATED_FILES);
     }
 
-    private Logger logger;
     private OdsFactory odsFactory;
     private TextStyle lts;
     private TextStyle cts;
@@ -124,19 +120,8 @@ public class OdsFileWithHeaderAndFooterCreationIT {
 
     @Before
     public void setUp() {
-        this.logger = Logger.getLogger("footer and header");
-        this.odsFactory = OdsFactory.create(this.logger, Locale.US);
-        this.logger.info("Creating a file with footer and header");
-    }
-
-    @After
-    public void tearDown() {
-        // let's display logging infos
-        final Logger rootLogger = Logger.getLogger("");
-        rootLogger.setLevel(Level.FINEST);
-        for (final Handler h : rootLogger.getHandlers()) {
-            h.setLevel(Level.FINEST);
-        }
+        final Logger logger = Logger.getLogger("footer and header");
+        this.odsFactory = OdsFactory.create(logger, Locale.US);
     }
 
     @Test
@@ -288,7 +273,7 @@ public class OdsFileWithHeaderAndFooterCreationIT {
         table.setColumnDefaultCellStyle(0, this.tcls);
         TableRowImpl row = table.getRow(0);
         row.setRowStyle(this.trs);
-        row.setDefaultCellStyle(this.tcls);
+        row.setRowDefaultCellStyle(this.tcls);
 
         row = table.getRow(0);
         row.getOrCreateCell(0).setText(Text.builder().parContent("This is a")

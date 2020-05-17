@@ -36,7 +36,9 @@ import java.util.List;
 
 /**
  * Created by jferard on 09/05/17.
+ * @deprecated test of a deprecated class
  */
+@Deprecated
 public class RowsFlusherTest {
     private XMLUtil util;
     private ZipUTF8Writer w;
