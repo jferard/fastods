@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ FastODS - A very fast and lightweight (no dependency) library for creating ODS 
-  ~    (Open Document Spreadsheet, mainly for Calc) files in Java. 
+  ~ FastODS - A very fast and lightweight (no dependency) library for creating ODS
+  ~    (Open Document Spreadsheet, mainly for Calc) files in Java.
   ~    It's a Martin Schulz's SimpleODS fork
-  ~    Copyright (C) 2016-2019 J. Férard <https://github.com/jferard>
+  ~    Copyright (C) 2016-2020 J. Férard <https://github.com/jferard>
   ~ SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
   ~    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
   ~
@@ -15,11 +15,12 @@
   ~ version.
   ~
   ~ FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
-  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  ~ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  ~  for more details.
   ~
   ~ You should have received a copy of the GNU General Public License along with
-  ~ this program. If not, see <http://www.gnu.org/licenses />.
+  ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
