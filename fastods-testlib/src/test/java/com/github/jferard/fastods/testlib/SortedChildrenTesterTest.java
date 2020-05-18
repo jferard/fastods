@@ -25,6 +25,7 @@
 package com.github.jferard.fastods.testlib;
 
 import com.google.common.annotations.Beta;
+import com.google.common.base.Charsets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class SortedChildrenTesterTest {
-    private static final String UTF_8 = "utf-8";
     private ChildrenTester tester;
     private DocumentBuilder builder;
 
@@ -106,7 +106,8 @@ public class SortedChildrenTesterTest {
 
     @Beta
     private Node getNode(final String s) throws SAXException, IOException {
-        final Document document = this.builder.parse(new ByteArrayInputStream(s.getBytes(UTF_8)));
+        final Document document =
+                this.builder.parse(new ByteArrayInputStream(s.getBytes(Charsets.UTF_8)));
         return document.getFirstChild();
     }
 }

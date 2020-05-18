@@ -24,6 +24,8 @@
 
 package com.github.jferard.fastods.ref;
 
+import com.github.jferard.fastods.util.CharsetUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -111,18 +113,18 @@ public class TableNameUtil {
     /**
      * @param filename the name
      * @return the name with quotes unescaped
-     * @throws ParseException
-     * @throws UnsupportedEncodingException
+     * @throws ParseException if there are no quotes
+     * @throws UnsupportedEncodingException if the encoding is not UTF-8
      */
     public String unescapeFilename(final String filename)
             throws ParseException, UnsupportedEncodingException {
-        return URLDecoder.decode(this.unescapeQuotes(filename), "UTF-8");
+        return URLDecoder.decode(this.unescapeQuotes(filename), CharsetUtil.UTF_8_NAME);
     }
 
     /**
      * @param str the name
      * @return the name with quotes unescaped
-     * @throws ParseException
+     * @throws ParseException if there are no quotes
      */
     public String unescapeQuotes(final String str) throws ParseException {
         final int length = str.length();

@@ -103,7 +103,7 @@ public class StylesElement implements OdsElement {
         final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
 
         writer.putNextEntry(new ZipEntry("styles.xml"));
-        writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-styles");
         for (final Map.Entry<String, String> entry: STYLES_NAMESPACE_BY_PREFIX.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());

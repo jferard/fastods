@@ -25,6 +25,8 @@
 package com.github.jferard.fastods.tool;
 
 import com.github.jferard.fastods.OdsDocument;
+import com.github.jferard.fastods.odselement.ManifestElement;
+import com.github.jferard.fastods.util.EqualityUtil;
 import com.github.jferard.fastods.util.FileUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -37,42 +39,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 class OdsArchiveExplorer {
-    static class OdsFile {
-        private final String name;
-        private byte[] bytes;
-        private String mediaType;
-
-        OdsFile(final String name) {
-            this.name = name;
-        }
-
-        public void setBytes(final byte[] bytes) {
-            this.bytes = bytes;
-        }
-
-        public void setMediaType(final String mediaType) {
-            this.mediaType = mediaType;
-        }
-
-        public void addToDocument(final OdsDocument document, final String prefix) {
-            if (this.bytes == null) {
-                document.addExtraObject(prefix + this.name, this.mediaType, null);
-            } else {
-                document.addExtraFile(prefix + this.name, this.mediaType, this.bytes);
-            }
-        }
-    }
-
     private final FileUtil fileUtil;
     private final InputStream sourceStream;
     private final Map<String, OdsFile> fileByName;
-
     /**
      * @param fileUtil     an util
      * @param sourceStream the source of the image
@@ -90,7 +66,7 @@ class OdsArchiveExplorer {
         while (zipEntry != null) {
             final String name = zipEntry.getName();
             final byte[] bytes = this.fileUtil.readStream(zipStream);
-            if (name.equals("META-INF/manifest.xml")) {
+            if (name.equals(ManifestElement.META_INF_MANIFEST_XML)) {
                 this.extractMediaTypeByName(bytes);
             }
             this.putBytes(name, bytes);
@@ -137,6 +113,50 @@ class OdsArchiveExplorer {
             final NamedNodeMap attributes = mEntry.getAttributes();
             this.putMediaType(attributes.getNamedItem("manifest:full-path").getNodeValue(),
                     attributes.getNamedItem("manifest:media-type").getNodeValue());
+        }
+    }
+
+    static class OdsFile {
+        private final String name;
+        private byte[] bytes;
+        private String mediaType;
+
+        OdsFile(final String name) {
+            this.name = name;
+        }
+
+        public void setBytes(final byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        public void setMediaType(final String mediaType) {
+            this.mediaType = mediaType;
+        }
+
+        public void addToDocument(final OdsDocument document, final String prefix) {
+            if (this.bytes == null) {
+                document.addExtraObject(prefix + this.name, this.mediaType, null);
+            } else {
+                document.addExtraFile(prefix + this.name, this.mediaType, this.bytes);
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return EqualityUtil.hashObjects(this.name, this.mediaType, this.bytes);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof OdsArchiveExplorer.OdsFile)) {
+                return false;
+            }
+            final OdsArchiveExplorer.OdsFile other = (OdsArchiveExplorer.OdsFile) o;
+            return this.name.equals(other.name) && EqualityUtil.equal(this.mediaType, other.mediaType) &&
+                    Arrays.equals(this.bytes, other.bytes);
         }
     }
 }

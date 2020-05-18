@@ -50,6 +50,11 @@ import java.util.zip.ZipEntry;
  * @author Martin Schulz
  */
 public class ManifestElement implements OdsElement {
+    /**
+     * the name of the manifest file in the archive
+     */
+    public static final String META_INF_MANIFEST_XML = "META-INF/manifest.xml";
+
     private static final List<ManifestEntry> ENTRIES = Arrays.asList(
             new ManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
             new ManifestEntry("content.xml", "text/xml", null),
@@ -88,8 +93,8 @@ public class ManifestElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new ZipEntry("META-INF/manifest.xml"));
-        writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+        writer.putNextEntry(new ZipEntry(META_INF_MANIFEST_XML));
+        writer.append(XMLUtil.XML_PROLOG);
         writer.append("<manifest:manifest");
         util.appendAttribute(writer, "xmlns:manifest",
                 "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0");

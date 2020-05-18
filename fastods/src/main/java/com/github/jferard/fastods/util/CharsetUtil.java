@@ -22,44 +22,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.testlib;
+package com.github.jferard.fastods.util;
 
-import com.google.common.base.Charsets;
-
-import java.io.File;
 import java.nio.charset.Charset;
 
 /**
- * An utility class for creating directories
- *
- * @author Julien Férard
+ * A simple util for charsets.
  */
-public final class Util {
-    public static final String XML_PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-
+public class CharsetUtil {
     /**
-     * @param dirName the name of the directory to create
-     * @return true if the directory was created
+     * name of the utf-8 encoding
      */
-    public static boolean mkdir(final String dirName) {
-        return Util.mkdir(new File(dirName));
-    }
-
+    public static final String UTF_8_NAME = "UTF-8";
     /**
-     * @param file the directory to create
-     * @return true if the directory was created
+     * the utf-8 encoding
      */
-    public static boolean mkdir(final File file) {
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                return false;
-            } else {
-                throw new IllegalStateException();
-            }
-        }
-        return file.mkdir();
-    }
-
-    private Util() {
-    }
+    public static final Charset UTF_8 = Charset.forName(UTF_8_NAME);
 }

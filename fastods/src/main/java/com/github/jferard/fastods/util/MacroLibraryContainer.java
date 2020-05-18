@@ -39,6 +39,16 @@ public class MacroLibraryContainer {
      * Directory of scripts
      */
     public static final String CONTAINER_NAME_SLASH = CONTAINER_NAME + "/";
+    private final XMLUtil util;
+    private final List<MacroLibrary> libraries;
+    /**
+     * @param util      an util to write XML
+     * @param libraries the libraries of the module
+     */
+    public MacroLibraryContainer(final XMLUtil util, final List<MacroLibrary> libraries) {
+        this.util = util;
+        this.libraries = libraries;
+    }
 
     /**
      * Variadic version
@@ -49,18 +59,6 @@ public class MacroLibraryContainer {
     public static MacroLibraryContainer create(final MacroLibrary... libraries) {
         final XMLUtil xmlUtil = XMLUtil.create();
         return new MacroLibraryContainer(xmlUtil, Arrays.asList(libraries));
-    }
-
-    private final XMLUtil util;
-    private final List<MacroLibrary> libraries;
-
-    /**
-     * @param util      an util to write XML
-     * @param libraries the libraries of the module
-     */
-    public MacroLibraryContainer(final XMLUtil util, final List<MacroLibrary> libraries) {
-        this.util = util;
-        this.libraries = libraries;
     }
 
     /**
@@ -80,7 +78,7 @@ public class MacroLibraryContainer {
 
     private byte[] container(final XMLUtil util) throws IOException {
         final StringBuilder sb = new StringBuilder();
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        sb.append(XMLUtil.XML_PROLOG + "\n" +
                 "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
                 "OfficeDocument 1.0//EN\" \"libraries.dtd\">\n" +
                 "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
@@ -89,6 +87,6 @@ public class MacroLibraryContainer {
             library.appendIndexLine(util, sb);
         }
         sb.append("</library:libraries>");
-        return sb.toString().getBytes(ZipUTF8Writer.UTF_8);
+        return sb.toString().getBytes(CharsetUtil.UTF_8);
     }
 }

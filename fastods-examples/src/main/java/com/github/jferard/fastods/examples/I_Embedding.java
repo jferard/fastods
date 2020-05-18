@@ -34,9 +34,9 @@ import com.github.jferard.fastods.Tooltip;
 import com.github.jferard.fastods.style.DrawFillBitmap;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.tool.InsertHelper;
+import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.google.common.io.Resources;
 
 import java.io.File;
@@ -87,7 +87,7 @@ class I_Embedding {
         // Let's add a file for the fun:
         document.addExtraDir("FastODS");
         document.addExtraFile("FastODS/fast.txt", "text/plain",
-                "Hello from FastODS!".getBytes(ZipUTF8Writer.UTF_8));
+                "Hello from FastODS!".getBytes(CharsetUtil.UTF_8));
         //
         // You can check that the file was added with your favorite file archive viewer.
         //
@@ -113,8 +113,14 @@ class I_Embedding {
         document.addExtraDir("Pictures");
 
         // And there is a tool to insert the image:
-        final InputStream sourceStream = new URL("https://raw.githubusercontent" +
-                ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
+        final InputStream sourceStream;
+        try {
+            sourceStream = new URL("https://raw.githubusercontent" +
+                    ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
+        } catch (final IOException e) {
+            e.printStackTrace(System.err);
+            return;
+        }
         InsertHelper.create()
                 .insertImage(document, table, "Frame 1", sourceStream, "periodic_table.png",
                         SVGRectangle.cm(0, 0, 15, 10));
@@ -180,8 +186,14 @@ class I_Embedding {
         document.addExtraDir("Pictures");
 
         // And there is a tool to create the fill style:
-        final InputStream sourceStream = new URL("https://raw.githubusercontent" +
-                ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
+        final InputStream sourceStream;
+        try {
+            sourceStream = new URL("https://raw.githubusercontent" +
+                    ".com/wiki/jferard/fastods/images/j_periodic_table.png").openStream();
+        } catch (final IOException e) {
+            e.printStackTrace(System.err);
+            return;
+        }
         final DrawFillBitmap drawFillImage = InsertHelper.create()
                 .createDrawFillImage(document, sourceStream, "periodic", "Pictures/periodic.png");
 

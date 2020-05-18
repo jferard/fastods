@@ -71,7 +71,7 @@ public class MacroLibrary {
 
     private byte[] index(final XMLUtil util) throws IOException {
         final StringBuilder sb = new StringBuilder();
-        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+        sb.append(XMLUtil.XML_PROLOG +
                 "<!DOCTYPE library:library PUBLIC \"-//OpenOffice.org//DTD OfficeDocument" +
                 " 1.0//EN\" \"library.dtd\">");
         sb.append("<library:library");
@@ -84,7 +84,7 @@ public class MacroLibrary {
             module.appendIndexLine(util, sb);
         }
         sb.append("</library:library>");
-        return sb.toString().getBytes(ZipUTF8Writer.UTF_8);
+        return sb.toString().getBytes(CharsetUtil.UTF_8);
     }
 
     /**

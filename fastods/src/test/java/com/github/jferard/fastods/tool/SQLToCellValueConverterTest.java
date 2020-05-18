@@ -30,6 +30,7 @@ import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.attribute.CellType;
+import com.github.jferard.fastods.util.XMLUtil;
 import com.mockrunner.mock.jdbc.MockBlob;
 import com.mockrunner.mock.jdbc.MockClob;
 import com.mockrunner.mock.jdbc.MockSQLXML;
@@ -46,8 +47,7 @@ import java.sql.Timestamp;
 
 public class SQLToCellValueConverterTest {
     private static final Charset CHARSET = Charset.forName("US-ASCII");
-    private static final String XML_FASTODS =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<fastods />";
+    private static final String XML_FASTODS = XMLUtil.XML_PROLOG + "\r\n" + "<fastods />";
     private static final String XML_FASTODS_RAW = "<fastods/>";
     private static final String FASTODS = "FastODS";
     private static final Date SQL_DATE = new Date(100);

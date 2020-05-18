@@ -29,6 +29,7 @@ import com.github.jferard.fastods.DrawImage;
 import com.github.jferard.fastods.DrawObject;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.odselement.ManifestElement;
 import com.github.jferard.fastods.ref.RangeRef;
 import com.github.jferard.fastods.style.DrawFillBitmap;
 import com.github.jferard.fastods.style.GraphicStyle;
@@ -125,7 +126,8 @@ public class InsertHelper {
     }
 
     /**
-     * Insert a new object into the document
+     * Insert a new ODF object into the document. This object can be a chart (.odc), a text (.odt),
+     * another spreadsheet (.ods).
      *
      * @param document        the destination document
      * @param table           the destination table
@@ -148,7 +150,7 @@ public class InsertHelper {
                 new OdsArchiveExplorer(this.fileUtil, sourceStream).explore();
         for (final Map.Entry<String, OdsArchiveExplorer.OdsFile> entry : fileByName.entrySet()) {
             final String name = entry.getKey();
-            if (name.equals("META-INF/manifest.xml") || name.equals("mimetype") ||
+            if (name.equals(ManifestElement.META_INF_MANIFEST_XML) || name.equals("mimetype") ||
                     name.startsWith("Thumbnails")) {
                 continue; // do nothing
             }

@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.testlib;
 
+import com.google.common.base.Charsets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class UnsortedChildrenTesterTest {
-    private static final String UTF_8 = "utf-8";
     private Node s;
     private DocumentBuilder builder;
     private Node t;
@@ -52,7 +52,8 @@ public class UnsortedChildrenTesterTest {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
         final Document document = this.builder
-                .parse(new ByteArrayInputStream(("<r a='1' b='2'><s/><t/></r>").getBytes(UTF_8)));
+                .parse(new ByteArrayInputStream(
+                        ("<r a='1' b='2'><s/><t/></r>").getBytes(Charsets.UTF_8)));
         this.r = document.getFirstChild();
     }
 
@@ -113,7 +114,8 @@ public class UnsortedChildrenTesterTest {
     }
 
     private Node getNode(final String s) throws SAXException, IOException {
-        final Document document = this.builder.parse(new ByteArrayInputStream(s.getBytes(UTF_8)));
+        final Document document =
+                this.builder.parse(new ByteArrayInputStream(s.getBytes(Charsets.UTF_8)));
         return document.getFirstChild();
     }
 }

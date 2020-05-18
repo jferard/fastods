@@ -32,12 +32,9 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
 public class MacroLibraryContainerTest {
-    private static final Charset UTF_8 = Charset.forName("UTF-8");
-
     @Test
     public void test() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
@@ -58,19 +55,19 @@ public class MacroLibraryContainerTest {
         container.add(document);
 
         PowerMock.verifyAll();
-        Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                         "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
                         "OfficeDocument 1" +
                         ".0//EN\" \"libraries.dtd\">\n" +
                         "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
                         "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>",
                 sb1.toString());
-        Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                         "<!DOCTYPE library:libraries PUBLIC \"-//OpenOffice.org//DTD " +
                         "OfficeDocument 1" +
                         ".0//EN\" \"libraries.dtd\">\n" +
                         "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
                         "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>",
-                new String(bs.getValue(), UTF_8));
+                new String(bs.getValue(), CharsetUtil.UTF_8));
     }
 }

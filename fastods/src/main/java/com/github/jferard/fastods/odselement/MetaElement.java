@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -121,7 +122,7 @@ public class MetaElement implements OdsElement {
         writer.putNextEntry(new ZipEntry("meta.xml"));
         writer.append("<?xml");
         util.appendAttribute(writer, "version", "1.0");
-        util.appendAttribute(writer, "encoding", "UTF-8");
+        util.appendAttribute(writer, "encoding", CharsetUtil.UTF_8_NAME);
         writer.append("?><office:document-meta");
         for (final Map.Entry<String, String> entry: META_NAMESPACE_BY_PREFIX.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());

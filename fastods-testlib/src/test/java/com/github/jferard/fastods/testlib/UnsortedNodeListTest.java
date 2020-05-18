@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.testlib;
 
+import com.google.common.base.Charsets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,6 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public class UnsortedNodeListTest {
-    private static final String UTF_8 = "utf-8";
     private Node s;
     private DocumentBuilder builder;
     private Node t;
@@ -52,7 +52,7 @@ public class UnsortedNodeListTest {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
         final Document document = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r a='1' b='2' /><r c='3' /></doc>").getBytes(UTF_8)));
+                ("<doc><r a='1' b='2' /><r c='3' /></doc>").getBytes(Charsets.UTF_8)));
         this.r = new UnsortedNodeList(document.getElementsByTagName("r"));
     }
 
@@ -75,7 +75,7 @@ public class UnsortedNodeListTest {
     @Test
     public void testCompareDifferentLength() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r a='1' b='2' /><r c='3' /><r /></doc>").getBytes(UTF_8)));
+                ("<doc><r a='1' b='2' /><r c='3' /><r /></doc>").getBytes(Charsets.UTF_8)));
         final UnsortedNodeList r2 = new UnsortedNodeList(document.getElementsByTagName("r"));
         Assert.assertEquals(-1, this.r.compareTo(r2));
         Assert.assertEquals(1, r2.compareTo(this.r));
@@ -88,7 +88,7 @@ public class UnsortedNodeListTest {
     @Test
     public void testCompare() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r c='3' /><r a='1' b='2' /></doc>").getBytes(UTF_8)));
+                ("<doc><r c='3' /><r a='1' b='2' /></doc>").getBytes(Charsets.UTF_8)));
         final UnsortedNodeList r2 = new UnsortedNodeList(document.getElementsByTagName("r"));
         Assert.assertEquals(0, this.r.compareTo(r2));
         Assert.assertEquals(0, r2.compareTo(this.r));
@@ -98,7 +98,7 @@ public class UnsortedNodeListTest {
     @Test
     public void testDifferent() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r c='4' /><r a='1' b='2' /></doc>").getBytes(UTF_8)));
+                ("<doc><r c='4' /><r a='1' b='2' /></doc>").getBytes(Charsets.UTF_8)));
         final UnsortedNodeList r2 = new UnsortedNodeList(document.getElementsByTagName("r"));
         Assert.assertEquals(-1, this.r.compareTo(r2));
         Assert.assertEquals(1, r2.compareTo(this.r));
@@ -124,7 +124,7 @@ public class UnsortedNodeListTest {
     @Test
     public void testComparator() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r c='4' /><r a='1' b='2' /></doc>").getBytes(UTF_8)));
+                ("<doc><r c='4' /><r a='1' b='2' /></doc>").getBytes(Charsets.UTF_8)));
 
         final Node doc = document.getFirstChild();
         Assert.assertEquals(8, UnsortedNodeList.cmp.compare(document, doc));
@@ -132,7 +132,7 @@ public class UnsortedNodeListTest {
 
 
         final Document document2 = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r/><r a='1' b='2' /></doc>").getBytes(UTF_8)));
+                ("<doc><r/><r a='1' b='2' /></doc>").getBytes(Charsets.UTF_8)));
         Assert.assertNotEquals(doc.getFirstChild(), doc.getLastChild());
         Assert.assertEquals(-1,
                 UnsortedNodeList.cmp.compare(doc.getFirstChild(), doc.getLastChild()));
@@ -146,7 +146,7 @@ public class UnsortedNodeListTest {
     @Test
     public void testComparator2() throws IOException, SAXException {
         final Document document = this.builder.parse(new ByteArrayInputStream(
-                ("<doc><r c='4' /><s c='1'/></doc>").getBytes(UTF_8)));
+                ("<doc><r c='4' /><s c='1'/></doc>").getBytes(Charsets.UTF_8)));
 
         final Node doc = document.getFirstChild();
         final Node item = doc.getFirstChild().getAttributes().item(0);

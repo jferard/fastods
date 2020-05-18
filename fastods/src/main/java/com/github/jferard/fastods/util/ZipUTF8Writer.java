@@ -36,10 +36,6 @@ import java.util.zip.ZipEntry;
  * @author Julien Férard
  */
 public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
-    /**
-     * the utf-8 encoding
-     */
-    Charset UTF_8 = Charset.forName("UTF-8");
 
     /**
      * Close the current entry

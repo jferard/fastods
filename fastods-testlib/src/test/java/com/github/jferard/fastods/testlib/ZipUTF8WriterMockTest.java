@@ -66,7 +66,7 @@ public class ZipUTF8WriterMockTest {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         final ZipUTF8WriterMockHandler mockHandler = new ZipUTF8WriterMockHandler(mock);
         mock.putNextEntry(new ZipEntry("entry1"));
-        mock.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        mock.append(Util.XML_PROLOG +"\n");
         mock.append("<tag>\n");
         mock.append("content\n");
         mock.append("</tag>\n");

@@ -76,7 +76,7 @@ public class ZipUTF8WriterBuilder {
         final ZipOutputStream zipOut = new ZipOutputStream(bufferedOut);
         zipOut.setMethod(ZipOutputStream.DEFLATED);
         zipOut.setLevel(this.level);
-        final Writer writer = new OutputStreamWriter(zipOut, ZipUTF8Writer.UTF_8);
+        final Writer writer = new OutputStreamWriter(zipOut, CharsetUtil.UTF_8);
         final Writer bufferedWriter;
         switch (this.writerBufferSize) {
             case NO_BUFFER:

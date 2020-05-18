@@ -37,6 +37,11 @@ import java.util.List;
  */
 public class XMLUtil {
     /**
+     * the usual preamble
+     */
+    public static final String XML_PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+    /**
      * A space char for append
      */
     public static final char SPACE_CHAR = ' ';

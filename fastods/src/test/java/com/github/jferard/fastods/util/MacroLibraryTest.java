@@ -34,12 +34,9 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Arrays;
+import java.util.Collections;
 
 public class MacroLibraryTest {
-    private static final Charset UTF_8 = Charset.forName("UTF-8");
-
     private MacroModule module;
     private XMLUtil util;
 
@@ -62,7 +59,8 @@ public class MacroLibraryTest {
     @Test
     public void testAdd() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
-        final MacroLibrary lib = new MacroLibrary("ml", false, Arrays.asList(this.module));
+        final MacroLibrary lib = new MacroLibrary("ml", false,
+                Collections.singletonList(this.module));
         final Capture<StringBuilder> sb1 = Capture.newInstance();
         final Capture<byte[]> bs = Capture.newInstance();
 
@@ -77,17 +75,17 @@ public class MacroLibraryTest {
         lib.add(this.util, document);
 
         PowerMock.verifyAll();
-        Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE library:library " +
+        Assert.assertEquals(XMLUtil.XML_PROLOG + "<!DOCTYPE library:library " +
                 "PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library" +
                 ".dtd\"><library:library xmlns:library=\"http://openoffice.org/2000/library\" " +
                 "library:name=\"ml\" library:readonly=\"false\" " +
                 "library:passwordprotected=\"false\"></library:library>", sb1.toString());
-        Assert.assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE library:library " +
+        Assert.assertEquals(XMLUtil.XML_PROLOG + "<!DOCTYPE library:library " +
                         "PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library" +
                         ".dtd\"><library:library xmlns:library=\"http://openoffice" +
                         ".org/2000/library\" " +
                         "library:name=\"ml\" library:readonly=\"false\" " +
                         "library:passwordprotected=\"false\"></library:library>",
-                new String(bs.getValue(), UTF_8));
+                new String(bs.getValue(), CharsetUtil.UTF_8));
     }
 }

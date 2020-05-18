@@ -121,7 +121,7 @@ public class SettingsElement implements OdsElement {
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         writer.putNextEntry(new ZipEntry("settings.xml"));
-        writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+        writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-settings");
         for (final Map.Entry<String, String> entry: SETTINGS_NAMESPACE_BY_PREFIX.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());

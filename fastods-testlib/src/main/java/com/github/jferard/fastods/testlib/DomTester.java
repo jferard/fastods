@@ -23,6 +23,7 @@
  */
 package com.github.jferard.fastods.testlib;
 
+import com.google.common.base.Charsets;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -34,7 +35,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
 
 /**
  * A tester for nodes
@@ -42,7 +42,6 @@ import java.nio.charset.Charset;
  * @author Julien Férard
  */
 public class DomTester {
-    private final Charset UTF_8 = Charset.forName("UTF-8");
     private final DocumentBuilder builder;
 
     /**
@@ -87,8 +86,12 @@ public class DomTester {
     public static void assertEquals(final String expected, final String actual,
                                     final ChildrenTester childrenTester) {
         if (!DomTester.equals(expected, actual, childrenTester)) {
-            final String msg = "Expected was: " + expected + "\n  Actual was: " + actual + "\n" +
-                    childrenTester.getFirstDifference().get();
+            assert childrenTester.getFirstDifference().isPresent();
+            final String msg =
+                    "XML are different.\n" +
+                            "Expected was: " + expected + "\n" +
+                            "  Actual was: " + actual + "\n" +
+                            childrenTester.getFirstDifference().get();
             throw new AssertionError(msg);
         }
     }
@@ -189,10 +192,11 @@ public class DomTester {
         final PrintStream errBkp = System.err;
         System.setErr(new PrintStream(new OutputStream() {
             @Override
-            public void write(final int b) throws IOException {
+            public void write(final int b) {
                 // pass
             }
-        }) {});
+        }) {
+        });
         try {
             return this.builder.parse(is);
         } finally {
@@ -205,9 +209,8 @@ public class DomTester {
         if (s.startsWith("<?xml")) {
             wrapped = s;
         } else {
-            wrapped = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><domtesterroot>" + s +
-                    "</domtesterroot>";
+            wrapped = Util.XML_PROLOG + "<domtesterroot>" + s + "</domtesterroot>";
         }
-        return new ByteArrayInputStream((wrapped).getBytes(this.UTF_8));
+        return new ByteArrayInputStream((wrapped).getBytes(Charsets.UTF_8));
     }
 }
