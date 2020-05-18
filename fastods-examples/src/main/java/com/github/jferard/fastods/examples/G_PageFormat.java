@@ -38,7 +38,7 @@ import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -132,12 +132,12 @@ class G_PageFormat {
 
             // Text can be styled:
             textBuilder.par().styledSpan("date is:",
-                    TextProperties.builder().fontWeightBold().buildHiddenStyle("footer1"));
+                    TextStyle.builder("footer1").fontWeightBold().build());
 
             // In one call:
             textBuilder.parStyledContent(Text.TEXT_DATE,
-                    TextProperties.builder().fontSize(SimpleLength.pt(25)).fontWeightBold()
-                            .buildHiddenStyle("footer2"));
+                    TextStyle.builder("footer2").fontSize(SimpleLength.pt(25)).fontWeightBold()
+                            .build());
 
             // And build the text:
             final Text footerContent = textBuilder.build();

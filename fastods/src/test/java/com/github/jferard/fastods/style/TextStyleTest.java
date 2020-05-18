@@ -24,48 +24,82 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
-import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class TextStyleTest {
-    private XMLUtil util;
-    private TextStyle ts;
-
-    @Before
-    public void setUp() {
-        this.util = XMLUtil.create();
-        this.ts = new TextStyle("ts", false, TextProperties.builder().build());
-    }
-
     @Test
-    public void testXML() throws IOException {
+    public void testDefaultXML() throws IOException {
+        final TextStyle style = TextStyle.builder("ts").build();
         TestHelper.assertXMLEquals("<style:style style:name=\"ts\" " +
-                "style:family=\"text\"><style:text-properties/></style:style>", this.ts);
+                "style:family=\"text\"><style:text-properties/></style:style>", style);
     }
 
     @Test
     public void testGetter() {
-        Assert.assertEquals("ts", this.ts.getName());
-        Assert.assertEquals(ObjectStyleFamily.TEXT, this.ts.getFamily());
-        Assert.assertEquals("TEXT@ts", this.ts.getKey());
-        Assert.assertFalse(this.ts.isHidden());
+        final TextStyle style = TextStyle.builder("ts").visible().build();
+        Assert.assertEquals("ts", style.getName());
+        Assert.assertEquals(ObjectStyleFamily.TEXT, style.getFamily());
+        Assert.assertEquals("TEXT@ts", style.getKey());
+        Assert.assertFalse(style.isHidden());
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddToElements() {
-        this.ts.addToElements(null);
+        final TextStyle style = TextStyle.builder("ts").build();
+        style.addToElements(null);
     }
 
     @Test
     public void testEmpty() {
         Assert.assertFalse(
-                new TextStyle("ts", false, TextProperties.builder().build()).isNotEmpty());
+                TextStyle.builder("ts").build().isNotEmpty());
         Assert.assertTrue(
-                new TextStyle("ts", false, TextProperties.builder().fontWeightBold().build())
+                TextStyle.builder("ts").fontWeightBold().build()
                         .isNotEmpty());
+    }
+
+    @Test
+    public final void testBadSize() throws IOException {
+        final TextStyle style = TextStyle.builder("ts").fontSize(SimpleLength.cm(10)).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"ts\" style:family=\"text\">" +
+                        "<style:text-properties fo:font-size=\"10cm\" style:font-size-asian=\"10cm\" style:font-size-complex=\"10cm\"/>" +
+                        "</style:style>", style);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testVisibleOnly() {
+        TextStyle.builder("ts").fontSizePercentage(110).build();
+    }
+
+    @Test
+    public final void testColorNameSize() throws IOException {
+        final TextStyle style = TextStyle.builder("ts").fontColor(SimpleColor.ALICEBLUE)
+                .fontName(LOFonts.LIBERATION_SERIF).fontSizePercentage(10.8).visible().build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"ts\" style:family=\"text\">" +
+                        "<style:text-properties fo:color=\"#f0f8ff\" " +
+                        "style:font-name=\"Liberation Serif\" fo:font-size=\"10.8%\" " +
+                        "style:font-size-asian=\"10.8%\" style:font-size-complex=\"10.8%\"/>" +
+                        "</style:style>", style);
+    }
+
+    @Test
+    public final void testItalicBold() throws IOException {
+        final TextStyle prop =
+                TextStyle.builder("ts").fontStyleItalic().fontWeightBold().build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"ts\" style:family=\"text\">" +
+                        "<style:text-properties fo:font-weight=\"bold\" " +
+                        "style:font-weight-asian=\"bold\" style:font-weight-complex=\"bold\" " +
+                        "fo:font-style=\"italic\" style:font-style-asian=\"italic\" " +
+                        "style:font-style-complex=\"italic\"/>" +
+                        "</style:style>",
+                prop);
     }
 }

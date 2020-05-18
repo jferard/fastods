@@ -51,7 +51,7 @@ public class LinkTest {
 
     @Before
     public void setUp() {
-        this.ts = TextProperties.builder().buildStyle("test");
+        this.ts = TextStyle.builder("test").visible().build();
         this.util = new TableNameUtil();
     }
 
@@ -175,7 +175,7 @@ public class LinkTest {
     @Test
     public void testEmbeddedStyles() {
         final StylesContainer container = PowerMock.createMock(StylesContainerImpl.class);
-        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
+        final TextStyle ts = TextStyle.builder("s").visible().fontWeightBold().build();
         final Link link = Link.builder("ok").style(ts).to("ref").build();
 
         PowerMock.resetAll();
@@ -190,7 +190,7 @@ public class LinkTest {
     @Test
     public void testEmbeddedStyles2() {
         final StylesContainer container = PowerMock.createMock(StylesContainerImpl.class);
-        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("s");
+        final TextStyle ts = TextStyle.builder("s").visible().fontWeightBold().build();
         final Link link = Link.builder("ok").style(ts).to("ref").build();
 
         PowerMock.resetAll();

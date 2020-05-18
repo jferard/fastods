@@ -40,7 +40,6 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -125,11 +124,11 @@ class K_MultiplicationTable {
         // For the header, we need a style for the title and another for a discreet dedication
         // (note the use of `buildHiddenStyle`: common styles in footer/header are ignored by LO):
         final TextStyle titleStyle =
-                TextProperties.builder().fontWeightBold().fontSize(SimpleLength.pt(24))
-                        .buildHiddenStyle("title");
+                TextStyle.builder("title").fontWeightBold().fontSize(SimpleLength.pt(24))
+                        .build();
         final TextStyle dedicationStyle =
-                TextProperties.builder().fontSize(SimpleLength.pt(8)).fontStyleItalic()
-                        .buildHiddenStyle("dedication");
+                TextStyle.builder("dedication").fontSize(SimpleLength.pt(8))
+                        .fontStyleItalic().build();
 
         // Now, we create the text of the header:
         final Text headerText = Text.builder().parStyledContent("Multiplication Table", titleStyle)

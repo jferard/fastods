@@ -26,7 +26,6 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.PageSectionContent.Region;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -59,10 +58,10 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionsToMasterStyle() throws IOException {
-        final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
+        final TextStyle ts1 = TextStyle.builder("style1").visible().fontStyleItalic().build();
         final TextStyle ts2 =
-                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
-        final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
+                TextStyle.builder("style2").visible().fontStyleNormal().fontWeightNormal().build();
+        final TextStyle ts3 = TextStyle.builder("style3").visible().fontWeightBold().build();
         final PageSection headerSection =
                 PageSection.regionBuilder().region(Region.LEFT).styledContent("left-text", ts1)
                         .region(Region.CENTER).styledContent("center-text", ts2)
@@ -78,7 +77,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionToAutomaticStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("style");
+        final TextStyle ts = TextStyle.builder("style").visible().fontWeightBold().build();
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
         final StringBuilder sb = new StringBuilder();
@@ -91,7 +90,7 @@ public class RegionPageSectionTest {
 
     @Test
     public final void testRegionToMasterStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontWeightBold().buildStyle("style");
+        final TextStyle ts = TextStyle.builder("style").visible().fontWeightBold().build();
         final PageSection footerSection = PageSection.regionBuilder().region(Region.CENTER)
                 .styledContent(Text.TEXT_PAGE_NUMBER, ts).build();
         this.assertMasterXMLEquals(
@@ -103,10 +102,10 @@ public class RegionPageSectionTest {
     @Test
     public final void testEmbedded() {
         final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
-        final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
+        final TextStyle ts1 = TextStyle.builder("style1").visible().fontStyleItalic().build();
         final TextStyle ts2 =
-                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
-        final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
+                TextStyle.builder("style2").visible().fontStyleNormal().fontWeightNormal().build();
+        final TextStyle ts3 = TextStyle.builder("style3").visible().fontWeightBold().build();
         final PageSection headerSection =
                 PageSection.regionBuilder().region(Region.LEFT).styledContent("left-text", ts1)
                         .region(Region.CENTER).styledContent("center-text", ts2)
@@ -138,10 +137,10 @@ public class RegionPageSectionTest {
     @Test
     public final void testEmbeddedMode() {
         final StylesContainer sc = PowerMock.createMock(StylesContainerImpl.class);
-        final TextStyle ts1 = TextProperties.builder().fontStyleItalic().buildStyle("style1");
+        final TextStyle ts1 = TextStyle.builder("style1").visible().fontStyleItalic().build();
         final TextStyle ts2 =
-                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style2");
-        final TextStyle ts3 = TextProperties.builder().fontWeightBold().buildStyle("style3");
+                TextStyle.builder("style2").visible().fontStyleNormal().fontWeightNormal().build();
+        final TextStyle ts3 = TextStyle.builder("style3").visible().fontWeightBold().build();
         final PageSection headerSection =
                 PageSection.regionBuilder().region(Region.LEFT).styledContent("left-text", ts1)
                         .region(Region.CENTER).styledContent("center-text", ts2)

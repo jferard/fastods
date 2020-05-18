@@ -40,6 +40,7 @@ import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TextProperties;
+import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapperBuilder;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
@@ -321,10 +322,13 @@ class J_Misc {
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable("custom");
+
+        // And add a cell.
         final TableCellWalker walker = table.getWalker();
+        final TextStyle sourceStyle = TextStyle.builder("source").fontName(
+                LOFonts.LIBERATION_MONO).build();
         walker.setText(Text.builder().par().span("Check custom attributes in the ")
-                .styledSpan("content.xml", TextProperties.builder().fontName(
-                        LOFonts.LIBERATION_MONO).buildHiddenStyle("source")).span(" file!").build());
+                .styledSpan("content.xml", sourceStyle).span(" file!").build());
 
         // Then you can add a custom attribute to the `table:table`, `table:table-row`,
         // `table:table-column` or `table:table-cell` tags.

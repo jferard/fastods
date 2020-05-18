@@ -42,7 +42,6 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.OdfToolkitUtil;
 import com.github.jferard.fastods.testlib.Util;
@@ -91,12 +90,6 @@ public class OdsFileWithHeaderAndFooterCreationIT {
             "-page']//style:header//style:region-right";
     private static final String RIGHT_FOOTER_PATH = "//style:master-page[@style:name='test-master" +
             "-page']//style:footer//style:region-right";
-
-    @BeforeClass
-    public static void beforeClass() {
-        Util.mkdir(GENERATED_FILES);
-    }
-
     private OdsFactory odsFactory;
     private TextStyle lts;
     private TextStyle cts;
@@ -118,6 +111,11 @@ public class OdsFileWithHeaderAndFooterCreationIT {
     private TableCellStyle tcls;
     private TableColumnStyle tcns;
     private Footer footer;
+
+    @BeforeClass
+    public static void beforeClass() {
+        Util.mkdir(GENERATED_FILES);
+    }
 
     @Before
     public void setUp() {
@@ -307,14 +305,13 @@ public class OdsFileWithHeaderAndFooterCreationIT {
                 .fontWeightBold().build();
         this.tcns = TableColumnStyle.builder("ccs").columnWidth(SimpleLength.cm(10.0)).build();
 
-        this.lts = TextProperties.builder().fontColor(SimpleColor.RED).buildHiddenStyle("red-text");
+        this.lts = TextStyle.builder("red-text").fontColor(SimpleColor.RED).build();
         this.cts =
-                TextProperties.builder().fontColor(SimpleColor.BLUE).buildHiddenStyle("blue-text");
-        this.rts = TextProperties.builder().fontColor(SimpleColor.GREEN)
-                .buildHiddenStyle("green-text");
-        this.boldStyle = TextProperties.builder().fontWeightBold().buildHiddenStyle("bold-text");
+                TextStyle.builder("blue-text").fontColor(SimpleColor.BLUE).build();
+        this.rts = TextStyle.builder("green-text").fontColor(SimpleColor.GREEN).build();
+        this.boldStyle = TextStyle.builder("bold-text").fontWeightBold().build();
         this.italicStyle =
-                TextProperties.builder().fontStyleItalic().buildHiddenStyle("italic-text");
+                TextStyle.builder("italic-text").fontStyleItalic().build();
 
         this.leftHeader = Text.styledContent("left header", this.lts);
         this.centerHeader = Text.builder().par().styledSpan("center header", this.cts)

@@ -51,7 +51,20 @@ public class TextPropertiesBuilder {
         this.fontUnderlineColor = SimpleColor.NONE;
     }
 
-    public TextPropertiesBuilder(final Color fontColor, final String fontName,
+    /**
+     * Do not use this directly. Called by `TextProperties.toBuilder()`
+     *
+     * @param fontColor          the font color
+     * @param fontName           the font name
+     * @param fontWeight         the font weight
+     * @param fontStyle          the font style
+     * @param fontSizePercentage the font size percentage, or -1. Exclusive with fontSizeLength
+     * @param fontSizeLength     the font size percentage, or null. Exclusive with
+     *                           fontSizePercentage
+     * @param fontUnderlineColor the font underline color
+     * @param fontUnderlineStyle the font underline style
+     */
+    TextPropertiesBuilder(final Color fontColor, final String fontName,
                                  final String fontWeight, final String fontStyle,
                                  final double fontSizePercentage, final Length fontSizeLength,
                                  final Color fontUnderlineColor,
@@ -78,15 +91,19 @@ public class TextPropertiesBuilder {
     /**
      * @param name the name of the style
      * @return the TextStyle of that name
+     * @deprecated use `TextStyle.builder(name).visible().build()`
      */
-    public TextStyle buildStyle(final String name) {
+    @Deprecated
+    public TextStyle buildVisibleStyle(final String name) {
         return new TextStyle(name, false, this.build());
     }
 
     /**
      * @param name the name of the style
      * @return the TextStyle of that name
+     * @deprecated use `TextStyle.builder(name).build()`
      */
+    @Deprecated
     public TextStyle buildHiddenStyle(final String name) {
         if (this.fontSizePercentage > 0) {
             throw new IllegalArgumentException(
@@ -210,5 +227,12 @@ public class TextPropertiesBuilder {
     public TextPropertiesBuilder fontWeightNormal() {
         this.fontWeight = "normal";
         return this;
+    }
+
+    /**
+     * @return true if this builder uses % to define the font size
+     */
+    public boolean hasFontSizePercentage() {
+        return this.fontSizePercentage > 0;
     }
 }

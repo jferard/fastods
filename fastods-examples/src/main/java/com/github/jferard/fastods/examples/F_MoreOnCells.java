@@ -30,7 +30,6 @@ import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.Text;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 
 import java.io.File;
@@ -154,8 +153,7 @@ class F_MoreOnCells {
         walker.setText(text);
 
         // We can use some styles:
-        final TextStyle boldStyle =
-                TextProperties.builder().fontWeightBold().buildHiddenStyle("bold");
+        final TextStyle boldStyle = TextStyle.builder("bold").fontWeightBold().build();
         text = Text.builder().par().span("This is a ").styledSpan("bold", boldStyle)
                 .span(" example").build();
         walker.to(2);

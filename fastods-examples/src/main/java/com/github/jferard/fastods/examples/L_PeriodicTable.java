@@ -48,7 +48,6 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -175,14 +174,13 @@ class L_PeriodicTable {
                         TableRowStyle.builder("ro2").rowHeight(CELL_SIZE).build();
 
                 // We need some styles:
-                final TextStyle elementStyle = TextProperties.builder().fontSize(SimpleLength.pt(6))
-                        .buildHiddenStyle("elementStyle");
+                final TextStyle elementStyle =
+                        TextStyle.builder("elementStyle").fontSize(SimpleLength.pt(6)).build();
                 final TextStyle atomicNumberStyle =
-                        TextProperties.builder().fontSize(SimpleLength.pt(8))
-                                .buildHiddenStyle("atomicNumberStyle");
+                        TextStyle.builder("atomicNumberStyle").fontSize(SimpleLength.pt(8)).build();
                 final TextStyle symbolStyle =
-                        TextProperties.builder().fontSize(SimpleLength.pt(12)).fontWeightBold()
-                                .buildHiddenStyle("symbolStyle");
+                        TextStyle.builder("symbolStyle").fontSize(SimpleLength.pt(12))
+                                .fontWeightBold().build();
 
                 // ### Cells content
                 // The row of the element is given by its `period` and the column is the `pt_group`.
@@ -255,12 +253,11 @@ class L_PeriodicTable {
                     // ### Printing
                     // It's almost over. We just need a footer and a header. It's a copycat from
                     // the previous section:
-                    final TextStyle titleStyle =
-                            TextProperties.builder().fontWeightBold().fontSize(SimpleLength.pt(24))
-                                    .buildHiddenStyle("title");
+                    final TextStyle titleStyle = TextStyle.builder("title").fontWeightBold()
+                            .fontSize(SimpleLength.pt(24)).build();
                     final TextStyle dedicationStyle =
-                            TextProperties.builder().fontSize(SimpleLength.pt(8)).fontStyleItalic()
-                                    .buildHiddenStyle("dedication");
+                            TextStyle.builder("dedication").fontSize(SimpleLength.pt(8))
+                                    .fontStyleItalic().build();
                     final Text headerText =
                             Text.builder().parStyledContent("Periodic Table", titleStyle)
                                     .parStyledContent("For Maia", dedicationStyle).build();

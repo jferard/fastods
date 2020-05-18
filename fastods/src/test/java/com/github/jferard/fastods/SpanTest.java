@@ -23,7 +23,6 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import org.junit.Test;
 
@@ -32,14 +31,14 @@ import java.io.IOException;
 public class SpanTest {
     @Test
     public final void testFHTextWithStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().buildStyle("test");
-        final XMLConvertible fhtext = new Span("text", ts);
-        TestHelper.assertXMLEquals("<text:span text:style-name=\"test\">text</text:span>", fhtext);
+        final TextStyle ts = TextStyle.builder("test").visible().build();
+        final XMLConvertible fhText = new Span("text", ts);
+        TestHelper.assertXMLEquals("<text:span text:style-name=\"test\">text</text:span>", fhText);
     }
 
     @Test
     public final void testSimpleFHText() throws IOException {
-        final XMLConvertible fhtext = new Span("text");
-        TestHelper.assertXMLEquals("text", fhtext);
+        final XMLConvertible fhText = new Span("text");
+        TestHelper.assertXMLEquals("text", fhText);
     }
 }

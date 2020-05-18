@@ -37,13 +37,25 @@ import java.io.IOException;
  */
 public class TextStyle implements FontFaceContainerStyle {
     /**
+     * TextStyles are hidden by default.
+     *
+     * @param styleName name of the style to build
+     * @return a new style builder
+     */
+    public static TextStyleBuilder builder(final String styleName) {
+        return new TextStyleBuilder(styleName);
+    }
+
+    /**
      * The default text style
      */
     public static final TextStyle DEFAULT_TEXT_STYLE =
-            TextProperties.builder().buildStyle("Default");
+            TextStyle.builder("Default").visible().build();
+
     private final String name;
     private final boolean hidden;
     private final TextProperties textProperties;
+
     private String key;
 
     /**

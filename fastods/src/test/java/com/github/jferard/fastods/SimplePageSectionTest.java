@@ -26,7 +26,6 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -52,7 +51,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testFourMarginsAndMinHeightToAutomaticStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
+        final TextStyle ts = TextStyle.builder("style").visible().fontStyleItalic().build();
         final Header header = PageSection.simpleBuilder().marginTop(SimpleLength.pt(10.0))
                 .marginRight(SimpleLength.pt(11.0)).marginBottom(SimpleLength.pt(12.0))
                 .marginLeft(SimpleLength.pt(13.0)).minHeight(SimpleLength.pt(120.0))
@@ -65,7 +64,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testMarginsAndMinHeightToAutomaticStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
+        final TextStyle ts = TextStyle.builder("style").visible().fontStyleItalic().build();
         final Header header = PageSection.simpleBuilder().allMargins(SimpleLength.pt(10.0))
                 .minHeight(SimpleLength.pt(120.0)).styledContent("text", ts).buildHeader();
         this.assertAutomaticXMLEquals("<style:header-style>" +
@@ -75,8 +74,8 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testPageToMasterStyle() throws IOException {
-        final TextStyle ts1 = TextProperties.builder().buildStyle("test1");
-        final TextStyle ts2 = TextProperties.builder().buildStyle("test2");
+        final TextStyle ts1 = TextStyle.builder("test1").visible().build();
+        final TextStyle ts2 = TextStyle.builder("test2").visible().build();
         final PageSection header = PageSection.simpleBuilder()
                 .text(Text.builder().parStyledContent(Text.TEXT_PAGE_NUMBER, ts1)
                         .parStyledContent(Text.TEXT_PAGE_COUNT, ts2).build()).build();
@@ -88,8 +87,8 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testPageToMasterStyle2() throws IOException {
-        final TextStyle ts1 = TextProperties.builder().buildStyle("test1");
-        final TextStyle ts2 = TextProperties.builder().buildStyle("test2");
+        final TextStyle ts1 = TextStyle.builder("test1").visible().build();
+        final TextStyle ts2 = TextStyle.builder("test2").visible().build();
         final PageSection header = PageSection.simpleBuilder()
                 .text(Text.builder().par().styledSpan(Text.TEXT_PAGE_NUMBER, ts1)
                         .styledSpan(Text.TEXT_PAGE_COUNT, ts2).build()).build();
@@ -101,7 +100,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testSimpleFooterToAutomaticStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
+        final TextStyle ts = TextStyle.builder("style").visible().fontStyleItalic().build();
         final Header header = PageSection.simpleHeader("text", ts);
         this.assertAutomaticXMLEquals("<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
@@ -110,7 +109,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testSimpleFooterToMasterStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().fontStyleItalic().buildStyle("style");
+        final TextStyle ts = TextStyle.builder("style").visible().fontStyleItalic().build();
         final Header header = PageSection.simpleHeader("text", ts);
         this.assertMasterXMLEquals(
                 "<text:p>" + "<text:span text:style-name=\"style\">" + "text" + "</text:span>" +
@@ -119,7 +118,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testSimpleStyledTextToAutomaticStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().buildStyle("test");
+        final TextStyle ts = TextStyle.builder("test").visible().build();
         final String text = "text";
         final Footer footer = PageSection.simpleBuilder().styledContent(text, ts).buildFooter();
         this.assertAutomaticXMLEquals("<style:footer-style>" +
@@ -129,7 +128,7 @@ public class SimplePageSectionTest {
 
     @Test
     public final void testSimpleStyledTextToMasterStyle() throws IOException {
-        final TextStyle ts = TextProperties.builder().buildStyle("test");
+        final TextStyle ts = TextStyle.builder("test").visible().build();
         final PageSection footer = PageSection.simpleBuilder().styledContent("text", ts).build();
         this.assertMasterXMLEquals(
                 "<text:p>" + "<text:span text:style-name=\"test\">text</text:span>" + "</text:p>",

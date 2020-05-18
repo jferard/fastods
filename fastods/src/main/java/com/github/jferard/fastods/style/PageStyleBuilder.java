@@ -87,7 +87,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
         this.scaleToPages = 0;
         this.centering = PageCentering.NONE;
 
-        final TextStyle noneStyle = TextProperties.builder().buildHiddenStyle("none");
+        final TextStyle noneStyle = TextStyle.builder("none").build();
         this.header = PageSection.simpleHeader("", noneStyle);
         this.footer = PageSection.simpleFooter("", noneStyle);
         this.hidden = false;

@@ -23,7 +23,6 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
@@ -62,7 +61,7 @@ public class ParagraphTest {
     @Test
     public final void testWithStyle() throws IOException {
         final TextStyle ts =
-                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
+                TextStyle.builder("style").visible().fontStyleNormal().fontWeightNormal().build();
         this.parBuilder.style(ts).span("text");
         this.assertParXMLEquals("<text:p text:style-name=\"style\">text</text:p>");
     }
@@ -95,7 +94,7 @@ public class ParagraphTest {
     @Test
     public final void testStyledLinks() throws IOException, URISyntaxException {
         final TextStyle ts =
-                TextProperties.builder().fontStyleNormal().fontWeightNormal().buildStyle("style");
+                TextStyle.builder("style").visible().fontStyleNormal().fontWeightNormal().build();
         final Table table = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
