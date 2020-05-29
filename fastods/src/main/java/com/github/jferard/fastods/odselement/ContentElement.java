@@ -28,6 +28,7 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
@@ -254,7 +255,7 @@ public class ContentElement implements OdsElement {
      * @throws IOException if the preamble was not written
      */
     public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new ZipEntry("content.xml"));
+        writer.putNextEntry(new StandardManifestEntry("content.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-content");
         for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {

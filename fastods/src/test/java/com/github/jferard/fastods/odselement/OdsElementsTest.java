@@ -30,7 +30,7 @@ import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
@@ -258,7 +258,7 @@ public class OdsElementsTest {
 
     @Test
     public final void testAddExtraDir() throws IOException {
-        final Capture<ManifestEntry> capture = EasyMock.newCapture();
+        final Capture<StandardManifestEntry> capture = EasyMock.newCapture();
 
         PowerMock.resetAll();
         this.manifestElement.add(EasyMock.capture(capture));
@@ -274,7 +274,7 @@ public class OdsElementsTest {
     @Test
     public final void testAddExtraFile() throws IOException {
         final byte[] bytes = {'c', 'o', 'n', 't', 'e', 'n', 't'};
-        final Capture<ManifestEntry> capture = EasyMock.newCapture();
+        final Capture<StandardManifestEntry> capture = EasyMock.newCapture();
 
         PowerMock.resetAll();
         this.manifestElement.add(EasyMock.capture(capture));

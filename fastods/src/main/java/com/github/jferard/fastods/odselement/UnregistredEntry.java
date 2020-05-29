@@ -22,55 +22,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.util.XMLUtil;
 
-import java.io.Closeable;
-import java.io.Flushable;
 import java.io.IOException;
 
 /**
- * A writer for a zip file/ It's a writer and a zipper
- *
- * @author Julien Férard
+ * An entry in the zip file, but not registred in the manifest.
  */
-public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
+public class UnregistredEntry implements ManifestEntry {
+    private final String fullPath;
 
-    /**
-     * Close the current entry
-     *
-     * @throws IOException if an I/O error occurs
-     */
-    void closeEntry() throws IOException;
+    public UnregistredEntry(final String fullPath) {
+        this.fullPath = fullPath;
+    }
 
-    /**
-     * finish the zip file
-     *
-     * @throws IOException if an I/O error occurs
-     */
-    void finish() throws IOException;
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        // do nothing
+    }
 
-    /**
-     * Put a new entry into the zip. This becomes the current entry
-     *
-     * @param entry the entry
-     * @throws IOException if an I/O error occurs
-     */
-    void putNextEntry(final ManifestEntry entry) throws IOException;
-
-    /**
-     * Add a comment to the zip
-     *
-     * @param comment the comment
-     */
-    void setComment(final String comment);
-
-    /**
-     * Write raw bytes to the output stream
-     *
-     * @param bytes the bytes to write
-     * @throws IOException if an I/O error occurs
-     */
-    void write(byte[] bytes) throws IOException;
+    @Override
+    public String getPath() {
+        return this.fullPath;
+    }
 }

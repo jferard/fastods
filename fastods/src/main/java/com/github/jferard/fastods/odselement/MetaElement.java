@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -119,7 +120,7 @@ public class MetaElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new ZipEntry("meta.xml"));
+        writer.putNextEntry(new StandardManifestEntry("meta.xml", "text/xml", null));
         writer.append("<?xml");
         util.appendAttribute(writer, "version", "1.0");
         util.appendAttribute(writer, "encoding", CharsetUtil.UTF_8_NAME);

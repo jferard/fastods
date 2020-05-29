@@ -132,9 +132,9 @@ public class ZipUTF8WriterMock implements Appendable {
     /**
      * @param arg0 the entry to put
      */
-    public void putNextEntry(final ZipEntry arg0) {
+    public void putNextEntry(final Object arg0) {
         this.curBuilder = new StringBuilder();
-        this.builderByEntryName.put(arg0.getName(), this.curBuilder);
+        this.builderByEntryName.put(arg0.toString(), this.curBuilder);
     }
 
     /**

@@ -25,6 +25,7 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.ZipEntry;
 
 /**
  * Part 3, 3.2 Manifest:
@@ -55,25 +55,25 @@ public class ManifestElement implements OdsElement {
      */
     public static final String META_INF_MANIFEST_XML = "META-INF/manifest.xml";
 
-    private static final List<ManifestEntry> ENTRIES = Arrays.asList(
-            new ManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
-            new ManifestEntry("content.xml", "text/xml", null),
-            new ManifestEntry("styles.xml", "text/xml", null),
-            new ManifestEntry("meta.xml", "text/xml", null),
-            new ManifestEntry("settings.xml", "text/xml", null),
-            new ManifestEntry("Configurations2/", "application/vnd.sun.xml.ui.configuration", null),
-            new ManifestEntry("Configurations2/statusbar/", "", null),
-            new ManifestEntry("Configurations2/accelerator/", "", null),
-            new ManifestEntry("Configurations2/accelerator/current.xml", "", null),
-            new ManifestEntry("Configurations2/floater/", "", null),
-            new ManifestEntry("Configurations2/popupmenu/", "", null),
-            new ManifestEntry("Configurations2/progressbar/", "", null),
-            new ManifestEntry("Configurations2/menubar/", "", null),
-            new ManifestEntry("Configurations2/toolbar/", "", null),
-            new ManifestEntry("Configurations2/images/", "", null),
-            new ManifestEntry("Configurations2/images/Bitmaps/", "", null),
-            new ManifestEntry("Thumbnails/", "", null),
-            new ManifestEntry("Thumbnails/thumbnail.png", "", null));
+    private static final List<ManifestEntry> ENTRIES = Arrays.<ManifestEntry>asList(
+            new StandardManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
+            new StandardManifestEntry("content.xml", "text/xml", null),
+            new StandardManifestEntry("styles.xml", "text/xml", null),
+            new StandardManifestEntry("meta.xml", "text/xml", null),
+            new StandardManifestEntry("settings.xml", "text/xml", null),
+            new StandardManifestEntry("Configurations2/", "application/vnd.sun.xml.ui.configuration", null),
+            new StandardManifestEntry("Configurations2/statusbar/", "", null),
+            new StandardManifestEntry("Configurations2/accelerator/", "", null),
+            new StandardManifestEntry("Configurations2/accelerator/current.xml", "", null),
+            new StandardManifestEntry("Configurations2/floater/", "", null),
+            new StandardManifestEntry("Configurations2/popupmenu/", "", null),
+            new StandardManifestEntry("Configurations2/progressbar/", "", null),
+            new StandardManifestEntry("Configurations2/menubar/", "", null),
+            new StandardManifestEntry("Configurations2/toolbar/", "", null),
+            new StandardManifestEntry("Configurations2/images/", "", null),
+            new StandardManifestEntry("Configurations2/images/Bitmaps/", "", null),
+            new StandardManifestEntry("Thumbnails/", "", null),
+            new StandardManifestEntry("Thumbnails/thumbnail.png", "", null));
 
     /**
      * @return a new ManifestElement
@@ -93,7 +93,7 @@ public class ManifestElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new ZipEntry(META_INF_MANIFEST_XML));
+        writer.putNextEntry(new UnregistredEntry(ManifestElement.META_INF_MANIFEST_XML));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<manifest:manifest");
         util.appendAttribute(writer, "xmlns:manifest",

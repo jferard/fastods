@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.annotation.Beta;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -35,8 +36,9 @@ import java.util.Date;
 /**
  * An abstract class to ease the implementation of `WritableTableCell`. The method 
  * `appendXMLToTableRow` should be implemented. All other methods will throw a 
- * `UnsupportedOperationException`.
+ * `UnsupportedOperationException` unless they are overriden.
  */
+@Beta
 public abstract class AbstractTableCell implements WritableTableCell {
     @Override
     public void markRowsSpanned(final int n) {

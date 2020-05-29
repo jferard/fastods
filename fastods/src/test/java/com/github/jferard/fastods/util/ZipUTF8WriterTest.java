@@ -23,6 +23,8 @@
  */
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +33,6 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUTF8WriterTest {
@@ -51,12 +52,16 @@ public class ZipUTF8WriterTest {
     @Test
     public final void test() throws IOException {
         this.zipUTF8Writer.setComment("comment");
-        this.zipUTF8Writer.putNextEntry(new ZipEntry("a"));
+        this.zipUTF8Writer.putNextEntry(this.getManifestEntry());
         this.zipUTF8Writer.append("text", 0, 2);
         Assert.assertEquals(this.writer.toString(), "te");
         Assert.assertEquals(31, this.out.toByteArray().length);
         this.zipUTF8Writer.closeEntry();
         this.zipUTF8Writer.finish();
+    }
+
+    private ManifestEntry getManifestEntry() {
+        return new StandardManifestEntry("a", null, null);
     }
 
 }

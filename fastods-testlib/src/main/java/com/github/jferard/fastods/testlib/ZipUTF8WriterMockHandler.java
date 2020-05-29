@@ -87,7 +87,7 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
         } else if (name.equals("flush")) {
             this.mock.flush();
         } else if (name.equals("putNextEntry")) {
-            this.mock.putNextEntry((ZipEntry) objects[0]);
+            this.mock.putNextEntry(objects[0]);
         } else if (name.equals("setComment")) {
             this.mock.setComment((String) objects[0]);
         } else if (name.equals("toString")) {
@@ -115,10 +115,14 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
     /**
      * @param name name of the entry in the zip file
      * @return the content
+     * @throws IllegalArgumentException if there is no entry having this name.
      */
     public String getEntryAsString(final String name) {
         final StringBuilder stringBuilder = this.mock.getBuilder(name);
-        return stringBuilder == null ? null : stringBuilder.toString();
+        if (stringBuilder == null) {
+            throw new IllegalArgumentException();
+        }
+        return stringBuilder.toString();
     }
 
     /**

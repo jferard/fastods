@@ -29,37 +29,10 @@ import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 
-/**
- * 4.3<manifest:file-entry>
- */
-public class ManifestEntry implements XMLConvertible {
-    private final CharSequence fullPath;
-    private final CharSequence mediaType;
-    private final CharSequence version;
-
-    /**
-     * @param fullPath  the path
-     * @param mediaType the media MIME type
-     * @param version
-     */
-    public ManifestEntry(final CharSequence fullPath, final CharSequence mediaType,
-                         final CharSequence version) {
-        this.fullPath = fullPath;
-        this.mediaType = mediaType;
-        this.version = version;
-    }
-
+public interface ManifestEntry extends XMLConvertible {
     @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-            throws IOException {
-        appendable.append("<manifest:file-entry");
-        util.appendAttribute(appendable, "manifest:full-path", this.fullPath);
-        if (this.mediaType != null) {
-            util.appendAttribute(appendable, "manifest:media-type", this.mediaType);
-        }
-        if (this.version != null) {
-            util.appendAttribute(appendable, "manifest:version", this.version);
-        }
-        appendable.append("/>");
-    }
+    void appendXMLContent(XMLUtil util, Appendable appendable)
+            throws IOException;
+
+    String getPath();
 }

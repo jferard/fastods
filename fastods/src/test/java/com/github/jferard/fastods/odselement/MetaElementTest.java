@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -104,6 +105,6 @@ public class MetaElementTest {
         final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
         final ZipUTF8Writer instance = handler.getInstance(ZipUTF8Writer.class);
         element.write(XMLUtil.create(), instance);
-        return handler.getEntryAsString("meta.xml");
+        return handler.getEntryAsString("ManifestEntry[path=meta.xml]");
     }
 }

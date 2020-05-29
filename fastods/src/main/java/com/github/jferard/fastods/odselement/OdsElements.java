@@ -36,6 +36,7 @@ import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
@@ -56,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
 
 /**
  * The OdsElements class is simply a facade in front of various OdsElement classes
@@ -81,47 +81,32 @@ public class OdsElements implements StylesContainer {
      * LO only: freeze cells
      */
     public static final String SC_SPLIT_FIX = "2";
+    public static final Map<String, String> BASE_NAMESPACE_BY_PREFIX =
+            new HashMap<String, String>();
 
-    private static final String[] EMPTY_ELEMENT_NAMES =
-            {"Thumbnails/", "Configurations2/accelerator/current.xml", "Configurations2/floater/",
-                    "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
-                    "Configurations2/popupmenu/", "Configurations2/progressbar/",
-                    "Configurations2/statusbar/", "Configurations2/toolbar/"};
-
-    public static final Map<String, String> BASE_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+    private static final ManifestEntry[] EMPTY_ENTRIES = {
+            new StandardManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
+            new StandardManifestEntry("Configurations2/",
+                    "application/vnd.sun.xml.ui.configuration", null),
+            new StandardManifestEntry("Configurations2/statusbar/", "", null),
+            new StandardManifestEntry("Configurations2/accelerator/", "", null),
+            new StandardManifestEntry("Configurations2/accelerator/current.xml", "", null),
+            new StandardManifestEntry("Configurations2/floater/", "", null),
+            new StandardManifestEntry("Configurations2/popupmenu/", "", null),
+            new StandardManifestEntry("Configurations2/progressbar/", "", null),
+            new StandardManifestEntry("Configurations2/menubar/", "", null),
+            new StandardManifestEntry("Configurations2/toolbar/", "", null),
+            new StandardManifestEntry("Configurations2/images/", "", null),
+            new StandardManifestEntry("Configurations2/images/Bitmaps/", "", null),
+            new StandardManifestEntry("Thumbnails/", "", null),
+//            new StandardManifestEntry("Thumbnails/thumbnail.png", "", null)
+    };
 
     static {
         BASE_NAMESPACE_BY_PREFIX.put("xmlns:office",
                 "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
         BASE_NAMESPACE_BY_PREFIX.put("xmlns:xlink", "http://www.w3.org/1999/xlink");
         BASE_NAMESPACE_BY_PREFIX.put("xmlns:ooo", "http://openoffice.org/2004/office");
-    }
-
-    /**
-     * @param positionUtil    an util for cell addresses (e.g. "A1")
-     * @param xmlUtil         an XML util
-     * @param writeUtil       an util for write
-     * @param format          the data styles
-     * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param metaElement
-     * @param additionalNamespaceByPrefix
-     * @return a new OdsElements, with newly build elements.
-     */
-    public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-                                     final WriteUtil writeUtil, final DataStyles format,
-                                     final boolean libreOfficeMode, final MetaElement metaElement,
-                                     final Map<String, String> additionalNamespaceByPrefix) {
-        final Logger logger = Logger.getLogger(OdsElements.class.getName());
-        final MimetypeElement mimetypeElement = new MimetypeElement();
-        final ManifestElement manifestElement = ManifestElement.create();
-        final SettingsElement settingsElement = SettingsElement.create();
-        final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
-        final StylesElement stylesElement = new StylesElement(stylesContainer);
-        final ContentElement contentElement =
-                new ContentElement(positionUtil, xmlUtil, writeUtil, format, libreOfficeMode,
-                        stylesContainer, additionalNamespaceByPrefix);
-        return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
-                settingsElement, metaElement, contentElement, stylesElement);
     }
 
     private final ContentElement contentElement;
@@ -132,7 +117,7 @@ public class OdsElements implements StylesContainer {
     private final SettingsElement settingsElement;
     private final StylesContainerImpl stylesContainer;
     private final StylesElement stylesElement;
-    private final Map<String, byte[]> extraFileByName;
+    private final Map<ManifestEntry, byte[]> extraFileByName;
     private NamedOdsFileWriter observer;
 
     /**
@@ -159,7 +144,34 @@ public class OdsElements implements StylesContainer {
         this.contentElement = contentElement;
         this.stylesElement = stylesElement;
         this.stylesContainer = stylesContainer;
-        this.extraFileByName = new HashMap<String, byte[]>();
+        this.extraFileByName = new HashMap<ManifestEntry, byte[]>();
+    }
+
+    /**
+     * @param positionUtil                an util for cell addresses (e.g. "A1")
+     * @param xmlUtil                     an XML util
+     * @param writeUtil                   an util for write
+     * @param format                      the data styles
+     * @param libreOfficeMode             try to get full compatibility with LO if true
+     * @param metaElement
+     * @param additionalNamespaceByPrefix
+     * @return a new OdsElements, with newly build elements.
+     */
+    public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
+                                     final WriteUtil writeUtil, final DataStyles format,
+                                     final boolean libreOfficeMode, final MetaElement metaElement,
+                                     final Map<String, String> additionalNamespaceByPrefix) {
+        final Logger logger = Logger.getLogger(OdsElements.class.getName());
+        final MimetypeElement mimetypeElement = new MimetypeElement();
+        final ManifestElement manifestElement = ManifestElement.create();
+        final SettingsElement settingsElement = SettingsElement.create();
+        final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
+        final StylesElement stylesElement = new StylesElement(stylesContainer);
+        final ContentElement contentElement =
+                new ContentElement(positionUtil, xmlUtil, writeUtil, format, libreOfficeMode,
+                        stylesContainer, additionalNamespaceByPrefix);
+        return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
+                settingsElement, metaElement, contentElement, stylesElement);
     }
 
     /**
@@ -271,9 +283,9 @@ public class OdsElements implements StylesContainer {
      */
     public void createEmptyElements(final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing empty ods elements to zip file");
-        for (final String elementName : EMPTY_ELEMENT_NAMES) {
-            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", elementName);
-            writer.putNextEntry(new ZipEntry(elementName));
+        for (final ManifestEntry entry : EMPTY_ENTRIES) {
+            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", entry);
+            writer.putNextEntry(entry);
             writer.closeEntry();
         }
     }
@@ -525,8 +537,9 @@ public class OdsElements implements StylesContainer {
      * @param bytes     the content
      */
     public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
-        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType, null);
-        this.extraFileByName.put(fullPath, bytes);
+        final ManifestEntry
+                manifestEntry = new StandardManifestEntry(fullPath, mediaType, null);
+        this.extraFileByName.put(manifestEntry, bytes);
         this.manifestElement.add(manifestEntry);
     }
 
@@ -534,7 +547,7 @@ public class OdsElements implements StylesContainer {
      * @param fullPath the path of the dir
      */
     public void addExtraDir(final String fullPath) {
-        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, null, null);
+        final StandardManifestEntry manifestEntry = new StandardManifestEntry(fullPath, null, null);
         this.manifestElement.add(manifestEntry);
     }
 
@@ -547,7 +560,8 @@ public class OdsElements implements StylesContainer {
      */
     public void addExtraObject(final String fullPath, final String mediaType,
                                final String version) {
-        final ManifestEntry manifestEntry = new ManifestEntry(fullPath, mediaType, version);
+        final StandardManifestEntry
+                manifestEntry = new StandardManifestEntry(fullPath, mediaType, version);
         this.manifestElement.add(manifestEntry);
     }
 
@@ -557,10 +571,10 @@ public class OdsElements implements StylesContainer {
      */
     public void writeExtras(final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing extra elements to zip file");
-        for (final Map.Entry<String, byte[]> entry : this.extraFileByName.entrySet()) {
-            final String elementName = entry.getKey();
-            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", elementName);
-            writer.putNextEntry(new ZipEntry(elementName));
+        for (final Map.Entry<ManifestEntry, byte[]> entry : this.extraFileByName.entrySet()) {
+            final ManifestEntry mEntry = entry.getKey();
+            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", mEntry);
+            writer.putNextEntry(mEntry);
             writer.write(entry.getValue());
             writer.closeEntry();
         }

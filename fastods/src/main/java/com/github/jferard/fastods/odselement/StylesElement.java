@@ -24,13 +24,13 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.ZipEntry;
 
 import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
 
@@ -41,15 +41,20 @@ import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
  * @author Martin Schulz
  */
 public class StylesElement implements OdsElement {
-    public static final Map<String, String> STYLES_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+    public static final Map<String, String> STYLES_NAMESPACE_BY_PREFIX =
+            new HashMap<String, String>();
 
     static {
         STYLES_NAMESPACE_BY_PREFIX.putAll(MetaElement.META_NAMESPACE_BY_PREFIX);
 
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:style", "urn:oasis:names:tc:opendocument:xmlns:style:1.0");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:text", "urn:oasis:names:tc:opendocument:xmlns:text:1.0");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:table", "urn:oasis:names:tc:opendocument:xmlns:table:1.0");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:draw", "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:style", "urn:oasis:names:tc:opendocument:xmlns:style:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:text", "urn:oasis:names:tc:opendocument:xmlns:text:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:table", "urn:oasis:names:tc:opendocument:xmlns:table:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:draw", "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:fo",
                 "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:number",
@@ -58,14 +63,27 @@ public class StylesElement implements OdsElement {
                 "urn:oasis:names:tc:opendocument:xmlns:presentation:1.0");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:svg",
                 "urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:chart", "urn:oasis:names:tc:opendocument:xmlns:chart:1.0");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:dr3d", "urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:chart", "urn:oasis:names:tc:opendocument:xmlns:chart:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:dr3d", "urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:math", "http://www.w3.org/1998/Math/MathML");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:form", "urn:oasis:names:tc:opendocument:xmlns:form:1.0");
-        STYLES_NAMESPACE_BY_PREFIX.put("xmlns:script", "urn:oasis:names:tc:opendocument:xmlns:script:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:form", "urn:oasis:names:tc:opendocument:xmlns:form:1.0");
+        STYLES_NAMESPACE_BY_PREFIX
+                .put("xmlns:script", "urn:oasis:names:tc:opendocument:xmlns:script:1.0");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:ooow", "http://openoffice.org/2004/writer");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:oooc", "http://openoffice.org/2004/calc");
         STYLES_NAMESPACE_BY_PREFIX.put("xmlns:dom", "http://www.w3.org/2001/xml-events");
+    }
+
+    private final StylesContainerImpl stylesContainer;
+
+    /**
+     * @param stylesContainer the container for all styles
+     */
+    public StylesElement(final StylesContainerImpl stylesContainer) {
+        this.stylesContainer = stylesContainer;
     }
 
     private static void appendDefaultFooterHeaderStyle(final XMLUtil util,
@@ -82,15 +100,6 @@ public class StylesElement implements OdsElement {
         appendable.append("/></style:style>");
     }
 
-    private final StylesContainerImpl stylesContainer;
-
-    /**
-     * @param stylesContainer the container for all styles
-     */
-    public StylesElement(final StylesContainerImpl stylesContainer) {
-        this.stylesContainer = stylesContainer;
-    }
-
     /**
      * @return the container of the styles
      */
@@ -102,10 +111,10 @@ public class StylesElement implements OdsElement {
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
 
-        writer.putNextEntry(new ZipEntry("styles.xml"));
+        writer.putNextEntry(new StandardManifestEntry("styles.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-styles");
-        for (final Map.Entry<String, String> entry: STYLES_NAMESPACE_BY_PREFIX.entrySet()) {
+        for (final Map.Entry<String, String> entry : STYLES_NAMESPACE_BY_PREFIX.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());
         }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);

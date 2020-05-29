@@ -23,6 +23,8 @@
  */
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,7 +34,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.ZipEntry;
 
 public class ZipUTF8WriterBuilderTest {
     public static final int C_SIZE = 118;
@@ -52,7 +53,7 @@ public class ZipUTF8WriterBuilderTest {
     @Test
     public final void testDefault() throws IOException {
         final ZipUTF8Writer writer = this.builder.build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
         Assert.assertEquals(C_SIZE, this.out.size());
@@ -61,7 +62,7 @@ public class ZipUTF8WriterBuilderTest {
     @Test
     public final void testNoZipBuffer() throws IOException {
         final ZipUTF8Writer writer = this.builder.noZipBuffer().build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
@@ -70,16 +71,20 @@ public class ZipUTF8WriterBuilderTest {
     @Test
     public final void testCustomZipBuffer() throws IOException {
         final ZipUTF8Writer writer = this.builder.zipBuffer(1).build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
+    private ManifestEntry getManifestEntry() {
+        return new StandardManifestEntry("a", null, null);
+    }
+
     @Test
     public final void testNoWriterBuffer() throws IOException {
         final ZipUTF8Writer writer = this.builder.noWriterBuffer().build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
@@ -88,7 +93,7 @@ public class ZipUTF8WriterBuilderTest {
     @Test
     public final void testCustomWriterBuffer() throws IOException {
         final ZipUTF8Writer writer = this.builder.writerBuffer(1).build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
@@ -98,7 +103,7 @@ public class ZipUTF8WriterBuilderTest {
     public final void testExplicitDefault() throws IOException {
         final ZipUTF8Writer writer =
                 this.builder.defaultWriterBuffer().defaultZipBuffer().build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
@@ -119,7 +124,7 @@ public class ZipUTF8WriterBuilderTest {
     @Test
     public final void testLevel0() throws IOException {
         final ZipUTF8Writer writer = this.builder.level(0).build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append(
                 "some long text that can be zipped some long text that can be zipped some long " +
                         "text that can be " + "zipped some long text that can be zipped ");
@@ -130,7 +135,7 @@ public class ZipUTF8WriterBuilderTest {
     @Test
     public final void testLevel9() throws IOException {
         final ZipUTF8Writer writer = this.builder.level(9).build(this.out);
-        writer.putNextEntry(new ZipEntry("a"));
+        writer.putNextEntry(this.getManifestEntry());
         writer.append(
                 "some long text that can be zipped some long text that can be zipped some long " +
                         "text that can be zipped some long text that can be zipped ");

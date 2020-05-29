@@ -46,17 +46,29 @@ public class ZipUTF8WriterMockTest {
         mock.write("test");
     }
 
-    @Test
-    public void testOneEntry() throws IOException {
+    @Test(expected = IllegalArgumentException.class)
+    public void testAbsentEntry() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         final ZipUTF8WriterMockHandler mockHandler = new ZipUTF8WriterMockHandler(mock);
-        mock.putNextEntry(new ZipEntry("entry1"));
+        mock.putNextEntry("entry1");
         mock.write("test");
         mock.closeEntry();
         mock.flush();
         mock.close();
 
-        Assert.assertNull(mockHandler.getEntryAsString("entry2"));
+        mockHandler.getEntryAsString("entry2");
+    }
+
+    @Test
+    public void testOneEntry() throws IOException {
+        final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
+        final ZipUTF8WriterMockHandler mockHandler = new ZipUTF8WriterMockHandler(mock);
+        mock.putNextEntry("entry1");
+        mock.write("test");
+        mock.closeEntry();
+        mock.flush();
+        mock.close();
+
         Assert.assertEquals("test", mockHandler.getEntryAsString("entry1"));
     }
 

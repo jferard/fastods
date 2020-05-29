@@ -25,6 +25,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
@@ -63,7 +64,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5226;
+    private static final int EMPTY_DOCUMENT_SIZE = 5735; // 5226;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -131,10 +132,10 @@ public class AnonymousOdsFileWriterTest {
                             buf.length));
             Assert.fail();
         }
-        Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
+        Assert.assertEquals(Sets.newHashSet("/", "settings.xml", "Configurations2/","Configurations2/images/","Configurations2/images/Bitmaps/",
                 "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                 "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
-                "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
+                "Configurations2/accelerator/", "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
                 "styles.xml", "content.xml", "Configurations2/progressbar/",
                 "Configurations2/statusbar/"), names);
     }
@@ -176,12 +177,15 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        Assert.assertEquals(Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
-                "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
-                "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
-                "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
-                "styles.xml", "content.xml", "Configurations2/progressbar/",
-                "Configurations2/statusbar/"), names);
+        Assert.assertEquals(
+                Sets.newHashSet("settings.xml", "Configurations2/", "Configurations2/images/",
+                        "Configurations2/images/Bitmaps/", "/",
+                        "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
+                        "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
+                        "meta.xml", "Configurations2/accelerator/",
+                        "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
+                        "styles.xml", "content.xml", "Configurations2/progressbar/",
+                        "Configurations2/statusbar/"), names);
     }
 
     @Test
@@ -193,7 +197,7 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.replayAll();
         try {
             writer.save(zw);
-            zw.putNextEntry(new ZipEntry("last"));
+            zw.putNextEntry(new StandardManifestEntry("last", null, null));
             zw.append("last content");
             zw.closeEntry();
         } finally {
@@ -211,10 +215,12 @@ public class AnonymousOdsFileWriterTest {
         }
 
         Assert.assertEquals(
-                Sets.newHashSet("settings.xml", "last", "Configurations2/images/Bitmaps/",
+                Sets.newHashSet("settings.xml", "last", "Configurations2/",
+                        "Configurations2/images/", "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
-                        "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
+                        "/", "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
                         "meta.xml", "Configurations2/accelerator/current.xml",
+                        "Configurations2/accelerator/",
                         "Configurations2/popupmenu/", "styles.xml", "content.xml",
                         "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
     }
@@ -253,8 +259,9 @@ public class AnonymousOdsFileWriterTest {
         }
         // Every element appears twice
         Assert.assertEquals(
-                Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",
-                        "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+                Arrays.asList("/", "Configurations2/", "Configurations2/accelerator/",
+                        "Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                        "Configurations2/images/", "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
                         "Configurations2/popupmenu/", "Configurations2/progressbar/",
                         "Configurations2/statusbar/", "Configurations2/toolbar/",
                         "META-INF/manifest.xml", "Thumbnails/", "content.xml", "meta.xml",
