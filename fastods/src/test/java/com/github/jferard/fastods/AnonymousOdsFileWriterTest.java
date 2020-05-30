@@ -64,7 +64,7 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5735; // 5226;
+    private static final int EMPTY_DOCUMENT_SIZE = 5280; // 5226;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -132,12 +132,13 @@ public class AnonymousOdsFileWriterTest {
                             buf.length));
             Assert.fail();
         }
-        Assert.assertEquals(Sets.newHashSet("/", "settings.xml", "Configurations2/","Configurations2/images/","Configurations2/images/Bitmaps/",
-                "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
-                "Configurations2/floater/", "Configurations2/menubar/", "mimetype", "meta.xml",
-                "Configurations2/accelerator/", "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
-                "styles.xml", "content.xml", "Configurations2/progressbar/",
-                "Configurations2/statusbar/"), names);
+        Assert.assertEquals(
+                Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
+                        "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
+                        "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
+                        "meta.xml", "Configurations2/accelerator/current.xml",
+                        "Configurations2/popupmenu/", "styles.xml", "content.xml",
+                        "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
     }
 
     @Test
@@ -178,12 +179,11 @@ public class AnonymousOdsFileWriterTest {
         }
 
         Assert.assertEquals(
-                Sets.newHashSet("settings.xml", "Configurations2/", "Configurations2/images/",
-                        "Configurations2/images/Bitmaps/", "/",
+                Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                         "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
-                        "meta.xml", "Configurations2/accelerator/",
-                        "Configurations2/accelerator/current.xml", "Configurations2/popupmenu/",
+                        "meta.xml", "Configurations2/accelerator/current.xml",
+                        "Configurations2/popupmenu/",
                         "styles.xml", "content.xml", "Configurations2/progressbar/",
                         "Configurations2/statusbar/"), names);
     }
@@ -197,10 +197,11 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.replayAll();
         try {
             writer.save(zw);
-            zw.putNextEntry(new StandardManifestEntry("last", null, null));
+            zw.putAndRegisterNextEntry(new StandardManifestEntry("last", null, null));
             zw.append("last content");
             zw.closeEntry();
         } finally {
+            zw.finish();
             zw.close();
         }
 
@@ -215,12 +216,10 @@ public class AnonymousOdsFileWriterTest {
         }
 
         Assert.assertEquals(
-                Sets.newHashSet("settings.xml", "last", "Configurations2/",
-                        "Configurations2/images/", "Configurations2/images/Bitmaps/",
+                Sets.newHashSet("settings.xml", "last", "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
-                        "/", "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
+                        "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
                         "meta.xml", "Configurations2/accelerator/current.xml",
-                        "Configurations2/accelerator/",
                         "Configurations2/popupmenu/", "styles.xml", "content.xml",
                         "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
     }
@@ -259,9 +258,8 @@ public class AnonymousOdsFileWriterTest {
         }
         // Every element appears twice
         Assert.assertEquals(
-                Arrays.asList("/", "Configurations2/", "Configurations2/accelerator/",
-                        "Configurations2/accelerator/current.xml", "Configurations2/floater/",
-                        "Configurations2/images/", "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
+                Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                        "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
                         "Configurations2/popupmenu/", "Configurations2/progressbar/",
                         "Configurations2/statusbar/", "Configurations2/toolbar/",
                         "META-INF/manifest.xml", "Thumbnails/", "content.xml", "meta.xml",
@@ -303,7 +301,8 @@ public class AnonymousOdsFileWriterTest {
 
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .createEmptyElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeMimeType(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
@@ -311,9 +310,7 @@ public class AnonymousOdsFileWriterTest {
         this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements
-                .writeManifest(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements.writeExtras(EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeExtras(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();
@@ -353,7 +350,8 @@ public class AnonymousOdsFileWriterTest {
         TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.builder.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
 
-        this.odsElements.createEmptyElements(EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .createEmptyElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeMimeType(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
@@ -361,9 +359,7 @@ public class AnonymousOdsFileWriterTest {
         this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         this.odsElements
                 .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements
-                .writeManifest(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
-        this.odsElements.writeExtras(EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeExtras(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
         outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();

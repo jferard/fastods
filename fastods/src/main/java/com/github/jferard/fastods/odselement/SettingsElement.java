@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
 
 import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
 
@@ -121,7 +120,7 @@ public class SettingsElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new StandardManifestEntry("settings.xml", "text/xml", null));
+        writer.putAndRegisterNextEntry(new StandardManifestEntry("settings.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-settings");
         for (final Map.Entry<String, String> entry: SETTINGS_NAMESPACE_BY_PREFIX.entrySet()) {

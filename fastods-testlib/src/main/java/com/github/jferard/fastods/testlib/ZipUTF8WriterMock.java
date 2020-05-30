@@ -26,8 +26,9 @@ package com.github.jferard.fastods.testlib;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.zip.ZipEntry;
+import java.util.Set;
 
 /**
  * See https://github.com/jferard/fastods/issues/29
@@ -47,20 +48,24 @@ import java.util.zip.ZipEntry;
 public class ZipUTF8WriterMock implements Appendable {
     private final Map<String, StringBuilder> builderByEntryName;
     private StringBuilder curBuilder;
+    private Set<String> registredEntries;
+
+    /**
+     * @param builderByEntryName the container
+     * @param strings
+     */
+    ZipUTF8WriterMock(final Map<String, StringBuilder> builderByEntryName,
+                      final Set<String> registredEntries) {
+        this.builderByEntryName = builderByEntryName;
+        this.registredEntries = registredEntries;
+        this.curBuilder = null;
+    }
 
     /**
      * @return the mock
      */
     public static ZipUTF8WriterMock createMock() {
-        return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>());
-    }
-
-    /**
-     * @param builderByEntryName the container
-     */
-    ZipUTF8WriterMock(final Map<String, StringBuilder> builderByEntryName) {
-        this.builderByEntryName = builderByEntryName;
-        this.curBuilder = null;
+        return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>(), new HashSet<String>());
     }
 
     @Override
@@ -120,6 +125,7 @@ public class ZipUTF8WriterMock implements Appendable {
      * finish the zip mock
      */
     public void finish() {
+        this.builderByEntryName.put("ManifestEntry[path=META-INF/manifest.xml]", new StringBuilder());
         this.curBuilder = null;
     }
 
@@ -129,6 +135,11 @@ public class ZipUTF8WriterMock implements Appendable {
     public void flush() {
     }
 
+    public void putAndRegisterNextEntry(final Object object) {
+        this.putNextEntry(object);
+        this.registerEntry(object);
+    }
+
     /**
      * @param arg0 the entry to put
      */
@@ -136,6 +147,11 @@ public class ZipUTF8WriterMock implements Appendable {
         this.curBuilder = new StringBuilder();
         this.builderByEntryName.put(arg0.toString(), this.curBuilder);
     }
+
+    public void registerEntry(final Object object) {
+        this.registredEntries.add(object.toString());
+    }
+
 
     /**
      * Do not use this!
@@ -161,11 +177,39 @@ public class ZipUTF8WriterMock implements Appendable {
     }
 
     /**
+     * Write a byte array in the current entry
+     *
+     * @param arr the string
+     * @throws IOException if an I/O error occurs
+     */
+    public void write(final byte[] arr) throws IOException {
+        if (this.curBuilder == null) {
+            throw new IOException();
+        }
+
+        this.curBuilder.append(new String(arr, "ISO-8859-1"));
+    }
+
+    /**
      * @param name the name of the entry
      * @return the builder
      */
     public StringBuilder getBuilder(final String name) {
         return this.builderByEntryName.get(name);
+    }
+
+    /**
+     * @return the names of the entries
+     */
+    public Set<String> getEntryNames() {
+        return this.builderByEntryName.keySet();
+    }
+
+    /**
+     * @return the names of the registred entries
+     */
+    public Set<String> registredNames() {
+        return this.registredEntries;
     }
 }
 

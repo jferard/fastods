@@ -24,6 +24,8 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.odselement.ManifestElement;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.OutputStream;
@@ -40,6 +42,7 @@ import java.util.zip.ZipOutputStream;
 public class ZipUTF8WriterBuilder {
     private static final int DEFAULT_BUFFER = -1;
     private static final int NO_BUFFER = -2;
+    private final XMLUtil xmlUtil;
 
     private int level;
     private int writerBufferSize;
@@ -52,6 +55,7 @@ public class ZipUTF8WriterBuilder {
         this.level = Deflater.BEST_SPEED;
         this.writerBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
         this.zipBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
+        this.xmlUtil = XMLUtil.create();
     }
 
     /**
@@ -89,27 +93,8 @@ public class ZipUTF8WriterBuilder {
                 bufferedWriter = new BufferedWriter(writer, this.writerBufferSize);
                 break;
         }
-        return new ZipUTF8WriterImpl(zipOut, bufferedWriter);
-    }
-
-    /**
-     * Set the default buffer size for the writer
-     *
-     * @return this for fluent style
-     */
-    public ZipUTF8WriterBuilder defaultWriterBuffer() {
-        this.writerBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
-        return this;
-    }
-
-    /**
-     * Set the default buffer size for the zipper
-     *
-     * @return this for fluent style
-     */
-    public ZipUTF8WriterBuilder defaultZipBuffer() {
-        this.zipBufferSize = ZipUTF8WriterBuilder.DEFAULT_BUFFER;
-        return this;
+        return new ZipUTF8WriterImpl(this.xmlUtil, zipOut, bufferedWriter,
+                ManifestElement.create());
     }
 
     /**

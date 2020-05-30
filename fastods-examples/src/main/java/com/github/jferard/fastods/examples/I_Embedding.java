@@ -85,7 +85,7 @@ class I_Embedding {
         // open the file.
         //
         // Let's add a file for the fun:
-        document.addExtraDir("FastODS");
+        document.addExtraDir("FastODS/");
         document.addExtraFile("FastODS/fast.txt", "text/plain",
                 "Hello from FastODS!".getBytes(CharsetUtil.UTF_8));
         //

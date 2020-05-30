@@ -36,6 +36,7 @@ import java.io.StringReader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 
 /**
@@ -78,6 +79,8 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
                 }
             }
             return this.mock;
+        } else if (name.equals("write")) {
+            this.mock.write((byte[]) objects[0]);
         } else if (name.equals("close")) {
             this.mock.close();
         } else if (name.equals("closeEntry")) {
@@ -86,8 +89,12 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
             this.mock.finish();
         } else if (name.equals("flush")) {
             this.mock.flush();
+        } else if (name.equals("putAndRegisterNextEntry")) {
+            this.mock.putAndRegisterNextEntry(objects[0]);
         } else if (name.equals("putNextEntry")) {
             this.mock.putNextEntry(objects[0]);
+        } else if (name.equals("registerEntry")) {
+            this.mock.registerEntry(objects[0]);
         } else if (name.equals("setComment")) {
             this.mock.setComment((String) objects[0]);
         } else if (name.equals("toString")) {
@@ -147,5 +154,13 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
         final DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(new InputSource(new StringReader(xml)));
     }
+
+    /**
+     * @return the names of the entries
+     */
+    public Set<String> getEntryNames() {
+        return this.mock.getEntryNames();
+    }
+
 }
 

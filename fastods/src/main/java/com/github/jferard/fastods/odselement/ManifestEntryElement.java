@@ -22,47 +22,26 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.odselement.ContentElement;
-import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 
 /**
- * An async flusher flusher to finalize the file.
- * Writes postamble for contents, and the settings.
- * <p>
- * Sent by the NamedOdsDocument.save method.
- *
- * @author Julien Férard
+ * This is only a manifest entry. Nothing is written to the zip stream.
  */
-public class FinalizeFlusher implements OdsAsyncFlusher {
-    private final ContentElement contentElement;
-    private final OdsElements odsElements;
+public class ManifestEntryElement implements OdsElement {
+    private final ManifestEntry entry;
 
-    /**
-     * @param contentElement the content to finalize
-     * @param odsElements    the elements
-     */
-    public FinalizeFlusher(final ContentElement contentElement, final OdsElements odsElements) {
-        this.contentElement = contentElement;
-        this.odsElements = odsElements;
+    public ManifestEntryElement(final ManifestEntry entry) {
+        this.entry = entry;
     }
 
     @Override
-    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.contentElement.writePostamble(xmlUtil, writer);
-        this.odsElements.writeSettings(xmlUtil, writer);
-        this.odsElements.writeExtras(xmlUtil, writer);
-        writer.finish();
-        writer.close();
-    }
-
-    @Override
-    public boolean isEnd() {
-        return true;
+    public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+        writer.registerEntry(this.entry);
     }
 }

@@ -51,7 +51,7 @@ public class ImmutableElementsFlusher implements OdsAsyncFlusher {
 
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.odsElements.createEmptyElements(writer);
+        this.odsElements.createEmptyElements(xmlUtil, writer);
         this.odsElements.writeMimeType(xmlUtil, writer);
     }
 

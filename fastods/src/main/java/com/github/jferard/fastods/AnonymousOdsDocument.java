@@ -233,14 +233,13 @@ public final class AnonymousOdsDocument implements OdsDocument {
      * @throws IOException if the document can't be saved
      */
     void save(final ZipUTF8Writer writer) throws IOException {
-        this.odsElements.createEmptyElements(writer);
+        this.odsElements.createEmptyElements(this.xmlUtil, writer);
         this.odsElements.writeMimeType(this.xmlUtil, writer);
         this.odsElements.writeMeta(this.xmlUtil, writer);
         this.odsElements.writeStyles(this.xmlUtil, writer);
         this.odsElements.writeContent(this.xmlUtil, writer);
         this.odsElements.writeSettings(this.xmlUtil, writer);
-        this.odsElements.writeManifest(this.xmlUtil, writer);
-        this.odsElements.writeExtras(writer);
+        this.odsElements.writeExtras(this.xmlUtil, writer);
         this.logger.log(Level.FINE, "file saved");
     }
 }

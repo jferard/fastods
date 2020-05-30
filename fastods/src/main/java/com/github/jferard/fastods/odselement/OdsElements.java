@@ -35,7 +35,6 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.FontFaceContainerStyle;
@@ -53,8 +52,10 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,21 +85,33 @@ public class OdsElements implements StylesContainer {
     public static final Map<String, String> BASE_NAMESPACE_BY_PREFIX =
             new HashMap<String, String>();
 
-    private static final ManifestEntry[] EMPTY_ENTRIES = {
-            new StandardManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
-            new StandardManifestEntry("Configurations2/",
-                    "application/vnd.sun.xml.ui.configuration", null),
-            new StandardManifestEntry("Configurations2/statusbar/", "", null),
-            new StandardManifestEntry("Configurations2/accelerator/", "", null),
-            new StandardManifestEntry("Configurations2/accelerator/current.xml", "", null),
-            new StandardManifestEntry("Configurations2/floater/", "", null),
-            new StandardManifestEntry("Configurations2/popupmenu/", "", null),
-            new StandardManifestEntry("Configurations2/progressbar/", "", null),
-            new StandardManifestEntry("Configurations2/menubar/", "", null),
-            new StandardManifestEntry("Configurations2/toolbar/", "", null),
-            new StandardManifestEntry("Configurations2/images/", "", null),
-            new StandardManifestEntry("Configurations2/images/Bitmaps/", "", null),
-            new StandardManifestEntry("Thumbnails/", "", null),
+    private static final OdsElement[] EMPTY_ELEMENTS = {
+            new ManifestEntryElement(
+                    new StandardManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet",
+                            null)),
+            new ManifestEntryElement(new StandardManifestEntry("Configurations2/",
+                    "application/vnd.sun.xml.ui.configuration", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/statusbar/", "", null)),
+            new ManifestEntryElement(
+                    new StandardManifestEntry("Configurations2/accelerator/", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/accelerator/current.xml", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/floater/", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/popupmenu/", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/progressbar/", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/menubar/", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/toolbar/", "", null)),
+            new ManifestEntryElement(
+                    new StandardManifestEntry("Configurations2/images/", "", null)),
+            new EmptyElement(
+                    new StandardManifestEntry("Configurations2/images/Bitmaps/", "", null)),
+            new EmptyElement(new StandardManifestEntry("Thumbnails/", "", null)),
 //            new StandardManifestEntry("Thumbnails/thumbnail.png", "", null)
     };
 
@@ -107,44 +120,6 @@ public class OdsElements implements StylesContainer {
                 "urn:oasis:names:tc:opendocument:xmlns:office:1.0");
         BASE_NAMESPACE_BY_PREFIX.put("xmlns:xlink", "http://www.w3.org/1999/xlink");
         BASE_NAMESPACE_BY_PREFIX.put("xmlns:ooo", "http://openoffice.org/2004/office");
-    }
-
-    private final ContentElement contentElement;
-    private final Logger logger;
-    private final ManifestElement manifestElement;
-    private final MetaElement metaElement;
-    private final MimetypeElement mimeTypeElement;
-    private final SettingsElement settingsElement;
-    private final StylesContainerImpl stylesContainer;
-    private final StylesElement stylesElement;
-    private final Map<ManifestEntry, byte[]> extraFileByName;
-    private NamedOdsFileWriter observer;
-
-    /**
-     * Create a new instance from elements
-     *
-     * @param logger          the logger
-     * @param stylesContainer the styles container (before dispatch to styles.xml and content.xml)
-     * @param mimeTypeElement the mime type element
-     * @param manifestElement the manifest element
-     * @param settingsElement the settings.xml element
-     * @param metaElement     the meta element
-     * @param contentElement  the content.xml element
-     * @param stylesElement   the styles.xml element
-     */
-    OdsElements(final Logger logger, final StylesContainerImpl stylesContainer,
-                final MimetypeElement mimeTypeElement, final ManifestElement manifestElement,
-                final SettingsElement settingsElement, final MetaElement metaElement,
-                final ContentElement contentElement, final StylesElement stylesElement) {
-        this.logger = logger;
-        this.mimeTypeElement = mimeTypeElement;
-        this.manifestElement = manifestElement;
-        this.settingsElement = settingsElement;
-        this.metaElement = metaElement;
-        this.contentElement = contentElement;
-        this.stylesElement = stylesElement;
-        this.stylesContainer = stylesContainer;
-        this.extraFileByName = new HashMap<ManifestEntry, byte[]>();
     }
 
     /**
@@ -172,6 +147,44 @@ public class OdsElements implements StylesContainer {
                         stylesContainer, additionalNamespaceByPrefix);
         return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
                 settingsElement, metaElement, contentElement, stylesElement);
+    }
+
+    private final ContentElement contentElement;
+    private final Logger logger;
+    private final ManifestElement manifestElement;
+    private final MetaElement metaElement;
+    private final MimetypeElement mimeTypeElement;
+    private final SettingsElement settingsElement;
+    private final StylesContainerImpl stylesContainer;
+    private final StylesElement stylesElement;
+    private final Set<OdsElement> extraElements;
+    private NamedOdsFileWriter observer;
+
+    /**
+     * Create a new instance from elements
+     *
+     * @param logger          the logger
+     * @param stylesContainer the styles container (before dispatch to styles.xml and content.xml)
+     * @param mimeTypeElement the mime type element
+     * @param manifestElement the manifest element
+     * @param settingsElement the settings.xml element
+     * @param metaElement     the meta element
+     * @param contentElement  the content.xml element
+     * @param stylesElement   the styles.xml element
+     */
+    OdsElements(final Logger logger, final StylesContainerImpl stylesContainer,
+                final MimetypeElement mimeTypeElement, final ManifestElement manifestElement,
+                final SettingsElement settingsElement, final MetaElement metaElement,
+                final ContentElement contentElement, final StylesElement stylesElement) {
+        this.logger = logger;
+        this.mimeTypeElement = mimeTypeElement;
+        this.manifestElement = manifestElement;
+        this.settingsElement = settingsElement;
+        this.metaElement = metaElement;
+        this.contentElement = contentElement;
+        this.stylesElement = stylesElement;
+        this.stylesContainer = stylesContainer;
+        this.extraElements = new HashSet<OdsElement>();
     }
 
     /**
@@ -278,15 +291,16 @@ public class OdsElements implements StylesContainer {
     /**
      * Create empty elements for package. Used on save or by the ImmutableElementsFlusher.
      *
+     * @param util   an xml util
      * @param writer destination
      * @throws IOException if the elements were not created.
      */
-    public void createEmptyElements(final ZipUTF8Writer writer) throws IOException {
+    public void createEmptyElements(final XMLUtil util, final ZipUTF8Writer writer)
+            throws IOException {
         this.logger.log(Level.FINER, "Writing empty ods elements to zip file");
-        for (final ManifestEntry entry : EMPTY_ENTRIES) {
-            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", entry);
-            writer.putNextEntry(entry);
-            writer.closeEntry();
+        for (final OdsElement element : EMPTY_ELEMENTS) {
+            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", element);
+            element.write(util, writer);
         }
     }
 
@@ -534,21 +548,21 @@ public class OdsElements implements StylesContainer {
      *
      * @param fullPath  the name of the file in the sequence
      * @param mediaType the MIME type
-     * @param bytes     the content
+     * @param data      the content
      */
-    public void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes) {
-        final ManifestEntry
-                manifestEntry = new StandardManifestEntry(fullPath, mediaType, null);
-        this.extraFileByName.put(manifestEntry, bytes);
-        this.manifestElement.add(manifestEntry);
+    public void addExtraFile(final String fullPath, final String mediaType, final byte[] data) {
+        final OdsElement element =
+                new ExtraElement(new StandardManifestEntry(fullPath, mediaType, null), data);
+        this.extraElements.add(element);
     }
 
     /**
      * @param fullPath the path of the dir
      */
     public void addExtraDir(final String fullPath) {
-        final StandardManifestEntry manifestEntry = new StandardManifestEntry(fullPath, null, null);
-        this.manifestElement.add(manifestEntry);
+        final ManifestEntryElement element = new ManifestEntryElement(
+                new StandardManifestEntry(fullPath, "", null));
+        this.extraElements.add(element);
     }
 
     /**
@@ -560,23 +574,22 @@ public class OdsElements implements StylesContainer {
      */
     public void addExtraObject(final String fullPath, final String mediaType,
                                final String version) {
-        final StandardManifestEntry
-                manifestEntry = new StandardManifestEntry(fullPath, mediaType, version);
-        this.manifestElement.add(manifestEntry);
+        final ManifestEntryElement element = new ManifestEntryElement(
+                new StandardManifestEntry(fullPath, mediaType, version));
+        this.extraElements.add(element);
     }
 
     /**
-     * @param writer write the extra files to the archive
+     * @param xmlUtil
+     * @param writer  write the extra files to the archive
      * @throws IOException if something can"t be written
      */
-    public void writeExtras(final ZipUTF8Writer writer) throws IOException {
+    public void writeExtras(final XMLUtil xmlUtil,
+                            final ZipUTF8Writer writer) throws IOException {
         this.logger.log(Level.FINER, "Writing extra elements to zip file");
-        for (final Map.Entry<ManifestEntry, byte[]> entry : this.extraFileByName.entrySet()) {
-            final ManifestEntry mEntry = entry.getKey();
-            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", mEntry);
-            writer.putNextEntry(mEntry);
-            writer.write(entry.getValue());
-            writer.closeEntry();
+        for (final OdsElement element : this.extraElements) {
+            this.logger.log(Level.FINEST, "Writing ods element: {0} to zip file", element);
+            element.write(xmlUtil, writer);
         }
     }
 
@@ -591,19 +604,6 @@ public class OdsElements implements StylesContainer {
             throws IOException {
         this.logger.log(Level.FINER, "Writing ods element: mimeTypeEntry to zip file");
         this.mimeTypeElement.write(xmlUtil, writer);
-    }
-
-    /**
-     * Write the manifest element to a writer.
-     *
-     * @param xmlUtil the xml util
-     * @param writer  the writer
-     * @throws IOException if write fails
-     */
-    public void writeManifest(final XMLUtil xmlUtil, final ZipUTF8Writer writer)
-            throws IOException {
-        this.logger.log(Level.FINER, "Writing ods element: manifestElement to zip file");
-        this.manifestElement.write(xmlUtil, writer);
     }
 
     /**

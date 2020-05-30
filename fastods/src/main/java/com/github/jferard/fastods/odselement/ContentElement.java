@@ -44,7 +44,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
 
 import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
 
@@ -225,6 +224,37 @@ public class ContentElement implements OdsElement {
     }
 
     /**
+     * Write the preamble into the given writer. Used by the MetaAndStylesElementsFlusher and by
+     * standard write method
+     *
+     * @param util   an XML util
+     * @param writer the destination
+     * @throws IOException if the preamble was not written
+     */
+    public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
+        writer.putAndRegisterNextEntry(new StandardManifestEntry("content.xml", "text/xml", null));
+        writer.append(XMLUtil.XML_PROLOG);
+        writer.append("<office:document-content");
+        for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
+        for (final Map.Entry<String, String> entry: this.additionalNamespaceByPrefix.entrySet()) {
+            util.appendAttribute(writer, entry.getKey(), entry.getValue());
+        }
+        util.appendAttribute(writer, "office:version", OFFICE_VERSION);
+        writer.append(">");
+        this.writeEvents(util, writer);
+        this.stylesContainer.writeFontFaceDecls(util, writer);
+        writer.append("<office:automatic-styles>");
+        this.stylesContainer.writeHiddenDataStyles(util, writer);
+        this.stylesContainer.writeContentAutomaticStyles(util, writer);
+        writer.append("</office:automatic-styles>");
+        writer.append("<office:body>");
+        writer.append("<office:spreadsheet>");
+        // don't close here
+    }
+
+    /**
      * Write the postamble into the given writer. Used by the FinalizeFlusher and by standard
      * write method
      *
@@ -244,36 +274,6 @@ public class ContentElement implements OdsElement {
         writer.append("</office:document-content>");
         writer.flush();
         writer.closeEntry();
-    }
-
-    /**
-     * Write the preamble into the given writer. Used by the MetaAndStylesElementsFlusher and by
-     * standard write method
-     *
-     * @param util   an XML util
-     * @param writer the destination
-     * @throws IOException if the preamble was not written
-     */
-    public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new StandardManifestEntry("content.xml", "text/xml", null));
-        writer.append(XMLUtil.XML_PROLOG);
-        writer.append("<office:document-content");
-        for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {
-            util.appendAttribute(writer, entry.getKey(), entry.getValue());
-        }
-        for (final Map.Entry<String, String> entry: this.additionalNamespaceByPrefix.entrySet()) {
-            util.appendAttribute(writer, entry.getKey(), entry.getValue());
-        }
-        util.appendAttribute(writer, "office:version", OFFICE_VERSION);
-        writer.append(">");
-        this.writeEvents(util, writer);
-        this.stylesContainer.writeFontFaceDecls(util, writer);
-        writer.append("<office:automatic-styles>");
-        this.stylesContainer.writeHiddenDataStyles(util, writer);
-        this.stylesContainer.writeContentAutomaticStyles(util, writer);
-        writer.append("</office:automatic-styles>");
-        writer.append("<office:body>");
-        writer.append("<office:spreadsheet>");
     }
 
     public void writeEvents(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {

@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.zip.ZipEntry;
 
 /**
  * 3.1.3.4 office:document-meta
@@ -120,7 +119,7 @@ public class MetaElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new StandardManifestEntry("meta.xml", "text/xml", null));
+        writer.putAndRegisterNextEntry(new StandardManifestEntry("meta.xml", "text/xml", null));
         writer.append("<?xml");
         util.appendAttribute(writer, "version", "1.0");
         util.appendAttribute(writer, "encoding", CharsetUtil.UTF_8_NAME);

@@ -26,17 +26,17 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.Table;
-import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.easymock.Capture;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,6 +45,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OdsElementsTest {
@@ -258,33 +259,46 @@ public class OdsElementsTest {
 
     @Test
     public final void testAddExtraDir() throws IOException {
-        final Capture<StandardManifestEntry> capture = EasyMock.newCapture();
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
 
         PowerMock.resetAll();
-        this.manifestElement.add(EasyMock.capture(capture));
+        this.logger.log(Level.FINER, "Writing extra elements to zip file");
+        this.logger
+                .log(EasyMock.eq(Level.FINEST), EasyMock.eq("Writing ods element: {0} to zip file"),
+                        EasyMock.isA(ManifestEntryElement.class));
 
         PowerMock.replayAll();
         this.odsElements.addExtraDir("dir");
+        this.odsElements.writeExtras(this.util, writer);
+        writer.finish();
 
         PowerMock.verifyAll();
-        TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"dir\" />",
-                capture.getValue());
     }
 
     @Test
     public final void testAddExtraFile() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
         final byte[] bytes = {'c', 'o', 'n', 't', 'e', 'n', 't'};
-        final Capture<StandardManifestEntry> capture = EasyMock.newCapture();
 
         PowerMock.resetAll();
-        this.manifestElement.add(EasyMock.capture(capture));
+        this.logger.log(Level.FINER, "Writing extra elements to zip file");
+        this.logger
+                .log(EasyMock.eq(Level.FINEST), EasyMock.eq("Writing ods element: {0} to zip file"),
+                        EasyMock.isA(ExtraElement.class));
 
         PowerMock.replayAll();
         this.odsElements.addExtraFile("path", "mt", bytes);
+        this.odsElements.writeExtras(this.util, writer);
+        writer.finish();
 
         PowerMock.verifyAll();
-        TestHelper.assertXMLEquals("<manifest:file-entry manifest:full-path=\"path\" " +
-                "manifest:media-type=\"mt\"/>", capture.getValue());
+        final String pathContent = handler.getEntryAsString("ManifestEntry[path=path]");
+        Assert.assertEquals("content", pathContent);
+        final String entryAsString = handler.getEntryAsString("ManifestEntry[path=META-INF/manifest.xml]");
+        Assert.assertEquals("", entryAsString);
+
     }
 
     @Test
@@ -292,6 +306,7 @@ public class OdsElementsTest {
         final Container.Mode mode = Container.Mode.UPDATE;
 
         PowerMock.resetAll();
+
 
         PowerMock.replayAll();
         this.odsElements.setDataStylesMode(mode);

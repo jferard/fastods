@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.odselement.ManifestElement;
 import com.github.jferard.fastods.odselement.config.ManifestEntry;
 
 import java.io.IOException;
@@ -37,18 +38,25 @@ import java.util.zip.ZipOutputStream;
  * @author Julien Férard
  */
 public class ZipUTF8WriterImpl implements ZipUTF8Writer {
-    private final Writer writer;
     private final ZipOutputStream zipStream;
+    private final Writer writer;
+    private final ManifestElement manifestElement;
+    private final XMLUtil xmlUtil;
 
     /**
      * Create a new writer. Do not use directly. Use a builder if you want to avoid mistakes
      *
-     * @param zipStream the zip stream
-     * @param writer    the utf-8 writer
+     * @param xmlUtil
+     * @param zipStream       the zip stream
+     * @param writer          the utf-8 writer
+     * @param manifestElement
      */
-    ZipUTF8WriterImpl(final ZipOutputStream zipStream, final Writer writer) {
+    ZipUTF8WriterImpl(final XMLUtil xmlUtil, final ZipOutputStream zipStream, final Writer writer,
+                      final ManifestElement manifestElement) {
         this.zipStream = zipStream;
         this.writer = writer;
+        this.manifestElement = manifestElement;
+        this.xmlUtil = xmlUtil;
     }
 
     /**
@@ -87,6 +95,8 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
 
     @Override
     public void finish() throws IOException {
+        this.manifestElement.write(this.xmlUtil, this);
+        this.closeEntry();
         this.writer.flush();
         this.zipStream.finish();
     }
@@ -94,6 +104,17 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     @Override
     public void flush() throws IOException {
         this.writer.flush();
+    }
+
+    @Override
+    public void putAndRegisterNextEntry(final ManifestEntry entry) throws IOException {
+        this.registerEntry(entry);
+        this.putNextEntry(entry);
+    }
+
+    @Override
+    public void registerEntry(final ManifestEntry entry) {
+        this.manifestElement.add(entry);
     }
 
     @Override

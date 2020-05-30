@@ -205,14 +205,15 @@ public interface OdsDocument extends StylesModeSetter {
     void addExtraFile(final String fullPath, final String mediaType, final byte[] bytes);
 
     /**
-     * Add an extra directory
+     * Add an extra directory to the manifest.
      *
      * @param fullPath the path of the dir
      */
     void addExtraDir(final String fullPath);
 
     /**
-     * Add an extra object (eg. a spreadsheet)
+     * Add an extra object (eg. a spreadsheet) to the manifest. Files have to be added
+     * with `AddExtraFile`.
      *
      * @param fullPath  the path of the dir
      * @param mediaType the type of the object

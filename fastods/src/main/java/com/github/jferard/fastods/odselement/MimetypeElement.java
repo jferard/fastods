@@ -28,7 +28,6 @@ import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
-import java.util.zip.ZipEntry;
 
 /**
  * 2.2.4 OpenDocument Spreadsheet Document

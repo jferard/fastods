@@ -47,8 +47,8 @@ public class FinalizeFlusherTest {
         PowerMock.resetAll();
         contentElement.writePostamble(util, w);
         odsElements.writeSettings(util, w);
-        odsElements.writeManifest(util, w);
-        odsElements.writeExtras(w);
+        odsElements.writeExtras(util, w);
+        w.finish();
         w.close();
 
         PowerMock.replayAll();

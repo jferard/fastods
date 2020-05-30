@@ -52,12 +52,29 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
     void finish() throws IOException;
 
     /**
+     * Register an entry.
      * Put a new entry into the zip. This becomes the current entry
      *
      * @param entry the entry
      * @throws IOException if an I/O error occurs
      */
-    void putNextEntry(final ManifestEntry entry) throws IOException;
+    void putAndRegisterNextEntry(final ManifestEntry entry) throws IOException;
+
+    /**
+     * Put a new entry into the manifest.
+     *
+     * @param entry the entry
+     * @throws IOException if an I/O error occurs
+     */
+    void registerEntry(ManifestEntry entry);
+
+    /**
+     * Put a new entry into the zip stream. This becomes the current entry
+     *
+     * @param entry the entry
+     * @throws IOException if an I/O error occurs
+     */
+    void putNextEntry(ManifestEntry entry) throws IOException;
 
     /**
      * Add a comment to the zip
