@@ -22,17 +22,49 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.odselement.config;
+package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.zip.ZipEntry;
 
-public interface ManifestEntry extends XMLConvertible {
+/**
+ *
+ */
+public class UnregisteredStoredEntry implements ManifestEntry {
+    private final String fullPath;
+    private final long size;
+    private final long crc32;
+
+    public UnregisteredStoredEntry(final String fullPath, final long size, final long crc32) {
+        this.fullPath = fullPath;
+        this.size = size;
+        this.crc32 = crc32;
+    }
+
     @Override
-    void appendXMLContent(XMLUtil util, Appendable appendable)
-            throws IOException;
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        // do nothing
+    }
 
-    String getPath();
+    @Override
+    public ManifestEntry encryptParameters(final EncryptParameters encryptParameters) {
+        return this;
+    }
+
+    @Override
+    public ZipEntry asZipEntry() {
+        final ZipEntry zipEntry = new ZipEntry(this.fullPath);
+        zipEntry.setSize(this.size);
+        zipEntry.setCompressedSize(this.size);
+        zipEntry.setCrc(this.crc32);
+        zipEntry.setMethod(ZipEntry.STORED);
+        return zipEntry;
+    }
+
+    @Override
+    public boolean neverEncrypt() {
+        return true;
+    }
 }

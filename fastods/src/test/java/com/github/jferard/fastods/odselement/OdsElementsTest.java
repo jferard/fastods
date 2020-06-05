@@ -29,7 +29,6 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;

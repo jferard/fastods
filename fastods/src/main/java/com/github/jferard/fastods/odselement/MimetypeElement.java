@@ -24,34 +24,41 @@
 
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.util.zip.CRC32;
 
 /**
- * 2.2.4 OpenDocument Spreadsheet Document
+ * 3.3 MIME Media Type
+ * The “mimetype” file shall be the first file of the zip file. It shall not be compressed, and
+ * it shall not use an 'extra field' in its header.
  * <p>
- * > An OpenDocument Spreadsheet document shall meet all requirements of a Conforming OpenDocument
- * > Document, as well as the following additional requirements:
- * >     ...
- * >
- * >    B)If the document is an OpenDocument package then it shall contain a file named mimetype
- * >    containing one of these strings: "application/vnd.oasis.opendocument.spreadsheet" or
- * >    "application/vnd.oasis.opendocument.spreadsheet-template".
- * >
- * >     ...
+ * If the file named “META-INF/manifest.xml” contains a <manifest:file-entry> element whose
+ * manifest:full-path attribute has the value "/", then a "mimetype" file shall exist, and
+ * the content of the “mimetype” file shall be equal to the value of the manifest:media-type
+ * attribute 4.8.10 of that element.
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 public class MimetypeElement implements OdsElement {
+    public static final String DOCUMENT_MIMETYPE = "application/vnd.oasis.opendocument.spreadsheet";
+
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new UnregistredEntry("mimetype"));
-        writer.append("application/vnd.oasis.opendocument.spreadsheet");
-        writer.flush();
+        final byte[] data = DOCUMENT_MIMETYPE.getBytes(CharsetUtil.UTF_8);
+        final long crc32 = this.getCrc32(data);
+        writer.putNextEntry(new UnregisteredStoredEntry("mimetype", data.length, crc32));
+        writer.append(DOCUMENT_MIMETYPE);
         writer.closeEntry();
     }
 
+    private long getCrc32(final byte[] data) {
+        final CRC32 crc32 = new CRC32();
+        crc32.update(data);
+        return crc32.getValue();
+    }
 }

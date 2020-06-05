@@ -24,11 +24,12 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.ManifestEntry;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 import com.google.common.collect.Sets;
 import org.easymock.EasyMock;
@@ -54,6 +55,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,11 +66,12 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
-    private static final int EMPTY_DOCUMENT_SIZE = 5280; // 5226;
+    private static final int EMPTY_DOCUMENT_SIZE = 5214; // 5226;
+    private static final int DELTA = 50;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-    private ZipUTF8WriterBuilder builder;
+    private ZipUTF8WriterBuilderImpl builder;
 
     private Logger logger;
     private OdsElements odsElements;
@@ -85,7 +88,7 @@ public class AnonymousOdsFileWriterTest {
         this.os = new ByteArrayOutputStream();
         this.xmlUtil = XMLUtil.create();
         this.odsElements = PowerMock.createMock(OdsElements.class);
-        this.builder = PowerMock.createMock(ZipUTF8WriterBuilder.class);
+        this.builder = PowerMock.createMock(ZipUTF8WriterBuilderImpl.class);
         this.odsFactory = OdsFactory.create(this.logger, Locale.US);
     }
 
@@ -104,7 +107,7 @@ public class AnonymousOdsFileWriterTest {
     }
 
     @Test
-    public final void testSaveEmpyDocumentToStream() throws IOException {
+    public final void testSaveEmptyDocumentToStream() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
 
         PowerMock.resetAll();
@@ -126,7 +129,7 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > 7) {
+        if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > DELTA) {
             System.out.println(
                     String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE,
                             buf.length));
@@ -142,7 +145,7 @@ public class AnonymousOdsFileWriterTest {
     }
 
     @Test
-    public final void testSaveEmpyDocumentToStreamAndAddPrePostamble() throws IOException {
+    public final void testSaveEmptyDocumentToStreamAndAddPrePostamble() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
 
         PowerMock.resetAll();
@@ -189,7 +192,7 @@ public class AnonymousOdsFileWriterTest {
     }
 
     @Test
-    public final void testSaveEmpyDocumentToWriterAndAddEntry() throws IOException {
+    public final void testSaveEmptyDocumentToWriterAndAddEntry() throws IOException {
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
         final ZipUTF8Writer zw = ZipUTF8WriterImpl.builder().build(this.os);
 
@@ -225,7 +228,7 @@ public class AnonymousOdsFileWriterTest {
     }
 
     @Test
-    public final void testSaveTwiceEmpyDocumentToStream() throws IOException {
+    public final void testSaveTwiceEmptyDocumentToStream() throws IOException {
         /// see https://github.com/jferard/fastods/issues/138
         final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
 
@@ -243,14 +246,13 @@ public class AnonymousOdsFileWriterTest {
         final InputStream is = new ByteArrayInputStream(buf);
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
-        final List<String> names = new ArrayList<String>();
+        final Set<String> names = new HashSet<String>();
         while (entry != null) {
             names.add(entry.getName());
             entry = zis.getNextEntry();
         }
-        Collections.sort(names);
 
-        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 15) {
+        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 2*DELTA) {
             System.out.println(
                     String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2,
                             buf.length));
@@ -258,17 +260,17 @@ public class AnonymousOdsFileWriterTest {
         }
         // Every element appears twice
         Assert.assertEquals(
-                Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                new HashSet<String>(Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",
                         "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
                         "Configurations2/popupmenu/", "Configurations2/progressbar/",
                         "Configurations2/statusbar/", "Configurations2/toolbar/",
                         "META-INF/manifest.xml", "Thumbnails/", "content.xml", "meta.xml",
-                        "mimetype", "settings.xml", "styles.xml"), names);
+                        "mimetype", "settings.xml", "styles.xml")), names);
     }
 
     @Test
     public final void testSaveWriter() throws IOException {
-        final ZipUTF8WriterBuilder zb = PowerMock.createMock(ZipUTF8WriterBuilder.class);
+        final ZipUTF8WriterBuilderImpl zb = PowerMock.createMock(ZipUTF8WriterBuilderImpl.class);
         final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
         final File temp = File.createTempFile("tempfile", ".tmp");
 
@@ -364,6 +366,7 @@ public class AnonymousOdsFileWriterTest {
         EasyMock.expectLastCall().anyTimes();
         outputStream.flush();
         EasyMock.expectLastCall().anyTimes();
+        z.finish();
         z.close();
 
         PowerMock.replayAll();

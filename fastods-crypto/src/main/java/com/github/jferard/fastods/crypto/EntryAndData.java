@@ -22,41 +22,27 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.crypto;
 
-import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
-
-import java.io.IOException;
+import com.github.jferard.fastods.odselement.ManifestEntry;
 
 /**
- * An async flusher for mime type and meta elements.
- * Those files are always the same and do not depend on anything:
- * Thumbnails, Configurations2/accelerator/current.xml, ...
- * <p>
- * Automatically sent when the NamedOdsWriter is created.
- *
- * @author Julien Férard
+ * An entry and the associated data.
  */
-public class ImmutableElementsFlusher implements OdsAsyncFlusher {
-    private final OdsElements odsElements;
+class EntryAndData {
+    private final ManifestEntry entry;
+    private final byte[] data;
 
-    /**
-     * @param odsElements content.xml, styles.xml, ...
-     */
-    public ImmutableElementsFlusher(final OdsElements odsElements) {
-        this.odsElements = odsElements;
+    public EntryAndData(final ManifestEntry entry, final byte[] data) {
+        this.entry = entry;
+        this.data = data;
     }
 
-    @Override
-    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.odsElements.writeMimeType(xmlUtil, writer);
-        this.odsElements.createEmptyElements(xmlUtil, writer);
+    public ManifestEntry getEntry() {
+        return this.entry;
     }
 
-    @Override
-    public boolean isEnd() {
-        return false;
+    public byte[] getData() {
+        return this.data;
     }
 }

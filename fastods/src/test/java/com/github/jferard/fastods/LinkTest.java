@@ -167,7 +167,6 @@ public class LinkTest {
     @Test
     public final void testString() throws IOException {
         final Link link = Link.builder("file").to("s").build();
-        System.out.println(TestHelper.toXML(link));
         TestHelper.assertXMLEquals("<text:a xlink:href=\"s\" xlink:type=\"simple\">file</text:a>",
                 link);
     }

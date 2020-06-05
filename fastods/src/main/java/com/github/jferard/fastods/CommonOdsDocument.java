@@ -24,10 +24,8 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.odselement.ManifestEntryElement;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;

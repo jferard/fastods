@@ -25,7 +25,7 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.odselement.ManifestElement;
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.ManifestEntry;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -62,8 +62,8 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     /**
      * @return a new builder
      */
-    public static ZipUTF8WriterBuilder builder() {
-        return new ZipUTF8WriterBuilder();
+    public static ZipUTF8WriterBuilderImpl builder() {
+        return new ZipUTF8WriterBuilderImpl();
     }
 
     @Override
@@ -84,6 +84,7 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
 
     @Override
     public void close() throws IOException {
+        this.writer.flush();
         this.zipStream.close();
     }
 
@@ -96,8 +97,6 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     @Override
     public void finish() throws IOException {
         this.manifestElement.write(this.xmlUtil, this);
-        this.closeEntry();
-        this.writer.flush();
         this.zipStream.finish();
     }
 
@@ -119,7 +118,8 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
 
     @Override
     public void putNextEntry(final ManifestEntry entry) throws IOException {
-        this.zipStream.putNextEntry(new ZipEntry(entry.getPath()));
+        final ZipEntry e = entry.asZipEntry();
+        this.zipStream.putNextEntry(e);
     }
 
     @Override
@@ -138,6 +138,4 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     public void write(final byte[] bytes) throws IOException {
         this.zipStream.write(bytes);
     }
-
-
 }

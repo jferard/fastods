@@ -28,7 +28,6 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
@@ -272,7 +271,6 @@ public class ContentElement implements OdsElement {
         writer.append("</office:spreadsheet>");
         writer.append("</office:body>");
         writer.append("</office:document-content>");
-        writer.flush();
         writer.closeEntry();
     }
 

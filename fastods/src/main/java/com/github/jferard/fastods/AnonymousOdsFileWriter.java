@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
 import java.io.File;
@@ -75,7 +76,10 @@ public class AnonymousOdsFileWriter {
      * @throws IOException The file can't be saved.
      */
     public void save(final OutputStream out) throws IOException {
-        this.save(out, ZipUTF8WriterImpl.builder());
+        final ZipUTF8Writer writer = ZipUTF8WriterImpl.builder().build(out);
+        this.save(writer);
+        writer.finish();
+        writer.flush();
     }
 
     /**
@@ -86,17 +90,18 @@ public class AnonymousOdsFileWriter {
      * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
      *                 level, ...)
      * @throws IOException The file can't be saved.
+     * @deprecated use `save(ZipUTF8Writer writer)`
      */
-    public void save(final OutputStream out, final ZipUTF8WriterBuilder builder) throws IOException {
+    @Deprecated
+    public void save(final OutputStream out, final ZipUTF8WriterBuilderImpl builder) throws IOException {
         final ZipUTF8Writer writer = builder.build(out);
         this.save(writer);
-        writer.finish(); // ensures the zip file is well formed
-        writer.flush();
+        writer.finish();
     }
 
     /**
      * Writes the document to a writer. The use shall close the writer.
-     * WARNING: The user shall close the writer (since 0.6.1).
+     * WARNING: The user shall `finish` and `close` the writer (since 0.6.1).
      *
      * @param writer the ZipUTF8WriterImpl that should be used
      * @throws IOException If an I/O error occurs during the save
@@ -167,6 +172,7 @@ public class AnonymousOdsFileWriter {
             try {
                 this.save(writer);
             } finally {
+                writer.finish();
                 writer.close();
             }
         } catch (final FileNotFoundException e) {

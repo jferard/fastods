@@ -28,7 +28,7 @@ import com.github.jferard.fastods.util.FileOpen;
 import com.github.jferard.fastods.util.FileOpenResult;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
 import java.io.File;
@@ -44,7 +44,7 @@ public class OdsFileWriterBuilder {
     private final Logger logger;
     private final NamedOdsDocument document;
     private OutputStream out;
-    private ZipUTF8WriterBuilder builder;
+    private ZipUTF8WriterBuilderImpl builder;
 
     /**
      * Create a new ODS file.
@@ -115,7 +115,7 @@ public class OdsFileWriterBuilder {
      *                level, ...)
      * @return this for fluent style
      */
-    public OdsFileWriterBuilder zipBuilder(final ZipUTF8WriterBuilder builder) {
+    public OdsFileWriterBuilder zipBuilder(final ZipUTF8WriterBuilderImpl builder) {
         this.builder = builder;
         return this;
     }

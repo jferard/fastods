@@ -48,16 +48,16 @@ import java.util.Set;
 public class ZipUTF8WriterMock implements Appendable {
     private final Map<String, StringBuilder> builderByEntryName;
     private StringBuilder curBuilder;
-    private Set<String> registredEntries;
+    private Set<String> registeredEntries;
 
     /**
      * @param builderByEntryName the container
      * @param strings
      */
     ZipUTF8WriterMock(final Map<String, StringBuilder> builderByEntryName,
-                      final Set<String> registredEntries) {
+                      final Set<String> registeredEntries) {
         this.builderByEntryName = builderByEntryName;
-        this.registredEntries = registredEntries;
+        this.registeredEntries = registeredEntries;
         this.curBuilder = null;
     }
 
@@ -149,7 +149,7 @@ public class ZipUTF8WriterMock implements Appendable {
     }
 
     public void registerEntry(final Object object) {
-        this.registredEntries.add(object.toString());
+        this.registeredEntries.add(object.toString());
     }
 
 
@@ -206,10 +206,10 @@ public class ZipUTF8WriterMock implements Appendable {
     }
 
     /**
-     * @return the names of the registred entries
+     * @return the names of the registered entries
      */
-    public Set<String> registredNames() {
-        return this.registredEntries;
+    public Set<String> registeredNames() {
+        return this.registeredEntries;
     }
 }
 

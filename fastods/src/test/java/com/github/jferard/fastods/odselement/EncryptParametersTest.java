@@ -24,27 +24,24 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.TestHelper;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
 
-/**
- * An empty element, but present in the zip archive.
- */
-public class ExtraElement implements OdsElement {
-    private final ManifestEntry entry;
-    private final byte[] data;
-
-    public ExtraElement(final ManifestEntry entry, final byte[] data) {
-        this.entry = entry;
-        this.data = data;
-    }
-
-    @Override
-    public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putAndRegisterNextEntry(this.entry);
-        writer.write(this.data);
-        writer.closeEntry();
+public class EncryptParametersTest {
+    @Test
+    public void testStd() throws IOException {
+        final EncryptParameters parameters =
+                EncryptParameters.builder().build(10, 0, 0L, "CS", "SALT", "IV");
+        TestHelper.assertXMLEquals(
+                "<manifest:encryption-data manifest:checksum-type=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0#sha256-1k\" manifest:checksum=\"CS\">" +
+                        "<manifest:algorithm manifest:algorithm-name=\"http://www.w3.org/2001/04/xmlenc#aes256-cbc\" manifest:initialisation-vector=\"IV\"/>" +
+                        "<manifest:key-derivation manifest:key-derivation-name=\"PBKDF2\" manifest:key-size=\"32\" manifest:iteration-count=\"100000\" manifest:salt=\"SALT\"/>" +
+                        "<manifest:start-key-generation manifest:start-key-generation-name=\"http://www.w3.org/2000/09/xmldsig#sha256\" manifest:key-size=\"32\"/>" +
+                        "</manifest:encryption-data>",
+                parameters);
+        Assert.assertEquals(10, parameters.getUncompressedSize());
     }
 }

@@ -34,8 +34,14 @@ public class CharsetUtil {
      * name of the utf-8 encoding
      */
     public static final String UTF_8_NAME = "UTF-8";
+
     /**
      * the utf-8 encoding
      */
     public static final Charset UTF_8 = Charset.forName(UTF_8_NAME);
+
+    /**
+     * the ascii encoding
+     */
+    public static final Charset ASCII = Charset.forName("ASCII");
 }

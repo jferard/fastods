@@ -161,4 +161,9 @@ public class FastODSExamplesIT {
     public void periodicTableTest() throws IOException, SQLException {
         L_PeriodicTable.example();
     }
+
+    @Test
+    public void cryptoTest() throws IOException {
+        M_Crypto.cryptoExample();
+    }
 }

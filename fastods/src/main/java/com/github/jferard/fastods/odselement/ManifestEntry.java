@@ -24,29 +24,28 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.zip.ZipEntry;
 
-/**
- * An entry in the zip file, but not registred in the manifest.
- */
-public class UnregistredEntry implements ManifestEntry {
-    private final String fullPath;
+public interface ManifestEntry extends XMLConvertible {
+    /**
+     * @param encryptParameters the parameters to encrypt the file
+     * @return an entry with those parameters.
+     * @throws IllegalArgumentException if the entry can't be encrypted (e.g. directory or
+     * mimetype).
+     */
+    ManifestEntry encryptParameters(EncryptParameters encryptParameters);
 
-    public UnregistredEntry(final String fullPath) {
-        this.fullPath = fullPath;
-    }
+    /**
+     * @return the ZipEntry (STORE or DEFLATE) associated with this entry.
+     */
+    ZipEntry asZipEntry();
 
-    @Override
-    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
-            throws IOException {
-        // do nothing
-    }
-
-    @Override
-    public String getPath() {
-        return this.fullPath;
-    }
+    /**
+     * @return true if the entry should not be encrypted.
+     */
+    boolean neverEncrypt();
 }

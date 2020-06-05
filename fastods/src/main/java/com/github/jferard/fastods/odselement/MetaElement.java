@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
@@ -157,7 +156,6 @@ public class MetaElement implements OdsElement {
         }
         //TODO: <meta:document-statistic ...>"
         writer.append("</office:meta>").append("</office:document-meta>");
-        writer.flush();
         writer.closeEntry();
     }
 }

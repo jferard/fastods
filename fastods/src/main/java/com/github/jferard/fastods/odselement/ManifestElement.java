@@ -24,15 +24,17 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Part 3, 3.2 Manifest:
@@ -55,56 +57,48 @@ public class ManifestElement implements OdsElement {
      */
     public static final String META_INF_MANIFEST_XML = "META-INF/manifest.xml";
 
-    private static final List<ManifestEntry> ENTRIES = Arrays.<ManifestEntry>asList(
-            new StandardManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet", null),
-            new StandardManifestEntry("content.xml", "text/xml", null),
-            new StandardManifestEntry("styles.xml", "text/xml", null),
-            new StandardManifestEntry("meta.xml", "text/xml", null),
-            new StandardManifestEntry("settings.xml", "text/xml", null),
-            new StandardManifestEntry("Configurations2/", "application/vnd.sun.xml.ui.configuration", null),
-            new StandardManifestEntry("Configurations2/statusbar/", "", null),
-            new StandardManifestEntry("Configurations2/accelerator/", "", null),
-            new StandardManifestEntry("Configurations2/accelerator/current.xml", "", null),
-            new StandardManifestEntry("Configurations2/floater/", "", null),
-            new StandardManifestEntry("Configurations2/popupmenu/", "", null),
-            new StandardManifestEntry("Configurations2/progressbar/", "", null),
-            new StandardManifestEntry("Configurations2/menubar/", "", null),
-            new StandardManifestEntry("Configurations2/toolbar/", "", null),
-            new StandardManifestEntry("Configurations2/images/", "", null),
-            new StandardManifestEntry("Configurations2/images/Bitmaps/", "", null),
-            new StandardManifestEntry("Thumbnails/", "", null),
-            new StandardManifestEntry("Thumbnails/thumbnail.png", "", null));
-
     /**
      * @return a new ManifestElement
      */
     public static ManifestElement create() {
-        return new ManifestElement(ManifestElement.ENTRIES);
+        return new ManifestElement(new HashSet<ManifestEntry>()); //ManifestElement.ENTRIES);
     }
 
-    private final List<ManifestEntry> manifestEntries;
+    private final Set<ManifestEntry> manifestEntries;
 
     /**
      * @param initialEntries the first entries
      */
-    ManifestElement(final List<ManifestEntry> initialEntries) {
-        this.manifestEntries = new ArrayList<ManifestEntry>(initialEntries);
+    ManifestElement(final Set<ManifestEntry> initialEntries) {
+        this.manifestEntries = new HashSet<ManifestEntry>(initialEntries);
     }
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new UnregistredEntry(ManifestElement.META_INF_MANIFEST_XML));
+        writer.putNextEntry(new UnregisteredEntry(ManifestElement.META_INF_MANIFEST_XML));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<manifest:manifest");
         util.appendAttribute(writer, "xmlns:manifest",
                 "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0");
+        util.appendAttribute(writer, "manifest:version", "1.2");
         writer.append(">");
-        for (final ManifestEntry entry : this.manifestEntries) {
+        final List<ManifestEntry> entries = this.getManifestEntries();
+        for (final ManifestEntry entry : entries) {
             entry.appendXMLContent(util, writer);
         }
         writer.append("</manifest:manifest>");
-        writer.flush();
         writer.closeEntry();
+    }
+
+    private List<ManifestEntry> getManifestEntries() {
+        final List<ManifestEntry> entries = new ArrayList<ManifestEntry>(this.manifestEntries);
+        Collections.sort(entries, new Comparator<ManifestEntry>() {
+            @Override
+            public int compare(final ManifestEntry o1, final ManifestEntry o2) {
+                return o1.asZipEntry().getName().compareTo(o2.asZipEntry().getName());
+            }
+        });
+        return entries;
     }
 
     /**

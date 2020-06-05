@@ -15,7 +15,7 @@
   ~ version.
   ~
   ~ FastODS is distributed in the hope that it will be useful, but WITHOUT ANY
-  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~ WARRANTY; without even the implied warranty of MERCHANTABILITY or 
   ~ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
   ~  for more details.
   ~
@@ -23,15 +23,19 @@
   ~ this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.github.jferard</groupId>
         <artifactId>fastods-parent</artifactId>
         <version>0.7.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fastods-examples</artifactId>
+    <groupId>com.github.jferard</groupId>
+    <artifactId>fastods-crypto</artifactId>
     <version>0.7.3-SNAPSHOT</version>
 
     <properties>
@@ -49,41 +53,17 @@
             <artifactId>fastods</artifactId>
             <version>0.7.3-SNAPSHOT</version>
         </dependency>
+
         <dependency>
-            <groupId>com.github.jferard</groupId>
-            <artifactId>fastods-crypto</artifactId>
-            <version>0.7.3-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.199</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.65</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>1.7.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

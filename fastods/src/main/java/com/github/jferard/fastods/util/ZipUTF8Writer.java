@@ -24,7 +24,7 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
+import com.github.jferard.fastods.odselement.ManifestEntry;
 
 import java.io.Closeable;
 import java.io.Flushable;
@@ -36,6 +36,21 @@ import java.io.IOException;
  * @author Julien Férard
  */
 public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
+    /**
+     * Add a comment to the zip
+     *
+     * @param comment the comment
+     */
+    void setComment(final String comment);
+
+
+    /**
+     * Put a new entry into the zip stream. This becomes the current entry
+     *
+     * @param entry the entry
+     * @throws IOException if an I/O error occurs
+     */
+    void putNextEntry(ManifestEntry entry) throws IOException;
 
     /**
      * Close the current entry
@@ -67,21 +82,6 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
      * @throws IOException if an I/O error occurs
      */
     void registerEntry(ManifestEntry entry);
-
-    /**
-     * Put a new entry into the zip stream. This becomes the current entry
-     *
-     * @param entry the entry
-     * @throws IOException if an I/O error occurs
-     */
-    void putNextEntry(ManifestEntry entry) throws IOException;
-
-    /**
-     * Add a comment to the zip
-     *
-     * @param comment the comment
-     */
-    void setComment(final String comment);
 
     /**
      * Write raw bytes to the output stream

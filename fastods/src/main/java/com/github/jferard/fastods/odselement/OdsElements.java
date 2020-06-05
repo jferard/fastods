@@ -35,7 +35,6 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.FontFaceContainerStyle;
 import com.github.jferard.fastods.style.MasterPageStyle;
@@ -87,8 +86,7 @@ public class OdsElements implements StylesContainer {
 
     private static final OdsElement[] EMPTY_ELEMENTS = {
             new ManifestEntryElement(
-                    new StandardManifestEntry("/", "application/vnd.oasis.opendocument.spreadsheet",
-                            null)),
+                    new StandardManifestEntry("/", MimetypeElement.DOCUMENT_MIMETYPE, "1.2")),
             new ManifestEntryElement(new StandardManifestEntry("Configurations2/",
                     "application/vnd.sun.xml.ui.configuration", null)),
             new EmptyElement(

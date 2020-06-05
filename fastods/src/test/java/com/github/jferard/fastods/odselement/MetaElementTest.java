@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.XMLUtil;

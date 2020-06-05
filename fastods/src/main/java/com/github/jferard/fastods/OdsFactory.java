@@ -30,7 +30,7 @@ import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
 import java.io.File;
@@ -238,7 +238,7 @@ public class OdsFactory {
      */
     public OdsFileWriterAdapter createWriterAdapter(final File file) throws IOException {
         final NamedOdsDocument document = this.createNamedDocument();
-        final ZipUTF8WriterBuilder zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
+        final ZipUTF8WriterBuilderImpl zipUTF8Writer = ZipUTF8WriterImpl.builder().noWriterBuffer();
         final OdsFileWriterAdapter writerAdapter = OdsFileWriterAdapter.create(this.logger,
                 OdsFileDirectWriter.builder(this.logger, document).file(file)
                         .zipBuilder(zipUTF8Writer).build());

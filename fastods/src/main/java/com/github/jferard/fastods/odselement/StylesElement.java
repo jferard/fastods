@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -144,7 +143,6 @@ public class StylesElement implements OdsElement {
 
         writer.append("</office:master-styles>");
         writer.append("</office:document-styles>");
-        writer.flush();
         writer.closeEntry();
     }
 }

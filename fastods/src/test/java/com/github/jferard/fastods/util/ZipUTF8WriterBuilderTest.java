@@ -23,8 +23,8 @@
  */
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.ManifestEntry;
+import com.github.jferard.fastods.odselement.StandardManifestEntry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,20 +32,24 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class ZipUTF8WriterBuilderTest {
-    public static final int C_SIZE = 118;
+    public static final int C_SIZE = 121;
+    private static final int UC_SIZE = 259;
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
 
-    private ZipUTF8WriterBuilder builder;
+    private ZipUTF8WriterBuilderImpl builder;
     private ByteArrayOutputStream out;
 
     @Before
     public void setUp() {
-        this.builder = new ZipUTF8WriterBuilder();
+        this.builder = new ZipUTF8WriterBuilderImpl();
         this.out = new ByteArrayOutputStream();
         PowerMock.resetAll();
     }
@@ -56,7 +60,15 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
+        this.checkZipFile();
         Assert.assertEquals(C_SIZE, this.out.size());
+    }
+
+    private void checkZipFile() throws IOException {
+        final ZipInputStream zs =
+                new ZipInputStream(new ByteArrayInputStream(this.out.toByteArray()));
+        Assert.assertEquals("me", zs.getNextEntry().getName());
+        Assert.assertNull(zs.getNextEntry());
     }
 
     @Test
@@ -65,6 +77,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
+        this.checkZipFile();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
@@ -74,11 +87,12 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
+        this.checkZipFile();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
     private ManifestEntry getManifestEntry() {
-        return new StandardManifestEntry("a", null, null);
+        return new StandardManifestEntry("me", null, null);
     }
 
     @Test
@@ -87,6 +101,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
+        this.checkZipFile();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
@@ -96,6 +111,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
+        this.checkZipFile();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
@@ -106,6 +122,7 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append('c');
         writer.close();
+        this.checkZipFile();
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
@@ -127,9 +144,10 @@ public class ZipUTF8WriterBuilderTest {
         writer.putAndRegisterNextEntry(this.getManifestEntry());
         writer.append(
                 "some long text that can be zipped some long text that can be zipped some long " +
-                        "text that can be " + "zipped some long text that can be zipped ");
+                        "text that can be zipped some long text that can be zipped ");
         writer.close();
-        Assert.assertEquals(121, this.out.size());
+        this.checkZipFile();
+        Assert.assertEquals(ZipUTF8WriterBuilderTest.UC_SIZE, this.out.size());
     }
 
     @Test
@@ -140,7 +158,8 @@ public class ZipUTF8WriterBuilderTest {
                 "some long text that can be zipped some long text that can be zipped some long " +
                         "text that can be zipped some long text that can be zipped ");
         writer.close();
-        Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
+        this.checkZipFile();
+        Assert.assertEquals(157, this.out.size());
     }
 
     @Test

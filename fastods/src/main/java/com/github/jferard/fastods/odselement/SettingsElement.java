@@ -27,7 +27,6 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.odselement.config.ConfigBlock;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -133,7 +132,6 @@ public class SettingsElement implements OdsElement {
         }
         writer.append("</office:settings>");
         writer.append("</office:document-settings>");
-        writer.flush();
         writer.closeEntry();
     }
 

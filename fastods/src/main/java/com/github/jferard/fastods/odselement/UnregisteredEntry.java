@@ -22,53 +22,44 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.odselement.config;
+package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.zip.ZipEntry;
 
 /**
- * 4.3<manifest:file-entry>
+ * An entry in the zip file, but not registered in the manifest.
  */
-public class StandardManifestEntry implements ManifestEntry {
+public class UnregisteredEntry implements ManifestEntry {
     private final String fullPath;
-    private final CharSequence mediaType;
-    private final CharSequence version;
 
     /**
-     * @param fullPath  the path
-     * @param mediaType the media MIME type
-     * @param version   the version
+     * @param fullPath the path
      */
-    public StandardManifestEntry(final String fullPath, final CharSequence mediaType,
-                                 final CharSequence version) {
+    public UnregisteredEntry(final String fullPath) {
         this.fullPath = fullPath;
-        this.mediaType = mediaType;
-        this.version = version;
     }
 
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        appendable.append("<manifest:file-entry");
-        util.appendAttribute(appendable, "manifest:full-path", this.fullPath);
-        if (this.mediaType != null) {
-            util.appendAttribute(appendable, "manifest:media-type", this.mediaType);
-        }
-        if (this.version != null) {
-            util.appendAttribute(appendable, "manifest:version", this.version);
-        }
-        appendable.append("/>");
+        // do nothing
     }
 
     @Override
-    public String getPath() {
-        return this.fullPath;
+    public ManifestEntry encryptParameters(final EncryptParameters encryptParameters) {
+        return this;
     }
 
     @Override
-    public String toString() {
-        return "ManifestEntry[path="+this.fullPath+"]";
+    public ZipEntry asZipEntry() {
+        return new ZipEntry(this.fullPath);
+    }
+
+    @Override
+    public boolean neverEncrypt() {
+        return false;
     }
 }

@@ -24,8 +24,8 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.odselement.ManifestElement;
-import com.github.jferard.fastods.odselement.config.ManifestEntry;
-import com.github.jferard.fastods.odselement.config.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.ManifestEntry;
+import com.github.jferard.fastods.odselement.StandardManifestEntry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
