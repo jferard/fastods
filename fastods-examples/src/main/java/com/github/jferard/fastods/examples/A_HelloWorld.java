@@ -49,7 +49,20 @@ class A_HelloWorld {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Hello, world!
         //
-        // Let's start with the famous "Hello, World!" example.
+        // Let's start with the famous "Hello, World!" example. Here's the full code:
+        //
+        // ```
+        // final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("hello-world"), Locale.US);
+        // final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        // final OdsDocument document = writer.document();
+        // final Table table = document.addTable("hello-world");
+        // final TableRowImpl row = table.getRow(0);
+        // final TableCell cell = row.getOrCreateCell(0);
+        // cell.setStringValue("Hello, world!");
+        // writer.saveAs(new File("generated_files", "a_hello_world_example.ods"));
+        // ```
+        //
+        // And here are the explanations.
         //
         // As stated in the javadoc, "An OdsFactory is the entry point for creating ODS documents."
         // Every time you want to create an ODS document, you'll start with something like that:

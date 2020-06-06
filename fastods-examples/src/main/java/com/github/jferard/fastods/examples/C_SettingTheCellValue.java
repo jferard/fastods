@@ -159,6 +159,7 @@ class C_SettingTheCellValue {
 
         // *Note:* We saw all the cell type available in the OpenDocument specification.
         // We'll see that FastODS has another kind of String value in the Text value section.
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
         //
         writer.saveAs(new File("generated_files", "c_cell_value.ods"));
     }

@@ -43,10 +43,20 @@ public class M_Crypto {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Encrypt an ODS file
         //
-        // FastODS provides a `fastods-crypto` module that has a dependency to Bouncy Castle APIs.
-        // This module is still in beta version.
+        // In LibreOffice, you can protect a file with a password. This is the "Save with password"
+        // option in the *Save As* dialog box. Note that this has nothing to do with the "Tools >
+        // Protect Spreadsheet/Protect Sheet" options. The "Save with password" option really
+        // encrypts the data, while the "Protect Spreadsheet/Protect Sheet" options are easy to
+        // bypass.
         //
-        // First, we create a simple document:
+        // The file encryption is regarded as robust: the key derivation function is PBKDF2 using
+        // HMAC-SHA-1 and 100,000 iterations; the encryption algorithm is AES256 (Cipher block
+        // chaining mode). To make a long story short: if you use a strong password and loose it,
+        //
+        // FastODS provides a `fastods-crypto` module (that has a dependency to Bouncy Castle APIs)
+        // to encrypt an ODS file. *This module is still in beta version.*
+        //
+        // First, we create a simple document, similar to the "Hello, world!" example:
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("hello-world"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -55,12 +65,18 @@ public class M_Crypto {
         final TableCell cell = row.getOrCreateCell(0);
         cell.setStringValue("Hello, world!");
         //
-        // Second, we save it with encryption. This is easy: we just need to provide a
-        // `ZipUTF8WriterBuilder` that will encrypt the data. The password is "123".
+        // Second, we save it with encryption. This is easy: the module provides a class
+        // `ZipUTF8CryptoWriterBuilder` that implements `ZipUTF8WriterBuilder` and encrypts the
+        // data:
+        //
         final char[] password = {'1', '2', '3'};
         writer.saveAs(new File("generated_files", "m_hello_world_crypto_example.ods"),
                 new ZipUTF8CryptoWriterBuilder(password));
         Arrays.fill(password, '\0'); // clear sensitive data.
+        //
+        // (The password in this example is "123", but you'd better choose another password.)
+        //
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
     }
 
 }

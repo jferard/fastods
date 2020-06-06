@@ -215,17 +215,19 @@ class F_MoreOnCells {
         // ### Warning
         // First, FastODS won't parse formulas, check syntax or semantic, evaluate results or
         // anything like that. FastODS will write your formula in the document
-        // and that's all, even if your formula is "I'm the King of the wold!". That may be
+        // and that's all, even if your formula is "I'm the King of the world!". That may be
         // frustrating, but FastODS is not an OpenDocument consumer, just a producer.
         //
         // Second, it's important to understand that LibreOffice, as OpenOffice and Excel before,
         // have made the choice to *translate* the formula language in various human languages.
+        // That's a stupid yet perfectly understandable idea: *anyone should be able to create
+        // Excel formulas, but it's sooo hard to understand and remember a hundred basic
+        // english words*.
+        //
         // Let's think about that: imagine that Sun decided to translate the Java keywords
         // in every language, and then to translate the libraries in every language.
         // I'm not talking about internationalization of localization, but about *translation*!
-        // Programming would be harder, a lot harder... That's a stupid yet perfectly
-        // understandable idea: anyone can use Excel formulas, but anyone can't understand and
-        // remember hundred basic english words.
+        // Programming would be harder, a lot harder...
         //
         // But, as you may know, no matter what interface language you have selected, formulas are
         // always stored in a document in the [Recalculated Formula (OpenFormula)

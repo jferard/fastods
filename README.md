@@ -9,14 +9,27 @@
 A very fast and lightweight (no dependency) library for creating ODS (Open Document Spreadsheet, mainly for Calc) files in Java. It's a Martin Schulz's SimpleODS fork.
 
 ## TLDR;
+* **FastODS cannot read ODS documents;** 
 * FastODS can produce complex and large ODS documents *very* fast;
 * FastODS is almost ready for production use. The version 1.0 is coming;
 * There is a little [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) that covers most of the features of FastODS;
 * Important: [feel free to ask a question or make a suggestion](https://github.com/jferard/fastods/issues/new);
 
+### Features
+* Cell styles, content formatting (dates, numbers, ...), formulas; 
+* Page formatting (header, footer);
+* Document embedding, images;
+* Filters & Autofilters;
+* Pivot Tables (Data Pilot);
+* Easy export of SQL ResultSets;
+* Support for Macros, events;
+* Document encryption (AES).
+
+### Examples
+
 Here's what some of the produced documents in the tutorial look like:
 
-A regular table:  
+A regular table (export of a SQL ResultSet):  
   ![Periodic Table List of elements](https://raw.githubusercontent.com/wiki/jferard/fastods/images/capture_periodic_table.png)
   
 A multiplication table:  
@@ -38,9 +51,12 @@ The periodic table of Mr. Dmitri Mendeleev:
 Because I need to write big and simple ODS files very fast in Java.
 
 There are some very good libraries for [OASIS Open Document Format](https://www.oasis-open.org/standards#opendocumentv1.2), like [Simple ODF](http://incubator.apache.org/odftoolkit/simple/) or [JOpenDocument](http://www.jopendocument.org/), but they are a little bit slow and cumberstone for only writing **very simple** spreadsheets.
-There is a simple and fast library by Martin Schulz, [Simple ODS](http://simpleods.sourceforge.net/), but it is now discontinued, outdated (Java 1.3), has a few limitations (incorrect handling of UTF-8 encoding, missing XML escaping for attributes) and can be speed up.
+There is a simple and fast library by Martin Schulz, [Simple ODS](http://simpleods.sourceforge.net/), but it is now discontinued, outdated (Java 1.3), has a few limitations (incorrect handling of UTF-8 encoding, missing XML escaping for attributes), etc.
 
-FastODS is a fork of SimpleODS that aims to be a very fast ODS writing library in Java.
+FastODS is a fork of SimpleODS that aims to be a very fast ODS writing library in Java. A lot of 
+features have been added.
+
+(Thanks to M. Schultz for his work.)
 
 ## Limitations
 FastODS won't deal with odt, odg, odf, or other od_ files.
@@ -74,7 +90,7 @@ Add the following dependency to your POM:
 <dependency>
 		<groupId>com.github.jferard</groupId>
 		<artifactId>fastods</artifactId>
-		<version>0.7.0</version>
+		<version>0.7.2</version>
 </dependency>
 ```
 
