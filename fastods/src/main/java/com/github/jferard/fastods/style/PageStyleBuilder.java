@@ -123,7 +123,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     public PageStyle build() {
         if (this.masterPageStyle == null) {
             this.masterPageStyle =
-                    new MasterPageStyle(this.name, this.name, this.header, this.footer);
+                    new MasterPageStyle(PageStyle.DEFAULT_MASTER_PAGE_NAME, this.name, this.header, this.footer);
         }
 
         if (this.pageLayoutStyle == null) {
