@@ -48,7 +48,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
      * This is the default cell style: left and top align, no wrap.
      */
     public static final TableCellStyle DEFAULT_CELL_STYLE =
-            TableCellStyle.builder("Default").verticalAlign(VerticalAlign.TOP).fontWrap(false)
+            TableCellStyle.builder("Default").verticalAlign(VerticalAlign.AUTOMATIC).fontWrap(false)
                     .backgroundColor(SimpleColor.NONE).allMargins(Length.NULL_LENGTH)
                     .fontName(LOFonts.LIBERATION_SANS).parentCellStyle(null).build();
 
@@ -71,7 +71,7 @@ public class TableCellStyle implements FontFaceContainerStyle {
     private final TableCellStyle parentCellStyle;
     private final CellAlign textAlign; // 'center','end','start','justify'
     private final TextProperties textProperties;
-    private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top'
+    private final VerticalAlign verticalAlign; // 'middle', 'bottom', 'top', 'automatic'
     private final Angle textRotating;
     private final boolean wrap; // No line wrap when false, line wrap when
     private final DataStyle dataStyle;
@@ -123,9 +123,11 @@ public class TableCellStyle implements FontFaceContainerStyle {
     private void appendCellProperties(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<style:table-cell-properties");
+        
+        /*
         if (this.backgroundColor != SimpleColor.NONE) {
             util.appendAttribute(appendable, "fo:background-color", this.backgroundColor);
-        }
+        }*/
 
         if (this.verticalAlign != null) {
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign);
