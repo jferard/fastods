@@ -110,7 +110,6 @@ class TableAppender {
             }
         }
         appendable.append(">");
-        this.appendForms(util, appendable);
         this.appendColumns(util, appendable, this.builder.getColumns());
         this.appendShapes(util, appendable, this.builder.getShapes());
     }
@@ -126,13 +125,6 @@ class TableAppender {
             shape.appendXMLContent(util, appendable);
         }
         appendable.append("</table:shapes>");
-    }
-
-    private void appendForms(final XMLUtil util, final Appendable appendable) throws IOException {
-        appendable.append("<office:forms");
-        util.appendAttribute(appendable, "form:automatic-focus", false);
-        util.appendAttribute(appendable, "form:apply-design-mode", false);
-        appendable.append("/>");
     }
 
     /**
