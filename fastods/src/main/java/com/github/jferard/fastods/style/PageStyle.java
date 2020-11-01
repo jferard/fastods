@@ -47,7 +47,7 @@ public class PageStyle implements AddableToOdsElements, ElementWithEmbeddedStyle
     /**
      * The classic default master page name
      */
-    public static final String DEFAULT_MASTER_PAGE_NAME = "DefaultMasterPage";
+    public static final String DEFAULT_MASTER_PAGE_NAME = "Default";
     /**
      * The default format (A4)
      */
