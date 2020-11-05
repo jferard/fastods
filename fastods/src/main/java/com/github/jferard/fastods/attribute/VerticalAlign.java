@@ -42,12 +42,7 @@ public enum VerticalAlign implements AttributeValue {
     /**
      * "top: to the top of the line."
      */
-    TOP("top"),
-    
-    /**
-     * "automatic: automatic. (default)"
-     */
-    AUTOMATIC("automatic");
+    TOP("top");
 
     private final String attrValue;
 
