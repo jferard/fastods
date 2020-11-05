@@ -124,10 +124,9 @@ public class TableCellStyle implements FontFaceContainerStyle {
             throws IOException {
         appendable.append("<style:table-cell-properties");
         
-        /*
         if (this.backgroundColor != SimpleColor.NONE) {
             util.appendAttribute(appendable, "fo:background-color", this.backgroundColor);
-        }*/
+        }
 
         if (this.verticalAlign != null) {
             util.appendAttribute(appendable, "style:vertical-align", this.verticalAlign);
