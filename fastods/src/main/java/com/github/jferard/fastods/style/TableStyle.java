@@ -71,6 +71,7 @@ public class TableStyle implements ObjectStyle {
     @Override
     public void addToElements(final OdsElements odsElements) {
         odsElements.addContentStyle(this);
+        this.pageStyle.addToElements(odsElements);
     }
 
     @Override

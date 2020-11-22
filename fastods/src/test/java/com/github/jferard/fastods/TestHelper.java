@@ -97,10 +97,10 @@ public class TestHelper {
         EasyMock.expect(mockOdsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
                 .andReturn(true); //.times(2);
         EasyMock.expect(mockOdsElements
-                .addMasterPageStyle(PageStyle.DEFAULT_PAGE_STYLE.getMasterPageStyle()))
-                .andReturn(true);
+                .addMasterPageStyle(PageStyle.DEFAULT_MASTER_PAGE_STYLE.getMasterPageStyle()))
+                .andReturn(true).anyTimes();
         EasyMock.expect(mockOdsElements
-                .addPageLayoutStyle(PageStyle.DEFAULT_PAGE_STYLE.getPageLayoutStyle()))
-                .andReturn(true);
+                .addPageLayoutStyle(PageStyle.DEFAULT_MASTER_PAGE_STYLE.getPageLayoutStyle()))
+                .andReturn(true).anyTimes();
     }
 }

@@ -40,6 +40,12 @@ public class TableStyleTest {
 
         PowerMock.resetAll();
         EasyMock.expect(odsElements.addContentStyle(ts)).andReturn(true);
+        EasyMock.expect(odsElements
+                .addMasterPageStyle(PageStyle.DEFAULT_MASTER_PAGE_STYLE.getMasterPageStyle()))
+                .andReturn(true);
+        EasyMock.expect(odsElements
+                .addPageLayoutStyle(PageStyle.DEFAULT_MASTER_PAGE_STYLE.getPageLayoutStyle()))
+                .andReturn(true);
 
         PowerMock.replayAll();
         ts.addToElements(odsElements);
