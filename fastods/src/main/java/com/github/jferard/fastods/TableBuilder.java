@@ -131,6 +131,7 @@ class TableBuilder {
     private final WriteUtil writeUtil;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
+    private final List<XMLConvertible> forms;
     private boolean tablePreambleWritten;
     private NamedOdsFileWriter observer;
     private int curRowIndex;
@@ -178,6 +179,7 @@ class TableBuilder {
         this.lastRowIndex = -1;
         this.bufferSize = bufferSize;
         this.tablePreambleWritten = false;
+        this.forms = new ArrayList<XMLConvertible>();
         this.shapes = new ArrayList<Shape>();
     }
 
@@ -574,6 +576,15 @@ class TableBuilder {
     }
 
     /**
+     * Add a new form (experimental feature)
+     *
+     * @param form the form
+     */
+    public void addForm(final XMLConvertible form) {
+        this.forms.add(form);
+    }
+
+    /**
      * Set a custom attribute
      * @param attribute the attribute
      * @param value the value
@@ -587,5 +598,9 @@ class TableBuilder {
 
     public Map<String, CharSequence> getCustomValueByAttribute() {
         return this.customValueByAttribute;
+    }
+
+    public List<XMLConvertible> getForms() {
+        return this.forms;
     }
 }

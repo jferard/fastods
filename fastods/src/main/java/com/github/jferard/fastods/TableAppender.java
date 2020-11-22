@@ -103,14 +103,15 @@ class TableAppender {
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
         util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
         util.appendAttribute(appendable, "table:print", false);
-        final Map<String, CharSequence> customValueByAttribute = this.builder.getCustomValueByAttribute();
+        final Map<String, CharSequence> customValueByAttribute =
+                this.builder.getCustomValueByAttribute();
         if (customValueByAttribute != null) {
             for (final Map.Entry<String, CharSequence> entry : customValueByAttribute.entrySet()) {
                 util.appendAttribute(appendable, entry.getKey(), entry.getValue());
             }
         }
         appendable.append(">");
-        this.appendForms(util, appendable);
+        this.appendForms(util, appendable, this.builder.getForms());
         this.appendColumns(util, appendable, this.builder.getColumns());
         this.appendShapes(util, appendable, this.builder.getShapes());
     }
@@ -128,11 +129,20 @@ class TableAppender {
         appendable.append("</table:shapes>");
     }
 
-    private void appendForms(final XMLUtil util, final Appendable appendable) throws IOException {
+    private void appendForms(final XMLUtil util, final Appendable appendable,
+                             final List<XMLConvertible> forms) throws IOException {
+        if (forms.isEmpty()) {
+            return;
+        }
+
         appendable.append("<office:forms");
         util.appendAttribute(appendable, "form:automatic-focus", false);
         util.appendAttribute(appendable, "form:apply-design-mode", false);
-        appendable.append("/>");
+        appendable.append(">");
+        for (final XMLConvertible form : forms) {
+            form.appendXMLContent(util, appendable);
+        }
+        appendable.append("</office:forms>");
     }
 
     /**

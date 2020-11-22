@@ -38,7 +38,6 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -68,14 +67,21 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>singletonList(
+                new XMLConvertible() {
+                    @Override
+                    public void appendXMLContent(final XMLUtil util, final Appendable appendable)
+                            throws IOException {
+                        appendable.append("FOO");
+                    }
+                }));
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
-                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
-                        "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
+                        "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
+                        "form:apply-design-mode=\"false\">FOO</office:forms><table:table-column " +
+                        "table:style-name=\"co1\" table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/>");
 
         PowerMock.verifyAll();
@@ -92,13 +98,13 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Arrays.<Shape>asList(drawFrame));
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>singletonList(drawFrame));
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
-                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
+                        "table:print=\"false\">" +
                         "<table:table-column table:style-name=\"co1\" " +
                         "table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
@@ -120,12 +126,12 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x")));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
-                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
+                        "table:print=\"false\">" +
                         "<table:table-column table:style-name=\"x\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-column table:style-name=\"co1\" " +
@@ -144,12 +150,12 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x"), this.newTC("x")));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
-                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
+                        "table:print=\"false\">" +
                         "<table:table-column table:style-name=\"x\" " +
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
@@ -170,12 +176,12 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(x, x, this.newTC("y"), x));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
-                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
+                        "table:print=\"false\">" +
                         "<table:table-column table:style-name=\"x\" " +
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
@@ -201,12 +207,12 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
-                        "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/>" +
+                        "table:print=\"false\">" +
                         "<table:table-column table:style-name=\"x\" " +
                         "table:number-columns-repeated=\"5\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
@@ -233,6 +239,7 @@ public class TableAppenderTest {
                 .andReturn(FastFullList.<TableColumnImpl>builder().build());
         EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0);
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.tableAppender.appendAllAvailableRows(this.xmlUtil, sb);
@@ -240,8 +247,7 @@ public class TableAppenderTest {
         PowerMock.verifyAll();
         sb.append("</table:table>");
         DomTester.assertEquals("<table:table table:name=\"tb\" table:style-name=\"tb-style\" " +
-                "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
-                "form:apply-design-mode=\"false\"/><table:table-column " +
+                "table:print=\"false\"><table:table-column " +
                 "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
                 "table:default-cell-style-name=\"Default\"/></table:table>", sb.toString());
     }
@@ -250,7 +256,8 @@ public class TableAppenderTest {
     public final void testAppendTwoWriters() throws IOException {
         final StringBuilder sb1 = new StringBuilder();
         final StringBuilder sb2 = new StringBuilder();
-        final FastFullList<TableColumnImpl> emptyFullList = FastFullList.<TableColumnImpl>builder().build();
+        final FastFullList<TableColumnImpl> emptyFullList =
+                FastFullList.<TableColumnImpl>builder().build();
 
         PowerMock.resetAll();
         EasyMock.expect(this.tb.getName()).andReturn("tb").times(2);
@@ -259,6 +266,8 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getColumns()).andReturn(emptyFullList).times(2);
         EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0).times(2);
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList()).times(2);
+        EasyMock.expect(this.tb.getForms()).andReturn(
+                Collections.<XMLConvertible>emptyList()).times(2);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb1);

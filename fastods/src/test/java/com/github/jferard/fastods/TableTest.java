@@ -107,8 +107,7 @@ public class TableTest {
         }
         this.table.getRow(100);
         this.assertTableXMLEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
-                "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                "form:apply-design-mode=\"false\"/>" +
+                "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"test0\" " +
                 "table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-column table:style-name=\"test1\" " +
@@ -191,8 +190,7 @@ public class TableTest {
                 "table:number-columns-repeated=\"9\"/><table:covered-table-cell/></table:table" +
                 "-row>";
         this.assertTableXMLEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
-                "table:print=\"false\">" + "<office:forms form:automatic-focus=\"false\" " +
-                "form:apply-design-mode=\"false\"/>" +
+                "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"co1\" " +
                 "table:number-columns-repeated=\"1024\" " +
                 "table:default-cell-style-name=\"Default\"/>" + "<table:table-row " +
@@ -423,8 +421,7 @@ public class TableTest {
 
         PowerMock.verifyAll();
         DomTester.assertEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
-                        "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
-                        "form:apply-design-mode=\"false\"/><table:table-column " +
+                        "table:print=\"false\"><table:table-column " +
                         "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
                         "table:default-cell-style-name=\"Default\"/><table:table-row " +
                         "table:style-name=\"ro1\"><table:table-cell office:value-type=\"boolean\"" +

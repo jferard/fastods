@@ -305,7 +305,10 @@ public class ContentElementTest {
 
         DomTester.assertEquals(PREAMBLE_BODY +
                         "<office:spreadsheet>" +
-                        "<table:table table:name=\"t\" table:style-name=\"ta1\" table:print=\"false\"><office:forms form:automatic-focus=\"false\" form:apply-design-mode=\"false\"/><table:table-column table:style-name=\"co1\" table:number-columns-repeated=\"1024\" table:default-cell-style-name=\"Default\"/></table:table>" +
+                        "<table:table table:name=\"t\" table:style-name=\"ta1\" " +
+                        "table:print=\"false\"><table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/></table:table>" +
                         "</office:spreadsheet>" +
                         POSTAMBLE_BODY,
                 this.getString(handler));
