@@ -303,6 +303,13 @@ public class TableCellImpl implements WritableTableCell {
         this.type = CellType.FLOAT;
         this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
     }
+    
+    @Override
+    public void setNumberValue(final Integer value) {
+        this.value = this.writeUtil.toString(value);
+        this.type = CellType.FLOAT;
+        //no datastyle for correct display
+    }
 
     @Override
     public void setFloatValue(final float value) {
