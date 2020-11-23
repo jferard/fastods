@@ -305,7 +305,7 @@ public class TableCellImpl implements WritableTableCell {
     }
     
     @Override
-    public void setNumberValue(final Integer value) {
+    public void setNumberValue(final int value) {
         this.value = this.writeUtil.toString(value);
         this.type = CellType.FLOAT;
         //no datastyle for correct display
