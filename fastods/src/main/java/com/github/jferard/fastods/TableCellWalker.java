@@ -108,6 +108,11 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     public void setFloatValue(final Number value) {
         this.cell.setFloatValue(value);
     }
+    
+    @Override
+    public void setNumberValue(final int value) {
+        this.cell.setNumberValue(value);
+    }
 
     @Override
     public void setPercentageValue(final Number value) {
