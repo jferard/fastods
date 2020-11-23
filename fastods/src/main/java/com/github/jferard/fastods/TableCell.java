@@ -110,6 +110,13 @@ public interface TableCell {
      * @param value a double object with the value to be used
      */
     void setFloatValue(int value);
+    
+    /**
+     * Set the float value for a cell with TableCell.Type.FLOAT.
+     *
+     * @param value a double object with the value to be used
+     */
+    void setNumberValue(int value);
 
     /**
      * Set the float value for a cell with TableCell.Type.FLOAT.
