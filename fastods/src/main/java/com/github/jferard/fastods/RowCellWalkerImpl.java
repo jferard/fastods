@@ -94,6 +94,11 @@ public class RowCellWalkerImpl implements RowCellWalker {
     public void setFloatValue(final Number value) {
         this.row.getOrCreateCell(this.c).setFloatValue(value);
     }
+    
+    @Override
+    public void setNumberValue(final int value) {
+        this.row.getOrCreateCell(this.c).setNumberValue(value);
+    }
 
     @Override
     public void setPercentageValue(final Number value) {
