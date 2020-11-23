@@ -90,7 +90,7 @@ Add the following dependency to your POM:
 <dependency>
 		<groupId>com.github.jferard</groupId>
 		<artifactId>fastods</artifactId>
-		<version>0.7.2</version>
+		<version>0.7.3</version>
 </dependency>
 ```
 
