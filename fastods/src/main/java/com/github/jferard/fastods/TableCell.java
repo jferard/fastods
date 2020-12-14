@@ -35,6 +35,15 @@ import java.util.Date;
 /**
  * A TableCell represents a cell in a spreadsheet sheet.
  *
+ * A cell value may be set using one of the following methods: setBooleanValue, setCurrencyValue,
+ * setDateValue, setFloatValue, setPercentageValue, setStringValue, setTextValue, setTimeValue.
+ * Those methods mimic the existing value types in the OpenDocument specification (boolean,
+ * currency, date, float, percentage, string, time -- void value is not implemented).
+ *
+ * Remarks: 1. there is no integer type in OpenDocument specification: use setFloatValue. 2.
+ * setStringValue and setTextValue both set the value type to string. Use setTextValue for
+ * multiline or formatted text.
+ *
  * @author Julien Férard
  */
 public interface TableCell {
@@ -46,21 +55,23 @@ public interface TableCell {
     void markRowsSpanned(int n);
 
     /**
-     * Set the boolean value
+     * Set the boolean value of the cell. Type will be CellType.BOOLEAN and data style the
+     * default data style for booleans.
      *
      * @param value true or false
      */
     void setBooleanValue(boolean value);
 
     /**
-     * Set the float value for a cell with TableCell.Type.STRING.
+     * Set the value for a cell. The value should be wrapped in a {@code CellValue} object.
      *
      * @param value the value as a CellValue object.
      */
     void setCellValue(CellValue value);
 
     /**
-     * Set the currency value and table cell style to STYLE_CURRENCY.
+     * Set the currency value of the cell. Type will be CellType.CURRENCY and data style the
+     * default data style for currency.
      *
      * @param value    the value as a float
      * @param currency The currency value
@@ -68,7 +79,8 @@ public interface TableCell {
     void setCurrencyValue(float value, String currency);
 
     /**
-     * Set the currency value and table cell style to STYLE_CURRENCY.
+     * Set the currency value of the cell. Type will be CellType.CURRENCY and data style the
+     * default data style for currency.
      *
      * @param value    the value as an int
      * @param currency The currency value
@@ -76,7 +88,8 @@ public interface TableCell {
     void setCurrencyValue(int value, String currency);
 
     /**
-     * Set the currency value and table cell style to STYLE_CURRENCY.
+     * Set the currency value of the cell. Type will be CellType.CURRENCY and data style the
+     * default data style for currency.
      *
      * @param value    the value as a Number
      * @param currency the currency value
@@ -84,63 +97,71 @@ public interface TableCell {
     void setCurrencyValue(Number value, String currency);
 
     /**
-     * Set the date value for a cell with TableCell.STYLE_DATE.
+     * Set the date value of the cell. Type will be CellType.DATE and data style the
+     * default data style for date.
      *
      * @param cal a Calendar object with the date to be used
      */
     void setDateValue(Calendar cal);
 
     /**
-     * Set the date value for a cell with TableCell.STYLE_DATE.
+     * Set the date value of the cell. Type will be CellType.DATE and data style the
+     * default data style for date.
      *
      * @param date a Date object
      */
     void setDateValue(Date date);
 
     /**
-     * Set the float value for a cell with TableCell.Type.FLOAT.
+     * Set the float value of the cell. Type will be CellType.FLOAT and data style the
+     * default data style for float.
      *
      * @param value a double object with the value to be used
      */
     void setFloatValue(float value);
 
     /**
-     * Set the float value for a cell with TableCell.Type.FLOAT.
+     * Set the float value of the cell. Type will be CellType.FLOAT and data style the
+     * default data style for float.
      *
      * @param value a double object with the value to be used
      */
     void setFloatValue(int value);
 
     /**
-     * Set the float value for a cell with TableCell.Type.FLOAT.
+     * Set the float value of the cell. Type will be CellType.FLOAT and data style the
+     * default data style for float.
      *
      * @param value a double object with the value to be used
      */
     void setFloatValue(Number value);
 
     /**
-     * Set the float value for a cell with TableCell.Type.PERCENTAGE.
+     * Set the percentage value of the cell. Type will be CellType.PERCENTAGE and data style the
+     * default data style for percentage.
      *
      * @param value a float object with the value to be used
      */
     void setPercentageValue(float value);
 
     /**
-     * Set the int value for a cell with TableCell.Type.PERCENTAGE.
+     * Set the percentage value of the cell. Type will be CellType.PERCENTAGE and data style the
+     * default data style for percentage.
      *
      * @param value an int with the value to be used
      */
     void setPercentageValue(int value);
 
     /**
-     * Set the float value for a cell with TableCell.Type.PERCENTAGE.
+     * Set the percentage value of the cell. Type will be CellType.PERCENTAGE and data style the
+     * default data style for percentage.
      *
      * @param value a double object with the value to be used
      */
     void setPercentageValue(Number value);
 
     /**
-     * Set the float value for a cell with TableCell.Type.STRING.
+     * Set the string value for a cell. The type will be CellType.STRING.
      * <p>
      * Note that this will not set the data style of the cell to "text" but let it to "standard",
      * hence the quote before numbers in LO. This is the same behavior
@@ -158,6 +179,9 @@ public interface TableCell {
     void setStyle(TableCellStyle style);
 
     /**
+     * Set the time value of the cell. Type will be CellType.TIME and data style the
+     * default data style for time.
+     *
      * Set the time value as in 19.382 office:time-value. The xml datatype is "duration"
      * (https://www.w3.org/TR/xmlschema-2/#duration)
      *
@@ -166,6 +190,9 @@ public interface TableCell {
     void setTimeValue(long timeInMillis);
 
     /**
+     * Set the time value of the cell. Type will be CellType.TIME and data style the
+     * default data style for time.
+     *
      * Set the time value as in 19.382 office:time-value. The xml datatype is "duration"
      * (https://www.w3.org/TR/xmlschema-2/#duration)
      * All parameters must be positive
@@ -180,6 +207,9 @@ public interface TableCell {
     void setTimeValue(long years, long months, long days, long hours, long minutes, double seconds);
 
     /**
+     * Set the time value of the cell. Type will be CellType.TIME and data style the
+     * default data style for time.
+     *
      * Set the time value as in 19.382 office:time-value. The xml datatype is "duration"
      * (https://www.w3.org/TR/xmlschema-2/#duration)
      * All parameters must be positive
@@ -289,7 +319,7 @@ public interface TableCell {
     boolean hasValue();
 
     /**
-     * Set a text in this cell
+     * Set a text in this cell. Type will be CellType.STRING.
      *
      * @param text the text
      */
