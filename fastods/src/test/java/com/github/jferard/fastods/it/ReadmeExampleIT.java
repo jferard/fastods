@@ -117,10 +117,10 @@ public class ReadmeExampleIT {
                 Assert.assertEquals("float", cell.getValueType());
 
                 final TableTableCellElementBase element = cell.getOdfElement();
-                Assert.assertEquals(GREEN_CELL_STYLE + "-_-float-data",
+                Assert.assertEquals(GREEN_CELL_STYLE,
                         OdfToolkitUtil.getStyleName(cell));
                 Assert.assertEquals("table-cell", OdfToolkitUtil.getStyleFamilyName(cell));
-                Assert.assertEquals(GREEN_CELL_STYLE, OdfToolkitUtil.getParentStyleName(cell));
+                Assert.assertEquals(GREEN_CELL_STYLE, OdfToolkitUtil.getStyleName(cell));
             }
         }
     }

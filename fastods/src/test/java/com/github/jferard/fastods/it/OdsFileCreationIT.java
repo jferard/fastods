@@ -178,16 +178,16 @@ public class OdsFileCreationIT {
             row = sheet.getRowByIndex(1);
             Cell c = row.getCellByIndex(0);
             Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-            Assert.assertEquals("tcs0", OdfToolkitUtil.getParentStyleName(c));
+            Assert.assertEquals("tcs0", OdfToolkitUtil.getStyleName(c));
             c = row.getCellByIndex(1);
             Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-            Assert.assertEquals("tcs1", OdfToolkitUtil.getParentStyleName(c));
+            Assert.assertEquals("tcs1", OdfToolkitUtil.getStyleName(c));
             c = row.getCellByIndex(2);
             Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-            Assert.assertEquals("tcs2", OdfToolkitUtil.getParentStyleName(c));
+            Assert.assertEquals("tcs2", OdfToolkitUtil.getStyleName(c));
             c = row.getCellByIndex(3);
             Assert.assertEquals(validateFibonacci.nextInt(100000), c.getDoubleValue().intValue());
-            Assert.assertEquals("tcs3", OdfToolkitUtil.getParentStyleName(c));
+            Assert.assertEquals("tcs3", OdfToolkitUtil.getStyleName(c));
 
             // THIRD ROW
             row = sheet.getRowByIndex(2);

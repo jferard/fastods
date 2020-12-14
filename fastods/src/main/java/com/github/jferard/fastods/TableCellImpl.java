@@ -301,7 +301,7 @@ public class TableCellImpl implements WritableTableCell {
     private void setFloatValue(final String valueAsString) {
         this.value = valueAsString;
         this.type = CellType.FLOAT;
-        this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
+//        this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
     }
 
     @Override

@@ -54,7 +54,11 @@ public final class OdfToolkitUtil {
      * @return the parent style name
      */
     public static String getParentStyleName(final Cell cell) {
-        return cell.getOdfElement().getAutomaticStyle().getStyleParentStyleNameAttribute();
+        return getAutomaticStyle(cell).getStyleParentStyleNameAttribute();
+    }
+
+    public static OdfStyle getAutomaticStyle(final Cell cell) {
+        return cell.getOdfElement().getAutomaticStyle();
     }
 
     /**
