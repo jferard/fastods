@@ -36,7 +36,7 @@ public class AutoFilterBuilder {
     private Filter filter;
 
     /**
-     * @param rangeName    the name of the table
+     * @param rangeName    the name of the range
      * @param rangeAddress the range address
      */
     public AutoFilterBuilder(final String rangeName, final String rangeAddress) {

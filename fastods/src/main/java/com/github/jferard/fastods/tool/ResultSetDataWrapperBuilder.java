@@ -63,7 +63,7 @@ public class ResultSetDataWrapperBuilder {
 
 
     /**
-     * @param rangeName
+     * @param rangeName the name of the range
      * @param rs        the result set
      */
     public ResultSetDataWrapperBuilder(final String rangeName, final ResultSet rs) {

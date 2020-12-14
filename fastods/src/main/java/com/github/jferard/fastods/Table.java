@@ -370,7 +370,7 @@ public class Table implements NamedObject, FrameContent {
     /**
      * Add a new auto filter
      *
-     * @param rangeName
+     * @param rangeName the name of the range
      * @param r1        first row of the range
      * @param c1        first col of the range
      * @param r2        last row

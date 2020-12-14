@@ -39,6 +39,7 @@ import java.io.IOException;
  */
 public class AutoFilter implements XMLConvertible {
     /**
+     * @param rangeName the name of the range
      * @param table the table
      * @param r1    first row of the range
      * @param c1    first col of the range

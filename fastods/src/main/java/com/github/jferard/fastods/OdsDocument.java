@@ -80,7 +80,7 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * *You probably need {@code addTable}*
      * <p>
-     * Create a new table.
+     * Create a new table, **but do not add it to the document**.
      *
      * @param name - The name of the table to add
      * @return the table
@@ -91,7 +91,7 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * *You probably need {@code addTable}*
      * <p>
-     * Create a new table.
+     * Create a new table, **but do not add it to the document**.
      *
      * @param name           - The name of the table to add
      * @param rowCapacity    the initial row capacity
@@ -177,7 +177,7 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * Add an autoFilter to a range address
      *
-     * @param rangeName
+     * @param rangeName the name of the range
      * @param table     the table
      * @param r1        the top row
      * @param c1        the left column
