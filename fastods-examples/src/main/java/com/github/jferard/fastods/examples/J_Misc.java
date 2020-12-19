@@ -39,8 +39,8 @@ import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.odselement.config.ConfigElement;
 import com.github.jferard.fastods.style.LOFonts;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TextProperties;
 import com.github.jferard.fastods.style.TextStyle;
+import com.github.jferard.fastods.tool.DatabaseExporter;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapperBuilder;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
@@ -74,7 +74,7 @@ class J_Misc {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example1() throws IOException {
+    static void namedWriterExample() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // # Miscellanous Features
         // ## A Named Writer
@@ -130,7 +130,7 @@ class J_Misc {
      * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
      */
-    static void example2() throws IOException, SQLException {
+    static void resultSetExample() throws IOException, SQLException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -260,7 +260,50 @@ class J_Misc {
      * @throws IOException  if the file can't be written
      * @throws SQLException in something goes wrong with the local database
      */
-    static void example3() throws IOException, SQLException {
+    static void databaseExample() throws IOException, SQLException {
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Writing a Database to the Spreadsheet
+        // We need a ResultSet. Let's use H2:
+
+        final JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setUrl("jdbc:h2:mem:test");
+        final Connection conn = dataSource.getConnection();
+        try {
+            final Statement s = conn.createStatement();
+            s.execute("CREATE TABLE document (file_type TEXT, extension TEXT)");
+            s.execute("INSERT INTO document VALUES ('Text', '.odt'), ('Spreadsheet', '.ods'), " +
+                    "('Presentation', '.odp'), ('Drawing', '.odg'), ('Chart', '.odc'), " +
+                    "('Formula', '.odf'), ('Image', '.odi'), ('Master Document', '.odm')" +
+                    ", ('Database', '.odb')");
+            s.execute("CREATE TABLE document_repr (root TEXT, filename TEXT)");
+            s.execute("INSERT INTO document_repr VALUES ('<office:document-content>', " +
+                    "'content.xml'), ('<office:document-styles>', 'styles.xml'), " +
+                    "('<office:document-meta>', 'meta.xml'), ('<office:document-settings>', " +
+                    "'settings.xml')");
+        } finally {
+            conn.close();
+        }
+
+        // Then just use the raw exporter:
+
+        DatabaseExporter.exportDatabase(dataSource, document);
+
+        // There is a command line version of `DatabaseExporter`. See this class for more
+        // information.
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "j_misc_db.ods"));
+    }
+
+
+    /**
+     * @throws IOException  if the file can't be written
+     * @throws SQLException in something goes wrong with the local database
+     */
+    static void freezeCellExample() throws IOException, SQLException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -380,7 +423,7 @@ class J_Misc {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example6() throws IOException {
+    static void namedSpacesExample() throws IOException {
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         //
         // The previous example might not be really impressive, because the attributes should be

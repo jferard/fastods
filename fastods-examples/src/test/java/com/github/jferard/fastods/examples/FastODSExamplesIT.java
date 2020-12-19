@@ -124,17 +124,22 @@ public class FastODSExamplesIT {
 
     @Test
     public void miscTest1() throws IOException {
-        J_Misc.example1();
+        J_Misc.namedWriterExample();
     }
 
     @Test
     public void miscTest2() throws IOException, SQLException {
-        J_Misc.example2();
+        J_Misc.resultSetExample();
     }
 
     @Test
     public void miscTest3() throws IOException, SQLException {
-        J_Misc.example3();
+        J_Misc.databaseExample();
+    }
+
+    @Test
+    public void miscTest4() throws IOException, SQLException {
+        J_Misc.freezeCellExample();
     }
 
     @Test
@@ -149,7 +154,7 @@ public class FastODSExamplesIT {
 
     @Test
     public void miscTest6() throws IOException {
-        J_Misc.example6();
+        J_Misc.namedSpacesExample();
     }
 
     @Test
