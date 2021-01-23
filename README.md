@@ -2,7 +2,7 @@
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
 
 # FastODS
-(C) J. Férard 2016-2020
+(C) J. Férard 2016-2021
 
 (C) M. Schulz 2008-2013 for SimpleODS
 
@@ -80,6 +80,8 @@ To be pragmatic, I chose to consider LibreOffice as the reference implementation
 
 ## Platforms and dependencies
 FastODS has no runtime dependency beyond the standard Java Library version 6 or higher. Even the XML code is manually produced.
+
+However, specific modules like `fastods-crypto` and `fastods-extra` have dependencies, but those are usually not needed.
 
 FastODS works on Android (tested on *Android 9 Pie*, see [this issue](https://github.com/jferard/fastods/issues/180)).
 
