@@ -1,0 +1,3 @@
+domain,key,value
+data,col/1/type,date/yyyy-MM-dd
+data,col/2/type,integer
