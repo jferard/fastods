@@ -31,7 +31,6 @@ import com.github.jferard.javamcsv.MetaCSVReadException;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

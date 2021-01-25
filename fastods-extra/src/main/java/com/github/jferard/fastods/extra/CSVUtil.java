@@ -53,7 +53,7 @@ public class CSVUtil {
     public static void csvToOds(final InputStream is, final InputStream metaIs,
                                 final OutputStream os, final String tableName)
             throws MetaCSVReadException, MetaCSVDataException, MetaCSVParseException, IOException {
-        final DataWrapper wrapper = CSVDataWrapper.builder(is).metaCSVInputStream(metaIs).build();
+        final DataWrapper wrapper = CSVDataWrapper.builder(is).metaCSVInputStream(metaIs).autoFilterRangeName("test").build();
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("csv-import"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();

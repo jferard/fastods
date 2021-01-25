@@ -24,6 +24,8 @@
 
 package com.github.jferard.fastods.extra;
 
+import com.github.jferard.fastods.attribute.SimpleColor;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.javamcsv.MetaCSVDataException;
 import com.github.jferard.javamcsv.MetaCSVParseException;
 import com.github.jferard.javamcsv.MetaCSVParser;
@@ -34,32 +36,39 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 public class CSVDataWrapperBuilder {
+    private static final TableCellStyle HEADER_STYLE =
+            TableCellStyle.builder("csv-data-wrapper").backgroundColor(SimpleColor.GRAY64)
+                    .fontWeightBold().build();
+
     private final File csvFile;
     private final InputStream is;
     private File metaCSVFile;
     private String[] metaCSVDirectives;
     private MetaCSVParser metaCSVParser;
-    private AnyProcessorFactory anyProcessorFactory;
+    private ObjectProcessorFactory objectProcessorFactory;
     private InputStream metaIs;
+    private Logger logger;
+    private int max;
+    private TableCellStyle headerStyle;
+    private String rangeName;
 
     public CSVDataWrapperBuilder(final File csvFile) {
         this.csvFile = csvFile;
-        this.metaCSVFile = null;
-        this.metaCSVDirectives = null;
         this.is = null;
-        this.metaCSVParser = null;
-        this.anyProcessorFactory = AnyProcessorFactory.DEFAULT;
+        this.headerStyle = HEADER_STYLE;
+        this.objectProcessorFactory = ObjectProcessorFactory.DEFAULT;
+        this.max = -1;
     }
 
     public CSVDataWrapperBuilder(final InputStream is) {
         this.is = is;
         this.csvFile = null;
-        this.metaCSVFile = null;
-        this.metaCSVDirectives = null;
-        this.metaCSVParser = null;
-        this.anyProcessorFactory = AnyProcessorFactory.DEFAULT;
+        this.headerStyle = HEADER_STYLE;
+        this.objectProcessorFactory = ObjectProcessorFactory.DEFAULT;
+        this.max = -1;
     }
 
     public CSVDataWrapper build()
@@ -89,7 +98,8 @@ public class CSVDataWrapperBuilder {
                 throw new AssertionError();
             }
         }
-            return new CSVDataWrapper(reader, this.anyProcessorFactory);
+        return new CSVDataWrapper(this.logger, this.objectProcessorFactory, this.rangeName, reader,
+                this.headerStyle, this.max);
     }
 
     public CSVDataWrapperBuilder metaCSVFile(final File metaCSVFile) {
@@ -123,8 +133,62 @@ public class CSVDataWrapperBuilder {
         return this;
     }
 
-    public CSVDataWrapperBuilder anyProcessorFactory(final AnyProcessorFactory anyProcessorFactory) {
-        this.anyProcessorFactory = anyProcessorFactory;
+    public CSVDataWrapperBuilder objectProcessorFactory(
+            final ObjectProcessorFactory objectProcessorFactory) {
+        this.objectProcessorFactory = objectProcessorFactory;
+        return this;
+    }
+
+    /**
+     * Set a logger
+     *
+     * @param logger the logger
+     * @return this for fluent style
+     */
+    public CSVDataWrapperBuilder logger(final Logger logger) {
+        this.logger = logger;
+        return this;
+    }
+
+    /**
+     * Set a header style
+     *
+     * @param headerStyle the cell style for the header
+     * @return this for fluent style
+     */
+    public CSVDataWrapperBuilder headerStyle(final TableCellStyle headerStyle) {
+        this.headerStyle = headerStyle;
+        return this;
+    }
+
+    /**
+     * Remove the default header style
+     *
+     * @return this for fluent style
+     */
+    public CSVDataWrapperBuilder noHeaderStyle() {
+        this.headerStyle = null;
+        return this;
+    }
+
+    /**
+     * Set a limit to the number of rows
+     *
+     * @param max the last line written
+     * @return this for fluent style
+     */
+    public CSVDataWrapperBuilder max(final int max) {
+        this.max = max;
+        return this;
+    }
+
+    /**
+     * Set the auto filter
+     *
+     * @return this for fluent style
+     */
+    public CSVDataWrapperBuilder autoFilterRangeName(final String rangeName) {
+        this.rangeName = rangeName;
         return this;
     }
 }

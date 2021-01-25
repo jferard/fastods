@@ -29,15 +29,15 @@ import com.github.jferard.javamcsv.MetaCSVRecord;
 
 import java.util.List;
 
-public interface AnyProcessorFactory {
-    AnyProcessorFactory DEFAULT = new AnyProcessorFactory() {
+public interface ObjectProcessorFactory {
+    ObjectProcessorFactory DEFAULT = new ObjectProcessorFactory() {
         @Override
         public ValueProcessor create(final List<String> parameters) {
             return new ValueProcessor() {
                 @Override
                 public void processValue(final MetaCSVRecord record, final int i,
                                          final TableCellWalker walker) {
-                    walker.setStringValue(record.getAny(i).toString());
+                    walker.setStringValue(record.getObject(i).toString());
                 }
             };
         }

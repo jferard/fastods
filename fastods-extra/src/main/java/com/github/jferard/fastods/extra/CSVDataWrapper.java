@@ -26,19 +26,21 @@ package com.github.jferard.fastods.extra;
 
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.javamcsv.AnyFieldDescription;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.javamcsv.ObjectFieldDescription;
 import com.github.jferard.javamcsv.CurrencyDecimalFieldDescription;
 import com.github.jferard.javamcsv.DataType;
 import com.github.jferard.javamcsv.MetaCSVMetaData;
 import com.github.jferard.javamcsv.MetaCSVReader;
 import com.github.jferard.javamcsv.MetaCSVRecord;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.io.File;
+import java.util.logging.Logger;
 
 public class CSVDataWrapper implements DataWrapper {
     public static CSVDataWrapperBuilder builder(final File csvFile) {
@@ -49,16 +51,30 @@ public class CSVDataWrapper implements DataWrapper {
         return new CSVDataWrapperBuilder(is);
     }
 
+    private final Logger logger;
+    private final String rangeName;
     private final MetaCSVReader metaCSVReader;
-    private final AnyProcessorFactory anyProcessorFactory;
+    private final ObjectProcessorFactory objectProcessorFactory;
+    private final TableCellStyle headCellStyle;
+    private final int max;
 
-    public CSVDataWrapper(final MetaCSVReader metaCSVReader, final AnyProcessorFactory anyProcessorFactory) {
+    public CSVDataWrapper(final Logger logger, final ObjectProcessorFactory objectProcessorFactory,
+                          final String rangeName, final MetaCSVReader metaCSVReader,
+                          final TableCellStyle headCellStyle,
+                          final int max) {
+        this.logger = logger;
+        this.rangeName = rangeName;
         this.metaCSVReader = metaCSVReader;
-        this.anyProcessorFactory = anyProcessorFactory;
+        this.objectProcessorFactory = objectProcessorFactory;
+        this.headCellStyle = headCellStyle;
+        this.max = max;
     }
 
     @Override
     public boolean addToTable(final TableCellWalker walker) throws IOException {
+        int rowCount = 0; // at least
+        final int r1 = walker.rowIndex();
+        final int c1 = walker.colIndex();
         final MetaCSVMetaData metaData = this.metaCSVReader.getMetaData();
         final Iterator<MetaCSVRecord> iterator = this.metaCSVReader.iterator();
         if (!iterator.hasNext()) {
@@ -68,13 +84,12 @@ public class CSVDataWrapper implements DataWrapper {
         final int columnCount = header.size();
         final List<ValueProcessor> processors =
                 this.createProcessors(metaData, columnCount);
-
-        for (int i = 0; i < columnCount; i++) {
-            walker.setStringValue(header.getText(i).toString());
-            walker.next();
-        }
-        walker.nextRow();
+        this.writeFirstLineTo(header, columnCount, walker, c1);
         while (iterator.hasNext()) {
+            if (this.max >= 0 && ++rowCount >= this.max) {
+                break;
+            }
+            walker.to(c1);
             final MetaCSVRecord record = iterator.next();
             for (int i = 0; i < record.size(); i++) {
                 processors.get(i).processValue(record, i, walker);
@@ -82,12 +97,32 @@ public class CSVDataWrapper implements DataWrapper {
             }
             walker.nextRow();
         }
+        if (this.rangeName != null) {
+            final int r2 = walker.rowIndex();
+            final int c2 = c1 + columnCount - 1;
+            walker.getTable().addAutoFilter(this.rangeName, r1, c1, r2, c2);
+        }
+        walker.nextRow();
         this.metaCSVReader.close();
         return true;
     }
 
+    private void writeFirstLineTo(final MetaCSVRecord header, final int columnCount,
+                                  final TableCellWalker walker, final int c1)
+            throws IOException {
+        walker.to(c1);
+        for (int i = 0; i < columnCount; i++) {
+            walker.setStringValue(header.getText(i).toString());
+            if (this.headCellStyle != null) {
+                walker.setStyle(this.headCellStyle);
+            }
+            walker.next();
+        }
+        walker.nextRow();
+    }
+
     private List<ValueProcessor> createProcessors(final MetaCSVMetaData metaData,
-                                                         final int columnCount) {
+                                                  final int columnCount) {
         final List<ValueProcessor> processors = new ArrayList<ValueProcessor>(columnCount);
         for (int i = 0; i < columnCount; i++) {
             final DataType dataType = metaData.getDataType(i);
@@ -110,7 +145,7 @@ public class CSVDataWrapper implements DataWrapper {
                         @Override
                         public void processValue(final MetaCSVRecord record, final int i,
                                                  final TableCellWalker walker) {
-                            walker.setCurrencyValue(record.getCurrency(i), currencyDecimalSymbol);
+                            walker.setCurrencyValue(record.getDecimal(i), currencyDecimalSymbol);
                         }
                     };
                     break;
@@ -122,7 +157,8 @@ public class CSVDataWrapper implements DataWrapper {
                         @Override
                         public void processValue(final MetaCSVRecord record, final int i,
                                                  final TableCellWalker walker) {
-                            walker.setCurrencyValue((int) record.getCurrency(i), currencyIntegerSymbol);
+                            walker.setCurrencyValue((int) record.getInteger(i),
+                                    currencyIntegerSymbol);
                         }
                     };
                     break;
@@ -172,12 +208,20 @@ public class CSVDataWrapper implements DataWrapper {
                     };
                     break;
                 case PERCENTAGE_DECIMAL:
+                    processor = new ValueProcessor() {
+                        @Override
+                        public void processValue(final MetaCSVRecord record, final int i,
+                                                 final TableCellWalker walker) {
+                            walker.setPercentageValue(record.getDecimal(i));
+                        }
+                    };
+                    break;
                 case PERCENTAGE_FLOAT:
                     processor = new ValueProcessor() {
                         @Override
                         public void processValue(final MetaCSVRecord record, final int i,
                                                  final TableCellWalker walker) {
-                            walker.setPercentageValue(record.getPercentage(i));
+                            walker.setPercentageValue(record.getFloat(i));
                         }
                     };
                     break;
@@ -190,11 +234,11 @@ public class CSVDataWrapper implements DataWrapper {
                         }
                     };
                     break;
-                case ANY:
+                case OBJECT:
                     final List<String> parameters =
-                            metaData.getDescription(i, AnyFieldDescription.class)
+                            metaData.getDescription(i, ObjectFieldDescription.class)
                                     .getParameters();
-                    processor = this.anyProcessorFactory.create(parameters);
+                    processor = this.objectProcessorFactory.create(parameters);
                     break;
                 default:
                     throw new IllegalStateException();
