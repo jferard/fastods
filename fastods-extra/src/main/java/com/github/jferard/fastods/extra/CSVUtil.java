@@ -25,41 +25,57 @@
 package com.github.jferard.fastods.extra;
 
 import com.github.jferard.fastods.AnonymousOdsFileWriter;
-import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
-import com.github.jferard.javamcsv.CurrencyDecimalFieldDescription;
-import com.github.jferard.javamcsv.DataType;
+import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.javamcsv.MetaCSVDataException;
-import com.github.jferard.javamcsv.MetaCSVMetaData;
 import com.github.jferard.javamcsv.MetaCSVParseException;
 import com.github.jferard.javamcsv.MetaCSVReadException;
-import com.github.jferard.javamcsv.MetaCSVReader;
 
-import com.github.jferard.javamcsv.MetaCSVRecord;
-
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
 public class CSVUtil {
-    public static void csvToOds(final InputStream is, final InputStream metaIs,
-                                final OutputStream os, final String tableName)
+    /**
+     * Export the content of a CSV file to an ODS file. The CSV file must have a MetaCSV file that
+     * describes its content. See https://github.com/jferard/MetaCSV
+     *
+     * @param csvFile the source CSV File. The MetaCSV file must have the same path but a .mcsv extension
+     * @param odsFile the destination ODS File
+     * @throws MetaCSVReadException  if the CSV file can't be read
+     * @throws MetaCSVDataException  if the MetaCSV file is inconsistent
+     * @throws MetaCSVParseException if the MetaCSV file can't be parser
+     * @throws IOException           if an I/O error occurs
+     */
+    public static void csvToOds(final File csvFile, final File odsFile)
             throws MetaCSVReadException, MetaCSVDataException, MetaCSVParseException, IOException {
-        final DataWrapper wrapper = CSVDataWrapper.builder(is).metaCSVInputStream(metaIs).autoFilterRangeName("test").build();
+        final CSVDataWrapper dataWrapper =
+                CSVDataWrapper.builder(csvFile).autoFilterRangeName("csv-import").build();
+        final String tableName = new TableNameUtil().escapeTableName(csvFile.getName());
+        csvToOds(dataWrapper, odsFile, tableName);
+    }
+
+    /**
+     * Copy the wrapped data to an ODS file.
+     *
+     * @param dataWrapper the data wrapper
+     * @param tableName the table name
+     * @param odsFile the destination ODS File
+     * @throws IOException           if an I/O error occurs
+     */
+    public static void csvToOds(final CSVDataWrapper dataWrapper, final File odsFile,
+                                final String tableName)
+            throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("csv-import"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
         final Table table = document.addTable(tableName);
         final TableCellWalker walker = table.getWalker();
-        wrapper.addToTable(walker);
-        writer.save(os);
+        dataWrapper.addToTable(walker);
+        writer.saveAs(odsFile);
     }
 }
