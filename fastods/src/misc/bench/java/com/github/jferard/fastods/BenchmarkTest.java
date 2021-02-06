@@ -23,7 +23,6 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.testlib.Bench;
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -32,6 +31,7 @@ import org.junit.rules.TestName;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -100,7 +100,7 @@ public class BenchmarkTest {
 
     private void test(final int rowCount, final int colCount, final int times) throws IOException {
         final List<Bench> benches =
-                Lists.newArrayList(new BenchFast(this.logger, rowCount, colCount),
+                Arrays.asList(new BenchFast(this.logger, rowCount, colCount),
                         new BenchFastFlush(this.logger, rowCount, colCount),
                         new BenchFastFlushWithThreads(this.logger, rowCount, colCount),
                         new BenchSimpleOds(this.logger, rowCount, colCount),

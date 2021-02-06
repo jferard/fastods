@@ -24,8 +24,6 @@
 
 package com.github.jferard.fastods.testlib;
 
-import com.google.common.base.Joiner;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -62,7 +60,7 @@ public class CodePointTester {
         if (from >= 0) {
             segments.add(format(from, i));
         }
-        return Joiner.on(" | ").join(segments);
+        return Util.join(" | ", segments);
     }
 
     private static String format(final int from, final int to) {

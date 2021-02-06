@@ -23,7 +23,7 @@
  */
 package com.github.jferard.fastods.util;
 
-import com.google.common.collect.Sets;
+import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -125,7 +125,7 @@ public class UniqueListTest {
         ul.add(new FirstLetter("FastODS"));
         ul.add(new FirstLetter("GastODS"));
 
-        Assert.assertEquals(Sets.newHashSet("F", "G"), ul.nameSet());
+        Assert.assertEquals(TestHelper.newSet("F", "G"), ul.nameSet());
     }
 
     @Test()

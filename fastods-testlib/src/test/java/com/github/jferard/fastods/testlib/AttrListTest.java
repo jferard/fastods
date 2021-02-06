@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods.testlib;
 
-import com.google.common.base.Charsets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +50,7 @@ public class AttrListTest {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         this.builder = factory.newDocumentBuilder();
         final Document document =
-                this.builder.parse(new ByteArrayInputStream(("<r a='1' b='2'/>").getBytes(
-                        Charsets.UTF_8)));
+                this.parse("<r a='1' b='2'/>");
         this.attributes = document.getElementsByTagName("r").item(0).getAttributes();
         this.attrList = AttrList.create(this.attributes);
     }
@@ -84,8 +82,7 @@ public class AttrListTest {
         Assert.assertNotEquals(this.attrList, "attrList");
 
         final Document document =
-                this.builder.parse(new ByteArrayInputStream(("<s b='2' a='1'/>").getBytes(
-                        Charsets.UTF_8)));
+                this.parse("<s b='2' a='1'/>");
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
         final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(attrList2, this.attrList);
@@ -95,8 +92,7 @@ public class AttrListTest {
     @Test
     public void testCompare() throws IOException, SAXException {
         final Document document =
-                this.builder.parse(new ByteArrayInputStream(("<s b='3' a='1'/>").getBytes(
-                        Charsets.UTF_8)));
+                this.parse("<s b='3' a='1'/>");
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
         final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(0, this.attrList.compareTo(this.attrList));
@@ -111,8 +107,7 @@ public class AttrListTest {
 
     @Test
     public void testCompareWithDifferentSizes() throws IOException, SAXException {
-        final Document document = this.builder
-                .parse(new ByteArrayInputStream(("<s c='3' b='2' a='1'/>").getBytes(Charsets.UTF_8)));
+        final Document document = this.parse("<s c='3' b='2' a='1'/>");
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
         final AttrList attrList2 = AttrList.create(attributes2);
         Assert.assertEquals(1, attrList2.compareTo(this.attrList));
@@ -121,8 +116,7 @@ public class AttrListTest {
 
     @Test
     public void testNull() throws IOException, SAXException {
-        final Document document = this.builder
-                .parse(new ByteArrayInputStream(("<s c='3' b='2' a='1'/>").getBytes(Charsets.UTF_8)));
+        final Document document = this.parse("<s c='3' b='2' a='1'/>");
         final NamedNodeMap attributes2 = document.getElementsByTagName("s").item(0).getAttributes();
         final AttrList attrList2 = AttrList.create(attributes2);
         final AttrList attrList3 = new AttrList(Arrays.<Attr>asList(null, null, null));
@@ -131,6 +125,10 @@ public class AttrListTest {
         Assert.assertEquals(1, attrList3.compareTo(attrList2));
         Assert.assertEquals(0, attrList3.compareTo(attrList3));
         Assert.assertEquals(0, attrList3.compareTo(attrList4));
+    }
+
+    private Document parse(final String xml) throws IOException, SAXException {
+        return this.builder.parse(new ByteArrayInputStream(xml.getBytes(Util.UTF_8)));
     }
 
     @Test

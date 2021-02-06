@@ -39,7 +39,6 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.collect.Lists;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -129,7 +128,7 @@ public class TableTest {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        final List<TableRowImpl> rows = Lists.newArrayList();
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.table.getRow(r));
         }

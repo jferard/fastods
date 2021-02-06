@@ -36,11 +36,16 @@ import org.easymock.EasyMock;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TestHelper {
+
+
     private static final XMLUtil util = XMLUtil.create();
 
     public static String toXML(final XMLConvertible o) throws IOException {
@@ -102,5 +107,15 @@ public class TestHelper {
         EasyMock.expect(mockOdsElements
                 .addPageLayoutStyle(PageStyle.DEFAULT_MASTER_PAGE_STYLE.getPageLayoutStyle()))
                 .andReturn(true).anyTimes();
+    }
+
+    /**
+     * Create a new set
+     * @param elements the elements
+     * @param <T> the type of the elements
+     * @return the set
+     */
+    public static <T> Set<T> newSet(final T... elements) {
+        return new HashSet<T>(Arrays.asList(elements));
     }
 }

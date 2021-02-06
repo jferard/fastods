@@ -50,14 +50,14 @@ import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
+import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Resources;
 import org.h2.jdbcx.JdbcDataSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -298,10 +298,17 @@ class L_PeriodicTable {
     // Finally, the expected functions:
     // I use Guava to convert this resources to Strings:
     private static String resourceToString(final String resourceName) throws IOException {
-        final Reader reader =
-                Resources.asCharSource(Resources.getResource(resourceName), Charsets.UTF_8)
-                        .openStream();
-        return CharStreams.toString(reader);
+        final InputStream in = L_PeriodicTable.class.getClassLoader().getResourceAsStream(resourceName);
+        assert in != null : "Can't find resource "+resourceName;
+        final Reader reader = new InputStreamReader(in, CharsetUtil.UTF_8);
+        final char[] arr = new char[8 * 1024];
+        final StringBuilder sb = new StringBuilder();
+        int count = reader.read(arr, 0, arr.length);
+        while (count != -1) {
+            sb.append(arr, 0, count);
+            count = reader.read(arr, 0, arr.length);
+        }
+        return sb.toString();
     }
 
     // And to produce similar cell styles:

@@ -37,7 +37,6 @@ import com.github.jferard.fastods.tool.InsertHelper;
 import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.io.Resources;
 
 import java.io.File;
 import java.io.IOException;
@@ -145,10 +144,9 @@ class I_Embedding {
         final OdsDocument document = writer.document();
         final Table table = document.addTable("test");
 
-        // We get the input stream with Guava:
+        // We get the input stream:
         final InputStream inputStream =
-                Resources.asByteSource(Resources.getResource("a_hello_world_example.ods"))
-                        .openStream();
+                I_Embedding.class.getClassLoader().getResourceAsStream("a_hello_world_example.ods");
 
         // And use a tool
         final GraphicStyle gs = GraphicStyle.builder("gs").build();

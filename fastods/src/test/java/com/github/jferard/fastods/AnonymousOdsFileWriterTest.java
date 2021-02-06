@@ -24,14 +24,12 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.odselement.ManifestEntry;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StandardManifestEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
-import com.google.common.collect.Sets;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,12 +46,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.ConsoleHandler;
@@ -136,7 +131,7 @@ public class AnonymousOdsFileWriterTest {
             Assert.fail();
         }
         Assert.assertEquals(
-                Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
+                TestHelper.newSet("settings.xml", "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                         "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
                         "meta.xml", "Configurations2/accelerator/current.xml",
@@ -182,7 +177,7 @@ public class AnonymousOdsFileWriterTest {
         }
 
         Assert.assertEquals(
-                Sets.newHashSet("settings.xml", "Configurations2/images/Bitmaps/",
+                TestHelper.newSet("settings.xml", "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                         "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
                         "meta.xml", "Configurations2/accelerator/current.xml",
@@ -219,12 +214,13 @@ public class AnonymousOdsFileWriterTest {
         }
 
         Assert.assertEquals(
-                Sets.newHashSet("settings.xml", "last", "Configurations2/images/Bitmaps/",
+                TestHelper.newSet(new String[]{"settings.xml", "last",
+                        "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                         "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
                         "meta.xml", "Configurations2/accelerator/current.xml",
                         "Configurations2/popupmenu/", "styles.xml", "content.xml",
-                        "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
+                        "Configurations2/progressbar/", "Configurations2/statusbar/"}), names);
     }
 
     @Test
@@ -252,7 +248,7 @@ public class AnonymousOdsFileWriterTest {
             entry = zis.getNextEntry();
         }
 
-        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 2*DELTA) {
+        if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 2 * DELTA) {
             System.out.println(
                     String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2,
                             buf.length));
@@ -260,12 +256,13 @@ public class AnonymousOdsFileWriterTest {
         }
         // Every element appears twice
         Assert.assertEquals(
-                new HashSet<String>(Arrays.asList("Configurations2/accelerator/current.xml", "Configurations2/floater/",
+                TestHelper.newSet("Configurations2/accelerator/current.xml",
+                        "Configurations2/floater/",
                         "Configurations2/images/Bitmaps/", "Configurations2/menubar/",
                         "Configurations2/popupmenu/", "Configurations2/progressbar/",
                         "Configurations2/statusbar/", "Configurations2/toolbar/",
                         "META-INF/manifest.xml", "Thumbnails/", "content.xml", "meta.xml",
-                        "mimetype", "settings.xml", "styles.xml")), names);
+                        "mimetype", "settings.xml", "styles.xml"), names);
     }
 
     @Test

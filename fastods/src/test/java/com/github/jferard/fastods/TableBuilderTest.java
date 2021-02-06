@@ -36,7 +36,6 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.WriteUtil;
 import com.github.jferard.fastods.util.XMLUtil;
-import com.google.common.collect.Lists;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,6 +44,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,7 +76,7 @@ public class TableBuilderTest {
 
     @Test
     public final void testColumnStyles() {
-        final List<TableColumnStyle> tcss = Lists.newArrayList();
+        final List<TableColumnStyle> tcss = new ArrayList<TableColumnStyle>();
         for (int c = 0; c < 10; c++) {
             final TableColumnStyle tcs = TableColumnStyle.builder("test" + c).build();
             tcss.add(tcs);
@@ -99,7 +99,7 @@ public class TableBuilderTest {
 
     @Test
     public final void testGetRow() throws IOException {
-        final List<TableRowImpl> rows = Lists.newArrayList();
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }
@@ -114,7 +114,7 @@ public class TableBuilderTest {
 
     @Test
     public final void testGetRowFromStringPos() throws IOException, ParseException {
-        final List<TableRowImpl> rows = Lists.newArrayList();
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         for (int r = 0; r < 7; r++) { // 8 times
             rows.add(this.builder.nextRow(this.table, this.appender));
         }

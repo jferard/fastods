@@ -23,14 +23,9 @@
  */
 package com.github.jferard.fastods.testlib;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.collect.Iterables;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -94,18 +89,18 @@ public abstract class ChildrenTester {
             this.logFail("Different nodes types: %s vs %s");
             return false;
         }
-        final boolean namesEqual = Objects.equal(element1.getNodeName(), element2.getNodeName());
+        final boolean namesEqual = Util.equal(element1.getNodeName(), element2.getNodeName());
         if (!namesEqual) {
             this.logFail("Different nodes names: %s vs %s");
             return false;
         }
-        final boolean valuesEqual = Objects.equal(element1.getNodeValue(), element2.getNodeValue());
+        final boolean valuesEqual = Util.equal(element1.getNodeValue(), element2.getNodeValue());
         if (!valuesEqual) {
             this.logFail("Different nodes values: %s vs %s");
             return false;
         }
         final boolean nsURIEqual =
-                Objects.equal(element1.getNamespaceURI(), element2.getNamespaceURI());
+                Util.equal(element1.getNamespaceURI(), element2.getNamespaceURI());
         if (!nsURIEqual) {
             this.logFail("Different nodes namespaces: %s vs %s");
             return false;
@@ -157,20 +152,26 @@ public abstract class ChildrenTester {
         if (p.size() <= 1) {
             return "<root>";
         } else {
-            return Joiner.on("/").join(p.subList(1, p.size()));
+            return Util.join("/", p.subList(1, p.size()));
         }
     }
 
+    /**
+     *
+     * @param format first and second parameters are the state. Other parameters are extra.
+     * @param extra extra parameters.
+     */
     protected void logFail(final String format, final Object... extra) {
-        final Object[] objects = Iterables.toArray(Iterables
-                .concat(Arrays.asList(this.getStateStr(this.state1), this.getStateStr(this.state2)),
-                        Arrays.asList(extra)), Object.class);
+        final Object[] objects = new Object[2 + extra.length];
+        objects[0] = this.getStateStr(this.state1);
+        objects[1] = this.getStateStr(this.state2);
+        System.arraycopy(extra, 0, objects, 2, extra.length);
 
         this.firstDifference = String.format(format, objects);
     }
 
-    public Optional<String> getFirstDifference() {
-        return Optional.fromNullable(this.firstDifference);
+    public String getFirstDifference() {
+        return this.firstDifference;
     }
 
     public void setFirstDifference(final String difference) {

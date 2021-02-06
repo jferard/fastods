@@ -25,7 +25,6 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.TestHelper;
-import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +59,7 @@ public class ConfigItemMapEntrySetTest {
     @Test
     public void testCreateSingletonSet() {
         final ConfigItemMapEntrySet s =
-                new ConfigItemMapEntrySet("n", Sets.<ConfigBlock>newHashSet(this.item));
+                new ConfigItemMapEntrySet("n", TestHelper.<ConfigBlock>newSet(this.item));
         Assert.assertEquals(1, s.size());
         Assert.assertFalse(s.isEmpty());
     }

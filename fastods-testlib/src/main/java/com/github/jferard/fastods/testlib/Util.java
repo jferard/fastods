@@ -24,18 +24,20 @@
 
 package com.github.jferard.fastods.testlib;
 
-import com.google.common.base.Charsets;
-
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
- * An utility class for creating directories
+ * An utility class for creating directories, join strings, etc.
  *
  * @author Julien Férard
  */
 public final class Util {
     public static final String XML_PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+    public static final Charset UTF_8 = Charset.forName("UTF-8");
 
     /**
      * @param dirName the name of the directory to create
@@ -58,6 +60,38 @@ public final class Util {
             }
         }
         return file.mkdir();
+    }
+
+    /**
+     * Join a collection on a separator
+     * @param separator the separator
+     * @param segments the collection
+     * @return the joined collection.
+     */
+    public static String join(final String separator, final Collection<String> segments) {
+        final StringBuilder sb = new StringBuilder();
+        final Iterator<String> it = segments.iterator();
+        if (it.hasNext()) {
+            sb.append(it.next());
+            while (it.hasNext()) {
+                sb.append(separator).append(it.next());
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Safe check if objects are equal.
+     * @param first the first object
+     * @param second the second object
+     * @return if objects are equal
+     */
+    public static boolean equal(final Object first, final Object second) {
+        if (first == null) {
+            return second == null;
+        } else {
+            return first.equals(second);
+        }
     }
 
     private Util() {

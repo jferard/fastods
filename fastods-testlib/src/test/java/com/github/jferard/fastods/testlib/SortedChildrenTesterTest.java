@@ -24,8 +24,6 @@
 
 package com.github.jferard.fastods.testlib;
 
-import com.google.common.annotations.Beta;
-import com.google.common.base.Charsets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,6 +85,7 @@ public class SortedChildrenTesterTest {
         final Node x = this.getNode("<x><r/></x>");
         final Node y = this.getNode("<y><s/><t/></y>");
         final Node z = this.getNode("<z><s/><u/></z>");
+        // TODO: make a test!
     }
 
     @Test
@@ -104,10 +103,9 @@ public class SortedChildrenTesterTest {
         Assert.assertFalse(this.tester.equals(r, u));
     }
 
-    @Beta
     private Node getNode(final String s) throws SAXException, IOException {
         final Document document =
-                this.builder.parse(new ByteArrayInputStream(s.getBytes(Charsets.UTF_8)));
+                this.builder.parse(new ByteArrayInputStream(s.getBytes(Util.UTF_8)));
         return document.getFirstChild();
     }
 }

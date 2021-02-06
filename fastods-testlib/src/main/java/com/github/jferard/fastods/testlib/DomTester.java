@@ -23,7 +23,6 @@
  */
 package com.github.jferard.fastods.testlib;
 
-import com.google.common.base.Charsets;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -86,12 +85,12 @@ public class DomTester {
     public static void assertEquals(final String expected, final String actual,
                                     final ChildrenTester childrenTester) {
         if (!DomTester.equals(expected, actual, childrenTester)) {
-            assert childrenTester.getFirstDifference().isPresent();
+            assert childrenTester.getFirstDifference() != null;
             final String msg =
                     "XML are different.\n" +
                             "Expected was: " + expected + "\n" +
                             "  Actual was: " + actual + "\n" +
-                            childrenTester.getFirstDifference().get();
+                            childrenTester.getFirstDifference();
             throw new AssertionError(msg);
         }
     }
@@ -211,6 +210,6 @@ public class DomTester {
         } else {
             wrapped = Util.XML_PROLOG + "<domtesterroot>" + s + "</domtesterroot>";
         }
-        return new ByteArrayInputStream((wrapped).getBytes(Charsets.UTF_8));
+        return new ByteArrayInputStream((wrapped).getBytes(Util.UTF_8));
     }
 }
