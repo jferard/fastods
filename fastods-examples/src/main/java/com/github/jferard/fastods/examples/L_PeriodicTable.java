@@ -296,7 +296,6 @@ class L_PeriodicTable {
     // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 
     // Finally, the expected functions:
-    // I use Guava to convert this resources to Strings:
     private static String resourceToString(final String resourceName) throws IOException {
         final InputStream in = L_PeriodicTable.class.getClassLoader().getResourceAsStream(resourceName);
         assert in != null : "Can't find resource "+resourceName;
