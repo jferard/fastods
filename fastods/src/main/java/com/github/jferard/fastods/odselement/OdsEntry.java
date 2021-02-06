@@ -24,27 +24,27 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.XMLConvertible;
 
-import java.io.IOException;
+import java.util.zip.ZipEntry;
 
-/**
- * An empty element, but present in the zip archive.
- */
-public class ExtraElement implements OdsElement {
-    private final OdsEntry entry;
-    private final byte[] data;
+public interface OdsEntry extends XMLConvertible {
+    /**
+     * Wrap this entry with encrypt parameters if possible
+     * @param encryptParameters the parameters to encrypt the file
+     * @return an entry with those parameters.
+     * @throws IllegalArgumentException if the entry can't be encrypted (e.g. directory or
+     * mimetype).
+     */
+    OdsEntry encryptParameters(EncryptParameters encryptParameters);
 
-    public ExtraElement(final OdsEntry entry, final byte[] data) {
-        this.entry = entry;
-        this.data = data;
-    }
+    /**
+     * @return the ZipEntry (STORE or DEFLATE) associated with this entry.
+     */
+    ZipEntry asZipEntry();
 
-    @Override
-    public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putAndRegisterNextEntry(this.entry);
-        writer.write(this.data);
-        writer.closeEntry();
-    }
+    /**
+     * @return true if the entry should not be encrypted.
+     */
+    boolean neverEncrypt();
 }

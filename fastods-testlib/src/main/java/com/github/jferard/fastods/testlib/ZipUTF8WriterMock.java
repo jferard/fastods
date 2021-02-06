@@ -125,7 +125,7 @@ public class ZipUTF8WriterMock implements Appendable {
      * finish the zip mock
      */
     public void finish() {
-        this.builderByEntryName.put("ManifestEntry[path=META-INF/manifest.xml]", new StringBuilder());
+        this.builderByEntryName.put("UnregisteredOdsEntry[path=META-INF/manifest.xml]", new StringBuilder());
         this.curBuilder = null;
     }
 

@@ -119,7 +119,7 @@ public class SettingsElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putAndRegisterNextEntry(new StandardManifestEntry("settings.xml", "text/xml", null));
+        writer.putAndRegisterNextEntry(new StandardOdsEntry("settings.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-settings");
         for (final Map.Entry<String, String> entry: SETTINGS_NAMESPACE_BY_PREFIX.entrySet()) {

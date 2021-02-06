@@ -23,26 +23,23 @@
  */
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.odselement.ManifestEntry;
-import com.github.jferard.fastods.odselement.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.OdsEntry;
+import com.github.jferard.fastods.odselement.StandardOdsEntry;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.ZipEntry;
+import java.io.OutputStream;
 import java.util.zip.ZipInputStream;
 
 public class ZipUTF8WriterBuilderTest {
     public static final int C_SIZE = 121;
     private static final int UC_SIZE = 259;
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
 
     private ZipUTF8WriterBuilderImpl builder;
     private ByteArrayOutputStream out;
@@ -91,8 +88,8 @@ public class ZipUTF8WriterBuilderTest {
         Assert.assertEquals(ZipUTF8WriterBuilderTest.C_SIZE, this.out.size());
     }
 
-    private ManifestEntry getManifestEntry() {
-        return new StandardManifestEntry("me", null, null);
+    private OdsEntry getManifestEntry() {
+        return new StandardOdsEntry("me", null, null);
     }
 
     @Test
@@ -128,14 +125,26 @@ public class ZipUTF8WriterBuilderTest {
 
     @Test
     public final void testBadWriterBufferSize() {
-        this.thrown.expect(IllegalArgumentException.class);
-        this.builder.writerBuffer(-1).build(this.out);
+        final ZipUTF8WriterBuilderImpl finalBuilder = this.builder;
+        final OutputStream finalOut = this.out;
+        Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() {
+                finalBuilder.writerBuffer(-1).build(finalOut);
+            }
+        });
     }
 
     @Test
     public final void testBadZipBufferSize() {
-        this.thrown.expect(IllegalArgumentException.class);
-        this.builder.zipBuffer(-1).build(this.out);
+        final ZipUTF8WriterBuilderImpl finalBuilder = this.builder;
+        final OutputStream finalOut = this.out;
+        Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() {
+                finalBuilder.zipBuffer(-1).build(finalOut);
+            }
+        });
     }
 
     @Test
@@ -164,8 +173,14 @@ public class ZipUTF8WriterBuilderTest {
 
     @Test
     public final void testLevel99() {
-        this.thrown.expect(IllegalArgumentException.class);
-        this.thrown.expectMessage("invalid compression level");
-        this.builder.level(99).build(this.out);
+        final ZipUTF8WriterBuilderImpl finalBuilder = this.builder;
+        final OutputStream finalOut = this.out;
+        Assert.assertThrows("invalid compression level", IllegalArgumentException.class,
+                new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalBuilder.level(99).build(finalOut);
+                    }
+                });
     }
 }

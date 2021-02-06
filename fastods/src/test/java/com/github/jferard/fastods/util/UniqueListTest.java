@@ -25,37 +25,24 @@ package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.TestHelper;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 
 import java.util.List;
 
 public class UniqueListTest {
-    private static class FirstLetter implements NamedObject {
-        private final String s;
-
-        FirstLetter(final String s) {
-            this.s = s;
-        }
-
-        @Override
-        public String getName() {
-            return this.s.substring(0, 1);
-        }
-    }
-
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-
     @Test()
     public final void testDuplicate() {
         final List<FirstLetter> ul = new UniqueList<FirstLetter>();
         ul.add(new FirstLetter("FastODS"));
 
-        this.thrown.expect(IllegalArgumentException.class);
-        this.thrown.expectMessage("already in list");
-        ul.add(new FirstLetter("FastODS2"));
+        Assert.assertThrows("already in list", IllegalArgumentException.class,
+                new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        ul.add(new FirstLetter("FastODS2"));
+                    }
+                });
     }
 
     @Test()
@@ -75,8 +62,12 @@ public class UniqueListTest {
         ul.add(element);
         ul.add(new FirstLetter("GastODS"));
 
-        this.thrown.expect(IndexOutOfBoundsException.class);
-        Assert.assertEquals(element, ul.remove(2));
+        Assert.assertThrows(IndexOutOfBoundsException.class, new ThrowingRunnable() {
+            @Override
+            public void run() {
+                ul.remove(2);
+            }
+        });
     }
 
     @Test()
@@ -134,8 +125,26 @@ public class UniqueListTest {
         ul.add(new FirstLetter("FastODS"));
         ul.set(0, new FirstLetter("GastODS"));
 
-        this.thrown.expect(IllegalArgumentException.class);
-        this.thrown.expectMessage("already in list");
-        ul.set(0, new FirstLetter("FastODS"));
+        Assert.assertThrows("already in list", IllegalArgumentException.class,
+                new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        ul.set(0, new FirstLetter("FastODS"));
+
+                    }
+                });
+    }
+
+    private static class FirstLetter implements NamedObject {
+        private final String s;
+
+        FirstLetter(final String s) {
+            this.s = s;
+        }
+
+        @Override
+        public String getName() {
+            return this.s.substring(0, 1);
+        }
     }
 }

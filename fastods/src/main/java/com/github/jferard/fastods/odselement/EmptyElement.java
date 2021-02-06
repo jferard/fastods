@@ -33,9 +33,9 @@ import java.io.IOException;
  * An empty element, but present in the zip archive.
  */
 public class EmptyElement implements OdsElement {
-    private final ManifestEntry entry;
+    private final OdsEntry entry;
 
-    public EmptyElement(final ManifestEntry entry) {
+    public EmptyElement(final OdsEntry entry) {
         this.entry = entry;
     }
 

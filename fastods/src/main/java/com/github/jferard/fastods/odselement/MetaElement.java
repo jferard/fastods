@@ -118,7 +118,7 @@ public class MetaElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putAndRegisterNextEntry(new StandardManifestEntry("meta.xml", "text/xml", null));
+        writer.putAndRegisterNextEntry(new StandardOdsEntry("meta.xml", "text/xml", null));
         writer.append("<?xml");
         util.appendAttribute(writer, "version", "1.0");
         util.appendAttribute(writer, "encoding", CharsetUtil.UTF_8_NAME);

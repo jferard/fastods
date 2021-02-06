@@ -56,6 +56,9 @@ import java.util.Arrays;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
+/**
+ * A class that can encrypt data
+ */
 class StandardEncrypter {
     public static final int BUFFER_SIZE = 4096;
     public static final int BITS_BY_BYTE = 8;
@@ -160,7 +163,7 @@ class StandardEncrypter {
     /**
      * @param data the data
      * @return the SHA-256 checksum of the 1024 first bytes.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException should not happen
      */
     public byte[] getDataChecksum(final byte[] data) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -171,7 +174,7 @@ class StandardEncrypter {
     /**
      * @param password the data
      * @return the base64 byte array
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException should not happen
      */
     public byte[] getPasswordChecksum(final char[] password) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -200,13 +203,14 @@ class StandardEncrypter {
     }
 
     /**
-     * @param uncompressedSize
-     * @param compressedSize
-     * @param crc32
-     * @param compressedCheckSum
-     * @param derivationSalt
-     * @param algorithmInitializationVector
-     * @return
+     * Build the parameters to pass to the encrypted OdsEntry
+     * @param uncompressedSize size of the uncompressed data
+     * @param compressedSize size of the compressed data
+     * @param crc32 check
+     * @param compressedCheckSum the checksum of the compressed data
+     * @param derivationSalt salt
+     * @param algorithmInitializationVector iv
+     * @return the parameters
      */
     public EncryptParameters buildParameters(final int uncompressedSize,
                                              final int compressedSize, final long crc32,

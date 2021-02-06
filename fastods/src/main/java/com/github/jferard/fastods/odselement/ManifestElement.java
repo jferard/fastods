@@ -29,7 +29,6 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -61,40 +60,40 @@ public class ManifestElement implements OdsElement {
      * @return a new ManifestElement
      */
     public static ManifestElement create() {
-        return new ManifestElement(new HashSet<ManifestEntry>()); //ManifestElement.ENTRIES);
+        return new ManifestElement(new HashSet<OdsEntry>()); //ManifestElement.ENTRIES);
     }
 
-    private final Set<ManifestEntry> manifestEntries;
+    private final Set<OdsEntry> manifestEntries;
 
     /**
      * @param initialEntries the first entries
      */
-    ManifestElement(final Set<ManifestEntry> initialEntries) {
-        this.manifestEntries = new HashSet<ManifestEntry>(initialEntries);
+    ManifestElement(final Set<OdsEntry> initialEntries) {
+        this.manifestEntries = new HashSet<OdsEntry>(initialEntries);
     }
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putNextEntry(new UnregisteredEntry(ManifestElement.META_INF_MANIFEST_XML));
+        writer.putNextEntry(new UnregisteredOdsEntry(ManifestElement.META_INF_MANIFEST_XML));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<manifest:manifest");
         util.appendAttribute(writer, "xmlns:manifest",
                 "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0");
         util.appendAttribute(writer, "manifest:version", "1.2");
         writer.append(">");
-        final List<ManifestEntry> entries = this.getManifestEntries();
-        for (final ManifestEntry entry : entries) {
+        final List<OdsEntry> entries = this.getManifestEntries();
+        for (final OdsEntry entry : entries) {
             entry.appendXMLContent(util, writer);
         }
         writer.append("</manifest:manifest>");
         writer.closeEntry();
     }
 
-    private List<ManifestEntry> getManifestEntries() {
-        final List<ManifestEntry> entries = new ArrayList<ManifestEntry>(this.manifestEntries);
-        Collections.sort(entries, new Comparator<ManifestEntry>() {
+    private List<OdsEntry> getManifestEntries() {
+        final List<OdsEntry> entries = new ArrayList<OdsEntry>(this.manifestEntries);
+        Collections.sort(entries, new Comparator<OdsEntry>() {
             @Override
-            public int compare(final ManifestEntry o1, final ManifestEntry o2) {
+            public int compare(final OdsEntry o1, final OdsEntry o2) {
                 return o1.asZipEntry().getName().compareTo(o2.asZipEntry().getName());
             }
         });
@@ -104,7 +103,7 @@ public class ManifestElement implements OdsElement {
     /**
      * @param manifestEntry the new entry to add
      */
-    public void add(final ManifestEntry manifestEntry) {
+    public void add(final OdsEntry manifestEntry) {
         this.manifestEntries.add(manifestEntry);
     }
 }

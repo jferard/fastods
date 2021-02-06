@@ -293,9 +293,9 @@ public class OdsElementsTest {
         writer.finish();
 
         PowerMock.verifyAll();
-        final String pathContent = handler.getEntryAsString("ManifestEntry[path=path]");
+        final String pathContent = handler.getEntryAsString("OdsEntry[path=path]");
         Assert.assertEquals("content", pathContent);
-        final String entryAsString = handler.getEntryAsString("ManifestEntry[path=META-INF/manifest.xml]");
+        final String entryAsString = handler.getEntryAsString("UnregisteredOdsEntry[path=META-INF/manifest.xml]");
         Assert.assertEquals("", entryAsString);
 
     }

@@ -110,7 +110,7 @@ public class StylesElement implements OdsElement {
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
         final HasFooterHeader hasFooterHeader = this.stylesContainer.hasFooterHeader();
 
-        writer.putAndRegisterNextEntry(new StandardManifestEntry("styles.xml", "text/xml", null));
+        writer.putAndRegisterNextEntry(new StandardOdsEntry("styles.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-styles");
         for (final Map.Entry<String, String> entry : STYLES_NAMESPACE_BY_PREFIX.entrySet()) {

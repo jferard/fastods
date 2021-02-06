@@ -38,14 +38,32 @@ import java.security.NoSuchAlgorithmException;
  * A builder for `ZipUTF8CryptoWriter`.
  */
 public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
+    /**
+     * @param password the password to encrypt data
+     * @return a builder
+     */
+    public static ZipUTF8WriterBuilder create(final char[] password) {
+        return new ZipUTF8CryptoWriterBuilder(new ZipUTF8WriterBuilderImpl(),
+                EncryptParameters.builder(), password
+        );
+    }
+
+
     private final ZipUTF8WriterBuilderImpl writerBuilder;
     private final char[] password;
     private final EncryptParametersBuilder parametersBuilder;
 
-    public ZipUTF8CryptoWriterBuilder(final char[] password) {
+    /**
+     * @param writerBuilder the writer builder. May be initialized
+     * @param parametersBuilder the parameters builder. May be initialized
+     * @param password the password
+     */
+    public ZipUTF8CryptoWriterBuilder(final ZipUTF8WriterBuilderImpl writerBuilder,
+                                      final EncryptParametersBuilder parametersBuilder,
+                                      final char[] password) {
         this.password = password;
-        this.writerBuilder = new ZipUTF8WriterBuilderImpl();
-        this.parametersBuilder = EncryptParameters.builder();
+        this.writerBuilder = writerBuilder;
+        this.parametersBuilder = parametersBuilder;
     }
 
     @Override
@@ -54,10 +72,9 @@ public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
             return new ZipUTF8CryptoWriter(this.writerBuilder.build(outputStream),
                     new StandardEncrypter(this.parametersBuilder), this.password);
         } catch (final NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (final NoSuchPaddingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }

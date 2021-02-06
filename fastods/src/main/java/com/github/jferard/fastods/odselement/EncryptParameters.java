@@ -126,10 +126,16 @@ public class EncryptParameters implements XMLConvertible {
         return this.uncompressedSize;
     }
 
+    /**
+     * @return the size of the compressed file
+     */
     public long getCompressedSize() {
         return this.compressedSize;
     }
 
+    /**
+     * @return the CRC32
+     */
     public long getCrc32() {
         return this.crc32;
     }

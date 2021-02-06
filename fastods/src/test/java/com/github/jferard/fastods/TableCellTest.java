@@ -23,7 +23,6 @@
  */
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.attribute.PageWritingMode;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.CurrencyStyle;
 import com.github.jferard.fastods.datastyle.DataStyle;

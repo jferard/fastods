@@ -127,7 +127,7 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
     public String getEntryAsString(final String name) {
         final StringBuilder stringBuilder = this.mock.getBuilder(name);
         if (stringBuilder == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Don't know entry: "+name);
         }
         return stringBuilder.toString();
     }

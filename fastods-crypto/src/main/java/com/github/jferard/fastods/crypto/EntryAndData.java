@@ -24,24 +24,34 @@
 
 package com.github.jferard.fastods.crypto;
 
-import com.github.jferard.fastods.odselement.ManifestEntry;
+import com.github.jferard.fastods.odselement.OdsEntry;
 
 /**
  * An entry and the associated data.
  */
 class EntryAndData {
-    private final ManifestEntry entry;
+    private final OdsEntry entry;
     private final byte[] data;
 
-    public EntryAndData(final ManifestEntry entry, final byte[] data) {
+    /**
+     * @param entry the entry
+     * @param data the data
+     */
+    public EntryAndData(final OdsEntry entry, final byte[] data) {
         this.entry = entry;
         this.data = data;
     }
 
-    public ManifestEntry getEntry() {
+    /**
+     * @return the entry
+     */
+    public OdsEntry getEntry() {
         return this.entry;
     }
 
+    /**
+     * @return the associated data
+     */
     public byte[] getData() {
         return this.data;
     }

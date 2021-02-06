@@ -31,6 +31,8 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.crypto.ZipUTF8CryptoWriterBuilder;
+import com.github.jferard.fastods.odselement.EncryptParameters;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +73,7 @@ public class M_Crypto {
         //
         final char[] password = {'1', '2', '3'};
         writer.saveAs(new File("generated_files", "m_hello_world_crypto_example.ods"),
-                new ZipUTF8CryptoWriterBuilder(password));
+                ZipUTF8CryptoWriterBuilder.create(password));
         Arrays.fill(password, '\0'); // clear sensitive data.
         //
         // (The password in this example is "123", but you'd better choose another password.)

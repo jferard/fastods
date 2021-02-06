@@ -231,7 +231,7 @@ public class ContentElement implements OdsElement {
      * @throws IOException if the preamble was not written
      */
     public void writePreamble(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        writer.putAndRegisterNextEntry(new StandardManifestEntry("content.xml", "text/xml", null));
+        writer.putAndRegisterNextEntry(new StandardOdsEntry("content.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-content");
         for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {

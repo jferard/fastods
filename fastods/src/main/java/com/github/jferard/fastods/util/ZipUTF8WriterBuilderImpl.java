@@ -93,7 +93,7 @@ public class ZipUTF8WriterBuilderImpl implements ZipUTF8WriterBuilder {
     }
 
     /**
-     * Set the zip level
+     * Set the zip level.
      *
      * @param level the level
      * @return this for fluent style

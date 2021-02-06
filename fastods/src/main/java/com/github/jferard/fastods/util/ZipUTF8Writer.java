@@ -24,7 +24,7 @@
 
 package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.odselement.ManifestEntry;
+import com.github.jferard.fastods.odselement.OdsEntry;
 
 import java.io.Closeable;
 import java.io.Flushable;
@@ -50,7 +50,7 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
      * @param entry the entry
      * @throws IOException if an I/O error occurs
      */
-    void putNextEntry(ManifestEntry entry) throws IOException;
+    void putNextEntry(OdsEntry entry) throws IOException;
 
     /**
      * Close the current entry
@@ -73,7 +73,7 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
      * @param entry the entry
      * @throws IOException if an I/O error occurs
      */
-    void putAndRegisterNextEntry(final ManifestEntry entry) throws IOException;
+    void putAndRegisterNextEntry(final OdsEntry entry) throws IOException;
 
     /**
      * Put a new entry into the manifest.
@@ -81,7 +81,7 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
      * @param entry the entry
      * @throws IOException if an I/O error occurs
      */
-    void registerEntry(ManifestEntry entry);
+    void registerEntry(OdsEntry entry);
 
     /**
      * Write raw bytes to the output stream

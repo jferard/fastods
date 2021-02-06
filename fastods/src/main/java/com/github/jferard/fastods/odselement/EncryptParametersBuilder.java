@@ -39,7 +39,7 @@ public class EncryptParametersBuilder {
     /**
      *
      */
-    EncryptParametersBuilder() {
+    public EncryptParametersBuilder() {
         this.compressedCheckSumType =
                 "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0#sha256-1k";
         this.startKeyGenerationName = "http://www.w3.org/2000/09/xmldsig#sha256";

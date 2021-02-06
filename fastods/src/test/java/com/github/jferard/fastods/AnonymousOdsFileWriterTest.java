@@ -25,7 +25,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.odselement.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.StandardOdsEntry;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
@@ -195,7 +195,7 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.replayAll();
         try {
             writer.save(zw);
-            zw.putAndRegisterNextEntry(new StandardManifestEntry("last", null, null));
+            zw.putAndRegisterNextEntry(new StandardOdsEntry("last", null, null));
             zw.append("last content");
             zw.closeEntry();
         } finally {

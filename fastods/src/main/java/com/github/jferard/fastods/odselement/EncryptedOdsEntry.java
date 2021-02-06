@@ -32,9 +32,9 @@ import java.util.zip.ZipEntry;
 /**
  * 4.3<manifest:file-entry>
  * An entry in the manifest for encrypted files. External modules should provide the ZipUTF8Writer
- * to effectively encrupt the file using `encryptParameters`.
+ * to effectively encrypt the file using `encryptParameters`.
  */
-public class EncryptedManifestEntry implements ManifestEntry {
+public class EncryptedOdsEntry implements OdsEntry {
     private final String fullPath;
     private final CharSequence mediaType;
     private final CharSequence version;
@@ -46,9 +46,9 @@ public class EncryptedManifestEntry implements ManifestEntry {
      * @param version           the version
      * @param encryptParameters the parameters for encryption
      */
-    public EncryptedManifestEntry(final String fullPath, final CharSequence mediaType,
-                                  final CharSequence version,
-                                  final EncryptParameters encryptParameters) {
+    public EncryptedOdsEntry(final String fullPath, final CharSequence mediaType,
+                             final CharSequence version,
+                             final EncryptParameters encryptParameters) {
         this.fullPath = fullPath;
         this.mediaType = mediaType;
         this.version = version;
@@ -74,7 +74,7 @@ public class EncryptedManifestEntry implements ManifestEntry {
     }
 
     @Override
-    public ManifestEntry encryptParameters(final EncryptParameters encryptParameters) {
+    public OdsEntry encryptParameters(final EncryptParameters encryptParameters) {
         throw new IllegalArgumentException();
     }
 

@@ -33,9 +33,9 @@ import java.io.IOException;
  * This is only a manifest entry. Nothing is written to the zip stream.
  */
 public class ManifestEntryElement implements OdsElement {
-    private final ManifestEntry entry;
+    private final OdsEntry entry;
 
-    public ManifestEntryElement(final ManifestEntry entry) {
+    public ManifestEntryElement(final OdsEntry entry) {
         this.entry = entry;
     }
 

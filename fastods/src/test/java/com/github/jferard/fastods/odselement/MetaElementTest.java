@@ -104,6 +104,6 @@ public class MetaElementTest {
         final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
         final ZipUTF8Writer instance = handler.getInstance(ZipUTF8Writer.class);
         element.write(XMLUtil.create(), instance);
-        return handler.getEntryAsString("ManifestEntry[path=meta.xml]");
+        return handler.getEntryAsString("OdsEntry[path=meta.xml]");
     }
 }

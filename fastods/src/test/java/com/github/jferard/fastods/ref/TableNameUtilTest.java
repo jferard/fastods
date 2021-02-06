@@ -26,13 +26,10 @@ package com.github.jferard.fastods.ref;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 
 public class TableNameUtilTest {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
     private TableNameUtil util;
 
     @Before
@@ -42,9 +39,14 @@ public class TableNameUtilTest {
 
     @Test
     public void testCheckTableNameQuoteAtFirstPlace() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not start with ': 'quote at first place");
-        this.util.checkTableName("'quote at first place");
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not start with ': 'quote at first place",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("'quote at first place");
+                    }
+                });
     }
 
     @Test
@@ -53,52 +55,87 @@ public class TableNameUtilTest {
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar1() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with [");
-        this.util.checkTableName("a name with [");
+    public void testCheckTableNameForbiddenCharLeftSquareBracket() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with [",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with [");
+                    }
+                });
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar2() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with ]");
-        this.util.checkTableName("a name with ]");
+    public void testCheckTableNameForbiddenCharRightSquareBracket() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with ]",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with ]");
+                    }
+                });
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar3() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with *");
-        this.util.checkTableName("a name with *");
+    public void testCheckTableNameForbiddenCharStar() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with *",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with *");
+                    }
+                });
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar4() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with ?");
-        this.util.checkTableName("a name with ?");
+    public void testCheckTableNameForbiddenCharQuestionMark() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with ?",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with ?");
+                    }
+                });
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar5() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with :");
-        this.util.checkTableName("a name with :");
+    public void testCheckTableNameForbiddenCharColon() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with :",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with :");
+                    }
+                });
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar6() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with /");
-        this.util.checkTableName("a name with /");
+    public void testCheckTableNameForbiddenCharSlash() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with /",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with /");
+                    }
+                });
     }
 
     @Test
-    public void testCheckTableNameForbiddenChar7() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Table name should not contain []*?:/\\: a name with \\");
-        this.util.checkTableName("a name with \\");
+    public void testCheckTableNameForbiddenCharBackSlash() {
+        final TableNameUtil finalUtil = this.util;
+        Assert.assertThrows("Table name should not contain []*?:/\\: a name with \\",
+                IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        finalUtil.checkTableName("a name with \\");
+                    }
+                });
     }
 
     @Test

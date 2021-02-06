@@ -33,7 +33,7 @@ import java.util.zip.ZipEntry;
  * 4.3<manifest:file-entry>
  * A standard entry (DEFLATE)
  */
-public class StandardManifestEntry implements ManifestEntry {
+public class StandardOdsEntry implements OdsEntry {
     private final String fullPath;
     private final CharSequence mediaType;
     private final CharSequence version;
@@ -43,8 +43,8 @@ public class StandardManifestEntry implements ManifestEntry {
      * @param mediaType the media MIME type
      * @param version   the version
      */
-    public StandardManifestEntry(final String fullPath, final CharSequence mediaType,
-                                 final CharSequence version) {
+    public StandardOdsEntry(final String fullPath, final CharSequence mediaType,
+                            final CharSequence version) {
         this.fullPath = fullPath;
         this.mediaType = mediaType;
         this.version = version;
@@ -65,8 +65,8 @@ public class StandardManifestEntry implements ManifestEntry {
     }
 
     @Override
-    public ManifestEntry encryptParameters(final EncryptParameters encryptParameters) {
-        return new EncryptedManifestEntry(this.fullPath, this.mediaType, this.version,
+    public OdsEntry encryptParameters(final EncryptParameters encryptParameters) {
+        return new EncryptedOdsEntry(this.fullPath, this.mediaType, this.version,
                 encryptParameters);
     }
 
@@ -82,6 +82,6 @@ public class StandardManifestEntry implements ManifestEntry {
 
     @Override
     public String toString() {
-        return "ManifestEntry[path=" + this.fullPath + "]";
+        return "OdsEntry[path=" + this.fullPath + "]";
     }
 }

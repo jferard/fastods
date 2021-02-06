@@ -26,6 +26,9 @@ package com.github.jferard.fastods.util;
 
 import java.io.OutputStream;
 
+/**
+ * A builder for ZipUTF8Writer objects.
+ */
 public interface ZipUTF8WriterBuilder {
     /**
      * Build the new writer, with a given output stream

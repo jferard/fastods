@@ -86,30 +86,30 @@ public class OdsElements implements StylesContainer {
 
     private static final OdsElement[] EMPTY_ELEMENTS = {
             new ManifestEntryElement(
-                    new StandardManifestEntry("/", MimetypeElement.DOCUMENT_MIMETYPE, "1.2")),
-            new ManifestEntryElement(new StandardManifestEntry("Configurations2/",
+                    new StandardOdsEntry("/", MimetypeElement.DOCUMENT_MIMETYPE, "1.2")),
+            new ManifestEntryElement(new StandardOdsEntry("Configurations2/",
                     "application/vnd.sun.xml.ui.configuration", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/statusbar/", "", null)),
+                    new StandardOdsEntry("Configurations2/statusbar/", "", null)),
             new ManifestEntryElement(
-                    new StandardManifestEntry("Configurations2/accelerator/", "", null)),
+                    new StandardOdsEntry("Configurations2/accelerator/", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/accelerator/current.xml", "", null)),
+                    new StandardOdsEntry("Configurations2/accelerator/current.xml", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/floater/", "", null)),
+                    new StandardOdsEntry("Configurations2/floater/", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/popupmenu/", "", null)),
+                    new StandardOdsEntry("Configurations2/popupmenu/", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/progressbar/", "", null)),
+                    new StandardOdsEntry("Configurations2/progressbar/", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/menubar/", "", null)),
+                    new StandardOdsEntry("Configurations2/menubar/", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/toolbar/", "", null)),
+                    new StandardOdsEntry("Configurations2/toolbar/", "", null)),
             new ManifestEntryElement(
-                    new StandardManifestEntry("Configurations2/images/", "", null)),
+                    new StandardOdsEntry("Configurations2/images/", "", null)),
             new EmptyElement(
-                    new StandardManifestEntry("Configurations2/images/Bitmaps/", "", null)),
-            new EmptyElement(new StandardManifestEntry("Thumbnails/", "", null)),
+                    new StandardOdsEntry("Configurations2/images/Bitmaps/", "", null)),
+            new EmptyElement(new StandardOdsEntry("Thumbnails/", "", null)),
 //            new StandardManifestEntry("Thumbnails/thumbnail.png", "", null)
     };
 
@@ -550,7 +550,7 @@ public class OdsElements implements StylesContainer {
      */
     public void addExtraFile(final String fullPath, final String mediaType, final byte[] data) {
         final OdsElement element =
-                new ExtraElement(new StandardManifestEntry(fullPath, mediaType, null), data);
+                new ExtraElement(new StandardOdsEntry(fullPath, mediaType, null), data);
         this.extraElements.add(element);
     }
 
@@ -559,7 +559,7 @@ public class OdsElements implements StylesContainer {
      */
     public void addExtraDir(final String fullPath) {
         final ManifestEntryElement element = new ManifestEntryElement(
-                new StandardManifestEntry(fullPath, "", null));
+                new StandardOdsEntry(fullPath, "", null));
         this.extraElements.add(element);
     }
 
@@ -573,7 +573,7 @@ public class OdsElements implements StylesContainer {
     public void addExtraObject(final String fullPath, final String mediaType,
                                final String version) {
         final ManifestEntryElement element = new ManifestEntryElement(
-                new StandardManifestEntry(fullPath, mediaType, version));
+                new StandardOdsEntry(fullPath, mediaType, version));
         this.extraElements.add(element);
     }
 

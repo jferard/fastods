@@ -24,8 +24,8 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.odselement.ManifestElement;
-import com.github.jferard.fastods.odselement.ManifestEntry;
-import com.github.jferard.fastods.odselement.StandardManifestEntry;
+import com.github.jferard.fastods.odselement.OdsEntry;
+import com.github.jferard.fastods.odselement.StandardOdsEntry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,8 +62,8 @@ public class ZipUTF8WriterTest {
         this.zipUTF8Writer.finish();
     }
 
-    private ManifestEntry getManifestEntry() {
-        return new StandardManifestEntry("a", null, null);
+    private OdsEntry getManifestEntry() {
+        return new StandardOdsEntry("a", null, null);
     }
 
 }

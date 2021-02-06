@@ -27,8 +27,14 @@ package com.github.jferard.fastods.crypto;
 import com.github.jferard.fastods.odselement.EncryptParameters;
 import com.github.jferard.fastods.util.CharsetUtil;
 import org.bouncycastle.util.encoders.Base64;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -37,6 +43,7 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class StandardEncrypterTest {
@@ -80,5 +87,14 @@ public class StandardEncrypterTest {
                         95, -94, -80, -104, 50, 82, 12, -100, 8, 12, 106, 12, 84, -32, -125, -36,
                         -48, -83, 58, 15, 15, 117, 111, -26, 13, -37, -37, 80, -92, 43, -45},
                 Arrays.copyOfRange(encrypted, 0, 224));
+    }
+
+    @Test
+    public void testIVandSalt() throws NoSuchPaddingException, NoSuchAlgorithmException {
+        final StandardEncrypter encrypter = new StandardEncrypter(EncryptParameters.builder());
+        final byte[] ivBytes = encrypter.generateIV();
+        Assert.assertEquals(16, ivBytes.length);
+        final byte[] saltBytes = encrypter.generateSalt();
+        Assert.assertEquals(16, saltBytes.length);
     }
 }

@@ -25,9 +25,10 @@
 package com.github.jferard.fastods.crypto;
 
 import com.github.jferard.fastods.annotation.Beta;
-import com.github.jferard.fastods.odselement.ManifestEntry;
+import com.github.jferard.fastods.odselement.OdsEntry;
 import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import org.bouncycastle.util.encoders.Base64;
 
 import javax.crypto.BadPaddingException;
@@ -42,10 +43,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.CRC32;
 
+/**
+ * A writer that encypts data on the fly.
+ */
 @Beta
 public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
-    public static ZipUTF8CryptoWriterBuilder builder(final char[] password) {
-        return new ZipUTF8CryptoWriterBuilder(password);
+    public static ZipUTF8WriterBuilder builder(final char[] password) {
+        return ZipUTF8CryptoWriterBuilder.create(password);
     }
 
     private final ZipUTF8Writer zipUTF8Writer;
@@ -53,7 +57,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     private final char[] password;
     private ByteArrayOutputStream out;
     private Writer writer;
-    private ManifestEntry curEntry;
+    private OdsEntry curEntry;
     private boolean toRegister;
 
     public ZipUTF8CryptoWriter(final ZipUTF8Writer zipUTF8Writer,
@@ -69,19 +73,19 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     }
 
     @Override
-    public void putAndRegisterNextEntry(final ManifestEntry entry) throws IOException {
+    public void putAndRegisterNextEntry(final OdsEntry entry) throws IOException {
         this.toRegister = true;
         this.putNextEntry(entry);
     }
 
     @Override
-    public void registerEntry(final ManifestEntry entry) {
+    public void registerEntry(final OdsEntry entry) {
         this.toRegister = false;
         this.zipUTF8Writer.registerEntry(entry);
     }
 
     @Override
-    public void putNextEntry(final ManifestEntry entry) {
+    public void putNextEntry(final OdsEntry entry) {
         this.curEntry = entry;
         this.out = new ByteArrayOutputStream();
         this.writer = new OutputStreamWriter(this.out, CharsetUtil.UTF_8);
@@ -95,7 +99,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
         if (this.curEntry.neverEncrypt()) {
             entryAndData = new EntryAndData(this.curEntry, plainTextBytes);
         } else {
-            entryAndData = this.getEntryAndData(plainTextBytes);
+            entryAndData = this.getEncryptedEntryAndData(plainTextBytes);
             if (this.toRegister) {
                 this.zipUTF8Writer.registerEntry(entryAndData.getEntry());
                 this.toRegister = false;
@@ -108,7 +112,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
         this.curEntry = null;
     }
 
-    private EntryAndData getEntryAndData(final byte[] plainTextBytes) throws IOException {
+    private EntryAndData getEncryptedEntryAndData(final byte[] plainTextBytes) throws IOException {
         final EntryAndData entryAndData;
         try {
             entryAndData = this.getEncryptedEntryAndDataUnchecked(plainTextBytes);
@@ -135,16 +139,16 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
         final byte[] salt = this.encrypter.generateSalt();
         final byte[] iv = this.encrypter.generateIV();
         final byte[] compressedTextBytes = this.encrypter.compress(plainTextBytes);
-        final byte[] data = this.encrypter.encrypt(
+        final byte[] encryptedData = this.encrypter.encrypt(
                 compressedTextBytes, salt, this.password, iv);
         final String compressedCheckSum = Base64.toBase64String(
                 this.encrypter.getDataChecksum(compressedTextBytes));
-        final long crc32 = this.getCrc32(data);
-        final ManifestEntry entry = this.curEntry.encryptParameters(
+        final long crc32 = this.getCrc32(encryptedData);
+        final OdsEntry entry = this.curEntry.encryptParameters(
                 this.encrypter.buildParameters(
-                        plainTextBytes.length, data.length, crc32, compressedCheckSum,
+                        plainTextBytes.length, encryptedData.length, crc32, compressedCheckSum,
                         Base64.toBase64String(salt), Base64.toBase64String(iv)));
-        return new EntryAndData(entry, data);
+        return new EntryAndData(entry, encryptedData);
     }
 
     private long getCrc32(final byte[] encryptedCompressedTextBytes) {

@@ -25,7 +25,7 @@
 package com.github.jferard.fastods.util;
 
 import com.github.jferard.fastods.odselement.ManifestElement;
-import com.github.jferard.fastods.odselement.ManifestEntry;
+import com.github.jferard.fastods.odselement.OdsEntry;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -106,18 +106,18 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     }
 
     @Override
-    public void putAndRegisterNextEntry(final ManifestEntry entry) throws IOException {
+    public void putAndRegisterNextEntry(final OdsEntry entry) throws IOException {
         this.registerEntry(entry);
         this.putNextEntry(entry);
     }
 
     @Override
-    public void registerEntry(final ManifestEntry entry) {
+    public void registerEntry(final OdsEntry entry) {
         this.manifestElement.add(entry);
     }
 
     @Override
-    public void putNextEntry(final ManifestEntry entry) throws IOException {
+    public void putNextEntry(final OdsEntry entry) throws IOException {
         final ZipEntry e = entry.asZipEntry();
         this.zipStream.putNextEntry(e);
     }

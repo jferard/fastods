@@ -30,9 +30,11 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 /**
- *
+ * An entry in the ods archive, but not registered in the manifest.
+ * This entry is never encrypted and the file is simply STORED in the archive.
+ * Used for mimetype.
  */
-public class UnregisteredStoredEntry implements ManifestEntry {
+public class UnregisteredStoredEntry implements OdsEntry {
     private final String fullPath;
     private final long size;
     private final long crc32;
@@ -49,7 +51,7 @@ public class UnregisteredStoredEntry implements ManifestEntry {
     }
 
     @Override
-    public ManifestEntry encryptParameters(final EncryptParameters encryptParameters) {
+    public OdsEntry encryptParameters(final EncryptParameters encryptParameters) {
         return this;
     }
 

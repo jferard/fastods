@@ -250,7 +250,7 @@ public class ContentElementTest {
     }
 
     private String getString(final ZipUTF8WriterMockHandler handler) {
-        return handler.getEntryAsString("ManifestEntry[path=content.xml]");
+        return handler.getEntryAsString("OdsEntry[path=content.xml]");
     }
 
     @Test
