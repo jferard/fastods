@@ -30,9 +30,11 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 
+import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * A builder for `ZipUTF8CryptoWriter`.
@@ -70,7 +72,9 @@ public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
     public ZipUTF8Writer build(final OutputStream outputStream) {
         try {
             return new ZipUTF8CryptoWriter(this.writerBuilder.build(outputStream),
-                    new StandardEncrypter(this.parametersBuilder), this.password);
+                    new StandardEncrypter(SecureRandom.getInstance("SHA1PRNG"),
+                            Cipher.getInstance("AES/CBC/ISO10126Padding"), 100000, 32, 32, this.parametersBuilder
+                    ), this.password);
         } catch (final NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (final NoSuchPaddingException e) {

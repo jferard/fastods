@@ -28,15 +28,12 @@ import com.github.jferard.fastods.odselement.EncryptParameters;
 import com.github.jferard.fastods.util.CharsetUtil;
 import org.bouncycastle.util.encoders.Base64;
 import org.easymock.EasyMock;
-import org.easymock.EasyMockRunner;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
@@ -51,8 +48,7 @@ public class StandardEncrypterTest {
     public void test() throws NoSuchPaddingException, NoSuchAlgorithmException, IOException,
             IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException,
             InvalidKeyException {
-        final StandardEncrypter encrypter = new StandardEncrypter(EncryptParameters.builder());
-
+        final StandardEncrypter encrypter = StandardEncrypter.create(EncryptParameters.builder());
         final byte[] checksum = Base64.decode("/UdU2OKZn04r0e9O047PaWNqi7LGaHYN9mURmvMCM60=");
         final byte[] iv = Base64.decode("ZEk8JHG3bHu8kZw0VGOT+g==");
         final byte[] salt = Base64.decode("jGIagiBnlFdvQctdCkYfRQ==");
@@ -91,10 +87,22 @@ public class StandardEncrypterTest {
 
     @Test
     public void testIVandSalt() throws NoSuchPaddingException, NoSuchAlgorithmException {
-        final StandardEncrypter encrypter = new StandardEncrypter(EncryptParameters.builder());
+        final SecureRandom sr = PowerMock.createMock(SecureRandom.class);
+        final StandardEncrypter encrypter = new StandardEncrypter(
+                sr, Cipher.getInstance("AES/CBC/ISO10126Padding"),
+                100000, 32, 32, EncryptParameters.builder()
+        );
+
+        PowerMock.resetAll();
+        sr.nextBytes(EasyMock.isA(byte[].class));
+        EasyMock.expectLastCall().times(2);
+
+        PowerMock.replayAll();
         final byte[] ivBytes = encrypter.generateIV();
-        Assert.assertEquals(16, ivBytes.length);
+        Assert.assertArrayEquals(new byte[16], ivBytes);
         final byte[] saltBytes = encrypter.generateSalt();
-        Assert.assertEquals(16, saltBytes.length);
+        Assert.assertArrayEquals(new byte[16], saltBytes);
+
+        PowerMock.verifyAll();
     }
 }

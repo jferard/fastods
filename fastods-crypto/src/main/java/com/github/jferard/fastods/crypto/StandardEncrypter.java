@@ -62,6 +62,15 @@ import java.util.zip.DeflaterOutputStream;
 class StandardEncrypter {
     public static final int BUFFER_SIZE = 4096;
     public static final int BITS_BY_BYTE = 8;
+
+    public static StandardEncrypter create(final EncryptParametersBuilder parametersBuilder)
+            throws NoSuchPaddingException, NoSuchAlgorithmException {
+        final SecureRandom sha1PRNG = SecureRandom.getInstance("SHA1PRNG");
+        final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");  // W3C padding
+        return new StandardEncrypter(sha1PRNG, cipher, 100000, 32, 32, parametersBuilder
+        );
+    }
+
     private final EncryptParametersBuilder parametersBuilder;
     private final SecureRandom randomSecureRandom;
     private final Cipher cipher;
@@ -69,15 +78,18 @@ class StandardEncrypter {
     private final int startKeySize;
     private final int keySize;
 
-    StandardEncrypter(final EncryptParametersBuilder parametersBuilder)
+    StandardEncrypter(final SecureRandom randomSecureRandom,
+                      final Cipher cipher, final int iterationCount,
+                      final int startKeySize, final int keySize,
+                      final EncryptParametersBuilder parametersBuilder)
             throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.parametersBuilder = parametersBuilder;
         Security.addProvider(new BouncyCastleProvider());
-        this.randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
-        this.cipher = Cipher.getInstance("AES/CBC/ISO10126Padding"); // W3C padding
-        this.iterationCount = 100000;
-        this.startKeySize = 32;
-        this.keySize = 32;
+        this.randomSecureRandom = randomSecureRandom;
+        this.cipher = cipher;
+        this.iterationCount = iterationCount;
+        this.startKeySize = startKeySize;
+        this.keySize = keySize;
     }
 
     /**
@@ -204,11 +216,12 @@ class StandardEncrypter {
 
     /**
      * Build the parameters to pass to the encrypted OdsEntry
-     * @param uncompressedSize size of the uncompressed data
-     * @param compressedSize size of the compressed data
-     * @param crc32 check
-     * @param compressedCheckSum the checksum of the compressed data
-     * @param derivationSalt salt
+     *
+     * @param uncompressedSize              size of the uncompressed data
+     * @param compressedSize                size of the compressed data
+     * @param crc32                         check
+     * @param compressedCheckSum            the checksum of the compressed data
+     * @param derivationSalt                salt
      * @param algorithmInitializationVector iv
      * @return the parameters
      */
