@@ -26,12 +26,12 @@ package com.github.jferard.fastods.extra;
 
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.javamcsv.MetaCSVDataException;
 import com.github.jferard.javamcsv.MetaCSVParseException;
 import com.github.jferard.javamcsv.MetaCSVReadException;
 import org.easymock.EasyMock;
+import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
@@ -39,36 +39,82 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class CSVDataWrapperTest {
+    private TableCellWalker walker;
+
+    @Before
+    public void setUp() {
+        this.walker = PowerMock.createMock(TableCellWalker.class);
+    }
+
     @Test
-    public void test()
-            throws IOException,MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
-        final TableCellWalker walker = PowerMock.createMock(TableCellWalker.class);
+    public void testText()
+            throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
         PowerMock.resetAll();
-        EasyMock.expect(walker.rowIndex()).andReturn(0);
-        EasyMock.expect(walker.colIndex()).andReturn(0);
-        walker.to(0);
-        walker.setStringValue("VALUE");
-        walker.setStyle(EasyMock.isA(TableCellStyle.class));
-        walker.next();
-        walker.nextRow();
-        walker.to(0);
-        walker.setStringValue("foo");
-        walker.next();
-        walker.nextRow();
-        walker.nextRow();
+        this.prepareWalker();
+        this.walker.setStringValue("foo");
+        this.finalizeWalker();
 
         PowerMock.replayAll();
         final CSVDataWrapper dataWrapper = this.getWrapper("foo", "text");
-        dataWrapper.addToTable(walker);
+        dataWrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
     }
 
+    @Test
+    public void testInteger()
+            throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
+        PowerMock.resetAll();
+        this.prepareWalker();
+        this.walker.setFloatValue(10L);
+        this.finalizeWalker();
+
+        PowerMock.replayAll();
+        final CSVDataWrapper dataWrapper = this.getWrapper("10", "integer");
+        dataWrapper.addToTable(this.walker);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testFloat()
+            throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
+        PowerMock.resetAll();
+        this.prepareWalker();
+        this.walker.setFloatValue(10.5d);
+        this.finalizeWalker();
+
+        PowerMock.replayAll();
+        final CSVDataWrapper dataWrapper = this.getWrapper("\"10,5\"", "\"float//,\"");
+        dataWrapper.addToTable(this.walker);
+
+        PowerMock.verifyAll();
+    }
+
+    private TableCellWalker prepareWalker() throws IOException {
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.colIndex()).andReturn(0);
+        this.walker.to(0);
+        this.walker.setStringValue("VALUE");
+        this.walker.setStyle(EasyMock.isA(TableCellStyle.class));
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.to(0);
+        return this.walker;
+    }
+
+    private void finalizeWalker() throws IOException {
+        this.walker.next();
+        this.walker.nextRow();
+        this.walker.nextRow();
+    }
+
     private CSVDataWrapper getWrapper(final String value, final String type)
             throws MetaCSVReadException, MetaCSVDataException, MetaCSVParseException, IOException {
-        final byte[] bytes = ("VALUE\r\n"+ value).getBytes(CharsetUtil.UTF_8);
-        final CSVDataWrapper dataWrapper = new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes))
-                .metaCSVDirectives("data,col/0/type,"+ type).build();
+        final byte[] bytes = ("VALUE\r\n" + value).getBytes(CharsetUtil.UTF_8);
+        final CSVDataWrapper dataWrapper =
+                new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes))
+                        .metaCSVDirectives("data,col/0/type," + type).build();
         return dataWrapper;
     }
 }
