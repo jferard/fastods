@@ -100,7 +100,7 @@ class C_SettingTheCellValue {
         walker.setFloatValue(3.14159);
         walker.nextRow();
 
-        // The fifth row contains a percentage:
+        // The fifth row contains a percentage (you have to divide the value by 100):
         walker.setStringValue("Percentage");
         walker.next();
         walker.setPercentageValue(0.545);

@@ -47,7 +47,6 @@ public class CSVDataWrapperBuilder {
     private final InputStream is;
     private File metaCSVFile;
     private String[] metaCSVDirectives;
-    private MetaCSVParser metaCSVParser;
     private ObjectProcessorFactory objectProcessorFactory;
     private InputStream metaIs;
     private Logger logger;
@@ -106,7 +105,6 @@ public class CSVDataWrapperBuilder {
         this.metaCSVFile = metaCSVFile;
         this.metaIs = null;
         this.metaCSVDirectives = null;
-        this.metaCSVParser = null;
         return this;
     }
 
@@ -114,20 +112,11 @@ public class CSVDataWrapperBuilder {
         this.metaCSVDirectives = metaCSVDirectives;
         this.metaIs = null;
         this.metaCSVFile = null;
-        this.metaCSVParser = null;
         return this;
     }
 
     public CSVDataWrapperBuilder metaCSVInputStream(final InputStream metaIs) {
         this.metaIs = metaIs;
-        this.metaCSVFile = null;
-        this.metaCSVDirectives = null;
-        this.metaCSVParser = null;
-        return this;
-    }
-
-    public CSVDataWrapperBuilder metaCSVParser(final MetaCSVParser metaCSVParser) {
-        this.metaCSVParser = metaCSVParser;
         this.metaCSVFile = null;
         this.metaCSVDirectives = null;
         return this;

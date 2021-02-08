@@ -27,6 +27,7 @@ package com.github.jferard.fastods.extra;
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.javamcsv.CurrencyIntegerFieldDescription;
 import com.github.jferard.javamcsv.ObjectFieldDescription;
 import com.github.jferard.javamcsv.CurrencyDecimalFieldDescription;
 import com.github.jferard.javamcsv.DataType;
@@ -86,7 +87,7 @@ public class CSVDataWrapper implements DataWrapper {
                 this.createProcessors(metaData, columnCount);
         this.writeFirstLineTo(header, columnCount, walker, c1);
         while (iterator.hasNext()) {
-            if (this.max >= 0 && ++rowCount >= this.max) {
+            if (this.max >= 0 && ++rowCount > this.max) {
                 break;
             }
             walker.to(c1);
@@ -151,7 +152,7 @@ public class CSVDataWrapper implements DataWrapper {
                     break;
                 case CURRENCY_INTEGER:
                     final String currencyIntegerSymbol =
-                            metaData.getDescription(i, CurrencyDecimalFieldDescription.class)
+                            metaData.getDescription(i, CurrencyIntegerFieldDescription.class)
                                     .getCurrencySymbol();
                     processor = new ValueProcessor() {
                         @Override

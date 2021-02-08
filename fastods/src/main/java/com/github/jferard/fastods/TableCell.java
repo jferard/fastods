@@ -140,6 +140,9 @@ public interface TableCell {
      * Set the percentage value of the cell. Type will be CellType.PERCENTAGE and data style the
      * default data style for percentage.
      *
+     * <b>Beware: 0.75 means 75 %, 75.0 means 7500 %.</b> This is consistent with OpenDocument
+     * specification.
+     *
      * @param value a float object with the value to be used
      */
     void setPercentageValue(float value);
@@ -148,15 +151,23 @@ public interface TableCell {
      * Set the percentage value of the cell. Type will be CellType.PERCENTAGE and data style the
      * default data style for percentage.
      *
+     * <b>Beware: 75 means 7500 %.</b> This is consistent with OpenDocument specification.
+     *
      * @param value an int with the value to be used
+     * @deprecated This is misleading: setPercentageValue(10) means 1000 %.
+     * For n %, use setPercentageValue(n/100)
      */
+    @Deprecated
     void setPercentageValue(int value);
 
     /**
      * Set the percentage value of the cell. Type will be CellType.PERCENTAGE and data style the
      * default data style for percentage.
      *
-     * @param value a double object with the value to be used
+     * <b>Beware: 0.75 means 75 %, 75.0 means 7500 %.</b> This is consistent with OpenDocument
+     * specification.
+     *
+     * @param value a double object with the value to be used.
      */
     void setPercentageValue(Number value);
 
