@@ -50,8 +50,22 @@ public class TableNameUtilTest {
     }
 
     @Test
+    public void testSanitizeTableNameQuoteAtFirstPlace() {
+        final String actual = this.util.sanitizeTableName("'quote at first place");
+        Assert.assertEquals("_quote at first place", actual);
+        this.util.checkTableName(actual);
+    }
+
+    @Test
     public void testCheckTableNameNoQuoteAtFirstPlace() {
         this.util.checkTableName(" 'quote at second place");
+    }
+
+    @Test
+    public void testSanitizeTableNameNoQuoteAtFirstPlace() {
+        final String actual = this.util.sanitizeTableName(" 'quote at second place");
+        Assert.assertEquals(" 'quote at second place", actual);
+        this.util.checkTableName(actual);
     }
 
     @Test
@@ -67,6 +81,13 @@ public class TableNameUtilTest {
     }
 
     @Test
+    public void testSanitizeTableNameForbiddenCharLeftSquareBracket() {
+        final String actual = this.util.sanitizeTableName("a name with [");
+        Assert.assertEquals("a name with _", actual);
+        this.util.checkTableName(actual);
+    }
+
+    @Test
     public void testCheckTableNameForbiddenCharRightSquareBracket() {
         final TableNameUtil finalUtil = this.util;
         Assert.assertThrows("Table name should not contain []*?:/\\: a name with ]",
@@ -76,6 +97,13 @@ public class TableNameUtilTest {
                         finalUtil.checkTableName("a name with ]");
                     }
                 });
+    }
+
+    @Test
+    public void testSanitizeTableNameForbiddenCharRightSquareBracket() {
+        final String actual = this.util.sanitizeTableName("a name with ]");
+        Assert.assertEquals("a name with _", actual);
+        this.util.checkTableName(actual);
     }
 
     @Test
@@ -103,6 +131,13 @@ public class TableNameUtilTest {
     }
 
     @Test
+    public void testSanitizeTableNameForbiddenCharStar() {
+        final String actual = this.util.sanitizeTableName("a name with *");
+        Assert.assertEquals("a name with _", actual);
+        this.util.checkTableName(actual);
+    }
+
+    @Test
     public void testCheckTableNameForbiddenCharColon() {
         final TableNameUtil finalUtil = this.util;
         Assert.assertThrows("Table name should not contain []*?:/\\: a name with :",
@@ -112,6 +147,13 @@ public class TableNameUtilTest {
                         finalUtil.checkTableName("a name with :");
                     }
                 });
+    }
+
+    @Test
+    public void testSanitizeTableNameForbiddenCharColon() {
+        final String actual = this.util.sanitizeTableName("a name with :");
+        Assert.assertEquals("a name with _", actual);
+        this.util.checkTableName(actual);
     }
 
     @Test
@@ -127,6 +169,13 @@ public class TableNameUtilTest {
     }
 
     @Test
+    public void testSanitizeTableNameForbiddenCharSlash() {
+        final String actual = this.util.sanitizeTableName("a name with /");
+        Assert.assertEquals("a name with _", actual);
+        this.util.checkTableName(actual);
+    }
+
+    @Test
     public void testCheckTableNameForbiddenCharBackSlash() {
         final TableNameUtil finalUtil = this.util;
         Assert.assertThrows("Table name should not contain []*?:/\\: a name with \\",
@@ -139,9 +188,24 @@ public class TableNameUtilTest {
     }
 
     @Test
+    public void testSanitizeTableNameForbiddenCharBackSlash() {
+        final String actual = this.util.sanitizeTableName("a name with \\");
+        Assert.assertEquals("a name with _", actual);
+        this.util.checkTableName(actual);
+    }
+
+    @Test
     public void escapeTableNameOk() {
         Assert.assertEquals("no_problem", this.util.escapeTableName("no_problem"));
     }
+
+    @Test
+    public void testSanitizeTableNameNoProblem() {
+        final String actual = this.util.sanitizeTableName("no problem");
+        Assert.assertEquals("no problem", actual);
+        this.util.checkTableName(actual);
+    }
+
 
     @Test
     public void escapeTableNameSpace() {
@@ -151,6 +215,13 @@ public class TableNameUtilTest {
     @Test
     public void escapeTableNameQuote() {
         Assert.assertEquals("'a '' quote'", this.util.escapeTableName("a ' quote"));
+    }
+
+    @Test
+    public void testSanitizeTableNameQute() {
+        final String actual = this.util.sanitizeTableName("a ' quote");
+        Assert.assertEquals("a ' quote", actual);
+        this.util.checkTableName(actual);
     }
 
     @Test

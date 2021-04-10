@@ -42,7 +42,8 @@ public class TableNameUtil {
      * A single quote
      */
     private static final char SINGLE_QUOTE = '\'';
-    private static final Pattern FORBIDDEN_CHARS = Pattern.compile("[\\[\\]*?:/\\\\]");
+    private static final String FORBIDDEN_CHARS = "[]*?:/\\";
+    private static final Pattern FORBIDDEN_CHARS_PATTERN = Pattern.compile("[\\[\\]*?:/\\\\]");
 
     /**
      * Check if the table name is ok. Currently, this does stick to LO limitations (excepted for
@@ -60,11 +61,31 @@ public class TableNameUtil {
             throw new IllegalArgumentException(
                     "Table name should not start with " + SINGLE_QUOTE + ": " + name);
         }
-        if (FORBIDDEN_CHARS.matcher(name).find()) {
+        if (FORBIDDEN_CHARS_PATTERN.matcher(name).find()) {
                 throw new IllegalArgumentException(
-                        "Table name should not contain " + FORBIDDEN_CHARS.pattern() + ": " +
+                        "Table name should not contain " + FORBIDDEN_CHARS + ": " +
                                 name);
         }
+    }
+
+    /**
+     * Change the table to comply with LO limitations (excepted for
+     * the check of duplicate names), but may the conditions may be relaxed in a future version.
+     *
+     * A valid table name should not start with a single quote (`'`) or contain of of the following
+     * characters: left square bracket (`[`), right square bracket (`]`), star (`*`), question
+     * mark (`?`), colon (`:`), slash (`/`) or backslash (`\`).
+     *
+     * @param name the name to check
+     * @return the sanitized table name. It is guaranteed that `checkTableName(return value)` will
+     * not throw an IllegalArgumentException.
+     */
+    public String sanitizeTableName(final CharSequence name) {
+        final String s = FORBIDDEN_CHARS_PATTERN.matcher(name).replaceAll("_");
+        if (s.charAt(0) == SINGLE_QUOTE) {
+            return "_" + s.substring(1);
+        }
+        return s;
     }
 
     /**
