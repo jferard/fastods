@@ -146,9 +146,15 @@ public class PositionUtil {
     }
 
     /**
-     * Check if the name is valid.
+     * Check if the table name is ok. Currently, this does stick to LO limitations (excepted for
+     * the check of duplicate names), but may the conditions may be relaxed in a future version.
      *
-     * @param name the name of the table
+     * A valid table name should not start with a single quote (`'`) or contain of of the following
+     * characters: left square bracket (`[`), right square bracket (`]`), star (`*`), question
+     * mark (`?`), colon (`:`), slash (`/`) or backslash (`\`).
+     *
+     * @param name the name to check
+     * @throws IllegalArgumentException if the table name is not accepted.
      */
     public void checkTableName(final CharSequence name) {
         this.tableNameUtil.checkTableName(name);
