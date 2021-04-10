@@ -29,6 +29,7 @@ import com.github.jferard.fastods.util.CharsetUtil;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
+import java.util.regex.Pattern;
 
 /**
  * A TableNameUtil checks the table name and escapes it.
@@ -41,7 +42,7 @@ public class TableNameUtil {
      * A single quote
      */
     private static final char SINGLE_QUOTE = '\'';
-    private static final char[] FORBIDDEN_CHARS = "[]*?:/\\".toCharArray();
+    private static final Pattern FORBIDDEN_CHARS = Pattern.compile("[\\[\\]*?:/\\\\]");
 
     /**
      * Check if the table name is ok. Currently, this does stick to LO limitations (excepted for
@@ -59,15 +60,10 @@ public class TableNameUtil {
             throw new IllegalArgumentException(
                     "Table name should not start with " + SINGLE_QUOTE + ": " + name);
         }
-        for (int i = 0; i < name.length(); i++) {
-            final char c = name.charAt(i);
-            for (final char fc : FORBIDDEN_CHARS) {
-                if (c == fc) {
-                    throw new IllegalArgumentException(
-                            "Table name should not contain " + new String(FORBIDDEN_CHARS) + ": " +
-                                    name);
-                }
-            }
+        if (FORBIDDEN_CHARS.matcher(name).find()) {
+                throw new IllegalArgumentException(
+                        "Table name should not contain " + FORBIDDEN_CHARS.pattern() + ": " +
+                                name);
         }
     }
 

@@ -102,7 +102,7 @@ public class CSVDataWrapperTest {
             throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
         final Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.set(2021, Calendar.FEBRUARY, 8);
-        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
@@ -125,7 +125,7 @@ public class CSVDataWrapperTest {
             throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
         final Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
         cal.set(2021, Calendar.FEBRUARY, 8);
-        cal.set(Calendar.HOUR, 10);
+        cal.set(Calendar.HOUR_OF_DAY, 10);
         cal.set(Calendar.MINUTE, 11);
         cal.set(Calendar.SECOND, 12);
         cal.set(Calendar.MILLISECOND, 0);
