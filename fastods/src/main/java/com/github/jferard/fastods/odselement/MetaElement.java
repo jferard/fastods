@@ -43,7 +43,7 @@ import java.util.TimeZone;
  * @author Martin Schulz
  */
 public class MetaElement implements OdsElement {
-    public static final String GENERATOR = "FastOds/0.7.3";
+    public static final String GENERATOR = "FastOds/0.8.0";
     public static final String OFFICE_VERSION = "1.2";
 
     /**
