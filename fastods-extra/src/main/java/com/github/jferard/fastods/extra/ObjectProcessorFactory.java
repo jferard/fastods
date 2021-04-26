@@ -25,6 +25,7 @@
 package com.github.jferard.fastods.extra;
 
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.javamcsv.MetaCSVReadException;
 import com.github.jferard.javamcsv.MetaCSVRecord;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public interface ObjectProcessorFactory {
             return new ValueProcessor() {
                 @Override
                 public void processValue(final MetaCSVRecord record, final int i,
-                                         final TableCellWalker walker) {
+                                         final TableCellWalker walker) throws MetaCSVReadException {
                     walker.setStringValue(record.getObject(i).toString());
                 }
             };

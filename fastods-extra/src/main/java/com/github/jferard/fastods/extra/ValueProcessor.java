@@ -25,9 +25,10 @@
 package com.github.jferard.fastods.extra;
 
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.javamcsv.MetaCSVReadException;
 import com.github.jferard.javamcsv.MetaCSVRecord;
 
 public interface ValueProcessor {
     void processValue(final MetaCSVRecord record, final int i,
-                             final TableCellWalker walker);
+                             final TableCellWalker walker) throws MetaCSVReadException;
 }

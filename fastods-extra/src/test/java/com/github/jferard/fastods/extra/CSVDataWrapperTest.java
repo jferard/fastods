@@ -87,7 +87,7 @@ public class CSVDataWrapperTest {
             throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
         PowerMock.resetAll();
         this.prepareWalker();
-        this.walker.setCurrencyValue(74, "€");
+        this.walker.setCurrencyValue((Number) 74L, "€");
         this.finalizeWalker();
 
         PowerMock.replayAll();
@@ -178,7 +178,7 @@ public class CSVDataWrapperTest {
             throws IOException, MetaCSVReadException, MetaCSVDataException, MetaCSVParseException {
         PowerMock.resetAll();
         this.prepareWalker();
-        this.walker.setFloatValue(10L);
+        this.walker.setFloatValue((Number) 10L);
         this.finalizeWalker();
 
         PowerMock.replayAll();
