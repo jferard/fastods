@@ -61,7 +61,7 @@
         <connection>scm:git:git@github.com:jferard/fastods.git</connection>
         <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
         <url>git@github.com:jferard/fastods.git</url>
-        <tag>fastods-parent-0.7.4-SNAPSHOT</tag>
+        <tag>fastods-parent-0.8.0-SNAPSHOT</tag>
     </scm>
 
     <distributionManagement>

@@ -53,7 +53,7 @@ public class DatabaseExporter {
      *
      * Example:
      *
-     * $ java -cp $HOME/.m2/repository/com/github/jferard/fastods/0.7.4-SNAPSHOT/fastods-0.7.4-SNAPSHOT.jar:$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.27.2.1/sqlite-jdbc-3.27.2.1.jar com.github.jferard.fastods.tool.DatabaseExporter "jdbc:sqlite:$HOME/test.sqlite3" "$HOME/export.ods"
+     * $ java -cp $HOME/.m2/repository/com/github/jferard/fastods/0.7.4/fastods-0.7.4.jar:$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.27.2.1/sqlite-jdbc-3.27.2.1.jar com.github.jferard.fastods.tool.DatabaseExporter "jdbc:sqlite:$HOME/test.sqlite3" "$HOME/export.ods"
      *
      * Please avoid exporting huge databases: LibreOffice won't open huge documents.
      */

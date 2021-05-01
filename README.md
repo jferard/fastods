@@ -97,13 +97,23 @@ Add the following dependency to your POM:
 ```
 
 ### From sources
-Type the following command:
+For the latest version, type the following command:
 
 `git clone https://github.com/jferard/fastods.git`
 
 Then:
 
 `mvn clean install`
+
+And add the following dependency to your POM:
+
+```
+<dependency>
+		<groupId>com.github.jferard</groupId>
+		<artifactId>fastods</artifactId>
+		<version>0.8.0-SNAPSHOT</version>
+</dependency>
+```
 
 ### From jar
 First download the **jar file** from the latest [release](https://github.com/jferard/fastods/releases/).
