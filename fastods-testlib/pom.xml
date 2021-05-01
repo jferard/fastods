@@ -57,12 +57,6 @@
         <system>github</system>
         <url>http://github.com/jferard/fastods/issues</url>
     </issueManagement>
-    <scm>
-        <connection>scm:git:git@github.com:jferard/fastods.git</connection>
-        <developerConnection>scm:git:git@github.com:jferard/fastods.git</developerConnection>
-        <url>git@github.com:jferard/fastods.git</url>
-        <tag>fastods-parent-0.8.0-SNAPSHOT</tag>
-    </scm>
 
     <distributionManagement>
         <snapshotRepository>
