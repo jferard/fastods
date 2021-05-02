@@ -35,7 +35,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class Table implements NamedObject, FrameContent {
      *
      * @param contentElement  the content.xml representation
      * @param positionUtil    an util
-     * @param writeUtil       an util
+     * @param cache       an util
      * @param xmlUtil         an util
      * @param name            the name of the tables
      * @param rowCapacity     the row capacity
@@ -64,13 +64,13 @@ public class Table implements NamedObject, FrameContent {
      * @return the table
      */
     public static Table create(final ContentElement contentElement, final PositionUtil positionUtil,
-                               final WriteUtil writeUtil, final XMLUtil xmlUtil, final String name,
+                               final IntegerRepresentationCache cache, final XMLUtil xmlUtil, final String name,
                                final int rowCapacity, final int columnCapacity,
                                final StylesContainer stylesContainer, final DataStyles format,
                                final boolean libreOfficeMode) {
         positionUtil.checkTableName(name);
         final TableBuilder builder = TableBuilder
-                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode,
+                .create(positionUtil, cache, xmlUtil, stylesContainer, format, libreOfficeMode,
                         name, rowCapacity, columnCapacity);
         return new Table(name, contentElement, builder, new TableAppender(builder));
     }

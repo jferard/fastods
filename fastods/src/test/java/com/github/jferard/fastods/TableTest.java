@@ -37,7 +37,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -72,7 +72,7 @@ public class TableTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table =
-                Table.create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "my_table", 10,
+                Table.create(this.ce, positionUtil, IntegerRepresentationCache.create(), xmlUtil, "my_table", 10,
                         100, this.stc, this.ds, false);
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();

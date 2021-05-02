@@ -31,7 +31,7 @@ import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -60,11 +60,11 @@ public class TableRowTest {
     public void setUp() {
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.table = PowerMock.createMock(Table.class);
-        final WriteUtil writeUtil = WriteUtil.create();
+        final IntegerRepresentationCache cache = IntegerRepresentationCache.create();
         this.xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.row =
-                new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
+                new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
                         100);
         this.tcs = TableCellStyle.builder("---").build();
         PowerMock.mockStatic(TableColdCell.class);

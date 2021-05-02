@@ -38,7 +38,7 @@ import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -76,14 +76,14 @@ public class TableCellTest {
         this.locale = Locale.US;
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.table = PowerMock.createMock(Table.class);
-        final WriteUtil writeUtil = WriteUtil.create();
+        final IntegerRepresentationCache cache = IntegerRepresentationCache.create();
         this.xmlUtil = XMLUtil.create();
 
         this.tcc = TableColdCell.create(this.xmlUtil);
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.row = new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table,
+        this.row = new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table,
                 ROW_INDEX, 100);
-        this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.row,
+        this.cell = new TableCellImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.row,
                 COLUMN_INDEX);
         this.tcs = TableCellStyle.builder("name").build();
         PowerMock.mockStatic(TableColdCell.class);

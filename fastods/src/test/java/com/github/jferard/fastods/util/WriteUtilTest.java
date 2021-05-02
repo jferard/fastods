@@ -28,11 +28,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WriteUtilTest {
-    private WriteUtil util;
+    private IntegerRepresentationCache util;
 
     @Before
     public void setUp() {
-        this.util = WriteUtil.create();
+        this.util = IntegerRepresentationCache.create();
     }
 
     @Test

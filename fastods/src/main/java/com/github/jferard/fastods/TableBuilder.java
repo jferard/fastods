@@ -37,7 +37,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -83,7 +83,7 @@ class TableBuilder {
      * Create a new table builder
      *
      * @param positionUtil    an util
-     * @param writeUtil       an util
+     * @param cache       an util
      * @param xmlUtil         an util
      * @param stylesContainer the container
      * @param format          the available data styles
@@ -93,7 +93,7 @@ class TableBuilder {
      * @param columnCapacity  the column capacity of the table
      * @return the builder
      */
-    public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil,
+    public static TableBuilder create(final PositionUtil positionUtil, final IntegerRepresentationCache cache,
                                       final XMLUtil xmlUtil, final StylesContainer stylesContainer,
                                       final DataStyles format, final boolean libreOfficeMode,
                                       final String name, final int rowCapacity,
@@ -116,7 +116,7 @@ class TableBuilder {
         configEntry.add(ConfigItem.create(ConfigElement.POSITION_TOP, "0"));
         configEntry.add(ConfigItem.create(ConfigElement.POSITION_BOTTOM, "0"));
 
-        return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format,
+        return new TableBuilder(positionUtil, cache, xmlUtil, stylesContainer, format,
                 libreOfficeMode, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
     }
 
@@ -128,7 +128,7 @@ class TableBuilder {
     private final StylesContainer stylesContainer;
     private final FastFullList<TableRowImpl> tableRows;
     private final FastFullList<TableColumnImpl> tableColumns;
-    private final WriteUtil writeUtil;
+    private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
     private final List<XMLConvertible> forms;
@@ -146,7 +146,7 @@ class TableBuilder {
      * Create a new table builder
      *
      * @param positionUtil    an util
-     * @param writeUtil       an util
+     * @param cache       an util
      * @param xmlUtil         an util
      * @param stylesContainer the container
      * @param format          the available data styles
@@ -157,13 +157,13 @@ class TableBuilder {
      * @param configEntry     the config
      * @param bufferSize      the buffer size
      */
-    TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,
+    TableBuilder(final PositionUtil positionUtil, final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
                  final StylesContainer stylesContainer, final DataStyles format,
                  final boolean libreOfficeMode, final String name, final int rowCapacity,
                  final int columnCapacity, final ConfigItemMapEntrySet configEntry,
                  final int bufferSize) {
         this.xmlUtil = xmlUtil;
-        this.writeUtil = writeUtil;
+        this.cache = cache;
         this.positionUtil = positionUtil;
         this.stylesContainer = stylesContainer;
         this.format = format;
@@ -280,7 +280,7 @@ class TableBuilder {
             throws IOException {
         TableRowImpl tr = this.tableRows.get(rowIndex);
         if (tr == null) {
-            tr = new TableRowImpl(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,
+            tr = new TableRowImpl(this.cache, this.xmlUtil, this.stylesContainer, this.format,
                     this.libreOfficeMode, table, rowIndex, this.columnCapacity);
             this.tableRows.set(rowIndex, tr);
             if (rowIndex > this.lastRowIndex) {

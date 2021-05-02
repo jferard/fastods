@@ -25,18 +25,18 @@
 package com.github.jferard.fastods.util;
 
 /**
- * A WriteUtil helps to write data to file.
+ * A WriteUtil helps to write data to file. It works as a cache for integer string representation.
  *
  * @author Julien Férard
  */
-public class WriteUtil {
+public class IntegerRepresentationCache {
     private static final int DEFAULT_MAX_INT = 1000;
 
     /**
      * @return a WriteUtil with the default max int in cache.
      */
-    public static WriteUtil create() {
-        return new WriteUtil(DEFAULT_MAX_INT);
+    public static IntegerRepresentationCache create() {
+        return new IntegerRepresentationCache(DEFAULT_MAX_INT);
     }
 
     private final int maxInt;
@@ -45,7 +45,7 @@ public class WriteUtil {
     /**
      * @param maxInt the max int in cache
      */
-    WriteUtil(final int maxInt) {
+    IntegerRepresentationCache(final int maxInt) {
         this.maxInt = maxInt;
         this.ints = new String[2 * maxInt];
     }

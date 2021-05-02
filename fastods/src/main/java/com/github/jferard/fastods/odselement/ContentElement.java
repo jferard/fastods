@@ -33,7 +33,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.UniqueList;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -69,7 +69,7 @@ public class ContentElement implements OdsElement {
     private final PositionUtil positionUtil;
     private final StylesContainerImpl stylesContainer;
     private final UniqueList<Table> tables;
-    private final WriteUtil writeUtil;
+    private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
     private final List<ScriptEventListener> scriptEvents;
@@ -80,17 +80,17 @@ public class ContentElement implements OdsElement {
     /**
      * @param positionUtil    an util object for positions (e.g. "A1")
      * @param xmlUtil         an util object to write xml
-     * @param writeUtil       an util to compute some data
+     * @param cache       an util to compute some data
      * @param format          the format for data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
      * @param stylesContainer a styles container.
      * @param additionalNamespaceByPrefix a map prefix -> namespace
      */
     ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-                   final WriteUtil writeUtil, final DataStyles format,
+                   final IntegerRepresentationCache cache, final DataStyles format,
                    final boolean libreOfficeMode, final StylesContainerImpl stylesContainer,
                    final Map<String, String> additionalNamespaceByPrefix) {
-        this.writeUtil = writeUtil;
+        this.cache = cache;
         this.xmlUtil = xmlUtil;
         this.positionUtil = positionUtil;
         this.format = format;
@@ -133,7 +133,7 @@ public class ContentElement implements OdsElement {
     public Table addTable(final String name, final int rowCapacity, final int columnCapacity) {
         Table table = this.tables.getByName(name);
         if (table == null) {
-            table = Table.create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name,
+            table = Table.create(this, this.positionUtil, this.cache, this.xmlUtil, name,
                     rowCapacity, columnCapacity, this.stylesContainer, this.format,
                     this.libreOfficeMode);
             this.tables.add(table);
@@ -164,7 +164,7 @@ public class ContentElement implements OdsElement {
      */
     public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
         return Table
-                .create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,
+                .create(this, this.positionUtil, this.cache, this.xmlUtil, name, rowCapacity,
                         columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);
     }
 

@@ -30,7 +30,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class TableCellImpl implements WritableTableCell {
     }
 
     private final TableRowImpl parentRow;
-    private final WriteUtil writeUtil;
+    private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final StylesContainer stylesContainer;
     private final DataStyles dataStyles;
@@ -76,7 +76,7 @@ public class TableCellImpl implements WritableTableCell {
     /**
      * Create the table cell implementation
      *
-     * @param writeUtil       an util
+     * @param cache       an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles containers that will dispatch styles to document.xml and
      *                        styles.xml
@@ -85,11 +85,11 @@ public class TableCellImpl implements WritableTableCell {
      * @param parentRow       the parent row
      * @param columnIndex     index in parent row
      */
-    TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
+    TableCellImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
                   final StylesContainer stylesContainer, final DataStyles dataStyles,
                   final boolean libreOfficeMode, final TableRowImpl parentRow,
                   final int columnIndex) {
-        this.writeUtil = writeUtil;
+        this.cache = cache;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
@@ -311,7 +311,7 @@ public class TableCellImpl implements WritableTableCell {
 
     @Override
     public void setFloatValue(final int value) {
-        this.setFloatValue(this.writeUtil.toString(value));
+        this.setFloatValue(this.cache.toString(value));
     }
 
     @Override

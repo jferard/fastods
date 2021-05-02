@@ -29,7 +29,7 @@ import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class TableRowImpl implements TableRow {
     private final Table parentTable;
     private final int rowIndex;
     private final StylesContainer stylesContainer;
-    private final WriteUtil writeUtil;
+    private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final FastFullList<WritableTableCell> cells;
     private final boolean libreOfficeMode;
@@ -76,7 +76,7 @@ public class TableRowImpl implements TableRow {
     /**
      * Create a new TableRow
      *
-     * @param writeUtil       an util
+     * @param cache       an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles container
      * @param dataStyles      the data styles
@@ -85,11 +85,11 @@ public class TableRowImpl implements TableRow {
      * @param rowIndex        the index of this row
      * @param columnCapacity  the max column
      */
-    TableRowImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,
+    TableRowImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
                  final StylesContainer stylesContainer, final DataStyles dataStyles,
                  final boolean libreOfficeMode, final Table parentTable, final int rowIndex,
                  final int columnCapacity) {
-        this.writeUtil = writeUtil;
+        this.cache = cache;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
         this.dataStyles = dataStyles;
@@ -262,7 +262,7 @@ public class TableRowImpl implements TableRow {
     public TableCell getOrCreateCell(final int colIndex) {
         WritableTableCell cell = this.cells.get(colIndex);
         if (cell == null) {
-            cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer,
+            cell = new TableCellImpl(this.cache, this.xmlUtil, this.stylesContainer,
                     this.dataStyles, this.libreOfficeMode, this, colIndex);
             this.cells.set(colIndex, cell);
         }

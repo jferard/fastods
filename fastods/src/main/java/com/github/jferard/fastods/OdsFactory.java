@@ -28,7 +28,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.MetaElement;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
 import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 public class OdsFactory {
     private final Logger logger;
     private final PositionUtil positionUtil;
-    private final WriteUtil writeUtil;
+    private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final Map<String, String> additionalNamespaceByPrefix;
     private DataStyles format;
@@ -59,20 +59,20 @@ public class OdsFactory {
      *
      * @param logger                      the logger
      * @param positionUtil                an util
-     * @param writeUtil                   an util
+     * @param cache                   an util
      * @param xmlUtil                     an util
      * @param additionalNamespaceByPrefix a map prefix -> namespace
      * @param format                      the data styles
      * @param libreOfficeMode             try to get full compatibility with LO if true
      * @param metaElement                 the meta element
      */
-    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,
+    OdsFactory(final Logger logger, final PositionUtil positionUtil, final IntegerRepresentationCache cache,
                final XMLUtil xmlUtil, final Map<String, String> additionalNamespaceByPrefix,
                final DataStyles format, final boolean libreOfficeMode,
                final MetaElement metaElement) {
         this.logger = logger;
         this.positionUtil = positionUtil;
-        this.writeUtil = writeUtil;
+        this.cache = cache;
         this.xmlUtil = xmlUtil;
         this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;
         this.format = format;
@@ -169,7 +169,7 @@ public class OdsFactory {
      */
     private AnonymousOdsDocument createAnonymousDocument() {
         final OdsElements odsElements = OdsElements
-                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
+                .create(this.positionUtil, this.xmlUtil, this.cache, this.format,
                         this.libreOfficeMode, this.metaElement, this.additionalNamespaceByPrefix);
         return AnonymousOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }
@@ -181,7 +181,7 @@ public class OdsFactory {
      */
     private NamedOdsDocument createNamedDocument() {
         final OdsElements odsElements = OdsElements
-                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,
+                .create(this.positionUtil, this.xmlUtil, this.cache, this.format,
                         this.libreOfficeMode, this.metaElement, this.additionalNamespaceByPrefix);
         return NamedOdsDocument.create(this.logger, this.xmlUtil, odsElements);
     }

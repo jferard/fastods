@@ -1,0 +1,673 @@
+warning: Les CRLF seront remplacés par des LF dans fastods/src/main/java/com/github/jferard/fastods/util/IntegerRepresentationCache.java.
+Le fichier conservera ses fins de ligne d'origine dans votre copie de travail
+warning: Les CRLF seront remplacés par des LF dans fastods/src/main/java/com/github/jferard/fastods/util/XMLUtil.java.
+Le fichier conservera ses fins de ligne d'origine dans votre copie de travail
+warning: Les CRLF seront remplacés par des LF dans fastods/src/test/java/com/github/jferard/fastods/RowCellWalkerImplTest.java.
+Le fichier conservera ses fins de ligne d'origine dans votre copie de travail
+warning: Les CRLF seront remplacés par des LF dans fastods/src/test/java/com/github/jferard/fastods/TableCellTest.java.
+Le fichier conservera ses fins de ligne d'origine dans votre copie de travail
+warning: Les CRLF seront remplacés par des LF dans fastods/src/test/java/com/github/jferard/fastods/util/WriteUtilTest.java.
+Le fichier conservera ses fins de ligne d'origine dans votre copie de travail
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/OdsFactory.java b/fastods/src/main/java/com/github/jferard/fastods/OdsFactory.java[m
+[1mindex cfceb3e2..6f5297b3 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/OdsFactory.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/OdsFactory.java[m
+[36m@@ -28,7 +28,7 @@[m [mimport com.github.jferard.fastods.datastyle.DataStyles;[m
+ import com.github.jferard.fastods.odselement.MetaElement;[m
+ import com.github.jferard.fastods.odselement.OdsElements;[m
+ import com.github.jferard.fastods.ref.PositionUtil;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;[m
+ import com.github.jferard.fastods.util.ZipUTF8WriterImpl;[m
+[36m@@ -48,7 +48,7 @@[m [mimport java.util.logging.Logger;[m
+ public class OdsFactory {[m
+     private final Logger logger;[m
+     private final PositionUtil positionUtil;[m
+[31m-    private final WriteUtil writeUtil;[m
+[32m+[m[32m    private final IntegerRepresentationCache cache;[m[41m[m
+     private final XMLUtil xmlUtil;[m
+     private final Map<String, String> additionalNamespaceByPrefix;[m
+     private DataStyles format;[m
+[36m@@ -59,20 +59,20 @@[m [mpublic class OdsFactory {[m
+      *[m
+      * @param logger                      the logger[m
+      * @param positionUtil                an util[m
+[31m-     * @param writeUtil                   an util[m
+[32m+[m[32m     * @param cache                   an util[m[41m[m
+      * @param xmlUtil                     an util[m
+      * @param additionalNamespaceByPrefix a map prefix -> namespace[m
+      * @param format                      the data styles[m
+      * @param libreOfficeMode             try to get full compatibility with LO if true[m
+      * @param metaElement                 the meta element[m
+      */[m
+[31m-    OdsFactory(final Logger logger, final PositionUtil positionUtil, final WriteUtil writeUtil,[m
+[32m+[m[32m    OdsFactory(final Logger logger, final PositionUtil positionUtil, final IntegerRepresentationCache cache,[m[41m[m
+                final XMLUtil xmlUtil, final Map<String, String> additionalNamespaceByPrefix,[m
+                final DataStyles format, final boolean libreOfficeMode,[m
+                final MetaElement metaElement) {[m
+         this.logger = logger;[m
+         this.positionUtil = positionUtil;[m
+[31m-        this.writeUtil = writeUtil;[m
+[32m+[m[32m        this.cache = cache;[m[41m[m
+         this.xmlUtil = xmlUtil;[m
+         this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;[m
+         this.format = format;[m
+[36m@@ -169,7 +169,7 @@[m [mpublic class OdsFactory {[m
+      */[m
+     private AnonymousOdsDocument createAnonymousDocument() {[m
+         final OdsElements odsElements = OdsElements[m
+[31m-                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,[m
+[32m+[m[32m                .create(this.positionUtil, this.xmlUtil, this.cache, this.format,[m[41m[m
+                         this.libreOfficeMode, this.metaElement, this.additionalNamespaceByPrefix);[m
+         return AnonymousOdsDocument.create(this.logger, this.xmlUtil, odsElements);[m
+     }[m
+[36m@@ -181,7 +181,7 @@[m [mpublic class OdsFactory {[m
+      */[m
+     private NamedOdsDocument createNamedDocument() {[m
+         final OdsElements odsElements = OdsElements[m
+[31m-                .create(this.positionUtil, this.xmlUtil, this.writeUtil, this.format,[m
+[32m+[m[32m                .create(this.positionUtil, this.xmlUtil, this.cache, this.format,[m[41m[m
+                         this.libreOfficeMode, this.metaElement, this.additionalNamespaceByPrefix);[m
+         return NamedOdsDocument.create(this.logger, this.xmlUtil, odsElements);[m
+     }[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/OdsFactoryBuilder.java b/fastods/src/main/java/com/github/jferard/fastods/OdsFactoryBuilder.java[m
+[1mindex 2d7a2f75..76b24f45 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/OdsFactoryBuilder.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/OdsFactoryBuilder.java[m
+[36m@@ -29,7 +29,7 @@[m [mimport com.github.jferard.fastods.datastyle.DataStylesBuilder;[m
+ import com.github.jferard.fastods.odselement.MetaElement;[m
+ import com.github.jferard.fastods.ref.PositionUtil;[m
+ import com.github.jferard.fastods.ref.TableNameUtil;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ [m
+ import java.util.HashMap;[m
+[36m@@ -40,7 +40,7 @@[m [mimport java.util.logging.Logger;[m
+ public class OdsFactoryBuilder {[m
+     private final Logger logger;[m
+     private final PositionUtil positionUtil;[m
+[31m-    private final WriteUtil writeUtil;[m
+[32m+[m[32m    private final IntegerRepresentationCache cache;[m
+     private final XMLUtil xmlUtil;[m
+     private final Map<String, String> additionalNamespaceByPrefix;[m
+     private DataStyles format;[m
+[36m@@ -50,7 +50,7 @@[m [mpublic class OdsFactoryBuilder {[m
+     public OdsFactoryBuilder(final Logger logger, final Locale locale) {[m
+         this.logger = logger;[m
+         this.positionUtil = new PositionUtil(new TableNameUtil());[m
+[31m-        this.writeUtil = WriteUtil.create();[m
+[32m+[m[32m        this.cache = IntegerRepresentationCache.create();[m
+         this.xmlUtil = XMLUtil.create();[m
+         this.additionalNamespaceByPrefix = new HashMap<String, String>();[m
+ [m
+[36m@@ -60,7 +60,7 @@[m [mpublic class OdsFactoryBuilder {[m
+     }[m
+ [m
+     public OdsFactory build() {[m
+[31m-        return new OdsFactory(this.logger, this.positionUtil, this.writeUtil, this.xmlUtil,[m
+[32m+[m[32m        return new OdsFactory(this.logger, this.positionUtil, this.cache, this.xmlUtil,[m
+                 this.additionalNamespaceByPrefix, this.format, this.libreOfficeMode, this.metaElement[m
+         );[m
+     }[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/Table.java b/fastods/src/main/java/com/github/jferard/fastods/Table.java[m
+[1mindex f502da0e..559e3b34 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/Table.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/Table.java[m
+[36m@@ -35,7 +35,7 @@[m [mimport com.github.jferard.fastods.style.TableColumnStyle;[m
+ import com.github.jferard.fastods.style.TableStyle;[m
+ import com.github.jferard.fastods.util.AutoFilter;[m
+ import com.github.jferard.fastods.util.NamedObject;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ [m
+ import java.io.IOException;[m
+[36m@@ -53,7 +53,7 @@[m [mpublic class Table implements NamedObject, FrameContent {[m
+      *[m
+      * @param contentElement  the content.xml representation[m
+      * @param positionUtil    an util[m
+[31m-     * @param writeUtil       an util[m
+[32m+[m[32m     * @param cache       an util[m[41m[m
+      * @param xmlUtil         an util[m
+      * @param name            the name of the tables[m
+      * @param rowCapacity     the row capacity[m
+[36m@@ -64,13 +64,13 @@[m [mpublic class Table implements NamedObject, FrameContent {[m
+      * @return the table[m
+      */[m
+     public static Table create(final ContentElement contentElement, final PositionUtil positionUtil,[m
+[31m-                               final WriteUtil writeUtil, final XMLUtil xmlUtil, final String name,[m
+[32m+[m[32m                               final IntegerRepresentationCache cache, final XMLUtil xmlUtil, final String name,[m[41m[m
+                                final int rowCapacity, final int columnCapacity,[m
+                                final StylesContainer stylesContainer, final DataStyles format,[m
+                                final boolean libreOfficeMode) {[m
+         positionUtil.checkTableName(name);[m
+         final TableBuilder builder = TableBuilder[m
+[31m-                .create(positionUtil, writeUtil, xmlUtil, stylesContainer, format, libreOfficeMode,[m
+[32m+[m[32m                .create(positionUtil, cache, xmlUtil, stylesContainer, format, libreOfficeMode,[m[41m[m
+                         name, rowCapacity, columnCapacity);[m
+         return new Table(name, contentElement, builder, new TableAppender(builder));[m
+     }[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/TableBuilder.java b/fastods/src/main/java/com/github/jferard/fastods/TableBuilder.java[m
+[1mindex 3f21bfac..24044d76 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/TableBuilder.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/TableBuilder.java[m
+[36m@@ -37,7 +37,7 @@[m [mimport com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.style.TableColumnStyle;[m
+ import com.github.jferard.fastods.style.TableStyle;[m
+ import com.github.jferard.fastods.util.FastFullList;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ [m
+ import java.io.IOException;[m
+[36m@@ -83,7 +83,7 @@[m [mclass TableBuilder {[m
+      * Create a new table builder[m
+      *[m
+      * @param positionUtil    an util[m
+[31m-     * @param writeUtil       an util[m
+[32m+[m[32m     * @param cache       an util[m[41m[m
+      * @param xmlUtil         an util[m
+      * @param stylesContainer the container[m
+      * @param format          the available data styles[m
+[36m@@ -93,7 +93,7 @@[m [mclass TableBuilder {[m
+      * @param columnCapacity  the column capacity of the table[m
+      * @return the builder[m
+      */[m
+[31m-    public static TableBuilder create(final PositionUtil positionUtil, final WriteUtil writeUtil,[m
+[32m+[m[32m    public static TableBuilder create(final PositionUtil positionUtil, final IntegerRepresentationCache cache,[m[41m[m
+                                       final XMLUtil xmlUtil, final StylesContainer stylesContainer,[m
+                                       final DataStyles format, final boolean libreOfficeMode,[m
+                                       final String name, final int rowCapacity,[m
+[36m@@ -116,7 +116,7 @@[m [mclass TableBuilder {[m
+         configEntry.add(ConfigItem.create(ConfigElement.POSITION_TOP, "0"));[m
+         configEntry.add(ConfigItem.create(ConfigElement.POSITION_BOTTOM, "0"));[m
+ [m
+[31m-        return new TableBuilder(positionUtil, writeUtil, xmlUtil, stylesContainer, format,[m
+[32m+[m[32m        return new TableBuilder(positionUtil, cache, xmlUtil, stylesContainer, format,[m[41m[m
+                 libreOfficeMode, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);[m
+     }[m
+ [m
+[36m@@ -128,7 +128,7 @@[m [mclass TableBuilder {[m
+     private final StylesContainer stylesContainer;[m
+     private final FastFullList<TableRowImpl> tableRows;[m
+     private final FastFullList<TableColumnImpl> tableColumns;[m
+[31m-    private final WriteUtil writeUtil;[m
+[32m+[m[32m    private final IntegerRepresentationCache cache;[m[41m[m
+     private final XMLUtil xmlUtil;[m
+     private final boolean libreOfficeMode;[m
+     private final List<XMLConvertible> forms;[m
+[36m@@ -146,7 +146,7 @@[m [mclass TableBuilder {[m
+      * Create a new table builder[m
+      *[m
+      * @param positionUtil    an util[m
+[31m-     * @param writeUtil       an util[m
+[32m+[m[32m     * @param cache       an util[m[41m[m
+      * @param xmlUtil         an util[m
+      * @param stylesContainer the container[m
+      * @param format          the available data styles[m
+[36m@@ -157,13 +157,13 @@[m [mclass TableBuilder {[m
+      * @param configEntry     the config[m
+      * @param bufferSize      the buffer size[m
+      */[m
+[31m-    TableBuilder(final PositionUtil positionUtil, final WriteUtil writeUtil, final XMLUtil xmlUtil,[m
+[32m+[m[32m    TableBuilder(final PositionUtil positionUtil, final IntegerRepresentationCache cache, final XMLUtil xmlUtil,[m[41m[m
+                  final StylesContainer stylesContainer, final DataStyles format,[m
+                  final boolean libreOfficeMode, final String name, final int rowCapacity,[m
+                  final int columnCapacity, final ConfigItemMapEntrySet configEntry,[m
+                  final int bufferSize) {[m
+         this.xmlUtil = xmlUtil;[m
+[31m-        this.writeUtil = writeUtil;[m
+[32m+[m[32m        this.cache = cache;[m[41m[m
+         this.positionUtil = positionUtil;[m
+         this.stylesContainer = stylesContainer;[m
+         this.format = format;[m
+[36m@@ -280,7 +280,7 @@[m [mclass TableBuilder {[m
+             throws IOException {[m
+         TableRowImpl tr = this.tableRows.get(rowIndex);[m
+         if (tr == null) {[m
+[31m-            tr = new TableRowImpl(this.writeUtil, this.xmlUtil, this.stylesContainer, this.format,[m
+[32m+[m[32m            tr = new TableRowImpl(this.cache, this.xmlUtil, this.stylesContainer, this.format,[m[41m[m
+                     this.libreOfficeMode, table, rowIndex, this.columnCapacity);[m
+             this.tableRows.set(rowIndex, tr);[m
+             if (rowIndex > this.lastRowIndex) {[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/TableCellImpl.java b/fastods/src/main/java/com/github/jferard/fastods/TableCellImpl.java[m
+[1mindex 447cbd17..348e8049 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/TableCellImpl.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/TableCellImpl.java[m
+[36m@@ -30,7 +30,7 @@[m [mimport com.github.jferard.fastods.datastyle.DataStyle;[m
+ import com.github.jferard.fastods.datastyle.DataStyles;[m
+ import com.github.jferard.fastods.odselement.StylesContainer;[m
+ import com.github.jferard.fastods.style.TableCellStyle;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ [m
+ import java.io.IOException;[m
+[36m@@ -62,7 +62,7 @@[m [mpublic class TableCellImpl implements WritableTableCell {[m
+     }[m
+ [m
+     private final TableRowImpl parentRow;[m
+[31m-    private final WriteUtil writeUtil;[m
+[32m+[m[32m    private final IntegerRepresentationCache cache;[m
+     private final XMLUtil xmlUtil;[m
+     private final StylesContainer stylesContainer;[m
+     private final DataStyles dataStyles;[m
+[36m@@ -76,7 +76,7 @@[m [mpublic class TableCellImpl implements WritableTableCell {[m
+     /**[m
+      * Create the table cell implementation[m
+      *[m
+[31m-     * @param writeUtil       an util[m
+[32m+[m[32m     * @param cache       an util[m
+      * @param xmlUtil         an util[m
+      * @param stylesContainer the styles containers that will dispatch styles to document.xml and[m
+      *                        styles.xml[m
+[36m@@ -85,11 +85,11 @@[m [mpublic class TableCellImpl implements WritableTableCell {[m
+      * @param parentRow       the parent row[m
+      * @param columnIndex     index in parent row[m
+      */[m
+[31m-    TableCellImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,[m
+[32m+[m[32m    TableCellImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,[m
+                   final StylesContainer stylesContainer, final DataStyles dataStyles,[m
+                   final boolean libreOfficeMode, final TableRowImpl parentRow,[m
+                   final int columnIndex) {[m
+[31m-        this.writeUtil = writeUtil;[m
+[32m+[m[32m        this.cache = cache;[m
+         this.stylesContainer = stylesContainer;[m
+         this.xmlUtil = xmlUtil;[m
+         this.dataStyles = dataStyles;[m
+[36m@@ -311,7 +311,7 @@[m [mpublic class TableCellImpl implements WritableTableCell {[m
+ [m
+     @Override[m
+     public void setFloatValue(final int value) {[m
+[31m-        this.setFloatValue(this.writeUtil.toString(value));[m
+[32m+[m[32m        this.setFloatValue(this.cache.toString(value));[m
+     }[m
+ [m
+     @Override[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/TableRowImpl.java b/fastods/src/main/java/com/github/jferard/fastods/TableRowImpl.java[m
+[1mindex cfe4bbcd..9887121c 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/TableRowImpl.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/TableRowImpl.java[m
+[36m@@ -29,7 +29,7 @@[m [mimport com.github.jferard.fastods.odselement.StylesContainer;[m
+ import com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.style.TableRowStyle;[m
+ import com.github.jferard.fastods.util.FastFullList;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ [m
+ import java.io.IOException;[m
+[36m@@ -64,7 +64,7 @@[m [mpublic class TableRowImpl implements TableRow {[m
+     private final Table parentTable;[m
+     private final int rowIndex;[m
+     private final StylesContainer stylesContainer;[m
+[31m-    private final WriteUtil writeUtil;[m
+[32m+[m[32m    private final IntegerRepresentationCache cache;[m
+     private final XMLUtil xmlUtil;[m
+     private final FastFullList<WritableTableCell> cells;[m
+     private final boolean libreOfficeMode;[m
+[36m@@ -76,7 +76,7 @@[m [mpublic class TableRowImpl implements TableRow {[m
+     /**[m
+      * Create a new TableRow[m
+      *[m
+[31m-     * @param writeUtil       an util[m
+[32m+[m[32m     * @param cache       an util[m
+      * @param xmlUtil         an util[m
+      * @param stylesContainer the styles container[m
+      * @param dataStyles      the data styles[m
+[36m@@ -85,11 +85,11 @@[m [mpublic class TableRowImpl implements TableRow {[m
+      * @param rowIndex        the index of this row[m
+      * @param columnCapacity  the max column[m
+      */[m
+[31m-    TableRowImpl(final WriteUtil writeUtil, final XMLUtil xmlUtil,[m
+[32m+[m[32m    TableRowImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,[m
+                  final StylesContainer stylesContainer, final DataStyles dataStyles,[m
+                  final boolean libreOfficeMode, final Table parentTable, final int rowIndex,[m
+                  final int columnCapacity) {[m
+[31m-        this.writeUtil = writeUtil;[m
+[32m+[m[32m        this.cache = cache;[m
+         this.stylesContainer = stylesContainer;[m
+         this.xmlUtil = xmlUtil;[m
+         this.dataStyles = dataStyles;[m
+[36m@@ -262,7 +262,7 @@[m [mpublic class TableRowImpl implements TableRow {[m
+     public TableCell getOrCreateCell(final int colIndex) {[m
+         WritableTableCell cell = this.cells.get(colIndex);[m
+         if (cell == null) {[m
+[31m-            cell = new TableCellImpl(this.writeUtil, this.xmlUtil, this.stylesContainer,[m
+[32m+[m[32m            cell = new TableCellImpl(this.cache, this.xmlUtil, this.stylesContainer,[m
+                     this.dataStyles, this.libreOfficeMode, this, colIndex);[m
+             this.cells.set(colIndex, cell);[m
+         }[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/odselement/ContentElement.java b/fastods/src/main/java/com/github/jferard/fastods/odselement/ContentElement.java[m
+[1mindex 79822f51..94c14eb1 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/odselement/ContentElement.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/odselement/ContentElement.java[m
+[36m@@ -33,7 +33,7 @@[m [mimport com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.util.AutoFilter;[m
+ import com.github.jferard.fastods.util.PilotTable;[m
+ import com.github.jferard.fastods.util.UniqueList;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import com.github.jferard.fastods.util.ZipUTF8Writer;[m
+ [m
+[36m@@ -69,7 +69,7 @@[m [mpublic class ContentElement implements OdsElement {[m
+     private final PositionUtil positionUtil;[m
+     private final StylesContainerImpl stylesContainer;[m
+     private final UniqueList<Table> tables;[m
+[31m-    private final WriteUtil writeUtil;[m
+[32m+[m[32m    private final IntegerRepresentationCache cache;[m[41m[m
+     private final XMLUtil xmlUtil;[m
+     private final boolean libreOfficeMode;[m
+     private final List<ScriptEventListener> scriptEvents;[m
+[36m@@ -80,17 +80,17 @@[m [mpublic class ContentElement implements OdsElement {[m
+     /**[m
+      * @param positionUtil    an util object for positions (e.g. "A1")[m
+      * @param xmlUtil         an util object to write xml[m
+[31m-     * @param writeUtil       an util to compute some data[m
+[32m+[m[32m     * @param cache       an util to compute some data[m[41m[m
+      * @param format          the format for data styles[m
+      * @param libreOfficeMode try to get full compatibility with LO if true[m
+      * @param stylesContainer a styles container.[m
+      * @param additionalNamespaceByPrefix a map prefix -> namespace[m
+      */[m
+     ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,[m
+[31m-                   final WriteUtil writeUtil, final DataStyles format,[m
+[32m+[m[32m                   final IntegerRepresentationCache cache, final DataStyles format,[m[41m[m
+                    final boolean libreOfficeMode, final StylesContainerImpl stylesContainer,[m
+                    final Map<String, String> additionalNamespaceByPrefix) {[m
+[31m-        this.writeUtil = writeUtil;[m
+[32m+[m[32m        this.cache = cache;[m[41m[m
+         this.xmlUtil = xmlUtil;[m
+         this.positionUtil = positionUtil;[m
+         this.format = format;[m
+[36m@@ -133,7 +133,7 @@[m [mpublic class ContentElement implements OdsElement {[m
+     public Table addTable(final String name, final int rowCapacity, final int columnCapacity) {[m
+         Table table = this.tables.getByName(name);[m
+         if (table == null) {[m
+[31m-            table = Table.create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name,[m
+[32m+[m[32m            table = Table.create(this, this.positionUtil, this.cache, this.xmlUtil, name,[m[41m[m
+                     rowCapacity, columnCapacity, this.stylesContainer, this.format,[m
+                     this.libreOfficeMode);[m
+             this.tables.add(table);[m
+[36m@@ -164,7 +164,7 @@[m [mpublic class ContentElement implements OdsElement {[m
+      */[m
+     public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {[m
+         return Table[m
+[31m-                .create(this, this.positionUtil, this.writeUtil, this.xmlUtil, name, rowCapacity,[m
+[32m+[m[32m                .create(this, this.positionUtil, this.cache, this.xmlUtil, name, rowCapacity,[m[41m[m
+                         columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);[m
+     }[m
+ [m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/odselement/OdsElements.java b/fastods/src/main/java/com/github/jferard/fastods/odselement/OdsElements.java[m
+[1mindex 683a6ced..f6557cc4 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/odselement/OdsElements.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/odselement/OdsElements.java[m
+[36m@@ -45,7 +45,7 @@[m [mimport com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.util.AutoFilter;[m
+ import com.github.jferard.fastods.util.Container;[m
+ import com.github.jferard.fastods.util.PilotTable;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import com.github.jferard.fastods.util.ZipUTF8Writer;[m
+ [m
+[36m@@ -123,7 +123,7 @@[m [mpublic class OdsElements implements StylesContainer {[m
+     /**[m
+      * @param positionUtil                an util for cell addresses (e.g. "A1")[m
+      * @param xmlUtil                     an XML util[m
+[31m-     * @param writeUtil                   an util for write[m
+[32m+[m[32m     * @param cache                   an util for write[m[41m[m
+      * @param format                      the data styles[m
+      * @param libreOfficeMode             try to get full compatibility with LO if true[m
+      * @param metaElement[m
+[36m@@ -131,7 +131,7 @@[m [mpublic class OdsElements implements StylesContainer {[m
+      * @return a new OdsElements, with newly build elements.[m
+      */[m
+     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,[m
+[31m-                                     final WriteUtil writeUtil, final DataStyles format,[m
+[32m+[m[32m                                     final IntegerRepresentationCache cache, final DataStyles format,[m[41m[m
+                                      final boolean libreOfficeMode, final MetaElement metaElement,[m
+                                      final Map<String, String> additionalNamespaceByPrefix) {[m
+         final Logger logger = Logger.getLogger(OdsElements.class.getName());[m
+[36m@@ -141,7 +141,7 @@[m [mpublic class OdsElements implements StylesContainer {[m
+         final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);[m
+         final StylesElement stylesElement = new StylesElement(stylesContainer);[m
+         final ContentElement contentElement =[m
+[31m-                new ContentElement(positionUtil, xmlUtil, writeUtil, format, libreOfficeMode,[m
+[32m+[m[32m                new ContentElement(positionUtil, xmlUtil, cache, format, libreOfficeMode,[m[41m[m
+                         stylesContainer, additionalNamespaceByPrefix);[m
+         return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,[m
+                 settingsElement, metaElement, contentElement, stylesElement);[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/util/FastOdsXMLEscaper.java b/fastods/src/main/java/com/github/jferard/fastods/util/FastOdsXMLEscaper.java[m
+[1mindex b5f69fb9..c453239f 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/util/FastOdsXMLEscaper.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/util/FastOdsXMLEscaper.java[m
+[36m@@ -32,7 +32,6 @@[m [mimport java.util.Map;[m
+  *[m
+  * @author Julien Férard[m
+  */[m
+[31m-@SuppressWarnings("PMD.UnusedLocalVariable")[m
+ public class FastOdsXMLEscaper implements XMLEscaper {[m
+     private static final int BUFFER_SIZE = 65536;[m
+     private static final char[][] CHAR_SUBSTITUTES_IN_ATTRIBUTE;[m
+[1mdiff --git a/fastods/src/main/java/com/github/jferard/fastods/util/IntegerRepresentationCache.java b/fastods/src/main/java/com/github/jferard/fastods/util/IntegerRepresentationCache.java[m
+[1mindex 411e87b4..5fcb45a5 100644[m
+[1m--- a/fastods/src/main/java/com/github/jferard/fastods/util/IntegerRepresentationCache.java[m
+[1m+++ b/fastods/src/main/java/com/github/jferard/fastods/util/IntegerRepresentationCache.java[m
+[36m@@ -29,14 +29,14 @@[m [mpackage com.github.jferard.fastods.util;[m
+  *[m
+  * @author Julien Férard[m
+  */[m
+[31m-public class WriteUtil {[m
+[32m+[m[32mpublic class IntegerRepresentationCache {[m
+     private static final int DEFAULT_MAX_INT = 1000;[m
+ [m
+     /**[m
+      * @return a WriteUtil with the default max int in cache.[m
+      */[m
+[31m-    public static WriteUtil create() {[m
+[31m-        return new WriteUtil(DEFAULT_MAX_INT);[m
+[32m+[m[32m    public static IntegerRepresentationCache create() {[m
+[32m+[m[32m        return new IntegerRepresentationCache(DEFAULT_MAX_INT);[m
+     }[m
+ [m
+     private final int maxInt;[m
+[36m@@ -45,7 +45,7 @@[m [mpublic class WriteUtil {[m
+     /**[m
+      * @param maxInt the max int in cache[m
+      */[m
+[31m-    WriteUtil(final int maxInt) {[m
+[32m+[m[32m    IntegerRepresentationCache(final int maxInt) {[m
+         this.maxInt = maxInt;[m
+         this.ints = new String[2 * maxInt];[m
+     }[m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/RowCellWalkerImplTest.java b/fastods/src/test/java/com/github/jferard/fastods/RowCellWalkerImplTest.java[m
+[1mindex 1179937a..5d4e5ca7 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/RowCellWalkerImplTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/RowCellWalkerImplTest.java[m
+[36m@@ -30,7 +30,7 @@[m [mimport com.github.jferard.fastods.datastyle.DataStyles;[m
+ import com.github.jferard.fastods.datastyle.DataStylesBuilder;[m
+ import com.github.jferard.fastods.odselement.StylesContainer;[m
+ import com.github.jferard.fastods.odselement.StylesContainerImpl;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import org.easymock.EasyMock;[m
+ import org.junit.Assert;[m
+[36m@@ -554,8 +554,8 @@[m [mpublic class RowCellWalkerImplTest {[m
+         final StylesContainer stc = PowerMock.createMock(StylesContainerImpl.class);[m
+         final XMLUtil xmlUtil = XMLUtil.create();[m
+         final DataStyles ds = DataStylesBuilder.create(Locale.US).build();[m
+[31m-        final WriteUtil writeUtil = WriteUtil.create();[m
+[31m-        return new TableRowImpl(writeUtil, xmlUtil, stc, ds, false, null, 10, 100);[m
+[32m+[m[32m        final IntegerRepresentationCache cache = IntegerRepresentationCache.create();[m
+[32m+[m[32m        return new TableRowImpl(cache, xmlUtil, stc, ds, false, null, 10, 100);[m
+     }[m
+ [m
+     /*[m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/TableBuilderTest.java b/fastods/src/test/java/com/github/jferard/fastods/TableBuilderTest.java[m
+[1mindex ad6cb2c4..dfcf8f4b 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/TableBuilderTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/TableBuilderTest.java[m
+[36m@@ -34,7 +34,7 @@[m [mimport com.github.jferard.fastods.ref.TableNameUtil;[m
+ import com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.style.TableColumnStyle;[m
+ import com.github.jferard.fastods.style.TableStyle;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import org.easymock.EasyMock;[m
+ import org.junit.Assert;[m
+[36m@@ -66,7 +66,7 @@[m [mpublic class TableBuilderTest {[m
+         this.ds = DataStylesBuilder.create(Locale.US).build();[m
+         this.ce = ConfigItemMapEntrySet.createSet("mytable");[m
+         this.builder =[m
+[31m-                new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil, this.stc, this.ds,[m
+[32m+[m[32m                new TableBuilder(positionUtil, IntegerRepresentationCache.create(), xmlUtil, this.stc, this.ds,[m[41m[m
+                         false, "mytable", 10, 100, this.ce, 2);[m
+         this.xmlUtil = xmlUtil;[m
+ [m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/TableCellTest.java b/fastods/src/test/java/com/github/jferard/fastods/TableCellTest.java[m
+[1mindex e341c5ba..fe815f64 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/TableCellTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/TableCellTest.java[m
+[36m@@ -38,7 +38,7 @@[m [mimport com.github.jferard.fastods.style.GraphicStyle;[m
+ import com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.style.TextStyle;[m
+ import com.github.jferard.fastods.testlib.DomTester;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import org.easymock.EasyMock;[m
+ import org.junit.Assert;[m
+[36m@@ -76,14 +76,14 @@[m [mpublic class TableCellTest {[m
+         this.locale = Locale.US;[m
+         this.stc = PowerMock.createMock(StylesContainerImpl.class);[m
+         this.table = PowerMock.createMock(Table.class);[m
+[31m-        final WriteUtil writeUtil = WriteUtil.create();[m
+[32m+[m[32m        final IntegerRepresentationCache cache = IntegerRepresentationCache.create();[m
+         this.xmlUtil = XMLUtil.create();[m
+ [m
+         this.tcc = TableColdCell.create(this.xmlUtil);[m
+         this.ds = DataStylesBuilder.create(Locale.US).build();[m
+[31m-        this.row = new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table,[m
+[32m+[m[32m        this.row = new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table,[m
+                 ROW_INDEX, 100);[m
+[31m-        this.cell = new TableCellImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.row,[m
+[32m+[m[32m        this.cell = new TableCellImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.row,[m
+                 COLUMN_INDEX);[m
+         this.tcs = TableCellStyle.builder("name").build();[m
+         PowerMock.mockStatic(TableColdCell.class);[m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/TableRowTest.java b/fastods/src/test/java/com/github/jferard/fastods/TableRowTest.java[m
+[1mindex d23336b5..0c127cce 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/TableRowTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/TableRowTest.java[m
+[36m@@ -31,7 +31,7 @@[m [mimport com.github.jferard.fastods.odselement.StylesContainerImpl;[m
+ import com.github.jferard.fastods.style.TableCellStyle;[m
+ import com.github.jferard.fastods.style.TableRowStyle;[m
+ import com.github.jferard.fastods.testlib.DomTester;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import org.easymock.EasyMock;[m
+ import org.junit.Assert;[m
+[36m@@ -60,11 +60,11 @@[m [mpublic class TableRowTest {[m
+     public void setUp() {[m
+         this.stc = PowerMock.createMock(StylesContainerImpl.class);[m
+         this.table = PowerMock.createMock(Table.class);[m
+[31m-        final WriteUtil writeUtil = WriteUtil.create();[m
+[32m+[m[32m        final IntegerRepresentationCache cache = IntegerRepresentationCache.create();[m
+         this.xmlUtil = XMLUtil.create();[m
+         this.ds = DataStylesBuilder.create(Locale.US).build();[m
+         this.row =[m
+[31m-                new TableRowImpl(writeUtil, this.xmlUtil, this.stc, this.ds, false, this.table, 10,[m
+[32m+[m[32m                new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table, 10,[m
+                         100);[m
+         this.tcs = TableCellStyle.builder("---").build();[m
+         PowerMock.mockStatic(TableColdCell.class);[m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/TableTest.java b/fastods/src/test/java/com/github/jferard/fastods/TableTest.java[m
+[1mindex ed854886..3f8bd704 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/TableTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/TableTest.java[m
+[36m@@ -37,7 +37,7 @@[m [mimport com.github.jferard.fastods.style.TableColumnStyle;[m
+ import com.github.jferard.fastods.style.TableStyle;[m
+ import com.github.jferard.fastods.testlib.DomTester;[m
+ import com.github.jferard.fastods.util.AutoFilter;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m[41m[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import org.easymock.Capture;[m
+ import org.easymock.EasyMock;[m
+[36m@@ -72,7 +72,7 @@[m [mpublic class TableTest {[m
+         final XMLUtil xmlUtil = XMLUtil.create();[m
+         this.ds = DataStylesBuilder.create(Locale.US).build();[m
+         this.table =[m
+[31m-                Table.create(this.ce, positionUtil, WriteUtil.create(), xmlUtil, "my_table", 10,[m
+[32m+[m[32m                Table.create(this.ce, positionUtil, IntegerRepresentationCache.create(), xmlUtil, "my_table", 10,[m[41m[m
+                         100, this.stc, this.ds, false);[m
+         this.xmlUtil = xmlUtil;[m
+         this.sb = new StringBuilder();[m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/odselement/ContentElementTest.java b/fastods/src/test/java/com/github/jferard/fastods/odselement/ContentElementTest.java[m
+[1mindex e4551f6f..df2b57fc 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/odselement/ContentElementTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/odselement/ContentElementTest.java[m
+[36m@@ -35,7 +35,7 @@[m [mimport com.github.jferard.fastods.testlib.DomTester;[m
+ import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;[m
+ import com.github.jferard.fastods.util.AutoFilter;[m
+ import com.github.jferard.fastods.util.PilotTable;[m
+[31m-import com.github.jferard.fastods.util.WriteUtil;[m
+[32m+[m[32mimport com.github.jferard.fastods.util.IntegerRepresentationCache;[m
+ import com.github.jferard.fastods.util.XMLUtil;[m
+ import com.github.jferard.fastods.util.ZipUTF8Writer;[m
+ import org.easymock.EasyMock;[m
+[36m@@ -67,7 +67,8 @@[m [mpublic class ContentElementTest {[m
+         this.container = PowerMock.createMock(StylesContainerImpl.class);[m
+         this.format = DataStylesBuilder.create(Locale.US).build();[m
+         this.content =[m
+[31m-                new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(),[m
+[32m+[m[32m                new ContentElement(PositionUtil.create(), XMLUtil.create(), IntegerRepresentationCache[m
+[32m+[m[32m                        .create(),[m
+                         this.format, true, this.container,[m
+                         new HashMap<String, String>());[m
+         this.settingsElement = PowerMock.createMock(SettingsElement.class);[m
+[36m@@ -135,7 +136,7 @@[m [mpublic class ContentElementTest {[m
+     }[m
+ [m
+     private Table createTable(final String name, final int rowCapacity, final int columnCapacity) {[m
+[31m-        return Table.create(this.content, PositionUtil.create(), WriteUtil.create(),[m
+[32m+[m[32m        return Table.create(this.content, PositionUtil.create(), IntegerRepresentationCache.create(),[m
+                 XMLUtil.create(), name, rowCapacity, columnCapacity, null, null, false);[m
+     }[m
+ [m
+[36m@@ -260,7 +261,8 @@[m [mpublic class ContentElementTest {[m
+         final HashMap<String, String> additionalNamespaceByPrefix = new HashMap<String, String>();[m
+         additionalNamespaceByPrefix.put("xmlns:myns", "my/namespace");[m
+         final ContentElement contentElement =[m
+[31m-                new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(),[m
+[32m+[m[32m                new ContentElement(PositionUtil.create(), XMLUtil.create(), IntegerRepresentationCache[m
+[32m+[m[32m                        .create(),[m
+                         this.format, true, this.container,[m
+                         additionalNamespaceByPrefix);[m
+ [m
+[1mdiff --git a/fastods/src/test/java/com/github/jferard/fastods/util/WriteUtilTest.java b/fastods/src/test/java/com/github/jferard/fastods/util/WriteUtilTest.java[m
+[1mindex e85582de..ec063d66 100644[m
+[1m--- a/fastods/src/test/java/com/github/jferard/fastods/util/WriteUtilTest.java[m
+[1m+++ b/fastods/src/test/java/com/github/jferard/fastods/util/WriteUtilTest.java[m
+[36m@@ -28,11 +28,11 @@[m [mimport org.junit.Before;[m
+ import org.junit.Test;[m
+ [m
+ public class WriteUtilTest {[m
+[31m-    private WriteUtil util;[m
+[32m+[m[32m    private IntegerRepresentationCache util;[m
+ [m
+     @Before[m
+     public void setUp() {[m
+[31m-        this.util = WriteUtil.create();[m
+[32m+[m[32m        this.util = IntegerRepresentationCache.create();[m
+     }[m
+ [m
+     @Test[m

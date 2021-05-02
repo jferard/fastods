@@ -35,7 +35,7 @@ import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.PilotTable;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
@@ -67,7 +67,8 @@ public class ContentElementTest {
         this.container = PowerMock.createMock(StylesContainerImpl.class);
         this.format = DataStylesBuilder.create(Locale.US).build();
         this.content =
-                new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(),
+                new ContentElement(PositionUtil.create(), XMLUtil.create(), IntegerRepresentationCache
+                        .create(),
                         this.format, true, this.container,
                         new HashMap<String, String>());
         this.settingsElement = PowerMock.createMock(SettingsElement.class);
@@ -135,7 +136,7 @@ public class ContentElementTest {
     }
 
     private Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
-        return Table.create(this.content, PositionUtil.create(), WriteUtil.create(),
+        return Table.create(this.content, PositionUtil.create(), IntegerRepresentationCache.create(),
                 XMLUtil.create(), name, rowCapacity, columnCapacity, null, null, false);
     }
 
@@ -260,7 +261,8 @@ public class ContentElementTest {
         final HashMap<String, String> additionalNamespaceByPrefix = new HashMap<String, String>();
         additionalNamespaceByPrefix.put("xmlns:myns", "my/namespace");
         final ContentElement contentElement =
-                new ContentElement(PositionUtil.create(), XMLUtil.create(), WriteUtil.create(),
+                new ContentElement(PositionUtil.create(), XMLUtil.create(), IntegerRepresentationCache
+                        .create(),
                         this.format, true, this.container,
                         additionalNamespaceByPrefix);
 

@@ -34,7 +34,7 @@ import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -66,7 +66,7 @@ public class TableBuilderTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.ce = ConfigItemMapEntrySet.createSet("mytable");
         this.builder =
-                new TableBuilder(positionUtil, WriteUtil.create(), xmlUtil, this.stc, this.ds,
+                new TableBuilder(positionUtil, IntegerRepresentationCache.create(), xmlUtil, this.stc, this.ds,
                         false, "mytable", 10, 100, this.ce, 2);
         this.xmlUtil = xmlUtil;
 

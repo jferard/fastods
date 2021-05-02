@@ -30,7 +30,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -554,8 +554,8 @@ public class RowCellWalkerImplTest {
         final StylesContainer stc = PowerMock.createMock(StylesContainerImpl.class);
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
-        final WriteUtil writeUtil = WriteUtil.create();
-        return new TableRowImpl(writeUtil, xmlUtil, stc, ds, false, null, 10, 100);
+        final IntegerRepresentationCache cache = IntegerRepresentationCache.create();
+        return new TableRowImpl(cache, xmlUtil, stc, ds, false, null, 10, 100);
     }
 
     /*

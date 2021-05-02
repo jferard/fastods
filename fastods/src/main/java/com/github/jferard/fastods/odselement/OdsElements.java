@@ -45,7 +45,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.PilotTable;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -123,7 +123,7 @@ public class OdsElements implements StylesContainer {
     /**
      * @param positionUtil                an util for cell addresses (e.g. "A1")
      * @param xmlUtil                     an XML util
-     * @param writeUtil                   an util for write
+     * @param cache                   an util for write
      * @param format                      the data styles
      * @param libreOfficeMode             try to get full compatibility with LO if true
      * @param metaElement
@@ -131,7 +131,7 @@ public class OdsElements implements StylesContainer {
      * @return a new OdsElements, with newly build elements.
      */
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-                                     final WriteUtil writeUtil, final DataStyles format,
+                                     final IntegerRepresentationCache cache, final DataStyles format,
                                      final boolean libreOfficeMode, final MetaElement metaElement,
                                      final Map<String, String> additionalNamespaceByPrefix) {
         final Logger logger = Logger.getLogger(OdsElements.class.getName());
@@ -141,7 +141,7 @@ public class OdsElements implements StylesContainer {
         final StylesContainerImpl stylesContainer = new StylesContainerImpl(logger);
         final StylesElement stylesElement = new StylesElement(stylesContainer);
         final ContentElement contentElement =
-                new ContentElement(positionUtil, xmlUtil, writeUtil, format, libreOfficeMode,
+                new ContentElement(positionUtil, xmlUtil, cache, format, libreOfficeMode,
                         stylesContainer, additionalNamespaceByPrefix);
         return new OdsElements(logger, stylesContainer, mimetypeElement, manifestElement,
                 settingsElement, metaElement, contentElement, stylesElement);

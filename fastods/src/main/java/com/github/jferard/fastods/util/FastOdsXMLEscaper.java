@@ -32,7 +32,6 @@ import java.util.Map;
  *
  * @author Julien Férard
  */
-@SuppressWarnings("PMD.UnusedLocalVariable")
 public class FastOdsXMLEscaper implements XMLEscaper {
     private static final int BUFFER_SIZE = 65536;
     private static final char[][] CHAR_SUBSTITUTES_IN_ATTRIBUTE;

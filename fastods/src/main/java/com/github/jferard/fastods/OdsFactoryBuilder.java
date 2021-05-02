@@ -29,7 +29,7 @@ import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.MetaElement;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.ref.TableNameUtil;
-import com.github.jferard.fastods.util.WriteUtil;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.util.HashMap;
@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 public class OdsFactoryBuilder {
     private final Logger logger;
     private final PositionUtil positionUtil;
-    private final WriteUtil writeUtil;
+    private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final Map<String, String> additionalNamespaceByPrefix;
     private DataStyles format;
@@ -50,7 +50,7 @@ public class OdsFactoryBuilder {
     public OdsFactoryBuilder(final Logger logger, final Locale locale) {
         this.logger = logger;
         this.positionUtil = new PositionUtil(new TableNameUtil());
-        this.writeUtil = WriteUtil.create();
+        this.cache = IntegerRepresentationCache.create();
         this.xmlUtil = XMLUtil.create();
         this.additionalNamespaceByPrefix = new HashMap<String, String>();
 
@@ -60,7 +60,7 @@ public class OdsFactoryBuilder {
     }
 
     public OdsFactory build() {
-        return new OdsFactory(this.logger, this.positionUtil, this.writeUtil, this.xmlUtil,
+        return new OdsFactory(this.logger, this.positionUtil, this.cache, this.xmlUtil,
                 this.additionalNamespaceByPrefix, this.format, this.libreOfficeMode, this.metaElement
         );
     }
