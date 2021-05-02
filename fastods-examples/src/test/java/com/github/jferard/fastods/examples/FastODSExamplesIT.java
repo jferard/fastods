@@ -186,4 +186,9 @@ public class FastODSExamplesIT {
     public void cryptoTest() throws IOException {
         M_Crypto.cryptoExample();
     }
+
+    @Test
+    public void usingTheBusTest() throws IOException {
+        N_UsingTheBus.example();
+    }
 }
