@@ -37,6 +37,7 @@ import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.PaperFormat;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextStyle;
 
@@ -54,14 +55,13 @@ class G_PageFormat {
     /**
      * @throws IOException if the file can't be written
      */
-    static void example() throws IOException {
-        // As usual:
-        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
-        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
-        final OdsDocument document = writer.document();
-
+    static void example1() throws IOException {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         {
+            // As usual:
+            final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
+            final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+            final OdsDocument document = writer.document();
             // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
             // # Page Format
             // We know how to access to cells and how to format those cells. We still have to format
@@ -73,30 +73,10 @@ class G_PageFormat {
             final TableCellWalker walker = table.getWalker();
             walker.setStringValue("Text");
 
-            // We will add a footer and a header.
-            // ## Header
-            // First, we build the three parts of a simple header:
-            final Text leftHeaderContent = Text.content("left header");
-            final Text centerHeaderContent =
-                    Text.builder().par().span("center header, page ").span(Text.TEXT_PAGE_NUMBER)
-                            .build();
-            final Text rightHeaderContent = Text.content("right header");
-
-            // Then we build the header itself:
-            final Header header = PageSection.regionBuilder().region(PageSectionContent.Region.LEFT)
-                    .text(leftHeaderContent).region(PageSectionContent.Region.CENTER)
-                    .text(centerHeaderContent).region(PageSectionContent.Region.RIGHT)
-                    .text(rightHeaderContent).allMargins(SimpleLength.cm(2))
-                    .minHeight(SimpleLength.cm(5)).buildHeader();
-
-            // ## Footer
-            // For the footer, let's use the one part format:
-            final Footer footer =
-                    PageSection.simpleBuilder().text(Text.content("footer")).buildFooter();
-
-            // We now insert the header and the footer in a page style:
+            // ## Page size and margins
+            // It's easy to set the page size to a standard format:
             final PageStyle pageStyle =
-                    PageStyle.builder("page-style").header(header).footer(footer).build();
+                    PageStyle.builder("page-style").paperFormat(PaperFormat.A3).build();
 
             // And add the page style into the table style:
             final TableStyle tableStyle =
@@ -106,54 +86,156 @@ class G_PageFormat {
             table.setStyle(tableStyle);
 
             // << END TUTORIAL (directive to extract part of a tutorial from this file)
+            // And save the file.
+            writer.saveAs(new File("generated_files", "g_page_format_A3.ods"));
         }
-        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-        // ## Styles
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+
+        // Next example:
         {
-            // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
-            // Create another table:
-            final Table table = document.addTable("format-page2");
+            final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
+            final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+            final OdsDocument document = writer.document();
+            final Table table = document.addTable("format-page");
             final TableCellWalker walker = table.getWalker();
             walker.setStringValue("Text");
 
-            // We can create a very simple header:
-            final Header minimalHeader =
-                    PageSection.simpleBuilder().content("minimal header").buildHeader();
-
-            // Or a complex footer:
-            final TextBuilder textBuilder = Text.builder();
-
-            // `par()` means a new paragraph, `span` a new portion of text:
-            textBuilder.par().span("complex");
-
-            // Both can be used in one call:
-            textBuilder.parContent("footer");
-
-            // Text can be styled:
-            textBuilder.par().styledSpan("date is:",
-                    TextStyle.builder("footer1").fontWeightBold().build());
-
-            // In one call:
-            textBuilder.parStyledContent(Text.TEXT_DATE,
-                    TextStyle.builder("footer2").fontSize(SimpleLength.pt(25)).fontWeightBold()
-                            .build());
-
-            // And build the text:
-            final Text footerContent = textBuilder.build();
-            final Footer complexFooter =
-                    PageSection.simpleBuilder().text(footerContent).buildFooter();
-
-            // As above:
+            // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+            // You can use a custom format:
             final PageStyle pageStyle =
-                    PageStyle.builder("page-style2").header(minimalHeader).footer(complexFooter)
-                            .build();
+                    PageStyle.builder("page-style").pageWidth(SimpleLength.cm(10)).pageHeight(
+                            SimpleLength.cm(50)).build();
+
+            // << END TUTORIAL (directive to extract part of a tutorial from this file)
             final TableStyle tableStyle =
-                    TableStyle.builder("table-style2").pageStyle(pageStyle).build();
+                    TableStyle.builder("table-style").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
+            writer.saveAs(new File("generated_files", "g_page_format_custom.ods"));
         }
+
+        // Next example:
+        {
+            final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
+            final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+            final OdsDocument document = writer.document();
+            final Table table = document.addTable("format-page");
+            final TableCellWalker walker = table.getWalker();
+            walker.setStringValue("Text");
+
+            // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+            // Or change the margins:
+            final PageStyle pageStyle =
+                    PageStyle.builder("page-style").allMargins(SimpleLength.cm(4)).build();
+
+            // You can combine margins and page size customization. Please check the
+            // `PageStyleBuilder` class for other options.
+            //
+            // << END TUTORIAL (directive to extract part of a tutorial from this file)
+            final TableStyle tableStyle =
+                    TableStyle.builder("table-style").pageStyle(pageStyle).build();
+            table.setStyle(tableStyle);
+            writer.saveAs(new File("generated_files", "g_page_format_margins.ods"));
+        }
+    }
+
+    static void example2() throws IOException {
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // As usual:
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        //
+        // Now, something a little bit harder: we will add a footer and a header.
+        //
+        // ## Header
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        final Table table = document.addTable("format-page");
+        final TableCellWalker walker = table.getWalker();
+        walker.setStringValue("Text");
+
+        // First, we build the three parts of a simple header:
+        final Text leftHeaderContent = Text.content("left header");
+        final Text centerHeaderContent =
+                Text.builder().par().span("center header, page ").span(Text.TEXT_PAGE_NUMBER)
+                        .build();
+        final Text rightHeaderContent = Text.content("right header");
+
+        // Then we build the header itself:
+        final Header header = PageSection.regionBuilder().region(PageSectionContent.Region.LEFT)
+                .text(leftHeaderContent).region(PageSectionContent.Region.CENTER)
+                .text(centerHeaderContent).region(PageSectionContent.Region.RIGHT)
+                .text(rightHeaderContent).allMargins(SimpleLength.cm(2))
+                .minHeight(SimpleLength.cm(5)).buildHeader();
+
+        // ## Footer
+        // For the footer, let's use the one part format:
+        final Footer footer =
+                PageSection.simpleBuilder().text(Text.content("footer")).buildFooter();
+
+        // We now insert the header and the footer in a page style:
+        final PageStyle pageStyle =
+                PageStyle.builder("page-style").header(header).footer(footer).build();
+
+        // And add the page style into the table style:
+        final TableStyle tableStyle =
+                TableStyle.builder("table-style").pageStyle(pageStyle).build();
+
+        // And set this table style:
+        table.setStyle(tableStyle);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "g_page_format.ods"));
+        writer.saveAs(new File("generated_files", "g_page_format_header_footer.ods"));
+    }
+
+    static void example3() throws IOException {
+        // As usual
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Styles
+        // Create another table:
+        final Table table = document.addTable("format-page2");
+        final TableCellWalker walker = table.getWalker();
+        walker.setStringValue("Text");
+
+        // We can create a very simple header:
+        final Header minimalHeader =
+                PageSection.simpleBuilder().content("minimal header").buildHeader();
+
+        // Or a complex footer:
+        final TextBuilder textBuilder = Text.builder();
+
+        // `par()` means a new paragraph, `span` a new portion of text:
+        textBuilder.par().span("complex");
+
+        // Both can be used in one call:
+        textBuilder.parContent("footer");
+
+        // Text can be styled:
+        textBuilder.par().styledSpan("date is:",
+                TextStyle.builder("footer1").fontWeightBold().build());
+
+        // In one call:
+        textBuilder.parStyledContent(Text.TEXT_DATE,
+                TextStyle.builder("footer2").fontSize(SimpleLength.pt(25)).fontWeightBold()
+                        .build());
+
+        // And build the text:
+        final Text footerContent = textBuilder.build();
+        final Footer complexFooter =
+                PageSection.simpleBuilder().text(footerContent).buildFooter();
+
+        // As above:
+        final PageStyle pageStyle =
+                PageStyle.builder("page-style2").header(minimalHeader).footer(complexFooter)
+                        .build();
+        final TableStyle tableStyle =
+                TableStyle.builder("table-style2").pageStyle(pageStyle).build();
+        table.setStyle(tableStyle);
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "g_page_format_styled_header_footer.ods"));
     }
 }

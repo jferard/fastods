@@ -82,8 +82,18 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void pageFormatTest() throws IOException {
-        G_PageFormat.example();
+    public void pageFormatTest1() throws IOException {
+        G_PageFormat.example1();
+    }
+
+    @Test
+    public void pageFormatTest2() throws IOException {
+        G_PageFormat.example2();
+    }
+
+    @Test
+    public void pageFormatTest3() throws IOException {
+        G_PageFormat.example3();
     }
 
     @Test
