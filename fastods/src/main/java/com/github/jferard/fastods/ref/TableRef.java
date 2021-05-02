@@ -34,10 +34,6 @@ import java.io.IOException;
  * @author J. Férard
  */
 public class TableRef {
-    /**
-     * The table is absolute
-     */
-    public static final int ABSOLUTE_TABLE = 4;
 
     /**
      * @param tableNameUtil util for check/escaping the table name
@@ -83,7 +79,7 @@ public class TableRef {
     }
 
     private void appendTableName(final Appendable appendable) throws IOException {
-        if ((this.status & TableRef.ABSOLUTE_TABLE) == TableRef.ABSOLUTE_TABLE) {
+        if ((this.status & CellRef.ABSOLUTE_TABLE) == CellRef.ABSOLUTE_TABLE) {
             appendable.append('$');
         }
         appendable.append(this.tableNameUtil.escapeTableName(this.tableName));

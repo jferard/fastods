@@ -58,7 +58,7 @@ public class TableRefBuilder {
      */
     public TableRefBuilder absTable(final String tableName) {
         this.tableName = tableName;
-        this.status |= TableRef.ABSOLUTE_TABLE;
+        this.status |= CellRef.ABSOLUTE_TABLE;
         return this;
     }
 
@@ -92,7 +92,7 @@ public class TableRefBuilder {
      */
     public TableRefBuilder absTable(final Table table) {
         this.tableName = table.getName();
-        this.status |= TableRef.ABSOLUTE_TABLE;
+        this.status |= CellRef.ABSOLUTE_TABLE;
         return this;
     }
 

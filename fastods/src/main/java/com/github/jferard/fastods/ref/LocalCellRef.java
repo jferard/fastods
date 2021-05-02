@@ -36,15 +36,6 @@ import java.io.IOException;
 class LocalCellRef {
     public static final char ABS_SIGN = '$';
 
-    /**
-     * The col is absolute
-     */
-    static final int ABSOLUTE_COL = 1;
-    /**
-     * The row is absolute
-     */
-    static final int ABSOLUTE_ROW = 2;
-
     public static LocalCellRefBuilder builder() {
         return new LocalCellRefBuilder();
     }
@@ -132,11 +123,11 @@ class LocalCellRef {
      */
     public void write(final Appendable appendable) throws IOException {
         final StringBuilder tempSb = this.getColStringBuilder();
-        if ((this.status & LocalCellRef.ABSOLUTE_COL) == LocalCellRef.ABSOLUTE_COL) {
+        if ((this.status & CellRef.ABSOLUTE_COL) == CellRef.ABSOLUTE_COL) {
             appendable.append('$');
         }
         appendable.append(tempSb);
-        if ((this.status & LocalCellRef.ABSOLUTE_ROW) == LocalCellRef.ABSOLUTE_ROW) {
+        if ((this.status & CellRef.ABSOLUTE_ROW) == CellRef.ABSOLUTE_ROW) {
             appendable.append('$');
         }
         appendable.append(String.valueOf(this.r + 1));

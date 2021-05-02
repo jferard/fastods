@@ -53,7 +53,7 @@ class LocalCellAddressParser {
             switch (state) {
                 case BEGIN_COL: // check for opt $
                     if (c == LocalCellRef.ABS_SIGN) {
-                        status |= LocalCellRef.ABSOLUTE_COL;
+                        status |= CellRef.ABSOLUTE_COL;
                     } else if ('A' <= c && c <= 'Z') {
                         col = c - 'A' + 1;
                         state = LocalCellAddressParser.OPT_LETTER;
@@ -64,7 +64,7 @@ class LocalCellAddressParser {
                     break;
                 case BEGIN_ROW: // check for opt $
                     if (c == LocalCellRef.ABS_SIGN) {
-                        status |= LocalCellRef.ABSOLUTE_ROW;
+                        status |= CellRef.ABSOLUTE_ROW;
                     } else if ('1' <= c && c <= '9') {
                         row = c - '0';
                         state = LocalCellAddressParser.OPT_DIGIT;

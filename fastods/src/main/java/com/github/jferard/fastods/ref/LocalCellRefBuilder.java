@@ -62,7 +62,7 @@ class LocalCellRefBuilder {
      */
     public LocalCellRefBuilder absRow(final int r) {
         this.r = r;
-        this.status |= LocalCellRef.ABSOLUTE_ROW;
+        this.status |= CellRef.ABSOLUTE_ROW;
         return this;
     }
 
@@ -85,7 +85,7 @@ class LocalCellRefBuilder {
      */
     public LocalCellRefBuilder absColumn(final int c) {
         this.c = c;
-        this.status |= LocalCellRef.ABSOLUTE_COL;
+        this.status |= CellRef.ABSOLUTE_COL;
         return this;
     }
 

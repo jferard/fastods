@@ -34,7 +34,26 @@ import java.io.IOException;
  * @author J. Férard
  */
 public class CellRef {
+    /**
+     * The separator for the ref.
+     */
     public static final char TABLE_CELL_SEP = '.';
+    /**
+     * The ref is relative
+     */
+    public static final int RELATIVE = 0;
+    /**
+     * The col is absolute
+     */
+    public static final int ABSOLUTE_COL = 1;
+    /**
+     * The row is absolute
+     */
+    public static final int ABSOLUTE_ROW = 2;
+    /**
+     * The table is absolute
+     */
+    public static final int ABSOLUTE_TABLE = 4;
 
     /**
      * @param r      row index

@@ -52,6 +52,7 @@ class TableAddressParser {
      */
     public TableAddressParser(final TableNameUtil tableNameUtil) {
         this.tableNameUtil = tableNameUtil;
+        this.status = CellRef.RELATIVE;
     }
 
     /**
@@ -75,7 +76,7 @@ class TableAddressParser {
         }
         String tableName = this.tableNameUtil.unescapeQuotes(escapedTableName);
         if (tableName.charAt(0) == '$') {
-            this.status = TableRef.ABSOLUTE_TABLE;
+            this.status |= CellRef.ABSOLUTE_TABLE;
             tableName = tableName.substring(1);
         }
         return new TableRef(this.tableNameUtil, filename, tableName, this.status);
