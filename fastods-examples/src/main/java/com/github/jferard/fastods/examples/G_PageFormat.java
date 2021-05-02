@@ -152,6 +152,7 @@ class G_PageFormat {
         final Table table = document.addTable("format-page");
         final TableCellWalker walker = table.getWalker();
         walker.setStringValue("Text");
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 
         // First, we build the three parts of a simple header:
         final Text leftHeaderContent = Text.content("left header");
