@@ -168,6 +168,11 @@ public class FastODSExamplesIT {
     }
 
     @Test
+    public void miscTest7() throws IOException {
+        J_Misc.validationExample();
+    }
+
+    @Test
     public void multiplicationTableTest() throws IOException {
         K_MultiplicationTable.example();
     }

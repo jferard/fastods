@@ -31,6 +31,7 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -142,8 +143,7 @@ public class TableCellImpl implements WritableTableCell {
 
     @Override
     public void setCovered() {
-        this.ensureColdCell();
-        this.coldCell.setCovered();
+        this.secureColdCell().setCovered();
     }
 
     @Override
@@ -159,8 +159,7 @@ public class TableCellImpl implements WritableTableCell {
             return;
         }
 
-        this.ensureColdCell();
-        this.coldCell.setColumnsSpanned(n);
+        this.secureColdCell().setColumnsSpanned(n);
     }
 
     @Override
@@ -176,8 +175,7 @@ public class TableCellImpl implements WritableTableCell {
             return;
         }
 
-        this.ensureColdCell();
-        this.coldCell.setRowsSpanned(n);
+        this.secureColdCell().setRowsSpanned(n);
     }
 
     private String getCurrency() {
@@ -212,8 +210,7 @@ public class TableCellImpl implements WritableTableCell {
         this.type = CellType.CURRENCY;
         this.setImplicitDataStyle(this.dataStyles.getCurrencyDataStyle());
 
-        this.ensureColdCell();
-        this.coldCell.setCurrency(currency); // escape here
+        this.secureColdCell().setCurrency(currency); // escape here
     }
 
     @Override
@@ -226,10 +223,11 @@ public class TableCellImpl implements WritableTableCell {
         this.setCurrencyValue(value.toString(), currency);
     }
 
-    private void ensureColdCell() {
+    private TableColdCell secureColdCell() {
         if (this.coldCell == null) {
             this.coldCell = TableColdCell.create(this.xmlUtil);
         }
+        return this.coldCell;
     }
 
     @Override
@@ -247,6 +245,12 @@ public class TableCellImpl implements WritableTableCell {
             this.style = this.stylesContainer
                     .addChildCellStyle(curStyle.getParentCellStyle(), dataStyle);
         }
+    }
+
+    @Override
+    public void setValidation(final Validation validation) {
+        this.parentRow.addValidationToContainer(validation);
+        this.secureColdCell().setValidation(validation);
     }
 
     @Override
@@ -370,8 +374,7 @@ public class TableCellImpl implements WritableTableCell {
 
     @Override
     public void setText(final Text text) {
-        this.ensureColdCell();
-        this.coldCell.setText(text);
+        this.secureColdCell().setText(text);
         this.value = "";
         this.type = CellType.STRING;
         text.addEmbeddedStylesFromCell(this.stylesContainer);
@@ -384,8 +387,7 @@ public class TableCellImpl implements WritableTableCell {
 
     @Override
     public void setAttribute(final String attribute, final CharSequence value) {
-        this.ensureColdCell();
-        this.coldCell.setAttribute(attribute, value);
+        this.secureColdCell().setAttribute(attribute, value);
     }
 
     @Override
@@ -420,22 +422,19 @@ public class TableCellImpl implements WritableTableCell {
 
     @Override
     public void setTooltip(final String tooltipText) {
-        this.ensureColdCell();
-        this.coldCell.setTooltip(tooltipText);
+        this.secureColdCell().setTooltip(tooltipText);
     }
 
     @Override
     public void setTooltip(final String tooltipText, final Length width, final Length height,
                            final boolean visible) {
-        this.ensureColdCell();
-        this.coldCell.setTooltip(tooltipText, width, height, visible);
+        this.secureColdCell().setTooltip(tooltipText, width, height, visible);
     }
 
     @Override
     public void setTooltip(final Tooltip tooltip) {
-        this.ensureColdCell();
         tooltip.addEmbeddedStyles(this.stylesContainer);
-        this.coldCell.setTooltip(tooltip);
+        this.secureColdCell().setTooltip(tooltip);
     }
 
     @Override
@@ -446,13 +445,12 @@ public class TableCellImpl implements WritableTableCell {
 
     @Override
     public void setFormula(final String formula) {
-        this.ensureColdCell();
-        this.coldCell.setFormula(formula);
+        this.secureColdCell().setFormula(formula);
     }
 
     @Override
     public void setMatrixFormula(final String formula) {
-        this.ensureColdCell();
+        this.secureColdCell();
         this.coldCell.setFormula(formula);
         this.coldCell.setMatrixRowsSpanned(1);
         this.coldCell.setMatrixColumnsSpanned(1);
@@ -461,7 +459,7 @@ public class TableCellImpl implements WritableTableCell {
     @Override
     public void setMatrixFormula(final String formula, final int matrixRowsSpanned,
                                  final int matrixColumnsSpanned) {
-        this.ensureColdCell();
+        this.secureColdCell();
         this.coldCell.setFormula(formula);
         this.coldCell.setMatrixRowsSpanned(matrixRowsSpanned);
         this.coldCell.setMatrixColumnsSpanned(matrixColumnsSpanned);

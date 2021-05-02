@@ -27,6 +27,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Validation;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -360,6 +361,12 @@ public interface TableCell {
      * @param dataStyle the data style
      */
     void setDataStyle(DataStyle dataStyle);
+
+    /**
+     * Set a content validation on this cell
+     * @param validation the validation
+     */
+    void setValidation(Validation validation);
 
     /**
      * @return the index of the cell in the current row

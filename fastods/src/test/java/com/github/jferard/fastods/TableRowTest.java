@@ -55,6 +55,7 @@ public class TableRowTest {
     private Table table;
     private TableCellStyle tcs;
     private XMLUtil xmlUtil;
+    private ValidationsContainer vc;
 
     @Before
     public void setUp() {
@@ -63,9 +64,10 @@ public class TableRowTest {
         final IntegerRepresentationCache cache = IntegerRepresentationCache.create();
         this.xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
+        this.vc = PowerMock.createMock(ValidationsContainer.class);
         this.row =
                 new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
-                        100);
+                        100, this.vc);
         this.tcs = TableCellStyle.builder("---").build();
         PowerMock.mockStatic(TableColdCell.class);
         PowerMock.resetAll();

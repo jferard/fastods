@@ -28,6 +28,7 @@ import com.github.jferard.fastods.annotation.Beta;
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.util.Validation;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -224,6 +225,11 @@ public abstract class AbstractTableCell implements WritableTableCell {
 
     @Override
     public void setAttribute(final String attribute, final CharSequence value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setValidation(final Validation validation) {
         throw new UnsupportedOperationException();
     }
 }

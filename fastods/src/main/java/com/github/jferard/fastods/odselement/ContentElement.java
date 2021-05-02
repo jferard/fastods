@@ -25,21 +25,24 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.ValidationsContainer;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.UniqueList;
-import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +56,8 @@ import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
  * @author Martin Schulz
  */
 public class ContentElement implements OdsElement {
-    private static final Map<String, String> CONTENT_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
+    private static final Map<String, String> CONTENT_NAMESPACE_BY_PREFIX =
+            new HashMap<String, String>();
 
     static {
         CONTENT_NAMESPACE_BY_PREFIX.putAll(StylesElement.STYLES_NAMESPACE_BY_PREFIX);
@@ -73,17 +77,18 @@ public class ContentElement implements OdsElement {
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
     private final List<ScriptEventListener> scriptEvents;
+    private final ValidationsContainer validationsContainer;
+    private final Map<String, String> additionalNamespaceByPrefix;
     private List<AutoFilter> autoFilters;
     private List<PilotTable> pilotTables;
-    private final Map<String, String> additionalNamespaceByPrefix;
 
     /**
-     * @param positionUtil    an util object for positions (e.g. "A1")
-     * @param xmlUtil         an util object to write xml
-     * @param cache       an util to compute some data
-     * @param format          the format for data styles
-     * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param stylesContainer a styles container.
+     * @param positionUtil                an util object for positions (e.g. "A1")
+     * @param xmlUtil                     an util object to write xml
+     * @param cache                       an util to compute some data
+     * @param format                      the format for data styles
+     * @param libreOfficeMode             try to get full compatibility with LO if true
+     * @param stylesContainer             a styles container.
      * @param additionalNamespaceByPrefix a map prefix -> namespace
      */
     ContentElement(final PositionUtil positionUtil, final XMLUtil xmlUtil,
@@ -100,6 +105,7 @@ public class ContentElement implements OdsElement {
         this.tables = new UniqueList<Table>();
         this.flushPosition = new FlushPosition();
         this.scriptEvents = new ArrayList<ScriptEventListener>();
+        this.validationsContainer = new ValidationsContainer();
     }
 
     /**
@@ -135,7 +141,7 @@ public class ContentElement implements OdsElement {
         if (table == null) {
             table = Table.create(this, this.positionUtil, this.cache, this.xmlUtil, name,
                     rowCapacity, columnCapacity, this.stylesContainer, this.format,
-                    this.libreOfficeMode);
+                    this.libreOfficeMode, this.validationsContainer);
             this.tables.add(table);
         }
         return table;
@@ -165,7 +171,8 @@ public class ContentElement implements OdsElement {
     public Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
         return Table
                 .create(this, this.positionUtil, this.cache, this.xmlUtil, name, rowCapacity,
-                        columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode);
+                        columnCapacity, this.stylesContainer, this.format, this.libreOfficeMode,
+                        this.validationsContainer);
     }
 
     /**
@@ -234,10 +241,10 @@ public class ContentElement implements OdsElement {
         writer.putAndRegisterNextEntry(new StandardOdsEntry("content.xml", "text/xml", null));
         writer.append(XMLUtil.XML_PROLOG);
         writer.append("<office:document-content");
-        for (final Map.Entry<String, String> entry: CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {
+        for (final Map.Entry<String, String> entry : CONTENT_NAMESPACE_BY_PREFIX.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());
         }
-        for (final Map.Entry<String, String> entry: this.additionalNamespaceByPrefix.entrySet()) {
+        for (final Map.Entry<String, String> entry : this.additionalNamespaceByPrefix.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());
         }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);
@@ -250,8 +257,24 @@ public class ContentElement implements OdsElement {
         writer.append("</office:automatic-styles>");
         writer.append("<office:body>");
         writer.append("<office:spreadsheet>");
+        this.appendValidations(util, writer);
         // don't close here
     }
+
+    private void appendValidations(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        final Collection<Validation> validations = this.validationsContainer.getValidations();
+        if (validations == null || validations.isEmpty()) {
+            return;
+        }
+
+        appendable.append("<table:content-validations>");
+        for (final Validation validation : validations) {
+            validation.appendXMLContent(util, appendable);
+        }
+        appendable.append("</table:content-validations>");
+    }
+
 
     /**
      * Write the postamble into the given writer. Used by the FinalizeFlusher and by standard

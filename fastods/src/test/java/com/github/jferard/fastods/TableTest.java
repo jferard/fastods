@@ -73,7 +73,7 @@ public class TableTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table =
                 Table.create(this.ce, positionUtil, IntegerRepresentationCache.create(), xmlUtil, "my_table", 10,
-                        100, this.stc, this.ds, false);
+                        100, this.stc, this.ds, false, new ValidationsContainer());
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
 

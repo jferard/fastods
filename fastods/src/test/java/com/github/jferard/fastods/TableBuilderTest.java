@@ -67,7 +67,7 @@ public class TableBuilderTest {
         this.ce = ConfigItemMapEntrySet.createSet("mytable");
         this.builder =
                 new TableBuilder(positionUtil, IntegerRepresentationCache.create(), xmlUtil, this.stc, this.ds,
-                        false, "mytable", 10, 100, this.ce, 2);
+                        false, "mytable", 10, 100, this.ce, 2, new ValidationsContainer());
         this.xmlUtil = xmlUtil;
 
         this.table = PowerMock.createMock(Table.class);

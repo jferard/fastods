@@ -44,6 +44,7 @@ import com.github.jferard.fastods.tool.DatabaseExporter;
 import com.github.jferard.fastods.tool.ResultSetDataWrapper;
 import com.github.jferard.fastods.tool.ResultSetDataWrapperBuilder;
 import com.github.jferard.fastods.tool.SQLToCellValueConverter;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.h2.api.Interval;
 import org.h2.jdbcx.JdbcDataSource;
@@ -54,6 +55,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -485,5 +487,46 @@ class J_Misc {
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         writer.saveAs(new File("generated_files", "j_misc_custom_cell2.ods"));
+    }
+
+    /**
+     * @throws IOException if the file can't be written
+     */
+    static void validationExample() throws IOException {
+        // As usual:
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        //
+        // # Validate the content of a cell
+        // When it comes to user input, it's usually a good idea to check the validity of
+        // the data.
+        //
+        // In LibreOffice, we are accustomed to drop down lists, but the validation of
+        // OpenDocument may involve more complex formulas. Currently, FastODS implements
+        // drop down lists of "hard" values, that is values that are not part of the document
+        // but manually created.
+        //
+        // Create the table:
+        final Table table = document.addTable("validation");
+
+        // Here's our validation:
+        final Validation validation =
+                Validation.builder("val1").listCondition(Arrays.asList("foo", "bar", "baz"))
+                        .build();
+
+        // And how to add the validation to a cell.
+        final TableCellWalker walker = table.getWalker();
+        walker.setStringValue("A value");
+        walker.next();
+        walker.setValidation(validation);
+
+        // That's all.
+
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        writer.saveAs(new File("generated_files", "j_misc_validation.ods"));
     }
 }

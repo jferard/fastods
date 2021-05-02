@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.attribute.Length;
 import com.github.jferard.fastods.util.SVGRectangle;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -61,6 +62,7 @@ class TableColdCell {
     private int matrixRowsSpanned;
     private int matrixColumnsSpanned;
     private Map<String, CharSequence> customValueByAttribute;
+    private Validation validation;
 
     /**
      * Create an new "cold cell"
@@ -173,9 +175,15 @@ class TableColdCell {
         }
 
         if (this.customValueByAttribute != null) {
-            for (final Map.Entry<String, CharSequence> entry : this.customValueByAttribute.entrySet()) {
+            for (final Map.Entry<String, CharSequence> entry : this.customValueByAttribute
+                    .entrySet()) {
                 util.appendAttribute(appendable, entry.getKey(), entry.getValue());
             }
+        }
+
+        if (this.validation != null) {
+            util.appendEAttribute(appendable, "table:content-validation-name",
+                    this.validation.getName());
         }
 
         if (this.text == null && this.tooltip == null) {
@@ -246,5 +254,9 @@ class TableColdCell {
             this.customValueByAttribute = new HashMap<String, CharSequence>();
         }
         this.customValueByAttribute.put(attribute, value);
+    }
+
+    public void setValidation(final Validation validation) {
+        this.validation = validation;
     }
 }

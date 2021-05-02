@@ -25,9 +25,12 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.FastFullList;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +121,7 @@ class TableAppender {
 
     private void appendShapes(final XMLUtil util, final Appendable appendable,
                               final List<Shape> shapes) throws IOException {
-        if (shapes.isEmpty()) {
+        if (shapes == null || shapes.isEmpty()) {
             return;
         }
 
@@ -131,7 +134,7 @@ class TableAppender {
 
     private void appendForms(final XMLUtil util, final Appendable appendable,
                              final List<XMLConvertible> forms) throws IOException {
-        if (forms.isEmpty()) {
+        if (forms == null || forms.isEmpty()) {
             return;
         }
 

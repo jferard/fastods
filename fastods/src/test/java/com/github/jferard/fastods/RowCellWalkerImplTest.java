@@ -57,6 +57,7 @@ public class RowCellWalkerImplTest {
     private StringBuilder sb;
     private TableCell cell;
     private ToCellValueConverter converter;
+    private ValidationsContainer vc;
 
     @Before
     public void setUp() {
@@ -66,6 +67,7 @@ public class RowCellWalkerImplTest {
         this.cellWalker = new RowCellWalkerImpl(this.row);
         this.util = XMLUtil.create();
         this.sb = new StringBuilder();
+        this.vc = PowerMock.createMock(ValidationsContainer.class);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -555,7 +557,7 @@ public class RowCellWalkerImplTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
         final IntegerRepresentationCache cache = IntegerRepresentationCache.create();
-        return new TableRowImpl(cache, xmlUtil, stc, ds, false, null, 10, 100);
+        return new TableRowImpl(cache, xmlUtil, stc, ds, false, null, 10, 100, this.vc);
     }
 
     /*

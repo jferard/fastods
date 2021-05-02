@@ -69,6 +69,7 @@ public class TableCellTest {
     private WritableTableCell cell;
     private TableColdCell tcc;
     private ToCellValueConverter converter;
+    private ValidationsContainer vc;
 
     @Before
     public void setUp() {
@@ -81,8 +82,9 @@ public class TableCellTest {
 
         this.tcc = TableColdCell.create(this.xmlUtil);
         this.ds = DataStylesBuilder.create(Locale.US).build();
+        this.vc = PowerMock.createMock(ValidationsContainer.class);
         this.row = new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table,
-                ROW_INDEX, 100);
+                ROW_INDEX, 100, this.vc);
         this.cell = new TableCellImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.row,
                 COLUMN_INDEX);
         this.tcs = TableCellStyle.builder("name").build();

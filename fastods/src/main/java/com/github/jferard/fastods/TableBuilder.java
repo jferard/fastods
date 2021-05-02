@@ -38,11 +38,13 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +85,7 @@ class TableBuilder {
      * Create a new table builder
      *
      * @param positionUtil    an util
-     * @param cache       an util
+     * @param cache           an util
      * @param xmlUtil         an util
      * @param stylesContainer the container
      * @param format          the available data styles
@@ -91,13 +93,16 @@ class TableBuilder {
      * @param name            the name of the table
      * @param rowCapacity     the row capacity of the table
      * @param columnCapacity  the column capacity of the table
+     * @param validationsContainer the container for validations
      * @return the builder
      */
-    public static TableBuilder create(final PositionUtil positionUtil, final IntegerRepresentationCache cache,
+    public static TableBuilder create(final PositionUtil positionUtil,
+                                      final IntegerRepresentationCache cache,
                                       final XMLUtil xmlUtil, final StylesContainer stylesContainer,
                                       final DataStyles format, final boolean libreOfficeMode,
                                       final String name, final int rowCapacity,
-                                      final int columnCapacity) {
+                                      final int columnCapacity,
+                                      final ValidationsContainer validationsContainer) {
         final ConfigItemMapEntrySet configEntry = ConfigItemMapEntrySet.createSet(name);
         configEntry.add(ConfigItem
                 .create(ConfigElement.HORIZONTAL_SPLIT_MODE, OdsElements.SC_SPLIT_NORMAL));
@@ -117,7 +122,8 @@ class TableBuilder {
         configEntry.add(ConfigItem.create(ConfigElement.POSITION_BOTTOM, "0"));
 
         return new TableBuilder(positionUtil, cache, xmlUtil, stylesContainer, format,
-                libreOfficeMode, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE);
+                libreOfficeMode, name, rowCapacity, columnCapacity, configEntry, BUFFER_SIZE,
+                validationsContainer);
     }
 
     private final int bufferSize;
@@ -131,7 +137,7 @@ class TableBuilder {
     private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
     private final boolean libreOfficeMode;
-    private final List<XMLConvertible> forms;
+    private List<XMLConvertible> forms;
     private boolean tablePreambleWritten;
     private NamedOdsFileWriter observer;
     private int curRowIndex;
@@ -139,29 +145,32 @@ class TableBuilder {
     private int lastRowIndex;
     private String name;
     private TableStyle style;
-    private final List<Shape> shapes;
+    private List<Shape> shapes;
     private Map<String, CharSequence> customValueByAttribute;
+    private final ValidationsContainer validationsContainer;
 
     /**
      * Create a new table builder
      *
-     * @param positionUtil    an util
-     * @param cache       an util
-     * @param xmlUtil         an util
-     * @param stylesContainer the container
-     * @param format          the available data styles
-     * @param libreOfficeMode try to get full compatibility with LO if true
-     * @param name            the name of the table
-     * @param rowCapacity     the row capacity of the table
-     * @param columnCapacity  the column capacity of the table
-     * @param configEntry     the config
-     * @param bufferSize      the buffer size
+     * @param positionUtil         an util
+     * @param cache                an util
+     * @param xmlUtil              an util
+     * @param stylesContainer      the container
+     * @param format               the available data styles
+     * @param libreOfficeMode      try to get full compatibility with LO if true
+     * @param name                 the name of the table
+     * @param rowCapacity          the row capacity of the table
+     * @param columnCapacity       the column capacity of the table
+     * @param configEntry          the config
+     * @param bufferSize           the buffer size
+     * @param validationsContainer
      */
-    TableBuilder(final PositionUtil positionUtil, final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
-                 final StylesContainer stylesContainer, final DataStyles format,
-                 final boolean libreOfficeMode, final String name, final int rowCapacity,
-                 final int columnCapacity, final ConfigItemMapEntrySet configEntry,
-                 final int bufferSize) {
+    TableBuilder(final PositionUtil positionUtil, final IntegerRepresentationCache cache,
+                 final XMLUtil xmlUtil, final StylesContainer stylesContainer,
+                 final DataStyles format, final boolean libreOfficeMode, final String name,
+                 final int rowCapacity, final int columnCapacity,
+                 final ConfigItemMapEntrySet configEntry, final int bufferSize,
+                 final ValidationsContainer validationsContainer) {
         this.xmlUtil = xmlUtil;
         this.cache = cache;
         this.positionUtil = positionUtil;
@@ -171,6 +180,7 @@ class TableBuilder {
         this.name = name;
         this.columnCapacity = columnCapacity;
         this.configEntry = configEntry;
+        this.validationsContainer = validationsContainer;
         this.style = TableStyle.DEFAULT_TABLE_STYLE;
         this.tableColumns = FastFullList.newListWithCapacity(this.columnCapacity);
         this.tableRows = FastFullList.newListWithCapacity(rowCapacity);
@@ -179,8 +189,6 @@ class TableBuilder {
         this.lastRowIndex = -1;
         this.bufferSize = bufferSize;
         this.tablePreambleWritten = false;
-        this.forms = new ArrayList<XMLConvertible>();
-        this.shapes = new ArrayList<Shape>();
     }
 
     /**
@@ -281,7 +289,8 @@ class TableBuilder {
         TableRowImpl tr = this.tableRows.get(rowIndex);
         if (tr == null) {
             tr = new TableRowImpl(this.cache, this.xmlUtil, this.stylesContainer, this.format,
-                    this.libreOfficeMode, table, rowIndex, this.columnCapacity);
+                    this.libreOfficeMode, table, rowIndex, this.columnCapacity,
+                    this.validationsContainer);
             this.tableRows.set(rowIndex, tr);
             if (rowIndex > this.lastRowIndex) {
                 this.lastRowIndex = rowIndex;
@@ -404,11 +413,13 @@ class TableBuilder {
 
     /**
      * Set a custom attribute for this column
-     * @param col the column
+     *
+     * @param col       the column
      * @param attribute the attribute
-     * @param value the value
+     * @param value     the value
      */
-    public void setColumnAttribute(final int col, final String attribute, final CharSequence value) {
+    public void setColumnAttribute(final int col, final String attribute,
+                                   final CharSequence value) {
         this.getTableColumn(col).setColumnAttribute(attribute, value);
     }
 
@@ -571,6 +582,9 @@ class TableBuilder {
      * @param shape the shape
      */
     public void addShape(final Shape shape) {
+        if (this.shapes == null) {
+            this.shapes = new ArrayList<Shape>();
+        }
         this.shapes.add(shape);
         shape.addEmbeddedStyles(this.stylesContainer);
     }
@@ -581,13 +595,17 @@ class TableBuilder {
      * @param form the form
      */
     public void addForm(final XMLConvertible form) {
+        if (this.forms == null) {
+            this.forms = new ArrayList<XMLConvertible>();
+        }
         this.forms.add(form);
     }
 
     /**
      * Set a custom attribute
+     *
      * @param attribute the attribute
-     * @param value the value
+     * @param value     the value
      */
     public void setAttribute(final String attribute, final CharSequence value) {
         if (this.customValueByAttribute == null) {
@@ -596,11 +614,24 @@ class TableBuilder {
         this.customValueByAttribute.put(attribute, value);
     }
 
+    /**
+     * @return a map of custom attributes and values for the `table` tag.
+     */
     public Map<String, CharSequence> getCustomValueByAttribute() {
         return this.customValueByAttribute;
     }
 
+    /**
+     * @return the forms of this table
+     */
     public List<XMLConvertible> getForms() {
         return this.forms;
+    }
+
+    /**
+     * @return the validations
+     */
+    public Collection<Validation> getValidations() {
+        return this.validationsContainer.getValidations();
     }
 }

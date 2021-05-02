@@ -61,17 +61,20 @@ public class Table implements NamedObject, FrameContent {
      * @param stylesContainer the container for styles
      * @param format          the data styles
      * @param libreOfficeMode try to get full compatibility with LO if true
+     * @param validationsContainer the validations container
      * @return the table
      */
     public static Table create(final ContentElement contentElement, final PositionUtil positionUtil,
-                               final IntegerRepresentationCache cache, final XMLUtil xmlUtil, final String name,
+                               final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
+                               final String name,
                                final int rowCapacity, final int columnCapacity,
                                final StylesContainer stylesContainer, final DataStyles format,
-                               final boolean libreOfficeMode) {
+                               final boolean libreOfficeMode,
+                               final ValidationsContainer validationsContainer) {
         positionUtil.checkTableName(name);
         final TableBuilder builder = TableBuilder
                 .create(positionUtil, cache, xmlUtil, stylesContainer, format, libreOfficeMode,
-                        name, rowCapacity, columnCapacity);
+                        name, rowCapacity, columnCapacity, validationsContainer);
         return new Table(name, contentElement, builder, new TableAppender(builder));
     }
 

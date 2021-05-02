@@ -2,7 +2,7 @@
  * FastODS - A very fast and lightweight (no dependency) library for creating ODS
  *    (Open Document Spreadsheet, mainly for Calc) files in Java.
  *    It's a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016-2021 J. Férard <https://github.com/jferard>
+ *    Copyright (C) 2016-2020 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
@@ -25,74 +25,24 @@
 package com.github.jferard.fastods.attribute;
 
 /**
- * Extensible Stylesheet Language (XSL)
- * Version 1.0, 7.7.20 "border-top-style"
- * <p>
- * The style of the border
+ * 19.670 table:message-type
  */
-    public enum BorderStyle implements AttributeValue {
+public enum MessageType implements AttributeValue {
     /**
-     * No border
+     * information: message is displayed as information only.
      */
-    NONE("none"),
-
+    INFORMATION,
     /**
-     * Same as 'none', with a little exception
+     * stop: message is displayed as an error and the operation that caused the validation check is stopped.
      */
-    HIDDEN("hidden"),
-
+    STOP,
     /**
-     * Series of dots
+     * warning: message is displayed as a warning.
      */
-    DOTTED("dotted"),
+    WARNING;
 
-    /**
-     * Series of dashes
-     */
-    DASHED("dashed"),
-
-    /**
-     * Solid border
-     */
-    SOLID("solid"),
-
-    /**
-     * Double lined border
-     */
-    DOUBLE("double"),
-
-    /**
-     * Carved in the canvas
-     */
-    GROOVE("groove"),
-
-    /**
-     * Coming out of the canvas
-     */
-    RIDGE("ridge"),
-
-    /**
-     * Box carved in the canvas
-     */
-    INSET("inset"),
-
-    /**
-     * Box coming out of the canvas
-     */
-    OUTSET("outset");
-
-    private final String attrValue;
-
-    BorderStyle(final String attrValue) {
-        this.attrValue = attrValue;
-    }
-
-
-    /**
-     * @return the value of the attribute for XML use
-     */
     @Override
-    public String getValue() {
-        return this.attrValue;
+    public CharSequence getValue() {
+        return this.toString();
     }
 }

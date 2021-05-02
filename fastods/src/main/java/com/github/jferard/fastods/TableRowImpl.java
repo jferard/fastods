@@ -30,6 +30,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
@@ -63,6 +64,7 @@ public class TableRowImpl implements TableRow {
 
     private final Table parentTable;
     private final int rowIndex;
+    private final ValidationsContainer validationsContainer;
     private final StylesContainer stylesContainer;
     private final IntegerRepresentationCache cache;
     private final XMLUtil xmlUtil;
@@ -75,8 +77,7 @@ public class TableRowImpl implements TableRow {
 
     /**
      * Create a new TableRow
-     *
-     * @param cache       an util
+     *  @param cache       an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles container
      * @param dataStyles      the data styles
@@ -84,11 +85,12 @@ public class TableRowImpl implements TableRow {
      * @param parentTable     the parent table
      * @param rowIndex        the index of this row
      * @param columnCapacity  the max column
+     * @param validationsContainer the container for validations
      */
     TableRowImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
                  final StylesContainer stylesContainer, final DataStyles dataStyles,
                  final boolean libreOfficeMode, final Table parentTable, final int rowIndex,
-                 final int columnCapacity) {
+                 final int columnCapacity, final ValidationsContainer validationsContainer) {
         this.cache = cache;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -96,6 +98,7 @@ public class TableRowImpl implements TableRow {
         this.libreOfficeMode = libreOfficeMode;
         this.parentTable = parentTable;
         this.rowIndex = rowIndex;
+        this.validationsContainer = validationsContainer;
         this.rowStyle = TableRowStyle.DEFAULT_TABLE_ROW_STYLE;
         this.cells = FastFullList.newListWithCapacity(columnCapacity);
     }
@@ -337,5 +340,9 @@ public class TableRowImpl implements TableRow {
             this.customValueByAttribute = new HashMap<String, CharSequence>();
         }
         this.customValueByAttribute.put(attribute, value);
+    }
+
+    public void addValidationToContainer(final Validation validation) {
+        this.validationsContainer.addValidation(validation);
     }
 }

@@ -2,7 +2,7 @@
  * FastODS - A very fast and lightweight (no dependency) library for creating ODS
  *    (Open Document Spreadsheet, mainly for Calc) files in Java.
  *    It's a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016-2021 J. Férard <https://github.com/jferard>
+ *    Copyright (C) 2016-2020 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
@@ -25,68 +25,27 @@
 package com.github.jferard.fastods.attribute;
 
 /**
- * Extensible Stylesheet Language (XSL)
- * Version 1.0, 7.7.20 "border-top-style"
- * <p>
- * The style of the border
+ * 19.621 table:display-list
  */
-    public enum BorderStyle implements AttributeValue {
+public enum DisplayList implements AttributeValue {
     /**
-     * No border
+     * none: "the list values are not displayed"
      */
     NONE("none"),
-
     /**
-     * Same as 'none', with a little exception
+     * sort-ascending: "the list values are displayed in ascending order."
      */
-    HIDDEN("hidden"),
-
+    SORT_ASCENDING("sort-ascending"),
     /**
-     * Series of dots
+     * unsorted: "the list values are displayed in the order they occur in the condition."
      */
-    DOTTED("dotted"),
-
-    /**
-     * Series of dashes
-     */
-    DASHED("dashed"),
-
-    /**
-     * Solid border
-     */
-    SOLID("solid"),
-
-    /**
-     * Double lined border
-     */
-    DOUBLE("double"),
-
-    /**
-     * Carved in the canvas
-     */
-    GROOVE("groove"),
-
-    /**
-     * Coming out of the canvas
-     */
-    RIDGE("ridge"),
-
-    /**
-     * Box carved in the canvas
-     */
-    INSET("inset"),
-
-    /**
-     * Box coming out of the canvas
-     */
-    OUTSET("outset");
+    UNSORTED("unsorted");
 
     private final String attrValue;
 
-    BorderStyle(final String attrValue) {
+    DisplayList(final String attrValue) {
         this.attrValue = attrValue;
     }
-
 
     /**
      * @return the value of the attribute for XML use

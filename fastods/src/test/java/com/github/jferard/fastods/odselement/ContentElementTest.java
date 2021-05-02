@@ -25,6 +25,7 @@
 package com.github.jferard.fastods.odselement;
 
 import com.github.jferard.fastods.Table;
+import com.github.jferard.fastods.ValidationsContainer;
 import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.attribute.ScriptEvent;
 import com.github.jferard.fastods.datastyle.DataStyles;
@@ -137,7 +138,8 @@ public class ContentElementTest {
 
     private Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
         return Table.create(this.content, PositionUtil.create(), IntegerRepresentationCache.create(),
-                XMLUtil.create(), name, rowCapacity, columnCapacity, null, null, false);
+                XMLUtil.create(), name, rowCapacity, columnCapacity, null, null, false,
+                new ValidationsContainer());
     }
 
     @Test

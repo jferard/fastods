@@ -31,6 +31,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.annotation.Beta;
+import com.github.jferard.fastods.util.Validation;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -247,6 +248,11 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     @Override
     public void setDataStyle(final DataStyle dataStyle) {
         this.cell.setDataStyle(dataStyle);
+    }
+
+    @Override
+    public void setValidation(final Validation validation) {
+        this.cell.setValidation(validation);
     }
 
     @Override
