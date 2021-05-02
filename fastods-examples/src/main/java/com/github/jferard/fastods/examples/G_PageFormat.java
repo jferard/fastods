@@ -151,8 +151,6 @@ class G_PageFormat {
             final TableStyle tableStyle =
                     TableStyle.builder("table-style2").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
-
-            // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         }
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
