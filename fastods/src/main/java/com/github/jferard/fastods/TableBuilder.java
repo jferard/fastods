@@ -38,6 +38,7 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -148,6 +149,7 @@ class TableBuilder {
     private List<Shape> shapes;
     private Map<String, CharSequence> customValueByAttribute;
     private final ValidationsContainer validationsContainer;
+    private Protection protection;
 
     /**
      * Create a new table builder
@@ -628,10 +630,11 @@ class TableBuilder {
         return this.forms;
     }
 
-    /**
-     * @return the validations
-     */
-    public Collection<Validation> getValidations() {
-        return this.validationsContainer.getValidations();
+    public void protect(final Protection protection) {
+        this.protection = protection;
+    }
+
+    public Protection getProtection() {
+        return this.protection;
     }
 }

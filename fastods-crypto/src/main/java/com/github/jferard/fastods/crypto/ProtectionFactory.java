@@ -22,37 +22,32 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.crypto;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.security.MessageDigest;
+import com.github.jferard.fastods.util.Protection;
+import org.bouncycastle.util.encoders.Base64;
+
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
- * This class implements the infamous missing feature of Java 6 Strings.
+ * The ProtectionFactory class is temporary in this submodule because of the need of a base64
+ * encoder (absent of JRE 6).
+ *
+ * 19.698: "Producers should use http://www.w3.org/2000/09/xmldsig#sha256."
  */
-public class StringUtil {
+public class ProtectionFactory {
     /**
-     * Join a collection on a separator
-     * @param separator the separator
-     * @param segments the collection
-     * @return the joined collection.
+     * Create a new protection. **Beware: for security reasons, this fills the password array
+     * with 0's**
+     *
+     * @param password the password.
+     * @return the protection.
+     * @throws NoSuchAlgorithmException
      */
-    public static String join(final String separator, final Collection<String> segments) {
-        final StringBuilder sb = new StringBuilder();
-        final Iterator<String> it = segments.iterator();
-        if (it.hasNext()) {
-            sb.append(it.next());
-            while (it.hasNext()) {
-                sb.append(separator).append(it.next());
-            }
-        }
-        return sb.toString();
+    public static Protection createSha256(final char[] password) throws NoSuchAlgorithmException {
+        final String algorithm = "http://www.w3.org/2000/09/xmldsig#sha256";
+        final String base64digest = Base64.toBase64String(Util.getPasswordChecksum(password, "SHA-256"));
+
+        return new Protection(base64digest, algorithm);
     }
-
-
 }

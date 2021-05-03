@@ -45,11 +45,10 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 public class ZipUTF8CryptoWriterTest {
     @Test
-    public void testUnregistredStored() throws IOException {
+    public void testUnregistredStored() throws IOException, NoSuchAlgorithmException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final ZipUTF8Writer writer = ZipUTF8CryptoWriter.builder(new char[]{65, 66, 67}).build(bos);
         writer.putNextEntry(new UnregisteredStoredEntry("path", 0L, 0L));
@@ -86,6 +85,7 @@ public class ZipUTF8CryptoWriterTest {
         final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
         final byte[] data = "foo".getBytes(CharsetUtil.UTF_8);
         final char[] password = {65, 66, 67};
+        final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
         final byte[] iv = new byte[16];
 
@@ -93,7 +93,8 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.generateSalt()).andReturn(salt);
         EasyMock.expect(encrypter.generateIV()).andReturn(iv);
         EasyMock.expect(encrypter.compress(data)).andReturn(data);
-        EasyMock.expect(encrypter.encrypt(data, salt, password, iv))
+        EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
+        ))
                 .andReturn("bar".getBytes(CharsetUtil.UTF_8));
         EasyMock.expect(encrypter.getDataChecksum(data))
                 .andReturn("baz".getBytes(CharsetUtil.UTF_8));
@@ -104,7 +105,7 @@ public class ZipUTF8CryptoWriterTest {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final ZipUTF8Writer writer =
                 new ZipUTF8CryptoWriter(new ZipUTF8WriterBuilderImpl().build(bos), encrypter,
-                        password);
+                        hashedPassword);
         writer.putNextEntry(new UnregisteredOdsEntry("path"));
         writer.write(data);
         writer.closeEntry();
@@ -160,6 +161,7 @@ public class ZipUTF8CryptoWriterTest {
         final EncryptParameters parameters = PowerMock.createMock(EncryptParameters.class);
         final byte[] data = "foo".getBytes(CharsetUtil.UTF_8);
         final char[] password = {65, 66, 67};
+        final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
         final byte[] iv = new byte[16];
 
@@ -167,7 +169,8 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.generateSalt()).andReturn(salt);
         EasyMock.expect(encrypter.generateIV()).andReturn(iv);
         EasyMock.expect(encrypter.compress(data)).andReturn(data);
-        EasyMock.expect(encrypter.encrypt(data, salt, password, iv))
+        EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
+        ))
                 .andReturn("bar".getBytes(CharsetUtil.UTF_8));
         EasyMock.expect(encrypter.getDataChecksum(data))
                 .andReturn("baz".getBytes(CharsetUtil.UTF_8));
@@ -184,7 +187,7 @@ public class ZipUTF8CryptoWriterTest {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final ZipUTF8Writer writer =
                 new ZipUTF8CryptoWriter(new ZipUTF8WriterBuilderImpl().build(bos), encrypter,
-                        password);
+                        hashedPassword);
         writer.putAndRegisterNextEntry(new StandardOdsEntry("path", "", ""));
         writer.write(data);
         writer.closeEntry();
@@ -237,6 +240,7 @@ public class ZipUTF8CryptoWriterTest {
         final EncryptParameters parameters = PowerMock.createMock(EncryptParameters.class);
         final byte[] data = "foobar".getBytes(CharsetUtil.UTF_8);
         final char[] password = {65, 66, 67};
+        final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
         final byte[] iv = new byte[16];
 
@@ -244,7 +248,8 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.generateSalt()).andReturn(salt);
         EasyMock.expect(encrypter.generateIV()).andReturn(iv);
         EasyMock.expect(encrypter.compress(data)).andReturn(data);
-        EasyMock.expect(encrypter.encrypt(data, salt, password, iv))
+        EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
+        ))
                 .andReturn("bar".getBytes(CharsetUtil.UTF_8));
         EasyMock.expect(encrypter.getDataChecksum(data))
                 .andReturn("baz".getBytes(CharsetUtil.UTF_8));
@@ -260,7 +265,7 @@ public class ZipUTF8CryptoWriterTest {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final ZipUTF8Writer writer =
                 new ZipUTF8CryptoWriter(new ZipUTF8WriterBuilderImpl().build(bos), encrypter,
-                        password);
+                        hashedPassword);
         writer.putAndRegisterNextEntry(new StandardOdsEntry("path", "", ""));
         writer.append("foo");
         writer.append('b');

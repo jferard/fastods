@@ -49,24 +49,30 @@ public class StandardEncrypterTest {
             IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException,
             InvalidKeyException {
         final StandardEncrypter encrypter = StandardEncrypter.create(EncryptParameters.builder());
-        final byte[] checksum = Base64.decode("/UdU2OKZn04r0e9O047PaWNqi7LGaHYN9mURmvMCM60=");
-        final byte[] iv = Base64.decode("ZEk8JHG3bHu8kZw0VGOT+g==");
+        final byte[] expectedChecksum = Base64.decode("/UdU2OKZn04r0e9O047PaWNqi7LGaHYN9mURmvMCM60=");
+        final byte[] expectedIV = Base64.decode("ZEk8JHG3bHu8kZw0VGOT+g==");
         final byte[] salt = Base64.decode("jGIagiBnlFdvQctdCkYfRQ==");
+        final byte[] expectedHashedPassword = Base64.decode("pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=");
 
-        final char[] password = new char[]{'1', '2', '3'};
+        char[] password = new char[]{'1', '2', '3'};
 
         final String plainText =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE script:module PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"module.dtd\">\n<script:module xmlns:script=\"http://openoffice.org/2000/script\" script:name=\"Module1\" script:language=\"StarBasic\" script:moduleType=\"normal\">REM  *****  BASIC  *****\nREM Hello, world!\n</script:module>";
         final byte[] source = plainText.getBytes(CharsetUtil.UTF_8);
         Assert.assertEquals(332, source.length);
         final byte[] compressed = encrypter.compress(source);
-        Assert.assertArrayEquals(checksum, encrypter.getDataChecksum(compressed));
+        Assert.assertArrayEquals(expectedChecksum, encrypter.getDataChecksum(compressed));
         Assert.assertEquals(225, compressed.length);
 
-        final byte[] hashedPassword = encrypter.getPasswordChecksum(password);
+        final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
+        Assert.assertArrayEquals(expectedHashedPassword, hashedPassword);
         Assert.assertEquals(32, hashedPassword.length);
 
-        final byte[] encrypted = encrypter.encrypt(compressed, salt, password, iv);
+        // password was filled with 0's
+        password = new char[]{'1', '2', '3'};
+        final byte[] encrypted = encrypter.encrypt(compressed,
+                Util.getPasswordChecksum(password, "SHA-256"), salt, expectedIV
+        );
         Assert.assertArrayEquals(
                 new byte[]{-93, -12, 97, -104, -63, -56, -24, -79, -45, -6, -80, -68, -17, 81, -121,
                         -38, 76, -40, -110, -62, 9, 127, 18, 25, 71, 68, -81, 59, 50, -99, 74, 51,

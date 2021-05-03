@@ -26,7 +26,6 @@ package com.github.jferard.fastods.crypto;
 
 import com.github.jferard.fastods.odselement.EncryptParameters;
 import com.github.jferard.fastods.odselement.EncryptParametersBuilder;
-import com.github.jferard.fastods.util.CharsetUtil;
 import org.bouncycastle.crypto.PBEParametersGenerator;
 import org.bouncycastle.crypto.digests.SHA1Digest;
 import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
@@ -43,8 +42,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -52,7 +49,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
-import java.util.Arrays;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
@@ -96,8 +92,8 @@ class StandardEncrypter {
      * Encrypt the compressed bytes.
      *
      * @param compressedTextBytes the compressed bytes
+     * @param hashedPassword
      * @param salt                the salt
-     * @param password            the password as char[]
      * @param iv                  the initialisation vector
      * @return the encrypted bytes
      * @throws NoSuchAlgorithmException           if something fails
@@ -107,46 +103,30 @@ class StandardEncrypter {
      * @throws BadPaddingException                if something fails
      * @throws IllegalBlockSizeException          if something fails
      */
-    public byte[] encrypt(final byte[] compressedTextBytes, final byte[] salt,
-                          final char[] password,
-                          final byte[] iv) throws NoSuchAlgorithmException,
+    public byte[] encrypt(final byte[] compressedTextBytes, final byte[] hashedPassword,
+                          final byte[] salt, final byte[] iv) throws NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        final Key key = this.getKey(salt, password);
+        final Key key = this.getKey(salt, hashedPassword);
         final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding"); // W3C padding
         cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
         return cipher.doFinal(compressedTextBytes);
     }
 
     /**
-     * @param salt     the salt
-     * @param password the password
+     * @param salt           the salt
+     * @param hashedPassword
      * @return the key
      * @throws NoSuchAlgorithmException
      */
-    private Key getKey(final byte[] salt, final char[] password) throws NoSuchAlgorithmException {
-        final byte[] hashedPassword = this.getPasswordChecksum(password);
+    private Key getKey(final byte[] salt, final byte[] hashedPassword)
+            throws NoSuchAlgorithmException {
         assert hashedPassword.length == this.startKeySize;
         final PBEParametersGenerator generator = new PKCS5S2ParametersGenerator(new SHA1Digest());
         generator.init(hashedPassword, salt, this.iterationCount);
         final KeyParameter keyParam =
                 (KeyParameter) generator.generateDerivedParameters(this.keySize * BITS_BY_BYTE);
         return new SecretKeySpec(keyParam.getKey(), "AES");
-    }
-
-    /**
-     * See https://stackoverflow.com/a/9670279/6914441
-     *
-     * @param chars a password as a char array
-     * @return bytes
-     */
-    private byte[] toBytes(final char[] chars) {
-        final CharBuffer charBuffer = CharBuffer.wrap(chars);
-        final ByteBuffer byteBuffer = CharsetUtil.UTF_8.encode(charBuffer);
-        final byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
-                byteBuffer.position(), byteBuffer.limit());
-        Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
-        return bytes;
     }
 
     /**
@@ -180,19 +160,6 @@ class StandardEncrypter {
     public byte[] getDataChecksum(final byte[] data) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA-256");
         digest.update(data, 0, Math.min(data.length, 1024));
-        return digest.digest();
-    }
-
-    /**
-     * @param password the data
-     * @return the base64 byte array
-     * @throws NoSuchAlgorithmException should not happen
-     */
-    public byte[] getPasswordChecksum(final char[] password) throws NoSuchAlgorithmException {
-        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        final byte[] bytes = this.toBytes(password);
-        digest.update(bytes);
-        Arrays.fill(bytes, (byte) 0); // clear sensitive data
         return digest.digest();
     }
 

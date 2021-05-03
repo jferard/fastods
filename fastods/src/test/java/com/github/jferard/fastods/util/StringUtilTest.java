@@ -24,35 +24,27 @@
 
 package com.github.jferard.fastods.util;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.security.MessageDigest;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
 
-/**
- * This class implements the infamous missing feature of Java 6 Strings.
- */
-public class StringUtil {
-    /**
-     * Join a collection on a separator
-     * @param separator the separator
-     * @param segments the collection
-     * @return the joined collection.
-     */
-    public static String join(final String separator, final Collection<String> segments) {
-        final StringBuilder sb = new StringBuilder();
-        final Iterator<String> it = segments.iterator();
-        if (it.hasNext()) {
-            sb.append(it.next());
-            while (it.hasNext()) {
-                sb.append(separator).append(it.next());
-            }
-        }
-        return sb.toString();
+public class StringUtilTest {
+    @Test
+    public void testJoinEmpty() {
+        Assert.assertEquals("", StringUtil.join("-", Collections.<String>emptyList()));
     }
 
+    @Test
+    public void testJoinOneElement() {
+        Assert.assertEquals("foo", StringUtil.join("-", Collections.singleton("foo")));
+    }
 
+    @Test
+    public void testJoinThreeElements() {
+        Assert.assertEquals("foo-bar-baz",
+                StringUtil.join("-", Arrays.asList("foo", "bar", "baz")));
+    }
 }

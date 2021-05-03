@@ -64,6 +64,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -96,6 +97,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>singletonList(drawFrame));
@@ -123,6 +125,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x")));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -147,6 +150,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x"), this.newTC("x")));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -173,6 +177,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(x, x, this.newTC("y"), x));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -204,6 +209,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("table1");
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -235,6 +241,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("tb");
         EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>builder().build());
         EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0);
@@ -263,6 +270,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getName()).andReturn("tb").times(2);
         EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style").times(2);
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null).times(2);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null).times(2);
         EasyMock.expect(this.tb.getColumns()).andReturn(emptyFullList).times(2);
         EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0).times(2);
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList()).times(2);

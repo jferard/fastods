@@ -35,37 +35,42 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 /**
  * A builder for `ZipUTF8CryptoWriter`.
  */
 public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
     /**
+     * **Beware: for security reasons, this fills the password array with 0's**
+     *
      * @param password the password to encrypt data
      * @return a builder
      */
-    public static ZipUTF8WriterBuilder create(final char[] password) {
+    public static ZipUTF8WriterBuilder create(final char[] password)
+            throws NoSuchAlgorithmException {
         return new ZipUTF8CryptoWriterBuilder(new ZipUTF8WriterBuilderImpl(),
-                EncryptParameters.builder(), password
-        );
+                EncryptParameters.builder(), password);
     }
 
 
     private final ZipUTF8WriterBuilderImpl writerBuilder;
-    private final char[] password;
     private final EncryptParametersBuilder parametersBuilder;
+    private final byte[] hashedPassword;
 
     /**
+     * **Beware: for security reasons, this fills the password array with 0's**
      * @param writerBuilder the writer builder. May be initialized
      * @param parametersBuilder the parameters builder. May be initialized
      * @param password the password
      */
     public ZipUTF8CryptoWriterBuilder(final ZipUTF8WriterBuilderImpl writerBuilder,
                                       final EncryptParametersBuilder parametersBuilder,
-                                      final char[] password) {
-        this.password = password;
+                                      final char[] password) throws NoSuchAlgorithmException {
         this.writerBuilder = writerBuilder;
         this.parametersBuilder = parametersBuilder;
+        // We hash password and void array as soon as possible
+        this.hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
     }
 
     @Override
@@ -74,7 +79,7 @@ public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
             return new ZipUTF8CryptoWriter(this.writerBuilder.build(outputStream),
                     new StandardEncrypter(SecureRandom.getInstance("SHA1PRNG"),
                             Cipher.getInstance("AES/CBC/ISO10126Padding"), 100000, 32, 32, this.parametersBuilder
-                    ), this.password);
+                    ), this.hashedPassword);
         } catch (final NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (final NoSuchPaddingException e) {

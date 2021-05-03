@@ -48,23 +48,28 @@ import java.util.zip.CRC32;
  */
 @Beta
 public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
-    public static ZipUTF8WriterBuilder builder(final char[] password) {
+    /**
+     * **Beware: for security reasons, this fills the password array with 0's**
+     */
+    public static ZipUTF8WriterBuilder builder(final char[] password)
+            throws NoSuchAlgorithmException {
         return ZipUTF8CryptoWriterBuilder.create(password);
     }
 
     private final ZipUTF8Writer zipUTF8Writer;
     private final StandardEncrypter encrypter;
-    private final char[] password;
     private ByteArrayOutputStream out;
     private Writer writer;
     private OdsEntry curEntry;
     private boolean toRegister;
+    private final byte[] hashedPassword;
 
     public ZipUTF8CryptoWriter(final ZipUTF8Writer zipUTF8Writer,
-                               final StandardEncrypter encrypter, final char[] password) {
+                               final StandardEncrypter encrypter, final byte[] hashedPassword)
+            throws NoSuchAlgorithmException {
         this.zipUTF8Writer = zipUTF8Writer;
         this.encrypter = encrypter;
-        this.password = password;
+        this.hashedPassword = hashedPassword;
     }
 
     @Override
@@ -140,7 +145,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
         final byte[] iv = this.encrypter.generateIV();
         final byte[] compressedTextBytes = this.encrypter.compress(plainTextBytes);
         final byte[] encryptedData = this.encrypter.encrypt(
-                compressedTextBytes, salt, this.password, iv);
+                compressedTextBytes, this.hashedPassword, salt, iv);
         final String compressedCheckSum = Base64.toBase64String(
                 this.encrypter.getDataChecksum(compressedTextBytes));
         final long crc32 = this.getCrc32(encryptedData);

@@ -36,10 +36,14 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.util.Arrays;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -385,7 +389,19 @@ public class Table implements NamedObject, FrameContent {
                 .addAutoFilter(AutoFilter.builder(rangeName, this, r1, c1, r2, c2).build());
     }
 
+    /**
+     * Add a shape
+     * @param shape the shape
+     */
     public void addShape(final Shape shape) {
         this.builder.addShape(shape);
+    }
+
+    /**
+     * @param protection the protection
+     * @throws NoSuchAlgorithmException should not happen
+     */
+    public void protect(final Protection protection) throws NoSuchAlgorithmException {
+        this.builder.protect(protection);
     }
 }

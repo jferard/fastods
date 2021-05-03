@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class FastODSExamplesIT {
@@ -168,11 +169,6 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void miscTest7() throws IOException {
-        J_Misc.validationExample();
-    }
-
-    @Test
     public void multiplicationTableTest() throws IOException {
         K_MultiplicationTable.example();
     }
@@ -183,8 +179,18 @@ public class FastODSExamplesIT {
     }
 
     @Test
-    public void cryptoTest() throws IOException {
-        M_Crypto.cryptoExample();
+    public void validationTest() throws IOException {
+        M_Protection.validationExample();
+    }
+
+    @Test
+    public void protectionTest() throws IOException, NoSuchAlgorithmException {
+        M_Protection.protectionExample();
+    }
+
+    @Test
+    public void cryptoTest() throws IOException, NoSuchAlgorithmException {
+        M_Protection.cryptoExample();
     }
 
     @Test

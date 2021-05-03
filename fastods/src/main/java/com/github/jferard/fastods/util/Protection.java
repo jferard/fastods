@@ -24,35 +24,31 @@
 
 package com.github.jferard.fastods.util;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.io.IOException;
 
 /**
- * This class implements the infamous missing feature of Java 6 Strings.
+ * The Protection instances should be created using the fastods.crypto submodule:
+ *
+ *     ProtectionFactory.createSha256(new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd' });
  */
-public class StringUtil {
+public class Protection {
+    private final String base64key;
+    private final String algorithm;
+
     /**
-     * Join a collection on a separator
-     * @param separator the separator
-     * @param segments the collection
-     * @return the joined collection.
+     * **Do not use this constructor, use ProtectionFactory instead**
+     *
+     * @param base64key the digest of the password in base 64 format
+     * @param algorithm the IRI of the algorithm.
      */
-    public static String join(final String separator, final Collection<String> segments) {
-        final StringBuilder sb = new StringBuilder();
-        final Iterator<String> it = segments.iterator();
-        if (it.hasNext()) {
-            sb.append(it.next());
-            while (it.hasNext()) {
-                sb.append(separator).append(it.next());
-            }
-        }
-        return sb.toString();
+    public Protection(final String base64key, final String algorithm) {
+        this.base64key = base64key;
+        this.algorithm = algorithm;
     }
 
-
+    public void appendAttributes(final XMLUtil util, final Appendable appendable) throws IOException {
+        util.appendAttribute(appendable, "table:protected", true);
+        util.appendAttribute(appendable, "table:protection-key", this.base64key);
+        util.appendAttribute(appendable, "table:protection-key-digest-algorithm", this.algorithm);
+    }
 }

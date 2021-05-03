@@ -22,37 +22,26 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.crypto;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.security.MessageDigest;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 
-/**
- * This class implements the infamous missing feature of Java 6 Strings.
- */
-public class StringUtil {
-    /**
-     * Join a collection on a separator
-     * @param separator the separator
-     * @param segments the collection
-     * @return the joined collection.
-     */
-    public static String join(final String separator, final Collection<String> segments) {
-        final StringBuilder sb = new StringBuilder();
-        final Iterator<String> it = segments.iterator();
-        if (it.hasNext()) {
-            sb.append(it.next());
-            while (it.hasNext()) {
-                sb.append(separator).append(it.next());
-            }
-        }
-        return sb.toString();
+public class UtilTest {
+    @Test
+    public void testPassword() throws NoSuchAlgorithmException {
+        final byte[] passwordChecksum = Util.getPasswordChecksum("foo".toCharArray(), "SHA-256");
+        Assert.assertArrayEquals(
+                new byte[]{44, 38, -76, 107, 104, -1, -58, -113, -7, -101, 69, 60, 29, 48, 65, 52,
+                        19, 66, 45, 112, 100, -125, -65, -96, -7, -118, 94, -120, 98, 102, -25,
+                        -82}, passwordChecksum);
+        Assert.assertEquals("2C26B46B68FFC68FF99B453C1D30413413422D706483BFA0F98A5E886266E7AE",
+                javax.xml.bind.DatatypeConverter.printHexBinary(
+                        passwordChecksum));
+        Assert.assertEquals("LCa0a2j/xo/5m0U8HTBBNBNCLXBkg7+g+YpeiGJm564=",
+                Util.toBase64String(
+                        passwordChecksum));
     }
-
-
 }
