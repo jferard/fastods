@@ -42,6 +42,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.nio.charset.Charset;
 import java.sql.Date;
+import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
 
@@ -354,6 +355,28 @@ public class SQLToCellValueConverterTest {
 
         PowerMock.replayAll();
         this.converter.from(CellType.VOID, interval);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testFromXMLFails() throws FastOdsException {
+        final SQLXML xml = new MockSQLXML("malformed xml");
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.converter.from(xml);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test(expected = FastOdsException.class)
+    public void testFromXMLStringFails() throws FastOdsException {
+        final SQLXML xml = new MockSQLXML("malformed xml");
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.converter.from(CellType.STRING, xml);
 
         PowerMock.verifyAll();
     }

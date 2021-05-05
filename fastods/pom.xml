@@ -114,7 +114,7 @@
             <artifactId>simple-odf</artifactId>
             <scope>test</scope>
         </dependency>
-   </dependencies>
+    </dependencies>
 
     <build>
         <testSourceDirectory>${fastods.testSourceDirectory}</testSourceDirectory>

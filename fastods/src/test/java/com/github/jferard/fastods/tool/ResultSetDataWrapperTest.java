@@ -30,6 +30,7 @@ import com.github.jferard.fastods.ObjectToCellValueConverter;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.PercentageValue;
 import com.github.jferard.fastods.StringValue;
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.attribute.CellType;
@@ -96,7 +97,8 @@ public class ResultSetDataWrapperTest {
             r.add(l);
         }
 
-        final DataWrapper wrapper = this.createWrapper(Collections.singletonList("number"), r, 3);
+        final DataWrapper wrapper = this.createWrapper(Collections.singletonList("number"), r, 3,
+                false);
 
         PowerMock.resetAll();
         EasyMock.expect(this.walker.rowIndex()).andReturn(0);
@@ -150,7 +152,7 @@ public class ResultSetDataWrapperTest {
     @Test
     public final void testNoRow() throws IOException {
         final DataWrapper wrapper = this.createWrapper(Arrays.asList("number", "word"),
-                Collections.<List<Object>>emptyList(), 100);
+                Collections.<List<Object>>emptyList(), 100, false);
 
         PowerMock.resetAll();
         EasyMock.expect(this.walker.rowIndex()).andReturn(0);
@@ -183,7 +185,7 @@ public class ResultSetDataWrapperTest {
         l.add(null);
         final DataWrapper wrapper =
                 this.createWrapper(Collections.singletonList("value"), Collections.singletonList(l),
-                        100);
+                        100, false);
 
         PowerMock.resetAll();
         EasyMock.expect(this.walker.rowIndex()).andReturn(0);
@@ -209,11 +211,13 @@ public class ResultSetDataWrapperTest {
     @Test
     public final void testOneRow() throws IOException {
         final DataWrapper wrapper = this.createWrapper(Arrays.asList("number", "word"),
-                Collections.singletonList(Arrays.<Object>asList(7, "a")), 100);
+                Collections.singletonList(Arrays.<Object>asList(7, "a")), 100, true);
+        final Table table = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
+        EasyMock.expect(this.walker.rowIndex()).andReturn(0).times(2);
         EasyMock.expect(this.walker.colIndex()).andReturn(0);
+
         // header
         this.walker.setStringValue("number");
         this.walker.setStyle(this.tcls);
@@ -230,6 +234,9 @@ public class ResultSetDataWrapperTest {
         this.walker.setCellValue(this.converter.from("a"));
         this.walker.next();
         this.walker.nextRow();
+
+        EasyMock.expect(this.walker.getTable()).andReturn(table);
+        table.addAutoFilter("range", 0, 0, 0, 1);
 
         PowerMock.replayAll();
         wrapper.addToTable(this.walker);
@@ -377,9 +384,15 @@ public class ResultSetDataWrapperTest {
     }
 
     private DataWrapper createWrapper(final Iterable<String> head,
-                                      final Iterable<List<Object>> rows, final int max) {
+                                      final Iterable<List<Object>> rows, final int max,
+                                      final boolean autofilter) {
         final MockResultSet rs = this.tester.createResultSet(head, rows);
-        return ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls)
-                .max(max).noAutoFilter().build();
+        final ResultSetDataWrapperBuilder builder =
+                ResultSetDataWrapper.builder("range", rs).logger(this.logger).headerStyle(this.tcls)
+                        .max(max);
+        if (!autofilter) {
+            builder.noAutoFilter();
+        }
+        return builder.build();
     }
 }

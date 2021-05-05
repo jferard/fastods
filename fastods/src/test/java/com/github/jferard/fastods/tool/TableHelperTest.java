@@ -48,19 +48,29 @@ public class TableHelperTest {
 
     @Before
     public void setUp() {
-        this.positionUtil = new PositionUtil(new TableNameUtil());
+        this.tableHelper = TableHelper.create();
         this.table = PowerMock.createMock(Table.class);
         this.walker = PowerMock.createMock(TableCellWalker.class);
-        this.tableHelper = new TableHelper(this.positionUtil);
     }
 
     @Test
-    public final void testSetCellMerge() throws IOException, ParseException {
+    public final void testSetCellMergeRef() throws IOException, ParseException {
         PowerMock.resetAll();
         this.table.setCellMerge(6, 2, 9, 3);
 
         PowerMock.replayAll();
         this.tableHelper.setCellMerge(this.table, "C7", 9, 3);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetCellMergeIndices() throws IOException, ParseException {
+        PowerMock.resetAll();
+        this.table.setCellMerge(6, 2, 9, 3);
+
+        PowerMock.replayAll();
+        this.tableHelper.setCellMerge(this.table, 6, 2, 9, 3);
 
         PowerMock.verifyAll();
     }
