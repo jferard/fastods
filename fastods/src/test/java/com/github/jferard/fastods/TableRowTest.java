@@ -217,7 +217,7 @@ public class TableRowTest {
                         "table:number-columns-repeated=\"5\"/>" +
                         "<table:table-cell table:style-name=\"---\" " +
                         "office:value-type=\"boolean\" office:boolean-value=\"true\"/>" +
-                        "<table:table-cell " + "table:number-columns-repeated=\"4\"/>" +
+                        "<table:table-cell table:number-columns-repeated=\"4\"/>" +
                         "<table:table-cell office:value-type=\"string\" " +
                         "office:string-value=\"a\"/>" + "</table:table-row>");
     }
@@ -238,7 +238,7 @@ public class TableRowTest {
 
         PowerMock.verifyAll();
         this.assertTableXMLEquals("<table:table-row table:default-cell-style-name=\"Default" +
-                "\"></table:table-row>");
+                "\"><table:table-cell/></table:table-row>");
     }
 
 

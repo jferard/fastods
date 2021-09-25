@@ -31,10 +31,14 @@ import java.io.File;
 public class ExamplesTestHelper {
 
     public static void validate(final File destFile) {
-        final File schemaRNG = new File("target/schemas", "OpenDocument-v1.3-schema.rng");
+//        final File schemaRNG = new File("target/schemas", "OpenDocument-v1.3-schema.rng");
+//        final File manifestSchemaRNG =
+//                new File("target/schemas", "OpenDocument-v1.3-manifest-schema.rng");
+//        final File dsigSchemaRNG = new File("target/schemas", "OpenDocument-v1.3-dsig-schema.rng");
+        final File schemaRNG = new File("target/schemas", "OpenDocument-v1.2-os-schema.rng");
         final File manifestSchemaRNG =
-                new File("target/schemas", "OpenDocument-v1.3-manifest-schema.rng");
-        final File dsigSchemaRNG = new File("target/schemas", "OpenDocument-v1.3-dsig-schema.rng");
+                new File("target/schemas", "OpenDocument-v1.2-os-manifest-schema.rng");
+        final File dsigSchemaRNG = new File("target/schemas", "OpenDocument-v1.2-os-dsig-schema.rng");
         if (schemaRNG.exists() && manifestSchemaRNG.exists() && dsigSchemaRNG.exists()) {
             Main.main(new String[]{
                     "-O", schemaRNG.getAbsolutePath(),

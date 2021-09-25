@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.Validation;
@@ -120,8 +121,8 @@ class TableAppender {
         }
         appendable.append(">");
         this.appendForms(util, appendable, this.builder.getForms());
-        this.appendColumns(util, appendable, this.builder.getColumns());
         this.appendShapes(util, appendable, this.builder.getShapes());
+        this.appendColumns(util, appendable, this.builder.getColumns());
     }
 
     private void appendShapes(final XMLUtil util, final Appendable appendable,
@@ -264,7 +265,9 @@ class TableAppender {
             util.appendAttribute(appendable, "table:number-rows-repeated", this.nullFieldCounter);
         }
         util.appendAttribute(appendable, "table:style-name", "ro1");
-        appendable.append("><table:table-cell/></table:table-row>");
+        appendable.append(">");
+        appendable.append("<table:table-cell/>");
+        appendable.append("</table:table-row>");
         this.nullFieldCounter = 0;
     }
 

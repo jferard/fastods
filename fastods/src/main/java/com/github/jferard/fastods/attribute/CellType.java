@@ -60,9 +60,9 @@ public enum CellType implements AttributeValue {
      */
     TIME("time", "office:time-value"),
     /**
-     * a void cell value: nothing.
+     * a void type: nothing.
      */
-    VOID("", "office-value");
+    VOID("void", null);
 
     private final String valueType;
     private final String valueAttribute;

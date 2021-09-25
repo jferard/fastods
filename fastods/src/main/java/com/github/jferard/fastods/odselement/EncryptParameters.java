@@ -86,8 +86,8 @@ public class EncryptParameters implements XMLConvertible {
         util.appendAttribute(appendable, "manifest:checksum", this.compressedCheckSum);
         appendable.append(">");
         this.appendAlgorithm(util, appendable);
-        this.appendKeyDerivation(util, appendable);
         this.appendKeyGeneration(util, appendable);
+        this.appendKeyDerivation(util, appendable);
         appendable.append("</manifest:encryption-data>");
     }
 

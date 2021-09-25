@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.attribute.FormatSource;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -55,6 +56,8 @@ import java.io.IOException;
  * @author Martin Schulz
  */
 public class DateStyle implements DataStyle {
+    private final FormatSource formatSource;
+
     /**
      * The format of the date
      */
@@ -129,10 +132,11 @@ public class DateStyle implements DataStyle {
      * @param automaticOrder true if the order comes from the current locale
      */
     DateStyle(final CoreDataStyle dataStyle, final DateTimeStyleFormat dateFormat,
-              final boolean automaticOrder) {
+              final boolean automaticOrder, final FormatSource formatSource) {
         this.dataStyle = dataStyle;
         this.dateFormat = dateFormat;
         this.automaticOrder = automaticOrder;
+        this.formatSource = formatSource;
     }
 
     @Override
@@ -142,15 +146,12 @@ public class DateStyle implements DataStyle {
         util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
         this.dataStyle.appendLVAttributes(util, appendable);
         util.appendAttribute(appendable, "number:automatic-order", this.automaticOrder);
-        if (this.dateFormat == null) {
-            util.appendAttribute(appendable, "number:format-source", "language");
-            appendable.append("/>");
-        } else {
-            util.appendAttribute(appendable, "number:format-source", "fixed");
-            appendable.append(">");
-            this.dateFormat.appendXMLContent(util, appendable);
-            appendable.append("</number:date-style>");
+        if (this.formatSource != FormatSource.FIXED) {
+            util.appendAttribute(appendable, "number:format-source", this.formatSource);
         }
+        appendable.append(">");
+        this.dateFormat.appendXMLContent(util, appendable);
+        appendable.append("</number:date-style>");
     }
 
     @Override

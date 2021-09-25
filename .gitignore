@@ -12,6 +12,7 @@ target
 reports
 simpleods5.3
 generated_files
+history
 
 # extensions
 *.old

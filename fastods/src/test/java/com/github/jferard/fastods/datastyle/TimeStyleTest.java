@@ -24,8 +24,11 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -46,7 +49,7 @@ public class TimeStyleTest {
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " + "style" +
-                        ":volatile=\"true\" number:format-source=\"fixed\">" +
+                        ":volatile=\"true\">" +
                         "<number:hours number:style=\"long\"/>" + "<number:text>:</number:text>" +
                         "<number:minutes number:style=\"long\"/>" + "<number:text>:</number:text>" +
                         "<number:seconds number:style=\"long\"/>" + "</number:time-style>", ts);
@@ -55,19 +58,12 @@ public class TimeStyleTest {
     @Test
     public final void testNullFormat() throws IOException {
         final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(null).build();
-        TestHelper.assertXMLEquals(
-                "<number:time-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:format-source=\"language\"/>", ts);
-    }
-
-    @Test
-    public final void testHiddenNullFormat() throws IOException {
-        final TimeStyle ts = new TimeStyleBuilder("test", this.locale).timeFormat(null).build();
-        TestHelper.assertXMLEquals(
-                "<number:time-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:format-source=\"language\"/>", ts);
+        Assert.assertThrows(NullPointerException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                ts.appendXMLContent(XMLUtil.create(), new StringBuilder());
+            }
+        });
     }
 
     @Test
@@ -77,7 +73,11 @@ public class TimeStyleTest {
                         .build();
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"test\" number:language=\"fr\" " +
-                        "number:country=\"FR\" " + "number:format-source=\"language\"/>", ts);
+                        "number:country=\"FR\">" +
+                        "<number:hours number:style=\"long\"/><number:text>:</number:text>" +
+                        "<number:minutes number:style=\"long\"/><number:text>:</number:text>" +
+                        "<number:seconds number:style=\"long\"/>" +
+                        "</number:time-style>", ts);
     }
 
     @Test
@@ -86,7 +86,11 @@ public class TimeStyleTest {
                 new TimeStyleBuilder("test", this.locale).language("a").country("b").build();
         TestHelper.assertXMLEquals("<number:time-style style:name=\"test\" number:language=\"a\" " +
                 "number:country=\"B\" " +
-                "style:volatile=\"true\" number:format-source=\"language\"/>", ts);
+                "style:volatile=\"true\">" +
+                "<number:hours number:style=\"long\"/><number:text>:</number:text>" +
+                "<number:minutes number:style=\"long\"/><number:text>:</number:text>" +
+                "<number:seconds number:style=\"long\"/>" +
+                "</number:time-style>", ts);
     }
 
     @Test

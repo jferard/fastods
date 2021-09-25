@@ -45,12 +45,11 @@ public class DateStyleTest {
                         .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " + "style" +
-                        ":volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\"><number:day number:style=\"long\"/>" +
-                        "<number:text>" + "" +
-                        ".</number:text><number:month number:style=\"long\"/>" + "<number:text>" +
-                        "" + "" + "" + "" + ".</number:text><number:year/>" +
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:day number:style=\"long\"/>" +
+                        "<number:text>.</number:text><number:month number:style=\"long\"/>" +
+                        "<number:text>.</number:text><number:year/>" +
                         "</number:date-style>", ds);
     }
 
@@ -61,12 +60,12 @@ public class DateStyleTest {
                         .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\">" + "<number:day number:style=\"long\"/>" +
-                        "<number:text>.</number:text>" + "<number:month " +
-                        "number:style=\"long\"/>" + "<number:text>.</number:text>" +
-                        "<number:year " + "number:style=\"long\"/>" + "</number:date-style>", ds);
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:day number:style=\"long\"/><number:text>.</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>.</number:text>" +
+                        "<number:year number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
@@ -75,9 +74,8 @@ public class DateStyleTest {
                 new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.MMMM).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\">" +
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
                         "<number:month number:style=\"long\" number:textual=\"true\"/>" +
                         "</number:date-style>", ds);
     }
@@ -88,11 +86,11 @@ public class DateStyleTest {
                 new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.MMYY).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\">" +
-                        "<number:month number:style=\"long\"/>" + "<number:text>.</number:text>" +
-                        "<number:year/>" + "</number:date-style>", ds);
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:month number:style=\"long\"/><number:text>.</number:text>" +
+                        "<number:year/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
@@ -102,12 +100,12 @@ public class DateStyleTest {
                         .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\">" + "<number:day/>" +
-                        "<number:text>. </number:text>" + "<number:month number:style=\"long\" " +
-                        "number:textual=\"true\"/>" + "<number:text> </number:text>" +
-                        "<number:year " + "number:style=\"long\"/>" + "</number:date-style>", ds);
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:day/><number:text>. </number:text>" +
+                        "<number:month number:style=\"long\" number:textual=\"true\"/>" +
+                        "<number:text> </number:text><number:year " + "number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
@@ -116,9 +114,9 @@ public class DateStyleTest {
                 new DateStyleBuilder("test", this.locale).dateFormat(DateStyle.Format.WW).build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\">" + "<number:week-of-year/>" +
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:week-of-year/>" +
                         "</number:date-style>", ds);
     }
 
@@ -129,12 +127,12 @@ public class DateStyleTest {
                         .build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"fixed\">" + "<number:year number:style=\"long\"/>" +
-                        "<number:text>-</number:text>" + "<number:month " +
-                        "number:style=\"long\"/>" + "<number:text>-</number:text>" +
-                        "<number:day " + "number:style=\"long\"/>" + "</number:date-style>", ds);
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day " + "number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
@@ -142,9 +140,12 @@ public class DateStyleTest {
         final DateStyle ds = new DateStyleBuilder("test", this.locale).language("fr").build();
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"fr\" " +
-                        "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"language\"/>", ds);
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
@@ -154,8 +155,11 @@ public class DateStyleTest {
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"language\"/>", ds);
+                        "style:volatile=\"true\" number:automatic-order=\"false\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -169,8 +173,11 @@ public class DateStyleTest {
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"true\" " +
-                        "number:format-source=\"language\"/>", ds);
+                        "style:volatile=\"true\" number:automatic-order=\"true\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test
@@ -179,7 +186,11 @@ public class DateStyleTest {
         TestHelper.assertXMLEquals(
                 "<number:date-style number:language=\"en\" style:name=\"test\" " +
                         "number:country=\"US\" " +
-                        "number:automatic-order=\"false\" number:format-source=\"language\"/>", ds);
+                        "number:automatic-order=\"false\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
     }
 
     @Test

@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TableCellStyle;
@@ -116,18 +117,22 @@ public class TableRowImpl implements TableRow {
         this.appendRowOpenTag(util, appendable);
         int nullFieldCounter = 0;
 
-        final int size = this.cells.usedSize();
-        for (int c = 0; c < size; c++) {
-            final WritableTableCell cell = this.cells.get(c);
-            if (this.hasNoValue(cell)) {
-                nullFieldCounter++;
-                continue;
+        int size = this.cells.usedSize();
+        if (size == 0) { // relaxNG validation : oneOrMore cells
+            appendable.append("<table:table-cell/>");
+        } else {
+            for (int c = 0; c < size; c++) {
+                final WritableTableCell cell = this.cells.get(c);
+                if (this.hasNoValue(cell)) {
+                    nullFieldCounter++;
+                    continue;
+                }
+                this.insertBlankCells(util, appendable, nullFieldCounter);
+                nullFieldCounter = 0;
+                cell.appendXMLToTableRow(util, appendable);
             }
-            this.insertBlankCells(util, appendable, nullFieldCounter);
-            nullFieldCounter = 0;
-            cell.appendXMLToTableRow(util, appendable);
         }
-
+        this.insertBlankCells(util, appendable, nullFieldCounter); // relaxNG
         appendable.append("</table:table-row>");
     }
 

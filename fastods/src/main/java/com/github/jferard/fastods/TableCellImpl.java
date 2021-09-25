@@ -116,12 +116,12 @@ public class TableCellImpl implements WritableTableCell {
             util.appendEAttribute(appendable, "table:style-name", this.getCurCellStyle().getName());
         }
 
-        if (this.type != null) {
-            util.appendAttribute(appendable, "office:value-type", this.type);
-            util.appendEAttribute(appendable, this.type.getValueAttribute(), this.value);
-            if (this.type == CellType.CURRENCY) {
-                final String currency = this.getCurrency();
-                util.appendEAttribute(appendable, "office:currency", currency);
+        if (this.type != null && this.type != CellType.VOID) {
+                util.appendAttribute(appendable, "office:value-type", this.type);
+                util.appendEAttribute(appendable, this.type.getValueAttribute(), this.value);
+                if (this.type == CellType.CURRENCY) {
+                    final String currency = this.getCurrency();
+                    util.appendEAttribute(appendable, "office:currency", currency);
             }
         }
 

@@ -120,8 +120,11 @@ public class DataStylesTest {
         TestHelper.assertXMLEquals(
                 "<number:date-style style:name=\"date-data\" number:language=\"en\" " +
                         "number:country=\"C\" " +
-                        "style:volatile=\"true\" number:automatic-order=\"false\" " +
-                        "number:format-source=\"language\"/>", ds.getDateDataStyle());
+                        "style:volatile=\"true\" number:automatic-order=\"false\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day number:style=\"long\"/>" +
+                        "</number:date-style>", ds.getDateDataStyle());
         TestHelper.assertXMLEquals(
                 "<number:number-style style:name=\"float-data\" number:language=\"en\" " +
                         "number:country=\"D\" " +
@@ -137,7 +140,11 @@ public class DataStylesTest {
         TestHelper.assertXMLEquals(
                 "<number:time-style style:name=\"time-data\" number:language=\"en\" " +
                         "number:country=\"F\" " +
-                        "style:volatile=\"true\" number:format-source=\"language\"/>",
+                        "style:volatile=\"true\">" +
+                        "<number:hours number:style=\"long\"/><number:text>:</number:text>" +
+                        "<number:minutes number:style=\"long\"/><number:text>:</number:text>" +
+                        "<number:seconds number:style=\"long\"/>" +
+                        "</number:time-style>",
                 ds.getTimeDataStyle());
     }
 

@@ -98,23 +98,24 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
         EasyMock.expect(this.tb.getProtection()).andReturn(null);
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>singletonList(drawFrame));
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>singletonList(drawFrame));
         EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
                         "table:print=\"false\">" +
-                        "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
-                        "table:default-cell-style-name=\"Default\"/>" +
                         "<table:shapes><draw:frame draw:name=\"a\" " +
                         "draw:z-index=\"0\" svg:width=\"2cm\" svg:height=\"3cm\" svg:x=\"0cm\" " +
                         "svg:y=\"1cm\"><draw:image xlink:href=\"href\" xlink:type=\"simple\" " +
                         "xlink:show=\"embed\" xlink:actuate=\"onLoad\"/>" +
-                        "</draw:frame></table:shapes>");
+                        "</draw:frame></table:shapes>" +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/>"
+        );
 
         PowerMock.verifyAll();
     }

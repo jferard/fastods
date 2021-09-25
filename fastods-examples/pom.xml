@@ -101,7 +101,8 @@
                         </goals>
                         <configuration>
                             <url>
-                                https://docs.oasis-open.org/office/OpenDocument/v1.3/os/schemas/OpenDocument-v1.3-dsig-schema.rng
+                                http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-dsig-schema.rng
+                                <!-- https://docs.oasis-open.org/office/OpenDocument/v1.3/os/schemas/OpenDocument-v1.3-dsig-schema.rng -->
                             </url>
                             <outputDirectory>${project.build.directory}/schemas</outputDirectory>
                         </configuration>
@@ -114,7 +115,8 @@
                         </goals>
                         <configuration>
                             <url>
-                                https://docs.oasis-open.org/office/OpenDocument/v1.3/os/schemas/OpenDocument-v1.3-schema.rng
+                                http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-schema.rng
+                                <!-- https://docs.oasis-open.org/office/OpenDocument/v1.3/os/schemas/OpenDocument-v1.3-schema.rng -->
                             </url>
                             <outputDirectory>${project.build.directory}/schemas</outputDirectory>
                         </configuration>
@@ -127,7 +129,8 @@
                         </goals>
                         <configuration>
                             <url>
-                                https://docs.oasis-open.org/office/OpenDocument/v1.3/os/schemas/OpenDocument-v1.3-manifest-schema.rng
+                                http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-manifest-schema.rng
+                                <!-- https://docs.oasis-open.org/office/OpenDocument/v1.3/os/schemas/OpenDocument-v1.3-manifest-schema.rng -->
                             </url>
                             <outputDirectory>${project.build.directory}/schemas</outputDirectory>
                         </configuration>

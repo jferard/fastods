@@ -123,8 +123,9 @@ public class TableCellStyleTest {
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"Default\" style:family=\"table-cell\">" +
                         "<style:table-cell-properties style:vertical-align=\"top\"/>" +
+                        "<style:paragraph-properties fo:margin=\"0cm\"/>" +
                         "<style:text-properties style:font-name=\"Liberation Sans\"/>" +
-                        "<style:paragraph-properties fo:margin=\"0cm\"/>" + "</style:style>",
+                        "</style:style>",
                 TableCellStyle.DEFAULT_CELL_STYLE);
     }
 
@@ -198,10 +199,11 @@ public class TableCellStyleTest {
                 TableCellStyle.DEFAULT_CELL_STYLE.toBuilder("Default with red bg")
                         .backgroundColor(SimpleColor.RED).build();
         TestHelper.assertXMLEquals("<style:style style:name=\"Default with red bg\" " +
-                "style:family=\"table-cell\"><style:table-cell-properties " +
-                "fo:background-color=\"#ff0000\" " +
-                "style:vertical-align=\"top\"/><style:text-properties " +
-                "style:font-name=\"Liberation Sans\"/><style:paragraph-properties " +
-                "fo:margin=\"0cm\"/></style:style>", style);
+                "style:family=\"table-cell\">" +
+                "<style:table-cell-properties fo:background-color=\"#ff0000\" " +
+                "style:vertical-align=\"top\"/>" +
+                "<style:paragraph-properties fo:margin=\"0cm\"/>" +
+                "<style:text-properties style:font-name=\"Liberation Sans\"/>" +
+                "</style:style>", style);
     }
 }

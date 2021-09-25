@@ -24,6 +24,8 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.attribute.FormatSource;
+
 import java.util.Locale;
 
 /**
@@ -35,6 +37,7 @@ public class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBu
      * The date format.
      */
     private DateTimeStyleFormat timeFormat;
+    private FormatSource formatSource;
 
     /**
      * Create a new date style with the name name.
@@ -44,11 +47,22 @@ public class TimeStyleBuilder implements DataStyleBuilder<TimeStyle, TimeStyleBu
      */
     public TimeStyleBuilder(final String name, final Locale locale) {
         this.dataStyleBuilder = new CoreDataStyleBuilder(name, locale);
+        this.formatSource = FormatSource.FIXED;
+        this.timeFormat = TimeStyle.Format.HHMMSS;
     }
 
     @Override
     public TimeStyle build() {
-        return new TimeStyle(this.dataStyleBuilder.build(), this.timeFormat);
+        return new TimeStyle(this.dataStyleBuilder.build(), this.formatSource, this.timeFormat);
+    }
+
+    /**
+     * @param formatSource the new number:format-source
+     * @return this for fluent style
+     */
+    public TimeStyleBuilder formatSource(final FormatSource formatSource) {
+        this.formatSource = formatSource;
+        return this;
     }
 
     /**

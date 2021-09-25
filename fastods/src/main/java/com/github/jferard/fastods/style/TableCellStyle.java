@@ -162,10 +162,6 @@ public class TableCellStyle implements FontFaceContainerStyle {
                 this.appendCellProperties(util, appendable);
             }
 
-            if (this.hasTextProperties()) {
-                this.textProperties.appendXMLContent(util, appendable);
-            }
-
             if (this.hasParagraphProperties()) {
                 appendable.append("<style:paragraph-properties");
                 if (this.textAlign != null) {
@@ -175,6 +171,11 @@ public class TableCellStyle implements FontFaceContainerStyle {
                 this.margins.appendXMLContent(util, appendable);
                 appendable.append("/>");
             }
+
+            if (this.hasTextProperties()) {
+                this.textProperties.appendXMLContent(util, appendable);
+            }
+
             appendable.append("</style:style>");
         } else {
             appendable.append("/>");

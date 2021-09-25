@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.datastyle;
 
+import com.github.jferard.fastods.attribute.FormatSource;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -37,16 +38,20 @@ import java.io.IOException;
  */
 public class TimeStyle implements DataStyle {
     private final CoreDataStyle dataStyle;
+    private final FormatSource formatSource;
     private final DateTimeStyleFormat timeFormat;
 
     /**
      * Create a new date style
-     *
-     * @param dataStyle  the embedded core data style
+     *  @param dataStyle  the embedded core data style
+     * @param formatSource the number:format-source
      * @param timeFormat the format
      */
-    TimeStyle(final CoreDataStyle dataStyle, final DateTimeStyleFormat timeFormat) {
+    TimeStyle(final CoreDataStyle dataStyle,
+              final FormatSource formatSource,
+              final DateTimeStyleFormat timeFormat) {
         this.dataStyle = dataStyle;
+        this.formatSource = formatSource;
         this.timeFormat = timeFormat;
     }
 
@@ -56,15 +61,12 @@ public class TimeStyle implements DataStyle {
         appendable.append("<number:time-style");
         util.appendEAttribute(appendable, "style:name", this.dataStyle.getName());
         this.dataStyle.appendLVAttributes(util, appendable);
-        if (this.timeFormat == null) {
-            util.appendAttribute(appendable, "number:format-source", "language");
-            appendable.append("/>");
-        } else {
-            util.appendAttribute(appendable, "number:format-source", "fixed");
-            appendable.append(">");
-            this.timeFormat.appendXMLContent(util, appendable);
-            appendable.append("</number:time-style>");
+        if (this.formatSource != FormatSource.FIXED) {
+            util.appendAttribute(appendable, "number:format-source", this.formatSource);
         }
+        appendable.append(">");
+        this.timeFormat.appendXMLContent(util, appendable);
+        appendable.append("</number:time-style>");
     }
 
     /**

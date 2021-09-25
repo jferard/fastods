@@ -594,7 +594,7 @@ public class TableCellTest {
         this.cell.setVoidValue();
 
         PowerMock.verifyAll();
-        this.assertCellXMLEquals("<table:table-cell office:value-type=\"\" office-value=\"\"/>");
+        this.assertCellXMLEquals("<table:table-cell/>");
     }
 
     @Test

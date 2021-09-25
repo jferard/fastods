@@ -117,7 +117,8 @@ public class TableTest {
                 "table:number-columns-repeated=\"1021\"/>" + "<table:table-row " +
                 "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" + "</table:table-row>" +
-                "<table:table-row table:style-name=\"ro1\">" + "</table:table-row>" +
+                "<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell/>"+"</table:table-row>" +
                 "</table:table>");
 
         PowerMock.verifyAll();
