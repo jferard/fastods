@@ -87,7 +87,9 @@ class G_PageFormat {
 
             // << END TUTORIAL (directive to extract part of a tutorial from this file)
             // And save the file.
-            writer.saveAs(new File("generated_files", "g_page_format_A3.ods"));
+            final File destFile = new File("generated_files", "g_page_format_A3.ods");
+            writer.saveAs(destFile);
+            ExamplesTestHelper.validate(destFile);
         }
 
         // Next example:
@@ -109,7 +111,9 @@ class G_PageFormat {
             final TableStyle tableStyle =
                     TableStyle.builder("table-style").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
-            writer.saveAs(new File("generated_files", "g_page_format_custom.ods"));
+            final File destFile = new File("generated_files", "g_page_format_custom.ods");
+            writer.saveAs(destFile);
+            ExamplesTestHelper.validate(destFile);
         }
 
         // Next example:
@@ -133,7 +137,10 @@ class G_PageFormat {
             final TableStyle tableStyle =
                     TableStyle.builder("table-style").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
-            writer.saveAs(new File("generated_files", "g_page_format_margins.ods"));
+            final File destFile = new File("generated_files", "g_page_format_margins.ods");
+            writer.saveAs(destFile);
+            ExamplesTestHelper.validate(destFile);
+
         }
     }
 
@@ -185,7 +192,9 @@ class G_PageFormat {
         table.setStyle(tableStyle);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "g_page_format_header_footer.ods"));
+        final File destFile = new File("generated_files", "g_page_format_header_footer.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     static void example3() throws IOException {
@@ -237,6 +246,9 @@ class G_PageFormat {
         table.setStyle(tableStyle);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "g_page_format_styled_header_footer.ods"));
+        final File destFile =
+                new File("generated_files", "g_page_format_styled_header_footer.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 }

@@ -291,7 +291,8 @@ class L_PeriodicTable {
         // And save the file.
         writer.saveAs(new File("generated_files", "l_periodic_table.ods"));
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
-
+        final File destFile = new File("generated_files", "l_periodic_table.ods");
+        ExamplesTestHelper.validate(destFile);
     }
     // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
 

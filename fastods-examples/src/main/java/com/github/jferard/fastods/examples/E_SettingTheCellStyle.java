@@ -176,7 +176,8 @@ class E_SettingTheCellStyle {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "e_cell_styles.ods"));
-        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        final File destFile = new File("generated_files", "e_cell_styles.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 }

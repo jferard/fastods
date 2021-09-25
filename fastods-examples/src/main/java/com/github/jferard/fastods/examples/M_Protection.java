@@ -104,7 +104,9 @@ public class M_Protection {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "m_protect_validation.ods"));
+        final File destFile = new File("generated_files", "m_protect_validation.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     public static void protectionExample() throws IOException, NoSuchAlgorithmException {
@@ -136,7 +138,9 @@ public class M_Protection {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "m_protect_sheet.ods"));
+        final File destFile = new File("generated_files", "m_protect_sheet.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     public static void cryptoExample() throws IOException, NoSuchAlgorithmException {
@@ -180,5 +184,7 @@ public class M_Protection {
         // (The password in this example is "123", but you'd better choose another password.)
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        final File destFile = new File("generated_files", "m_hello_world_crypto_example.ods");
+        ExamplesTestHelper.validate(destFile);
     }
 }

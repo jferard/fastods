@@ -97,5 +97,8 @@ class A_HelloWorld {
         // With a `mvn clean verify` at the root of the project, you can check the result in the
         // `fastods-examples/generated-files` directory.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // Validation
+        final File destFile = new File("generated_files", "a_hello_world_example.ods");
+        ExamplesTestHelper.validate(destFile);
     }
 }

@@ -144,7 +144,9 @@ class H_AutofiltersAndDataPilotTables {
         // macro is not mandatory.)
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "h_autofilter.ods"));
+        final File destFile = new File("generated_files", "h_autofilter.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
 
@@ -279,6 +281,8 @@ class H_AutofiltersAndDataPilotTables {
         new MacroHelper().addRefreshMacro(document);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "h_data_pilot.ods"));
+        final File destFile = new File("generated_files", "h_data_pilot.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 }

@@ -118,7 +118,9 @@ class D_SettingTheCellDataStyle {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "d_data_style1.ods"));
+        final File destFile = new File("generated_files", "d_data_style1.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -163,8 +165,10 @@ class D_SettingTheCellDataStyle {
         walker.next();
         walker.setDateValue(cal);
 
-        // And save the file.
-        writer.saveAs(new File("generated_files", "d_data_style2.ods"));
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        final File destFile = new File("generated_files", "d_data_style2.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 }

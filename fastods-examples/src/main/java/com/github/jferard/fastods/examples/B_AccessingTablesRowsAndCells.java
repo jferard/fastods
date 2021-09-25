@@ -155,5 +155,7 @@ class B_AccessingTablesRowsAndCells {
         //
         // *Note:* We will see how to merge cells in the Advanced part of this tutorial.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        final File destFile = new File("generated_files", "b_accessing_example.ods");
+        ExamplesTestHelper.validate(destFile);
     }
 }

@@ -92,7 +92,9 @@ class I_Embedding {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_embedding_a_file.ods"));
+        final File destFile = new File("generated_files", "i_embedding_a_file.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -128,7 +130,9 @@ class I_Embedding {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_embedding_image.ods"));
+        final File destFile = new File("generated_files", "i_embedding_image.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -156,7 +160,9 @@ class I_Embedding {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_embedding_object.ods"));
+        final File destFile = new File("generated_files", "i_embedding_object.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -207,7 +213,9 @@ class I_Embedding {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_embed_tt_image.ods"));
+        final File destFile = new File("generated_files", "i_embed_tt_image.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -240,7 +248,9 @@ class I_Embedding {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "i_embedding_table.ods"));
+        final File destFile = new File("generated_files", "i_embedding_table.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 }
 

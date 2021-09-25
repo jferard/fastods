@@ -255,7 +255,9 @@ class J_Misc {
         }
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_rs.ods"));
+        final File destFile = new File("generated_files", "j_misc_rs.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -297,7 +299,9 @@ class J_Misc {
         // information.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_db.ods"));
+        final File destFile = new File("generated_files", "j_misc_db.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
 
@@ -343,7 +347,9 @@ class J_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_features.ods"));
+        final File destFile = new File("generated_files", "j_misc_features.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -384,7 +390,9 @@ class J_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_custom_attr.ods"));
+        final File destFile = new File("generated_files", "j_misc_custom_attr.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -418,7 +426,9 @@ class J_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_custom_cell.ods"));
+        final File destFile = new File("generated_files", "j_misc_custom_cell.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
 
@@ -486,7 +496,9 @@ class J_Misc {
         // ](https://github.com/jferard/fastods/issues/new) or propose a pull request.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "j_misc_custom_cell2.ods"));
+        final File destFile = new File("generated_files", "j_misc_custom_cell2.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
 }

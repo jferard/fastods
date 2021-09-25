@@ -162,5 +162,7 @@ class K_MultiplicationTable {
         // As you see, it's possible to create a nice document in roughly 40 lines of code (I don't
         // count the imports)
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        final File destFile = new File("generated_files", "k_multiplication_table.ods");
+        ExamplesTestHelper.validate(destFile);
     }
 }

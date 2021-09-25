@@ -196,7 +196,9 @@ class F_MoreOnCells {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "f_more.ods"));
+        final File destFile = new File("generated_files", "f_more.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 
     /**
@@ -281,6 +283,8 @@ class F_MoreOnCells {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "f_formulas.ods"));
+        final File destFile = new File("generated_files", "f_formulas.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
     }
 }

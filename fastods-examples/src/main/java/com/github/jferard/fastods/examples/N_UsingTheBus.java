@@ -198,6 +198,8 @@ public class N_UsingTheBus {
         }
         // And that's all.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        final File destFile = new File("generated_files", "n_using_the_bus.ods");
+        ExamplesTestHelper.validate(destFile);
     }
 
     private interface Element {
