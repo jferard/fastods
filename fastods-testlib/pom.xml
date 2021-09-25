@@ -111,7 +111,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.odftoolkit</groupId>
+            <groupId>org.odftoolkit</groupId>
             <artifactId>simple-odf</artifactId>
         </dependency>
     </dependencies>

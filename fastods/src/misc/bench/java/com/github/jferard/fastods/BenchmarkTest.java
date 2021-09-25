@@ -104,7 +104,9 @@ public class BenchmarkTest {
                         new BenchFastFlush(this.logger, rowCount, colCount),
                         new BenchFastFlushWithThreads(this.logger, rowCount, colCount),
                         new BenchSimpleOds(this.logger, rowCount, colCount),
-                        new BenchJOpen(this.logger, rowCount, colCount));
+                        new BenchJOpen(this.logger, rowCount, colCount)
+                        //, new BenchSimpleOdf(this.logger, rowCount, colCount)
+                );
         if (rowCount < 10000) {
             benches.add(new BenchSimpleOdf(this.logger, rowCount, colCount));
         }
