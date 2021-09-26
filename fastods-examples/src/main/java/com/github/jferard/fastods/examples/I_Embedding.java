@@ -39,6 +39,7 @@ import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -149,8 +150,12 @@ class I_Embedding {
         final Table table = document.addTable("test");
 
         // We get the input stream:
+        final File embeddedFile = new File("generated_files", "a_hello_world_example.ods");
+        if (!embeddedFile.exists()) {
+            return;
+        }
         final InputStream inputStream =
-                I_Embedding.class.getClassLoader().getResourceAsStream("a_hello_world_example.ods");
+                new FileInputStream(embeddedFile);
 
         // And use a tool
         final GraphicStyle gs = GraphicStyle.builder("gs").build();
