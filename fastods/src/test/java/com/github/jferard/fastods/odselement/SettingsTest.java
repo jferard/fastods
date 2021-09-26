@@ -80,61 +80,62 @@ public class SettingsTest {
         final ConfigBlock block = this.blocks.get(0);
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
-                        "<config:config-item " + "config:name=\"VisibleAreaTop\" " +
-                        "config:type=\"int\">0</config:config-item>" + "<config:config-item " +
-                        "config:name=\"VisibleAreaLeft\" " +
-                        "config:type=\"int\">0</config:config-item>" + "<config:config-item " +
-                        "config:name=\"VisibleAreaWidth\" " +
-                        "config:type=\"int\">680</config:config-item>" + "<config:config-item " +
-                        "config:name=\"VisibleAreaHeight\" " +
-                        "config:type=\"int\">400</config:config-item>" +
-                        "<config:config-item-map-indexed " + "config:name=\"Views\">" +
-                        "<config:config-item-map-entry>" + "<config:config-item " +
-                        "config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" +
-                        "<config:config-item-map-named config:name=\"Tables\" />" +
-                        "<config:config-item " + "config:name=\"ActiveTable\" " +
-                        "config:type=\"string\">Sheet1</config:config-item>" +
-                        "<config:config-item" + " config:name=\"HorizontalScrollbarWidth\" " +
-                        "config:type=\"int\">270</config:config-item>" + "<config:config-item " +
-                        "config:name=\"PageViewZoomValue\" " +
-                        "config:type=\"int\">60</config:config-item>" +
-                        "<config:config-item config:name=\"ZoomType\" " +
-                        "config:type=\"short\">0</config:config-item>" + "<config:config-item " +
-                        "config:name=\"ZoomValue\" " +
-                        "config:type=\"short\">100</config:config-item>" + "<config:config-item " +
-                        "config:name=\"ShowPageBreakPreview\" " +
+                        "<config:config-item config:name=\"VisibleAreaTop\" " +
+                        "config:type=\"int\">0</config:config-item>" +
+                        "<config:config-item config:name=\"VisibleAreaLeft\" config:type=\"int\">0" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"VisibleAreaWidth\" config:type=\"int\">" +
+                        "680</config:config-item>" +
+                        "<config:config-item config:name=\"VisibleAreaHeight\" config:type=\"int\">" +
+                        "400</config:config-item>" +
+                        "<config:config-item-map-indexed config:name=\"Views\">" +
+                        "<config:config-item-map-entry>" +
+                        "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"ActiveTable\" config:type=\"string\">" +
+                        "Sheet1</config:config-item>" +
+                        "<config:config-item config:name=\"HorizontalScrollbarWidth\" config:type=\"int\">" +
+                        "270</config:config-item>" +
+                        "<config:config-item config:name=\"PageViewZoomValue\" config:type=\"int\">" +
+                        "60</config:config-item>" +
+                        "<config:config-item config:name=\"ZoomType\" config:type=\"short\">0" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"ZoomValue\" config:type=\"short\">100" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"ShowPageBreakPreview\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
-                        "<config:config-item " + "config:name=\"ShowZeroValues\" " +
+                        "<config:config-item config:name=\"ShowZeroValues\" config:type=\"boolean\">" +
+                        "true</config:config-item>" +
+                        "<config:config-item config:name=\"ShowNotes\" config:type=\"boolean\">true" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"ShowGrid\" config:type=\"boolean\">true" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"GridColor\" config:type=\"long\">" +
+                        "12632256</config:config-item>" +
+                        "<config:config-item config:name=\"ShowPageBreaks\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item config:name=\"ShowNotes\" " + "" +
+                        "<config:config-item config:name=\"HasColumnRowHeaders\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " +
-                        "config:name=\"ShowGrid\" config:type=\"boolean\">true</config:config" +
-                        "-item>" + "<config:config-item " + "config:name=\"GridColor\" " +
-                        "config:type=\"long\">12632256</config:config-item>" +
-                        "<config:config-item " + "config:name=\"ShowPageBreaks\" " +
+                        "<config:config-item config:name=\"IsOutlineSymbolsSet\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " + "config:name=\"HasColumnRowHeaders\" " +
-                        "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " + "config:name=\"IsOutlineSymbolsSet\" " +
-                        "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " + "config:name=\"HasSheetTabs\" " +
-                        "config:type=\"boolean\">true</config:config-item>" +
-                        "<config:config-item " + "config:name=\"IsSnapToRaster\" " +
+                        "<config:config-item config:name=\"HasSheetTabs\" config:type=\"boolean\">" +
+                        "true</config:config-item>" +
+                        "<config:config-item config:name=\"IsSnapToRaster\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
-                        "<config:config-item " + "config:name=\"RasterIsVisible\" " +
+                        "<config:config-item config:name=\"RasterIsVisible\" " +
                         "config:type=\"boolean\">false</config:config-item>" +
-                        "<config:config-item " + "config:name=\"RasterResolutionX\" " +
+                        "<config:config-item config:name=\"RasterResolutionX\" " +
                         "config:type=\"long\">1000</config:config-item>" + "<config:config-item " +
-                        "config:name=\"RasterResolutionY\" " +
-                        "config:type=\"long\">1000</config:config-item>" + "<config:config-item " +
-                        "config:name=\"RasterSubdivisionX\" " +
-                        "config:type=\"long\">1</config:config-item>" + "<config:config-item " +
-                        "config:name=\"RasterSubdivisionY\" " +
-                        "config:type=\"long\">1</config:config-item>" + "<config:config-item " +
-                        "config:name=\"IsRasterAxisSynchronized\" " +
+                        "config:name=\"RasterResolutionY\" config:type=\"long\">1000" +
+                        "</config:config-item>" +
+                        "<config:config-item config:name=\"RasterSubdivisionX\" " +
+                        "config:type=\"long\">1</config:config-item>" +
+                        "<config:config-item config:name=\"RasterSubdivisionY\" " +
+                        "config:type=\"long\">1</config:config-item>" +
+                        "<config:config-item config:name=\"IsRasterAxisSynchronized\" " +
                         "config:type=\"boolean\">true</config:config-item>" +
-                        "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
+                        "</config:config-item-map-entry>" +
+                        "</config:config-item-map-indexed>" +
                         "</config:config-item-set>", block);
     }
 
@@ -236,10 +237,10 @@ public class SettingsTest {
         s.setViewSetting("vId", "i", "v");
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
-                        "<config:config-item-map-indexed " + "config:name=\"Views\">" +
-                        "<config:config-item-map-entry>" + "<config:config-item " +
-                        "config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" +
-                        "<config:config-item-map-named config:name=\"Tables\" />" +
+                        "<config:config-item-map-indexed config:name=\"Views\">" +
+                        "<config:config-item-map-entry>" +
+                        "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1" +
+                        "</config:config-item>" +
                         "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
                         "</config:config-item-set>", s.getRootBlocks().get(0));
     }
@@ -252,11 +253,12 @@ public class SettingsTest {
         s.setViewSetting("View1", "i", "v");
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
-                        "<config:config-item-map-indexed " + "config:name=\"Views\">" +
-                        "<config:config-item-map-entry>" + "<config:config-item " +
-                        "config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" +
-                        "<config:config-item-map-named config:name=\"Tables\" />" +
-                        "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
+                        "<config:config-item-map-indexed config:name=\"Views\">" +
+                        "<config:config-item-map-entry>" +
+                        "<config:config-item config:name=\"ViewId\" config:type=\"string\">View1" +
+                        "</config:config-item>" +
+                        "</config:config-item-map-entry>" +
+                        "</config:config-item-map-indexed>" +
                         "</config:config-item-set>", s.getRootBlocks().get(0));
 
     }
@@ -268,11 +270,12 @@ public class SettingsTest {
         s.setViewSetting("View1", "ViewId", "View2");
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
-                        "<config:config-item-map-indexed " + "config:name=\"Views\">" +
-                        "<config:config-item-map-entry>" + "<config:config-item " +
-                        "config:name=\"ViewId\" config:type=\"string\">View2</config:config-item>" +
-                        "<config:config-item-map-named config:name=\"Tables\" />" +
-                        "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
+                        "<config:config-item-map-indexed config:name=\"Views\">" +
+                        "<config:config-item-map-entry>" +
+                        "<config:config-item config:name=\"ViewId\" config:type=\"string\">" +
+                        "View2</config:config-item>" +
+                        "</config:config-item-map-entry>" +
+                        "</config:config-item-map-indexed>" +
                         "</config:config-item-set>", s.getRootBlocks().get(0));
     }
 

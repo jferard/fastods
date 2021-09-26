@@ -104,6 +104,9 @@ public class ConfigItemMapNamed implements ConfigItemCollection<ConfigItemMapEnt
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
+        if (this.isEmpty()) { // relaxNG: oneOrMore.
+            return;
+        }
         appendable.append("<config:config-item-map-named");
         util.appendEAttribute(appendable, "config:name", this.name);
         appendable.append(">");
