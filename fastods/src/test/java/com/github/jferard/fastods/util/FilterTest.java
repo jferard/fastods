@@ -39,15 +39,19 @@ public class FilterTest {
                         new FilterCompare(2, FilterOperator.N_BEGINS, "70", FilterType.TEXT)));
 
         TestHelper.assertXMLEquals(
-                "<table:filter-or>" + "<table:filter-condition table:field-number=\"1\">" +
+                "<table:filter-or>" +
+                        "<table:filter-condition table:field-number=\"1\" table:operator=\"=\" " +
+                        "table:value=\"1\" table:data-type=\"text\">" +
                         "<table:filter-set-item table:value=\"1\"/>" +
-                        "<table:filter-set-item table:value=\"2\"/>" + "</table:filter-condition>" +
+                        "<table:filter-set-item table:value=\"2\"/>" +
+                        "</table:filter-condition>" +
                         "<table:filter-and>" +
                         "<table:filter-condition table:operator=\"begins\" table:value=\"7\" " +
                         "table:data-type=\"text\" table:field-number=\"2\"/>" +
                         "<table:filter-condition table:operator=\"!begins\" table:value=\"70\" " +
                         "table:data-type=\"text\" table:field-number=\"2\"/>" +
-                        "</table:filter-and>" + "</table:filter-or>", filter);
+                        "</table:filter-and>" +
+                        "</table:filter-or>", filter);
     }
 
 }

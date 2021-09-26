@@ -24,6 +24,9 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.attribute.FilterOperator;
+import com.github.jferard.fastods.attribute.FilterType;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -48,11 +51,23 @@ public class FilterEnumerate implements Filter {
         this.values = Arrays.asList(values);
     }
 
+    /**
+     * "Note: To improve backward compatibility with OpenDocument 1.1 documents, the following
+     * attributes should have these values if <table:filter-set-item> elements are included:
+     * table:operator: "=", table:value: value of the first <table:filter-set-item> child element,
+     * table:data-type: "text".
+     * @param util       a helper object
+     * @param appendable the appendable to append data to
+     * @throws IOException
+     */
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<table:filter-condition");
         util.appendAttribute(appendable, "table:field-number", this.colIndex);
+        util.appendAttribute(appendable, "table:operator", FilterOperator.EQ);
+        util.appendAttribute(appendable, "table:value", this.values.get(0));
+        util.appendAttribute(appendable, "table:data-type", FilterType.TEXT);
         appendable.append(">");
         for (final String value : this.values) {
             appendable.append("<table:filter-set-item");
