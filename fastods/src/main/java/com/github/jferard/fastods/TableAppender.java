@@ -24,14 +24,12 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.attribute.CellType;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.Protection;
-import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -53,6 +51,7 @@ class TableAppender {
     private final TableBuilder builder;
     private boolean preambleWritten;
     private int nullFieldCounter;
+    private boolean atLeastOneRow;
 
     /**
      * Create a new appender
@@ -62,6 +61,7 @@ class TableAppender {
     TableAppender(final TableBuilder builder) {
         this.preambleWritten = false;
         this.builder = builder;
+        this.atLeastOneRow = false;
     }
 
     /**
@@ -79,30 +79,12 @@ class TableAppender {
     }
 
     /**
-     * Append the postamble
-     *
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
-    public void appendPostamble(final Appendable appendable) throws IOException {
-        appendable.append("</table:table>");
-    }
-
-    /**
      * Append the preamble
      *
-     * @param util       an util
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
+     * @param util       the XMLUtil instance
+     * @param appendable where to append
+     * @throws IOException
      */
-    public void appendPreambleOnce(final XMLUtil util, final Appendable appendable)
-            throws IOException {
-        if (!this.preambleWritten) {
-            this.appendPreamble(util, appendable);
-            this.preambleWritten = true;
-        }
-    }
-
     public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<table:table");
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
@@ -125,19 +107,6 @@ class TableAppender {
         this.appendColumns(util, appendable, this.builder.getColumns());
     }
 
-    private void appendShapes(final XMLUtil util, final Appendable appendable,
-                              final List<Shape> shapes) throws IOException {
-        if (shapes == null || shapes.isEmpty()) {
-            return;
-        }
-
-        appendable.append("<table:shapes>");
-        for (final Shape shape : shapes) {
-            shape.appendXMLContent(util, appendable);
-        }
-        appendable.append("</table:shapes>");
-    }
-
     private void appendForms(final XMLUtil util, final Appendable appendable,
                              final List<XMLConvertible> forms) throws IOException {
         if (forms == null || forms.isEmpty()) {
@@ -154,50 +123,17 @@ class TableAppender {
         appendable.append("</office:forms>");
     }
 
-    /**
-     * Open the table, flush all rows from start, but do not freeze the table
-     *
-     * @param util       a XMLUtil instance for writing XML
-     * @param appendable where to write
-     * @throws IOException if an I/O error occurs during the flush
-     */
-    public void appendAllAvailableRows(final XMLUtil util, final Appendable appendable)
-            throws IOException {
-        this.appendPreambleOnce(util, appendable);
-        this.appendRows(util, appendable, 0);
-    }
-
-    /**
-     * Flush all rows from a given position, and do freeze the table
-     *
-     * @param util       a XMLUtil instance for writing XML
-     * @param appendable where to write
-     * @param rowIndex   the first index to use.
-     * @throws IOException if an I/O error occurs during the flush
-     */
-    public void appendRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
-                                        final int rowIndex) throws IOException {
-        if (rowIndex == 0) {
-            this.appendPreamble(util, appendable);
+    private void appendShapes(final XMLUtil util, final Appendable appendable,
+                              final List<Shape> shapes) throws IOException {
+        if (shapes == null || shapes.isEmpty()) {
+            return;
         }
-        this.appendRows(util, appendable, rowIndex);
-        this.appendPostamble(appendable);
-    }
 
-    /**
-     * Flush all rows from a given position, but do not freeze the table
-     *
-     * @param util       a XMLUtil instance for writing XML
-     * @param appendable where to write
-     * @param rowIndex   the index of the row
-     * @throws IOException if an I/O error occurs during the flush
-     */
-    public void appendSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
-                                            final int rowIndex) throws IOException {
-        if (rowIndex == 0) {
-            this.appendPreamble(util, appendable);
+        appendable.append("<table:shapes>");
+        for (final Shape shape : shapes) {
+            shape.appendXMLContent(util, appendable);
         }
-        this.appendRows(util, appendable, rowIndex);
+        appendable.append("</table:shapes>");
     }
 
     private void appendColumns(final XMLUtil xmlUtil, final Appendable appendable,
@@ -237,11 +173,11 @@ class TableAppender {
 
     private void appendRows(final XMLUtil util, final Appendable appendable,
                             final int firstRowIndex) throws IOException {
+        final int size = this.builder.getTableRowsUsedSize();
         if (firstRowIndex == 0) {
             this.nullFieldCounter = 0;
         }
 
-        final int size = this.builder.getTableRowsUsedSize();
         for (int r = firstRowIndex; r < size; r++) {
             final TableRowImpl tr = this.builder.getTableRow(r);
             if (tr == null) {
@@ -249,9 +185,23 @@ class TableAppender {
             } else {
                 this.appendRepeatedRows(util, appendable);
                 tr.appendXMLToTable(util, appendable);
+                this.atLeastOneRow = true;
                 this.nullFieldCounter = 0;
             }
         }
+    }
+
+    /**
+     * Append the postamble
+     *
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
+    public void appendPostamble(final Appendable appendable) throws IOException {
+        if (!this.atLeastOneRow) {
+            appendable.append("<table:table-row><table:table-cell/></table:table-row>");
+        }
+        appendable.append("</table:table>");
     }
 
     private void appendRepeatedRows(final XMLUtil util, final Appendable appendable)
@@ -268,13 +218,88 @@ class TableAppender {
         appendable.append(">");
         appendable.append("<table:table-cell/>");
         appendable.append("</table:table-row>");
+        this.atLeastOneRow = true;
         this.nullFieldCounter = 0;
     }
 
+    /* ***************** */
+    /* For ASYNC version */
+    /* ***************** */
+
     /**
-     * @return true if the preamble was written
+     * Append the preamble only once. This method is idempotent.
+     *
+     * @param util       an util
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
      */
-    public boolean isPreambleWritten() {
-        return this.preambleWritten;
+    public void appendPreambleOnce(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        if (!this.preambleWritten) {
+            this.appendPreamble(util, appendable);
+            this.preambleWritten = true;
+        }
+    }
+
+    /**
+     * Flush all rows from a given position, and do freeze the table
+     *
+     * @param util       a XMLUtil instance for writing XML
+     * @param appendable where to write
+     * @param rowIndex   the first index to use.
+     * @throws IOException if an I/O error occurs during the flush
+     */
+    public void appendRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
+                                        final int rowIndex) throws IOException {
+        if (rowIndex == 0) {
+            this.appendPreamble(util, appendable);
+        }
+        this.appendRows(util, appendable, rowIndex);
+        this.appendPostamble(appendable);
+    }
+
+    /**
+     * Flush all rows from a given position, but do not freeze the table
+     *
+     * @param util       a XMLUtil instance for writing XML
+     * @param appendable where to write
+     * @param rowIndex   the index of the row
+     * @throws IOException if an I/O error occurs during the flush
+     */
+    public void appendSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
+                                            final int rowIndex) throws IOException {
+        if (rowIndex == 0) {
+            this.appendPreamble(util, appendable);
+        }
+        this.appendRows(util, appendable, rowIndex);
+    }
+
+    /**
+     * Open the table, flush all rows from start, but do not freeze the table
+     *
+     * @param util       a XMLUtil instance for writing XML
+     * @param appendable where to write
+     * @throws IOException if an I/O error occurs during the flush
+     */
+    public void appendAllAvailableRows(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        this.appendPreambleOnce(util, appendable);
+        this.appendRows(util, appendable, 0);
+    }
+
+    /**
+     * Flush a bunch of rows
+     *
+     * @param rows the rows
+     * @throws IOException
+     */
+    public void flushRows(final XMLUtil xmlUtil, final ZipUTF8Writer writer,
+                          final List<TableRowImpl> rows) throws IOException {
+        for (final TableRowImpl row : rows) {
+            TableRowImpl.appendXMLToTable(row, xmlUtil, writer);
+            this.atLeastOneRow = true;
+        }
+        // free rows
+        Collections.fill(rows, null);
     }
 }

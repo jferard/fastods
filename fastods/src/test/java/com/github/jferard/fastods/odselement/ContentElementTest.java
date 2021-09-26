@@ -176,7 +176,7 @@ public class ContentElementTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(t.getName()).andReturn("t");
+        EasyMock.expect(t.getName()).andReturn("t").times(2);
         this.container
                 .writeFontFaceDecls(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
         this.container
@@ -194,7 +194,7 @@ public class ContentElementTest {
         DomTester.assertEquals(PREAMBLE_BODY + "<office:spreadsheet>" +
                         "<table:database-ranges>" +
                         "<table:database-range table:name=\"range\" table:display-filter-buttons=\"true\" " +
-                        "table:target-range-address=\"t.C2:E4\"/>" +
+                        "table:target-range-address=\"t.C2:t.E4\"/>" +
                         "</table:database-ranges></office:spreadsheet>" + POSTAMBLE_BODY,
                 this.getString(handler));
     }
@@ -312,7 +312,9 @@ public class ContentElementTest {
                         "<table:table table:name=\"t\" table:style-name=\"ta1\" " +
                         "table:print=\"false\"><table:table-column table:style-name=\"co1\" " +
                         "table:number-columns-repeated=\"1024\" " +
-                        "table:default-cell-style-name=\"Default\"/></table:table>" +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-row><table:table-cell/></table:table-row>" +
+                        "</table:table>" +
                         "</office:spreadsheet>" +
                         POSTAMBLE_BODY,
                 this.getString(handler));

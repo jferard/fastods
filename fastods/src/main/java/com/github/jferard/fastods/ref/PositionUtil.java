@@ -142,7 +142,7 @@ public class PositionUtil {
      */
     public String toRangeAddress(final Table table, final int row1, final int col1, final int row2,
                                  final int col2) {
-        return this.toCellAddress(table, row1, col1) + ":" + this.toCellAddress(row2, col2);
+        return this.toCellAddress(table, row1, col1) + ":" + this.toCellAddress(table, row2, col2);
     }
 
     /**

@@ -54,6 +54,7 @@ public class EndTableFlusherTest {
         final List<TableRowImpl> rows = Collections.emptyList();
 
         PowerMock.resetAll();
+        this.appender.flushRows(this.util, this.w, rows);
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();
@@ -70,8 +71,7 @@ public class EndTableFlusherTest {
         final List<TableRowImpl> rows = Arrays.asList(r1, r2);
 
         PowerMock.resetAll();
-        r1.appendXMLToTable(this.util, this.w);
-        r2.appendXMLToTable(this.util, this.w);
+        this.appender.flushRows(this.util, this.w, rows);
         this.appender.appendPostamble(this.w);
 
         PowerMock.replayAll();

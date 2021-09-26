@@ -39,7 +39,7 @@ public class AutoFilterTest {
         final Filter filter = PowerMock.createMock(Filter.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(table.getName()).andReturn("t");
+        EasyMock.expect(table.getName()).andReturn("t").times(2);
         filter.appendXMLContent(EasyMock.isA(XMLUtil.class), EasyMock.isA(Appendable.class));
 
         PowerMock.replayAll();
@@ -47,8 +47,9 @@ public class AutoFilterTest {
                 AutoFilter.builder("my_range", table, 0, 1, 2, 3).filter(filter).hideButtons()
                         .build();
         TestHelper.assertXMLEquals("<table:database-range table:name=\"my_range\" " +
-                "table:display-filter-buttons=\"false\" table:target-range-address=\"t" +
-                ".B1:D3\"><table:filter></table:filter></table:database-range>", af);
+                "table:display-filter-buttons=\"false\" " +
+                "table:target-range-address=\"t.B1:t.D3\"><table:filter></table:filter>" +
+                "</table:database-range>", af);
 
         PowerMock.verifyAll();
     }

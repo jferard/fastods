@@ -171,7 +171,7 @@ public class PositionUtilTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(t.getName()).andReturn("n").times(2);
+        EasyMock.expect(t.getName()).andReturn("n").times(3);
 
         PowerMock.replayAll();
         final String cellAddress = this.util.toCellAddress(t, 0, 1023);
@@ -179,7 +179,7 @@ public class PositionUtilTest {
 
         PowerMock.verifyAll();
         Assert.assertEquals("n.AMJ1", cellAddress);
-        Assert.assertEquals("n.A1:K11", rangeAddress);
+        Assert.assertEquals("n.A1:n.K11", rangeAddress);
     }
 
     @Test

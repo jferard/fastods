@@ -51,11 +51,7 @@ public class EndTableFlusher implements OdsAsyncFlusher {
 
     @Override
     public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        for (final TableRowImpl row : this.rows) {
-            TableRowImpl.appendXMLToTable(row, xmlUtil, writer);
-        }
-        // free rows
-        Collections.fill(this.rows, null);
+        this.appender.flushRows(xmlUtil, writer, this.rows);
         this.appender.appendPostamble(writer);
     }
 

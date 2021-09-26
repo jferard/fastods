@@ -135,7 +135,7 @@ public class OdsElementsTest {
         final Table t = PowerMock.createMock(Table.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(t.getName()).andReturn("table");
+        EasyMock.expect(t.getName()).andReturn("table").times(2);
         this.contentElement.addAutoFilter(EasyMock.isA(AutoFilter.class));
 
         PowerMock.replayAll();

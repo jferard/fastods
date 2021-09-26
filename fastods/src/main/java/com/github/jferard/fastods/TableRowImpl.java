@@ -115,12 +115,12 @@ public class TableRowImpl implements TableRow {
     public void appendXMLToTable(final XMLUtil util, final Appendable appendable)
             throws IOException {
         this.appendRowOpenTag(util, appendable);
-        int nullFieldCounter = 0;
 
         int size = this.cells.usedSize();
         if (size == 0) { // relaxNG validation : oneOrMore cells
             appendable.append("<table:table-cell/>");
         } else {
+            int nullFieldCounter = 0;
             for (int c = 0; c < size; c++) {
                 final WritableTableCell cell = this.cells.get(c);
                 if (this.hasNoValue(cell)) {
@@ -131,8 +131,8 @@ public class TableRowImpl implements TableRow {
                 nullFieldCounter = 0;
                 cell.appendXMLToTableRow(util, appendable);
             }
+            this.insertBlankCells(util, appendable, nullFieldCounter); // relaxNG
         }
-        this.insertBlankCells(util, appendable, nullFieldCounter); // relaxNG
         appendable.append("</table:table-row>");
     }
 
