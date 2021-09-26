@@ -44,8 +44,8 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
-import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -123,15 +123,16 @@ public class OdsElements implements StylesContainer {
     /**
      * @param positionUtil                an util for cell addresses (e.g. "A1")
      * @param xmlUtil                     an XML util
-     * @param cache                   an util for write
+     * @param cache                       an util for write
      * @param format                      the data styles
      * @param libreOfficeMode             try to get full compatibility with LO if true
-     * @param metaElement
-     * @param additionalNamespaceByPrefix
+     * @param metaElement                 meta.xml representation
+     * @param additionalNamespaceByPrefix a map: prefix -> NS
      * @return a new OdsElements, with newly build elements.
      */
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
-                                     final IntegerRepresentationCache cache, final DataStyles format,
+                                     final IntegerRepresentationCache cache,
+                                     final DataStyles format,
                                      final boolean libreOfficeMode, final MetaElement metaElement,
                                      final Map<String, String> additionalNamespaceByPrefix) {
         final Logger logger = Logger.getLogger(OdsElements.class.getName());
@@ -555,30 +556,43 @@ public class OdsElements implements StylesContainer {
     }
 
     /**
-     * @param fullPath the path of the dir
+     * Add an extra dir. If the directoy does not end with a slash,
+     * add it.
+     *
+     * @param fullDirectoryPath the path of the dir
      */
-    public void addExtraDir(final String fullPath) {
+    public void addExtraDir(final String fullDirectoryPath) {
+        final String fullPath = this.pathWithSlash(fullDirectoryPath);
         final ManifestEntryElement element = new ManifestEntryElement(
                 new StandardOdsEntry(fullPath, "", null));
         this.extraElements.add(element);
     }
 
+    private String pathWithSlash(final String fullDirectoryPath) {
+        if (fullDirectoryPath.endsWith("/")) {
+            return fullDirectoryPath;
+        } else {
+            return fullDirectoryPath + "/";
+        }
+    }
+
     /**
      * Add an extra object (eg. a spreadsheet)
      *
-     * @param fullPath  the path of the dir
-     * @param mediaType the type of the object
-     * @param version   the version
+     * @param fullDirectoryPath the path of the dir
+     * @param mediaType         the type of the object
+     * @param version           the version
      */
-    public void addExtraObject(final String fullPath, final String mediaType,
+    public void addExtraObject(final String fullDirectoryPath, final String mediaType,
                                final String version) {
+        final String fullPath = this.pathWithSlash(fullDirectoryPath);
         final ManifestEntryElement element = new ManifestEntryElement(
                 new StandardOdsEntry(fullPath, mediaType, version));
         this.extraElements.add(element);
     }
 
     /**
-     * @param xmlUtil
+     * @param xmlUtil the XML util instance.
      * @param writer  write the extra files to the archive
      * @throws IOException if something can"t be written
      */
