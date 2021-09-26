@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/jferard/fastods.svg?branch=master)](https://travis-ci.com/jferard/fastods)
+[![Build Status](https://app.travis-ci.com/jferard/fastods.svg?branch=master)](https://travis-ci.com/jferard/fastods)
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
 
 # FastODS
@@ -9,10 +9,12 @@
 A very fast and lightweight (no dependency) library for creating ODS (Open Document Spreadsheet, mainly for Calc) files in Java. It's a Martin Schulz's SimpleODS fork.
 
 ## TLDR;
+* FastODS is compatible with Java 6 (might upgrade to Java 8) and OpenDocument v1.2 (might upgrade to 1.3)
 * **FastODS cannot read ODS documents;** 
 * FastODS can produce complex and large ODS documents *very* fast;
 * FastODS is almost ready for production use. The version 1.0 is coming;
 * There is a little [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) that covers most of the features of FastODS;
+* All documents produced in the tutorial are validated against OpenDocument RELAX NG schemas; 
 * Important: [feel free to ask a question or make a suggestion](https://github.com/jferard/fastods/issues/new);
 
 ### Features
@@ -146,6 +148,8 @@ My idea is to provide a set of examples of the features of FastODS. This is ensu
 
 Those examples are located in [the examples module](https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github/jferard/fastods/examples) and are fully commented.
 A [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) was extracted from this examples.
+
+**Note: All documents produced in the tutorial are validated against [OpenDocument RELAX NG schemas](http://docs.oasis-open.org/office/v1.2/OpenDocument-v1.2.html).**
 
 To run those examples, one has to run:
 
