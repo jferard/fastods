@@ -149,13 +149,13 @@ My idea is to provide a set of examples of the features of FastODS. This is ensu
 Those examples are located in [the examples module](https://github.com/jferard/fastods/tree/master/fastods-examples/src/main/java/com/github/jferard/fastods/examples) and are fully commented.
 A [tutorial](https://github.com/jferard/fastods/wiki/Tutorial) was extracted from this examples.
 
-**Note: All documents produced in the tutorial are validated against [OpenDocument RELAX NG schemas](http://docs.oasis-open.org/office/v1.2/OpenDocument-v1.2.html).**
-
 To run those examples, one has to run:
 
 ```mvn verify```
 
 The resulting ods files are written in `generated_files` directory, and can be opened with LibreOffice or OpenOffice.
+
+(**Note: All documents produced in the tutorial are validated against [OpenDocument RELAX NG schemas](http://docs.oasis-open.org/office/v1.2/OpenDocument-v1.2.html).** This is done by the `odfvalidator` from OdfToolkit.)
 
 ### Other examples
 Other examples are implemented as integration tests: ```OdsFileCreationIT.java```, ```OdsFileWithHeaderAndFooterCreationIT.java```, etc.
