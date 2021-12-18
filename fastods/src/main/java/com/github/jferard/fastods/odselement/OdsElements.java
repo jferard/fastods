@@ -408,7 +408,7 @@ public class OdsElements implements StylesContainer {
             previousTable.asyncFlushEndTable();
         }
 
-        this.observer.update(new FinalizeFlusher(this.contentElement, this));
+        this.observer.update(new FinalizeFlusher(this, this.contentElement));
     }
 
     /**

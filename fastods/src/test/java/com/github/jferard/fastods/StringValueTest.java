@@ -69,6 +69,12 @@ public class StringValueTest {
     }
 
     @Test
+    public void testToString() {
+        final StringValue v = new StringValue("ok");
+        Assert.assertEquals(v.toString(), "StringValue[ok]");
+    }
+
+    @Test
     public void testCell() {
         PowerMock.replayAll();
         final TableCell cell = PowerMock.createMock(TableCell.class);

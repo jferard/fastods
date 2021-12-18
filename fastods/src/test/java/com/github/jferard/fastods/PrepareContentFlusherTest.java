@@ -2,7 +2,7 @@
  * FastODS - A very fast and lightweight (no dependency) library for creating ODS
  *    (Open Document Spreadsheet, mainly for Calc) files in Java.
  *    It's a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016-2021 J. Férard <https://github.com/jferard>
+ *    Copyright (C) 2016-2020 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
@@ -34,26 +34,21 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
-/**
- * Created by jferard on 07/05/17.
- */
-public class FinalizeFlusherTest {
+public class PrepareContentFlusherTest {
     @Test
     public final void testFlush() throws IOException {
         final XMLUtil util = XMLUtil.create();
-        final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
+        final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
         final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
 
         PowerMock.resetAll();
-        contentElement.writePostamble(util, w);
-        odsElements.writeSettings(util, w);
-        odsElements.writeExtras(util, w);
-        w.finish();
-        w.close();
+        odsElements.writeMeta(util, w);
+        odsElements.writeStyles(util, w);
+        contentElement.writePreamble(util, w);
 
         PowerMock.replayAll();
-        final OdsAsyncFlusher flusher = new FinalizeFlusher(odsElements, contentElement);
+        final OdsAsyncFlusher flusher = new PrepareContentFlusher(odsElements, contentElement);
         flusher.flushInto(util, w);
 
         PowerMock.verifyAll();
@@ -61,14 +56,13 @@ public class FinalizeFlusherTest {
 
     @Test
     public final void testEnd() throws IOException {
-        final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
+        final ContentElement contentElement = PowerMock.createMock(ContentElement.class);
 
         PowerMock.resetAll();
-
         PowerMock.replayAll();
-        final OdsAsyncFlusher flusher = new FinalizeFlusher(odsElements, contentElement);
+        final OdsAsyncFlusher flusher = new PrepareContentFlusher(odsElements, contentElement);
         PowerMock.verifyAll();
-        Assert.assertTrue(flusher.isEnd());
+        Assert.assertFalse(flusher.isEnd());
     }
 }

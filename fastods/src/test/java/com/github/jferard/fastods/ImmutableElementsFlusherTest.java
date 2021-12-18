@@ -27,6 +27,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
@@ -37,7 +38,7 @@ import java.io.IOException;
  */
 public class ImmutableElementsFlusherTest {
     @Test
-    public final void test() throws IOException {
+    public final void testFlush() throws IOException {
         final XMLUtil util = XMLUtil.create();
         final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
         final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
@@ -51,5 +52,16 @@ public class ImmutableElementsFlusherTest {
         flusher.flushInto(util, w);
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testEnd() throws IOException {
+        final OdsElements odsElements = PowerMock.createMock(OdsElements.class);
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final OdsAsyncFlusher flusher = new ImmutableElementsFlusher(odsElements);
+        PowerMock.verifyAll();
+        Assert.assertFalse(flusher.isEnd());
     }
 }

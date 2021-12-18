@@ -66,4 +66,23 @@ public class CurrencyValueTest {
     public void testFromObject() throws FastOdsException {
         CurrencyValue.from(new Object(), "€");
     }
+
+    @Test
+    public void testHashCode() throws FastOdsException {
+        final CurrencyValue c1 = CurrencyValue.from(16, "€");
+        Assert.assertEquals(8860, c1.hashCode());
+    }
+
+    @Test
+    public void testEquals() throws FastOdsException {
+        final CurrencyValue c1 = CurrencyValue.from(16, "€");
+        final CurrencyValue c2 = CurrencyValue.from(16, "€");
+        final CurrencyValue c3 = CurrencyValue.from(17, "€");
+        final CurrencyValue c4 = CurrencyValue.from(16, "$");
+        Assert.assertEquals(c1, c1);
+        Assert.assertEquals(c1, c2);
+        Assert.assertNotEquals(c1, c3);
+        Assert.assertNotEquals(c1, c4);
+        Assert.assertNotEquals(c1, new Object());
+    }
 }

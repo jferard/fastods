@@ -71,21 +71,47 @@ public class TimeValueTest {
     public void testEquals() throws FastOdsException {
         final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
         final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
+
         Assert.assertEquals(tv1, TimeValue.from(l));
         Assert.assertNotEquals(tv1, TimeValue.from(-l));
+        Assert.assertNotEquals(tv1, new Object());
+    }
+
+    @Test
+    public void testEqualsNeg() throws FastOdsException {
+        final TimeValue tv2 = new TimeValue(true, 0, 0, 1, 2, 3, 4);
+        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
+        Assert.assertEquals(tv2, TimeValue.from(-l));
+        Assert.assertNotEquals(tv2, TimeValue.from(l));
     }
 
     @Test
     public void testHashcode() throws FastOdsException {
         final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
-        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
         Assert.assertEquals(93784, tv1.hashCode());
+
+        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
         Assert.assertEquals(93784, TimeValue.from(l).hashCode());
+    }
+
+    @Test
+    public void testHashcodeNeg() throws FastOdsException {
+        final TimeValue tv2 = new TimeValue(true, 0, 0, 1, 2, 3, 4);
+        Assert.assertEquals(94745, tv2.hashCode());
+
+        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
+        Assert.assertEquals(94745, TimeValue.from(-l).hashCode());
     }
 
     @Test
     public void testToString() {
         final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
         Assert.assertEquals("TimeValue[P0Y0M1DT2H3M4.0S]", tv1.toString());
+    }
+
+    @Test
+    public void testToStringNeg() {
+        final TimeValue tv2 = new TimeValue(true, 0, 0, 1, 2, 3, 4);
+        Assert.assertEquals("TimeValue[-P0Y0M1DT2H3M4.0S]", tv2.toString());
     }
 }

@@ -42,7 +42,6 @@ import java.util.List;
  * Created by jferard on 09/05/17.
  */
 public class PreprocessedRowsFlusherTest {
-
     private XMLUtil util;
     private ZipUTF8Writer w;
     private StringBuilder sb;
@@ -66,7 +65,7 @@ public class PreprocessedRowsFlusherTest {
     }
 
     @Test
-    public void flushIntoEmptyList() throws Exception {
+    public void testFlushIntoEmptyList() throws Exception {
         final List<TableRowImpl> rows = Collections.emptyList();
 
         PowerMock.resetAll();
@@ -80,7 +79,7 @@ public class PreprocessedRowsFlusherTest {
     }
 
     @Test
-    public void flushInto() throws Exception {
+    public void testFlushInto() throws Exception {
         final TableRowImpl r1 = PowerMock.createMock(TableRowImpl.class);
         final TableRowImpl r2 = PowerMock.createMock(TableRowImpl.class);
         final List<TableRowImpl> rows = Arrays.asList(r1, r2);
@@ -99,7 +98,7 @@ public class PreprocessedRowsFlusherTest {
     }
 
     @Test
-    public void flushIntoNullRow() throws Exception {
+    public void testFlushIntoNullRow() throws Exception {
         final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         rows.add(null);
 
@@ -113,5 +112,17 @@ public class PreprocessedRowsFlusherTest {
 
         PowerMock.verifyAll();
         Assert.assertEquals("<row />", capturedArgument.getValue().toString());
+    }
+
+    @Test
+    public void testEnd() throws Exception {
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final OdsAsyncFlusher flusher = PreprocessedRowsFlusher.create(this.util, rows);
+
+        PowerMock.verifyAll();
+        Assert.assertFalse(flusher.isEnd());
     }
 }

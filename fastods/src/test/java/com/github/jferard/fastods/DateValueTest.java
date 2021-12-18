@@ -110,6 +110,15 @@ public class DateValueTest {
     }
 
     @Test
+    public void testEquals() throws FastOdsException {
+        final DateValue dv1 = new DateValue(DATE);
+        final DateValue dv2 = DateValue.from(dv1);
+        Assert.assertEquals(dv1, dv1);
+        Assert.assertEquals(dv1, dv2);
+        Assert.assertNotEquals(dv1, new Object());
+    }
+
+    @Test
     public void testToString() {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
         final DateValue dv1 = new DateValue(DATE);

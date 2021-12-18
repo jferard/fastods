@@ -24,6 +24,7 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.style.TextStyle;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -40,5 +41,16 @@ public class SpanTest {
     public final void testSimpleFHText() throws IOException {
         final XMLConvertible fhText = new Span("text");
         TestHelper.assertXMLEquals("text", fhText);
+    }
+
+    @Test
+    public final void testEquals() throws IOException {
+        final Span span = new Span("text");
+        final Span span2 = new Span("text");
+        final Span span3 = new Span("other text");
+        Assert.assertEquals(span, span);
+        Assert.assertEquals(span, span2);
+        Assert.assertNotEquals(span, span3);
+        Assert.assertNotEquals(span, new Object());
     }
 }

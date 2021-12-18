@@ -61,4 +61,13 @@ public class BooleanValueTest {
     public final void testFromBooleanObject() throws FastOdsException {
         BooleanValue.from(new Object());
     }
+
+    @Test
+    public final void testEquals() throws FastOdsException {
+        final BooleanValue bv1 = new BooleanValue(true);
+        final BooleanValue bv2 = BooleanValue.from(bv1);
+        Assert.assertEquals(bv1, bv1);
+        Assert.assertEquals(bv1, bv2);
+        Assert.assertNotEquals(bv1, new Object());
+    }
 }

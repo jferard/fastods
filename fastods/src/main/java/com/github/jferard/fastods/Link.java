@@ -168,6 +168,18 @@ public final class Link implements ParagraphElement {
     }
 
     /**
+     * Create a new link to a given url
+     *
+     * @param text the text content
+     * @param uri  the file
+     * @return the link
+     */
+    @Deprecated
+    public static Link create(final String text, final URI uri) {
+        return new Link(text, null, uri.toString());
+    }
+
+    /**
      * Create a new link to a given table ref
      *
      * @param text     the text content
@@ -190,18 +202,6 @@ public final class Link implements ParagraphElement {
     @Deprecated
     public static Link create(final String text, final TextStyle ts, final TableRef tableRef) {
         return Link.builder(text).style(ts).to(tableRef).build();
-    }
-
-    /**
-     * Create a new link to a given url
-     *
-     * @param text the text content
-     * @param uri  the file
-     * @return the link
-     */
-    @Deprecated
-    public static Link create(final String text, final URI uri) {
-        return new Link(text, null, uri.toString());
     }
 
     private final String text;

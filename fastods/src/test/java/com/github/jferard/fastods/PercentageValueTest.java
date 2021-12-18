@@ -53,4 +53,21 @@ public class PercentageValueTest {
     public void testFromObject() throws FastOdsException {
         PercentageValue.from(new Object());
     }
+
+    @Test
+    public void testHashCode() throws FastOdsException {
+        final PercentageValue c1 = new PercentageValue(16);
+        Assert.assertEquals(16, c1.hashCode());
+    }
+
+    @Test
+    public void testEquals() throws FastOdsException {
+        final PercentageValue c1 = new PercentageValue(16);
+        final PercentageValue c2 = PercentageValue.from(c1);
+        final PercentageValue c3 = PercentageValue.from(17);
+        Assert.assertEquals(c1, c1);
+        Assert.assertEquals(c1, c2);
+        Assert.assertNotEquals(c1, c3);
+        Assert.assertNotEquals(c1, new Object());
+    }
 }

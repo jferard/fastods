@@ -2,7 +2,7 @@
  * FastODS - A very fast and lightweight (no dependency) library for creating ODS
  *    (Open Document Spreadsheet, mainly for Calc) files in Java.
  *    It's a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016-2021 J. Férard <https://github.com/jferard>
+ *    Copyright (C) 2016-2020 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
@@ -24,45 +24,42 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.odselement.ContentElement;
-import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
-/**
- * An async flusher flusher to finalize the file.
- * Writes postamble for contents, and the settings.
- * <p>
- * Sent by the NamedOdsDocument.save method.
- *
- * @author Julien Férard
- */
-public class FinalizeFlusher implements OdsAsyncFlusher {
-    private final ContentElement contentElement;
-    private final OdsElements odsElements;
+import static org.junit.Assert.*;
 
-    /**
-     * @param odsElements    the elements
-     * @param contentElement the content to finalize
-     */
-    public FinalizeFlusher(final OdsElements odsElements, final ContentElement contentElement) {
-        this.contentElement = contentElement;
-        this.odsElements = odsElements;
-    }
+public class OdsFileDirectWriterTest {
+    @Test
+    public final void test() throws IOException {
+        final XMLUtil util = XMLUtil.create();
+        final ZipUTF8Writer w = PowerMock.createMock(ZipUTF8Writer.class);
+        final StringBuilder sb = new StringBuilder(1024 * 32);
+        final Logger logger = PowerMock.createMock(Logger.class);
+        final NamedOdsDocument document = PowerMock.createMock(NamedOdsDocument.class);
+        final OdsAsyncFlusher flusher = PowerMock.createMock(OdsAsyncFlusher.class);
 
-    @Override
-    public void flushInto(final XMLUtil xmlUtil, final ZipUTF8Writer writer) throws IOException {
-        this.contentElement.writePostamble(xmlUtil, writer);
-        this.odsElements.writeSettings(xmlUtil, writer);
-        this.odsElements.writeExtras(xmlUtil, writer);
-        writer.finish();
+        PowerMock.resetAll();
+        flusher.flushInto(util, w);
+        document.save();
+        w.flush();
+        w.close();
+
+        PowerMock.replayAll();
+
+        final OdsFileDirectWriter writer = new OdsFileDirectWriter(logger, util, document, w);
+        Assert.assertEquals(writer.document(), document);
+        writer.update(flusher);
+        writer.save();
         writer.close();
-    }
 
-    @Override
-    public boolean isEnd() {
-        return true;
+        PowerMock.verifyAll();
     }
 }

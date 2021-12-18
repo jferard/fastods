@@ -23,9 +23,11 @@
  */
 package com.github.jferard.fastods;
 
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -115,6 +117,45 @@ public class ParagraphTest {
                         "xlink:type=\"simple\">to_uri</text:a>" +
                         "<text:a text:style-name=\"style\" xlink:href=\"#tableName\" " +
                         "xlink:type=\"simple\">to_table</text:a>" + "</text:p>");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testEquals() throws URISyntaxException {
+        final Paragraph paragraph1 = Paragraph.builder().span("text").build();
+        final Paragraph paragraph2 = Paragraph.builder().span("text").build();
+        final Paragraph paragraph3 = Paragraph.builder().link("link", new URI("a")).build();
+        Assert.assertEquals(paragraph1, paragraph1);
+        Assert.assertEquals(paragraph1, paragraph2);
+        Assert.assertNotEquals(paragraph1, paragraph3);
+        Assert.assertNotEquals(paragraph1, new Object());
+    }
+
+    @Test
+    public void testAddStylesFromCell() {
+        final StylesContainer stylesContainer = PowerMock.createMock(StylesContainer.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(stylesContainer.addContentFontFaceContainerStyle(TextStyle.DEFAULT_TEXT_STYLE)).andReturn(true);
+
+        PowerMock.replayAll();
+        final Paragraph paragraph1 = Paragraph.builder().style(TextStyle.DEFAULT_TEXT_STYLE).span("text").build();
+        paragraph1.addEmbeddedStylesFromCell(stylesContainer);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddStylesFromFooterHeader() {
+        final StylesContainer stylesContainer = PowerMock.createMock(StylesContainer.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(stylesContainer.addStylesFontFaceContainerStyle(TextStyle.DEFAULT_TEXT_STYLE)).andReturn(true);
+
+        PowerMock.replayAll();
+        final Paragraph paragraph1 = Paragraph.builder().style(TextStyle.DEFAULT_TEXT_STYLE).span("text").build();
+        paragraph1.addEmbeddedStylesFromFooterHeader(stylesContainer);
 
         PowerMock.verifyAll();
     }

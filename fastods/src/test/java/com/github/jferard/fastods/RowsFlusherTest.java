@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -51,7 +52,7 @@ public class RowsFlusherTest {
     }
 
     @Test
-    public void flushIntoEmptyList() throws Exception {
+    public void testFlushIntoEmptyList() throws Exception {
         final List<TableRowImpl> rows = Collections.emptyList();
 
         PowerMock.resetAll();
@@ -62,7 +63,7 @@ public class RowsFlusherTest {
     }
 
     @Test
-    public void flushInto() throws Exception {
+    public void testFlushInto() throws Exception {
         final TableRowImpl r1 = PowerMock.createMock(TableRowImpl.class);
         final TableRowImpl r2 = PowerMock.createMock(TableRowImpl.class);
         final List<TableRowImpl> rows = Arrays.asList(r1, r2);
@@ -78,7 +79,7 @@ public class RowsFlusherTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void flushIntoNullRow() throws Exception {
+    public void testFlushIntoNullRow() throws Exception {
         final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         rows.add(null);
 
@@ -87,5 +88,17 @@ public class RowsFlusherTest {
         final OdsAsyncFlusher flusher = new RowsFlusher(rows);
         flusher.flushInto(this.util, this.w);
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testEnd() throws Exception {
+        final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final OdsAsyncFlusher flusher = new RowsFlusher(rows);
+        PowerMock.verifyAll();
+
+        Assert.assertFalse(flusher.isEnd());
     }
 }
