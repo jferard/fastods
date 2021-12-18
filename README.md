@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/jferard/fastods.svg?branch=master)](https://travis-ci.com/jferard/fastods)
+[![Build Status](https://app.travis-ci.com/jferard/fastods.svg?branch=master)](https://travis-ci.com/github/jferard/fastods)
 [![Code Coverage](https://img.shields.io/codecov/c/github/jferard/fastods/master.svg)](https://codecov.io/github/jferard/fastods?branch=master)
 
 # FastODS
