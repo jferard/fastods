@@ -37,8 +37,7 @@ import java.util.Map;
  * 9.1.4 table:table-cell
  * <p>
  * A TableColdCell represents the "cold" part of a cell, that means the part that is absent of
- * most of
- * the cells.
+ * most of the cells.
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -145,6 +144,7 @@ class TableColdCell {
     }
 
     /**
+     * Add "cold" content and close the cell or covered cell tag.
      * @param util       a util class to write XML data
      * @param appendable the object to which data will be appended
      * @throws IOException if data can't be appended

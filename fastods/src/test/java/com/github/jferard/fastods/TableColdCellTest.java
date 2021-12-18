@@ -24,11 +24,16 @@
 package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.odselement.StylesContainer;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
@@ -96,6 +101,14 @@ public class TableColdCellTest {
     }
 
     @Test
+    public final void testTooltipObject() throws IOException {
+        this.coldCell.setTooltip(Tooltip.builder(this.xmlUtil, "some text").build());
+        this.assertXMLEquals(
+                "<table:table-cell><office:annotation>" + "<text:p>some text</text:p>" +
+                        "</office:annotation></table:table-cell>");
+    }
+
+    @Test
     public final void testTooltipWithSize() throws IOException {
         this.coldCell.setTooltip("tooltip", SimpleLength.cm(1), SimpleLength.cm(2), true);
         this.assertXMLEquals("<table:table-cell>" +
@@ -128,6 +141,56 @@ public class TableColdCellTest {
         this.assertXMLEquals("<table:table-cell>" + "<text:p>c</text:p>" +
                 "<office:annotation><text:p>tooltip</text:p></office:annotation>" +
                 "</table:table-cell>");
+    }
+
+    @Test
+    public final void testMatrix() throws IOException {
+        this.coldCell.setFormula("[.A1:.A10]+[.B1:.B10]");
+        this.coldCell.setMatrixColumnsSpanned(1);
+        this.coldCell.setMatrixRowsSpanned(10);
+        this.assertXMLEquals("<table:table-cell " +
+                "table:number-matrix-columns-spanned=\"1\" " +
+                "table:number-matrix-rows-spanned=\"10\" " +
+                "table:formula=\"of:=[.A1:.A10]+[.B1:.B10]\"/>");
+    }
+
+    @Test
+    public final void testCustomAttribute() throws IOException {
+        this.coldCell.setAttribute("myattr", "myvalue");
+        this.coldCell.setAttribute("myattr2", "myvalue2");
+        this.assertXMLEquals("<table:table-cell myattr=\"myvalue\" myattr2=\"myvalue2\"/>");
+    }
+
+    @Test
+    public final void testValidation() throws IOException {
+        this.coldCell.setValidation(Validation.builder("myvalid").dontAllowEmptyCells().build());
+        this.assertXMLEquals("<table:table-cell table:content-validation-name=\"myvalid\"/>");
+    }
+
+    @Test
+    public final void testTextCovered() throws IOException {
+        final StylesContainer stylesContainer = PowerMock.createMock(StylesContainer.class);
+        PowerMock.resetAll();
+
+        EasyMock.expect(
+                        stylesContainer.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
+        PowerMock.replayAll();
+
+        final TableCellImpl c =
+                new TableCellImpl(null, this.xmlUtil, stylesContainer, null, true, null, 1);
+        c.setStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        c.setText(Text.content("a long\ntext"));
+        c.setCovered();
+        final StringBuilder sb = new StringBuilder();
+        c.appendXMLToTableRow(this.xmlUtil, sb);
+        PowerMock.verifyAll();
+
+        DomTester.assertEquals("<table:covered-table-cell table:style-name=\"Default\" " +
+                "office:value-type=\"string\" office:string-value=\"\">" +
+                "<text:p>a long\n" +
+                "text</text:p>" +
+                "</table:covered-table-cell>", sb.toString());
     }
 
     private void assertXMLEquals(final String xml) throws IOException {
