@@ -98,6 +98,11 @@ public class FastODSExamplesIT {
     }
 
     @Test
+    public void pageFormatTest4() throws IOException {
+        G_PageFormat.example4();
+    }
+
+    @Test
     public void filtersAndPilotTest1() throws IOException {
         H_AutofiltersAndDataPilotTables.example1();
     }

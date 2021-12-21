@@ -26,6 +26,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.Protection;
+import com.github.jferard.fastods.util.StringUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
@@ -90,6 +91,11 @@ class TableAppender {
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
         util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
         util.appendAttribute(appendable, "table:print", false);
+        final List<String> printRanges = this.builder.getPrintRanges();
+        if (!printRanges.isEmpty()) {
+            final String printRangesAddresses = StringUtil.join(" ", printRanges);
+            util.appendEAttribute(appendable, "table:print-ranges", printRangesAddresses);
+        }
         final Protection protection = this.builder.getProtection();
         if (protection != null) {
             protection.appendAttributes(util, appendable);

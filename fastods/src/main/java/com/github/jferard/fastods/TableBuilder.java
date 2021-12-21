@@ -150,6 +150,7 @@ class TableBuilder {
     private Map<String, CharSequence> customValueByAttribute;
     private final ValidationsContainer validationsContainer;
     private Protection protection;
+    private final List<String> printRanges;
 
     /**
      * Create a new table builder
@@ -165,7 +166,7 @@ class TableBuilder {
      * @param columnCapacity       the column capacity of the table
      * @param configEntry          the config
      * @param bufferSize           the buffer size
-     * @param validationsContainer
+     * @param validationsContainer a container for validations
      */
     TableBuilder(final PositionUtil positionUtil, final IntegerRepresentationCache cache,
                  final XMLUtil xmlUtil, final StylesContainer stylesContainer,
@@ -191,6 +192,7 @@ class TableBuilder {
         this.lastRowIndex = -1;
         this.bufferSize = bufferSize;
         this.tablePreambleWritten = false;
+        this.printRanges = new ArrayList<String>();
     }
 
     /**
@@ -604,6 +606,26 @@ class TableBuilder {
     }
 
     /**
+     * Add a new print range
+     * @param r1 first row
+     * @param c1 first column
+     * @param r2 last row
+     * @param c2 last column
+     */
+    public void addPrintRange(final int r1, final int c1, final int r2, final int c2) {
+        this.printRanges.add(PositionUtil.create().toRangeAddress(r1, c1, r2, c2));
+    }
+
+    /**
+     * Protect this table
+     * @param protection a protection built with the fastods.crypto submodule
+     */
+    public void protect(final Protection protection) {
+        this.protection = protection;
+    }
+
+
+    /**
      * Set a custom attribute
      *
      * @param attribute the attribute
@@ -630,11 +652,18 @@ class TableBuilder {
         return this.forms;
     }
 
-    public void protect(final Protection protection) {
-        this.protection = protection;
+    /**
+     * @return a list of print ranges
+     */
+    public List<String> getPrintRanges() {
+        return this.printRanges;
     }
 
+    /**
+     * @return the current protection or null
+     */
     public Protection getProtection() {
         return this.protection;
     }
+
 }

@@ -582,12 +582,12 @@ public enum ConfigElement {
     VERTICAL_SPLIT_POSITION("VerticalSplitPosition", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, set the cursor initial position
      */
     CURSOR_POSITION_X("CursorPositionX", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, set the cursor initial position
      */
     CURSOR_POSITION_Y("CursorPositionY", ConfigElementType.INT),
 

@@ -251,4 +251,43 @@ class G_PageFormat {
         writer.saveAs(destFile);
         ExamplesTestHelper.validate(destFile);
     }
+
+    static void example4() throws IOException {
+        // As usual
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("format-page"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## Printing
+        // This topic is slightly different from page formatting, but usually we format a page
+        // in order to print it. Let's see how to define print ranges and repeat rows or columns.
+        //
+        // First, create a large table and fill it with data:
+        final Table table = document.addTable("print me");
+        final TableCellWalker walker = table.getWalker();
+        for (int i=0; i<8; i++) {
+            walker.setStringValue(String.format("Column %s", i));
+            walker.next();
+        }
+        walker.nextRow();
+        for (int j=0; j<1000; j++) {
+            for (int i = 0; i < 8; i++) {
+                walker.setStringValue(String.format("Value %s.%s", j, i));
+                walker.next();
+            }
+            walker.nextRow();
+        }
+
+        // Now, we can set the print range. We can leave the 100 last rows out this range, if we
+        // want (900 is enough !).
+        table.addPrintRange(0, 0, 900, 7);
+
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        final File destFile =
+                new File("generated_files", "g_print.ods");
+        writer.saveAs(destFile);
+        ExamplesTestHelper.validate(destFile);
+    }
 }

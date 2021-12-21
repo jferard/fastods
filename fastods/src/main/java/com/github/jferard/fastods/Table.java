@@ -404,4 +404,8 @@ public class Table implements NamedObject, FrameContent {
     public void protect(final Protection protection) throws NoSuchAlgorithmException {
         this.builder.protect(protection);
     }
+
+    public void addPrintRange(final int r1, final int c1, final int r2, final int c2) {
+        this.builder.addPrintRange(r1, c1, r2, c2);
+    }
 }
