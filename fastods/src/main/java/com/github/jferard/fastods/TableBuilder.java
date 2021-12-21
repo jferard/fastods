@@ -39,13 +39,11 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.Protection;
-import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,6 +149,8 @@ class TableBuilder {
     private final ValidationsContainer validationsContainer;
     private Protection protection;
     private final List<String> printRanges;
+    private int headerRowsCount;
+    private int headerColumnsCount;
 
     /**
      * Create a new table builder
@@ -193,6 +193,8 @@ class TableBuilder {
         this.bufferSize = bufferSize;
         this.tablePreambleWritten = false;
         this.printRanges = new ArrayList<String>();
+        this.headerRowsCount = 0;
+        this.headerColumnsCount = 0;
     }
 
     /**
@@ -666,4 +668,19 @@ class TableBuilder {
         return this.protection;
     }
 
+    public void setHeaderRowsCount(final int headerRowsCount) {
+        this.headerRowsCount = headerRowsCount;
+    }
+
+    public int getHeaderRowsCount() {
+        return this.headerRowsCount;
+    }
+
+    public void setHeaderColumnsCount(final int headerColumnsCount) {
+        this.headerColumnsCount = headerColumnsCount;
+    }
+
+    public int getHeaderColumnsCount() {
+        return this.headerColumnsCount;
+    }
 }

@@ -130,6 +130,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
         EasyMock.expect(this.tb.getProtection()).andReturn(null);
+        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x")));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -156,6 +157,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
         EasyMock.expect(this.tb.getProtection()).andReturn(null);
+        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x"), this.newTC("x")));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -184,6 +186,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
         EasyMock.expect(this.tb.getProtection()).andReturn(null);
+        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(x, x, this.newTC("y"), x));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -207,7 +210,7 @@ public class TableAppenderTest {
     }
 
     @Test
-    public void appendTenElementsPreambleTest() throws IOException {
+    public void appendTenColumnsPreambleTest() throws IOException {
         final TableColumnImpl x = this.newTC("x");
         final TableColumnImpl y = this.newTC("y");
 
@@ -217,6 +220,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
         EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
         EasyMock.expect(this.tb.getProtection()).andReturn(null);
+        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
         EasyMock.expect(this.tb.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
         EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
@@ -293,6 +297,46 @@ public class TableAppenderTest {
 
         PowerMock.verifyAll();
         DomTester.assertEquals(sb1.toString(), sb2.toString());
+    }
+
+    @Test
+    public void testHeaderColums() throws IOException {
+        final TableColumnImpl x = this.newTC("x");
+        final TableColumnImpl y = this.newTC("y");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getName()).andReturn("table1");
+        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tb.getProtection()).andReturn(null);
+        EasyMock.expect(this.tb.getColumns())
+                .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(2);
+        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+
+        PowerMock.replayAll();
+        this.assertPreambleXMLEquals(
+                "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
+                        "table:print=\"false\">" +
+                        "<table:table-header-columns>" +
+                        "<table:table-column table:style-name=\"x\" " +
+                        "table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "</table:table-header-columns>" +
+                        "<table:table-column table:style-name=\"x\" " +
+                        "table:number-columns-repeated=\"3\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"y\" " +
+                        "table:number-columns-repeated=\"3\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"x\" " +
+                        "table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
+                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1014\" " +
+                        "table:default-cell-style-name=\"Default\"/>");
+        PowerMock.verifyAll();
     }
 
     private void assertPreambleXMLEquals(final String xml) throws IOException {

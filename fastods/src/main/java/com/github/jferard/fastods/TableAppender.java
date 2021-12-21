@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods;
 
-import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.StringUtil;
 import com.github.jferard.fastods.util.XMLUtil;
@@ -32,7 +31,6 @@ import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +46,6 @@ import java.util.Map;
  * @author Martin Schulz
  */
 class TableAppender {
-    private static final int MAX_COLUMN_COUNT = 1024;
     private final TableBuilder builder;
     private boolean preambleWritten;
     private int nullFieldCounter;
@@ -87,6 +84,15 @@ class TableAppender {
      * @throws IOException
      */
     public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
+        this.appendTableOpenTag(util, appendable);
+        final PreambleAppender preambleAppender = new PreambleAppender(this.builder);
+        preambleAppender.appendForms(util, appendable);
+        preambleAppender.appendShapes(util, appendable);
+        preambleAppender.appendColumns(util, appendable);
+    }
+
+    private void appendTableOpenTag(final XMLUtil util, final Appendable appendable)
+            throws IOException {
         appendable.append("<table:table");
         util.appendEAttribute(appendable, "table:name", this.builder.getName());
         util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
@@ -108,69 +114,6 @@ class TableAppender {
             }
         }
         appendable.append(">");
-        this.appendForms(util, appendable, this.builder.getForms());
-        this.appendShapes(util, appendable, this.builder.getShapes());
-        this.appendColumns(util, appendable, this.builder.getColumns());
-    }
-
-    private void appendForms(final XMLUtil util, final Appendable appendable,
-                             final List<XMLConvertible> forms) throws IOException {
-        if (forms == null || forms.isEmpty()) {
-            return;
-        }
-
-        appendable.append("<office:forms");
-        util.appendAttribute(appendable, "form:automatic-focus", false);
-        util.appendAttribute(appendable, "form:apply-design-mode", false);
-        appendable.append(">");
-        for (final XMLConvertible form : forms) {
-            form.appendXMLContent(util, appendable);
-        }
-        appendable.append("</office:forms>");
-    }
-
-    private void appendShapes(final XMLUtil util, final Appendable appendable,
-                              final List<Shape> shapes) throws IOException {
-        if (shapes == null || shapes.isEmpty()) {
-            return;
-        }
-
-        appendable.append("<table:shapes>");
-        for (final Shape shape : shapes) {
-            shape.appendXMLContent(util, appendable);
-        }
-        appendable.append("</table:shapes>");
-    }
-
-    private void appendColumns(final XMLUtil xmlUtil, final Appendable appendable,
-                               final FastFullList<TableColumnImpl> tableColumns)
-            throws IOException {
-        final Iterator<TableColumnImpl> iterator = tableColumns.iterator();
-        if (!iterator.hasNext()) {
-            TableColumnImpl.DEFAULT_TABLE_COLUMN
-                    .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT);
-            return;
-        }
-
-        int count = 1;
-        int endCount = MAX_COLUMN_COUNT;
-        TableColumnImpl curColumn = iterator.next(); // will be shifted to prevTCS
-        while (iterator.hasNext()) {
-            final TableColumnImpl prevColumn = curColumn;
-            curColumn = iterator.next();
-
-            if (curColumn.equals(prevColumn)) {
-                count++;
-            } else {
-                prevColumn.appendXMLToTable(xmlUtil, appendable, count);
-                endCount -= count;
-                count = 1;
-            }
-
-        }
-        curColumn.appendXMLToTable(xmlUtil, appendable, count);
-        endCount -= count;
-        TableColumnImpl.DEFAULT_TABLE_COLUMN.appendXMLToTable(xmlUtil, appendable, endCount);
     }
 
     private void appendRows(final XMLUtil util, final Appendable appendable) throws IOException {
