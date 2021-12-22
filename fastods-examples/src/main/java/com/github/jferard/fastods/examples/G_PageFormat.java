@@ -279,6 +279,9 @@ class G_PageFormat {
             walker.nextRow();
         }
 
+        // We set the first row as a header row.
+        table.setHeaderRowsCount(1);
+
         // Now, we can set the print range. We can leave the 100 last rows out this range, if we
         // want (900 is enough !).
         table.addPrintRange(0, 0, 900, 7);
