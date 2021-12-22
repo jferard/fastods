@@ -116,7 +116,7 @@ public class TableRowImpl implements TableRow {
             throws IOException {
         this.appendRowOpenTag(util, appendable);
 
-        int size = this.cells.usedSize();
+        final int size = this.cells.usedSize();
         if (size == 0) { // relaxNG validation : oneOrMore cells
             appendable.append("<table:table-cell/>");
         } else {

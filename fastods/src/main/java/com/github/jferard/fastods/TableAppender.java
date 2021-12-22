@@ -122,6 +122,26 @@ class TableAppender {
 
     private void appendRows(final XMLUtil util, final Appendable appendable,
                             final int firstRowIndex) throws IOException {
+        final int headerRowsCount = this.builder.getHeaderRowsCount();
+        if (headerRowsCount == 0) {
+            this.appendRowsWithoutHeaderRows(util, appendable, firstRowIndex);
+        } else {
+            if (firstRowIndex == 0) {
+                appendable.append("<table:table-header-rows>");
+            }
+            if (firstRowIndex < headerRowsCount) {
+                this.appendRowsWithHeaderRows(util, appendable, firstRowIndex, headerRowsCount);
+            } else if (firstRowIndex == headerRowsCount) {
+                appendable.append("</table:table-header-rows>");
+                this.appendRowsWithoutHeaderRows(util, appendable, firstRowIndex);
+            } else {
+                this.appendRowsWithoutHeaderRows(util, appendable, firstRowIndex);
+            }
+        }
+    }
+
+    private void appendRowsWithoutHeaderRows(final XMLUtil util, final Appendable appendable,
+                                             final int firstRowIndex) throws IOException {
         final int size = this.builder.getTableRowsUsedSize();
         if (firstRowIndex == 0) {
             this.nullFieldCounter = 0;
@@ -129,10 +149,41 @@ class TableAppender {
 
         for (int r = firstRowIndex; r < size; r++) {
             final TableRowImpl tr = this.builder.getTableRow(r);
-            if (tr == null) {
+            if (tr == null) { // we don't append null rows immediately
                 this.nullFieldCounter++;
             } else {
-                this.appendRepeatedRows(util, appendable);
+                this.flushNullRows(util, appendable); // but wait for a non null row
+                tr.appendXMLToTable(util, appendable);
+                this.atLeastOneRow = true;
+                this.nullFieldCounter = 0;
+            }
+        }
+        // forget the remaining null rows
+    }
+
+    private void appendRowsWithHeaderRows(final XMLUtil util, final Appendable appendable,
+                                          final int firstRowIndex, final int headerRowsCount) throws IOException {
+        final int size = this.builder.getTableRowsUsedSize();
+        if (firstRowIndex == 0) {
+            this.nullFieldCounter = 0;
+        }
+
+        for (int r = firstRowIndex; r < size; r++) {
+            final TableRowImpl tr = this.builder.getTableRow(r);
+            if (r == headerRowsCount) {
+                this.flushNullRows(util, appendable);
+                appendable.append("</table:table-header-rows>");
+                if (tr == null) {
+                    this.nullFieldCounter = 1;
+                } else {
+                    tr.appendXMLToTable(util, appendable);
+                    this.nullFieldCounter = 0;
+                }
+                this.atLeastOneRow = true;
+            } else if (tr == null) {
+                this.nullFieldCounter++;
+            } else {
+                this.flushNullRows(util, appendable);
                 tr.appendXMLToTable(util, appendable);
                 this.atLeastOneRow = true;
                 this.nullFieldCounter = 0;
@@ -153,7 +204,7 @@ class TableAppender {
         appendable.append("</table:table>");
     }
 
-    private void appendRepeatedRows(final XMLUtil util, final Appendable appendable)
+    private void flushNullRows(final XMLUtil util, final Appendable appendable)
             throws IOException {
         if (this.nullFieldCounter <= 0) {
             return;
