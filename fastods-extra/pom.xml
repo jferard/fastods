@@ -29,11 +29,11 @@
     <parent>
         <groupId>com.github.jferard</groupId>
         <artifactId>fastods-parent</artifactId>
-        <version>0.8.1-SNAPSHOT</version>
+        <version>0.8.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>fastods-extra</artifactId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.github.jferard</groupId>
             <artifactId>fastods</artifactId>
-            <version>0.8.1-SNAPSHOT</version>
+            <version>0.8.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
