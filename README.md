@@ -113,7 +113,7 @@ And add the following dependency to your POM:
 <dependency>
 		<groupId>com.github.jferard</groupId>
 		<artifactId>fastods</artifactId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.8.1-SNAPSHOT</version>
 </dependency>
 ```
 
