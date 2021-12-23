@@ -27,7 +27,7 @@
     <parent>
         <groupId>com.github.jferard</groupId>
         <artifactId>fastods-parent</artifactId>
-        <version>0.8.1</version>
+        <version>0.8.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>fastods-testlib</artifactId>
