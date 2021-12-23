@@ -59,7 +59,7 @@ public class M_Protection {
     //     <dependency>
     //        <groupId>com.github.jferard</groupId>
     //        <artifactId>fastods-crypto</artifactId>
-    //        <version>0.7.4</version>
+    //        <version>0.8.1</version>
     //     </dependency>
     // ``̀`
     //
