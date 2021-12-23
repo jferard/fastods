@@ -50,6 +50,9 @@ import java.util.zip.CRC32;
 public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     /**
      * **Beware: for security reasons, this fills the password array with 0's**
+     * @param password the password to encrypt data
+     * @return a builder
+     * @throws NoSuchAlgorithmException won't happen since SHA-256 is pretty common
      */
     public static ZipUTF8WriterBuilder builder(final char[] password)
             throws NoSuchAlgorithmException {
@@ -65,8 +68,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     private final byte[] hashedPassword;
 
     public ZipUTF8CryptoWriter(final ZipUTF8Writer zipUTF8Writer,
-                               final StandardEncrypter encrypter, final byte[] hashedPassword)
-            throws NoSuchAlgorithmException {
+                               final StandardEncrypter encrypter, final byte[] hashedPassword) {
         this.zipUTF8Writer = zipUTF8Writer;
         this.encrypter = encrypter;
         this.hashedPassword = hashedPassword;

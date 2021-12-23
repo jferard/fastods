@@ -92,7 +92,7 @@ class StandardEncrypter {
      * Encrypt the compressed bytes.
      *
      * @param compressedTextBytes the compressed bytes
-     * @param hashedPassword
+     * @param hashedPassword      the hashed password
      * @param salt                the salt
      * @param iv                  the initialisation vector
      * @return the encrypted bytes
@@ -115,12 +115,10 @@ class StandardEncrypter {
 
     /**
      * @param salt           the salt
-     * @param hashedPassword
+     * @param hashedPassword the hashed password
      * @return the key
-     * @throws NoSuchAlgorithmException
      */
-    private Key getKey(final byte[] salt, final byte[] hashedPassword)
-            throws NoSuchAlgorithmException {
+    private Key getKey(final byte[] salt, final byte[] hashedPassword) {
         assert hashedPassword.length == this.startKeySize;
         final PBEParametersGenerator generator = new PKCS5S2ParametersGenerator(new SHA1Digest());
         generator.init(hashedPassword, salt, this.iterationCount);

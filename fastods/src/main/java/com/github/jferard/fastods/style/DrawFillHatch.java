@@ -34,7 +34,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.40.5 <draw:hatch>
+ * 16.40.5 draw:hatch
  */
 public class DrawFillHatch implements DrawFill, ObjectStyle {
     private final String name;

@@ -27,7 +27,7 @@ package com.github.jferard.fastods.attribute;
 import java.util.Locale;
 
 /**
- * 19.611.2<table:filter-condition>
+ * 19.611.2 table:filter-condition
  */
 public enum FilterType implements AttributeValue {
     /**

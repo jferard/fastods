@@ -106,7 +106,7 @@ public interface OdsDocument extends StylesModeSetter {
      *
      * @param n the index
      * @return the table
-     * @throws FastOdsException if the table index is negative or >= number of tables
+     * @throws FastOdsException if the table index is negative or &ge; number of tables
      */
     Table getTable(int n) throws FastOdsException;
 

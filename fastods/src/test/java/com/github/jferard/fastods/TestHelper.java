@@ -43,9 +43,10 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A test helper
+ */
 public class TestHelper {
-
-
     private static final XMLUtil util = XMLUtil.create();
 
     public static String toXML(final XMLConvertible o) throws IOException {
@@ -57,9 +58,9 @@ public class TestHelper {
     /**
      * Beware: sensitive to spaces (spaces are children)
      *
-     * @param xml
-     * @param o
-     * @throws IOException
+     * @param xml the xml string
+     * @param o an object convertible to XML
+     * @throws IOException if an I/O error occurs
      */
     public static void assertXMLEquals(final String xml, final XMLConvertible o)
             throws IOException {

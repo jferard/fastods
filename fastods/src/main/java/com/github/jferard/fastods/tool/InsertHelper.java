@@ -68,6 +68,7 @@ public class InsertHelper {
      *
      * @param document  the destination document
      * @param table     the destination table
+     * @param frameName the name of the draw frame
      * @param source    the source of the image
      * @param destName  the name of the image embedded in the document
      * @param rectangle the frame coordinates
@@ -90,6 +91,7 @@ public class InsertHelper {
      *
      * @param document     the destination document
      * @param table        the destination table
+     * @param frameName the name of the draw frame
      * @param sourceStream the source of the image
      * @param destName     the name of the image embedded in the document
      * @param rectangle    the frame coordinates
@@ -157,7 +159,7 @@ public class InsertHelper {
             entry.getValue().addToDocument(document, objectName + "/");
         }
         table.addShape(DrawFrame.builder(frameName,
-                new DrawObject("./" + objectName, Collections.<RangeRef>emptyList()), rectangle)
+                        new DrawObject("./" + objectName, Collections.<RangeRef>emptyList()), rectangle)
                 .style(gs).build());
     }
 }

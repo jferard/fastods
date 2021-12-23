@@ -50,7 +50,7 @@ import java.util.Map;
 import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
 
 /**
- * See 3.1.3.2 <office:document-content>.
+ * 3.1.3.2 office:document-content
  *
  * @author Julien Férard
  * @author Martin Schulz

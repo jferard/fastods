@@ -33,7 +33,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 10.4.2<draw:frame>
+ * 10.4.2 draw:frame
  */
 public class DrawFrame implements Shape {
     /**

@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 /**
  * A multi container contains values indexed by sub container. The sub container is a value
  * inside an enum.
- * Basically, we have a map (K,S) -> V.
+ * Basically, we have a map (K,S) to V.
  *
  * @param <K> the key type
  * @param <V> the value type
@@ -149,7 +149,7 @@ public class MultiContainer<K, S extends Enum<S>, V> {
 
     /**
      * @param subContainer the sub container
-     * @return a map of K->V for the given container
+     * @return a map K to V for the given container
      */
     public Map<K, V> getValueByKey(final S subContainer) {
         return this.valueByKeyBySubContainer.get(subContainer);

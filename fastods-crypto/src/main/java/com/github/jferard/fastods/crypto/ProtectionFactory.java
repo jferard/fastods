@@ -42,7 +42,7 @@ public class ProtectionFactory {
      *
      * @param password the password.
      * @return the protection.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException shoud not happen since SHA-256 is pretty common
      */
     public static Protection createSha256(final char[] password) throws NoSuchAlgorithmException {
         final String algorithm = "http://www.w3.org/2000/09/xmldsig#sha256";

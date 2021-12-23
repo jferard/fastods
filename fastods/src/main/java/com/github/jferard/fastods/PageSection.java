@@ -31,10 +31,10 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.6<style:header-style>
- * 16.7<style:footer-style>
- * 16.10<style:header>
- * 16.11<style:footer>
+ * 16.6 style:header-style
+ * 16.7 style:footer-style
+ * 16.10 style:header
+ * 16.11 style:footer
  * <p>
  * The PageSection class represents the union of a page section content and a page section
  * style. It may be a footer or a header.

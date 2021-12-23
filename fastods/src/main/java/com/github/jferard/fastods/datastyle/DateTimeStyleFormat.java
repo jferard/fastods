@@ -30,7 +30,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.27.10<number:date-style>
+ * 16.27.10 number:date-style
  * The class `DateStyleFormat` represents a style for date and time values.
  * A `DateStyleFormat` may be constructed using bricks (the static `String`s),
  * free text or any string. This is flexible enough to create any style.
@@ -40,22 +40,22 @@ import java.io.IOException;
  */
 public class DateTimeStyleFormat implements XMLConvertible {
     /**
-     * 16.27.11<number:day>
+     * 16.27.11 number:day
      * the day
      */
     public static final String DAY = "<number:day/>";
     /**
-     * 16.27.11<number:day>
+     * 16.27.11 number:day
      * A day (long)
      */
     public static final String LONG_DAY = "<number:day number:style=\"long\"/>";
     /**
-     * 16.27.11<number:day>
+     * 16.27.11 number:day
      * the day, textual version
      */
     public static final String TEXTUAL_DAY = "<number:day number:textual=\"true\"/>";
     /**
-     * 16.27.11<number:day>
+     * 16.27.11 number:day
      * A day (long)
      */
     public static final String LONG_TEXTUAL_DAY =
@@ -63,34 +63,34 @@ public class DateTimeStyleFormat implements XMLConvertible {
 
 
     /**
-     * 16.27.12<number:month>
+     * 16.27.12 number:month
      * A month
      */
     public static final String MONTH = "<number:month/>";
     /**
-     * 16.27.12<number:month>
+     * 16.27.12 number:month
      * A month (long)
      */
     public static final String LONG_MONTH = "<number:month number:style=\"long\"/>";
     /**
-     * 16.27.12<number:month>
+     * 16.27.12 number:month
      * A month name
      */
     public static final String TEXTUAL_MONTH = "<number:month number:textual=\"true\"/>";
     /**
-     * 16.27.12<number:month>
+     * 16.27.12 number:month
      * A month name (long)
      */
     public static final String LONG_TEXTUAL_MONTH =
             "<number:month number:style=\"long\" " + "number:textual=\"true\"/>";
 
     /**
-     * 16.27.13<number:year>
+     * 16.27.13 number:year
      * A year YY
      */
     public static final String YEAR = "<number:year/>";
     /**
-     * 16.27.13<number:year>
+     * 16.27.13 number:year
      * A year YYYY
      */
     public static final String LONG_YEAR = "<number:year number:style=\"long\"/>";
@@ -120,42 +120,42 @@ public class DateTimeStyleFormat implements XMLConvertible {
      */
     public static final String SPACE = "<number:text> </number:text>";
     /**
-     * 16.27.15<number:day-of-week>
+     * 16.27.15 number:day-of-week
      * Day of week
      */
     public static final String DAY_OF_WEEK = "<number:day-of-week/>";
     /**
-     * 16.27.16<number:week-of-year>
+     * 16.27.16 number:week-of-year
      * A week number in the year
      */
     public static final String WEEK = "<number:week-of-year/>";
     /**
-     * 16.27.19<number:hours>
+     * 16.27.19 number:hours
      * Hours
      */
     public static final String HOURS = "<number:hours/>";
     /**
-     * 16.27.19<number:hours>
+     * 16.27.19 number:hours
      * Hours (long)
      */
     public static final String LONG_HOURS = "<number:hours number:style=\"long\"/>";
     /**
-     * 16.27.20<number:minutes>
+     * 16.27.20 number:minutes
      * Minutes
      */
     public static final String MINUTES = "<number:minutes/>";
     /**
-     * 16.27.20<number:minutes>
+     * 16.27.20 number:minutes
      * Minutes (long)
      */
     public static final String LONG_MINUTES = "<number:minutes number:style=\"long\"/>";
     /**
-     * 16.27.21<number:seconds>
+     * 16.27.21 number:seconds
      * Seconds
      */
     public static final String SECONDS = "<number:seconds/>";
     /**
-     * 16.27.21<number:seconds>
+     * 16.27.21 number:seconds
      * Seconds (long)
      */
     public static final String LONG_SECONDS = "<number:seconds number:style=\"long\"/>";
@@ -171,7 +171,7 @@ public class DateTimeStyleFormat implements XMLConvertible {
     }
 
     /**
-     * 16.27.21<number:seconds>
+     * 16.27.21 number:seconds
      * Seconds (long)
      *
      * @param n number of digits

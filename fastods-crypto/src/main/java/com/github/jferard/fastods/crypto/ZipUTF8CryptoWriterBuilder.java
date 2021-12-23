@@ -46,6 +46,7 @@ public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
      *
      * @param password the password to encrypt data
      * @return a builder
+     * @throws NoSuchAlgorithmException won't happen since SHA-256 is pretty common
      */
     public static ZipUTF8WriterBuilder create(final char[] password)
             throws NoSuchAlgorithmException {
@@ -63,6 +64,7 @@ public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
      * @param writerBuilder the writer builder. May be initialized
      * @param parametersBuilder the parameters builder. May be initialized
      * @param password the password
+     * @throws NoSuchAlgorithmException won't happen since SHA-256 is pretty common
      */
     public ZipUTF8CryptoWriterBuilder(final ZipUTF8WriterBuilderImpl writerBuilder,
                                       final EncryptParametersBuilder parametersBuilder,

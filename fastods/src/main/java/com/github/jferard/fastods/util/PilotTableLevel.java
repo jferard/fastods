@@ -29,7 +29,7 @@ import com.github.jferard.fastods.XMLConvertible;
 import java.io.IOException;
 
 /**
- * 9.6.8<table:data-pilot-level>
+ * 9.6.8 table:data-pilot-level
  *
  * @author J. Férard
  */

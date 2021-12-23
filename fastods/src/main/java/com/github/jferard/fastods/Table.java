@@ -34,16 +34,14 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.NamedObject;
 import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.util.Arrays;
 
 /**
  * OpenDocument 9.1.2 table:table
@@ -55,16 +53,16 @@ public class Table implements NamedObject, FrameContent {
     /**
      * Create a new Table with a name and a row/column capacity
      *
-     * @param contentElement  the content.xml representation
-     * @param positionUtil    an util
-     * @param cache       an util
-     * @param xmlUtil         an util
-     * @param name            the name of the tables
-     * @param rowCapacity     the row capacity
-     * @param columnCapacity  the column capacity
-     * @param stylesContainer the container for styles
-     * @param format          the data styles
-     * @param libreOfficeMode try to get full compatibility with LO if true
+     * @param contentElement       the content.xml representation
+     * @param positionUtil         an util
+     * @param cache                an util
+     * @param xmlUtil              an util
+     * @param name                 the name of the tables
+     * @param rowCapacity          the row capacity
+     * @param columnCapacity       the column capacity
+     * @param stylesContainer      the container for styles
+     * @param format               the data styles
+     * @param libreOfficeMode      try to get full compatibility with LO if true
      * @param validationsContainer the validations container
      * @return the table
      */
@@ -94,7 +92,7 @@ public class Table implements NamedObject, FrameContent {
      * @param name           the name of the table
      * @param contentElement the content.xml representation
      * @param builder        the builder
-     * @param tableAppender
+     * @param tableAppender  the appender
      */
     Table(final String name, final ContentElement contentElement, final TableBuilder builder,
           final TableAppender tableAppender) {
@@ -299,9 +297,10 @@ public class Table implements NamedObject, FrameContent {
 
     /**
      * Set a custom attribute for a column
-     * @param col the column
+     *
+     * @param col       the column
      * @param attribute the attribute
-     * @param value the value
+     * @param value     the value
      */
     public void setColumnAttribute(final int col, final String attribute,
                                    final CharSequence value) {
@@ -314,8 +313,9 @@ public class Table implements NamedObject, FrameContent {
 
     /**
      * Set a custom attribute
+     *
      * @param attribute the attribute
-     * @param value the value
+     * @param value     the value
      */
     public void setAttribute(final String attribute, final CharSequence value) {
         this.builder.setAttribute(attribute, value);
@@ -391,6 +391,7 @@ public class Table implements NamedObject, FrameContent {
 
     /**
      * Add a shape
+     *
      * @param shape the shape
      */
     public void addShape(final Shape shape) {

@@ -31,7 +31,7 @@ package com.github.jferard.fastods.attribute;
  */
 public interface Length extends AttributeValue {
     /**
-     * For double comparison. d1 == d2 iff abs(d1-d2) < MAX_DELTA.
+     * For double comparison. d1 == d2 iff abs(d1-d2) &lt; MAX_DELTA.
      */
     double MAX_DELTA = 0.00001;
 

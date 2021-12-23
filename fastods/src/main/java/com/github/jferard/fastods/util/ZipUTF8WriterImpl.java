@@ -38,6 +38,12 @@ import java.util.zip.ZipOutputStream;
  * @author Julien Férard
  */
 public class ZipUTF8WriterImpl implements ZipUTF8Writer {
+    /**
+     * @return a new builder
+     */
+    public static ZipUTF8WriterBuilderImpl builder() {
+        return new ZipUTF8WriterBuilderImpl();
+    }
     private final ZipOutputStream zipStream;
     private final Writer writer;
     private final ManifestElement manifestElement;
@@ -46,10 +52,10 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
     /**
      * Create a new writer. Do not use directly. Use a builder if you want to avoid mistakes
      *
-     * @param xmlUtil
+     * @param xmlUtil         the xml util
      * @param zipStream       the zip stream
      * @param writer          the utf-8 writer
-     * @param manifestElement
+     * @param manifestElement the manifest element
      */
     ZipUTF8WriterImpl(final XMLUtil xmlUtil, final ZipOutputStream zipStream, final Writer writer,
                       final ManifestElement manifestElement) {
@@ -57,13 +63,6 @@ public class ZipUTF8WriterImpl implements ZipUTF8Writer {
         this.writer = writer;
         this.manifestElement = manifestElement;
         this.xmlUtil = xmlUtil;
-    }
-
-    /**
-     * @return a new builder
-     */
-    public static ZipUTF8WriterBuilderImpl builder() {
-        return new ZipUTF8WriterBuilderImpl();
     }
 
     @Override

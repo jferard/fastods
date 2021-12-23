@@ -30,7 +30,7 @@ import com.github.jferard.fastods.attribute.FilterType;
 import java.io.IOException;
 
 /**
- * 9.5.5<table:filter-condition>
+ * 9.5.5 table:filter-condition
  *
  * @author J. Férard
  */

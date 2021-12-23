@@ -30,7 +30,7 @@ import com.github.jferard.fastods.attribute.MessageType;
 import java.io.IOException;
 
 /**
- * 9.4.7 <table:error-message>
+ * 9.4.7 table:error-message
  */
 public class ErrorMessage implements XMLConvertible {
     /**

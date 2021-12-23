@@ -27,7 +27,7 @@ package com.github.jferard.fastods.util;
 import com.github.jferard.fastods.XMLConvertible;
 
 /**
- * 9.5.2<table:filter>
+ * 9.5.2 table:filter
  *
  * @author J. Férard
  */

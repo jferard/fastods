@@ -30,7 +30,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.27.25 <number:text-style>
+ * 16.27.25 number:text-style
  *
  * @author Julien Férard
  */

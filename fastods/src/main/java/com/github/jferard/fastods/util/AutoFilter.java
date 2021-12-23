@@ -31,7 +31,7 @@ import com.github.jferard.fastods.ref.PositionUtil;
 import java.io.IOException;
 
 /**
- * 9.4.15 <table:database-range>
+ * 9.4.15 table:database-range
  * <p>
  * A filter on a range
  *
@@ -40,11 +40,11 @@ import java.io.IOException;
 public class AutoFilter implements XMLConvertible {
     /**
      * @param rangeName the name of the range
-     * @param table the table
-     * @param r1    first row of the range
-     * @param c1    first col of the range
-     * @param r2    last row
-     * @param c2    last col
+     * @param table     the table
+     * @param r1        first row of the range
+     * @param c1        first col of the range
+     * @param r2        last row
+     * @param c2        last col
      * @return a new builder
      */
     public static AutoFilterBuilder builder(final String rangeName, final Table table, final int r1,
@@ -59,6 +59,7 @@ public class AutoFilter implements XMLConvertible {
     private final Filter filter;
 
     /**
+     * @param rangeName      the name of the range
      * @param rangeAddress   the range address
      * @param displayButtons display buttons if true
      * @param filter         the filter

@@ -60,7 +60,6 @@ public class OdsFileWriterBuilder {
 
     /**
      * @return the writer for the ods file
-     * @throws FileNotFoundException if there is no stream to write
      */
     public NamedOdsFileWriter build() {
         final ZipUTF8Writer writer = this.builder.build(this.out);
@@ -72,6 +71,7 @@ public class OdsFileWriterBuilder {
      *
      * @param filename the name of the destination file
      * @return this for fluent style
+     * @throws FileNotFoundException if the file does not exist.
      */
     public OdsFileWriterBuilder file(final String filename) throws FileNotFoundException {
         return this.openResult(FileOpen.openFile(filename));
@@ -82,6 +82,7 @@ public class OdsFileWriterBuilder {
      *
      * @param file the destination file
      * @return this for fluent style
+     * @throws FileNotFoundException if the file does not exist
      */
     public OdsFileWriterBuilder file(final File file) throws FileNotFoundException {
         return this.openResult(FileOpen.openFile(file));
@@ -98,6 +99,7 @@ public class OdsFileWriterBuilder {
 
     /**
      * Locks the file
+     *
      * @param lockResult the result of a file lock
      * @return this for fluent style
      * @throws FileNotFoundException the file exists but is a directory

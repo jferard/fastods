@@ -82,7 +82,7 @@ public class ConfigItemMapIndexed implements ConfigItemCollection<ConfigItemMapE
 
     /**
      * @param index the index of the element to be removed
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &ge; size())
      */
     public void remove(final int index) {
         this.list.remove(index);
@@ -91,7 +91,7 @@ public class ConfigItemMapIndexed implements ConfigItemCollection<ConfigItemMapE
     /**
      * @param index the index of the entry to return
      * @return the entry
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &ge; size())
      */
     public ConfigItemMapEntry get(final int index) {
         return this.list.get(index);
@@ -101,7 +101,7 @@ public class ConfigItemMapIndexed implements ConfigItemCollection<ConfigItemMapE
      * @param index   the index of the entry to set
      * @param element the new element to set
      * @return the previous element
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &ge; size())
      */
     public ConfigItemMapEntry set(final int index, final ConfigItemMapEntry element) {
         return this.list.set(index, element);
@@ -110,7 +110,7 @@ public class ConfigItemMapIndexed implements ConfigItemCollection<ConfigItemMapE
     /**
      * @param index   the index of the entry to add
      * @param element the new element to add
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &ge; size())
      */
     public void add(final int index, final ConfigItemMapEntry element) {
         this.list.add(index, element);

@@ -53,7 +53,7 @@ public class AutoFilterBuilder {
     }
 
     /**
-     * 9.5.2<table:filter>
+     * 9.5.2 table:filter
      *
      * @param filter the filter
      * @return this for fluent style

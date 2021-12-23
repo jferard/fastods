@@ -90,10 +90,10 @@ public class TableNameUtil {
 
     /**
      * 9.2.1 Referencing Table Cells
-     * > If the name of the table contains blanks, dots “.” (U+002E, FULL STOP) or apostrophes
+     * "If the name of the table contains blanks, dots “.” (U+002E, FULL STOP) or apostrophes
      * “'” (U+0027, APOSTROPHE), the name shall be quoted with apostrophes “'” (U+0027,
      * APOSTROPHE). Any apostrophes in the name shall be escaped by doubling the”'”( U+0027,
-     * APOSTROPHE) character.
+     * APOSTROPHE) character."
      *
      * @param tableName the name of the table
      * @return the name of the table escaped

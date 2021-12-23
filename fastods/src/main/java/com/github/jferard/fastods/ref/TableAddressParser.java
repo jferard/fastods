@@ -59,7 +59,6 @@ class TableAddressParser {
      * @param tableAddress [filename#][$]tablename
      * @return a new position
      * @throws ParseException If the address can't be parsed.
-     * @throws IOException    never
      */
     public TableRef parse(final String tableAddress)
             throws ParseException, UnsupportedEncodingException {

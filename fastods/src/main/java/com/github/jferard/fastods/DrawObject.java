@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 10.4.6.2<draw:object>
+ * 10.4.6.2 draw:object
  */
 public class DrawObject implements FrameContent {
     private final String href;

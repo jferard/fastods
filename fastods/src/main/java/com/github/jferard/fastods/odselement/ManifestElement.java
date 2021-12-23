@@ -37,13 +37,13 @@ import java.util.Set;
 
 /**
  * Part 3, 3.2 Manifest:
- * > All OpenDocument packages shall contain a file named “META-INF/manifest.xml”. This file is
+ * "All OpenDocument packages shall contain a file named “META-INF/manifest.xml”. This file is
  * the OpenDocument package manifest. The manifest provides :
  * •A list of all of the files in the package (except those specifically excluded from the
  * manifest).
  * •The MIME media type of each file in the package.
  * •If a file is stored in the file data in encrypted form, the manifest provides information
- * required to decrypt the file correctly when the encryption key is also supplied.
+ * required to decrypt the file correctly when the encryption key is also supplied."
  * <p>
  * Part 3, 4 Manifest File
  *

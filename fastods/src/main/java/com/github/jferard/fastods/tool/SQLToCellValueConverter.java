@@ -43,7 +43,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 /**
- * A converter SQL -> OpenDocument cell value
+ * A converter SQL to OpenDocument cell value
  *
  * @author J. Férard
  */

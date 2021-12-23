@@ -95,7 +95,7 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
      * Remove the block at a given index.
      *
      * @param i the index.
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &ge; size())
      */
     public void remove(final int i) {
         this.blocks.remove(i);
@@ -126,7 +126,7 @@ public class ConfigItemMapEntrySequence implements ConfigItemMapEntry {
      * @param i     the index
      * @param value the new value
      * @return the previous value
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &ge; size())
      */
     public String set(final int i, final String value) {
         final ConfigBlock block = this.blocks.get(i);

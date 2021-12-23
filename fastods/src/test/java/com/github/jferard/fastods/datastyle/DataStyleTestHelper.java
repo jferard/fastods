@@ -32,6 +32,7 @@ import org.powermock.api.easymock.PowerMock;
 public class DataStyleTestHelper {
     /**
      * very basic test
+     * @param dataStyle the data style
      */
     public static void testAddToElements(final DataStyle dataStyle) {
         final OdsElements elements = PowerMock.createMock(OdsElements.class);

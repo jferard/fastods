@@ -52,8 +52,8 @@ public class EncryptParametersBuilder {
 
     /**
      * @param uncompressedSize              4.8.13, manifest:size
-     * @param compressedSize
-     * @param crc32
+     * @param compressedSize                the compressed size
+     * @param crc32                         the CRC-32 checksum of the uncompressed data
      * @param compressedCheckSum            4.8.2, manifest:checksum
      * @param derivationSalt                4.8.12, manifest:salt
      * @param algorithmInitializationVector 4.8.5, manifest:initialisation-vector
@@ -82,7 +82,6 @@ public class EncryptParametersBuilder {
     /**
      * @param startKeyGenerationName 4.8.6, manifest:start-key-generation-name
      * @return this for fluent style
-     * >
      */
     public EncryptParametersBuilder startKeyGenerationName(final String startKeyGenerationName) {
         this.startKeyGenerationName = startKeyGenerationName;

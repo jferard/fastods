@@ -493,7 +493,7 @@ class TableBuilder {
      * @param colIndex the col index
      * @param n        the number of rows
      * @throws IOException              if an error occurs
-     * @throws IllegalArgumentException if n < 0
+     * @throws IllegalArgumentException if n &lt; 0
      */
     public void setRowsSpanned(final Table table, final TableAppender appender, final int rowIndex,
                                final int colIndex, final int n) throws IOException {

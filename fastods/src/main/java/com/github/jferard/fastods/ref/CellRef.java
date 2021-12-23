@@ -126,7 +126,7 @@ public class CellRef {
      * <li>1023 gives "AMJ"</li>
      * </ul>
      * <p>
-     * Remainder: '<filename>'#<table-name>.<col><row>
+     * Remainder: '[filename]'#[table-name].[col][row]
      *
      * @return the Excel/OO/LO address
      */

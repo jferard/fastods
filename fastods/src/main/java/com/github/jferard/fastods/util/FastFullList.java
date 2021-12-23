@@ -110,7 +110,7 @@ public class FastFullList<E> implements Iterable<E> {
     private int size;
 
     /**
-     * @param capacity     the capacity, >= 10
+     * @param capacity     the capacity, &ge; 10
      * @param blankElement the value of cells that were not set.
      */
     @SuppressWarnings("unchecked")

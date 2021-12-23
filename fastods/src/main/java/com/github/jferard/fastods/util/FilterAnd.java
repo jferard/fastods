@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 9.5.3<table:filter-and>
+ * 9.5.3 table:filter-and
  */
 public class FilterAnd implements Filter {
     private final List<Filter> filters;

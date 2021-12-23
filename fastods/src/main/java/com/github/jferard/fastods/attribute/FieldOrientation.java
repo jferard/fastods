@@ -25,7 +25,7 @@
 package com.github.jferard.fastods.attribute;
 
 /**
- * 19.686.2<table:data-pilot-field>
+ * 19.686.2 table:data-pilot-field
  *
  * @author J. Férard
  */

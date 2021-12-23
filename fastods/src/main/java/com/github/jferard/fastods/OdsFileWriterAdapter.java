@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * <li>A producer thread that writes on a OdsFileWriterAdapter.document()</li>
  * <li>A consumer thread that uses the following structure to flush the data</li>
  * </ul>
- * <p>
+ *
  * <pre>
  * while (this.writerAdapter.isNotStopped()) {
  *     this.writerAdapter.waitForData();

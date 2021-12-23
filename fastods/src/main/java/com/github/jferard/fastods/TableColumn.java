@@ -28,7 +28,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 
 /**
- * 9.1.6 <table:table-column>
+ * 9.1.6 table:table-column
  * A column.
  *
  * @author J. Férard

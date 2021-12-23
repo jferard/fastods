@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 /**
- * 4.3<manifest:file-entry>
+ * 4.3 manifest:file-entry
  * An entry in the manifest for encrypted files. External modules should provide the ZipUTF8Writer
  * to effectively encrypt the file using `encryptParameters`.
  */

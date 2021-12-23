@@ -36,7 +36,8 @@ import java.io.IOException;
  */
 public class Tooltip implements XMLConvertible, ElementWithEmbeddedStyles {
     /**
-     * @param text the escaped test
+     * @param xmlUtil an xml util
+     * @param text    the escaped test
      * @return the new tooltip parameter
      */
     public static TooltipBuilder builder(final XMLUtil xmlUtil, final String text) {

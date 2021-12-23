@@ -132,6 +132,9 @@ public class MetaElementBuilder {
         return this;
     }
 
+    /**
+     * @return the element
+     */
     public MetaElement build() {
         return new MetaElement(this.creator, this.dateTime, this.description, this.language,
                 this.subject, this.title, this.editingCycles, this.editingDuration,

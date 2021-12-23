@@ -46,26 +46,25 @@ import java.util.Set;
  * @author Julien Férard
  */
 public class ZipUTF8WriterMock implements Appendable {
+    /**
+     * @return the mock
+     */
+    public static ZipUTF8WriterMock createMock() {
+        return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>(), new HashSet<String>());
+    }
     private final Map<String, StringBuilder> builderByEntryName;
     private StringBuilder curBuilder;
-    private Set<String> registeredEntries;
+    private final Set<String> registeredEntries;
 
     /**
      * @param builderByEntryName the container
-     * @param strings
+     * @param registeredEntries  the entries
      */
     ZipUTF8WriterMock(final Map<String, StringBuilder> builderByEntryName,
                       final Set<String> registeredEntries) {
         this.builderByEntryName = builderByEntryName;
         this.registeredEntries = registeredEntries;
         this.curBuilder = null;
-    }
-
-    /**
-     * @return the mock
-     */
-    public static ZipUTF8WriterMock createMock() {
-        return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>(), new HashSet<String>());
     }
 
     @Override
@@ -125,7 +124,8 @@ public class ZipUTF8WriterMock implements Appendable {
      * finish the zip mock
      */
     public void finish() {
-        this.builderByEntryName.put("UnregisteredOdsEntry[path=META-INF/manifest.xml]", new StringBuilder());
+        this.builderByEntryName.put("UnregisteredOdsEntry[path=META-INF/manifest.xml]",
+                new StringBuilder());
         this.curBuilder = null;
     }
 

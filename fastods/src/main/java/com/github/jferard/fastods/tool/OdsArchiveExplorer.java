@@ -52,7 +52,6 @@ class OdsArchiveExplorer {
     /**
      * @param fileUtil     an util
      * @param sourceStream the source of the image
-     * @throws IOException if an I/O error occurs
      */
     public OdsArchiveExplorer(final FileUtil fileUtil, final InputStream sourceStream) {
         this.fileUtil = fileUtil;

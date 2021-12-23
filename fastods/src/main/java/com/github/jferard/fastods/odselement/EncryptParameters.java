@@ -30,7 +30,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 4.4 <manifest:encryption-data>
+ * 4.4 manifest:encryption-data
  * <p>
  * Parameters for encryption
  */

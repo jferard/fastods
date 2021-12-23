@@ -289,7 +289,7 @@ public interface TableCell {
      * Create a span over cells at the right
      *
      * @param n the number of cells to be spanned
-     * @throws IllegalArgumentException if n < 0
+     * @throws IllegalArgumentException if n &lt; 0
      */
     void setColumnsSpanned(int n);
 
@@ -297,7 +297,7 @@ public interface TableCell {
      * Mark the columns a spanned
      *
      * @param n the number of columns
-     * @throws IllegalArgumentException if n < 0
+     * @throws IllegalArgumentException if n &lt; 0
      */
     void markColumnsSpanned(int n);
 
@@ -306,7 +306,7 @@ public interface TableCell {
      *
      * @param n the number of cells to be spanned
      * @throws IOException              if the cell can't be merged (only when flushing data)
-     * @throws IllegalArgumentException if n < 0
+     * @throws IllegalArgumentException if n &lt; 0
      */
     void setRowsSpanned(int n) throws IOException;
 
@@ -317,11 +317,15 @@ public interface TableCell {
 
     /**
      * Set a matrix formula
+     * @param formula the formula
      */
     void setMatrixFormula(String formula);
 
     /**
      * Set a matrix formula
+     * @param formula the formula
+     * @param matrixRowsSpanned the number of rows
+     * @param matrixColumnsSpanned the number of columns
      */
     void setMatrixFormula(String formula, int matrixRowsSpanned, int matrixColumnsSpanned);
 

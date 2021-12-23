@@ -27,7 +27,7 @@ package com.github.jferard.fastods.style;
 import com.github.jferard.fastods.util.Style;
 
 /**
- * 16.2 <style:style>
+ * 16.2 style:style
  * <p>
  * The ObjectStyle class represents a style:style element.
  * There are four possibilities:

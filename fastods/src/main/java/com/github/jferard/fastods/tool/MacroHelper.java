@@ -39,6 +39,7 @@ import java.io.IOException;
 public class MacroHelper {
     /**
      * @param document the document
+     * @throws IOException if an I/O error occurs
      */
     public void addRefreshMacro(final OdsDocument document) throws IOException {
         MacroLibraryContainer.create(MacroLibrary.builder().modules(MacroModule

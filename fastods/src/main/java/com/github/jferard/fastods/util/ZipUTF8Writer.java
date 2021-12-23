@@ -79,8 +79,7 @@ public interface ZipUTF8Writer extends Closeable, Flushable, Appendable {
      * Put a new entry into the manifest.
      *
      * @param entry the entry
-     * @throws IOException if an I/O error occurs
-     */
+    */
     void registerEntry(OdsEntry entry);
 
     /**

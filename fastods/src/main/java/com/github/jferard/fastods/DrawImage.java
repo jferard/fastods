@@ -29,7 +29,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 10.4.4<draw:image>
+ * 10.4.4 draw:image
  */
 public class DrawImage implements FrameContent {
     private final String href;

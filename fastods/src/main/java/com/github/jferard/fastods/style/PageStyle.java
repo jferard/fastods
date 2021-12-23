@@ -39,16 +39,15 @@ import java.io.IOException;
  * OpenDocument 16.9 style:master-page
  * <p>
  * The PageStyle class represents a combination of a master page style and a page layout style:
- * formatting + header & footer.
+ * formatting + header and footer.
  *
- * 16.5<style:page-layout>
- * The <style:page-layout> element represents the styles that specify the formatting properties of
+ * 16.5 style:page-layout
+ * The style:page-layout element represents the styles that specify the formatting properties of
  * a page.
  *
- * 16.9 <style:master-page>
- * In text and spreadsheet documents, the <style:master-page> element contains the content of
+ * 16.9 style:master-page
+ * In text and spreadsheet documents, the style:master-page element contains the content of
  * headers and footers.
- *
  *
  * @author Julien Férard
  * @author Martin Schulz

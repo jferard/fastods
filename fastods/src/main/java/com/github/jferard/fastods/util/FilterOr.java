@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 9.5.4<table:filter-or>
+ * 9.5.4 table:filter-or
  */
 public class FilterOr implements Filter {
     private final List<Filter> filters;

@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 9.1.6 <table:table-column>
+ * 9.1.6 table:table-column
  * A column.
  *
  * @author J. Férard

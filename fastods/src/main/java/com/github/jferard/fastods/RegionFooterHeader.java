@@ -30,8 +30,8 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.10<style:header>
- * 16.11<style:footer>
+ * 16.10 style:header
+ * 16.11 style:footer
  * <p>
  * "The <style:header> element represents the content of a header in a <style:master-page> element."
  * "The <style:footer> element represents the content of a footer in a <style:master-page> element."

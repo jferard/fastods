@@ -153,7 +153,7 @@ public class OdsFactory {
     /**
      * Use custom namespace prefixes in content element.
      *
-     * @param additionalNamespaceByPrefix a map prefix -> namespace
+     * @param additionalNamespaceByPrefix a map prefix to namespace
      * @return this for fluent style
      */
     @Deprecated

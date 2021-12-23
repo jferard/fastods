@@ -48,14 +48,18 @@ import java.util.logging.Logger;
 public class DatabaseExporter {
     /**
      * Usage:
-     *
-     * $ java -cp path/to/fastods/jar:path/to/jdbc/driver/jar <connection string> <target.ods>
-     *
+     * <p>
+     * $ java -cp path/to/fastods/jar:path/to/jdbc/driver/jar [connection string] [target.ods]
+     * <p>
      * Example:
-     *
+     * <p>
      * $ java -cp $HOME/.m2/repository/com/github/jferard/fastods/0.7.4/fastods-0.7.4.jar:$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.27.2.1/sqlite-jdbc-3.27.2.1.jar com.github.jferard.fastods.tool.DatabaseExporter "jdbc:sqlite:$HOME/test.sqlite3" "$HOME/export.ods"
-     *
+     * <p>
      * Please avoid exporting huge databases: LibreOffice won't open huge documents.
+     *
+     * @param args the parameters: connection string and target
+     * @throws SQLException if a SQL exception occurs
+     * @throws IOException  if an I/O error occurs
      */
     public static void main(final String[] args) throws SQLException, IOException {
         if (args.length != 2) {

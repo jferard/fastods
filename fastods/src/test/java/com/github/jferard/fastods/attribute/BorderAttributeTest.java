@@ -33,7 +33,7 @@ import java.io.IOException;
 
 /**
  * @author Julien Férard
- * @autohr Martin Schulz
+ * @author Martin Schulz
  */
 public class BorderAttributeTest {
     private XMLUtil util;

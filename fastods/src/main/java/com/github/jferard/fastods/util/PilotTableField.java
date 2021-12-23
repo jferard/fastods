@@ -31,7 +31,7 @@ import com.github.jferard.fastods.attribute.PilotFunction;
 import java.io.IOException;
 
 /**
- * 9.6.7<table:data-pilot-field>
+ * 9.6.7 table:data-pilot-field
  *
  * @author J. Férard
  */

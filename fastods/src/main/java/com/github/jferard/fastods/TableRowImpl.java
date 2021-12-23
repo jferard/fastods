@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 9.1.3 <table:table-row>
+ * 9.1.3 table:table-row
  *
  * @author Julien Férard
  * @author Martin Schulz
@@ -215,7 +215,7 @@ public class TableRowImpl implements TableRow {
      *
      * @param colIndex the index of the first column
      * @param n        the number of columns in the span
-     * @throws IllegalArgumentException if n < 0
+     * @throws IllegalArgumentException if n &lt; 0
      */
     public void setColumnsSpanned(final int colIndex, final int n) {
         if (n < 0) {
@@ -243,7 +243,7 @@ public class TableRowImpl implements TableRow {
      * @param colIndex the index of the column
      * @param n        the number of rows in the span
      * @throws IOException              if the cells can't be merged
-     * @throws IllegalArgumentException if n < 0 of this cells is covered
+     * @throws IllegalArgumentException if n &lt; 0 of this cells is covered
      */
     public void setRowsSpanned(final int colIndex, final int n) throws IOException {
         if (n < 0) {

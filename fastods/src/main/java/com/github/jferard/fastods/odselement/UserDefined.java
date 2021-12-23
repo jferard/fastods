@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * 4.3.3<meta:user-defined>
+ * 4.3.3 meta:user-defined
  */
 public class UserDefined implements XMLConvertible {
     /**

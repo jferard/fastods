@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 /**
- * 4.3<manifest:file-entry>
+ * 4.3 manifest:file-entry
  * A standard entry (DEFLATE)
  */
 public class StandardOdsEntry implements OdsEntry {

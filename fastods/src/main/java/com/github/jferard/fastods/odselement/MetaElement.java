@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
+ * 3.2 office:meta
  * 3.1.3.4 office:document-meta
  * and 4.3 Non-RDF Metadata
  *
@@ -43,27 +44,34 @@ import java.util.TimeZone;
  * @author Martin Schulz
  */
 public class MetaElement implements OdsElement {
-    public static final String GENERATOR = "FastOds/0.8.0";
+    public static final String GENERATOR = "FastOds/0.8.1";
     public static final String OFFICE_VERSION = "1.2";
-
+    public static final Map<String, String> META_NAMESPACE_BY_PREFIX =
+            new HashMap<String, String>();
     /**
      * the date format: 2017-12-31
      */
     final static SimpleDateFormat DF_DATE;
-
-    static {
-        DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
-        DF_DATE.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
-
     /**
      * the time format: 18:12:59
      */
     final static SimpleDateFormat DF_TIME;
 
     static {
+        DF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+        DF_DATE.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    static {
         DF_TIME = new SimpleDateFormat("HH:mm:ss");
         DF_TIME.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    static {
+        META_NAMESPACE_BY_PREFIX.putAll(OdsElements.BASE_NAMESPACE_BY_PREFIX);
+        META_NAMESPACE_BY_PREFIX.put("xmlns:dc", "http://purl.org/dc/elements/1.1/");
+        META_NAMESPACE_BY_PREFIX.put("xmlns:meta",
+                "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
     }
 
     public static MetaElementBuilder builder() {
@@ -73,16 +81,6 @@ public class MetaElement implements OdsElement {
     public static MetaElement create() {
         return new MetaElementBuilder().build();
     }
-
-    public static final Map<String, String> META_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
-
-    static {
-        META_NAMESPACE_BY_PREFIX.putAll(OdsElements.BASE_NAMESPACE_BY_PREFIX);
-        META_NAMESPACE_BY_PREFIX.put("xmlns:dc", "http://purl.org/dc/elements/1.1/");
-        META_NAMESPACE_BY_PREFIX.put("xmlns:meta",
-                "urn:oasis:names:tc:opendocument:xmlns:meta:1.0");
-    }
-
     private final String description;
     private final String language;
     private final String subject;
@@ -97,6 +95,18 @@ public class MetaElement implements OdsElement {
 
     /**
      * Create a new meta element
+     *
+     * @param creator         the creator of the document
+     * @param dateTime        the date of the document
+     * @param description     the description of the document
+     * @param language        the language of the document
+     * @param subject         the subject of the document
+     * @param title           the title of the document
+     * @param editingCycles   number of times the document has been edited
+     * @param editingDuration time spent editing the document
+     * @param initialCreator  the initial creator of the documents
+     * @param keyWords        keywords
+     * @param userDefineds    other field of met
      */
     public MetaElement(final String creator, final String dateTime, final String description,
                        final String language, final String subject, final String title,
@@ -123,7 +133,7 @@ public class MetaElement implements OdsElement {
         util.appendAttribute(writer, "version", "1.0");
         util.appendAttribute(writer, "encoding", CharsetUtil.UTF_8_NAME);
         writer.append("?><office:document-meta");
-        for (final Map.Entry<String, String> entry: META_NAMESPACE_BY_PREFIX.entrySet()) {
+        for (final Map.Entry<String, String> entry : META_NAMESPACE_BY_PREFIX.entrySet()) {
             util.appendAttribute(writer, entry.getKey(), entry.getValue());
         }
         util.appendAttribute(writer, "office:version", OFFICE_VERSION);

@@ -50,7 +50,7 @@ public class MetaElementTest {
                         "office:version=\"1.2\"><office:meta>" +
                         "<dc:creator>creator</dc:creator>" + "<dc:date>date</dc:date>" +
                         "<dc:language>en</dc:language>" +
-                        "<meta:generator>FastOds/0.8.0</meta:generator>" +
+                        "<meta:generator>FastOds/0.8.1</meta:generator>" +
                         "<meta:editing-cycles>1</meta:editing-cycles>" +
                         "<meta:editing-duration>PT1M00S</meta:editing-duration>" +
                         "</office:meta></office:document-meta>", string);
@@ -79,7 +79,7 @@ public class MetaElementTest {
                         "<dc:description>description</dc:description>" +
                         "<dc:language>l</dc:language><dc:subject>subject</dc:subject>" +
                         "<dc:title>title</dc:title>" +
-                        "<meta:generator>FastOds/0.8.0</meta:generator>" +
+                        "<meta:generator>FastOds/0.8.1</meta:generator>" +
                         "<meta:editing-cycles>10</meta:editing-cycles>" +
                         "<meta:editing-duration>duration</meta:editing-duration>" +
                         "<meta:initial-creator>init</meta:initial-creator>" +

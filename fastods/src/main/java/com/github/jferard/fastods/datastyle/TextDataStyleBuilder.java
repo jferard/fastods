@@ -27,7 +27,7 @@ package com.github.jferard.fastods.datastyle;
 import java.util.Locale;
 
 /**
- * 16.27.25 <number:text-style>
+ * 16.27.25 number:text-style
  *
  * @author Julien Férard
  */

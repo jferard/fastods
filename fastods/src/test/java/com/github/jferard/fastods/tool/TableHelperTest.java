@@ -28,7 +28,6 @@ import com.github.jferard.fastods.StringValue;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.ref.PositionUtil;
-import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import org.easymock.EasyMock;
 import org.junit.Assert;

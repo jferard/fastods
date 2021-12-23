@@ -33,7 +33,7 @@ import com.github.jferard.fastods.util.XMLUtil;
 import java.io.IOException;
 
 /**
- * 16.40.1 <draw:gradient>
+ * 16.40.1 draw:gradient
  */
 public class DrawFillGradient implements DrawFill, ObjectStyle {
     private final Angle angle;

@@ -44,16 +44,19 @@ public interface TableRowWalker extends TableRow {
 
     /**
      * Set the walker on the last row of the table
+     * @throws IOException if an I/O error occurs
      */
     void lastRow() throws IOException;
 
     /**
      * Set the walker on the next row of the table
+     * @throws IOException if an I/O error occurs
      */
     void nextRow() throws IOException;
 
     /**
      * Set the walker on the previous row of the table
+     * @throws IOException if an I/O error occurs
      */
     void previousRow() throws IOException;
 
@@ -61,6 +64,7 @@ public interface TableRowWalker extends TableRow {
      * Set the walker on the table
      *
      * @param i the index of the row
+     * @throws IOException if an I/O error occurs
      */
     void toRow(final int i) throws IOException;
 }

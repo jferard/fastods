@@ -32,11 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 9.5.6<table:filter-set-item>
+ * 9.5.6 table:filter-set-item
  *
  * @author J. Férard
  * <p>
- * TODO: See compatibility note in 9.5.5<table:filter-condition>
+ * TODO: See compatibility note in 9.5.5 table:filter-condition
  */
 public class FilterEnumerate implements Filter {
     private final int colIndex;
@@ -53,12 +53,13 @@ public class FilterEnumerate implements Filter {
 
     /**
      * "Note: To improve backward compatibility with OpenDocument 1.1 documents, the following
-     * attributes should have these values if <table:filter-set-item> elements are included:
-     * table:operator: "=", table:value: value of the first <table:filter-set-item> child element,
+     * attributes should have these values if table:filter-set-item elements are included:
+     * table:operator: "=", table:value: value of the first table:filter-set-item child element,
      * table:data-type: "text".
+     *
      * @param util       a helper object
      * @param appendable the appendable to append data to
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable)

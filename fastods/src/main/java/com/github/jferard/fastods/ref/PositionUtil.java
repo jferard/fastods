@@ -35,7 +35,7 @@ import java.text.ParseException;
  */
 public class PositionUtil {
     /**
-     * a..z -> 26 letters
+     * a..z: 26 letters
      */
     public static final int ALPHABET_SIZE = 26;
     /**

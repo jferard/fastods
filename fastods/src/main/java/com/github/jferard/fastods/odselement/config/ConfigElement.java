@@ -518,12 +518,12 @@ public enum ConfigElement {
     HORIZONTAL_SCROLLBAR_WIDTH("HorizontalScrollbarWidth", ConfigElementType.INT),
 
     /**
-     * Undocumented, zoom for View > PageBreak
+     * Undocumented, zoom for View | PageBreak
      */
     PAGE_VIEW_ZOOM_VALUE("PageViewZoomValue", ConfigElementType.INT),
 
     /**
-     * Undocumented, equivalent to View > PageBreak
+     * Undocumented, equivalent to View | PageBreak
      */
     SHOW_PAGE_BREAK_PREVIEW("ShowPageBreakPreview", ConfigElementType.BOOLEAN),
 

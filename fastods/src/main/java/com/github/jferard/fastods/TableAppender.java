@@ -81,7 +81,7 @@ class TableAppender {
      *
      * @param util       the XMLUtil instance
      * @param appendable where to append
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     public void appendOpenTagAndPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
         this.appendTableOpenTag(util, appendable);
@@ -291,7 +291,7 @@ class TableAppender {
      * Flush a bunch of rows
      *
      * @param rows the rows
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     public void flushRows(final XMLUtil xmlUtil, final ZipUTF8Writer writer,
                           final List<TableRowImpl> rows) throws IOException {

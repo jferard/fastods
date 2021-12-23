@@ -27,15 +27,12 @@ package com.github.jferard.fastods.util;
 /**
  * 18.3.32 styleNameRef
  * A NCName as specified in [xmlschema-2] that is the name of a referenced style, or an empty value.
- * <br/>
  * In [xmlschema-2] (https://www.w3.org/TR/xmlschema-2/):
  * NCName represents XML "non-colonized" Names. The ·value space· of NCName is the set of all
  * strings which ·match·
  * the NCName production of [Namespaces in XML]. "Non-colonized" equals non qualified.
- * <br/>
  * In [Namespaces in XML] (https://www.w3.org/TR/REC-xml-names/):
  * [4]   	NCName	   ::=   	Name - (Char* ':' Char*)	// An XML Name, minus the ":"
- * <br/>
  * In https://www.w3.org/TR/REC-xml/#NT-Name:
  * [4]   	NameStartChar	   ::=   	":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] |
  * [#xF8-#x2FF] |

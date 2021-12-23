@@ -38,7 +38,7 @@ public class Util {
      * Convert a char array to a byte array containing the SHA-256 digest. **Beware: for security
      * reasons, this fills the password array with 0's**.
      * <p>
-     * (char[] -> byte[]) See https://stackoverflow.com/a/9670279/6914441
+     * (char[] to byte[]) See https://stackoverflow.com/a/9670279/6914441
      *
      * @param password  the data
      * @param algorithm the algorithm (see java.security.MessageDigest)

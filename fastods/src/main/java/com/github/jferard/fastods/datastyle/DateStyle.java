@@ -42,7 +42,7 @@ import java.io.IOException;
  *                                                          DateStyleFormat.LONG_TEXTUAL_MONTH);
  *     DateStyle s = DateStyleBuilder("my style", Locale.US).dateFormat(f).build();
  *     ... // use the style
- * }
+ * }</pre>
  *
  * Note that the bricks from `TimeStyleFormat` are allowed too:
  *
@@ -50,7 +50,7 @@ import java.io.IOException;
  *     DateStyleFormat f = new DateStyleFormat(TimeStyleFormat.MINUTES);
  *     DateStyle s = DateStyleBuilder("my style", Locale.US).dateFormat(f).build();
  *     ... // use the style
- * }
+ * }</pre>
  *
  * @author Julien Férard
  * @author Martin Schulz

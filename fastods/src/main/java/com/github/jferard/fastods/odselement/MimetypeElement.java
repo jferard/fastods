@@ -36,7 +36,7 @@ import java.util.zip.CRC32;
  * The “mimetype” file shall be the first file of the zip file. It shall not be compressed, and
  * it shall not use an 'extra field' in its header.
  * <p>
- * If the file named “META-INF/manifest.xml” contains a <manifest:file-entry> element whose
+ * If the file named “META-INF/manifest.xml” contains a manifest:file-entry element whose
  * manifest:full-path attribute has the value "/", then a "mimetype" file shall exist, and
  * the content of the “mimetype” file shall be equal to the value of the manifest:media-type
  * attribute 4.8.10 of that element.

@@ -49,7 +49,8 @@ import java.util.logging.Logger;
  */
 public final class ResultSetDataWrapper implements DataWrapper {
     /**
-     * @param rs the result set
+     * @param rangeName the name of the range
+     * @param rs        the result set
      * @return the data wrapper
      */
     public static ResultSetDataWrapperBuilder builder(final String rangeName, final ResultSet rs) {
@@ -79,7 +80,7 @@ public final class ResultSetDataWrapper implements DataWrapper {
 
     /**
      * @param logger             a logger
-     * @param converter          a converter SQL -> OpenDocument
+     * @param converter          a converter SQL to OpenDocument
      * @param rangeName          the name of the range
      * @param rs                 the result cell
      * @param headCellStyle      a style for header, null if none

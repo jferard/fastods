@@ -127,7 +127,7 @@ public class OdsElements implements StylesContainer {
      * @param format                      the data styles
      * @param libreOfficeMode             try to get full compatibility with LO if true
      * @param metaElement                 meta.xml representation
-     * @param additionalNamespaceByPrefix a map: prefix -> NS
+     * @param additionalNamespaceByPrefix a map: prefix to NS
      * @return a new OdsElements, with newly build elements.
      */
     public static OdsElements create(final PositionUtil positionUtil, final XMLUtil xmlUtil,
@@ -349,6 +349,7 @@ public class OdsElements implements StylesContainer {
      * are written to destination.
      *
      * @param table the table
+     * @return true if the table was added
      * @throws IOException if the OdsElements is observed and there is a write exception
      */
     public boolean addTableToContent(final Table table) throws IOException {
@@ -466,7 +467,7 @@ public class OdsElements implements StylesContainer {
      * Freeze cells. See https://help.libreoffice.org/Calc/Freezing_Rows_or_Columns_as_Headers
      *
      * @param table    the table to freeze
-     * @param rowCount the number of rows to freeze (e.g. 1 -> freeze the first row)
+     * @param rowCount the number of rows to freeze (e.g. 1 to freeze the first row)
      * @param colCount the number of cols to freeze.
      */
     public void freezeCells(final Table table, final int rowCount, final int colCount) {
