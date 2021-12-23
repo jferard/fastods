@@ -62,12 +62,13 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     private final PageWritingMode writingMode;
     private final int scaleTo;
     private final int scaleToPages;
+    private final int scaleToX;
+    private final int scaleToY;
     private final PageCentering centering;
 
     /**
      * Create a new page style. Version 0.5.0 Added parameter NamedOdsDocument o
-     *
-     * @param name             A unique name for this style
+     *  @param name             A unique name for this style
      * @param margins          the margins of the page
      * @param pageWidth        the width of the page
      * @param pageHeight       the height of the page
@@ -78,14 +79,17 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
      * @param printOrientation the print orientation
      * @param writingMode      the writing mode
      * @param scaleTo          a percentage for print scale
-     * @param scaleToPages     a number of pages for print scale
+     * @param scaleToPages     a number of pages for print scale or 0
+     * @param scaleToX         a number of horizontal pages for print scale or 0
+     * @param scaleToY         a number of vertical pages for print scale or 0
      * @param centering        center the table in the page if true
      */
     PageLayoutStyle(final String name, final Margins margins, final Length pageWidth,
                     final Length pageHeight, final String numFormat, final Color backgroundColor,
                     final Header header, final Footer footer,
                     final PagePrintOrientation printOrientation, final PageWritingMode writingMode,
-                    final int scaleTo, final int scaleToPages, final PageCentering centering) {
+                    final int scaleTo, final int scaleToPages, final int scaleToX,
+                    final int scaleToY, final PageCentering centering) {
         this.name = name;
         this.margins = margins;
         this.pageWidth = pageWidth;
@@ -98,6 +102,8 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
         this.writingMode = writingMode;
         this.scaleTo = scaleTo;
         this.scaleToPages = scaleToPages;
+        this.scaleToX = scaleToX;
+        this.scaleToY = scaleToY;
         this.centering = centering;
     }
 
@@ -126,6 +132,14 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
         }
         if (this.scaleToPages != 0) {
             util.appendAttribute(appendable, "style:scale-to-pages", this.scaleToPages);
+        }
+        if (this.scaleToX != 0) {
+            util.appendAttribute(appendable, "style:scale-to-X", this.scaleToX);
+            util.appendAttribute(appendable, "loext:scale-to-X", this.scaleToX);
+        }
+        if (this.scaleToY != 0) {
+            util.appendAttribute(appendable, "style:scale-to-Y", this.scaleToY);
+            util.appendAttribute(appendable, "loext:scale-to-Y", this.scaleToY);
         }
         if (this.centering != PageCentering.NONE) {
             util.appendAttribute(appendable, "style:table-centering", this.centering);

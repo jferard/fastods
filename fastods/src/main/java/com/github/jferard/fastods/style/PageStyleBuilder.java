@@ -58,6 +58,8 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     private boolean hidden;
     private int scaleTo;
     private int scaleToPages;
+    private int scaleToX;
+    private int scaleToY;
     private PageCentering centering;
 
     /**
@@ -85,6 +87,8 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
         this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
         this.scaleTo = 100;
         this.scaleToPages = 0;
+        this.scaleToX = 0;
+        this.scaleToY = 0;
         this.centering = PageCentering.NONE;
 
         final TextStyle noneStyle = TextStyle.builder("none").build();
@@ -92,6 +96,23 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
         this.footer = PageSection.simpleFooter("", noneStyle);
         this.hidden = false;
 
+    }
+
+    @Override
+    public PageStyle build() {
+        if (this.masterPageStyle == null) {
+            this.masterPageStyle =
+                    new MasterPageStyle(this.name, this.name, this.header, this.footer);
+        }
+
+        if (this.pageLayoutStyle == null) {
+            this.pageLayoutStyle =
+                    new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
+                            this.pageHeight, this.numFormat, this.backgroundColor, this.header,
+                            this.footer, this.printOrientation, this.writingMode, this.scaleTo,
+                            this.scaleToPages, this.scaleToX, this.scaleToY, this.centering);
+        }
+        return new PageStyle(this.hidden, this.masterPageStyle, this.pageLayoutStyle);
     }
 
     /**
@@ -117,23 +138,6 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     public PageStyleBuilder backgroundColor(final Color color) {
         this.backgroundColor = color;
         return this;
-    }
-
-    @Override
-    public PageStyle build() {
-        if (this.masterPageStyle == null) {
-            this.masterPageStyle =
-                    new MasterPageStyle(this.name, this.name, this.header, this.footer);
-        }
-
-        if (this.pageLayoutStyle == null) {
-            this.pageLayoutStyle =
-                    new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
-                            this.pageHeight, this.numFormat, this.backgroundColor, this.header,
-                            this.footer, this.printOrientation, this.writingMode, this.scaleTo,
-                            this.scaleToPages, this.centering);
-        }
-        return new PageStyle(this.hidden, this.masterPageStyle, this.pageLayoutStyle);
     }
 
 
@@ -326,6 +330,9 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
      */
     public PageStyleBuilder scaleTo(final int percentage) {
         this.scaleTo = percentage;
+        this.scaleToPages = 0;
+        this.scaleToX = 0;
+        this.scaleToY = 0;
         return this;
     }
 
@@ -337,6 +344,37 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
      */
     public PageStyleBuilder scaleToPages(final int pages) {
         this.scaleToPages = pages;
+        this.scaleTo = 100;
+        this.scaleToX = 0;
+        this.scaleToY = 0;
+        return this;
+    }
+
+    /**
+     * (v1.3) 20.354  style:scale-to-X
+     *
+     * @param pages the number of pages
+     * @return this for fluent style
+     */
+    public PageStyleBuilder scaleToX(final int pages) {
+        this.scaleToX = pages;
+        this.scaleTo = 100;
+        this.scaleToPages = 0;
+        this.scaleToY = 0;
+        return this;
+    }
+
+    /**
+     * (v1.3) 20.355  style:scale-to-Y
+     *
+     * @param pages the number of pages
+     * @return this for fluent style
+     */
+    public PageStyleBuilder scaleToY(final int pages) {
+        this.scaleToY = pages;
+        this.scaleTo = 100;
+        this.scaleToPages = 0;
+        this.scaleToX = 0;
         return this;
     }
 

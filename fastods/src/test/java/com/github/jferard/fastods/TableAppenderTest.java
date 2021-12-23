@@ -27,7 +27,6 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
-import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
@@ -517,7 +516,7 @@ public class TableAppenderTest {
 
     private void assertPreambleXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
-        this.tableAppender.appendPreambleOnce(this.xmlUtil, sb);
+        this.tableAppender.appendOpenTagAndPreambleOnce(this.xmlUtil, sb);
         sb.append("</table:table>");
         DomTester.assertEquals(xml + "</table:table>", sb.toString());
     }

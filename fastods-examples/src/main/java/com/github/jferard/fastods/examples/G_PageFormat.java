@@ -286,6 +286,15 @@ class G_PageFormat {
         // want (900 is enough !).
         table.addPrintRange(0, 0, 900, 7);
 
+        final PageStyle pageStyle =
+                PageStyle.builder("page-style").scaleToX(1).build();
+        // And add the page style into the table style:
+        final TableStyle tableStyle =
+                TableStyle.builder("table-style").pageStyle(pageStyle).build();
+
+        // And set this table style:
+        table.setStyle(tableStyle);
+
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
         final File destFile =

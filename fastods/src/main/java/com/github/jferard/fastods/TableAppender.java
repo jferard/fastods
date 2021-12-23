@@ -71,7 +71,7 @@ class TableAppender {
      */
     public void appendXMLToContentEntry(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        this.appendPreamble(util, appendable);
+        this.appendOpenTagAndPreamble(util, appendable);
         this.appendRows(util, appendable);
         this.appendPostamble(appendable);
     }
@@ -83,7 +83,7 @@ class TableAppender {
      * @param appendable where to append
      * @throws IOException
      */
-    public void appendPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
+    public void appendOpenTagAndPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
         this.appendTableOpenTag(util, appendable);
         final PreambleAppender preambleAppender = new PreambleAppender(this.builder);
         preambleAppender.appendForms(util, appendable);
@@ -191,19 +191,6 @@ class TableAppender {
         }
     }
 
-    /**
-     * Append the postamble
-     *
-     * @param appendable the destination
-     * @throws IOException if an I/O error occurs
-     */
-    public void appendPostamble(final Appendable appendable) throws IOException {
-        if (!this.atLeastOneRow) {
-            appendable.append("<table:table-row><table:table-cell/></table:table-row>");
-        }
-        appendable.append("</table:table>");
-    }
-
     private void flushNullRows(final XMLUtil util, final Appendable appendable)
             throws IOException {
         if (this.nullFieldCounter <= 0) {
@@ -222,6 +209,19 @@ class TableAppender {
         this.nullFieldCounter = 0;
     }
 
+    /**
+     * Append the postamble
+     *
+     * @param appendable the destination
+     * @throws IOException if an I/O error occurs
+     */
+    public void appendPostamble(final Appendable appendable) throws IOException {
+        if (!this.atLeastOneRow) {
+            appendable.append("<table:table-row><table:table-cell/></table:table-row>");
+        }
+        appendable.append("</table:table>");
+    }
+
     /* ***************** */
     /* For ASYNC version */
     /* ***************** */
@@ -233,10 +233,10 @@ class TableAppender {
      * @param appendable the destination
      * @throws IOException if an I/O error occurs
      */
-    public void appendPreambleOnce(final XMLUtil util, final Appendable appendable)
+    public void appendOpenTagAndPreambleOnce(final XMLUtil util, final Appendable appendable)
             throws IOException {
         if (!this.preambleWritten) {
-            this.appendPreamble(util, appendable);
+            this.appendOpenTagAndPreamble(util, appendable);
             this.preambleWritten = true;
         }
     }
@@ -252,7 +252,7 @@ class TableAppender {
     public void appendRemainingRowsFrom(final XMLUtil util, final Appendable appendable,
                                         final int rowIndex) throws IOException {
         if (rowIndex == 0) {
-            this.appendPreamble(util, appendable);
+            this.appendOpenTagAndPreamble(util, appendable);
         }
         this.appendRows(util, appendable, rowIndex);
         this.appendPostamble(appendable);
@@ -269,7 +269,7 @@ class TableAppender {
     public void appendSomeAvailableRowsFrom(final XMLUtil util, final Appendable appendable,
                                             final int rowIndex) throws IOException {
         if (rowIndex == 0) {
-            this.appendPreamble(util, appendable);
+            this.appendOpenTagAndPreamble(util, appendable);
         }
         this.appendRows(util, appendable, rowIndex);
     }
@@ -283,7 +283,7 @@ class TableAppender {
      */
     public void appendAllAvailableRows(final XMLUtil util, final Appendable appendable)
             throws IOException {
-        this.appendPreambleOnce(util, appendable);
+        this.appendOpenTagAndPreambleOnce(util, appendable);
         this.appendRows(util, appendable, 0);
     }
 
