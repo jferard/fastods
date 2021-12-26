@@ -35,9 +35,11 @@ import com.github.jferard.fastods.attribute.PageWritingMode;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.util.Hidable;
+import com.github.jferard.fastods.util.StringUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * OpenDocument 16.5 style:page-layout
@@ -58,17 +60,18 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     private final Length pageWidth;
 
     private final PagePrintOrientation printOrientation;
-
     private final PageWritingMode writingMode;
     private final int scaleTo;
     private final int scaleToPages;
     private final int scaleToX;
     private final int scaleToY;
     private final PageCentering centering;
+    private final List<PrintComponent> printComponents;
 
     /**
      * Create a new page style. Version 0.5.0 Added parameter NamedOdsDocument o
-     *  @param name             A unique name for this style
+     *
+     * @param name             A unique name for this style
      * @param margins          the margins of the page
      * @param pageWidth        the width of the page
      * @param pageHeight       the height of the page
@@ -77,6 +80,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
      * @param header           the header for this style
      * @param footer           the footer for this style
      * @param printOrientation the print orientation
+     * @param printComponents  the components to print
      * @param writingMode      the writing mode
      * @param scaleTo          a percentage for print scale
      * @param scaleToPages     a number of pages for print scale or 0
@@ -87,7 +91,8 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
     PageLayoutStyle(final String name, final Margins margins, final Length pageWidth,
                     final Length pageHeight, final String numFormat, final Color backgroundColor,
                     final Header header, final Footer footer,
-                    final PagePrintOrientation printOrientation, final PageWritingMode writingMode,
+                    final PagePrintOrientation printOrientation,
+                    final List<PrintComponent> printComponents, final PageWritingMode writingMode,
                     final int scaleTo, final int scaleToPages, final int scaleToX,
                     final int scaleToY, final PageCentering centering) {
         this.name = name;
@@ -99,6 +104,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
         this.footer = footer;
         this.header = header;
         this.printOrientation = printOrientation;
+        this.printComponents = printComponents;
         this.writingMode = writingMode;
         this.scaleTo = scaleTo;
         this.scaleToPages = scaleToPages;
@@ -148,6 +154,7 @@ public class PageLayoutStyle implements AddableToOdsElements, Hidable {
         util.appendEAttribute(appendable, "style:num-format", this.numFormat);
         util.appendAttribute(appendable, "style:writing-mode", this.writingMode);
         util.appendAttribute(appendable, "style:print-orientation", this.printOrientation);
+        util.appendAttribute(appendable, "style:print", StringUtil.join(" ", this.printComponents));
         this.appendBackgroundColor(util, appendable);
         this.margins.appendXMLContent(util, appendable);
         appendable.append("/>"); // End of page-layout-properties

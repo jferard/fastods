@@ -64,7 +64,9 @@ public class PageStyleTest {
                         "<style:page-layout-properties fo:page-width=\"21cm\" " +
                         "fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
                         "style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
                         "<style:header-style>" + "<style:header-footer-properties " +
                         "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:header-style>" +
                         "<style:footer-style>" + "<style:header-footer-properties " +
@@ -88,12 +90,14 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" fo:background-color=\"#ffebcd\" " +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:background-color=\"#ffebcd\" " +
                 "fo:margin=\"1.5cm\"/>" + "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" " +
-                "fo:margin=\"0cm\"/></style:header-style><style:footer-style><style:header-footer" +
-                "-properties " + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" + "</style:footer-style>" +
+                "fo:margin=\"0cm\"/></style:header-style><style:footer-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" +
                 "</style:page-layout>", pageStyle);
     }
 
@@ -120,7 +124,9 @@ public class PageStyleTest {
         DomTester.assertEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
                 "</style:page-layout>", sb.toString());
 
     }
@@ -132,11 +138,13 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"10cm\" " +
                 "fo:page-height=\"20cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
                 "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:header-style>" + "<style:footer-style>" +
-                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
@@ -147,7 +155,9 @@ public class PageStyleTest {
                         "<style:page-layout-properties fo:page-width=\"21cm\" " +
                         "fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
                         "style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
                         "<style:header-style/>" + "<style:footer-style/>" + "</style:page-layout>",
                 pageStyle);
     }
@@ -159,7 +169,9 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"29.7cm\" " +
                 "fo:page-height=\"42cm\" style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
                 "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:header-style>" + "<style:footer-style>" +
@@ -175,7 +187,9 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"29.7cm\" " +
                 "fo:page-height=\"21cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
-                "style:print-orientation=\"landscape\" fo:margin=\"1.5cm\"/>" +
+                "style:print-orientation=\"landscape\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
                 "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:header-style>" + "<style:footer-style>" +
@@ -191,11 +205,13 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
                 "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:header-style>" + "<style:footer-style>" +
-                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 
@@ -208,12 +224,16 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\"><style:page-layout" +
                 "-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
                 "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\" fo:margin-top=\"4pt\" " +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\" fo:margin-top=\"4pt\" " +
                 "fo:margin-right=\"3pt\" fo:margin-bottom=\"1pt\" " +
-                "fo:margin-left=\"2pt\"/><style:header-style><style:header-footer-properties " +
-                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer" +
-                "-style><style:header-footer-properties fo:min-height=\"0cm\" " +
-                "fo:margin=\"0cm\"/></style:footer-style></style:page-layout>", pageStyle);
+                "fo:margin-left=\"2pt\"/>" +
+                "<style:header-style><style:header-footer-properties " +
+                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style>" +
+                "<style:footer-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style></style:page-layout>", pageStyle);
     }
 
     @Test
@@ -226,8 +246,10 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\"><style:page-layout" +
                 "-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
                 "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1" +
-                ".5cm\"/><style:header-style><style:header-footer-properties " +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
+                "<style:header-style><style:header-footer-properties " +
                 "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer" +
                 "-style><style:header-footer-properties fo:min-height=\"0cm\" " +
                 "fo:margin=\"0cm\"/></style:footer-style></style:page-layout>", pageStyle);
@@ -245,11 +267,14 @@ public class PageStyleTest {
         this.assertLayoutXMLEquals("<style:page-layout style:name=\"test\">" +
                 "<style:page-layout-properties fo:page-width=\"21cm\" " +
                 "fo:page-height=\"29.7cm\" style:num-format=\"1\" style:writing-mode=\"page\" " +
-                "style:print-orientation=\"portrait\" fo:margin=\"1.5cm\"/>" +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" " +
+                "fo:margin=\"1.5cm\"/>" +
                 "<style:header-style>" +
                 "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                "</style:header-style>" + "<style:footer-style>" +
-                "<style:header-footer-properties " + "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style>" +
+                "<style:footer-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
                 "</style:footer-style>" + "</style:page-layout>", pageStyle);
     }
 

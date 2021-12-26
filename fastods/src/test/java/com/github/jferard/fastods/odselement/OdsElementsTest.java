@@ -204,13 +204,17 @@ public class OdsElementsTest {
                 "style:display=\"false\"/></style:master-page>", sb1.toString());
         final StringBuilder sb2 = new StringBuilder();
         this.stylesContainer.writePageLayoutStyles(XMLUtil.create(), sb2);
-        Assert.assertEquals("<style:page-layout style:name=\"Mpm1\"><style:page-layout-properties" +
-                " fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
-                "style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" fo:margin=\"1" +
-                ".5cm\"/><style:header-style><style:header-footer-properties " +
-                "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:header-style><style:footer" +
-                "-style><style:header-footer-properties fo:min-height=\"0cm\" " +
-                "fo:margin=\"0cm\"/></style:footer-style></style:page-layout>", sb2.toString());
+        Assert.assertEquals("<style:page-layout style:name=\"Mpm1\">" +
+                "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
+                "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                "style:print-orientation=\"portrait\" " +
+                "style:print=\"objects charts drawings zero-values\" fo:margin=\"1.5cm\"/>" +
+                "<style:header-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:header-style><style:footer-style>" +
+                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                "</style:footer-style>" +
+                "</style:page-layout>", sb2.toString());
     }
 
     @Test

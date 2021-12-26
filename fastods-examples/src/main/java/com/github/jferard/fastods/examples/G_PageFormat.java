@@ -38,6 +38,7 @@ import com.github.jferard.fastods.TextBuilder;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.PaperFormat;
+import com.github.jferard.fastods.style.PrintComponent;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextStyle;
 
@@ -286,8 +287,12 @@ class G_PageFormat {
         // want (900 is enough !).
         table.addPrintRange(0, 0, 900, 7);
 
-        final PageStyle pageStyle =
-                PageStyle.builder("page-style").scaleToX(1).build();
+        // Then we set the number of horizontal pages and show the grid.
+        final PageStyle pageStyle = PageStyle.builder("page-style")
+                .scaleToX(1)
+                .printComponents(PrintComponent.OBJECTS, PrintComponent.CHARTS,
+                        PrintComponent.DRAWINGS, PrintComponent.ZERO_VALUES, PrintComponent.GRID)
+                .build();
         // And add the page style into the table style:
         final TableStyle tableStyle =
                 TableStyle.builder("table-style").pageStyle(pageStyle).build();

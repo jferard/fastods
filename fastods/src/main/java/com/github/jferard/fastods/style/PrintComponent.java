@@ -22,37 +22,26 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.util;
+package com.github.jferard.fastods.style;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+public enum PrintComponent {
+    HEADERS("headers"),
+    GRID("grid"),
+    ANNOTATIONS("annotations"),
+    OBJECTS("objects"),
+    CHARTS("charts"),
+    DRAWINGS("drawings"),
+    FORMULAS("formulas"),
+    ZERO_VALUES("zero-values");
 
-/**
- * This class implements the infamous missing feature of Java 6 Strings.
- */
-public class StringUtil {
-    /**
-     * Join a collection on a separator
-     * @param <T> the type of the objects
-     * @param separator the separator
-     * @param segments the collection
-     * @return the joined collection.
-     */
-    public static <T> String join(final String separator, final Collection<T> segments) {
-        final StringBuilder sb = new StringBuilder();
-        final Iterator<T> it = segments.iterator();
-        if (it.hasNext()) {
-            sb.append(it.next());
-            while (it.hasNext()) {
-                sb.append(separator).append(it.next());
-            }
-        }
-        return sb.toString();
+    private final String componentName;
+
+    PrintComponent(final String componentName) {
+        this.componentName = componentName;
     }
 
+    @Override
+    public String toString() {
+        return this.componentName;
+    }
 }

@@ -36,6 +36,9 @@ import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.util.StyleBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Julien Férard
  */
@@ -61,6 +64,7 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
     private int scaleToX;
     private int scaleToY;
     private PageCentering centering;
+    private List<PrintComponent> printComponents;
 
     /**
      * Create a new page style builder.
@@ -84,6 +88,8 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
         this.backgroundColor = SimpleColor.NONE;
 
         this.printOrientation = PageStyle.DEFAULT_PRINT_ORIENTATION;
+        this.printComponents = Arrays.asList(PrintComponent.OBJECTS, PrintComponent.CHARTS,
+                PrintComponent.DRAWINGS, PrintComponent.ZERO_VALUES);
         this.writingMode = PageStyle.DEFAULT_WRITING_MODE;
         this.scaleTo = 100;
         this.scaleToPages = 0;
@@ -109,8 +115,9 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
             this.pageLayoutStyle =
                     new PageLayoutStyle(this.name, this.marginsBuilder.build(), this.pageWidth,
                             this.pageHeight, this.numFormat, this.backgroundColor, this.header,
-                            this.footer, this.printOrientation, this.writingMode, this.scaleTo,
-                            this.scaleToPages, this.scaleToX, this.scaleToY, this.centering);
+                            this.footer, this.printOrientation, this.printComponents,
+                            this.writingMode, this.scaleTo, this.scaleToPages, this.scaleToX,
+                            this.scaleToY, this.centering);
         }
         return new PageStyle(this.hidden, this.masterPageStyle, this.pageLayoutStyle);
     }
@@ -297,6 +304,17 @@ public class PageStyleBuilder implements StyleBuilder<PageStyle>, HidableBuilder
         this.pageWidth = this.paperFormat.getWidth();
         this.pageHeight = this.paperFormat.getHeight();
         this.printOrientation = PagePrintOrientation.VERTICAL;
+        return this;
+    }
+
+    /**
+     * Set the components to print
+     *
+     * @param components the components to print. Default is: OBJECTS, CHARTS, DRAWINGS, ZERO_VALUES
+     * @return this for fluent style
+     */
+    public PageStyleBuilder printComponents(final PrintComponent... components) {
+        this.printComponents = Arrays.asList(components);
         return this;
     }
 

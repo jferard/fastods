@@ -67,14 +67,20 @@ public class StylesContainerTest {
         DS2_XML = String.format(DS_XML_FORMAT, "B");
 
         PS_LAYOUT_XML_FORMAT =
-                "<style:page-layout style:name=\"a\">" + "<style:page-layout-properties " +
-                        "fo:page-width=\"21cm\" " + "fo:page-height=\"29.7cm\" " +
-                        "style:num-format=\"1\" " + "style:writing-mode=\"lr-tb\" " +
-                        "style:print-orientation=\"portrait\" " + "fo:margin=\"%s\"/>" +
-                        "<style:header-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:header-style>" +
-                        "<style:footer-style>" + "<style:header-footer-properties " +
-                        "fo:min-height=\"0cm\" " + "fo:margin=\"0cm\"/>" + "</style:footer-style>" +
+                "<style:page-layout style:name=\"a\">" +
+                        "<style:page-layout-properties " +
+                        "fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
+                        "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" fo:margin=\"%s\"/>" +
+                        "<style:header-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" " +
+                        "fo:margin=\"0cm\"/>" +
+                        "</style:header-style>" +
+                        "<style:footer-style>" +
+                        "<style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:footer-style>" +
                         "</style:page-layout>";
         PS1_LAYOUT_XML = String.format(PS_LAYOUT_XML_FORMAT, "1pt");
         PS2_LAYOUT_XML = String.format(PS_LAYOUT_XML_FORMAT, "2pt");
