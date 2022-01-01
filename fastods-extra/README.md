@@ -1,5 +1,5 @@
 # FastODS
-(C) J. Férard 2016-2021
+(C) J. Férard 2016-2022
 
 (C) M. Schulz 2008-2013 for SimpleODS
 
