@@ -65,10 +65,10 @@ public class ErrorMessage implements XMLConvertible {
             util.appendAttribute(appendable, "table:display", true);
         }
         if (this.messageType != MessageType.STOP) {
-            util.appendAttribute(appendable, "table:display", this.display);
+            util.appendAttribute(appendable, "table:message-type", this.messageType);
         }
         if (this.title != null) {
-            util.appendAttribute(appendable, "table:display", this.title);
+            util.appendAttribute(appendable, "table:title", this.title);
         }
         appendable.append("/>");
     }

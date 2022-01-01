@@ -30,6 +30,11 @@ import com.github.jferard.fastods.ref.CellRef;
 
 import java.io.IOException;
 
+/**
+ * 9.4.5 table:content-validation
+ *
+ *
+ */
 public class Validation implements XMLConvertible, NamedObject {
     public static ValidationBuilder builder(final String name) {
         return new ValidationBuilder(name);
@@ -42,6 +47,14 @@ public class Validation implements XMLConvertible, NamedObject {
     private final DisplayList displayList;
     private final ErrorMessage errorMessage;
 
+    /**
+     * @param name the validation name
+     * @param condition the table:condition attribute
+     * @param allowEmptyCells true if empty cells are allowed
+     * @param baseCellAddress the base address (A1) for formulas
+     * @param displayList the sort order
+     * @param errorMessage the error message if the condition is not met
+     */
     public Validation(final String name, final String condition, final boolean allowEmptyCells,
                       final CellRef baseCellAddress,
                       final DisplayList displayList, final ErrorMessage errorMessage) {
@@ -58,18 +71,18 @@ public class Validation implements XMLConvertible, NamedObject {
             throws IOException {
         appendable.append("<table:content-validation");
         util.appendEAttribute(appendable, "table:name", this.name);
-        util.appendEAttribute(appendable, "table:condition", this.condition); // "of:cell-content-is-in-list(&quot;A&quot;;&quot;B&quot;;&quot;C&quot;)">
+        if (this.condition != null) {
+            util.appendEAttribute(appendable, "table:condition",
+                    this.condition); // "of:cell-content-is-in-list(&quot;A&quot;;&quot;B&quot;;&quot;C&quot;)">
+        }
         if (!this.allowEmptyCells) {
             util.appendEAttribute(appendable, "table:allow-empty-cell", "false");
         }
         if (this.baseCellAddress != null) {
             util.appendEAttribute(appendable, "table:base-cell-address", this.baseCellAddress.toString());
         }
-        if (this.baseCellAddress != null) {
-            util.appendAttribute(appendable, "table:base-cell-address", this.baseCellAddress.toString());
-        }
         if (this.displayList != DisplayList.UNSORTED) {
-            util.appendAttribute(appendable, "table:base-cell-address", this.displayList);
+            util.appendAttribute(appendable, "table:display-list", this.displayList);
         }
         if (this.errorMessage != null) {
             appendable.append(">");

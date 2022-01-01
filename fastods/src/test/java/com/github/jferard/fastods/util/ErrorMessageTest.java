@@ -22,31 +22,27 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.attribute;
+package com.github.jferard.fastods.util;
 
-import com.github.jferard.fastods.util.CharsetUtil;
+import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.MessageType;
+import org.junit.Assert;
+import org.junit.Test;
 
-import java.util.Locale;
+import java.io.IOException;
 
-/**
- * 19.670 table:message-type
- */
-public enum MessageType implements AttributeValue {
-    /**
-     * information: message is displayed as information only.
-     */
-    INFORMATION,
-    /**
-     * stop: message is displayed as an error and the operation that caused the validation check is stopped.
-     */
-    STOP,
-    /**
-     * warning: message is displayed as a warning.
-     */
-    WARNING;
+public class ErrorMessageTest {
+    @Test
+    public void testDefault() throws IOException {
+        final ErrorMessage message = ErrorMessage.create();
+        TestHelper.assertXMLEquals("<table:error-message/>", message);
+    }
 
-    @Override
-    public CharSequence getValue() {
-        return this.toString().toLowerCase(Locale.US);
+    @Test
+    public void testOther() throws IOException {
+        final ErrorMessage message = new ErrorMessage(true, MessageType.INFORMATION, "try again");
+        TestHelper.assertXMLEquals("<table:error-message table:display=\"true\" " +
+                "table:message-type=\"information\" " +
+                "table:title=\"try again\"/>", message);
     }
 }

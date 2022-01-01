@@ -28,7 +28,6 @@ import com.github.jferard.fastods.attribute.DisplayList;
 import com.github.jferard.fastods.ref.CellRef;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A builder for cell content validation.
@@ -45,7 +44,15 @@ public class ValidationBuilder {
         this.name = name;
         this.allowEmptyCells = true;
         this.displayList = DisplayList.UNSORTED;
-        this.errorMessage = ErrorMessage.create();
+        this.errorMessage = null;
+    }
+
+    /**
+     * @return the validation
+     */
+    public Validation build() {
+        return new Validation(this.name, this.condition, this.allowEmptyCells, this.baseCellAddress,
+                this.displayList, this.errorMessage);
     }
 
     /**
@@ -100,13 +107,5 @@ public class ValidationBuilder {
     public ValidationBuilder errorMessage(final ErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
         return this;
-    }
-
-    /**
-     * @return the validation
-     */
-    public Validation build() {
-        return new Validation(this.name, this.condition, this.allowEmptyCells, this.baseCellAddress,
-                this.displayList, this.errorMessage);
     }
 }

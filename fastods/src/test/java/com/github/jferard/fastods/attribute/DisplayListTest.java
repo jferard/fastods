@@ -24,29 +24,14 @@
 
 package com.github.jferard.fastods.attribute;
 
-import com.github.jferard.fastods.util.CharsetUtil;
+import org.junit.Assert;
+import org.junit.Test;
 
-import java.util.Locale;
-
-/**
- * 19.670 table:message-type
- */
-public enum MessageType implements AttributeValue {
-    /**
-     * information: message is displayed as information only.
-     */
-    INFORMATION,
-    /**
-     * stop: message is displayed as an error and the operation that caused the validation check is stopped.
-     */
-    STOP,
-    /**
-     * warning: message is displayed as a warning.
-     */
-    WARNING;
-
-    @Override
-    public CharSequence getValue() {
-        return this.toString().toLowerCase(Locale.US);
+public class DisplayListTest {
+    @Test
+    public void test() {
+        Assert.assertEquals("none", DisplayList.NONE.getValue());
+        Assert.assertEquals("unsorted", DisplayList.UNSORTED.getValue());
+        Assert.assertEquals("sort-ascending", DisplayList.SORT_ASCENDING.getValue());
     }
 }
