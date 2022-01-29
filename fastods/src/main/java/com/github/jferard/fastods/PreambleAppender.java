@@ -83,10 +83,16 @@ public class PreambleAppender {
         int count = 1;
         int endCount = MAX_COLUMN_COUNT;
         TableColumnImpl curColumn = iterator.next(); // will be shifted to prevTCS
+        if (curColumn == null) {
+            curColumn = TableColumnImpl.DEFAULT_TABLE_COLUMN;
+        }
         while (iterator.hasNext()) {
             headerColumnsCount--;
             final TableColumnImpl prevColumn = curColumn;
             curColumn = iterator.next();
+            if (curColumn == null) {
+                curColumn = TableColumnImpl.DEFAULT_TABLE_COLUMN;
+            }
 
             if (headerColumnsCount == 0) {
                 prevColumn.appendXMLToTable(xmlUtil, appendable, count);

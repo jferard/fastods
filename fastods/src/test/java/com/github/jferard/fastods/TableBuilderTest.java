@@ -28,14 +28,20 @@ import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
+import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.ref.TableNameUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Protection;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.apache.jena.ext.com.google.common.collect.ImmutableMap;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,6 +51,8 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,7 +74,8 @@ public class TableBuilderTest {
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.ce = ConfigItemMapEntrySet.createSet("mytable");
         this.builder =
-                new TableBuilder(positionUtil, IntegerRepresentationCache.create(), xmlUtil, this.stc, this.ds,
+                new TableBuilder(positionUtil, IntegerRepresentationCache.create(), xmlUtil,
+                        this.stc, this.ds,
                         false, "mytable", 10, 100, this.ce, 2, new ValidationsContainer());
         this.xmlUtil = xmlUtil;
 
@@ -178,7 +187,7 @@ public class TableBuilderTest {
     public final void testMergeWithPosString() throws IOException, ParseException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.builder.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
+        this.builder.setCellMerge(this.table, this.appender, "A3", 2, 2);
         PowerMock.verifyAll();
     }
 
@@ -279,9 +288,12 @@ public class TableBuilderTest {
         PowerMock.replayAll();
         this.builder.setConfigItem("item", "string", "value");
         this.builder.updateConfigItem("item", "value");
+        final ConfigItemMapEntrySet configEntry =
+                (ConfigItemMapEntrySet) this.builder.getConfigEntry();
 
         PowerMock.verifyAll();
-        final ConfigItem item = (ConfigItem) this.ce.getByName("item");
+        Assert.assertEquals(this.ce, configEntry);
+        final ConfigItem item = (ConfigItem) configEntry.getByName("item");
         Assert.assertEquals("item", item.getName());
         Assert.assertEquals("string", item.getType());
         Assert.assertEquals("value", item.getValue());
@@ -364,8 +376,142 @@ public class TableBuilderTest {
     public final void testFindDefaultCellStyle() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
-                this.builder.findDefaultCellStyle(10));
+        final TableCellStyle defaultCellStyle = this.builder.findDefaultCellStyle(10);
+
         PowerMock.verifyAll();
+        Assert.assertEquals(TableCellStyle.DEFAULT_CELL_STYLE,
+                defaultCellStyle);
+    }
+
+    @Test
+    public final void testFindDefaultCellStyleCustom() {
+        final TableCellStyle cellStyle = TableCellStyle.builder("test").fontWeightBold().build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(cellStyle)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.builder.setColumnDefaultCellStyle(1, cellStyle);
+        final TableCellStyle defaultCellStyle = this.builder.findDefaultCellStyle(1);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(cellStyle,
+                defaultCellStyle);
+    }
+
+    @Test
+    public final void testSetColumnAttribute() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setColumnAttribute(1, "attr", "value");
+        final FastFullList<TableColumnImpl> columns = this.builder.getColumns();
+
+        PowerMock.verifyAll();
+        final StringBuilder sb = new StringBuilder();
+        final XMLUtil util = XMLUtil.create();
+        Assert.assertNull(columns.get(0));
+        columns.get(1).appendXMLToTable(util, sb, 1);
+        DomTester.assertEquals(
+                "<table:table-column " +
+                        "table:style-name=\"co1\" table:default-cell-style-name=\"Default\" " +
+                        "attr=\"value\"/>", sb.toString());
+    }
+
+    @Test
+    public final void testAddShape() {
+        final Shape s =
+                DrawFrame.builder("df", new DrawImage("href"), SVGRectangle.cm(1, 2, 3, 4)).build();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.builder.addShape(s);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(Collections.singletonList(s), this.builder.getShapes());
+    }
+
+    @Test
+    public final void testSetAttribute() {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.builder.setAttribute("attr", "value");
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(ImmutableMap.of("attr", "value"),
+                this.builder.getCustomValueByAttribute());
+    }
+
+    @Test
+    public final void testAddForm() {
+        final Span form1 = new Span("a");
+        final Span form2 = new Span("b");
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.builder.addForm(form1);
+        this.builder.addForm(form2);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(Arrays.asList(form1, form2), this.builder.getForms());
+    }
+
+    @Test
+    public final void testSetColumnStyle() {
+        final TableCellStyle cellStyle = TableCellStyle.builder("test").fontWeightBold().build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.stc.addContentFontFaceContainerStyle(cellStyle)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.builder.setColumnDefaultCellStyle(1, cellStyle);
+
+        PowerMock.verifyAll();
+        final FastFullList<TableColumnImpl> columns = this.builder.getColumns();
+        Assert.assertEquals(2, columns.usedSize());
+        Assert.assertNull(columns.get(0));
+        Assert.assertEquals(cellStyle, columns.get(1).getColumnDefaultCellStyle());
+        Assert.assertNull(columns.get(2));
+    }
+
+    @Test
+    public final void testAddPrintRange() {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.addPrintRange(1, 2, 3, 4);
+        this.builder.addPrintRange(5, 6, 7, 8);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(Arrays.asList("C2:E4", "G6:I8"), this.builder.getPrintRanges());
+    }
+
+    @Test
+    public final void testProtect() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.protect(new Protection("b", "c"));
+        final Protection protection = this.builder.getProtection();
+
+        PowerMock.verifyAll();
+        final StringBuilder sb = new StringBuilder();
+        protection.appendAttributes(XMLUtil.create(), sb);
+        Assert.assertEquals(
+                " table:protected=\"true\" table:protection-key=\"b\" table:protection-key-digest-algorithm=\"c\"",
+                sb.toString());
+    }
+
+    @Test
+    public final void testHeader() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.builder.setHeaderRowsCount(3);
+        this.builder.setHeaderColumnsCount(1);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(3, this.builder.getHeaderRowsCount());
+        Assert.assertEquals(1, this.builder.getHeaderColumnsCount());
     }
 }

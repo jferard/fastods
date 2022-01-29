@@ -78,6 +78,48 @@ public class PreambleAppenderTest {
     }
 
     @Test
+    public void appendEmptyColumnsTest() throws IOException {
+        final TableColumnImpl x = this.newTC("x");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getColumns())
+                .andReturn(FastFullList.<TableColumnImpl>newList());
+
+        PowerMock.replayAll();
+        final StringBuilder sb = new StringBuilder();
+        this.preambleAppender.appendColumns(this.xmlUtil, sb);
+        DomTester.assertEquals(
+                        "<table:table-column table:style-name=\"co1\"" +
+                        " table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/>", sb.toString());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void appendMissingColumnsTest() throws IOException {
+        final TableColumnImpl x = this.newTC("x");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tb.getColumns())
+                .andReturn(FastFullList.newList(null, null, x));
+
+        PowerMock.replayAll();
+        final StringBuilder sb = new StringBuilder();
+        this.preambleAppender.appendColumns(this.xmlUtil, sb);
+        DomTester.assertEquals(
+                "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"2\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"x\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1021\" " +
+                        "table:default-cell-style-name=\"Default\"/>", sb.toString());
+        PowerMock.verifyAll();
+    }
+
+    @Test
     public void testHeaderColumns() throws IOException {
         final TableColumnImpl x = this.newTC("x");
         final TableColumnImpl y = this.newTC("y");

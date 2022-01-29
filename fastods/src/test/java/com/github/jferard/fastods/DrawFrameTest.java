@@ -83,4 +83,26 @@ public class DrawFrameTest {
 
         PowerMock.verifyAll();
     }
+
+    @Test
+    public void testStylesContent() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        final StylesContainer container = PowerMock.createMock(StylesContainer.class);
+        final GraphicStyle gs = GraphicStyle.builder("gs").build();
+        final DrawFrame frame =
+                DrawFrame.builder("Frame 1", this.content, SVGRectangle.cm(1, 2, 3, 4)).style(gs)
+                        .textStyle(TextStyle.DEFAULT_TEXT_STYLE).build();
+
+        PowerMock.resetAll();
+        this.content.appendXMLContent(this.util, sb);
+
+        PowerMock.replayAll();
+        frame.appendXMLContent(this.util, sb);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals("<draw:frame " +
+                "draw:name=\"Frame 1\" draw:z-index=\"0\" draw:style-name=\"gs\" " +
+                "draw:text-style-name=\"Default\" svg:x=\"1cm\" svg:y=\"2cm\" " +
+                "svg:width=\"3cm\" svg:height=\"4cm\"></draw:frame>", sb.toString());
+    }
 }
