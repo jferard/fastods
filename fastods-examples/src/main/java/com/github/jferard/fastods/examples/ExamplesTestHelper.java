@@ -38,7 +38,8 @@ public class ExamplesTestHelper {
         final File schemaRNG = new File("target/schemas", "OpenDocument-v1.2-os-schema.rng");
         final File manifestSchemaRNG =
                 new File("target/schemas", "OpenDocument-v1.2-os-manifest-schema.rng");
-        final File dsigSchemaRNG = new File("target/schemas", "OpenDocument-v1.2-os-dsig-schema.rng");
+        final File dsigSchemaRNG =
+                new File("target/schemas", "OpenDocument-v1.2-os-dsig-schema.rng");
         if (schemaRNG.exists() && manifestSchemaRNG.exists() && dsigSchemaRNG.exists()) {
             Main.main(new String[]{
                     "-O", schemaRNG.getAbsolutePath(),

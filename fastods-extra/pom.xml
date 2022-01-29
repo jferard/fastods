@@ -37,7 +37,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jre>1.6</jre>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
@@ -51,7 +50,7 @@
         <dependency>
             <groupId>com.github.jferard</groupId>
             <artifactId>java-mcsv</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.4</version>
         </dependency>
 
         <dependency>

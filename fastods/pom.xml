@@ -73,7 +73,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jre>1.6</jre>
         <fastods.testSourceDirectory>src/test/java</fastods.testSourceDirectory>
     </properties>
 
