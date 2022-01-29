@@ -41,12 +41,13 @@ public class DrawFillGradient implements DrawFill, ObjectStyle {
     private final int startIntensity;
     private final Color endColor;
     private final int endIntensity;
-    private String name;
+    private final String name;
     private String key;
 
     public DrawFillGradient(final String name, final Angle angle, final Color startColor,
                             final int startIntensity, final Color endColor,
                             final int endIntensity) {
+        this.name = name;
         this.angle = angle;
         this.startColor = startColor;
         this.startIntensity = startIntensity;

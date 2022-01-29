@@ -72,6 +72,7 @@ public class DrawFillBitmap implements DrawFill, ObjectStyle {
 
     @Override
     public void addToElements(final OdsElements odsElements) {
+        // TODO: why nothing here?
     }
 
     @Override
