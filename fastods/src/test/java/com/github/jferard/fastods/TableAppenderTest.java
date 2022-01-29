@@ -31,8 +31,10 @@ import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.FastFullList;
+import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.apache.jena.ext.com.google.common.collect.ImmutableMap;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +43,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -58,10 +61,11 @@ public class TableAppenderTest {
     public void setUp()
             throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException,
             InstantiationException, IllegalAccessException {
-        final Constructor<?> constructor = StylesContainerImpl.class.getDeclaredConstructor(Logger.class);
+        final Constructor<?> constructor =
+                StylesContainerImpl.class.getDeclaredConstructor(Logger.class);
         constructor.setAccessible(true);
         this.stylesContainer =
-                (StylesContainer) constructor.newInstance(new Object[]{ Logger.getLogger("")});
+                (StylesContainer) constructor.newInstance(new Object[]{Logger.getLogger("")});
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.tm = PowerMock.createMock(TableModel.class);
         final XMLUtil xmlUtil = XMLUtil.create();
@@ -422,6 +426,62 @@ public class TableAppenderTest {
     }
 
     @Test
+    public final void testAppendRemainingRowsWithHeader() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        final TableRowImpl tr2 = this.newTR("tr2");
+        final TableRowImpl tr3 = this.newTR("tr3");
+        final TableRowImpl tr4 = this.newTR("tr4");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(2);
+        EasyMock.expect(this.tm.getTableRow(2)).andReturn(tr2);
+        EasyMock.expect(this.tm.getTableRow(3)).andReturn(tr3);
+        EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr4);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5);
+
+        PowerMock.replayAll();
+        sb.append("<table:table><table:table-header-rows>");
+        this.tableAppender.appendRemainingRowsFrom(this.xmlUtil, sb, 2);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(
+                "<table:table><table:table-header-rows></table:table-header-rows>" +
+                        "<table:table-row table:style-name=\"tr2\"><table:table-cell/>" +
+                        "</table:table-row><table:table-row table:style-name=\"tr3\">" +
+                        "<table:table-cell/></table:table-row>" +
+                        "<table:table-row table:style-name=\"tr4\"><table:table-cell/>" +
+                        "</table:table-row>" +
+                        "</table:table>",
+                sb.toString());
+    }
+
+    @Test
+    public final void testAppendRemainingRowsWithHeader2() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        final TableRowImpl tr3 = this.newTR("tr3");
+        final TableRowImpl tr4 = this.newTR("tr4");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(2);
+        EasyMock.expect(this.tm.getTableRow(3)).andReturn(tr3);
+        EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr4);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5);
+
+        PowerMock.replayAll();
+        sb.append("<table:table>");
+        this.tableAppender.appendRemainingRowsFrom(this.xmlUtil, sb, 3);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(
+                "<table:table><table:table-row table:style-name=\"tr3\">" +
+                        "<table:table-cell/></table:table-row>" +
+                        "<table:table-row table:style-name=\"tr4\"><table:table-cell/>" +
+                        "</table:table-row>" +
+                        "</table:table>",
+                sb.toString());
+    }
+
+    @Test
     public final void testAppendRowsWithHeaderRows2() throws IOException {
         final StringBuilder sb = new StringBuilder();
         final FastFullList<TableColumnImpl> emptyFullList =
@@ -488,8 +548,8 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(2);
-        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -514,6 +574,38 @@ public class TableAppenderTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public final void testAppendOpenTag() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Arrays.asList("A5:E10", "A17:E27"));
+        EasyMock.expect(this.tm.getProtection()).andReturn(new Protection("a", "b"));
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(
+                ImmutableMap.<String, CharSequence>of("attr", "value"));
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getColumns())
+                .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
+
+        PowerMock.replayAll();
+        this.tableAppender.appendOpenTagAndPreamble(this.xmlUtil, sb);
+
+        PowerMock.verifyAll();
+        sb.append("</table:table>");
+        DomTester.assertEquals("<table:table " +
+                        "table:name=\"table1\" table:style-name=\"table-style1\" " +
+                        "table:print-ranges=\"A5:E10 A17:E27\" " +
+                        "table:protected=\"true\" table:protection-key=\"a\" " +
+                        "table:protection-key-digest-algorithm=\"b\" attr=\"value\">" +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/></table:table>",
+                sb.toString());
+    }
+
     private void assertPreambleXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
         this.tableAppender.appendOpenTagAndPreambleOnce(this.xmlUtil, sb);
@@ -530,7 +622,8 @@ public class TableAppenderTest {
 
     private TableRowImpl newTR(final String styleName) {
         final TableRowImpl tr =
-                new TableRowImpl(null, null, this.stylesContainer, null, true, null, this.rowIndex, 10, null);
+                new TableRowImpl(null, null, this.stylesContainer, null, true, null, this.rowIndex,
+                        10, null);
         // return PowerMock.createMock(TableRowImpl.class);
         this.rowIndex++;
         tr.setRowStyle(TableRowStyle.builder(styleName).build());

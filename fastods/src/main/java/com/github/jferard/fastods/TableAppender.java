@@ -96,9 +96,10 @@ class TableAppender {
         appendable.append("<table:table");
         util.appendEAttribute(appendable, "table:name", this.model.getName());
         util.appendEAttribute(appendable, "table:style-name", this.model.getStyleName());
-        util.appendAttribute(appendable, "table:print", false);
         final List<String> printRanges = this.model.getPrintRanges();
-        if (!printRanges.isEmpty()) {
+        if (printRanges.isEmpty()) {
+            util.appendAttribute(appendable, "table:print", false);
+        } else { // default value for table:print = true
             final String printRangesAddresses = StringUtil.join(" ", printRanges);
             util.appendEAttribute(appendable, "table:print-ranges", printRangesAddresses);
         }
