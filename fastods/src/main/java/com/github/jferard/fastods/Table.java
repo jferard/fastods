@@ -74,14 +74,14 @@ public class Table implements NamedObject, FrameContent {
                                final boolean libreOfficeMode,
                                final ValidationsContainer validationsContainer) {
         positionUtil.checkTableName(name);
-        final TableBuilder builder = TableBuilder
+        final TableModel model = TableModel
                 .create(positionUtil, cache, xmlUtil, stylesContainer, format, libreOfficeMode,
                         name, rowCapacity, columnCapacity, validationsContainer);
-        return new Table(name, contentElement, builder, new TableAppender(builder));
+        return new Table(name, contentElement, model, new TableAppender(model));
     }
 
     private final ContentElement contentElement;
-    private final TableBuilder builder;
+    private final TableModel model;
     private final TableAppender appender;
     private final String name;
 
@@ -91,14 +91,14 @@ public class Table implements NamedObject, FrameContent {
      *
      * @param name           the name of the table
      * @param contentElement the content.xml representation
-     * @param builder        the builder
+     * @param model        the builder
      * @param tableAppender  the appender
      */
-    Table(final String name, final ContentElement contentElement, final TableBuilder builder,
+    Table(final String name, final ContentElement contentElement, final TableModel model,
           final TableAppender tableAppender) {
         this.name = name;
         this.contentElement = contentElement;
-        this.builder = builder;
+        this.model = model;
         this.appender = tableAppender;
     }
 
@@ -108,7 +108,7 @@ public class Table implements NamedObject, FrameContent {
      * @param observer the observer
      */
     public void addObserver(final NamedOdsFileWriter observer) {
-        this.builder.addObserver(observer);
+        this.model.addObserver(observer);
     }
 
     /**
@@ -132,8 +132,8 @@ public class Table implements NamedObject, FrameContent {
      */
     @Deprecated
     public void asyncFlush() throws IOException {
-        this.builder.asyncFlushBeginTable(this.appender);
-        this.builder.asyncFlushEndTable(this.appender);
+        this.model.asyncFlushBeginTable(this.appender);
+        this.model.asyncFlushEndTable(this.appender);
     }
 
     /**
@@ -142,7 +142,7 @@ public class Table implements NamedObject, FrameContent {
      * @throws IOException if an error occurs
      */
     public void asyncFlushBeginTable() throws IOException {
-        this.builder.asyncFlushBeginTable(this.appender);
+        this.model.asyncFlushBeginTable(this.appender);
     }
 
     /**
@@ -151,7 +151,7 @@ public class Table implements NamedObject, FrameContent {
      * @throws IOException if an error occurs
      */
     public void asyncFlushEndTable() throws IOException {
-        this.builder.asyncFlushEndTable(this.appender);
+        this.model.asyncFlushEndTable(this.appender);
     }
 
     /**
@@ -196,14 +196,14 @@ public class Table implements NamedObject, FrameContent {
      * @return the config item map of this table
      */
     public ConfigItemMapEntry getConfigEntry() {
-        return this.builder.getConfigEntry();
+        return this.model.getConfigEntry();
     }
 
     /**
      * @return the number of the last row (0..)
      */
     public int getRowCount() {
-        return this.builder.getRowCount();
+        return this.model.getRowCount();
     }
 
     /**
@@ -225,7 +225,7 @@ public class Table implements NamedObject, FrameContent {
      * @throws IOException              if the row was flushed
      */
     public TableRowImpl getRow(final int rowIndex) throws IOException {
-        return this.builder.getRow(this, this.appender, rowIndex);
+        return this.model.getRow(this, this.appender, rowIndex);
     }
 
     /**
@@ -234,7 +234,7 @@ public class Table implements NamedObject, FrameContent {
      * @return The current TableStyle
      */
     public String getStyleName() {
-        return this.builder.getStyleName();
+        return this.model.getStyleName();
     }
 
     /**
@@ -243,7 +243,7 @@ public class Table implements NamedObject, FrameContent {
      */
     @Deprecated
     public TableRowImpl nextRow() throws IOException {
-        return this.builder.nextRow(this, this.appender);
+        return this.model.nextRow(this, this.appender);
     }
 
     /**
@@ -265,7 +265,7 @@ public class Table implements NamedObject, FrameContent {
      */
     public void setCellMerge(final int rowIndex, final int colIndex, final int rowMerge,
                              final int columnMerge) throws IOException {
-        this.builder.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
+        this.model.setCellMerge(this, this.appender, rowIndex, colIndex, rowMerge, columnMerge);
     }
 
     /**
@@ -280,7 +280,7 @@ public class Table implements NamedObject, FrameContent {
     @Deprecated
     public void setCellMerge(final String address, final int rowMerge, final int columnMerge)
             throws IOException, ParseException {
-        this.builder.setCellMerge(this, this.appender, address, rowMerge, columnMerge);
+        this.model.setCellMerge(this, this.appender, address, rowMerge, columnMerge);
     }
 
     /**
@@ -292,7 +292,7 @@ public class Table implements NamedObject, FrameContent {
      * @throws IllegalArgumentException if col has an invalid value.
      */
     public void setColumnStyle(final int col, final TableColumnStyle ts) {
-        this.builder.setColumnStyle(col, ts);
+        this.model.setColumnStyle(col, ts);
     }
 
     /**
@@ -304,11 +304,11 @@ public class Table implements NamedObject, FrameContent {
      */
     public void setColumnAttribute(final int col, final String attribute,
                                    final CharSequence value) {
-        this.builder.setColumnAttribute(col, attribute, value);
+        this.model.setColumnAttribute(col, attribute, value);
     }
 
     public void setColumnDefaultCellStyle(final int col, final TableCellStyle cellStyle) {
-        this.builder.setColumnDefaultCellStyle(col, cellStyle);
+        this.model.setColumnDefaultCellStyle(col, cellStyle);
     }
 
     /**
@@ -318,7 +318,7 @@ public class Table implements NamedObject, FrameContent {
      * @param value     the value
      */
     public void setAttribute(final String attribute, final CharSequence value) {
-        this.builder.setAttribute(attribute, value);
+        this.model.setAttribute(attribute, value);
     }
 
     /**
@@ -329,7 +329,7 @@ public class Table implements NamedObject, FrameContent {
      * @param value the item value
      */
     public void setConfigItem(final String name, final String type, final String value) {
-        this.builder.setConfigItem(name, type, value);
+        this.model.setConfigItem(name, type, value);
     }
 
     /**
@@ -339,7 +339,7 @@ public class Table implements NamedObject, FrameContent {
      * @param value   the item value
      */
     public void updateConfigItem(final ConfigElement element, final String value) {
-        this.builder.updateConfigItem(element.getName(), value);
+        this.model.updateConfigItem(element.getName(), value);
     }
 
     /**
@@ -348,7 +348,7 @@ public class Table implements NamedObject, FrameContent {
      * @param style The new TableStyle to be used
      */
     public void setStyle(final TableStyle style) {
-        this.builder.setStyle(style);
+        this.model.setStyle(style);
     }
 
     /**
@@ -361,7 +361,7 @@ public class Table implements NamedObject, FrameContent {
      */
     public void setRowsSpanned(final int rowIndex, final int colIndex, final int n)
             throws IOException {
-        this.builder.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
+        this.model.setRowsSpanned(this, this.appender, rowIndex, colIndex, n);
     }
 
     /**
@@ -371,7 +371,7 @@ public class Table implements NamedObject, FrameContent {
      * @return the style, never null
      */
     public TableCellStyle findDefaultCellStyle(final int columnIndex) {
-        return this.builder.findDefaultCellStyle(columnIndex);
+        return this.model.findDefaultCellStyle(columnIndex);
     }
 
     /**
@@ -395,7 +395,7 @@ public class Table implements NamedObject, FrameContent {
      * @param shape the shape
      */
     public void addShape(final Shape shape) {
-        this.builder.addShape(shape);
+        this.model.addShape(shape);
     }
 
     /**
@@ -403,18 +403,18 @@ public class Table implements NamedObject, FrameContent {
      * @throws NoSuchAlgorithmException should not happen
      */
     public void protect(final Protection protection) throws NoSuchAlgorithmException {
-        this.builder.protect(protection);
+        this.model.protect(protection);
     }
 
     public void addPrintRange(final int r1, final int c1, final int r2, final int c2) {
-        this.builder.addPrintRange(r1, c1, r2, c2);
+        this.model.addPrintRange(r1, c1, r2, c2);
     }
 
     public void setHeaderRowsCount(final int headerRowsCount) {
-        this.builder.setHeaderRowsCount(headerRowsCount);
+        this.model.setHeaderRowsCount(headerRowsCount);
     }
 
     public void setHeaderColumnsCount(final int headerColumnsCount) {
-        this.builder.setHeaderColumnsCount(headerColumnsCount);
+        this.model.setHeaderColumnsCount(headerColumnsCount);
     }
 }

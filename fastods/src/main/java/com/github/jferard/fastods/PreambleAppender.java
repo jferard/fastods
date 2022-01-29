@@ -32,14 +32,14 @@ import java.util.List;
 
 public class PreambleAppender {
     private static final int MAX_COLUMN_COUNT = 1024;
-    private final TableBuilder builder;
+    private final TableModel model;
 
-    public PreambleAppender(final TableBuilder builder) {
-        this.builder = builder;
+    public PreambleAppender(final TableModel model) {
+        this.model = model;
     }
 
     public void appendForms(final XMLUtil util, final Appendable appendable) throws IOException {
-        final List<XMLConvertible> forms = this.builder.getForms();
+        final List<XMLConvertible> forms = this.model.getForms();
         if (forms == null || forms.isEmpty()) {
             return;
         }
@@ -55,7 +55,7 @@ public class PreambleAppender {
     }
 
     public void appendShapes(final XMLUtil util, final Appendable appendable) throws IOException {
-        final List<Shape> shapes = this.builder.getShapes();
+        final List<Shape> shapes = this.model.getShapes();
         if (shapes == null || shapes.isEmpty()) {
             return;
         }
@@ -69,14 +69,14 @@ public class PreambleAppender {
 
     public void appendColumns(final XMLUtil xmlUtil, final Appendable appendable)
             throws IOException {
-        final Iterator<TableColumnImpl> iterator = this.builder.getColumns().iterator();
+        final Iterator<TableColumnImpl> iterator = this.model.getColumns().iterator();
         if (!iterator.hasNext()) {
             TableColumnImpl.DEFAULT_TABLE_COLUMN
                     .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT);
             return;
         }
 
-        int headerColumnsCount = this.builder.getHeaderColumnsCount();
+        int headerColumnsCount = this.model.getHeaderColumnsCount();
         if (headerColumnsCount > 0) {
             appendable.append("<table:table-header-columns>");
         }

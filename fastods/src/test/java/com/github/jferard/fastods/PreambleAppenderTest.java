@@ -39,12 +39,12 @@ import java.io.IOException;
 public class PreambleAppenderTest {
     private PreambleAppender preambleAppender;
     private XMLUtil xmlUtil;
-    private TableBuilder tb;
+    private TableModel tm;
 
     @Before
     public void setUp() {
-        this.tb = PowerMock.createMock(TableBuilder.class);
-        this.preambleAppender = new PreambleAppender(this.tb);
+        this.tm = PowerMock.createMock(TableModel.class);
+        this.preambleAppender = new PreambleAppender(this.tm);
         this.xmlUtil = XMLUtil.create();
     }
 
@@ -54,8 +54,8 @@ public class PreambleAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
@@ -82,7 +82,7 @@ public class PreambleAppenderTest {
         final TableColumnImpl x = this.newTC("x");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newList());
 
         PowerMock.replayAll();
@@ -100,8 +100,8 @@ public class PreambleAppenderTest {
         final TableColumnImpl x = this.newTC("x");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(null, null, x));
 
         PowerMock.replayAll();
@@ -125,8 +125,8 @@ public class PreambleAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(2);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(2);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
@@ -159,8 +159,8 @@ public class PreambleAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(5);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(5);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
@@ -190,8 +190,8 @@ public class PreambleAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(10);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(10);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();
@@ -221,8 +221,8 @@ public class PreambleAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(11);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(11);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
 
         PowerMock.replayAll();

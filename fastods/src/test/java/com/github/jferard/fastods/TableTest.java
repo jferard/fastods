@@ -60,7 +60,7 @@ public class TableTest {
     private XMLUtil xmlUtil;
     private StringBuilder sb;
     private ContentElement ce;
-    private TableBuilder tb;
+    private TableModel tm;
     private Table tableWithMockBuilder;
     private TableAppender ta;
 
@@ -77,10 +77,10 @@ public class TableTest {
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
 
-        this.tb = PowerMock.createMock(TableBuilder.class);
+        this.tm = PowerMock.createMock(TableModel.class);
         this.ta = PowerMock.createMock(TableAppender.class);
 
-        this.tableWithMockBuilder = new Table("test", this.ce, this.tb, this.ta);
+        this.tableWithMockBuilder = new Table("test", this.ce, this.tm, this.ta);
     }
 
     @Test
@@ -207,7 +207,7 @@ public class TableTest {
     @Test
     public final void testMerge() throws IOException {
         PowerMock.resetAll();
-        this.tb.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
+        this.tm.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
                 EasyMock.isA(TableAppender.class), EasyMock.eq(1), EasyMock.eq(1), EasyMock.eq(2),
                 EasyMock.eq(3));
 
@@ -220,7 +220,7 @@ public class TableTest {
     @Test
     public final void testMergePos() throws IOException {
         PowerMock.resetAll();
-        this.tb.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
+        this.tm.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
                 EasyMock.isA(TableAppender.class), EasyMock.eq(0),
                 EasyMock.eq(1), EasyMock.eq(2),
                 EasyMock.eq(3));
@@ -277,7 +277,7 @@ public class TableTest {
     @Test
     public final void testConfigItem() {
         PowerMock.resetAll();
-        this.tb.setConfigItem("item", "type", "value");
+        this.tm.setConfigItem("item", "type", "value");
 
         PowerMock.replayAll();
         this.tableWithMockBuilder.setConfigItem("item", "type", "value");
@@ -288,7 +288,7 @@ public class TableTest {
     @Test
     public final void testUpdateConfigItem() {
         PowerMock.resetAll();
-        this.tb.updateConfigItem(ZOOM_VALUE.getName(), "value");
+        this.tm.updateConfigItem(ZOOM_VALUE.getName(), "value");
 
         PowerMock.replayAll();
         this.tableWithMockBuilder.updateConfigItem(ZOOM_VALUE, "value");
@@ -315,7 +315,7 @@ public class TableTest {
     @Test
     public final void testAsyncFlushBeginTable() throws IOException {
         PowerMock.resetAll();
-        this.tb.asyncFlushBeginTable(this.ta);
+        this.tm.asyncFlushBeginTable(this.ta);
 
         PowerMock.replayAll();
         this.tableWithMockBuilder.asyncFlushBeginTable();
@@ -326,7 +326,7 @@ public class TableTest {
     @Test
     public final void testAsyncFlushEndTable() throws IOException {
         PowerMock.resetAll();
-        this.tb.asyncFlushEndTable(this.ta);
+        this.tm.asyncFlushEndTable(this.ta);
 
         PowerMock.replayAll();
         this.tableWithMockBuilder.asyncFlushEndTable();
@@ -351,7 +351,7 @@ public class TableTest {
         final TableCell cell = PowerMock.createMock(TableCell.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getRow(this.tableWithMockBuilder, this.ta, 0)).andReturn(row);
+        EasyMock.expect(this.tm.getRow(this.tableWithMockBuilder, this.ta, 0)).andReturn(row);
         EasyMock.expect(row.getOrCreateCell(0)).andReturn(cell);
 
         PowerMock.replayAll();
@@ -365,7 +365,7 @@ public class TableTest {
         final ConfigItemMapEntry entry = PowerMock.createMock(ConfigItemMapEntry.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getConfigEntry()).andReturn(entry);
+        EasyMock.expect(this.tm.getConfigEntry()).andReturn(entry);
 
         PowerMock.replayAll();
         final ConfigItemMapEntry e = this.tableWithMockBuilder.getConfigEntry();

@@ -50,7 +50,7 @@ public class TableAppenderTest {
     private StylesContainer stc;
     private TableAppender tableAppender;
     private XMLUtil xmlUtil;
-    private TableBuilder tb;
+    private TableModel tm;
     private int rowIndex;
     private StylesContainer stylesContainer;
 
@@ -63,25 +63,25 @@ public class TableAppenderTest {
         this.stylesContainer =
                 (StylesContainer) constructor.newInstance(new Object[]{ Logger.getLogger("")});
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
-        this.tb = PowerMock.createMock(TableBuilder.class);
+        this.tm = PowerMock.createMock(TableModel.class);
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
-        this.tableAppender = new TableAppender(this.tb);
+        this.tableAppender = new TableAppender(this.tm);
         this.xmlUtil = xmlUtil;
     }
 
     @Test
     public void appendEmptyPreambleTest() throws IOException {
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>singletonList(
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>singletonList(
                 new XMLConvertible() {
                     @Override
                     public void appendXMLContent(final XMLUtil util, final Appendable appendable)
@@ -107,15 +107,15 @@ public class TableAppenderTest {
                 DrawFrame.builder("a", new DrawImage("href"), SVGRectangle.cm(0, 1, 2, 3)).build();
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>singletonList(drawFrame));
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>singletonList(drawFrame));
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -137,16 +137,16 @@ public class TableAppenderTest {
     @Test
     public void appendOneElementPreambleTest() throws IOException {
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x")));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -164,16 +164,16 @@ public class TableAppenderTest {
     @Test
     public void appendTwoElementsPreambleTest() throws IOException {
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(this.newTC("x"), this.newTC("x")));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -193,16 +193,16 @@ public class TableAppenderTest {
         final TableColumnImpl x = this.newTC("x");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, this.newTC("y"), x));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -227,16 +227,16 @@ public class TableAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -261,17 +261,17 @@ public class TableAppenderTest {
         final StringBuilder sb = new StringBuilder();
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("tb");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("tb");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("tb-style");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>builder().build());
-        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
-        EasyMock.expect(this.tb.getHeaderRowsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(0);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(0);
 
         PowerMock.replayAll();
         this.tableAppender.appendAllAvailableRows(this.xmlUtil, sb);
@@ -292,18 +292,18 @@ public class TableAppenderTest {
                 FastFullList.<TableColumnImpl>builder().build();
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("tb").times(2);
-        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style").times(2);
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList())
+        EasyMock.expect(this.tm.getName()).andReturn("tb").times(2);
+        EasyMock.expect(this.tm.getStyleName()).andReturn("tb-style").times(2);
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList())
                 .times(2);
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null).times(2);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null).times(2);
-        EasyMock.expect(this.tb.getColumns()).andReturn(emptyFullList).times(2);
-        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(0).times(2);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList()).times(2);
-        EasyMock.expect(this.tb.getForms()).andReturn(
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null).times(2);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null).times(2);
+        EasyMock.expect(this.tm.getColumns()).andReturn(emptyFullList).times(2);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(0).times(2);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList()).times(2);
+        EasyMock.expect(this.tm.getForms()).andReturn(
                 Collections.<XMLConvertible>emptyList()).times(2);
-        EasyMock.expect(this.tb.getHeaderRowsCount()).andReturn(0).times(2);
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(0).times(2);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb1);
@@ -324,22 +324,22 @@ public class TableAppenderTest {
         final TableRowImpl tr2 = this.newTR("tr2");
         final TableRowImpl tr3 = this.newTR("tr3");
         final TableRowImpl tr4 = this.newTR("tr4");
-        EasyMock.expect(this.tb.getName()).andReturn("tb");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getColumns()).andReturn(emptyFullList);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(
+        EasyMock.expect(this.tm.getName()).andReturn("tb");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("tb-style");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns()).andReturn(emptyFullList);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(
                 Collections.<XMLConvertible>emptyList());
-        EasyMock.expect(this.tb.getHeaderRowsCount()).andReturn(0);
-        EasyMock.expect(this.tb.getTableRow(0)).andReturn(tr0);
-        EasyMock.expect(this.tb.getTableRow(1)).andReturn(tr1);
-        EasyMock.expect(this.tb.getTableRow(2)).andReturn(tr2);
-        EasyMock.expect(this.tb.getTableRow(3)).andReturn(tr3);
-        EasyMock.expect(this.tb.getTableRow(4)).andReturn(tr4);
-        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(5);
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getTableRow(0)).andReturn(tr0);
+        EasyMock.expect(this.tm.getTableRow(1)).andReturn(tr1);
+        EasyMock.expect(this.tm.getTableRow(2)).andReturn(tr2);
+        EasyMock.expect(this.tm.getTableRow(3)).andReturn(tr3);
+        EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr4);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb);
@@ -377,22 +377,22 @@ public class TableAppenderTest {
         final TableRowImpl tr4 = this.newTR("tr4");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("tb");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getColumns()).andReturn(emptyFullList);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(
+        EasyMock.expect(this.tm.getName()).andReturn("tb");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("tb-style");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns()).andReturn(emptyFullList);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(
                 Collections.<XMLConvertible>emptyList());
-        EasyMock.expect(this.tb.getHeaderRowsCount()).andReturn(2);
-        EasyMock.expect(this.tb.getTableRow(0)).andReturn(tr0);
-        EasyMock.expect(this.tb.getTableRow(1)).andReturn(tr1);
-        EasyMock.expect(this.tb.getTableRow(2)).andReturn(tr2);
-        EasyMock.expect(this.tb.getTableRow(3)).andReturn(tr3);
-        EasyMock.expect(this.tb.getTableRow(4)).andReturn(tr4);
-        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(5);
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(2);
+        EasyMock.expect(this.tm.getTableRow(0)).andReturn(tr0);
+        EasyMock.expect(this.tm.getTableRow(1)).andReturn(tr1);
+        EasyMock.expect(this.tm.getTableRow(2)).andReturn(tr2);
+        EasyMock.expect(this.tm.getTableRow(3)).andReturn(tr3);
+        EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr4);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb);
@@ -429,22 +429,22 @@ public class TableAppenderTest {
         final TableRowImpl tr0 = this.newTR("tr0");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("tb");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("tb-style");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getColumns()).andReturn(emptyFullList);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(
+        EasyMock.expect(this.tm.getName()).andReturn("tb");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("tb-style");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns()).andReturn(emptyFullList);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(
                 Collections.<XMLConvertible>emptyList());
-        EasyMock.expect(this.tb.getHeaderRowsCount()).andReturn(2);
-        EasyMock.expect(this.tb.getTableRow(0)).andReturn(tr0);
-        EasyMock.expect(this.tb.getTableRow(1)).andReturn(null);
-        EasyMock.expect(this.tb.getTableRow(2)).andReturn(null);
-        EasyMock.expect(this.tb.getTableRow(3)).andReturn(null);
-        EasyMock.expect(this.tb.getTableRow(4)).andReturn(tr0);
-        EasyMock.expect(this.tb.getTableRowsUsedSize()).andReturn(5).anyTimes();
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(2);
+        EasyMock.expect(this.tm.getTableRow(0)).andReturn(tr0);
+        EasyMock.expect(this.tm.getTableRow(1)).andReturn(null);
+        EasyMock.expect(this.tm.getTableRow(2)).andReturn(null);
+        EasyMock.expect(this.tm.getTableRow(3)).andReturn(null);
+        EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr0);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5).anyTimes();
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb);
@@ -480,16 +480,16 @@ public class TableAppenderTest {
         final TableColumnImpl y = this.newTC("y");
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tb.getName()).andReturn("table1");
-        EasyMock.expect(this.tb.getStyleName()).andReturn("table-style1");
-        EasyMock.expect(this.tb.getPrintRanges()).andReturn(Collections.<String>emptyList());
-        EasyMock.expect(this.tb.getCustomValueByAttribute()).andReturn(null);
-        EasyMock.expect(this.tb.getProtection()).andReturn(null);
-        EasyMock.expect(this.tb.getColumns())
+        EasyMock.expect(this.tm.getName()).andReturn("table1");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("table-style1");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.<String>emptyList());
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
-        EasyMock.expect(this.tb.getHeaderColumnsCount()).andReturn(2);
-        EasyMock.expect(this.tb.getShapes()).andReturn(Collections.<Shape>emptyList());
-        EasyMock.expect(this.tb.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(2);
+        EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(

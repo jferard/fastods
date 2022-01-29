@@ -37,16 +37,16 @@ import java.util.Map;
 /**
  * OpenDocument 9.1.2 table:table
  * <p>
- * Provides methods to flush rows from TableBuilder (ie. TableRow objects) to a given appendable.
+ * Provides methods to flush rows from TableModel (ie. TableRow objects) to a given appendable.
  * <p>
- * Users will either call `appendXMLToContentEntry` to convert the whole TableBuilder, or have
+ * Users will either call `appendXMLToContentEntry` to convert the whole TableModel, or have
  * a finer control with appendPreamble, appendAllAvailableRows, ...
  *
  * @author Julien Férard
  * @author Martin Schulz
  */
 class TableAppender {
-    private final TableBuilder builder;
+    private final TableModel model;
     private boolean preambleWritten;
     private int nullFieldCounter;
     private boolean atLeastOneRow;
@@ -54,11 +54,11 @@ class TableAppender {
     /**
      * Create a new appender
      *
-     * @param builder the table builder
+     * @param model the table model
      */
-    TableAppender(final TableBuilder builder) {
+    TableAppender(final TableModel model) {
         this.preambleWritten = false;
-        this.builder = builder;
+        this.model = model;
         this.atLeastOneRow = false;
     }
 
@@ -85,7 +85,7 @@ class TableAppender {
      */
     public void appendOpenTagAndPreamble(final XMLUtil util, final Appendable appendable) throws IOException {
         this.appendTableOpenTag(util, appendable);
-        final PreambleAppender preambleAppender = new PreambleAppender(this.builder);
+        final PreambleAppender preambleAppender = new PreambleAppender(this.model);
         preambleAppender.appendForms(util, appendable);
         preambleAppender.appendShapes(util, appendable);
         preambleAppender.appendColumns(util, appendable);
@@ -94,20 +94,20 @@ class TableAppender {
     private void appendTableOpenTag(final XMLUtil util, final Appendable appendable)
             throws IOException {
         appendable.append("<table:table");
-        util.appendEAttribute(appendable, "table:name", this.builder.getName());
-        util.appendEAttribute(appendable, "table:style-name", this.builder.getStyleName());
+        util.appendEAttribute(appendable, "table:name", this.model.getName());
+        util.appendEAttribute(appendable, "table:style-name", this.model.getStyleName());
         util.appendAttribute(appendable, "table:print", false);
-        final List<String> printRanges = this.builder.getPrintRanges();
+        final List<String> printRanges = this.model.getPrintRanges();
         if (!printRanges.isEmpty()) {
             final String printRangesAddresses = StringUtil.join(" ", printRanges);
             util.appendEAttribute(appendable, "table:print-ranges", printRangesAddresses);
         }
-        final Protection protection = this.builder.getProtection();
+        final Protection protection = this.model.getProtection();
         if (protection != null) {
             protection.appendAttributes(util, appendable);
         }
         final Map<String, CharSequence> customValueByAttribute =
-                this.builder.getCustomValueByAttribute();
+                this.model.getCustomValueByAttribute();
         if (customValueByAttribute != null) {
             for (final Map.Entry<String, CharSequence> entry : customValueByAttribute.entrySet()) {
                 util.appendAttribute(appendable, entry.getKey(), entry.getValue());
@@ -122,7 +122,7 @@ class TableAppender {
 
     private void appendRows(final XMLUtil util, final Appendable appendable,
                             final int firstRowIndex) throws IOException {
-        final int headerRowsCount = this.builder.getHeaderRowsCount();
+        final int headerRowsCount = this.model.getHeaderRowsCount();
         if (headerRowsCount == 0) {
             this.appendRowsWithoutHeaderRows(util, appendable, firstRowIndex);
         } else {
@@ -142,13 +142,13 @@ class TableAppender {
 
     private void appendRowsWithoutHeaderRows(final XMLUtil util, final Appendable appendable,
                                              final int firstRowIndex) throws IOException {
-        final int size = this.builder.getTableRowsUsedSize();
+        final int size = this.model.getTableRowsUsedSize();
         if (firstRowIndex == 0) {
             this.nullFieldCounter = 0;
         }
 
         for (int r = firstRowIndex; r < size; r++) {
-            final TableRowImpl tr = this.builder.getTableRow(r);
+            final TableRowImpl tr = this.model.getTableRow(r);
             if (tr == null) { // we don't append null rows immediately
                 this.nullFieldCounter++;
             } else {
@@ -163,13 +163,13 @@ class TableAppender {
 
     private void appendRowsWithHeaderRows(final XMLUtil util, final Appendable appendable,
                                           final int firstRowIndex, final int headerRowsCount) throws IOException {
-        final int size = this.builder.getTableRowsUsedSize();
+        final int size = this.model.getTableRowsUsedSize();
         if (firstRowIndex == 0) {
             this.nullFieldCounter = 0;
         }
 
         for (int r = firstRowIndex; r < size; r++) {
-            final TableRowImpl tr = this.builder.getTableRow(r);
+            final TableRowImpl tr = this.model.getTableRow(r);
             if (r == headerRowsCount) {
                 this.flushNullRows(util, appendable);
                 appendable.append("</table:table-header-rows>");
