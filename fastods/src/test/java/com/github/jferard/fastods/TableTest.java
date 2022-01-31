@@ -38,6 +38,8 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Protection;
+import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -47,6 +49,8 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -60,9 +64,9 @@ public class TableTest {
     private XMLUtil xmlUtil;
     private StringBuilder sb;
     private ContentElement ce;
-    private TableModel tm;
-    private Table tableWithMockBuilder;
-    private TableAppender ta;
+    private TableModel model;
+    private Table tableWithMockModel;
+    private TableAppender appender;
 
     @Before
     public void setUp() {
@@ -72,15 +76,16 @@ public class TableTest {
         final XMLUtil xmlUtil = XMLUtil.create();
         this.ds = DataStylesBuilder.create(Locale.US).build();
         this.table =
-                Table.create(this.ce, positionUtil, IntegerRepresentationCache.create(), xmlUtil, "my_table", 10,
+                Table.create(this.ce, positionUtil, IntegerRepresentationCache.create(), xmlUtil,
+                        "my_table", 10,
                         100, this.stc, this.ds, false, new ValidationsContainer());
         this.xmlUtil = xmlUtil;
         this.sb = new StringBuilder();
 
-        this.tm = PowerMock.createMock(TableModel.class);
-        this.ta = PowerMock.createMock(TableAppender.class);
+        this.model = PowerMock.createMock(TableModel.class);
+        this.appender = PowerMock.createMock(TableAppender.class);
 
-        this.tableWithMockBuilder = new Table("test", this.ce, this.tm, this.ta);
+        this.tableWithMockModel = new Table("test", this.ce, this.model, this.appender);
     }
 
     @Test
@@ -118,7 +123,7 @@ public class TableTest {
                 "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" + "</table:table-row>" +
                 "<table:table-row table:style-name=\"ro1\">" +
-                "<table:table-cell/>"+"</table:table-row>" +
+                "<table:table-cell/>" + "</table:table-row>" +
                 "</table:table>");
 
         PowerMock.verifyAll();
@@ -207,12 +212,11 @@ public class TableTest {
     @Test
     public final void testMerge() throws IOException {
         PowerMock.resetAll();
-        this.tm.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
-                EasyMock.isA(TableAppender.class), EasyMock.eq(1), EasyMock.eq(1), EasyMock.eq(2),
-                EasyMock.eq(3));
+        this.model.setCellMerge(this.tableWithMockModel,
+                this.appender, 1, 1, 2, 3);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.setCellMerge(1, 1, 2, 3);
+        this.tableWithMockModel.setCellMerge(1, 1, 2, 3);
 
         PowerMock.verifyAll();
     }
@@ -220,13 +224,13 @@ public class TableTest {
     @Test
     public final void testMergePos() throws IOException {
         PowerMock.resetAll();
-        this.tm.setCellMerge(EasyMock.eq(this.tableWithMockBuilder),
+        this.model.setCellMerge(EasyMock.eq(this.tableWithMockModel),
                 EasyMock.isA(TableAppender.class), EasyMock.eq(0),
                 EasyMock.eq(1), EasyMock.eq(2),
                 EasyMock.eq(3));
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.setCellMerge(0, 1, 2, 3);
+        this.tableWithMockModel.setCellMerge(0, 1, 2, 3);
 
         PowerMock.verifyAll();
     }
@@ -251,12 +255,12 @@ public class TableTest {
     public final void testColumnStyle() throws IOException {
         PowerMock.resetAll();
 
-        this.ta.appendAllAvailableRows(this.xmlUtil, this.sb);
-        this.tableWithMockBuilder.setColumnStyle(0, null);
+        this.appender.appendAllAvailableRows(this.xmlUtil, this.sb);
+        this.tableWithMockModel.setColumnStyle(0, null);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.flushAllAvailableRows(this.xmlUtil, this.sb);
-        this.tableWithMockBuilder.setColumnStyle(0, null);
+        this.tableWithMockModel.flushAllAvailableRows(this.xmlUtil, this.sb);
+        this.tableWithMockModel.setColumnStyle(0, null);
 
         PowerMock.verifyAll();
         Assert.assertEquals("", this.sb.toString());
@@ -265,10 +269,10 @@ public class TableTest {
     @Test
     public final void testName() throws IOException {
         PowerMock.resetAll();
-        this.ta.appendAllAvailableRows(this.xmlUtil, this.sb);
+        this.appender.appendAllAvailableRows(this.xmlUtil, this.sb);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.flushAllAvailableRows(this.xmlUtil, this.sb);
+        this.tableWithMockModel.flushAllAvailableRows(this.xmlUtil, this.sb);
 
         PowerMock.verifyAll();
         Assert.assertEquals("", this.sb.toString());
@@ -277,10 +281,10 @@ public class TableTest {
     @Test
     public final void testConfigItem() {
         PowerMock.resetAll();
-        this.tm.setConfigItem("item", "type", "value");
+        this.model.setConfigItem("item", "type", "value");
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.setConfigItem("item", "type", "value");
+        this.tableWithMockModel.setConfigItem("item", "type", "value");
 
         PowerMock.verifyAll();
     }
@@ -288,10 +292,10 @@ public class TableTest {
     @Test
     public final void testUpdateConfigItem() {
         PowerMock.resetAll();
-        this.tm.updateConfigItem(ZOOM_VALUE.getName(), "value");
+        this.model.updateConfigItem(ZOOM_VALUE.getName(), "value");
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.updateConfigItem(ZOOM_VALUE, "value");
+        this.tableWithMockModel.updateConfigItem(ZOOM_VALUE, "value");
 
         PowerMock.verifyAll();
     }
@@ -304,7 +308,7 @@ public class TableTest {
         this.ce.addAutoFilter(EasyMock.capture(af));
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.addAutoFilter("range", 1, 2, 3, 4);
+        this.tableWithMockModel.addAutoFilter("range", 1, 2, 3, 4);
 
         PowerMock.verifyAll();
         TestHelper.assertXMLEquals("<table:database-range table:name=\"range\" " +
@@ -315,10 +319,10 @@ public class TableTest {
     @Test
     public final void testAsyncFlushBeginTable() throws IOException {
         PowerMock.resetAll();
-        this.tm.asyncFlushBeginTable(this.ta);
+        this.model.asyncFlushBeginTable(this.appender);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.asyncFlushBeginTable();
+        this.tableWithMockModel.asyncFlushBeginTable();
 
         PowerMock.verifyAll();
     }
@@ -326,10 +330,10 @@ public class TableTest {
     @Test
     public final void testAsyncFlushEndTable() throws IOException {
         PowerMock.resetAll();
-        this.tm.asyncFlushEndTable(this.ta);
+        this.model.asyncFlushEndTable(this.appender);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.asyncFlushEndTable();
+        this.tableWithMockModel.asyncFlushEndTable();
 
         PowerMock.verifyAll();
     }
@@ -337,10 +341,10 @@ public class TableTest {
     @Test
     public final void testFlushRemainingRowsFrom() throws IOException {
         PowerMock.resetAll();
-        this.ta.appendRemainingRowsFrom(this.xmlUtil, this.sb, 0);
+        this.appender.appendRemainingRowsFrom(this.xmlUtil, this.sb, 0);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.flushRemainingRowsFrom(this.xmlUtil, this.sb, 0);
+        this.tableWithMockModel.flushRemainingRowsFrom(this.xmlUtil, this.sb, 0);
 
         PowerMock.verifyAll();
     }
@@ -351,11 +355,12 @@ public class TableTest {
         final TableCell cell = PowerMock.createMock(TableCell.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tm.getRow(this.tableWithMockBuilder, this.ta, 0)).andReturn(row);
+        EasyMock.expect(this.model.getRow(this.tableWithMockModel, this.appender, 0))
+                .andReturn(row);
         EasyMock.expect(row.getOrCreateCell(0)).andReturn(cell);
 
         PowerMock.replayAll();
-        this.tableWithMockBuilder.getWalker();
+        this.tableWithMockModel.getWalker();
 
         PowerMock.verifyAll();
     }
@@ -365,10 +370,10 @@ public class TableTest {
         final ConfigItemMapEntry entry = PowerMock.createMock(ConfigItemMapEntry.class);
 
         PowerMock.resetAll();
-        EasyMock.expect(this.tm.getConfigEntry()).andReturn(entry);
+        EasyMock.expect(this.model.getConfigEntry()).andReturn(entry);
 
         PowerMock.replayAll();
-        final ConfigItemMapEntry e = this.tableWithMockBuilder.getConfigEntry();
+        final ConfigItemMapEntry e = this.tableWithMockModel.getConfigEntry();
 
         PowerMock.verifyAll();
         Assert.assertEquals(entry, e);
@@ -404,7 +409,7 @@ public class TableTest {
     @Test
     public final void testFlushSomeAvailableRows() throws IOException {
         final NamedOdsFileWriter writer = PowerMock.createMock(NamedOdsFileWriter.class);
-        final StringBuilder app = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         final BooleanStyle bs = this.ds.getBooleanDataStyle();
 
         PowerMock.resetAll();
@@ -417,7 +422,7 @@ public class TableTest {
         this.table.addObserver(writer);
         final TableCellWalker walker = this.table.getWalker();
         walker.setBooleanValue(true);
-        this.table.flushSomeAvailableRowsFrom(this.xmlUtil, app, 0);
+        this.table.flushSomeAvailableRowsFrom(this.xmlUtil, sb, 0);
 
         PowerMock.verifyAll();
         DomTester.assertEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
@@ -426,7 +431,117 @@ public class TableTest {
                         "table:default-cell-style-name=\"Default\"/><table:table-row " +
                         "table:style-name=\"ro1\"><table:table-cell office:value-type=\"boolean\"" +
                         " office:boolean-value=\"true\"/></table:table-row></table:table>",
-                app.toString() + "</table:table>");
+                sb.toString() + "</table:table>");
+    }
+
+    @Test
+    public final void testMergeWithPosString() throws IOException, ParseException {
+        PowerMock.resetAll();
+        this.model.setCellMerge(this.tableWithMockModel, this.appender, "A3", 2, 2);
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.setCellMerge("A3", 2, 2);
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddPrintRange() {
+        PowerMock.resetAll();
+        this.model.addPrintRange(1, 2, 3, 4);
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.addPrintRange(1, 2, 3, 4);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testNextRow() throws IOException {
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.model.nextRow(this.tableWithMockModel, this.appender)).andReturn(row);
+
+        PowerMock.replayAll();
+        final TableRowImpl row1 = this.tableWithMockModel.nextRow();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(row, row1);
+    }
+
+    @Test
+    public final void testSetColumnAttribute() throws IOException {
+        PowerMock.resetAll();
+        this.model.setColumnAttribute(1, "attr", "value");
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.setColumnAttribute(1, "attr", "value");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetColumnStyle() {
+        final TableCellStyle cellStyle = TableCellStyle.builder("test").fontWeightBold().build();
+
+        PowerMock.resetAll();
+        this.model.setColumnDefaultCellStyle(1, cellStyle);
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.setColumnDefaultCellStyle(1, cellStyle);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetAttribute() {
+        PowerMock.resetAll();
+        this.model.setAttribute("attr", "value");
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.setAttribute("attr", "value");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddShape() {
+        final Shape s =
+                DrawFrame.builder("df", new DrawImage("href"), SVGRectangle.cm(1, 2, 3, 4)).build();
+
+        PowerMock.resetAll();
+        this.model.addShape(s);
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.addShape(s);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testProtect() throws NoSuchAlgorithmException {
+        final Protection protection = new Protection("b", "c");
+
+        PowerMock.resetAll();
+        this.model.protect(protection);
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.protect(protection);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testHeader() throws IOException {
+        PowerMock.resetAll();
+        this.model.setHeaderRowsCount(3);
+        this.model.setHeaderColumnsCount(1);
+
+        PowerMock.replayAll();
+        this.tableWithMockModel.setHeaderRowsCount(3);
+        this.tableWithMockModel.setHeaderColumnsCount(1);
+
+        PowerMock.verifyAll();
     }
 
     private void assertTableXMLEquals(final String xml) throws IOException {

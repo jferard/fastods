@@ -399,6 +399,19 @@ public class TableModelTest {
     }
 
     @Test
+    public final void testAddShape() {
+        final Shape s =
+                DrawFrame.builder("df", new DrawImage("href"), SVGRectangle.cm(1, 2, 3, 4)).build();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.model.addShape(s);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(Collections.singletonList(s), this.model.getShapes());
+    }
+
+    @Test
     public final void testSetColumnAttribute() throws IOException {
         PowerMock.resetAll();
 
@@ -415,19 +428,6 @@ public class TableModelTest {
                 "<table:table-column " +
                         "table:style-name=\"co1\" table:default-cell-style-name=\"Default\" " +
                         "attr=\"value\"/>", sb.toString());
-    }
-
-    @Test
-    public final void testAddShape() {
-        final Shape s =
-                DrawFrame.builder("df", new DrawImage("href"), SVGRectangle.cm(1, 2, 3, 4)).build();
-
-        PowerMock.resetAll();
-        PowerMock.replayAll();
-        this.model.addShape(s);
-
-        PowerMock.verifyAll();
-        Assert.assertEquals(Collections.singletonList(s), this.model.getShapes());
     }
 
     @Test
