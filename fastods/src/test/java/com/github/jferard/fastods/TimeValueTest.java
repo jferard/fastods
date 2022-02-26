@@ -68,21 +68,42 @@ public class TimeValueTest {
     }
 
     @Test
-    public void testEquals() throws FastOdsException {
+    public void testEqualsBase() throws FastOdsException {
         final TimeValue tv1 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
-        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
-
-        Assert.assertEquals(tv1, TimeValue.from(l));
-        Assert.assertNotEquals(tv1, TimeValue.from(-l));
+        Assert.assertEquals(tv1, tv1);
         Assert.assertNotEquals(tv1, new Object());
     }
 
     @Test
-    public void testEqualsNeg() throws FastOdsException {
-        final TimeValue tv2 = new TimeValue(true, 0, 0, 1, 2, 3, 4);
+    public void testEquals() throws FastOdsException {
+        final TimeValue tv = new TimeValue(false, 0, 0, 1, 2, 3, 4);
         final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
-        Assert.assertEquals(tv2, TimeValue.from(-l));
-        Assert.assertNotEquals(tv2, TimeValue.from(l));
+
+        Assert.assertEquals(tv, TimeValue.from(l));
+        Assert.assertNotEquals(tv, TimeValue.from(-l));
+    }
+
+    @Test
+    public void testEqualsNeg() throws FastOdsException {
+        final TimeValue tv = new TimeValue(true, 0, 0, 1, 2, 3, 4);
+        final long l = ((((1 * 24 + 2) * 60) + 3) * 60 + 4) * 1000;
+        Assert.assertEquals(tv, TimeValue.from(-l));
+        Assert.assertNotEquals(tv, TimeValue.from(l));
+    }
+
+    @Test
+    public void testNotEquals() throws FastOdsException {
+        final TimeValue tv1 = new TimeValue(true, 0, 0, 1, 2, 3, 4);
+        final TimeValue tv2 = new TimeValue(false, 0, 0, 1, 2, 3, 4);
+        final TimeValue tv3 = new TimeValue(true, 0, 1, 1, 2, 3, 4);
+        final TimeValue tv4 = new TimeValue(true, 0, 0, 0, 2, 3, 4);
+
+        Assert.assertNotEquals(tv1, tv2);
+        Assert.assertNotEquals(tv1, tv3);
+        Assert.assertNotEquals(tv1, tv4);
+        Assert.assertNotEquals(tv2, tv3);
+        Assert.assertNotEquals(tv2, tv4);
+        Assert.assertNotEquals(tv3, tv4);
     }
 
     @Test
