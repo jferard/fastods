@@ -40,12 +40,14 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -63,9 +65,10 @@ import java.util.zip.ZipInputStream;
 public class AnonymousOdsFileWriterTest {
     private static final int EMPTY_DOCUMENT_SIZE = 5214; // 5226;
     private static final int DELTA = 50;
+    public static final int EMPTY_DOCUMENT_SIZE_LEVEL0 = 12784;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none(); // TODO
     private ZipUTF8WriterBuilderImpl builder;
 
     private Logger logger;
@@ -114,20 +117,23 @@ public class AnonymousOdsFileWriterTest {
         }
 
         PowerMock.verifyAll();
+        this.checkEmptyDocument();
+    }
+
+    private void checkEmptyDocument() throws IOException {
         final byte[] buf = this.os.toByteArray();
         final InputStream is = new ByteArrayInputStream(buf);
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
-        final Collection<String> names = new HashSet<String>();
+        final Collection<String> names = new HashSet<>();
         while (entry != null) {
             names.add(entry.getName());
             entry = zis.getNextEntry();
         }
 
         if (Math.abs(EMPTY_DOCUMENT_SIZE - buf.length) > DELTA) {
-            System.out.println(
-                    String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE,
-                            buf.length));
+            System.out.printf("Expected size: %d, actual size: %d%n", EMPTY_DOCUMENT_SIZE,
+                    buf.length);
             Assert.fail();
         }
         Assert.assertEquals(
@@ -137,6 +143,42 @@ public class AnonymousOdsFileWriterTest {
                         "meta.xml", "Configurations2/accelerator/current.xml",
                         "Configurations2/popupmenu/", "styles.xml", "content.xml",
                         "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
+    }
+
+    @Test
+    public final void testSaveEmptyDocumentToStreamAndBuilder() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        try {
+            final ZipUTF8WriterBuilderImpl builder = ZipUTF8WriterImpl.builder();
+            writer.save(this.os, builder);
+        } finally {
+            this.os.close();
+        }
+
+        PowerMock.verifyAll();
+        this.checkEmptyDocument();
+    }
+
+    @Test
+    public final void testSaveEmptyDocumentToWriter() throws IOException {
+        final AnonymousOdsFileWriter writer = this.odsFactory.createWriter();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final ZipUTF8Writer zipWriter = ZipUTF8WriterImpl.builder().build(this.os);
+        try {
+            writer.save(zipWriter);
+        } finally {
+            this.os.close();
+        }
+        zipWriter.finish();
+        zipWriter.flush();
+
+        PowerMock.verifyAll();
+        this.checkEmptyDocument();
     }
 
     @Test
@@ -160,7 +202,7 @@ public class AnonymousOdsFileWriterTest {
         final byte[] post = Arrays.copyOfRange(buf, buf.length - 9, buf.length);
 
         // preamble
-        final Charset charset = Charset.forName("US-ASCII");
+        final Charset charset = StandardCharsets.US_ASCII;
         Assert.assertArrayEquals(pre, "preamble".getBytes(charset));
 
         // postamble
@@ -170,7 +212,7 @@ public class AnonymousOdsFileWriterTest {
         final InputStream is = new ByteArrayInputStream(body);
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
-        final Collection<String> names = new HashSet<String>();
+        final Collection<String> names = new HashSet<>();
         while (entry != null) {
             names.add(entry.getName());
             entry = zis.getNextEntry();
@@ -207,20 +249,20 @@ public class AnonymousOdsFileWriterTest {
         final InputStream is = new ByteArrayInputStream(this.os.toByteArray());
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
-        final Collection<String> names = new HashSet<String>();
+        final Collection<String> names = new HashSet<>();
         while (entry != null) {
             names.add(entry.getName());
             entry = zis.getNextEntry();
         }
 
         Assert.assertEquals(
-                TestHelper.newSet(new String[]{"settings.xml", "last",
+                TestHelper.newSet("settings.xml", "last",
                         "Configurations2/images/Bitmaps/",
                         "Configurations2/toolbar/", "META-INF/manifest.xml", "Thumbnails/",
                         "Configurations2/floater/", "Configurations2/menubar/", "mimetype",
                         "meta.xml", "Configurations2/accelerator/current.xml",
                         "Configurations2/popupmenu/", "styles.xml", "content.xml",
-                        "Configurations2/progressbar/", "Configurations2/statusbar/"}), names);
+                        "Configurations2/progressbar/", "Configurations2/statusbar/"), names);
     }
 
     @Test
@@ -242,16 +284,15 @@ public class AnonymousOdsFileWriterTest {
         final InputStream is = new ByteArrayInputStream(buf);
         final ZipInputStream zis = new ZipInputStream(is);
         ZipEntry entry = zis.getNextEntry();
-        final Set<String> names = new HashSet<String>();
+        final Set<String> names = new HashSet<>();
         while (entry != null) {
             names.add(entry.getName());
             entry = zis.getNextEntry();
         }
 
         if (Math.abs(EMPTY_DOCUMENT_SIZE * 2 - buf.length) > 2 * DELTA) {
-            System.out.println(
-                    String.format("Expected size: %d, actual size: %d", EMPTY_DOCUMENT_SIZE * 2,
-                            buf.length));
+            System.out.printf("Expected size: %d, actual size: %d%n", EMPTY_DOCUMENT_SIZE * 2,
+                    buf.length);
             Assert.fail();
         }
         // Every element appears twice
@@ -263,31 +304,6 @@ public class AnonymousOdsFileWriterTest {
                         "Configurations2/statusbar/", "Configurations2/toolbar/",
                         "META-INF/manifest.xml", "Thumbnails/", "content.xml", "meta.xml",
                         "mimetype", "settings.xml", "styles.xml"), names);
-    }
-
-    @Test
-    public final void testSaveWriter() throws IOException {
-        final ZipUTF8WriterBuilderImpl zb = PowerMock.createMock(ZipUTF8WriterBuilderImpl.class);
-        final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
-        final File temp = File.createTempFile("tempfile", ".tmp");
-
-        PowerMock.resetAll();
-        TestHelper.initMockDocument(this.odsElements);
-        EasyMock.expect(zb.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
-        this.odsElements.saveAsync();
-
-        PowerMock.replayAll();
-        final NamedOdsDocument document = this.getNamedDocument();
-        final NamedOdsFileWriter writer =
-                new OdsFileWriterBuilder(this.logger, document).zipBuilder(zb)
-                        .file(temp.getAbsolutePath()).build();
-        writer.save();
-
-        PowerMock.verifyAll();
-    }
-
-    private NamedOdsDocument getNamedDocument() {
-        return NamedOdsDocument.create(this.logger, this.xmlUtil, this.odsElements);
     }
 
     private AnonymousOdsDocument getAnonymousDocument() {

@@ -97,11 +97,12 @@ public class AnonymousOdsFileWriter {
         final ZipUTF8Writer writer = builder.build(out);
         this.save(writer);
         writer.finish();
+        writer.flush();
     }
 
     /**
      * Writes the document to a writer. The use shall close the writer.
-     * WARNING: The user shall `finish` and `close` the writer (since 0.6.1).
+     * WARNING: The user shall `finish` and `flush` the writer (since 0.6.1).
      *
      * @param writer the ZipUTF8WriterImpl that should be used
      * @throws IOException If an I/O error occurs during the save
