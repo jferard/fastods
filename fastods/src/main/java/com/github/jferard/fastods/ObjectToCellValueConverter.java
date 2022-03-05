@@ -91,7 +91,8 @@ public class ObjectToCellValueConverter implements ToCellValueConverter {
                 return TimeValue.from(o);
             case VOID:
                 return VoidValue.from(o);
+            default:
+                return (CellValue) ThisShouldNotHappen.fastOdsException();
         }
-        throw new FastOdsException("Should not happen!");
     }
 }
