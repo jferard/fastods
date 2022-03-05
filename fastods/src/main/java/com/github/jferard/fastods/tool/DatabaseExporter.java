@@ -65,6 +65,7 @@ public class DatabaseExporter {
         if (args.length != 2) {
             System.err.println(
                     "Usage: java -cp path/to/fastods/jar:path/to/jdbc/driver/jar <connection string> <target.ods>");
+            System.exit(-1);
         }
         final String connectionString = args[0];
         final String documentName = args[1];
