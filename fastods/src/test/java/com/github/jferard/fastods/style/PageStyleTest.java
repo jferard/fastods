@@ -25,6 +25,7 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.attribute.PageCentering;
 import com.github.jferard.fastods.attribute.PageWritingMode;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
@@ -42,6 +43,16 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 
 public class PageStyleTest {
+    public static final String EMPTY_MASTER_XML =
+            "<style:master-page style:name=\"test\" style:page-layout-name=\"test\">" +
+                    "<style:header><text:p>" +
+                    "<text:span text:style-name=\"none\">" +
+                    "</text:span></text:p>" +
+                    "</style:header>" +
+                    "<style:header-left style:display=\"false\"/>" +
+                    "<style:footer><text:p><text:span text:style-name=\"none\"></text:span>" +
+                    "</text:p></style:footer><style:footer-left style:display=\"false\"/>" +
+                    "</style:master-page>";
     private static final String MASTER =
             "<style:master-page style:name=\"test\" style:page-layout-name=\"test\">" +
                     "<style:header>" + "<text:p>" + "<text:span text:style-name=\"none\">" +
@@ -336,5 +347,148 @@ public class PageStyleTest {
         final PageLayoutStyle ls = ps1.getPageLayoutStyle();
 
         Assert.assertEquals(PageStyle.DEFAULT_WRITING_MODE, ls.getWritingMode());
+    }
+
+    @Test
+    public final void testScaleTo() throws IOException {
+        final PageStyle ps = PageStyle.builder("test").scaleTo(95).build();
+
+        this.assertMasterXMLEquals(EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:scale-to=\"95%\" " +
+                        "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:header-style><style:footer-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:footer-style></style:page-layout>", ps);
+    }
+
+    @Test
+    public final void testScaleToPages() throws IOException {
+        final PageStyle ps = PageStyle.builder("test").scaleToPages(2).build();
+
+        this.assertMasterXMLEquals(EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:scale-to-pages=\"2\" " +
+                        "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:header-style><style:footer-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:footer-style></style:page-layout>", ps);
+    }
+
+    @Test
+    public final void testScaleToX() throws IOException {
+        final PageStyle ps = PageStyle.builder("test").scaleToX(2).build();
+
+        this.assertMasterXMLEquals(EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:scale-to-X=\"2\" " +
+                        "loext:scale-to-X=\"2\" " +
+                        "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:header-style><style:footer-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:footer-style></style:page-layout>", ps);
+    }
+
+    @Test
+    public final void testScaleToY() throws IOException {
+        final PageStyle ps = PageStyle.builder("test").scaleToY(2).build();
+
+        this.assertMasterXMLEquals(
+                EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:scale-to-Y=\"2\" " +
+                        "loext:scale-to-Y=\"2\" " +
+                        "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:header-style><style:footer-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:footer-style></style:page-layout>", ps);
+    }
+
+    @Test
+    public final void testPrintOrientation() throws IOException {
+        final PageStyle ps = PageStyle.builder("test").pageHeight(SimpleLength.cm(200))
+                .printOrientationHorizontal().build();
+
+        this.assertMasterXMLEquals(
+                EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"200cm\" " +
+                        "fo:page-height=\"21cm\" style:num-format=\"1\" " +
+                        "style:writing-mode=\"lr-tb\" style:print-orientation=\"landscape\" " +
+                        "style:print=\"objects charts drawings zero-values\" fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style><style:header-footer-properties fo:min-height=\"0cm\" " +
+                        "fo:margin=\"0cm\"/>" +
+                        "</style:header-style><style:footer-style><style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:footer-style>" +
+                        "</style:page-layout>", ps);
+    }
+
+    @Test
+    public final void testCenteringPage() throws IOException {
+        final PageStyle ps = PageStyle.builder("test").centering(PageCentering.BOTH).build();
+
+        this.assertMasterXMLEquals(
+                EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:table-centering=\"both\" " +
+                        "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+                        "style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects charts drawings zero-values\" " +
+                        "fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style><style:header-footer-properties fo:min-height=\"0cm\" " +
+                        "fo:margin=\"0cm\"/></style:header-style><style:footer-style>" +
+                        "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+                        "</style:footer-style></style:page-layout>", ps);
+    }
+
+    @Test
+    public final void testPrintComponent() throws IOException {
+        final PageStyle ps = PageStyle.builder("test")
+                .printComponents(PrintComponent.OBJECTS, PrintComponent.GRID).build();
+
+        this.assertMasterXMLEquals(
+                EMPTY_MASTER_XML, ps);
+        this.assertLayoutXMLEquals(
+                "<style:page-layout style:name=\"test\">" +
+                        "<style:page-layout-properties fo:page-width=\"21cm\" " +
+                        "fo:page-height=\"29.7cm\" style:num-format=\"1\" " +
+                        "style:writing-mode=\"lr-tb\" style:print-orientation=\"portrait\" " +
+                        "style:print=\"objects grid\" fo:margin=\"1.5cm\"/>" +
+                        "<style:header-style><style:header-footer-properties fo:min-height=\"0cm\" " +
+                        "fo:margin=\"0cm\"/>" +
+                        "</style:header-style><style:footer-style><style:header-footer-properties " +
+                        "fo:min-height=\"0cm\" fo:margin=\"0cm\"/></style:footer-style>" +
+                        "</style:page-layout>", ps);
     }
 }
