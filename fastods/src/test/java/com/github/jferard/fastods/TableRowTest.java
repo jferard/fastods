@@ -32,6 +32,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -241,11 +242,77 @@ public class TableRowTest {
                 "\"><table:table-cell/></table:table-row>");
     }
 
+    @Test
+    public final void testGetWalker() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final RowCellWalker walker = this.row.getWalker();
+        walker.setFloatValue(1);
+
+        PowerMock.verifyAll();
+        this.assertTableXMLEquals("<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell office:value-type=\"float\" office:value=\"1\"/>" +
+                "</table:table-row>");
+    }
+
+    @Test
+    public final void testSetRowAttribute() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.row.setRowAttribute("attr", "value");
+
+        PowerMock.verifyAll();
+        this.assertTableXMLEquals("<table:table-row table:style-name=\"ro1\" attr=\"value\">" +
+                "<table:table-cell/>" +
+                "</table:table-row>");
+    }
+
+    @Test
+    public final void testSetCustomCell() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        this.row.set(1, new AbstractTableCell() {
+            @Override
+            public void appendXMLToTableRow(final XMLUtil util, final Appendable appendable)
+                    throws IOException {
+                appendable.append("<mycell/>");
+            }
+        });
+
+        PowerMock.verifyAll();
+        this.assertTableXMLEquals("<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell/>" +
+                "<mycell/>" +
+                "</table:table-row>");
+    }
+
+    @Test
+    public final void testRowIndex() throws IOException {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        Assert.assertEquals(10, this.row.rowIndex());
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddValidationToContainer() throws IOException {
+        final Validation v = Validation.builder("v").dontAllowEmptyCells().build();
+
+        PowerMock.resetAll();
+        this.vc.addValidation(v);
+
+        PowerMock.replayAll();
+        this.row.addValidationToContainer(v);
+        PowerMock.verifyAll();
+
+        this.assertTableXMLEquals("<table:table-row table:style-name=\"ro1\">" +
+                "<table:table-cell/>" +
+                "</table:table-row>");
+    }
 
     private void assertTableXMLEquals(final String xml) throws IOException {
         final StringBuilder sb = new StringBuilder();
         this.row.appendXMLToTable(this.xmlUtil, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
-
 }
