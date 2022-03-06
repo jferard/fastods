@@ -270,7 +270,8 @@ public class TableCellStyleBuilder
     }
 
     /**
-     * Set text rotation angle
+     * Set text rotation angle:
+     * "The style:rotation-angle attribute has the data type angle 18.3.1"
      *
      * @param angle TextRotation to be used
      * @return this for fluent style

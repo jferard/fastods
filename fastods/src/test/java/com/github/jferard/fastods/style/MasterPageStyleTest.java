@@ -22,21 +22,33 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-@ExcludeFromJacocoGeneratedReport
-public class ThisShouldNotHappen {
-    private ThisShouldNotHappen() {}
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
+import com.github.jferard.fastods.odselement.OdsElements;
+import org.easymock.EasyMock;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
-    public static IllegalStateException illegalState() {
-        return new IllegalStateException("this should not happen");
+public class MasterPageStyleTest {
+    @Test
+    public void testAddToElements() {
+        final TextStyle noneStyle = TextStyle.builder("none").build();
+        final Header header =
+                PageSection.simpleHeader("", noneStyle);
+        final Footer footer = PageSection.simpleFooter("", noneStyle);
+        final MasterPageStyle ms = new MasterPageStyle("test", "layoutName", header, footer);
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(elements.addMasterPageStyle(ms)).andReturn(true);
+
+        PowerMock.replayAll();
+        ms.addToElements(elements);
+
+        PowerMock.verifyAll();
     }
 
-    public static IllegalArgumentException illegalEnumValue() {
-        return new IllegalArgumentException("this should not happen");
-    }
-
-    public static FastOdsException fastOdsException() throws FastOdsException {
-        return new FastOdsException("this should not happen");
-    }
 }

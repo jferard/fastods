@@ -92,7 +92,7 @@ public class ObjectToCellValueConverter implements ToCellValueConverter {
             case VOID:
                 return VoidValue.from(o);
             default:
-                return (CellValue) ThisShouldNotHappen.fastOdsException();
+                throw ThisShouldNotHappen.fastOdsException();
         }
     }
 }

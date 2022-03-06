@@ -26,6 +26,7 @@ package com.github.jferard.fastods.extra;
 
 import com.github.jferard.fastods.DataWrapper;
 import com.github.jferard.fastods.TableCellWalker;
+import com.github.jferard.fastods.ThisShouldNotHappen;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.javamcsv.DataType;
 import com.github.jferard.javamcsv.MetaCSVMetaData;
@@ -258,7 +259,7 @@ public class CSVDataWrapper implements DataWrapper {
                     processor = this.objectProcessorFactory.create(parameters);
                     break;
                 default:
-                    throw new IllegalStateException();
+                    throw ThisShouldNotHappen.illegalEnumValue();
             }
             processors.add(processor);
         }

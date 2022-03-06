@@ -28,15 +28,19 @@ import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.io.IOException;
 
 public class TextStyleTest {
+
+    public static final String EMPTY_XML =
+            "<style:style style:name=\"ts\" style:family=\"text\"><style:text-properties/></style:style>";
+
     @Test
     public void testDefaultXML() throws IOException {
         final TextStyle style = TextStyle.builder("ts").build();
-        TestHelper.assertXMLEquals("<style:style style:name=\"ts\" " +
-                "style:family=\"text\"><style:text-properties/></style:style>", style);
+        TestHelper.assertXMLEquals(EMPTY_XML, style);
     }
 
     @Test
@@ -101,5 +105,41 @@ public class TextStyleTest {
                         "style:font-style-complex=\"italic\"/>" +
                         "</style:style>",
                 prop);
+    }
+
+    @Test
+    public void testUnderline() throws IOException {
+        final TextStyle style =
+                TextStyle.builder("ts").fontUnderlineColor(SimpleColor.RED).fontUnderlineStyle(
+                        TextProperties.Underline.DASH).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"ts\" style:family=\"text\">" +
+                        "<style:text-properties style:text-underline-style=\"dash\" " +
+                        "style:text-underline-width=\"auto\" " +
+                        "style:text-underline-color=\"#ff0000\"/></style:style>", style);
+    }
+
+    @Test
+    public void testFromPropertiesHidden() throws IOException {
+        final TextStyle style = new TextPropertiesBuilder().buildHiddenStyle("ts");
+        TestHelper.assertXMLEquals(EMPTY_XML, style);
+        Assert.assertTrue(style.isHidden());
+    }
+
+    @Test
+    public void testFromPropertiesHiddenException() throws IOException {
+        Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                new TextPropertiesBuilder().fontSizePercentage(95.2).buildHiddenStyle("ts");
+            }
+        });
+    }
+
+    @Test
+    public void testFromPropertiesVisible() throws IOException {
+        final TextStyle style = new TextPropertiesBuilder().buildVisibleStyle("ts");
+        TestHelper.assertXMLEquals(EMPTY_XML, style);
+        Assert.assertFalse(style.isHidden());
     }
 }

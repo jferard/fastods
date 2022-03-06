@@ -24,9 +24,13 @@
 
 package com.github.jferard.fastods.attribute;
 
+import com.github.jferard.fastods.ThisShouldNotHappen;
+
 /**
  * 20.339 style:rotation-angle http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1
  * .2-os-part1.html#__RefHeading__1420142_253892949
+ *
+ * "If no unit identifier is specified, the value is assumed to be in degrees"
  *
  * @author J. Férard
  * @author https://github.com/qmor
@@ -93,19 +97,16 @@ public class Angle implements AttributeValue {
 
     @Override
     public String getValue() {
-        String ret = "";
         switch (this.unit) {
             case DEG:
-                ret = String.valueOf((int) this.value); // TODO: LO bug
-                break;
+                return String.valueOf((int) this.value); // TODO: LO bug
             case GRAD:
-                ret = this.value + "grad";
-                break;
+                return this.value + "grad";
             case RAD:
-                ret = this.value + "rad";
-                break;
+                return this.value + "rad";
+            default:
+                throw ThisShouldNotHappen.illegalEnumValue();
         }
-        return ret;
     }
 
     /**

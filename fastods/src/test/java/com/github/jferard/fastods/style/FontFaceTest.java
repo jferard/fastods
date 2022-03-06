@@ -22,21 +22,27 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-@ExcludeFromJacocoGeneratedReport
-public class ThisShouldNotHappen {
-    private ThisShouldNotHappen() {}
+import org.junit.Assert;
+import org.junit.Test;
 
-    public static IllegalStateException illegalState() {
-        return new IllegalStateException("this should not happen");
+public class FontFaceTest {
+    @Test
+    public void testEquals() {
+        final FontFace face = new FontFace(LOFonts.CALADEA);
+        Assert.assertEquals(face, face);
+        Assert.assertNotEquals(face, new Object());
+        Assert.assertNotEquals(new Object(), face);
     }
 
-    public static IllegalArgumentException illegalEnumValue() {
-        return new IllegalArgumentException("this should not happen");
-    }
-
-    public static FastOdsException fastOdsException() throws FastOdsException {
-        return new FastOdsException("this should not happen");
+    @Test
+    public void testEquals2() {
+        final FontFace face1 = new FontFace(LOFonts.CALADEA);
+        final FontFace face2 = new FontFace(LOFonts.CALADEA);
+        final FontFace face3 = new FontFace(LOFonts.OPENSYMBOL);
+        Assert.assertEquals(face1, face2);
+        Assert.assertNotEquals(face1, face3);
+        Assert.assertNotEquals(face2, face3);
     }
 }

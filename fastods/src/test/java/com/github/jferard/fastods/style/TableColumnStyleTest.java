@@ -38,6 +38,10 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 
 public class TableColumnStyleTest {
+    public static final String EMPTY_XML =
+            "<style:style style:name=\"test\" style:family=\"table-column\">" +
+                    "<style:table-column-properties " + "fo:break-before=\"auto\" " +
+                    "style:column-width=\"2.5cm\"/>" + "</style:style>";
     private XMLUtil util;
 
     @Before
@@ -89,14 +93,26 @@ public class TableColumnStyleTest {
     @Test
     public final void testEmpty() throws IOException {
         final TableColumnStyle tcs = TableColumnStyle.builder("test").build();
-        TestHelper.assertXMLEquals(
-                "<style:style style:name=\"test\" style:family=\"table-column\">" +
-                        "<style:table-column-properties " + "fo:break-before=\"auto\" " +
-                        "style:column-width=\"2.5cm\"/>" + "</style:style>", tcs);
+        TestHelper.assertXMLEquals(EMPTY_XML, tcs);
+        Assert.assertTrue(tcs.isHidden());
         final TableColumnImpl tc = new TableColumnImpl();
         tc.setColumnStyle(tcs);
         this.assertXMLTableEquals("<table:table-column table:style-name=\"test\" " +
                 "table:default-cell-style-name=\"Default\"/>", tc, -1);
+    }
+
+    @Test
+    public final void testVisible() throws IOException {
+        final TableColumnStyle tcs = TableColumnStyle.builder("test").visible().build();
+        TestHelper.assertXMLEquals(EMPTY_XML, tcs);
+        Assert.assertFalse(tcs.isHidden());
+    }
+
+
+    @Test
+    public final void testColumnWidth() {
+        final TableColumnStyle tcs = TableColumnStyle.builder("test").columnWidth(SimpleLength.cm(10)).build();
+        Assert.assertEquals(SimpleLength.cm(10), tcs.getColumnWidth());
     }
 
     @Test

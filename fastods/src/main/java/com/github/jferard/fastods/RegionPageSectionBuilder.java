@@ -78,7 +78,7 @@ public class RegionPageSectionBuilder extends PageSectionBuilder<RegionPageSecti
                 this.curRegionBox = this.rightRegionBox;
                 break;
             default: // Invalid footerRegionValue, use center region as default
-                ThisShouldNotHappen.illegalState();
+                throw ThisShouldNotHappen.illegalEnumValue();
         }
         return this;
     }

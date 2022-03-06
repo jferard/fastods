@@ -22,21 +22,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods;
+package com.github.jferard.fastods.style;
 
-@ExcludeFromJacocoGeneratedReport
-public class ThisShouldNotHappen {
-    private ThisShouldNotHappen() {}
+import org.junit.Assert;
+import org.junit.Test;
 
-    public static IllegalStateException illegalState() {
-        return new IllegalStateException("this should not happen");
-    }
-
-    public static IllegalArgumentException illegalEnumValue() {
-        return new IllegalArgumentException("this should not happen");
-    }
-
-    public static FastOdsException fastOdsException() throws FastOdsException {
-        return new FastOdsException("this should not happen");
+public class ObjectStyleFamilyTest {
+    @Test
+    public void test() {
+        Assert.assertEquals("draw:fill-hatch", ObjectStyleFamily.DRAW_FILL_HATCH.getName());
     }
 }

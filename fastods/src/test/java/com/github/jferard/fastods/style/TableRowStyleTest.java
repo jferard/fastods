@@ -25,10 +25,13 @@ package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 
@@ -82,7 +85,22 @@ public class TableRowStyleTest {
     public final void testGetFontFace() {
         final TableCellStyle tcs =
                 TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL).build();
-        final TableRowStyle test = TableRowStyle.builder("test").defaultCellStyle(tcs).build();
         Assert.assertEquals(new FontFace(LOFonts.OPENSYMBOL), tcs.getFontFace());
+    }
+
+    @Test
+    public final void testAddToContentStyles() {
+        final TableCellStyle tcs =
+                TableCellStyle.builder("tcs").fontName(LOFonts.OPENSYMBOL).build();
+        final TableRowStyle trs = TableRowStyle.builder("test").defaultCellStyle(tcs).build();
+        final StylesContainer sc = PowerMock.createMock(StylesContainer.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(sc.addContentStyle(trs)).andReturn(true);
+
+        PowerMock.replayAll();
+        trs.addToContentStyles(sc);
+
+        PowerMock.verifyAll();
     }
 }

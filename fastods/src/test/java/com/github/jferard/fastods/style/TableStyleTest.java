@@ -33,6 +33,11 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.IOException;
 
 public class TableStyleTest {
+
+    public static final String TS_XML = "<style:style style:name=\"test\" style:family=\"table\" " +
+            "style:master-page-name=\"Default\">" + "<style:table-properties " +
+            "table:display=\"true\" style:writing-mode=\"lr-tb\"/>" + "</style:style>";
+
     @Test
     public final void testAddEmptyToFile() {
         final TableStyle ts = TableStyle.builder("test").build();
@@ -56,9 +61,15 @@ public class TableStyleTest {
     @Test
     public final void testEmpty() throws IOException {
         final TableStyle ts = TableStyle.builder("test").build();
-        TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table\" " +
-                "style:master-page-name=\"Default\">" + "<style:table-properties " +
-                "table:display=\"true\" style:writing-mode=\"lr-tb\"/>" + "</style:style>", ts);
+        TestHelper.assertXMLEquals(TS_XML, ts);
+        Assert.assertTrue(ts.isHidden());
+    }
+
+    @Test
+    public final void testVisible() throws IOException {
+        final TableStyle ts = TableStyle.builder("test").visible().build();
+        TestHelper.assertXMLEquals(TS_XML, ts);
+        Assert.assertFalse(ts.isHidden());
     }
 
     @Test

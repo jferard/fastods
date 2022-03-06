@@ -84,12 +84,17 @@ public class MarginsTest {
 
     @Test
     public final void testEquals() {
+        final Margins margins = new MarginsBuilder().build();
+        Assert.assertEquals(margins, margins);
+        Assert.assertNotEquals(new Object(), margins);
+        Assert.assertNotEquals(margins, new Object());
+    }
+
+    @Test
+    public final void testEquals2() {
         final Margins margins =
                 new MarginsBuilder().top(MarginsTest.TEN_PT).right(SimpleLength.pt(11.0))
                         .bottom(SimpleLength.pt(12.0)).left(SimpleLength.pt(13.0)).build();
-        Assert.assertNotEquals(1, margins);
-        Assert.assertNotEquals(1, margins);
-        Assert.assertEquals(margins, margins);
         final Margins margins2 =
                 new MarginsBuilder().top(MarginsTest.TEN_PT).right(SimpleLength.pt(11.0))
                         .bottom(SimpleLength.pt(120.0)).left(SimpleLength.pt(13.0)).build();

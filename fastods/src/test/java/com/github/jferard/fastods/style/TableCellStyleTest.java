@@ -24,15 +24,26 @@
 package com.github.jferard.fastods.style;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.Angle;
 import com.github.jferard.fastods.attribute.BorderAttribute;
 import com.github.jferard.fastods.attribute.BorderStyle;
+import com.github.jferard.fastods.attribute.CellAlign;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.FloatStyle;
+import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
+import com.github.jferard.fastods.odselement.OdsElements;
+import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
+import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class TableCellStyleTest {
     private XMLUtil util;
@@ -205,5 +216,51 @@ public class TableCellStyleTest {
                 "<style:paragraph-properties fo:margin=\"0cm\"/>" +
                 "<style:text-properties style:font-name=\"Liberation Sans\"/>" +
                 "</style:style>", style);
+    }
+
+    @Test
+    public final void testRotating() throws IOException {
+        final TableCellStyle style = TableCellStyle.builder("test").textRotating(Angle.deg(35)).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"test\" style:family=\"table-cell\" " +
+                        "style:parent-style-name=\"Default\"><style:table-cell-properties " +
+                        "style:rotation-angle=\"35\"/>" +
+                        "</style:style>",
+                style);
+    }
+
+    @Test
+    public final void testRealName() {
+        final TableCellStyle style = TableCellStyle.builder("foo-_-bar").build();
+        Assert.assertEquals("foo", style.getRealName());
+        final TableCellStyle style2 = TableCellStyle.builder("foo_bar").build();
+        Assert.assertEquals("foo_bar", style2.getRealName());
+    }
+
+    @Test
+    public final void testDataStyle() throws IOException {
+        final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
+        final TableCellStyle style = TableCellStyle.builder("ts").dataStyle(fs).textAlign(CellAlign.LEFT).build();
+        TestHelper.assertXMLEquals(
+                "<style:style style:name=\"ts\" style:family=\"table-cell\" " +
+                        "style:parent-style-name=\"Default\" style:data-style-name=\"fs\">" +
+                        "<style:paragraph-properties fo:text-align=\"start\"/></style:style>",
+                style);
+    }
+
+    @Test
+    public final void testAddToElements() throws IOException {
+        final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
+        final TableCellStyle style = TableCellStyle.builder("ts").dataStyle(fs).textAlign(CellAlign.LEFT).build();
+        final OdsElements elements = PowerMock.createMock(OdsElements.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(elements.addDataStyle(fs)).andReturn(true);
+        EasyMock.expect(elements.addContentStyle(style)).andReturn(true);
+
+        PowerMock.replayAll();
+        style.addToElements(elements);
+
+        PowerMock.verifyAll();
     }
 }
